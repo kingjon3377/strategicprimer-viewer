@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -220,7 +219,7 @@ public final class HarvestableReportGenerator
 		}
 		final IReportNode shrubsNode =
 				new SortedSectionListReportNode(5, "Shrubs, small trees, and such");
-		for (final Entry<String, IReportNode> entry : shrubs.entrySet()) {
+		for (final Map.Entry<String, IReportNode> entry : shrubs.entrySet()) {
 			shrubsNode.add(entry.getValue());
 		}
 		final SectionReportNode retval = new SectionReportNode(4, "Resource Sources");

@@ -26,7 +26,6 @@ import model.map.fixtures.FortressMember;
 import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
-import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
@@ -159,11 +158,12 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 *
 	 * @param direction the direction to move
 	 * @return the movement cost
-	 * @throws TraversalImpossibleException if movement in that direction is impossible
+	 * @throws SimpleMovement.TraversalImpossibleException if movement in that direction
+	 * is impossible
 	 */
 	@Override
 	public int move(final Direction direction)
-			throws TraversalImpossibleException {
+			throws SimpleMovement.TraversalImpossibleException {
 		final IUnit unit = selUnit;
 		if (unit == null) {
 			throw new IllegalStateException("move() called when no unit selected");
@@ -206,7 +206,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				ensureTerrain(subMap, dest, map.getBaseTerrain(dest));
 			}
 			fireMovementCost(1);
-			throw new TraversalImpossibleException();
+			throw new SimpleMovement.TraversalImpossibleException();
 		}
 	}
 

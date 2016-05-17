@@ -1,7 +1,6 @@
 package controller.map.drivers;
 
 import controller.map.misc.FileChooser;
-import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import util.EqualsAny;
@@ -82,7 +81,7 @@ public interface SimpleDriver extends ISPDriver {
 	default File askUserForFile() throws DriverFailedException {
 		try {
 			return new FileChooser(new File("")).getFile();
-		} catch (final ChoiceInterruptedException except) {
+		} catch (final FileChooser.ChoiceInterruptedException except) {
 			throw new DriverFailedException("Choice interrupted or user didn't choose",
 												except);
 		}

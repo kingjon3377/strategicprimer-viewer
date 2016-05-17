@@ -2,7 +2,6 @@ package controller.map.drivers;
 
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
-import controller.map.misc.ICLIHelper.ChoiceOperation;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import java.io.IOException;
@@ -74,7 +73,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			final String desc = "Players in the maps:";
 			final String none = "No players found.";
 			final String prompt = "Player to add resources for: ";
-			final ChoiceOperation choice =
+			final ICLIHelper.ChoiceOperation choice =
 					() -> cli.chooseFromList(players, desc, none, prompt, false);
 			for (int playerNum = choice.choose();
 					(playerNum >= 0) && (playerNum < players.size());

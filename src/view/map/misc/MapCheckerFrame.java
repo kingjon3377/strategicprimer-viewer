@@ -3,8 +3,7 @@ package view.map.misc;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,15 +13,13 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.util.ISPWindow;
 import view.util.StreamingLabel;
-import view.util.StreamingLabel.LabelTextColor;
 
 /**
  * A window to show the results of checking maps for errors.
@@ -50,7 +47,8 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	/**
 	 * The color to use for errors.
 	 */
-	private static final LabelTextColor ERROR_COLOR = LabelTextColor.red;
+	private static final StreamingLabel.LabelTextColor ERROR_COLOR =
+			StreamingLabel.LabelTextColor.red;
 	/**
 	 * Logger.
 	 */
@@ -70,7 +68,7 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	public MapCheckerFrame() {
 		super("Strategic Primer Map Checker");
 		Warning.Custom.setCustomPrinter(str -> printParagraph(str,
-				NullCleaner.assertNotNull(LabelTextColor.yellow)));
+				NullCleaner.assertNotNull(StreamingLabel.LabelTextColor.yellow)));
 		setBackground(Color.black);
 		setMinimumSize(new Dimension(640, 320));
 		setContentPane(new JScrollPane(label));
@@ -87,7 +85,7 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	 * @param paragraph the string to enclose
 	 */
 	private void printParagraph(final String paragraph) {
-		printParagraph(paragraph, LabelTextColor.white);
+		printParagraph(paragraph, StreamingLabel.LabelTextColor.white);
 	}
 	/**
 	 * Enclose a string in HTML paragraph indicators, optionally with a color. And
@@ -98,7 +96,8 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	 * @param paragraph the string to enclose
 	 * @param color     the color to make it, or the empty string if none.
 	 */
-	private void printParagraph(final String paragraph, final LabelTextColor color) {
+	private void printParagraph(final String paragraph,
+								final StreamingLabel.LabelTextColor color) {
 		try (final PrintWriter writer = label.getWriter()) {
 			// This is safe because StringWriter.close() does nothing.
 			writer.print("<p style=\"color:");
@@ -125,7 +124,7 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 			printError(except, filename);
 			return;
 		}
-		printParagraph("No errors in " + filename, LabelTextColor.green);
+		printParagraph("No errors in " + filename, StreamingLabel.LabelTextColor.green);
 	}
 
 	/**

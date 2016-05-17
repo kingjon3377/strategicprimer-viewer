@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import model.exploration.IExplorationModel;
-import model.exploration.IExplorationModel.Direction;
 import model.listeners.MovementCostListener;
 import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeListener;
@@ -30,7 +29,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
-import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
+import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
@@ -91,7 +90,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * The direction this button is from the currently selected tile.
 	 */
-	private final Direction direction;
+	private final IExplorationModel.Direction direction;
 	/**
 	 * The list of fixtures on this tile in the main map.
 	 */
@@ -105,7 +104,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * @param mainList the list of fixtures on this tile in the main map.
 	 */
 	public ExplorationClickListener(final IExplorationModel explorationModel,
-									final Direction direct, final FixtureList mainList) {
+									final IExplorationModel.Direction direct, final FixtureList mainList) {
 		model = explorationModel;
 		direction = direct;
 		list = mainList;
@@ -128,7 +127,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 */
 	protected void handleMove() {
 		try {
-			if (Direction.Nowhere == direction) {
+			if (IExplorationModel.Direction.Nowhere == direction) {
 				final int swearing = JOptionPane.showConfirmDialog(null,
 						"Should the explorer swear any villages on this tile?");
 				switch (swearing) {
@@ -193,7 +192,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 			for (final CacheFixture cache : caches) {
 				model.getMap().removeFixture(dPoint, cache);
 			}
-		} catch (final TraversalImpossibleException except) {
+		} catch (final SimpleMovement.TraversalImpossibleException except) {
 			LOGGER.log(Level.FINEST, "Attempted movement to impassable destination",
 					except);
 			final Point sel = model.getSelectedUnitLocation();

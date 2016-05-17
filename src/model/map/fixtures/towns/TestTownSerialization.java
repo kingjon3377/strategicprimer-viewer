@@ -11,7 +11,6 @@ import model.map.Player;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import util.Warning;
 
 /**
@@ -67,7 +66,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 	 * @return a list of values to use for tests
 	 */
 	@SuppressWarnings("ObjectAllocationInLoop")
-	@Parameters
+	@Parameterized.Parameters
 	public static Collection<Object[]> generateData() {
 		final Collection<Object[]> retval =
 				new ArrayList<>(TownSize.values().length * TownStatus.values().length);

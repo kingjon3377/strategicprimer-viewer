@@ -20,8 +20,7 @@ import model.map.HasImage;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.worker.IJob;
-import model.workermgmt.WorkerTreeModelAlt.KindNode;
-import model.workermgmt.WorkerTreeModelAlt.UnitNode;
+import model.workermgmt.WorkerTreeModelAlt;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
 
@@ -143,11 +142,11 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 				((DefaultTreeCellRenderer) component)
 						.setBackgroundNonSelectionColor(Color.YELLOW);
 			}
-		} else if (warn && (value instanceof KindNode)) {
+		} else if (warn && (value instanceof WorkerTreeModelAlt.KindNode)) {
 			boolean shouldWarn = false;
 			boolean shouldErr = false;
-			for (final TreeNode node : (KindNode) value) {
-				if (node instanceof UnitNode) {
+			for (final TreeNode node : (WorkerTreeModelAlt.KindNode) value) {
+				if (node instanceof WorkerTreeModelAlt.UnitNode) {
 					final IUnit unit = (IUnit) assertNotNull(getNodeValue(node));
 					final String orders = unit.getOrders().toLowerCase();
 					if (orders.contains("fixme") && unit.iterator().hasNext()) {

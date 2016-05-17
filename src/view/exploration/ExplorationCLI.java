@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.exploration.HuntingModel;
 import model.exploration.IExplorationModel;
-import model.exploration.IExplorationModel.Direction;
 import model.map.HasOwner;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -23,7 +22,6 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
-import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
@@ -159,14 +157,14 @@ public final class ExplorationCLI {
 		if (directionNum > 8) {
 			return Integer.MAX_VALUE;
 		}
-		final Direction direction =
-				assertNotNull(Direction.values()[directionNum]);
+		final IExplorationModel.Direction direction =
+				assertNotNull(IExplorationModel.Direction.values()[directionNum]);
 		final Point point = model.getSelectedUnitLocation();
 		final Point dPoint = model.getDestination(point, direction);
 		int cost;
 		try {
 			cost = model.move(direction);
-		} catch (final TraversalImpossibleException except) {
+		} catch (final SimpleMovement.TraversalImpossibleException except) {
 			LOGGER.log(Level.FINEST, "Attempted movement to impassable destination",
 					except);
 			helper.print("That direction is impassable; we've made sure ");
@@ -212,10 +210,10 @@ public final class ExplorationCLI {
 			allFixtures
 					.add(new Animal(possibleTracks, true, false, "wild", idf.createID()));
 		}
-		if ((Direction.Nowhere == direction) && helper.inputBoolean(FEALTY_PROMPT)) {
+		if ((IExplorationModel.Direction.Nowhere == direction) && helper.inputBoolean(FEALTY_PROMPT)) {
 			model.swearVillages();
 			cost += 5;
-		} else if ((Direction.Nowhere == direction) &&
+		} else if ((IExplorationModel.Direction.Nowhere == direction) &&
 						helper.inputBoolean("Dig to expose some ground here?")) {
 			model.dig();
 			cost += 4;

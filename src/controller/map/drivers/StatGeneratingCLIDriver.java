@@ -2,7 +2,6 @@ package controller.map.drivers;
 
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
-import controller.map.misc.ICLIHelper.ChoiceOperation;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import java.io.File;
@@ -142,7 +141,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which player owns the worker in question?";
 		final String none = "There are no players shared by all the maps.";
 		final String prompt = "Player selection: ";
-		final ChoiceOperation choice =
+		final ICLIHelper.ChoiceOperation choice =
 				() -> cli.chooseFromList(players, hdr, none, prompt, true);
 		for (int playerNum = choice.choose();
 				(playerNum >= 0) && (playerNum < players.size());
@@ -166,7 +165,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which unit contains the worker in question?";
 		final String none = "All that player's units already have stats.";
 		final String prompt = "Unit selection: ";
-		final ChoiceOperation choice =
+		final ICLIHelper.ChoiceOperation choice =
 				() -> cli.chooseFromList(units, hdr, none, prompt, false);
 		for (int unitNum = choice.choose(); (unitNum >= 0) && (unitNum < units.size());
 				unitNum = choice.choose()) {
@@ -230,7 +229,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which worker do you want to enter stats for?";
 		final String none = "There are no workers without stats in that unit.";
 		final String prompt = "Worker to modify: ";
-		final ChoiceOperation choice =
+		final ICLIHelper.ChoiceOperation choice =
 				() -> cli.chooseFromList(workers, hdr, none, prompt, false);
 		for (int workerNum = choice.choose();
 				(workerNum >= 0) && (workerNum < workers.size()) && !workers.isEmpty();
@@ -338,7 +337,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which player owns the new worker(s)?";
 		final String none = "There are no players shared by all the maps.";
 		final String prompt = "Player selection: ";
-		final ChoiceOperation choice =
+		final ICLIHelper.ChoiceOperation choice =
 				() -> cli.chooseFromList(players, hdr, none, prompt, false);
 		for (int playerNum = choice.choose();
 				(playerNum >= 0) && (playerNum < players.size());

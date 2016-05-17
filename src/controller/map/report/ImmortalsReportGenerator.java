@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.map.HasKind;
@@ -349,7 +348,7 @@ public final class ImmortalsReportGenerator
 	private static void optionallyPrintMap(final Map<String, List<Point>> mapping,
 										final String infix,
 										final StringBuilder builder) {
-		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
+		for (final Map.Entry<String, List<Point>> entry : mapping.entrySet()) {
 			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix);
 			pointCSL(builder, entry.getValue());
 			builder.append(CLOSE_LIST_ITEM);

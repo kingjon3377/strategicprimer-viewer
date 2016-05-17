@@ -7,7 +7,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
-import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
+import model.map.fixtures.mobile.SimpleMovement;
 import model.misc.IMultiMapModel;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -98,9 +98,10 @@ public interface IExplorationModel
 	 *
 	 * @param direction the direction to move
 	 * @return the movement cost
-	 * @throws TraversalImpossibleException if movement in that direction is impossible
+	 * @throws SimpleMovement.TraversalImpossibleException if movement in that direction
+	 * is impossible
 	 */
-	int move(Direction direction) throws TraversalImpossibleException;
+	int move(Direction direction) throws SimpleMovement.TraversalImpossibleException;
 
 	/**
 	 * @param point     a point

@@ -3,7 +3,7 @@ package view.map.misc;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilterWriter;
@@ -16,8 +16,7 @@ import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -29,7 +28,6 @@ import util.TypesafeLogger;
 import util.Warning;
 import view.util.ISPWindow;
 import view.util.StreamingLabel;
-import view.util.StreamingLabel.LabelTextColor;
 
 /**
  * A window to show the result of running subset tests.
@@ -71,7 +69,8 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 	/**
 	 * The color to use for errors.
 	 */
-	private static final LabelTextColor ERROR_COLOR = LabelTextColor.red;
+	private static final StreamingLabel.LabelTextColor ERROR_COLOR =
+			StreamingLabel.LabelTextColor.red;
 	/**
 	 * The main map.
 	 */
@@ -154,7 +153,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 	 * @param paragraph the string to enclose
 	 */
 	protected void printParagraph(final String paragraph) {
-		printParagraph(paragraph, LabelTextColor.white);
+		printParagraph(paragraph, StreamingLabel.LabelTextColor.white);
 	}
 	/**
 	 * Enclose a string in HTML paragraph indicators, optionally with a color. And
@@ -165,7 +164,8 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 	 * @param paragraph the string to enclose
 	 * @param color     the color to make it, or the empty string if none.
 	 */
-	protected void printParagraph(final String paragraph, final LabelTextColor color) {
+	protected void printParagraph(final String paragraph,
+								  final StreamingLabel.LabelTextColor color) {
 		try (final PrintWriter writer = label.getWriter()) {
 			// Because StringWriter's close() does nothing, this is safe.
 			writer.print("<p style=\"color:");
@@ -248,9 +248,9 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 		printParagraph("Testing " + file + " ...");
 		try (final Writer out = new HTMLWriter(label.getWriter())) {
 			if (mainMap.isSubset(map, out, file.getName() + ':')) {
-				printParagraph("OK", LabelTextColor.green);
+				printParagraph("OK", StreamingLabel.LabelTextColor.green);
 			} else {
-				printParagraph("WARN", LabelTextColor.yellow);
+				printParagraph("WARN", StreamingLabel.LabelTextColor.yellow);
 			}
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error writing to window", e);
@@ -308,13 +308,14 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 		}
 		try (final Writer out = new HTMLWriter(label.getWriter())) {
 			if (mainMap.isSubset(map, out, arg.getName() + ':')) {
-				printParagraph("OK", LabelTextColor.green);
+				printParagraph("OK", StreamingLabel.LabelTextColor.green);
 			} else {
-				printParagraph("WARN", LabelTextColor.yellow);
+				printParagraph("WARN", StreamingLabel.LabelTextColor.yellow);
 			}
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error writing to label", except);
-			printParagraph("ERROR: " + except.getLocalizedMessage(), LabelTextColor.red);
+			printParagraph("ERROR: " + except.getLocalizedMessage(),
+					StreamingLabel.LabelTextColor.red);
 		}
 	}
 	/**

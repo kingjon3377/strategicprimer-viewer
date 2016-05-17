@@ -2,7 +2,6 @@ package view.worker;
 
 import com.bric.window.WindowList;
 import controller.map.misc.FileChooser;
-import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ActionMap;
@@ -65,7 +63,6 @@ import model.viewer.ViewerModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
-import model.workermgmt.WorkerTreeModelAlt.PlayerNode;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ActionWrapper;
@@ -249,7 +246,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 																	new JFileChooser("."),
 																	JFileChooser.SAVE_DIALOG)
 																			.getFile());
-									} catch (final ChoiceInterruptedException except) {
+									} catch (final FileChooser.ChoiceInterruptedException except) {
 										LOGGER.log(Level.INFO,
 												"Choice interrupted or user failed to choose",
 												except);
@@ -386,8 +383,8 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		public String createStrategy() {
 			final Player currentPlayer;
 			final Object treeRoot = workerTreeModel.getRoot();
-			if (treeRoot instanceof PlayerNode) {
-				currentPlayer = ((PlayerNode) treeRoot).getUserObject();
+			if (treeRoot instanceof WorkerTreeModelAlt.PlayerNode) {
+				currentPlayer = ((WorkerTreeModelAlt.PlayerNode) treeRoot).getUserObject();
 			} else if (treeRoot instanceof Player) {
 				currentPlayer = (Player) treeRoot;
 			} else {
@@ -416,7 +413,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 			}
 
 			int size = 58 + playerName.length() + turn.length();
-			for (final Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
+			for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 				size += 4;
 				size += entry.getKey().length();
 				for (final IUnit unit : entry.getValue()) {
@@ -456,7 +453,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 				builder.append("\n\n");
 			}
 			builder.append("Workers:\n");
-			for (final Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
+			for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 				builder.append("* ");
 				builder.append(entry.getKey());
 				builder.append(":\n");

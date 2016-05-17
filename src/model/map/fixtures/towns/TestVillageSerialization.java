@@ -13,7 +13,6 @@ import model.workermgmt.RaceFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
 /**
  * A class to test serialization of Villages.
@@ -70,7 +69,7 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	 */
 	private final String race;
 	@SuppressWarnings("ObjectAllocationInLoop")
-	@Parameters
+	@Parameterized.Parameters
 	public static Collection<Object[]> generateData() {
 		final TownStatus[] statuses = TownStatus.values();
 		final Collection<String> races = new HashSet<>(RaceFactory.getRaces());

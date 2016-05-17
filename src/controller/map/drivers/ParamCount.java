@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 /**
  * Possible numbers of (non-option?) parameters a driver might want.
- * 
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *

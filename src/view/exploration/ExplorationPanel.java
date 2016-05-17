@@ -1,6 +1,6 @@
 package view.exploration;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -16,16 +16,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import model.exploration.IExplorationModel;
-import model.exploration.IExplorationModel.Direction;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
 import model.listeners.MovementCostListener;
@@ -88,18 +82,18 @@ public final class ExplorationPanel extends BorderedPanel
 	/**
 	 * The collection of proxies for main-map tile-fixture-lists.
 	 */
-	private final Map<Direction, SelectionChangeSupport> mains =
-			new EnumMap<>(Direction.class);
+	private final Map<IExplorationModel.Direction, SelectionChangeSupport> mains =
+			new EnumMap<>(IExplorationModel.Direction.class);
 	/**
 	 * The collection of proxies for secondary-map tile-fixture lists.
 	 */
-	private final Map<Direction, SelectionChangeSupport> seconds =
-			new EnumMap<>(Direction.class);
+	private final Map<IExplorationModel.Direction, SelectionChangeSupport> seconds =
+			new EnumMap<>(IExplorationModel.Direction.class);
 	/**
 	 * The collection of dual-tile-buttons.
 	 */
-	private final Map<Direction, DualTileButton> buttons =
-			new EnumMap<>(Direction.class);
+	private final Map<IExplorationModel.Direction, DualTileButton> buttons =
+			new EnumMap<>(IExplorationModel.Direction.class);
 
 	/**
 	 * @param direction a direction
@@ -107,7 +101,7 @@ public final class ExplorationPanel extends BorderedPanel
 	 */
 	@SuppressWarnings("EnumSwitchStatementWhichMissesCases")
 	@Nullable
-	private static KeyStroke getArrowKey(final Direction direction) {
+	private static KeyStroke getArrowKey(final IExplorationModel.Direction direction) {
 		switch (direction) {
 		case North:
 			return KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0);
@@ -127,7 +121,7 @@ public final class ExplorationPanel extends BorderedPanel
 	 * @return the corresponding numeric-keypad key, or null if not supported
 	 */
 	@Nullable
-	private static KeyStroke getNumpadKey(final Direction direction) {
+	private static KeyStroke getNumpadKey(final IExplorationModel.Direction direction) {
 		switch (direction) {
 		case North:
 			return KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD8, 0);
@@ -187,10 +181,11 @@ public final class ExplorationPanel extends BorderedPanel
 	 * @return it
 	 */
 	private JPanel setupTilesGUI(final JPanel panel) {
-		return setupTilesGUIImpl(panel, Direction.Northwest, Direction.North,
-				Direction.Northeast, Direction.West, Direction.Nowhere,
-				Direction.East, Direction.Southwest, Direction.South,
-				Direction.Southeast);
+		return setupTilesGUIImpl(panel, IExplorationModel.Direction.Northwest,
+				IExplorationModel.Direction.North, IExplorationModel.Direction.Northeast,
+				IExplorationModel.Direction.West, IExplorationModel.Direction.Nowhere,
+				IExplorationModel.Direction.East, IExplorationModel.Direction.Southwest,
+				IExplorationModel.Direction.South, IExplorationModel.Direction.Southeast);
 	}
 
 	/**
@@ -200,8 +195,8 @@ public final class ExplorationPanel extends BorderedPanel
 	 * @param directions the directions to create GUIs for
 	 * @return the panel
 	 */
-	private JPanel setupTilesGUIImpl(final JPanel panel, final Direction... directions) {
-		for (final Direction direction : directions) {
+	private JPanel setupTilesGUIImpl(final JPanel panel, final IExplorationModel.Direction... directions) {
+		for (final IExplorationModel.Direction direction : directions) {
 			if (direction != null) {
 				addTileGUI(panel, direction);
 			}
@@ -219,7 +214,7 @@ public final class ExplorationPanel extends BorderedPanel
 	 *                  represents.
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private void addTileGUI(final JPanel panel, final Direction direction) {
+	private void addTileGUI(final JPanel panel, final IExplorationModel.Direction direction) {
 		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
 		final FixtureList mainList =
 				new FixtureList(panel, model, model.getMap().players());
@@ -317,7 +312,7 @@ public final class ExplorationPanel extends BorderedPanel
 	@Override
 	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		final Point selPoint = model.getSelectedUnitLocation();
-		for (final Direction dir : Direction.values()) {
+		for (final IExplorationModel.Direction dir : IExplorationModel.Direction.values()) {
 			assert dir != null;
 			final Point point = model.getDestination(selPoint, dir);
 			NullCleaner.assertNotNull(mains.get(dir)).fireChanges(selPoint, point);

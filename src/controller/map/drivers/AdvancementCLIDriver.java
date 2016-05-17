@@ -2,7 +2,6 @@ package controller.map.drivers;
 
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
-import controller.map.misc.ICLIHelper.ChoiceOperation;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -95,7 +94,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			final String hdr = "Available players:";
 			final String none = "No players found.";
 			final String prompt = "Chosen player: ";
-			final ChoiceOperation choice =
+			final ICLIHelper.ChoiceOperation choice =
 					() -> cli.chooseFromList(playerList, hdr, none, prompt, false);
 			for (int playerNum = choice.choose();
 					(playerNum >= 0) && (playerNum < playerList.size());
@@ -182,7 +181,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Jobs in worker:";
 		final String none = "No existing jobs.";
 		final String prompt = "Job to advance: ";
-		final ChoiceOperation choice =
+		final ICLIHelper.ChoiceOperation choice =
 				() -> cli.chooseFromList(jobs, hdr, none, prompt, false);
 		for (int jobNum = choice.choose(); jobNum <= jobs.size();
 				jobNum = choice.choose()) {
@@ -214,7 +213,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Skills in Job:";
 		final String none = "No existing skills.";
 		final String prompt = "Skill to advance: ";
-		final ChoiceOperation choice =
+		final ICLIHelper.ChoiceOperation choice =
 				() -> cli.chooseFromList(skills, hdr, none, prompt, false);
 		for (int skillNum = choice.choose(); skillNum <= skills.size();
 				skillNum = choice.choose()) {

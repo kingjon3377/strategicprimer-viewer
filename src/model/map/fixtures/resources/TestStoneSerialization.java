@@ -13,7 +13,6 @@ import model.map.HasMutableImage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import util.NullCleaner;
 
 /**
@@ -63,7 +62,7 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * @return a collection of values to use for tests
 	 */
-	@Parameters
+	@Parameterized.Parameters
 	public static Collection<Object[]> generateData() {
 		return Stream.of(StoneKind.values()).map(stoneKind -> new Object[]{stoneKind})
 					.collect(Collectors.toList());

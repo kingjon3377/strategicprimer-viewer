@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -97,7 +96,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			final StringBuilder builder = new StringBuilder(16384).append(
 					"<h4>Animal sightings or encounters</h4>\n").append(
 					OPEN_LIST);
-			for (final Entry<String, List<Point>> entry : items.entrySet()) {
+			for (final Map.Entry<String, List<Point>> entry : items.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry.getKey())
 						.append(": at ");
 				pointCSL(builder, entry.getValue());
@@ -145,7 +144,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 		} else {
 			final IReportNode retval =
 					new SectionListReportNode(4, "Animal sightings or encounters");
-			for (final Entry<String, IReportNode> entry : items.entrySet()) {
+			for (final Map.Entry<String, IReportNode> entry : items.entrySet()) {
 				retval.add(entry.getValue());
 			}
 			return retval;

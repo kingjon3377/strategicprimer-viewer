@@ -1,7 +1,6 @@
 package model.exploration;
 
 import java.io.File;
-import model.exploration.IExplorationModel.Direction;
 import model.map.MapDimensions;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
@@ -47,61 +46,61 @@ public class TestDirection {
 	@Test
 	public void testEast() {
 		assertThat("East of (0, 0) is (0, 1)",
-				model.getDestination(point(0, 0), Direction.East),
+				model.getDestination(point(0, 0), IExplorationModel.Direction.East),
 				equalTo(point(0, 1)));
 		assertThat("East of (1, 1) is (1, 2)",
-				model.getDestination(point(1, 1), Direction.East),
+				model.getDestination(point(1, 1), IExplorationModel.Direction.East),
 				equalTo(point(1, 2)));
 		assertThat("East of (3, 4) in a 5x5 map is (3, 0)",
-				model.getDestination(point(3, 4), Direction.East),
+				model.getDestination(point(3, 4), IExplorationModel.Direction.East),
 				equalTo(point(3, 0)));
 		assertThat("East of (4, 3) is (4, 4)",
-				model.getDestination(point(4, 3), Direction.East),
+				model.getDestination(point(4, 3), IExplorationModel.Direction.East),
 				equalTo(point(4, 4)));
 	}
 	@Test
 	public void testNorth() {
 		assertThat("North of (0, 0) in a 5x5 map is (4, 0)",
-				model.getDestination(point(0, 0), Direction.North),
+				model.getDestination(point(0, 0), IExplorationModel.Direction.North),
 				equalTo(point(4, 0)));
 		assertThat("North of (1, 1) is (0, 1)",
-				model.getDestination(point(1, 1), Direction.North),
+				model.getDestination(point(1, 1), IExplorationModel.Direction.North),
 				equalTo(point(0, 1)));
 		assertThat("North of (3, 4) is (2, 4)",
-				model.getDestination(point(3, 4), Direction.North),
+				model.getDestination(point(3, 4), IExplorationModel.Direction.North),
 				equalTo(point(2, 4)));
 		assertThat("North of (4, 3) is (3, 3)",
-				model.getDestination(point(4, 3), Direction.North),
+				model.getDestination(point(4, 3), IExplorationModel.Direction.North),
 				equalTo(point(3, 3)));
 	}
 	@Test
 	public void testSouth() {
 		assertThat("South of (0, 0) is (1, 0)",
-				model.getDestination(point(0, 0), Direction.South),
+				model.getDestination(point(0, 0), IExplorationModel.Direction.South),
 				equalTo(point(1, 0)));
 		assertThat("South of (1, 1) is (2, 1)",
-				model.getDestination(point(1, 1), Direction.South),
+				model.getDestination(point(1, 1), IExplorationModel.Direction.South),
 				equalTo(point(2, 1)));
 		assertThat("South of (3, 4) is (4, 4)",
-				model.getDestination(point(3, 4), Direction.South),
+				model.getDestination(point(3, 4), IExplorationModel.Direction.South),
 				equalTo(point(4, 4)));
 		assertThat("South of (4, 3) in a 5x5 map is (0, 3)",
-				model.getDestination(point(4, 3), Direction.South),
+				model.getDestination(point(4, 3), IExplorationModel.Direction.South),
 				equalTo(point(0, 3)));
 	}
 	@Test
 	public void testWest() {
 		assertThat("West of (0, 0) in a 5x5 map is (0, 4)",
-				model.getDestination(point(0, 0), Direction.West),
+				model.getDestination(point(0, 0), IExplorationModel.Direction.West),
 				equalTo(point(0, 4)));
 		assertThat("West of (1, 1) is (1, 0)",
-				model.getDestination(point(1, 1), Direction.West),
+				model.getDestination(point(1, 1), IExplorationModel.Direction.West),
 				equalTo(point(1, 0)));
 		assertThat("West of (3, 4) is (3, 3)",
-				model.getDestination(point(3, 4), Direction.West),
+				model.getDestination(point(3, 4), IExplorationModel.Direction.West),
 				equalTo(point(3, 3)));
 		assertThat("West of (4, 3) is (4, 2)",
-				model.getDestination(point(4, 3), Direction.West),
+				model.getDestination(point(4, 3), IExplorationModel.Direction.West),
 				equalTo(point(4, 2)));
 	}
 }
