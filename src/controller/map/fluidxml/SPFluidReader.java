@@ -446,7 +446,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					// Deliberately ignore
 					continue;
 				case "tile":
-					parseTile(retval, element, current, stream, players, warner, idFactory);
+					parseTile(retval, current, stream, players, warner, idFactory);
 					continue;
 				}
 				if (equalsAny(type, ISPReader.FUTURE)) {
@@ -500,14 +500,13 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * framework, but this is cleaner than using a marker variable in the map-reading
 	 * loop.
 	 * @param map the map being read
-	 * @param parent the map tag
 	 * @param element the tag currently being read
 	 * @param stream the stream to read more tags from
 	 * @param players the collection of players
 	 * @param warner to report format irregularities
 	 * @param idFactory to get ID numbers when needed, and report numbers in use
 	 */
-	private void parseTile(final IMutableMapNG map, final StartElement parent,
+	private void parseTile(final IMutableMapNG map,
 						   final StartElement element,
 						   final Iterable<XMLEvent> stream,
 						   final IMutablePlayerCollection players, final Warning warner,
