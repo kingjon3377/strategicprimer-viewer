@@ -629,6 +629,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @return the parsed tile
 	 * @throws SPFormatException on SP format problems
 	 */
+	@SuppressWarnings("UnusedParameters")
 	private static final Player readPlayer(final StartElement element,
 					   final Iterable<XMLEvent> stream,
 					   final IMutablePlayerCollection players, final Warning warner,
