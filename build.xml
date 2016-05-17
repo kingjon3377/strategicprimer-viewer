@@ -29,8 +29,6 @@
     <!-- See comment in paths.properties -->
     <pathelement location="${nullness.jar.path}" />
     <pathelement location="${windowmenu.jar.path}" />
-    <exclude name="/usr/share/java/hamcrest-core.jar" />
-    <exclude name="**/hamcrest-core-1.1.jar" />
   </path>
 
 
