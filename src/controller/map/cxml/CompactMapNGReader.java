@@ -35,6 +35,7 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.EqualsAny;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 
 import static java.util.Collections.unmodifiableList;
@@ -343,9 +344,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI))
 				.findFirst()
 				.orElseThrow(() -> new MissingChildException(parent));
-		// TODO: Use NullCleaner instead of an assertion here. Or annotate JDK
-		assert retval != null;
-		return retval;
+		return assertNotNull(retval);
 	}
 	/**
 	 * @param obj     a map
