@@ -108,7 +108,7 @@ public final class CompactReaderAdapter {
 	}
 
 	/**
-	 * Write an object to XML.
+	 * Write an object to XML. TODO: Improve test coverage
 	 *
 	 * @param ostream The stream to write to.
 	 * @param obj     The object to write.

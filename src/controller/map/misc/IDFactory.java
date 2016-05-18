@@ -49,6 +49,7 @@ public final class IDFactory {
 	public int register(final int idNum) {
 		if (idNum >= 0) {
 			if (usedIDs.get(idNum)) {
+				// TODO: Tests should check the duplicate-ID case.
 				Warning.DEFAULT.warn(new DuplicateIDException(idNum));
 			}
 			usedIDs.set(idNum);
@@ -72,6 +73,8 @@ public final class IDFactory {
 	/**
 	 * Create a copy of this factory for testing purposes. (So that we don't "register"
 	 * IDs that don't end up getting used.)
+	 *
+	 * TODO: Tests should cover this method
 	 *
 	 * @return a copy of this factory
 	 */

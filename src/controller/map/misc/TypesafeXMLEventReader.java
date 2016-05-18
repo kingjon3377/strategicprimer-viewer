@@ -56,6 +56,7 @@ public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent>
 			throws XMLStreamException {
 		final XMLEventReader temp =
 				XMLInputFactory.newInstance().createXMLEventReader(reader);
+		// TODO: Use NullCleaner instead of checking here; neither JDK impl can return null
 		if (temp == null) {
 			throw new XMLStreamException("Factory created a null XMLEventReader");
 		} else {

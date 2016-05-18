@@ -103,6 +103,8 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	}
 
 	/**
+	 * TODO: Either remove toString() from CXML classes (and add suppression to make
+	 * that not warn) or make test code call them.
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

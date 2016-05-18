@@ -1,7 +1,7 @@
 package controller.map.misc;
 
 /**
- * An exception to warn about duplicate IDs.
+ * An exception to warn about duplicate IDs. TODO: Tests should ensure that this is fired.
  */
 public final class DuplicateIDException extends Exception {
 	/**

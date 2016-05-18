@@ -52,6 +52,7 @@ public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compareTo(final ComparableIterator<T> obj) {
+		// TODO: Tests should cover each branch of this
 		final int theirs = Objects.hashCode(obj);
 		final int ours = hashCode();
 		if (ours > theirs) {

@@ -73,12 +73,14 @@ public abstract class AbstractCompactReader<@NonNull T>
 		if (!EqualsAny.equalsAny(
 				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
+			// TODO: Throw an SPFormatException subclass, and test this
 			throw new IllegalArgumentException("requireTag given a tag that is in " +
 														"neither our namespace nor the " +
 														"default namespace");
 		}
 		final String localName = element.getName().getLocalPart();
 		final int line = element.getLocation().getLineNumber();
+		// TODO: Convert null check into assertNotNull; QName spec says it's not null
 		if (localName == null) {
 			throw new IllegalArgumentException(Stream.concat(
 					Stream.of(
@@ -207,6 +209,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 												.parse(getParameter(element, "id"))
 												.intValue());
 			} catch (final NumberFormatException | ParseException except) {
+				// TODO: Test malformed input for ID
 				throw new MissingPropertyException(element, "id", except);
 			}
 		} else {
@@ -228,6 +231,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		if (retval == null) {
 			return element.getAttributeByName(new QName(param));
 		} else {
+			// TODO: Test attribute-in-SP-namespace case
 			return retval;
 		}
 	}
@@ -308,6 +312,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	@SuppressWarnings("TypeMayBeWeakened")
 	protected static String imageXML(final HasImage obj) {
 		final String image = obj.getImage();
+		// TODO: Test image-is-default case
 		if (image.isEmpty() || image.equals(obj.getDefaultImage())) {
 			return "";
 		} else {
@@ -324,6 +329,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		if (portrait.isEmpty()) {
 			return "";
 		} else {
+			// TODO: Test that portraits get written
 			return " portrait=\"" + portrait + '"';
 		}
 	}

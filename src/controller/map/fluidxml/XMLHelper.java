@@ -76,6 +76,7 @@ public final class XMLHelper {
 		}
 		final String localName = element.getName().getLocalPart();
 		final int line = element.getLocation().getLineNumber();
+		// TODO: Drop this check; QName spec says getLocalPart can't return null
 		if (localName == null) {
 			throw new IllegalArgumentException(Stream.concat(
 					Stream.of(

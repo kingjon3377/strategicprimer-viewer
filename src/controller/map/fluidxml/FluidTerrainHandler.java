@@ -232,6 +232,7 @@ public class FluidTerrainHandler {
 			writeTag(ostream, "river", indent);
 			writeAttribute(ostream, "direction", ((River) obj).getDescription());
 		} else if (obj instanceof RiverFixture) {
+			// TODO: Test
 			for (final River river : (RiverFixture) obj) {
 				writeRivers(ostream, river, indent);
 			}

@@ -174,14 +174,17 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 					new ComparableIterator<>(new TypesafeXMLEventReader(new MagicReader(
 							file)))));
 		} catch (final FileNotFoundException e) {
+			// TODO: Tests should handle include-non-existent-file case
 			throw new NoSuchElementBecauseException("File referenced by <include> not " +
 															"found",
 														e);
 		} catch (final XMLStreamException e) {
+			// TODO: Tests should handle include-non-XML case
 			throw new NoSuchElementBecauseException("XML stream error parsing <include> " +
 															"tag or opening file",
 														e);
 		} catch (final SPFormatException e) {
+			// TODO: Tests should handle include-non-SP-XML case
 			throw new NoSuchElementBecauseException("SP format problem in <include>", e);
 		}
 	}
@@ -203,6 +206,8 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
+	 * TODO: Tests
+	 *
 	 * @return the file we're *currently* reading from.
 	 */
 	public String getFile() {
@@ -227,6 +232,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
+	 * TODO: Use XMLHelper instead of reimplementing getAttribute().
 	 * @param startElement a tag
 	 * @return the value of that attribute.
 	 * @throws SPFormatException if the element doesn't have that attribute

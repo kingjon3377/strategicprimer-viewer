@@ -124,6 +124,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						assertNotNull(element.getName()), mapTag);
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
+			// TODO: Test reading map-not-in-view case
 			currentTurn = 0;
 			mapTag = element;
 		} else {
@@ -196,12 +197,14 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					addFixture(retval, point, CompactTerrainReader.READER.read(current,
 							stream, players, warner, idFactory));
 				} else if ("mountain".equalsIgnoreCase(type)) {
+					// TODO: Tests should cover this case ...
 					retval.setMountainous(point, true);
 				} else {
 					try {
 						retval.addFixture(point, parseFixture(current, stream,
 								players, idFactory, warner));
 					} catch (final UnwantedChildException except) {
+						// TODO: Test the worker-in-tile-directly case, which should get here
 						if ("unknown".equals(except.getTag().getLocalPart())) {
 							throw new UnwantedChildException(
 									assertNotNull(mapTag.getName()),
@@ -230,6 +233,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				final String data =
 						assertNotNull(event.asCharacters().getData().trim());
 				if (!data.isEmpty()) {
+					// TODO: Test this functionality
 					//noinspection ObjectAllocationInLoop
 					retval.addFixture(point, new TextFixture(data, -1));
 				}
@@ -263,6 +267,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			if (oldGround == null) {
 				map.setGround(point, ground);
 			} else if (ground.isExposed() && !oldGround.isExposed()) {
+				// TODO: Test the multiple-Ground-per-tile cases
 				map.setGround(point, ground);
 				map.addFixture(point, oldGround);
 			} else if (!oldGround.equals(ground)) {
@@ -274,6 +279,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			if (oldForest == null) {
 				map.setForest(point, forest);
 			} else if (!oldForest.equals(forest)) {
+				// TODO: Test the multiple-Forest cases
 				map.addFixture(point, forest);
 			}
 		} else if (fix instanceof Mountain) {
@@ -338,6 +344,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI))
 				.findFirst()
 				.orElseThrow(() -> new MissingChildException(parent));
+		// TODO: Use NullCleaner instead of an assertion here. Or annotate JDK
 		assert retval != null;
 		return retval;
 	}
@@ -373,6 +380,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				final TileType terrain = obj.getBaseTerrain(point);
+				// TODO: Test cases that fit only one of these
 				if ((TileType.NotVisible != terrain)
 							|| obj.isMountainous(point)
 							|| (obj.getGround(point) != null)
@@ -506,7 +514,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	}
 
 	/**
-	 * Write a series of rivers.
+	 * Write a series of rivers. TODO: test this
 	 *
 	 * @param ostream the stream to write to
 	 * @param iter    a series of rivers to write

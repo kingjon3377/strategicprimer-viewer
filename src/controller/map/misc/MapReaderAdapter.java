@@ -93,8 +93,9 @@ public final class MapReaderAdapter {
 
 	/**
 	 * Because this is intended to be used by implementations of ISPDriver, which can
-	 * only
-	 * throw DriverFailedException, we use that class for all errors we generate.
+	 * only throw DriverFailedException, we use that class for all errors we generate.
+	 *
+	 * TODO: Make a way to read a map model from test code
 	 *
 	 * @param file   the file to open
 	 * @param warner the Warning instance to use for warnings
@@ -201,6 +202,7 @@ public final class MapReaderAdapter {
 	}
 
 	/**
+	 * TODO: Tests
 	 * @param names     some filenames
 	 * @param dropFirst whether to skip the first filename.
 	 * @return an array of equivalent Files

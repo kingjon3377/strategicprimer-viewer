@@ -97,6 +97,7 @@ public final class CompactAdventureReader extends
 			ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
 			ostream.append("\" ");
 		}
+		// TODO: Test empty-descriptions cases
 		if (!obj.getBriefDescription().isEmpty()) {
 			ostream.append("brief=\"");
 			ostream.append(obj.getBriefDescription());

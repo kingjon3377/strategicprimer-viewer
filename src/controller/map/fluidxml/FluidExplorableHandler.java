@@ -209,6 +209,8 @@ public class FluidExplorableHandler {
 	public static final void writeAdventure(final Appendable ostream,
 											final Object obj, final int indent)
 			throws IOException {
+		// TODO: Create helper method for this idiom, so we don't have to sacrifice
+		// one coverage-miss line per method.
 		if (!(obj instanceof AdventureFixture)) {
 			throw new IllegalArgumentException("Can only write AdventureFixtures");
 		}

@@ -45,7 +45,7 @@ public final class CompactXMLWriter implements SPWriter {
 	}
 
 	/**
-	 * Write a map to a stream.
+	 * Write a map to a stream. TODO: Test
 	 *
 	 * @param ostream the stream to write to
 	 * @param map     the map to write
