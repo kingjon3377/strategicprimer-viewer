@@ -16,9 +16,11 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
-import util.NullCleaner;
 import util.Pair;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * An extension to the IteratorWrapper we previously used in MapReaderNG that
@@ -61,7 +63,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 * @param iter the iterator we'll start with.
 	 */
 	public IncludingIterator(final File file, final Iterator<XMLEvent> iter) {
-		this(NullCleaner.assertNotNull(file.getPath()), iter);
+		this(assertNotNull(file.getPath()), iter);
 	}
 
 	/**
@@ -117,12 +119,12 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		XMLEvent retval = stack.getFirst().second().next();
 		while (retval.isStartElement()
 				&& EqualsAny.equalsAny(
-						NullCleaner.assertNotNull(retval.asStartElement()
+						assertNotNull(retval.asStartElement()
 								.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)
 				&& "include".equals(
 						retval.asStartElement().getName().getLocalPart())) {
-			handleInclude(NullCleaner.assertNotNull(retval.asStartElement()));
+			handleInclude(assertNotNull(retval.asStartElement()));
 			removeEmptyIterators();
 			if (stack.isEmpty()) {
 				throw new NoSuchElementException();
@@ -230,38 +232,37 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 			return "Empty IncludingIterator";
 		}
 	}
+	/**
+	 * @param element an element
+	 * @param names names an attribute of it might be known by
+	 * @return the first matching attribute, or null if none found
+	 */
+	@Nullable
+	private static Attribute getAttribute(final StartElement element, final QName... names) {
+		for (final QName name : names) {
+			final Attribute retval = element.getAttributeByName(name);
+			if (retval != null && retval.getValue() != null) {
+				return retval;
+			}
+		}
+		return null;
+	}
 
 	/**
-	 * TODO: Use XMLHelper instead of reimplementing getAttribute().
 	 * @param startElement a tag
-	 * @return the value of that attribute.
+	 * @return the value of the 'file' attribute.
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	private static String getFileAttribute(final StartElement startElement)
 			throws SPFormatException {
-		final Attribute namespacedAttr = startElement.getAttributeByName(
-				new QName(ISPReader.NAMESPACE, FILE_ATTR_NAME));
-		final String namespacedValue;
-		if (namespacedAttr == null) {
-			//noinspection AssignmentToNull
-			namespacedValue = null;
+		final Attribute attr =
+				getAttribute(startElement, new QName(ISPReader.NAMESPACE,
+															FILE_ATTR_NAME),
+						new QName(FILE_ATTR_NAME));
+		if (attr == null) {
+			throw new MissingPropertyException(startElement, FILE_ATTR_NAME);
 		} else {
-			namespacedValue = namespacedAttr.getValue();
-		}
-		if (namespacedValue == null) {
-			final Attribute defaultAttr =
-					startElement.getAttributeByName(new QName(FILE_ATTR_NAME));
-			if (defaultAttr == null) {
-				throw new MissingPropertyException(startElement, FILE_ATTR_NAME);
-			}
-			final String value = defaultAttr.getValue();
-			if (value == null) {
-				throw new MissingPropertyException(startElement, FILE_ATTR_NAME);
-			} else {
-				return value;
-			}
-		} else {
-			return namespacedValue;
+			return assertNotNull(attr.getValue());
 		}
 	}
 }
