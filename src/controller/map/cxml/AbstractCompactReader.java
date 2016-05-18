@@ -27,6 +27,7 @@ import util.NullCleaner;
 import util.Warning;
 
 import static java.lang.String.format;
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A superclass to provide helper methods.
@@ -71,25 +72,16 @@ public abstract class AbstractCompactReader<@NonNull T>
 	protected static void requireTag(final StartElement element,
 									final String... tags) {
 		if (!EqualsAny.equalsAny(
-				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
+				assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 			// TODO: Throw an SPFormatException subclass, and test this
 			throw new IllegalArgumentException("requireTag given a tag that is in " +
 														"neither our namespace nor the " +
 														"default namespace");
 		}
-		final String localName = element.getName().getLocalPart();
+		final String localName = assertNotNull(element.getName().getLocalPart());
 		final int line = element.getLocation().getLineNumber();
-		// TODO: Convert null check into assertNotNull; QName spec says it's not null
-		if (localName == null) {
-			throw new IllegalArgumentException(Stream.concat(
-					Stream.of(
-							format("Null tag on line %d, expected one of the " +
-											"following: ",
-									Integer.valueOf(line))), Stream.of(tags))
-														.collect(
-															Collectors.joining(", ")));
-		} else if (!EqualsAny.equalsAny(localName, tags)) {
+		if (!EqualsAny.equalsAny(localName, tags)) {
 			throw new IllegalArgumentException(Stream.concat(Stream.of(format(
 					"Unexpected tag %s on line %d, expected one of the following: ",
 					localName, Integer.valueOf(line))), Stream.of(tags))
@@ -177,11 +169,11 @@ public abstract class AbstractCompactReader<@NonNull T>
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
-					NullCleaner.assertNotNull(
+					assertNotNull(
 							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				throw new UnwantedChildException(tag,
-						NullCleaner.assertNotNull(event.asStartElement()));
+						assertNotNull(event.asStartElement()));
 			} else if (event.isEndElement()
 								&& tag.equals(event.asEndElement().getName())) {
 				break;
@@ -336,8 +328,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	/**
 	 * A parser for numeric data.
 	 */
-	private static final NumberFormat NUM_PARSER = NullCleaner
-														.assertNotNull(NumberFormat
+	private static final NumberFormat NUM_PARSER =
+			assertNotNull(NumberFormat
 																				.getIntegerInstance());
 
 
@@ -370,7 +362,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 												final String parameter)
 			throws SPFormatException {
 		return parseInt(getParameter(tag, parameter),
-				NullCleaner.assertNotNull(tag.getLocation()));
+				assertNotNull(tag.getLocation()));
 	}
 
 	/**
@@ -395,7 +387,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		if ((val == null) || val.isEmpty()) {
 			return defaultValue;
 		} else {
-			return parseInt(val, NullCleaner.assertNotNull(tag.getLocation()));
+			return parseInt(val, assertNotNull(tag.getLocation()));
 		}
 	}
 	/**

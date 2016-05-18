@@ -417,7 +417,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		final int currentTurn;
 		final StartElement mapTag;
 		final String outerTag = assertNotNull(element.getName().getLocalPart());
-		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
+		if ("view".equalsIgnoreCase(outerTag)) {
 			currentTurn = getIntegerAttribute(element, "current_turn");
 			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equals(mapTag.getName().getLocalPart())) {

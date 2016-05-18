@@ -76,16 +76,7 @@ public final class XMLHelper {
 		}
 		final String localName = element.getName().getLocalPart();
 		final int line = element.getLocation().getLineNumber();
-		// TODO: Drop this check; QName spec says getLocalPart can't return null
-		if (localName == null) {
-			throw new IllegalArgumentException(Stream.concat(
-					Stream.of(
-							format("Null tag on line %d, expected one of the " +
-										   "following: ",
-									Integer.valueOf(line))), Stream.of(tags))
-													   .collect(
-															   Collectors.joining(", ")));
-		} else if (!EqualsAny.equalsAny(localName, tags)) {
+		if (!EqualsAny.equalsAny(localName, tags)) {
 			throw new IllegalArgumentException(Stream.concat(Stream.of(format(
 					"Unexpected tag %s on line %d, expected one of the following: ",
 					localName, Integer.valueOf(line))), Stream.of(tags))

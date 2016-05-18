@@ -140,10 +140,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement current = event.asStartElement();
-				final String type = current.getName().getLocalPart();
-				if ((type == null) || !EqualsAny.equalsAny(
-						assertNotNull(
-								current.getName().getNamespaceURI()),
+				final String type = assertNotNull(current.getName().getLocalPart());
+				if (!EqualsAny.equalsAny(
+						assertNotNull(current.getName().getNamespaceURI()),
 						ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 					continue;
 				} else if ("player".equalsIgnoreCase(type)) {
