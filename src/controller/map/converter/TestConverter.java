@@ -135,9 +135,15 @@ public final class TestConverter {
 		original.setBaseTerrain(PointFactory.point(0, 1), TileType.TemperateForest);
 		original.setBaseTerrain(PointFactory.point(1, 0), TileType.Desert);
 		original.setBaseTerrain(PointFactory.point(1, 1), TileType.Plains);
+		final Player player = new Player(1, "playerName");
+		final Player independent = new Player(2, "independent");
+		original.addPlayer(player);
+		original.addPlayer(independent);
 
 		final IMutableMapNG converted =
 				new SPMapNG(new MapDimensions(8, 8, 2), new PlayerCollection(), -1);
+		converted.addPlayer(player);
+		converted.addPlayer(independent);
 		converted.setBaseTerrain(PointFactory.point(0, 0), TileType.Steppe);
 		converted.setGround(PointFactory.point(0, 0), new Ground(ROCK_TYPE, false));
 		converted.setForest(PointFactory.point(0, 0), new Forest(BOREAL_TREE, false));
@@ -181,7 +187,7 @@ public final class TestConverter {
 		final Player noPlayer = new Player(-1, "");
 
 		converted.addFixture(PointFactory.point(1, 2),
-				new Village(TownStatus.Active, "", 0, noPlayer, "dwarf"));
+				new Village(TownStatus.Active, "", 0, independent, "dwarf"));
 
 		final String maxIterWarn =
 				"FIXME: A fixture here was force-added after " + "MAX_ITER";
@@ -230,7 +236,7 @@ public final class TestConverter {
 		converted.setGround(PointFactory.point(2, 6), new Ground(ROCK_TYPE, false));
 		converted.setForest(PointFactory.point(2, 6), new Forest(TEMP_TREE, false));
 		converted.addFixture(PointFactory.point(2, 6),
-				new Village(TownStatus.Active, "", 1, noPlayer, "human"));
+				new Village(TownStatus.Active, "", 1, independent, "human"));
 		converted.addFixture(PointFactory.point(2, 6), new TextFixture(maxIterWarn, 10));
 		converted.setBaseTerrain(PointFactory.point(2, 7), TileType.Plains);
 		converted.setGround(PointFactory.point(2, 7), new Ground(ROCK_TYPE, false));
@@ -301,7 +307,7 @@ public final class TestConverter {
 		converted.setBaseTerrain(PointFactory.point(5, 2), TileType.Plains);
 		converted.setGround(PointFactory.point(5, 2), new Ground(ROCK_TYPE, false));
 		converted.addFixture(PointFactory.point(5, 2),
-				new Village(TownStatus.Active, "", 2, noPlayer, "human"));
+				new Village(TownStatus.Active, "", 2, independent, "human"));
 		converted.addFixture(PointFactory.point(5, 2), new TextFixture(maxIterWarn, 10));
 		converted.setBaseTerrain(PointFactory.point(5, 3), TileType.Plains);
 		converted.setGround(PointFactory.point(5, 3), new Ground(ROCK_TYPE, false));
@@ -312,7 +318,7 @@ public final class TestConverter {
 		converted.setBaseTerrain(PointFactory.point(5, 5), TileType.Plains);
 		converted.setGround(PointFactory.point(5, 5), new Ground(ROCK_TYPE, false));
 		converted.addFixture(PointFactory.point(5, 5),
-				new Village(TownStatus.Active, "", 3, noPlayer, "human"));
+				new Village(TownStatus.Active, "", 3, independent, "human"));
 		converted.addFixture(PointFactory.point(5, 5), new TextFixture(maxIterWarn, 10));
 		converted.setBaseTerrain(PointFactory.point(5, 6), TileType.Plains);
 		converted.setGround(PointFactory.point(5, 6), new Ground(ROCK_TYPE, false));
