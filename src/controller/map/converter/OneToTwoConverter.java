@@ -336,7 +336,7 @@ public final class OneToTwoConverter {
 	 * @return whether that location is suitable
 	 */
 	private static boolean isSubTileSuitable(final IMapNG map, final Point point) {
-		return map.streamOtherFixtures(point).anyMatch(OneToTwoConverter::isBackground);
+		return map.streamOtherFixtures(point).allMatch(OneToTwoConverter::isBackground);
 	}
 
 	/**
