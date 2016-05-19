@@ -70,23 +70,24 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @param tags    the tags we accept here
 	 */
 	protected static void requireTag(final StartElement element,
-									final String... tags) {
+									final String... tags) throws SPFormatException {
 		if (!EqualsAny.equalsAny(
 				assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-			// TODO: Throw an SPFormatException subclass, and test this
-			throw new IllegalArgumentException("requireTag given a tag that is in " +
-														"neither our namespace nor the " +
-														"default namespace");
+			// TODO: Tests should exercise this
+			// TODO: Pass in parent tag? Somehow?
+			throw new UnwantedChildException(new QName("unknown"), element, new IllegalArgumentException("Unrecognized namespace"));
 		}
 		final String localName = assertNotNull(element.getName().getLocalPart());
 		final int line = element.getLocation().getLineNumber();
 		if (!EqualsAny.equalsAny(localName, tags)) {
-			throw new IllegalArgumentException(Stream.concat(Stream.of(format(
-					"Unexpected tag %s on line %d, expected one of the following: ",
-					localName, Integer.valueOf(line))), Stream.of(tags))
+			// TODO: Tests should exercise this
+			throw new UnwantedChildException(new QName("unknown"), element,
+					new IllegalArgumentException(Stream.concat(Stream.of(format(
+						"Unexpected tag %s on line %d, expected one of the following: ",
+						localName, Integer.valueOf(line))), Stream.of(tags))
 													.collect(Collectors.joining(", "))
-			);
+			));
 		}
 	}
 
