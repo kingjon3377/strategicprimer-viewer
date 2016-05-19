@@ -556,19 +556,34 @@ public class SPMapNG implements IMutableMapNG {
 			builder.append("At ");
 			builder.append(location);
 			builder.append(": ");
+			if (getBaseTerrain(location) != TileType.NotVisible) {
+				builder.append("terrain: ");
+				builder.append(getBaseTerrain(location));
+				builder.append(", ");
+			}
 			if (isMountainous(location)) {
 				builder.append("mountains, ");
 			}
-			builder.append("ground: ");
-			builder.append(getGround(location));
-			builder.append(", forest: ");
-			builder.append(getForest(location));
-			builder.append(", rivers:");
-			for (final River river : getRivers(location)) {
-				builder.append(' ');
-				builder.append(river);
+			if (getGround(location) != null) {
+				builder.append("ground: ");
+				builder.append(getGround(location));
+				builder.append(", ");
 			}
-			builder.append(", other: ");
+			if (getForest(location) != null) {
+				builder.append("forest: ");
+				builder.append(getForest(location));
+				builder.append(", ");
+			}
+			if (StreamSupport.stream(getRivers(location).spliterator(), false).count() >
+						0) {
+				builder.append("rivers:");
+				for (final River river : getRivers(location)) {
+					builder.append(' ');
+					builder.append(river);
+				}
+				builder.append(", ");
+			}
+			builder.append("other: ");
 			for (final TileFixture fixture : getOtherFixtures(location)) {
 				builder.append('\n');
 				builder.append(fixture);
@@ -576,6 +591,7 @@ public class SPMapNG implements IMutableMapNG {
 				// builder.append(fixture.getClass().getSimpleName());
 				// builder.append(")");
 			}
+			builder.append('\n');
 		}
 		return assertNotNull(builder.toString());
 	}
