@@ -133,6 +133,10 @@ public final class ZeroToOneConverter {
 			ostream.append(':');
 		}
 		ostream.append(element.getName().getLocalPart());
+		for (Object namespace : new IteratorWrapper(element.getNamespaces())) {
+			ostream.append(' ');
+			ostream.append(namespace.toString());
+		}
 		for (final Attribute attr : attrs) {
 			if ("version".equalsIgnoreCase(attr.getName().getLocalPart())) {
 				ostream.append(" version=\"1\"");
