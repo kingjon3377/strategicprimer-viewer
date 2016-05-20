@@ -3,6 +3,7 @@ package controller.map.converter;
 import controller.map.cxml.CompactXMLWriter;
 import controller.map.fluidxml.SPFluidWriter;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
 import java.io.StringReader;
@@ -1188,12 +1189,12 @@ public final class TestConverter {
 			throws XMLStreamException, IOException, SPFormatException {
 		// FIXME: Include tile fixtures beyond those implicit in events
 		final String orig =
-				"<map version='0' rows='2' columns='2'><player number='0' " +
+				"<map xmlns:sp=\"" + ISPReader.NAMESPACE + "\" version='0' rows='2' columns='2'><player number='0' " +
 						"code_name='Test Player' /><row index='0'><tile row='0' " +
-						"column='0' type='tundra' event='0'></tile><tile row='0' " +
+						"column='0' type='tundra' event='0'>Random event here</tile><tile row='0' " +
 						"column='1' type='boreal_forest' event='183'></tile></row><row " +
-						"index='1'><tile row='1' column='0' type='mountain' " +
-						"event='229'></tile><tile row='1' column='1' " +
+						"index='1'><sp:tile row='1' column='0' type='mountain' " +
+						"event='229'><sp:fortress name='HQ' owner='0' id='15'/></sp:tile><tile row='1' column='1' " +
 						"type='temperate_forest' event='219'></tile></row></map>";
 		final StringWriter out = new StringWriter();
 		//noinspection unchecked
@@ -1201,6 +1202,7 @@ public final class TestConverter {
 																.createXMLEventReader(
 																		new StringReader(orig))),
 				out);
+		SystemOut.SYS_OUT.println(out.toString());
 		final StringWriter actualXML = new StringWriter();
 		CompactXMLWriter.writeSPObject(actualXML, new MapReaderAdapter()
 														.readMapFromStream(
@@ -1208,14 +1210,17 @@ public final class TestConverter {
 																Warning.Ignore));
 		final IMutableMapNG expected =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
-		expected.addPlayer(new Player(0, "Test Player"));
+		final Player player = new Player(0, "Test Player");
+		expected.addPlayer(player);
 		expected.setBaseTerrain(PointFactory.point(0, 0), TileType.Tundra);
+		expected.addFixture(PointFactory.point(0, 0), new TextFixture("Random event here", -1));
 		expected.setBaseTerrain(PointFactory.point(0, 1), TileType.BorealForest);
 		expected.setBaseTerrain(PointFactory.point(1, 0), TileType.Mountain);
 		expected.setBaseTerrain(PointFactory.point(1, 1), TileType.TemperateForest);
 		expected.addFixture(PointFactory.point(1, 0),
 				new Town(TownStatus.Burned, TownSize.Small, 0, "", 0,
 								new Player(-1, "Independent")));
+		expected.addFixture(PointFactory.point(1, 0), new Fortress(player, "HQ", 15));
 		expected.addFixture(PointFactory.point(1, 1), new MineralVein("coal", true, 0, 1));
 
 		final StringWriter expectedXML = new StringWriter();
