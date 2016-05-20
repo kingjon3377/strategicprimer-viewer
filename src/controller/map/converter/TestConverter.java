@@ -62,8 +62,11 @@ import view.util.SystemOut;
 import static model.map.fixtures.resources.FieldStatus.Growing;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * The test case for map-conversion code paths.
@@ -118,17 +121,21 @@ public final class TestConverter {
 		final Point pointOne = PointFactory.point(0, 0);
 		final Animal fixture = new Animal("animal", false, true, "domesticated", 1);
 		start.addFixture(pointOne, fixture);
+		start.setBaseTerrain(pointOne, TileType.Desert);
 		final Point pointTwo = PointFactory.point(0, 1);
 		final CacheFixture fixtureTwo = new CacheFixture("gemstones", "small",
 																2);
 		start.addFixture(pointTwo, fixtureTwo);
+		start.setBaseTerrain(pointTwo, TileType.Desert);
 		final Point pointThree = PointFactory.point(1, 0);
 		final IUnit fixtureThree =
 				new Unit(new Player(0, "A. Player"), "legion", "eagles", 3);
 		start.addFixture(pointThree, fixtureThree);
+		start.setBaseTerrain(pointThree, TileType.Desert);
 		final Point pointFour = PointFactory.point(1, 1);
 		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"), "HQ", 4);
 		start.addFixture(pointFour, fixtureFour);
+		start.setBaseTerrain(pointFour, TileType.Plains);
 		final IMapNG converted = ResolutionDecreaseConverter.convert(start);
 		final Point zeroPoint = PointFactory.point(0, 0);
 		assertThat("Combined tile should contain fixtures from tile one",
@@ -139,6 +146,63 @@ public final class TestConverter {
 				converted.getOtherFixtures(zeroPoint), hasItem(fixtureThree));
 		assertThat("Combined tile should contain fixtures from tile four",
 				converted.getOtherFixtures(zeroPoint), hasItem(fixtureFour));
+		assertThat("Combined tile has type of most of input tiles",
+				converted.getBaseTerrain(zeroPoint), equalTo(TileType.Desert));
+	}
+	/**
+	 * Test more corners of resolution-decrease conversion.
+	 */
+	@SuppressWarnings("static-method")
+	@Test
+	public void testMoreConversion() {
+		final IMutableMapNG start =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 0);
+		final Point pointOne = PointFactory.point(0, 0);
+		start.setMountainous(pointOne, true);
+		final Ground groundOne = new Ground("groundOne", false);
+		start.setGround(pointOne, groundOne);
+		start.addRivers(pointOne, River.East, River.South);
+		start.setBaseTerrain(pointOne, TileType.Steppe);
+		final Point pointTwo = PointFactory.point(0, 1);
+		final Ground groundTwo = new Ground("groundTwo", false);
+		start.setGround(pointTwo, groundTwo);
+		start.addRivers(pointTwo, River.Lake);
+		start.setBaseTerrain(pointTwo, TileType.Steppe);
+		final Point pointThree = PointFactory.point(1, 0);
+		final Forest forestOne = new Forest("forestOne", false);
+		start.setForest(pointThree, forestOne);
+		start.setBaseTerrain(pointThree, TileType.Plains);
+		final Point pointFour = PointFactory.point(1, 1);
+		final Forest forestTwo = new Forest("forestTwo", false);
+		start.setForest(pointFour, forestTwo);
+		start.setBaseTerrain(pointFour, TileType.Desert);
+		final IMapNG converted = ResolutionDecreaseConverter.convert(start);
+		final Point zeroPoint = PointFactory.point(0, 0);
+		assertThat("One mountainous point makes the reduced point mountainous",
+				converted.isMountainous(zeroPoint), equalTo(true));
+		assertThat("Ground carries over", converted.getGround(zeroPoint),
+				equalTo(groundOne));
+		assertThat("Ground carries over even when already set",
+				converted.getOtherFixtures(zeroPoint), hasItem(groundTwo));
+		assertThat("Forest carries over", converted.getForest(zeroPoint),
+				equalTo(forestOne));
+		assertThat("Forest carries over even when already set",
+				converted.getOtherFixtures(zeroPoint), hasItem(forestTwo));
+		assertThat("Non-interior rivers carry over", converted.getRivers(zeroPoint),
+				hasItem(River.Lake));
+		assertThat("Non-interior rivers carry over", converted.getRivers(zeroPoint),
+				not(hasItems(River.East, River.South)));
+		assertThat("Combined tile has most common terrain type among inputs",
+				converted.getBaseTerrain(zeroPoint), equalTo(TileType.Steppe));
+	}
+	/**
+	 * Test that resolution-decrease conversion fails fast.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testResolutionDecreaseRequirement() {
+		ResolutionDecreaseConverter.convert(
+				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(), -1));
+		fail("Shouldn't accept non-even dimensions");
 	}
 	/**
 	 * Test version-1 to version-2 conversion.
