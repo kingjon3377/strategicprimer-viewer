@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 import model.exploration.old.ExplorationRunner;
@@ -362,8 +363,10 @@ public final class OneToTwoConverter {
 	private static void changeFor(final IMutableMapNG map, final Point point,
 								final TileFixture fix) {
 		if ((fix instanceof Village) || (fix instanceof ITownFixture)) {
-			map.streamOtherFixtures(point).filter(Forest.class::isInstance)
-							.forEach(fixture -> map.removeFixture(point, fixture));
+			final List<TileFixture> toRemove =
+					map.streamOtherFixtures(point).filter(Forest.class::isInstance)
+							.collect(Collectors.toList());
+			toRemove.forEach(fixture -> map.removeFixture(point, fixture));
 			map.setForest(point, null);
 		}
 	}
