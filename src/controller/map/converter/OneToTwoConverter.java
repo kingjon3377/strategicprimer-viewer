@@ -4,6 +4,7 @@ import controller.exploration.TableLoader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -138,10 +139,11 @@ public final class OneToTwoConverter {
 			}
 		}
 		final List<Point> converted = new LinkedList<>();
-		final IDFactory idFactory = new IDFactory();
+		final IDFactory idFactory = IDFactoryFiller.createFactory(old);
+		final IMapNG oldCopy = old.copy(false);
 		for (int row = 0; row < oldDim.rows; row++) {
 			for (int col = 0; col < oldDim.cols; col++) {
-				converted.addAll(convertTile(PointFactory.point(row, col), old,
+				converted.addAll(convertTile(PointFactory.point(row, col), oldCopy,
 						retval, main, idFactory, independent));
 			}
 		}

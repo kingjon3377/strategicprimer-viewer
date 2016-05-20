@@ -1,6 +1,7 @@
 package controller.map.converter;
 
 import controller.map.cxml.CompactXMLWriter;
+import controller.map.fluidxml.SPFluidWriter;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
@@ -17,18 +18,36 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
+import model.map.River;
 import model.map.SPMapNG;
 import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.TextFixture;
+import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.mobile.Centaur;
+import model.map.fixtures.mobile.Djinn;
+import model.map.fixtures.mobile.Dragon;
+import model.map.fixtures.mobile.Fairy;
+import model.map.fixtures.mobile.Giant;
+import model.map.fixtures.mobile.Griffin;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.Minotaur;
+import model.map.fixtures.mobile.Ogre;
+import model.map.fixtures.mobile.Simurgh;
+import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
+import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.MineralVein;
+import model.map.fixtures.resources.StoneDeposit;
+import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.terrain.Hill;
+import model.map.fixtures.towns.City;
+import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
@@ -42,6 +61,7 @@ import view.util.SystemOut;
 import static model.map.fixtures.resources.FieldStatus.Growing;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -184,9 +204,6 @@ public final class TestConverter {
 		converted.setBaseTerrain(PointFactory.point(1, 2), TileType.Steppe);
 		converted.setGround(PointFactory.point(1, 2), new Ground(ROCK_TYPE, false));
 		converted.setForest(PointFactory.point(1, 2), new Forest(BOREAL_TREE, false));
-
-		final String maxIterWarn =
-				"FIXME: A fixture here was force-added after " + "MAX_ITER";
 
 		converted.setBaseTerrain(PointFactory.point(1, 3), TileType.Steppe);
 		converted.setGround(PointFactory.point(1, 3), new Ground(ROCK_TYPE, false));
@@ -347,6 +364,14 @@ public final class TestConverter {
 				new Grove(true, true, "fruit1", 13));
 
 
+//		new SPFluidWriter().write(SystemOut.SYS_OUT,
+//				new OneToTwoConverter().convert(original, true));
+		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
+			final SPFluidWriter writer = new SPFluidWriter();
+			writer.write(outOne, converted);
+			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
+			assertEquals("Produces expected result", outOne.toString(), outTwo.toString());
+		}
 		try (StringWriter outOne = new StringWriter();
 				StringWriter outTwo = new StringWriter()) {
 			assertThat("Products of two runs are both or neither subsets of expected",
@@ -431,7 +456,6 @@ public final class TestConverter {
 		converted.setBaseTerrain(PointFactory.point(1, 5), TileType.Plains);
 		converted.setGround(PointFactory.point(1, 5), new Ground(ROCK_TYPE, false));
 		converted.setForest(PointFactory.point(1, 5), new Forest(TEMP_TREE, false));
-		converted.addFixture(PointFactory.point(1, 5), new TextFixture(maxIterWarn, 10));
 		converted.setBaseTerrain(PointFactory.point(1, 6), TileType.Plains);
 		converted.setGround(PointFactory.point(1, 6), new Ground(ROCK_TYPE, false));
 		converted.setForest(PointFactory.point(1, 6), new Forest(TEMP_TREE, false));
@@ -513,8 +537,6 @@ public final class TestConverter {
 				new Meadow(FIELD_TYPE, true, true, 16, Growing));
 		converted.setBaseTerrain(PointFactory.point(4, 5), TileType.Tundra);
 		converted.setGround(PointFactory.point(4, 5), new Ground(ROCK_TYPE, false));
-		converted.addFixture(PointFactory.point(4, 5),
-				new Meadow(FIELD_TYPE, true, true, 8, Growing));
 		converted.setBaseTerrain(PointFactory.point(4, 6), TileType.Tundra);
 		converted.setGround(PointFactory.point(4, 6), new Ground(ROCK_TYPE, false));
 		converted.setBaseTerrain(PointFactory.point(4, 7), TileType.Tundra);
@@ -541,7 +563,6 @@ public final class TestConverter {
 		converted.setForest(PointFactory.point(5, 4), new Forest(TEMP_TREE, false));
 		converted.setBaseTerrain(PointFactory.point(5, 5), TileType.Tundra);
 		converted.setGround(PointFactory.point(5, 5), new Ground(ROCK_TYPE, false));
-		converted.addFixture(PointFactory.point(5, 5), new TextFixture(maxIterWarn, 10));
 		converted.setBaseTerrain(PointFactory.point(5, 6), TileType.Tundra);
 		converted.setGround(PointFactory.point(5, 6), new Ground(ROCK_TYPE, false));
 		converted.setBaseTerrain(PointFactory.point(5, 7), TileType.Tundra);
@@ -597,6 +618,330 @@ public final class TestConverter {
 		converted.setBaseTerrain(PointFactory.point(7, 7), TileType.Tundra);
 		converted.setGround(PointFactory.point(7, 7), new Ground(ROCK_TYPE, false));
 
+//		new SPFluidWriter().write(SystemOut.SYS_OUT,
+//				new OneToTwoConverter().convert(original, true));
+		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
+			final SPFluidWriter writer = new SPFluidWriter();
+			writer.write(outOne, converted);
+			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
+			assertEquals("Produces expected result", outOne.toString(), outTwo.toString());
+		}
+		try (StringWriter outOne = new StringWriter();
+			 StringWriter outTwo = new StringWriter()) {
+			assertThat("Products of two runs are both or neither subsets of expected",
+					converted.isSubset(
+							new OneToTwoConverter().convert(original, true), outTwo, ""),
+					equalTo(converted.isSubset(
+							new OneToTwoConverter().convert(original, true), outOne, "")));
+			assertThat("Two runs produce identical results", outTwo.toString(),
+					equalTo(outOne.toString()));
+		}
+		assertThat("Actual is at least subset of expected converted", converted.isSubset(
+				new OneToTwoConverter().convert(original, true), SystemOut.SYS_OUT,
+				""), equalTo(true));
+	}
+	/**
+	 * Test more version-1 to version-2 conversion.
+	 *
+	 * @throws IOException on I/O error causing test failure
+	 *
+	 * TODO: Make the converter (and the tests) pass the map size to the encounter tables.
+	 */
+	@SuppressWarnings({"deprecation", "boxing", "static-method"})
+	@Test
+	public void testThirdOneToTwoConversion() throws IOException {
+		final IMutableMapNG original =
+				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
+		final Player player = new Player(1, "playerName");
+		final Player independent = new Player(2, "independent");
+		original.setGround(PointFactory.point(0, 0), new Ground(ROCK_TYPE, false));
+		original.setBaseTerrain(PointFactory.point(0, 1), TileType.BorealForest);
+		original.setForest(PointFactory.point(0, 1), new Forest(TEMP_TREE, false));
+		original.addFixture(PointFactory.point(0, 1), new Hill(1));
+		original.addFixture(PointFactory.point(0, 1),
+				new Animal("animalKind", false, false, "wild", 2));
+		original.addFixture(PointFactory.point(0, 1),
+				new Mine("mineral", TownStatus.Active, 3));
+		original.addFixture(PointFactory.point(0, 1),
+				new AdventureFixture(independent, "briefDescription", "fullDescription",
+											4));
+		original.addFixture(PointFactory.point(0, 1), new Simurgh(5));
+		original.addFixture(PointFactory.point(0, 1), new Griffin(6));
+		original.addFixture(PointFactory.point(0, 1),
+				new City(TownStatus.Ruined, TownSize.Large, 0, "cityName", 7,
+								independent));
+		original.addFixture(PointFactory.point(0, 1), new Ogre(8));
+		original.addFixture(PointFactory.point(0, 1), new Minotaur(9));
+		original.addFixture(PointFactory.point(0, 1), new Centaur("hill", 10));
+		original.addFixture(PointFactory.point(0, 1), new Giant("frost", 11));
+		original.addFixture(PointFactory.point(0, 1), new Djinn(12));
+		original.addFixture(PointFactory.point(0, 1), new Fairy("lesser", 13));
+		original.addFixture(PointFactory.point(0, 1), new Dragon("ice", 14));
+		original.addFixture(PointFactory.point(0, 1), new Troll(15));
+		original.addFixture(PointFactory.point(0, 1),
+				new Fortification(TownStatus.Burned, TownSize.Medium, 0, "townName", 16,
+										 independent));
+		original.addFixture(PointFactory.point(0, 1),
+				new StoneDeposit(StoneKind.Conglomerate, 0, 17));
+		original.setBaseTerrain(PointFactory.point(1, 0), TileType.Mountain);
+		original.setBaseTerrain(PointFactory.point(1, 1), TileType.Tundra);
+		original.addRivers(PointFactory.point(0, 1), River.Lake, River.South);
+		original.addRivers(PointFactory.point(1, 0), River.East, River.West);
+		original.addRivers(PointFactory.point(1, 1), River.West, River.North);
+		original.addPlayer(player);
+		original.addPlayer(independent);
+
+		final IMutableMapNG converted =
+				new SPMapNG(new MapDimensions(8, 8, 2), new PlayerCollection(), -1);
+		converted.addPlayer(player);
+		converted.addPlayer(independent);
+
+		// TODO: Convert to class-level constant
+		final String maxIterWarn =
+				"FIXME: A fixture here was force-added after MAX_ITER";
+
+		converted.setGround(PointFactory.point(0, 0), new Ground(ROCK_TYPE, false));
+		converted.setGround(PointFactory.point(0, 1), new Ground(ROCK_TYPE, false));
+		converted.setGround(PointFactory.point(0, 2), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(0, 2),
+				new Meadow(FIELD_TYPE, true, true, 24, Growing));
+		converted.setGround(PointFactory.point(0, 3), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(0, 3),
+				new Meadow(FIELD_TYPE, true, true, 28, Growing));
+		converted.setBaseTerrain(PointFactory.point(0, 4), TileType.Steppe);
+		converted.setGround(PointFactory.point(0, 4), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(0, 4), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(0, 4), new Hill(1));
+		converted.addFixture(PointFactory.point(0, 4), new Centaur("hill", 10));
+		converted.addFixture(PointFactory.point(0, 4),
+				new Meadow(FIELD_TYPE, true, true, 32, Growing));
+		converted.setBaseTerrain(PointFactory.point(0, 5), TileType.Steppe);
+		converted.setGround(PointFactory.point(0, 5), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(0, 5), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(0, 5), new Troll(15));
+		converted.addFixture(PointFactory.point(0, 5), new Forest(TEMP_TREE, false));
+		converted.setBaseTerrain(PointFactory.point(0, 6), TileType.Steppe);
+		converted.setGround(PointFactory.point(0, 6), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(0, 6), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(0, 6),
+				new AdventureFixture(independent, "briefDescription", "fullDescription",
+											4));
+		converted.setBaseTerrain(PointFactory.point(0, 7), TileType.Steppe);
+		converted.setGround(PointFactory.point(0, 7), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(0, 7), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(0, 7), new Griffin(6));
+		converted.addFixture(PointFactory.point(0, 7), new Forest(TEMP_TREE, false));
+		converted.setGround(PointFactory.point(1, 0), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(1, 0), new Forest(TEMP_TREE, false));
+		converted.setGround(PointFactory.point(1, 1), new Ground(ROCK_TYPE, false));
+		converted.setGround(PointFactory.point(1, 2), new Ground(ROCK_TYPE, false));
+		converted.setGround(PointFactory.point(1, 3), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(1, 3), new Forest(TEMP_TREE, false));
+		converted.addFixture(PointFactory.point(1, 3),
+				new Village(TownStatus.Active, "", 0, independent, "dwarf"));
+		converted.setBaseTerrain(PointFactory.point(1, 4), TileType.Steppe);
+		converted.setGround(PointFactory.point(1, 4), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(1, 4), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(1, 4),
+				new Mine("mineral", TownStatus.Active, 3));
+		converted.addFixture(PointFactory.point(1, 4),
+				new Meadow(FIELD_TYPE, true, true, 22, Growing));
+		converted.setBaseTerrain(PointFactory.point(1, 5), TileType.Steppe);
+		converted.setGround(PointFactory.point(1, 5), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(1, 5), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(1, 5), new Giant("frost", 11));
+		converted.addFixture(PointFactory.point(1, 5), new Forest(TEMP_TREE, false));
+		converted.setBaseTerrain(PointFactory.point(1, 6), TileType.Steppe);
+		converted.setGround(PointFactory.point(1, 6), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(1, 6), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(1, 6),
+				new StoneDeposit(StoneKind.Conglomerate, 0, 17));
+		converted.setBaseTerrain(PointFactory.point(1, 7), TileType.Steppe);
+		converted.setGround(PointFactory.point(1, 7), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(1, 7), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(1, 7), new Dragon("ice", 14));
+		converted.addFixture(PointFactory.point(1, 7),
+				new Meadow(FIELD_TYPE, true, true, 21, Growing));
+		converted.setGround(PointFactory.point(2, 0), new Ground(ROCK_TYPE, false));
+		converted.setGround(PointFactory.point(2, 1), new Ground(ROCK_TYPE, false));
+		converted.setGround(PointFactory.point(2, 2), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(2, 2),
+				new Grove(true, true, "fruit1", 29));
+		converted.setGround(PointFactory.point(2, 3), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(2, 3),
+				new Meadow(FIELD_TYPE, true, true, 27, Growing));
+		converted.setBaseTerrain(PointFactory.point(2, 4), TileType.Steppe);
+		converted.setGround(PointFactory.point(2, 4), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(2, 4), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(2, 4), new Fairy("lesser", 13));
+		converted.addFixture(PointFactory.point(2, 4),
+				new Meadow(FIELD_TYPE, true, true, 35, Growing));
+		converted.setBaseTerrain(PointFactory.point(2, 5), TileType.Steppe);
+		converted.setGround(PointFactory.point(2, 5), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(2, 5),
+				new Fortification(TownStatus.Burned, TownSize.Medium, 0, "townName", 16,
+										 independent));
+		converted.addFixture(PointFactory.point(2, 5),
+				new Meadow(FIELD_TYPE, true, true, 34, Growing));
+		converted.setBaseTerrain(PointFactory.point(2, 6), TileType.Steppe);
+		converted.addRivers(PointFactory.point(2, 6), River.Lake, River.South);
+		converted.setGround(PointFactory.point(2, 6), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(2, 6), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(2, 6), new Djinn(12));
+		converted.addFixture(PointFactory.point(2, 6),
+				new Village(TownStatus.Active, "", 18, independent, "dwarf"));
+		converted.addFixture(PointFactory.point(2, 6), new TextFixture(maxIterWarn, 10));
+		converted.addFixture(PointFactory.point(2, 6),
+				new Meadow(FIELD_TYPE, true, true, 38, Growing));
+		converted.setBaseTerrain(PointFactory.point(2, 7), TileType.Steppe);
+		converted.setGround(PointFactory.point(2, 7), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(2, 7), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(2, 7), new Ogre(8));
+		converted.setGround(PointFactory.point(3, 0), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(3, 0), new Grove(true, true, "fruit1", 23));
+		converted.setGround(PointFactory.point(3, 1), new Ground(ROCK_TYPE, false));
+		converted.setGround(PointFactory.point(3, 2), new Ground(ROCK_TYPE, false));
+		converted.setGround(PointFactory.point(3, 3), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(3, 4), TileType.Steppe);
+		converted.setGround(PointFactory.point(3, 4), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(3, 4), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(3, 4), new Simurgh(5));
+		converted.addFixture(PointFactory.point(3, 4), new Grove(true, true, "fruit1", 33));
+		converted.setBaseTerrain(PointFactory.point(3, 5), TileType.Steppe);
+		converted.setGround(PointFactory.point(3, 5), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(3, 5), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(3, 5), new Minotaur(9));
+		converted.addFixture(PointFactory.point(3, 5), new Forest(TEMP_TREE, false));
+		converted.setBaseTerrain(PointFactory.point(3, 6), TileType.Steppe);
+		converted.addRivers(PointFactory.point(3, 6), River.North, River.South);
+		converted.setGround(PointFactory.point(3, 6), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(3, 6), new Forest(TEMP_TREE, false));
+		converted.addFixture(PointFactory.point(3, 6),
+				new City(TownStatus.Ruined, TownSize.Large, 0, "cityName", 7,
+								independent));
+		converted.setBaseTerrain(PointFactory.point(3, 7), TileType.Steppe);
+		converted.setGround(PointFactory.point(3, 7), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(3, 7), new Forest(BOREAL_TREE, false));
+		converted.addFixture(PointFactory.point(3, 7),
+				new Animal("animalKind", false, false, "wild", 2));
+		converted.addFixture(PointFactory.point(3, 7),
+				new Grove(true, true, "fruit1", 36));
+		converted.setBaseTerrain(PointFactory.point(4, 0), TileType.Plains);
+		converted.setMountainous(PointFactory.point(4, 0), true);
+		converted.setGround(PointFactory.point(4, 0), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(4, 0), new Forest(TEMP_TREE, false));
+		converted.addFixture(PointFactory.point(4, 0),
+				new Village(TownStatus.Active, "", 19, independent, "human"));
+		converted.setBaseTerrain(PointFactory.point(4, 1), TileType.Plains);
+		converted.setMountainous(PointFactory.point(4, 1), true);
+		converted.setGround(PointFactory.point(4, 1), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(4, 2), TileType.Plains);
+		converted.setMountainous(PointFactory.point(4, 2), true);
+		converted.setGround(PointFactory.point(4, 2), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(4, 3), TileType.Plains);
+		converted.setMountainous(PointFactory.point(4, 3), true);
+		converted.setGround(PointFactory.point(4, 3), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(4, 4), TileType.Tundra);
+		converted.setGround(PointFactory.point(4, 4), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(4, 5), TileType.Tundra);
+		converted.setGround(PointFactory.point(4, 5), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(4, 6), TileType.Tundra);
+		converted.addRivers(PointFactory.point(4, 6), River.North, River.South);
+		converted.setGround(PointFactory.point(4, 6), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(4, 6),
+				new Meadow(FIELD_TYPE, true, true, 39, Growing));
+		converted.setBaseTerrain(PointFactory.point(4, 7), TileType.Tundra);
+		converted.setGround(PointFactory.point(4, 7), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(4, 7),
+				new Meadow(FIELD_TYPE, true, true, 25, Growing));
+		converted.setBaseTerrain(PointFactory.point(5, 0), TileType.Plains);
+		converted.setMountainous(PointFactory.point(5, 0), true);
+		converted.setGround(PointFactory.point(5, 0), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(5, 1), TileType.Plains);
+		converted.setMountainous(PointFactory.point(5, 1), true);
+		converted.setGround(PointFactory.point(5, 1), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(5, 1),
+				new Grove(true, true, "fruit1", 26));
+		converted.setBaseTerrain(PointFactory.point(5, 2), TileType.Plains);
+		converted.setMountainous(PointFactory.point(5, 2), true);
+		converted.setGround(PointFactory.point(5, 2), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(5, 3), TileType.Plains);
+		converted.setMountainous(PointFactory.point(5, 3), true);
+		converted.setGround(PointFactory.point(5, 3), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(5, 4), TileType.Tundra);
+		converted.setGround(PointFactory.point(5, 4), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(5, 5), TileType.Tundra);
+		converted.setGround(PointFactory.point(5, 5), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(5, 6), TileType.Tundra);
+		converted.addRivers(PointFactory.point(5, 6), River.North, River.South);
+		converted.setGround(PointFactory.point(5, 6), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(5, 7), TileType.Tundra);
+		converted.setGround(PointFactory.point(5, 7), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(6, 0), TileType.Plains);
+		converted.setMountainous(PointFactory.point(6, 0), true);
+		converted.addRivers(PointFactory.point(6, 0), River.East, River.West);
+		converted.setGround(PointFactory.point(6, 0), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(6, 1), TileType.Plains);
+		converted.setMountainous(PointFactory.point(6, 1), true);
+		converted.addRivers(PointFactory.point(6, 1), River.East, River.West);
+		converted.setGround(PointFactory.point(6, 1), new Ground(ROCK_TYPE, false));
+		converted.setForest(PointFactory.point(6, 1), new Forest(TEMP_TREE, false));
+		converted.setBaseTerrain(PointFactory.point(6, 2), TileType.Plains);
+		converted.setMountainous(PointFactory.point(6, 2), true);
+		converted.addRivers(PointFactory.point(6, 2), River.East, River.West);
+		converted.setGround(PointFactory.point(6, 2), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(6, 3), TileType.Plains);
+		converted.setMountainous(PointFactory.point(6, 3), true);
+		converted.addRivers(PointFactory.point(6, 3), River.East, River.West);
+		converted.setGround(PointFactory.point(6, 3), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(6, 4), TileType.Tundra);
+		converted.addRivers(PointFactory.point(6, 4), River.East, River.West);
+		converted.setGround(PointFactory.point(6, 4), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(6, 5), TileType.Tundra);
+		converted.addRivers(PointFactory.point(6, 5), River.East, River.West);
+		converted.setGround(PointFactory.point(6, 5), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(6, 5),
+				new Meadow(FIELD_TYPE, true, true, 30, Growing));
+		converted.setBaseTerrain(PointFactory.point(6, 6), TileType.Tundra);
+		converted.addRivers(PointFactory.point(6, 6), River.North, River.West);
+		converted.setGround(PointFactory.point(6, 6), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(6, 7), TileType.Tundra);
+		converted.setGround(PointFactory.point(6, 7), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(6, 7),
+				new Meadow(FIELD_TYPE, true, true, 37, Growing));
+		converted.setBaseTerrain(PointFactory.point(7, 0), TileType.Plains);
+		converted.setMountainous(PointFactory.point(7, 0), true);
+		converted.setGround(PointFactory.point(7, 0), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(7, 1), TileType.Plains);
+		converted.setMountainous(PointFactory.point(7, 1), true);
+		converted.setGround(PointFactory.point(7, 1), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(7, 2), TileType.Plains);
+		converted.setMountainous(PointFactory.point(7, 2), true);
+		converted.setGround(PointFactory.point(7, 2), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(7, 3), TileType.Plains);
+		converted.setMountainous(PointFactory.point(7, 3), true);
+		converted.setGround(PointFactory.point(7, 3), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(7, 4), TileType.Tundra);
+		converted.setGround(PointFactory.point(7, 4), new Ground(ROCK_TYPE, false));
+		converted.setBaseTerrain(PointFactory.point(7, 5), TileType.Tundra);
+		converted.setGround(PointFactory.point(7, 5), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(7, 5),
+				new Meadow(FIELD_TYPE, true, true, 31, Growing));
+		converted.setBaseTerrain(PointFactory.point(7, 6), TileType.Tundra);
+		converted.setGround(PointFactory.point(7, 6), new Ground(ROCK_TYPE, false));
+		converted.addFixture(PointFactory.point(7, 6),
+				new Village(TownStatus.Active, "", 20, independent, "human"));
+		converted.setBaseTerrain(PointFactory.point(7, 7), TileType.Tundra);
+		converted.setGround(PointFactory.point(7, 7), new Ground(ROCK_TYPE, false));
+
+//		new SPFluidWriter().write(SystemOut.SYS_OUT,
+//				new OneToTwoConverter().convert(original, true));
+		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
+			final SPFluidWriter writer = new SPFluidWriter();
+			writer.write(outOne, converted);
+			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
+			assertEquals("Produces expected result", outOne.toString(), outTwo.toString());
+		}
 		try (StringWriter outOne = new StringWriter();
 			 StringWriter outTwo = new StringWriter()) {
 			assertThat("Products of two runs are both or neither subsets of expected",
