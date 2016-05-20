@@ -638,9 +638,6 @@ public final class OneToTwoConverter {
 			final OneToTwoConverter converter = new OneToTwoConverter();
 			final MapReaderAdapter reader = new MapReaderAdapter();
 			for (final String arg : args) {
-				if (arg == null) {
-					continue;
-				}
 				//noinspection ObjectAllocationInLoop
 				final File file = new File(arg);
 				final IMapNG old;
