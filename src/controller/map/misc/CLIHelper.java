@@ -110,14 +110,12 @@ public final class CLIHelper implements ICLIHelper {
 												final String prompt, final boolean auto)
 			throws IOException {
 		if (items.isEmpty()) {
-			// TODO: Test the empty-list case
 			ostream.println(none);
 			ostream.flush();
 			return -1;
 		}
 		ostream.println(desc);
 		if (auto && (items.size() == 1)) {
-			// TODO: Check that tests cover the auto-but-more-than-one-item case
 			ostream.print("Automatically choosing only item, ");
 			ostream.println(items.get(0));
 			ostream.flush();
@@ -162,13 +160,12 @@ public final class CLIHelper implements ICLIHelper {
 			ostream.flush();
 			final String input = istream.readLine();
 			if (input == null) {
-				// TODO: Test case of EOF
 				throw new IOException("Null line of input");
 			} else if (IsNumeric.isNumeric(input)) {
 				try {
 					retval = NUM_PARSER.parse(input).intValue();
 				} catch (final ParseException e) {
-					// TODO: Test malformed-input case
+					// In practice we can't get here, as IsNumeric generally works
 					//noinspection ObjectAllocationInLoop
 					final NumberFormatException numFormatExcept =
 							new NumberFormatException("Failed to parse number from input");
@@ -268,14 +265,12 @@ public final class CLIHelper implements ICLIHelper {
 									final boolean auto)
 			throws IOException {
 		if (items.isEmpty()) {
-			// TODO: Test empty-list case
 			ostream.println(none);
 			ostream.flush();
 			return -1;
 		}
 		ostream.println(desc);
 		if (auto && (items.size() == 1)) {
-			// TODO: Test auto-but-two-items case
 			ostream.print("Automatically choosing only item, ");
 			ostream.println(items.get(0));
 			ostream.flush();
@@ -292,7 +287,6 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public void printf(final String format, final Object ... args) {
-		// TODO: Tests should cover printf()
 		ostream.printf(format, args);
 		ostream.flush();
 	}
@@ -302,7 +296,6 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public void println(final String line) {
-		// TODO: Tests should cover println()
 		ostream.println(line);
 		ostream.flush();
 	}
@@ -312,7 +305,6 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public void print(final String text) {
-		// TODO: Tests should cover print()
 		ostream.print(text);
 		ostream.flush();
 	}

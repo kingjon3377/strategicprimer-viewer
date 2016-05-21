@@ -1,6 +1,7 @@
 package controller.map.misc;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.Collections;
 import model.map.Player;
 import org.junit.Test;
 import util.NullCleaner;
+import util.NullStream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -108,6 +110,23 @@ public class TestCLIHelper {
 			assertThat("chooseFromList allows too-large choice",
 					out.toString(), equalTo("test desc\n0: one\n1: two\nprompt"));
 		}
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader("0\n"), out)) {
+			assertThat("chooseFromList asks even if 'auto' when multiple items",
+					cli.chooseFromList(NullCleaner.assertNotNull(
+							Arrays.asList(new Player(1, "one"), new Player(2, "two"))),
+							"test desc", "none present", "prompt", true), equalTo(0));
+			assertThat("chooseFromList prompted the user", out.toString(),
+					equalTo("test desc\n0: one\n1: two\nprompt"));
+		}
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
+			assertThat("chooseFromList handles no-item case",
+					cli.chooseFromList(Collections.emptyList(), "test desc",
+							"none present", "prompt", false), equalTo(-1));
+			assertThat("chooseFromList didn't prompt the user", out.toString(),
+					equalTo("none present\n"));
+		}
 	}
 	/**
 	 * Test inputNumber().
@@ -136,6 +155,24 @@ public class TestCLIHelper {
 					equalTo(0));
 			assertThat("inputNumber asks again on negative input",
 					out.toString(), equalTo("test prompt threetest prompt three"));
+		}
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader("not-number\n0\n"), out)) {
+			assertThat("inputNumber asks again on non-numeric input",
+					cli.inputNumber(" test prompt four"),
+					equalTo(0));
+			assertThat("inputNumber asks again on negative input",
+					out.toString(), equalTo(" test prompt four test prompt four"));
+		}
+	}
+	/**
+	 * Test that inputNumber() bails out on EOF.
+	 */
+	@Test(expected = IOException.class)
+	public void testInputNumberEOF() throws IOException {
+		try (ICLIHelper cli = new CLIHelper(new StringReader(""),
+												   new OutputStreamWriter(new NullStream()))) {
+			cli.inputNumber("test prompt");
 		}
 	}
 	/**
@@ -287,6 +324,16 @@ public class TestCLIHelper {
 					"chooseStringFromList didn't automatically chose only choice",
 					out.toString(), equalTo("test desc\n0: one\nprompt"));
 		}
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader("1\n"), out)) {
+			assertThat("chooseStringFromList doesn't always auto-choose",
+					cli.chooseStringFromList(
+							NullCleaner.assertNotNull(Arrays.asList("zero", "one", "two")),
+							"test desc", "none present", "prompt", true), equalTo(1));
+			assertThat(
+					"chooseStringFromList didn't automatically chose only choice",
+					out.toString(), equalTo("test desc\n0: zero\n1: one\n2: two\nprompt"));
+		}
 		try (StringWriter out = new StringWriter(); ICLIHelper cli =
 				new CLIHelper(new StringReader("-1\n0\n"), out)) {
 			assertThat(
@@ -308,6 +355,36 @@ public class TestCLIHelper {
 							"test desc", "none present", "prompt", false), equalTo(3));
 			assertThat("chooseStringFromList allows too-large choice",
 					out.toString(), equalTo("test desc\n0: one\n1: two\nprompt"));
+		}
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
+			assertThat("chooseStringFromList handles empty list",
+					cli.chooseStringFromList(Collections.emptyList(),
+							"test desc", "none present", "prompt", false), equalTo(-1));
+			assertThat("chooseStringFromList handles empty list", out.toString(),
+					equalTo("none present\n"));
+		}
+	}
+	/**
+	 * Test print() and friends.
+	 */
+	@Test
+	public void testPrinting() throws IOException {
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
+			cli.print("test string");
+			assertThat("print() prints string", out.toString(), equalTo("test string"));
+		}
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
+			cli.println("test two");
+			assertThat("println() adds newline", out.toString(),
+					equalTo("test two\n"));
+		}
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
+			cli.printf("test %s", "three");
+			assertThat("printf() works", out.toString(), equalTo("test three"));
 		}
 	}
 }
