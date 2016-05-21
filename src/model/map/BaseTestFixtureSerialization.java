@@ -25,6 +25,7 @@ import util.TypesafeLogger;
 import util.Warning;
 
 import static jdk.internal.dynalink.support.Guards.isNull;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
@@ -626,6 +627,16 @@ public abstract class BaseTestFixtureSerialization {
 		obj.setImage("imageForSerialization");
 		assertImageSerialization(message, obj, oldReader);
 		assertImageSerialization(message, obj, newReader);
+		obj.setImage(obj.getDefaultImage());
+		assertThat("Default image is not written", createSerializedForm(obj, true),
+				not(containsString("image=")));
+		assertThat("Default image is not written", createSerializedForm(obj, false),
+				not(containsString("image=")));
+		obj.setImage("");
+		assertThat("Empty image is not written", createSerializedForm(obj, true),
+				not(containsString("image=")));
+		assertThat("Empty image is not written", createSerializedForm(obj, false),
+				not(containsString("image=")));
 		obj.setImage(origImage);
 	}
 

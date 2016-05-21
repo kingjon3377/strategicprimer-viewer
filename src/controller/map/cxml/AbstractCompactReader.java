@@ -305,7 +305,6 @@ public abstract class AbstractCompactReader<@NonNull T>
 	@SuppressWarnings("TypeMayBeWeakened")
 	protected static String imageXML(final HasImage obj) {
 		final String image = obj.getImage();
-		// TODO: Test image-is-default case
 		if (image.isEmpty() || image.equals(obj.getDefaultImage())) {
 			return "";
 		} else {
