@@ -488,7 +488,20 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertForwardDeserialization("Reading Ogre via <include>", new Ogre(1),
 				"<include file=\"string:&lt;ogre id=&quot;1&quot; /&gt;\" />");
 	}
-
+	/**
+	 * Tests that duplicate IDs are warned about.
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML reading error
+	 */
+	@Test
+	public void testDuplicateID() throws XMLStreamException, SPFormatException {
+		assertDuplicateID(
+				"<map version=\"2\" rows=\"1\" columns=\"1\" " +
+						"current_player=\"1\"><player number=\"1\" " +
+						"code_name=\"playerOne\" /><row index=\"0\"><tile row=\"0\" " +
+						"column=\"0\" kind=\"steppe\"><hill id=\"1\" /><ogre id=\"1\" " +
+						"/></tile></row></map>");
+	}
 	/**
 	 * @return a String representation of the object
 	 */

@@ -11,6 +11,7 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.iointerfaces.TestReaderFactory;
+import controller.map.misc.DuplicateIDException;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -666,6 +667,38 @@ public abstract class BaseTestFixtureSerialization {
 			assertThat(message,
 					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(),
 							Warning.Ignore).getImage(), equalTo(obj.getImage()));
+		}
+	}
+	/**
+	 * Assert that a "forward idiom"---an idiom that we do not yet produce, but want to
+	 * accept---will be deserialized properly by both readers, both with and without
+	 * reflection.
+	 *
+	 * @param xml      the serialized form
+	 * @throws SPFormatException  on SP format error
+	 * @throws XMLStreamException on XML format error
+	 */
+	protected final void assertDuplicateID(final String xml)
+			throws XMLStreamException, SPFormatException {
+		try (StringReader stringReader = new StringReader(xml)) {
+			oldReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Ignore);
+		}
+		try (StringReader stringReader = new StringReader(xml)) {
+			newReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Ignore);
+		}
+		try (StringReader stringReader = new StringReader(xml)) {
+			oldReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Die);
+			fail("Old reader didn't warn about duplicate ID");
+		} catch (FatalWarningException except) {
+			assertThat("Warning was about duplicate ID", except.getCause(), instanceOf(
+					DuplicateIDException.class));
+		}
+		try (StringReader stringReader = new StringReader(xml)) {
+			newReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Die);
+			fail("New reader didn't warn about duplicate ID");
+		} catch (FatalWarningException except) {
+			assertThat("Warning was about duplicate ID", except.getCause(), instanceOf(
+					DuplicateIDException.class));
 		}
 	}
 }
