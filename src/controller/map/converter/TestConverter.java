@@ -1266,7 +1266,6 @@ public final class TestConverter {
 																.createXMLEventReader(
 																		new StringReader(orig))),
 				out);
-		SystemOut.SYS_OUT.println(out.toString());
 		final StringWriter actualXML = new StringWriter();
 		CompactXMLWriter.writeSPObject(actualXML, new MapReaderAdapter()
 														.readMapFromStream(
