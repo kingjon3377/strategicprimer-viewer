@@ -198,7 +198,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 			throws SPFormatException {
 		if (hasParameter(element, "id")) {
 			try {
-				return idFactory.register(NumberFormat.getIntegerInstance()
+				return idFactory.register(warner, NumberFormat.getIntegerInstance()
 												.parse(getParameter(element, "id"))
 												.intValue());
 			} catch (final NumberFormatException | ParseException except) {

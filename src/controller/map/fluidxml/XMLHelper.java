@@ -191,7 +191,7 @@ public final class XMLHelper {
 			throws SPFormatException {
 		if (hasAttribute(element, "id")) {
 			try {
-				return idFactory.register(NumberFormat.getIntegerInstance()
+				return idFactory.register(warner, NumberFormat.getIntegerInstance()
 												  .parse(getAttribute(element, "id"))
 												  .intValue());
 			} catch (final NumberFormatException | ParseException except) {

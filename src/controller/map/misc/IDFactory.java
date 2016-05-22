@@ -47,10 +47,20 @@ public final class IDFactory {
 	 * @return the id, so this can be used functionally.
 	 */
 	public int register(final int idNum) {
+		return register(Warning.DEFAULT, idNum);
+	}
+	/**
+	 * Register an ID.
+	 *
+	 * @param warning the Warning instance to use to report if the ID has already been
+	 *                   registered
+	 * @param idNum the ID to register.
+	 * @return the id, so this can be used functionally.
+	 */
+	public int register(final Warning warning, final int idNum) {
 		if (idNum >= 0) {
 			if (usedIDs.get(idNum)) {
-				// TODO: Tests should check the duplicate-ID case.
-				Warning.DEFAULT.warn(new DuplicateIDException(idNum));
+				warning.warn(new DuplicateIDException(idNum));
 			}
 			usedIDs.set(idNum);
 		}
