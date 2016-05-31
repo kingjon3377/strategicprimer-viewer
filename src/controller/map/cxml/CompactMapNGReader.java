@@ -264,7 +264,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			if (oldGround == null) {
 				map.setGround(point, ground);
 			} else if (ground.isExposed() && !oldGround.isExposed()) {
-				// TODO: Test the multiple-Ground-per-tile cases
 				map.setGround(point, ground);
 				map.addFixture(point, oldGround);
 			} else if (!oldGround.equals(ground)) {

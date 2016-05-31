@@ -301,6 +301,22 @@ public final class TestFixtureSerialization extends
 		map.setBaseTerrain(point, TileType.Plains);
 		map.setGround(point, new Ground("four", true));
 		assertSerialization("Test that reader handles ground as a fixture", map);
+		assertForwardDeserialization("Duplicate Ground ignored", map,
+				"<view current_turn=\"-1\"><map version=\"2\" rows=\"1\" " +
+						"columns=\"1\"><tile row=\"0\" column=\"0\" " +
+						"kind=\"plains\"><ground kind=\"four\" exposed=\"true\" " +
+						"/><ground kind=\"four\" exposed=\"true\" /></tile></map></view>");
+		map.addFixture(point, new Ground("five", false));
+		assertForwardDeserialization("Exposed Ground made main", map,
+				"<view current_turn=\"-1\"><map version=\"2\" rows=\"1\" " +
+						"columns=\"1\"><tile row=\"0\" column=\"0\" " +
+						"kind=\"plains\"><ground kind=\"five\" exposed=\"false\" " +
+						"/><ground kind=\"four\" exposed=\"true\" /></tile></map></view>");
+		assertForwardDeserialization("Exposed Ground left as main", map,
+				"<view current_turn=\"-1\"><map version=\"2\" rows=\"1\" " +
+						"columns=\"1\"><tile row=\"0\" column=\"0\" " +
+						"kind=\"plains\"><ground kind=\"four\" exposed=\"true\" " +
+						"/><ground kind=\"five\" exposed=\"false\" /></tile></map></view>");
 		assertUnwantedChild(
 				"<ground kind=\"sand\" exposed=\"true\"><hill /></ground>",
 				Ground.class, false);
