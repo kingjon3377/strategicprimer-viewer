@@ -195,7 +195,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					addFixture(retval, point, CompactTerrainReader.READER.read(current,
 							stream, players, warner, idFactory));
 				} else if ("mountain".equalsIgnoreCase(type)) {
-					// TODO: Tests should cover this case ...
 					retval.setMountainous(point, true);
 				} else {
 					try {

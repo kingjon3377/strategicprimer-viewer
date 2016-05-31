@@ -384,6 +384,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				SPMapNG.class, "rows", false);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" />", SPMapNG.class,
 				"columns", false);
+		firstMap.setMountainous(point, true);
+		assertSerialization("Map with a mountainous point", firstMap);
 	}
 
 	/**
