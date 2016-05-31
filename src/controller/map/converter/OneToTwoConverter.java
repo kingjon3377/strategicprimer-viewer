@@ -257,17 +257,19 @@ public final class OneToTwoConverter {
 					newMap.addFixture(subTile,
 							assertNotNull(fixtures.remove(0)));
 					//noinspection ObjectAllocationInLoop
-					newMap.addFixture(subTile,
-							new TextFixture("FIXME: A fixture here was force-added after" +
-													" MAX_ITER",
-												NEXT_TURN));
+					newMap.addFixture(subTile, new TextFixture(MAX_ITER_WARN,
+																	  NEXT_TURN));
 					initial.add(initial.remove(0));
 				}
 			}
 		}
 		return initial;
 	}
-
+	/**
+	 * Text to add each time we had to add a fixture to an "unsuitable" tile.
+	 */
+	public static final String MAX_ITER_WARN =
+			"FIXME: A fixture here was force-added after MAX_ITER";
 	/**
 	 * Deal with rivers separately.
 	 *

@@ -757,10 +757,6 @@ public final class TestConverter {
 		converted.addPlayer(player);
 		converted.addPlayer(independent);
 
-		// TODO: Convert to class-level constant
-		final String maxIterWarn =
-				"FIXME: A fixture here was force-added after MAX_ITER";
-
 		converted.setGround(PointFactory.point(0, 0), new Ground(ROCK_TYPE, false));
 		converted.setGround(PointFactory.point(0, 1), new Ground(ROCK_TYPE, false));
 		converted.setGround(PointFactory.point(0, 2), new Ground(ROCK_TYPE, false));
@@ -851,7 +847,7 @@ public final class TestConverter {
 		converted.addFixture(PointFactory.point(2, 6), new Djinn(12));
 		converted.addFixture(PointFactory.point(2, 6),
 				new Village(TownStatus.Active, "", 18, independent, "dwarf"));
-		converted.addFixture(PointFactory.point(2, 6), new TextFixture(maxIterWarn, 10));
+		converted.addFixture(PointFactory.point(2, 6), new TextFixture(OneToTwoConverter.MAX_ITER_WARN, 10));
 		converted.addFixture(PointFactory.point(2, 6),
 				new Meadow(FIELD_TYPE, true, true, 38, Growing));
 		converted.setBaseTerrain(PointFactory.point(2, 7), TileType.Steppe);
