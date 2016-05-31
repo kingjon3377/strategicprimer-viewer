@@ -509,10 +509,6 @@ public final class TestConverter {
 		converted.setBaseTerrain(PointFactory.point(1, 2), TileType.Jungle);
 		converted.setGround(PointFactory.point(1, 2), new Ground(ROCK_TYPE, false));
 
-		// TODO: Convert to class-level constant
-		final String maxIterWarn =
-				"FIXME: A fixture here was force-added after MAX_ITER";
-
 		converted.setBaseTerrain(PointFactory.point(1, 3), TileType.Jungle);
 		converted.setGround(PointFactory.point(1, 3), new Ground(ROCK_TYPE, false));
 		converted.setBaseTerrain(PointFactory.point(1, 4), TileType.Plains);
