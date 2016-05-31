@@ -35,7 +35,6 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.EqualsAny;
 import util.IteratorWrapper;
-import util.NullCleaner;
 import util.Warning;
 
 import static java.util.Collections.unmodifiableList;
@@ -125,7 +124,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						assertNotNull(element.getName()), mapTag);
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
-			// TODO: Test reading map-not-in-view case
 			currentTurn = 0;
 			mapTag = element;
 		} else {
