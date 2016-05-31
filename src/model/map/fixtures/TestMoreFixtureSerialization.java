@@ -433,6 +433,8 @@ public final class TestMoreFixtureSerialization extends
 		wrapper.addFixture(PointFactory.point(0, 0), firstAdventure);
 		assertSerialization("First adventure hook serialization test", wrapper);
 		assertSerialization("Second adventure hook serialization test", secondAdventure);
+		assertSerialization("Adventure hook with empty descriptions",
+				new AdventureFixture(new Player(3, "third"), "", "", 4));
 		final TileFixture thirdPortal =
 				new Portal("portal dest", PointFactory.point(1, 2), 3);
 		final Portal fourthPortal =
