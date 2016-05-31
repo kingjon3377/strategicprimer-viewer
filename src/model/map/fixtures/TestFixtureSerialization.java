@@ -92,6 +92,8 @@ public final class TestFixtureSerialization extends
 				"<animal kind=\"animalFive\" talking=\"false\" id=\"3\" />");
 		assertMissingProperty("<animal kind=\"animalSix\" talking=\"true\" />",
 				Animal.class, "id", true);
+		assertMissingProperty("<animal kind=\"animalEight\" id=\"nonNumeric\" />",
+				Animal.class, "id", false);
 		assertForwardDeserialization("Explicit default status of animal",
 				new Animal("animalSeven", false, false, "wild", 4),
 				"<animal kind=\"animalSeven\" status=\"wild\" id=\"4\" />");

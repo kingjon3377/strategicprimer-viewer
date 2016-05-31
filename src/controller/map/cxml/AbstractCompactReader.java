@@ -202,7 +202,6 @@ public abstract class AbstractCompactReader<@NonNull T>
 												.parse(getParameter(element, "id"))
 												.intValue());
 			} catch (final NumberFormatException | ParseException except) {
-				// TODO: Test malformed input for ID
 				throw new MissingPropertyException(element, "id", except);
 			}
 		} else {
