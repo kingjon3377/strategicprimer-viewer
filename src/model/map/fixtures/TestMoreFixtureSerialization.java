@@ -12,7 +12,6 @@ import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
-import model.map.PointFactory;
 import model.map.SPMapNG;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -36,6 +35,7 @@ import org.junit.Test;
 import util.NullCleaner;
 import util.Warning;
 
+import static model.map.PointFactory.point;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -263,6 +263,13 @@ public final class TestMoreFixtureSerialization extends
 		assertUnwantedChild("<text turn=\"1\"><troll /></text>",
 				TextFixture.class, false);
 		assertImageSerialization("Text image property is preserved", thirdText);
+		final SPMapNG wrapper =
+				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), 0);
+		wrapper.setBaseTerrain(point(0, 0), TileType.Plains);
+		wrapper.addFixture(point(0, 0), firstText);
+		assertForwardDeserialization("Deprecated text-in-map still works", wrapper,
+				"<map version=\"2\" rows=\"1\" columns=\"1\"><tile row=\"0\" " +
+						"column=\"0\" kind=\"plains\">one</tile></map>");
 	}
 
 
@@ -435,19 +442,19 @@ public final class TestMoreFixtureSerialization extends
 		final IMutableMapNG wrapper =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), -1);
 		wrapper.addPlayer(independent);
-		wrapper.setBaseTerrain(PointFactory.point(0, 0), TileType.Plains);
-		wrapper.addFixture(PointFactory.point(0, 0), firstAdventure);
+		wrapper.setBaseTerrain(point(0, 0), TileType.Plains);
+		wrapper.addFixture(point(0, 0), firstAdventure);
 		assertSerialization("First adventure hook serialization test", wrapper);
 		assertSerialization("Second adventure hook serialization test", secondAdventure);
 		assertSerialization("Adventure hook with empty descriptions",
 				new AdventureFixture(new Player(3, "third"), "", "", 4));
 		final TileFixture thirdPortal =
-				new Portal("portal dest", PointFactory.point(1, 2), 3);
+				new Portal("portal dest", point(1, 2), 3);
 		final Portal fourthPortal =
-				new Portal("portal dest two", PointFactory.point(2, 1), 4);
+				new Portal("portal dest two", point(2, 1), 4);
 		assertThat("Two different portals are not equal", fourthPortal,
 				not(equalTo(thirdPortal)));
-		wrapper.addFixture(PointFactory.point(0, 0), thirdPortal);
+		wrapper.addFixture(point(0, 0), thirdPortal);
 		assertSerialization("First portal serialization test", wrapper);
 		assertSerialization("Second portal serialization test", fourthPortal);
 	}

@@ -231,7 +231,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				final String data =
 						assertNotNull(event.asCharacters().getData().trim());
 				if (!data.isEmpty()) {
-					// TODO: Test this functionality
 					//noinspection ObjectAllocationInLoop
 					retval.addFixture(point, new TextFixture(data, -1));
 				}
