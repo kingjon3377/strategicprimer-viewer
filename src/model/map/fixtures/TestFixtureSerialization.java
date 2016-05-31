@@ -1,6 +1,7 @@
 package model.map.fixtures;
 
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.iointerfaces.ISPReader;
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
@@ -98,6 +99,11 @@ public final class TestFixtureSerialization extends
 				new Animal("animalSeven", false, false, "wild", 4),
 				"<animal kind=\"animalSeven\" status=\"wild\" id=\"4\" />");
 		assertImageSerialization("Animal image property is preserved", fourthAnimal);
+		assertForwardDeserialization("Namespaced attribute",
+				new Animal("animalNine", true, true, "tame", 5),
+				"<animal xmlns:sp=\"" + ISPReader.NAMESPACE +
+						"\" sp:kind=\"animalNine\" sp:talking=\"true\" " +
+						"sp:traces=\"true\" sp:status=\"tame\" sp:id=\"5\" />");
 	}
 
 	/**

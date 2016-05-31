@@ -223,7 +223,6 @@ public abstract class AbstractCompactReader<@NonNull T>
 		if (retval == null) {
 			return element.getAttributeByName(new QName(param));
 		} else {
-			// TODO: Test attribute-in-SP-namespace case
 			return retval;
 		}
 	}
