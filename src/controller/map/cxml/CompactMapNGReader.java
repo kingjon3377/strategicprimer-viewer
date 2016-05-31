@@ -201,8 +201,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						retval.addFixture(point, parseFixture(current, stream,
 								players, idFactory, warner));
 					} catch (final UnwantedChildException except) {
-						// TODO: Test the worker-in-tile-directly case, which should get here
 						if ("unknown".equals(except.getTag().getLocalPart())) {
+							// TODO: Tests should cover this
 							throw new UnwantedChildException(
 									assertNotNull(mapTag.getName()),
 									except);
@@ -210,6 +210,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 							throw except;
 						}
 					} catch (final IllegalStateException except) {
+						// TODO: Tests should cover this
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
 							throw new UnwantedChildException(
 									assertNotNull(mapTag.getName()),

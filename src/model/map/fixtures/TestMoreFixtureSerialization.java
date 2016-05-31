@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.HasMutableImage;
+import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
@@ -380,6 +381,11 @@ public final class TestMoreFixtureSerialization extends
 		assertImageSerialization("Worker image property is preserved", secondWorker);
 		secondWorker.addJob(new Job("seventh", 1));
 		assertSerialization("Worker can have a Job with no skills yet", secondWorker);
+		assertUnwantedChild(
+				"<map version=\"2\" rows=\"1\" columns=\"1\"><tile row=\"0\" " +
+						"column=\"0\"><worker name=\"name\" id=\"1\" " +
+						"/></tile></row></map>",
+				IMapNG.class, false);
 	}
 
 	/**
