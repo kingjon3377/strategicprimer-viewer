@@ -36,6 +36,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
+import util.SimpleMultiMap;
 
 /**
  * A report generator for "immortals"---dragons, fairies, centaurs, and such.

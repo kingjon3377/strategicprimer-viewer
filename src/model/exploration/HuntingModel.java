@@ -3,7 +3,6 @@ package model.exploration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,13 +17,12 @@ import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Shrub;
 import util.NullCleaner;
+import util.SimpleMultiMap;
 
 import static model.map.TileType.Ocean;
 
 /**
  * A class to facilitate a better hunting/fishing driver.
- *
- * TODO: Use MultiMaps once we add the Guava dependency.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -53,15 +51,15 @@ public final class HuntingModel {
 	/**
 	 * The non-aquatic animals in the map.
 	 */
-	private final Map<Point, List<String>> animals = new HashMap<>();
+	private final Map<Point, Collection<String>> animals = new SimpleMultiMap<>();
 	/**
 	 * The aquatic animals in the map.
 	 */
-	private final Map<Point, List<String>> waterAnimals = new HashMap<>();
+	private final Map<Point, Collection<String>> waterAnimals = new SimpleMultiMap<>();
 	/**
 	 * The plants in the map.
 	 */
-	private final Map<Point, List<String>> plants = new HashMap<>();
+	private final Map<Point, Collection<String>> plants = new SimpleMultiMap<>();
 	/**
 	 * The size of the map.
 	 */
@@ -85,18 +83,16 @@ public final class HuntingModel {
 				if ((fix instanceof Animal) && !((Animal) fix).isTalking()
 							&& !((Animal) fix).isTraces()) {
 					if (fishKinds.contains(((Animal) fix).getKind())) {
-						addToMap(waterAnimals, point, ((Animal) fix).getKind());
+						waterAnimals.get(point).add(((Animal) fix).getKind());
 					} else {
-						addToMap(animals, point, ((Animal) fix).getKind());
+						animals.get(point).add(((Animal) fix).getKind());
 					}
 				} else if ((fix instanceof Grove) || (fix instanceof Meadow) ||
 								(fix instanceof Shrub)) {
-					addToMap(plants, point,
-							NullCleaner.assertNotNull(fix.toString()));
+					plants.get(point).add(fix.toString());
 				}
 			}
-			addToMap(plants, point, NOTHING);
-			final List<String> plantList =
+			final Collection<String> plantList =
 					NullCleaner.assertNotNull(plants.get(point));
 			final int len = plantList.size() - 1;
 			final int nothings; // TODO: extract method?
@@ -131,9 +127,9 @@ public final class HuntingModel {
 	 * @param value a string to put in the map at that point.
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void addToMap(final Map<Point, List<String>> map, final Point point,
+	private static void addToMap(final Map<Point, Collection<String>> map, final Point point,
 								final String value) {
-		final List<String> list;
+		final Collection<String> list;
 		if (map.containsKey(point)) {
 			list = NullCleaner.assertNotNull(map.get(point));
 		} else {
@@ -193,7 +189,7 @@ public final class HuntingModel {
 	 * @return a list of results, about one eighth of which will be "nothing."
 	 */
 	private List<String> chooseFromMap(final Point point, final int items,
-									final Map<Point, List<String>> chosenMap) {
+									final Map<Point, Collection<String>> chosenMap) {
 		final List<String> choices = StreamSupport
 											.stream(new SurroundingPointIterable(point,
 																						dims)
