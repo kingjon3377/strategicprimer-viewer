@@ -221,8 +221,8 @@ public final class TestConverter {
 		original.setBaseTerrain(PointFactory.point(1, 0), TileType.Desert);
 		original.setBaseTerrain(PointFactory.point(1, 1), TileType.Plains);
 		final Player player = new Player(1, "playerName");
-		final Player independent = new Player(2, "independent");
 		original.addPlayer(player);
+		final Player independent = new Player(2, "independent");
 		original.addPlayer(independent);
 
 		final IMutableMapNG converted =
@@ -470,8 +470,8 @@ public final class TestConverter {
 		original.setBaseTerrain(PointFactory.point(1, 1), TileType.Tundra);
 		original.setGround(PointFactory.point(1, 1), new Ground(ROCK_TYPE, false));
 		final Player player = new Player(1, "playerName");
-		final Player independent = new Player(2, "independent");
 		original.addPlayer(player);
+		final Player independent = new Player(2, "independent");
 		original.addPlayer(independent);
 
 		final IMutableMapNG converted =
@@ -713,8 +713,6 @@ public final class TestConverter {
 	public void testThirdOneToTwoConversion() throws IOException {
 		final IMutableMapNG original =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
-		final Player player = new Player(1, "playerName");
-		final Player independent = new Player(2, "independent");
 		original.setGround(PointFactory.point(0, 0), new Ground(ROCK_TYPE, false));
 		original.setBaseTerrain(PointFactory.point(0, 1), TileType.BorealForest);
 		original.setForest(PointFactory.point(0, 1), new Forest(TEMP_TREE, false));
@@ -723,6 +721,7 @@ public final class TestConverter {
 				new Animal("animalKind", false, false, "wild", 2));
 		original.addFixture(PointFactory.point(0, 1),
 				new Mine("mineral", TownStatus.Active, 3));
+		final Player independent = new Player(2, "independent");
 		original.addFixture(PointFactory.point(0, 1),
 				new AdventureFixture(independent, "briefDescription", "fullDescription",
 											4));
@@ -749,6 +748,7 @@ public final class TestConverter {
 		original.addRivers(PointFactory.point(0, 1), River.Lake, River.South);
 		original.addRivers(PointFactory.point(1, 0), River.East, River.West);
 		original.addRivers(PointFactory.point(1, 1), River.West, River.North);
+		final Player player = new Player(1, "playerName");
 		original.addPlayer(player);
 		original.addPlayer(independent);
 
@@ -1025,13 +1025,13 @@ public final class TestConverter {
 	public void testFourthOneToTwoConversion() throws IOException {
 		final IMutableMapNG original =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
-		final Player player = new Player(1, "playerName");
-		final Player independent = new Player(2, "independent");
 		original.setBaseTerrain(PointFactory.point(0, 0), TileType.Ocean);
 		original.setBaseTerrain(PointFactory.point(0, 1), TileType.Desert);
 		original.setBaseTerrain(PointFactory.point(1, 0), TileType.Desert);
 		original.setBaseTerrain(PointFactory.point(1, 1), TileType.Desert);
+		final Player player = new Player(1, "playerName");
 		original.addPlayer(player);
+		final Player independent = new Player(2, "independent");
 		original.addPlayer(independent);
 
 		final IMutableMapNG converted =
