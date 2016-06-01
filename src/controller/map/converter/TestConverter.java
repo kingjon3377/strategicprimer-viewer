@@ -435,7 +435,8 @@ public final class TestConverter {
 			final SPFluidWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
-			assertEquals("Produces expected result", outOne.toString(), outTwo.toString());
+			assertThat("Produces expected result", outTwo.toString(),
+					equalTo(outOne.toString()));
 		}
 		try (StringWriter outOne = new StringWriter();
 				StringWriter outTwo = new StringWriter()) {
@@ -685,7 +686,8 @@ public final class TestConverter {
 			final SPFluidWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
-			assertEquals("Produces expected result", outOne.toString(), outTwo.toString());
+			assertThat("Produces expected result", outTwo.toString(),
+					equalTo(outOne.toString()));
 		}
 		try (StringWriter outOne = new StringWriter();
 			 StringWriter outTwo = new StringWriter()) {
@@ -997,7 +999,8 @@ public final class TestConverter {
 			final SPFluidWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
-			assertEquals("Produces expected result", outOne.toString(), outTwo.toString());
+			assertThat("Produces expected result", outTwo.toString(),
+					equalTo(outOne.toString()));
 		}
 		try (StringWriter outOne = new StringWriter();
 			 StringWriter outTwo = new StringWriter()) {
@@ -1203,7 +1206,8 @@ public final class TestConverter {
 			final SPFluidWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
-			assertEquals("Produces expected result", outOne.toString(), outTwo.toString());
+			assertThat("Produces expected result", outTwo.toString(),
+					equalTo(outOne.toString()));
 		}
 		try (StringWriter outOne = new StringWriter();
 			 StringWriter outTwo = new StringWriter()) {
