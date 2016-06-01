@@ -275,7 +275,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			if (oldForest == null) {
 				map.setForest(point, forest);
 			} else if (!oldForest.equals(forest)) {
-				// TODO: Test the multiple-Forest cases
 				map.addFixture(point, forest);
 			}
 		} else if (fix instanceof Mountain) {

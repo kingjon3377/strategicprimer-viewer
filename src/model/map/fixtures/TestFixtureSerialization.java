@@ -221,6 +221,18 @@ public final class TestFixtureSerialization extends
 		assertMissingProperty("<forest />", Forest.class, KIND_PROPERTY, false);
 		assertImageSerialization("Forest image property is preserved",
 				new Forest("thirdForest", true));
+		final IMutableMapNG map = new SPMapNG(new MapDimensions(1, 1,2), new PlayerCollection(), -1);
+		final Point point = PointFactory.point(0, 0);
+		map.setBaseTerrain(point, TileType.Plains);
+		map.setForest(point, new Forest("trees", false));
+		map.addFixture(point, new Forest("secondForest", true));
+		assertSerialization("Map with multiple Forests on a tile", map);
+		assertForwardDeserialization("Duplicate Forests ignored", map,
+				"<view current_turn=\"-1\"><map version=\"2\" rows=\"1\" " +
+						"columns=\"1\"><tile row=\"0\" column=\"0\" " +
+						"kind=\"plains\"><forest kind=\"trees\" /><forest kind=\"trees\"" +
+						" /><forest kind=\"secondForest\" rows=\"true\" " +
+						"/></tile></map></view>");
 	}
 
 	/**
