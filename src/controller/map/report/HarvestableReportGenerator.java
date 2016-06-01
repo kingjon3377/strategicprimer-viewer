@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -80,11 +81,10 @@ public final class HarvestableReportGenerator
 	@Override
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer) {
-		// TODO: Use Guava MultiMaps to reduce cyclomatic complexity
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final HeadedList<String> stone = new HtmlList("<h5>Exposed stone deposits</h5>");
-		final Map<String, List<Point>> shrubs = new HashMap<>();
+		final Map<String, Collection<Point>> shrubs = new SimpleMultiMap<>();
 		final HeadedList<String> minerals = new HtmlList("<h5>Mineral deposits</h5>");
 		final HeadedList<String> mines = new HtmlList("<h5>Mines</h5>");
 		final HeadedList<String> meadows = new HtmlList("<h5>Meadows and fields</h5>");
@@ -109,16 +109,7 @@ public final class HarvestableReportGenerator
 				minerals.add(produce(fixtures, map, currentPlayer,
 						(MineralVein) item, point));
 			} else if (item instanceof Shrub) {
-				// TODO: Use a Guava Multimap
-				final List<Point> shrubPoints;
-				if (shrubs.containsKey(((Shrub) item).getKind())) {
-					shrubPoints = NullCleaner.assertNotNull(shrubs.get(((Shrub) item).getKind()));
-				} else {
-					//noinspection ObjectAllocationInLoop
-					shrubPoints = new ArrayList<>();
-					shrubs.put(((Shrub) item).getKind(), shrubPoints);
-				}
-				shrubPoints.add(point);
+				shrubs.get(((Shrub) item).getKind()).add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (item instanceof StoneDeposit) {
 				// TODO: Handle these like shrubs.
@@ -129,7 +120,8 @@ public final class HarvestableReportGenerator
 		final HeadedList<String> shrubsText =
 				new HtmlList("<h5>Shrubs, small trees, and such</h5>");
 		shrubsText.addAll(shrubs.entrySet().stream().map(entry -> {
-			final List<Point> lst = entry.getValue();
+			final List<Point> lst =
+					entry.getValue().stream().collect(Collectors.toList());
 			final StringBuilder builder = new StringBuilder(lst.size() * 10);
 			pointCSL(builder, lst);
 			return concat(entry.getKey(), ": at ", builder.toString());

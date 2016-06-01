@@ -1,11 +1,13 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -65,7 +67,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 						final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		final Map<String, List<Point>> items = new HashMap<>();
+		final Map<String, Collection<Point>> items = new SimpleMultiMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
@@ -77,15 +79,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				} else {
 					desc = animal.getKind();
 				}
-				final List<Point> points;
-				if (items.containsKey(desc)) {
-					points = NullCleaner.assertNotNull(items.get(desc));
-				} else {
-					//noinspection ObjectAllocationInLoop
-					points = new ArrayList<>();
-					items.put(desc, points);
-				}
-				points.add(pair.first());
+				items.get(desc).add(pair.first());
 				fixtures.remove(Integer.valueOf(animal.getID()));
 			}
 		}
@@ -96,10 +90,10 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			final StringBuilder builder = new StringBuilder(16384).append(
 					"<h4>Animal sightings or encounters</h4>\n").append(
 					OPEN_LIST);
-			for (final Map.Entry<String, List<Point>> entry : items.entrySet()) {
+			for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry.getKey())
 						.append(": at ");
-				pointCSL(builder, entry.getValue());
+				pointCSL(builder, entry.getValue().stream().collect(Collectors.toList()));
 				builder.append(CLOSE_LIST_ITEM);
 			}
 			return NullCleaner.assertNotNull(builder.append(CLOSE_LIST)

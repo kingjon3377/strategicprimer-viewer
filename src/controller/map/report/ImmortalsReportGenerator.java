@@ -86,23 +86,23 @@ public final class ImmortalsReportGenerator
 		final List<Point> griffins = new ArrayList<>();
 		final List<Point> simurghs = new ArrayList<>();
 		final List<Point> phoenixes = new ArrayList<>();
-		final Map<String, List<Point>> centaurs = new HashMap<>();
+		final Map<String, Collection<Point>> centaurs = new SimpleMultiMap<>();
 		final List<Point> ogres = new ArrayList<>();
 		final List<Point> minotaurs = new ArrayList<>();
-		final Map<String, List<Point>> giants = new HashMap<>();
+		final Map<String, Collection<Point>> giants = new SimpleMultiMap<>();
 		final List<Point> sphinxes = new ArrayList<>();
 		final List<Point> djinni = new ArrayList<>();
 		final List<Point> trolls = new ArrayList<>();
-		final Map<String, List<Point>> fairies = new HashMap<>();
-		final Map<String, List<Point>> dragons = new HashMap<>();
+		final Map<String, Collection<Point>> fairies = new SimpleMultiMap<>();
+		final Map<String, Collection<Point>> dragons = new SimpleMultiMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
 			if (immortal instanceof Dragon) {
-				separateByKind(dragons, (Dragon) immortal, point);
+				dragons.get(immortal.toString()).add(point);
 				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Fairy) {
-				separateByKind(fairies, (Fairy) immortal, point);
+				fairies.get(immortal.toString()).add(point);
 				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Troll) {
 				trolls.add(point);
@@ -114,7 +114,7 @@ public final class ImmortalsReportGenerator
 				sphinxes.add(point);
 				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Giant) {
-				separateByKind(giants, (Giant) immortal, point);
+				giants.get(immortal.toString()).add(point);
 				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Minotaur) {
 				minotaurs.add(point);
@@ -123,7 +123,7 @@ public final class ImmortalsReportGenerator
 				ogres.add(point);
 				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Centaur) {
-				separateByKind(centaurs, (Centaur) immortal, point);
+				centaurs.get(immortal.toString()).add(point);
 				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Phoenix) {
 				phoenixes.add(point);
@@ -345,12 +345,12 @@ public final class ImmortalsReportGenerator
 	 * @param infix   what to print in the middle of each item
 	 * @param builder the builder to print to
 	 */
-	private static void optionallyPrintMap(final Map<String, List<Point>> mapping,
+	private static void optionallyPrintMap(final Map<String, Collection<Point>> mapping,
 										final String infix,
 										final StringBuilder builder) {
-		for (final Map.Entry<String, List<Point>> entry : mapping.entrySet()) {
+		for (final Map.Entry<String, Collection<Point>> entry : mapping.entrySet()) {
 			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix);
-			pointCSL(builder, entry.getValue());
+			pointCSL(builder, entry.getValue().stream().collect(Collectors.toList()));
 			builder.append(CLOSE_LIST_ITEM);
 		}
 	}
