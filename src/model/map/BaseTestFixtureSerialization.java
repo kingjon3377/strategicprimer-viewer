@@ -689,14 +689,14 @@ public abstract class BaseTestFixtureSerialization {
 		try (StringReader stringReader = new StringReader(xml)) {
 			oldReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Die);
 			fail("Old reader didn't warn about duplicate ID");
-		} catch (FatalWarningException except) {
+		} catch (final FatalWarningException except) {
 			assertThat("Warning was about duplicate ID", except.getCause(), instanceOf(
 					DuplicateIDException.class));
 		}
 		try (StringReader stringReader = new StringReader(xml)) {
 			newReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Die);
 			fail("New reader didn't warn about duplicate ID");
-		} catch (FatalWarningException except) {
+		} catch (final FatalWarningException except) {
 			assertThat("Warning was about duplicate ID", except.getCause(), instanceOf(
 					DuplicateIDException.class));
 		}

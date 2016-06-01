@@ -133,7 +133,7 @@ public final class ZeroToOneConverter {
 			ostream.append(':');
 		}
 		ostream.append(element.getName().getLocalPart());
-		for (Object namespace : new IteratorWrapper(element.getNamespaces())) {
+		for (final Object namespace : new IteratorWrapper(element.getNamespaces())) {
 			ostream.append(' ');
 			ostream.append(namespace.toString());
 		}
