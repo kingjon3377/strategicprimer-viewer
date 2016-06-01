@@ -241,7 +241,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	private static Attribute getAttribute(final StartElement element, final QName... names) {
 		for (final QName name : names) {
 			final Attribute retval = element.getAttributeByName(name);
-			if (retval != null && retval.getValue() != null) {
+			if ((retval != null) && (retval.getValue() != null)) {
 				return retval;
 			}
 		}
