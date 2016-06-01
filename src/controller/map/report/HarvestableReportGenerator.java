@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -126,7 +125,7 @@ public final class HarvestableReportGenerator
 		}
 		final HeadedList<String> shrubsText =
 				new HtmlList("<h5>Shrubs, small trees, and such</h5>");
-		final Function<Entry<String, Collection<Point>>, String> listPrinter =
+		final Function<Map.Entry<String, Collection<Point>>, String> listPrinter =
 				entry -> {
 					final List<Point> lst =
 							entry.getValue().stream().collect(Collectors.toList());
