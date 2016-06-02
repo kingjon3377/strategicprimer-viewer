@@ -4,6 +4,7 @@ import controller.map.cxml.CompactXMLWriter;
 import controller.map.fluidxml.SPFluidWriter;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.ISPReader;
+import controller.map.iointerfaces.SPWriter;
 import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
 import java.io.StringReader;
@@ -431,7 +432,7 @@ public final class TestConverter {
 //		new SPFluidWriter().write(SystemOut.SYS_OUT,
 //				new OneToTwoConverter().convert(original, true));
 		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
-			final SPFluidWriter writer = new SPFluidWriter();
+			final SPWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			assertThat("Produces expected result", outTwo.toString(),
@@ -682,7 +683,7 @@ public final class TestConverter {
 //		new SPFluidWriter().write(SystemOut.SYS_OUT,
 //				new OneToTwoConverter().convert(original, true));
 		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
-			final SPFluidWriter writer = new SPFluidWriter();
+			final SPWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			assertThat("Produces expected result", outTwo.toString(),
@@ -995,7 +996,7 @@ public final class TestConverter {
 //		new SPFluidWriter().write(SystemOut.SYS_OUT,
 //				new OneToTwoConverter().convert(original, true));
 		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
-			final SPFluidWriter writer = new SPFluidWriter();
+			final SPWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			assertThat("Produces expected result", outTwo.toString(),
@@ -1202,7 +1203,7 @@ public final class TestConverter {
 //		new SPFluidWriter().write(SystemOut.SYS_OUT,
 //				new OneToTwoConverter().convert(original, true));
 		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
-			final SPFluidWriter writer = new SPFluidWriter();
+			final SPWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			assertThat("Produces expected result", outTwo.toString(),

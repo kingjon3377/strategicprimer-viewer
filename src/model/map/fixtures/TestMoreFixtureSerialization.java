@@ -263,7 +263,7 @@ public final class TestMoreFixtureSerialization extends
 		assertUnwantedChild("<text turn=\"1\"><troll /></text>",
 				TextFixture.class, false);
 		assertImageSerialization("Text image property is preserved", thirdText);
-		final SPMapNG wrapper =
+		final IMutableMapNG wrapper =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), 0);
 		wrapper.setBaseTerrain(point(0, 0), TileType.Plains);
 		wrapper.addFixture(point(0, 0), firstText);
