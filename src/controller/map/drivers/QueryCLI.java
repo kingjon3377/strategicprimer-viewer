@@ -31,8 +31,6 @@ import util.TypesafeLogger;
 /**
  * A driver for running exploration results, etc., using the new model.
  *
- * TODO: Find something else to be "-c -m" so this can be "--query|-q"
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -57,7 +55,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-m", "--map", ParamCount.One,
+			new DriverUsage(false, "-q", "--query", ParamCount.One,
 								"Answer questions about a map.",
 								"Look at tiles on a map. Or run hunting, gathering, " +
 										"or fishing.",

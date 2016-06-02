@@ -36,9 +36,9 @@ public final class WorkerReportDriver implements SimpleDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-w", "--worker", ParamCount.One,
-								"Worker Report Generator",
-								"Produce HTML report of units, workers, etc., in a map.",
+			new DriverUsage(false, "-m", "--map", ParamCount.One,
+								"Report Generator",
+								"Produce HTML report of the contents of a map",
 								WorkerReportDriver.class);
 
 	/**

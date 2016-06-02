@@ -99,13 +99,16 @@ public final class AppStarter implements ISPDriver {
 	}
 
 	static {
-		addChoice(new QueryCLI(), new ViewerStart());
+		addChoice(new WorkerReportDriver(), new ViewerStart());
 		addChoice(new AdvancementCLIDriver(), new AdvancementStart());
-		addChoice(new WorkerReportDriver(), new WorkerStart());
+		// FIXME: Add strategy-generating CLI app equivalent to worker-mgmt GUI
+		addChoice(new WorkerStart());
 		addChoice(new ExplorationCLIDriver(), new ExplorationGUI());
 		addChoice(new ReaderComparator(), new DrawHelperComparator());
 		addChoice(new MapChecker(), new MapCheckerGUI());
 		addChoice(new SubsetDriver(), new SubsetGUIDriver());
+		// FIXME: Add GUI equivalent of QueryCLI
+		addChoice(new QueryCLI());
 		addChoice(new EchoDriver());
 		// FIXME: Write a GUI for the duplicate feature remover
 		addChoice(new DuplicateFixtureRemover());
