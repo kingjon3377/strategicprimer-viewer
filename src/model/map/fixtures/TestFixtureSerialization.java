@@ -221,7 +221,8 @@ public final class TestFixtureSerialization extends
 		assertMissingProperty("<forest />", Forest.class, KIND_PROPERTY, false);
 		assertImageSerialization("Forest image property is preserved",
 				new Forest("thirdForest", true));
-		final IMutableMapNG map = new SPMapNG(new MapDimensions(1, 1,2), new PlayerCollection(), -1);
+		final IMutableMapNG map =
+				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), -1);
 		final Point point = PointFactory.point(0, 0);
 		map.setBaseTerrain(point, TileType.Plains);
 		map.setForest(point, new Forest("trees", false));

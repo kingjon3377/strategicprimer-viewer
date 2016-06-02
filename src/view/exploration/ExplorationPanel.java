@@ -1,6 +1,6 @@
 package view.exploration;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -16,12 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import model.exploration.IExplorationModel;
@@ -200,7 +195,8 @@ public final class ExplorationPanel extends BorderedPanel
 	 * @param directions the directions to create GUIs for
 	 * @return the panel
 	 */
-	private JPanel setupTilesGUIImpl(final JPanel panel, final IExplorationModel.Direction... directions) {
+	private JPanel setupTilesGUIImpl(final JPanel panel,
+									 final IExplorationModel.Direction... directions) {
 		for (final IExplorationModel.Direction direction : directions) {
 			if (direction != null) {
 				addTileGUI(panel, direction);
@@ -219,7 +215,8 @@ public final class ExplorationPanel extends BorderedPanel
 	 *                  represents.
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private void addTileGUI(final JPanel panel, final IExplorationModel.Direction direction) {
+	private void addTileGUI(final JPanel panel,
+							final IExplorationModel.Direction direction) {
 		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
 		final FixtureList mainList =
 				new FixtureList(panel, model, model.getMap().players());

@@ -76,7 +76,9 @@ public abstract class AbstractCompactReader<@NonNull T>
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 			// TODO: Tests should exercise this
 			// TODO: Pass in parent tag? Somehow?
-			throw new UnwantedChildException(new QName("unknown"), element, new IllegalArgumentException("Unrecognized namespace"));
+			throw new UnwantedChildException(new QName("unknown"), element,
+													new IllegalArgumentException
+															("Unrecognized namespace"));
 		}
 		final String localName = assertNotNull(element.getName().getLocalPart());
 		final int line = element.getLocation().getLineNumber();

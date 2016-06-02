@@ -210,7 +210,8 @@ public final class ExplorationCLI {
 			allFixtures
 					.add(new Animal(possibleTracks, true, false, "wild", idf.createID()));
 		}
-		if ((IExplorationModel.Direction.Nowhere == direction) && helper.inputBoolean(FEALTY_PROMPT)) {
+		if ((IExplorationModel.Direction.Nowhere == direction) &&
+					helper.inputBoolean(FEALTY_PROMPT)) {
 			model.swearVillages();
 			cost += 5;
 		} else if ((IExplorationModel.Direction.Nowhere == direction) &&

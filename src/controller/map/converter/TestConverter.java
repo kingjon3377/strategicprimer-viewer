@@ -431,7 +431,8 @@ public final class TestConverter {
 
 //		new SPFluidWriter().write(SystemOut.SYS_OUT,
 //				new OneToTwoConverter().convert(original, true));
-		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
+		try (StringWriter outOne = new StringWriter();
+			 StringWriter outTwo = new StringWriter()) {
 			final SPWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
@@ -682,7 +683,8 @@ public final class TestConverter {
 
 //		new SPFluidWriter().write(SystemOut.SYS_OUT,
 //				new OneToTwoConverter().convert(original, true));
-		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
+		try (StringWriter outOne = new StringWriter();
+			 StringWriter outTwo = new StringWriter()) {
 			final SPWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
@@ -849,7 +851,8 @@ public final class TestConverter {
 		converted.addFixture(PointFactory.point(2, 6), new Djinn(12));
 		converted.addFixture(PointFactory.point(2, 6),
 				new Village(TownStatus.Active, "", 18, independent, "dwarf"));
-		converted.addFixture(PointFactory.point(2, 6), new TextFixture(OneToTwoConverter.MAX_ITER_WARN, 10));
+		converted.addFixture(PointFactory.point(2, 6),
+				new TextFixture(OneToTwoConverter.MAX_ITER_WARN, 10));
 		converted.addFixture(PointFactory.point(2, 6),
 				new Meadow(FIELD_TYPE, true, true, 38, Growing));
 		converted.setBaseTerrain(PointFactory.point(2, 7), TileType.Steppe);
@@ -995,7 +998,8 @@ public final class TestConverter {
 
 //		new SPFluidWriter().write(SystemOut.SYS_OUT,
 //				new OneToTwoConverter().convert(original, true));
-		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
+		try (StringWriter outOne = new StringWriter();
+			 StringWriter outTwo = new StringWriter()) {
 			final SPWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
@@ -1202,7 +1206,8 @@ public final class TestConverter {
 
 //		new SPFluidWriter().write(SystemOut.SYS_OUT,
 //				new OneToTwoConverter().convert(original, true));
-		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
+		try (StringWriter outOne = new StringWriter();
+			 StringWriter outTwo = new StringWriter()) {
 			final SPWriter writer = new SPFluidWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
@@ -1248,14 +1253,17 @@ public final class TestConverter {
 	public void testZeroToOneConversion()
 			throws XMLStreamException, IOException, SPFormatException {
 		// FIXME: Include tile fixtures beyond those implicit in events
-		final String orig =
-				"<map xmlns:sp=\"" + ISPReader.NAMESPACE + "\" version='0' rows='2' columns='2'><player number='0' " +
-						"code_name='Test Player' /><row index='0'><tile row='0' " +
-						"column='0' type='tundra' event='0'>Random event here</tile><tile row='0' " +
-						"column='1' type='boreal_forest' event='183'></tile></row><row " +
-						"index='1'><sp:tile row='1' column='0' type='mountain' " +
-						"event='229'><sp:fortress name='HQ' owner='0' id='15'/></sp:tile><tile row='1' column='1' " +
-						"type='temperate_forest' event='219'></tile></row></map>";
+		final String orig = "<map xmlns:sp=\"" + ISPReader.NAMESPACE +
+									"\" version='0' rows='2' columns='2'><player " +
+									"number='0' code_name='Test Player' /><row " +
+									"index='0'><tile row='0' column='0' type='tundra' " +
+									"event='0'>Random event here</tile><tile row='0' " +
+									"column='1' type='boreal_forest' " +
+									"event='183'></tile></row><row index='1'><sp:tile " +
+									"row='1' column='0' type='mountain' " +
+									"event='229'><sp:fortress name='HQ' owner='0' " +
+									"id='15'/></sp:tile><tile row='1' column='1' " +
+									"type='temperate_forest' event='219'></tile></row></map>";
 		final StringWriter out = new StringWriter();
 		//noinspection unchecked
 		ZeroToOneConverter.convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
