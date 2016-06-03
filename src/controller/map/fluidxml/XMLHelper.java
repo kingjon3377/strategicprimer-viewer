@@ -424,8 +424,8 @@ public final class XMLHelper {
 	 * @throws IOException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public static final void writeIntegerAttribute(final Appendable ostream,
-												   final String name, final int value)
+	public static void writeIntegerAttribute(final Appendable ostream,
+											 final String name, final int value)
 			throws IOException {
 		ostream.append(' ');
 		ostream.append(name);
@@ -459,8 +459,8 @@ public final class XMLHelper {
 	 * @throws IOException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public static final void writeBooleanAttribute(final Appendable ostream,
-												   final String name, final boolean
+	public static void writeBooleanAttribute(final Appendable ostream,
+											 final String name, final boolean
 																			  value)
 			throws IOException {
 		ostream.append(' ');
@@ -480,9 +480,9 @@ public final class XMLHelper {
 	 * @return a suitable player
 	 * @throws SPFormatException on SP format problems reading the attribute.
 	 */
-	public static final Player getPlayerOrIndependent(final StartElement element,
-										  final Warning warner,
-										  final IPlayerCollection players)
+	public static Player getPlayerOrIndependent(final StartElement element,
+												final Warning warner,
+												final IPlayerCollection players)
 			throws SPFormatException {
 		final Player retval;
 		if (hasAttribute(element, "owner") && !getAttribute(element, "owner").isEmpty()) {
@@ -502,8 +502,8 @@ public final class XMLHelper {
 	 * @return the object
 	 * @param <T> the type of the object
 	 */
-	public static final <T> T setImage(final T obj, final StartElement element,
-									   final Warning warner) {
+	public static <T> T setImage(final T obj, final StartElement element,
+								 final Warning warner) {
 		if (obj instanceof HasMutableImage) {
 			((HasMutableImage) obj).setImage(getAttribute(element, "image", ""));
 		} else if (hasAttribute(element, "image")) {

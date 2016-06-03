@@ -45,7 +45,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * @return the result of a comparison between them
 	 */
 	@SuppressWarnings("QuestionableName")
-	public static final int compareTownSize(final TownSize one, final TownSize two) {
+	public static int compareTownSize(final TownSize one, final TownSize two) {
 		if (one == two) {
 			return 0;
 		} else if (TownSize.Large == one) {
@@ -67,7 +67,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * @return the result of the comparison
 	 */
 	@SuppressWarnings("QuestionableName")
-	public static final int compareTownStatus(final TownStatus one, final TownStatus two) {
+	public static int compareTownStatus(final TownStatus one, final TownStatus two) {
 		if (one == two) {
 			return 0;
 		} else if (TownStatus.Active == one) {
@@ -93,8 +93,8 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * @return the result of a comparison between them only on the basis of town-kind.
 	 */
 	@SuppressWarnings("QuestionableName")
-	public static final int compareTownKind(final ITownFixture one,
-											final ITownFixture two) {
+	public static int compareTownKind(final ITownFixture one,
+									  final ITownFixture two) {
 		if (one instanceof Fortress) {
 			if (two instanceof Fortress) {
 				return 0;

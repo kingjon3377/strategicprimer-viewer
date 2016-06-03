@@ -80,11 +80,11 @@ public final class FluidResourceHandler {
 	 * @return the resource pile represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final ResourcePile readResource(final StartElement element,
-							  final Iterable<XMLEvent> stream,
-							  final IMutablePlayerCollection players,
-							  final Warning warner,
-							  final IDFactory idFactory) throws SPFormatException {
+	public static ResourcePile readResource(final StartElement element,
+											final Iterable<XMLEvent> stream,
+											final IMutablePlayerCollection players,
+											final Warning warner,
+											final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "resource");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final ResourcePile retval =
@@ -111,10 +111,10 @@ public final class FluidResourceHandler {
 	 * @return the cache represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final CacheFixture readCache(final StartElement element,
-							  final Iterable<XMLEvent> stream,
-							  final IMutablePlayerCollection players,
-							  final Warning warner, final IDFactory idFactory)
+	public static CacheFixture readCache(final StartElement element,
+										 final Iterable<XMLEvent> stream,
+										 final IMutablePlayerCollection players,
+										 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "cache");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -136,10 +136,10 @@ public final class FluidResourceHandler {
 	 * @return the grove represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Grove readGrove(final StartElement element,
-										final Iterable<XMLEvent> stream,
-										final IMutablePlayerCollection players,
-										final Warning warner, final IDFactory idFactory)
+	public static Grove readGrove(final StartElement element,
+								  final Iterable<XMLEvent> stream,
+								  final IMutablePlayerCollection players,
+								  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "grove");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -171,10 +171,10 @@ public final class FluidResourceHandler {
 	 * @return the grove represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Grove readOrchard(final StartElement element,
-										  final Iterable<XMLEvent> stream,
-										  final IMutablePlayerCollection players,
-										  final Warning warner, final IDFactory idFactory)
+	public static Grove readOrchard(final StartElement element,
+									final Iterable<XMLEvent> stream,
+									final IMutablePlayerCollection players,
+									final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "orchard");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -206,10 +206,10 @@ public final class FluidResourceHandler {
 	 * @return the meadow represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Meadow readMeadow(final StartElement element,
-										  final Iterable<XMLEvent> stream,
-										  final IMutablePlayerCollection players,
-										  final Warning warner, final IDFactory idFactory)
+	public static Meadow readMeadow(final StartElement element,
+									final Iterable<XMLEvent> stream,
+									final IMutablePlayerCollection players,
+									final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "meadow");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -234,10 +234,10 @@ public final class FluidResourceHandler {
 	 * @return the meadow represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Meadow readField(final StartElement element,
-										 final Iterable<XMLEvent> stream,
-										 final IMutablePlayerCollection players,
-										 final Warning warner, final IDFactory idFactory)
+	public static Meadow readField(final StartElement element,
+								   final Iterable<XMLEvent> stream,
+								   final IMutablePlayerCollection players,
+								   final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "field");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -262,10 +262,10 @@ public final class FluidResourceHandler {
 	 * @return the mine represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Mine readMine(final StartElement element,
-									  final Iterable<XMLEvent> stream,
-									  final IMutablePlayerCollection players,
-									  final Warning warner, final IDFactory idFactory)
+	public static Mine readMine(final StartElement element,
+								final Iterable<XMLEvent> stream,
+								final IMutablePlayerCollection players,
+								final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "mine");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -288,10 +288,10 @@ public final class FluidResourceHandler {
 	 * @return the parsed mineral
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final MineralVein readMineral(final StartElement element,
-							 final Iterable<XMLEvent> stream,
-							 final IMutablePlayerCollection players,
-							 final Warning warner, final IDFactory idFactory)
+	public static MineralVein readMineral(final StartElement element,
+										  final Iterable<XMLEvent> stream,
+										  final IMutablePlayerCollection players,
+										  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "mineral");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -315,10 +315,10 @@ public final class FluidResourceHandler {
 	 * @return the shrub represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Shrub readShrub(final StartElement element,
-					   final Iterable<XMLEvent> stream,
-					   final IMutablePlayerCollection players,
-					   final Warning warner, final IDFactory idFactory)
+	public static Shrub readShrub(final StartElement element,
+								  final Iterable<XMLEvent> stream,
+								  final IMutablePlayerCollection players,
+								  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "shrub");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -339,10 +339,10 @@ public final class FluidResourceHandler {
 	 * @return the parsed stone
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final StoneDeposit readStone(final StartElement element,
-							  final Iterable<XMLEvent> stream,
-							  final IMutablePlayerCollection players,
-							  final Warning warner, final IDFactory idFactory)
+	public static StoneDeposit readStone(final StartElement element,
+										 final Iterable<XMLEvent> stream,
+										 final IMutablePlayerCollection players,
+										 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "stone");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -362,8 +362,8 @@ public final class FluidResourceHandler {
 	 * @param indent  the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeResource(final Appendable ostream, final Object obj,
-					  final int indent) throws IOException {
+	public static void writeResource(final Appendable ostream, final Object obj,
+									 final int indent) throws IOException {
 		if (!(obj instanceof ResourcePile)) {
 			throw new IllegalArgumentException("Can only write ResourcePile");
 		}
@@ -388,8 +388,8 @@ public final class FluidResourceHandler {
 	 * @param indent  the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeCache(final Appendable ostream, final Object obj,
-							  final int indent) throws IOException {
+	public static void writeCache(final Appendable ostream, final Object obj,
+								  final int indent) throws IOException {
 		if (!(obj instanceof CacheFixture)) {
 			throw new IllegalArgumentException("Can only write CacheFixture");
 		}
@@ -409,8 +409,8 @@ public final class FluidResourceHandler {
 	 * @param indent  the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeMeadow(final Appendable ostream, final Object obj,
-							  final int indent) throws IOException {
+	public static void writeMeadow(final Appendable ostream, final Object obj,
+								   final int indent) throws IOException {
 		if (!(obj instanceof Meadow)) {
 			throw new IllegalArgumentException("Can only write Meadows");
 		}
@@ -435,8 +435,8 @@ public final class FluidResourceHandler {
 	 * @param indent  the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeGrove(final Appendable ostream, final Object obj,
-							  final int indent) throws IOException {
+	public static void writeGrove(final Appendable ostream, final Object obj,
+								  final int indent) throws IOException {
 		if (!(obj instanceof Grove)) {
 			throw new IllegalArgumentException("Can only write Grove");
 		}
@@ -460,8 +460,8 @@ public final class FluidResourceHandler {
 	 * @param indent  the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeMine(final Appendable ostream, final Object obj,
-							  final int indent) throws IOException {
+	public static void writeMine(final Appendable ostream, final Object obj,
+								 final int indent) throws IOException {
 		if (!(obj instanceof Mine)) {
 			throw new IllegalArgumentException("Can only write Mine");
 		}
@@ -481,8 +481,8 @@ public final class FluidResourceHandler {
 	 * @param indent  the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeMineral(final Appendable ostream, final Object obj,
-							  final int indent) throws IOException {
+	public static void writeMineral(final Appendable ostream, final Object obj,
+									final int indent) throws IOException {
 		if (!(obj instanceof MineralVein)) {
 			throw new IllegalArgumentException("Can only write MineralVein");
 		}
@@ -503,8 +503,8 @@ public final class FluidResourceHandler {
 	 * @param indent  the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeStone(final Appendable ostream, final Object obj,
-							  final int indent) throws IOException {
+	public static void writeStone(final Appendable ostream, final Object obj,
+								  final int indent) throws IOException {
 		if (!(obj instanceof StoneDeposit)) {
 			throw new IllegalArgumentException("Can only write StoneDeposit");
 		}

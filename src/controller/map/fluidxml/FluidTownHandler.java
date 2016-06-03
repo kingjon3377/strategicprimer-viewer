@@ -72,11 +72,11 @@ public final class FluidTownHandler {
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static final Town readTown(final StartElement element,
-										  final Iterable<XMLEvent> stream,
-										  final IPlayerCollection players,
-										  final Warning warner,
-										  final IDFactory idFactory) throws SPFormatException {
+	public static Town readTown(final StartElement element,
+								final Iterable<XMLEvent> stream,
+								final IPlayerCollection players,
+								final Warning warner,
+								final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "town");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
@@ -101,11 +101,11 @@ public final class FluidTownHandler {
 	 * @return the parsed fortification
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static final Fortification readFortification(final StartElement element,
-														 final Iterable<XMLEvent> stream,
-														 final IPlayerCollection players,
-														 final Warning warner,
-														 final IDFactory idFactory) throws SPFormatException {
+	public static Fortification readFortification(final StartElement element,
+												  final Iterable<XMLEvent> stream,
+												  final IPlayerCollection players,
+												  final Warning warner,
+												  final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "fortification");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
@@ -130,11 +130,11 @@ public final class FluidTownHandler {
 	 * @return the parsed city
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static final City readCity(final StartElement element,
-									   final Iterable<XMLEvent> stream,
-									   final IPlayerCollection players,
-									   final Warning warner,
-									   final IDFactory idFactory) throws SPFormatException {
+	public static City readCity(final StartElement element,
+								final Iterable<XMLEvent> stream,
+								final IPlayerCollection players,
+								final Warning warner,
+								final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "city");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
@@ -159,11 +159,11 @@ public final class FluidTownHandler {
 	 * @return the parsed village
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static final Village readVillage(final StartElement element,
-											 final Iterable<XMLEvent> stream,
-											 final IPlayerCollection players,
-											 final Warning warner,
-											 final IDFactory idFactory)
+	public static Village readVillage(final StartElement element,
+									  final Iterable<XMLEvent> stream,
+									  final IPlayerCollection players,
+									  final Warning warner,
+									  final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "village");
 		requireNonEmptyAttribute(element, "name", false, warner);

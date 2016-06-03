@@ -73,11 +73,11 @@ public final class FluidExplorableHandler {
 	 * @return the parsed adventure
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static final AdventureFixture readAdventure(final StartElement element,
-												final Iterable<XMLEvent> stream,
-												final IPlayerCollection players,
-												final Warning warner,
-												final IDFactory idFactory)
+	public static AdventureFixture readAdventure(final StartElement element,
+												 final Iterable<XMLEvent> stream,
+												 final IPlayerCollection players,
+												 final Warning warner,
+												 final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "adventure");
 		final Player player;
@@ -104,11 +104,11 @@ public final class FluidExplorableHandler {
 	 * @return the parsed portal
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static final Portal readPortal(final StartElement element,
-										  final Iterable<XMLEvent> stream,
-										  final IMutablePlayerCollection players,
-										  final Warning warner,
-										  final IDFactory idFactory) throws SPFormatException {
+	public static Portal readPortal(final StartElement element,
+									final Iterable<XMLEvent> stream,
+									final IMutablePlayerCollection players,
+									final Warning warner,
+									final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "portal");
 		final Portal retval = setImage(new Portal(getAttribute(element, "world"),
 												PointFactory.point(getIntegerAttribute(
@@ -130,10 +130,10 @@ public final class FluidExplorableHandler {
 	 * @return the parsed resource
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static final Cave readCave(final StartElement element,
-									  final Iterable<XMLEvent> stream,
-									  final IMutablePlayerCollection players,
-									  final Warning warner, final IDFactory idFactory)
+	public static Cave readCave(final StartElement element,
+								final Iterable<XMLEvent> stream,
+								final IMutablePlayerCollection players,
+								final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "cave");
 		final int idNum = getOrGenerateID(element, warner, idFactory);
@@ -151,12 +151,12 @@ public final class FluidExplorableHandler {
 	 * @return the parsed resource
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static final Battlefield readBattlefield(final StartElement element,
-													final Iterable<XMLEvent> stream,
-													final IMutablePlayerCollection
+	public static Battlefield readBattlefield(final StartElement element,
+											  final Iterable<XMLEvent> stream,
+											  final IMutablePlayerCollection
 															players,
-													final Warning warner,
-													final IDFactory idFactory)
+											  final Warning warner,
+											  final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "battlefield");
 		final int idNum = getOrGenerateID(element, warner, idFactory);
@@ -178,10 +178,10 @@ public final class FluidExplorableHandler {
 	 * @return the TextFixture
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final TextFixture readTextFixture(final StartElement element,
-							 final Iterable<XMLEvent> stream,
-							 final IMutablePlayerCollection players,
-							 final Warning warner, final IDFactory idFactory)
+	public static TextFixture readTextFixture(final StartElement element,
+											  final Iterable<XMLEvent> stream,
+											  final IMutablePlayerCollection players,
+											  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "text");
 		// Of all our uses of StringBuilder, here we can't know how much size
@@ -212,8 +212,8 @@ public final class FluidExplorableHandler {
 	 * @throws IOException on I/O error
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static final void writeAdventure(final Appendable ostream,
-											final Object obj, final int indent)
+	public static void writeAdventure(final Appendable ostream,
+									  final Object obj, final int indent)
 			throws IOException {
 		// TODO: Create helper method for this idiom, so we don't have to sacrifice
 		// one coverage-miss line per method.
@@ -239,8 +239,8 @@ public final class FluidExplorableHandler {
 	 * @throws IOException on I/O error
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static final void writePortal(final Appendable ostream,
-											final Object obj, final int indent)
+	public static void writePortal(final Appendable ostream,
+								   final Object obj, final int indent)
 			throws IOException {
 		if (!(obj instanceof Portal)) {
 			throw new IllegalArgumentException("Can only write Portals");
@@ -262,8 +262,8 @@ public final class FluidExplorableHandler {
 	 * @throws IOException on I/O error
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static final void writeCave(final Appendable ostream,
-											final Object obj, final int indent)
+	public static void writeCave(final Appendable ostream,
+								 final Object obj, final int indent)
 			throws IOException {
 		if (!(obj instanceof Cave)) {
 			throw new IllegalArgumentException("Can only write Caves");
@@ -283,8 +283,8 @@ public final class FluidExplorableHandler {
 	 * @throws IOException on I/O error
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static final void writeBattlefield(final Appendable ostream,
-									   final Object obj, final int indent)
+	public static void writeBattlefield(final Appendable ostream,
+										final Object obj, final int indent)
 			throws IOException {
 		if (!(obj instanceof Battlefield)) {
 			throw new IllegalArgumentException("Can only write Caves");

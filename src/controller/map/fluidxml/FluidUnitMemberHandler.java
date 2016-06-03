@@ -82,10 +82,10 @@ public final class FluidUnitMemberHandler {
 	 * @return the parsed Worker
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Worker readWorker(final StartElement element,
-						final Iterable<XMLEvent> stream,
-						final IMutablePlayerCollection players,
-						final Warning warner, final IDFactory idFactory)
+	public static Worker readWorker(final StartElement element,
+									final Iterable<XMLEvent> stream,
+									final IMutablePlayerCollection players,
+									final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "worker");
 		final Worker retval = setImage(new Worker(getAttribute(element, "name"),
@@ -128,10 +128,10 @@ public final class FluidUnitMemberHandler {
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final IJob readJob(final StartElement element,
-									 final Iterable<XMLEvent> stream,
-									 final IMutablePlayerCollection players,
-									 final Warning warner, final IDFactory idFactory)
+	public static IJob readJob(final StartElement element,
+							   final Iterable<XMLEvent> stream,
+							   final IMutablePlayerCollection players,
+							   final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "job");
 		if (hasAttribute(element, "hours")) {
@@ -188,10 +188,10 @@ public final class FluidUnitMemberHandler {
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final ISkill readSkill(final StartElement element,
-					   final Iterable<XMLEvent> stream,
-					   final IMutablePlayerCollection players,
-					   final Warning warner, final IDFactory idFactory)
+	public static ISkill readSkill(final StartElement element,
+								   final Iterable<XMLEvent> stream,
+								   final IMutablePlayerCollection players,
+								   final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "skill");
 		requireNonEmptyAttribute(element, "name", true, warner);
@@ -218,10 +218,10 @@ public final class FluidUnitMemberHandler {
 	 * @return the parsed stats object
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final WorkerStats readStats(final StartElement element,
-							 final Iterable<XMLEvent> stream,
-							 final IMutablePlayerCollection players,
-							 final Warning warner, final IDFactory idFactory)
+	public static WorkerStats readStats(final StartElement element,
+										final Iterable<XMLEvent> stream,
+										final IMutablePlayerCollection players,
+										final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "stats");
 		final WorkerStats retval =
@@ -244,8 +244,8 @@ public final class FluidUnitMemberHandler {
 	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeWorker(final Appendable ostream, final Object obj,
-										 final int indent) throws IOException {
+	public static void writeWorker(final Appendable ostream, final Object obj,
+								   final int indent) throws IOException {
 		if (!(obj instanceof IWorker)) {
 			throw new IllegalArgumentException("Can only write IWorker");
 		}
@@ -375,10 +375,10 @@ public final class FluidUnitMemberHandler {
 	 * @return the animal
 	 * @throws SPFormatException if the data is invalid
 	 */
-	public static final Animal readAnimal(final StartElement element,
-										  final Iterable<XMLEvent> stream,
-										  final IMutablePlayerCollection players,
-										  final Warning warner, final IDFactory idFactory)
+	public static Animal readAnimal(final StartElement element,
+									final Iterable<XMLEvent> stream,
+									final IMutablePlayerCollection players,
+									final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "animal");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -398,8 +398,8 @@ public final class FluidUnitMemberHandler {
 	 * @param indent the current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeAnimal(final Appendable ostream, final Object obj,
-										 final int indent) throws IOException {
+	public static void writeAnimal(final Appendable ostream, final Object obj,
+								   final int indent) throws IOException {
 		if (!(obj instanceof Animal)) {
 			throw new IllegalArgumentException("Can only write Animal");
 		}

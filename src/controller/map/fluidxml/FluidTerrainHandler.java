@@ -67,10 +67,10 @@ public final class FluidTerrainHandler {
 	 * @return the parsed Ground
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static final Ground readGround(final StartElement element,
-					   final Iterable<XMLEvent> stream,
-					   final IMutablePlayerCollection players, final Warning warner,
-					   final IDFactory idFactory) throws SPFormatException {
+	public static Ground readGround(final StartElement element,
+									final Iterable<XMLEvent> stream,
+									final IMutablePlayerCollection players, final Warning warner,
+									final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "ground");
 		final String kind = getAttrWithDeprecatedForm(element, "kind",
 				"ground", warner);
@@ -89,10 +89,10 @@ public final class FluidTerrainHandler {
 	 * @return the parsed Forest
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static final Forest readForest(final StartElement element,
-										   final Iterable<XMLEvent> stream,
-										   final IMutablePlayerCollection players, final Warning warner,
-										   final IDFactory idFactory) throws SPFormatException {
+	public static Forest readForest(final StartElement element,
+									final Iterable<XMLEvent> stream,
+									final IMutablePlayerCollection players, final Warning warner,
+									final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "forest");
 		final Forest retval =
 				new Forest(getAttribute(element, "kind"), hasAttribute(element, "rows"));
@@ -110,10 +110,10 @@ public final class FluidTerrainHandler {
 	 * @return the parsed Mountain
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static final Mountain readMountain(final StartElement element,
-										   final Iterable<XMLEvent> stream,
-										   final IMutablePlayerCollection players, final Warning warner,
-										   final IDFactory idFactory) throws SPFormatException {
+	public static Mountain readMountain(final StartElement element,
+										final Iterable<XMLEvent> stream,
+										final IMutablePlayerCollection players, final Warning warner,
+										final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "mountain");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Mountain(), element, warner);
@@ -127,8 +127,8 @@ public final class FluidTerrainHandler {
 	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeGround(final Appendable ostream, final Object obj,
-										 final int indent) throws IOException {
+	public static void writeGround(final Appendable ostream, final Object obj,
+								   final int indent) throws IOException {
 		if (!(obj instanceof Ground)) {
 			throw new IllegalArgumentException("Can only write Ground");
 		}
@@ -147,8 +147,8 @@ public final class FluidTerrainHandler {
 	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeMountain(final Appendable ostream, final Object obj,
-										   final int indent) throws IOException {
+	public static void writeMountain(final Appendable ostream, final Object obj,
+									 final int indent) throws IOException {
 		if (!(obj instanceof Mountain)) {
 			throw new IllegalArgumentException("Can only write Mountain");
 		}
@@ -164,8 +164,8 @@ public final class FluidTerrainHandler {
 	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeForest(final Appendable ostream, final Object obj,
-										 final int indent) throws IOException {
+	public static void writeForest(final Appendable ostream, final Object obj,
+								   final int indent) throws IOException {
 		if (!(obj instanceof Forest)) {
 			throw new IllegalArgumentException("Can only write Forest");
 		}
@@ -191,10 +191,10 @@ public final class FluidTerrainHandler {
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final River readLake(final StartElement element,
-										final Iterable<XMLEvent> stream,
-										final IMutablePlayerCollection players,
-										final Warning warner, final IDFactory idFactory)
+	public static River readLake(final StartElement element,
+								 final Iterable<XMLEvent> stream,
+								 final IMutablePlayerCollection players,
+								 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "lake");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -213,10 +213,10 @@ public final class FluidTerrainHandler {
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final River readRiver(final StartElement element,
-					   final Iterable<XMLEvent> stream,
-					   final IMutablePlayerCollection players,
-					   final Warning warner, final IDFactory idFactory)
+	public static River readRiver(final StartElement element,
+								  final Iterable<XMLEvent> stream,
+								  final IMutablePlayerCollection players,
+								  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "river");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
