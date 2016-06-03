@@ -6,14 +6,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Point;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
 
@@ -240,5 +237,16 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * Superclass removes CloneNotSupportedException from method signature, but we still
+	 * want to throw it, so we wrap it in a RuntimeException
+	 * @return never
+	 */
+	@Override
+	public ComplexReportNode clone() {
+		throw new RuntimeException("cloning prohibited",
+										  new CloneNotSupportedException("cloning prohibited"));
 	}
 }
