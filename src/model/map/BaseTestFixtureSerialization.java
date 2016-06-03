@@ -523,10 +523,10 @@ public abstract class BaseTestFixtureSerialization {
 												final boolean deprecated)
 			throws IOException {
 		final StringWriter writer = new StringWriter();
-		if (!deprecated) {
-			new SPFluidWriter().writeSPObject(writer, obj, 0);
-		} else {
+		if (deprecated) {
 			CompactXMLWriter.writeSPObject(writer, obj);
+		} else {
+			new SPFluidWriter().writeSPObject(writer, obj, 0);
 		}
 		return NullCleaner.assertNotNull(writer.toString());
 	}
