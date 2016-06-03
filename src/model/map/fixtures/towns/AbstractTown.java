@@ -175,7 +175,6 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 		} else {
 			nameString = "named " + name;
 		}
-		final String format;
 		if (owner.isIndependent()) {
 			return String.format("An independent %s %s %s of DC %d %s", size.toString(),
 					status.toString(), kind(), Integer.valueOf(getDC()), nameString);
@@ -259,7 +258,6 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 		} else {
 			nameString = "named " + name;
 		}
-		final String format;
 		if (owner.isIndependent()) {
 			return String.format("An independent %s %s %s %s", size.toString(),
 					status.toString(), kind(), nameString);
