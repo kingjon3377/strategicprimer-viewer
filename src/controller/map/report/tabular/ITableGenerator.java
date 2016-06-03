@@ -144,6 +144,7 @@ public interface ITableGenerator<@NonNull T> {
 	/**
 	 * @return the character delimiting fields in output files.
 	 */
+	@SuppressWarnings("SameReturnValue")
 	default char getFieldDelimiter() {
 		return ',';
 	}
@@ -158,6 +159,7 @@ public interface ITableGenerator<@NonNull T> {
 	/**
 	 * @return the character delimiting rows in the output
 	 */
+	@SuppressWarnings("SameReturnValue")
 	default char getRowDelimiter() {
 		return '\n';
 	}
