@@ -156,7 +156,7 @@ public final class TableReportGenerator {
 			new AnimalTabularReportGenerator(hq).produce(out, Animal.class, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("workers"))) {
-			new WorkerTabularReportGenerator(player, hq)
+			new WorkerTabularReportGenerator(hq)
 					.produce(out, IWorker.class, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("villages"))) {

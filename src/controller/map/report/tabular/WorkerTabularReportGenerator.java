@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.function.ToIntFunction;
 import model.map.DistanceComparator;
 import model.map.IFixture;
-import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Worker;
@@ -39,20 +38,14 @@ import util.PatientMap;
  */
 public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	/**
-	 * The player for whom this report is being produced.
-	 */
-	private final Player player;
-	/**
 	 * His or her HQ location.
 	 */
 	private final Point base;
 	/**
 	 * Constructor.
-	 * @param currentPlayer the player for whom this report is being produced
 	 * @param hq his or her HQ location
 	 */
-	public WorkerTabularReportGenerator(final Player currentPlayer, final Point hq) {
-		player = currentPlayer;
+	public WorkerTabularReportGenerator(final Point hq) {
 		base = hq;
 	}
 
