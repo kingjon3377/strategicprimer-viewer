@@ -215,7 +215,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		model.addMapChangeListener(reportUpdater);
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
-		final StrategyExporter strategyExporter = new StrategyExporter(model, treeModel);
+		final StrategyExporter strategyExporter = new StrategyExporter(model);
 		// TODO: Make a JFileChooser subclass or wrapper that takes what to do with the
 		// chosen file as a parameter
 		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
@@ -233,7 +233,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 												new FileChooser(new File(""),
 																	new JFileChooser("."),
 																	JFileChooser.SAVE_DIALOG)
-																			.getFile());
+																			.getFile(), treeModel.dismissed());
 									} catch (final FileChooser.ChoiceInterruptedException except) {
 										LOGGER.log(Level.INFO,
 												"Choice interrupted or user failed to choose",

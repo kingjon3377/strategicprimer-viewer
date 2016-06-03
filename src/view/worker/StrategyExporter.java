@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import model.listeners.PlayerChangeListener;
 import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
@@ -16,8 +17,7 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.IWorkerModel;
-import model.workermgmt.IWorkerTreeModel;
-import model.workermgmt.WorkerTreeModelAlt;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
@@ -47,46 +47,35 @@ import static java.util.logging.Level.SEVERE;
  *
  * @author Jonathan Lovelace
  */
-public final class StrategyExporter {
+public final class StrategyExporter implements PlayerChangeListener {
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(StrategyExporter.class);
 	/**
+	 * The current player.
+	 */
+	private Player currentPlayer;
+	/**
 	 * The worker model.
 	 */
 	private final IWorkerModel model;
-	/**
-	 * Unit members that have been dismissed.
-	 */
-	private final IWorkerTreeModel workerTreeModel;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param workerModel    the driver model to draw from
-	 * @param treeModel the tree model to get dismissed unit members from
 	 */
-	public StrategyExporter(final IWorkerModel workerModel,
-							final IWorkerTreeModel treeModel) {
+	public StrategyExporter(final IWorkerModel workerModel) {
 		model = workerModel;
-		workerTreeModel = treeModel;
+		currentPlayer = workerModel.getMap().getCurrentPlayer();
 	}
 
 	/**
 	 * @return the proto-strategy as a String
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public String createStrategy() {
-		final Player currentPlayer;
-		final Object treeRoot = workerTreeModel.getRoot();
-		if (treeRoot instanceof WorkerTreeModelAlt.PlayerNode) {
-			currentPlayer = ((WorkerTreeModelAlt.PlayerNode) treeRoot).getUserObject();
-		} else if (treeRoot instanceof Player) {
-			currentPlayer = (Player) treeRoot;
-		} else {
-			currentPlayer = model.getMap().getCurrentPlayer();
-		}
+	public String createStrategy(Iterable<UnitMember> dismissed) {
 		final String playerName = currentPlayer.getName();
 		final String turn = Integer.toString(model.getMap().getCurrentTurn());
 		final List<IUnit> units = model.getUnits(currentPlayer);
@@ -120,7 +109,6 @@ public final class StrategyExporter {
 				size += unit.getOrders().length();
 			}
 		}
-		final Iterable<UnitMember> dismissed = workerTreeModel.dismissed();
 		for (final UnitMember member : dismissed) {
 			size += 2;
 			if (member instanceof HasName) {
@@ -174,10 +162,10 @@ public final class StrategyExporter {
 	 * Write the strategy to file.
 	 * @param file a file (name) to write to
 	 */
-	public void writeStrategy(final File file) {
+	public void writeStrategy(final File file, final Iterable<UnitMember> dismissed) {
 		try (final FileWriter writer = new FileWriter(file)) {
 			//noinspection resource
-			writer.append(createStrategy());
+			writer.append(createStrategy(dismissed));
 		} catch (final IOException except) {
 			LOGGER.log(SEVERE, "I/O error exporting strategy", except);
 		}
@@ -280,5 +268,14 @@ public final class StrategyExporter {
 	@Override
 	public String toString() {
 		return "StrategyExporter";
+	}
+
+	/**
+	 * @param old       the previous current player
+	 * @param newPlayer the new current player
+	 */
+	@Override
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		currentPlayer = newPlayer;
 	}
 }
