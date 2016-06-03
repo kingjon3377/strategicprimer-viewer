@@ -8,8 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.JTree;
-import javax.swing.ToolTipManager;
+import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -68,34 +67,29 @@ public final class WorkerTree extends JTree
 	 * The listener to tell other listeners when a new worker has been selected.
 	 */
 	private final WorkerTreeSelectionListener tsl;
-
 	/**
-	 * @param wtModel    the tree model
-	 * @param players    the players in the map
-	 * @param orderCheck whether we should visually warn if orders contain substrings
-	 *                      indicating remaining work or if a unit named "unassigned" is
-	 *                      nonempty
+	 * Factory method, to avoid leaking 'this' references.
 	 */
-	public WorkerTree(final IWorkerTreeModel wtModel, final Iterable<Player> players,
-					final boolean orderCheck) {
-		setModel(wtModel);
-		final JTree tree = this;
+	public static WorkerTree factory(final IWorkerTreeModel wtModel,
+									 final Iterable<Player> players,
+									 final boolean orderCheck) {
+		final WorkerTree retval = new WorkerTree(wtModel, orderCheck);
 		wtModel.addTreeModelListener(new TreeModelListener() {
 			@Override
 			public void treeStructureChanged(@Nullable final TreeModelEvent e) {
 				if (e == null) {
 					return;
 				}
-				tree.expandPath(e.getTreePath().getParentPath());
-				for (int i = 0; i < getRowCount(); i++) {
-					expandRow(i);
+				retval.expandPath(e.getTreePath().getParentPath());
+				for (int i = 0; i < retval.getRowCount(); i++) {
+					retval.expandRow(i);
 				}
-				updateUI();
+				retval.updateUI();
 			}
 
 			@Override
 			public void treeNodesRemoved(@Nullable final TreeModelEvent e) {
-				updateUI();
+				retval.updateUI();
 			}
 
 			@Override
@@ -103,9 +97,9 @@ public final class WorkerTree extends JTree
 				if (e == null) {
 					return;
 				}
-				tree.expandPath(e.getTreePath());
-				tree.expandPath(e.getTreePath().getParentPath());
-				updateUI();
+				retval.expandPath(e.getTreePath());
+				retval.expandPath(e.getTreePath().getParentPath());
+				retval.updateUI();
 			}
 
 			@Override
@@ -113,10 +107,23 @@ public final class WorkerTree extends JTree
 				if (e == null) {
 					return;
 				}
-				tree.expandPath(e.getTreePath().getParentPath());
-				updateUI();
+				retval.expandPath(e.getTreePath().getParentPath());
+				retval.updateUI();
 			}
 		});
+		ToolTipManager.sharedInstance().registerComponent(retval);
+		retval.addMouseListener(new TreeMouseListener(players, wtModel, retval));
+		return retval;
+	}
+	/**
+	 * @param wtModel    the tree model
+	 * @param orderCheck whether we should visually warn if orders contain substrings
+	 *                      indicating remaining work or if a unit named "unassigned" is
+	 *                      nonempty
+	 */
+	private WorkerTree(final IWorkerTreeModel wtModel, final boolean orderCheck) {
+		setModel(wtModel);
+		;
 		setRootVisible(false);
 		setDragEnabled(true);
 		setShowsRootHandles(true);
@@ -127,8 +134,6 @@ public final class WorkerTree extends JTree
 
 																wtModel));
 		setCellRenderer(new UnitMemberCellRenderer(orderCheck));
-		addMouseListener(new TreeMouseListener(players, wtModel, this));
-		ToolTipManager.sharedInstance().registerComponent(this);
 		tsl = new WorkerTreeSelectionListener(wtModel);
 		addTreeSelectionListener(tsl);
 		for (int i = 0; i < getRowCount(); i++) {

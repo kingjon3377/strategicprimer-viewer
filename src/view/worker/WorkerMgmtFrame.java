@@ -128,7 +128,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		final IWorkerTreeModel treeModel =
 				new WorkerTreeModelAlt(model.getMap().getCurrentPlayer(), model);
 		final WorkerTree tree =
-				new WorkerTree(treeModel, model.getMap().players(), true);
+				WorkerTree.factory(treeModel, model.getMap().players(), true);
 		ioHandler.addPlayerChangeListener(treeModel);
 		newUnitFrame.addNewUnitListener(treeModel);
 		final boolean onMac = OnMac.SYSTEM_IS_MAC;
