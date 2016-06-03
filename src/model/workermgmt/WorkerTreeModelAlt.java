@@ -212,7 +212,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @return never
 		 */
 		@Override
-		public final WorkerTreeNode clone() {
+		public final WorkerTreeNode<T> clone() {
 			throw new RuntimeException("cloning prohibited",
 											  new CloneNotSupportedException("cloning prohibited"));
 		}
