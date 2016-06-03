@@ -206,7 +206,7 @@ public class ExplorableTabularReportGenerator
 					(ExplorableFixture) pair.second().second(), pair.second().first())) {
 				fixtures.remove(pair.first());
 			} else if (item instanceof TextFixture) {
-				produceFromText(ostream, fixtures, (TextFixture) pair.second().second(),
+				produceFromText(ostream, (TextFixture) pair.second().second(),
 						pair.second().first());
 				fixtures.remove(pair.first());
 			}
@@ -215,15 +215,13 @@ public class ExplorableTabularReportGenerator
 	}
 	/**
 	 * @param ostream the stream to write the row to
-	 * @param fixtures the set of fixtures
 	 * @param item the fixture to base the line on
 	 * @param loc its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	public void produceFromText(final Appendable ostream,
-								   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-								   final TextFixture item, final Point loc) throws IOException {
+								final TextFixture item, final Point loc) throws IOException {
 		writeField(ostream, distanceString(loc, base));
 		writeFieldDelimiter(ostream);
 		writeField(ostream, loc.toString());
