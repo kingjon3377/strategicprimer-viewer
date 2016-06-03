@@ -202,13 +202,12 @@ public class ExplorableTabularReportGenerator
 		}
 		for (final Pair<Integer, Pair<Point, IFixture>> pair : values) {
 			final IFixture item = pair.second().second();
-			if (((item instanceof ExplorableFixture) && produce(ostream, fixtures,
-					(ExplorableFixture) pair.second().second(), pair.second().first())
-			) ||
-						((item instanceof TextFixture) &&
-								 produceFromText(ostream, fixtures,
-										 (TextFixture) pair.second().second(),
-										 pair.second().first()))) {
+			if ((item instanceof ExplorableFixture) && produce(ostream, fixtures,
+					(ExplorableFixture) pair.second().second(), pair.second().first())) {
+				fixtures.remove(pair.first());
+			} else if (item instanceof TextFixture) {
+				produceFromText(ostream, fixtures, (TextFixture) pair.second().second(),
+						pair.second().first());
 				fixtures.remove(pair.first());
 			}
 		}
@@ -222,7 +221,7 @@ public class ExplorableTabularReportGenerator
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
-	public boolean produceFromText(final Appendable ostream,
+	public void produceFromText(final Appendable ostream,
 								   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 								   final TextFixture item, final Point loc) throws IOException {
 		writeField(ostream, distanceString(loc, base));
@@ -240,7 +239,6 @@ public class ExplorableTabularReportGenerator
 		writeFieldDelimiter(ostream);
 		writeField(ostream, item.getText());
 		ostream.append(getRowDelimiter());
-		return true;
 	}
 
 	@Override
