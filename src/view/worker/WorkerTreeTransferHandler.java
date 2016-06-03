@@ -119,10 +119,10 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 				LOGGER.info("Selection included a non-UnitMember; skipping ...");
 			}
 		}
-		if (!toTransfer.isEmpty()) {
-			return new UnitMemberTransferable(toTransfer);
-		} else {
+		if (toTransfer.isEmpty()) {
 			return null;
+		} else {
+			return new UnitMemberTransferable(toTransfer);
 		}
 	}
 
