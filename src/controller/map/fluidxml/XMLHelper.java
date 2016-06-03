@@ -21,7 +21,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
 import model.map.HasMutableImage;
-import model.map.HasPortrait;
 import model.map.IPlayerCollection;
 import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;
@@ -302,19 +301,7 @@ public final class XMLHelper {
 			writeNonEmptyAttribute(ostream, "image", image);
 		}
 	}
-	/**
-	 * @param obj an object being written out that might have a custom portrait
-	 * @return the XML for the portrait if it does, or the empty string if not
-	 */
-	@SuppressWarnings("TypeMayBeWeakened")
-	public static String portraitXML(final HasPortrait obj) {
-		final String portrait = obj.getPortrait();
-		if (portrait.isEmpty()) {
-			return "";
-		} else {
-			return " portrait=\"" + portrait + '"';
-		}
-	}
+
 	/**
 	 * A parser for numeric data.
 	 */
