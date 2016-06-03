@@ -296,7 +296,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 * @return never
 	 */
 	@Override
-	public SectionListReportNode clone() {
+	public final SectionListReportNode clone() {
 		throw new RuntimeException("cloning prohibited",
 										  new CloneNotSupportedException("cloning prohibited"));
 	}

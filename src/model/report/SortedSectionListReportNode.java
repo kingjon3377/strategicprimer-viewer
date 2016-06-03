@@ -75,14 +75,4 @@ public final class SortedSectionListReportNode extends SectionListReportNode {
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
-	/**
-	 * Superclass removes CloneNotSupportedException from method signature, but we still
-	 * want to throw it, so we wrap it in a RuntimeException
-	 * @return never
-	 */
-	@Override
-	public SortedSectionListReportNode clone() {
-		throw new RuntimeException("cloning prohibited",
-										  new CloneNotSupportedException("cloning prohibited"));
-	}
 }
