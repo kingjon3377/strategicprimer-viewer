@@ -1,12 +1,11 @@
 package model.map.fixtures.towns;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -170,33 +169,24 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder(80 + name.length() +
-																owner.getName().length());
-		if (owner.isIndependent()) {
-			builder.append("An independent ");
-		} else {
-			builder.append("A ");
-		}
-		builder.append(size);
-		builder.append(' ');
-		builder.append(status);
-		builder.append(' ');
-		builder.append(kind());
-		builder.append(" of DC ");
-		builder.append(getDC());
+		final String nameString;
 		if (name.isEmpty()) {
-			builder.append(" with no name");
+			nameString = "with no name";
 		} else {
-			builder.append(" with name ");
-			builder.append(name);
+			nameString = "named " + name;
 		}
-		builder.append(", owned by ");
-		if (owner.isCurrent()) {
-			builder.append("you");
+		final String format;
+		if (owner.isIndependent()) {
+			return String.format("An independent %s %s %s of DC %d %s", size.toString(),
+					status.toString(), kind(), Integer.valueOf(getDC()), nameString);
+		} else if (owner.isCurrent()) {
+			return String.format("A %s %s %s of DC %d %s, owned by you", size.toString(),
+					status.toString(), kind(), Integer.valueOf(getDC()), nameString);
 		} else {
-			builder.append(owner.getName());
+			return String.format("A %s %s %s of DC %d %s, owned by %s", size.toString(),
+					status.toString(), kind(), Integer.valueOf(getDC()), nameString,
+					owner.getName());
 		}
-		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -263,31 +253,24 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 */
 	@Override
 	public String shortDesc() {
-		final StringBuilder builder = new StringBuilder(78 + name.length() +
-																owner.getName().length());
-		if (owner.isIndependent()) {
-			builder.append("An independent ");
-		} else {
-			builder.append("A ");
-		}
-		builder.append(size);
-		builder.append(' ');
-		builder.append(status);
-		builder.append(' ');
-		builder.append(kind());
+		final String nameString;
 		if (name.isEmpty()) {
-			builder.append(" with no name");
+			nameString = "with no name";
 		} else {
-			builder.append(" named ");
-			builder.append(name);
+			nameString = "named " + name;
 		}
-		builder.append(", owned by ");
-		if (owner.isCurrent()) {
-			builder.append("you");
+		final String format;
+		if (owner.isIndependent()) {
+			return String.format("An independent %s %s %s %s", size.toString(),
+					status.toString(), kind(), nameString);
+		} else if (owner.isCurrent()) {
+			return String.format("A %s %s %s %s, owned by you", size.toString(),
+					status.toString(), kind(), nameString);
 		} else {
-			builder.append(owner.getName());
+			return String.format("A %s %s %s %s, owned by %s", size.toString(),
+					status.toString(), kind(), Integer.valueOf(getDC()), nameString,
+					owner.getName());
 		}
-		return NullCleaner.assertNotNull(builder.toString());
 	}
 	/**
 	 * The filename of an image to use as a portrait for the town.
