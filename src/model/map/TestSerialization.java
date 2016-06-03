@@ -271,8 +271,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		five.addFixture(point(2, 3), new Unit(
 													new Player(2, ""), "explorer",
 													"name two", 2));
-		assertThat("Just checking ...", five.streamOtherFixtures(point(2, 3)).count(),
-				equalTo(2L));
+		assertThat("Just checking ...",
+				Long.valueOf(five.streamOtherFixtures(point(2, 3)).count()),
+				equalTo(Long.valueOf(2L)));
 		assertSerialization("Multiple units should come through", five);
 		final String xmlTwo = "<view xmlns=\"" + ISPReader.NAMESPACE +
 									"\" current_player=\"-1\" " +

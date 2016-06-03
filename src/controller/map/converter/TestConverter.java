@@ -179,7 +179,8 @@ public final class TestConverter {
 		final IMapNG converted = ResolutionDecreaseConverter.convert(start);
 		final Point zeroPoint = PointFactory.point(0, 0);
 		assertThat("One mountainous point makes the reduced point mountainous",
-				converted.isMountainous(zeroPoint), equalTo(true));
+				Boolean.valueOf(Boolean.valueOf(converted.isMountainous(zeroPoint))),
+				equalTo(Boolean.TRUE));
 		assertThat("Ground carries over", converted.getGround(zeroPoint),
 				equalTo(groundOne));
 		assertThat("Ground carries over even when already set",

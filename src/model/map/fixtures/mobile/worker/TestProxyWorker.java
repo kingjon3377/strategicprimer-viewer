@@ -170,11 +170,13 @@ public final class TestProxyWorker {
 		assertThat("First worker should not still be as it was originally", firstWorker,
 				not(equalTo(oneOrig)));
 		assertThat("But first worker original should be a subset of first worker now",
-				firstWorker.isSubset(oneOrig, NullStream.DEV_NULL, ""), equalTo(true));
+				Boolean.valueOf(firstWorker.isSubset(oneOrig, NullStream.DEV_NULL, "")), equalTo(
+						Boolean.TRUE));
 		assertThat("Two copies of second worker shouldn't still be as it was originally",
 				secondWorker, not(equalTo(twoOrig)));
 		assertThat("But second worker original should be a subset of second worker now",
-				secondWorker.isSubset(twoOrig, NullStream.DEV_NULL, ""), equalTo(true));
+				Boolean.valueOf(secondWorker.isSubset(twoOrig, NullStream.DEV_NULL, "")), equalTo(
+						Boolean.TRUE));
 	}
 
 	/**
@@ -231,11 +233,13 @@ public final class TestProxyWorker {
 		assertThat("First worker should not still be as it was originally", firstWorker,
 				not(equalTo(oneOrig)));
 		assertThat("But first worker original should be a subset of first worker now",
-				firstWorker.isSubset(oneOrig, NullStream.DEV_NULL, ""), equalTo(true));
+				Boolean.valueOf(firstWorker.isSubset(oneOrig, NullStream.DEV_NULL, "")), equalTo(
+						Boolean.TRUE));
 		assertThat("Two copies of second worker shouldn't still be as it was originally",
 				secondWorker, not(equalTo(twoOrig)));
 		assertThat("But second worker original should be a subset of second worker now",
-				secondWorker.isSubset(twoOrig, NullStream.DEV_NULL, ""), equalTo(true));
+				Boolean.valueOf(secondWorker.isSubset(twoOrig, NullStream.DEV_NULL, "")), equalTo(
+						Boolean.TRUE));
 	}
 
 	/**
