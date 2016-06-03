@@ -219,6 +219,7 @@ public final class FluidUnitMemberHandler {
 	 * @return the parsed stats object
 	 * @throws SPFormatException on SP format error
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public static WorkerStats readStats(final StartElement element,
 										final Iterable<XMLEvent> stream,
 										final IMutablePlayerCollection players,
@@ -376,6 +377,7 @@ public final class FluidUnitMemberHandler {
 	 * @return the animal
 	 * @throws SPFormatException if the data is invalid
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public static Animal readAnimal(final StartElement element,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
