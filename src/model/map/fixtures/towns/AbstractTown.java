@@ -268,8 +268,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 					status.toString(), kind(), nameString);
 		} else {
 			return String.format("A %s %s %s %s, owned by %s", size.toString(),
-					status.toString(), kind(), Integer.valueOf(getDC()), nameString,
-					owner.getName());
+					status.toString(), kind(), nameString, owner.getName());
 		}
 	}
 	/**
