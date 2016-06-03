@@ -67,6 +67,7 @@ public final class FluidTerrainHandler {
 	 * @return the parsed Ground
 	 * @throws SPFormatException on SP format problems
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public static Ground readGround(final StartElement element,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players, final Warning warner,
@@ -89,6 +90,7 @@ public final class FluidTerrainHandler {
 	 * @return the parsed Forest
 	 * @throws SPFormatException on SP format problems
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public static Forest readForest(final StartElement element,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players, final Warning warner,
@@ -110,6 +112,7 @@ public final class FluidTerrainHandler {
 	 * @return the parsed Mountain
 	 * @throws SPFormatException on SP format problems
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public static Mountain readMountain(final StartElement element,
 										final Iterable<XMLEvent> stream,
 										final IMutablePlayerCollection players, final Warning warner,
@@ -191,7 +194,7 @@ public final class FluidTerrainHandler {
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("SameReturnValue")
+	@SuppressWarnings({"SameReturnValue", "UnusedParameters"})
 	public static River readLake(final StartElement element,
 								 final Iterable<XMLEvent> stream,
 								 final IMutablePlayerCollection players,
@@ -214,6 +217,7 @@ public final class FluidTerrainHandler {
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public static River readRiver(final StartElement element,
 								  final Iterable<XMLEvent> stream,
 								  final IMutablePlayerCollection players,

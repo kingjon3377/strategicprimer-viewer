@@ -188,6 +188,7 @@ public final class FluidUnitMemberHandler {
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format error
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public static ISkill readSkill(final StartElement element,
 								   final Iterable<XMLEvent> stream,
 								   final IMutablePlayerCollection players,

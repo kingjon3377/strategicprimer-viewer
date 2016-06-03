@@ -104,6 +104,7 @@ public final class FluidExplorableHandler {
 	 * @return the parsed portal
 	 * @throws SPFormatException on SP format problems
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public static Portal readPortal(final StartElement element,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
@@ -130,6 +131,7 @@ public final class FluidExplorableHandler {
 	 * @return the parsed resource
 	 * @throws SPFormatException on SP format problems
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public static Cave readCave(final StartElement element,
 								final Iterable<XMLEvent> stream,
 								final IMutablePlayerCollection players,
@@ -151,6 +153,7 @@ public final class FluidExplorableHandler {
 	 * @return the parsed resource
 	 * @throws SPFormatException on SP format problems
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public static Battlefield readBattlefield(final StartElement element,
 											  final Iterable<XMLEvent> stream,
 											  final IMutablePlayerCollection
@@ -178,6 +181,7 @@ public final class FluidExplorableHandler {
 	 * @return the TextFixture
 	 * @throws SPFormatException on SP format error
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public static TextFixture readTextFixture(final StartElement element,
 											  final Iterable<XMLEvent> stream,
 											  final IMutablePlayerCollection players,
