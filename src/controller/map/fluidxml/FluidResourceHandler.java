@@ -60,7 +60,13 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
-public class FluidResourceHandler {
+public final class FluidResourceHandler {
+	/**
+	 * Do not instantiate.
+	 */
+	private FluidResourceHandler() {
+		// Do not instantiate
+	}
 	/**
 	 * Parse a resource pile.
 	 *

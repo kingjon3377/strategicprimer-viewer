@@ -55,7 +55,13 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
-public class FluidExplorableHandler {
+public final class FluidExplorableHandler {
+	/**
+	 * Do not instantiate.
+	 */
+	private FluidExplorableHandler() {
+		// Do not instantiate
+	}
 	/**
 	 * Read an adventure from XML.
 	 *

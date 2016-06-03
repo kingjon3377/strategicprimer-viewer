@@ -54,7 +54,13 @@ import static model.map.fixtures.towns.TownStatus.parseTownStatus;
  *
  * @author Jonathan Lovelace
  */
-public class FluidTownHandler {
+public final class FluidTownHandler {
+	/**
+	 * Do not instantiate.
+	 */
+	private FluidTownHandler() {
+		// Do not instantiate
+	}
 	/**
 	 * Parse a town.
 	 *

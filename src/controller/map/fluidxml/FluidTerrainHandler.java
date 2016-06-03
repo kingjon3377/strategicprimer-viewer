@@ -50,7 +50,13 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
-public class FluidTerrainHandler {
+public final class FluidTerrainHandler {
+	/**
+	 * Do not instantiate.
+	 */
+	private FluidTerrainHandler() {
+		// Do not instantiate
+	}
 	/**
 	 * Read Ground from XML.
 	 * @param element   the XML element to parse

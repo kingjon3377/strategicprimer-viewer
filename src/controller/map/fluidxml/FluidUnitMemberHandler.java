@@ -64,7 +64,13 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
-public class FluidUnitMemberHandler {
+public final class FluidUnitMemberHandler {
+	/**
+	 * Do not instantiate.
+	 */
+	private FluidUnitMemberHandler() {
+		// Do not instantiate
+	}
 	/**
 	 * Parse a worker from XML.
 	 *
