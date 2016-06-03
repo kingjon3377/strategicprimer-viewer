@@ -408,7 +408,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @return the parsed map
 	 * @throws SPFormatException on format error
 	 */
-	private final IMutableMapNG readMap(final StartElement element,
+	private IMutableMapNG readMap(final StartElement element,
 										final Iterable<XMLEvent> stream,
 										final IMutablePlayerCollection players,
 										final Warning warner, final IDFactory idFactory)
@@ -630,7 +630,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @throws SPFormatException on SP format problems
 	 */
 	@SuppressWarnings("UnusedParameters")
-	private static final Player readPlayer(final StartElement element,
+	private static Player readPlayer(final StartElement element,
 					   final Iterable<XMLEvent> stream,
 					   final IMutablePlayerCollection players, final Warning warner,
 					   final IDFactory idFactory) throws SPFormatException {
