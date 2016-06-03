@@ -32,7 +32,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("CloneableClassInSecureContext")
+@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
 public final class SortedSectionListReportNode extends SectionListReportNode {
 	/**
 	 * Constructor.

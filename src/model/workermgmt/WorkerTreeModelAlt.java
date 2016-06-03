@@ -223,7 +223,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	@SuppressWarnings("CloneableClassInSecureContext")
+	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
 	public static final class PlayerNode extends WorkerTreeNode<Player> {
 		/**
 		 * Constructor.
@@ -293,7 +293,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	@SuppressWarnings("CloneableClassInSecureContext")
+	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
 	public static final class KindNode extends WorkerTreeNode<String> {
 		/**
 		 * Constructor.
@@ -360,7 +360,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	@SuppressWarnings("CloneableClassInSecureContext")
+	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
 	public static final class UnitNode extends WorkerTreeNode<IUnit> {
 		/**
 		 * Constructor.
@@ -426,7 +426,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	@SuppressWarnings("CloneableClassInSecureContext")
+	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
 	public static final class UnitMemberNode extends WorkerTreeNode<UnitMember> {
 		/**
 		 * Constructor.
