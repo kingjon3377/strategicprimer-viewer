@@ -57,7 +57,10 @@ import static util.NullStream.DEV_NULL;
  * @author Jonathan Lovelace
  */
 public class SPMapNG implements IMutableMapNG {
-	public static final Logger LOGGER = TypesafeLogger.getLogger(SPMapNG.class);
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger.getLogger(SPMapNG.class);
 	/**
 	 * The set of mountainous places.
 	 */
