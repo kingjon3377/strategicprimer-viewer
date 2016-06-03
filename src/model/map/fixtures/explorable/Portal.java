@@ -183,6 +183,7 @@ public class Portal implements ExplorableFixture {
 	 * @param fix a fixture
 	 * @return whether it would be equal to this one if its ID # were not considered
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Portal) &&

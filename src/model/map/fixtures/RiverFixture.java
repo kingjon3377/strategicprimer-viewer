@@ -160,6 +160,7 @@ public final class RiverFixture
 	 * doesn't
 	 * @throws IOException on I/O error writing error messages
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
 							final String context) throws IOException {

@@ -161,7 +161,7 @@ public class Worker implements IWorker, HasPortrait {
 	 * @param fix a fixture
 	 * @return whether it equals this one except its ID.
 	 */
-	@SuppressWarnings("ObjectEquality")
+	@SuppressWarnings({"ObjectEquality", "CastToConcreteClass"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof Worker) && equalsIgIDImpl((Worker)
@@ -213,6 +213,7 @@ public class Worker implements IWorker, HasPortrait {
 	 * @return whether that member equals this one
 	 * @throws IOException on I/O error writing output to the stream
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
 							final String context) throws IOException {

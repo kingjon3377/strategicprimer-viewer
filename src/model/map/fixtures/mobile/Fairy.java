@@ -131,6 +131,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Fairy) && ((Fairy) fix).kind.equals(kind);
@@ -144,6 +145,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	 * @return whether that member equals this one
 	 * @throws IOException on I/O error writing output to the stream
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
 							final String context) throws IOException {

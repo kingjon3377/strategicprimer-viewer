@@ -145,6 +145,7 @@ public class ResourcePile
 	 * @param fix a fixture
 	 * @return whether it equals this one except for ID
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof ResourcePile) && kind.equals(((ResourcePile) fix).kind) &&
@@ -161,6 +162,7 @@ public class ResourcePile
 	 * quantity from) this one
 	 * @throws IOException on I/O error writing to ostream
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
 							final String context) throws IOException {

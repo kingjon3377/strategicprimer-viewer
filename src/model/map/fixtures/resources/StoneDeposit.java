@@ -153,7 +153,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
-	@SuppressWarnings("ObjectEquality")
+	@SuppressWarnings({"ObjectEquality", "CastToConcreteClass"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof StoneDeposit) &&

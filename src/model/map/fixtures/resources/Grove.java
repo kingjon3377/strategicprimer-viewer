@@ -174,6 +174,7 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Grove) && kind.equals(((Grove) fix).kind) &&

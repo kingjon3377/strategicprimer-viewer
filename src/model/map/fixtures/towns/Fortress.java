@@ -226,6 +226,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	 * @return whether it's a strict subset of this one
 	 * @throws IOException on I/O error writing output to the stream
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
 							final String context) throws IOException {
@@ -277,7 +278,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
-	@SuppressWarnings("ObjectEquality")
+	@SuppressWarnings({"ObjectEquality", "CastToConcreteClass"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof Fortress)

@@ -139,6 +139,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 * @param fix a fixture
 	 * @return whether it's equal to this one
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof ProxyWorker) &&

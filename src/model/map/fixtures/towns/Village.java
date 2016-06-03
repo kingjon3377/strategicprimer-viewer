@@ -166,6 +166,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 * @param fix a fixture
 	 * @return whether it's an identical-but-for-ID village.
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Village) && (status == ((Village) fix).status) &&
@@ -283,6 +284,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 * @return whether the fixture is a "subset" of this
 	 * @throws IOException on I/O error writing to stream
 	 */
+	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
 							final String context) throws IOException {
