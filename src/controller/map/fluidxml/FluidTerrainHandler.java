@@ -191,6 +191,7 @@ public final class FluidTerrainHandler {
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
+	@SuppressWarnings("SameReturnValue")
 	public static River readLake(final StartElement element,
 								 final Iterable<XMLEvent> stream,
 								 final IMutablePlayerCollection players,
