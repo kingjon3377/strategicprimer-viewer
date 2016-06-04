@@ -47,12 +47,11 @@ public class TestCLIHelper {
 		try (StringWriter out = new StringWriter();
 				ICLIHelper cli = new CLIHelper(new StringReader("0\n"), out)) {
 			assertThat("chooseFromList chooses the one specified by user",
-					Integer.valueOf(
-							Integer.valueOf(cli.chooseFromList(NullCleaner.assertNotNull(
+					Integer.valueOf(cli.chooseFromList(NullCleaner.assertNotNull(
 									Arrays.asList(new Player(1, "one"),
 											new Player(2, "two"))),
-									"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(0))));
+									"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(0)));
 			assertThat("chooseFromList prompted the user", out.toString(),
 					equalTo("test desc\n0: one\n1: two\nprompt"));
 		}
@@ -60,11 +59,11 @@ public class TestCLIHelper {
 				ICLIHelper cli = new CLIHelper(new StringReader("1\n"), out)) {
 			assertThat("chooseFromList chooses the one specified by user",
 					Integer.valueOf(
-							Integer.valueOf(cli.chooseFromList(NullCleaner.assertNotNull(
+							cli.chooseFromList(NullCleaner.assertNotNull(
 									Arrays.asList(new Player(1, "one"),
 											new Player(2, "two"))),
-									"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(1))));
+									"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(1)));
 			assertThat("chooseFromList prompted the user", out.toString(),
 					equalTo("test desc\n0: one\n1: two\nprompt"));
 		}
@@ -72,13 +71,13 @@ public class TestCLIHelper {
 				ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
 			assertThat(
 					"chooseFromList chooses only choice when this is specified",
-					Integer.valueOf(Integer.valueOf(cli.chooseFromList(
+					Integer.valueOf(cli.chooseFromList(
 							NullCleaner.assertNotNull(Collections
 															  .singletonList(new
 																					 Player(1,
 																							   "one"))),
-							"test desc", "none present", "prompt", true))),
-					equalTo(Integer.valueOf(Integer.valueOf(0))));
+							"test desc", "none present", "prompt", true)),
+					equalTo(Integer.valueOf(0)));
 			assertThat("chooseFromList automatically chose only choice",
 					out.toString(),
 					equalTo("test desc\nAutomatically choosing only item, one\n"));
@@ -87,13 +86,13 @@ public class TestCLIHelper {
 				ICLIHelper cli = new CLIHelper(new StringReader("0\n"), out)) {
 			assertThat(
 					"chooseFromList doesn't always auto-choose only choice",
-					Integer.valueOf(Integer.valueOf(cli.chooseFromList(
+					Integer.valueOf(cli.chooseFromList(
 							NullCleaner.assertNotNull(Collections
 															  .singletonList(new
 																					 Player(1,
 																							   "one"))),
-							"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(0))));
+							"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(0)));
 			assertThat(
 					"chooseFromList didn't automatically chose only choice", out.toString(),
 					equalTo("test desc\n0: one\nprompt"));
@@ -102,12 +101,12 @@ public class TestCLIHelper {
 				new CLIHelper(new StringReader("-1\n0\n"), out)) {
 			assertThat(
 					"chooseFromList prompts again when negative index given",
-					Integer.valueOf(Integer.valueOf(cli.chooseFromList(
+					Integer.valueOf(cli.chooseFromList(
 							NullCleaner.assertNotNull(
 									Arrays.asList(new Player(1, "one"),
 											new Player(2, "two"))),
-							"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(0))));
+							"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(0)));
 			assertThat(
 					"chooseFromList prompts again when negative index given", out.toString(),
 					equalTo("test desc\n0: one\n1: two\npromptprompt"));
@@ -115,12 +114,12 @@ public class TestCLIHelper {
 		try (StringWriter out = new StringWriter();
 				ICLIHelper cli = new CLIHelper(new StringReader("3\n"), out)) {
 			assertThat("chooseFromList allows too-large choice",
-					Integer.valueOf(Integer.valueOf(cli.chooseFromList(
+					Integer.valueOf(cli.chooseFromList(
 							NullCleaner.assertNotNull(
 									Arrays.asList(new Player(1, "one"),
 											new Player(2, "two"))),
-							"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(3))));
+							"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(3)));
 			assertThat("chooseFromList allows too-large choice",
 					out.toString(), equalTo("test desc\n0: one\n1: two\nprompt"));
 		}
@@ -128,11 +127,11 @@ public class TestCLIHelper {
 			 ICLIHelper cli = new CLIHelper(new StringReader("0\n"), out)) {
 			assertThat("chooseFromList asks even if 'auto' when multiple items",
 					Integer.valueOf(
-							Integer.valueOf(cli.chooseFromList(NullCleaner.assertNotNull(
+							cli.chooseFromList(NullCleaner.assertNotNull(
 									Arrays.asList(new Player(1, "one"),
 											new Player(2, "two"))),
-									"test desc", "none present", "prompt", true))),
-					equalTo(Integer.valueOf(Integer.valueOf(0))));
+									"test desc", "none present", "prompt", true)),
+					equalTo(Integer.valueOf(0)));
 			assertThat("chooseFromList prompted the user", out.toString(),
 					equalTo("test desc\n0: one\n1: two\nprompt"));
 		}
@@ -140,9 +139,9 @@ public class TestCLIHelper {
 			 ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
 			assertThat("chooseFromList handles no-item case",
 					Integer.valueOf(
-							Integer.valueOf(cli.chooseFromList(Collections.emptyList(),
-									"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(-1))));
+							cli.chooseFromList(Collections.emptyList(),
+									"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(-1)));
 			assertThat("chooseFromList didn't prompt the user", out.toString(),
 					equalTo("none present\n"));
 		}
@@ -157,32 +156,32 @@ public class TestCLIHelper {
 		try (StringWriter out = new StringWriter();
 				ICLIHelper cli = new CLIHelper(new StringReader("2\n"), out)) {
 			assertThat("inputNumber works",
-					Integer.valueOf(Integer.valueOf(cli.inputNumber("test prompt"))),
-					equalTo(Integer.valueOf(Integer.valueOf(2))));
+					Integer.valueOf(cli.inputNumber("test prompt")),
+					equalTo(Integer.valueOf(2)));
 			assertThat("inputNumber uses given prompt", out.toString(),
 					equalTo("test prompt"));
 		}
 		try (StringWriter out = new StringWriter();
 				ICLIHelper cli = new CLIHelper(new StringReader("8\n"), out)) {
 			assertThat("inputNumber works",
-					Integer.valueOf(Integer.valueOf(cli.inputNumber("test prompt two"))),
-					equalTo(Integer.valueOf(Integer.valueOf(8))));
+					Integer.valueOf(cli.inputNumber("test prompt two")),
+					equalTo(Integer.valueOf(8)));
 			assertThat("inputNumber uses given prompt", out.toString(),
 					equalTo("test prompt two"));
 		}
 		try (StringWriter out = new StringWriter();
 				ICLIHelper cli = new CLIHelper(new StringReader("-1\n0\n"), out)) {
 			assertThat("inputNumber asks again on negative input",
-					Integer.valueOf(Integer.valueOf(cli.inputNumber("test prompt three"))),
-					equalTo(Integer.valueOf(Integer.valueOf(0))));
+					Integer.valueOf(cli.inputNumber("test prompt three")),
+					equalTo(Integer.valueOf(0)));
 			assertThat("inputNumber asks again on negative input",
 					out.toString(), equalTo("test prompt threetest prompt three"));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader("not-number\n0\n"), out)) {
 			assertThat("inputNumber asks again on non-numeric input",
-					Integer.valueOf(Integer.valueOf(cli.inputNumber(" test prompt four"))),
-					equalTo(Integer.valueOf(Integer.valueOf(0))));
+					Integer.valueOf(cli.inputNumber(" test prompt four")),
+					equalTo(Integer.valueOf(0)));
 			assertThat("inputNumber asks again on negative input",
 					out.toString(), equalTo(" test prompt four test prompt four"));
 		}
@@ -309,30 +308,30 @@ public class TestCLIHelper {
 		try (StringWriter out = new StringWriter();
 				ICLIHelper cli = new CLIHelper(new StringReader("0\n"), out)) {
 			assertThat("chooseStringFromList chooses the one specified by user",
-					Integer.valueOf(Integer.valueOf(cli.chooseStringFromList(
+					Integer.valueOf(cli.chooseStringFromList(
 							NullCleaner.assertNotNull(Arrays.asList("one", "two")),
-							"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(0))));
+							"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(0)));
 			assertThat("chooseStringFromList prompted the user",
 					out.toString(), equalTo("test desc\n0: one\n1: two\nprompt"));
 		}
 		try (StringWriter out = new StringWriter();
 				ICLIHelper cli = new CLIHelper(new StringReader("1\n"), out)) {
 			assertThat("chooseStringFromList chooses the one specified by user",
-					Integer.valueOf(Integer.valueOf(cli.chooseStringFromList(
+					Integer.valueOf(cli.chooseStringFromList(
 							NullCleaner.assertNotNull(Arrays.asList("one", "two")),
-							"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(1))));
+							"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(1)));
 			assertThat("chooseStringFromList prompted the user",
 					out.toString(), equalTo("test desc\n0: one\n1: two\nprompt"));
 		}
 		try (StringWriter out = new StringWriter();
 				ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
 			assertThat("chooseStringFromList chooses only choice when told to",
-					Integer.valueOf(Integer.valueOf(cli.chooseStringFromList(
+					Integer.valueOf(cli.chooseStringFromList(
 							NullCleaner.assertNotNull(Collections.singletonList("one")),
-							"test desc", "none present", "prompt", true))),
-					equalTo(Integer.valueOf(Integer.valueOf(0))));
+							"test desc", "none present", "prompt", true)),
+					equalTo(Integer.valueOf(0)));
 			assertThat("chooseStringFromList automatically chose only choice",
 					out.toString(),
 					equalTo("test desc\nAutomatically choosing only item, one\n"));
@@ -340,10 +339,10 @@ public class TestCLIHelper {
 		try (StringWriter out = new StringWriter();
 				ICLIHelper cli = new CLIHelper(new StringReader("0\n"), out)) {
 			assertThat("chooseStringFromList doesn't always auto-choose",
-					Integer.valueOf(Integer.valueOf(cli.chooseStringFromList(
+					Integer.valueOf(cli.chooseStringFromList(
 							NullCleaner.assertNotNull(Collections.singletonList("one")),
-							"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(0))));
+							"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(0)));
 			assertThat(
 					"chooseStringFromList didn't automatically chose only choice",
 					out.toString(), equalTo("test desc\n0: one\nprompt"));
@@ -351,11 +350,11 @@ public class TestCLIHelper {
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader("1\n"), out)) {
 			assertThat("chooseStringFromList doesn't always auto-choose",
-					Integer.valueOf(Integer.valueOf(cli.chooseStringFromList(
+					Integer.valueOf(cli.chooseStringFromList(
 							NullCleaner
 									.assertNotNull(Arrays.asList("zero", "one", "two")),
-							"test desc", "none present", "prompt", true))),
-					equalTo(Integer.valueOf(Integer.valueOf(1))));
+							"test desc", "none present", "prompt", true)),
+					equalTo(Integer.valueOf(1)));
 			assertThat(
 					"chooseStringFromList didn't automatically chose only choice",
 					out.toString(), equalTo("test desc\n0: zero\n1: one\n2: two\nprompt"));
@@ -364,11 +363,11 @@ public class TestCLIHelper {
 				new CLIHelper(new StringReader("-1\n0\n"), out)) {
 			assertThat(
 					"chooseStringFromList prompts again when negative index given",
-					Integer.valueOf(Integer.valueOf(cli.chooseStringFromList(
+					Integer.valueOf(cli.chooseStringFromList(
 							NullCleaner
 									.assertNotNull(Arrays.asList("one", "two")),
-							"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(0))));
+							"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(0)));
 			assertThat(
 					"chooseStringFromList prompts again when negative index given",
 					out.toString(), equalTo("test desc\n0: one\n1: two\npromptprompt"));
@@ -376,20 +375,20 @@ public class TestCLIHelper {
 		try (StringWriter out = new StringWriter();
 				ICLIHelper cli = new CLIHelper(new StringReader("3\n"), out)) {
 			assertThat("chooseStringFromList allows too-large choice",
-					Integer.valueOf(Integer.valueOf(cli.chooseStringFromList(
+					Integer.valueOf(cli.chooseStringFromList(
 							NullCleaner.assertNotNull(Arrays.asList("one", "two")),
-							"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(3))));
+							"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(3)));
 			assertThat("chooseStringFromList allows too-large choice",
 					out.toString(), equalTo("test desc\n0: one\n1: two\nprompt"));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
 			assertThat("chooseStringFromList handles empty list",
-					Integer.valueOf(Integer.valueOf(
+					Integer.valueOf(
 							cli.chooseStringFromList(Collections.emptyList(),
-									"test desc", "none present", "prompt", false))),
-					equalTo(Integer.valueOf(Integer.valueOf(-1))));
+									"test desc", "none present", "prompt", false)),
+					equalTo(Integer.valueOf(-1)));
 			assertThat("chooseStringFromList handles empty list", out.toString(),
 					equalTo("none present\n"));
 		}

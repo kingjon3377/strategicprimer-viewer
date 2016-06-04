@@ -209,19 +209,19 @@ public final class TestExplorationRunner {
 		runner.loadTable("existent_table", new ConstantTable("exists"));
 		assertThat("base case of non-existent table",
 				Boolean.valueOf(Boolean.valueOf(
-						Boolean.valueOf(runner.recursiveCheck("non-existent-table")))),
+						runner.recursiveCheck("non-existent-table"))),
 				equalTo(Boolean.TRUE));
 		assertThat("base case of existent table",
-				Boolean.valueOf(Boolean.valueOf(runner.recursiveCheck("existent_table"))), equalTo(Boolean.FALSE));
+				Boolean.valueOf(runner.recursiveCheck("existent_table")), equalTo(Boolean.FALSE));
 		runner.loadTable("referent_one", new ConstantTable("#existent_table#"));
 		runner.loadTable("referent_two", new ConstantTable("( #existent_table# )"));
 		runner.loadTable("referent_three", new QuadrantTable(1, assertNotNull(
 				Arrays.asList("#referent_one#", "#referent_two#"))));
 		assertThat("recursive case to exercise cache-hits",
-				Boolean.valueOf(Boolean.valueOf(runner.recursiveCheck("referent_three"))), equalTo(Boolean.FALSE));
+				Boolean.valueOf(runner.recursiveCheck("referent_three")), equalTo(Boolean.FALSE));
 		runner.loadTable("false_referent", new ConstantTable("#nonexistent#"));
 		assertThat("reference to nonexistent table",
-				Boolean.valueOf(Boolean.valueOf(runner.recursiveCheck("false_referent"))), equalTo(Boolean.TRUE));
+				Boolean.valueOf(runner.recursiveCheck("false_referent")), equalTo(Boolean.TRUE));
 	}
 
 	/**
@@ -230,14 +230,14 @@ public final class TestExplorationRunner {
 	@Test
 	public void testGlobalRecursiveCheck() {
 		assertThat("recursive check with no tables",
-				Boolean.valueOf(Boolean.valueOf(runner.recursiveCheck())),
+				Boolean.valueOf(runner.recursiveCheck()),
 				equalTo(Boolean.FALSE));
 		runner.loadTable("existent", new ConstantTable("true_table"));
 		assertThat("recursive check with only valid tables",
-				Boolean.valueOf(Boolean.valueOf(runner.recursiveCheck())), equalTo(Boolean.FALSE));
+				Boolean.valueOf(runner.recursiveCheck()), equalTo(Boolean.FALSE));
 		runner.loadTable("false_ref", new ConstantTable("#false#"));
 		assertThat("recursive check with an invalid table",
-				Boolean.valueOf(Boolean.valueOf(runner.recursiveCheck())), equalTo(Boolean.TRUE));
+				Boolean.valueOf(runner.recursiveCheck()), equalTo(Boolean.TRUE));
 	}
 
 	/**
