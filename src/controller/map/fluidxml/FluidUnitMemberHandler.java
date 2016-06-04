@@ -259,7 +259,6 @@ public final class FluidUnitMemberHandler {
 		}
 		writeIntegerAttribute(ostream, "id", work.getID());
 		writeImage(ostream, work);
-		// TODO: Add portraitXML() to XMLHelper
 		if (work instanceof HasPortrait) {
 			writeNonEmptyAttribute(ostream, "portrait",
 					((HasPortrait) work).getPortrait());
