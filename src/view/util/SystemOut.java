@@ -37,6 +37,7 @@ public final class SystemOut extends FilterOutputStream {
 	/**
 	 * Constructor.
 	 */
+	@SuppressWarnings("UseOfSystemOutOrSystemErr")
 	private SystemOut() {
 		super(System.out);
 	}
