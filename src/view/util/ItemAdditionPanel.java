@@ -38,7 +38,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class ItemAdditionPanel extends JPanel implements AddRemoveSource {
+public final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 	/**
 	 * The maximum height of the widget.
 	 */
