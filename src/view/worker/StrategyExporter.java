@@ -75,7 +75,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	 * @return the proto-strategy as a String
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public String createStrategy(Iterable<UnitMember> dismissed) {
+	public String createStrategy(final Iterable<UnitMember> dismissed) {
 		final String playerName = currentPlayer.getName();
 		final String turn = Integer.toString(model.getMap().getCurrentTurn());
 		final List<IUnit> units = model.getUnits(currentPlayer);
