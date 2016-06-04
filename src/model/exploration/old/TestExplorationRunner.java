@@ -208,8 +208,8 @@ public final class TestExplorationRunner {
 	public void testRecursiveCheck() {
 		runner.loadTable("existent_table", new ConstantTable("exists"));
 		assertThat("base case of non-existent table",
-				Boolean.valueOf(Boolean.valueOf(
-						runner.recursiveCheck("non-existent-table"))),
+				Boolean.valueOf(
+						runner.recursiveCheck("non-existent-table")),
 				equalTo(Boolean.TRUE));
 		assertThat("base case of existent table",
 				Boolean.valueOf(runner.recursiveCheck("existent_table")), equalTo(Boolean.FALSE));
