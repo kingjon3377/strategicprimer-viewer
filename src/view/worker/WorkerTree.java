@@ -123,7 +123,6 @@ public final class WorkerTree extends JTree
 	 */
 	private WorkerTree(final IWorkerTreeModel wtModel, final boolean orderCheck) {
 		setModel(wtModel);
-		;
 		setRootVisible(false);
 		setDragEnabled(true);
 		setShowsRootHandles(true);
