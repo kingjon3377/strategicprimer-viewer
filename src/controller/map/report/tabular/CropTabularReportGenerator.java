@@ -187,6 +187,7 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 		}
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "CropTabularReportGenerator";

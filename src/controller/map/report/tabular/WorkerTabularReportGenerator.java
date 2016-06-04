@@ -121,6 +121,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 		}
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "WorkerTabularReportGenerator";

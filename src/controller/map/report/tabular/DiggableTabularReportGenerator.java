@@ -165,6 +165,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 		}
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "DiggableTabularReportGenerator";

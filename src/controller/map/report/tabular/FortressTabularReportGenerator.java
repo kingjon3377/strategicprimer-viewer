@@ -120,6 +120,7 @@ public class FortressTabularReportGenerator implements ITableGenerator<Fortress>
 		}
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "FortressTabularReportGenerator";

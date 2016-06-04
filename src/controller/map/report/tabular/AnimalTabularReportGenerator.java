@@ -110,6 +110,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<Animal> {
 		}
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "AnimalTabularReportGenerator";

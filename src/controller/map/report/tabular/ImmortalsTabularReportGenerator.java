@@ -118,6 +118,7 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<MobileFi
 		}
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ImmortalsTabularReportGenerator";

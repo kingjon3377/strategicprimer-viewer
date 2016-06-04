@@ -236,6 +236,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "PortraitPanel";

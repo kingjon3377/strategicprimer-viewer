@@ -388,6 +388,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		ostream.append(" />\n");
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "SPFluidWriter";

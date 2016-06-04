@@ -121,6 +121,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 		}
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "UnitTabularReportGenerator";

@@ -128,6 +128,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 		}
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "TownTabularReportGenerator";

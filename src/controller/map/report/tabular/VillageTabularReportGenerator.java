@@ -106,6 +106,7 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 		}
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "VillageTabularReportGenerator";

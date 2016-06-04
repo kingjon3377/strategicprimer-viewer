@@ -239,6 +239,7 @@ public class ExplorableTabularReportGenerator
 		ostream.append(getRowDelimiter());
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ExplorableTabularReportGenerator";
