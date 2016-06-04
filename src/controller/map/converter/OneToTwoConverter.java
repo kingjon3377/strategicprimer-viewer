@@ -680,20 +680,22 @@ public final class OneToTwoConverter {
 	private static void printReadError(final Exception except,
 									final String filename) {
 		if (except instanceof MapVersionException) {
-			System.err.printf("Unsupported map version while reading %s%n", filename);
+			LOGGER.warning("Unsupported map version while reading " + filename);
 		} else if (except instanceof XMLStreamException) {
-			System.err.printf("Malformed XML in %s%n", filename);
+			LOGGER.log(Level.WARNING, "Malformed XML in " + filename, except)
 		} else if (except instanceof FileNotFoundException) {
-			System.err.printf("File %s not found%n", filename);
+			LOGGER.warning("File " + filename + " not found");
 		} else if (except instanceof IOException) {
-			System.err.printf("I/O error reading %s%n", filename);
+			LOGGER.log(Level.WARNING, "I/O error reading " + filename, except);
 		} else if (except instanceof SPFormatException) {
-			System.err.printf("Bad SP XML in %s on line %d, as explained below:%n",
-					filename, Integer.valueOf(((SPFormatException) except).getLine()));
-			System.err.println(except.getLocalizedMessage());
+			LOGGER.log(Level.WARNING,
+					String.format("Bad SP XML in %s on line %d, as explained below:%n",
+							filename,
+							Integer.valueOf(((SPFormatException) except).getLine())),
+					except);
 		} else {
-			System.err.printf("Unexpected error while reading %s:%n", filename);
-			except.printStackTrace(System.err);
+			LOGGER.log(Level.SEVERE, "Unexpected error while reading " + filename,
+					except);
 			DriverQuit.quit(3);
 		}
 	}
