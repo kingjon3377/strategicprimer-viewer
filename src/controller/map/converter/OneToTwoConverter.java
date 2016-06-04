@@ -682,7 +682,7 @@ public final class OneToTwoConverter {
 		if (except instanceof MapVersionException) {
 			LOGGER.warning("Unsupported map version while reading " + filename);
 		} else if (except instanceof XMLStreamException) {
-			LOGGER.log(Level.WARNING, "Malformed XML in " + filename, except)
+			LOGGER.log(Level.WARNING, "Malformed XML in " + filename, except);
 		} else if (except instanceof FileNotFoundException) {
 			LOGGER.warning("File " + filename + " not found");
 		} else if (except instanceof IOException) {
