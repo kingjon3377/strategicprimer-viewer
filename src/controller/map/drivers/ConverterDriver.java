@@ -7,6 +7,7 @@ import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
@@ -40,13 +41,39 @@ import static view.util.SystemOut.SYS_OUT;
  */
 public final class ConverterDriver implements UtilityDriver {
 	/**
-	 * An object indicating how to use and invoke this driver.
+	 * Default constructor, for when this is run at a command line. Sets output to
+	 * stdout.
 	 */
-	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-v", "--convert", ParamCount.One,
-								"Convert a map's format",
-								"Convert a map. At present, this means reducing its resolution.",
-								ConverterDriver.class);
+	public ConverterDriver() {
+		this(SYS_OUT, false);
+	}
+	/**
+	 * @param outputStream the stream to write progress information to
+	 */
+	public ConverterDriver(final PrintStream outputStream) {
+		this(outputStream, true);
+	}
+	/**
+	 * @param outputStream the stream to write progress information to
+	 * @param gui whether it is (presumed to be) connected to a GUI window rather than
+	 *               stdout
+	 */
+	private ConverterDriver(final PrintStream outputStream, final boolean gui) {
+		ostream = outputStream;
+		usageObject = new DriverUsage(gui, "-v", "--convert", ParamCount.One,
+											 "Convert a map's format",
+											 "Convert a map. At present, this means reducing its resolution.",
+											 ConverterDriver.class);
+	}
+	/**
+	 * The stream to write progress information to.
+	 */
+	private final PrintStream ostream;
+	/**
+	 * The usage object. This is only an instance rather than static object so we can
+	 * have it be CLI by default and GUI when a stream was passed in.
+	 */
+	private final DriverUsage usageObject;
 
 	/**
 	 * Logger.
@@ -74,15 +101,15 @@ public final class ConverterDriver implements UtilityDriver {
 			if (filename == null) {
 				continue;
 			}
-			SYS_OUT.printf("Reading %s ... ", filename);
+			ostream.printf("Reading %s ... ", filename);
 			try {
 				//noinspection ObjectAllocationInLoop
 				final IMapNG old = READER.readMap(new File(filename), Warning.DEFAULT);
-				SYS_OUT.println(" ... Converting ... ");
+				ostream.println(" ... Converting ... ");
 				final String newFilename = filename + ".new";
 				final IMapNG map = ResolutionDecreaseConverter.convert(old);
-				SYS_OUT.print("About to write ");
-				SYS_OUT.println(newFilename);
+				ostream.print("About to write ");
+				ostream.println(newFilename);
 				//noinspection ObjectAllocationInLoop
 				READER.write(new File(newFilename), map);
 			} catch (final MapVersionException e) {
@@ -107,7 +134,7 @@ public final class ConverterDriver implements UtilityDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE;
+		return usageObject;
 	}
 
 	/**
