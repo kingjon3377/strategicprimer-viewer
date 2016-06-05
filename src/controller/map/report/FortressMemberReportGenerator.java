@@ -196,8 +196,7 @@ public final class FortressMemberReportGenerator
 			}
 		} else if (item instanceof Implement) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			// TODO: Improve this somehow
-			return "An implement of kind " + ((Implement) item).getKind();
+			return "Equipment: " + ((Implement) item).getKind();
 		} else {
 			throw new IllegalArgumentException("Unexpected FortressMember type");
 		}
@@ -243,8 +242,7 @@ public final class FortressMemberReportGenerator
 			}
 		} else if (item instanceof Implement) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			// TODO: Improve this somehow
-			return new SimpleReportNode("An implement of kind ", ((Implement) item).getKind());
+			return new SimpleReportNode("Equipment: ", ((Implement) item).getKind());
 		} else {
 			throw new IllegalArgumentException("Unexpected FortressMember type");
 		}
