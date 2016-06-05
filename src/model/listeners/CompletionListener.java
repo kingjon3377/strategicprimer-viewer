@@ -6,9 +6,6 @@ import java.util.EventListener;
  * An interface for objects that want to start something when another object has finished
  * whatever it's doing.
  *
- * FIXME: Too many uses of this should be replaced by their own set of listeners; in fact,
- * the 'result' below should be a boolean for "start afresh" vs "start incremental.
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
