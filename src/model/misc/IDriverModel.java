@@ -28,9 +28,6 @@ import model.map.MapDimensions;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
- *         TODO: Maybe (to accomodate MapChecker et al) store format errors in the driver
- *         model?
  */
 public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 	/**
