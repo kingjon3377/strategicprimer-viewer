@@ -74,9 +74,7 @@ public final class ConverterDriver implements UtilityDriver {
 			if (filename == null) {
 				continue;
 			}
-			SYS_OUT.print("Reading ");
-			SYS_OUT.print(filename);
-			SYS_OUT.print(" ... ");
+			SYS_OUT.printf("Reading %s ... ", filename);
 			//noinspection ObjectAllocationInLoop
 			final File file = new File(filename);
 			try {
