@@ -75,18 +75,16 @@ public final class ConverterDriver implements UtilityDriver {
 				continue;
 			}
 			SYS_OUT.printf("Reading %s ... ", filename);
-			//noinspection ObjectAllocationInLoop
-			final File file = new File(filename);
 			try {
-				final IMapNG old = READER.readMap(file, Warning.DEFAULT);
+				//noinspection ObjectAllocationInLoop
+				final IMapNG old = READER.readMap(new File(filename), Warning.DEFAULT);
 				SYS_OUT.println(" ... Converting ... ");
 				final String newFilename = filename + ".new";
-				//noinspection ObjectAllocationInLoop
-				final File newFile = new File(newFilename);
 				final IMapNG map = ResolutionDecreaseConverter.convert(old);
 				SYS_OUT.print("About to write ");
 				SYS_OUT.println(newFilename);
-				READER.write(newFile, map);
+				//noinspection ObjectAllocationInLoop
+				READER.write(new File(newFilename), map);
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
 												+ " not acceptable to reader", e);
