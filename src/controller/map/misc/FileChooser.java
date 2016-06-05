@@ -3,11 +3,15 @@ package controller.map.misc;
 import java.awt.Component;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
+import util.TypesafeLogger;
 import view.util.FilteredFileChooser;
 
 import static javax.swing.JFileChooser.APPROVE_OPTION;
@@ -38,6 +42,10 @@ import static util.NullCleaner.assertNotNull;
  * @author Jonathan Lovelace
  */
 public final class FileChooser {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger.getLogger(FileChooser.class);
 	/**
 	 * The file we'll return, if valid.
 	 */
@@ -131,7 +139,20 @@ public final class FileChooser {
 			throw new ChoiceInterruptedException();
 		}
 	}
-
+	/**
+	 * Allow the user to choose a file, if necessary, and pass that file to the given
+	 * consumer. If the operation is canceled, do nothing.
+	 * @param consumer something that takes a File.
+	 */
+	public void call(final Consumer<File> consumer) {
+		try {
+			final File chosenFile = getFile();
+			consumer.accept(chosenFile);
+		} catch (final ChoiceInterruptedException interruption) {
+			LOGGER.log(Level.INFO, "Choice interrupted or user failed to choose",
+					interruption);
+		}
+	}
 	/**
 	 * invokeAndWait(), and throw a ChoiceInterruptedException if interrupted or
 	 * otherwise

@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -216,8 +215,6 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
 		final StrategyExporter strategyExporter = new StrategyExporter(model);
-		// TODO: Make a JFileChooser subclass or wrapper that takes what to do with the
-		// chosen file as a parameter
 		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
 				verticalSplit(TWO_THIRDS, TWO_THIRDS,
 						BorderedPanel.vertical(playerLabel, new JScrollPane(tree), null),
@@ -228,17 +225,12 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 								ordersPanel,
 								new ListenedButton("Export a proto-strategy from units' " +
 														"orders", evt -> {
-									try {
-										strategyExporter.writeStrategy(
-												new FileChooser(new File(""),
-																	new JFileChooser("."),
-																	JFileChooser.SAVE_DIALOG)
-																			.getFile(), treeModel.dismissed());
-									} catch (final FileChooser.ChoiceInterruptedException except) {
-										LOGGER.log(Level.INFO,
-												"Choice interrupted or user failed to choose",
-												except);
-									}
+									new FileChooser(new File(""), new JFileChooser("."),
+														   JFileChooser.SAVE_DIALOG)
+											.call(file -> strategyExporter
+																  .writeStrategy(file,
+																		  treeModel
+																				  .dismissed()));
 								}))), BorderedPanel.vertical(new JLabel(RPT_HDR),
 						new JScrollPane(report), mdp)));
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
