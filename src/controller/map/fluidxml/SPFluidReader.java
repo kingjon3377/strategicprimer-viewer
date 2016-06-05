@@ -3,6 +3,7 @@ package controller.map.fluidxml;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.IMapReader;
@@ -34,6 +35,7 @@ import model.map.PointFactory;
 import model.map.River;
 import model.map.SPMapNG;
 import model.map.TileFixture;
+import model.map.TileType;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Ground;
 import model.map.fixtures.Implement;
@@ -53,6 +55,8 @@ import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.resources.StoneDeposit;
+import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
@@ -579,6 +583,14 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					for (final River river : (RiverFixture) child) {
 						map.addRivers(point, river);
 					}
+				} else if (child instanceof StoneDeposit && StoneKind.Laterite
+																	.equals((
+																					(StoneDeposit) child)
+																					.stone()) &&
+								   !TileType.Jungle
+											.equals(map.getBaseTerrain(point))) {
+						warner.warn(new UnsupportedPropertyException(current, "laterite"));
+					map.addFixture(point, (TileFixture) child);
 				} else if (child instanceof TileFixture) {
 					map.addFixture(point, (TileFixture) child);
 				} else {

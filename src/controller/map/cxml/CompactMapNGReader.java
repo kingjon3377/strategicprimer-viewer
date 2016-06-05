@@ -3,6 +3,7 @@ package controller.map.cxml;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
@@ -31,6 +32,8 @@ import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
+import model.map.fixtures.resources.StoneDeposit;
+import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.EqualsAny;
@@ -198,8 +201,18 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					retval.setMountainous(point, true);
 				} else {
 					try {
-						retval.addFixture(point, parseFixture(current, stream,
-								players, idFactory, warner));
+						TileFixture fix = parseFixture(current, stream,
+								players, idFactory, warner);
+						if (fix instanceof StoneDeposit && StoneKind.Laterite
+																   .equals((
+																				   (StoneDeposit) fix)
+																				   .stone()) &&
+									!TileType.Jungle
+											 .equals(retval.getBaseTerrain(point))) {
+							warner.warn(new UnsupportedPropertyException(current,
+																				"laterite"));
+						}
+						retval.addFixture(point, fix);
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag().getLocalPart())) {
 							// TODO: Tests should cover this

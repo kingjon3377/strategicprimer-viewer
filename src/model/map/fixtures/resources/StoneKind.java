@@ -52,7 +52,7 @@ public enum StoneKind {
 	 */
 	Sandstone("sandstone"),
 	/**
-	 * Laterite. TODO: Is this only under jungle?
+	 * Laterite. Should only be found under jungle.
 	 */
 	Laterite("laterite"),
 	/**
