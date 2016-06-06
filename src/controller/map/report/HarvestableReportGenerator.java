@@ -178,11 +178,9 @@ public final class HarvestableReportGenerator
 		//  TODO: Use Guava MultiMaps to reduce cyclomatic complexity
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		final IReportNode stone =
-				new SortedSectionListReportNode(5, "Exposed stone deposits");
+		final Map<String, IReportNode> stone = new HashMap<>();
 		final Map<String, IReportNode> shrubs = new HashMap<>();
-		final IReportNode minerals =
-				new SortedSectionListReportNode(5, "Mineral deposits");
+		final Map<String, IReportNode> minerals = new HashMap<>();
 		final IReportNode mines = new SortedSectionListReportNode(5, "Mines");
 		final IReportNode meadows =
 				new SortedSectionListReportNode(5, "Meadows and fields");
@@ -204,8 +202,21 @@ public final class HarvestableReportGenerator
 				} else if (item instanceof Mine) {
 					mines.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof MineralVein) {
-					// TODO: Handle these like shrubs.
-					minerals.add(produceRIR(fixtures, map, currentPlayer, item,
+					final String kind;
+					if (((MineralVein) item).isExposed()) {
+						kind = "exposed " + ((MineralVein) item).getKind();
+					} else {
+						kind = "unexposed " + ((MineralVein) item).getKind();
+					}
+					final IReportNode collection;
+					if (minerals.containsKey(kind)) {
+						collection = NullCleaner.assertNotNull(minerals.get(kind));
+					} else {
+						//noinspection ObjectAllocationInLoop
+						collection = new ListReportNode(kind);
+						minerals.put(kind, collection);
+					}
+					collection.add(produceRIR(fixtures, map, currentPlayer, item,
 							loc));
 				} else if (item instanceof Shrub) {
 					final IReportNode collection;
@@ -219,8 +230,15 @@ public final class HarvestableReportGenerator
 					collection.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 					fixtures.remove(Integer.valueOf(item.getID()));
 				} else if (item instanceof StoneDeposit) {
-					// TODO: Handle these like shrubs.
-					stone.add(produceRIR(fixtures, map, currentPlayer, item, loc));
+					final IReportNode collection;
+					if (stone.containsKey(((StoneDeposit) item).getKind())) {
+						collection = NullCleaner.assertNotNull(stone.get(((StoneDeposit) item).getKind()));
+					} else {
+						//noinspection ObjectAllocationInLoop
+						collection = new ListReportNode(((StoneDeposit) item).getKind());
+						stone.put(((StoneDeposit) item).getKind(), collection);
+					}
+					collection.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				}
 			}
 		}
@@ -229,9 +247,15 @@ public final class HarvestableReportGenerator
 		for (final Map.Entry<String, IReportNode> entry : shrubs.entrySet()) {
 			shrubsNode.add(entry.getValue());
 		}
+		final IReportNode mineralsNode =
+				new SortedSectionListReportNode(5, "Mineral deposits");
+		minerals.values().forEach(mineralsNode::add);
+		final IReportNode stoneNode =
+				new SortedSectionListReportNode(5, "Exposed stone deposits");
+		stone.values().forEach(stoneNode::add);
 		final SectionReportNode retval = new SectionReportNode(4, "Resource Sources");
-		if (addAllNonEmpty(retval, caches, groves, meadows, mines, minerals, stone,
-				shrubsNode)) {
+		if (addAllNonEmpty(retval, caches, groves, meadows, mines, mineralsNode,
+				stoneNode, shrubsNode)) {
 			return retval;
 		} else {
 			return EmptyReportNode.NULL_NODE;
