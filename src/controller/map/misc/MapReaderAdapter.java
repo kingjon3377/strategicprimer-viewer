@@ -90,12 +90,27 @@ public final class MapReaderAdapter {
 			throws XMLStreamException, SPFormatException {
 		return reader.readMap(new File(""), stream, warner);
 	}
-
+	/**
+	 * Read a map model from a stream. Because this is parallel to readMapModel(), we
+	 * wrap any errors we generate in a DriverFailedException.
+	 * @param stream the stream to read a map from
+	 * @param warner the Warning instance to use for warnings.
+	 * @return a driver model containing the map contained in the stream
+	 * @throws DriverFailedException on any error
+	 */
+	public IDriverModel readMapModelFromStream(final Reader stream, final Warning warner)
+			throws DriverFailedException {
+		try {
+			return new ViewerModel(readMapFromStream(stream, warner), new File(""));
+		} catch (final XMLStreamException except) {
+			throw new DriverFailedException("Malformed XML in stream", except);
+		} catch (final SPFormatException except) {
+			throw new DriverFailedException("SP map format error in stream", except);
+		}
+	}
 	/**
 	 * Because this is intended to be used by implementations of ISPDriver, which can
 	 * only throw DriverFailedException, we use that class for all errors we generate.
-	 *
-	 * TODO: Make a way to read a map model from test code
 	 *
 	 * @param file   the file to open
 	 * @param warner the Warning instance to use for warnings
