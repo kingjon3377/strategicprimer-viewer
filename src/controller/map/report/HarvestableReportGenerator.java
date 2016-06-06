@@ -244,9 +244,7 @@ public final class HarvestableReportGenerator
 		}
 		final IReportNode shrubsNode =
 				new SortedSectionListReportNode(5, "Shrubs, small trees, and such");
-		for (final Map.Entry<String, IReportNode> entry : shrubs.entrySet()) {
-			shrubsNode.add(entry.getValue());
-		}
+		shrubs.values().forEach(shrubsNode::add);
 		final IReportNode mineralsNode =
 				new SortedSectionListReportNode(5, "Mineral deposits");
 		minerals.values().forEach(mineralsNode::add);
