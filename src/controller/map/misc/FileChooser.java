@@ -20,8 +20,6 @@ import static util.NullCleaner.assertNotNull;
 /**
  * A class to hide the details of choosing a file from the caller.
  *
- * TODO: Add a form taking what to do with the selected file.
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
