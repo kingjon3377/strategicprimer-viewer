@@ -6,8 +6,6 @@ import util.NullCleaner;
 /**
  * A class representing a worker's core statistical attributes.
  *
- * TODO: Should this really be mutable?
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -36,35 +34,35 @@ public class WorkerStats {
 	/**
 	 * The worker's health.
 	 */
-	private int hp;
+	private final int hp;
 	/**
 	 * The worker's max health.
 	 */
-	private int maxHP;
+	private final int maxHP;
 	/**
 	 * The worker's strength.
 	 */
-	private int strength;
+	private final int strength;
 	/**
 	 * The worker's dexterity.
 	 */
-	private int dex;
+	private final int dex;
 	/**
 	 * The worker's constitution.
 	 */
-	private int con;
+	private final int con;
 	/**
 	 * The worker's intelligence.
 	 */
-	private int intel;
+	private final int intel;
 	/**
 	 * The worker's wisdom.
 	 */
-	private int wis;
+	private final int wis;
 	/**
 	 * The worker's charisma.
 	 */
-	private int cha;
+	private final int cha;
 
 	/**
 	 * Constructor.
@@ -106,24 +104,10 @@ public class WorkerStats {
 	}
 
 	/**
-	 * @param hitPoints the worker's health
-	 */
-	public void setHitPoints(final int hitPoints) {
-		hp = hitPoints;
-	}
-
-	/**
 	 * @return the worker's max health
 	 */
 	public int getMaxHitPoints() {
 		return maxHP;
-	}
-
-	/**
-	 * @param maxHitPoints the worker's max health
-	 */
-	public void setMaxHitPoints(final int maxHitPoints) {
-		maxHP = maxHitPoints;
 	}
 
 	/**
@@ -134,24 +118,10 @@ public class WorkerStats {
 	}
 
 	/**
-	 * @param strengthStat the worker's strength
-	 */
-	public void setStrength(final int strengthStat) {
-		strength = strengthStat;
-	}
-
-	/**
 	 * @return the worker's dexterity
 	 */
 	public int getDexterity() {
 		return dex;
-	}
-
-	/**
-	 * @param dexterity the worker's dexterity
-	 */
-	public void setDexterity(final int dexterity) {
-		dex = dexterity;
 	}
 
 	/**
@@ -162,24 +132,10 @@ public class WorkerStats {
 	}
 
 	/**
-	 * @param constitution the worker's constitution
-	 */
-	public void setConstitution(final int constitution) {
-		con = constitution;
-	}
-
-	/**
 	 * @return the worker's intelligence
 	 */
 	public int getIntelligence() {
 		return intel;
-	}
-
-	/**
-	 * @param intelligence the worker's intelligence
-	 */
-	public void setIntelligence(final int intelligence) {
-		intel = intelligence;
 	}
 
 	/**
@@ -190,24 +146,10 @@ public class WorkerStats {
 	}
 
 	/**
-	 * @param wisdom the worker's wisdom
-	 */
-	public void setWisdom(final int wisdom) {
-		wis = wisdom;
-	}
-
-	/**
 	 * @return the worker's charisma
 	 */
 	public int getCharisma() {
 		return cha;
-	}
-
-	/**
-	 * @param charisma the worker's charisma
-	 */
-	public void setCharisma(final int charisma) {
-		cha = charisma;
 	}
 
 	/**
