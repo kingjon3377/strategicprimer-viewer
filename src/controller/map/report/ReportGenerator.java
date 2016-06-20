@@ -315,7 +315,7 @@ public final class ReportGenerator {
 							.filter(fix -> (fix instanceof TileFixture)
 									|| (fix.getID() > 0))
 							.collect(Collectors.toMap(fix -> {
-								if (fix instanceof TileFixture) {
+								if (fix.getID() < 0) {
 									return Integer.valueOf(idf.createID());
 								} else {
 									return Integer.valueOf(fix.getID());
