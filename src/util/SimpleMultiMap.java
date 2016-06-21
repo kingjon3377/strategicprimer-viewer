@@ -145,4 +145,12 @@ public class SimpleMultiMap<K, V> implements Map<K, Collection<V>> {
 	public Set<Entry<K, Collection<V>>> entrySet() {
 		return delegate.entrySet();
 	}
+	/**
+	 * TODO: Improve this to match the way we use the class
+	 * @return a String representation of the map.
+	 */
+	@Override
+	public String toString() {
+		return "SimpleMultiMap: " + super.toString();
+	}
 }
