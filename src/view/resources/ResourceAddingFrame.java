@@ -227,8 +227,11 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			if (inner instanceof JTextField) {
 				((JTextField) inner).addActionListener(list);
 			} else {
-				logLabel.getWriter().println("Editor wasn't a text field, but a " +
-										inner.getClass().getCanonicalName());
+				// logLabel.getWriter() returns a PrintWriter whose close() is a no-op.
+				try (final PrintWriter logger = logLabel.getWriter()) {
+					logger.print("Editor wasn't a text field, but a ");
+					logger.println(inner.getClass().getCanonicalName());
+				}
 			}
 		};
 		// Unfortunately, this would fire every time the "selected item" changed!

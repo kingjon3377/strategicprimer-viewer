@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
+import java.io.PrintStream;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
@@ -111,8 +112,11 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	@Override
 	public void startDriver(final IDriverModel model) {
 		populate(model.getMap());
-		SystemOut.SYS_OUT.printf("%d out of %d suitable locations were changed",
-				Integer.valueOf(changedCount), Integer.valueOf(suitableCount));
+		// SystemOut.close() delegates to flush() but doesn't close stdout
+		try (final PrintStream stdout = SystemOut.SYS_OUT) {
+			stdout.printf("%d out of %d suitable locations were changed",
+					Integer.valueOf(changedCount), Integer.valueOf(suitableCount));
+		}
 	}
 
 	/**
