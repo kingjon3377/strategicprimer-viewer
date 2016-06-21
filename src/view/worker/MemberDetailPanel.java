@@ -1,9 +1,6 @@
 package view.worker;
 
-import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -15,12 +12,7 @@ import java.util.Iterator;
 import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import model.listeners.UnitMemberListener;
 import model.map.HasPortrait;
 import model.map.fixtures.UnitMember;
@@ -72,13 +64,8 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	@Nullable
 	private UnitMember current = null;
 	/**
-	 * The image of the portrait of the currently selected unit member, or null if it can't
-	 * or doesn't have one.
-	 */
-	@Nullable
-	private Image portrait = null;
-	/**
-	 * The component displaying the portrait.
+	 * The component displaying the portrait of the currently selected unit member, if
+	 * it has one.
 	 */
 	private final PortraitComponent portraitComponent = new PortraitComponent();
 	/**
@@ -346,12 +333,13 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			}
 			jobsPanel.removeAll();
 		}
-		portrait = null;
+		portraitComponent.setPortrait(null);
 		if (local instanceof HasPortrait) {
 			final String portraitName = ((HasPortrait) local).getPortrait();
 			if (!portraitName.isEmpty()) {
 				try {
-					portrait = ImageLoader.getLoader().loadImage(portraitName);
+					portraitComponent
+							.setPortrait(ImageLoader.getLoader().loadImage(portraitName));
 				} catch (final IOException except) {
 					LOGGER.log(Level.WARNING, "Failed to load portrait", except);
 				}
@@ -389,7 +377,21 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	/**
 	 * A component to show the portrait of the currently selected member.
 	 */
-	private class PortraitComponent extends JComponent {
+	private static class PortraitComponent extends JComponent {
+		/**
+		 * The image to draw.
+		 */
+		@Nullable
+		private Image portrait;
+		/**
+		 * @param image the image to draw from now on
+		 */
+		public void setPortrait(@Nullable final Image image) {
+			portrait = image;
+		}
+		/**
+		 * @param pen the graphics context
+		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		protected void paintComponent(@Nullable final Graphics pen) {
