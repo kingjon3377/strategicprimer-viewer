@@ -4,6 +4,8 @@
       <root url="jar://$USER_HOME$/lib/WindowMenu.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/lib/WindowMenu.jar!/" />
+    </SOURCES>
   </library>
 </component>
