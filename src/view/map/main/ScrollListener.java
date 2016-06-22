@@ -14,14 +14,13 @@ import model.map.Point;
 import model.viewer.IViewerModel;
 import model.viewer.VisibleDimensions;
 import org.eclipse.jdt.annotation.Nullable;
+import view.util.BorderedPanel;
 
 /**
  * A class to change the visible area of the map based on the user's use of the
  * scrollbars.
  *
- * TODO: Merge much of this functionality into MapScrollPanel? Or at least make it accept
- * the necessary events (from the model if not its scroll-bars) and pass them to this
- * object. Keep track of VisibleDimensions and selected point directly, rather than
+ * TODO: Keep track of VisibleDimensions and selected point directly, rather than
  * querying the model, so we can drop the reference to the model.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
@@ -105,11 +104,25 @@ public final class ScrollListener
 	 * @param map       the map model to work with
 	 * @param component the component to attach the scrollbars to.
 	 */
-	public ScrollListener(final IViewerModel map, final JComponent component) {
+	private ScrollListener(final IViewerModel map, final JComponent component) {
 		this(map, new JScrollBar(Adjustable.HORIZONTAL),
 				new JScrollBar(Adjustable.VERTICAL));
 		component.add(horizontalBar, BorderLayout.PAGE_END);
 		component.add(verticalBar, BorderLayout.LINE_END);
+	}
+
+	/**
+	 * Factory method.
+	 * @param model the viewer model
+	 * @param component the map component
+	 */
+	public static BorderedPanel mapScrollPanel(final IViewerModel model,
+											   final JComponent component) {
+		final BorderedPanel retval = new BorderedPanel(component, null, null, null, null);
+		final ScrollListener scrollListener = new ScrollListener(model, retval);
+		model.addGraphicalParamsListener(scrollListener);
+		model.addMapChangeListener(scrollListener);
+		return retval;
 	}
 
 	/**

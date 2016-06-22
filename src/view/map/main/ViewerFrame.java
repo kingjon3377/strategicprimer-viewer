@@ -91,7 +91,7 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
 		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
-				new MapScrollPanel(map, mapPanel), detailPanel));
+				ScrollListener.mapScrollPanel(map, mapPanel), detailPanel));
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		mapPanel.requestFocusInWindow();
