@@ -223,16 +223,21 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 																					.setVisible(
 																							true)),
 								ordersPanel,
-								new ListenedButton("Export a proto-strategy from units' " +
-														"orders", evt -> {
-									new FileChooser(new File(""), new JFileChooser("."),
-														   JFileChooser.SAVE_DIALOG)
-											.call(file -> strategyExporter
-																  .writeStrategy(file,
-																		  treeModel
-																				  .dismissed()));
-								}))), BorderedPanel.vertical(new JLabel(RPT_HDR),
-						new JScrollPane(report), mdp)));
+								new ListenedButton("Export a proto-strategy from units'" +
+														   " " +
+														   "orders",
+														  evt -> new FileChooser(new
+																						 File(""),
+																						new JFileChooser("."),
+																						JFileChooser.SAVE_DIALOG)
+																		 .call(file ->
+																					   strategyExporter
+																							   .writeStrategy(
+																									   file,
+																									   treeModel
+																											   .dismissed()))))),
+				BorderedPanel
+						.vertical(new JLabel(RPT_HDR), new JScrollPane(report), mdp)));
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
 		setJMenuBar(new WorkerMenu(ioHandler, this, model));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
