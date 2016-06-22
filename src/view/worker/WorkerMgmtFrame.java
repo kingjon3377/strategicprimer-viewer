@@ -223,15 +223,12 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 																					.setVisible(
 																							true)),
 								ordersPanel,
-								new ListenedButton("Export a proto-strategy from units'" +
-														   " " +
-														   "orders",
+								new ListenedButton("Export a proto-strategy",
 														  evt -> new FileChooser(new
 																						 File(""),
 																						new JFileChooser("."),
 																						JFileChooser.SAVE_DIALOG)
-																		 .call(file ->
-																					   strategyExporter
+																		 .call(file -> strategyExporter
 																							   .writeStrategy(
 																									   file,
 																									   treeModel
