@@ -19,6 +19,7 @@ import model.map.HasKind;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
 import model.map.HasMutableOwner;
+import model.map.HasName;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
@@ -125,10 +126,16 @@ public final class FixtureEditMenu extends JPopupMenu {
 			immutable = false;
 		}
 		if (fixture instanceof UnitMember) {
+			final String name;
+			if (fixture instanceof HasName) {
+				name = ((HasName) fixture).getName();
+			} else {
+				name = "this " + fixture;
+			}
 			addMenuItem(new JMenuItem("Dismiss", KeyEvent.VK_D),
 					event -> {
 						final int reply = showConfirmDialog(
-								outer, "Are you sure you want to dismiss this?",
+								outer, String.format("Are you sure you want to dismiss %s?", name),
 								"Confirm Dismissal", YES_NO_OPTION);
 						if (YES_OPTION == reply) {
 							for (final IWorkerTreeModel listener : listeners) {
