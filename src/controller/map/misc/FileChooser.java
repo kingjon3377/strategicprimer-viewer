@@ -131,7 +131,7 @@ public final class FileChooser {
 				});
 			}
 		}
-		if (file.exists()) {
+		if (!file.toString().isEmpty()) {
 			return file;
 		} else {
 			throw new ChoiceInterruptedException();
