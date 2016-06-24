@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -193,22 +195,15 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * there are any.
 	 */
 	private static String jobCSL(final Iterable<IJob> iter) {
-		if (iter.iterator().hasNext()) {
-			final StringBuilder builder = new StringBuilder(100);
-			builder.append(" (");
-			boolean first = true;
-			for (final IJob job : iter) {
-				if (first) {
-					first = false;
-				} else {
-					builder.append(", ");
-				}
-				builder.append(job.getName()).append(' ').append(job.getLevel());
-			}
-			builder.append(')');
-			return assertNotNull(builder.toString());
-		} else {
+		final String retval = StreamSupport.stream(iter.spliterator(), false)
+									  .filter(job -> !job.isEmpty())
+									  .map(job -> String.format("%s %d", job.getName(),
+											  Integer.valueOf(job.getLevel())))
+									  .collect(Collectors.joining(", ", "(", ")"));
+		if ("()".equals(retval)) {
 			return "";
+		} else {
+			return retval;
 		}
 	}
 
