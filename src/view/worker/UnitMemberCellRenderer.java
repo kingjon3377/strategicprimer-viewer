@@ -199,8 +199,8 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 									  .filter(job -> !job.isEmpty())
 									  .map(job -> String.format("%s %d", job.getName(),
 											  Integer.valueOf(job.getLevel())))
-									  .collect(Collectors.joining(", ", "(", ")"));
-		if ("()".equals(retval)) {
+									  .collect(Collectors.joining(", ", " (", ")"));
+		if (" ()".equals(retval)) {
 			return "";
 		} else {
 			return retval;
