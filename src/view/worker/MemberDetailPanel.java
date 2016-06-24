@@ -305,6 +305,9 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			}
 			jobsPanel.removeAll();
 			for (final IJob job : (Worker) local) {
+				if (job.isEmpty()) {
+					continue;
+				}
 				//noinspection ObjectAllocationInLoop
 				final JLabel label = new JLabel(job.getName() + ' ' + job.getLevel());
 				final String skills = stream(job.spliterator(), false)
