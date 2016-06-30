@@ -125,6 +125,11 @@ public interface IExplorationModel
 	@Nullable IUnit getSelectedUnit();
 
 	/**
+	 * @param unit the new selected unit
+	 */
+	void selectUnit(@Nullable IUnit unit);
+
+	/**
 	 * @return its location. This will *not* be null.
 	 */
 	Point getSelectedUnitLocation();

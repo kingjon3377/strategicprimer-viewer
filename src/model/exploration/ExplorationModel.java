@@ -463,6 +463,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	/**
 	 * @param unit the new selected unit
 	 */
+	@Override
 	public void selectUnit(@Nullable final IUnit unit) {
 		final Point oldLoc = selUnitLoc;
 		selUnit = unit;
