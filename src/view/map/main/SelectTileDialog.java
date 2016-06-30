@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import model.map.MapDimensions;
 import model.map.PointFactory;
@@ -83,7 +84,7 @@ public final class SelectTileDialog extends JDialog {
 						assertNotNull(column.getText()));
 
 
-		final BoxPanel contentPane = new BoxPanel(false);
+		final JPanel contentPane = new BoxPanel(false);
 		contentPane.add(mainLabel);
 		final BoxPanel boxPanel = new BoxPanel(true);
 		final JLabel rowLabel = new JLabel("Row: ");
