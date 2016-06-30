@@ -384,7 +384,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				SPMapNG.class, false);
 		final Player player = new Player(1, "playerOne");
 		player.setCurrent(true);
-		final PlayerCollection players = new PlayerCollection();
+		final IMutablePlayerCollection players = new PlayerCollection();
 		players.add(player);
 		final IMutableMapNG firstMap = new SPMapNG(new MapDimensions(1, 1, 2), players, 0);
 		final Point point = point(0, 0);

@@ -19,8 +19,10 @@ import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.explorable.Portal;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
@@ -304,7 +306,7 @@ public final class TestMoreFixtureSerialization extends
 	public void testUnitWarnings()
 			throws XMLStreamException, SPFormatException, IOException {
 		assertUnwantedChild("<unit><unit /></unit>", Unit.class, false);
-		final Unit firstUnit = new Unit(new Player(1, ""), "unitType", "unitName", 1);
+		final IUnit firstUnit = new Unit(new Player(1, ""), "unitType", "unitName", 1);
 		final String oldKindProperty = "type";
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
@@ -326,7 +328,7 @@ public final class TestMoreFixtureSerialization extends
 		assertMissingPropertyDeserialization("Deserialize unit with no owner properly",
 				new Unit(new Player(-1, ""), "kind", "unitThree", 3),
 				"<unit kind=\"kind\" name=\"unitThree\" id=\"3\" />", OWNER_PROPERTY);
-		final Unit fourthUnit = new Unit(new Player(3, ""), "unitKind", "", 4);
+		final IUnit fourthUnit = new Unit(new Player(3, ""), "unitKind", "", 4);
 		assertMissingPropertyDeserialization(
 				"Deserialize unit with no name properly", fourthUnit,
 				createSerializedForm(fourthUnit, true), NAME_PROPERTY);
@@ -513,8 +515,8 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testSuspiciousSkills()
 			throws IOException, XMLStreamException, SPFormatException {
-		final Job job = new Job("jobName", 0, new Skill("hunting", 1, 0));
-		final Worker worker = new Worker("workerName", "race", 1, job);
+		final IJob job = new Job("jobName", 0, new Skill("hunting", 1, 0));
+		final IWorker worker = new Worker("workerName", "race", 1, job);
 		assertUnwantedChild(createSerializedForm(worker, false), Worker.class, true);
 		job.addSkill(new Skill("secondSkill", 1, 0));
 		assertSerialization("No warning if 'suspicious' skill isn't only one in a Job",

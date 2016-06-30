@@ -46,7 +46,7 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyWorker() {
-		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
+		final IWorker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
 																				new
 																						Skill("skillOne",
 																								0,
@@ -55,14 +55,14 @@ public final class TestProxyWorker {
 																						Skill("skillTwo",
 																								2,
 																								6)));
-		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
+		final IWorker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
 																			new Skill("skillThree",
 																								1,
 																								19),
 																			new Skill("skillFour",
 																								0,
 																								99)));
-		final Worker thirdWorker = new Worker("three", "dwarf", 5);
+		final IWorker thirdWorker = new Worker("three", "dwarf", 5);
 		final Iterable<IJob> proxy =
 				new ProxyWorker(firstWorker, secondWorker, thirdWorker);
 		for (final IJob job : proxy) {
@@ -70,7 +70,7 @@ public final class TestProxyWorker {
 				skill.addHours(10, 100);
 			}
 		}
-		final Worker oneCopy = new Worker("one", "human", 1,
+		final IWorker oneCopy = new Worker("one", "human", 1,
 												new Job("jobOne", 1,
 																new Skill("skillOne", 0,
 																				15),
@@ -84,7 +84,7 @@ public final class TestProxyWorker {
 																				10)));
 		assertThat("First worker should have appropriate experience", firstWorker,
 				equalTo(oneCopy));
-		final Worker twoCopy = new Worker("two", "elf", 2,
+		final IWorker twoCopy = new Worker("two", "elf", 2,
 												new Job("jobOne", 0,
 																new Skill("skillOne", 0,
 																				10),
@@ -98,7 +98,7 @@ public final class TestProxyWorker {
 																				0)));
 		assertThat("Second worker should have appropriate experience", secondWorker,
 				equalTo(twoCopy));
-		final Worker threeCopy = new Worker("three", "dwarf", 5,
+		final IWorker threeCopy = new Worker("three", "dwarf", 5,
 												new Job("jobOne", 0,
 															new Skill
 																	("skillOne", 0,
@@ -141,10 +141,10 @@ public final class TestProxyWorker {
 																			new Skill("skillFour",
 																								0,
 																								99)));
-		final Worker oneCopy = firstWorker.copy(false);
-		final Worker twoCopy = secondWorker.copy(false);
-		final Worker oneOrig = firstWorker.copy(false);
-		final Worker twoOrig = secondWorker.copy(false);
+		final IWorker oneCopy = firstWorker.copy(false);
+		final IWorker twoCopy = secondWorker.copy(false);
+		final IWorker oneOrig = firstWorker.copy(false);
+		final IWorker twoOrig = secondWorker.copy(false);
 		final Player player = new Player(3, "");
 		final IUnit unitOne = new Unit(player, "unitKInd", "unitName", 4);
 		final IUnit unitTwo = unitOne.copy(false);
@@ -204,10 +204,10 @@ public final class TestProxyWorker {
 																			new Skill("skillFour",
 																								0,
 																								99)));
-		final Worker oneCopy = firstWorker.copy(false);
-		final Worker twoCopy = secondWorker.copy(false);
-		final Worker oneOrig = firstWorker.copy(false);
-		final Worker twoOrig = secondWorker.copy(false);
+		final IWorker oneCopy = firstWorker.copy(false);
+		final IWorker twoCopy = secondWorker.copy(false);
+		final IWorker oneOrig = firstWorker.copy(false);
+		final IWorker twoOrig = secondWorker.copy(false);
 		final Player player = new Player(3, "");
 		final IUnit unitOne = new Unit(player, "unitKInd", "unitName", 4);
 		final IUnit unitTwo = unitOne.copy(false);
