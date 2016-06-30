@@ -2,6 +2,7 @@ package controller.map.misc;
 
 import controller.map.formatexceptions.SPFormatException;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -187,7 +188,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				saveAll(source);
 				break;
 			case "open in map viewer":
-				final ViewerModel viewModel = new ViewerModel(model);
+				final IViewerModel viewModel = new ViewerModel(model);
 				SwingUtilities.invokeLater(
 						() -> new ViewerFrame(viewModel, new IOHandler(viewModel, chooser))
 									.setVisible(true));
@@ -197,7 +198,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 					final Pair<IMutableMapNG, File> mapPair =
 							((IMultiMapModel) model).getSubordinateMaps().iterator()
 									.next();
-					final ViewerModel newModel =
+					final IViewerModel newModel =
 							new ViewerModel(mapPair.first(), mapPair.second());
 					SwingUtilities.invokeLater(
 							() -> new ViewerFrame(newModel, new IOHandler(newModel, chooser))
@@ -221,7 +222,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				if (model instanceof IViewerModel) {
 					SwingUtilities
 							.invokeLater(() -> {
-								final FindDialog findDialog = getFindDialog(source);
+								final Dialog findDialog = getFindDialog(source);
 								if (findDialog != null) {
 									findDialog.setVisible(true);
 								}
@@ -301,7 +302,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * map.
 	 */
 	private void startNewViewerWindow() {
-		final ViewerModel newModel = new ViewerModel(new SPMapNG(model.getMapDimensions(),
+		final IViewerModel newModel = new ViewerModel(new SPMapNG(model.getMapDimensions(),
 																	new
 																			PlayerCollection(),
 																	model.getMap()
