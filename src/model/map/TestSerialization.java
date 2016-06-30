@@ -360,6 +360,13 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				IMapNG.class, "rows", false);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" />", IMapNG.class,
 				"columns", false);
+		final String originalFormOne = createSerializedForm(firstMap, false);
+		final String originalFormTwo = createSerializedForm(firstMap, true);
+		firstMap.setBaseTerrain(point(1, 1), TileType.NotVisible);
+		assertThat("Explicitly not visible tile is not serialized",
+				createSerializedForm(firstMap, false), equalTo(originalFormOne));
+		assertThat("Explicitly not visible tile is not serialized",
+				createSerializedForm(firstMap, true), equalTo(originalFormTwo));
 	}
 
 	/**
