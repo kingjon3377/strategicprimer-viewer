@@ -2,6 +2,7 @@ package view.resources;
 
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IDRegistrar;
 import controller.map.misc.IOHandler;
 import java.awt.Component;
 import java.awt.Container;
@@ -155,7 +156,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 							   final IOHandler ioh) {
 		super("Resource Entry");
 		model = driverModel;
-		final IDFactory idf = IDFactoryFiller.createFactory(model);
+		final IDRegistrar idf = IDFactoryFiller.createFactory(model);
 		current = StreamSupport.stream(driverModel.getPlayers().spliterator(), false)
 						.filter(player -> player.isCurrent())
 						.findAny().orElse(new Player(-1, ""));

@@ -1,7 +1,7 @@
 package controller.map.cxml;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -45,7 +45,7 @@ public interface CompactReader<@NonNull T> {
 	 * @throws SPFormatException on SP format errors
 	 */
 	T read(StartElement element, Iterable<XMLEvent> stream,
-		   IMutablePlayerCollection players, Warning warner, IDFactory idFactory)
+		   IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
 			throws SPFormatException;
 
 	/**

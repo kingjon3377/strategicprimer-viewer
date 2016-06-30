@@ -1,5 +1,6 @@
 package controller.map.cxml;
 
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,7 +11,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 import model.map.HasImage;
 import model.map.HasMutableImage;
 import model.map.IMutablePlayerCollection;
@@ -90,7 +90,7 @@ public final class CompactTerrainReader extends
 							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players,
 							final Warning warner,
-							final IDFactory idFactory) throws SPFormatException {
+							final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "forest", "hill", "mountain", "oasis", "sandbar");
 		final TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {

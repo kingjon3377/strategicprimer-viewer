@@ -5,6 +5,7 @@ import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IDRegistrar;
 import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -139,7 +140,7 @@ public final class OneToTwoConverter {
 			}
 		}
 		final List<Point> converted = new LinkedList<>();
-		final IDFactory idFactory = IDFactoryFiller.createFactory(old);
+		final IDRegistrar idFactory = IDFactoryFiller.createFactory(old);
 		final IMapNG oldCopy = old.copy(false);
 		for (int row = 0; row < oldDim.rows; row++) {
 			for (int col = 0; col < oldDim.cols; col++) {
@@ -211,7 +212,7 @@ public final class OneToTwoConverter {
 										final IMapNG oldMap,
 										final IMutableMapNG newMap,
 										final boolean main,
-										final IDFactory idFactory,
+										final IDRegistrar idFactory,
 										final Player independentPlayer) {
 		final List<Point> initial = createInitialSubtiles(point,
 				oldMap, newMap, main);
@@ -387,7 +388,7 @@ public final class OneToTwoConverter {
 	 */
 	private void perturb(final Point point, final IMutableMapNG map,
 						final Random random, final boolean main,
-						final IDFactory idFac) {
+						final IDRegistrar idFac) {
 		if (TileType.Ocean != map.getBaseTerrain(point)) {
 			if (isAdjacentToTown(point, map)
 						&& (random.nextDouble() < SIXTY_PERCENT)) {
@@ -433,7 +434,7 @@ public final class OneToTwoConverter {
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addFieldOrOrchard(final boolean field, final Point point,
 								final IMutableMapNG map, final boolean main,
-								final IDFactory idFactory) {
+								final IDRegistrar idFactory) {
 		try {
 			final int id = idFactory.createID();
 			if (field) {

@@ -4,6 +4,7 @@ import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IDRegistrar;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -333,7 +334,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void createWorkers(final IExplorationModel model,
-			final IDFactory idf, final ICLIHelper cli) throws IOException {
+			final IDRegistrar idf, final ICLIHelper cli) throws IOException {
 		final List<Player> players = model.getPlayerChoices();
 		final String hdr = "Which player owns the new worker(s)?";
 		final String none = "There are no players shared by all the maps.";
@@ -359,7 +360,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void createWorkersForPlayer(final IExplorationModel model,
-			final IDFactory idf, final Player player, final ICLIHelper cli)
+			final IDRegistrar idf, final Player player, final ICLIHelper cli)
 					throws IOException {
 		boolean again = true;
 		while (again) {
@@ -409,7 +410,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private static void createWorkersForUnit(final IMultiMapModel model,
-			final IDFactory idf, final IFixture unit, final ICLIHelper cli)
+			final IDRegistrar idf, final IFixture unit, final ICLIHelper cli)
 					throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
@@ -434,7 +435,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private static void createWorkersFromFile(final IMultiMapModel model,
-			final IDFactory idf, final IFixture unit, final ICLIHelper cli)
+			final IDRegistrar idf, final IFixture unit, final ICLIHelper cli)
 					throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		final String filename = cli.inputString("Filename to load names from: ");
@@ -471,7 +472,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @return the generated worker
 	 * @throws IOException on I/O error interacting with the user
 	 */
-	private static Worker createSingleWorker(final IDFactory idf,
+	private static Worker createSingleWorker(final IDRegistrar idf,
 			final ICLIHelper cli) throws IOException {
 		final String race = RaceFactory.getRace();
 		final String name = cli.inputString("Worker is a " + race
@@ -651,7 +652,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private static Worker createWorkerFromNameFile(final String name,
-			final IDFactory idf, final ICLIHelper cli) throws IOException {
+			final IDRegistrar idf, final ICLIHelper cli) throws IOException {
 		final String race = RaceFactory.getRace();
 		cli.printf("Worker %s is a %s%n", name, race);
 		final Worker retval = new Worker(name, race, idf.createID());

@@ -46,8 +46,8 @@ public final class IDFactoryFiller {
 	 * @param map a map
 	 * @return an ID factory that won't generate an ID the map already uses
 	 */
-	public static IDFactory createFactory(final IMapNG map) {
-		final IDFactory retval = new IDFactory();
+	public static IDRegistrar createFactory(final IMapNG map) {
+		final IDRegistrar retval = new IDFactory();
 		for (final Point point : map.locations()) {
 			// Ground, Forest, Rivers, and Mountains do not have IDs, so we
 			// can skip them and just test the "other" fixtures
@@ -70,8 +70,8 @@ public final class IDFactoryFiller {
 	 * @param model a collection of maps
 	 * @return an ID factory that won't generate an ID any of the maps already uses.
 	 */
-	public static IDFactory createFactory(final IMultiMapModel model) {
-		final IDFactory retval = new IDFactory();
+	public static IDRegistrar createFactory(final IMultiMapModel model) {
+		final IDRegistrar retval = new IDFactory();
 		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 			for (final Point point : pair.first().locations()) {
 				// Ground, Forest, Rivers, and Mountains do not have IDs, so we
@@ -96,9 +96,9 @@ public final class IDFactoryFiller {
 	 * @param iter a collection of fixtures
 	 * @return an ID factory that won't generate an ID already used in the collection
 	 */
-	public static IDFactory createFactory(final Iterable<@NonNull ? extends IFixture>
+	public static IDRegistrar createFactory(final Iterable<@NonNull ? extends IFixture>
 												iter) {
-		final IDFactory retval = new IDFactory();
+		final IDRegistrar retval = new IDFactory();
 		recursiveRegister(retval, iter);
 		return retval;
 	}
@@ -108,7 +108,7 @@ public final class IDFactoryFiller {
 	 * @param iter a collection of fixtures, all of which (recursively) should have their
 	 *             IDs marked as used.
 	 */
-	private static void recursiveRegister(final IDFactory idf,
+	private static void recursiveRegister(final IDRegistrar idf,
 										final Iterable<@NonNull ? extends IFixture> iter) {
 		for (final IFixture fix : iter) {
 			final int idNum = fix.getID();

@@ -3,7 +3,7 @@ package controller.map.cxml;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -110,7 +110,7 @@ public final class CompactResourceReader extends
 								final Iterable<XMLEvent> stream,
 								final IMutablePlayerCollection players,
 								final Warning warner,
-								final IDFactory idFactory) throws SPFormatException {
+								final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "cache", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
 		final int idNum = getOrGenerateID(element, warner, idFactory);

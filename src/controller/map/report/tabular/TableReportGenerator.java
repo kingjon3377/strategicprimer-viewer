@@ -2,6 +2,7 @@ package controller.map.report.tabular;
 
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IDRegistrar;
 import controller.map.report.IReportGenerator;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -206,7 +207,7 @@ public final class TableReportGenerator {
 	private static PatientMap<Integer, Pair<Point, IFixture>> getFixtures(final IMapNG
 																				  map) {
 		final PatientMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
-		final IDFactory idf = IDFactoryFiller.createFactory(map);
+		final IDRegistrar idf = IDFactoryFiller.createFactory(map);
 		for (final Point point : map.locations()) {
 			retval.putAll(
 					assertNotNull(getFixtures(map.streamOtherFixtures(point))

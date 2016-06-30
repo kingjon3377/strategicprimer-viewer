@@ -2,8 +2,8 @@ package controller.map.drivers;
 
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,7 +68,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 		final List<Player> players =
 				StreamSupport.stream(driverModel.getPlayers().spliterator(), false).collect(
 						Collectors.toList());
-		final IDFactory idf = IDFactoryFiller.createFactory(driverModel);
+		final IDRegistrar idf = IDFactoryFiller.createFactory(driverModel);
 		try (ICLIHelper cli = new CLIHelper()) {
 			final String desc = "Players in the maps:";
 			final String none = "No players found.";
@@ -100,7 +100,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	 * @param player the current player
 	 * @throws IOException on I/O error interacting with the user
 	 */
-	private void enterResource(final IDFactory idf, final ResourceManagementDriver model,
+	private void enterResource(final IDRegistrar idf, final ResourceManagementDriver model,
 							final ICLIHelper cli, final Player player)
 			throws IOException {
 		final String kind = getResourceKind(cli);
@@ -123,7 +123,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	 * @param player the current player
 	 * @throws IOException on I/O error interacting with the user
 	 */
-	private static void enterImplement(final IDFactory idf,
+	private static void enterImplement(final IDRegistrar idf,
 								final ResourceManagementDriver model,
 								final ICLIHelper cli, final Player player)
 			throws IOException {

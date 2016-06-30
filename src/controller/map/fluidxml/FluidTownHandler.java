@@ -1,7 +1,7 @@
 package controller.map.fluidxml;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Random;
 import javax.xml.stream.events.StartElement;
@@ -17,16 +17,16 @@ import model.workermgmt.RaceFactory;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.getPlayerOrIndependent;
-import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
+import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
@@ -76,7 +76,7 @@ public final class FluidTownHandler {
 								final Iterable<XMLEvent> stream,
 								final IPlayerCollection players,
 								final Warning warner,
-								final IDFactory idFactory) throws SPFormatException {
+								final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "town");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
@@ -105,7 +105,7 @@ public final class FluidTownHandler {
 												  final Iterable<XMLEvent> stream,
 												  final IPlayerCollection players,
 												  final Warning warner,
-												  final IDFactory idFactory) throws SPFormatException {
+												  final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "fortification");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
@@ -134,7 +134,7 @@ public final class FluidTownHandler {
 								final Iterable<XMLEvent> stream,
 								final IPlayerCollection players,
 								final Warning warner,
-								final IDFactory idFactory) throws SPFormatException {
+								final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "city");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
@@ -163,7 +163,7 @@ public final class FluidTownHandler {
 									  final Iterable<XMLEvent> stream,
 									  final IPlayerCollection players,
 									  final Warning warner,
-									  final IDFactory idFactory)
+									  final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "village");
 		requireNonEmptyAttribute(element, "name", false, warner);

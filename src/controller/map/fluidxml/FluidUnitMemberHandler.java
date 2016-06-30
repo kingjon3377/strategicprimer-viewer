@@ -5,7 +5,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
@@ -85,7 +85,7 @@ public final class FluidUnitMemberHandler {
 	public static Worker readWorker(final StartElement element,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
-									final Warning warner, final IDFactory idFactory)
+									final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "worker");
 		final Worker retval = setImage(new Worker(getAttribute(element, "name"),
@@ -131,7 +131,7 @@ public final class FluidUnitMemberHandler {
 	public static IJob readJob(final StartElement element,
 							   final Iterable<XMLEvent> stream,
 							   final IMutablePlayerCollection players,
-							   final Warning warner, final IDFactory idFactory)
+							   final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "job");
 		if (hasAttribute(element, "hours")) {
@@ -192,7 +192,7 @@ public final class FluidUnitMemberHandler {
 	public static ISkill readSkill(final StartElement element,
 								   final Iterable<XMLEvent> stream,
 								   final IMutablePlayerCollection players,
-								   final Warning warner, final IDFactory idFactory)
+								   final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "skill");
 		requireNonEmptyAttribute(element, "name", true, warner);
@@ -223,7 +223,7 @@ public final class FluidUnitMemberHandler {
 	public static WorkerStats readStats(final StartElement element,
 										final Iterable<XMLEvent> stream,
 										final IMutablePlayerCollection players,
-										final Warning warner, final IDFactory idFactory)
+										final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "stats");
 		final WorkerStats retval =
@@ -380,7 +380,7 @@ public final class FluidUnitMemberHandler {
 	public static Animal readAnimal(final StartElement element,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
-									final Warning warner, final IDFactory idFactory)
+									final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "animal");
 		spinUntilEnd(assertNotNull(element.getName()), stream);

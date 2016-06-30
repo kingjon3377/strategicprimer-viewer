@@ -4,7 +4,7 @@ import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +92,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	public Unit read(final StartElement element,
 					final Iterable<XMLEvent> stream,
 					final IMutablePlayerCollection players, final Warning warner,
-					final IDFactory idFactory) throws SPFormatException {
+					final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, UNIT_TAG);
 		requireNonEmptyParameter(element, "name", false, warner);
 		requireNonEmptyParameter(element, "owner", false, warner);
@@ -141,7 +141,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	private UnitMember parseChild(final StartElement element,
 								final Iterable<XMLEvent> stream,
 								final IMutablePlayerCollection players,
-								final IDFactory idFactory,
+								final IDRegistrar idFactory,
 								final Warning warner) throws SPFormatException {
 		final String name = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends IFixture> item : readers) {

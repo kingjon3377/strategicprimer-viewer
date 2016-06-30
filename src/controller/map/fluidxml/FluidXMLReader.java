@@ -1,7 +1,7 @@
 package controller.map.fluidxml;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -44,6 +44,6 @@ public interface FluidXMLReader {
 	 */
 	Object readSPObject(StartElement element, Iterable<XMLEvent> stream,
 						IMutablePlayerCollection players, Warning warner,
-						IDFactory idFactory)
+						IDRegistrar idFactory)
 			throws SPFormatException, IllegalArgumentException;
 }

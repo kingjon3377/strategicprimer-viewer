@@ -1,5 +1,6 @@
 package controller.map.cxml;
 
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 
 import javax.xml.stream.events.StartElement;
@@ -7,7 +8,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.TextFixture;
 import util.NullCleaner;
@@ -71,7 +71,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	public TextFixture read(final StartElement element,
 							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players, final Warning warner,
-							final IDFactory idFactory) throws SPFormatException {
+							final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "text");
 		// Of all the uses of a StringBuilder, this one can't know what size we
 		// need. But cases above 2K will be vanishingly rare in practice.

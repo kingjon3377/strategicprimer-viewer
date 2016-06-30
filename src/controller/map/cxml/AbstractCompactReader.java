@@ -6,7 +6,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.SPMalformedInputException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -196,7 +196,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
 	protected static int getOrGenerateID(final StartElement element,
-										final Warning warner, final IDFactory idFactory)
+										final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		if (hasParameter(element, "id")) {
 			try {

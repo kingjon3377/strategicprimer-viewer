@@ -1,6 +1,7 @@
 package view.worker;
 
 import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -70,7 +71,7 @@ public final class NewUnitDialog extends JFrame
 	/**
 	 * The factory to use to generate ID numbers.
 	 */
-	private final IDFactory idf;
+	private final IDRegistrar idf;
 	/**
 	 * The field to let the user give the name of the unit.
 	 */
@@ -100,7 +101,7 @@ public final class NewUnitDialog extends JFrame
 	 * @param player    the player to own the units
 	 * @param idFactory a factory to generate ID numbers
 	 */
-	public NewUnitDialog(final Player player, final IDFactory idFactory) {
+	public NewUnitDialog(final Player player, final IDRegistrar idFactory) {
 		super("Add a new unit");
 		setLayout(new GridLayout(0, 2));
 

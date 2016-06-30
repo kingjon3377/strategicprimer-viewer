@@ -1,7 +1,7 @@
 package controller.map.fluidxml;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -17,13 +17,13 @@ import util.Warning;
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
-import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeBooleanAttribute;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeTag;
 import static java.lang.Boolean.parseBoolean;
 import static util.NullCleaner.assertNotNull;
@@ -71,7 +71,7 @@ public final class FluidTerrainHandler {
 	public static Ground readGround(final StartElement element,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players, final Warning warner,
-									final IDFactory idFactory) throws SPFormatException {
+									final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "ground");
 		final String kind = getAttrWithDeprecatedForm(element, "kind",
 				"ground", warner);
@@ -94,7 +94,7 @@ public final class FluidTerrainHandler {
 	public static Forest readForest(final StartElement element,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players, final Warning warner,
-									final IDFactory idFactory) throws SPFormatException {
+									final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "forest");
 		final Forest retval =
 				new Forest(getAttribute(element, "kind"), hasAttribute(element, "rows"));
@@ -116,7 +116,7 @@ public final class FluidTerrainHandler {
 	public static Mountain readMountain(final StartElement element,
 										final Iterable<XMLEvent> stream,
 										final IMutablePlayerCollection players, final Warning warner,
-										final IDFactory idFactory) throws SPFormatException {
+										final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "mountain");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Mountain(), element, warner);
@@ -198,7 +198,7 @@ public final class FluidTerrainHandler {
 	public static River readLake(final StartElement element,
 								 final Iterable<XMLEvent> stream,
 								 final IMutablePlayerCollection players,
-								 final Warning warner, final IDFactory idFactory)
+								 final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "lake");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -221,7 +221,7 @@ public final class FluidTerrainHandler {
 	public static River readRiver(final StartElement element,
 								  final Iterable<XMLEvent> stream,
 								  final IMutablePlayerCollection players,
-								  final Warning warner, final IDFactory idFactory)
+								  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "river");
 		spinUntilEnd(assertNotNull(element.getName()), stream);

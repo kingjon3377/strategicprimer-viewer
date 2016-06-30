@@ -5,7 +5,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -73,7 +73,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	public Worker read(final StartElement element,
 					final Iterable<XMLEvent> stream,
 					final IMutablePlayerCollection players, final Warning warner,
-					final IDFactory idFactory) throws SPFormatException {
+					final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "worker");
 		final Worker retval = new Worker(getParameter(element, "name"),
 												getParameter(element, "race", "human"),

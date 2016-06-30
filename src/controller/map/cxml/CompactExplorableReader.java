@@ -2,7 +2,7 @@ package controller.map.cxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedTagException;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
@@ -92,7 +92,7 @@ public final class CompactExplorableReader
 	public ExplorableFixture read(final StartElement element,
 								final Iterable<XMLEvent> stream,
 								final IMutablePlayerCollection players,
-								final Warning warner, final IDFactory idFactory)
+								final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "battlefield", "cave");
 		final int idNum = getOrGenerateID(element, warner, idFactory);

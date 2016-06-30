@@ -1,6 +1,7 @@
 package view.worker;
 
 import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.IOException;
@@ -69,7 +70,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	/**
 	 * The ID factory to use to generate IDs.
 	 */
-	private final IDFactory idf;
+	private final IDRegistrar idf;
 
 	/**
 	 * The 'name' field.
@@ -121,7 +122,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 *
 	 * @param idFac the ID factory to use to generate IDs.
 	 */
-	public WorkerConstructionFrame(final IDFactory idFac) {
+	public WorkerConstructionFrame(final IDRegistrar idFac) {
 		super("Create Worker");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		race.setText(RaceFactory.getRace());

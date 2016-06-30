@@ -1,7 +1,7 @@
 package controller.map.cxml;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -82,7 +82,7 @@ public final class CompactReaderAdapter {
 	public static Object parse(final StartElement element,
 							final IteratorWrapper<XMLEvent> stream,
 							final IMutablePlayerCollection players,
-							final Warning warner, final IDFactory idFactory)
+							final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		// Since all impls of necessity check tag's namespace, we leave that to them.
 		final String tag = NullCleaner.assertNotNull(element.getName().getLocalPart());

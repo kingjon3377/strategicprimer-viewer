@@ -4,6 +4,7 @@ import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -85,7 +86,7 @@ public final class FluidResourceHandler {
 											final Iterable<XMLEvent> stream,
 											final IMutablePlayerCollection players,
 											final Warning warner,
-											final IDFactory idFactory) throws SPFormatException {
+											final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "resource");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final ResourcePile retval =
@@ -116,7 +117,7 @@ public final class FluidResourceHandler {
 	public static CacheFixture readCache(final StartElement element,
 										 final Iterable<XMLEvent> stream,
 										 final IMutablePlayerCollection players,
-										 final Warning warner, final IDFactory idFactory)
+										 final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "cache");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -142,7 +143,7 @@ public final class FluidResourceHandler {
 	public static Grove readGrove(final StartElement element,
 								  final Iterable<XMLEvent> stream,
 								  final IMutablePlayerCollection players,
-								  final Warning warner, final IDFactory idFactory)
+								  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "grove");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -178,7 +179,7 @@ public final class FluidResourceHandler {
 	public static Grove readOrchard(final StartElement element,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
-									final Warning warner, final IDFactory idFactory)
+									final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "orchard");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -214,7 +215,7 @@ public final class FluidResourceHandler {
 	public static Meadow readMeadow(final StartElement element,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
-									final Warning warner, final IDFactory idFactory)
+									final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "meadow");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -243,7 +244,7 @@ public final class FluidResourceHandler {
 	public static Meadow readField(final StartElement element,
 								   final Iterable<XMLEvent> stream,
 								   final IMutablePlayerCollection players,
-								   final Warning warner, final IDFactory idFactory)
+								   final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "field");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -272,7 +273,7 @@ public final class FluidResourceHandler {
 	public static Mine readMine(final StartElement element,
 								final Iterable<XMLEvent> stream,
 								final IMutablePlayerCollection players,
-								final Warning warner, final IDFactory idFactory)
+								final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "mine");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -299,7 +300,7 @@ public final class FluidResourceHandler {
 	public static MineralVein readMineral(final StartElement element,
 										  final Iterable<XMLEvent> stream,
 										  final IMutablePlayerCollection players,
-										  final Warning warner, final IDFactory idFactory)
+										  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "mineral");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -327,7 +328,7 @@ public final class FluidResourceHandler {
 	public static Shrub readShrub(final StartElement element,
 								  final Iterable<XMLEvent> stream,
 								  final IMutablePlayerCollection players,
-								  final Warning warner, final IDFactory idFactory)
+								  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "shrub");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -352,7 +353,7 @@ public final class FluidResourceHandler {
 	public static StoneDeposit readStone(final StartElement element,
 										 final Iterable<XMLEvent> stream,
 										 final IMutablePlayerCollection players,
-										 final Warning warner, final IDFactory idFactory)
+										 final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "stone");
 		spinUntilEnd(assertNotNull(element.getName()), stream);

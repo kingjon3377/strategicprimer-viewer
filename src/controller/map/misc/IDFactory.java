@@ -27,7 +27,7 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-public final class IDFactory {
+public final class IDFactory implements IDRegistrar {
 	/**
 	 * The set of IDs used already.
 	 */
@@ -37,6 +37,7 @@ public final class IDFactory {
 	 * @param idNum the ID number to check
 	 * @return whether it's unused
 	 */
+	@Override
 	public boolean isIDUnused(final int idNum) {
 		return (idNum >= 0) && !usedIDs.get(idNum);
 	}
@@ -46,6 +47,7 @@ public final class IDFactory {
 	 * @param idNum the ID to register.
 	 * @return the id, so this can be used functionally.
 	 */
+	@Override
 	public int register(final int idNum) {
 		return register(Warning.DEFAULT, idNum);
 	}
@@ -57,6 +59,7 @@ public final class IDFactory {
 	 * @param idNum the ID to register.
 	 * @return the id, so this can be used functionally.
 	 */
+	@Override
 	public int register(final Warning warning, final int idNum) {
 		if (idNum >= 0) {
 			if (usedIDs.get(idNum)) {
@@ -72,6 +75,7 @@ public final class IDFactory {
 	 *
 	 * @return the generated id
 	 */
+	@Override
 	public int createID() {
 		if (usedIDs.cardinality() < Integer.MAX_VALUE) {
 			return register(usedIDs.nextClearBit(0));
@@ -88,7 +92,7 @@ public final class IDFactory {
 	 *
 	 * @return a copy of this factory
 	 */
-	public IDFactory copy() {
+	public IDRegistrar copy() {
 		final IDFactory retval = new IDFactory();
 		retval.usedIDs.or(usedIDs);
 		return retval;

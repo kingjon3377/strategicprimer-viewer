@@ -4,7 +4,7 @@ import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -107,7 +107,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players,
 							final Warning warner,
-							final IDFactory idFactory) throws SPFormatException {
+							final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "village", "fortress", "town", "city",
 				"fortification");
 		final ITownFixture retval;
@@ -136,7 +136,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 											final Iterable<XMLEvent> stream,
 											final IPlayerCollection players,
 											final Warning warner,
-											final IDFactory idFactory)
+											final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
@@ -166,7 +166,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 										final Iterable<XMLEvent> stream,
 										final IPlayerCollection players,
 										final Warning warner,
-										final IDFactory idFactory)
+										final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		final String name = getParameter(element, NAME_PARAM, "");
@@ -230,7 +230,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 											final Iterable<XMLEvent> stream,
 											final IMutablePlayerCollection players,
 											final Warning warner,
-											final IDFactory idFactory)
+											final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, OWNER_PARAM, false, warner);
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);

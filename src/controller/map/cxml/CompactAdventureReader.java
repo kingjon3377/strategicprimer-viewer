@@ -1,7 +1,7 @@
 package controller.map.cxml;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -58,7 +58,7 @@ public final class CompactAdventureReader extends
 								final Iterable<XMLEvent> stream,
 								final IMutablePlayerCollection players,
 								final Warning warner,
-								final IDFactory idFactory) throws SPFormatException {
+								final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "adventure");
 		Player player = players.getIndependent();
 		if (hasParameter(element, "owner")) {

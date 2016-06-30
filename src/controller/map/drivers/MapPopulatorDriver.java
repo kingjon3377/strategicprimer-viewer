@@ -1,7 +1,7 @@
 package controller.map.drivers;
 
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IDRegistrar;
 import java.io.PrintStream;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -87,7 +87,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	 * @param idf      an ID factory to generate the necessary ID #.
 	 */
 	private static void create(final Point location, final IMutableMapNG map,
-							final IDFactory idf) {
+							final IDRegistrar idf) {
 		changedCount++;
 		map.addFixture(location,
 				new Animal("hare", false, false, "wild", idf.createID()));
@@ -125,7 +125,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	 * @param map the map
 	 */
 	private static void populate(final IMutableMapNG map) {
-		final IDFactory idf = IDFactoryFiller.createFactory(map);
+		final IDRegistrar idf = IDFactoryFiller.createFactory(map);
 		for (final Point location : map.locations()) {
 			if (isSuitable(map, location) &&
 						(SingletonRandom.RANDOM.nextDouble() < chance())) {

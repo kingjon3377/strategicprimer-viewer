@@ -1,7 +1,7 @@
 package view.exploration;
 
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IDRegistrar;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -173,7 +173,7 @@ public final class ExplorationListListener implements ListDataListener {
 	/**
 	 * An ID number factory for the animal tracks.
 	 */
-	private final IDFactory idf;
+	private final IDRegistrar idf;
 	/**
 	 * Mutex.
 	 */

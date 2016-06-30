@@ -1,7 +1,7 @@
 package controller.map.report;
 
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IDRegistrar;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -306,7 +306,7 @@ public final class ReportGenerator {
 	private static PatientMap<Integer, Pair<Point, IFixture>> getFixtures(final IMapNG
 																				  map) {
 		final PatientMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
-		final IDFactory idf = IDFactoryFiller.createFactory(map);
+		final IDRegistrar idf = IDFactoryFiller.createFactory(map);
 		for (final Point point : map.locations()) {
 			// Because neither Forests, Mountains, nor Ground have positive IDs,
 			// we can ignore everything but the "other" fixtures.

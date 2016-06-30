@@ -1,8 +1,8 @@
 package view.exploration;
 
 import controller.map.misc.ICLIHelper;
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IDRegistrar;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -139,7 +139,7 @@ public final class ExplorationCLI {
 	/**
 	 * An ID number factory for the animal tracks.
 	 */
-	private final IDFactory idf;
+	private final IDRegistrar idf;
 	/**
 	 * Have the player move the selected unit. Throws an exception if no unit is
 	 * selected.

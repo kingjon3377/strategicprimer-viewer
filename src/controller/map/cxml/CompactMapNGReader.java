@@ -7,7 +7,7 @@ import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -113,7 +113,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players,
 							final Warning warner,
-							final IDFactory idFactory) throws SPFormatException {
+							final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "map", "view");
 		final int currentTurn;
 		final StartElement mapTag;
@@ -321,7 +321,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	private TileFixture parseFixture(final StartElement element,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
-									final IDFactory idFactory,
+									final IDRegistrar idFactory,
 									final Warning warner) throws SPFormatException {
 		final String name = assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends TileFixture> item : readers) {

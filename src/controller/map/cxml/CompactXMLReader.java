@@ -4,6 +4,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
 import java.io.File;
@@ -65,7 +66,7 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 		final IteratorWrapper<XMLEvent> eventReader =
 				new IteratorWrapper<>(new IncludingIterator(file, reader));
 		final IMutablePlayerCollection players = new PlayerCollection();
-		final IDFactory idFactory = new IDFactory();
+		final IDRegistrar idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final Object retval = CompactReaderAdapter.parse(

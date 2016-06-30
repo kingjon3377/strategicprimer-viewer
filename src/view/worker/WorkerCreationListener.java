@@ -1,6 +1,6 @@
 package view.worker;
 
-import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
@@ -61,7 +61,7 @@ public final class WorkerCreationListener
 	/**
 	 * The ID factory to pass to the worker-creation window.
 	 */
-	private final IDFactory idf;
+	private final IDRegistrar idf;
 
 	/**
 	 * Constructor.
@@ -70,7 +70,7 @@ public final class WorkerCreationListener
 	 * @param idFac     the ID factory to pass to the worker-creation window.
 	 */
 	public WorkerCreationListener(final IWorkerTreeModel model,
-								final IDFactory idFac) {
+								final IDRegistrar idFac) {
 		treeModel = model;
 		idf = idFac;
 	}

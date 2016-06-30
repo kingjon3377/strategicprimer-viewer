@@ -1,5 +1,6 @@
 package controller.map.cxml;
 
+import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,7 +14,6 @@ import javax.xml.stream.events.XMLEvent;
 import org.eclipse.jdt.annotation.NonNull;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasMutableImage;
@@ -125,7 +125,7 @@ public final class CompactMobileReader extends
 							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players,
 							final Warning warner,
-							final IDFactory idFactory) throws SPFormatException {
+							final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "animal", "centaur", "djinn", "dragon", "fairy",
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",
 				"sphinx", "troll", "unit");

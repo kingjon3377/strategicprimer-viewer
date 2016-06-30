@@ -9,6 +9,7 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
 import java.io.File;
@@ -111,14 +112,66 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 */
 	private final Map<String, FluidXMLReader> readers = new HashMap<>();
 	public SPFluidReader() {
-		readers.put("adventure", FluidExplorableHandler::readAdventure);
-		readers.put("portal", FluidExplorableHandler::readPortal);
-		readers.put("cave", FluidExplorableHandler::readCave);
-		readers.put("battlefield", FluidExplorableHandler::readBattlefield);
-		readers.put("ground", FluidTerrainHandler::readGround);
-		readers.put("forest", FluidTerrainHandler::readForest);
+		readers.put("adventure",
+				(element1, stream1, players1, warner1, idFactory1) ->
+						FluidExplorableHandler
+																			  .readAdventure(
+																					  element1,
+																					  stream1,
+																					  players1,
+																					  warner1,
+																					  idFactory1));
+		readers.put("portal",
+				(element1, stream1, players1, warner1, idFactory1) ->
+						FluidExplorableHandler
+																			  .readPortal(
+																					  element1,
+																					  stream1,
+																					  players1,
+																					  warner1,
+																					  idFactory1));
+		readers.put("cave",
+				(element3, stream3, players3, warner3, idFactory3) ->
+						FluidExplorableHandler
+																			  .readCave(
+																					  element3,
+																					  stream3,
+																					  players3,
+																					  warner3,
+																					  idFactory3));
+		readers.put("battlefield",
+				(element, stream, players, warner, idFactory) -> FluidExplorableHandler
+																		 .readBattlefield(
+																				 element,
+																				 stream,
+																				 players,
+																				 warner,
+																				 idFactory));
+		readers.put("ground",
+				(element3, stream3, players3, warner3, idFactory3) -> FluidTerrainHandler
+																			  .readGround(
+																					  element3,
+																					  stream3,
+																					  players3,
+																					  warner3,
+																					  idFactory3));
+		readers.put("forest",
+				(element4, stream4, players4, warner4, idFactory4) -> FluidTerrainHandler
+																			  .readForest(
+																					  element4,
+																					  stream4,
+																					  players4,
+																					  warner4,
+																					  idFactory4));
 		createSimpleFixtureReader("hill", Hill::new);
-		readers.put("mountain", FluidTerrainHandler::readMountain);
+		readers.put("mountain",
+				(element6, stream6, players6, warner6, idFactory6) -> FluidTerrainHandler
+																			  .readMountain(
+																					  element6,
+																					  stream6,
+																					  players6,
+																					  warner6,
+																					  idFactory6));
 		createSimpleFixtureReader("oasis", Oasis::new);
 		createSimpleFixtureReader("sandbar", Sandbar::new);
 		createSimpleFixtureReader("djinn", Djinn::new);
@@ -129,38 +182,212 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		createSimpleFixtureReader("simurgh", Simurgh::new);
 		createSimpleFixtureReader("sphinx", Sphinx::new);
 		createSimpleFixtureReader("troll", Troll::new);
-		readers.put("animal", FluidUnitMemberHandler::readAnimal);
+		readers.put("animal",
+				(element6, stream6, players6, warner6, idFactory6) -> FluidUnitMemberHandler
+																			  .readAnimal(
+																					  element6,
+																					  stream6,
+																					  players6,
+																					  warner6,
+																					  idFactory6));
 		createSimpleHasKindReader("centaur", Centaur::new);
 		createSimpleHasKindReader("dragon", Dragon::new);
 		createSimpleHasKindReader("fairy", Fairy::new);
 		createSimpleHasKindReader("giant", Giant::new);
-		readers.put("text", FluidExplorableHandler::readTextFixture);
+		readers.put("text",
+				(element1, stream1, players1, warner1, idFactory1) ->
+						FluidExplorableHandler
+																			  .readTextFixture(
+																					  element1,
+																					  stream1,
+																					  players1,
+																					  warner1,
+																					  idFactory1));
 		createSimpleHasKindReader("implement", Implement::new);
-		readers.put("resource", FluidResourceHandler::readResource);
-		readers.put("cache", FluidResourceHandler::readCache);
-		readers.put("grove", FluidResourceHandler::readGrove);
-		readers.put("orchard", FluidResourceHandler::readOrchard);
-		readers.put("meadow", FluidResourceHandler::readMeadow);
-		readers.put("field", FluidResourceHandler::readField);
-		readers.put("mine", FluidResourceHandler::readMine);
-		readers.put("mineral", FluidResourceHandler::readMineral);
-		readers.put("shrub", FluidResourceHandler::readShrub);
-		readers.put("stone", FluidResourceHandler::readStone);
-		readers.put("worker", FluidUnitMemberHandler::readWorker);
-		readers.put("job", FluidUnitMemberHandler::readJob);
-		readers.put("skill", FluidUnitMemberHandler::readSkill);
-		readers.put("stats", FluidUnitMemberHandler::readStats);
-		readers.put("unit", this::readUnit);
-		readers.put("fortress", this::readFortress);
-		readers.put("town", FluidTownHandler::readTown);
-		readers.put("city", FluidTownHandler::readCity);
-		readers.put("fortification", FluidTownHandler::readFortification);
-		readers.put("village", FluidTownHandler::readVillage);
-		readers.put("map", this::readMap);
-		readers.put("view", this::readMap);
-		readers.put("river", FluidTerrainHandler::readRiver);
-		readers.put("lake", FluidTerrainHandler::readLake);
-		readers.put("player", SPFluidReader::readPlayer);
+		readers.put("resource",
+				(element1, stream1, players1, warner1, idFactory1) ->
+						FluidResourceHandler
+																			  .readResource(
+																					  element1,
+																					  stream1,
+																					  players1,
+																					  warner1,
+																					  idFactory1));
+		readers.put("cache",
+				(element3, stream3, players3, warner3, idFactory3) ->
+						FluidResourceHandler
+																			  .readCache(
+																					  element3,
+																					  stream3,
+																					  players3,
+																					  warner3,
+																					  idFactory3));
+		readers.put("grove",
+				(element4, stream4, players4, warner4, idFactory4) ->
+						FluidResourceHandler
+																			  .readGrove(
+																					  element4,
+																					  stream4,
+																					  players4,
+																					  warner4,
+																					  idFactory4));
+		readers.put("orchard",
+				(element2, stream2, players2, warner2, idFactory2) ->
+						FluidResourceHandler
+																			  .readOrchard(
+																					  element2,
+																					  stream2,
+																					  players2,
+																					  warner2,
+																					  idFactory2));
+		readers.put("meadow",
+				(element, stream, players, warner, idFactory) -> FluidResourceHandler
+																		 .readMeadow(
+																				 element,
+																				 stream,
+																				 players,
+																				 warner,
+																				 idFactory));
+		readers.put("field",
+				(element5, stream5, players5, warner5, idFactory5) ->
+						FluidResourceHandler
+																			  .readField(
+																					  element5,
+																					  stream5,
+																					  players5,
+																					  warner5,
+																					  idFactory5));
+		readers.put("mine",
+				(element6, stream6, players6, warner6, idFactory6) ->
+						FluidResourceHandler
+																			  .readMine(
+																					  element6,
+																					  stream6,
+																					  players6,
+																					  warner6,
+																					  idFactory6));
+		readers.put("mineral",
+				(element5, stream5, players5, warner5, idFactory5) ->
+						FluidResourceHandler
+																			  .readMineral(
+																					  element5,
+																					  stream5,
+																					  players5,
+																					  warner5,
+																					  idFactory5));
+		readers.put("shrub",
+				(element2, stream2, players2, warner2, idFactory2) ->
+						FluidResourceHandler
+																			  .readShrub(
+																					  element2,
+																					  stream2,
+																					  players2,
+																					  warner2,
+																					  idFactory2));
+		readers.put("stone",
+				(element1, stream1, players1, warner1, idFactory1) -> FluidResourceHandler
+																			  .readStone(
+																					  element1,
+																					  stream1,
+																					  players1,
+																					  warner1,
+																					  idFactory1));
+		readers.put("worker",
+				(element2, stream2, players2, warner2, idFactory2) -> FluidUnitMemberHandler
+																			  .readWorker(
+																					  element2,
+																					  stream2,
+																					  players2,
+																					  warner2,
+																					  idFactory2));
+		readers.put("job",
+				(element4, stream4, players4, warner4, idFactory4) -> FluidUnitMemberHandler
+																			  .readJob(
+																					  element4,
+																					  stream4,
+																					  players4,
+																					  warner4,
+																					  idFactory4));
+		readers.put("skill",
+				(element2, stream2, players2, warner2, idFactory2) -> FluidUnitMemberHandler
+																			  .readSkill(
+																					  element2,
+																					  stream2,
+																					  players2,
+																					  warner2,
+																					  idFactory2));
+		readers.put("stats",
+				(element3, stream3, players3, warner3, idFactory3) -> FluidUnitMemberHandler
+																			  .readStats(
+																					  element3,
+																					  stream3,
+																					  players3,
+																					  warner3,
+																					  idFactory3));
+		readers.put("unit",
+				(element3, stream3, players3, warner3, idFactory3) -> readUnit(element3,
+						stream3, players3, warner3, idFactory3));
+		readers.put("fortress",
+				(element2, stream2, players2, warner2, idFactory2) -> readFortress(
+						element2, stream2, players2, warner2, idFactory2));
+		readers.put("town",
+				(element4, stream4, players4, warner4, idFactory4) -> FluidTownHandler
+																			  .readTown(
+																					  element4,
+																					  stream4,
+																					  players4,
+																					  warner4,
+																					  idFactory4));
+		readers.put("city",
+				(element1, stream1, players1, warner1, idFactory1) -> FluidTownHandler
+																			  .readCity(
+																					  element1,
+																					  stream1,
+																					  players1,
+																					  warner1,
+																					  idFactory1));
+		readers.put("fortification",
+				(element3, stream3, players3, warner3, idFactory3) -> FluidTownHandler
+																			  .readFortification(
+																					  element3,
+																					  stream3,
+																					  players3,
+																					  warner3,
+
+																					  idFactory3));
+		readers.put("village",
+				(element, stream, players, warner, idFactory) -> FluidTownHandler
+																		 .readVillage(
+																				 element,
+																				 stream,
+																				 players,
+																				 warner,
+																				 idFactory));
+		readers.put("map",
+				(element1, stream1, players1, warner1, idFactory1) -> readMap(element1,
+						stream1, players1, warner1, idFactory1));
+		readers.put("view",
+				(element2, stream2, players2, warner2, idFactory2) -> readMap(element2,
+						stream2, players2, warner2, idFactory2));
+		readers.put("river",
+				(element1, stream1, players1, warner1, idFactory1) -> FluidTerrainHandler
+																			  .readRiver(
+																					  element1,
+																					  stream1,
+																					  players1,
+																					  warner1,
+																					  idFactory1));
+		readers.put("lake",
+				(element, stream, players, warner, idFactory) -> FluidTerrainHandler
+																		 .readLake(
+																				 element,
+																				 stream,
+																				 players,
+																				 warner,
+																				 idFactory));
+		readers.put("player",
+				(element, stream, players, warner, idFactory) -> readPlayer(element,
+						stream, players, warner, idFactory));
 	}
 	/**
 	 * @param <T>     A supertype of the object the XML represents
@@ -180,7 +407,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		final Iterable<XMLEvent> eventReader =
 				new IteratorWrapper<>(new IncludingIterator(file, reader));
 		final IMutablePlayerCollection players = new PlayerCollection();
-		final IDFactory idFactory = new IDFactory();
+		final IDRegistrar idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final Object retval = readSPObject(
@@ -242,7 +469,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 							   final Iterable<XMLEvent> stream,
 							   final IMutablePlayerCollection players,
 							   final Warning warner,
-							   final IDFactory idFactory)
+							   final IDRegistrar idFactory)
 			throws SPFormatException, IllegalArgumentException {
 		final String namespace = element.getName().getNamespaceURI();
 		final String tag = element.getName().getLocalPart().toLowerCase();
@@ -318,7 +545,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	private Unit readUnit(final StartElement element,
 					 final Iterable<XMLEvent> stream,
 					 final IMutablePlayerCollection players, final Warning warner,
-					 final IDFactory idFactory) throws SPFormatException {
+					 final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "unit");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		requireNonEmptyAttribute(element, "owner", false, warner);
@@ -374,7 +601,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 											  final Iterable<XMLEvent> stream,
 											  final IMutablePlayerCollection players,
 											  final Warning warner,
-											  final IDFactory idFactory)
+											  final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireNonEmptyAttribute(element, "owner", false, warner);
 		requireNonEmptyAttribute(element, "name", false, warner);
@@ -416,7 +643,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	private IMutableMapNG readMap(final StartElement element,
 										final Iterable<XMLEvent> stream,
 										final IMutablePlayerCollection players,
-										final Warning warner, final IDFactory idFactory)
+										final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, "map", "view");
 		final int currentTurn;
@@ -515,7 +742,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 						   final StartElement element,
 						   final Iterable<XMLEvent> stream,
 						   final IMutablePlayerCollection players, final Warning warner,
-						   final IDFactory idFactory) throws SPFormatException {
+						   final IDRegistrar idFactory) throws SPFormatException {
 		final Point point = PointFactory.point(getIntegerAttribute(element, "row"),
 				getIntegerAttribute(element, "column"));
 		// Tiles have been known to be *written* without "kind" and then fail to load, so
@@ -646,7 +873,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	private static Player readPlayer(final StartElement element,
 					   final Iterable<XMLEvent> stream,
 					   final IMutablePlayerCollection players, final Warning warner,
-					   final IDFactory idFactory) throws SPFormatException {
+					   final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, "player");
 		requireNonEmptyAttribute(element, "number", true, warner);
 		requireNonEmptyAttribute(element, "code_name", true, warner);
