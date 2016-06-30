@@ -1,6 +1,7 @@
 package model.map;
 
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
+import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.mobile.Griffin;
 import model.map.fixtures.mobile.Ogre;
 import model.map.fixtures.mobile.Unit;
@@ -477,6 +479,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 					except.getTag().getLocalPart(), equalTo("unknown"));
 			assertThat("Unwanted child was the one we expected",
 					except.getChild(), equalTo(new QName("xyzzy", "map")));
+		}
+		try {
+			assertUnwantedChild(
+					"<adventure xmlns=\"xyzzy\" id=\"1\" brief=\"one\" full=\"two\" />",
+					AdventureFixture.class, false);
+		} catch (final UnsupportedTagException except) {
+			assertThat("Unsupported tag is because of unsupported namespace",
+					except.getTag().getNamespaceURI(), equalTo("xyzzy"));
 		}
 	}
 
