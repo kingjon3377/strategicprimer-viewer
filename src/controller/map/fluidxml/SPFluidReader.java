@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.function.IntFunction;
 import java.util.regex.Pattern;
@@ -175,7 +176,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	public <@NonNull T> T readXML(final File file, final Reader istream,
 								  final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream);
+		final Iterator<XMLEvent> reader = new TypesafeXMLEventReader(istream);
 		final Iterable<XMLEvent> eventReader =
 				new IteratorWrapper<>(new IncludingIterator(file, reader));
 		final IMutablePlayerCollection players = new PlayerCollection();
