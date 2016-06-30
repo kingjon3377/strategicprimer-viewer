@@ -9,7 +9,6 @@ import java.util.Map;
 import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.fixtures.mobile.worker.IJob;
-import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -76,7 +75,7 @@ public class Worker implements IWorker, HasPortrait {
 	 * @param jobs       the Jobs the worker is trained in
 	 */
 	public Worker(final String wName, final String workerRace, final int idNum,
-				final @NonNull Job @NonNull ... jobs) {
+				final @NonNull IJob @NonNull ... jobs) {
 		name = wName;
 		id = idNum;
 		race = workerRace;
