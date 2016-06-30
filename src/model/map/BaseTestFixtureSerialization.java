@@ -642,6 +642,31 @@ public abstract class BaseTestFixtureSerialization {
 	}
 
 	/**
+	 * Assert that the given object, if serialized and deserialized, will have its portrait
+	 * property preserved. We modify its image property, but set it back to the original
+	 * value before exiting the method.
+	 *
+	 * @param message the message to use for assertions
+	 * @param obj     the object to serialize
+	 * @throws SPFormatException  on SP XML problem
+	 * @throws XMLStreamException on XML reading problem
+	 * @throws IOException        on I/O error creating serialized form
+	 */
+	protected final void assertPortraitSerialization(final String message,
+												  final HasPortrait obj)
+			throws XMLStreamException, SPFormatException, IOException {
+		final String origImage = obj.getPortrait();
+		obj.setPortrait("portraitForSerialization");
+		assertPortraitSerialization(message, obj, oldReader);
+		assertPortraitSerialization(message, obj, newReader);
+		obj.setPortrait("");
+		assertThat("Empty portrait is not written", createSerializedForm(obj, true),
+				not(containsString("image=")));
+		assertThat("Empty portrait is not written", createSerializedForm(obj, false),
+				not(containsString("image=")));
+		obj.setPortrait(origImage);
+	}
+	/**
 	 * Assert that the given object, if serialized and deserialized, will have its image
 	 * property preserved. We modify its image property, but set it back to the original
 	 * value before exiting the method.
@@ -667,6 +692,34 @@ public abstract class BaseTestFixtureSerialization {
 			assertThat(message,
 					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(),
 							Warning.Ignore).getImage(), equalTo(obj.getImage()));
+		}
+	}
+	/**
+	 * Assert that the given object, if serialized and deserialized, will have its portrait
+	 * property preserved. We modify its image property, but set it back to the original
+	 * value before exiting the method.
+	 *
+	 * @param message the message to use for assertions
+	 * @param obj     the object to serialize
+	 * @param reader  the reader to use
+	 * @throws SPFormatException  on SP XML problem
+	 * @throws XMLStreamException on XML reading problem
+	 * @throws IOException        on I/O error creating serialized form
+	 */
+	private static void assertPortraitSerialization(final String message, final HasPortrait obj,
+												 final ISPReader reader)
+			throws XMLStreamException, SPFormatException, IOException {
+		try (final StringReader stringReader = new StringReader(createSerializedForm(obj,
+				true))) {
+			assertThat(message,
+					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(),
+							Warning.Ignore).getPortrait(), equalTo(obj.getPortrait()));
+		}
+		try (final StringReader stringReader = new StringReader(createSerializedForm(obj,
+				false))) {
+			assertThat(message,
+					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(),
+							Warning.Ignore).getPortrait(), equalTo(obj.getPortrait()));
 		}
 	}
 	/**

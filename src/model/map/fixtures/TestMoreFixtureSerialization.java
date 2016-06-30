@@ -418,7 +418,21 @@ public final class TestMoreFixtureSerialization extends
 				createSerializedForm(secondUnit, false), containsString("some orders"));
 
 	}
-
+	/**
+	 * Test serialization of portraits.
+	 */
+	@Test
+	public void testUnitPortraitSerialization()
+			throws XMLStreamException, IOException, SPFormatException {
+		final Unit unit = new Unit(new Player(1, ""), "kind", "name", 2);
+		unit.setPortrait("portraitFile");
+		assertSerialization("Portrait doesn't mess up serialization", unit, Warning.Die);
+		assertThat("Serialized form contains portrait", createSerializedForm(unit, true),
+				containsString("portraitFile"));
+		assertThat("Serialized form contains portrait", createSerializedForm(unit, false),
+				containsString("portraitFile"));
+		assertPortraitSerialization("Unit portrait property is preservedd", unit);
+	}
 	/**
 	 * Test serialization of adventure hooks and portals.
 	 *

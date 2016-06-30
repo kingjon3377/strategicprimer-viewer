@@ -321,7 +321,6 @@ public abstract class AbstractCompactReader<@NonNull T>
 		if (portrait.isEmpty()) {
 			return "";
 		} else {
-			// TODO: Test that portraits get written
 			return " portrait=\"" + portrait + '"';
 		}
 	}
