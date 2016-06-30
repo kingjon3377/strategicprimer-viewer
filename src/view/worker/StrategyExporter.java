@@ -14,7 +14,6 @@ import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.IWorkerModel;
 import org.eclipse.jdt.annotation.Nullable;
@@ -216,8 +215,8 @@ public final class StrategyExporter implements PlayerChangeListener {
 	 * @return the size of a string for it
 	 */
 	private static int memberStringSize(final UnitMember member) {
-		if (member instanceof Worker) {
-			int size = ((Worker) member).getName().length();
+		if (member instanceof IWorker) {
+			int size = ((IWorker) member).getName().length();
 			size += 2;
 			for (final IJob job : (IWorker) member) {
 				size += 3;
