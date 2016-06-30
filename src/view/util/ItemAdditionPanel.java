@@ -72,14 +72,14 @@ public final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 		category = what;
 		setLayout(layout);
 		setPanelSizes(this);
-		final BoxPanel first = new BoxPanel(true);
+		final JPanel first = new BoxPanel(true);
 		first.add(new ListenedButton("+", evt -> {
 			layout.next(this);
 			field.requestFocusInWindow();
 		}));
 		setPanelSizes(first);
 		add(first);
-		final BoxPanel second = new BoxPanel(false);
+		final JPanel second = new BoxPanel(false);
 		second.add(field);
 		final ActionListener okListener = evt -> {
 			final String text = NullCleaner.assertNotNull(field.getText());
@@ -91,7 +91,7 @@ public final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 		};
 		field.addActionListener(okListener);
 		field.setActionCommand("OK");
-		final BoxPanel okPanel = new BoxPanel(true);
+		final JPanel okPanel = new BoxPanel(true);
 		okPanel.add(new ListenedButton("OK", okListener));
 		okPanel.add(new ListenedButton("Cancel", evt -> {
 			layout.first(this);
