@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.ListSelectionEvent;
@@ -90,7 +91,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		fixList = new FixtureList(this, model, model.getMap().players());
 		final PortraitPanel portrait = new PortraitPanel(fixList);
 		fixList.addListSelectionListener(portrait);
-		final BorderedPanel listPanel =
+		final JPanel listPanel =
 				BorderedPanel.vertical(header, new JScrollPane(fixList), null);
 
 		keyPanel = new KeyPanel(version);
