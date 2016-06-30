@@ -329,8 +329,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * A parser for numeric data.
 	 */
 	private static final NumberFormat NUM_PARSER =
-			assertNotNull(NumberFormat
-																				.getIntegerInstance());
+			assertNotNull(NumberFormat.getIntegerInstance());
 
 
 	/**
