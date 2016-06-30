@@ -3,6 +3,7 @@ package controller.map.drivers;
 import controller.map.misc.IOHandler;
 import javax.swing.SwingUtilities;
 import model.exploration.ExplorationModel;
+import model.exploration.IExplorationModel;
 import model.misc.IDriverModel;
 import view.exploration.ExplorationFrame;
 
@@ -46,9 +47,9 @@ public final class ExplorationGUI implements SimpleDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) {
-		final ExplorationModel explorationModel;
-		if (model instanceof ExplorationModel) {
-			explorationModel = (ExplorationModel) model;
+		final IExplorationModel explorationModel;
+		if (model instanceof IExplorationModel) {
+			explorationModel = (IExplorationModel) model;
 		} else {
 			explorationModel = new ExplorationModel(model);
 		}

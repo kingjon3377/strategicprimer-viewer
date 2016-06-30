@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.stream.Stream;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-import model.exploration.ExplorationModel;
+import model.exploration.IExplorationModel;
 import model.listeners.CompletionListener;
 import util.NullCleaner;
 import view.util.ISPWindow;
@@ -110,7 +110,7 @@ public final class ExplorationFrame extends JFrame implements ISPWindow {
 	 * @param explorationModel    the exploration model
 	 * @param ioHandler Passed to menu constructor
 	 */
-	public ExplorationFrame(final ExplorationModel explorationModel,
+	public ExplorationFrame(final IExplorationModel explorationModel,
 							final IOHandler ioHandler) {
 		super("Exploration");
 		if (explorationModel.getMapFile().exists()) {

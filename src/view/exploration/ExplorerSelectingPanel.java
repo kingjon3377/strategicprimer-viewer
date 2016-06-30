@@ -14,8 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.text.Document;
-import model.exploration.ExplorationModel;
 import model.exploration.ExplorationUnitListModel;
+import model.exploration.IExplorationModel;
 import model.exploration.PlayerListModel;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
@@ -98,14 +98,14 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	/**
 	 * The exploration model.
 	 */
-	private final ExplorationModel model;
+	private final IExplorationModel model;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param explorationModel the driver model
 	 */
-	public ExplorerSelectingPanel(final ExplorationModel explorationModel) {
+	public ExplorerSelectingPanel(final IExplorationModel explorationModel) {
 		model = explorationModel;
 		final PlayerListModel playerListModel = new PlayerListModel(explorationModel);
 		explorationModel.addMapChangeListener(playerListModel);

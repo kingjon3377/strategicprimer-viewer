@@ -4,6 +4,7 @@ import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import model.exploration.ExplorationModel;
+import model.exploration.IExplorationModel;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.misc.IDriverModel;
@@ -50,9 +51,9 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		final ExplorationModel explorationModel;
-		if (model instanceof ExplorationModel) {
-			explorationModel = (ExplorationModel) model;
+		final IExplorationModel explorationModel;
+		if (model instanceof IExplorationModel) {
+			explorationModel = (IExplorationModel) model;
 		} else {
 			explorationModel = new ExplorationModel(model);
 		}
