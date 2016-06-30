@@ -1,7 +1,6 @@
 package model.map;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A structure encapsulating two coordinates.
@@ -9,7 +8,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Copyright (C) 2011-2014 Jonathan Lovelace
+ * Copyright (C) 2011-2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
@@ -25,84 +24,34 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class Point implements Comparable<@NonNull Point> {
-	/**
-	 * The first coordinate.
-	 */
-	private final int row;
-	/**
-	 * The second coordinate.
-	 */
-	private final int col;
-
+public interface Point extends Comparable<@NonNull Point> {
 	/**
 	 * @return the first coordinate.
 	 */
-	public int getRow() {
-		return row;
-	}
+	int getRow();
 
 	/**
 	 * @return the second coordinate.
 	 */
-	public int getCol() {
-		return col;
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param rowNum The first coordinate
-	 * @param colNum The second coordinate
-	 */
-	public Point(final int rowNum, final int colNum) {
-		row = rowNum;
-		col = colNum;
-	}
-
-	/**
-	 * @param obj the other object
-	 * @return whether this object equals another.
-	 */
-	@Override
-	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Point) && (((Point) obj).row == row) &&
-										(((Point) obj).col == col));
-	}
-
-	/**
-	 * @return a hash code.
-	 */
-	@Override
-	public int hashCode() {
-		return row | col;
-	}
-
+	int getCol();
 	/**
 	 * @param point another point
 	 * @return the result of a comparison with that point
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public int compareTo(final Point point) {
-		if (row > point.row) {
+	default int compareTo(final Point point) {
+		if (getRow() > point.getRow()) {
 			return 1;
-		} else if (row < point.row) {
+		} else if (getRow() < point.getRow()) {
 			return -1;
-		} else if (col > point.col) {
+		} else if (getCol() > point.getCol()) {
 			return 1;
-		} else if (col < point.col) {
+		} else if (getCol() < point.getCol()) {
 			return -1;
 		} else {
 			return 0;
 		}
 	}
 
-	/**
-	 * @return a String representation of the class
-	 */
-	@Override
-	public String toString() {
-		return '(' + Integer.toString(row) + ", " + Integer.toString(col) + ')';
-	}
 }

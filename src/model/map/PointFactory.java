@@ -2,6 +2,7 @@ package model.map;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.eclipse.jdt.annotation.Nullable;
 import view.util.Coordinate;
 
 import static util.NullCleaner.assertNotNull;
@@ -12,7 +13,7 @@ import static util.NullCleaner.assertNotNull;
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Copyright (C) 2011-2014 Jonathan Lovelace
+ * Copyright (C) 2011-2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
@@ -90,11 +91,11 @@ public final class PointFactory {
 						new ConcurrentHashMap<>());
 			}
 			if (!assertNotNull(POINT_CACHE.get(boxedRow)).containsKey(boxedCol)) {
-				assertNotNull(POINT_CACHE.get(boxedRow)).put(boxedCol, new Point(row, col));
+				assertNotNull(POINT_CACHE.get(boxedRow)).put(boxedCol, new PointImpl(row, col));
 			}
 			return assertNotNull(assertNotNull(POINT_CACHE.get(boxedRow)).get(boxedCol));
 		} else {
-			return new Point(row, col);
+			return new PointImpl(row, col);
 		}
 	}
 
@@ -118,6 +119,73 @@ public final class PointFactory {
 			return assertNotNull(assertNotNull(C_CACHE.get(boxedX)).get(boxedY));
 		} else {
 			return new Coordinate(xCoordinate, yCoordinate);
+		}
+	}
+
+	/**
+	 * A structure encapsulating two coordinates.
+	 */
+	private static final class PointImpl implements Point {
+		/**
+		 * The first coordinate.
+		 */
+		private final int row;
+		/**
+		 * The second coordinate.
+		 */
+		private final int col;
+
+		/**
+		 * @return the first coordinate.
+		 */
+		@Override
+		public int getRow() {
+			return row;
+		}
+
+		/**
+		 * @return the second coordinate.
+		 */
+		@Override
+		public int getCol() {
+			return col;
+		}
+
+		/**
+		 * Constructor.
+		 *
+		 * @param rowNum The first coordinate
+		 * @param colNum The second coordinate
+		 */
+		protected PointImpl(final int rowNum, final int colNum) {
+			row = rowNum;
+			col = colNum;
+		}
+
+		/**
+		 * @param obj the other object
+		 * @return whether this object equals another.
+		 */
+		@Override
+		public boolean equals(@Nullable final Object obj) {
+			return (this == obj) || ((obj instanceof Point) && (((Point) obj).getRow() == row) &&
+											(((Point) obj).getCol() == col));
+		}
+
+		/**
+		 * @return a hash code.
+		 */
+		@Override
+		public int hashCode() {
+			return row | col;
+		}
+
+		/**
+		 * @return a String representation of the class
+		 */
+		@Override
+		public String toString() {
+			return '(' + Integer.toString(row) + ", " + Integer.toString(col) + ')';
 		}
 	}
 }
