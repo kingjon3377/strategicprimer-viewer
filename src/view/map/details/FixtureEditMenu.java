@@ -1,5 +1,6 @@
 package view.map.details;
 
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -75,7 +76,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 						final @NonNull IWorkerTreeModel @NonNull ... changeListeners) {
 		Collections.addAll(listeners, changeListeners);
 		boolean immutable = true;
-		final FixtureEditMenu outer = this;
+		final Component outer = this;
 		if (fixture instanceof HasMutableName) {
 			addMenuItem(new JMenuItem("Rename", KeyEvent.VK_N), event -> {
 				final String result = (String) showInputDialog(outer,

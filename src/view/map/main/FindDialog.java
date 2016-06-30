@@ -15,6 +15,7 @@ import java.util.stream.StreamSupport;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -125,7 +126,7 @@ public final class FindDialog extends JDialog {
 		search.addActionListener(okListener);
 		search.setActionCommand("OK");
 
-		final BoxPanel contentPane = new BoxPanel(false);
+		final JPanel contentPane = new BoxPanel(false);
 		contentPane.add(search);
 		contentPane.add(backwards);
 		contentPane.add(vertically);

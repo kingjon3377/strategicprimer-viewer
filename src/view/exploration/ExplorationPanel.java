@@ -165,7 +165,7 @@ public final class ExplorationPanel extends BorderedPanel
 	public ExplorationPanel(final IExplorationModel explorationModel,
 							final Document mpDoc) {
 		model = explorationModel;
-		final BoxPanel headerPanel = new BoxPanel(true);
+		final JPanel headerPanel = new BoxPanel(true);
 		headerPanel.add(new ListenedButton("Select a different explorer", evt -> {
 			for (final CompletionListener list : cListeners) {
 				list.finished();
