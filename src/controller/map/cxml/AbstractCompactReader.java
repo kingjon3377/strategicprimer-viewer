@@ -82,7 +82,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 		final String localName = assertNotNull(element.getName().getLocalPart());
 		final int line = element.getLocation().getLineNumber();
 		if (!EqualsAny.equalsAny(localName, tags)) {
-			// TODO: Tests should exercise this
+			// While we'd like tests to exercise this, we're always careful
+			// to only call readers when we know they support the tag ...
 			throw new UnwantedChildException(new QName("unknown"), element,
 					new IllegalArgumentException(Stream.concat(Stream.of(format(
 						"Unexpected tag %s on line %d, expected one of the following: ",
