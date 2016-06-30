@@ -74,7 +74,6 @@ public abstract class AbstractCompactReader<@NonNull T>
 		if (!EqualsAny.equalsAny(
 				assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-			// TODO: Tests should exercise this
 			// TODO: Pass in parent tag? Somehow?
 			throw new UnwantedChildException(new QName("unknown"), element,
 													new IllegalArgumentException

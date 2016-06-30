@@ -1,8 +1,6 @@
 package controller.map.cxml;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,8 +8,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -21,7 +17,6 @@ import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import org.eclipse.jdt.annotation.NonNull;
-import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -89,11 +84,7 @@ public final class CompactReaderAdapter {
 							final IMutablePlayerCollection players,
 							final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (!EqualsAny.equalsAny(
-				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
-				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-			throw new UnwantedChildException(new QName("unknown"), element);
-		}
+		// Since all impls of necessity check tag's namespace, we leave that to them.
 		final String tag = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		// Handle rivers specially.
 		if ("river".equals(tag) || "lake".equals(tag)) {
