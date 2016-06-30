@@ -58,13 +58,13 @@ public final class TestSubsets {
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testPlayerCollectionSubset() {
-		final PlayerCollection firstCollection = new PlayerCollection();
+	public void testPlayerCollectionSubset() throws IOException {
+		final IMutablePlayerCollection firstCollection = new PlayerCollection();
 		firstCollection.add(new Player(1, ONE_STR));
-		final PlayerCollection secondCollection = new PlayerCollection();
+		final IMutablePlayerCollection secondCollection = new PlayerCollection();
 		secondCollection.add(new Player(1, ONE_STR));
 		secondCollection.add(new Player(2, "two"));
-		final PlayerCollection zero = new PlayerCollection();
+		final IMutablePlayerCollection zero = new PlayerCollection();
 		assertThat("Empty is subset of self",
 				Boolean.valueOf(zero.isSubset(zero, DEV_NULL, "")), equalTo(
 				Boolean.TRUE));
@@ -255,7 +255,7 @@ public final class TestSubsets {
 	 */
 	@Test
 	public void testMapOffByOne() throws IOException {
-		final SPMapNG baseMap =
+		final IMutableMapNG baseMap =
 				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(), -1);
 		baseMap.locationStream()
 				.forEach(point -> baseMap.setBaseTerrain(point, TileType.Plains));
@@ -264,13 +264,13 @@ public final class TestSubsets {
 				new Animal("skunk", false, false, "wild", 1));
 		baseMap.addRivers(PointFactory.point(1, 1), River.East);
 
-		final SPMapNG testMap =
+		final IMutableMapNG testMap =
 				new SPMapNG(baseMap.dimensions(), new PlayerCollection(), -1);
 		testMap.locationStream()
 				.forEach(point -> testMap.setBaseTerrain(point, TileType.Plains));
 		final Forest forest = new Forest("elm", false);
 		final TileFixture animal = new Animal("skunk", false, false, "wild", 1);
-		final Consumer<SPMapNG> testTrue =
+		final Consumer<IMutableMapNG> testTrue =
 				map -> {
 					try {
 						assertThat("Subset holds when fixture(s) placed correctly",
@@ -279,7 +279,7 @@ public final class TestSubsets {
 
 					}
 				};
-		final Consumer<SPMapNG> testFalse = map -> {
+		final Consumer<IMutableMapNG> testFalse = map -> {
 			try {
 				assertThat("Subset fails when fixture(s) off by one",
 						Boolean.valueOf(baseMap.isSubset(map, DEV_NULL, "")), equalTo(Boolean.FALSE));
@@ -290,7 +290,7 @@ public final class TestSubsets {
 		for (final Point point : testMap.locations()) {
 			assertThat("Subset invariant before attempt using " + point,
 					Boolean.valueOf(baseMap.isSubset(testMap, DEV_NULL, "")), equalTo(Boolean.TRUE));
-			final Consumer<SPMapNG> test;
+			final Consumer<IMutableMapNG> test;
 			if (PointFactory.point(1, 1).equals(point)) {
 				test = testTrue;
 			} else {
