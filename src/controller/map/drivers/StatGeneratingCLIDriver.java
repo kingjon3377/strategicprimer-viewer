@@ -29,6 +29,7 @@ import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
@@ -412,7 +413,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 					throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
-			final Worker worker = createSingleWorker(idf, cli);
+			final IWorker worker = createSingleWorker(idf, cli);
 			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 				final IFixture fix = find(pair.first(), unit.getID());
 				if (fix instanceof IUnit) {
@@ -445,7 +446,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			// Can't close a FileSystem, but IDEA screams if we don't use try-with-res ...
 		}
 		for (int i = 0; i < count; i++) {
-			final Worker worker =
+			final IWorker worker =
 					createWorkerFromNameFile(
 							NullCleaner.assertNotNull(names.get(i).trim()), idf, cli);
 			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
