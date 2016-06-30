@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -96,8 +97,7 @@ public final class ImageLoader {
 	 */
 	public Image loadImage(final String file) throws IOException {
 		if (!cache.containsKey(file)) {
-			try (final ResourceInputStream res = new ResourceInputStream("images/" +
-																				file)) {
+			try (final InputStream res = new ResourceInputStream("images/" + file)) {
 				final BufferedImage image = ImageIO.read(res);
 				if (image == null) {
 					throw new IOException("No reader could read the file");
