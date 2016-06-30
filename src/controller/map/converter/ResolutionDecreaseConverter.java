@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.PlayerCollection;
 import model.map.Point;
@@ -59,7 +60,7 @@ public final class ResolutionDecreaseConverter {
 		final int newCols = old.dimensions().cols / 2;
 		final PlayerCollection players = new PlayerCollection();
 		old.players().forEach(players::add);
-		final SPMapNG retval =
+		final IMutableMapNG retval =
 				new SPMapNG(new MapDimensions(newRows, newCols, 2), players,
 								old.getCurrentTurn());
 		for (int row = 0; row < newRows; row++) {
