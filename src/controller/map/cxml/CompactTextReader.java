@@ -10,7 +10,6 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.TextFixture;
-import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
 
@@ -70,7 +69,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	 */
 	@Override
 	public TextFixture read(final StartElement element,
-							final IteratorWrapper<XMLEvent> stream,
+							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players, final Warning warner,
 							final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "text");

@@ -7,7 +7,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import org.eclipse.jdt.annotation.NonNull;
-import util.IteratorWrapper;
 import util.Warning;
 
 /**
@@ -45,8 +44,8 @@ public interface CompactReader<@NonNull T> {
 	 * @return the object parsed from XML
 	 * @throws SPFormatException on SP format errors
 	 */
-	T read(StartElement element, IteratorWrapper<XMLEvent> stream,
-				IMutablePlayerCollection players, Warning warner, IDFactory idFactory)
+	T read(StartElement element, Iterable<XMLEvent> stream,
+		   IMutablePlayerCollection players, Warning warner, IDFactory idFactory)
 			throws SPFormatException;
 
 	/**

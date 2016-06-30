@@ -37,7 +37,6 @@ import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.EqualsAny;
-import util.IteratorWrapper;
 import util.Warning;
 
 import static java.util.Collections.unmodifiableList;
@@ -111,7 +110,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 */
 	@Override
 	public IMutableMapNG read(final StartElement element,
-							final IteratorWrapper<XMLEvent> stream,
+							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players,
 							final Warning warner,
 							final IDFactory idFactory) throws SPFormatException {
@@ -320,7 +319,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private TileFixture parseFixture(final StartElement element,
-									final IteratorWrapper<XMLEvent> stream,
+									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
 									final IDFactory idFactory,
 									final Warning warner) throws SPFormatException {

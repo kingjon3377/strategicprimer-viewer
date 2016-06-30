@@ -24,7 +24,6 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.TownStatus;
-import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
 
@@ -108,7 +107,7 @@ public final class CompactResourceReader extends
 	 */
 	@Override
 	public HarvestableFixture read(final StartElement element,
-								final IteratorWrapper<XMLEvent> stream,
+								final Iterable<XMLEvent> stream,
 								final IMutablePlayerCollection players,
 								final Warning warner,
 								final IDFactory idFactory) throws SPFormatException {

@@ -33,7 +33,6 @@ import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
-import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
 
@@ -123,7 +122,7 @@ public final class CompactMobileReader extends
 	 */
 	@Override
 	public MobileFixture read(final StartElement element,
-							final IteratorWrapper<XMLEvent> stream,
+							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players,
 							final Warning warner,
 							final IDFactory idFactory) throws SPFormatException {

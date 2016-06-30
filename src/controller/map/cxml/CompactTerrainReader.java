@@ -20,7 +20,6 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
-import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
 
@@ -88,7 +87,7 @@ public final class CompactTerrainReader extends
 	 */
 	@Override
 	public TerrainFixture read(final StartElement element,
-							final IteratorWrapper<XMLEvent> stream,
+							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players,
 							final Warning warner,
 							final IDFactory idFactory) throws SPFormatException {

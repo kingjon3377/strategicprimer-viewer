@@ -18,7 +18,6 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
-import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
 import view.util.SystemOut;
@@ -91,7 +90,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 */
 	@Override
 	public Unit read(final StartElement element,
-					final IteratorWrapper<XMLEvent> stream,
+					final Iterable<XMLEvent> stream,
 					final IMutablePlayerCollection players, final Warning warner,
 					final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, UNIT_TAG);
@@ -140,7 +139,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private UnitMember parseChild(final StartElement element,
-								final IteratorWrapper<XMLEvent> stream,
+								final Iterable<XMLEvent> stream,
 								final IMutablePlayerCollection players,
 								final IDFactory idFactory,
 								final Warning warner) throws SPFormatException {

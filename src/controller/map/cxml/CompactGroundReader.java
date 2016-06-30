@@ -7,7 +7,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.Ground;
-import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
 
@@ -58,7 +57,7 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	 */
 	@Override
 	public Ground read(final StartElement element,
-						final IteratorWrapper<XMLEvent> stream,
+						final Iterable<XMLEvent> stream,
 						final IMutablePlayerCollection players, final Warning warner,
 						final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "ground");

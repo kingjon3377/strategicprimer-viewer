@@ -1,18 +1,16 @@
 package controller.map.cxml;
 
-import java.io.IOException;
-import java.util.Random;
-import java.util.logging.Logger;
-
-import javax.xml.XMLConstants;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
+import java.util.Random;
+import java.util.logging.Logger;
+import javax.xml.XMLConstants;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
@@ -31,7 +29,6 @@ import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
 import util.EqualsAny;
-import util.IteratorWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
@@ -107,7 +104,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 */
 	@Override
 	public ITownFixture read(final StartElement element,
-							final IteratorWrapper<XMLEvent> stream,
+							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players,
 							final Warning warner,
 							final IDFactory idFactory) throws SPFormatException {
@@ -230,7 +227,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static ITownFixture parseFortress(final StartElement element,
-											final IteratorWrapper<XMLEvent> stream,
+											final Iterable<XMLEvent> stream,
 											final IMutablePlayerCollection players,
 											final Warning warner,
 											final IDFactory idFactory)

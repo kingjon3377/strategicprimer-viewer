@@ -8,7 +8,6 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.PointFactory;
 import model.map.fixtures.explorable.Portal;
-import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
 
@@ -54,7 +53,7 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 	 */
 	@Override
 	public Portal read(final StartElement element,
-						final IteratorWrapper<XMLEvent> stream,
+						final Iterable<XMLEvent> stream,
 						final IMutablePlayerCollection players, final Warning warner,
 						final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "portal");

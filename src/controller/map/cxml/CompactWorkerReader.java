@@ -19,7 +19,6 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
-import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
 
@@ -72,7 +71,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 */
 	@Override
 	public Worker read(final StartElement element,
-					final IteratorWrapper<XMLEvent> stream,
+					final Iterable<XMLEvent> stream,
 					final IMutablePlayerCollection players, final Warning warner,
 					final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "worker");
