@@ -1,25 +1,23 @@
 package controller.map.cxml;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Iterator;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
+import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -63,7 +61,7 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 	public <@NonNull T> T readXML(final File file, final Reader istream,
 								final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream);
+		final Iterator<XMLEvent> reader = new TypesafeXMLEventReader(istream);
 		final IteratorWrapper<XMLEvent> eventReader =
 				new IteratorWrapper<>(new IncludingIterator(file, reader));
 		final IMutablePlayerCollection players = new PlayerCollection();
