@@ -301,8 +301,8 @@ public final class MapComponent extends JComponent
 	 * current bounds.
 	 */
 	private boolean isSelectionVisible() {
-		final int selRow = model.getSelectedPoint().row;
-		final int selCol = model.getSelectedPoint().col;
+		final int selRow = model.getSelectedPoint().getRow();
+		final int selCol = model.getSelectedPoint().getCol();
 		final int minRow = model.getDimensions().getMinimumRow();
 		final int maxRow = model.getDimensions().getMaximumRow();
 		final int minCol = model.getDimensions().getMinimumCol();
@@ -318,8 +318,8 @@ public final class MapComponent extends JComponent
 	 * Fix the visible dimensions to include the selected tile.
 	 */
 	private void fixVisibility() {
-		final int selRow = Math.max(model.getSelectedPoint().row, 0);
-		final int selCol = Math.max(model.getSelectedPoint().col, 0);
+		final int selRow = Math.max(model.getSelectedPoint().getRow(), 0);
+		final int selCol = Math.max(model.getSelectedPoint().getCol(), 0);
 		int minRow = model.getDimensions().getMinimumRow();
 		int maxRow = model.getDimensions().getMaximumRow();
 		int minCol = model.getDimensions().getMinimumCol();

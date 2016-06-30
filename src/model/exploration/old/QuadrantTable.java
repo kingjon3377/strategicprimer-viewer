@@ -93,8 +93,8 @@ public final class QuadrantTable implements EncounterTable {
 	public String getQuadrantValue(final int row, final int col) {
 		Point bestKey = PointFactory.point(-1, -1);
 		for (final Point iter : quadrants.keySet()) {
-			if ((iter.row <= row) && (iter.row > bestKey.row) && (iter.col <= col) &&
-						(iter.col > bestKey.col)) {
+			if ((iter.getRow() <= row) && (iter.getRow() > bestKey.getRow()) && (iter.getCol() <= col) &&
+						(iter.getCol() > bestKey.getCol())) {
 				bestKey = iter;
 			}
 		}
@@ -110,7 +110,7 @@ public final class QuadrantTable implements EncounterTable {
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
 								final Iterable<TileFixture> fixtures) {
-		return getQuadrantValue(point.row, point.col);
+		return getQuadrantValue(point.getRow(), point.getCol());
 	}
 	/**
 	 * @param terrain  ignored
@@ -121,7 +121,7 @@ public final class QuadrantTable implements EncounterTable {
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
 								final Stream<TileFixture> fixtures) {
-		return getQuadrantValue(point.row, point.col);
+		return getQuadrantValue(point.getRow(), point.getCol());
 	}
 
 	/**

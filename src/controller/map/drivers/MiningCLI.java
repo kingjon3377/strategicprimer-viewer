@@ -87,8 +87,8 @@ public final class MiningCLI {
 				NullCleaner.assertNotNull(LodeStatus.values()[index]);
 		final MiningModel model = new MiningModel(initial, seed);
 		final Point lowerRight = model.getMaxPoint();
-		final int maxCol = lowerRight.col + 1;
-		final int maxRow = lowerRight.row + 1;
+		final int maxCol = lowerRight.getCol() + 1;
+		final int maxRow = lowerRight.getRow() + 1;
 		final String out = args[0];
 		try (final PrintWriter ostream = new PrintWriter(new FileWriter(out))) {
 			for (int row = 0; row < maxRow; row++) {

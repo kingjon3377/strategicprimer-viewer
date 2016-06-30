@@ -80,11 +80,11 @@ public final class ScrollListener
 		mapDimensions = mapDim;
 		horizontalBar = horizontal;
 		final Point selPoint = map.getSelectedPoint();
-		horizontalBar.getModel().setRangeProperties(Math.max(selPoint.col, 0), 1, 0,
+		horizontalBar.getModel().setRangeProperties(Math.max(selPoint.getCol(), 0), 1, 0,
 				mapDim.cols - map.getDimensions().getWidth(), false);
 		horizontalBar.setInputVerifier(new LocalInputVerifier(mapDim, map, true));
 		verticalBar = vertical;
-		verticalBar.getModel().setRangeProperties(Math.max(selPoint.row, 0), 1, 0,
+		verticalBar.getModel().setRangeProperties(Math.max(selPoint.getRow(), 0), 1, 0,
 				mapDim.rows - map.getDimensions().getHeight(), false);
 		verticalBar.setInputVerifier(new LocalInputVerifier(mapDim, map, false));
 		final AdjustmentListener adjList = evt -> model.setDimensions(
@@ -134,10 +134,10 @@ public final class ScrollListener
 								final VisibleDimensions newDim) {
 		dimensions = newDim;
 		horizontalBar.getModel().setRangeProperties(
-				Math.max(model.getSelectedPoint().col, 0), 1, 0,
+				Math.max(model.getSelectedPoint().getCol(), 0), 1, 0,
 				mapDimensions.cols - newDim.getWidth(), false);
 		verticalBar.getModel().setRangeProperties(
-				Math.max(model.getSelectedPoint().row, 0), 1, 0,
+				Math.max(model.getSelectedPoint().getRow(), 0), 1, 0,
 				mapDimensions.rows - newDim.getHeight(), false);
 	}
 
@@ -161,13 +161,13 @@ public final class ScrollListener
 	@Override
 	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		final VisibleDimensions visibleDims = model.getDimensions();
-		if (!isInRange(visibleDims.getMinimumCol(), newPoint.col,
+		if (!isInRange(visibleDims.getMinimumCol(), newPoint.getCol(),
 				visibleDims.getMaximumCol())) {
-			horizontalBar.getModel().setValue(Math.max(newPoint.col, 0));
+			horizontalBar.getModel().setValue(Math.max(newPoint.getCol(), 0));
 		}
-		if (!isInRange(visibleDims.getMinimumRow(), newPoint.row,
+		if (!isInRange(visibleDims.getMinimumRow(), newPoint.getRow(),
 				visibleDims.getMaximumRow())) {
-			verticalBar.getModel().setValue(Math.max(newPoint.row, 0));
+			verticalBar.getModel().setValue(Math.max(newPoint.getRow(), 0));
 		}
 	}
 

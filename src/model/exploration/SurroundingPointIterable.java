@@ -66,8 +66,8 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 			final int upperBound = rad + 1;
 			for (int row = lowerBound; row < upperBound; row++) {
 				for (int col = lowerBound; col < upperBound; col++) {
-					points.add(point(roundRow(starting.row + row, dimensions),
-							roundCol(starting.col + col, dimensions)));
+					points.add(point(roundRow(starting.getRow() + row, dimensions),
+							roundCol(starting.getCol() + col, dimensions)));
 				}
 			}
 		}

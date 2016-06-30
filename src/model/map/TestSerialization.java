@@ -103,7 +103,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	private static IMapNG encapsulateRivers(final Point point,
 											final River... rivers) {
 		final IMutableMapNG retval =
-				new SPMapNG(new MapDimensions(point.row + 1, point.col + 1, 2),
+				new SPMapNG(new MapDimensions(point.getRow() + 1, point.getCol() + 1, 2),
 								new PlayerCollection(), -1);
 		retval.setBaseTerrain(point, Plains);
 		retval.addRivers(point, assertNotNull(rivers));
@@ -192,9 +192,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@SafeVarargs
 	private static IMutableMapNG createSimpleMap(final Point dims,
 												final Pair<Point, TileType>... terrain) {
-		final IMutableMapNG retval = new SPMapNG(new MapDimensions(dims.row, dims.col,
-																		2),
-														new PlayerCollection(), -1);
+		final IMutableMapNG retval =
+				new SPMapNG(new MapDimensions(dims.getRow(), dims.getCol(), 2),
+								   new PlayerCollection(), -1);
 		for (final Pair<Point, TileType> pair : terrain) {
 			retval.setBaseTerrain(pair.first(), pair.second());
 		}

@@ -102,8 +102,8 @@ public interface ITableGenerator<@NonNull T> {
 	 * @return the square of the distance between them
 	 */
 	default int distance(final Point first, final Point second) {
-		return ((first.col - second.col) * (first.col - second.col)) +
-					   ((first.row - second.row) * (first.row - second.row));
+		return ((first.getCol() - second.getCol()) * (first.getCol() - second.getCol())) +
+					   ((first.getRow() - second.getRow()) * (first.getRow() - second.getRow()));
 	}
 
 	/**

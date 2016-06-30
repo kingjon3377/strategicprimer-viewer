@@ -3,7 +3,6 @@ package controller.map.fluidxml;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import javax.xml.XMLConstants;
@@ -24,11 +23,11 @@ import util.Warning;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
-import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
@@ -253,8 +252,10 @@ public final class FluidExplorableHandler {
 		final Portal portal = (Portal) obj;
 		writeTag(ostream, "portal", indent);
 		writeAttribute(ostream, "world", portal.getDestinationWorld());
-		writeIntegerAttribute(ostream, "row", portal.getDestinationCoordinates().row);
-		writeIntegerAttribute(ostream, "column", portal.getDestinationCoordinates().col);
+		writeIntegerAttribute(ostream, "row",
+				portal.getDestinationCoordinates().getRow());
+		writeIntegerAttribute(ostream, "column",
+				portal.getDestinationCoordinates().getCol());
 		writeIntegerAttribute(ostream, "id", portal.getID());
 		writeImage(ostream, portal);
 		ostream.append(" />\n");

@@ -1,6 +1,5 @@
 package controller.map.report.tabular;
 
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import controller.map.report.IReportGenerator;
@@ -106,7 +105,7 @@ public final class TableReportGenerator {
 							((Fortress) fixture).getOwner().equals(player)) {
 					if ("HQ".equals(((Fortress) fixture).getName())) {
 						return location;
-					} else if ((location.row >= 0) && (retval.row == -1)) {
+					} else if ((location.getRow() >= 0) && (retval.getRow() == -1)) {
 						retval = location;
 					}
 				}

@@ -29,11 +29,11 @@ public final class Point implements Comparable<@NonNull Point> {
 	/**
 	 * The first coordinate.
 	 */
-	public final int row;
+	private final int row;
 	/**
 	 * The second coordinate.
 	 */
-	public final int col;
+	private final int col;
 
 	/**
 	 * @return the first coordinate.

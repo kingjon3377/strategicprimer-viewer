@@ -141,8 +141,8 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 				startCol = 0;
 			}
 		} else {
-			startRow = wrap(sel.row, maxRow);
-			startCol = wrap(sel.col, maxCol);
+			startRow = wrap(sel.getRow(), maxRow);
+			startCol = wrap(sel.getCol(), maxCol);
 		}
 		row = startRow;
 		col = startCol;

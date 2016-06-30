@@ -180,7 +180,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 							hqLoc = location;
 							found = true;
 							break;
-						} else if ((hqLoc.row < 0) && (location.row >= 0)) {
+						} else if ((hqLoc.getRow() < 0) && (location.getRow() >= 0)) {
 							hqLoc = location;
 							break;
 						}

@@ -3,7 +3,6 @@ package controller.map.converter;
 import controller.exploration.TableLoader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import controller.map.misc.MapReaderAdapter;
@@ -187,8 +186,8 @@ public final class OneToTwoConverter {
 		if (doesPointHaveContents(oldMap, point)) {
 			for (int i = 0; i < RES_JUMP; i++) {
 				for (int j = 0; j < RES_JUMP; j++) {
-					final int row = (point.row * RES_JUMP) + i;
-					final int col = (point.col * RES_JUMP) + j;
+					final int row = (point.getRow() * RES_JUMP) + i;
+					final int col = (point.getCol() * RES_JUMP) + j;
 					final Point subPoint = PointFactory.point(row, col);
 					newMap.setBaseTerrain(subPoint, oldMap.getBaseTerrain(point));
 					initial.add(subPoint);
@@ -251,8 +250,9 @@ public final class OneToTwoConverter {
 			}
 			if (iterations == MAX_ITERATIONS) {
 				LOGGER.severe(
-						"Maximum number of iterations reached on tile (" + point.row +
-								", " + point.col + "); forcing ...");
+						"Maximum number of iterations reached on tile (" +
+								point.getRow() + ", " + point.getCol() +
+								"); forcing ...");
 				while (!fixtures.isEmpty()) {
 					final Point subTile = assertNotNull(initial.get(0));
 					newMap.addFixture(subTile,
@@ -514,8 +514,8 @@ public final class OneToTwoConverter {
 	 * @return the locations of its neighbors.
 	 */
 	private static Stream<Point> getNeighbors(final Point point) {
-		final int row = point.row;
-		final int col = point.col;
+		final int row = point.getRow();
+		final int col = point.getCol();
 		return
 				assertNotNull(Stream.of(PointFactory.point(row - 1, col - 1),
 						PointFactory.point(row - 1, col),
@@ -616,7 +616,7 @@ public final class OneToTwoConverter {
 	 * @return a seed for the RNG for conversion based on the given tile
 	 */
 	private static long getSeed(final Point point) {
-		return (long) point.col << (32L + point.row);
+		return (long) point.getCol() << (32L + point.getRow());
 	}
 
 	/**

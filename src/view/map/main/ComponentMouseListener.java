@@ -6,9 +6,6 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.map.IMapNG;
@@ -23,6 +20,7 @@ import model.map.fixtures.terrain.Mountain;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
+import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.NullCleaner;
 
@@ -85,7 +83,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 													+ dimensions.getMinimumRow(),
 				(eventPoint.x / tileSize)
 						+ dimensions.getMinimumCol());
-		if ((point.row < mapDim.getRows()) && (point.col < mapDim.getColumns())) {
+		if ((point.getRow() < mapDim.getRows()) && (point.getCol() < mapDim.getColumns())) {
 			return concat("<html><body>", point.toString(), ": ", model
 																		.getMap()
 																		.getBaseTerrain(
@@ -160,7 +158,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 														+ dimensions.getMinimumRow(),
 					(eventPoint.x / tileSize)
 							+ dimensions.getMinimumCol());
-			if ((point.row < mapDim.getRows()) && (point.col < mapDim.getColumns())) {
+			if ((point.getRow() < mapDim.getRows()) &&
+						(point.getCol() < mapDim.getColumns())) {
 				model.setSelection(point);
 				if (event.isPopupTrigger()) {
 					menu.show(event.getComponent(), event.getX(), event.getY());

@@ -84,9 +84,9 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 		ostream.append(" world=\"");
 		ostream.append(obj.getDestinationWorld());
 		ostream.append("\" row=\"");
-		ostream.append(Integer.toString(obj.getDestinationCoordinates().row));
+		ostream.append(Integer.toString(obj.getDestinationCoordinates().getRow()));
 		ostream.append("\" column=\"");
-		ostream.append(Integer.toString(obj.getDestinationCoordinates().col));
+		ostream.append(Integer.toString(obj.getDestinationCoordinates().getCol()));
 		ostream.append("\" id=\"");
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append("\" ");

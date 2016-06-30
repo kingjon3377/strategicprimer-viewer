@@ -202,8 +202,8 @@ public final class QueryCLI implements SimpleDriver {
 	 */
 	private static double distance(final Point base, final Point dest,
 								final MapDimensions dims) {
-		final int rawXDiff = base.row - dest.row;
-		final int rawYDiff = base.col - dest.col;
+		final int rawXDiff = base.getRow() - dest.getRow();
+		final int rawYDiff = base.getCol() - dest.getCol();
 		final int xDiff;
 		if (rawXDiff < (dims.rows / 2)) {
 			xDiff = rawXDiff;

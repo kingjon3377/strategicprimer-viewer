@@ -357,29 +357,29 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final MapDimensions dims = getMapDimensions();
 		switch (direction) {
 		case East:
-			return PointFactory.point(point.row,
-					increment(point.col, dims.cols - 1));
+			return PointFactory.point(point.getRow(),
+					increment(point.getCol(), dims.cols - 1));
 		case North:
-			return PointFactory.point(decrement(point.row, dims.rows - 1),
-					point.col);
+			return PointFactory.point(decrement(point.getRow(), dims.rows - 1),
+					point.getCol());
 		case Northeast:
-			return PointFactory.point(decrement(point.row, dims.rows - 1),
-					increment(point.col, dims.cols - 1));
+			return PointFactory.point(decrement(point.getRow(), dims.rows - 1),
+					increment(point.getCol(), dims.cols - 1));
 		case Northwest:
-			return PointFactory.point(decrement(point.row, dims.rows - 1),
-					decrement(point.col, dims.cols - 1));
+			return PointFactory.point(decrement(point.getRow(), dims.rows - 1),
+					decrement(point.getCol(), dims.cols - 1));
 		case South:
-			return PointFactory.point(increment(point.row, dims.rows - 1),
-					point.col);
+			return PointFactory.point(increment(point.getRow(), dims.rows - 1),
+					point.getCol());
 		case Southeast:
-			return PointFactory.point(increment(point.row, dims.rows - 1),
-					increment(point.col, dims.cols - 1));
+			return PointFactory.point(increment(point.getRow(), dims.rows - 1),
+					increment(point.getCol(), dims.cols - 1));
 		case Southwest:
-			return PointFactory.point(increment(point.row, dims.rows - 1),
-					decrement(point.col, dims.cols - 1));
+			return PointFactory.point(increment(point.getRow(), dims.rows - 1),
+					decrement(point.getCol(), dims.cols - 1));
 		case West:
-			return PointFactory.point(point.row,
-					decrement(point.col, dims.cols - 1));
+			return PointFactory.point(point.getRow(),
+					decrement(point.getCol(), dims.cols - 1));
 		case Nowhere:
 			return point;
 		default:

@@ -177,8 +177,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 				helper.drawTile(
 						NullCleaner.assertNotNull(image.createGraphics()),
 						map, point,
-						PointFactory.coordinate(point.row * tileSize,
-								point.col * tileSize),
+						PointFactory.coordinate(point.getRow() * tileSize,
+								point.getCol() * tileSize),
 						dimensions);
 			}
 		}
@@ -264,9 +264,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 								final int tileSize) {
 		final Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
 		for (final Point point : map.locations()) {
-			helper.drawTile(pen, map, point,
-					PointFactory.coordinate(point.row * tileSize, point.col * tileSize),
-					dimensions);
+			helper.drawTile(pen, map, point, PointFactory.coordinate(
+					point.getRow() * tileSize, point.getCol() * tileSize), dimensions);
 		}
 	}
 
@@ -356,12 +355,11 @@ public final class DrawHelperComparator implements SimpleDriver {
 									final int tileSize) {
 		final Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
 		for (final Point point : map.locations()) {
-			if ((point.row >= TEST_MIN_ROW) && (point.row < TEST_MAX_ROW)
-						&& (point.col >= TEST_MIN_COL) && (point.col < TEST_MAX_COL)) {
-				helper.drawTile(
-						pen,
-						map, point,
-						PointFactory.coordinate(point.row * tileSize, point.col * tileSize),
+			if ((point.getRow() >= TEST_MIN_ROW) && (point.getRow() < TEST_MAX_ROW) &&
+						(point.getCol() >= TEST_MIN_COL) &&
+						(point.getCol() < TEST_MAX_COL)) {
+				helper.drawTile(pen, map, point, PointFactory.coordinate(
+						point.getRow() * tileSize, point.getCol() * tileSize),
 						dimensions);
 			}
 		}

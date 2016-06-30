@@ -68,13 +68,13 @@ public final class MiningModel {
 				SystemOut.SYS_OUT.append('.');
 			}
 			// Limit the size of the output spreadsheet
-			if ((Math.abs(point.row) > 400) || (Math.abs(point.col) > 300)) {
+			if ((Math.abs(point.getRow()) > 400) || (Math.abs(point.getCol()) > 300)) {
 				pruneCounter++;
 				continue;
 			} else {
-				final Point left = PointFactory.point(point.row, point.col - 1);
-				final Point down = PointFactory.point(point.row + 1, point.col);
-				final Point right = PointFactory.point(point.row, point.col + 1);
+				final Point left = PointFactory.point(point.getRow(), point.getCol() - 1);
+				final Point down = PointFactory.point(point.getRow() + 1, point.getCol());
+				final Point right = PointFactory.point(point.getRow(), point.getCol() + 1);
 				final LodeStatus current;
 				if (unnormalized.containsKey(point)) {
 					current = unnormalized.get(point);
@@ -104,7 +104,7 @@ public final class MiningModel {
 				getMinCol(NullCleaner.assertNotNull(unnormalized.keySet()));
 		for (final Map.Entry<Point, LodeStatus> entry : unnormalized.entrySet()) {
 			final Point key = entry.getKey();
-			data.put(PointFactory.point(key.row, key.col - minCol),
+			data.put(PointFactory.point(key.getRow(), key.getCol() - minCol),
 					entry.getValue());
 		}
 		maxPoint = createMaxPoint(NullCleaner.assertNotNull(data.keySet()));
@@ -130,14 +130,15 @@ public final class MiningModel {
 	}
 
 	/**
+	 * TODO: Use Stream operations for this
 	 * @param set a set of Points
 	 * @return the lowest column in the set
 	 */
 	private static int getMinCol(final Iterable<Point> set) {
 		int retval = 0;
 		for (final Point point : set) {
-			if (point.col < retval) {
-				retval = point.col;
+			if (point.getCol() < retval) {
+				retval = point.getCol();
 			}
 		}
 		return retval;
@@ -151,11 +152,11 @@ public final class MiningModel {
 		int maxCol = 0;
 		int maxRow = 0;
 		for (final Point point : set) {
-			if (point.col > maxCol) {
-				maxCol = point.col;
+			if (point.getCol() > maxCol) {
+				maxCol = point.getCol();
 			}
-			if (point.row > maxRow) {
-				maxRow = point.row;
+			if (point.getRow() > maxRow) {
+				maxRow = point.getRow();
 			}
 		}
 		return PointFactory.point(maxRow, maxCol);

@@ -67,21 +67,22 @@ public final class ZoomListener implements ActionListener {
 				final MapDimensions dims = model.getMapDimensions();
 				final VisibleDimensions vDims = model.getDimensions();
 				final int topRow;
-				if ((selection.row - (vDims.getHeight() / 2)) <= 0) {
+				if ((selection.getRow() - (vDims.getHeight() / 2)) <= 0) {
 					topRow = 0;
-				} else if ((selection.row + (vDims.getHeight() / 2)) >= dims.getRows()) {
+				} else if ((selection.getRow() + (vDims.getHeight() / 2)) >=
+								   dims.getRows()) {
 					topRow = dims.getRows() - vDims.getHeight();
 				} else {
-					topRow = selection.row - (vDims.getHeight() / 2);
+					topRow = selection.getRow() - (vDims.getHeight() / 2);
 				}
 				final int leftColumn;
-				if ((selection.col - (vDims.getWidth() / 2)) <= 0) {
+				if ((selection.getCol() - (vDims.getWidth() / 2)) <= 0) {
 					leftColumn = 0;
-				} else if ((selection.col + (vDims.getWidth() / 2)) >=
+				} else if ((selection.getCol() + (vDims.getWidth() / 2)) >=
 								dims.getColumns()) {
 					leftColumn = dims.getColumns() - vDims.getWidth();
 				} else {
-					leftColumn = selection.col - (vDims.getWidth() / 2);
+					leftColumn = selection.getCol() - (vDims.getWidth() / 2);
 				}
 				model.setDimensions(
 						new VisibleDimensions(topRow, topRow + dims.getRows(),

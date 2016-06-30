@@ -48,10 +48,10 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor up.
 	 */
 	public void up() {
-		if (model.getSelectedPoint().row > 0) {
+		if (model.getSelectedPoint().getRow() > 0) {
 			model.setSelection(PointFactory.point(
-					model.getSelectedPoint().row - 1,
-					model.getSelectedPoint().col));
+					model.getSelectedPoint().getRow() - 1,
+					model.getSelectedPoint().getCol()));
 		}
 	}
 
@@ -59,9 +59,9 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor left.
 	 */
 	public void left() {
-		if (model.getSelectedPoint().col > 0) {
-			model.setSelection(PointFactory.point(model.getSelectedPoint().row,
-					model.getSelectedPoint().col - 1));
+		if (model.getSelectedPoint().getCol() > 0) {
+			model.setSelection(PointFactory.point(model.getSelectedPoint().getRow(),
+					model.getSelectedPoint().getCol() - 1));
 		}
 	}
 
@@ -69,10 +69,10 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor down.
 	 */
 	public void down() {
-		if (model.getSelectedPoint().row < (model.getMapDimensions().rows - 1)) {
+		if (model.getSelectedPoint().getRow() < (model.getMapDimensions().rows - 1)) {
 			model.setSelection(PointFactory.point(
-					model.getSelectedPoint().row + 1,
-					model.getSelectedPoint().col));
+					model.getSelectedPoint().getRow() + 1,
+					model.getSelectedPoint().getCol()));
 		}
 	}
 
@@ -80,9 +80,9 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor right.
 	 */
 	public void right() {
-		if (model.getSelectedPoint().col < (model.getMapDimensions().cols - 1)) {
-			model.setSelection(PointFactory.point(model.getSelectedPoint().row,
-					model.getSelectedPoint().col + 1));
+		if (model.getSelectedPoint().getCol() < (model.getMapDimensions().cols - 1)) {
+			model.setSelection(PointFactory.point(model.getSelectedPoint().getRow(),
+					model.getSelectedPoint().getCol() + 1));
 		}
 	}
 
@@ -90,9 +90,9 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor all the way to the top.
 	 */
 	public void jumpUp() {
-		if (model.getSelectedPoint().row > 0) {
+		if (model.getSelectedPoint().getRow() > 0) {
 			model.setSelection(
-					PointFactory.point(0, model.getSelectedPoint().col));
+					PointFactory.point(0, model.getSelectedPoint().getCol()));
 		}
 	}
 
@@ -100,10 +100,10 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor all the way to the bottom.
 	 */
 	public void jumpDown() {
-		if (model.getSelectedPoint().row < (model.getMapDimensions().rows - 1)) {
+		if (model.getSelectedPoint().getRow() < (model.getMapDimensions().rows - 1)) {
 			model.setSelection(
 					PointFactory.point(model.getMapDimensions().rows - 1,
-							model.getSelectedPoint().col));
+							model.getSelectedPoint().getCol()));
 		}
 	}
 
@@ -111,9 +111,9 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor all the way to the left.
 	 */
 	public void jumpLeft() {
-		if (model.getSelectedPoint().col > 0) {
+		if (model.getSelectedPoint().getCol() > 0) {
 			model.setSelection(
-					PointFactory.point(model.getSelectedPoint().row, 0));
+					PointFactory.point(model.getSelectedPoint().getRow(), 0));
 		}
 	}
 
@@ -121,8 +121,8 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor all the way to the right.
 	 */
 	public void jumpRight() {
-		if (model.getSelectedPoint().col < (model.getMapDimensions().cols - 1)) {
-			model.setSelection(PointFactory.point(model.getSelectedPoint().row,
+		if (model.getSelectedPoint().getCol() < (model.getMapDimensions().cols - 1)) {
+			model.setSelection(PointFactory.point(model.getSelectedPoint().getRow(),
 					model.getMapDimensions().rows - 1));
 		}
 	}
