@@ -221,8 +221,7 @@ public final class TODOFixerDriver {
 					continue;
 				}
 				//noinspection ObjectAllocationInLoop
-				final TODOFixerDriver driver = new TODOFixerDriver(map);
-				driver.fixAllUnits(cli);
+				new TODOFixerDriver(map).fixAllUnits(cli);
 				try {
 					reader.write(file, map);
 				} catch (final IOException e) {
