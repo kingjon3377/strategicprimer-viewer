@@ -385,7 +385,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		 * The image to draw.
 		 */
 		@Nullable
-		private Image portrait;
+		private Image portrait = null;
 		/**
 		 * @param image the image to draw from now on
 		 */
