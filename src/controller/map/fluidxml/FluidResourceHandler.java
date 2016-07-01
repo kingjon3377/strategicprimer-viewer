@@ -3,7 +3,6 @@ package controller.map.fluidxml;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import javax.xml.stream.events.StartElement;

@@ -1,6 +1,5 @@
 package view.resources;
 
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import controller.map.misc.IOHandler;

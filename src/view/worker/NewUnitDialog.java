@@ -1,6 +1,5 @@
 package view.worker;
 
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDRegistrar;
 import java.awt.Dimension;
 import java.awt.GridLayout;

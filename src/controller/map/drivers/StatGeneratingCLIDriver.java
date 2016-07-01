@@ -2,7 +2,6 @@ package controller.map.drivers;
 
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import java.io.File;
