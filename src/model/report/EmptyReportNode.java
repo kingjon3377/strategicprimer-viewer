@@ -208,7 +208,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public EmptyReportNode clone() {
-		throw new RuntimeException("cloning prohibited",
+		throw new IllegalStateException("cloning prohibited",
 										  new CloneNotSupportedException("cloning prohibited"));
 	}
 }

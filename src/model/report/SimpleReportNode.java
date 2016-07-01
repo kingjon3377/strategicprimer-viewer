@@ -231,7 +231,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public SimpleReportNode clone() {
-		throw new RuntimeException("cloning prohibited",
+		throw new IllegalStateException("cloning prohibited",
 										  new CloneNotSupportedException("cloning prohibited"));
 	}
 }

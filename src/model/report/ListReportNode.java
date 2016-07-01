@@ -269,7 +269,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public ListReportNode clone() {
-		throw new RuntimeException("cloning prohibited",
+		throw new IllegalStateException("cloning prohibited",
 										  new CloneNotSupportedException("cloning prohibited"));
 	}
 }

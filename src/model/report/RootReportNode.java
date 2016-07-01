@@ -230,7 +230,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public RootReportNode clone() {
-		throw new RuntimeException("cloning prohibited",
+		throw new IllegalStateException("cloning prohibited",
 										  new CloneNotSupportedException("cloning prohibited"));
 	}
 }
