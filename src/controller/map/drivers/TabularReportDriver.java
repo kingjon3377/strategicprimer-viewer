@@ -43,6 +43,7 @@ public class TabularReportDriver implements SimpleDriver {
 								   "Produce CSV reports of contents of a map.",
 								   TabularReportDriver.class);
 
+	@SuppressWarnings("ErrorNotRethrown")
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
