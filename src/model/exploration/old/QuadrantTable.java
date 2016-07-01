@@ -93,8 +93,8 @@ public final class QuadrantTable implements EncounterTable {
 	public String getQuadrantValue(final int row, final int col) {
 		Point bestKey = PointFactory.point(-1, -1);
 		for (final Point iter : quadrants.keySet()) {
-			if ((iter.getRow() <= row) && (iter.getRow() > bestKey.getRow()) && (iter.getCol() <= col) &&
-						(iter.getCol() > bestKey.getCol())) {
+			if ((iter.getRow() <= row) && (iter.getRow() > bestKey.getRow()) &&
+						(iter.getCol() <= col) && (iter.getCol() > bestKey.getCol())) {
 				bestKey = iter;
 			}
 		}

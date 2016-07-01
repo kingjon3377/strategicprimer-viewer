@@ -706,8 +706,9 @@ public abstract class BaseTestFixtureSerialization {
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException        on I/O error creating serialized form
 	 */
-	private static void assertPortraitSerialization(final String message, final HasPortrait obj,
-												 final ISPReader reader)
+	private static void assertPortraitSerialization(final String message,
+													final HasPortrait obj,
+													final ISPReader reader)
 			throws XMLStreamException, SPFormatException, IOException {
 		try (final StringReader stringReader = new StringReader(createSerializedForm(obj,
 				true))) {
