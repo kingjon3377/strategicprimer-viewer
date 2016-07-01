@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.HasMutableImage;
+import model.map.HasPortrait;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
@@ -253,7 +254,7 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testTextSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
-		final TextFixture firstText = new TextFixture("one", -1);
+		final TileFixture firstText = new TextFixture("one", -1);
 		assertSerialization("First test of TextFixture serialization, reflection",
 				firstText);
 		final TextFixture secondText = new TextFixture("two", 2);
@@ -426,7 +427,7 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testUnitPortraitSerialization()
 			throws XMLStreamException, IOException, SPFormatException {
-		final Unit unit = new Unit(new Player(1, ""), "kind", "name", 2);
+		final HasPortrait unit = new Unit(new Player(1, ""), "kind", "name", 2);
 		unit.setPortrait("portraitFile");
 		assertSerialization("Portrait doesn't mess up serialization", unit, Warning.Die);
 		assertThat("Serialized form contains portrait", createSerializedForm(unit, true),

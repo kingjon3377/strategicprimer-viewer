@@ -471,7 +471,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @return the generated worker
 	 * @throws IOException on I/O error interacting with the user
 	 */
-	private static Worker createSingleWorker(final IDRegistrar idf,
+	private static IWorker createSingleWorker(final IDRegistrar idf,
 			final ICLIHelper cli) throws IOException {
 		final String race = RaceFactory.getRace();
 		final String name = cli.inputString("Worker is a " + race
@@ -650,7 +650,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @return the generated worker
 	 * @throws IOException on I/O error interacting with the user
 	 */
-	private static Worker createWorkerFromNameFile(final String name,
+	private static IWorker createWorkerFromNameFile(final String name,
 			final IDRegistrar idf, final ICLIHelper cli) throws IOException {
 		final String race = RaceFactory.getRace();
 		cli.printf("Worker %s is a %s%n", name, race);

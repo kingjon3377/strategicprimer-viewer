@@ -80,7 +80,7 @@ public final class CompactReaderAdapter {
 	 * @throws SPFormatException on SP format problems
 	 */
 	public static Object parse(final StartElement element,
-							final IteratorWrapper<XMLEvent> stream,
+							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players,
 							final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {

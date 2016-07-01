@@ -64,7 +64,7 @@ public final class TestSubsets {
 		final IMutablePlayerCollection secondCollection = new PlayerCollection();
 		secondCollection.add(new Player(1, ONE_STR));
 		secondCollection.add(new Player(2, "two"));
-		final IMutablePlayerCollection zero = new PlayerCollection();
+		final IPlayerCollection zero = new PlayerCollection();
 		assertThat("Empty is subset of self",
 				Boolean.valueOf(zero.isSubset(zero, DEV_NULL, "")), equalTo(
 				Boolean.TRUE));
