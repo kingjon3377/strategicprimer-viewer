@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
+import java.util.stream.StreamSupport;
 import model.map.Point;
 import model.map.PointFactory;
 import util.NullCleaner;
@@ -130,18 +131,12 @@ public final class MiningModel {
 	}
 
 	/**
-	 * TODO: Use Stream operations for this
 	 * @param set a set of Points
 	 * @return the lowest column in the set
 	 */
 	private static int getMinCol(final Iterable<Point> set) {
-		int retval = 0;
-		for (final Point point : set) {
-			if (point.getCol() < retval) {
-				retval = point.getCol();
-			}
-		}
-		return retval;
+		return StreamSupport.stream(set.spliterator(), false).mapToInt(Point::getCol)
+					   .min().orElse(0);
 	}
 
 	/**
@@ -151,6 +146,8 @@ public final class MiningModel {
 	private static Point createMaxPoint(final Iterable<Point> set) {
 		int maxCol = 0;
 		int maxRow = 0;
+		// I would use Stream operations for this, but that would require two passes
+		// (or a better understanding than I have), while a manual loop can do it in one
 		for (final Point point : set) {
 			if (point.getCol() > maxCol) {
 				maxCol = point.getCol();
