@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.exploration.HuntingModel;
 import model.exploration.IExplorationModel;
+import model.listeners.MovementCostListener;
+import model.listeners.MovementCostSource;
 import model.map.HasOwner;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -26,6 +28,8 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import org.eclipse.jdt.annotation.Nullable;
+import util.Accumulator;
+import util.IntHolder;
 import util.Pair;
 import util.SingletonRandom;
 
@@ -55,7 +59,7 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
-public final class ExplorationCLI {
+public final class ExplorationCLI implements MovementCostSource {
 	/**
 	 * Logger.
 	 */
@@ -142,9 +146,9 @@ public final class ExplorationCLI {
 	private final IDRegistrar idf;
 	/**
 	 * Have the player move the selected unit. Throws an exception if no unit is
-	 * selected.
-	 *
-	 * TODO: Use ExplorationModel's MP-tracking mechanisms; implement MovementCostListener
+	 * selected. Movement cost is reported by the driver model to all registered
+	 * MovementCostListeners, while any additional costs for non-movement
+	 * actions are reported by this class, so a listener should be attached to both.
 	 *
 	 * @param mover the selected unit
 	 * @return the cost of the specified movement, 1 if not possible (in which case we
@@ -152,10 +156,10 @@ public final class ExplorationCLI {
 	 * "exit".
 	 * @throws IOException on I/O error
 	 */
-	public int move(final IUnit mover) throws IOException {
+	public void move(final IUnit mover) throws IOException {
 		final int directionNum = helper.inputNumber("Direction to move: ");
 		if (directionNum > 8) {
-			return Integer.MAX_VALUE;
+			fireMovementCost(Integer.MAX_VALUE);
 		}
 		final IExplorationModel.Direction direction =
 				assertNotNull(IExplorationModel.Direction.values()[directionNum]);
@@ -163,13 +167,13 @@ public final class ExplorationCLI {
 		final Point dPoint = model.getDestination(point, direction);
 		int cost;
 		try {
-			cost = model.move(direction);
+			model.move(direction);
 		} catch (final SimpleMovement.TraversalImpossibleException except) {
 			LOGGER.log(Level.FINEST, "Attempted movement to impassable destination",
 					except);
 			helper.print("That direction is impassable; we've made sure ");
 			helper.println("all maps show that at a cost of 1 MP");
-			return 1;
+			return;
 		}
 		final Collection<TileFixture> constants = new ArrayList<>();
 		final IMutableMapNG map = model.getMap();
@@ -213,11 +217,11 @@ public final class ExplorationCLI {
 		if ((IExplorationModel.Direction.Nowhere == direction) &&
 					helper.inputBoolean(FEALTY_PROMPT)) {
 			model.swearVillages();
-			cost += 5;
+			fireMovementCost(5);
 		} else if ((IExplorationModel.Direction.Nowhere == direction) &&
 						helper.inputBoolean("Dig to expose some ground here?")) {
 			model.dig();
-			cost += 4;
+			fireMovementCost(4);
 		}
 		helper.printf("The explorer comes to %s, a tile with terrain %s%n",
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
@@ -239,7 +243,6 @@ public final class ExplorationCLI {
 		for (final TileFixture fix : constants) {
 			printAndTransferFixture(dPoint, fix, mover);
 		}
-		return cost;
 	}
 
 	/**
@@ -289,11 +292,14 @@ public final class ExplorationCLI {
 			helper.println("Details of the unit:");
 			helper.println(selUnit.verbose());
 			final int totalMP = helper.inputNumber("MP the unit has: ");
-			int movement = totalMP;
-			while (movement > 0) {
-				helper.printf("%d MP of %d remaining.%n%s%n", Integer.valueOf(movement),
-						Integer.valueOf(totalMP), PROMPT);
-				movement -= move(selUnit);
+			final Accumulator movement = new IntHolder(totalMP);
+			model.addMovementCostListener(cost -> movement.add(0 - cost));
+			addMovementCostListener(cost -> movement.add(0 - cost));
+			while (movement.getValue() > 0) {
+				helper.printf("%d MP of %d remaining.%n%s%n",
+						Integer.valueOf(movement.getValue()), Integer.valueOf(totalMP),
+						PROMPT);
+				move(selUnit);
 			}
 		}
 	}
@@ -305,5 +311,36 @@ public final class ExplorationCLI {
 	@Override
 	public String toString() {
 		return "ExplorationCLI";
+	}
+	/**
+	 * The list of movement-cost listeners.
+	 */
+	private final Collection<MovementCostListener> mcListeners = new ArrayList<>();
+	/**
+	 * @param listener the listener to add
+	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
+	@Override
+	public void addMovementCostListener(final MovementCostListener listener) {
+		mcListeners.add(listener);
+	}
+
+	/**
+	 * @param listener the listener to remove
+	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
+	@Override
+	public void removeMovementCostListener(final MovementCostListener listener) {
+		mcListeners.remove(listener);
+	}
+	/**
+	 * Tell listeners of a movement cost.
+	 *
+	 * @param cost how much the move cost
+	 */
+	private void fireMovementCost(final int cost) {
+		for (final MovementCostListener list : mcListeners) {
+			list.deduct(cost);
+		}
 	}
 }
