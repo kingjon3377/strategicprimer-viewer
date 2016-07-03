@@ -17,7 +17,6 @@ import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import org.eclipse.jdt.annotation.NonNull;
-import util.IteratorWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
