@@ -118,15 +118,23 @@ public final class FileChooser {
 	public File getFile() throws ChoiceInterruptedException {
 		if (shouldWait) {
 			if (SwingUtilities.isEventDispatchThread()) {
-				if (chooserFunc.applyAsInt(null) == APPROVE_OPTION) {
+				int status = chooserFunc.applyAsInt(null);
+				if (status == APPROVE_OPTION) {
 					setFile(assertNotNull(chooser.getSelectedFile()));
+				} else {
+					LOGGER.log(Level.INFO, "Chooser function returned %d",
+							Integer.valueOf(status));
 				}
 			} else {
 				final JFileChooser fileChooser = chooser;
 				invoke(() -> {
-					if (chooserFunc.applyAsInt(null) == APPROVE_OPTION) {
+					int status = chooserFunc.applyAsInt(null);
+					if (status == APPROVE_OPTION) {
 						setFile(NullCleaner.valueOrDefault(fileChooser.getSelectedFile(),
 								new File("")));
+					} else {
+						LOGGER.log(Level.INFO, "Chooser function returned %d",
+								Integer.valueOf(status));
 					}
 				});
 			}
