@@ -189,7 +189,7 @@ public final class FileChooser {
 	 * @param loc the file to return
 	 */
 	public void setFile(final File loc) {
-		if (loc.exists()) {
+		if (!file.toString().isEmpty()) {
 			file = loc;
 			shouldWait = false;
 		} else {
