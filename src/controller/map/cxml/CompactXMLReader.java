@@ -63,7 +63,7 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 								final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final Iterator<XMLEvent> reader = new TypesafeXMLEventReader(istream);
-		final IteratorWrapper<XMLEvent> eventReader =
+		final Iterable<XMLEvent> eventReader =
 				new IteratorWrapper<>(new IncludingIterator(file, reader));
 		final IMutablePlayerCollection players = new PlayerCollection();
 		final IDRegistrar idFactory = new IDFactory();
