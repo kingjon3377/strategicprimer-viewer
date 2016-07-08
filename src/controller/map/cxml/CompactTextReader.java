@@ -1,13 +1,11 @@
 package controller.map.cxml;
 
-import controller.map.misc.IDRegistrar;
-import java.io.IOException;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.misc.IDRegistrar;
+import java.io.IOException;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.TextFixture;
 import util.NullCleaner;
@@ -41,7 +39,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactTextReader READER = new CompactTextReader();
+	public static final CompactReader<TextFixture> READER = new CompactTextReader();
 	/**
 	 * Singleton.
 	 */

@@ -46,7 +46,7 @@ public final class CompactExplorableReader
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactExplorableReader READER =
+	public static final CompactReader<ExplorableFixture> READER =
 			new CompactExplorableReader();
 	/**
 	 * List of supported tags.

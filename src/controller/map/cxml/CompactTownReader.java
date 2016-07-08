@@ -66,7 +66,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactTownReader READER = new CompactTownReader();
+	public static final CompactReader<ITownFixture> READER = new CompactTownReader();
 	/**
 	 * The "owner" parameter.
 	 */

@@ -39,7 +39,7 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactPortalReader READER = new CompactPortalReader();
+	public static final CompactReader<Portal> READER = new CompactPortalReader();
 	/**
 	 * Read a portal from XML.
 	 *

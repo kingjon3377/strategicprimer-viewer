@@ -58,7 +58,8 @@ public final class CompactResourceReader extends
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactResourceReader READER = new CompactResourceReader();
+	public static final CompactReader<HarvestableFixture> READER =
+			new CompactResourceReader();
 	/**
 	 * The parameter giving the status of a fixture.
 	 */

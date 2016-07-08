@@ -40,7 +40,8 @@ public final class CompactAdventureReader extends
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactAdventureReader READER = new CompactAdventureReader();
+	public static final CompactReader<AdventureFixture> READER =
+			new CompactAdventureReader();
 
 	/**
 	 * Read an adventure from XML.
