@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
@@ -753,6 +754,25 @@ public abstract class BaseTestFixtureSerialization {
 		} catch (final FatalWarningException except) {
 			assertThat("Warning was about duplicate ID", except.getCause(), instanceOf(
 					DuplicateIDException.class));
+		}
+	}
+	/**
+	 * Assert that a given piece of XML will fail with NoSuchElementException.
+	 * @param xml the XML to check
+	 */
+	protected final void assertInvalid(final String xml)
+			throws XMLStreamException, SPFormatException {
+		try (StringReader stringReader = new StringReader(xml)) {
+			oldReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Ignore);
+			fail("Old reader didn't object to invalid XML");
+		} catch (NoSuchElementException ignored) {
+			// pass()
+		}
+		try (StringReader stringReader = new StringReader(xml)) {
+			newReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Ignore);
+			fail("Old reader didn't object to invalid XML");
+		} catch (NoSuchElementException ignored) {
+			// pass()
 		}
 	}
 }

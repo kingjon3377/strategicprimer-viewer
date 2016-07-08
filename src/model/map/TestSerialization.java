@@ -523,6 +523,16 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						"/></tile></row></map>");
 	}
 	/**
+	 * Test that the reader rejects invalid XML.
+	 */
+	@Test
+	public void testRejectsInvalid() throws XMLStreamException, SPFormatException {
+		assertInvalid(
+				"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">");
+		assertInvalid(
+				"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\"><></map>");
+	}
+	/**
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
