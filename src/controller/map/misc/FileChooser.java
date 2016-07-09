@@ -118,9 +118,9 @@ public final class FileChooser {
 	public File getFile() throws ChoiceInterruptedException {
 		if (shouldWait) {
 			if (SwingUtilities.isEventDispatchThread()) {
-				int status = chooserFunc.applyAsInt(null);
+				final int status = chooserFunc.applyAsInt(null);
 				if (status == APPROVE_OPTION) {
-					File selectedFile = chooser.getSelectedFile();
+					final File selectedFile = chooser.getSelectedFile();
 					setFile(assertNotNull(selectedFile));
 					if (selectedFile.toString().isEmpty()) {
 						LOGGER.severe("JFileChooser produced empty file");
@@ -134,7 +134,7 @@ public final class FileChooser {
 			} else {
 				final JFileChooser fileChooser = chooser;
 				invoke(() -> {
-					int status = chooserFunc.applyAsInt(null);
+					final int status = chooserFunc.applyAsInt(null);
 					if (status == APPROVE_OPTION) {
 						setFile(NullCleaner.valueOrDefault(fileChooser.getSelectedFile(),
 								new File("")));

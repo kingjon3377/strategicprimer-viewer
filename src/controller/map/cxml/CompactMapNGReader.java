@@ -200,7 +200,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					retval.setMountainous(point, true);
 				} else {
 					try {
-						TileFixture fix = parseFixture(current, stream,
+						final TileFixture fix = parseFixture(current, stream,
 								players, idFactory, warner);
 						if (fix instanceof StoneDeposit &&
 									StoneKind.Laterite == ((StoneDeposit) fix).stone() &&

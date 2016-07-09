@@ -40,7 +40,7 @@ public class IntHolder implements Accumulator {
 	 * @param addend how much to add
 	 */
 	@Override
-	public void add(int addend) {
+	public void add(final int addend) {
 		count += addend;
 	}
 	/**

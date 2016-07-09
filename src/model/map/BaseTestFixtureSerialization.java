@@ -765,13 +765,13 @@ public abstract class BaseTestFixtureSerialization {
 		try (StringReader stringReader = new StringReader(xml)) {
 			oldReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Ignore);
 			fail("Old reader didn't object to invalid XML");
-		} catch (NoSuchElementException ignored) {
+		} catch (final NoSuchElementException ignored) {
 			// pass()
 		}
 		try (StringReader stringReader = new StringReader(xml)) {
 			newReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Ignore);
 			fail("Old reader didn't object to invalid XML");
-		} catch (NoSuchElementException ignored) {
+		} catch (final NoSuchElementException ignored) {
 			// pass()
 		}
 	}
