@@ -59,6 +59,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	 * never
 	 * be called.
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Deprecated
 	@Override
 	public TileTypeFixture copy(final boolean zero) {

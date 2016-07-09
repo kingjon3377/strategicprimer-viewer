@@ -45,6 +45,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	 * @param zero ignored, as an oasis has no sensitive information
 	 * @return a copy of this oasis
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Oasis copy(final boolean zero) {
 		final Oasis retval = new Oasis(id);

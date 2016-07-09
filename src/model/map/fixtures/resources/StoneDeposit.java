@@ -46,6 +46,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this deposit
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public StoneDeposit copy(final boolean zero) {
 		final StoneDeposit retval;

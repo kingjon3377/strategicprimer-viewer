@@ -46,6 +46,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	 * @param zero ignored; there is no sensitive information to zero out
 	 * @return a copy of this troll
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Griffin copy(final boolean zero) {
 		final Griffin retval = new Griffin(id);

@@ -48,6 +48,7 @@ public class Phoenix implements MobileFixture, HasMutableImage, UnitMember {
 	 * @param zero ignored, as a phoenix has no sensitive information
 	 * @return a copy of this phoenix
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Phoenix copy(final boolean zero) {
 		final Phoenix retval = new Phoenix(id);

@@ -244,6 +244,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 * want to throw it, so we wrap it in a RuntimeException
 	 * @return never
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public ComplexReportNode clone() {
 		throw new IllegalStateException("cloning prohibited",

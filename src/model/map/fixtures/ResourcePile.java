@@ -208,6 +208,7 @@ public class ResourcePile
 	 * @param zero whether to "zero out" sensitive information
 	 * @return a copy of this Implement
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public ResourcePile copy(final boolean zero) {
 		final ResourcePile retval = new ResourcePile(id, kind, contents, quantity, unit);

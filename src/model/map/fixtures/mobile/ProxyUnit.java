@@ -542,6 +542,7 @@ public final class ProxyUnit
 		 * @param zero whether to "zero out" sensitive information
 		 * @return a copy of this proxy
 		 */
+		@SuppressWarnings("MethodReturnOfConcreteClass")
 		@Override
 		public ProxyMember copy(final boolean zero) {
 			final ProxyMember retval = new ProxyMember();

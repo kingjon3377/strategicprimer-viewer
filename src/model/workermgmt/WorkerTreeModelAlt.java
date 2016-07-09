@@ -211,6 +211,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * want to throw it, so we wrap it in a RuntimeException
 		 * @return never
 		 */
+		@SuppressWarnings("MethodReturnOfConcreteClass")
 		@Override
 		public final WorkerTreeNode<T> clone() {
 			throw new IllegalStateException("cloning prohibited",

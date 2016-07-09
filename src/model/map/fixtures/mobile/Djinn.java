@@ -48,6 +48,7 @@ public class Djinn implements MobileFixture, HasMutableImage, UnitMember {
 	 * @param zero ignored, as a djinn has no sensitive information
 	 * @return a copy of this djinn
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Djinn copy(final boolean zero) {
 		final Djinn retval = new Djinn(id);

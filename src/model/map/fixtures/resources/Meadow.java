@@ -74,6 +74,7 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	 * @param zero ignored; there's no sensitive information
 	 * @return a copy of this meadow
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Meadow copy(final boolean zero) {
 		final Meadow retval = new Meadow(kind, field, cultivated, id, status);

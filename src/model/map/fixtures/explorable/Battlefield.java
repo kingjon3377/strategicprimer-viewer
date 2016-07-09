@@ -54,6 +54,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this battlefield
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Battlefield copy(final boolean zero) {
 		final Battlefield retval;

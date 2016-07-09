@@ -56,6 +56,7 @@ public class Centaur
 	 * @param zero ignored, as a centaur has no sensitive information
 	 * @return a copy of this centaur
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Centaur copy(final boolean zero) {
 		final Centaur retval = new Centaur(kind, id);

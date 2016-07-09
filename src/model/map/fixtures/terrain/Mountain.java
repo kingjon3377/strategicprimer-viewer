@@ -36,6 +36,7 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	 * @param zero ignored, as a mountain has no state (other than its image)
 	 * @return a copy of this mountain
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Mountain copy(final boolean zero) {
 		final Mountain retval = new Mountain();

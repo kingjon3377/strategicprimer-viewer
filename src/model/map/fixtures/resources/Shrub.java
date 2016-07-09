@@ -52,6 +52,7 @@ public class Shrub implements HarvestableFixture, HasMutableKind {
 	 * @param zero ignored, as there's no sensitive data
 	 * @return a copy of this shrub
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Shrub copy(final boolean zero) {
 		final Shrub retval = new Shrub(description, id);

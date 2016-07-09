@@ -50,6 +50,7 @@ public final class City extends AbstractTown {
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this city
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public City copy(final boolean zero) {
 		final City retval;

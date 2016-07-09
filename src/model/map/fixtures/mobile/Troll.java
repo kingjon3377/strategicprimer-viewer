@@ -50,6 +50,7 @@ public class Troll implements MobileFixture, HasMutableImage, UnitMember {
 	 * @param zero ignored; there is no sensitive information to zero out
 	 * @return a copy of this troll
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Troll copy(final boolean zero) {
 		final Troll retval = new Troll(id);

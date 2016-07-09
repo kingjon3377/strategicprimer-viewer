@@ -303,6 +303,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * Prevent cloning.
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public ExplorationClickListener clone() throws CloneNotSupportedException {
 		throw new CloneNotSupportedException("Cloning is not allowed.");

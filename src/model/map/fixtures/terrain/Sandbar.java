@@ -142,6 +142,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	 * @param zero ignored, as a sandbar has no sensitive information
 	 * @return a copy of this sandbar
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Sandbar copy(final boolean zero) {
 		final Sandbar retval = new Sandbar(id);

@@ -49,6 +49,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this cave
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Cave copy(final boolean zero) {
 		final Cave retval;

@@ -48,6 +48,7 @@ public class Ogre implements MobileFixture, HasMutableImage, UnitMember {
 	 * @param zero ignored, as an ogre has no sensitive information
 	 * @return a copy of this ogre
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Ogre copy(final boolean zero) {
 		final Ogre retval = new Ogre(id);

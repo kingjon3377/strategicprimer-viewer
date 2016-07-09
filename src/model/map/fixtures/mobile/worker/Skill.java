@@ -55,6 +55,7 @@ public class Skill implements ISkill {
 	/**
 	 * @return a copy of this skill
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Skill copy() {
 		return new Skill(name, level, hours);

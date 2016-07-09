@@ -46,6 +46,7 @@ public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 	 * @param zero ignored, as a minotaur has no sensitive information
 	 * @return a copy of this minotaur
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Minotaur copy(final boolean zero) {
 		final Minotaur retval = new Minotaur(id);

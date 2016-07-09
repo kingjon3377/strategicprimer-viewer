@@ -92,6 +92,7 @@ public class WorkerStats {
 	/**
 	 * @return a copy of this
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	public WorkerStats copy() {
 		return new WorkerStats(hp, maxHP, strength, dex, con, intel, wis, cha);
 	}

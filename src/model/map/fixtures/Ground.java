@@ -59,6 +59,7 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	 * @param zero ignored, as there's no sensitive data
 	 * @return a copy of this ground
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Ground copy(final boolean zero) {
 		final Ground retval = new Ground(kind, exposed);

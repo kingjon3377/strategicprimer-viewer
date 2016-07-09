@@ -66,6 +66,7 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	 * @param zero ignored, as a grove has no sensitive information
 	 * @return a copy of this grove
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Grove copy(final boolean zero) {
 		final Grove retval = new Grove(orchard, cultivated, kind, id);

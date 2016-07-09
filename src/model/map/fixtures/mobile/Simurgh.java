@@ -48,6 +48,7 @@ public class Simurgh implements MobileFixture, HasMutableImage, UnitMember {
 	 * @param zero ignored, as a simurgh has no sensitive information
 	 * @return a copy of this simurgh
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Simurgh copy(final boolean zero) {
 		final Simurgh retval = new Simurgh(id);

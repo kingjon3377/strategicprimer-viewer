@@ -60,6 +60,7 @@ public class Mine implements HarvestableFixture, HasMutableKind {
 	 * @param zero ignored; there isn't any sensitive information
 	 * @return a copy of this mine
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Mine copy(final boolean zero) {
 		final Mine retval = new Mine(kind, status, id);

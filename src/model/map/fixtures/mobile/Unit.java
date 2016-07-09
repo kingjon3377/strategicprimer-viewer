@@ -103,6 +103,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	 * @param zero whether to omit its contents and orders
 	 * @return a copy of this unit
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Unit copy(final boolean zero) {
 		final Unit retval = new Unit(owner, kind, name, id);

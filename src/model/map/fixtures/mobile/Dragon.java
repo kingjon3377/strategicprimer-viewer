@@ -56,6 +56,7 @@ public class Dragon
 	 * @param zero ignored, as a dragon has no sensitive information
 	 * @return a copy of this dragon
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Dragon copy(final boolean zero) {
 		final Dragon retval = new Dragon(kind, id);

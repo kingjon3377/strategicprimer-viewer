@@ -85,6 +85,7 @@ public class ActionWrapper extends AbstractAction {
 	 * @return nothing
 	 * @throws CloneNotSupportedException always
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public final ActionWrapper clone() throws CloneNotSupportedException {
 		throw new CloneNotSupportedException("Cloning is not allowed.");

@@ -334,6 +334,7 @@ public class Worker implements IWorker, HasPortrait {
 	 * @param zero whether to "zero out" the worker
 	 * @return a copy of this worker
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Worker copy(final boolean zero) {
 		if (zero) {

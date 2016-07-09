@@ -68,6 +68,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	 * @param zero ignored, as there's no sensitive data
 	 * @return a copy of this forest
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Forest copy(final boolean zero) {
 		final Forest retval = new Forest(trees, rows);

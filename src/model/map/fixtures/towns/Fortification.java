@@ -52,6 +52,7 @@ public final class Fortification extends AbstractTown {
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this fortification
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Fortification copy(final boolean zero) {
 		final Fortification retval;

@@ -55,6 +55,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	 * @param zero ignored, as a giant has no sensitive information
 	 * @return a copy of this giant
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Giant copy(final boolean zero) {
 		final Giant retval = new Giant(kind, id);

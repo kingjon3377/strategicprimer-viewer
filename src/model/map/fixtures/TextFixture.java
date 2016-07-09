@@ -59,6 +59,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	 *             meaningless
 	 * @return a copy of this fixture
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public TextFixture copy(final boolean zero) {
 		final TextFixture retval = new TextFixture(text, turn);

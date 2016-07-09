@@ -50,6 +50,7 @@ public class Sphinx implements MobileFixture, HasMutableImage, UnitMember {
 	 * @param zero ignored, as a sphinx has no sensitive information
 	 * @return a copy of this sphinx
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Sphinx copy(final boolean zero) {
 		final Sphinx retval = new Sphinx(id);

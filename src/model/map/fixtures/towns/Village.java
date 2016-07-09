@@ -78,6 +78,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 *             essential
 	 * @return a copy of this village
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Village copy(final boolean zero) {
 		final Village retval = new Village(status, name, id, owner, race);

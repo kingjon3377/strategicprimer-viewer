@@ -63,6 +63,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	 * @param zero ignored, as there's no sensitive data
 	 * @return a copy of this cache
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public CacheFixture copy(final boolean zero) {
 		final CacheFixture retval = new CacheFixture(kind, contents, id);

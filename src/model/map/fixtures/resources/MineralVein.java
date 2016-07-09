@@ -64,6 +64,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this vein
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public MineralVein copy(final boolean zero) {
 		final MineralVein retval;

@@ -46,6 +46,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	 * @param zero ignored, as a hill has no sensitive information
 	 * @return a copy of this hill
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Hill copy(final boolean zero) {
 		final Hill retval = new Hill(id);

@@ -67,6 +67,7 @@ public class Portal implements ExplorableFixture {
 	 * @param zero whether to "zero out" the destination coordinates
 	 * @return a copy of this portal
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Portal copy(final boolean zero) {
 		final Portal retval;

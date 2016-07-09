@@ -71,6 +71,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	 * @param zero ignored, as there is no sensitive information that is not essential
 	 * @return a copy of this fixture
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public AdventureFixture copy(final boolean zero) {
 		final AdventureFixture retval =

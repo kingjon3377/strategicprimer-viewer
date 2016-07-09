@@ -64,6 +64,7 @@ public final class RiverFixture
 	 * @param zero ignored, as this fixture has no sensitive information
 	 * @return a copy of this fixture
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public RiverFixture copy(final boolean zero) {
 		final RiverFixture retval = new RiverFixture();

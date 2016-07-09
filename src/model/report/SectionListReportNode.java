@@ -295,6 +295,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 * want to throw it, so we wrap it in a RuntimeException
 	 * @return never
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public final SectionListReportNode clone() {
 		throw new IllegalStateException("cloning prohibited",

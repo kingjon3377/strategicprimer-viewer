@@ -102,6 +102,7 @@ public class Implement
 	 * @param zero whether to "zero out" sensitive information
 	 * @return a copy of this Implement
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Implement copy(final boolean zero) {
 		return new Implement(kind, id);

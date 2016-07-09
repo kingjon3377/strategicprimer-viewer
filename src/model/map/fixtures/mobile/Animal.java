@@ -282,6 +282,7 @@ public class Animal
 	 * @param zero whether to "zero out" sensitive information
 	 * @return a copy of this
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Animal copy(final boolean zero) {
 		// TODO: Should we "zero" out any information?

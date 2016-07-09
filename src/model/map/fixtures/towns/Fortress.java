@@ -85,6 +85,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	 * @param zero whether to omit the fortress's contents
 	 * @return a copy of this fortress
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Fortress copy(final boolean zero) {
 		final Fortress retval = new Fortress(owner, name, id);

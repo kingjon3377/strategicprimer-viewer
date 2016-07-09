@@ -55,6 +55,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	 * @param zero ignored, as a fairy has no sensitive information
 	 * @return a copy of this fairy
 	 */
+	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Fairy copy(final boolean zero) {
 		final Fairy retval = new Fairy(kind, id);
