@@ -1,7 +1,6 @@
 package controller.map.misc;
 
 import java.util.Comparator;
-import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.City;
 import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Fortress;
@@ -38,7 +37,7 @@ import org.eclipse.jdt.annotation.NonNull;
  *
  * @author Jonathan Lovelace
  */
-public final class TownComparator implements Comparator<@NonNull AbstractTown> {
+public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 	/**
 	 * @param one One town-size
 	 * @param two Another
@@ -145,7 +144,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public int compare(final AbstractTown townOne, final AbstractTown townTwo) {
+	public int compare(final ITownFixture townOne, final ITownFixture townTwo) {
 		if (townOne.status() == townTwo.status()) {
 			if (townOne.size() == townTwo.size()) {
 				if (townOne.getClass().equals(townTwo.getClass())) {
