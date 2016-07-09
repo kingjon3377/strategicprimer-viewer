@@ -120,7 +120,13 @@ public final class FileChooser {
 			if (SwingUtilities.isEventDispatchThread()) {
 				int status = chooserFunc.applyAsInt(null);
 				if (status == APPROVE_OPTION) {
-					setFile(assertNotNull(chooser.getSelectedFile()));
+					File selectedFile = chooser.getSelectedFile();
+					setFile(assertNotNull(selectedFile));
+					if (selectedFile.toString().isEmpty()) {
+						LOGGER.severe("JFileChooser produced empty file");
+					} else if (file.toString().isEmpty()) {
+						LOGGER.severe("Selection supposedly empty but shouldn't be");
+					}
 				} else {
 					LOGGER.log(Level.INFO, "Chooser function returned %d",
 							Integer.valueOf(status));
@@ -132,6 +138,9 @@ public final class FileChooser {
 					if (status == APPROVE_OPTION) {
 						setFile(NullCleaner.valueOrDefault(fileChooser.getSelectedFile(),
 								new File("")));
+						if (file.toString().isEmpty()) {
+							LOGGER.severe("Selection supposedly empty");
+						}
 					} else {
 						LOGGER.log(Level.INFO, "Chooser function returned %d",
 								Integer.valueOf(status));
@@ -189,7 +198,7 @@ public final class FileChooser {
 	 * @param loc the file to return
 	 */
 	public void setFile(final File loc) {
-		if (!file.toString().isEmpty()) {
+		if (!loc.toString().isEmpty()) {
 			file = loc;
 			shouldWait = false;
 		} else {
