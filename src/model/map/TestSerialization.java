@@ -29,7 +29,6 @@ import static model.map.PointFactory.point;
 import static model.map.River.Lake;
 import static model.map.TileType.Desert;
 import static model.map.TileType.Jungle;
-import static model.map.TileType.NotVisible;
 import static model.map.TileType.Plains;
 import static model.map.TileType.Steppe;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -292,14 +291,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				equalTo(xmlTwo));
 		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
-						createSimpleMap(point(1, 1), Pair.of(point(0, 0), NotVisible)),
+						createSimpleMap(point(1, 1), Pair.of(point(0, 0), TileType.NotVisible)),
 						true),
 				equalTo("<view xmlns=\"" + ISPReader.NAMESPACE +
 						"\" current_player=\"-1\" current_turn=\"-1\">\n\t<map " +
 						"version=\"2\" rows=\"1\" columns=\"1\">\n\t</map>\n</view>\n"));
 		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
-						createSimpleMap(point(1, 1), Pair.of(point(0, 0), NotVisible)),
+						createSimpleMap(point(1, 1), Pair.of(point(0, 0), TileType.NotVisible)),
 						false),
 				equalTo("<view xmlns=\"" + ISPReader.NAMESPACE +
 						"\" current_player=\"-1\" current_turn=\"-1\">\n\t<map " +
