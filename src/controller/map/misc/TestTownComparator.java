@@ -44,6 +44,7 @@ public class TestTownComparator {
 	/**
 	 * Test that the comparator works as expected.
 	 */
+	@SuppressWarnings("ValueOfIncrementOrDecrementUsed")
 	@Test
 	public void testComparison() {
 		final List<ITownFixture> input = new ArrayList<>();
