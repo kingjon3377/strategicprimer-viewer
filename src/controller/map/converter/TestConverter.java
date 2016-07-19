@@ -89,6 +89,8 @@ import static org.junit.Assert.fail;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ *
+ * TODO: Make OneToTwoConverter (and tests) pass the map size to the encounter tables.
  */
 public final class TestConverter {
 	/**
@@ -209,8 +211,6 @@ public final class TestConverter {
 	 * Test version-1 to version-2 conversion.
 	 *
 	 * @throws IOException on I/O error causing test failure
-	 *
-	 * TODO: Make the converter (and the tests) pass the map size to the encounter tables.
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
@@ -458,8 +458,6 @@ public final class TestConverter {
 	 * Test more version-1 to version-2 conversion.
 	 *
 	 * @throws IOException on I/O error causing test failure
-	 *
-	 * TODO: Make the converter (and the tests) pass the map size to the encounter tables.
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
@@ -710,8 +708,6 @@ public final class TestConverter {
 	 * Test more version-1 to version-2 conversion.
 	 *
 	 * @throws IOException on I/O error causing test failure
-	 *
-	 * TODO: Make the converter (and the tests) pass the map size to the encounter tables.
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
@@ -1025,8 +1021,6 @@ public final class TestConverter {
 	 * Test more version-1 to version-2 conversion.
 	 *
 	 * @throws IOException on I/O error causing test failure
-	 *
-	 * TODO: Make the converter (and the tests) pass the map size to the encounter tables.
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
