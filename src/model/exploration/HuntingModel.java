@@ -101,7 +101,7 @@ public final class HuntingModel {
 			final int len = plantList.size() - 1;
 			final TileType tileType = map.getBaseTerrain(point);
 			final int nothings;
-			if (tileType == Desert || tileType == Tundra) {
+			if ((tileType == Desert) || (tileType == Tundra)) {
 				nothings = len * 3;
 			} else if (tileType == Jungle) {
 				nothings = len / 2;
