@@ -61,7 +61,13 @@ public class TestTownComparator {
 		input.add(new Fortress(owner, "inputFortress", id++));
 		input.add(new City(TownStatus.Active, TownSize.Large, -1, "inputCityTwo", id++,
 								  owner));
-		input.add(new Fortress(owner, "inputFortressTwo", id));
+		input.add(new Fortress(owner, "inputFortressTwo", id++));
+		input.add(new Town(TownStatus.Ruined, TownSize.Medium, -1, "inputTownTwo", id++,
+								  owner));
+		input.add(new Fortification(TownStatus.Burned, TownSize.Small, -1,
+										   "inputFortificationTwo", id++, owner));
+		input.add(new Village(TownStatus.Abandoned, "inputVillageTwo", id, owner,
+									 "inputRace"));
 		Collections.shuffle(input);
 		final List<ITownFixture> expected = Arrays.asList(
 				new City(TownStatus.Active, TownSize.Large, -1, "inputCity", 7, owner),
@@ -100,12 +106,15 @@ public class TestTownComparator {
 										 "inputFortification", 12, owner),
 				new Village(TownStatus.Abandoned, "inputVillage", 19, owner,
 								   "inputRace"),
+				new Village(TownStatus.Abandoned, "inputVillageTwo", 45, owner,
+								   "inputRace"),
 				new City(TownStatus.Ruined, TownSize.Large, -1, "inputCity", 37, owner),
 				new Town(TownStatus.Ruined, TownSize.Large, -1, "inputTown", 36, owner),
 				new Fortification(TownStatus.Ruined, TownSize.Large, -1,
 										 "inputFortification", 38, owner),
 				new City(TownStatus.Ruined, TownSize.Medium, -1, "inputCity", 34, owner),
 				new Town(TownStatus.Ruined, TownSize.Medium, -1, "inputTown", 33, owner),
+				new Town(TownStatus.Ruined, TownSize.Medium, -1, "inputTownTwo", 43, owner),
 				new Fortification(TownStatus.Ruined, TownSize.Medium, -1,
 										 "inputFortification", 35, owner),
 				new City(TownStatus.Ruined, TownSize.Small, -1, "inputCity", 31, owner),
@@ -125,6 +134,8 @@ public class TestTownComparator {
 				new Town(TownStatus.Burned, TownSize.Small, -1, "inputTown", 20, owner),
 				new Fortification(TownStatus.Burned, TownSize.Small, -1,
 										 "inputFortification", 22, owner),
+				new Fortification(TownStatus.Burned, TownSize.Small, -1,
+										 "inputFortificationTwo", 44, owner),
 				new Village(TownStatus.Burned, "inputVillage", 29, owner, "inputRace"));
 		Collections.sort(input, new TownComparator());
 		assertThat("Sorted list of towns is the order we expect", input,
