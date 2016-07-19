@@ -1,11 +1,11 @@
 package controller.map.report;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -95,8 +95,8 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 										.sum() * 512) + 80);
 		builder.append("<h4>Cities, towns, and/or fortifications you know about:</h4>\n");
 		builder.append(OPEN_LIST);
-		Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
-				TownStatus.Burned).stream().map(separated::get).filter(Objects::nonNull)
+		Stream.of(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
+				TownStatus.Burned).map(separated::get).filter(Objects::nonNull)
 				.filter(coll -> !NullCleaner.assertNotNull(coll).isEmpty()).forEach(
 				coll -> builder.append(OPEN_LIST_ITEM)
 								.append(NullCleaner.assertNotNull(coll))
@@ -142,8 +142,8 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 										(ITownFixture) pair.second(), pair.first())));
 
 		final IReportNode retval = new SectionListReportNode(4, TOWN_HDR);
-		Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
-				TownStatus.Burned).stream().map(separated::get)
+		Stream.of(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
+				TownStatus.Burned).map(separated::get)
 				.filter(node -> (node != null) && (node.getChildCount() != 0)).forEach(retval::add);
 		if (retval.getChildCount() == 0) {
 			return EmptyReportNode.NULL_NODE;
