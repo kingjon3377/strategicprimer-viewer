@@ -148,10 +148,10 @@ public final class FileChooser {
 				});
 			}
 		}
-		if (!file.toString().isEmpty()) {
-			return file;
-		} else {
+		if (file.toString().isEmpty()) {
 			throw new ChoiceInterruptedException();
+		} else {
+			return file;
 		}
 	}
 	/**
@@ -198,12 +198,12 @@ public final class FileChooser {
 	 * @param loc the file to return
 	 */
 	public void setFile(final File loc) {
-		if (!loc.toString().isEmpty()) {
-			file = loc;
-			shouldWait = false;
-		} else {
+		if (loc.toString().isEmpty()) {
 			file = new File("");
 			shouldWait = true;
+		} else {
+			file = loc;
+			shouldWait = false;
 		}
 	}
 
