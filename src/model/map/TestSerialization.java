@@ -536,6 +536,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertInvalid("<include file=\"nonexistentfile\">");
 		assertInvalid("<include file=\"string:&lt;");
 		assertInvalid("<include file=\"\" />");
+		assertInvalid("<include file=\"string:&lt;xyzzy\" />");
 	}
 	/**
 	 * @return a String representation of the object
