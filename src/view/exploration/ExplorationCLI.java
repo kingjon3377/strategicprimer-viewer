@@ -162,7 +162,6 @@ public final class ExplorationCLI implements MovementCostSource {
 				assertNotNull(IExplorationModel.Direction.values()[directionNum]);
 		final Point point = model.getSelectedUnitLocation();
 		final Point dPoint = model.getDestination(point, direction);
-		int cost;
 		try {
 			model.move(direction);
 		} catch (final SimpleMovement.TraversalImpossibleException except) {
