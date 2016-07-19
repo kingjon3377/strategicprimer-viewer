@@ -151,9 +151,6 @@ public final class ExplorationCLI implements MovementCostSource {
 	 * actions are reported by this class, so a listener should be attached to both.
 	 *
 	 * @param mover the selected unit
-	 * @return the cost of the specified movement, 1 if not possible (in which case we
-	 * update subordinate maps with that tile's tile type but no fixtures), or MAX_INT if
-	 * "exit".
 	 * @throws IOException on I/O error
 	 */
 	public void move(final IUnit mover) throws IOException {
