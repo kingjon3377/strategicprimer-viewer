@@ -67,7 +67,6 @@ public final class TestTableLoader {
 			assertThat("loading quadrant table",
 					result.generateEvent(point, TileType.Tundra, EMPTY),
 					equalTo(ONE_STRING));
-			// TODO: somehow check that it got properly loaded, beyond this
 		}
 		try (final BufferedReader readerTwo = new BufferedReader(new StringReader
 																		("quadrant"))) {
