@@ -132,6 +132,7 @@ public final class FileChooser {
 							Integer.valueOf(status));
 				}
 			} else {
+				//noinspection UnnecessaryLocalVariable
 				final JFileChooser fileChooser = chooser;
 				invoke(() -> {
 					final int status = chooserFunc.applyAsInt(null);
