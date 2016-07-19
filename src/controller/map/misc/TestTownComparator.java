@@ -59,8 +59,9 @@ public class TestTownComparator {
 			input.add(new Village(status, "inputVillage", id++, owner, "inputRace"));
 		}
 		input.add(new Fortress(owner, "inputFortress", id++));
-		input.add(new City(TownStatus.Active, TownSize.Large, -1, "inputCityTwo", id,
+		input.add(new City(TownStatus.Active, TownSize.Large, -1, "inputCityTwo", id++,
 								  owner));
+		input.add(new Fortress(owner, "inputFortressTwo", id));
 		Collections.shuffle(input);
 		final List<ITownFixture> expected = Arrays.asList(
 				new City(TownStatus.Active, TownSize.Large, -1, "inputCity", 7, owner),
@@ -73,6 +74,7 @@ public class TestTownComparator {
 				new Fortification(TownStatus.Active, TownSize.Medium, -1,
 										 "inputFortification", 5, owner),
 				new Fortress(owner, "inputFortress", 40),
+				new Fortress(owner, "inputFortressTwo", 42),
 				new City(TownStatus.Active, TownSize.Small, -1, "inputCity", 1, owner),
 				new Town(TownStatus.Active, TownSize.Small, -1, "inputTown", 0, owner),
 				new Fortification(TownStatus.Active, TownSize.Small, -1,
