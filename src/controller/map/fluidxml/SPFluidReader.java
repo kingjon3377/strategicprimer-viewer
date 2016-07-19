@@ -589,9 +589,9 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 								   (StoneKind.Laterite ==
 											((StoneDeposit) child)
 													.stone()) &&
-								   !(TileType.Jungle ==
-											 map.getBaseTerrain(
-													 point))) {
+								   TileType.Jungle !=
+										   map.getBaseTerrain(
+												   point)) {
 						warner.warn(new UnsupportedPropertyException(current,
 																			"laterite"));
 					map.addFixture(point, (TileFixture) child);
