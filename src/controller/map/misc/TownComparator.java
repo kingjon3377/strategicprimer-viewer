@@ -153,10 +153,10 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 	public int compare(final ITownFixture townOne, final ITownFixture townTwo) {
 		int retval = 0;
 		for (final Comparator<ITownFixture> comparator : COMPARATORS) {
-			if (retval != 0) {
-				return retval;
-			} else {
+			if (retval == 0) {
 				retval = comparator.compare(townOne, townTwo);
+			} else {
+				return retval;
 			}
 		}
 		return retval;
