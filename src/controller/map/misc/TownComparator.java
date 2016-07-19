@@ -18,8 +18,6 @@ import org.eclipse.jdt.annotation.NonNull;
  * fortifications, and thereafter alphabetically. We only accept AbstractTowns because I
  * don't want to have to deal with villages and fortresses too ...
  *
- * TODO: Write tests.
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
