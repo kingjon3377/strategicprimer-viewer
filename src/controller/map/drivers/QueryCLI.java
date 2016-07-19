@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import model.exploration.HerdModel;
 import model.exploration.HuntingModel;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -220,7 +221,7 @@ public final class QueryCLI implements SimpleDriver {
 
 	}
 	/**
-	 * Run herding. TODO: Move the logic here into the HuntingModel or a similar class.
+	 * Run herding.
 	 *
 	 * @param cli the interface to the user
 	 * @param huntModel the hunting model (used for hours remaining after herding is done)
@@ -228,25 +229,22 @@ public final class QueryCLI implements SimpleDriver {
 	 */
 	private static void herd(final ICLIHelper cli, final HuntingModel huntModel)
 			throws IOException {
-		final double rate; // The amount of milk per animal
-		final int time; // How long it takes to milk one animal, in minutes.
+		final HerdModel herdModel;
 		final boolean poultry;
 		if (cli.inputBoolean("Are these small animals, like sheep?\t")) {
-			rate = 1.5;
-			time = 15;
+			herdModel = HerdModel.SmallMammals;
 			poultry = false;
 		} else if (cli.inputBoolean("Are these dairy cattle?\t")) {
-			rate = 4;
-			time = 20;
+			herdModel = HerdModel.DairyCattle;
 			poultry = false;
 		} else if (cli.inputBoolean("Are these chickens?\t")) {
-			// TODO: Support other poultry
-			rate = 0.75;
-			time = 12;
+			herdModel = HerdModel.Chickens;
+			poultry = true;
+		} else if (cli.inputBoolean("Are these turkeys?\t")) {
+			herdModel = HerdModel.Turkeys;
 			poultry = true;
 		} else {
-			rate = 3;
-			time = 20;
+			herdModel = HerdModel.LargeMammals;
 			poultry = false;
 		}
 		final int count = cli.inputNumber("How many animals?\t");
@@ -267,32 +265,45 @@ public final class QueryCLI implements SimpleDriver {
 			final int hours;
 			if (poultry) {
 				cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",
-						Integer.valueOf(animalsPerHerder * 2));
+						Integer.valueOf(animalsPerHerder * herdModel.getDailyTimePerHead()));
 				cli.printf(
-						"which should be done every third turn at least, takes %.1f " +
+						"which should be done every %d turns at least, takes %.1f " +
 								"hours.%n",
-						Double.valueOf(animalsPerHerder * 0.5));
-				cli.printf("This produces %.0f eggs, totaling %.1f oz.%n",
-						Double.valueOf(rate * count),
-						Double.valueOf(rate * 2.0 * count));
+						Integer.valueOf(herdModel.getExtraChoresInterval() + 1),
+						Double.valueOf(animalsPerHerder * herdModel.getExtraTimePerHead() / 60.0));
+				cli.printf("This produces %.0f %s, totaling %.1f oz.%n",
+						Double.valueOf(herdModel.getProductionPerHead() * count),
+						herdModel.getProductionUnit(),
+						Double.valueOf(herdModel.getProductionPerHead() * herdModel.getPoundsCoefficient() * count));
 				if (cli.inputBoolean("Do they do the cleaning this turn? ")) {
-					hours = round.applyAsInt((animalsPerHerder / 30.0) + (animalsPerHerder * 0.5));
+					hours = round.applyAsInt(
+							animalsPerHerder * (herdModel.getDailyTimePerHead() +
+														herdModel.getExtraTimePerHead()) /
+									60.0);
 				} else {
-					hours = round.applyAsInt(animalsPerHerder / 30.0);
+					hours = round.applyAsInt(
+							animalsPerHerder * herdModel.getDailyTimePerHead() / 60.0);
 				}
 			} else {
 				cli.printf("Tending the animals takes %d minutes, or %d minutes with ",
-						Integer.valueOf(animalsPerHerder * time),
-						Integer.valueOf(animalsPerHerder * (time - 5)));
+						Integer.valueOf(animalsPerHerder * herdModel.getDailyTimePerHead() / 2),
+						Integer.valueOf(animalsPerHerder * (herdModel.getDailyTimePerHead() / 2 - 5)));
 				cli.println("expert herders, twice daily.");
-				cli.println("Gathering them for each milking takes 30 min more.");
-				cli.printf("This produces %,.1f gallons, %,.1f lbs, of milk per day.%n",
-						Double.valueOf(rate * count),
-						Double.valueOf(rate * 8.6 * count));
+				cli.printf("Gathering them for each milking takes %d min more.%n",
+						Integer.valueOf(herdModel.getDailyTimeFloor() / 2));
+				cli.printf("This produces %,.1f %s, %,.1f lbs, of milk per day.%n",
+						Double.valueOf(herdModel.getProductionPerHead() * count),
+						herdModel.getProductionUnit(),
+						Double.valueOf(herdModel.getProductionPerHead() *
+											   herdModel.getPoundsCoefficient() * count));
 				if (cli.inputBoolean("Are the herders experts? ")) {
-					hours = round.applyAsInt((animalsPerHerder * (time - 5)) / 60.0);
+					hours = round.applyAsInt(
+							((animalsPerHerder * (herdModel.getDailyTimePerHead() - 5)) +
+									 herdModel.getDailyTimeFloor()) / 60.0);
 				} else {
-					hours = round.applyAsInt((animalsPerHerder * time) / 60.0);
+					hours = round.applyAsInt(
+							(animalsPerHerder * herdModel.getDailyTimePerHead() +
+									 herdModel.getDailyTimeFloor()) / 60.0);
 				}
 			}
 			if ((hours < HUNTER_HOURS) &&
