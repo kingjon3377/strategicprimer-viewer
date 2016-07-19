@@ -12,6 +12,7 @@ import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.TileFixture;
+import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
@@ -19,7 +20,10 @@ import model.map.fixtures.resources.Shrub;
 import util.NullCleaner;
 import util.SimpleMultiMap;
 
+import static model.map.TileType.Desert;
+import static model.map.TileType.Jungle;
 import static model.map.TileType.Ocean;
+import static model.map.TileType.Tundra;
 
 /**
  * A class to facilitate a better hunting/fishing driver.
@@ -95,25 +99,14 @@ public final class HuntingModel {
 			final Collection<String> plantList =
 					NullCleaner.assertNotNull(plants.get(point));
 			final int len = plantList.size() - 1;
-			final int nothings; // TODO: extract method?
-			switch (map.getBaseTerrain(point)) {
-			case Desert:
-			case Tundra:
+			final TileType tileType = map.getBaseTerrain(point);
+			final int nothings;
+			if (tileType == Desert || tileType == Tundra) {
 				nothings = len * 3;
-				break;
-			case Jungle:
+			} else if (tileType == Jungle) {
 				nothings = len / 2;
-				break;
-			case Mountain:
-			case BorealForest:
-			case TemperateForest:
-			case Ocean:
-			case Plains:
-			case Steppe:
-			case NotVisible:
-			default:
+			} else {
 				nothings = len;
-				break;
 			}
 			for (int i = 0; i < nothings; i++) {
 				plantList.add(NOTHING);
