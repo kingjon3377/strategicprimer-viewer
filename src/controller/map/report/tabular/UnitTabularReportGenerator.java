@@ -60,6 +60,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	 * @param loc its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
+	@SuppressWarnings("IfStatementWithIdenticalBranches")
 	@Override
 	public boolean produce(final Appendable ostream,
 						final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
