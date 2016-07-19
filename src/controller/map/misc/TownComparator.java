@@ -137,8 +137,7 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 	private static final List<Comparator<ITownFixture>> COMPARATORS =
 			Arrays.asList((one, two) -> compareTownStatus(one.status(), two.status()),
 					(one, two) -> compareTownSize(one.size(), two.size()), TownComparator::compareTownKind,
-					(ITownFixture one, ITownFixture two) -> one.getName().compareTo(
-							two.getName()));
+					(one, two) -> one.getName().compareTo(two.getName()));
 	/**
 	 * This implementation is rather a hack; fortunately, in each case I can rely on
 	 * there being only three (or four, for status) possibilities and the two towns'
