@@ -2,7 +2,9 @@ package controller.map.report.tabular;
 
 import controller.map.misc.TownComparator;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Player;
@@ -50,6 +52,12 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	public TownTabularReportGenerator(final Player currentPlayer, final Point hq) {
 		player = currentPlayer;
 		base = hq;
+		comps = Arrays.asList(
+				(one, two) -> TownComparator.compareTownKind(one.second(), two.second()),
+				(one, two) -> new DistanceComparator(base).compare(one.first(), two.first()),
+				(one, two) -> TownComparator.compareTownSize(one.second().size(), two.second().size()),
+				(one, two) -> TownComparator.compareTownStatus(one.second().status(), two.second().status()),
+				(one, two) -> one.second().getName().compareTo(two.second().getName()));
 	}
 
 	/**
@@ -86,8 +94,13 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	public String headerRow() {
 		return "Distance,Location,Owner,Kind,Size,Status,Name";
 	}
+
 	/**
-	 * TODO: Simplify, as we did in TownComparator, using a List of comparators.
+	 * The list of comparators to try in turn in comparePairs() until one produces a
+	 * non-zero result.
+	 */
+	private final List<Comparator<Pair<Point, AbstractTown>>> comps;
+	/**
 	 * @param one a Pair of one town and its location (in the other order)
 	 * @param two a Pair of another town and its location (in the other order)
 	 * @return the result of a comparison between the pairs.
@@ -96,37 +109,14 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	@Override
 	public int comparePairs(final Pair<Point, AbstractTown> one,
 							final Pair<Point, AbstractTown> two) {
-		final Comparator<Point> comparator = new DistanceComparator(base);
-		final AbstractTown first = one.second();
-		final AbstractTown second = two.second();
-		final int kindCmp = TownComparator.compareTownKind(first, second);
-		if (kindCmp == 0) {
-			final int ownerCmp = first.getOwner().compareTo(second.getOwner());
-			if (ownerCmp == 0) {
-				final int cmp = comparator.compare(one.first(), two.first());
-				if (cmp == 0) {
-					final int sizeCmp = TownComparator.compareTownSize(first.size(), second.size());
-					if (sizeCmp == 0) {
-						final int statusCmp = TownComparator
-													  .compareTownStatus(first.status(),
-															  second.status());
-						if (statusCmp == 0) {
-							return first.getName().compareTo(second.getName());
-						} else {
-							return statusCmp;
-						}
-					} else {
-						return sizeCmp;
-					}
-				} else {
-					return cmp;
-				}
-			} else {
-				return ownerCmp;
+		int retval = 0;
+		for (final Comparator<Pair<Point, AbstractTown>> comparator : comps) {
+			retval = comparator.compare(one, two);
+			if (retval != 0) {
+				return retval;
 			}
-		} else {
-			return kindCmp;
 		}
+		return retval;
 	}
 
 	@SuppressWarnings("MethodReturnAlwaysConstant")
