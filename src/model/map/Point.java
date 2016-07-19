@@ -24,6 +24,7 @@ import org.eclipse.jdt.annotation.NonNull;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public interface Point extends Comparable<@NonNull Point> {
 	/**
 	 * @return the first coordinate.
