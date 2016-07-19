@@ -138,7 +138,6 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	@SuppressWarnings("ObjectEquality")
 	@Override
 	public void addHours(final int hrs, final int condition) {
-		final Random random = new Random(condition);
 		if (parallel) {
 			for (final IJob job : proxied) {
 				boolean unmodified = true;
@@ -158,6 +157,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 				}
 			}
 		} else {
+			final Random random = new Random(condition);
 			for (final IJob job : proxied) {
 				boolean unmodified = true;
 				for (final ISkill skill : job) {

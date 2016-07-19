@@ -87,6 +87,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 		return "Distance,Location,Owner,Kind,Size,Status,Name";
 	}
 	/**
+	 * TODO: Simplify, as we did in TownComparator, using a List of comparators.
 	 * @param one a Pair of one town and its location (in the other order)
 	 * @param two a Pair of another town and its location (in the other order)
 	 * @return the result of a comparison between the pairs.

@@ -56,10 +56,10 @@ public final class ResolutionDecreaseConverter {
 	 */
 	public static IMapNG convert(final IMapNG old) {
 		checkRequirements(old);
-		final int newRows = old.dimensions().rows / 2;
-		final int newCols = old.dimensions().cols / 2;
 		final PlayerCollection players = new PlayerCollection();
 		old.players().forEach(players::add);
+		final int newCols = old.dimensions().cols / 2;
+		final int newRows = old.dimensions().rows / 2;
 		final IMutableMapNG retval =
 				new SPMapNG(new MapDimensions(newRows, newCols, 2), players,
 								old.getCurrentTurn());

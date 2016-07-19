@@ -164,7 +164,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		report.setRootVisible(false);
 		report.expandPath(
 				new TreePath(((DefaultMutableTreeNode) reportModel.getRoot()).getPath()));
-		final ReportUpdater reportUpdater = new ReportUpdater(model, reportModel);
+
 		@NonNull
 		Point hqLoc = PointFactory.point(-1, -1);
 		boolean found = false;
@@ -210,6 +210,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 				});
 		ToolTipManager.sharedInstance().registerComponent(report);
 		report.addMouseListener(new ReportMouseHandler(report, model, ioHandler));
+		final ReportUpdater reportUpdater = new ReportUpdater(model, reportModel);
 		ioHandler.addPlayerChangeListener(reportUpdater);
 		model.addMapChangeListener(reportUpdater);
 		final MemberDetailPanel mdp = new MemberDetailPanel();

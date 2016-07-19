@@ -55,11 +55,11 @@ public final class MiningModel {
 	public MiningModel(final LodeStatus initial, final long seed) {
 		final Map<Point, LodeStatus> unnormalized = new HashMap<>();
 		unnormalized.put(PointFactory.point(0, 0), initial);
-		final Random rng = new Random(seed);
 		final Queue<Point> queue = new LinkedList<>();
 		queue.add(PointFactory.point(0, 0));
 		long counter = 0;
 		long pruneCounter = 0;
+		final Random rng = new Random(seed);
 		while (!queue.isEmpty()) {
 			final Point point = queue.remove();
 			counter++;

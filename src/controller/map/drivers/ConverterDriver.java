@@ -106,9 +106,9 @@ public final class ConverterDriver implements UtilityDriver {
 				//noinspection ObjectAllocationInLoop
 				final IMapNG old = READER.readMap(new File(filename), Warning.DEFAULT);
 				ostream.println(" ... Converting ... ");
-				final String newFilename = filename + ".new";
 				final IMapNG map = ResolutionDecreaseConverter.convert(old);
 				ostream.print("About to write ");
+				final String newFilename = filename + ".new";
 				ostream.println(newFilename);
 				//noinspection ObjectAllocationInLoop
 				READER.write(new File(newFilename), map);

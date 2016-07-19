@@ -81,8 +81,6 @@ public final class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 		if (fix == null) {
 			return false;
 		}
-		@NonNull
-		final TileFixture localFix = fix;
 		if (fix instanceof TileTypeFixture) {
 			return false;
 		} else {
@@ -91,6 +89,7 @@ public final class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 				item = NullCleaner.assertNotNull(mapping.get(fix.getClass()));
 			} else if ("null".equals(fix.shortDesc())) {
 				item = new JCheckBoxMenuItem(fix.plural(), false);
+				final @NonNull TileFixture localFix = fix;
 				mapping.put(localFix.getClass(), item);
 			} else {
 				item = new JCheckBoxMenuItem(fix.plural(), true);

@@ -62,12 +62,12 @@ public final class QuadrantTable implements EncounterTable {
 													Integer.toString(rows));
 		}
 		final int cols = items.size() / rows;
-		final int rowStep = mapRows / rows;
-		final int colStep = mapCols / cols;
-		final int rowRemain = mapRows % rows;
-		final int colRemain = mapCols % cols;
 		quadrants = new HashMap<>();
 		int i = 0;
+		final int colRemain = mapCols % cols;
+		final int rowRemain = mapRows % rows;
+		final int colStep = mapCols / cols;
+		final int rowStep = mapRows / rows;
 		for (int row = 0; row < (mapRows - rowRemain); row += rowStep) {
 			for (int col = 0; col < (mapCols - colRemain); col += colStep) {
 				quadrants.put(PointFactory.point(row, col), items.get(i));

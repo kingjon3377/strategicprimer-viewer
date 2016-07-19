@@ -101,9 +101,9 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	@Override
 	public IWorker copy(final boolean zero) {
-		final IWorker retval = new ProxyWorker(parallel);
+		final ProxyWorker retval = new ProxyWorker(parallel);
 		for (final IWorker worker : workers) {
-			addProxied(worker.copy(zero));
+			retval.addProxied(worker.copy(zero));
 		}
 		return retval;
 	}

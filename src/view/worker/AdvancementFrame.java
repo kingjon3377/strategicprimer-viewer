@@ -87,13 +87,13 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 																							source.getMap()));
 		tree.addUnitSelectionListener(nwl);
 		final JobTreeModel jobsTreeModel = new JobTreeModel();
-		final JobsTree jobsTree = new JobsTree(jobsTreeModel);
 		tree.addUnitMemberListener(jobsTreeModel);
 		final ItemAdditionPanel jobAdditionPanel = new ItemAdditionPanel("job");
 		jobAdditionPanel.addAddRemoveListener(jobsTreeModel);
 		final ItemAdditionPanel skillAdditionPanel = new ItemAdditionPanel("skill");
 		skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
 		final LevelListener levelListener = new LevelListener();
+		final JobsTree jobsTree = new JobsTree(jobsTreeModel);
 		jobsTree.addSkillSelectionListener(levelListener);
 		final SkillAdvancementPanel skillAdvancementPanel = new SkillAdvancementPanel();
 		jobsTree.addSkillSelectionListener(skillAdvancementPanel);

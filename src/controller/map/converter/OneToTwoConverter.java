@@ -642,9 +642,9 @@ public final class OneToTwoConverter {
 			final MapReaderAdapter reader = new MapReaderAdapter();
 			for (final String arg : args) {
 				//noinspection ObjectAllocationInLoop
-				final File file = new File(arg);
 				final IMapNG old;
 				try {
+					final File file = new File(arg);
 					old = reader.readMap(file, Warning.DEFAULT);
 				} catch (final IOException | XMLStreamException | SPFormatException
 													except) {

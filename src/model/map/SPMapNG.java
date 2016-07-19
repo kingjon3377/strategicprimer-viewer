@@ -511,8 +511,8 @@ public class SPMapNG implements IMutableMapNG {
 		final Collection<T> first = firstStream.collect(Collectors.toList());
 		final Collection<T> firstCopy = new ArrayList<>(first);
 		final Collection<T> second = secondStream.collect(Collectors.toList());
-		final Collection<T> secondCopy = new ArrayList<>(second);
 		firstCopy.removeAll(second);
+		final Collection<T> secondCopy = new ArrayList<>(second);
 		secondCopy.removeAll(first);
 		return first.containsAll(second) && second.containsAll(first) &&
 					secondCopy.isEmpty() && firstCopy.isEmpty();
