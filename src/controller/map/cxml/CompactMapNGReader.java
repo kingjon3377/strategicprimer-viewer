@@ -202,9 +202,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					try {
 						final TileFixture fix = parseFixture(current, stream,
 								players, idFactory, warner);
-						if (fix instanceof StoneDeposit &&
-									StoneKind.Laterite == ((StoneDeposit) fix).stone() &&
-									TileType.Jungle != retval.getBaseTerrain(point)) {
+						if ((fix instanceof StoneDeposit) &&
+									(StoneKind.Laterite ==
+											 ((StoneDeposit) fix).stone()) &&
+									(TileType.Jungle != retval.getBaseTerrain(point))) {
 							warner.warn(new UnsupportedPropertyException(current,
 																				"laterite"));
 						}

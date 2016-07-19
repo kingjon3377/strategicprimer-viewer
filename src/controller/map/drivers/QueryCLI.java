@@ -270,24 +270,31 @@ public final class QueryCLI implements SimpleDriver {
 						"which should be done every %d turns at least, takes %.1f " +
 								"hours.%n",
 						Integer.valueOf(herdModel.getExtraChoresInterval() + 1),
-						Double.valueOf(animalsPerHerder * herdModel.getExtraTimePerHead() / 60.0));
+						Double.valueOf(
+								(animalsPerHerder * herdModel.getExtraTimePerHead()) /
+										60.0));
 				cli.printf("This produces %.0f %s, totaling %.1f oz.%n",
 						Double.valueOf(herdModel.getProductionPerHead() * count),
 						herdModel.getProductionUnit(),
 						Double.valueOf(herdModel.getProductionPerHead() * herdModel.getPoundsCoefficient() * count));
 				if (cli.inputBoolean("Do they do the cleaning this turn? ")) {
 					hours = round.applyAsInt(
-							animalsPerHerder * (herdModel.getDailyTimePerHead() +
-														herdModel.getExtraTimePerHead()) /
+							(animalsPerHerder * (herdModel.getDailyTimePerHead() +
+														 herdModel
+																 .getExtraTimePerHead()
+							)) /
 									60.0);
 				} else {
 					hours = round.applyAsInt(
-							animalsPerHerder * herdModel.getDailyTimePerHead() / 60.0);
+							(animalsPerHerder * herdModel.getDailyTimePerHead()) / 60.0);
 				}
 			} else {
 				cli.printf("Tending the animals takes %d minutes, or %d minutes with ",
-						Integer.valueOf(animalsPerHerder * herdModel.getDailyTimePerHead() / 2),
-						Integer.valueOf(animalsPerHerder * (herdModel.getDailyTimePerHead() / 2 - 5)));
+						Integer.valueOf(
+								(animalsPerHerder * herdModel.getDailyTimePerHead()) / 2),
+						Integer.valueOf(animalsPerHerder *
+												((herdModel.getDailyTimePerHead() / 2) -
+														 5)));
 				cli.println("expert herders, twice daily.");
 				cli.printf("Gathering them for each milking takes %d min more.%n",
 						Integer.valueOf(herdModel.getDailyTimeFloor() / 2));
@@ -302,7 +309,7 @@ public final class QueryCLI implements SimpleDriver {
 									 herdModel.getDailyTimeFloor()) / 60.0);
 				} else {
 					hours = round.applyAsInt(
-							(animalsPerHerder * herdModel.getDailyTimePerHead() +
+							((animalsPerHerder * herdModel.getDailyTimePerHead()) +
 									 herdModel.getDailyTimeFloor()) / 60.0);
 				}
 			}

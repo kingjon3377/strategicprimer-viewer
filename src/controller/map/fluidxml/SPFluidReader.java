@@ -585,10 +585,15 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					for (final River river : (RiverFixture) child) {
 						map.addRivers(point, river);
 					}
-				} else if (child instanceof StoneDeposit &&
-								   StoneKind.Laterite == ((StoneDeposit) child).stone() &&
-								   !(TileType.Jungle == map.getBaseTerrain(point))) {
-						warner.warn(new UnsupportedPropertyException(current, "laterite"));
+				} else if ((child instanceof StoneDeposit) &&
+								   (StoneKind.Laterite ==
+											((StoneDeposit) child)
+													.stone()) &&
+								   !(TileType.Jungle ==
+											 map.getBaseTerrain(
+													 point))) {
+						warner.warn(new UnsupportedPropertyException(current,
+																			"laterite"));
 					map.addFixture(point, (TileFixture) child);
 				} else if (child instanceof TileFixture) {
 					map.addFixture(point, (TileFixture) child);
