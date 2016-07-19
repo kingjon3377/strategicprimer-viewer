@@ -276,7 +276,8 @@ public final class QueryCLI implements SimpleDriver {
 				cli.printf("This produces %.0f %s, totaling %.1f oz.%n",
 						Double.valueOf(herdModel.getProductionPerHead() * count),
 						herdModel.getProductionUnit(),
-						Double.valueOf(herdModel.getProductionPerHead() * herdModel.getPoundsCoefficient() * count));
+						Double.valueOf(herdModel.getProductionPerHead() *
+											   herdModel.getPoundsCoefficient() * count));
 				if (cli.inputBoolean("Do they do the cleaning this turn? ")) {
 					hours = round.applyAsInt(
 							(animalsPerHerder * (herdModel.getDailyTimePerHead() +
