@@ -1,6 +1,8 @@
 package controller.map.misc;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import model.map.fixtures.towns.City;
 import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Fortress;
@@ -131,7 +133,14 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 			return 0;
 		}
 	}
-
+	/**
+	 * A list of comparators in the order to use them.
+	 */
+	private static final List<Comparator<ITownFixture>> COMPARATORS =
+			Arrays.asList((one, two) -> compareTownStatus(one.status(), two.status()),
+					(one, two) -> compareTownSize(one.size(), two.size()), TownComparator::compareTownKind,
+					(ITownFixture one, ITownFixture two) -> one.getName().compareTo(
+							two.getName()));
 	/**
 	 * This implementation is rather a hack; fortunately, in each case I can rely on
 	 * there being only three (or four, for status) possibilities and the two towns'
@@ -145,19 +154,15 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compare(final ITownFixture townOne, final ITownFixture townTwo) {
-		if (townOne.status() == townTwo.status()) {
-			if (townOne.size() == townTwo.size()) {
-				if (townOne.getClass().equals(townTwo.getClass())) {
-					return townOne.getName().compareTo(townTwo.getName());
-				} else {
-					return compareTownKind(townOne, townTwo);
-				}
+		int retval = 0;
+		for (final Comparator<ITownFixture> comparator : COMPARATORS) {
+			if (retval != 0) {
+				return retval;
 			} else {
-				return compareTownSize(townOne.size(), townTwo.size());
+				retval = comparator.compare(townOne, townTwo);
 			}
-		} else {
-			return compareTownStatus(townOne.status(), townTwo.status());
 		}
+		return retval;
 	}
 
 	/**
