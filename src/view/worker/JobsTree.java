@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.JTree;
+import java.util.Optional;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
@@ -53,7 +54,6 @@ public final class JobsTree extends JTree implements SkillSelectionSource {
 	 *
 	 * @param model the tree model underlying this tree
 	 */
-	@SuppressWarnings("AssignmentToNull")
 	public JobsTree(final JobTreeModel model) {
 		model.setSelectionModel(NullCleaner.assertNotNull(getSelectionModel()));
 		setModel(model);
@@ -100,20 +100,19 @@ public final class JobsTree extends JTree implements SkillSelectionSource {
 		getSelectionModel().addTreeSelectionListener(evt -> {
 			if (evt != null) {
 				final TreePath selPath = evt.getNewLeadSelectionPath();
-				@Nullable
-				final ISkill retval;
+				final Optional<ISkill> retval;
 				if (selPath == null) {
-					retval = null;
+					retval = Optional.empty();
 				} else {
 					final Object component = selPath.getLastPathComponent();
 					if (component instanceof ISkill) {
-						retval = (ISkill) component;
+						retval = Optional.of((ISkill) component);
 					} else {
-						retval = null;
+						retval = Optional.empty();
 					}
 				}
 				for (final SkillSelectionListener list : ssListeners) {
-					list.selectSkill(retval);
+					list.selectSkill(retval.orElse(null));
 				}
 			}
 		});
