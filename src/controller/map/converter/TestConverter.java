@@ -441,6 +441,14 @@ public final class TestConverter {
 					equalTo(outOne.toString()));
 		}
 		try (StringWriter outOne = new StringWriter();
+			 StringWriter outTwo = new StringWriter()) {
+			final SPWriter writer = new CompactXMLWriter();
+			writer.write(outOne, converted);
+			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
+			assertThat("Deprecated I/O produces expected result", outTwo.toString(),
+					equalTo(outOne.toString()));
+		}
+		try (StringWriter outOne = new StringWriter();
 				StringWriter outTwo = new StringWriter()) {
 			assertThat("Products of two runs are both or neither subsets of expected",
 					converted.isSubset(
