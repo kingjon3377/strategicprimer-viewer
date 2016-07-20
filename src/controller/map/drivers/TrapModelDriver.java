@@ -217,9 +217,7 @@ public final class TrapModelDriver implements SimpleDriver {
 					return FRUITLESS_TRAP;
 				}
 			} else {
-				cli.print("Found either ");
-				cli.print(top);
-				cli.println(" or evidence of it escaping.");
+				cli.printf("Found either %s or evidence of it escaping.%n", top);
 				return cli.inputNumber("How long to check and deal with animal? ");
 			}
 		case EasyReset:
