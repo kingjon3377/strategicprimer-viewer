@@ -1,10 +1,12 @@
 package controller.exploration;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -23,8 +25,9 @@ import model.map.TileType;
 import util.ComparablePair;
 import util.NullCleaner;
 import util.Pair;
-import util.ResourceInputStream;
 import util.TypesafeLogger;
+
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 
 /**
  * A class to load encounter tables from file.
@@ -79,10 +82,9 @@ public final class TableLoader {
 	 * @return the table
 	 * @throws IOException when file not found or on other I/O error
 	 */
-	public static EncounterTable loadTable(final String filename)
+	public static EncounterTable loadTable(final Path filename)
 			throws IOException {
-		try (final BufferedReader reader = new BufferedReader(new InputStreamReader(new
-																							ResourceInputStream(filename)))) {
+		try (final BufferedReader reader = Files.newBufferedReader(filename)) {
 			return loadTableFromStream(reader);
 		} catch (final IllegalArgumentException except) {
 			if ("unknown table type".equals(except.getMessage())) {
@@ -255,31 +257,29 @@ public final class TableLoader {
 	 * @param runner the runner to add them to
 	 */
 	public static void loadAllTables(final String path, final ExplorationRunner runner) {
-		final File dir = new File(path);
-		final String[] children = dir.list();
-		if (children != null) {
-			for (final String table : children) {
-				if (('.' == table.charAt(0)) || table.contains("/.")) {
-					LOGGER.info(table
-										+ " looks like a hidden file, skipping ...");
+		final Path dir = Paths.get(path);
+		try (final DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+			for (Path table : stream) {
+				if (Files.isHidden(table) || table.getFileName().startsWith(".")) {
+					LOGGER.info(table + " looks like a hidden file, skipping ...");
 					continue;
-				}
-				try {
-					runner.loadTable(table, loadTable(path + '/' + table));
-				} catch (final FileNotFoundException e) {
-					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
-				} catch (final IOException e) {
-					LOGGER.log(Level.SEVERE,
-							"I/O error while parsing " + table, e);
-				} catch (final IllegalArgumentException e) {
-					LOGGER.log(
-							Level.SEVERE,
-							"Illegal argument while parsing "
-									+ table
-									+ ", probably a malformed file",
-							e);
+				} else if (Files.exists(table)) {
+					runner.loadTable(table.getFileName().toString(),
+							loadTable(table));
 				}
 			}
+		} catch (final FileNotFoundException e) {
+			LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
+		} catch (final IOException e) {
+			LOGGER.log(Level.SEVERE,
+					"I/O error while parsing " + table, e);
+		} catch (final IllegalArgumentException e) {
+			LOGGER.log(
+					Level.SEVERE,
+					"Illegal argument while parsing "
+							+ table
+							+ ", probably a malformed file",
+					e);
 		}
 	}
 }
