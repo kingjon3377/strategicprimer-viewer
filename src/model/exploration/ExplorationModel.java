@@ -574,6 +574,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				first = false;
 				i++;
 			}
+			// TODO: When Ground gets unique IDs, check it instead of using ==
+			//noinspection ObjectEquality
 			if (ground == diggables.get(0)) {
 				assert ground != null;
 				final Ground newGround = ground.copy(false);
