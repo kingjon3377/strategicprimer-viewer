@@ -77,7 +77,10 @@
   <target name="build" depends="init">
     <echo message="${ant.project.name}: ${ant.file}" />
     <echo>${toString:viewer.classpath}</echo>
-    <exec executable="sh"><arg value="-c" /><arg value="for f in `echo ${toString:viewer.classpath} | tr ':' '\n'`; do test -e $f || echo WARNING: Classpath element $f 	does not exist;done" /></exec>
+    <exec executable="sh"><arg value="-c" />
+      <arg value="for f in `echo ${toString:viewer.classpath} | tr ':' '\n'`;
+        do test -e $f || echo WARNING: Classpath element $f 	does not exist;done" />
+    </exec>
     <javac debug="true" debuglevel="${debuglevel}" destdir="bin"
     source="${source}" target="${target}"
     includeantruntime="false">
@@ -112,9 +115,12 @@
       <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
       <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
       <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.towns.TestTownSerialization" todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.towns.TestVillageSerialization" todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.resources.TestStoneSerialization" todir="${junit.output.dir}" />
+      <test name="model.map.fixtures.towns.TestTownSerialization"
+            todir="${junit.output.dir}" />
+      <test name="model.map.fixtures.towns.TestVillageSerialization"
+            todir="${junit.output.dir}" />
+      <test name="model.map.fixtures.resources.TestStoneSerialization"
+            todir="${junit.output.dir}" />
       <test name="model.map.fixtures.TestFixtureSerialization"
             todir="${junit.output.dir}" />
       <test name="model.map.fixtures.TestMoreFixtureSerialization"
