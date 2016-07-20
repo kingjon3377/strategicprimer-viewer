@@ -113,15 +113,15 @@ public final class ScrollListener
 
 	/**
 	 * Factory method.
-	 * @param model the viewer model
+	 * @param viewerModel the viewer model
 	 * @param component the map component
 	 */
-	public static BorderedPanel mapScrollPanel(final IViewerModel model,
+	public static BorderedPanel mapScrollPanel(final IViewerModel viewerModel,
 											   final JComponent component) {
 		final BorderedPanel retval = new BorderedPanel(component, null, null, null, null);
-		final ScrollListener scrollListener = new ScrollListener(model, retval);
-		model.addGraphicalParamsListener(scrollListener);
-		model.addMapChangeListener(scrollListener);
+		final ScrollListener scrollListener = new ScrollListener(viewerModel, retval);
+		viewerModel.addGraphicalParamsListener(scrollListener);
+		viewerModel.addMapChangeListener(scrollListener);
 		return retval;
 	}
 
