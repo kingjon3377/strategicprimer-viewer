@@ -4,8 +4,9 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
@@ -213,7 +214,7 @@ public final class TODOFixerDriver {
 				}
 				final IMutableMapNG map;
 				//noinspection ObjectAllocationInLoop
-				final File file = new File(arg);
+				final Path file = Paths.get(arg);
 				try {
 					map = reader.readMap(file, Warning.DEFAULT);
 				} catch (final IOException | XMLStreamException | SPFormatException e) {

@@ -3,11 +3,12 @@ package view.worker;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import java.awt.Dimension;
-import java.io.File;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -66,9 +67,9 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 	 */
 	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
 		super("Worker Advancement");
-		final File mapFile = source.getMapFile();
-		if (mapFile.exists()) {
-			setTitle(mapFile.getName() + " | Worker Advancement");
+		final Path mapFile = source.getMapFile();
+		if (Files.exists(mapFile)) {
+			setTitle(mapFile + " | Worker Advancement");
 			getRootPane().putClientProperty("Window.documentFile",
 					mapFile);
 		}

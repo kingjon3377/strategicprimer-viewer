@@ -1,6 +1,6 @@
 package controller.map.drivers;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -105,7 +105,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 					"Expansion on a master map with no subordinate maps does nothing");
 			mapModel = new SimpleMultiMapModel(model);
 		}
-		for (final Pair<IMutableMapNG, File> pair : mapModel.getSubordinateMaps()) {
+		for (final Pair<IMutableMapNG, Path> pair : mapModel.getSubordinateMaps()) {
 			expand(mapModel.getMap(), pair.first());
 		}
 	}

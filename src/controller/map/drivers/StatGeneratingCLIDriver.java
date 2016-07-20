@@ -4,12 +4,12 @@ import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -251,7 +251,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	private static void enterStats(final IMultiMapModel model, final int idNum,
 			final ICLIHelper cli) throws IOException {
 		final WorkerStats stats = enterStats(cli);
-		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
+		for (final Pair<IMutableMapNG, Path> pair : model.getAllMaps()) {
 			final IMapNG map = pair.first();
 			final IFixture fix = find(map, idNum);
 			if ((fix instanceof Worker) && (((Worker) fix).getStats() == null)) {
@@ -385,7 +385,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				final TileFixture unit =
 						new Unit(player, cli.inputString("Kind of unit: "),
 										cli.inputString("Unit name: "), idf.createID());
-				for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
+				for (final Pair<IMutableMapNG, Path> pair : model.getAllMaps()) {
 					pair.first().addFixture(point, unit);
 				}
 				if (cli.inputBoolean(LOAD_NAMES)) {
@@ -414,7 +414,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
 			final IWorker worker = createSingleWorker(idf, cli);
-			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
+			for (final Pair<IMutableMapNG, Path> pair : model.getAllMaps()) {
 				final IFixture fix = find(pair.first(), unit.getID());
 				if (fix instanceof IUnit) {
 					((IUnit) fix).addMember(worker);
@@ -449,7 +449,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			final IWorker worker =
 					createWorkerFromNameFile(
 							NullCleaner.assertNotNull(names.get(i).trim()), idf, cli);
-			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
+			for (final Pair<IMutableMapNG, Path> pair : model.getAllMaps()) {
 				final IFixture fix = find(pair.first(), unit.getID());
 				if (fix instanceof IUnit) {
 					((IUnit) fix).addMember(worker);

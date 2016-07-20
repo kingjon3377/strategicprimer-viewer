@@ -3,8 +3,8 @@ package view.exploration;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -256,7 +256,7 @@ public final class ExplorationCLI implements MovementCostSource {
 			final boolean zero = (fix instanceof HasOwner) &&
 										!((HasOwner) fix).getOwner()
 												.equals(mover.getOwner());
-			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Path> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				if ((fix instanceof Ground) && (map.getGround(dPoint) == null)) {
 					map.setGround(dPoint, ((Ground) fix).copy(false));

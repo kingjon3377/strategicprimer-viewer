@@ -12,10 +12,11 @@ import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.iointerfaces.TestReaderFactory;
 import controller.map.misc.DuplicateIDException;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,7 +62,7 @@ public abstract class BaseTestFixtureSerialization {
 	/**
 	 * The "filename" to pass to the readers.
 	 */
-	private static final File FAKE_FILENAME = new File("");
+	private static final Path FAKE_FILENAME = Paths.get("");
 	/**
 	 * An instance of the previous-generation reader to test against.
 	 */

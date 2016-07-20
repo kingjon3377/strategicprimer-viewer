@@ -3,8 +3,8 @@ package controller.map.misc;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.ISPReader;
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -56,14 +56,14 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	private final Deque<Pair<String, ComparableIterator<XMLEvent>>> stack;
 
 	/**
-	 * FIXME: We should use Files "all the way down" if we can. But we can't yet because
+	 * FIXME: We should use Paths "all the way down" if we can. But we can't yet because
 	 * we rely on the magic string: file.
 	 *
 	 * @param file the name of the file we're reading
 	 * @param iter the iterator we'll start with.
 	 */
-	public IncludingIterator(final File file, final Iterator<XMLEvent> iter) {
-		this(assertNotNull(file.getPath()), iter);
+	public IncludingIterator(final Path file, final Iterator<XMLEvent> iter) {
+		this(assertNotNull(file.toString()), iter);
 	}
 
 	/**

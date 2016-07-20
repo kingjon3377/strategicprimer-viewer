@@ -2,7 +2,8 @@ package controller.map.drivers;
 
 import controller.map.misc.FileChooser;
 import controller.map.misc.MapReaderAdapter;
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import util.EqualsAny;
 import util.Warning;
 
@@ -65,11 +66,11 @@ public interface SimpleDriver extends ISPDriver {
 		} else if ((args.length == 1) && EqualsAny.equalsAny(usage().getParamsWanted(),
 				ParamCount.Two, ParamCount.AtLeastTwo)) {
 			startDriver(new MapReaderAdapter()
-								.readMultiMapModel(Warning.DEFAULT, new File(args[0]),
+								.readMultiMapModel(Warning.DEFAULT, Paths.get(args[0]),
 										askUserForFile()));
 		} else {
 			startDriver(new MapReaderAdapter()
-								.readMultiMapModel(Warning.DEFAULT, new File(args[0]),
+								.readMultiMapModel(Warning.DEFAULT, Paths.get(args[0]),
 										MapReaderAdapter.namesToFiles(true, args)));
 		}
 	}
@@ -78,9 +79,9 @@ public interface SimpleDriver extends ISPDriver {
 	 * @return the file chosen
 	 * @throws DriverFailedException if the user fails to choose
 	 */
-	default File askUserForFile() throws DriverFailedException {
+	default Path askUserForFile() throws DriverFailedException {
 		try {
-			return new FileChooser(new File("")).getFile();
+			return new FileChooser(Paths.get("")).getFile();
 		} catch (final FileChooser.ChoiceInterruptedException except) {
 			throw new DriverFailedException("Choice interrupted or user didn't choose",
 												except);

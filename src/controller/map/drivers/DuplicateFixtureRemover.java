@@ -1,7 +1,7 @@
 package controller.map.drivers;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import model.map.IMutableMapNG;
@@ -114,7 +114,7 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		try {
 			if (model instanceof IMultiMapModel) {
-				for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
+				for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model)
 																	.getAllMaps()) {
 					filter(pair.first(), SYS_OUT);
 				}

@@ -3,9 +3,10 @@ package controller.map.drivers;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -68,7 +69,7 @@ public final class MapChecker implements UtilityDriver {
 		if (args.length < 1) {
 			throw new IncorrectUsageException(usage());
 		}
-		Stream.of(args).map(File::new).forEach(this::check);
+		Stream.of(args).map(Paths::get).forEach(this::check);
 	}
 
 	/**
@@ -77,34 +78,34 @@ public final class MapChecker implements UtilityDriver {
 	 * @param file the file to check
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private void check(final File file) {
+	private void check(final Path file) {
 		SYS_OUT.print("Starting ");
-		SYS_OUT.println(file.getPath());
+		SYS_OUT.println(file);
 		boolean retval = true;
 		try {
 			reader.readMap(file, Warning.DEFAULT);
 		} catch (final MapVersionException e) {
 			LOGGER.log(Level.SEVERE,
-					"Map version in " + file.getPath() + " not acceptable to reader", e);
+					"Map version in " + file + " not acceptable to reader", e);
 			retval = false;
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, file.getPath() + " not found", e);
+			LOGGER.log(Level.SEVERE, file + " not found", e);
 			retval = false;
 		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error reading " + file.getPath(), e);
+			LOGGER.log(Level.SEVERE, "I/O error reading " + file, e);
 			retval = false;
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE,
-					"XML stream error reading " + file.getPath(), e);
+					"XML stream error reading " + file, e);
 			retval = false;
 		} catch (final SPFormatException e) {
 			LOGGER.log(Level.SEVERE,
-					"SP map format error reading " + file.getPath(), e);
+					"SP map format error reading " + file, e);
 			retval = false;
 		}
 		if (retval) {
 			SYS_OUT.print("No errors in ");
-			SYS_OUT.println(file.getPath());
+			SYS_OUT.println(file);
 		}
 	}
 

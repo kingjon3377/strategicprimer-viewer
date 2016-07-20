@@ -5,18 +5,17 @@ import controller.map.fluidxml.SPFluidReader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.CharBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -77,12 +76,12 @@ public final class ReaderComparator implements UtilityDriver {
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	public void compareReaders(final String... args) {
-		Stream.of(args).map(File::new).forEach(this::compareReaders);
+		Stream.of(args).map(Paths::get).forEach(this::compareReaders);
 	}
 	/**
 	 * Handle (log appropriately) an exception.
 	 * @param except the exception to handle
-	 * @param file the name of the file being read
+	 * @param file the name of the file being read TODO: Take Path instead
 	 */
 	private static void handleException(final Exception except, final String file) {
 		if (except instanceof XMLStreamException) {
@@ -104,7 +103,7 @@ public final class ReaderComparator implements UtilityDriver {
 	 *
 	 * @param arg the file to have each read.
 	 */
-	public void compareReaders(final File arg) {
+	public void compareReaders(final Path arg) {
 		SYS_OUT.print(arg);
 		SYS_OUT.println(':');
 		final String contents;
@@ -122,7 +121,7 @@ public final class ReaderComparator implements UtilityDriver {
 		try (StringReader reader = new StringReader(contents)) {
 			map1 = oldReader.readMap(arg, reader, Warning.Ignore);
 		} catch (XMLStreamException | SPFormatException except) {
-			handleException(except, arg.getPath());
+			handleException(except, arg.toString());
 			return;
 		}
 		final long endOne = System.nanoTime();
@@ -132,7 +131,7 @@ public final class ReaderComparator implements UtilityDriver {
 		try (StringReader reader = new StringReader(contents)) {
 			map2 = newReader.readMap(arg, reader, Warning.Ignore);
 		} catch (XMLStreamException | SPFormatException except) {
-			handleException(except, arg.getPath());
+			handleException(except, arg.toString());
 			return;
 		}
 		final long endTwo = System.nanoTime();
@@ -165,18 +164,9 @@ public final class ReaderComparator implements UtilityDriver {
 	 * disk I/O.
 	 * @throws IOException if file not found, or on other I/O error reading from file
 	 */
-	private static String readIntoBuffer(final File file)
+	private static String readIntoBuffer(final Path file)
 			throws IOException {
-		try (final FileReader reader = new FileReader(file)) {
-			final int len = (int) file.length();
-			final CharBuffer buffer = CharBuffer.allocate(len);
-			final int charsRead = reader.read(buffer);
-			if (len != charsRead) {
-				LOGGER.warning("Reading " + file.getPath() + " didn't use whole buffer");
-			}
-			buffer.position(0);
-			return NullCleaner.assertNotNull(buffer.toString());
-		}
+		return new String(Files.readAllBytes(file));
 	}
 
 	/**

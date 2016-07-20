@@ -5,13 +5,13 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -115,13 +115,13 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	/**
 	 * Check a map.
 	 *
-	 * @param filename the name of the file to check.
+	 * @param filename the name of the file to check. TODO: Take Path
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void check(final String filename) {
 		printParagraph("Starting " + filename);
 		try {
-			reader.readMap(new File(filename), Warning.Custom);
+			reader.readMap(Paths.get(filename), Warning.Custom);
 		} catch (final IOException | XMLStreamException | SPFormatException except) {
 			printError(except, filename);
 			return;

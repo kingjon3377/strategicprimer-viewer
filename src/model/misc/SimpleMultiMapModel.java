@@ -1,6 +1,6 @@
 package model.misc;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -37,7 +37,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	 * @param file the file the map was loaded from or should be saved to
 	 */
 	@SuppressWarnings("UnnecessarySuperQualifier")
-	public SimpleMultiMapModel(final IMutableMapNG map, final File file) {
+	public SimpleMultiMapModel(final IMutableMapNG map, final Path file) {
 		super.setMap(map, file);
 	}
 
@@ -50,7 +50,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	public SimpleMultiMapModel(final IDriverModel model) {
 		super.setMap(model.getMap(), model.getMapFile());
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
+			for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model)
 																.getSubordinateMaps()) {
 				addSubordinateMap(pair.first(), pair.second());
 			}
@@ -60,14 +60,14 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	/**
 	 * The collection of subordinate maps.
 	 */
-	private final List<Pair<IMutableMapNG, File>> subordinateMaps = new ArrayList<>();
+	private final List<Pair<IMutableMapNG, Path>> subordinateMaps = new ArrayList<>();
 
 	/**
 	 * @param map  the subordinate map to add
 	 * @param file the name of the file it was loaded from
 	 */
 	@Override
-	public final void addSubordinateMap(final IMutableMapNG map, final File file) {
+	public final void addSubordinateMap(final IMutableMapNG map, final Path file) {
 		subordinateMaps.add(Pair.of(map, file));
 	}
 
@@ -80,7 +80,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	 */
 	@Override
 	public final void removeSubordinateMap(final IMapNG map) {
-		for (final Pair<IMutableMapNG, File> pair : subordinateMaps) {
+		for (final Pair<IMutableMapNG, Path> pair : subordinateMaps) {
 			if (map.equals(pair.first())) {
 				subordinateMaps.remove(pair);
 				return;
@@ -92,7 +92,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	 * @return an iterator over the subordinate maps
 	 */
 	@Override
-	public final Iterable<Pair<IMutableMapNG, File>> getSubordinateMaps() {
+	public final Iterable<Pair<IMutableMapNG, Path>> getSubordinateMaps() {
 		return new ArrayList<>(subordinateMaps);
 	}
 
@@ -100,8 +100,8 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	 * @return an iterator over both the main map and the subordinate maps
 	 */
 	@Override
-	public final Iterable<Pair<IMutableMapNG, File>> getAllMaps() {
-		final Collection<Pair<IMutableMapNG, File>> retval = new ArrayList<>();
+	public final Iterable<Pair<IMutableMapNG, Path>> getAllMaps() {
+		final Collection<Pair<IMutableMapNG, Path>> retval = new ArrayList<>();
 		retval.add(Pair.of(getMap(), getMapFile()));
 		getSubordinateMaps().forEach(retval::add);
 		return retval;

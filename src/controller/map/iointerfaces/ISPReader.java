@@ -1,8 +1,8 @@
 package controller.map.iointerfaces;
 
 import controller.map.formatexceptions.SPFormatException;
-import java.io.File;
 import java.io.Reader;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.xml.stream.XMLStreamException;
@@ -53,6 +53,6 @@ public interface ISPReader {
 	 * @throws XMLStreamException if XML isn't well-formed.
 	 * @throws SPFormatException  if the data is invalid.
 	 */
-	<T> T readXML(File file, Reader istream, Class<T> type, Warning warner)
+	<T> T readXML(Path file, Reader istream, Class<T> type, Warning warner)
 			throws XMLStreamException, SPFormatException;
 }

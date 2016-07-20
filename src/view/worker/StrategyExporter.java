@@ -1,8 +1,9 @@
 package view.worker;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -161,8 +162,8 @@ public final class StrategyExporter implements PlayerChangeListener {
 	 * Write the strategy to file.
 	 * @param file a file (name) to write to
 	 */
-	public void writeStrategy(final File file, final Iterable<UnitMember> dismissed) {
-		try (final FileWriter writer = new FileWriter(file)) {
+	public void writeStrategy(final Path file, final Iterable<UnitMember> dismissed) {
+		try (final BufferedWriter writer = Files.newBufferedWriter(file)) {
 			//noinspection resource
 			writer.append(createStrategy(dismissed));
 		} catch (final IOException except) {

@@ -3,8 +3,9 @@ package controller.map.drivers;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import util.Warning;
@@ -56,21 +57,21 @@ public final class EchoDriver implements UtilityDriver {
 			throw new IncorrectUsageException(usage());
 		}
 		final IMapNG map;
-		final File infile = new File(args[0]);
+		final Path infile = Paths.get(args[0]);
 		try {
 			map =
 					new MapReaderAdapter().readMap(infile, Warning.Ignore);
 		} catch (final MapVersionException except) {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error reading file " + infile.getPath(),
+			throw new DriverFailedException("I/O error reading file " + infile,
 												except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML", except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("SP map format error", except);
 		}
-		final File outfile = new File(args[1]);
+		final Path outfile = Paths.get(args[1]);
 		try {
 			new MapReaderAdapter().write(outfile, map);
 		} catch (final IOException except) {

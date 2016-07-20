@@ -1,10 +1,10 @@
 package controller.map.fluidxml;
 
 import controller.map.iointerfaces.SPWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import model.map.HasImage;
@@ -65,9 +65,9 @@ import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
 import util.NullCleaner;
 
-import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.indent;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
@@ -158,8 +158,8 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	}
 
 	@Override
-	public void write(final File file, final IMapNG map) throws IOException {
-		try (final Writer writer = new FileWriter(file)) {
+	public void write(final Path file, final IMapNG map) throws IOException {
+		try (final Writer writer = Files.newBufferedWriter(file)) {
 			writeSPObject(writer, map, 0);
 		}
 	}

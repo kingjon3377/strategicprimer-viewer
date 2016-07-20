@@ -1,7 +1,7 @@
 package controller.map.drivers;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.logging.Logger;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -86,8 +86,8 @@ public final class SubsetDriver implements SimpleDriver {
 			mapModel = new SimpleMultiMapModel(model);
 			LOGGER.warning("Subset checking does nothing with no subordinate maps");
 		}
-		for (final Pair<IMutableMapNG, File> pair : mapModel.getSubordinateMaps()) {
-			SYS_OUT.print(pair.second().getName());
+		for (final Pair<IMutableMapNG, Path> pair : mapModel.getSubordinateMaps()) {
+			SYS_OUT.print(pair.second());
 			SYS_OUT.print("\t...\t\t");
 			printReturn(doSubsetTest(mapModel.getMap(), pair.first(), pair.second()));
 		}
@@ -137,9 +137,9 @@ public final class SubsetDriver implements SimpleDriver {
 	 */
 	@SuppressWarnings("UseOfSystemOutOrSystemErr")
 	private static Returns doSubsetTest(final Subsettable<IMapNG> mainMap,
-										final IMapNG map, final File file) {
+										final IMapNG map, final Path file) {
 		try {
-			if (mainMap.isSubset(map, SYS_OUT, "In " + file.getName() + ':')) {
+			if (mainMap.isSubset(map, SYS_OUT, "In " + file + ':')) {
 				return Returns.OK;
 			} else {
 				System.out.flush();

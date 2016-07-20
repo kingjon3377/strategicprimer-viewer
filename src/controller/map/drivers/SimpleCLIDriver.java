@@ -1,7 +1,7 @@
 package controller.map.drivers;
 
 import controller.map.misc.MapReaderAdapter;
-import java.io.File;
+import java.nio.file.Paths;
 import model.misc.IDriverModel;
 import util.Warning;
 
@@ -80,7 +80,7 @@ public interface SimpleCLIDriver extends SimpleDriver {
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IDriverModel model =
-				reader.readMultiMapModel(Warning.Ignore, new File(args[0]),
+				reader.readMultiMapModel(Warning.Ignore, Paths.get(args[0]),
 						MapReaderAdapter.namesToFiles(true, args));
 		startDriver(model);
 		reader.writeModel(model);

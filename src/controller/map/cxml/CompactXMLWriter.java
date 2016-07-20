@@ -1,10 +1,11 @@
 package controller.map.cxml;
 
 import controller.map.iointerfaces.SPWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import model.map.IMapNG;
 
 /**
@@ -40,12 +41,12 @@ public final class CompactXMLWriter implements SPWriter {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final File file, final IMapNG map) throws IOException {
+	public void write(final Path file, final IMapNG map) throws IOException {
 		writeSPObject(file, map);
 	}
 
 	/**
-	 * Write a map to a stream.
+	 * Write a map to a stream. TODO: Test
 	 *
 	 * @param ostream the stream to write to
 	 * @param map     the map to write
@@ -66,7 +67,7 @@ public final class CompactXMLWriter implements SPWriter {
 	 */
 	public static void writeObject(final String filename, final Object obj)
 			throws IOException {
-		writeSPObject(new File(filename), obj);
+		writeSPObject(Paths.get(filename), obj);
 	}
 
 	/**
@@ -76,9 +77,9 @@ public final class CompactXMLWriter implements SPWriter {
 	 * @param obj  the object to write
 	 * @throws IOException on I/O error
 	 */
-	public static void writeSPObject(final File file, final Object obj)
+	public static void writeSPObject(final Path file, final Object obj)
 			throws IOException {
-		try (final Writer writer = new FileWriter(file)) {
+		try (final Writer writer = Files.newBufferedWriter(file)) {
 			writeSPObject(writer, obj);
 		}
 	}

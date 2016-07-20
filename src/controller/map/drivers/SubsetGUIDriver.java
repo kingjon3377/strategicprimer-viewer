@@ -1,8 +1,9 @@
 package controller.map.drivers;
 
 import controller.map.formatexceptions.SPFormatException;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Stream;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
@@ -62,7 +63,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 			final SubsetFrame frame = new SubsetFrame();
 			SwingUtilities.invokeLater(() -> frame.setVisible(true));
 			frame.loadMain(model.getMap());
-			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
+			for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model)
 																.getSubordinateMaps()) {
 				frame.test(pair.first(), pair.second());
 			}
@@ -87,20 +88,20 @@ public final class SubsetGUIDriver implements ISPDriver {
 		}
 		final SubsetFrame frame = new SubsetFrame();
 		SwingUtilities.invokeLater(() -> frame.setVisible(true));
-		final File first = new File(args[0]);
+		final Path first = Paths.get(args[0]);
 		try {
 			frame.loadMain(first);
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error loading main map "
-													+ first.getPath(), except);
+													+ first, except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("XML error reading main map "
-													+ first.getPath(), except);
+													+ first, except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("Invalid SP XML in main map "
-													+ first.getPath(), except);
+													+ first, except);
 		}
-		Stream.of(args).skip(1).map(File::new).forEach(frame::test);
+		Stream.of(args).skip(1).map(Paths::get).forEach(frame::test);
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package model.viewer;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import model.listeners.GraphicalParamsListener;
@@ -78,7 +78,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 * @param firstMap the initial map
 	 * @param file     the name the map was loaded from or should be saved to
 	 */
-	public ViewerModel(final IMutableMapNG firstMap, final File file) {
+	public ViewerModel(final IMutableMapNG firstMap, final Path file) {
 		dimensions = new VisibleDimensions(0, firstMap.dimensions().rows - 1, 0,
 												firstMap.dimensions().cols - 1);
 		selPoint = PointFactory.point(-1, -1);
@@ -89,7 +89,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 * @param pair a Pair of the initial map and the name it was loaded from or should
 	 *                be saved to
 	 */
-	public ViewerModel(final Pair<IMutableMapNG, File> pair) {
+	public ViewerModel(final Pair<IMutableMapNG, Path> pair) {
 		this(pair.first(), pair.second());
 	}
 	/**
@@ -114,7 +114,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 * @param origin   the file the map was loaded from or should be saved to
 	 */
 	@Override
-	public void setMap(final IMutableMapNG newMap, final File origin) {
+	public void setMap(final IMutableMapNG newMap, final Path origin) {
 		super.setMap(newMap, origin);
 		clearSelection();
 		setDimensions(new VisibleDimensions(0, newMap.dimensions().rows - 1, 0,
@@ -167,7 +167,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 */
 	@Override
 	public String toString() {
-		return "ViewerModel for " + getMapFile().getName();
+		return "ViewerModel for " + getMapFile();
 	}
 
 	/**

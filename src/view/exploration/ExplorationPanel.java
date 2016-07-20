@@ -2,11 +2,11 @@ package view.exploration;
 
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Path;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -250,7 +250,7 @@ public final class ExplorationPanel extends BorderedPanel
 		ecl.addMovementCostListener(this);
 		mainList.getModel().addListDataListener(
 				new ExplorationListListener(model, mainList));
-		final Iterator<Pair<IMutableMapNG, File>> subMaps =
+		final Iterator<Pair<IMutableMapNG, Path>> subMaps =
 				model.getSubordinateMaps().iterator();
 		final Iterable<Player> players;
 		if (subMaps.hasNext()) {

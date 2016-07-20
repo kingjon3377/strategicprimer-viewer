@@ -4,10 +4,10 @@ import controller.map.converter.ResolutionDecreaseConverter;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
@@ -104,14 +104,14 @@ public final class ConverterDriver implements UtilityDriver {
 			ostream.printf("Reading %s ... ", filename);
 			try {
 				//noinspection ObjectAllocationInLoop
-				final IMapNG old = READER.readMap(new File(filename), Warning.DEFAULT);
+				final IMapNG old = READER.readMap(Paths.get(filename), Warning.DEFAULT);
 				ostream.println(" ... Converting ... ");
 				final IMapNG map = ResolutionDecreaseConverter.convert(old);
 				ostream.print("About to write ");
 				final String newFilename = filename + ".new";
 				ostream.println(newFilename);
 				//noinspection ObjectAllocationInLoop
-				READER.write(new File(newFilename), map);
+				READER.write(Paths.get(newFilename), map);
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
 												+ " not acceptable to reader", e);

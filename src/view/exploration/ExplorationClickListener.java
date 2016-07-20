@@ -1,11 +1,11 @@
 package view.exploration;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -157,7 +157,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 			final Player player =
 					NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
 			final Collection<CacheFixture> caches = new HashSet<>();
-			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Path> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap().getBaseTerrain(dPoint));
 				for (final TileFixture fix : fixtures) {

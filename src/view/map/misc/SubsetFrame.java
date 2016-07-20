@@ -4,7 +4,6 @@ import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import java.awt.Dimension;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilterWriter;
 import java.io.IOException;
@@ -13,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -187,7 +187,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 	 * @throws XMLStreamException on malformed XML
 	 * @throws IOException        on other I/O error
 	 */
-	public void loadMain(final File arg)
+	public void loadMain(final Path arg)
 			throws SPFormatException, XMLStreamException, IOException {
 		try {
 			mainMap = reader.readMap(arg, Warning.Ignore);
@@ -195,11 +195,11 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 			printParagraph("File " + arg + " not found", ERROR_COLOR);
 			throw except;
 		} catch (final MapVersionException except) {
-			printParagraph("ERROR: Map version of main map " + arg.getPath() +
+			printParagraph("ERROR: Map version of main map " + arg +
 								" not acceptable to reader", ERROR_COLOR);
 			throw except;
 		} catch (final XMLStreamException except) {
-			printParagraph("ERROR: Malformed XML in file " + arg.getPath() +
+			printParagraph("ERROR: Malformed XML in file " + arg +
 								"; see following error message for details",
 					ERROR_COLOR);
 			printParagraph(
@@ -209,7 +209,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 		} catch (final SPFormatException except) {
 			printParagraph(
 					"ERROR: SP map format error at line " + except.getLine()
-							+ " in file " + arg.getPath()
+							+ " in file " + arg
 							+ "; see following error message for details",
 					ERROR_COLOR);
 			printParagraph(
@@ -217,7 +217,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 					ERROR_COLOR);
 			throw except;
 		} catch (final IOException except) {
-			printParagraph("ERROR: I/O error reading file " + arg.getPath(),
+			printParagraph("ERROR: I/O error reading file " + arg,
 					ERROR_COLOR);
 			throw except;
 		}
@@ -245,10 +245,10 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 	 * @param map  the map to test
 	 * @param file the file from which it was loaded
 	 */
-	public void test(final IMapNG map, final File file) {
+	public void test(final IMapNG map, final Path file) {
 		printParagraph("Testing " + file + " ...");
 		try (final Writer out = new HTMLWriter(label.getWriter())) {
-			if (mainMap.isSubset(map, out, file.getName() + ':')) {
+			if (mainMap.isSubset(map, out, file.toString() + ':')) {
 				printParagraph("OK", StreamingLabel.LabelTextColor.green);
 			} else {
 				printParagraph("WARN", StreamingLabel.LabelTextColor.yellow);
@@ -265,28 +265,28 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 	 *
 	 * @param arg the file from which to load the possible subset.
 	 */
-	public void test(final File arg) {
+	public void test(final Path arg) {
 		printParagraph("Testing " + arg + " ...");
 		final IMapNG map;
 		try {
 			map = reader.readMap(arg, Warning.Ignore);
 		} catch (final MapVersionException except) {
 			LOGGER.log(Level.SEVERE,
-					"Map version in " + arg.getPath() + " not acceptable to reader",
+					"Map version in " + arg + " not acceptable to reader",
 					except);
 			printParagraph("ERROR: Map version not acceptable to reader",
 					ERROR_COLOR);
 			return;
 		} catch (final FileNotFoundException except) {
 			printParagraph("FAIL: File not found", ERROR_COLOR);
-			LOGGER.log(Level.SEVERE, arg.getPath() + " not found", except);
+			LOGGER.log(Level.SEVERE, arg + " not found", except);
 			return;
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error reading " + arg.getPath(), except);
+			LOGGER.log(Level.SEVERE, "I/O error reading " + arg, except);
 			printParagraph("FAIL: I/O error reading file", ERROR_COLOR);
 			return;
 		} catch (final XMLStreamException except) {
-			LOGGER.log(Level.SEVERE, "Malformed XML in file " + arg.getPath(),
+			LOGGER.log(Level.SEVERE, "Malformed XML in file " + arg,
 					except);
 			printParagraph("FAIL: Malformed XML in the file; " +
 								"see following error message for details",
@@ -297,7 +297,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 			return;
 		} catch (final SPFormatException except) {
 			LOGGER.log(Level.SEVERE,
-					"SP map format error reading " + arg.getPath(), except);
+					"SP map format error reading " + arg, except);
 			printParagraph(
 					"FAIL: SP map format error at line " + except.getLine()
 							+ "; see following error message for details",
@@ -308,7 +308,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 			return;
 		}
 		try (final Writer out = new HTMLWriter(label.getWriter())) {
-			if (mainMap.isSubset(map, out, arg.getName() + ':')) {
+			if (mainMap.isSubset(map, out, arg.toString() + ':')) {
 				printParagraph("OK", StreamingLabel.LabelTextColor.green);
 			} else {
 				printParagraph("WARN", StreamingLabel.LabelTextColor.yellow);

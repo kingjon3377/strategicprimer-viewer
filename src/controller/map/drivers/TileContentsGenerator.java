@@ -4,8 +4,8 @@ import controller.exploration.TableLoader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Collections;
@@ -86,7 +86,7 @@ public final class TileContentsGenerator {
 		if (!INSTANCES.containsKey(filename)) {
 			INSTANCES.put(
 					filename,
-					new TileContentsGenerator(READER.readMap(new File(filename),
+					new TileContentsGenerator(READER.readMap(Paths.get(filename),
 							Warning.DEFAULT)));
 		}
 		return NullCleaner.assertNotNull(INSTANCES.get(filename));

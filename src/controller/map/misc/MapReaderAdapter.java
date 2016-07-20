@@ -6,9 +6,10 @@ import controller.map.fluidxml.SPFluidWriter;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.SPWriter;
-import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,7 +75,7 @@ public final class MapReaderAdapter {
 	 * are
 	 *                            map format errors
 	 */
-	public IMutableMapNG readMap(final File file, final Warning warner)
+	public IMutableMapNG readMap(final Path file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
 		return reader.readMap(file, warner);
 	}
@@ -88,7 +89,7 @@ public final class MapReaderAdapter {
 	 */
 	public IMutableMapNG readMapFromStream(final Reader stream, final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		return reader.readMap(new File(""), stream, warner);
+		return reader.readMap(Paths.get(""), stream, warner);
 	}
 	/**
 	 * Read a map model from a stream. Because this is parallel to readMapModel(), we
@@ -101,7 +102,7 @@ public final class MapReaderAdapter {
 	public IDriverModel readMapModelFromStream(final Reader stream, final Warning warner)
 			throws DriverFailedException {
 		try {
-			return new ViewerModel(readMapFromStream(stream, warner), new File(""));
+			return new ViewerModel(readMapFromStream(stream, warner), Paths.get(""));
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in stream", except);
 		} catch (final SPFormatException except) {
@@ -117,18 +118,18 @@ public final class MapReaderAdapter {
 	 * @return a driver model containing the map described by that file
 	 * @throws DriverFailedException on any error
 	 */
-	public IDriverModel readMapModel(final File file, final Warning warner)
+	public IDriverModel readMapModel(final Path file, final Warning warner)
 			throws DriverFailedException {
 		try {
 			return new ViewerModel(readMap(file, warner), file);
 		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error reading " + file.getPath(),
+			throw new DriverFailedException("I/O error reading " + file,
 												except);
 		} catch (final XMLStreamException except) {
-			throw new DriverFailedException("Malformed XML in " + file.getPath(),
+			throw new DriverFailedException("Malformed XML in " + file,
 												except);
 		} catch (final SPFormatException except) {
-			throw new DriverFailedException("SP map format error in " + file.getPath(),
+			throw new DriverFailedException("SP map format error in " + file,
 												except);
 		}
 	}
@@ -145,15 +146,15 @@ public final class MapReaderAdapter {
 	 * @throws DriverFailedException on any error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public IMultiMapModel readMultiMapModel(final Warning warner, final File master,
-											final File... files)
+	public IMultiMapModel readMultiMapModel(final Warning warner, final Path master,
+											final Path... files)
 			throws DriverFailedException {
-		String current = master.getPath();
+		String current = master.toString();
 		try {
 			final IMultiMapModel retval =
 					new SimpleMultiMapModel(readMap(master, warner), master);
-			for (final File file : files) {
-				current = file.getPath();
+			for (final Path file : files) {
+				current = file.toString();
 				retval.addSubordinateMap(readMap(file, warner), file);
 			}
 			return retval;
@@ -174,7 +175,7 @@ public final class MapReaderAdapter {
 	 * @param map  the map to write
 	 * @throws IOException on error opening the file
 	 */
-	public void write(final File file, final IMapNG map) throws IOException {
+	public void write(final Path file, final IMapNG map) throws IOException {
 		spWriter.write(file, map);
 	}
 
@@ -195,7 +196,7 @@ public final class MapReaderAdapter {
 												except);
 		}
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
+			for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model)
 																.getSubordinateMaps()) {
 				try {
 					spWriter.write(pair.second(), pair.first());
@@ -222,12 +223,12 @@ public final class MapReaderAdapter {
 	 * @param dropFirst whether to skip the first filename.
 	 * @return an array of equivalent Files
 	 */
-	public static File[] namesToFiles(final boolean dropFirst, final String... names) {
-		final List<File> retval =
-				Stream.of(names).map(File::new).collect(Collectors.toList());
+	public static Path[] namesToFiles(final boolean dropFirst, final String... names) {
+		final List<Path> retval =
+				Stream.of(names).map(Paths::get).collect(Collectors.toList());
 		if (dropFirst) {
 			retval.remove(0);
 		}
-		return NullCleaner.assertNotNull(retval.toArray(new File[retval.size()]));
+		return NullCleaner.assertNotNull(retval.toArray(new Path[retval.size()]));
 	}
 }

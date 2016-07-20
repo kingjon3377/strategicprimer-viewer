@@ -1,7 +1,7 @@
 package controller.map.iointerfaces;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import model.map.IMapNG;
 
 /**
@@ -34,7 +34,7 @@ public interface SPWriter {
 	 * @param map  the map to write.
 	 * @throws IOException on error opening the file
 	 */
-	void write(File file, IMapNG map) throws IOException;
+	void write(Path file, IMapNG map) throws IOException;
 
 	/**
 	 * Write a map.

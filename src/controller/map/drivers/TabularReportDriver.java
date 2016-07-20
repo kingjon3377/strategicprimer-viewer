@@ -1,11 +1,11 @@
 package controller.map.drivers;
 
 import controller.map.report.tabular.TableReportGenerator;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOError;
 import java.io.IOException;
+import java.nio.file.Path;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
@@ -47,11 +47,11 @@ public class TabularReportDriver implements SimpleDriver {
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
+			for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model).getAllMaps()) {
 				try {
 					TableReportGenerator.createReports(pair.first(), s -> {
 						try {
-							return new FileOutputStream(pair.second().getPath() + '.' + s +
+							return new FileOutputStream(pair.second().toString() + '.' + s +
 																".csv");
 						} catch (final FileNotFoundException e) {
 							throw new IOError(e);
@@ -65,7 +65,7 @@ public class TabularReportDriver implements SimpleDriver {
 			try {
 				TableReportGenerator.createReports(model.getMap(), s -> {
 					try {
-						return new FileOutputStream(model.getMapFile().getPath() + '.' + s +
+						return new FileOutputStream(model.getMapFile().toString() + '.' + s +
 															".csv");
 					} catch (final FileNotFoundException e) {
 						throw new IOError(e);

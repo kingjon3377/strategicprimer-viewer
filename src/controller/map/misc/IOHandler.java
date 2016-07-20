@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -125,7 +127,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 
 
 	/**
-	 * Handle the "load" menu item.
+	 * Handle the "load" menu item. TODO: Delegate to FileChooser
 	 *
 	 * @param source the source of the event. May be null, since JFileChooser doesn't
 	 *                  seem
@@ -138,7 +140,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				return;
 			}
 			try {
-				model.setMap(readMap(file), file);
+				model.setMap(readMap(file.toPath()), file.toPath());
 			} catch (final IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);
@@ -195,7 +197,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				break;
 			case "open secondary map in map viewer":
 				if (model instanceof IMultiMapModel) {
-					final Pair<IMutableMapNG, File> mapPair =
+					final Pair<IMutableMapNG, Path> mapPair =
 							((IMultiMapModel) model).getSubordinateMaps().iterator()
 									.next();
 					final IViewerModel newModel =
@@ -307,7 +309,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 																			PlayerCollection(),
 																	model.getMap()
 																			.getCurrentTurn()),
-														new File(""));
+														Paths.get(""));
 		SwingUtilities.invokeLater(
 				() -> new ViewerFrame(newModel, new IOHandler(newModel)).setVisible(true));
 	}
@@ -377,13 +379,13 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			new MapReaderAdapter().write(model.getMapFile(), model.getMap());
 		} catch (final IOException e) {
 			ErrorShower.showErrorDialog(source, "I/O error writing to file "
-														+ model.getMapFile().getPath());
+														+ model.getMapFile());
 			LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 		}
 	}
 
 	/**
-	 * Save a map.
+	 * Save a map. TODO: Delegate to FileChooser
 	 *
 	 * @param map    the map to save.
 	 * @param source the source of the event. May be null if the source wasn't a
@@ -396,7 +398,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				return;
 			}
 			try {
-				new MapReaderAdapter().write(file, map);
+				new MapReaderAdapter().write(file.toPath(), map);
 			} catch (final IOException e) {
 				ErrorShower.showErrorDialog(source,
 						"I/O error writing to file "
@@ -413,7 +415,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * @throws XMLStreamException if the XML isn't well-formed
 	 * @throws SPFormatException  if the file contains invalid data
 	 */
-	private static IMutableMapNG readMap(final File file)
+	private static IMutableMapNG readMap(final Path file)
 			throws IOException, XMLStreamException, SPFormatException {
 		return new MapReaderAdapter().readMap(file, Warning.DEFAULT);
 	}
@@ -427,7 +429,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	private void saveAll(@Nullable final Component source) {
 		if (model instanceof IMultiMapModel) {
 			final MapReaderAdapter adapter = new MapReaderAdapter();
-			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
+			for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model)
 																.getAllMaps()) {
 				try {
 					adapter.write(pair.second(), pair.first());
@@ -441,7 +443,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	}
 
 	/**
-	 * Handle the 'load secondary map' menu item.
+	 * Handle the 'load secondary map' menu item. TODO: Delegate to FileChooser
 	 *
 	 * @param source the component to attach the dialog box to. May be null.
 	 */
@@ -454,7 +456,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			}
 			try {
 				((IMultiMapModel) model).addSubordinateMap(
-						readMap(file), file);
+						readMap(file.toPath()), file.toPath());
 			} catch (final IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);

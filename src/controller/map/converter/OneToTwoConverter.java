@@ -6,9 +6,10 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import controller.map.misc.MapReaderAdapter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -644,7 +645,7 @@ public final class OneToTwoConverter {
 				//noinspection ObjectAllocationInLoop
 				final IMapNG old;
 				try {
-					final File file = new File(arg);
+					final Path file = Paths.get(arg);
 					old = reader.readMap(file, Warning.DEFAULT);
 				} catch (final IOException | XMLStreamException | SPFormatException
 													except) {
@@ -659,7 +660,7 @@ public final class OneToTwoConverter {
 				final IMapNG newMap = converter.convert(old, first);
 				try {
 					//noinspection ObjectAllocationInLoop
-					reader.write(new File(arg + ".converted.xml"), newMap);
+					reader.write(Paths.get(arg + ".converted.xml"), newMap);
 				} catch (final IOException except) {
 					LOGGER.log(Level.SEVERE,
 							"I/O error writing to " + arg + ".converted.xml", except);

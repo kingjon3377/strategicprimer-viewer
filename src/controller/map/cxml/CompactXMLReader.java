@@ -7,10 +7,10 @@ import controller.map.misc.IDFactory;
 import controller.map.misc.IDRegistrar;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Iterator;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
@@ -59,8 +59,8 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException  on SP XML format error
 	 */
 	@Override
-	public <@NonNull T> T readXML(final File file, final Reader istream,
-								final Class<T> type, final Warning warner)
+	public <@NonNull T> T readXML(final Path file, final Reader istream,
+								  final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final Iterator<XMLEvent> reader = new TypesafeXMLEventReader(istream);
 		final Iterable<XMLEvent> eventReader =
@@ -92,9 +92,9 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException  on SP format problems
 	 */
 	@Override
-	public IMutableMapNG readMap(final File file, final Warning warner)
+	public IMutableMapNG readMap(final Path file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
-		try (final Reader istream = new FileReader(file)) {
+		try (final Reader istream = Files.newBufferedReader(file)) {
 			return readMap(file, istream, warner);
 		}
 	}
@@ -108,8 +108,8 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException  on SP format problems
 	 */
 	@Override
-	public IMutableMapNG readMap(final File file, final Reader istream,
-								final Warning warner)
+	public IMutableMapNG readMap(final Path file, final Reader istream,
+								 final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, SPMapNG.class, warner);
 	}

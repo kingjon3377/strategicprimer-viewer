@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Random;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -479,10 +479,10 @@ public final class DrawHelperComparator implements SimpleDriver {
 		final Random random = new Random();
 		final int reps = 50;
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
+			for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model)
 																.getAllMaps()) {
 				SYS_OUT.print("Testing using ");
-				SYS_OUT.println(pair.second().getName());
+				SYS_OUT.println(pair.second());
 				final IMapNG map = pair.first();
 				PointFactory.clearCache();
 				if (random.nextBoolean()) {
@@ -503,7 +503,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 			}
 		} else {
 			SYS_OUT.print("Testing using ");
-			SYS_OUT.println(model.getMapFile().getName());
+			SYS_OUT.println(model.getMapFile());
 			final IMapNG map = model.getMap();
 			PointFactory.clearCache();
 			if (random.nextBoolean()) {

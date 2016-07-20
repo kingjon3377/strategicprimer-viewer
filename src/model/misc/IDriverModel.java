@@ -1,6 +1,6 @@
 package model.misc;
 
-import java.io.File;
+import java.nio.file.Path;
 import model.listeners.MapChangeSource;
 import model.listeners.VersionChangeSource;
 import model.map.IMutableMapNG;
@@ -34,7 +34,7 @@ public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 	 * @param newMap the new map
 	 * @param origin the file from which it was loaded
 	 */
-	void setMap(IMutableMapNG newMap, File origin);
+	void setMap(IMutableMapNG newMap, Path origin);
 
 	/**
 	 * @return the map
@@ -49,5 +49,5 @@ public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 	/**
 	 * @return the file from which the map was loaded
 	 */
-	File getMapFile();
+	Path getMapFile();
 }

@@ -1,6 +1,6 @@
 package model.exploration;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -90,7 +90,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param map  the starting main map
 	 * @param file the name it was loaded from
 	 */
-	public ExplorationModel(final IMutableMapNG map, final File file) {
+	public ExplorationModel(final IMutableMapNG map, final Path file) {
 		super(map, file);
 	}
 
@@ -111,7 +111,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final List<Player> retval =
 				StreamSupport.stream(getMap().players().spliterator(), false)
 						.collect(Collectors.toList());
-		for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
+		for (final Pair<IMutableMapNG, Path> pair : getSubordinateMaps()) {
 			retval.retainAll(
 					StreamSupport.stream(pair.first().players().spliterator(), false)
 							.collect(Collectors.toList()));
@@ -186,7 +186,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			}
 			removeImpl(map, point, unit);
 			map.addFixture(dest, unit);
-			for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Path> pair : getSubordinateMaps()) {
 				final IMutableMapNG subMap = pair.first();
 				if (!doesLocationHaveFixture(subMap, point, unit)) {
 					continue;
@@ -201,7 +201,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			checkAllNearbyWatchers(getMap(), unit, dest);
 			return retval;
 		} else {
-			for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Path> pair : getSubordinateMaps()) {
 				final IMutableMapNG subMap = pair.first();
 				ensureTerrain(subMap, dest, map.getBaseTerrain(dest));
 			}
@@ -537,7 +537,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final IUnit mover = selUnit;
 		if (mover != null) {
 			final Player owner = mover.getOwner();
-			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
+			for (final Pair<IMutableMapNG, Path> pair : getAllMaps()) {
 				pair.first().streamOtherFixtures(currPoint).filter(Village.class::isInstance).map(
 						HasMutableOwner.class::cast).forEach(fix -> fix.setOwner(owner));
 			}
@@ -580,7 +580,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				assert ground != null;
 				final Ground newGround = ground.copy(false);
 				newGround.setExposed(true);
-				for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
+				for (final Pair<IMutableMapNG, Path> pair : getAllMaps()) {
 					final IMutableMapNG map = pair.first();
 					final Ground locGround = map.getGround(currPoint);
 					if ((locGround == null) || locGround.equals(ground)) {
@@ -602,7 +602,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					((MineralVein) newFix).setExposed(true);
 				}
 				boolean subsequent = false;
-				for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
+				for (final Pair<IMutableMapNG, Path> pair : getAllMaps()) {
 					final IMutableMapNG map = pair.first();
 					final Ground locGround = map.getGround(currPoint);
 					if ((locGround == null) || locGround.equals(oldFix)) {
