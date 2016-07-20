@@ -3,6 +3,7 @@ package controller.map.report.tabular;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.function.ToIntFunction;
 import model.map.DistanceComparator;
 import model.map.IFixture;
@@ -66,28 +67,30 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 		writeFieldDelimiter(ostream);
 		writeField(ostream, item.getName());
 		writeFieldDelimiter(ostream);
-		final WorkerStats stats;
+		final Optional<WorkerStats> stats;
 		if (item instanceof Worker) {
-			stats = ((Worker) item).getStats();
+			stats = Optional.ofNullable(((Worker) item).getStats());
 		} else {
-			stats = null;
+			stats = Optional.empty();
 		}
-		if (stats == null) {
+		if (!stats.isPresent()) {
 			for (int i = 0; i < 9; i++) {
 				writeField(ostream, "--");
 				writeFieldDelimiter(ostream);
 			}
 		} else {
-			writeField(ostream, Integer.toString(stats.getHitPoints()));
+			final WorkerStats actual = stats.get();
+			writeField(ostream, Integer.toString(actual.getHitPoints()));
 			writeFieldDelimiter(ostream);
-			writeField(ostream, Integer.toString(stats.getMaxHitPoints()));
+			writeField(ostream, Integer.toString(actual.getMaxHitPoints()));
 			for (final ToIntFunction<WorkerStats> field :
 					Arrays.<ToIntFunction<WorkerStats>>asList(WorkerStats::getStrength,
 							WorkerStats::getDexterity, WorkerStats::getConstitution,
 							WorkerStats::getIntelligence, WorkerStats::getWisdom,
 							WorkerStats::getCharisma)) {
 				writeFieldDelimiter(ostream);
-				writeField(ostream, WorkerStats.getModifierString(field.applyAsInt(stats)));
+				writeField(ostream,
+						WorkerStats.getModifierString(field.applyAsInt(actual)));
 			}
 		}
 		ostream.append(getRowDelimiter());

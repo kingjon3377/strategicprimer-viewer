@@ -7,6 +7,7 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
+import java.util.Optional;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -263,16 +264,16 @@ public final class FluidUnitMemberHandler {
 			writeNonEmptyAttribute(ostream, "portrait",
 					((HasPortrait) work).getPortrait());
 		}
-		final WorkerStats stats;
+		final Optional<WorkerStats> stats;
 		if (work instanceof Worker) {
-			stats = ((Worker) work).getStats();
+			stats = Optional.ofNullable(((Worker) work).getStats());
 		} else {
-			stats = null;
+			stats = Optional.empty();
 		}
-		if (work.iterator().hasNext() || (stats != null)) {
+		if (work.iterator().hasNext() || stats.isPresent()) {
 			ostream.append(">\n");
-			if (stats != null) {
-				writeStats(ostream, stats, indent + 1);
+			if (stats.isPresent()) {
+				writeStats(ostream, stats.get(), indent + 1);
 			}
 			for (final IJob job : work) {
 				if (job instanceof Job) {
