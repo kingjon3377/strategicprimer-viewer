@@ -93,7 +93,6 @@ public final class FluidUnitMemberHandler {
 												getAttribute(element, "race", "human"),
 												getOrGenerateID(element, warner,
 														idFactory)), element, warner);
-		// TODO: Add a setPortrait() method to XMLHelper
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
