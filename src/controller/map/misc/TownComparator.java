@@ -134,6 +134,7 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 	/**
 	 * A list of comparators in the order to use them.
 	 */
+	@SuppressWarnings("QuestionableName")
 	private static final List<Comparator<ITownFixture>> COMPARATORS =
 			Arrays.asList((one, two) -> compareTownStatus(one.status(), two.status()),
 					(one, two) -> compareTownSize(one.size(), two.size()),
