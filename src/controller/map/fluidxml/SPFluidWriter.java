@@ -95,7 +95,7 @@ import static controller.map.fluidxml.XMLHelper.writeTag;
  * @author Jonathan Lovelace
  */
 public class SPFluidWriter implements SPWriter, FluidXMLWriter {
-	final Map<Class<?>, FluidXMLWriter> writers = new HashMap<>();
+	private final Map<Class<?>, FluidXMLWriter> writers = new HashMap<>();
 	public SPFluidWriter() {
 		writers.put(River.class, FluidTerrainHandler::writeRivers);
 		writers.put(RiverFixture.class, FluidTerrainHandler::writeRivers);
