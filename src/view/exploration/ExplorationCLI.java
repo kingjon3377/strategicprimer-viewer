@@ -150,10 +150,10 @@ public final class ExplorationCLI implements MovementCostSource {
 	 * MovementCostListeners, while any additional costs for non-movement
 	 * actions are reported by this class, so a listener should be attached to both.
 	 *
-	 * @param mover the selected unit
 	 * @throws IOException on I/O error
 	 */
-	public void move(final IUnit mover) throws IOException {
+	public void move() throws IOException {
+		final IUnit mover = model.getSelectedUnit();
 		final int directionNum = helper.inputNumber("Direction to move: ");
 		if (directionNum > 8) {
 			fireMovementCost(Integer.MAX_VALUE);
@@ -295,7 +295,7 @@ public final class ExplorationCLI implements MovementCostSource {
 				helper.printf("%d MP of %d remaining.%n%s%n",
 						Integer.valueOf(movement.getValue()), Integer.valueOf(totalMP),
 						PROMPT);
-				move(selUnit);
+				move();
 			}
 		}
 	}
