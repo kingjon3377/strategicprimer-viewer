@@ -27,8 +27,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
-
 /**
  * A class to load encounter tables from file.
  *
@@ -260,25 +258,31 @@ public final class TableLoader {
 		final Path dir = Paths.get(path);
 		try (final DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 			for (Path table : stream) {
-				if (Files.isHidden(table) || table.getFileName().startsWith(".")) {
-					LOGGER.info(table + " looks like a hidden file, skipping ...");
-					continue;
-				} else if (Files.exists(table)) {
-					runner.loadTable(table.getFileName().toString(),
-							loadTable(table));
+				try {
+					if (Files.isHidden(table) || table.getFileName().startsWith(".")) {
+						LOGGER.info(table + " looks like a hidden file, skipping ...");
+						continue;
+					} else if (Files.exists(table)) {
+						runner.loadTable(table.getFileName().toString(),
+								loadTable(table));
+					}
+				} catch (final FileNotFoundException e) {
+					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
+				} catch (final IOException e) {
+					LOGGER.log(Level.SEVERE,
+							"I/O error while parsing " + table, e);
+				} catch (final IllegalArgumentException e) {
+					LOGGER.log(
+							Level.SEVERE,
+							"Illegal argument while parsing "
+									+ table
+									+ ", probably a malformed file",
+							e);
 				}
 			}
-		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
 		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE,
-					"I/O error while parsing " + table, e);
-		} catch (final IllegalArgumentException e) {
-			LOGGER.log(
-					Level.SEVERE,
-					"Illegal argument while parsing "
-							+ table
-							+ ", probably a malformed file",
+			LOGGER.log(Level.SEVERE, "I/O error while getting list of files in " +
+											 "directory",
 					e);
 		}
 	}
