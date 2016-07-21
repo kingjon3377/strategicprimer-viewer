@@ -72,7 +72,7 @@ public final class FixtureFilterListModel extends
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void add(final Class<? extends TileFixture> item) {
 		backing.add(item);
-		fireIntervalAdded(item.getClass(), getSize() - 1, getSize() - 1);
+		fireIntervalAdded(item, getSize() - 1, getSize() - 1);
 	}
 
 	/**
