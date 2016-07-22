@@ -66,6 +66,9 @@ public final class FileChooser {
 	/**
 	 * Constructor allowing the caller to pass in a file-chooser to have the user choose
 	 * with.
+	 *
+	 * TODO: Provide constructor taking the operation but not a file-chooser
+	 *
 	 * @param loc the file to return
 	 * @param fileChooser the file-chooser to use
 	 * @param operation which operation to use. Must be one of the two defined in

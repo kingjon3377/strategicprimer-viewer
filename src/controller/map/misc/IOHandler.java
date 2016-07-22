@@ -6,7 +6,6 @@ import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -127,25 +126,20 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 
 
 	/**
-	 * Handle the "load" menu item. TODO: Delegate to FileChooser
+	 * Handle the "load" menu item.
 	 *
 	 * @param source the source of the event. May be null, since JFileChooser doesn't
 	 *                  seem
 	 *               to care
 	 */
 	private void handleLoadMenu(@Nullable final Component source) {
-		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
-			final File file = chooser.getSelectedFile();
-			if (file == null) {
-				return;
-			}
+		new FileChooser(Optional.empty()).call(path -> {
 			try {
-				model.setMap(readMap(file.toPath()), Optional.of(file.toPath()));
+				model.setMap(readMap(path), Optional.of(path));
 			} catch (final IOException | SPFormatException | XMLStreamException e) {
-				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
-						"a null path"), source);
+				handleError(e, path.toString(), source);
 			}
-		}
+		});
 	}
 
 	/**
@@ -390,27 +384,23 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	}
 
 	/**
-	 * Save a map. TODO: Delegate to FileChooser
+	 * Save a map.
 	 *
 	 * @param map    the map to save.
 	 * @param source the source of the event. May be null if the source wasn't a
 	 *               component.
 	 */
 	private void saveMapAs(final IMapNG map, @Nullable final Component source) {
-		if (chooser.showSaveDialog(source) == JFileChooser.APPROVE_OPTION) {
-			final File file = chooser.getSelectedFile();
-			if (file == null) {
-				return;
-			}
+		new FileChooser(Optional.empty(), chooser, JFileChooser.SAVE_DIALOG).call(path -> {
 			try {
-				new MapReaderAdapter().write(file.toPath(), map);
+				new MapReaderAdapter().write(path, map);
 			} catch (final IOException e) {
 				ErrorShower.showErrorDialog(source,
 						"I/O error writing to file "
-								+ file.getPath());
+								+ path);
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 			}
-		}
+		});
 	}
 
 	/**
@@ -452,24 +442,20 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	}
 
 	/**
-	 * Handle the 'load secondary map' menu item. TODO: Delegate to FileChooser
+	 * Handle the 'load secondary map' menu item.
 	 *
 	 * @param source the component to attach the dialog box to. May be null.
 	 */
 	private void handleSecondaryLoadMenu(@Nullable final Component source) {
-		if ((model instanceof IMultiMapModel) &&
-					(chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION)) {
-			final File file = chooser.getSelectedFile();
-			if (file == null) {
-				return;
-			}
-			try {
-				((IMultiMapModel) model).addSubordinateMap(
-						readMap(file.toPath()), Optional.of(file.toPath()));
-			} catch (final IOException | SPFormatException | XMLStreamException e) {
-				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
-						"a null path"), source);
-			}
+		if (model instanceof IMultiMapModel) {
+			new FileChooser(Optional.empty()).call(path -> {
+				try {
+					((IMultiMapModel) model).addSubordinateMap(
+							readMap(path), Optional.of(path));
+				} catch (final IOException | SPFormatException | XMLStreamException e) {
+					handleError(e, path.toString(), source);
+				}
+			});
 		}
 	}
 	/**
