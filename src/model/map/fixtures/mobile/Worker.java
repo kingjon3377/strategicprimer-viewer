@@ -291,6 +291,7 @@ public class Worker implements IWorker, HasPortrait {
 	/**
 	 * @return the worker's stats
 	 */
+	@Override
 	@Nullable
 	public WorkerStats getStats() {
 		return stats;

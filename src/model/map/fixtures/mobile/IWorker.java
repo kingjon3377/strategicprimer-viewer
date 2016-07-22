@@ -5,6 +5,7 @@ import model.map.HasMutableKind;
 import model.map.HasMutableName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -51,6 +52,11 @@ public interface IWorker
 	 * @return the worker's race
 	 */
 	String getRace();
+
+	/**
+	 * @return the worker's stats
+	 */
+	@Nullable WorkerStats getStats();
 
 	/**
 	 * Specialization of method from IFixture.

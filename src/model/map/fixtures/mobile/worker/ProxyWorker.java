@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -73,6 +74,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	private ProxyWorker(final boolean parallelProxy) {
 		parallel = parallelProxy;
+		stats = null;
 	}
 
 	/**
@@ -82,6 +84,13 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		parallel = false;
 		for (final UnitMember member : unit) {
 			if (member instanceof IWorker) {
+				final WorkerStats tempStats = ((IWorker) member).getStats();
+				final WorkerStats priorStats = stats;
+				if (workers.isEmpty()) {
+					stats = tempStats;
+				} else if (!Objects.equals(tempStats, priorStats)) {
+					stats = null;
+				}
 				workers.add((IWorker) member);
 				for (final HasName job : (IWorker) member) {
 					jobNames.add(job.getName());
@@ -117,6 +126,13 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		for (final IWorker worker : proxied) {
 			if (worker == this) {
 				continue;
+			}
+			final WorkerStats tempStats = worker.getStats();
+			final WorkerStats priorStats = stats;
+			if (workers.isEmpty()) {
+				stats = tempStats;
+			} else if (!Objects.equals(tempStats, priorStats)) {
+				stats = null;
 			}
 			workers.add(worker);
 			for (final IJob job : worker) {
@@ -198,6 +214,13 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	public void addProxied(final IWorker item) {
 		if (item == this) {
 			return;
+		}
+		final WorkerStats tempStats = ((IWorker) item).getStats();
+		final WorkerStats priorStats = stats;
+		if (workers.isEmpty()) {
+			stats = tempStats;
+		} else if (!Objects.equals(tempStats, priorStats)) {
+			stats = null;
 		}
 		workers.add(item);
 		final IWorker[] workerArray =
@@ -385,5 +408,20 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	@Override
 	public boolean isParallel() {
 		return parallel;
+	}
+	/**
+	 * Cached stats for the workers. Null if there are no workers being proxied, or if
+	 * they do not share identical stats.
+	 */
+	@Nullable
+	private WorkerStats stats;
+	/**
+	 * @return the stats of the proxied workers, or null if either no workers are being
+	 * proxied or their stats are not all identical.
+	 */
+	@Nullable
+	@Override
+	public WorkerStats getStats() {
+		return stats;
 	}
 }
