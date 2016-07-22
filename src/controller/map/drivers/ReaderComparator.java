@@ -81,9 +81,9 @@ public final class ReaderComparator implements UtilityDriver {
 	/**
 	 * Handle (log appropriately) an exception.
 	 * @param except the exception to handle
-	 * @param file the name of the file being read TODO: Take Path instead
+	 * @param file the name of the file being read
 	 */
-	private static void handleException(final Exception except, final String file) {
+	private static void handleException(final Exception except, final Path file) {
 		if (except instanceof XMLStreamException) {
 			LOGGER.log(Level.SEVERE,
 					"XMLStreamException (probably badly formed input) in " + file,
@@ -121,7 +121,7 @@ public final class ReaderComparator implements UtilityDriver {
 		try (StringReader reader = new StringReader(contents)) {
 			map1 = oldReader.readMap(arg, reader, Warning.Ignore);
 		} catch (XMLStreamException | SPFormatException except) {
-			handleException(except, arg.toString());
+			handleException(except, arg);
 			return;
 		}
 		final long endOne = System.nanoTime();
@@ -131,7 +131,7 @@ public final class ReaderComparator implements UtilityDriver {
 		try (StringReader reader = new StringReader(contents)) {
 			map2 = newReader.readMap(arg, reader, Warning.Ignore);
 		} catch (XMLStreamException | SPFormatException except) {
-			handleException(except, arg.toString());
+			handleException(except, arg);
 			return;
 		}
 		final long endTwo = System.nanoTime();
