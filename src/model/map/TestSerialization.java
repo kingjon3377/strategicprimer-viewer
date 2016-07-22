@@ -497,7 +497,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
-	 * Test the <include> tag.
+	 * Test the XML "include" tag.
 	 *
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML reading error

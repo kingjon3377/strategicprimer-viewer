@@ -207,8 +207,8 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
-	 * Note that this is the *one* place where ProxySkill should be a ProxyFor <ISkill>
-	 * rather than ProxyFor<IJob>.
+	 * Note that this is the *one* place where ProxySkill should be a ProxyFor of ISkill
+	 * rather than ProxyFor of IJob.
 	 *
 	 * @return the proxied Jobs.
 	 */
