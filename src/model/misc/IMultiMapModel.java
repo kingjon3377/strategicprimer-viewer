@@ -1,6 +1,7 @@
 package model.misc;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import util.Pair;
@@ -31,12 +32,11 @@ import util.Pair;
 public interface IMultiMapModel extends IDriverModel {
 	/**
 	 * Add a subordinate map.
-	 *
-	 * @param map  the map to remove
+	 *  @param map  the map to remove
 	 * @param file the file it was loaded from
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	void addSubordinateMap(IMutableMapNG map, Path file);
+	void addSubordinateMap(IMutableMapNG map, Optional<Path> file);
 
 	/**
 	 * Remove a subordinate map.
@@ -49,11 +49,11 @@ public interface IMultiMapModel extends IDriverModel {
 	/**
 	 * @return an iterator over the subordinate maps
 	 */
-	Iterable<Pair<IMutableMapNG, Path>> getSubordinateMaps();
+	Iterable<Pair<IMutableMapNG, Optional<Path>>> getSubordinateMaps();
 
 	/**
 	 * @return an iterator over all the maps, including the main map and the subordinate
 	 * maps
 	 */
-	Iterable<Pair<IMutableMapNG, Path>> getAllMaps();
+	Iterable<Pair<IMutableMapNG, Optional<Path>>> getAllMaps();
 }

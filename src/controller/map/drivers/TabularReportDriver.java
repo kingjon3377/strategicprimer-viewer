@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOError;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Optional;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
@@ -47,7 +48,7 @@ public class TabularReportDriver implements SimpleDriver {
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model).getAllMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model).getAllMaps()) {
 				try {
 					TableReportGenerator.createReports(pair.first(), s -> {
 						try {

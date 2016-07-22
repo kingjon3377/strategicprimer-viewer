@@ -4,6 +4,7 @@ import controller.map.formatexceptions.SPFormatException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
@@ -63,9 +64,9 @@ public final class SubsetGUIDriver implements ISPDriver {
 			final SubsetFrame frame = new SubsetFrame();
 			SwingUtilities.invokeLater(() -> frame.setVisible(true));
 			frame.loadMain(model.getMap());
-			for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model)
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
 																.getSubordinateMaps()) {
-				frame.test(pair.first(), pair.second());
+				frame.test(pair.first(), pair.second().get());
 			}
 		} else {
 			ErrorShower.showErrorDialog(null,

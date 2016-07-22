@@ -1,6 +1,7 @@
 package model.resources;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import model.map.IMapNG;
@@ -40,7 +41,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @param map  the first map
 	 * @param file the file it was loaded from
 	 */
-	public ResourceManagementDriver(final IMutableMapNG map, final Path file) {
+	public ResourceManagementDriver(final IMutableMapNG map, final Optional<Path> file) {
 		super(map, file);
 	}
 
@@ -70,7 +71,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addResource(@SuppressWarnings("TypeMayBeWeakened")
 							final FortressMember resource, final Player player) {
-		for (final Pair<@NonNull IMutableMapNG, @NonNull Path> pair : getAllMaps()) {
+		for (final Pair<@NonNull IMutableMapNG, Optional<Path>> pair : getAllMaps()) {
 			final IMutableMapNG map = pair.first();
 			final Player currP = map.getCurrentPlayer();
 			if (currP.isIndependent() || (currP.getPlayerId() < 0) ||

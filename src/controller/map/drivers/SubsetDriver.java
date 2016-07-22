@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.logging.Logger;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -86,10 +87,10 @@ public final class SubsetDriver implements SimpleDriver {
 			mapModel = new SimpleMultiMapModel(model);
 			LOGGER.warning("Subset checking does nothing with no subordinate maps");
 		}
-		for (final Pair<IMutableMapNG, Path> pair : mapModel.getSubordinateMaps()) {
-			SYS_OUT.print(pair.second());
+		for (final Pair<IMutableMapNG, Optional<Path>> pair : mapModel.getSubordinateMaps()) {
+			SYS_OUT.print(pair.second().get());
 			SYS_OUT.print("\t...\t\t");
-			printReturn(doSubsetTest(mapModel.getMap(), pair.first(), pair.second()));
+			printReturn(doSubsetTest(mapModel.getMap(), pair.first(), pair.second().get()));
 		}
 	}
 

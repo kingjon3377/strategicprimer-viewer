@@ -1,9 +1,9 @@
 package model.misc;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import model.listeners.MapChangeListener;
 import model.listeners.VersionChangeListener;
 import model.map.IMutableMapNG;
@@ -48,16 +48,15 @@ public class SimpleDriverModel implements IDriverModel {
 	private IMutableMapNG map = new SPMapNG(mapDim, new PlayerCollection(), -1);
 	/**
 	 * The name from which the map was loaded.
-	 * TODO: Use Optional-of-Path instead of having "" be the null path.
 	 */
-	private Path file = Paths.get("");
+	private Optional<Path> file = Optional.empty();
 
 	/**
 	 * @param newMap the new map
 	 * @param origin the file from which the map was loaded
 	 */
 	@Override
-	public void setMap(final IMutableMapNG newMap, final Path origin) {
+	public void setMap(final IMutableMapNG newMap, final Optional<Path> origin) {
 		for (final VersionChangeListener list : vcListeners) {
 			list.changeVersion(mapDim.version, newMap.dimensions().version);
 		}
@@ -87,7 +86,7 @@ public class SimpleDriverModel implements IDriverModel {
 	 * @return the file from which the map was loaded
 	 */
 	@Override
-	public final Path getMapFile() {
+	public final Optional<Path> getMapFile() {
 		return file;
 	}
 

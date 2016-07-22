@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -157,7 +158,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 			final Player player =
 					NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
 			final Collection<CacheFixture> caches = new HashSet<>();
-			for (final Pair<IMutableMapNG, Path> pair : model.getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap().getBaseTerrain(dPoint));
 				for (final TileFixture fix : fixtures) {

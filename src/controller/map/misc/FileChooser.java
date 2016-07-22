@@ -4,7 +4,7 @@ import java.awt.Component;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 import java.util.logging.Level;
@@ -17,12 +17,9 @@ import util.TypesafeLogger;
 import view.util.FilteredFileChooser;
 
 import static javax.swing.JFileChooser.APPROVE_OPTION;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A class to hide the details of choosing a file from the caller.
- *
- * FIXME: Use an Optional-of-Path instead of a Path of "" for no-selection.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -51,7 +48,7 @@ public final class FileChooser {
 	/**
 	 * The file we'll return, if valid.
 	 */
-	private Path file;
+	private Optional<Path> file;
 	/**
 	 * Whether we should return the filename (if not, we'll show the dialog, then
 	 * throw an
@@ -75,9 +72,9 @@ public final class FileChooser {
 	 *                     JFileChooser (OPEN_DIALOG or SAVE_DIALOG; CUSTOM_DIALOG is
 	 *                     not yet supported)
 	 */
-	public FileChooser(final Path loc, final JFileChooser fileChooser,
+	public FileChooser(final Optional<Path> loc, final JFileChooser fileChooser,
 					   final int operation) {
-		file = Paths.get("");
+		file = Optional.empty();
 		setFile(loc);
 		chooser = fileChooser;
 		switch (operation) {
@@ -98,7 +95,7 @@ public final class FileChooser {
 	 *
 	 * @param loc the file to return.
 	 */
-	public FileChooser(final Path loc) {
+	public FileChooser(final Optional<Path> loc) {
 		this(loc, new FilteredFileChooser(), JFileChooser.OPEN_DIALOG);
 	}
 
@@ -107,7 +104,7 @@ public final class FileChooser {
 	 * for.
 	 */
 	public FileChooser() {
-		this(Paths.get(""));
+		this(Optional.empty());
 	}
 
 	/**
@@ -125,7 +122,7 @@ public final class FileChooser {
 				final int status = chooserFunc.applyAsInt(null);
 				if (status == APPROVE_OPTION) {
 					final File selectedFile = chooser.getSelectedFile();
-					setFile(assertNotNull(selectedFile.toPath()));
+					setFile(Optional.of(selectedFile.toPath()));
 					if (selectedFile.toString().isEmpty()) {
 						LOGGER.severe("JFileChooser produced empty file");
 					} else if (file.toString().isEmpty()) {
@@ -141,8 +138,8 @@ public final class FileChooser {
 				invoke(() -> {
 					final int status = chooserFunc.applyAsInt(null);
 					if (status == APPROVE_OPTION) {
-						setFile(NullCleaner.valueOrDefault(fileChooser.getSelectedFile(),
-								new File("")).toPath());
+						setFile(Optional.of(NullCleaner.valueOrDefault(fileChooser.getSelectedFile(),
+								new File("")).toPath()));
 						if (file.toString().isEmpty()) {
 							LOGGER.severe("Selection supposedly empty");
 						}
@@ -153,10 +150,10 @@ public final class FileChooser {
 				});
 			}
 		}
-		if (file.toString().isEmpty()) {
-			throw new ChoiceInterruptedException();
+		if (file.isPresent()) {
+			return file.get();
 		} else {
-			return file;
+			throw new ChoiceInterruptedException();
 		}
 	}
 	/**
@@ -202,14 +199,9 @@ public final class FileChooser {
 	 *
 	 * @param loc the file to return
 	 */
-	public void setFile(final Path loc) {
-		if (loc.toString().isEmpty()) {
-			file = Paths.get("");
-			shouldWait = true;
-		} else {
-			file = loc;
-			shouldWait = false;
-		}
+	public void setFile(final Optional<Path> loc) {
+		shouldWait = !loc.isPresent();
+		file = loc;
 	}
 
 	/**

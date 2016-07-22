@@ -11,6 +11,7 @@ import java.io.Reader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
@@ -102,7 +103,7 @@ public final class MapReaderAdapter {
 	public IDriverModel readMapModelFromStream(final Reader stream, final Warning warner)
 			throws DriverFailedException {
 		try {
-			return new ViewerModel(readMapFromStream(stream, warner), Paths.get(""));
+			return new ViewerModel(readMapFromStream(stream, warner), Optional.empty());
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in stream", except);
 		} catch (final SPFormatException except) {
@@ -121,7 +122,7 @@ public final class MapReaderAdapter {
 	public IDriverModel readMapModel(final Path file, final Warning warner)
 			throws DriverFailedException {
 		try {
-			return new ViewerModel(readMap(file, warner), file);
+			return new ViewerModel(readMap(file, warner), Optional.of(file));
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error reading " + file,
 												except);
@@ -152,10 +153,10 @@ public final class MapReaderAdapter {
 		String current = master.toString();
 		try {
 			final IMultiMapModel retval =
-					new SimpleMultiMapModel(readMap(master, warner), master);
+					new SimpleMultiMapModel(readMap(master, warner), Optional.of(master));
 			for (final Path file : files) {
 				current = file.toString();
-				retval.addSubordinateMap(readMap(file, warner), file);
+				retval.addSubordinateMap(readMap(file, warner), Optional.of(file));
 			}
 			return retval;
 		} catch (final IOException except) {
@@ -190,16 +191,16 @@ public final class MapReaderAdapter {
 	 */
 	public void writeModel(final IDriverModel model) throws DriverFailedException {
 		try {
-			spWriter.write(model.getMapFile(), model.getMap());
+			spWriter.write(model.getMapFile().get(), model.getMap());
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error writing to " + model.getMapFile(),
 												except);
 		}
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model)
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
 																.getSubordinateMaps()) {
 				try {
-					spWriter.write(pair.second(), pair.first());
+					spWriter.write(pair.second().get(), pair.first());
 				} catch (final IOException except) {
 					throw new DriverFailedException("I/O error writing to " +
 															pair.second(), except);

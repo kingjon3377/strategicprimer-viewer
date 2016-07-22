@@ -3,6 +3,7 @@ package model.viewer;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
@@ -78,7 +79,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 * @param firstMap the initial map
 	 * @param file     the name the map was loaded from or should be saved to
 	 */
-	public ViewerModel(final IMutableMapNG firstMap, final Path file) {
+	public ViewerModel(final IMutableMapNG firstMap, final Optional<Path> file) {
 		dimensions = new VisibleDimensions(0, firstMap.dimensions().rows - 1, 0,
 												firstMap.dimensions().cols - 1);
 		selPoint = PointFactory.point(-1, -1);
@@ -89,7 +90,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 * @param pair a Pair of the initial map and the name it was loaded from or should
 	 *                be saved to
 	 */
-	public ViewerModel(final Pair<IMutableMapNG, Path> pair) {
+	public ViewerModel(final Pair<IMutableMapNG, Optional<Path>> pair) {
 		this(pair.first(), pair.second());
 	}
 	/**
@@ -114,7 +115,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 * @param origin   the file the map was loaded from or should be saved to
 	 */
 	@Override
-	public void setMap(final IMutableMapNG newMap, final Path origin) {
+	public void setMap(final IMutableMapNG newMap, final Optional<Path> origin) {
 		super.setMap(newMap, origin);
 		clearSelection();
 		setDimensions(new VisibleDimensions(0, newMap.dimensions().rows - 1, 0,

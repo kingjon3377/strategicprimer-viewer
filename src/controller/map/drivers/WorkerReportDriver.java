@@ -4,6 +4,7 @@ import controller.map.report.ReportGenerator;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Optional;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
@@ -52,7 +53,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model).getAllMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model).getAllMaps()) {
 				final String report = ReportGenerator.createReport(pair.first());
 				//noinspection ObjectAllocationInLoop
 				try (final FileWriter writer = new FileWriter(pair.second().toString() +

@@ -56,7 +56,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * @param map  the map we're wrapping.
 	 * @param file the file the map was loaded from or should be saved to
 	 */
-	public WorkerModel(final IMutableMapNG map, final Path file) {
+	public WorkerModel(final IMutableMapNG map, final Optional<Path> file) {
 		super(map, file);
 	}
 
@@ -197,7 +197,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addUnitAtLocation(final IUnit unit, final Point location) {
 		if (getSubordinateMaps().iterator().hasNext()) {
-			for (final Pair<IMutableMapNG, Path> pair : getAllMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : getAllMaps()) {
 				final Optional<Fortress> fort = NullCleaner.assertNotNull(
 						pair.first().streamOtherFixtures(location)
 								.filter(Fortress.class::isInstance)

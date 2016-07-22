@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Files;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import model.viewer.IViewerModel;
@@ -76,10 +75,10 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 	 */
 	public ViewerFrame(final IViewerModel map, final IOHandler ioHandler) {
 		super("Map Viewer");
-		if (Files.exists(map.getMapFile())) {
-			setTitle(map.getMapFile() + " | Map Viewer");
+		if (map.getMapFile().isPresent()) {
+			setTitle(map.getMapFile().get() + " | Map Viewer");
 			getRootPane().putClientProperty("Window.documentFile",
-					map.getMapFile());
+					map.getMapFile().get().toFile());
 		}
 		model = map;
 		final FixtureFilterMenu filterMenu = new FixtureFilterMenu();

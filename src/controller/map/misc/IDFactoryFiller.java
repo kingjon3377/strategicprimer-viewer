@@ -1,6 +1,7 @@
 package controller.map.misc;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -72,7 +73,7 @@ public final class IDFactoryFiller {
 	 */
 	public static IDRegistrar createFactory(final IMultiMapModel model) {
 		final IDRegistrar retval = new IDFactory();
-		for (final Pair<IMutableMapNG, Path> pair : model.getAllMaps()) {
+		for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
 			for (final Point point : pair.first().locations()) {
 				// Ground, Forest, Rivers, and Mountains do not have IDs, so we
 				// can skip them and just test the "other" fixtures

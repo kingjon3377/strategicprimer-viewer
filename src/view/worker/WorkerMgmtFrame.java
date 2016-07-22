@@ -16,8 +16,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -116,10 +115,10 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	 */
 	public WorkerMgmtFrame(final IWorkerModel model, final IOHandler ioHandler) {
 		super("Worker Management");
-		if (Files.exists(model.getMapFile())) {
-			setTitle(model.getMapFile() + " | Worker Management");
+		if (model.getMapFile().isPresent()) {
+			setTitle(model.getMapFile().get() + " | Worker Management");
 			getRootPane().putClientProperty("Window.documentFile",
-					model.getMapFile());
+					model.getMapFile().get().toFile());
 		}
 		setMinimumSize(new Dimension(640, 480));
 		final NewUnitDialog newUnitFrame =
@@ -226,7 +225,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 																							true)),
 								ordersPanel,
 								new ListenedButton("Export a proto-strategy",
-														  evt -> new FileChooser(Paths.get(""),
+														  evt -> new FileChooser(Optional.empty(),
 																						new JFileChooser("."),
 																						JFileChooser.SAVE_DIALOG)
 																		 .call(file -> strategyExporter

@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.InputMap;
@@ -250,7 +251,7 @@ public final class ExplorationPanel extends BorderedPanel
 		ecl.addMovementCostListener(this);
 		mainList.getModel().addListDataListener(
 				new ExplorationListListener(model, mainList));
-		final Iterator<Pair<IMutableMapNG, Path>> subMaps =
+		final Iterator<Pair<IMutableMapNG, Optional<Path>>> subMaps =
 				model.getSubordinateMaps().iterator();
 		final Iterable<Player> players;
 		if (subMaps.hasNext()) {

@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -67,11 +65,10 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 	 */
 	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
 		super("Worker Advancement");
-		final Path mapFile = source.getMapFile();
-		if (Files.exists(mapFile)) {
-			setTitle(mapFile + " | Worker Advancement");
+		if (source.getMapFile().isPresent()) {
+			setTitle(source.getMapFile().get() + " | Worker Advancement");
 			getRootPane().putClientProperty("Window.documentFile",
-					mapFile);
+					source.getMapFile().get().toFile());
 		}
 		setMinimumSize(new Dimension(640, 480));
 		final IMapNG map = source.getMap();

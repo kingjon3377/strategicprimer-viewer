@@ -1,10 +1,10 @@
 package model.workermgmt;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -89,7 +89,7 @@ public final class TestWorkerModel {
 			map.addFixture(NullCleaner.assertNotNull(point),
 					NullCleaner.assertNotNull(fixtures.remove(0)));
 		}
-		final IWorkerModel model = new WorkerModel(map, Paths.get(""));
+		final IWorkerModel model = new WorkerModel(map, Optional.empty());
 		final List<IUnit> listOneA = filterProxies(model.getUnits(playerOne));
 		assertThat("Got all units for player 1", listOne,
 				hasItems(listOneA.toArray(new IUnit[listOneA.size()])));

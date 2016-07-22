@@ -10,10 +10,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -140,7 +140,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				return;
 			}
 			try {
-				model.setMap(readMap(file.toPath()), file.toPath());
+				model.setMap(readMap(file.toPath()), Optional.of(file.toPath()));
 			} catch (final IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);
@@ -197,7 +197,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				break;
 			case "open secondary map in map viewer":
 				if (model instanceof IMultiMapModel) {
-					final Pair<IMutableMapNG, Path> mapPair =
+					final Pair<IMutableMapNG, Optional<Path>> mapPair =
 							((IMultiMapModel) model).getSubordinateMaps().iterator()
 									.next();
 					final IViewerModel newModel =
@@ -309,7 +309,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 																			PlayerCollection(),
 																	model.getMap()
 																			.getCurrentTurn()),
-														Paths.get(""));
+														Optional.empty());
 		SwingUtilities.invokeLater(
 				() -> new ViewerFrame(newModel, new IOHandler(newModel)).setVisible(true));
 	}
@@ -370,13 +370,15 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * Save a map to the filename it was loaded from.
 	 *
+	 * TODO: If no map file specified (Optional empty), call saveAs instead.
+	 *
 	 * @param source the source of the event that triggered this. May be null if it
 	 *                  wasn't
 	 *               a Component.
 	 */
 	private void saveMap(@Nullable final Component source) {
 		try {
-			new MapReaderAdapter().write(model.getMapFile(), model.getMap());
+			new MapReaderAdapter().write(model.getMapFile().get(), model.getMap());
 		} catch (final IOException e) {
 			ErrorShower.showErrorDialog(source, "I/O error writing to file "
 														+ model.getMapFile());
@@ -423,16 +425,18 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * Save all maps to the filenames they were loaded from.
 	 *
+	 * TODO: If any is not specified, call saveAs() for it.
+	 *
 	 * @param source the source of the event that triggered this. May be null if it was
 	 *               not a component.
 	 */
 	private void saveAll(@Nullable final Component source) {
 		if (model instanceof IMultiMapModel) {
 			final MapReaderAdapter adapter = new MapReaderAdapter();
-			for (final Pair<IMutableMapNG, Path> pair : ((IMultiMapModel) model)
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
 																.getAllMaps()) {
 				try {
-					adapter.write(pair.second(), pair.first());
+					adapter.write(pair.second().get(), pair.first());
 				} catch (final IOException e) {
 					ErrorShower.showErrorDialog(source,
 							"I/O error writing to file " + pair.second());
@@ -456,7 +460,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			}
 			try {
 				((IMultiMapModel) model).addSubordinateMap(
-						readMap(file.toPath()), file.toPath());
+						readMap(file.toPath()), Optional.of(file.toPath()));
 			} catch (final IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);

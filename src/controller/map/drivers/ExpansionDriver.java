@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -105,7 +106,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 					"Expansion on a master map with no subordinate maps does nothing");
 			mapModel = new SimpleMultiMapModel(model);
 		}
-		for (final Pair<IMutableMapNG, Path> pair : mapModel.getSubordinateMaps()) {
+		for (final Pair<IMutableMapNG, Optional<Path>> pair : mapModel.getSubordinateMaps()) {
 			expand(mapModel.getMap(), pair.first());
 		}
 	}
