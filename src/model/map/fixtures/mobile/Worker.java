@@ -1,5 +1,6 @@
 package model.map.fixtures.mobile;
 
+import controller.map.misc.CLIHelper;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -136,8 +137,8 @@ public class Worker implements IWorker, HasPortrait {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Worker) && (((Worker) obj).id == id)
-										&& equalsIgIDImpl((Worker) obj));
+		return (this == obj) || ((obj instanceof IWorker) && (((IWorker) obj).getID() == id)
+										&& equalsIgIDImpl((IWorker) obj));
 	}
 
 	/**
@@ -163,7 +164,7 @@ public class Worker implements IWorker, HasPortrait {
 	@SuppressWarnings({"ObjectEquality", "CastToConcreteClass"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return (this == fix) || ((fix instanceof Worker) && equalsIgIDImpl((Worker)
+		return (this == fix) || ((fix instanceof IWorker) && equalsIgIDImpl((IWorker)
 																				fix));
 	}
 
@@ -171,14 +172,14 @@ public class Worker implements IWorker, HasPortrait {
 	 * @param fix a worker
 	 * @return whether it equals this one except for ID.
 	 */
-	private boolean equalsIgIDImpl(final Worker fix) {
+	private boolean equalsIgIDImpl(final IWorker fix) {
 		final WorkerStats locStats = stats;
 		if (locStats == null) {
-			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet) &&
-						fix.race.equals(race) && (fix.stats == null);
+			return fix.getName().equals(name) && areJobSetsEqual(jobSet, CLIHelper.toList(fix)) &&
+						fix.getRace().equals(race) && (fix.getStats() == null);
 		} else {
-			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet) &&
-						fix.race.equals(race) && locStats.equals(fix.stats);
+			return fix.getName().equals(name) && areJobSetsEqual(jobSet, CLIHelper.toList(fix)) &&
+						fix.getRace().equals(race) && locStats.equals(fix.getStats());
 		}
 	}
 
