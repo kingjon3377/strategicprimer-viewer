@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import java.nio.file.Paths;
 import java.util.stream.Stream;
 import view.map.misc.MapCheckerFrame;
 
@@ -46,7 +47,7 @@ public final class MapCheckerGUI implements UtilityDriver {
 	public void startDriver(final String... args) {
 		final MapCheckerFrame window = new MapCheckerFrame();
 		window.setVisible(true);
-		Stream.of(args).forEach(window::check);
+		Stream.of(args).map(Paths::get).forEach(window::check);
 	}
 
 	/**

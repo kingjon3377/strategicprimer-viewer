@@ -11,7 +11,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -115,15 +115,15 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	/**
 	 * Check a map.
 	 *
-	 * @param filename the name of the file to check. TODO: Take Path
+	 * @param filename the name of the file to check.
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	public void check(final String filename) {
+	public void check(final Path filename) {
 		printParagraph("Starting " + filename);
 		try {
-			reader.readMap(Paths.get(filename), Warning.Custom);
+			reader.readMap(filename, Warning.Custom);
 		} catch (final IOException | XMLStreamException | SPFormatException except) {
-			printError(except, filename);
+			printError(except, filename.toString());
 			return;
 		}
 		printParagraph("No errors in " + filename, StreamingLabel.LabelTextColor.green);
