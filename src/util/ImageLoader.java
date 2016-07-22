@@ -119,9 +119,12 @@ public final class ImageLoader {
 	 */
 	public Icon loadIcon(final String file) throws IOException {
 		if (!iconCache.containsKey(file)) {
-			iconCache.put(file, new ImageIcon(loadImage(file)
-													.getScaledInstance(ICON_SIZE, -1,
-															Image.SCALE_DEFAULT)));
+			final Image orig = loadImage(file);
+			final BufferedImage temp = new BufferedImage(ICON_SIZE, ICON_SIZE, BufferedImage.TYPE_INT_ARGB);
+			final Graphics pen = temp.getGraphics();
+			pen.drawImage(orig, 0, 0, ICON_SIZE, ICON_SIZE, null);
+			pen.dispose();
+			iconCache.put(file, new ImageIcon(temp));
 		}
 		return NullCleaner.assertNotNull(iconCache.get(file));
 	}
