@@ -370,19 +370,22 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * Save a map to the filename it was loaded from.
 	 *
-	 * TODO: If no map file specified (Optional empty), call saveAs instead.
-	 *
 	 * @param source the source of the event that triggered this. May be null if it
 	 *                  wasn't
 	 *               a Component.
 	 */
 	private void saveMap(@Nullable final Component source) {
-		try {
-			new MapReaderAdapter().write(model.getMapFile().get(), model.getMap());
-		} catch (final IOException e) {
-			ErrorShower.showErrorDialog(source, "I/O error writing to file "
-														+ model.getMapFile());
-			LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
+		final Optional<Path> givenFile = model.getMapFile();
+		if (givenFile.isPresent()) {
+			try {
+				new MapReaderAdapter().write(givenFile.get(), model.getMap());
+			} catch (final IOException e) {
+				ErrorShower.showErrorDialog(source, "I/O error writing to file "
+															+ model.getMapFile());
+				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
+			}
+		} else {
+			saveMapAs(model.getMap(), source);
 		}
 	}
 
@@ -425,8 +428,6 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * Save all maps to the filenames they were loaded from.
 	 *
-	 * TODO: If any is not specified, call saveAs() for it.
-	 *
 	 * @param source the source of the event that triggered this. May be null if it was
 	 *               not a component.
 	 */
@@ -435,12 +436,16 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			final MapReaderAdapter adapter = new MapReaderAdapter();
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
 																.getAllMaps()) {
-				try {
-					adapter.write(pair.second().get(), pair.first());
-				} catch (final IOException e) {
-					ErrorShower.showErrorDialog(source,
-							"I/O error writing to file " + pair.second());
-					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
+				if (pair.second().isPresent()) {
+					try {
+						adapter.write(pair.second().get(), pair.first());
+					} catch (final IOException e) {
+						ErrorShower.showErrorDialog(source,
+								"I/O error writing to file " + pair.second());
+						LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
+					}
+				} else {
+					saveMapAs(pair.first(), source);
 				}
 			}
 		}
