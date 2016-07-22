@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.fixtures.mobile.worker.IJob;
@@ -173,14 +174,8 @@ public class Worker implements IWorker, HasPortrait {
 	 * @return whether it equals this one except for ID.
 	 */
 	private boolean equalsIgIDImpl(final IWorker fix) {
-		final WorkerStats locStats = stats;
-		if (locStats == null) {
-			return fix.getName().equals(name) && areJobSetsEqual(jobSet, CLIHelper.toList(fix)) &&
-						fix.getRace().equals(race) && (fix.getStats() == null);
-		} else {
-			return fix.getName().equals(name) && areJobSetsEqual(jobSet, CLIHelper.toList(fix)) &&
-						fix.getRace().equals(race) && locStats.equals(fix.getStats());
-		}
+		return fix.getName().equals(name) && areJobSetsEqual(jobSet, CLIHelper.toList(fix)) && fix.getRace().equals(race) &&
+					   Objects.equals(stats, fix.getStats());
 	}
 
 	/**
