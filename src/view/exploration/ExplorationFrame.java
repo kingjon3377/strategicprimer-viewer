@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -113,10 +115,11 @@ public final class ExplorationFrame extends JFrame implements ISPWindow {
 	public ExplorationFrame(final IExplorationModel explorationModel,
 							final IOHandler ioHandler) {
 		super("Exploration");
-		if (explorationModel.getMapFile().isPresent()) {
-			setTitle(explorationModel.getMapFile().get() + " | Exploration");
+		Optional<Path> file = explorationModel.getMapFile();
+		if (file.isPresent()) {
+			setTitle(file.get() + " | Exploration");
 			getRootPane().putClientProperty("Window.documentFile",
-					explorationModel.getMapFile().get().toFile());
+					file.get().toFile());
 		}
 		setMinimumSize(new Dimension(768, 480));
 		setPreferredSize(new Dimension(1024, 640));

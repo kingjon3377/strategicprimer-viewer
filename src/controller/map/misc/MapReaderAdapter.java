@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
@@ -23,6 +24,7 @@ import model.misc.SimpleMultiMapModel;
 import model.viewer.ViewerModel;
 import util.NullCleaner;
 import util.Pair;
+import util.TypesafeLogger;
 import util.Warning;
 
 /**
@@ -49,6 +51,10 @@ import util.Warning;
  * @author Jonathan Lovelace
  */
 public final class MapReaderAdapter {
+	/**
+	 * Logger.
+	 */
+	private final Logger LOGGER = TypesafeLogger.getLogger(MapReaderAdapter.class);
 	/**
 	 * The implementation we use under the hood.
 	 */
@@ -190,20 +196,31 @@ public final class MapReaderAdapter {
 	 * @throws DriverFailedException on any error
 	 */
 	public void writeModel(final IDriverModel model) throws DriverFailedException {
-		try {
-			spWriter.write(model.getMapFile().get(), model.getMap());
-		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error writing to " + model.getMapFile(),
-												except);
+		Optional<Path> mainFile = model.getMapFile();
+		if (mainFile.isPresent()) {
+			try {
+				spWriter.write(mainFile.get(), model.getMap());
+			} catch (final IOException except) {
+				throw new DriverFailedException("I/O error writing to " + mainFile,
+													   except);
+			}
+		} else {
+			LOGGER.severe(
+					"Model didn't contain filename for main map, so didn't write it");
 		}
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
 																.getSubordinateMaps()) {
-				try {
-					spWriter.write(pair.second().get(), pair.first());
-				} catch (final IOException except) {
-					throw new DriverFailedException("I/O error writing to " +
-															pair.second(), except);
+				Optional<Path> filename = pair.second();
+				if (filename.isPresent()) {
+					try {
+						spWriter.write(filename.get(), pair.first());
+					} catch (final IOException except) {
+						throw new DriverFailedException("I/O error writing to " +
+																filename, except);
+					}
+				} else {
+					LOGGER.severe("A map didn't have a filename, and so wasn't written");
 				}
 			}
 		}

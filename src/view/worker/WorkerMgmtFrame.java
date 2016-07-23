@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.ActionMap;
@@ -115,10 +116,11 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	 */
 	public WorkerMgmtFrame(final IWorkerModel model, final IOHandler ioHandler) {
 		super("Worker Management");
-		if (model.getMapFile().isPresent()) {
-			setTitle(model.getMapFile().get() + " | Worker Management");
+		Optional<Path> filename = model.getMapFile();
+		if (filename.isPresent()) {
+			setTitle(filename.get() + " | Worker Management");
 			getRootPane().putClientProperty("Window.documentFile",
-					model.getMapFile().get().toFile());
+					filename.get().toFile());
 		}
 		setMinimumSize(new Dimension(640, 480));
 		final NewUnitDialog newUnitFrame =

@@ -13,6 +13,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -29,6 +30,7 @@ import util.TypesafeLogger;
 import util.Warning;
 import view.util.ISPWindow;
 import view.util.StreamingLabel;
+import view.util.StreamingLabel.LabelTextColor;
 
 /**
  * A window to show the result of running subset tests.
@@ -245,10 +247,18 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 	 * @param map  the map to test
 	 * @param file the file from which it was loaded
 	 */
-	public void test(final IMapNG map, final Path file) {
-		printParagraph("Testing " + file + " ...");
+	public void test(final IMapNG map, final Optional<Path> file) {
+		final String filename;
+		if (file.isPresent()) {
+			filename = file.get().toString();
+		} else {
+			LOGGER.warning("Given a map with no filename");
+			printParagraph("Given a map with no filename", LabelTextColor.yellow);
+			filename = "an unnamed file";
+		}
+		printParagraph("Testing " + filename + " ...");
 		try (final Writer out = new HTMLWriter(label.getWriter())) {
-			if (mainMap.isSubset(map, out, file.toString() + ':')) {
+			if (mainMap.isSubset(map, out, filename + ':')) {
 				printParagraph("OK", StreamingLabel.LabelTextColor.green);
 			} else {
 				printParagraph("WARN", StreamingLabel.LabelTextColor.yellow);

@@ -426,12 +426,13 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			final MapReaderAdapter adapter = new MapReaderAdapter();
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
 																.getAllMaps()) {
-				if (pair.second().isPresent()) {
+				Optional<Path> file = pair.second();
+				if (file.isPresent()) {
 					try {
-						adapter.write(pair.second().get(), pair.first());
+						adapter.write(file.get(), pair.first());
 					} catch (final IOException e) {
 						ErrorShower.showErrorDialog(source,
-								"I/O error writing to file " + pair.second());
+								"I/O error writing to file " + file.get());
 						LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 					}
 				} else {

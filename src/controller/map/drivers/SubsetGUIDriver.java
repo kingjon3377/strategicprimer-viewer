@@ -66,7 +66,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 			frame.loadMain(model.getMap());
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
 																.getSubordinateMaps()) {
-				frame.test(pair.first(), pair.second().get());
+				frame.test(pair.first(), pair.second());
 			}
 		} else {
 			ErrorShower.showErrorDialog(null,

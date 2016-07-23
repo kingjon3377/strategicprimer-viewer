@@ -483,7 +483,12 @@ public final class DrawHelperComparator implements SimpleDriver {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
 																.getAllMaps()) {
 				SYS_OUT.print("Testing using ");
-				SYS_OUT.println(pair.second().get());
+				final Optional<Path> file = pair.second();
+				if (file.isPresent()) {
+					SYS_OUT.println(pair.second().get());
+				} else {
+					SYS_OUT.println("a map not loaded from file");
+				}
 				final IMapNG map = pair.first();
 				PointFactory.clearCache();
 				if (random.nextBoolean()) {
