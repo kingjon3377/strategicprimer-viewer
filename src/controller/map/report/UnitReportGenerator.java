@@ -182,6 +182,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		final WorkerStats stats = worker.getStats();
 		if ((stats != null) && details) {
 			builder.append("<p>He or she has the following stats: ");
+			//noinspection HardcodedFileSeparator
 			builder.append(stats.getHitPoints()).append(" / ")
 					.append(stats.getMaxHitPoints()).append(" Hit Points");
 			builder.append(", Strength ").append(
@@ -256,6 +257,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 																		". ");
 		final WorkerStats stats = worker.getStats();
 		if ((stats != null) && details) {
+			//noinspection HardcodedFileSeparator
 			retval.add(new SimpleReportNode(loc, "He or she has the following stats: ",
 												Integer.toString(stats.getHitPoints()),
 												" / ", Integer.toString(

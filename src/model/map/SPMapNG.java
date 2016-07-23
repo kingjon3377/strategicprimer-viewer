@@ -727,6 +727,7 @@ public class SPMapNG implements IMutableMapNG {
 						LOGGER.info("Added: " + fix.shortDesc());
 					}
 				} catch (final IOException except) {
+					//noinspection HardcodedFileSeparator
 					LOGGER.log(Level.SEVERE, "I/O error on bit bucket", except);
 				}
 			} else {

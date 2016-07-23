@@ -95,6 +95,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	 */
 	@Override
 	public String headerRow() {
+		//noinspection HardcodedFileSeparator
 		return "Distance,Location,Owner,Kind/Category,Name,Orders";
 	}
 

@@ -103,6 +103,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 						NullCleaner.assertNotNull(playerList.remove(playerNum)), cli);
 			}
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error interacting with user",
 												except);
 		}

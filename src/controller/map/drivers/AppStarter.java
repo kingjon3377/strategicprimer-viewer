@@ -88,6 +88,7 @@ public final class AppStarter implements ISPDriver {
 		final DriverUsage cliUsage = cliDriver.usage();
 		final DriverUsage guiUsage = guiDriver.usage();
 		if (cliUsage.isGraphical() || !guiUsage.isGraphical()) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.warning("Two-arg addChoice expects non-GUI / GUI pair");
 		} else if (!cliUsage.getShortOption().equals(guiUsage.getShortOption())
 						|| !cliUsage.getLongOption().equals(guiUsage.getLongOption())) {
@@ -146,6 +147,7 @@ public final class AppStarter implements ISPDriver {
 								"No applications available", "App to start: ", true))),
 						model);
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE,
 						"I/O error prompting user for app to start", except);
 				return;
@@ -242,6 +244,7 @@ public final class AppStarter implements ISPDriver {
 								"No applications available", "App to start: ", true))),
 						others);
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE,
 						"I/O error prompting user for app to start", except);
 			}

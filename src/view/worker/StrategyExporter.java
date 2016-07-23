@@ -167,6 +167,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 			//noinspection resource
 			writer.append(createStrategy(dismissed));
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(SEVERE, "I/O error exporting strategy", except);
 		}
 	}

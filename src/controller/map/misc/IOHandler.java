@@ -351,6 +351,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			//noinspection StringConcatenationMissingWhitespace
 			msg = "File " + filename + NOT_FOUND_ERROR;
 		} else if (except instanceof IOException) {
+			//noinspection HardcodedFileSeparator
 			msg = "I/O error reading file " + filename;
 		} else if (except instanceof SPFormatException) {
 			msg = INV_DATA_ERROR + " in file " + filename;
@@ -374,8 +375,10 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			try {
 				new MapReaderAdapter().write(givenFile.get(), model.getMap());
 			} catch (final IOException e) {
+				//noinspection HardcodedFileSeparator
 				ErrorShower.showErrorDialog(source, "I/O error writing to file "
 															+ model.getMapFile());
+				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 			}
 		} else {
@@ -395,9 +398,11 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			try {
 				new MapReaderAdapter().write(path, map);
 			} catch (final IOException e) {
+				//noinspection HardcodedFileSeparator
 				ErrorShower.showErrorDialog(source,
 						"I/O error writing to file "
 								+ path);
+				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 			}
 		});
@@ -431,8 +436,10 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 					try {
 						adapter.write(file.get(), pair.first());
 					} catch (final IOException e) {
+						//noinspection HardcodedFileSeparator
 						ErrorShower.showErrorDialog(source,
 								"I/O error writing to file " + file.get());
+						//noinspection HardcodedFileSeparator
 						LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 					}
 				} else {

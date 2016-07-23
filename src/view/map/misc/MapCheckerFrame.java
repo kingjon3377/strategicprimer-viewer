@@ -145,7 +145,9 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 			printParagraph("ERROR: File not found", ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, filename + " not found", except);
 		} else if (except instanceof IOException) {
+			//noinspection HardcodedFileSeparator
 			printParagraph("ERROR: I/O error reading file", ERROR_COLOR);
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error reading " + filename, except);
 		} else if (except instanceof XMLStreamException) {
 			printParagraph("ERROR: Malformed XML in the file" +

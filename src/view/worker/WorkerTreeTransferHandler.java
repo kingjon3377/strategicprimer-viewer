@@ -197,6 +197,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 							"Impossible unsupported data flavor", except);
 					return false;
 				} catch (final IOException except) {
+					//noinspection HardcodedFileSeparator
 					LOGGER.log(
 							Level.SEVERE,
 							"I/O error in transfer after we checked",

@@ -211,6 +211,7 @@ public class WorkerStats {
 		final StringBuilder builder = new StringBuilder(70);
 		builder.append("HP: ");
 		builder.append(hp);
+		//noinspection HardcodedFileSeparator
 		builder.append(" / ");
 		builder.append(maxHP);
 		builder.append("\nStr: ");

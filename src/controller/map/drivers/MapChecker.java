@@ -92,6 +92,7 @@ public final class MapChecker implements UtilityDriver {
 			LOGGER.log(Level.SEVERE, file + " not found", e);
 			retval = false;
 		} catch (final IOException e) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error reading " + file, e);
 			retval = false;
 		} catch (final XMLStreamException e) {

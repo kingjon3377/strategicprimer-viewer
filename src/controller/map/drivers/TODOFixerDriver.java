@@ -132,6 +132,7 @@ public final class TODOFixerDriver {
 		}
 		for (final String job : jobList) {
 			if (random.nextBoolean()) {
+				//noinspection HardcodedFileSeparator
 				cli.printf(
 						"Setting unit with ID #%d (%d / 5328) to kind %s%n",
 						Integer.valueOf(unit.getID()), Integer.valueOf(count), job);
@@ -146,6 +147,7 @@ public final class TODOFixerDriver {
 			unit.setKind(kind);
 			jobList.add(kind);
 		} catch (final IOException e) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.FINE, "I/O error interacting with user", e);
 		}
 	}
@@ -226,10 +228,12 @@ public final class TODOFixerDriver {
 				try {
 					reader.write(file, map);
 				} catch (final IOException e) {
+					//noinspection HardcodedFileSeparator
 					LOGGER.log(Level.SEVERE, "I/O error writing map to " + arg, e);
 				}
 			}
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error closing CLIHelper", except);
 		}
 	}

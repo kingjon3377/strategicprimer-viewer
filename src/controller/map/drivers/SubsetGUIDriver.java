@@ -93,6 +93,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 		try {
 			frame.loadMain(first);
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error loading main map "
 													+ first, except);
 		} catch (final XMLStreamException except) {

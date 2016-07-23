@@ -338,6 +338,7 @@ public final class ZeroToOneConverter {
 			} catch (final XMLStreamException except) {
 				LOGGER.log(Level.SEVERE, "XML error", except);
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE, "I/O error dealing with file " + arg,
 						except);
 			}

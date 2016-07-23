@@ -174,6 +174,7 @@ public final class TrapModelDriver implements SimpleDriver {
 						"Next action: ", false);
 			}
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
 		}
 	}
@@ -252,6 +253,7 @@ public final class TrapModelDriver implements SimpleDriver {
 		try (final ICLIHelper cli = new CLIHelper()) {
 			repl(model.getMap(), cli);
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error closing CLIHelper", except);
 		}
 	}

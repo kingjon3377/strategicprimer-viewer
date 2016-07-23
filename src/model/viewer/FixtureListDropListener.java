@@ -173,6 +173,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 								except);
 						continue;
 					} catch (final IOException except) {
+						//noinspection HardcodedFileSeparator
 						LOGGER.log(Level.SEVERE, "I/O error getting the data",
 								except);
 						continue;

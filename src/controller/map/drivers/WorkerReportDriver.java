@@ -60,6 +60,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 																	  ".report.html")) {
 					writer.write(report);
 				} catch (final IOException except) {
+					//noinspection HardcodedFileSeparator
 					throw new DriverFailedException("I/O error writing report", except);
 				}
 			}
@@ -69,6 +70,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 																  ".report.html")) {
 				writer.write(report);
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException("I/O error writing report", except);
 			}
 		}

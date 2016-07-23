@@ -143,6 +143,7 @@ public final class TableDebugger {
 			LOGGER.log(Level.SEVERE, "Missing table", e);
 			System.exit(1);
 		} catch (final IOException e) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error writing to stdout", e);
 			System.exit(2);
 		}

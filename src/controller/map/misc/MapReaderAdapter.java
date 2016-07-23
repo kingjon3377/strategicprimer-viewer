@@ -130,6 +130,7 @@ public final class MapReaderAdapter {
 		try {
 			return new ViewerModel(readMap(file, warner), Optional.of(file));
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error reading " + file,
 												except);
 		} catch (final XMLStreamException except) {
@@ -166,6 +167,7 @@ public final class MapReaderAdapter {
 			}
 			return retval;
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error reading from file " + current,
 												except);
 		} catch (final XMLStreamException except) {
@@ -201,6 +203,7 @@ public final class MapReaderAdapter {
 			try {
 				spWriter.write(mainFile.get(), model.getMap());
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException("I/O error writing to " + mainFile,
 													   except);
 			}
@@ -216,6 +219,7 @@ public final class MapReaderAdapter {
 					try {
 						spWriter.write(filename.get(), pair.first());
 					} catch (final IOException except) {
+						//noinspection HardcodedFileSeparator
 						throw new DriverFailedException("I/O error writing to " +
 																filename, except);
 					}

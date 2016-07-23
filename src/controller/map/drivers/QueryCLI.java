@@ -89,6 +89,7 @@ public final class QueryCLI implements SimpleDriver {
 				input = cli.inputString("Command: ");
 			}
 		} catch (final IOException | DriverFailedException except) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
 		}
 	}
@@ -425,6 +426,7 @@ public final class QueryCLI implements SimpleDriver {
 		cli.print("Fortress: Print what a player automatically knows ");
 		cli.println("about his fortress's tile.");
 		final Integer encounters = Integer.valueOf(HUNTER_HOURS * HOURLY_ENCOUNTERS);
+		//noinspection HardcodedFileSeparator
 		cli.printf("Hunt/fIsh: Generates up to %d encounters with animals.%n", encounters);
 		cli.printf("Gather: Generates up to %d encounters with fields, meadows, ",
 				encounters);
@@ -449,6 +451,7 @@ public final class QueryCLI implements SimpleDriver {
 		try (final ICLIHelper cli = new CLIHelper()) {
 			repl(model, cli);
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error closing CLIHelper", except);
 		}
 	}

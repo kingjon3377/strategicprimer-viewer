@@ -662,6 +662,7 @@ public final class OneToTwoConverter {
 					//noinspection ObjectAllocationInLoop
 					reader.write(Paths.get(arg + ".converted.xml"), newMap);
 				} catch (final IOException except) {
+					//noinspection HardcodedFileSeparator
 					LOGGER.log(Level.SEVERE,
 							"I/O error writing to " + arg + ".converted.xml", except);
 					if (first) {
@@ -688,6 +689,7 @@ public final class OneToTwoConverter {
 		} else if (except instanceof FileNotFoundException) {
 			LOGGER.warning("File " + filename + " not found");
 		} else if (except instanceof IOException) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.WARNING, "I/O error reading " + filename, except);
 		} else if (except instanceof SPFormatException) {
 			LOGGER.log(Level.WARNING,

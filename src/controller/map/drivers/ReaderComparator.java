@@ -113,6 +113,7 @@ public final class ReaderComparator implements UtilityDriver {
 			LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 			return;
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error reading file " + arg, except);
 			return;
 		}

@@ -71,6 +71,7 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 				cli.moveUntilDone();
 			}
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}
 	}

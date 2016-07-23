@@ -445,6 +445,7 @@ public final class TestConverter {
 			final SPWriter writer = new CompactXMLWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
+			//noinspection HardcodedFileSeparator
 			assertThat("Deprecated I/O produces expected result", outTwo.toString(),
 					equalTo(outOne.toString()));
 		}

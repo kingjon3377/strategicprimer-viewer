@@ -126,6 +126,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 			MISSING.add(image);
 			retval = defaultFixtureIcon;
 		} catch (final IOException e) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error reading image", e);
 			retval = defaultFixtureIcon;
 		}

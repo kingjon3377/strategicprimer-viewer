@@ -100,6 +100,7 @@ public final class MiningCLI {
 				ostream.println();
 			}
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error writing to file", except);
 			System.exit(2);
 		}

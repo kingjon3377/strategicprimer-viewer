@@ -149,6 +149,7 @@ public final class TileContentsGenerator {
 				logger.log(Level.SEVERE, "Unexpected map version", e);
 				System.exit(2);
 			} catch (final IOException e) {
+				//noinspection HardcodedFileSeparator
 				logger.log(Level.SEVERE, "I/O error", e);
 				System.exit(3);
 			} catch (final XMLStreamException e) {

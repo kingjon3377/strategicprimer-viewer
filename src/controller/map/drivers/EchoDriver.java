@@ -64,6 +64,7 @@ public final class EchoDriver implements UtilityDriver {
 		} catch (final MapVersionException except) {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error reading file " + infile,
 												except);
 		} catch (final XMLStreamException except) {
@@ -75,6 +76,7 @@ public final class EchoDriver implements UtilityDriver {
 		try {
 			new MapReaderAdapter().write(outfile, map);
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error writing " + outfile, except);
 		}
 	}

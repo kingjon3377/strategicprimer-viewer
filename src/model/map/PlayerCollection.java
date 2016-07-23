@@ -83,6 +83,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 																			DEV_NULL,
 																			""));
 		} catch (final IOException e) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error from NullStream", e);
 			return false;
 		}

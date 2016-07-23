@@ -118,6 +118,7 @@ public final class ConverterDriver implements UtilityDriver {
 			} catch (final FileNotFoundException e) {
 				LOGGER.log(Level.SEVERE, filename + " not found", e);
 			} catch (final IOException e) {
+				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE, "I/O error processing " + filename, e);
 			} catch (final XMLStreamException e) {
 				LOGGER.log(Level.SEVERE,

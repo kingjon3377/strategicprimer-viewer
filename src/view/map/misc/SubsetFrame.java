@@ -219,6 +219,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 					ERROR_COLOR);
 			throw except;
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			printParagraph("ERROR: I/O error reading file " + arg,
 					ERROR_COLOR);
 			throw except;
@@ -264,7 +265,9 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 				printParagraph("WARN", StreamingLabel.LabelTextColor.yellow);
 			}
 		} catch (final IOException e) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error writing to window", e);
+			//noinspection HardcodedFileSeparator
 			printParagraph("ERROR: I/O error writing to window", ERROR_COLOR);
 		}
 	}
@@ -292,7 +295,9 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 			LOGGER.log(Level.SEVERE, arg + " not found", except);
 			return;
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error reading " + arg, except);
+			//noinspection HardcodedFileSeparator
 			printParagraph("FAIL: I/O error reading file", ERROR_COLOR);
 			return;
 		} catch (final XMLStreamException except) {
@@ -324,6 +329,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 				printParagraph("WARN", StreamingLabel.LabelTextColor.yellow);
 			}
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error writing to label", except);
 			printParagraph("ERROR: " + except.getLocalizedMessage(),
 					StreamingLabel.LabelTextColor.red);

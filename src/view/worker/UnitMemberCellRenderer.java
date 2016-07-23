@@ -242,6 +242,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 			LOGGER.log(Level.FINEST, "with stack trace", except);
 			return null;
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error reading image", except);
 			return null;
 		}

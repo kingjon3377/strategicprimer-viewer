@@ -269,6 +269,7 @@ public final class TableLoader {
 				} catch (final FileNotFoundException e) {
 					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
 				} catch (final IOException e) {
+					//noinspection HardcodedFileSeparator
 					LOGGER.log(Level.SEVERE,
 							"I/O error while parsing " + table, e);
 				} catch (final IllegalArgumentException e) {
@@ -281,6 +282,7 @@ public final class TableLoader {
 				}
 			}
 		} catch (final IOException e) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error while getting list of files in " +
 											 "directory",
 					e);

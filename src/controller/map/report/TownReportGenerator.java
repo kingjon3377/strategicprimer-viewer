@@ -50,6 +50,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	/**
 	 * Header for the 'towns' section.
 	 */
+	@SuppressWarnings("HardcodedFileSeparator")
 	public static final String TOWN_HDR =
 			"Cities, towns, and/or fortifications you know about:";
 

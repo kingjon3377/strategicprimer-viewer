@@ -123,6 +123,7 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 				filter(model.getMap(), SYS_OUT);
 			}
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}
 	}
