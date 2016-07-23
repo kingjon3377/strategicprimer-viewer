@@ -87,6 +87,7 @@ public final class AboutDialog extends JDialog {
 		builder.append(
 				"<p>Drag-and-drop implementation uses code adapted from 'helloworld922' " +
 						"on the ");
+		//noinspection HardcodedFileSeparator
 		link(builder,
 				"http://www.javaprogrammingforums" +
 						".com/java-swing-tutorials/3141-drag-drop-jtrees.html",
