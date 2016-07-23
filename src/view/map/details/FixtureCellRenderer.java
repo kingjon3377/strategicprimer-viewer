@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
@@ -121,7 +122,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 		try {
 			retval = ImageLoader.getLoader().loadIcon(image);
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, "image file images/" + image + " not found");
+			LOGGER.log(Level.SEVERE, "image file images" + File.separatorChar + image + " not found");
 			LOGGER.log(Level.FINEST, "With stack trace", e);
 			MISSING.add(image);
 			retval = defaultFixtureIcon;

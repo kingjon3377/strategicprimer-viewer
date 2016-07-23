@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -366,13 +367,15 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			return loader.loadImage(filename);
 		} catch (final FileNotFoundException e) {
 			if (!missingFiles.contains(filename)) {
-				LOGGER.log(Level.SEVERE, "images/" + filename + " not found");
+				LOGGER.log(Level.SEVERE,
+						"images" + File.separatorChar + filename + " not found");
 				LOGGER.log(Level.FINEST, "with stack trace", e);
 				missingFiles.add(filename);
 			}
 			return fallbackImage;
 		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error reading image images/" + filename, e);
+			LOGGER.log(Level.SEVERE,
+					"I/O error reading image images" + File.separatorChar + filename, e);
 			return fallbackImage;
 		}
 	}

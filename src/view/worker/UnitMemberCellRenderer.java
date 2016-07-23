@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -238,7 +239,8 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		try {
 			return ImageLoader.getLoader().loadIcon(filename);
 		} catch (final FileNotFoundException except) {
-			LOGGER.severe("image file images/" + filename + " not found");
+			LOGGER.severe(
+					"image file images" + File.separatorChar + filename + " not found");
 			LOGGER.log(Level.FINEST, "with stack trace", except);
 			return null;
 		} catch (final IOException except) {
