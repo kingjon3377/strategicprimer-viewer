@@ -57,6 +57,7 @@ public final class TableLoader {
 	/**
 	 * An error-message string. Pulled out because it's so long.
 	 */
+	@SuppressWarnings("HardcodedFileSeparator")
 	private static final String IO_ERR_STRING =
 			"I/O error while reading table, continuing with what we have so far ...";
 	/**

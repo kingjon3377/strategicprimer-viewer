@@ -176,6 +176,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				LOGGER.log(Level.INFO, msg, except);
 			}
 		} else {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE,
 					"I/O error while loading image " + filename, except);
 		}
@@ -374,6 +375,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			}
 			return fallbackImage;
 		} catch (final IOException e) {
+			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE,
 					"I/O error reading image images" + File.separatorChar + filename, e);
 			return fallbackImage;
