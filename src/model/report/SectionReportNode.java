@@ -83,7 +83,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
 		builder.append("<h").append(level).append('>').append(text)
-				.append("</h").append(level).append(">\n");
+				.append("</h").append(level).append(">").append(LINE_SEP);
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {

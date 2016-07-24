@@ -81,7 +81,8 @@ public final class ExplorableReportGenerator
 		// At only three (albeit potentially rather long) list items, I doubt this
 		// will ever be over one K ... but we'll give it two just in case.
 		final StringBuilder builder = new StringBuilder(2048).append(
-				"<h4>Caves, Battlefields, and Portals</h4>\n").append(OPEN_LIST);
+				"<h4>Caves, Battlefields, and Portals</h4>").append(LINE_SEP)
+											  .append(OPEN_LIST);
 		// Similarly, I doubt either of these will ever be over half a K, but
 		// we'll give each a whole K just in case.
 		final StringBuilder caveBuilder = new StringBuilder(1024).append(

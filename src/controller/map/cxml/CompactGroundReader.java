@@ -98,7 +98,8 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 		ostream.append(obj.getKind());
 		ostream.append("\" exposed=\"");
 		ostream.append(Boolean.toString(obj.isExposed()));
-		ostream.append('"').append(imageXML(obj)).append(" />\n");
+		ostream.append('"').append(imageXML(obj)).append(" />");
+		ostream.append(LINE_SEP);
 	}
 
 	/**

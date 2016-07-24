@@ -162,12 +162,13 @@ public class Dragon
 			if (obj instanceof Dragon) {
 				return areObjectsEqual(ostream, kind, ((Dragon) obj).kind, context,
 						"\tDifferent kinds of dragon for ID #", Integer.toString(id),
-						"\n");
+						System.lineSeparator());
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");
 				ostream.append(Integer.toString(id));
-				ostream.append(", different kinds of members\n");
+				ostream.append(", different kinds of members");
+				ostream.append(System.lineSeparator());
 				return false;
 			}
 		} else {
@@ -176,7 +177,7 @@ public class Dragon
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('\n');
+			ostream.append(System.lineSeparator());
 			return false;
 		}
 	}

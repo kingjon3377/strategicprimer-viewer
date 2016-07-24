@@ -96,7 +96,8 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append("\" kind=\"");
 		ostream.append(obj.getKind());
-		ostream.append('"').append(imageXML(obj)).append(" />\n");
+		ostream.append('"').append(imageXML(obj)).append(" />");
+		ostream.append(LINE_SEP);
 	}
 
 	/**

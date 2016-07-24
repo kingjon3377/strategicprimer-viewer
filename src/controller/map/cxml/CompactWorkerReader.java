@@ -250,7 +250,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		ostream.append(imageXML(obj));
 		ostream.append(portraitXML(obj));
 		if (obj.iterator().hasNext() || (obj.getStats() != null)) {
-			ostream.append(">\n");
+			ostream.append(">");
+			ostream.append(LINE_SEP);
 			writeStats(ostream, obj.getStats(), indent + 1);
 			for (final IJob job : obj) {
 				if (job instanceof Job) {
@@ -258,9 +259,11 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 				}
 			}
 			indent(ostream, indent);
-			ostream.append("</worker>\n");
+			ostream.append("</worker>");
+			ostream.append(LINE_SEP);
 		} else {
-			ostream.append(" />\n");
+			ostream.append(" />");
+			ostream.append(LINE_SEP);
 		}
 	}
 
@@ -293,7 +296,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 			ostream.append(Integer.toString(stats.getWisdom()));
 			ostream.append("\" cha=\"");
 			ostream.append(Integer.toString(stats.getCharisma()));
-			ostream.append("\" />\n");
+			ostream.append("\" />");
+			ostream.append(LINE_SEP);
 		}
 	}
 
@@ -317,16 +321,19 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		ostream.append(Integer.toString(obj.getLevel()));
 		ostream.append('"');
 		if (obj.iterator().hasNext()) {
-			ostream.append(">\n");
+			ostream.append('>');
+			ostream.append(LINE_SEP);
 			for (final ISkill skill : obj) {
 				if (skill instanceof Skill) {
 					writeSkill(ostream, skill, indent + 1);
 				}
 			}
 			indent(ostream, indent);
-			ostream.append("</job>\n");
+			ostream.append("</job>");
+			ostream.append(LINE_SEP);
 		} else {
-			ostream.append(" />\n");
+			ostream.append(" />");
+			ostream.append(LINE_SEP);
 		}
 	}
 
@@ -347,7 +354,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		ostream.append(Integer.toString(obj.getLevel()));
 		ostream.append("\" hours=\"");
 		ostream.append(Integer.toString(obj.getHours()));
-		ostream.append("\" />\n");
+		ostream.append("\" />");
+		ostream.append(LINE_SEP);
 	}
 
 	/**

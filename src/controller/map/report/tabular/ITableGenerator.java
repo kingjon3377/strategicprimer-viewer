@@ -160,8 +160,8 @@ public interface ITableGenerator<@NonNull T> {
 	 * @return the character delimiting rows in the output
 	 */
 	@SuppressWarnings("SameReturnValue")
-	default char getRowDelimiter() {
-		return '\n';
+	default String getRowDelimiter() {
+		return System.lineSeparator();
 	}
 	/**
 	 * Write a field to a stream, quoting it if necessary.
@@ -174,7 +174,7 @@ public interface ITableGenerator<@NonNull T> {
 		final String quotesQuoted = QUOTE_PATTERN.matcher(field).replaceAll("\"\"");
 		if (quotesQuoted.contains(Character.toString('"')) ||
 					quotesQuoted.contains(Character.toString(getFieldDelimiter())) ||
-					quotesQuoted.contains(Character.toString(getRowDelimiter())) ||
+					quotesQuoted.contains(getRowDelimiter()) ||
 					quotesQuoted.contains(Character.toString(' '))) {
 			ostream.append('"');
 			ostream.append(quotesQuoted);

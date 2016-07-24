@@ -71,8 +71,8 @@ public final class FortressMemberReportGenerator
 		// At only two (albeit who-knows-how-long) list items, I doubt this will ever be
 		// over one K, but we'll give it two just in case.
 		final StringBuilder builder =
-				new StringBuilder(2048).append("<h4>Resources and Equipment</h4>\n")
-						.append(OPEN_LIST);
+				new StringBuilder(2048).append("<h4>Resources and Equipment</h4>")
+						.append(LINE_SEP).append(OPEN_LIST);
 		// Similarly, I doubt either of these will ever be over half a K, but
 		// we'll give each a whole K just in case.
 		final StringBuilder rsrBuilder =

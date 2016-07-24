@@ -94,7 +94,7 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 				ostream.append(fix.getClass().getName());
 				ostream.append(' ');
 				ostream.append(Integer.toString(fix.getID()));
-				ostream.append('\n');
+				ostream.append(System.lineSeparator());
 				toRemove.add(fix);
 			} else {
 				fixtures.add(fix);

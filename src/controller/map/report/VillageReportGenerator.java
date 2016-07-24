@@ -104,7 +104,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		retval.append(ownString);
 		retval.append(independentsString);
 		if (!others.isEmpty()) {
-			retval.append("<h4>Other villages you know about:</h4>\n");
+			retval.append("<h4>Other villages you know about:</h4>");
+			retval.append(LINE_SEP);
 			others.values().stream().map(Object::toString).forEach(retval::append);
 		}
 		return NullCleaner.assertNotNull(retval.toString());

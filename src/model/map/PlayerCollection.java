@@ -132,8 +132,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 				player -> {
 					try {
 						return isConditionTrue(ostream, players.containsValue(player),
-								context,
-								"\tExtra player ", player.getName(), "\n");
+								context, "\tExtra player ", player.getName(),
+								System.lineSeparator());
 					} catch (final IOException ignored) {
 						return false;
 					}

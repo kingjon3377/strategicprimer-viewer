@@ -27,6 +27,10 @@ import util.NullCleaner;
  */
 public class WorkerStats {
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * The basis of stats: every two points more than this is worth +1, and every two
 	 * points less is worth -1.
 	 */
@@ -214,19 +218,25 @@ public class WorkerStats {
 		//noinspection HardcodedFileSeparator
 		builder.append(" / ");
 		builder.append(maxHP);
-		builder.append("\nStr: ");
+		builder.append(LINE_SEP);
+		builder.append("Str: ");
 		builder.append(strength);
-		builder.append("\nDex: ");
+		builder.append(LINE_SEP);
+		builder.append("Dex: ");
 		builder.append(dex);
-		builder.append("\nCon: ");
+		builder.append(LINE_SEP);
+		builder.append("Con: ");
 		builder.append(con);
-		builder.append("\nInt: ");
+		builder.append(LINE_SEP);
+		builder.append("Int: ");
 		builder.append(intel);
-		builder.append("\nWis: ");
+		builder.append(LINE_SEP);
+		builder.append("Wis: ");
 		builder.append(wis);
-		builder.append("\nCha: ");
+		builder.append(LINE_SEP);
+		builder.append("Cha: ");
 		builder.append(cha);
-		builder.append('\n');
+		builder.append(LINE_SEP);
 		return NullCleaner.assertNotNull(builder.toString());
 	}
 }

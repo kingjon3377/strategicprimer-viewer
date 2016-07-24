@@ -167,14 +167,15 @@ public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 							final String context) throws IOException {
 		if (obj.getID() == id) {
 			return isConditionTrue(ostream, obj instanceof Minotaur, context,
-					"\tFor ID #", Integer.toString(id), ", different kinds of members\n");
+					"\tFor ID #", Integer.toString(id), ", different kinds of members",
+					System.lineSeparator());
 		} else {
 			ostream.append(context);
 			ostream.append("\tCalled with different IDs, #");
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('\n');
+			ostream.append(System.lineSeparator());
 			return false;
 		}
 	}

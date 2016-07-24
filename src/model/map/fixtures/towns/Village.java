@@ -32,6 +32,10 @@ import util.NullCleaner;
  */
 public class Village implements ITownFixture, HasMutableImage, SubsettableFixture {
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
@@ -292,26 +296,27 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 		if (obj instanceof Village) {
 			final Village village = (Village) obj;
 			return !(!areIntItemsEqual(ostream, id, village.id, context,
-					"\tIDs differ\n") ||
+					"\tIDs differ", LINE_SEP) ||
 							!areObjectsEqual(ostream, status, village.status, context,
 									" In village (ID #", Integer.toString(id),
-									"):\tVillage status differs\n") ||
+									"):\tVillage status differs", LINE_SEP) ||
 							!areObjectsEqual(ostream, name, village.name, context,
 									" In village (ID #", Integer.toString(id),
-									"):\tVillage name differs\n") ||
+									"):\tVillage name differs", LINE_SEP) ||
 							!areObjectsEqual(ostream, race, village.race, context,
 									" In village ", name, " (ID #", Integer.toString
 																					(id),
-									"):\tDominant race differs\n") ||
+									"):\tDominant race differs", LINE_SEP) ||
 							!isConditionTrue(ostream, (owner.getPlayerId() ==
 																village.owner
 																		.getPlayerId()) ||
 															village.owner
 																	.isIndependent(),
 									context, " In village ", name, " (ID #",
-									Integer.toString(id), "):\tOwners differ\n"));
+									Integer.toString(id), "):\tOwners differ", LINE_SEP));
 		} else {
-			ostream.append("Incompatible types\n");
+			ostream.append("Incompatible types");
+			ostream.append(LINE_SEP);
 			return false;
 		}
 	}

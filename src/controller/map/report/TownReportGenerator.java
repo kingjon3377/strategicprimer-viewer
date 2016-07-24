@@ -94,7 +94,8 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		final StringBuilder builder =
 				new StringBuilder((separated.values().stream().mapToInt(Collection::size)
 										.sum() * 512) + 80);
-		builder.append("<h4>Cities, towns, and/or fortifications you know about:</h4>\n");
+		builder.append("<h4>Cities, towns, and/or fortifications you know about:</h4>");
+		builder.append(LINE_SEP);
 		builder.append(OPEN_LIST);
 		Stream.of(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
 				TownStatus.Burned).map(separated::get).filter(Objects::nonNull)

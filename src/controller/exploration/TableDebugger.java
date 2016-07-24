@@ -91,14 +91,15 @@ public final class TableDebugger {
 		if (set.contains(table)) {
 			ostream.append("table ");
 			ostream.append(tableName);
-			ostream.append(" is already on the stack, skipping ...\n");
+			ostream.append(" is already on the stack, skipping ...");
+			ostream.append(System.lineSeparator());
 			ostream.append("The cause was: ");
 			ostream.append(before);
 			ostream.append('#');
 			ostream.append(tableName);
 			ostream.append('#');
 			ostream.append(after);
-			ostream.append('\n');
+			ostream.append(System.lineSeparator());
 			return;
 		} // else
 		set.add(table);

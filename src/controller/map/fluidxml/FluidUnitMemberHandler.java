@@ -67,6 +67,10 @@ import static util.NullCleaner.assertNotNull;
  */
 public final class FluidUnitMemberHandler {
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * Do not instantiate.
 	 */
 	private FluidUnitMemberHandler() {
@@ -270,7 +274,8 @@ public final class FluidUnitMemberHandler {
 			stats = Optional.empty();
 		}
 		if (work.iterator().hasNext() || stats.isPresent()) {
-			ostream.append(">\n");
+			ostream.append(">");
+			ostream.append(LINE_SEP);
 			if (stats.isPresent()) {
 				writeStats(ostream, stats.get(), indent + 1);
 			}
@@ -280,10 +285,11 @@ public final class FluidUnitMemberHandler {
 				}
 			}
 			indent(ostream, indent);
-			ostream.append("</worker>\n");
+			ostream.append("</worker>");
 		} else {
-			ostream.append(" />\n");
+			ostream.append(" />");
 		}
+		ostream.append(LINE_SEP);
 	}
 	/**
 	 * Write the worker's stats.
@@ -309,7 +315,8 @@ public final class FluidUnitMemberHandler {
 		writeIntegerAttribute(ostream, "int", stats.getIntelligence());
 		writeIntegerAttribute(ostream, "wis", stats.getWisdom());
 		writeIntegerAttribute(ostream, "cha", stats.getCharisma());
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 	/**
 	 * Write a Job to a stream.
@@ -332,16 +339,18 @@ public final class FluidUnitMemberHandler {
 		writeAttribute(ostream, "name", job.getName());
 		writeIntegerAttribute(ostream, "level", job.getLevel());
 		if (job.iterator().hasNext()) {
-			ostream.append(">\n");
+			ostream.append(">");
+			ostream.append(LINE_SEP);
 			for (final ISkill skill : job) {
 				if (skill instanceof Skill) {
 					writeSkill(ostream, skill, indent + 1);
 				}
 			}
 			indent(ostream, indent);
-			ostream.append("</job>\n");
+			ostream.append("</job>");
 		} else {
-			ostream.append(" />\n");
+			ostream.append(" />");
+			ostream.append(LINE_SEP);
 		}
 	}
 	/**
@@ -362,7 +371,8 @@ public final class FluidUnitMemberHandler {
 		writeAttribute(ostream, "name", skl.getName());
 		writeIntegerAttribute(ostream, "level", skl.getLevel());
 		writeIntegerAttribute(ostream, "hours", skl.getHours());
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 
 	/**
@@ -419,6 +429,7 @@ public final class FluidUnitMemberHandler {
 		}
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 }

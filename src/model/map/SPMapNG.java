@@ -62,6 +62,10 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(SPMapNG.class);
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * The set of mountainous places.
 	 */
 	private final Collection<Point> mountains = new HashSet<>();
@@ -130,7 +134,7 @@ public class SPMapNG implements IMutableMapNG {
 					ostream.append(context);
 					ostream.append("\tExtra player ");
 					ostream.append(player.toString());
-					ostream.append('\n');
+					ostream.append(LINE_SEP);
 					retval = false;
 					// return false;
 				}
@@ -149,17 +153,19 @@ public class SPMapNG implements IMutableMapNG {
 							&& (TileType.NotVisible != obj.getBaseTerrain(point))) {
 					ostream.append(localContext);
 					if (TileType.NotVisible == getBaseTerrain(point)) {
-						ostream.append("\tHas terrain information we don't\n");
+						ostream.append("\tHas terrain information we don't");
 					} else {
-						ostream.append("\tBase terrain differs\n");
+						ostream.append("\tBase terrain differs");
 					}
+					ostream.append(LINE_SEP);
 					retval = false;
 					continue;
 					// return false;
 				}
 				if (obj.isMountainous(point) && !isMountainous(point)) {
 					ostream.append(localContext);
-					ostream.append("\tHas mountains we don't\n");
+					ostream.append("\tHas mountains we don't");
+					ostream.append(LINE_SEP);
 					retval = false;
 					// return false;
 				}
@@ -176,7 +182,8 @@ public class SPMapNG implements IMutableMapNG {
 								!assertNotNull(fixtures.get(point)).contains(forest)) {
 						ostream.append(localContext);
 						ostream.append(
-								"\tHas forest we don't, or different primary forest\n");
+								"\tHas forest we don't, or different primary forest");
+						ostream.append(LINE_SEP);
 						retval = false;
 					}
 					// return false;
@@ -201,7 +208,8 @@ public class SPMapNG implements IMutableMapNG {
 															.contains(theirGround)) {
 						ostream.append(localContext);
 						ostream.append(
-								"\tHas different primary ground, or ground we don't\n");
+								"\tHas different primary ground, or ground we don't");
+						ostream.append(LINE_SEP);
 						retval = false;
 						// return false;
 					}
@@ -245,7 +253,7 @@ public class SPMapNG implements IMutableMapNG {
 						ostream.append(localContext);
 						ostream.append(" Extra fixture:\t");
 						ostream.append(fix.toString());
-						ostream.append('\n');
+						ostream.append(LINE_SEP);
 						retval = false;
 						break;
 						// return false;
@@ -256,7 +264,8 @@ public class SPMapNG implements IMutableMapNG {
 				for (final River river : theirRivers) {
 					if ((ourRivers == null) || !ourRivers.contains(river)) {
 						ostream.append(localContext);
-						ostream.append("\tExtra river\n");
+						ostream.append("\tExtra river");
+						ostream.append(LINE_SEP);
 						retval = false;
 						break;
 						// return false;
@@ -266,7 +275,8 @@ public class SPMapNG implements IMutableMapNG {
 			return retval;
 		} else {
 			ostream.append(context);
-			ostream.append("\tDimension mismatch\n");
+			ostream.append("\tDimension mismatch");
+			ostream.append(LINE_SEP);
 			return false;
 		}
 	}
@@ -537,24 +547,33 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder("SPMapNG:\n");
+		final StringBuilder builder = new StringBuilder("SPMapNG:");
+		builder.append(LINE_SEP);
 		builder.append("Map version: ");
 		builder.append(dimensions().version);
-		builder.append("\nRows: ");
+		builder.append(LINE_SEP);
+		builder.append("Rows: ");
 		builder.append(dimensions().rows);
-		builder.append("\nColumns: ");
+		builder.append(LINE_SEP);
+		builder.append("Columns: ");
 		builder.append(dimensions().cols);
-		builder.append("\nCurrent Turn: ");
+		builder.append(LINE_SEP);
+		builder.append("Current Turn: ");
 		builder.append(turn);
-		builder.append("\n\nPlayers:\n");
+		builder.append(LINE_SEP);
+		builder.append(LINE_SEP);
+		builder.append("Players:");
+		builder.append(LINE_SEP);
 		for (final Player player : players()) {
 			builder.append(player);
 			if (player.equals(getCurrentPlayer())) {
 				builder.append(" (current)");
 			}
-			builder.append('\n');
+			builder.append(LINE_SEP);
 		}
-		builder.append("\nContents:\n");
+		builder.append(LINE_SEP);
+		builder.append("Contents:");
+		builder.append(LINE_SEP);
 		for (final Point location : locations()) {
 			builder.append("At ");
 			builder.append(location);
@@ -588,13 +607,13 @@ public class SPMapNG implements IMutableMapNG {
 			}
 			builder.append("other: ");
 			for (final TileFixture fixture : getOtherFixtures(location)) {
-				builder.append('\n');
+				builder.append(LINE_SEP);
 				builder.append(fixture);
 				// builder.append(" (");
 				// builder.append(fixture.getClass().getSimpleName());
 				// builder.append(")");
 			}
-			builder.append('\n');
+			builder.append(LINE_SEP);
 		}
 		return assertNotNull(builder.toString());
 	}

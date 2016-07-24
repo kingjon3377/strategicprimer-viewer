@@ -58,12 +58,14 @@ public final class ExplorationRunner {
 		final StringBuilder builder =
 				new StringBuilder(80).append("The primary rock type here is ");
 		builder.append(getPrimaryRock(point, terrain, fixtures));
-		builder.append(".\n");
+		builder.append('.');
+		builder.append(System.lineSeparator());
 		if ((TileType.BorealForest == terrain) || (TileType.TemperateForest ==
 														terrain)) {
 			builder.append("The main kind of tree is ");
 			builder.append(getPrimaryTree(point, terrain, fixtures));
-			builder.append(".\n");
+			builder.append('.');
+			builder.append(System.lineSeparator());
 		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}

@@ -58,6 +58,10 @@ import static util.NullCleaner.assertNotNull;
 @SuppressWarnings("UtilityClassCanBeEnum")
 public final class ReportGenerator {
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * No non-static members anymore.
 	 */
 	private ReportGenerator() {
@@ -133,9 +137,10 @@ public final class ReportGenerator {
 	public static String createReport(final IMapNG map) {
 		// The full report for the world map, as of turn 11, is 8 megs. So we
 		// make a 10 meg buffer.
-		final StringBuilder builder = new StringBuilder(10485760).append("<html>\n");
-		builder.append("<head><title>Strategic Primer map ").append(
-				"summary report</title></head>\n");
+		final StringBuilder builder = new StringBuilder(10485760).append("<html>");
+		builder.append(LINE_SEP);
+		builder.append("<head><title>Strategic Primer map summary report</title></head>");
+		builder.append(LINE_SEP);
 		builder.append("<body>");
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
@@ -153,7 +158,8 @@ public final class ReportGenerator {
 				new AnimalReportGenerator(comparator),
 				new VillageReportGenerator(comparator),
 				new ImmortalsReportGenerator(comparator));
-		builder.append("</body>\n</html>\n");
+		builder.append("</body>").append(LINE_SEP);
+		builder.append("</html>").append(LINE_SEP);
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fix = pair.second();
 			if ((fix instanceof Hill) || (fix instanceof Sandbar)
@@ -179,9 +185,11 @@ public final class ReportGenerator {
 		// The full report for the world map, as of turn 11, is 8 megs. So we
 		// make a 10 meg buffer.
 		final StringBuilder builder =
-				new StringBuilder(10485760).append("<html>\n<head>");
-		builder.append("<title>Strategic Primer map summary ").append(
-				"abridged report</title></head>\n");
+				new StringBuilder(10485760).append("<html>").append(LINE_SEP)
+						.append("<head>");
+		builder.append(
+				"<title>Strategic Primer map summary abridged report</title></head>");
+		builder.append(LINE_SEP);
 		builder.append("<body>");
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
@@ -208,7 +216,8 @@ public final class ReportGenerator {
 				new AnimalReportGenerator(comparator),
 				new VillageReportGenerator(comparator),
 				new ImmortalsReportGenerator(comparator));
-		builder.append("</body>\n</html>\n");
+		builder.append("</body>").append(LINE_SEP);
+		builder.append("</html>").append(LINE_SEP);
 		return assertNotNull(builder.toString());
 	}
 

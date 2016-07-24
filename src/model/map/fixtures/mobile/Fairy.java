@@ -154,7 +154,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 			if (obj instanceof Fairy) {
 				return areObjectsEqual(ostream, kind, ((Fairy) obj).kind, context,
 						"\tDifferent kinds of fairy for ID #", Integer.toString(id),
-						"\n");
+						System.lineSeparator());
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");

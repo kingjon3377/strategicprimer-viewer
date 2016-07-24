@@ -89,7 +89,8 @@ public class Implement
 			return false;
 		} else if (obj instanceof Implement) {
 			return areObjectsEqual(ostream, kind, ((Implement) obj).kind, context,
-					"\tIn Implement ID #", Integer.toString(id), ": Kinds differ\n");
+					"\tIn Implement ID #", Integer.toString(id), ": Kinds differ",
+					System.lineSeparator());
 		} else {
 			ostream.append(context);
 			ostream.append("\tDifferent fixture types given for ID #");

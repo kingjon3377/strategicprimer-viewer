@@ -305,7 +305,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			ostream.append(((Village) obj).getRace());
 			ostream.append("\" ").append(imageXML((Village) obj));
 			ostream.append(portraitXML(obj));
-			ostream.append("/>\n");
+			ostream.append("/>");
+			ostream.append(LINE_SEP);
 		} else if (obj instanceof Fortress) {
 			writeTag(ostream, "fortress", indent);
 			ostream.append(" owner=\"");
@@ -320,7 +321,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			ostream.append(portraitXML(obj));
 			ostream.append('>');
 			if (((Fortress) obj).iterator().hasNext()) {
-				ostream.append('\n');
+				ostream.append(LINE_SEP);
 				for (final FortressMember unit : (Fortress) obj) {
 					if (unit instanceof Unit) {
 						CompactUnitReader.READER.write(ostream, (Unit) unit,
@@ -338,7 +339,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 				}
 				indent(ostream, indent);
 			}
-			ostream.append("</fortress>\n");
+			ostream.append("</fortress>");
+			ostream.append(LINE_SEP);
 		} else {
 			throw new IllegalStateException("Unexpected TownFixture type");
 		}
@@ -377,7 +379,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
 		ostream.append('"').append(imageXML(obj));
 		ostream.append(portraitXML(obj));
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 
 	/**

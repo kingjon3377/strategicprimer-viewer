@@ -53,6 +53,10 @@ public final class StrategyExporter implements PlayerChangeListener {
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(StrategyExporter.class);
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * The current player.
 	 */
 	private Player currentPlayer;
@@ -120,9 +124,15 @@ public final class StrategyExporter implements PlayerChangeListener {
 		final StringBuilder builder = new StringBuilder(size);
 		builder.append('[');
 		builder.append(playerName);
-		builder.append("\nTurn ");
+		builder.append(LINE_SEP);
+		builder.append("Turn ");
 		builder.append(turn);
-		builder.append("]\n\nInventions: TODO: any?\n\n");
+		builder.append(']');
+		builder.append(LINE_SEP);
+		builder.append(LINE_SEP);
+		builder.append("Inventions: TODO: any?");
+		builder.append(LINE_SEP);
+		builder.append(LINE_SEP);
 		if (dismissed.iterator().hasNext()) {
 			builder.append("Dismissed workers etc.: ");
 			String separator = "";
@@ -135,25 +145,31 @@ public final class StrategyExporter implements PlayerChangeListener {
 					builder.append(member);
 				}
 			}
-			builder.append("\n\n");
+			builder.append(LINE_SEP);
+			builder.append(LINE_SEP);
 		}
-		builder.append("Workers:\n");
+		builder.append("Workers:");
+		builder.append(LINE_SEP);
 		for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 			builder.append("* ");
 			builder.append(entry.getKey());
-			builder.append(":\n");
+			builder.append(':');
+			builder.append(LINE_SEP);
 			for (final IUnit unit : entry.getValue()) {
 				builder.append("  - ");
 				builder.append(unit.getName());
 				builder.append(unitMembers(unit));
-				builder.append(":\n\n");
+				builder.append(':');
+				builder.append(LINE_SEP);
+				builder.append(LINE_SEP);
 				final String orders = unit.getOrders().trim();
 				if (orders.isEmpty()) {
 					builder.append("TODO");
 				} else {
 					builder.append(orders);
 				}
-				builder.append("\n\n");
+				builder.append(LINE_SEP);
+				builder.append(LINE_SEP);
 			}
 		}
 		return NullCleaner.assertNotNull(builder.toString());

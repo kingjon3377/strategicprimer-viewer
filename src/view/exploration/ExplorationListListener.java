@@ -272,7 +272,8 @@ public final class ExplorationListListener implements ListDataListener {
 		 */
 		@Override
 		public String toString() {
-			return "Wrapper around the following ListModel:\n" + wrapped;
+			return "Wrapper around the following ListModel:" + System.lineSeparator() +
+						   wrapped;
 		}
 	}
 }

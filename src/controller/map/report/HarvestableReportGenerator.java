@@ -147,7 +147,7 @@ public final class HarvestableReportGenerator
 					&& shrubs.isEmpty()) {
 			return "";
 		} else {
-			return concat("<h4>Resource Sources</h4>\n", caches.toString(),
+			return concat("<h4>Resource Sources</h4>", LINE_SEP, caches.toString(),
 					groves.toString(), meadows.toString(), mines.toString(),
 					minerals.toString(), stone.toString(),
 					shrubsText.toString());

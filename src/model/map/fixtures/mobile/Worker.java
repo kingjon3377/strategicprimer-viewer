@@ -44,6 +44,10 @@ import util.NullCleaner;
  */
 public class Worker implements IWorker, HasPortrait {
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * The worker's name.
 	 */
 	private String name;
@@ -218,11 +222,11 @@ public class Worker implements IWorker, HasPortrait {
 						context + " In worker " + ((Worker) obj).name
 								+ " (ID #" + Integer.toString(id) + "):";
 				if (areObjectsEqual(ostream, name, ((Worker) obj).name, localContext,
-						"\tNames differ\n") &&
+						"\tNames differ", LINE_SEP) &&
 						areObjectsEqual(ostream, race, ((Worker) obj).race, localContext,
-								":\tRaces differ\n") &&
+								":\tRaces differ", LINE_SEP) &&
 						areObjectsEqual(ostream, stats, ((Worker) obj).stats, localContext,
-								":\tStats differ\n")) {
+								":\tStats differ", LINE_SEP)) {
 					final Map<String, IJob> ours = new HashMap<>();
 					for (final IJob job : jobSet) {
 						ours.put(job.getName(), job);
@@ -233,7 +237,7 @@ public class Worker implements IWorker, HasPortrait {
 							ostream.append(localContext);
 							ostream.append("\tExtra Job: ");
 							ostream.append(job.getName());
-							ostream.append('\n');
+							ostream.append(LINE_SEP);
 							retval = false;
 						} else if (!NullCleaner.assertNotNull(ours.get(job.getName())).isSubset(job,
 								ostream, localContext)) {
@@ -255,7 +259,7 @@ public class Worker implements IWorker, HasPortrait {
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('\n');
+			ostream.append(LINE_SEP);
 			return false;
 		}
 	}

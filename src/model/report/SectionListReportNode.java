@@ -57,11 +57,11 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 * children and the header.
 	 */
 	private static final int MIN_BOILERPLATE =
-			"<h1></h1>\n<p></p>\n<ul>\n</ul>\n".length();
+			"<h1></h1><p></p><ul></ul>".length() + 4;
 	/**
 	 * The size of the boilerplate text we have to add for each child.
 	 */
-	private static final int PER_CHILD_BPLATE = "<li></li>\n".length();
+	private static final int PER_CHILD_BPLATE = "<li></li>".length() + 1;
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -120,21 +120,23 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
 		builder.append("<h").append(level).append('>').append(text)
-				.append("</h").append(level).append(">\n");
+				.append("</h").append(level).append(">").append(LINE_SEP);
 		if (!subHeader.isEmpty()) {
-			builder.append("<p>").append(subHeader).append("</p>\n");
+			builder.append("<p>").append(subHeader).append("</p>").append(LINE_SEP);
 		}
 		if (getChildCount() != 0) {
-			builder.append("<ul>\n");
+			builder.append("<ul>").append(LINE_SEP);
 			for (int i = 0; i < getChildCount(); i++) {
 				final TreeNode child = getChildAt(i);
 				if (child instanceof IReportNode) {
 					builder.append("<li>");
 					builder.append(((IReportNode) child).produce());
-					builder.append("</li>\n");
+					builder.append("</li>");
+					builder.append(LINE_SEP);
 				}
 			}
-			builder.append("</ul>\n");
+			builder.append("</ul>");
+			builder.append(LINE_SEP);
 		}
 		return builder;
 	}

@@ -93,7 +93,8 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 		ostream.append(Integer.toString(obj.getPlayerId()));
 		ostream.append("\" code_name=\"");
 		ostream.append(obj.getName());
-		ostream.append("\" />\n");
+		ostream.append("\" />");
+		ostream.append(LINE_SEP);
 	}
 
 	/**

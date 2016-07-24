@@ -144,7 +144,7 @@ public class Sphinx implements MobileFixture, HasMutableImage, UnitMember {
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('\n');
+			ostream.append(System.lineSeparator());
 			return false;
 		}
 	}

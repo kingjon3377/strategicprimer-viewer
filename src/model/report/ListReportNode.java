@@ -42,7 +42,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	/**
 	 * The length of the boilerplate even if we have no text and no children.
 	 */
-	private static final int BOILERPLATE_LEN = "\n<ul>\n</ul>\n".length();
+	private static final int BOILERPLATE_LEN = "<ul></ul>".length() + 3;
 
 	/**
 	 * The estimated size of a child: half a kilobyte, which is absurdly high, but we
@@ -52,7 +52,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	/**
 	 * The length of the boilerplate per child.
 	 */
-	private static final int PER_CHILD_BOILERPLATE = "<li></li>\n".length();
+	private static final int PER_CHILD_BOILERPLATE = "<li></li>".length() + 1;
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -94,17 +94,19 @@ public final class ListReportNode extends DefaultMutableTreeNode
 		final StringBuilder builder = new StringBuilder(text.length() + BOILERPLATE_LEN +
 																(getChildCount() *
 																		CHILD_BUF_SIZE))
-											.append(text);
-		builder.append("\n<ul>\n");
+											.append(text).append(LINE_SEP);
+		builder.append("<ul>").append(LINE_SEP);
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {
 				builder.append("<li>");
 				builder.append(((IReportNode) child).produce());
-				builder.append("</li>\n");
+				builder.append("</li>");
+				builder.append(LINE_SEP);
 			}
 		}
-		builder.append("</ul>\n");
+		builder.append("</ul>");
+		builder.append(LINE_SEP);
 		return NullCleaner.assertNotNull(builder.toString());
 	}
 
@@ -115,16 +117,20 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
 		builder.append(text);
-		builder.append("\n<ul>\n");
+		builder.append(LINE_SEP);
+		builder.append("<ul>");
+		builder.append(LINE_SEP);
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {
 				builder.append("<li>");
 				((IReportNode) child).produce(builder);
-				builder.append("</li>\n");
+				builder.append("</li>");
+				builder.append(LINE_SEP);
 			}
 		}
-		builder.append("</ul>\n");
+		builder.append("</ul>");
+		builder.append(LINE_SEP);
 		return builder;
 	}
 

@@ -91,7 +91,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 		 * Pre-compiled pattern for matching newlines.
 		 */
 		private static final Pattern NEWLINE =
-				NullCleaner.assertNotNull(Pattern.compile("\n"));
+				NullCleaner.assertNotNull(Pattern.compile(System.lineSeparator()));
 		/**
 		 * Whether we're at the start of a line.
 		 */

@@ -180,7 +180,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 		Collections
 				.sort(values, (one, two) -> comparePairs(one.second(), two.second()));
 		ostream.append(headerRow());
-		ostream.append('\n');
+		ostream.append(System.lineSeparator());
 		final Map<String, Integer> implementCounts = new HashMap<>();
 		for (final Pair<Integer, Pair<Point, IFixture>> pair : values) {
 			final Pair<Point, IFixture> inner = pair.second();

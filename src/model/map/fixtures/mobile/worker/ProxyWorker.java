@@ -200,7 +200,8 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
 							final String context) throws IOException {
 		ostream.append(context);
-		ostream.append("\tisSubset called on ProxyWorker\n");
+		ostream.append("\tisSubset called on ProxyWorker");
+		ostream.append(System.lineSeparator());
 		return false;
 	}
 

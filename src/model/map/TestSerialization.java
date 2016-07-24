@@ -276,16 +276,15 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				Long.valueOf(five.streamOtherFixtures(point(2, 3)).count()),
 				equalTo(Long.valueOf(2L)));
 		assertSerialization("Multiple units should come through", five);
-		final String xmlTwo = "<view xmlns=\"" + ISPReader.NAMESPACE +
-									"\" current_player=\"-1\" " +
-									"current_turn=\"-1\">\n\t<map version=\"2\" " +
-									"rows=\"3\" columns=\"4\">\n\t\t<row " +
-									"index=\"2\">\n\t\t\t<tile row=\"2\" column=\"3\" " +
-									"kind=\"jungle\">\n\t\t\t\t<unit owner=\"2\" " +
+		final String xmlTwo = String.format("<view xmlns=\"%s\" current_player=\"-1\" " +
+									"current_turn=\"-1\">%n\t<map version=\"2\" " +
+									"rows=\"3\" columns=\"4\">%n\t\t<row " +
+									"index=\"2\">%n\t\t\t<tile row=\"2\" column=\"3\" " +
+									"kind=\"jungle\">%n\t\t\t\t<unit owner=\"2\" " +
 									"kind=\"explorer\" name=\"name one\" id=\"1\" " +
-									"/>\n\t\t\t\t<unit owner=\"2\" kind=\"explorer\" " +
+									"/>%n\t\t\t\t<unit owner=\"2\" kind=\"explorer\" " +
 									"name=\"name two\" id=\"2\" " +
-									"/>\n\t\t\t</tile>\n\t\t</row>\n\t</map>\n</view>\n";
+									"/>%n\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view>%n", ISPReader.NAMESPACE);
 		assertThat("Multiple units", createSerializedForm(five, true), equalTo(xmlTwo));
 		assertThat("Multiple units", createSerializedForm(five, false),
 				equalTo(xmlTwo));
@@ -293,16 +292,20 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				createSerializedForm(
 						createSimpleMap(point(1, 1), Pair.of(point(0, 0), TileType.NotVisible)),
 						true),
-				equalTo("<view xmlns=\"" + ISPReader.NAMESPACE +
-						"\" current_player=\"-1\" current_turn=\"-1\">\n\t<map " +
-						"version=\"2\" rows=\"1\" columns=\"1\">\n\t</map>\n</view>\n"));
+				equalTo(String.format(
+						"<view xmlns=\"%s\" current_player=\"-1\" " +
+								"current_turn=\"-1\">%n\t<map version=\"2\" rows=\"1\" " +
+								"columns=\"1\">%n\t</map>%n</view>%n",
+						ISPReader.NAMESPACE)));
 		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
 						createSimpleMap(point(1, 1), Pair.of(point(0, 0), TileType.NotVisible)),
 						false),
-				equalTo("<view xmlns=\"" + ISPReader.NAMESPACE +
-						"\" current_player=\"-1\" current_turn=\"-1\">\n\t<map " +
-						"version=\"2\" rows=\"1\" columns=\"1\">\n\t</map>\n</view>\n"));
+				equalTo(String.format(
+						"<view xmlns=\"%s\" current_player=\"-1\" " +
+								"current_turn=\"-1\">%n\t<map version=\"2\" rows=\"1\" " +
+								"columns=\"1\">%n\t</map>%n</view>%n",
+						ISPReader.NAMESPACE)));
 		assertImageSerialization("Unit image property is preserved",
 				new Unit(new Player(5, ""), "herder", "herderName", 9));
 	}

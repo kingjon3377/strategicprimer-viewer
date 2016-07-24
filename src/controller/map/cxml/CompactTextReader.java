@@ -112,7 +112,8 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 		ostream.append(imageXML(obj));
 		ostream.append('>');
 		ostream.append(obj.getText().trim());
-		ostream.append("</text>\n");
+		ostream.append("</text>");
+		ostream.append(LINE_SEP);
 	}
 
 	/**

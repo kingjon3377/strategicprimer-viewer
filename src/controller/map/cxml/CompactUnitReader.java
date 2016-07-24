@@ -223,14 +223,17 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		ostream.append(imageXML(obj));
 		ostream.append(portraitXML(obj));
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
-			ostream.append('>').append(obj.getOrders().trim()).append('\n');
+			ostream.append('>').append(obj.getOrders().trim());
+			ostream.append(LINE_SEP);
 			for (final UnitMember member : obj) {
 				CompactReaderAdapter.write(ostream, member, indent + 1);
 			}
 			indent(ostream, indent);
-			ostream.append("</unit>\n");
+			ostream.append("</unit>");
+			ostream.append(LINE_SEP);
 		} else {
-			ostream.append(" />\n");
+			ostream.append(" />");
+			ostream.append(LINE_SEP);
 		}
 	}
 

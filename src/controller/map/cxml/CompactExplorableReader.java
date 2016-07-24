@@ -134,7 +134,8 @@ public final class CompactExplorableReader
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append('"');
 		ostream.append(imageXML(obj));
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 
 	/**

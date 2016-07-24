@@ -188,16 +188,16 @@ public final class TestExplorationRunner {
 		runner.loadTable("temperate_major_tree", new ConstantTable("temperate_tree"));
 		final Point point = PointFactory.point(0, 0);
 		assertThat("defaultResults in non-forest",
-				runner.defaultResults(point, TileType.Tundra, EMPTY),
-				equalTo("The primary rock type here is test_rock.\n"));
+				runner.defaultResults(point, TileType.Tundra, EMPTY).trim(),
+				equalTo("The primary rock type here is test_rock."));
 		assertThat("defaultResults in boreal forest",
 				runner.defaultResults(point, TileType.BorealForest, EMPTY),
-				equalTo("The primary rock type here is test_rock.\n"
-						+ "The main kind of tree is boreal_tree.\n"));
+				equalTo(String.format("The primary rock type here is test_rock.%n"
+						+ "The main kind of tree is boreal_tree.%n")));
 		assertThat("defaultResults in temperate forest",
 				runner.defaultResults(point, TileType.TemperateForest, EMPTY),
-				equalTo("The primary rock type here is test_rock.\n"
-						+ "The main kind of tree is temperate_tree.\n"));
+				equalTo(String.format("The primary rock type here is test_rock.%n"
+						+ "The main kind of tree is temperate_tree.%n")));
 	}
 
 	/**

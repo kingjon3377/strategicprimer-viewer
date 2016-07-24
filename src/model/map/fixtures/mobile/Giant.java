@@ -158,7 +158,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 			if (obj instanceof Giant) {
 				return areObjectsEqual(ostream, kind, ((Giant) obj).kind, context,
 						"\tDifferent kinds of giant for ID #", Integer.toString(id),
-						"\n");
+						System.lineSeparator());
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");
@@ -172,7 +172,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('\n');
+			ostream.append(System.lineSeparator());
 			return false;
 		}
 	}

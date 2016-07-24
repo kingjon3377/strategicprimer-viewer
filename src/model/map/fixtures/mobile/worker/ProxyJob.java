@@ -190,7 +190,8 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	public boolean isSubset(final IJob obj, final Appendable ostream,
 							final String context) throws IOException {
 		ostream.append(context);
-		ostream.append("\tisSubset called on ProxyJob\n");
+		ostream.append("\tisSubset called on ProxyJob");
+		ostream.append(System.lineSeparator());
 		return false;
 	}
 

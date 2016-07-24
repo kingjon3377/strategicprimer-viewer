@@ -176,12 +176,13 @@ public final class RiverFixture
 				for (final River river : temp) {
 					ostream.append(river.toString().toLowerCase());
 				}
-				ostream.append('\n');
+				ostream.append(System.lineSeparator());
 				return false;
 			}
 		} else {
 			ostream.append(context);
-			ostream.append("Incompatible types\n");
+			ostream.append("Incompatible types");
+			ostream.append(System.lineSeparator());
 			return false;
 		}
 	}

@@ -87,12 +87,13 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer) {
 		// This can get long. We'll give it 16K.
+		// TODO: Reformat these
 		final StringBuilder ours = new StringBuilder(16384)
 										.append("<h4>Your fortresses in the " +
-														"map:</h4>\n");
+														"map:</h4>").append(LINE_SEP);
 		final StringBuilder builder =
 				new StringBuilder(16384)
-						.append("<h4>Foreign fortresses in the map:</h4>\n");
+						.append("<h4>Foreign fortresses in the map:</h4>").append(LINE_SEP);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		boolean anyForts = false;
@@ -215,7 +216,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	private static String riversToString(final Collection<River> rivers) {
 		final StringBuilder builder = new StringBuilder(64);
 		if (rivers.contains(River.Lake)) {
-			builder.append("<li>There is a nearby lake.</li>\n");
+			builder.append("<li>There is a nearby lake.</li>");
+			builder.append(LINE_SEP);
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
@@ -270,7 +272,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 											.append(item.getName())
 											.append(" belonging to ")
 											.append(playerNameOrYou(item.getOwner()))
-											.append("</h5>\n")
+											.append("</h5>").append(LINE_SEP)
 											.append(OPEN_LIST).append(OPEN_LIST_ITEM)
 											.append("Located at ")
 											.append(loc).append(' ')
@@ -285,8 +287,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 							Collectors.toSet())));
 		}
 		if (item.iterator().hasNext()) {
-			builder.append(OPEN_LIST_ITEM).append("Units on the tile:\n")
-					.append(OPEN_LIST);
+			builder.append(OPEN_LIST_ITEM).append("Units on the tile:")
+					.append(LINE_SEP).append(OPEN_LIST);
 			final Collection<FortressMember> contents = new ArrayList<>();
 			for (final FortressMember member : item) {
 				if (member instanceof Unit) {
@@ -300,7 +302,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 			if (!contents.isEmpty()) {
 				builder.append(OPEN_LIST_ITEM)
-						.append("Other fortress contents:\n").append(OPEN_LIST);
+						.append("Other fortress contents:").append(LINE_SEP)
+						.append(OPEN_LIST);
 				// TODO: Group resources and implements separately
 				for (final FortressMember member : contents) {
 					builder.append(OPEN_LIST_ITEM)

@@ -53,6 +53,10 @@ public final class TestTableLoader {
 	private static final String ST_MET = "static-method";
 
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * Test method for loading quadrant tables.
 	 *
 	 * @throws IOException on I/O error in the test or in cleaning up after it.
@@ -61,7 +65,7 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadQuadrantTable() throws IOException {
 		try (final BufferedReader reader = new BufferedReader(new StringReader
-																	("quadrant\n2\none\ntwo\nthree\nfour\nfive\nsix"))) {
+																	(String.format("quadrant%n2%none%ntwo%nthree%nfour%nfive%nsix")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(0, 0);
 			assertThat("loading quadrant table",
@@ -87,10 +91,10 @@ public final class TestTableLoader {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testLoadRandomTable() throws IOException {
-		try (final BufferedReader reader = new BufferedReader(new StringReader
-																	("random\n0 " +
-																			"one\n99 " +
-																			"two"))) {
+		try (final BufferedReader reader = new BufferedReader(new StringReader(
+																	String.format(("random%n0 " +
+																			"one%n99 " +
+																			"two"))))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(30, 30);
 			assertThat("loading random table",
@@ -107,9 +111,9 @@ public final class TestTableLoader {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testLoadTerrainTable() throws IOException {
-		try (final BufferedReader reader = new BufferedReader(new StringReader
-																	("terrain\ntundra " +
-																			"one\nplains two\nocean three"))) {
+		try (final BufferedReader reader = new BufferedReader(new StringReader(
+																	String.format("terrain%ntundra " +
+																			"one%nplains two%nocean three")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point firstPoint = PointFactory.point(30, 30);
 			assertThat("loading terrain table: tundra",
@@ -134,7 +138,7 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadConstantTable() throws IOException {
 		try (BufferedReader reader = new BufferedReader(new StringReader
-																("constant\none"))) {
+																(String.format("constant%none")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(10, 5);
 			assertThat("loading constant table: first test",
@@ -160,7 +164,7 @@ public final class TestTableLoader {
 					equalTo("File doesn't start by specifying which kind of table."));
 		}
 		try (BufferedReader reader = new BufferedReader(new StringReader
-																("2\ninvalidData\ninvalidData"))) {
+																(String.format("2%ninvalidData%ninvalidData")))) {
 			TableLoader.loadTableFromStream(reader);
 			fail("Accepted table without header");
 		} catch (final IllegalArgumentException except) {

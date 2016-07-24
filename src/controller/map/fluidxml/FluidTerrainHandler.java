@@ -52,6 +52,10 @@ import static util.NullCleaner.assertNotNull;
  */
 public final class FluidTerrainHandler {
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * Do not instantiate.
 	 */
 	private FluidTerrainHandler() {
@@ -140,7 +144,8 @@ public final class FluidTerrainHandler {
 		writeAttribute(ostream, "kind", grd.getKind());
 		writeBooleanAttribute(ostream, "exposed", grd.isExposed());
 		writeImage(ostream, grd);
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 	/**
 	 * Write a Mountain to a stream.
@@ -157,7 +162,8 @@ public final class FluidTerrainHandler {
 		}
 		writeTag(ostream, "mountain", indent);
 		writeImage(ostream, (HasImage) obj);
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 	/**
 	 * Write a Forest to a stream.
@@ -179,7 +185,8 @@ public final class FluidTerrainHandler {
 			writeBooleanAttribute(ostream, "rows", true);
 		}
 		writeImage(ostream, forest);
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 	/**
 	 * Parse a river.
@@ -251,7 +258,8 @@ public final class FluidTerrainHandler {
 		} else {
 			throw new IllegalArgumentException("Can only write River or RiverFixture");
 		}
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 
 }

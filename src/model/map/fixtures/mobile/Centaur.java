@@ -155,7 +155,7 @@ public class Centaur
 			if (obj instanceof Centaur) {
 				return areObjectsEqual(ostream, kind, ((Centaur) obj).kind, context,
 						"\tDifferent kinds of centaur for ID #", Integer.toString(id),
-						"\n");
+						System.lineSeparator());
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");
@@ -168,7 +168,7 @@ public class Centaur
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('\n');
+			ostream.append(System.lineSeparator());
 			return false;
 		}
 	}

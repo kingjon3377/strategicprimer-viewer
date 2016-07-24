@@ -35,6 +35,10 @@ import util.NullCleaner;
 public class Animal
 		implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * ID number.
 	 */
 	private final int id;
@@ -189,22 +193,23 @@ public class Animal
 			if (obj instanceof Animal) {
 				return areObjectsEqual(ostream, kind, ((Animal) obj).kind, context,
 						"\tDifferent kinds of animal for ID #", Integer.toString(id),
-						"\n") && isConditionTrue(ostream,
+						LINE_SEP) && isConditionTrue(ostream,
 						talking || !((Animal) obj).talking, context, "\tIn animal ID #",
 						Integer.toString(id),
-						":\tSubmap's is talking and master's isn't\n") &&
+						":\tSubmap's is talking and master's isn't", LINE_SEP) &&
 							isConditionTrue(ostream, !traces || ((Animal) obj).traces,
 									context, "\tIn animal ID #", Integer.toString(id),
-									":\tSubmap has animal and master only tracks\n") &&
+									":\tSubmap has animal and master only tracks", LINE_SEP) &&
 							areObjectsEqual(ostream, status, ((Animal) obj).status,
 									context,
 									"\tDomestication status of animal differs at ID #",
-									Integer.toString(id), "\n");
+									Integer.toString(id), LINE_SEP);
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");
 				ostream.append(Integer.toString(id));
-				ostream.append(", different kinds of members\n");
+				ostream.append(", different kinds of members");
+				ostream.append(LINE_SEP);
 				return false;
 			}
 		} else {
@@ -212,7 +217,7 @@ public class Animal
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('\n');
+			ostream.append(LINE_SEP);
 			return false;
 		}
 	}

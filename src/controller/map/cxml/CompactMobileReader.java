@@ -225,7 +225,8 @@ public final class CompactMobileReader extends
 			}
 			ostream.append("\" id=\"");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('"').append(imageXML((Animal) obj)).append(" />\n");
+			ostream.append('"').append(imageXML((Animal) obj)).append(" />");
+			ostream.append(LINE_SEP);
 		} else {
 			writeTag(ostream, NullCleaner.assertNotNull(TAG_MAP.get(obj.getClass())), indent);
 			if (obj instanceof HasKind) {
@@ -239,7 +240,8 @@ public final class CompactMobileReader extends
 			if (obj instanceof HasImage) {
 				ostream.append(imageXML((HasImage) obj));
 			}
-			ostream.append(" />\n");
+			ostream.append(" />");
+			ostream.append(LINE_SEP);
 		}
 	}
 	/**

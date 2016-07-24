@@ -34,6 +34,11 @@ import model.map.PointFactory;
 public interface IReportNode
 		extends Comparable<@NonNull IReportNode>, MutableTreeNode, Iterable<IReportNode> {
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	String LINE_SEP = System.lineSeparator();
+
+	/**
 	 * @return the HTML representation of the node.
 	 */
 	String produce();

@@ -132,7 +132,8 @@ public final class CompactTerrainReader extends
 					final int indent) throws IOException {
 		if (obj instanceof Mountain) {
 			writeTag(ostream, "mountain", indent);
-			ostream.append(imageXML((Mountain) obj)).append(" />\n");
+			ostream.append(imageXML((Mountain) obj)).append(" />");
+			ostream.append(LINE_SEP);
 			return; // Mountains don't yet have IDs.
 		} else if (obj instanceof Forest) {
 			writeTag(ostream, "forest", indent);
@@ -141,7 +142,8 @@ public final class CompactTerrainReader extends
 			if (((Forest) obj).isRows()) {
 				ostream.append("\" rows=\"true");
 			}
-			ostream.append('"').append(imageXML((Forest) obj)).append(" />\n");
+			ostream.append('"').append(imageXML((Forest) obj)).append(" />");
+			ostream.append(LINE_SEP);
 			return; // Neither do Forests.
 		} else {
 			if (obj instanceof Hill) {
@@ -156,7 +158,8 @@ public final class CompactTerrainReader extends
 			ostream.append(imageXML((HasImage) obj));
 			ostream.append(" id=\"");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append("\" />\n");
+			ostream.append("\" />");
+			ostream.append(LINE_SEP);
 		}
 	}
 

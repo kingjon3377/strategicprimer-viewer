@@ -56,6 +56,10 @@ import static model.map.fixtures.towns.TownStatus.parseTownStatus;
  */
 public final class FluidTownHandler {
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * Do not instantiate.
 	 */
 	private FluidTownHandler() {
@@ -199,7 +203,8 @@ public final class FluidTownHandler {
 		writeAttribute(ostream, "race", fix.getRace());
 		writeImage(ostream, fix);
 		writeNonEmptyAttribute(ostream, "portrait", fix.getPortrait());
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 	/**
 	 * Write an AbstractTown to XML.
@@ -231,6 +236,7 @@ public final class FluidTownHandler {
 		writeIntegerAttribute(ostream, "owner", fix.getOwner().getPlayerId());
 		writeImage(ostream, fix);
 		writeNonEmptyAttribute(ostream, "portrait", fix.getPortrait());
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 }

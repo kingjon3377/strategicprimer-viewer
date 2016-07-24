@@ -113,7 +113,8 @@ public final class CompactResourcePileReader
 			ostream.append("\" created=\"");
 			ostream.append(Integer.toString(obj.getCreated()));
 		}
-		ostream.append('"').append(imageXML(obj)).append(" />\n");
+		ostream.append('"').append(imageXML(obj)).append(" />");
+		ostream.append(LINE_SEP);
 	}
 
 	/**

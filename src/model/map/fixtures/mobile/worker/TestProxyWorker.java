@@ -254,7 +254,8 @@ public final class TestProxyWorker {
 		}
 		final StringBuilder builder = new StringBuilder("Worker should contain job ");
 		builder.append(jobName);
-		builder.append(". Worker contained the following: \n");
+		builder.append(". Worker contained the following: ");
+		builder.append(System.lineSeparator());
 		for (final IJob job : worker) {
 			builder.append(job.getName());
 			if (job.isEmpty()) {
@@ -263,7 +264,7 @@ public final class TestProxyWorker {
 			if (job instanceof ProxyJob) {
 				builder.append(" (proxy)");
 			}
-			builder.append('\n');
+			builder.append(System.lineSeparator());
 		}
 		throw new AssertionFailedError(builder.toString());
 	}

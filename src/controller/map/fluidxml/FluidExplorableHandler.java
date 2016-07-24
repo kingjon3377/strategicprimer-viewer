@@ -57,6 +57,10 @@ import static util.NullCleaner.assertNotNull;
  */
 public final class FluidExplorableHandler {
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * Do not instantiate.
 	 */
 	private FluidExplorableHandler() {
@@ -233,7 +237,8 @@ public final class FluidExplorableHandler {
 		writeNonEmptyAttribute(ostream, "brief", adv.getBriefDescription());
 		writeNonEmptyAttribute(ostream, "full", adv.getFullDescription());
 		writeImage(ostream, adv);
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 	/**
 	 * Write a portal to XML.
@@ -258,7 +263,8 @@ public final class FluidExplorableHandler {
 				portal.getDestinationCoordinates().getCol());
 		writeIntegerAttribute(ostream, "id", portal.getID());
 		writeImage(ostream, portal);
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 	/**
 	 * Write a cave to XML.
@@ -279,7 +285,8 @@ public final class FluidExplorableHandler {
 		writeIntegerAttribute(ostream, "dc", cave.getDC());
 		writeIntegerAttribute(ostream, "id", cave.getID());
 		writeImage(ostream, cave);
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 	/**
 	 * Write a battlefield to XML.
@@ -300,7 +307,8 @@ public final class FluidExplorableHandler {
 		writeIntegerAttribute(ostream, "dc", field.getDC());
 		writeIntegerAttribute(ostream, "id", field.getID());
 		writeImage(ostream, field);
-		ostream.append(" />\n");
+		ostream.append(" />");
+		ostream.append(LINE_SEP);
 	}
 	/**
 	 * Write an arbitrary-text note to XML.
@@ -323,7 +331,8 @@ public final class FluidExplorableHandler {
 		writeImage(ostream, fix);
 		ostream.append('>');
 		ostream.append(fix.getText().trim());
-		ostream.append("</text>\n");
+		ostream.append("</text>");
+		ostream.append(LINE_SEP);
 	}
 }
 

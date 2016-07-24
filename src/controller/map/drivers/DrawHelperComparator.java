@@ -72,10 +72,10 @@ public final class DrawHelperComparator implements SimpleDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-t", "--test", ParamCount.AtLeastOne,
 								"Test drawing performance",
-								"Test the performance of the TileDrawHelper " +
+								String.format("Test the performance of the TileDrawHelper " +
 										"classes---which do the heavy lifting of " +
-										"rendering the map\nin the viewer---using a " +
-										"variety of automated tests.",
+										"rendering the map%nin the viewer---using a " +
+										"variety of automated tests."),
 								DrawHelperComparator.class);
 
 	/**

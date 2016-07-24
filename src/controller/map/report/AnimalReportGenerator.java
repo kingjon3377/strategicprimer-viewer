@@ -89,7 +89,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 		} else {
 			// We doubt this list will ever be over 16K.
 			final StringBuilder builder = new StringBuilder(16384).append(
-					"<h4>Animal sightings or encounters</h4>\n").append(
+					"<h4>Animal sightings or encounters</h4>").append(LINE_SEP).append(
 					OPEN_LIST);
 			for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry.getKey())

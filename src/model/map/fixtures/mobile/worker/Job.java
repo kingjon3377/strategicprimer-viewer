@@ -38,6 +38,10 @@ import static util.NullCleaner.assertNotNull;
  */
 public class Job implements IJob {
 	/**
+	 * The system's line-separator. TODO: Make a central location for this.
+	 */
+	private static final String LINE_SEP = System.lineSeparator();
+	/**
 	 * The name of the job.
 	 */
 	private String name;
@@ -144,9 +148,9 @@ public class Job implements IJob {
 	public boolean isSubset(final IJob obj, final Appendable ostream,
 							final String context) throws IOException {
 		if (!areObjectsEqual(ostream, name, obj.getName(), context,
-				"\tPassed Jobs with different names\n") ||
+				"\tPassed Jobs with different names", LINE_SEP) ||
 					!isConditionTrue(ostream, level >= obj.getLevel(), context,
-							"\tSubmap has higher level for Job ", name, "\n")) {
+							"\tSubmap has higher level for Job ", name, LINE_SEP)) {
 			return false;
 		} else {
 			boolean retval = true;
@@ -158,7 +162,7 @@ public class Job implements IJob {
 					ostream.append(name);
 					ostream.append(":\tMaster map contains duplicate Skill ");
 					ostream.append(skill.getName());
-					ostream.append('\n');
+					ostream.append(LINE_SEP);
 					retval = false;
 				} else {
 					ours.put(skill.getName(),
@@ -179,7 +183,7 @@ public class Job implements IJob {
 						ostream.append(name);
 						ostream.append(":\tExtra level(s) in ");
 						ostream.append(skill.getName());
-						ostream.append('\n');
+						ostream.append(LINE_SEP);
 						retval = false;
 					} else if ((skill.getLevel() == lvl) && (skill.getHours() > hours)) {
 						ostream.append(context);
@@ -187,7 +191,7 @@ public class Job implements IJob {
 						ostream.append(name);
 						ostream.append(":\tExtra hours in ");
 						ostream.append(skill.getName());
-						ostream.append('\n');
+						ostream.append(LINE_SEP);
 						retval = false;
 					}
 				} else {
@@ -196,7 +200,7 @@ public class Job implements IJob {
 					ostream.append(name);
 					ostream.append(":\tExtra skill ");
 					ostream.append(skill.getName());
-					ostream.append('\n');
+					ostream.append(LINE_SEP);
 					retval = false;
 				}
 			}

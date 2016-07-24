@@ -172,7 +172,8 @@ public class Fortress implements HasMutableImage, ITownFixture,
 		builder.append(". Members:");
 		int count = 0;
 		for (final FortressMember member : units) {
-			builder.append("\n\t\t\t");
+			builder.append(System.lineSeparator());
+			builder.append("\t\t\t");
 			if (member instanceof IUnit) {
 				final IUnit unit = (IUnit) member;
 				builder.append(unit.getName());
@@ -250,7 +251,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 				if (!isConditionTrue(ostream,
 						ours.containsKey(Integer.valueOf(unit.getID())), localContext,
 						"Extra unit:\t", unit.toString(), ", ID #",
-						Integer.toString(unit.getID()), "\n") ||
+						Integer.toString(unit.getID()), System.lineSeparator()) ||
 							!assertNotNull(ours.get(Integer.valueOf(unit.getID())))
 									 .isSubset(unit, ostream, localContext)) {
 					retval = false;

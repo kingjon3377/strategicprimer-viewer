@@ -171,7 +171,7 @@ public final class TileContentsGenerator {
 	 * @param text the text to print
 	 */
 	private static void println(final String text) {
-		for (final String line : text.split("\n")) {
+		for (final String line : text.split(System.lineSeparator())) {
 			SYS_OUT.print("\t\t\t");
 			SYS_OUT.println(line);
 		}
