@@ -18,6 +18,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
 import util.IsNumeric;
 import util.NullCleaner;
+import view.util.SystemIn;
 import view.util.SystemOut;
 
 /**
@@ -63,7 +64,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@SuppressWarnings("null") // System.in cannot be null
 	public CLIHelper() {
-		this(new InputStreamReader(System.in),
+		this(new InputStreamReader(SystemIn.SYS_IN),
 				new OutputStreamWriter(SystemOut.SYS_OUT));
 	}
 
