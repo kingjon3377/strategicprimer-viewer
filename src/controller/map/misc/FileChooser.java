@@ -42,6 +42,17 @@ import static javax.swing.JFileChooser.APPROVE_OPTION;
  */
 public final class FileChooser {
 	/**
+	 * Possible operations. TODO: We'd like to support CUSTOM.
+	 */
+	public enum FileChooserOperation {
+		Open(JFileChooser.OPEN_DIALOG),
+		Save(JFileChooser.SAVE_DIALOG);
+		protected final int operationId;
+		FileChooserOperation(final int id) {
+			operationId = id;
+		}
+	}
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(FileChooser.class);
@@ -71,24 +82,22 @@ public final class FileChooser {
 	 *
 	 * @param loc the file to return
 	 * @param fileChooser the file-chooser to use
-	 * @param operation which operation to use. Must be one of the two defined in
-	 *                     JFileChooser (OPEN_DIALOG or SAVE_DIALOG; CUSTOM_DIALOG is
-	 *                     not yet supported)
+	 * @param operation which operation to use.
 	 */
 	public FileChooser(final Optional<Path> loc, final JFileChooser fileChooser,
-					   final int operation) {
+					   final FileChooserOperation operation) {
 		file = Optional.empty();
 		setFile(loc);
 		chooser = fileChooser;
 		switch (operation) {
-		case JFileChooser.OPEN_DIALOG:
+		case Open:
 			chooserFunc = fileChooser::showOpenDialog;
 			break;
-		case JFileChooser.SAVE_DIALOG:
+		case Save:
 			chooserFunc = fileChooser::showSaveDialog;
 			break;
 		default:
-			throw new IllegalArgumentException("Only OPEN_DIALOG and SAVE_DIALOG " +
+			throw new IllegalArgumentException("Only open and save " +
 													"operations are supported");
 		}
 	}
@@ -99,7 +108,7 @@ public final class FileChooser {
 	 * @param loc the file to return.
 	 */
 	public FileChooser(final Optional<Path> loc) {
-		this(loc, new FilteredFileChooser(), JFileChooser.OPEN_DIALOG);
+		this(loc, new FilteredFileChooser(), FileChooserOperation.Open);
 	}
 
 	/**

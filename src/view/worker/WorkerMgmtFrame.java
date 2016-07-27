@@ -2,6 +2,7 @@ package view.worker;
 
 import com.bric.window.WindowList;
 import controller.map.misc.FileChooser;
+import controller.map.misc.FileChooser.FileChooserOperation;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
@@ -229,7 +230,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 								new ListenedButton("Export a proto-strategy",
 														  evt -> new FileChooser(Optional.empty(),
 																						new JFileChooser("."),
-																						JFileChooser.SAVE_DIALOG)
+																						FileChooserOperation.Save)
 																		 .call(file -> strategyExporter
 																							   .writeStrategy(
 																									   file,
