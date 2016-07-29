@@ -92,7 +92,7 @@ public final class SubsetDriver implements SimpleDriver {
 			if (filename.isPresent()) {
 				SYS_OUT.print(filename.get());
 				SYS_OUT.print("\t...\t\t");
-				printReturn(doSubsetTest(mapModel.getMap(), pair.first(), pair.second().get()));
+				printReturn(doSubsetTest(mapModel.getMap(), pair.first(), filename.get()));
 			} else {
 				SYS_OUT.println("Map didn't have a filename; skipping ...");
 			}

@@ -485,7 +485,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 				SYS_OUT.print("Testing using ");
 				final Optional<Path> file = pair.second();
 				if (file.isPresent()) {
-					SYS_OUT.println(pair.second().get());
+					SYS_OUT.println(file.get());
 				} else {
 					SYS_OUT.println("a map not loaded from file");
 				}
