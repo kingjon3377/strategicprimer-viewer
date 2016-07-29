@@ -121,7 +121,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
 		builder.append("<h").append(level).append('>').append(text)
-				.append("</h").append(level).append(">").append(LineEnd.LINE_SEP);
+				.append("</h").append(level).append('>').append(LineEnd.LINE_SEP);
 		if (!subHeader.isEmpty()) {
 			builder.append("<p>").append(subHeader).append("</p>").append(
 					LineEnd.LINE_SEP);
