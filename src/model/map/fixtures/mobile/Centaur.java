@@ -6,6 +6,7 @@ import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 
 /**
  * A centaur. TODO: Should probably be a kind of unit instead, or something ...
@@ -155,7 +156,7 @@ public class Centaur
 			if (obj instanceof Centaur) {
 				return areObjectsEqual(ostream, kind, ((Centaur) obj).kind, context,
 						"\tDifferent kinds of centaur for ID #", Integer.toString(id),
-						System.lineSeparator());
+						LineEnd.LINE_SEP);
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");
@@ -168,7 +169,7 @@ public class Centaur
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(System.lineSeparator());
+			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		}
 	}

@@ -18,6 +18,7 @@ import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
@@ -105,7 +106,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		retval.append(independentsString);
 		if (!others.isEmpty()) {
 			retval.append("<h4>Other villages you know about:</h4>");
-			retval.append(LINE_SEP);
+			retval.append(LineEnd.LINE_SEP);
 			others.values().stream().map(Object::toString).forEach(retval::append);
 		}
 		return NullCleaner.assertNotNull(retval.toString());

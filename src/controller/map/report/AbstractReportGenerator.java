@@ -12,6 +12,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import org.eclipse.jdt.annotation.NonNull;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PairComparator;
@@ -68,26 +69,23 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 			distCalculator = new DistanceComparator(PointFactory.point(-1, -1));
 		}
 	}
-	/**
-	 * The system's line separator.
-	 */
-	protected static final String LINE_SEP = System.lineSeparator();
+
 	/**
 	 * The HTML tag for the end of a bulleted list. Plus a newline.
 	 */
 	@SuppressWarnings("HardcodedLineSeparator")
-	protected static final String CLOSE_LIST = "</ul>" + LINE_SEP;
+	protected static final String CLOSE_LIST = "</ul>" + LineEnd.LINE_SEP;
 	/**
 	 * The HTML tag for the start of a bulleted list. Plus a newline, to keep the HTML
 	 * human-readable.
 	 */
-	protected static final String OPEN_LIST = "<ul>" + LINE_SEP;
+	protected static final String OPEN_LIST = "<ul>" + LineEnd.LINE_SEP;
 	/**
 	 * The HTML tag for the end of a list item ... plus a newline, to keep the HTML
 	 * mostly
 	 * human-readable.
 	 */
-	protected static final String CLOSE_LIST_ITEM = "</li>" + LINE_SEP;
+	protected static final String CLOSE_LIST_ITEM = "</li>" + LineEnd.LINE_SEP;
 	/**
 	 * The HTML tag for the start of a list item.
 	 */
@@ -150,7 +148,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 								Collectors.summingInt(value -> value.length() + 15))
 																		.intValue());
 				builder
-						.append(header).append(LINE_SEP).append(OPEN_LIST);
+						.append(header).append(LineEnd.LINE_SEP).append(OPEN_LIST);
 				for (final String item : this) {
 					builder.append(OPEN_LIST_ITEM).append(item)
 							.append(CLOSE_LIST_ITEM);

@@ -14,6 +14,7 @@ import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -55,10 +56,6 @@ import static model.map.fixtures.towns.TownStatus.parseTownStatus;
  * @author Jonathan Lovelace
  */
 public final class FluidTownHandler {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * Do not instantiate.
 	 */
@@ -204,7 +201,7 @@ public final class FluidTownHandler {
 		writeImage(ostream, fix);
 		writeNonEmptyAttribute(ostream, "portrait", fix.getPortrait());
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write an AbstractTown to XML.
@@ -237,6 +234,6 @@ public final class FluidTownHandler {
 		writeImage(ostream, fix);
 		writeNonEmptyAttribute(ostream, "portrait", fix.getPortrait());
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 }

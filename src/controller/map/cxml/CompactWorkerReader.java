@@ -19,6 +19,7 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -251,7 +252,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		ostream.append(portraitXML(obj));
 		if (obj.iterator().hasNext() || (obj.getStats() != null)) {
 			ostream.append(">");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 			writeStats(ostream, obj.getStats(), indent + 1);
 			for (final IJob job : obj) {
 				if (job instanceof Job) {
@@ -260,10 +261,10 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 			}
 			indent(ostream, indent);
 			ostream.append("</worker>");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 		} else {
 			ostream.append(" />");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 		}
 	}
 
@@ -297,7 +298,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 			ostream.append("\" cha=\"");
 			ostream.append(Integer.toString(stats.getCharisma()));
 			ostream.append("\" />");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 		}
 	}
 
@@ -322,7 +323,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		ostream.append('"');
 		if (obj.iterator().hasNext()) {
 			ostream.append('>');
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 			for (final ISkill skill : obj) {
 				if (skill instanceof Skill) {
 					writeSkill(ostream, skill, indent + 1);
@@ -330,10 +331,10 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 			}
 			indent(ostream, indent);
 			ostream.append("</job>");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 		} else {
 			ostream.append(" />");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 		}
 	}
 
@@ -355,7 +356,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		ostream.append("\" hours=\"");
 		ostream.append(Integer.toString(obj.getHours()));
 		ostream.append("\" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 	/**

@@ -19,6 +19,7 @@ import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
+import util.LineEnd;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
@@ -46,10 +47,6 @@ import util.TypesafeLogger;
  */
 public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableImage,
 									HasMutableOwner, HasPortrait {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -239,7 +236,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 		final StringBuilder builder = new StringBuilder(len).append(orig);
 		builder.append(", consisting of:");
 		for (final UnitMember member : members) {
-			builder.append(LINE_SEP);
+			builder.append(LineEnd.LINE_SEP);
 			builder.append(member);
 		}
 		return NullCleaner.assertNotNull(builder.toString());
@@ -389,23 +386,23 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 		if (obj.getID() != id) {
 			ostream.append(context);
 			ostream.append("\tFixtures have different IDs");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		} else if (!(obj instanceof IUnit)) {
 			ostream.append(context);
 			ostream.append("Different kinds of fixtures for ID #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		} else if (areIntItemsEqual(ostream, owner.getPlayerId(),
 				((IUnit) obj).getOwner().getPlayerId(), context, " Unit of ID #",
-				Integer.toString(id), ":\tOwners differ.", LINE_SEP) &&
+				Integer.toString(id), ":\tOwners differ.", LineEnd.LINE_SEP) &&
 						areObjectsEqual(ostream, name, ((IUnit) obj).getName(), context,
 								" Unit of ID #", Integer.toString(id),
-								":\tNames differ", LINE_SEP) &&
+								":\tNames differ", LineEnd.LINE_SEP) &&
 						areObjectsEqual(ostream, kind, ((IUnit) obj).getKind(), context,
 								" Unit of ID #", Integer.toString(id),
-								":\tKinds differ", LINE_SEP)) {
+								":\tKinds differ", LineEnd.LINE_SEP)) {
 			final Iterable<UnitMember> other = (IUnit) obj;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {
@@ -424,7 +421,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 					ostream.append(member.toString());
 					ostream.append(", ID #");
 					ostream.append(Integer.toString(member.getID()));
-					ostream.append(LINE_SEP);
+					ostream.append(LineEnd.LINE_SEP);
 					retval = false;
 				} else if (!NullCleaner.assertNotNull(
 						ours.get(Integer.valueOf(member.getID())))
@@ -437,7 +434,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 						!members.isEmpty() && !other.iterator().hasNext()) {
 					ostream.append(localContext);
 					ostream.append(" Nonempty 'unassigned' when submap has it empty");
-					ostream.append(LINE_SEP);
+					ostream.append(LineEnd.LINE_SEP);
 				}
 				return true;
 			} else {

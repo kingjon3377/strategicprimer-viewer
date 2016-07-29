@@ -6,6 +6,7 @@ import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 
 /**
  * A griffin. TODO: should probably be a unit, or something.
@@ -140,7 +141,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(System.lineSeparator());
+			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		}
 	}

@@ -12,6 +12,7 @@ import model.map.Point;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.map.fixtures.resources.CacheFixture;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
@@ -180,7 +181,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 		Collections
 				.sort(values, (one, two) -> comparePairs(one.second(), two.second()));
 		ostream.append(headerRow());
-		ostream.append(System.lineSeparator());
+		ostream.append(LineEnd.LINE_SEP);
 		final Map<String, Integer> implementCounts = new HashMap<>();
 		for (final Pair<Integer, Pair<Point, IFixture>> pair : values) {
 			final Pair<Point, IFixture> inner = pair.second();

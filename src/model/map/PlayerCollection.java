@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 import util.TypesafeLogger;
 
 import static util.NullCleaner.assertNotNull;
@@ -133,7 +134,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 					try {
 						return isConditionTrue(ostream, players.containsValue(player),
 								context, "\tExtra player ", player.getName(),
-								System.lineSeparator());
+								LineEnd.LINE_SEP);
 					} catch (final IOException ignored) {
 						return false;
 					}

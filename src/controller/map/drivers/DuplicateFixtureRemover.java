@@ -12,6 +12,7 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.resources.CacheFixture;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
+import util.LineEnd;
 import util.Pair;
 
 import static view.util.SystemOut.SYS_OUT;
@@ -94,7 +95,7 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 				ostream.append(fix.getClass().getName());
 				ostream.append(' ');
 				ostream.append(Integer.toString(fix.getID()));
-				ostream.append(System.lineSeparator());
+				ostream.append(LineEnd.LINE_SEP);
 				toRemove.add(fix);
 			} else {
 				fixtures.add(fix);

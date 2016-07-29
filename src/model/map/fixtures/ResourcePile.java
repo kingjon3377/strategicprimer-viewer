@@ -5,6 +5,7 @@ import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -34,10 +35,6 @@ import static util.NullCleaner.assertNotNull;
  */
 public class ResourcePile
 		implements UnitMember, FortressMember, HasMutableKind, HasMutableImage {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * The ID # of the resource pile.
 	 */
@@ -181,26 +178,26 @@ public class ResourcePile
 			if (!kind.equals(((ResourcePile) obj).kind)) {
 				ostream.append(localContext);
 				ostream.append("Kinds differ");
-				ostream.append(LINE_SEP);
+				ostream.append(LineEnd.LINE_SEP);
 				retval = false;
 			}
 			if (!contents.equals(((ResourcePile) obj).contents)) {
 				ostream.append(localContext);
 				ostream.append("Contents differ");
-				ostream.append(LINE_SEP);
+				ostream.append(LineEnd.LINE_SEP);
 				retval = false;
 			}
 			if (!unit.equals(((ResourcePile) obj).unit)) {
 				ostream.append(localContext);
 				ostream.append("Units differ");
-				ostream.append(LINE_SEP);
+				ostream.append(LineEnd.LINE_SEP);
 				retval = false;
 			}
 			if ((quantity != ((ResourcePile) obj).quantity)
 						&& (0 != ((ResourcePile) obj).quantity)) {
 				ostream.append(localContext);
 				ostream.append("Quantities differ");
-				ostream.append(LINE_SEP);
+				ostream.append(LineEnd.LINE_SEP);
 				retval = false;
 			}
 			return retval;

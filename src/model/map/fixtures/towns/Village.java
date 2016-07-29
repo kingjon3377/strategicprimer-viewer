@@ -6,6 +6,7 @@ import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -31,10 +32,6 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public class Village implements ITownFixture, HasMutableImage, SubsettableFixture {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -296,27 +293,28 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 		if (obj instanceof Village) {
 			final Village village = (Village) obj;
 			return !(!areIntItemsEqual(ostream, id, village.id, context,
-					"\tIDs differ", LINE_SEP) ||
+					"\tIDs differ", LineEnd.LINE_SEP) ||
 							!areObjectsEqual(ostream, status, village.status, context,
 									" In village (ID #", Integer.toString(id),
-									"):\tVillage status differs", LINE_SEP) ||
+									"):\tVillage status differs", LineEnd.LINE_SEP) ||
 							!areObjectsEqual(ostream, name, village.name, context,
 									" In village (ID #", Integer.toString(id),
-									"):\tVillage name differs", LINE_SEP) ||
+									"):\tVillage name differs", LineEnd.LINE_SEP) ||
 							!areObjectsEqual(ostream, race, village.race, context,
 									" In village ", name, " (ID #", Integer.toString
 																					(id),
-									"):\tDominant race differs", LINE_SEP) ||
+									"):\tDominant race differs", LineEnd.LINE_SEP) ||
 							!isConditionTrue(ostream, (owner.getPlayerId() ==
 																village.owner
 																		.getPlayerId()) ||
 															village.owner
 																	.isIndependent(),
 									context, " In village ", name, " (ID #",
-									Integer.toString(id), "):\tOwners differ", LINE_SEP));
+									Integer.toString(id), "):\tOwners differ",
+									LineEnd.LINE_SEP));
 		} else {
 			ostream.append("Incompatible types");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		}
 	}

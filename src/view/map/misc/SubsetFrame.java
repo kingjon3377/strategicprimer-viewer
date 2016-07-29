@@ -25,6 +25,7 @@ import model.map.MapDimensions;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
@@ -91,7 +92,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 		 * Pre-compiled pattern for matching newlines.
 		 */
 		private static final Pattern NEWLINE =
-				NullCleaner.assertNotNull(Pattern.compile(System.lineSeparator()));
+				NullCleaner.assertNotNull(Pattern.compile(LineEnd.LINE_SEP));
 		/**
 		 * Whether we're at the start of a line.
 		 */

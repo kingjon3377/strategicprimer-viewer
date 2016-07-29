@@ -17,6 +17,7 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyFor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 import util.TypesafeLogger;
 
 import static util.NullCleaner.assertNotNull;
@@ -201,7 +202,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 							final String context) throws IOException {
 		ostream.append(context);
 		ostream.append("\tisSubset called on ProxyWorker");
-		ostream.append(System.lineSeparator());
+		ostream.append(LineEnd.LINE_SEP);
 		return false;
 	}
 

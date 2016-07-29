@@ -53,10 +53,6 @@ public final class TestTableLoader {
 	private static final String ST_MET = "static-method";
 
 	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
-	/**
 	 * Test method for loading quadrant tables.
 	 *
 	 * @throws IOException on I/O error in the test or in cleaning up after it.

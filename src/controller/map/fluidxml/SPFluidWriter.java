@@ -63,6 +63,7 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
+import util.LineEnd;
 import util.NullCleaner;
 
 import static controller.map.fluidxml.XMLHelper.indent;
@@ -95,10 +96,6 @@ import static controller.map.fluidxml.XMLHelper.writeTag;
  * @author Jonathan Lovelace
  */
 public class SPFluidWriter implements SPWriter, FluidXMLWriter {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	private final Map<Class<?>, FluidXMLWriter> writers = new HashMap<>();
 	public SPFluidWriter() {
 		writers.put(River.class, FluidTerrainHandler::writeRivers);
@@ -195,7 +192,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 				writeImage(ostream, (HasImage) obj);
 			}
 			ostream.append(" />");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 		});
 	}
 	/**
@@ -224,7 +221,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		}
 		final String orders = unit.getOrders().trim();
 		if (unit.iterator().hasNext() || !orders.isEmpty()) {
-			ostream.append('>').append(orders).append(LINE_SEP);
+			ostream.append('>').append(orders).append(LineEnd.LINE_SEP);
 			for (final UnitMember member : unit) {
 				writeSPObject(ostream, member, indent + 1);
 			}
@@ -233,7 +230,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		} else {
 			ostream.append(" />");
 		}
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a fortress to a stream.
@@ -257,14 +254,14 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writeNonEmptyAttribute(ostream, "portrait", fort.getPortrait());
 		ostream.append('>');
 		if (fort.iterator().hasNext()) {
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 			for (final FortressMember unit : (Iterable<FortressMember>) obj) {
 				writeSPObject(ostream, unit, indent + 1);
 			}
 			indent(ostream, indent);
 		}
 		ostream.append("</fortress>");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a map to XML.
@@ -284,14 +281,14 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 				map.getCurrentPlayer().getPlayerId());
 		writeIntegerAttribute(ostream, "current_turn", map.getCurrentTurn());
 		ostream.append(">");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 		writeTag(ostream, "map", indent + 1);
 		final MapDimensions dim = map.dimensions();
 		writeIntegerAttribute(ostream, "version", dim.version);
 		writeIntegerAttribute(ostream, "rows", dim.rows);
 		writeIntegerAttribute(ostream, "columns", dim.cols);
 		ostream.append(">");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 		for (final Player player : map.players()) {
 			writeSPObject(ostream, player, indent + 2);
 		}
@@ -310,7 +307,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 						writeTag(ostream, "row", indent + 2);
 						writeIntegerAttribute(ostream, "index", i);
 						ostream.append(">");
-						ostream.append(LINE_SEP);
+						ostream.append(LineEnd.LINE_SEP);
 					}
 					writeTag(ostream, "tile", indent + 3);
 					writeIntegerAttribute(ostream, "row", i);
@@ -325,7 +322,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 						needEOL = false;
 						writeTag(ostream, "mountain", indent + 4);
 						ostream.append(" />");
-						ostream.append(LINE_SEP);
+						ostream.append(LineEnd.LINE_SEP);
 					}
 					for (final River river : map.getRivers(point)) {
 						eolIfNeeded(needEOL, ostream);
@@ -353,21 +350,21 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 						indent(ostream, indent + 3);
 					}
 					ostream.append("</tile>");
-					ostream.append(LINE_SEP);
+					ostream.append(LineEnd.LINE_SEP);
 				}
 			}
 			if (!rowEmpty) {
 				indent(ostream, indent + 2);
 				ostream.append("</row>");
-				ostream.append(LINE_SEP);
+				ostream.append(LineEnd.LINE_SEP);
 			}
 		}
 		indent(ostream, indent + 1);
 		ostream.append("</map>");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 		indent(ostream, indent);
 		ostream.append("</view>");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a newline if needed.
@@ -379,7 +376,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	private static void eolIfNeeded(final boolean needEOL,
 									final Appendable writer) throws IOException {
 		if (needEOL) {
-			writer.append(LINE_SEP);
+			writer.append(LineEnd.LINE_SEP);
 		}
 	}
 	/**
@@ -401,7 +398,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writeIntegerAttribute(ostream, "number", player.getPlayerId());
 		writeAttribute(ostream, "code_name", player.getName());
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 	@SuppressWarnings("MethodReturnAlwaysConstant")

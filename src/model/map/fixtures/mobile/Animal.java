@@ -6,6 +6,7 @@ import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -34,10 +35,6 @@ import util.NullCleaner;
  */
 public class Animal
 		implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * ID number.
 	 */
@@ -193,23 +190,24 @@ public class Animal
 			if (obj instanceof Animal) {
 				return areObjectsEqual(ostream, kind, ((Animal) obj).kind, context,
 						"\tDifferent kinds of animal for ID #", Integer.toString(id),
-						LINE_SEP) && isConditionTrue(ostream,
+						LineEnd.LINE_SEP) && isConditionTrue(ostream,
 						talking || !((Animal) obj).talking, context, "\tIn animal ID #",
 						Integer.toString(id),
-						":\tSubmap's is talking and master's isn't", LINE_SEP) &&
+						":\tSubmap's is talking and master's isn't", LineEnd.LINE_SEP) &&
 							isConditionTrue(ostream, !traces || ((Animal) obj).traces,
 									context, "\tIn animal ID #", Integer.toString(id),
-									":\tSubmap has animal and master only tracks", LINE_SEP) &&
+									":\tSubmap has animal and master only tracks",
+									LineEnd.LINE_SEP) &&
 							areObjectsEqual(ostream, status, ((Animal) obj).status,
 									context,
 									"\tDomestication status of animal differs at ID #",
-									Integer.toString(id), LINE_SEP);
+									Integer.toString(id), LineEnd.LINE_SEP);
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");
 				ostream.append(Integer.toString(id));
 				ostream.append(", different kinds of members");
-				ostream.append(LINE_SEP);
+				ostream.append(LineEnd.LINE_SEP);
 				return false;
 			}
 		} else {
@@ -217,7 +215,7 @@ public class Animal
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		}
 	}

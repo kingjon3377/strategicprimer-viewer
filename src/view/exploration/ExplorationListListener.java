@@ -18,6 +18,7 @@ import model.map.fixtures.mobile.SimpleMovement;
 import model.viewer.FixtureListModel;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 import util.NullCleaner;
 import util.SingletonRandom;
 import view.map.details.FixtureList;
@@ -272,7 +273,7 @@ public final class ExplorationListListener implements ListDataListener {
 		 */
 		@Override
 		public String toString() {
-			return "Wrapper around the following ListModel:" + System.lineSeparator() +
+			return "Wrapper around the following ListModel:" + LineEnd.LINE_SEP +
 						   wrapped;
 		}
 	}

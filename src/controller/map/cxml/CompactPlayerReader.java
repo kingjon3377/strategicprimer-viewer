@@ -7,6 +7,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.Player;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -94,7 +95,7 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 		ostream.append("\" code_name=\"");
 		ostream.append(obj.getName());
 		ostream.append("\" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 	/**

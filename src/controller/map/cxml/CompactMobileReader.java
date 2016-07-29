@@ -33,6 +33,7 @@ import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -226,7 +227,7 @@ public final class CompactMobileReader extends
 			ostream.append("\" id=\"");
 			ostream.append(Integer.toString(obj.getID()));
 			ostream.append('"').append(imageXML((Animal) obj)).append(" />");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 		} else {
 			writeTag(ostream, NullCleaner.assertNotNull(TAG_MAP.get(obj.getClass())), indent);
 			if (obj instanceof HasKind) {
@@ -241,7 +242,7 @@ public final class CompactMobileReader extends
 				ostream.append(imageXML((HasImage) obj));
 			}
 			ostream.append(" />");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 		}
 	}
 	/**

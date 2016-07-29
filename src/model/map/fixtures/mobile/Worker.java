@@ -15,6 +15,7 @@ import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
+import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -43,10 +44,6 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public class Worker implements IWorker, HasPortrait {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * The worker's name.
 	 */
@@ -222,11 +219,11 @@ public class Worker implements IWorker, HasPortrait {
 						context + " In worker " + ((Worker) obj).name
 								+ " (ID #" + Integer.toString(id) + "):";
 				if (areObjectsEqual(ostream, name, ((Worker) obj).name, localContext,
-						"\tNames differ", LINE_SEP) &&
+						"\tNames differ", LineEnd.LINE_SEP) &&
 						areObjectsEqual(ostream, race, ((Worker) obj).race, localContext,
-								":\tRaces differ", LINE_SEP) &&
+								":\tRaces differ", LineEnd.LINE_SEP) &&
 						areObjectsEqual(ostream, stats, ((Worker) obj).stats, localContext,
-								":\tStats differ", LINE_SEP)) {
+								":\tStats differ", LineEnd.LINE_SEP)) {
 					final Map<String, IJob> ours = new HashMap<>();
 					for (final IJob job : jobSet) {
 						ours.put(job.getName(), job);
@@ -237,7 +234,7 @@ public class Worker implements IWorker, HasPortrait {
 							ostream.append(localContext);
 							ostream.append("\tExtra Job: ");
 							ostream.append(job.getName());
-							ostream.append(LINE_SEP);
+							ostream.append(LineEnd.LINE_SEP);
 							retval = false;
 						} else if (!NullCleaner.assertNotNull(ours.get(job.getName())).isSubset(job,
 								ostream, localContext)) {
@@ -259,7 +256,7 @@ public class Worker implements IWorker, HasPortrait {
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		}
 	}

@@ -37,6 +37,7 @@ import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.EqualsAny;
+import util.LineEnd;
 import util.Warning;
 
 import static java.util.Collections.unmodifiableList;
@@ -366,7 +367,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		ostream.append("\" current_turn=\"");
 		ostream.append(Integer.toString(obj.getCurrentTurn()));
 		ostream.append("\">");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 		writeTag(ostream, "map", indent + 1);
 		final MapDimensions dim = obj.dimensions();
 		ostream.append(" version=\"");
@@ -376,7 +377,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		ostream.append("\" columns=\"");
 		ostream.append(Integer.toString(dim.cols));
 		ostream.append("\">");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 		for (final Player player : obj.players()) {
 			CompactPlayerReader.READER.write(ostream, player, indent + 2);
 		}
@@ -397,7 +398,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						ostream.append(" index=\"");
 						ostream.append(Integer.toString(i));
 						ostream.append("\">");
-						ostream.append(LINE_SEP);
+						ostream.append(LineEnd.LINE_SEP);
 					}
 					writeTag(ostream, "tile", indent + 3);
 					ostream.append(" row=\"");
@@ -415,7 +416,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						needEOL = false;
 						writeTag(ostream, "mountain", indent + 4);
 						ostream.append(" />");
-						ostream.append(LINE_SEP);
+						ostream.append(LineEnd.LINE_SEP);
 					}
 					for (final River river : obj.getRivers(point)) {
 						eolIfNeeded(needEOL, ostream);
@@ -443,21 +444,21 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						indent(ostream, indent + 3);
 					}
 					ostream.append("</tile>");
-					ostream.append(LINE_SEP);
+					ostream.append(LineEnd.LINE_SEP);
 				}
 			}
 			if (!rowEmpty) {
 				indent(ostream, indent + 2);
 				ostream.append("</row>");
-				ostream.append(LINE_SEP);
+				ostream.append(LineEnd.LINE_SEP);
 			}
 		}
 		indent(ostream, indent + 1);
 		ostream.append("</map>");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 		indent(ostream, indent);
 		ostream.append("</view>");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 	/**
@@ -479,7 +480,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	private static void eolIfNeeded(final boolean needEOL,
 									final Appendable writer) throws IOException {
 		if (needEOL) {
-			writer.append(LINE_SEP);
+			writer.append(LineEnd.LINE_SEP);
 		}
 	}
 
@@ -522,7 +523,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			ostream.append("\"");
 		}
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 	/**

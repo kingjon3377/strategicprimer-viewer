@@ -1,12 +1,10 @@
 package model.report;
 
 import javax.swing.tree.MutableTreeNode;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Point;
 import model.map.PointFactory;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An interface for report nodes.
@@ -33,11 +31,6 @@ import model.map.PointFactory;
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public interface IReportNode
 		extends Comparable<@NonNull IReportNode>, MutableTreeNode, Iterable<IReportNode> {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	String LINE_SEP = System.lineSeparator();
-
 	/**
 	 * @return the HTML representation of the node.
 	 */

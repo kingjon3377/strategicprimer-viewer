@@ -17,6 +17,7 @@ import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
+import util.LineEnd;
 import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
@@ -61,10 +62,6 @@ import static util.NullCleaner.assertNotNull;
  * @author Jonathan Lovelace
  */
 public final class FluidResourceHandler {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * Do not instantiate.
 	 */
@@ -393,7 +390,7 @@ public final class FluidResourceHandler {
 		}
 		writeImage(ostream, pile);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a cache to a stream.
@@ -415,7 +412,7 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a field or meadow to a stream.
@@ -442,7 +439,7 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a grove or orchard to a stream.
@@ -468,7 +465,7 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a mine to a stream.
@@ -490,7 +487,7 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a mineral vein to a stream.
@@ -513,7 +510,7 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a stone deposit to a stream.
@@ -535,6 +532,6 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 }

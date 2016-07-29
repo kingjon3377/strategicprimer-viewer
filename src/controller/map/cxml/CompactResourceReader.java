@@ -24,6 +24,7 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.TownStatus;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -301,7 +302,7 @@ public final class CompactResourceReader extends
 		ostream.append('"');
 		ostream.append(imageXML(obj));
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 	/**

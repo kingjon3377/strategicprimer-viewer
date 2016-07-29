@@ -12,6 +12,7 @@ import javax.swing.tree.TreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
+import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -83,7 +84,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
 		builder.append("<h").append(level).append('>').append(text)
-				.append("</h").append(level).append(">").append(LINE_SEP);
+				.append("</h").append(level).append(">").append(LineEnd.LINE_SEP);
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {

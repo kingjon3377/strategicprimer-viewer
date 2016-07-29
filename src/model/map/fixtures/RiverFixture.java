@@ -11,6 +11,7 @@ import model.map.SubsettableFixture;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -176,13 +177,13 @@ public final class RiverFixture
 				for (final River river : temp) {
 					ostream.append(river.toString().toLowerCase());
 				}
-				ostream.append(System.lineSeparator());
+				ostream.append(LineEnd.LINE_SEP);
 				return false;
 			}
 		} else {
 			ostream.append(context);
 			ostream.append("Incompatible types");
-			ostream.append(System.lineSeparator());
+			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		}
 	}

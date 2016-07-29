@@ -6,6 +6,7 @@ import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 
 /**
  * A dragon. TODO: should probably be a unit, or something.
@@ -162,13 +163,13 @@ public class Dragon
 			if (obj instanceof Dragon) {
 				return areObjectsEqual(ostream, kind, ((Dragon) obj).kind, context,
 						"\tDifferent kinds of dragon for ID #", Integer.toString(id),
-						System.lineSeparator());
+						LineEnd.LINE_SEP);
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");
 				ostream.append(Integer.toString(id));
 				ostream.append(", different kinds of members");
-				ostream.append(System.lineSeparator());
+				ostream.append(LineEnd.LINE_SEP);
 				return false;
 			}
 		} else {
@@ -177,7 +178,7 @@ public class Dragon
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(System.lineSeparator());
+			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		}
 	}

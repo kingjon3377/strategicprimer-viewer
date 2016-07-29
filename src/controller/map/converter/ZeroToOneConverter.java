@@ -24,6 +24,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import org.eclipse.jdt.annotation.Nullable;
 import util.IteratorWrapper;
+import util.LineEnd;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import view.util.SystemOut;
@@ -60,10 +61,6 @@ public final class ZeroToOneConverter {
 	 */
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(ZeroToOneConverter.class);
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * A mapping from numeric events to XML representations of their version-1
 	 * equivalents.
@@ -110,14 +107,14 @@ public final class ZeroToOneConverter {
 				ostream.append(
 						printEndElement(NullCleaner.assertNotNull(event.asEndElement())));
 			} else if (event.isStartDocument()) {
-				ostream.append("<?xml version=\"1.0\"?>").append(LINE_SEP);
+				ostream.append("<?xml version=\"1.0\"?>").append(LineEnd.LINE_SEP);
 			} else if (event.isEndDocument()) {
 				break;
 			} else {
 				LOGGER.warning("Unhandled element type " + event.getEventType());
 			}
 		}
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 	/**
@@ -185,7 +182,7 @@ public final class ZeroToOneConverter {
 		}
 		ostream.append('>');
 		while (!events.isEmpty()) {
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 			ostream.append(getEventXML(NullCleaner.assertNotNull(events.pop())));
 		}
 	}

@@ -18,6 +18,7 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 import view.util.SystemOut;
@@ -224,16 +225,16 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		ostream.append(portraitXML(obj));
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
 			ostream.append('>').append(obj.getOrders().trim());
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 			for (final UnitMember member : obj) {
 				CompactReaderAdapter.write(ostream, member, indent + 1);
 			}
 			indent(ostream, indent);
 			ostream.append("</unit>");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 		} else {
 			ostream.append(" />");
-			ostream.append(LINE_SEP);
+			ostream.append(LineEnd.LINE_SEP);
 		}
 	}
 

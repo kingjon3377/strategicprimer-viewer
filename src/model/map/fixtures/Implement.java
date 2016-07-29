@@ -5,6 +5,7 @@ import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 
 /**
  * A piece of equipment.
@@ -90,7 +91,7 @@ public class Implement
 		} else if (obj instanceof Implement) {
 			return areObjectsEqual(ostream, kind, ((Implement) obj).kind, context,
 					"\tIn Implement ID #", Integer.toString(id), ": Kinds differ",
-					System.lineSeparator());
+					LineEnd.LINE_SEP);
 		} else {
 			ostream.append(context);
 			ostream.append("\tDifferent fixture types given for ID #");

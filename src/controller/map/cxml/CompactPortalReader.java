@@ -8,6 +8,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.PointFactory;
 import model.map.fixtures.explorable.Portal;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -92,7 +93,7 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 		ostream.append("\" ");
 		ostream.append(imageXML(obj));
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 	/**

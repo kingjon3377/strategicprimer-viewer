@@ -12,6 +12,7 @@ import javax.swing.tree.TreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
+import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -94,19 +95,19 @@ public final class ListReportNode extends DefaultMutableTreeNode
 		final StringBuilder builder = new StringBuilder(text.length() + BOILERPLATE_LEN +
 																(getChildCount() *
 																		CHILD_BUF_SIZE))
-											.append(text).append(LINE_SEP);
-		builder.append("<ul>").append(LINE_SEP);
+											.append(text).append(LineEnd.LINE_SEP);
+		builder.append("<ul>").append(LineEnd.LINE_SEP);
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {
 				builder.append("<li>");
 				builder.append(((IReportNode) child).produce());
 				builder.append("</li>");
-				builder.append(LINE_SEP);
+				builder.append(LineEnd.LINE_SEP);
 			}
 		}
 		builder.append("</ul>");
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		return NullCleaner.assertNotNull(builder.toString());
 	}
 
@@ -117,20 +118,20 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
 		builder.append(text);
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		builder.append("<ul>");
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {
 				builder.append("<li>");
 				((IReportNode) child).produce(builder);
 				builder.append("</li>");
-				builder.append(LINE_SEP);
+				builder.append(LineEnd.LINE_SEP);
 			}
 		}
 		builder.append("</ul>");
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		return builder;
 	}
 

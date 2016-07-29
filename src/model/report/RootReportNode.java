@@ -12,6 +12,7 @@ import javax.swing.tree.TreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
+import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -39,10 +40,6 @@ import util.NullCleaner;
 @SuppressWarnings("CloneableClassInSecureContext")
 public final class RootReportNode extends DefaultMutableTreeNode
 		implements IReportNode {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -80,15 +77,16 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		builder.append("<html>").append(LINE_SEP).append("<head><title>").append(text)
-				.append("</title></head>").append(LINE_SEP).append("<body>");
+		builder.append("<html>").append(LineEnd.LINE_SEP).append("<head><title>").append(text)
+				.append("</title></head>").append(LineEnd.LINE_SEP).append("<body>");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {
 				((IReportNode) child).produce(builder);
 			}
 		}
-		builder.append("</body>").append(LINE_SEP).append("</html>").append(LINE_SEP);
+		builder.append("</body>").append(LineEnd.LINE_SEP).append("</html>").append(
+				LineEnd.LINE_SEP);
 		return builder;
 	}
 

@@ -33,6 +33,7 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
@@ -142,7 +143,7 @@ public final class ImmortalsReportGenerator
 				djinni, sphinxes, minotaurs, ogres, phoenixes, simurghs);
 		final int len = 36 + (512 * totalSize);
 		final StringBuilder builder = new StringBuilder(len);
-		builder.append("<h4>Immortals</h4>").append(LINE_SEP).append(OPEN_LIST);
+		builder.append("<h4>Immortals</h4>").append(LineEnd.LINE_SEP).append(OPEN_LIST);
 		optionallyPrintMap(dragons, "(s) at ", builder);
 		optionallyPrintMap(fairies, " at ", builder);
 		optionallyPrintList(trolls, "Troll(s) at ", builder);

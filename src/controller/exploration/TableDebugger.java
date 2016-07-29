@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import model.exploration.old.EncounterTable;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
+import util.LineEnd;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import view.util.SystemOut;
@@ -92,14 +93,14 @@ public final class TableDebugger {
 			ostream.append("table ");
 			ostream.append(tableName);
 			ostream.append(" is already on the stack, skipping ...");
-			ostream.append(System.lineSeparator());
+			ostream.append(LineEnd.LINE_SEP);
 			ostream.append("The cause was: ");
 			ostream.append(before);
 			ostream.append('#');
 			ostream.append(tableName);
 			ostream.append('#');
 			ostream.append(after);
-			ostream.append(System.lineSeparator());
+			ostream.append(LineEnd.LINE_SEP);
 			return;
 		} // else
 		set.add(table);

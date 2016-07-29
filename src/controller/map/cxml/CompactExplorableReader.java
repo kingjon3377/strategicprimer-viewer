@@ -14,6 +14,7 @@ import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.explorable.ExplorableFixture;
 import util.ArraySet;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -135,7 +136,7 @@ public final class CompactExplorableReader
 		ostream.append('"');
 		ostream.append(imageXML(obj));
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 	/**

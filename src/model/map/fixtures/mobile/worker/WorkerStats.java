@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile.worker;
 
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -26,10 +27,6 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public class WorkerStats {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * The basis of stats: every two points more than this is worth +1, and every two
 	 * points less is worth -1.
@@ -218,25 +215,25 @@ public class WorkerStats {
 		//noinspection HardcodedFileSeparator
 		builder.append(" / ");
 		builder.append(maxHP);
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		builder.append("Str: ");
 		builder.append(strength);
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		builder.append("Dex: ");
 		builder.append(dex);
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		builder.append("Con: ");
 		builder.append(con);
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		builder.append("Int: ");
 		builder.append(intel);
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		builder.append("Wis: ");
 		builder.append(wis);
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		builder.append("Cha: ");
 		builder.append(cha);
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		return NullCleaner.assertNotNull(builder.toString());
 	}
 }

@@ -26,6 +26,7 @@ import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.RaceFactory;
+import util.LineEnd;
 import util.Pair;
 import util.SingletonRandom;
 import util.TypesafeLogger;
@@ -117,10 +118,6 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	private final Collection<NewWorkerListener> nwListeners = new ArrayList<>();
 
 	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
-	/**
 	 * Constructor.
 	 *
 	 * @param idFac the ID factory to use to generate IDs.
@@ -202,10 +199,10 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	private String getErrorExplanation() {
 		final StringBuilder builder = new StringBuilder(50);
 		if (name.getText().trim().isEmpty()) {
-			builder.append("Worker needs a name.").append(LINE_SEP);
+			builder.append("Worker needs a name.").append(LineEnd.LINE_SEP);
 		}
 		if (race.getText().trim().isEmpty()) {
-			builder.append("Worker needs a race.").append(LINE_SEP);
+			builder.append("Worker needs a race.").append(LineEnd.LINE_SEP);
 		}
 		builder.append(numericExplanation(Pair.of(getBoxText(hpBox), "HP"),
 				Pair.of(getBoxText(maxHP), "Max HP"),
@@ -232,7 +229,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 			if (!isNumeric(num)) {
 				builder.append(number.second());
 				builder.append(" must be a number.");
-				builder.append(LINE_SEP);
+				builder.append(LineEnd.LINE_SEP);
 			}
 		}
 		return assertNotNull(builder.toString());

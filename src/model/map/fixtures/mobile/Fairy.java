@@ -6,6 +6,7 @@ import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 
 /**
  * A fairy. TODO: should probably be a unit, or something.
@@ -154,7 +155,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 			if (obj instanceof Fairy) {
 				return areObjectsEqual(ostream, kind, ((Fairy) obj).kind, context,
 						"\tDifferent kinds of fairy for ID #", Integer.toString(id),
-						System.lineSeparator());
+						LineEnd.LINE_SEP);
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");

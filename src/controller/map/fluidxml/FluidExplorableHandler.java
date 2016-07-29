@@ -18,6 +18,7 @@ import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.explorable.Portal;
 import util.EqualsAny;
+import util.LineEnd;
 import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttribute;
@@ -56,10 +57,6 @@ import static util.NullCleaner.assertNotNull;
  * @author Jonathan Lovelace
  */
 public final class FluidExplorableHandler {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * Do not instantiate.
 	 */
@@ -238,7 +235,7 @@ public final class FluidExplorableHandler {
 		writeNonEmptyAttribute(ostream, "full", adv.getFullDescription());
 		writeImage(ostream, adv);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a portal to XML.
@@ -264,7 +261,7 @@ public final class FluidExplorableHandler {
 		writeIntegerAttribute(ostream, "id", portal.getID());
 		writeImage(ostream, portal);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a cave to XML.
@@ -286,7 +283,7 @@ public final class FluidExplorableHandler {
 		writeIntegerAttribute(ostream, "id", cave.getID());
 		writeImage(ostream, cave);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a battlefield to XML.
@@ -308,7 +305,7 @@ public final class FluidExplorableHandler {
 		writeIntegerAttribute(ostream, "id", field.getID());
 		writeImage(ostream, field);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write an arbitrary-text note to XML.
@@ -332,7 +329,7 @@ public final class FluidExplorableHandler {
 		ostream.append('>');
 		ostream.append(fix.getText().trim());
 		ostream.append("</text>");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 }
 

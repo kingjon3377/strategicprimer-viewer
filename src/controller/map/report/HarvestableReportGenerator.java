@@ -31,6 +31,7 @@ import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import model.report.SortedSectionListReportNode;
 import org.eclipse.jdt.annotation.NonNull;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
@@ -147,7 +148,7 @@ public final class HarvestableReportGenerator
 					&& shrubs.isEmpty()) {
 			return "";
 		} else {
-			return concat("<h4>Resource Sources</h4>", LINE_SEP, caches.toString(),
+			return concat("<h4>Resource Sources</h4>", LineEnd.LINE_SEP, caches.toString(),
 					groves.toString(), meadows.toString(), mines.toString(),
 					minerals.toString(), stone.toString(),
 					shrubsText.toString());

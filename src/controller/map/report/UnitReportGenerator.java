@@ -24,6 +24,7 @@ import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
@@ -100,7 +101,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		for (final UnitMember member : item) {
 			if (!hasMembers) {
 				hasMembers = true;
-				builder.append(". Members of the unit:").append(LINE_SEP).append(OPEN_LIST);
+				builder.append(". Members of the unit:").append(LineEnd.LINE_SEP).append(OPEN_LIST);
 			}
 			builder.append(OPEN_LIST_ITEM);
 			if (member instanceof Worker) {
@@ -200,7 +201,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			builder.append("</p>");
 		}
 		if (worker.iterator().hasNext() && details) {
-			builder.append(HAS_TRAINING).append(LINE_SEP).append(OPEN_LIST);
+			builder.append(HAS_TRAINING).append(LineEnd.LINE_SEP).append(OPEN_LIST);
 			for (final IJob job : worker) {
 				if (job instanceof Job) {
 					builder.append(OPEN_LIST_ITEM);
@@ -307,16 +308,16 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		// This can get big; we'll say 8K.
 		final StringBuilder builder =
 				new StringBuilder(8192).append("<h4>Units in the map</h4>");
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		builder.append("<p>(Any units listed above are not described again.)</p>");
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		final StringBuilder ours =
 				new StringBuilder(8192).append("<h5>Your units</h5>");
-		ours.append(LINE_SEP);
+		ours.append(LineEnd.LINE_SEP);
 		ours.append(OPEN_LIST);
 		final StringBuilder foreign =
 				new StringBuilder(8192).append("<h5>Foreign units</h5>");
-		foreign.append(LINE_SEP);
+		foreign.append(LineEnd.LINE_SEP);
 		foreign.append(OPEN_LIST);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);

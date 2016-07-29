@@ -12,6 +12,7 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
+import util.LineEnd;
 import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
@@ -51,10 +52,6 @@ import static util.NullCleaner.assertNotNull;
  * @author Jonathan Lovelace
  */
 public final class FluidTerrainHandler {
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
 	/**
 	 * Do not instantiate.
 	 */
@@ -145,7 +142,7 @@ public final class FluidTerrainHandler {
 		writeBooleanAttribute(ostream, "exposed", grd.isExposed());
 		writeImage(ostream, grd);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a Mountain to a stream.
@@ -163,7 +160,7 @@ public final class FluidTerrainHandler {
 		writeTag(ostream, "mountain", indent);
 		writeImage(ostream, (HasImage) obj);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Write a Forest to a stream.
@@ -186,7 +183,7 @@ public final class FluidTerrainHandler {
 		}
 		writeImage(ostream, forest);
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 	/**
 	 * Parse a river.
@@ -259,7 +256,7 @@ public final class FluidTerrainHandler {
 			throw new IllegalArgumentException("Can only write River or RiverFixture");
 		}
 		ostream.append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 }

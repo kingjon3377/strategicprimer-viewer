@@ -18,6 +18,7 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.IWorkerModel;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
@@ -52,10 +53,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(StrategyExporter.class);
-	/**
-	 * The system's line-separator. TODO: Make a central location for this.
-	 */
-	private static final String LINE_SEP = System.lineSeparator();
+
 	/**
 	 * The current player.
 	 */
@@ -124,15 +122,15 @@ public final class StrategyExporter implements PlayerChangeListener {
 		final StringBuilder builder = new StringBuilder(size);
 		builder.append('[');
 		builder.append(playerName);
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		builder.append("Turn ");
 		builder.append(turn);
 		builder.append(']');
-		builder.append(LINE_SEP);
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		builder.append("Inventions: TODO: any?");
-		builder.append(LINE_SEP);
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		if (dismissed.iterator().hasNext()) {
 			builder.append("Dismissed workers etc.: ");
 			String separator = "";
@@ -145,31 +143,31 @@ public final class StrategyExporter implements PlayerChangeListener {
 					builder.append(member);
 				}
 			}
-			builder.append(LINE_SEP);
-			builder.append(LINE_SEP);
+			builder.append(LineEnd.LINE_SEP);
+			builder.append(LineEnd.LINE_SEP);
 		}
 		builder.append("Workers:");
-		builder.append(LINE_SEP);
+		builder.append(LineEnd.LINE_SEP);
 		for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 			builder.append("* ");
 			builder.append(entry.getKey());
 			builder.append(':');
-			builder.append(LINE_SEP);
+			builder.append(LineEnd.LINE_SEP);
 			for (final IUnit unit : entry.getValue()) {
 				builder.append("  - ");
 				builder.append(unit.getName());
 				builder.append(unitMembers(unit));
 				builder.append(':');
-				builder.append(LINE_SEP);
-				builder.append(LINE_SEP);
+				builder.append(LineEnd.LINE_SEP);
+				builder.append(LineEnd.LINE_SEP);
 				final String orders = unit.getOrders().trim();
 				if (orders.isEmpty()) {
 					builder.append("TODO");
 				} else {
 					builder.append(orders);
 				}
-				builder.append(LINE_SEP);
-				builder.append(LINE_SEP);
+				builder.append(LineEnd.LINE_SEP);
+				builder.append(LineEnd.LINE_SEP);
 			}
 		}
 		return NullCleaner.assertNotNull(builder.toString());

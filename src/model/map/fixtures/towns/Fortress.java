@@ -15,6 +15,7 @@ import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -172,7 +173,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 		builder.append(". Members:");
 		int count = 0;
 		for (final FortressMember member : units) {
-			builder.append(System.lineSeparator());
+			builder.append(LineEnd.LINE_SEP);
 			builder.append("\t\t\t");
 			if (member instanceof IUnit) {
 				final IUnit unit = (IUnit) member;
@@ -251,7 +252,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 				if (!isConditionTrue(ostream,
 						ours.containsKey(Integer.valueOf(unit.getID())), localContext,
 						"Extra unit:\t", unit.toString(), ", ID #",
-						Integer.toString(unit.getID()), System.lineSeparator()) ||
+						Integer.toString(unit.getID()), LineEnd.LINE_SEP) ||
 							!assertNotNull(ours.get(Integer.valueOf(unit.getID())))
 									 .isSubset(unit, ostream, localContext)) {
 					retval = false;

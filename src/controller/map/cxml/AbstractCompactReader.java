@@ -408,8 +408,4 @@ public abstract class AbstractCompactReader<@NonNull T>
 			ostream.append("\"");
 		}
 	}
-	/**
-	 * The system's line separator.
-	 */
-	protected static final String LINE_SEP = System.lineSeparator();
 }

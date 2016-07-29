@@ -21,6 +21,7 @@ import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileType;
+import util.LineEnd;
 import util.NullCleaner;
 import util.SingletonRandom;
 import util.TypesafeLogger;
@@ -171,7 +172,7 @@ public final class TileContentsGenerator {
 	 * @param text the text to print
 	 */
 	private static void println(final String text) {
-		for (final String line : text.split(System.lineSeparator())) {
+		for (final String line : text.split(LineEnd.LINE_SEP)) {
 			SYS_OUT.print("\t\t\t");
 			SYS_OUT.println(line);
 		}

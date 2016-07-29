@@ -7,6 +7,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.ResourcePile;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -114,7 +115,7 @@ public final class CompactResourcePileReader
 			ostream.append(Integer.toString(obj.getCreated()));
 		}
 		ostream.append('"').append(imageXML(obj)).append(" />");
-		ostream.append(LINE_SEP);
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 	/**

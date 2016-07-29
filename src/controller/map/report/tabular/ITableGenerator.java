@@ -10,6 +10,7 @@ import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
 import org.eclipse.jdt.annotation.NonNull;
+import util.LineEnd;
 import util.Pair;
 import util.PatientMap;
 
@@ -161,7 +162,7 @@ public interface ITableGenerator<@NonNull T> {
 	 */
 	@SuppressWarnings("SameReturnValue")
 	default String getRowDelimiter() {
-		return System.lineSeparator();
+		return LineEnd.LINE_SEP;
 	}
 	/**
 	 * Write a field to a stream, quoting it if necessary.

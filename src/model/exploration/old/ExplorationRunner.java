@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
+import util.LineEnd;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
@@ -59,13 +60,13 @@ public final class ExplorationRunner {
 				new StringBuilder(80).append("The primary rock type here is ");
 		builder.append(getPrimaryRock(point, terrain, fixtures));
 		builder.append('.');
-		builder.append(System.lineSeparator());
+		builder.append(LineEnd.LINE_SEP);
 		if ((TileType.BorealForest == terrain) || (TileType.TemperateForest ==
 														terrain)) {
 			builder.append("The main kind of tree is ");
 			builder.append(getPrimaryTree(point, terrain, fixtures));
 			builder.append('.');
-			builder.append(System.lineSeparator());
+			builder.append(LineEnd.LINE_SEP);
 		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}

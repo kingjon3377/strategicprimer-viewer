@@ -6,6 +6,7 @@ import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
+import util.LineEnd;
 
 /**
  * A giant. TODO: should probably be a unit, or something.
@@ -158,7 +159,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 			if (obj instanceof Giant) {
 				return areObjectsEqual(ostream, kind, ((Giant) obj).kind, context,
 						"\tDifferent kinds of giant for ID #", Integer.toString(id),
-						System.lineSeparator());
+						LineEnd.LINE_SEP);
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");
@@ -172,7 +173,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(System.lineSeparator());
+			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		}
 	}
