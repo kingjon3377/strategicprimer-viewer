@@ -96,6 +96,7 @@ public final class ImageLoader {
 	 * @throws IOException if the file isn't found, or on other I/O error reading the
 	 *                     file
 	 */
+	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	public Image loadImage(final String file) throws IOException {
 		if (!cache.containsKey(file)) {
 			try (final InputStream res =

@@ -234,6 +234,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * @param filename the filename of an image
 	 * @return the image contained in that file, or null on error
 	 */
+	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	@Nullable
 	private static Icon getIconForFile(final String filename) {
 		try {

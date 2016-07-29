@@ -271,6 +271,7 @@ public final class ExplorationListListener implements ListDataListener {
 		/**
 		 * @return a diagnostic String
 		 */
+		@SuppressWarnings("StringConcatenationMissingWhitespace")
 		@Override
 		public String toString() {
 			return "Wrapper around the following ListModel:" + LineEnd.LINE_SEP +

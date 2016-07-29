@@ -363,6 +363,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param filename the name of the file containing the image
 	 * @return that image, or, if it fails to load, the generic one.
 	 */
+	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	private Image getImage(final String filename) {
 		try {
 			return loader.loadImage(filename);

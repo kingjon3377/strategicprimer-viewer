@@ -110,6 +110,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	 * @param obj a HasImage object
 	 * @return an icon representing it
 	 */
+	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	private Icon getIcon(final HasImage obj) {
 		String image = obj.getImage();
 		if (image.isEmpty() || MISSING.contains(image)) {
