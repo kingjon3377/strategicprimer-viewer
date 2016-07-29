@@ -88,9 +88,7 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadRandomTable() throws IOException {
 		try (final BufferedReader reader = new BufferedReader(new StringReader(
-																	String.format(("random%n0 " +
-																			"one%n99 " +
-																			"two"))))) {
+				String.format("random%n0 one%n99 two")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(30, 30);
 			assertThat("loading random table",
