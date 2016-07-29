@@ -44,7 +44,7 @@ public class TestTownComparator {
 	/**
 	 * Test that the comparator works as expected.
 	 */
-	@SuppressWarnings("ValueOfIncrementOrDecrementUsed")
+	@SuppressWarnings({"ValueOfIncrementOrDecrementUsed", "ObjectAllocationInLoop"})
 	@Test
 	public void testComparison() {
 		final List<ITownFixture> input = new ArrayList<>();
