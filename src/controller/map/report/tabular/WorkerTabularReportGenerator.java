@@ -73,12 +73,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 		} else {
 			stats = Optional.empty();
 		}
-		if (!stats.isPresent()) {
-			for (int i = 0; i < 9; i++) {
-				writeField(ostream, "--");
-				writeFieldDelimiter(ostream);
-			}
-		} else {
+		if (stats.isPresent()) {
 			final WorkerStats actual = stats.get();
 			writeField(ostream, Integer.toString(actual.getHitPoints()));
 			writeFieldDelimiter(ostream);
@@ -91,6 +86,11 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 				writeFieldDelimiter(ostream);
 				writeField(ostream,
 						WorkerStats.getModifierString(field.applyAsInt(actual)));
+			}
+		} else {
+			for (int i = 0; i < 9; i++) {
+				writeField(ostream, "--");
+				writeFieldDelimiter(ostream);
 			}
 		}
 		ostream.append(getRowDelimiter());
