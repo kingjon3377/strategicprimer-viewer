@@ -99,7 +99,7 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the current height
 	 * @return whether the cache was regenerated
 	 */
-	private boolean checkCache(final int width, final int height) {
+	private void checkCache(final int width, final int height) {
 		if (areFloatsDifferent(backgroundShape.getWidth(), (double) width)
 				|| areFloatsDifferent(backgroundShape.getHeight(), (double) height)) {
 			backgroundShape = new Rectangle(0, 0, width, height);
@@ -144,9 +144,6 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 											(int) Math.round(height *
 																	EventOther.constant)},
 									MISC_EVENT_SIDES);
-			return true;
-		} else {
-			return false;
 		}
 	}
 
