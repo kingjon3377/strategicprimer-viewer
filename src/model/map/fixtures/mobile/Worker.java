@@ -175,7 +175,9 @@ public class Worker implements IWorker, HasPortrait {
 	 * @return whether it equals this one except for ID.
 	 */
 	private boolean equalsIgIDImpl(final IWorker fix) {
-		return fix.getName().equals(name) && areJobSetsEqual(jobSet, CLIHelper.toList(fix)) && fix.getRace().equals(race) &&
+		return fix.getName().equals(name) &&
+					   areJobSetsEqual(jobSet, CLIHelper.toList(fix)) &&
+					   fix.getRace().equals(race) &&
 					   Objects.equals(stats, fix.getStats());
 	}
 

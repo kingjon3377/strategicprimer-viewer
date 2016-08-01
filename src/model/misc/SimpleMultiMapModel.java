@@ -61,7 +61,8 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	/**
 	 * The collection of subordinate maps.
 	 */
-	private final List<Pair<IMutableMapNG, Optional<Path>>> subordinateMaps = new ArrayList<>();
+	private final List<Pair<IMutableMapNG, Optional<Path>>> subordinateMaps =
+			new ArrayList<>();
 
 	/**
 	 * @param map  the subordinate map to add

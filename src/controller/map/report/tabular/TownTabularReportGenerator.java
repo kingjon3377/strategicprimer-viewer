@@ -55,8 +55,10 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 		comps = Arrays.asList(
 				(one, two) -> TownComparator.compareTownKind(one.second(), two.second()),
 				(one, two) -> new DistanceComparator(base).compare(one.first(), two.first()),
-				(one, two) -> TownComparator.compareTownSize(one.second().size(), two.second().size()),
-				(one, two) -> TownComparator.compareTownStatus(one.second().status(), two.second().status()),
+				(one, two) -> TownComparator.compareTownSize(one.second().size(),
+						two.second().size()),
+				(one, two) -> TownComparator.compareTownStatus(one.second().status(),
+						two.second().status()),
 				(one, two) -> one.second().getName().compareTo(two.second().getName()));
 	}
 

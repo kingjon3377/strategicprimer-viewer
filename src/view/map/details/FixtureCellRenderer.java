@@ -1,9 +1,6 @@
 package view.map.details;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,13 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 import model.map.HasImage;
@@ -123,7 +114,8 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 		try {
 			retval = ImageLoader.getLoader().loadIcon(image);
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, "image file images" + File.separatorChar + image + " not found");
+			LOGGER.log(Level.SEVERE,
+					"image file images" + File.separatorChar + image + " not found");
 			LOGGER.log(Level.FINEST, "With stack trace", e);
 			MISSING.add(image);
 			retval = defaultFixtureIcon;

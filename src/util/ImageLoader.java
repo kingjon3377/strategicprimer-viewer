@@ -1,7 +1,6 @@
 package util;
 
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +8,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import model.map.TileType;
 import view.map.main.TileUIHelper;
 
@@ -123,7 +121,8 @@ public final class ImageLoader {
 	public Icon loadIcon(final String file) throws IOException {
 		if (!iconCache.containsKey(file)) {
 			final Image orig = loadImage(file);
-			final BufferedImage temp = new BufferedImage(ICON_SIZE, ICON_SIZE, BufferedImage.TYPE_INT_ARGB);
+			final BufferedImage temp =
+					new BufferedImage(ICON_SIZE, ICON_SIZE, BufferedImage.TYPE_INT_ARGB);
 			final Graphics pen = temp.getGraphics();
 			pen.drawImage(orig, 0, 0, ICON_SIZE, ICON_SIZE, null);
 			pen.dispose();

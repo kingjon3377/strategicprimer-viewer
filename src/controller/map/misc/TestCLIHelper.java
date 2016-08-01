@@ -178,7 +178,8 @@ public class TestCLIHelper {
 					out.toString(), equalTo("test prompt threetest prompt three"));
 		}
 		try (StringWriter out = new StringWriter();
-			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("not-number%n0%n")), out)) {
+			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
+					 "not-number%n0%n")), out)) {
 			assertThat("inputNumber asks again on non-numeric input",
 					Integer.valueOf(cli.inputNumber(" test prompt four")),
 					equalTo(Integer.valueOf(0)));
@@ -290,7 +291,8 @@ public class TestCLIHelper {
 					equalTo("prompt eight"));
 		}
 		try (StringWriter out = new StringWriter();
-				ICLIHelper cli = new CLIHelper(new StringReader(String.format("xyzzy%nyes%n")), out)) {
+			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
+					 "xyzzy%nyes%n")), out)) {
 			assertThat("inputBoolean rejects other input",
 					cli.inputBoolean("prompt nine"), equalTo(true));
 			assertThat("inputBoolean gives message on invalid input", out.toString(),
@@ -358,7 +360,8 @@ public class TestCLIHelper {
 					equalTo(Integer.valueOf(1)));
 			assertThat(
 					"chooseStringFromList didn't automatically chose only choice",
-					out.toString(), equalTo(String.format("test desc%n0: zero%n1: one%n2: two%nprompt")));
+					out.toString(),
+					equalTo(String.format("test desc%n0: zero%n1: one%n2: two%nprompt")));
 		}
 		try (StringWriter out = new StringWriter(); ICLIHelper cli =
 				new CLIHelper(new StringReader(String.format("-1%n0%n")), out)) {
