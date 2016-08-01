@@ -279,20 +279,12 @@ public final class WorkerTree extends JTree
 			}
 		} else if (localNode instanceof ProxyWorker) {
 			for (final IWorker proxied : ((ProxyWorker) localNode).getProxied()) {
-				if (proxied instanceof Worker) {
-					final Worker worker = (Worker) proxied;
-					final WorkerStats stats = worker.getStats();
-					if (stats == null) {
-						continue;
-					} else {
-						//noinspection TailRecursion
-						return getStatsToolTip(worker);
-					}
+				final WorkerStats stats = proxied.getStats();
+				if (stats == null) {
+					continue;
 				} else {
-					final String toolTip = getStatsToolTip(proxied);
-					if (toolTip != null) {
-						return toolTip;
-					}
+					//noinspection TailRecursion
+					return getStatsToolTip(proxied);
 				}
 			}
 			return null;
