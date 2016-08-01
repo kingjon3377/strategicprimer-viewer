@@ -26,7 +26,7 @@ import java.io.InputStream;
  * @author Jonathan Lovelace
  */
 @SuppressWarnings({"resource", "IOResourceOpenedButNotSafelyClosed"})
-public class SystemIn extends FilterInputStream {
+public final class SystemIn extends FilterInputStream {
 	/**
 	 * Constructor.
 	 */
