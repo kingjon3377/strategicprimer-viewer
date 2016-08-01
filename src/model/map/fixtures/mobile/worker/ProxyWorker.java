@@ -83,6 +83,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	public ProxyWorker(final Iterable<UnitMember> unit) {
 		parallel = false;
+		stats = null;
 		for (final UnitMember member : unit) {
 			if (member instanceof IWorker) {
 				final WorkerStats tempStats = ((IWorker) member).getStats();
