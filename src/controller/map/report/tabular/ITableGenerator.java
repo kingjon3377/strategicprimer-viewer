@@ -145,7 +145,7 @@ public interface ITableGenerator<@NonNull T> {
 	/**
 	 * @return the character delimiting fields in output files.
 	 */
-	@SuppressWarnings("SameReturnValue")
+	@SuppressWarnings({"SameReturnValue", "MethodReturnAlwaysConstant"})
 	default char getFieldDelimiter() {
 		return ',';
 	}
