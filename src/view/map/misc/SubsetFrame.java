@@ -31,7 +31,6 @@ import util.TypesafeLogger;
 import util.Warning;
 import view.util.ISPWindow;
 import view.util.StreamingLabel;
-import view.util.StreamingLabel.LabelTextColor;
 
 /**
  * A window to show the result of running subset tests.
@@ -255,7 +254,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 			filename = file.get().toString();
 		} else {
 			LOGGER.warning("Given a map with no filename");
-			printParagraph("Given a map with no filename", LabelTextColor.yellow);
+			printParagraph("Given a map with no filename", StreamingLabel.LabelTextColor.yellow);
 			filename = "an unnamed file";
 		}
 		printParagraph("Testing " + filename + " ...");

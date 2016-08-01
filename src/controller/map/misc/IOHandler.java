@@ -1,7 +1,6 @@
 package controller.map.misc;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.FileChooser.FileChooserOperation;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Frame;
@@ -395,7 +394,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 *               component.
 	 */
 	private void saveMapAs(final IMapNG map, @Nullable final Component source) {
-		new FileChooser(Optional.empty(), chooser, FileChooserOperation.Save).call(path -> {
+		new FileChooser(Optional.empty(), chooser, FileChooser.FileChooserOperation.Save).call(path -> {
 			try {
 				new MapReaderAdapter().write(path, map);
 			} catch (final IOException e) {
