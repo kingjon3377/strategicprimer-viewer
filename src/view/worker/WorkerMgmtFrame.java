@@ -117,7 +117,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	 */
 	public WorkerMgmtFrame(final IWorkerModel model, final IOHandler ioHandler) {
 		super("Worker Management");
-		Optional<Path> filename = model.getMapFile();
+		final Optional<Path> filename = model.getMapFile();
 		if (filename.isPresent()) {
 			setTitle(filename.get() + " | Worker Management");
 			getRootPane().putClientProperty("Window.documentFile",

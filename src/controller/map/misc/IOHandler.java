@@ -432,7 +432,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			final MapReaderAdapter adapter = new MapReaderAdapter();
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
 																.getAllMaps()) {
-				Optional<Path> file = pair.second();
+				final Optional<Path> file = pair.second();
 				if (file.isPresent()) {
 					try {
 						adapter.write(file.get(), pair.first());

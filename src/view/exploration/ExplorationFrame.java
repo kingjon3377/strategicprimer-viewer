@@ -115,7 +115,7 @@ public final class ExplorationFrame extends JFrame implements ISPWindow {
 	public ExplorationFrame(final IExplorationModel explorationModel,
 							final IOHandler ioHandler) {
 		super("Exploration");
-		Optional<Path> file = explorationModel.getMapFile();
+		final Optional<Path> file = explorationModel.getMapFile();
 		if (file.isPresent()) {
 			setTitle(file.get() + " | Exploration");
 			getRootPane().putClientProperty("Window.documentFile",

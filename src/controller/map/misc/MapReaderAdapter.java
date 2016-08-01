@@ -198,7 +198,7 @@ public final class MapReaderAdapter {
 	 * @throws DriverFailedException on any error
 	 */
 	public void writeModel(final IDriverModel model) throws DriverFailedException {
-		Optional<Path> mainFile = model.getMapFile();
+		final Optional<Path> mainFile = model.getMapFile();
 		if (mainFile.isPresent()) {
 			try {
 				spWriter.write(mainFile.get(), model.getMap());
@@ -214,7 +214,7 @@ public final class MapReaderAdapter {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
 																.getSubordinateMaps()) {
-				Optional<Path> filename = pair.second();
+				final Optional<Path> filename = pair.second();
 				if (filename.isPresent()) {
 					try {
 						spWriter.write(filename.get(), pair.first());

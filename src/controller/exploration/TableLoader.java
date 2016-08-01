@@ -258,7 +258,7 @@ public final class TableLoader {
 	public static void loadAllTables(final String path, final ExplorationRunner runner) {
 		final Path dir = Paths.get(path);
 		try (final DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
-			for (Path table : stream) {
+			for (final Path table : stream) {
 				try {
 					if (Files.isHidden(table) || table.getFileName().startsWith(".")) {
 						LOGGER.info(table + " looks like a hidden file, skipping ...");

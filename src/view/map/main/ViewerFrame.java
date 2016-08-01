@@ -77,7 +77,7 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 	 */
 	public ViewerFrame(final IViewerModel map, final IOHandler ioHandler) {
 		super("Map Viewer");
-		Optional<Path> filename = map.getMapFile();
+		final Optional<Path> filename = map.getMapFile();
 		if (filename.isPresent()) {
 			setTitle(filename.get() + " | Map Viewer");
 			getRootPane().putClientProperty("Window.documentFile",
