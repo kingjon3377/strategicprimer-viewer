@@ -54,7 +54,7 @@ public final class MapReaderAdapter {
 	/**
 	 * Logger.
 	 */
-	private final Logger LOGGER = TypesafeLogger.getLogger(MapReaderAdapter.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(MapReaderAdapter.class);
 	/**
 	 * The implementation we use under the hood.
 	 */
