@@ -9,10 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import model.listeners.AddRemoveListener;
 import util.NullCleaner;
 
@@ -50,39 +48,36 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	private final Collection<AddRemoveListener> arListeners = new ArrayList<>();
 
 	/**
-	 * The text box.
+	 * Factory method.
+	 * @param what what the panel allows the user to add or remove
 	 */
-	private final JTextField field = new JTextField(10);
-	/**
-	 * Constructor.
-	 *
-	 * @param what            what we're adding or removing
-	 */
-	public AddRemovePanel(final String what) {
+	public static AddRemovePanel addRemovePanel(final String what) {
+		final AddRemovePanel retval = new AddRemovePanel();
 		final CardLayout layout = new CardLayout();
 		final String category = what;
-		setLayout(layout);
-		setPanelSizes(this);
+		retval.setLayout(layout);
+		setPanelSizes(retval);
 		final JPanel first = new BoxPanel(true);
+		final JTextField field = new JTextField(10);
 		first.add(new ListenedButton("+", evt -> {
-			layout.next(this);
+			layout.next(retval);
 			field.requestFocusInWindow();
 		}));
 		first.add(new ListenedButton("-", evt -> {
-			for (final AddRemoveListener listener : arListeners) {
+			for (final AddRemoveListener listener : retval.arListeners) {
 				listener.remove(what);
 			}
 		}));
 		setPanelSizes(first);
-		add(first);
+		retval.add(first);
 		final JPanel second = new BoxPanel(false);
 		second.add(field);
 		final ActionListener okListener = evt -> {
-			final String text = NullCleaner.assertNotNull(field.getText());
-			for (final AddRemoveListener listener : arListeners) {
+			final String text = field.getText();
+			for (final AddRemoveListener listener : retval.arListeners) {
 				listener.add(category, text);
 			}
-			layout.first(this);
+			layout.first(retval);
 			field.setText("");
 		};
 		field.addActionListener(okListener);
@@ -90,12 +85,21 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 		final JPanel okPanel = new BoxPanel(true);
 		okPanel.add(new ListenedButton("OK", okListener));
 		okPanel.add(new ListenedButton("Cancel", evt -> {
-			layout.first(this);
+			layout.first(retval);
 			field.setText("");
 		}));
 		second.add(okPanel);
 		setPanelSizes(second);
-		add(second);
+		retval.add(second);
+		return retval;
+	}
+	/**
+	 * Constructor.
+	 *
+	 * @param what            what we're adding or removing
+	 */
+	private AddRemovePanel() {
+		// Use factory method.
 	}
 
 	/**
@@ -143,12 +147,5 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
-	}
-	/**
-	 * @return a String diagnostic
-	 */
-	@Override
-	public String toString() {
-		return "AddRemovePanel: Field currently has " + field.getText();
 	}
 }
