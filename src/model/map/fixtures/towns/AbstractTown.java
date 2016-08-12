@@ -6,7 +6,6 @@ import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * An abstract superclass for towns etc.
@@ -97,28 +96,25 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 */
 	@Override
 	public String getText() {
-		final StringBuilder builder = new StringBuilder(56)
-											.append("There is a ");
+		final String localSize;
 		if (TownSize.Medium == size) {
-			builder.append("medium-size");
+			localSize = "medium-size";
 		} else {
-			builder.append(size);
+			localSize = size.toString();
 		}
+		final String localStatus;
 		if (TownStatus.Burned == status) {
-			builder.append(" burned-out");
-		} else if (TownStatus.Active != status) {
-			builder.append(' ');
-			builder.append(status);
+			localStatus = "burned-out";
+		} else {
+			localStatus = status.toString();
 		}
-		builder.append(' ');
-		builder.append(kind());
-		if (!name.isEmpty()) {
-			builder.append(", ");
-			builder.append(name);
-			builder.append(',');
+		if (name.isEmpty()) {
+			return String.format("There is a %s %s %s here.", localSize, localStatus,
+					kind());
+		} else {
+			return String.format("There is a %s %s %s, %s, here.", localSize,
+					localStatus, kind(), name);
 		}
-		builder.append(" here.");
-		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
