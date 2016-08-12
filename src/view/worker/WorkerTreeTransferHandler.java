@@ -185,6 +185,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 			if (tempTarget instanceof IUnit) {
 				try {
 					final Transferable trans = support.getTransferable();
+					//noinspection unchecked This is a supertype of IUnit
 					final Iterable<Pair<UnitMember, IUnit>> list =
 							(Iterable<Pair<UnitMember, IUnit>>) trans.getTransferData(
 									UnitMemberTransferable.FLAVOR);

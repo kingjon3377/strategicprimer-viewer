@@ -133,6 +133,7 @@ public final class ZeroToOneConverter {
 			ostream.append(':');
 		}
 		ostream.append(element.getName().getLocalPart());
+		//noinspection unchecked Unavoidable: getNamespaces() isn't generified
 		for (final Object namespace : new IteratorWrapper(element.getNamespaces())) {
 			ostream.append(' ');
 			ostream.append(namespace.toString());

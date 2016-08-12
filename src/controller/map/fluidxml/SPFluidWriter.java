@@ -255,6 +255,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		ostream.append('>');
 		if (fort.iterator().hasNext()) {
 			ostream.append(LineEnd.LINE_SEP);
+			//noinspection unchecked: checked as first operation of method
 			for (final FortressMember unit : (Iterable<FortressMember>) obj) {
 				writeSPObject(ostream, unit, indent + 1);
 			}
