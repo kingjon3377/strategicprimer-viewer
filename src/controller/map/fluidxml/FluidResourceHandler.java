@@ -22,6 +22,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.createElement;
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
@@ -380,7 +381,7 @@ public final class FluidResourceHandler {
 			throw new IllegalArgumentException("Can only write ResourcePile");
 		}
 		final ResourcePile pile = (ResourcePile) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "resource");
+		final Element element = createElement(document, "resource");
 		writeIntegerAttribute(element, "id", pile.getID());
 		writeAttribute(element, "kind", pile.getKind());
 		writeAttribute(element, "contents", pile.getContents());
@@ -406,7 +407,7 @@ public final class FluidResourceHandler {
 			throw new IllegalArgumentException("Can only write CacheFixture");
 		}
 		final CacheFixture fix = (CacheFixture) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "cache");
+		final Element element = createElement(document, "cache");
 		writeAttribute(element, "kind", fix.getKind());
 		writeAttribute(element, "contents", fix.getContents());
 		writeIntegerAttribute(element, "id", fix.getID());
@@ -429,9 +430,9 @@ public final class FluidResourceHandler {
 		final Meadow fix = (Meadow) obj;
 		final Element element;
 		if (fix.isField()) {
-			element = document.createElementNS(ISPReader.NAMESPACE, "field");
+			element = createElement(document, "field");
 		} else {
-			element = document.createElementNS(ISPReader.NAMESPACE, "meadow");
+			element = createElement(document, "meadow");
 		}
 		writeAttribute(element, "kind", fix.getKind());
 		writeBooleanAttribute(element, "cultivated", fix.isCultivated());
@@ -456,9 +457,9 @@ public final class FluidResourceHandler {
 		final Grove fix = (Grove) obj;
 		final Element element;
 		if (fix.isOrchard()) {
-			element = document.createElementNS(ISPReader.NAMESPACE, "orchard");
+			element = createElement(document, "orchard");
 		} else {
-			element = document.createElementNS(ISPReader.NAMESPACE, "grove");
+			element = createElement(document, "grove");
 		}
 		writeBooleanAttribute(element, "cultivated", fix.isCultivated());
 		writeAttribute(element, "kind", fix.getKind());
@@ -480,7 +481,7 @@ public final class FluidResourceHandler {
 			throw new IllegalArgumentException("Can only write Mine");
 		}
 		final Mine fix = (Mine) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "mine");
+		final Element element = createElement(document, "mine");
 		writeAttribute(element, "kind", fix.getKind());
 		writeAttribute(element, "status", fix.getStatus().toString());
 		writeIntegerAttribute(element, "id", fix.getID());
@@ -501,7 +502,7 @@ public final class FluidResourceHandler {
 			throw new IllegalArgumentException("Can only write MineralVein");
 		}
 		final MineralVein fix = (MineralVein) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "mineral");
+		final Element element = createElement(document, "mineral");
 		writeAttribute(element, "kind", fix.getKind());
 		writeBooleanAttribute(element, "exposed", fix.isExposed());
 		writeIntegerAttribute(element, "dc", fix.getDC());
@@ -523,7 +524,7 @@ public final class FluidResourceHandler {
 			throw new IllegalArgumentException("Can only write StoneDeposit");
 		}
 		final StoneDeposit fix = (StoneDeposit) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "stone");
+		final Element element = createElement(document, "stone");
 		writeAttribute(element, "kind", fix.stone().toString());
 		writeIntegerAttribute(element, "dc", fix.getDC());
 		writeIntegerAttribute(element, "id", fix.getID());

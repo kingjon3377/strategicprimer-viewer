@@ -25,6 +25,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.createElement;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
@@ -252,7 +253,7 @@ public final class FluidUnitMemberHandler {
 			throw new IllegalArgumentException("Can only write IWorker");
 		}
 		final IWorker work = (IWorker) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "worker");
+		final Element element = createElement(document, "worker");
 		writeAttribute(element, "name", work.getName());
 		if (!"human".equals(work.getRace())) {
 			writeAttribute(element, "race", work.getRace());
@@ -289,7 +290,7 @@ public final class FluidUnitMemberHandler {
 			throw new IllegalArgumentException("Can only write WorkerStats");
 		}
 		final WorkerStats stats = (WorkerStats) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "stats");
+		final Element element = createElement(document, "stats");
 		writeIntegerAttribute(element, "hp", stats.getHitPoints());
 		writeIntegerAttribute(element, "max", stats.getMaxHitPoints());
 		writeIntegerAttribute(element, "str", stats.getStrength());
@@ -317,7 +318,7 @@ public final class FluidUnitMemberHandler {
 		if ((job.getLevel() <= 0) && !job.iterator().hasNext()) {
 			return;
 		}
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "job");
+		final Element element = createElement(document, "job");
 		writeAttribute(element, "name", job.getName());
 		writeIntegerAttribute(element, "level", job.getLevel());
 		for (final ISkill skill : job) {
@@ -341,7 +342,7 @@ public final class FluidUnitMemberHandler {
 			throw new IllegalArgumentException("Can only write ISkill");
 		}
 		final ISkill skl = (ISkill) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "skill");
+		final Element element = createElement(document, "skill");
 		writeAttribute(element, "name", skl.getName());
 		writeIntegerAttribute(element, "level", skl.getLevel());
 		writeIntegerAttribute(element, "hours", skl.getHours());
@@ -389,7 +390,7 @@ public final class FluidUnitMemberHandler {
 			throw new IllegalArgumentException("Can only write Animal");
 		}
 		final Animal fix = (Animal) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "animal");
+		final Element element = createElement(document, "animal");
 		writeAttribute(element, "kind", fix.getKind());
 		if (fix.isTraces()) {
 			writeAttribute(element, "traces", "");

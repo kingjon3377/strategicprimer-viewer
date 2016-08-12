@@ -20,6 +20,7 @@ import org.w3c.dom.Node;
 import util.NullCleaner;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.createElement;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
@@ -193,7 +194,7 @@ public final class FluidTownHandler {
 			throw new IllegalArgumentException("Can only write Village");
 		}
 		final Village fix = (Village) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "village");
+		final Element element = createElement(document, "village");
 		writeAttribute(element, "status", fix.status().toString());
 		writeNonEmptyAttribute(element, "name", fix.getName());
 		writeIntegerAttribute(element, "id", fix.getID());
@@ -218,11 +219,11 @@ public final class FluidTownHandler {
 		final AbstractTown fix = (AbstractTown) obj;
 		final Element element;
 		if (fix instanceof Fortification) {
-			element = document.createElementNS(ISPReader.NAMESPACE, "fortification");
+			element = createElement(document, "fortification");
 		} else if (fix instanceof Town) {
-			element = document.createElementNS(ISPReader.NAMESPACE, "town");
+			element = createElement(document, "town");
 		} else if (fix instanceof City) {
-			element = document.createElementNS(ISPReader.NAMESPACE, "city");
+			element = createElement(document, "city");
 		} else {
 			throw new IllegalStateException("Unknown AbstractTownEvent type");
 		}

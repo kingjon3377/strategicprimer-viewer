@@ -1,6 +1,5 @@
 package controller.map.fluidxml;
 
-import controller.map.iointerfaces.ISPReader;
 import controller.map.iointerfaces.SPWriter;
 import java.io.Closeable;
 import java.io.Flushable;
@@ -84,6 +83,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import util.NullCleaner;
 
+import static controller.map.fluidxml.XMLHelper.createElement;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
@@ -269,7 +269,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			} else if (!(obj instanceof IFixture)) {
 				throw new IllegalStateException("Can only 'simply' write fixtures");
 			}
-			final Element element = document.createElementNS(ISPReader.NAMESPACE, tag);
+			final Element element = createElement(document, tag);
 			if (obj instanceof HasKind) {
 				writeAttribute(element, "kind", ((HasKind) obj).getKind());
 			}
@@ -294,7 +294,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			throw new IllegalArgumentException("Can only write IUnit");
 		}
 		final IUnit unit = (IUnit) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "unit");
+		final Element element = createElement(document, "unit");
 		writeIntegerAttribute(element, "owner", unit.getOwner().getPlayerId());
 		writeNonEmptyAttribute(element, "kind", unit.getKind());
 		writeNonEmptyAttribute(element, "name", unit.getName());
@@ -325,7 +325,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			throw new IllegalArgumentException("Can only write Fortress");
 		}
 		final Fortress fort = (Fortress) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "fortress");
+		final Element element = createElement(document, "fortress");
 		writeIntegerAttribute(element, "owner", fort.getOwner().getPlayerId());
 		writeNonEmptyAttribute(element, "name", fort.getName());
 		writeIntegerAttribute(element, "id", fort.getID());
@@ -350,11 +350,11 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			throw new IllegalArgumentException("Can only write IMapNG");
 		}
 		final IMapNG map = (IMapNG) obj;
-		final Element viewElement = document.createElementNS(ISPReader.NAMESPACE, "view");
+		final Element viewElement = createElement(document, "view");
 		writeIntegerAttribute(viewElement, "current_player",
 				map.getCurrentPlayer().getPlayerId());
 		writeIntegerAttribute(viewElement, "current_turn", map.getCurrentTurn());
-		final Element mapElement = document.createElementNS(ISPReader.NAMESPACE, "map");
+		final Element mapElement = createElement(document, "map");
 		final MapDimensions dim = map.dimensions();
 		writeIntegerAttribute(mapElement, "version", dim.version);
 		writeIntegerAttribute(mapElement, "rows", dim.rows);
@@ -364,8 +364,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		}
 		for (int i = 0; i < dim.rows; i++) {
 			boolean rowEmpty = true;
-			final Element rowElement =
-					document.createElementNS(ISPReader.NAMESPACE, "row");
+			final Element rowElement = createElement(document, "row");
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				final TileType terrain = map.getBaseTerrain(point);
@@ -378,16 +377,14 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 						rowEmpty = false;
 						writeIntegerAttribute(rowElement, "index", i);
 					}
-					final Element element =
-							document.createElementNS(ISPReader.NAMESPACE, "tile");
+					final Element element = createElement(document, "tile");
 					writeIntegerAttribute(element, "row", i);
 					writeIntegerAttribute(element, "column", j);
 					if (TileType.NotVisible != terrain) {
 						writeAttribute(element, "kind", terrain.toXML());
 					}
 					if (map.isMountainous(point)) {
-						element.appendChild(document.createElementNS(ISPReader.NAMESPACE,
-								"mountain"));
+						element.appendChild(createElement(document, "mountain"));
 					}
 					for (final River river : map.getRivers(point)) {
 						writeSPObject(document, element, river);
@@ -429,7 +426,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			throw new IllegalArgumentException("Can only write Player");
 		}
 		final Player player = (Player) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "player");
+		final Element element = createElement(document, "player");
 		writeIntegerAttribute(element, "number", player.getPlayerId());
 		writeAttribute(element, "code_name", player.getName());
 		parent.appendChild(element);

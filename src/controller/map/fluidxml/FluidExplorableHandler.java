@@ -22,6 +22,7 @@ import org.w3c.dom.Node;
 import util.EqualsAny;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.createElement;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
@@ -223,7 +224,7 @@ public final class FluidExplorableHandler {
 			throw new IllegalArgumentException("Can only write AdventureFixtures");
 		}
 		final AdventureFixture adv = (AdventureFixture) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "adventure");
+		final Element element = createElement(document, "adventure");
 		writeIntegerAttribute(element, "id", adv.getID());
 		if (!adv.getOwner().isIndependent()) {
 			writeIntegerAttribute(element, "owner", adv.getOwner().getPlayerId());
@@ -246,7 +247,7 @@ public final class FluidExplorableHandler {
 			throw new IllegalArgumentException("Can only write Portals");
 		}
 		final Portal portal = (Portal) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "portal");
+		final Element element = createElement(document, "portal");
 		writeAttribute(element, "world", portal.getDestinationWorld());
 		writeIntegerAttribute(element, "row",
 				portal.getDestinationCoordinates().getRow());
@@ -269,7 +270,7 @@ public final class FluidExplorableHandler {
 			throw new IllegalArgumentException("Can only write Caves");
 		}
 		final Cave cave = (Cave) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "cave");
+		final Element element = createElement(document, "cave");
 		writeIntegerAttribute(element, "dc", cave.getDC());
 		writeIntegerAttribute(element, "id", cave.getID());
 		writeImage(element, cave);
@@ -288,8 +289,7 @@ public final class FluidExplorableHandler {
 			throw new IllegalArgumentException("Can only write Caves");
 		}
 		final Battlefield field = (Battlefield) obj;
-		final Element element =
-				document.createElementNS(ISPReader.NAMESPACE, "battlefield");
+		final Element element = createElement(document, "battlefield");
 		writeIntegerAttribute(element, "dc", field.getDC());
 		writeIntegerAttribute(element, "id", field.getID());
 		writeImage(element, field);
@@ -308,8 +308,7 @@ public final class FluidExplorableHandler {
 			throw new IllegalArgumentException("Can only write TextFixture");
 		}
 		final TextFixture fix = (TextFixture) obj;
-		// TODO: Make an XMLHelper wrapper to handle the namespacing
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "text");
+		final Element element = createElement(document, "text");
 		if (fix.getTurn() != -1) {
 			writeIntegerAttribute(element, "turn", fix.getTurn());
 		}

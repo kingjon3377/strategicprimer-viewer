@@ -24,6 +24,7 @@ import model.map.HasMutableImage;
 import model.map.IPlayerCollection;
 import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.EqualsAny;
 import util.NullCleaner;
@@ -566,5 +567,13 @@ public final class XMLHelper {
 			warner.warn(new UnsupportedPropertyException(element, "image"));
 		}
 		return obj;
+	}
+	/**
+	 * @param tag a tag
+	 * @param document the Document to use as an Element factory.
+	 * @return a properly namespaced Element for that tag
+	 */
+	public static Element createElement(final Document document, final String tag) {
+		return document.createElementNS(ISPReader.NAMESPACE, tag);
 	}
 }

@@ -1,7 +1,6 @@
 package controller.map.fluidxml;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -17,6 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.createElement;
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
@@ -138,7 +138,7 @@ public final class FluidTerrainHandler {
 			throw new IllegalArgumentException("Can only write Ground");
 		}
 		final Ground grd = (Ground) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "ground");
+		final Element element = createElement(document, "ground");
 		writeAttribute(element, "kind", grd.getKind());
 		writeBooleanAttribute(element, "exposed", grd.isExposed());
 		writeImage(element, grd);
@@ -157,7 +157,7 @@ public final class FluidTerrainHandler {
 		if (!(obj instanceof Mountain)) {
 			throw new IllegalArgumentException("Can only write Mountain");
 		}
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "mountain");
+		final Element element = createElement(document, "mountain");
 		writeImage(element, (HasImage) obj);
 		parent.appendChild(element);
 	}
@@ -175,7 +175,7 @@ public final class FluidTerrainHandler {
 			throw new IllegalArgumentException("Can only write Forest");
 		}
 		final Forest forest = (Forest) obj;
-		final Element element = document.createElementNS(ISPReader.NAMESPACE, "forest");
+		final Element element = createElement(document, "forest");
 		writeAttribute(element, "kind", forest.getKind());
 		if (forest.isRows()) {
 			writeBooleanAttribute(element, "rows", true);
@@ -238,9 +238,9 @@ public final class FluidTerrainHandler {
 	 */
 	public static void writeRivers(final Document document, final Node parent, final Object obj) {
 		if (River.Lake == obj) {
-			parent.appendChild(document.createElementNS(ISPReader.NAMESPACE, "lake"));
+			parent.appendChild(createElement(document, "lake"));
 		} else if (obj instanceof River) {
-			final Element element = document.createElementNS(ISPReader.NAMESPACE, "river");
+			final Element element = createElement(document, "river");
 			writeAttribute(element, "direction", ((River) obj).getDescription());
 			parent.appendChild(element);
 		} else if (obj instanceof RiverFixture) {
