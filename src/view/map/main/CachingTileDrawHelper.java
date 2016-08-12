@@ -89,7 +89,7 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 		event = new Line2D.Double();
 		fort = event;
 		unit = event;
-		checkCache(1, 1);
+		updateCache(1, 1);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param width  the current width
 	 * @param height the current height
 	 */
-	private void checkCache(final int width, final int height) {
+	private void updateCache(final int width, final int height) {
 		if (areFloatsDifferent(backgroundShape.getWidth(), (double) width)
 				|| areFloatsDifferent(backgroundShape.getHeight(), (double) height)) {
 			backgroundShape = new Rectangle(0, 0, width, height);
@@ -162,7 +162,7 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	public void drawTileTranslated(final Graphics pen, final IMapNG map,
 								final Point location, final int width,
 								final int height) {
-		checkCache(width, height);
+		updateCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
 			throw new IllegalArgumentException("CachingTileDrawHelper requires " +
 													"Graphics2D");
