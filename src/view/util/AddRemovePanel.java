@@ -50,26 +50,17 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	private final Collection<AddRemoveListener> arListeners = new ArrayList<>();
 
 	/**
-	 * The layout.
-	 */
-	private final CardLayout layout;
-	/**
 	 * The text box.
 	 */
 	private final JTextField field = new JTextField(10);
-	/**
-	 * What we're adding or removing.
-	 */
-	private final String category;
-
 	/**
 	 * Constructor.
 	 *
 	 * @param what            what we're adding or removing
 	 */
 	public AddRemovePanel(final String what) {
-		layout = new CardLayout();
-		category = what;
+		final CardLayout layout = new CardLayout();
+		final String category = what;
 		setLayout(layout);
 		setPanelSizes(this);
 		final JPanel first = new BoxPanel(true);
