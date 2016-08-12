@@ -1,7 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import model.map.IEvent;
 import model.map.IMapNG;
 import model.map.Point;
@@ -90,22 +89,6 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	protected static boolean hasEvent(final IMapNG map, final Point location) {
 		return map.streamOtherFixtures(location).anyMatch(IEvent.class::isInstance);
 	}
-
-	/**
-	 * Draw a tile. At present, the graphics context needs to be translated so that its
-	 * origin is the tile's upper-left-hand corner.
-	 *
-	 * @param pen      the graphics context
-	 * @param map      the map to draw the tile from
-	 * @param location the location to draw
-	 * @param width    the width of the drawing area
-	 * @param height   the height of the drawing area
-	 */
-	@Override
-	public abstract void drawTileTranslated(final Graphics pen,
-											final IMapNG map, final Point location,
-											final int width,
-											final int height);
 
 	/**
 	 * @return the UI helper.
