@@ -394,7 +394,8 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 *               component.
 	 */
 	private void saveMapAs(final IMapNG map, @Nullable final Component source) {
-		new FileChooser(Optional.empty(), chooser, FileChooser.FileChooserOperation.Save).call(path -> {
+		new FileChooser(Optional.empty(), chooser, FileChooser.FileChooserOperation.Save)
+				.call(path -> {
 			try {
 				new MapReaderAdapter().write(path, map);
 			} catch (final IOException e) {
