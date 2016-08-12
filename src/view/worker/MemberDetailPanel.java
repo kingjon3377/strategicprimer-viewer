@@ -392,6 +392,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		/**
 		 * The image to draw.
 		 */
+		@SuppressWarnings("FieldHasSetterButNoGetter")
 		@Nullable
 		private Image portrait = null;
 		/**
