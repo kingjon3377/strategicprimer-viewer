@@ -1,8 +1,11 @@
 package view.map.main;
 
 import java.awt.Graphics;
+import model.map.IEvent;
 import model.map.IMapNG;
 import model.map.Point;
+import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.towns.Fortress;
 import view.util.Coordinate;
 
 /**
@@ -54,4 +57,31 @@ public interface TileDrawHelper {
 	 */
 	void drawTile(Graphics pen, IMapNG map, Point location, Coordinate coordinates,
 				Coordinate dimensions);
+	/**
+	 * @param map      a map
+	 * @param location a location
+	 * @return whether there are any fortresses at that location
+	 */
+	default boolean hasAnyForts(final IMapNG map, final Point location) {
+		return map.streamOtherFixtures(location).anyMatch(Fortress.class::isInstance);
+	}
+
+	/**
+	 * @param map      a map
+	 * @param location a location
+	 * @return whether there are any units at that location
+	 */
+	default boolean hasAnyUnits(final IMapNG map, final Point location) {
+		return map.streamOtherFixtures(location).anyMatch(IUnit.class::isInstance);
+	}
+
+	/**
+	 * @param map      a map
+	 * @param location a location
+	 * @return whether there are any 'events' at that location
+	 */
+	default boolean hasEvent(final IMapNG map, final Point location) {
+		return map.streamOtherFixtures(location).anyMatch(IEvent.class::isInstance);
+	}
+
 }

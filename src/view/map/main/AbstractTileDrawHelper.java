@@ -64,33 +64,6 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	}
 
 	/**
-	 * @param map      a map
-	 * @param location a location
-	 * @return whether there are any fortresses at that location
-	 */
-	protected static boolean hasAnyForts(final IMapNG map, final Point location) {
-		return map.streamOtherFixtures(location).anyMatch(Fortress.class::isInstance);
-	}
-
-	/**
-	 * @param map      a map
-	 * @param location a location
-	 * @return whether there are any units at that location
-	 */
-	protected static boolean hasAnyUnits(final IMapNG map, final Point location) {
-		return map.streamOtherFixtures(location).anyMatch(IUnit.class::isInstance);
-	}
-
-	/**
-	 * @param map      a map
-	 * @param location a location
-	 * @return whether there are any 'events' at that location
-	 */
-	protected static boolean hasEvent(final IMapNG map, final Point location) {
-		return map.streamOtherFixtures(location).anyMatch(IEvent.class::isInstance);
-	}
-
-	/**
 	 * @return the UI helper.
 	 */
 	protected static TileUIHelper getHelper() {
