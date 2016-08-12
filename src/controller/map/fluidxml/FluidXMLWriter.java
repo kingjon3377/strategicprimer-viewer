@@ -28,6 +28,7 @@ import java.io.IOException;
 @FunctionalInterface
 public interface FluidXMLWriter {
 	/**
+	 * TODO: Instead of almost reproducing the CXML interface, take a DocumentBuilder.
 	 * @param ostream the stream to write to
 	 * @param obj the object to write
 	 * @param indent the indentation level
