@@ -73,18 +73,6 @@ import view.util.TreeExpansionOrderListener;
  */
 public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
-	 * Error message fragment when file not found.
-	 */
-	private static final String NOT_FOUND_ERROR = " not found";
-	/**
-	 * Error message when the map contains invalid data.
-	 */
-	private static final String INV_DATA_ERROR = "Map contained invalid data";
-	/**
-	 * An error message refactored from at least four uses.
-	 */
-	private static final String XML_ERROR_STRING = "Error reading XML file";
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(IOHandler.class);
@@ -346,20 +334,21 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 									@Nullable final Component source) {
 		final String msg;
 		if (except instanceof XMLStreamException) {
-			msg = XML_ERROR_STRING + ' ' + filename;
+			msg = "Error reading XML file %s";
 		} else if (except instanceof FileNotFoundException) {
 			//noinspection StringConcatenationMissingWhitespace
-			msg = "File " + filename + NOT_FOUND_ERROR;
+			msg = "File %s not found";
 		} else if (except instanceof IOException) {
 			//noinspection HardcodedFileSeparator
-			msg = "I/O error reading file " + filename;
+			msg = "I/O error reading file %s";
 		} else if (except instanceof SPFormatException) {
-			msg = INV_DATA_ERROR + " in file " + filename;
+			msg = "Map contained invalid data in file %s";
 		} else {
 			throw new IllegalStateException("Unknown exception type", except);
 		}
-		LOGGER.log(Level.SEVERE, msg, except);
-		ErrorShower.showErrorDialog(source, msg);
+		final String formatted = String.format(msg, filename);
+		LOGGER.log(Level.SEVERE, formatted, except);
+		ErrorShower.showErrorDialog(source, formatted);
 	}
 
 	/**
