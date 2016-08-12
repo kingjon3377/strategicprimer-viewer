@@ -29,8 +29,8 @@ import util.TypesafeLogger;
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Based on the tutorial found at http://www.javaprogrammingforums.com/java-swing
- * -tutorials/3141-drag-drop-jtrees.html
+ * Based on the tutorial found on the
+ * <a href="http://www.javaprogrammingforums.com/java-swing-tutorials/3141-drag-drop-jtrees.html">Java Programming Forums</a>
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
