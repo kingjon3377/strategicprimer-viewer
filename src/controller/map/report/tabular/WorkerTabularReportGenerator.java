@@ -9,7 +9,6 @@ import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Point;
 import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import util.Pair;
 import util.PatientMap;
@@ -68,11 +67,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 		writeField(ostream, item.getName());
 		writeFieldDelimiter(ostream);
 		final Optional<WorkerStats> stats;
-		if (item instanceof Worker) {
-			stats = Optional.ofNullable(((Worker) item).getStats());
-		} else {
-			stats = Optional.empty();
-		}
+		stats = Optional.ofNullable(item.getStats());
 		if (stats.isPresent()) {
 			final WorkerStats actual = stats.get();
 			writeField(ostream, Integer.toString(actual.getHitPoints()));

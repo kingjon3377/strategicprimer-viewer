@@ -265,11 +265,7 @@ public final class FluidUnitMemberHandler {
 					((HasPortrait) work).getPortrait());
 		}
 		final Optional<WorkerStats> stats;
-		if (work instanceof Worker) {
-			stats = Optional.ofNullable(((Worker) work).getStats());
-		} else {
-			stats = Optional.empty();
-		}
+		stats = Optional.ofNullable(work.getStats());
 		if (work.iterator().hasNext() || stats.isPresent()) {
 			ostream.append(">");
 			ostream.append(LineEnd.LINE_SEP);
