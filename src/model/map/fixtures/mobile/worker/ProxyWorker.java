@@ -219,7 +219,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		if (item == this) {
 			return;
 		}
-		final WorkerStats tempStats = ((IWorker) item).getStats();
+		final WorkerStats tempStats = item.getStats();
 		final WorkerStats priorStats = stats;
 		if (workers.isEmpty()) {
 			stats = tempStats;
