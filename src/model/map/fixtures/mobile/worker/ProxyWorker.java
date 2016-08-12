@@ -125,6 +125,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	@SuppressWarnings({"ObjectEquality", "OverloadedVarargsMethod"})
 	public ProxyWorker(final @NonNull IWorker @NonNull ... proxied) {
 		parallel = true;
+		stats = null;
 		for (final IWorker worker : proxied) {
 			if (worker == this) {
 				continue;
