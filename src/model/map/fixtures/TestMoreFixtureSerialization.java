@@ -423,6 +423,9 @@ public final class TestMoreFixtureSerialization extends
 	}
 	/**
 	 * Test serialization of portraits.
+	 * @throws XMLStreamException never
+	 * @throws IOException never
+	 * @throws SPFormatException never
 	 */
 	@Test
 	public void testUnitPortraitSerialization()

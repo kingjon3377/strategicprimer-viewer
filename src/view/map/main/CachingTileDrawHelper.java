@@ -97,7 +97,6 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 *
 	 * @param width  the current width
 	 * @param height the current height
-	 * @return whether the cache was regenerated
 	 */
 	private void checkCache(final int width, final int height) {
 		if (areFloatsDifferent(backgroundShape.getWidth(), (double) width)

@@ -28,7 +28,15 @@ import java.util.Iterator;
  * @author Jonathan Lovelace
  */
 public class ClassIterable implements Iterable<Class<?>> {
+	/**
+	 * The list of class objects.
+	 */
 	private final Collection<Class<?>> classes = new ArrayList<>();
+
+	/**
+	 * Constructor.
+	 * @param obj the object whose superclasses we want to iterate over.
+	 */
 	public ClassIterable(final Object obj) {
 		final Class<?> base = obj.getClass();
 		classes.add(base);
@@ -38,10 +46,20 @@ public class ClassIterable implements Iterable<Class<?>> {
 			addInterfaces(classes, cls);
 		}
 	}
+
+	/**
+	 * @return an iterator over the object's superclasses.
+	 */
 	@Override
 	public Iterator<Class<?>> iterator() {
 		return classes.iterator();
 	}
+
+	/**
+	 * Add the interfaces satisfied by the given class, recursively, to the given list.
+	 * @param list the list of classes
+	 * @param cls the class to get the interfaces of
+	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addInterfaces(final Collection<Class<?>> list, final Class<?> cls) {
 		for (final Class<?> iface : cls.getInterfaces()) {

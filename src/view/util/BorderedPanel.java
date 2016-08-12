@@ -143,6 +143,7 @@ public class BorderedPanel extends JPanel {
 	 * @param pageStart the component to put at page start
 	 * @param center the component to put at the center
 	 * @param pageEnd the component to put at page end
+	 * @return a vertical BorderedPanel.
 	 */
 	public static BorderedPanel vertical(@Nullable final Component pageStart,
 										@Nullable final Component center,
@@ -155,6 +156,7 @@ public class BorderedPanel extends JPanel {
 	 * @param lineStart the component to put at line start
 	 * @param center the component to put at the center
 	 * @param lineEnd the component to put at line end
+	 * @return a horizontal BorderedPanel.
 	 */
 	public static BorderedPanel horizontal(@Nullable final Component lineStart,
 										@Nullable final Component center,

@@ -55,6 +55,7 @@ public final class TestSubsets {
 
 	/**
 	 * A test of PlayerCollection's subset feature.
+	 * @throws IOException never
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test

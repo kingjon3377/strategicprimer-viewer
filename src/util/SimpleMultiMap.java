@@ -29,6 +29,8 @@ import java.util.Set;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @param <K> the type of keys in the map
+ * @param <V> the type of values in the map
  */
 public class SimpleMultiMap<K, V> implements Map<K, Collection<V>> {
 	/**

@@ -50,6 +50,7 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	/**
 	 * Factory method.
 	 * @param what what the panel allows the user to add or remove
+	 * @return the constructed panel.
 	 */
 	public static AddRemovePanel addRemovePanel(final String what) {
 		final AddRemovePanel retval = new AddRemovePanel();

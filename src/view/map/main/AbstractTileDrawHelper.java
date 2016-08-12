@@ -1,12 +1,7 @@
 package view.map.main;
 
-import java.awt.*;
-import model.map.IEvent;
-import model.map.IMapNG;
-import model.map.Point;
+import java.awt.Color;
 import model.map.TileType;
-import model.map.fixtures.mobile.IUnit;
-import model.map.fixtures.towns.Fortress;
 import util.NullCleaner;
 
 /**

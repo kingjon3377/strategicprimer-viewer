@@ -74,6 +74,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	}
 
 	/**
+	 * @param dismissed the list of dismissed members
 	 * @return the proto-strategy as a String
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
@@ -174,6 +175,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	}
 	/**
 	 * Write the strategy to file.
+	 * @param dismissed the list of dismissed members
 	 * @param file a file (name) to write to
 	 */
 	public void writeStrategy(final Path file, final Iterable<UnitMember> dismissed) {

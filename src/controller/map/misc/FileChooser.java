@@ -45,9 +45,22 @@ public final class FileChooser {
 	 * Possible operations. TODO: We'd like to support CUSTOM.
 	 */
 	public enum FileChooserOperation {
+		/**
+		 * Specifies the Open dialog.
+		 */
 		Open(JFileChooser.OPEN_DIALOG),
+		/**
+		 * Specifies the Save (or Save As) dialog.
+		 */
 		Save(JFileChooser.SAVE_DIALOG);
+		/**
+		 * The equivalent JFileChooser-class constant.
+		 */
 		protected final int operationId;
+
+		/**
+		 * @param id the equivalent JFileChooser-class constant.
+		 */
 		FileChooserOperation(final int id) {
 			operationId = id;
 		}

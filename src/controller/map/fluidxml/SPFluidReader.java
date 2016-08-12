@@ -111,6 +111,10 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * The collection of readers, mapped to the tags they read.
 	 */
 	private final Map<String, FluidXMLReader> readers = new HashMap<>();
+
+	/**
+	 * Constructor. Set up readers.
+	 */
 	public SPFluidReader() {
 		readers.put("adventure", FluidExplorableHandler::readAdventure);
 		readers.put("portal", FluidExplorableHandler::readPortal);
@@ -511,6 +515,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @param players the collection of players
 	 * @param warner to report format irregularities
 	 * @param idFactory to get ID numbers when needed, and report numbers in use
+	 * @throws SPFormatException on malformed or invalid-in-our-domain XML
 	 */
 	private void parseTile(final IMutableMapNG map,
 						   final StartElement element,

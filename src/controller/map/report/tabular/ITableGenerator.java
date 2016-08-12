@@ -186,8 +186,7 @@ public interface ITableGenerator<@NonNull T> {
 	}
 	/**
 	 * @param obj an object
-
-
+	 * @return whether this table generator can handle that object
 	 */
 	default boolean applies(final IFixture obj) {
 		return true;

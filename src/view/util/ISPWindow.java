@@ -25,7 +25,7 @@ package view.util;
 @FunctionalInterface
 public interface ISPWindow {
 	/**
-	 * The name of this window. TODO: Should this include the file being edited or viewed?
+	 * @return The name of this window. TODO: Should this include the file being edited or viewed?
 	 */
 	String getWindowName();
 }

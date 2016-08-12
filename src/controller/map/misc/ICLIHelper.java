@@ -112,6 +112,8 @@ public interface ICLIHelper extends Closeable {
 	interface ChoiceOperation {
 		/**
 		 * The operation.
+		 * @return the value the user chose.
+		 * @throws IOException on I/O error interacting with the user
 		 */
 		int choose() throws IOException;
 	}

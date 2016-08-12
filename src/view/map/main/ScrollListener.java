@@ -115,6 +115,7 @@ public final class ScrollListener
 	 * Factory method.
 	 * @param viewerModel the viewer model
 	 * @param component the map component
+	 * @return the panel encapsulating the component with scrollbars.
 	 */
 	public static BorderedPanel mapScrollPanel(final IViewerModel viewerModel,
 											   final JComponent component) {

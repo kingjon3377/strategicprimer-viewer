@@ -68,6 +68,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 *
 	 * @param element the element to check
 	 * @param tags    the tags we accept here
+	 * @throws SPFormatException on something other than one of the tags we accept in a
+	 * namespace we expect.
 	 */
 	protected static void requireTag(final StartElement element,
 									final String... tags) throws SPFormatException {

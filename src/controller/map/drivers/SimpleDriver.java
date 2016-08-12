@@ -36,6 +36,7 @@ public interface SimpleDriver extends ISPDriver {
 	 * (Try to) run the driver. If the driver does not need arguments, it should
 	 * override this default method to support that; otherwise, this will throw,
 	 * because nearly all drivers do need arguments.
+	 * @throws DriverFailedException on any failure
 	 */
 	default void startDriver() throws DriverFailedException {
 		throw new DriverFailedException("Driver does not support no-arg operation",

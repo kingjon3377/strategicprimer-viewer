@@ -760,6 +760,8 @@ public abstract class BaseTestFixtureSerialization {
 	/**
 	 * Assert that a given piece of XML will fail with NoSuchElementException.
 	 * @param xml the XML to check
+	 * @throws XMLStreamException on unexpected reader failure
+	 * @throws SPFormatException on unexpected reader objection
 	 */
 	protected final void assertInvalid(final String xml)
 			throws XMLStreamException, SPFormatException {

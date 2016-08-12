@@ -70,6 +70,10 @@ public final class WorkerTree extends JTree
 	private final WorkerTreeSelectionListener tsl;
 	/**
 	 * Factory method, to avoid leaking 'this' references.
+	 * @param wtModel the tree model
+	 * @param players the players in the map
+	 * @param orderCheck whether to visually warn on units needing orders
+	 * @return the constructed tree.
 	 */
 	public static WorkerTree factory(final IWorkerTreeModel wtModel,
 									 final Iterable<Player> players,

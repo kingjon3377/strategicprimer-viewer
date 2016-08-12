@@ -68,6 +68,11 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	 * The race to use for the village in the test.
 	 */
 	private final String race;
+
+	/**
+	 * A factory method for the data to use as parameters for the test.
+	 * @return the data to use as parameters for the test.
+	 */
 	@SuppressWarnings("ObjectAllocationInLoop")
 	@Parameterized.Parameters
 	public static Collection<Object[]> generateData() {

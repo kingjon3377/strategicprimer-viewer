@@ -189,6 +189,7 @@ public class TestCLIHelper {
 	}
 	/**
 	 * Test that inputNumber() bails out on EOF.
+	 * @throws IOException never
 	 */
 	@Test(expected = IOException.class)
 	public void testInputNumberEOF() throws IOException {
@@ -399,6 +400,7 @@ public class TestCLIHelper {
 	}
 	/**
 	 * Test print() and friends.
+	 * @throws IOException never
 	 */
 	@Test
 	public void testPrinting() throws IOException {

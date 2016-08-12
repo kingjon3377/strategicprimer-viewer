@@ -526,6 +526,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	}
 	/**
 	 * Test that the reader rejects invalid XML.
+	 * @throws XMLStreamException never
+	 * @throws SPFormatException never
 	 */
 	@Test
 	public void testRejectsInvalid() throws XMLStreamException, SPFormatException {

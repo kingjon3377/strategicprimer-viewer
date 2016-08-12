@@ -43,6 +43,10 @@ public class TestDirection {
 			new ExplorationModel(new SPMapNG(new MapDimensions(5, 5, 2),
 													new PlayerCollection(), 0),
 										Optional.empty());
+
+	/**
+	 * Test that wrapping to the east works properly.
+	 */
 	@Test
 	public void testEast() {
 		assertThat("East of (0, 0) is (0, 1)",
@@ -58,6 +62,10 @@ public class TestDirection {
 				model.getDestination(point(4, 3), IExplorationModel.Direction.East),
 				equalTo(point(4, 4)));
 	}
+
+	/**
+	 * Test that wrapping to the north works properly.
+	 */
 	@Test
 	public void testNorth() {
 		assertThat("North of (0, 0) in a 5x5 map is (4, 0)",
@@ -73,6 +81,10 @@ public class TestDirection {
 				model.getDestination(point(4, 3), IExplorationModel.Direction.North),
 				equalTo(point(3, 3)));
 	}
+
+	/**
+	 * Test that wrapping to the south works properly.
+	 */
 	@Test
 	public void testSouth() {
 		assertThat("South of (0, 0) is (1, 0)",
@@ -88,6 +100,10 @@ public class TestDirection {
 				model.getDestination(point(4, 3), IExplorationModel.Direction.South),
 				equalTo(point(0, 3)));
 	}
+
+	/**
+	 * Test that wrapping to the west works properly.
+	 */
 	@Test
 	public void testWest() {
 		assertThat("West of (0, 0) in a 5x5 map is (0, 4)",

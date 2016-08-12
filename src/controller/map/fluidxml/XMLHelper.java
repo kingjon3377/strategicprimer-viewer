@@ -55,6 +55,9 @@ import static java.lang.String.format;
  * @author Jonathan Lovelace
  */
 public final class XMLHelper {
+	/**
+	 * Do not instantiate.
+	 */
 	private XMLHelper() {
 		// do not instantiate
 	}
@@ -292,6 +295,7 @@ public final class XMLHelper {
 	 * If the object has a custom (non-default) image, write it to XML.
 	 * @param ostream the stream to write to
 	 * @param obj an object being written out that might have a custom image
+	 * @throws IOException on I/O error when writing
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeImage(final Appendable ostream, final HasImage obj)
