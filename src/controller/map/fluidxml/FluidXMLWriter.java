@@ -1,6 +1,7 @@
 package controller.map.fluidxml;
 
-import java.io.IOException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * An interface for writers-to-XML. It's expected that most "implementations" will in
@@ -28,13 +29,10 @@ import java.io.IOException;
 @FunctionalInterface
 public interface FluidXMLWriter {
 	/**
-	 * TODO: Instead of almost reproducing the CXML interface, take a DocumentBuilder.
-	 * @param ostream the stream to write to
-	 * @param obj the object to write
-	 * @param indent the indentation level
-	 * @throws IOException on I/O problems
-	 * @throws IllegalArgumentException if obj is not an object we know how to write
+	 * Create DOM subtree representing the given object.
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param obj The object being written.
 	 */
-	void writeSPObject(Appendable ostream, Object obj, int indent)
-			throws IOException, IllegalArgumentException;
+	void writeSPObject(final Document document, final Node parent, Object obj);
 }

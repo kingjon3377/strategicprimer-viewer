@@ -31,6 +31,7 @@ import static model.map.TileType.Desert;
 import static model.map.TileType.Jungle;
 import static model.map.TileType.Plains;
 import static model.map.TileType.Steppe;
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -276,7 +277,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				Long.valueOf(five.streamOtherFixtures(point(2, 3)).count()),
 				equalTo(Long.valueOf(2L)));
 		assertSerialization("Multiple units should come through", five);
-		final String xmlTwo = String.format("<view xmlns=\"%s\" current_player=\"-1\" " +
+		final String xmlTwoLogical = String.format("<view xmlns=\"%s\" current_player=\"-1\" " +
 									"current_turn=\"-1\">%n\t<map version=\"2\" " +
 									"rows=\"3\" columns=\"4\">%n\t\t<row " +
 									"index=\"2\">%n\t\t\t<tile row=\"2\" column=\"3\" " +
@@ -285,9 +286,19 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 									"/>%n\t\t\t\t<unit owner=\"2\" kind=\"explorer\" " +
 									"name=\"name two\" id=\"2\" " +
 									"/>%n\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view>%n", ISPReader.NAMESPACE);
-		assertThat("Multiple units", createSerializedForm(five, true), equalTo(xmlTwo));
+		final String xmlTwoAlphabetical = String.format(
+				"<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"%s\">%n\t<map " +
+						"columns=\"4\" rows=\"3\" version=\"2\">%n\t\t<row " +
+						"index=\"2\">%n\t\t\t<tile column=\"3\" kind=\"jungle\" " +
+						"row=\"2\">%n\t\t\t\t<unit id=\"1\" kind=\"explorer\" " +
+						"name=\"name one\" owner=\"2\"/>%n\t\t\t\t<unit id=\"2\" " +
+						"kind=\"explorer\" name=\"name two\" " +
+						"owner=\"2\"/>%n\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view>%n",
+				ISPReader.NAMESPACE);
+		assertThat("Multiple units", createSerializedForm(five, true), equalTo(xmlTwoLogical));
 		assertThat("Multiple units", createSerializedForm(five, false),
-				equalTo(xmlTwo));
+				anyOf(equalTo(xmlTwoLogical.replaceAll("\t", "    ")),
+						equalTo(xmlTwoAlphabetical.replaceAll("\t", "    "))));
 		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
 						createSimpleMap(point(1, 1), Pair.of(point(0, 0), TileType.NotVisible)),
@@ -301,11 +312,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				createSerializedForm(
 						createSimpleMap(point(1, 1), Pair.of(point(0, 0), TileType.NotVisible)),
 						false),
-				equalTo(String.format(
+				anyOf(equalTo(String.format(
 						"<view xmlns=\"%s\" current_player=\"-1\" " +
 								"current_turn=\"-1\">%n\t<map version=\"2\" rows=\"1\" " +
 								"columns=\"1\">%n\t</map>%n</view>%n",
-						ISPReader.NAMESPACE)));
+						ISPReader.NAMESPACE)), equalTo(String.format(
+						"<view current_player=\"-1\" current_turn=\"-1\" " +
+								"xmlns=\"%s\">%n    <map columns=\"1\" rows=\"1\" " +
+								"version=\"2\"/>%n</view>%n", ISPReader.NAMESPACE))));
 		assertImageSerialization("Unit image property is preserved",
 				new Unit(new Player(5, ""), "herder", "herderName", 9));
 	}

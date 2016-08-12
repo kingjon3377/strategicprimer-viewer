@@ -4,7 +4,6 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
-import java.io.IOException;
 import javax.xml.XMLConstants;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -17,8 +16,10 @@ import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.explorable.Portal;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import util.EqualsAny;
-import util.LineEnd;
 import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttribute;
@@ -31,7 +32,6 @@ import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
-import static controller.map.fluidxml.XMLHelper.writeTag;
 import static util.NullCleaner.assertNotNull;
 
 /**
@@ -210,126 +210,112 @@ public final class FluidExplorableHandler {
 							   getIntegerAttribute(element, "turn", -1)), element, warner);
 	}
 	/**
-	 * Write an adventure hook to XML.
-	 * @param ostream the stream to write to
-	 * @param obj the object to write to the stream. Must be an AdventureFixture.
-	 * @param indent the current indentation level
-	 * @throws IOException on I/O error
+	 * Create DOM subtree representing an adventure hook.
+	 * @param document the Document object, used to get new Elements
+	 * @param parent The parent Element to which the subtree should be attached
+	 * @param obj The object being written.
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeAdventure(final Appendable ostream,
-									  final Object obj, final int indent)
-			throws IOException {
+	public static void writeAdventure(final Document document, final Node parent, Object obj) {
 		// TODO: Create helper method for this idiom, so we don't have to sacrifice
 		// one coverage-miss line per method.
 		if (!(obj instanceof AdventureFixture)) {
 			throw new IllegalArgumentException("Can only write AdventureFixtures");
 		}
 		final AdventureFixture adv = (AdventureFixture) obj;
-		writeTag(ostream, "adventure", indent);
-		writeIntegerAttribute(ostream, "id", adv.getID());
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "adventure");
+		writeIntegerAttribute(element, "id", adv.getID());
 		if (!adv.getOwner().isIndependent()) {
-			writeIntegerAttribute(ostream, "owner", adv.getOwner().getPlayerId());
+			writeIntegerAttribute(element, "owner", adv.getOwner().getPlayerId());
 		}
-		writeNonEmptyAttribute(ostream, "brief", adv.getBriefDescription());
-		writeNonEmptyAttribute(ostream, "full", adv.getFullDescription());
-		writeImage(ostream, adv);
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		writeNonEmptyAttribute(element, "brief", adv.getBriefDescription());
+		writeNonEmptyAttribute(element, "full", adv.getFullDescription());
+		writeImage(element, adv);
+		parent.appendChild(element);
 	}
 	/**
 	 * Write a portal to XML.
-	 * @param ostream the stream to write to
-	 * @param obj the object to write to the stream. Must be a Portal.
-	 * @param indent the current indentation level
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param obj The object being written. Must be a Portal.
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writePortal(final Appendable ostream,
-								   final Object obj, final int indent)
-			throws IOException {
+	public static void writePortal(final Document document, final Node parent,
+								   Object obj) {
 		if (!(obj instanceof Portal)) {
 			throw new IllegalArgumentException("Can only write Portals");
 		}
 		final Portal portal = (Portal) obj;
-		writeTag(ostream, "portal", indent);
-		writeAttribute(ostream, "world", portal.getDestinationWorld());
-		writeIntegerAttribute(ostream, "row",
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "portal");
+		writeAttribute(element, "world", portal.getDestinationWorld());
+		writeIntegerAttribute(element, "row",
 				portal.getDestinationCoordinates().getRow());
-		writeIntegerAttribute(ostream, "column",
+		writeIntegerAttribute(element, "column",
 				portal.getDestinationCoordinates().getCol());
-		writeIntegerAttribute(ostream, "id", portal.getID());
-		writeImage(ostream, portal);
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		writeIntegerAttribute(element, "id", portal.getID());
+		writeImage(element, portal);
+		parent.appendChild(element);
 	}
 	/**
 	 * Write a cave to XML.
-	 * @param ostream the stream to write to
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
 	 * @param obj the object to write to the stream. Must be a Cave.
-	 * @param indent the current indentation level
-	 * @throws IOException on I/O error
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeCave(final Appendable ostream,
-								 final Object obj, final int indent)
-			throws IOException {
+	public static void writeCave(final Document document, final Node parent,
+								 Object obj) {
 		if (!(obj instanceof Cave)) {
 			throw new IllegalArgumentException("Can only write Caves");
 		}
 		final Cave cave = (Cave) obj;
-		writeTag(ostream, "cave", indent);
-		writeIntegerAttribute(ostream, "dc", cave.getDC());
-		writeIntegerAttribute(ostream, "id", cave.getID());
-		writeImage(ostream, cave);
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "cave");
+		writeIntegerAttribute(element, "dc", cave.getDC());
+		writeIntegerAttribute(element, "id", cave.getID());
+		writeImage(element, cave);
+		parent.appendChild(element);
 	}
 	/**
 	 * Write a battlefield to XML.
-	 * @param ostream the stream to write to
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
 	 * @param obj the object to write to the stream. Must be a Battlefield.
-	 * @param indent the current indentation level
-	 * @throws IOException on I/O error
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeBattlefield(final Appendable ostream,
-										final Object obj, final int indent)
-			throws IOException {
+	public static void writeBattlefield(final Document document, final Node parent,
+										Object obj) {
 		if (!(obj instanceof Battlefield)) {
 			throw new IllegalArgumentException("Can only write Caves");
 		}
 		final Battlefield field = (Battlefield) obj;
-		writeTag(ostream, "battlefield", indent);
-		writeIntegerAttribute(ostream, "dc", field.getDC());
-		writeIntegerAttribute(ostream, "id", field.getID());
-		writeImage(ostream, field);
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		final Element element =
+				document.createElementNS(ISPReader.NAMESPACE, "battlefield");
+		writeIntegerAttribute(element, "dc", field.getDC());
+		writeIntegerAttribute(element, "id", field.getID());
+		writeImage(element, field);
+		parent.appendChild(element);
 	}
 	/**
 	 * Write an arbitrary-text note to XML.
-	 * @param ostream the stream to write to
 	 * @param obj the object to write to the stream. Must be a TextFixture.
-	 * @param indent the current indentation level
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeTextFixture(final Appendable ostream, final Object obj,
-										final int indent) throws IOException {
+	public static void writeTextFixture(final Document document, final Node parent,
+										Object obj) {
 		if (!(obj instanceof TextFixture)) {
 			throw new IllegalArgumentException("Can only write TextFixture");
 		}
 		final TextFixture fix = (TextFixture) obj;
-		writeTag(ostream, "text", indent);
+		// TODO: Make an XMLHelper wrapper to handle the namespacing
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "text");
 		if (fix.getTurn() != -1) {
-			writeIntegerAttribute(ostream, "turn", fix.getTurn());
+			writeIntegerAttribute(element, "turn", fix.getTurn());
 		}
-		writeImage(ostream, fix);
-		ostream.append('>');
-		ostream.append(fix.getText().trim());
-		ostream.append("</text>");
-		ostream.append(LineEnd.LINE_SEP);
+		writeImage(element, fix);
+		element.appendChild(document.createTextNode(fix.getText().trim()));
+		parent.appendChild(element);
 	}
 }
 

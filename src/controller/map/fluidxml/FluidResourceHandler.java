@@ -3,8 +3,8 @@ package controller.map.fluidxml;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
-import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -17,7 +17,9 @@ import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
-import util.LineEnd;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
@@ -32,7 +34,6 @@ import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeBooleanAttribute;
 import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
-import static controller.map.fluidxml.XMLHelper.writeTag;
 import static java.lang.Boolean.parseBoolean;
 import static model.map.fixtures.resources.StoneKind.parseStoneKind;
 import static model.map.fixtures.towns.TownStatus.parseTownStatus;
@@ -366,172 +367,167 @@ public final class FluidResourceHandler {
 	}
 
 	/**
-	 * Write a resource pile to a stream.
+	 * Write a resource pile to XML.
 	 *
-	 * @param ostream the stream to write to
 	 * @param obj     the resource to write. Must be a ResourcePile.
-	 * @param indent  the current indentation level
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeResource(final Appendable ostream, final Object obj,
-									 final int indent) throws IOException {
+	public static void writeResource(final Document document, final Node parent,
+									 Object obj) {
 		if (!(obj instanceof ResourcePile)) {
 			throw new IllegalArgumentException("Can only write ResourcePile");
 		}
 		final ResourcePile pile = (ResourcePile) obj;
-		writeTag(ostream, "resource", indent);
-		writeIntegerAttribute(ostream, "id", pile.getID());
-		writeAttribute(ostream, "kind", pile.getKind());
-		writeAttribute(ostream, "contents", pile.getContents());
-		writeIntegerAttribute(ostream, "quantity", pile.getQuantity());
-		writeAttribute(ostream, "unit", pile.getUnits());
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "resource");
+		writeIntegerAttribute(element, "id", pile.getID());
+		writeAttribute(element, "kind", pile.getKind());
+		writeAttribute(element, "contents", pile.getContents());
+		writeIntegerAttribute(element, "quantity", pile.getQuantity());
+		writeAttribute(element, "unit", pile.getUnits());
 		if (pile.getCreated() >= 0) {
-			writeIntegerAttribute(ostream, "created", pile.getCreated());
+			writeIntegerAttribute(element, "created", pile.getCreated());
 		}
-		writeImage(ostream, pile);
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		writeImage(element, pile);
+		parent.appendChild(element);
 	}
 	/**
-	 * Write a cache to a stream.
+	 * Write a cache to XML.
 	 *
-	 * @param ostream the stream to write to
 	 * @param obj     the resource to write. Must be a CacheFixture.
-	 * @param indent  the current indentation level
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeCache(final Appendable ostream, final Object obj,
-								  final int indent) throws IOException {
+	public static void writeCache(final Document document, final Node parent,
+								  Object obj) {
 		if (!(obj instanceof CacheFixture)) {
 			throw new IllegalArgumentException("Can only write CacheFixture");
 		}
 		final CacheFixture fix = (CacheFixture) obj;
-		writeTag(ostream, "cache", indent);
-		writeAttribute(ostream, "kind", fix.getKind());
-		writeAttribute(ostream, "contents", fix.getContents());
-		writeIntegerAttribute(ostream, "id", fix.getID());
-		writeImage(ostream, fix);
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "cache");
+		writeAttribute(element, "kind", fix.getKind());
+		writeAttribute(element, "contents", fix.getContents());
+		writeIntegerAttribute(element, "id", fix.getID());
+		writeImage(element, fix);
+		parent.appendChild(element);
 	}
 	/**
-	 * Write a field or meadow to a stream.
+	 * Write a field or meadow to XML.
 	 *
-	 * @param ostream the stream to write to
 	 * @param obj     the resource to write. Must be a Meadow.
-	 * @param indent  the current indentation level
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeMeadow(final Appendable ostream, final Object obj,
-								   final int indent) throws IOException {
+	public static void writeMeadow(final Document document, final Node parent,
+								   Object obj) {
 		if (!(obj instanceof Meadow)) {
 			throw new IllegalArgumentException("Can only write Meadows");
 		}
 		final Meadow fix = (Meadow) obj;
+		final Element element;
 		if (fix.isField()) {
-			writeTag(ostream, "field", indent);
+			element = document.createElementNS(ISPReader.NAMESPACE, "field");
 		} else {
-			writeTag(ostream, "meadow", indent);
+			element = document.createElementNS(ISPReader.NAMESPACE, "meadow");
 		}
-		writeAttribute(ostream, "kind", fix.getKind());
-		writeBooleanAttribute(ostream, "cultivated", fix.isCultivated());
-		writeAttribute(ostream, "status", fix.getStatus().toString());
-		writeIntegerAttribute(ostream, "id", fix.getID());
-		writeImage(ostream, fix);
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		writeAttribute(element, "kind", fix.getKind());
+		writeBooleanAttribute(element, "cultivated", fix.isCultivated());
+		writeAttribute(element, "status", fix.getStatus().toString());
+		writeIntegerAttribute(element, "id", fix.getID());
+		writeImage(element, fix);
+		parent.appendChild(element);
 	}
 	/**
-	 * Write a grove or orchard to a stream.
+	 * Write a grove or orchard to XML.
 	 *
-	 * @param ostream the stream to write to
 	 * @param obj     the resource to write. Must be a Grove.
-	 * @param indent  the current indentation level
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeGrove(final Appendable ostream, final Object obj,
-								  final int indent) throws IOException {
+	public static void writeGrove(final Document document, final Node parent,
+								  Object obj) {
 		if (!(obj instanceof Grove)) {
 			throw new IllegalArgumentException("Can only write Grove");
 		}
 		final Grove fix = (Grove) obj;
+		final Element element;
 		if (fix.isOrchard()) {
-			writeTag(ostream, "orchard", indent);
+			element = document.createElementNS(ISPReader.NAMESPACE, "orchard");
 		} else {
-			writeTag(ostream, "grove", indent);
+			element = document.createElementNS(ISPReader.NAMESPACE, "grove");
 		}
-		writeBooleanAttribute(ostream, "cultivated", fix.isCultivated());
-		writeAttribute(ostream, "kind", fix.getKind());
-		writeIntegerAttribute(ostream, "id", fix.getID());
-		writeImage(ostream, fix);
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		writeBooleanAttribute(element, "cultivated", fix.isCultivated());
+		writeAttribute(element, "kind", fix.getKind());
+		writeIntegerAttribute(element, "id", fix.getID());
+		writeImage(element, fix);
+		parent.appendChild(element);
 	}
 	/**
-	 * Write a mine to a stream.
+	 * Write a mine to XML.
 	 *
-	 * @param ostream the stream to write to
 	 * @param obj     the resource to write. Must be a Mine.
-	 * @param indent  the current indentation level
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeMine(final Appendable ostream, final Object obj,
-								 final int indent) throws IOException {
+	public static void writeMine(final Document document, final Node parent,
+								 Object obj) {
 		if (!(obj instanceof Mine)) {
 			throw new IllegalArgumentException("Can only write Mine");
 		}
 		final Mine fix = (Mine) obj;
-		writeTag(ostream, "mine", indent);
-		writeAttribute(ostream, "kind", fix.getKind());
-		writeAttribute(ostream, "status", fix.getStatus().toString());
-		writeIntegerAttribute(ostream, "id", fix.getID());
-		writeImage(ostream, fix);
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "mine");
+		writeAttribute(element, "kind", fix.getKind());
+		writeAttribute(element, "status", fix.getStatus().toString());
+		writeIntegerAttribute(element, "id", fix.getID());
+		writeImage(element, fix);
+		parent.appendChild(element);
 	}
 	/**
-	 * Write a mineral vein to a stream.
+	 * Write a mineral vein to XML.
 	 *
-	 * @param ostream the stream to write to
 	 * @param obj     the resource to write. Must be a MineralVein.
-	 * @param indent  the current indentation level
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeMineral(final Appendable ostream, final Object obj,
-									final int indent) throws IOException {
+	public static void writeMineral(final Document document, final Node parent,
+									Object obj) {
 		if (!(obj instanceof MineralVein)) {
 			throw new IllegalArgumentException("Can only write MineralVein");
 		}
 		final MineralVein fix = (MineralVein) obj;
-		writeTag(ostream, "mineral", indent);
-		writeAttribute(ostream, "kind", fix.getKind());
-		writeBooleanAttribute(ostream, "exposed", fix.isExposed());
-		writeIntegerAttribute(ostream, "dc", fix.getDC());
-		writeIntegerAttribute(ostream, "id", fix.getID());
-		writeImage(ostream, fix);
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "mineral");
+		writeAttribute(element, "kind", fix.getKind());
+		writeBooleanAttribute(element, "exposed", fix.isExposed());
+		writeIntegerAttribute(element, "dc", fix.getDC());
+		writeIntegerAttribute(element, "id", fix.getID());
+		writeImage(element, fix);
+		parent.appendChild(element);
 	}
 	/**
-	 * Write a stone deposit to a stream.
+	 * Write a stone deposit to XML.
 	 *
-	 * @param ostream the stream to write to
 	 * @param obj     the resource to write. Must be a StoneDeposit.
-	 * @param indent  the current indentation level
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeStone(final Appendable ostream, final Object obj,
-								  final int indent) throws IOException {
+	public static void writeStone(final Document document, final Node parent,
+								  Object obj) {
 		if (!(obj instanceof StoneDeposit)) {
 			throw new IllegalArgumentException("Can only write StoneDeposit");
 		}
 		final StoneDeposit fix = (StoneDeposit) obj;
-		writeTag(ostream, "stone", indent);
-		writeAttribute(ostream, "kind", fix.stone().toString());
-		writeIntegerAttribute(ostream, "dc", fix.getDC());
-		writeIntegerAttribute(ostream, "id", fix.getID());
-		writeImage(ostream, fix);
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "stone");
+		writeAttribute(element, "kind", fix.stone().toString());
+		writeIntegerAttribute(element, "dc", fix.getDC());
+		writeIntegerAttribute(element, "id", fix.getID());
+		writeImage(element, fix);
+		parent.appendChild(element);
 	}
 }

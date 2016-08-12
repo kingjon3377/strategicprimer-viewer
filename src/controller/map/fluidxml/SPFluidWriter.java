@@ -1,12 +1,28 @@
 package controller.map.fluidxml;
 
+import controller.map.iointerfaces.ISPReader;
 import controller.map.iointerfaces.SPWriter;
+import java.io.Closeable;
+import java.io.Flushable;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.CharBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasPortrait;
@@ -63,15 +79,15 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
-import util.LineEnd;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import util.NullCleaner;
 
-import static controller.map.fluidxml.XMLHelper.indent;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
-import static controller.map.fluidxml.XMLHelper.writeTag;
 
 /**
  * The main writer-to-XML class in the 'fluid XML' implementation.
@@ -151,14 +167,19 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writers.put(IMapNG.class, this::writeMap);
 		writers.put(Player.class, SPFluidWriter::writePlayer);
 	}
+	/**
+	 * Create DOM subtree representing the given object.
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param obj The object being written.
+	 */
 	@Override
-	public void writeSPObject(final Appendable ostream, final Object obj,
-							  final int indent)
-			throws IOException, IllegalArgumentException {
+	public void writeSPObject(final Document document, final Node parent, Object obj)
+			throws IllegalArgumentException {
 		final Iterable<Class<?>> types = new ClassIterable(obj);
 		for (final Class<?> cls : types) {
 			if (writers.containsKey(cls)) {
-				NullCleaner.assertNotNull(writers.get(cls)).writeSPObject(ostream, obj, indent);
+				NullCleaner.assertNotNull(writers.get(cls)).writeSPObject(document, parent, obj);
 				return;
 			}
 		}
@@ -168,13 +189,71 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	@Override
 	public void write(final Path file, final IMapNG map) throws IOException {
 		try (final Writer writer = Files.newBufferedWriter(file)) {
-			writeSPObject(writer, map, 0);
+			writeSPObject(writer, map);
 		}
 	}
 
 	@Override
 	public void write(final Appendable ostream, final IMapNG map) throws IOException {
-		writeSPObject(ostream, map, 0);
+		writeSPObject(ostream, map);
+	}
+	/**
+	 * Write an object to a stream.
+	 *
+	 * @param ostream the stream to write to
+	 * @param obj     the object to write
+	 * @throws IOException on I/O error
+	 */
+	public void writeSPObject(final Appendable ostream, final Object obj)
+			throws IOException {
+		final DocumentBuilder builder;
+		try {
+			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			final Document document = builder.newDocument();
+			writeSPObject(document, document, obj);
+			final Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+			final Writer writer;
+			if (ostream instanceof Writer) {
+				writer = (Writer) ostream;
+			} else if (ostream instanceof OutputStream) {
+				writer = new OutputStreamWriter((OutputStream) ostream);
+			} else {
+				writer = new Writer() {
+					@Override
+					public void write(final char[] cbuf, final int off, final int len)
+							throws IOException {
+						ostream.append(CharBuffer.wrap(cbuf, off, len));
+					}
+					@Override
+					public void flush() throws IOException {
+						if (ostream instanceof Flushable) {
+							((Flushable) ostream).flush();
+						}
+					}
+
+					@Override
+					public void close() throws IOException {
+						if (ostream instanceof Closeable) {
+							((Closeable) ostream).close();
+						}
+					}
+				};
+			}
+			transformer.transform(new DOMSource(document), new StreamResult(writer));
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
+
 	}
 	/**
 	 * Create a writer for the simplest cases (only an ID number and maybe an image, or
@@ -183,125 +262,110 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	 * @param tag the tag to be used for this class
 	 */
 	private void createSimpleFixtureWriter(final Class<?> cls, final String tag) {
-		writers.put(cls, (ostream, obj, indent) -> {
+		writers.put(cls, (document, parent, obj) -> {
 			if (!cls.isInstance(obj)) {
 				throw new IllegalArgumentException("Can only write " +
 														   cls.getSimpleName());
 			} else if (!(obj instanceof IFixture)) {
 				throw new IllegalStateException("Can only 'simply' write fixtures");
 			}
-			writeTag(ostream, tag, indent);
+			final Element element = document.createElementNS(ISPReader.NAMESPACE, tag);
 			if (obj instanceof HasKind) {
-				writeAttribute(ostream, "kind", ((HasKind) obj).getKind());
+				writeAttribute(element, "kind", ((HasKind) obj).getKind());
 			}
-			writeIntegerAttribute(ostream, "id", ((IFixture) obj).getID());
+			writeIntegerAttribute(element, "id", ((IFixture) obj).getID());
 			if (obj instanceof HasImage) {
-				writeImage(ostream, (HasImage) obj);
+				writeImage(element, (HasImage) obj);
 			}
-			ostream.append(" />");
-			ostream.append(LineEnd.LINE_SEP);
+			parent.appendChild(element);
 		});
 	}
 	/**
-	 * Write a unit to a stream.
+	 * Write a unit to XML.
 	 *
-	 * @param ostream The stream to write to.
 	 * @param obj     The object to write. Must be an IUnit
-	 * @param indent  The current indentation level.
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	private void writeUnit(final Appendable ostream, final Object obj, final int indent)
-			throws IOException {
+	private void writeUnit(final Document document, final Node parent,
+						   Object obj) {
 		if (!(obj instanceof IUnit)) {
 			throw new IllegalArgumentException("Can only write IUnit");
 		}
 		final IUnit unit = (IUnit) obj;
-		writeTag(ostream, "unit", indent);
-		writeIntegerAttribute(ostream, "owner", unit.getOwner().getPlayerId());
-		writeNonEmptyAttribute(ostream, "kind", unit.getKind());
-		writeNonEmptyAttribute(ostream, "name", unit.getName());
-		writeIntegerAttribute(ostream, "id", unit.getID());
-		writeImage(ostream, unit);
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "unit");
+		writeIntegerAttribute(element, "owner", unit.getOwner().getPlayerId());
+		writeNonEmptyAttribute(element, "kind", unit.getKind());
+		writeNonEmptyAttribute(element, "name", unit.getName());
+		writeIntegerAttribute(element, "id", unit.getID());
+		writeImage(element, unit);
 		if (unit instanceof HasPortrait) {
-			writeNonEmptyAttribute(ostream, "portrait",
+			writeNonEmptyAttribute(element, "portrait",
 					((HasPortrait) unit).getPortrait());
 		}
 		final String orders = unit.getOrders().trim();
-		if (unit.iterator().hasNext() || !orders.isEmpty()) {
-			ostream.append('>').append(orders).append(LineEnd.LINE_SEP);
-			for (final UnitMember member : unit) {
-				writeSPObject(ostream, member, indent + 1);
-			}
-			indent(ostream, indent);
-			ostream.append("</unit>");
-		} else {
-			ostream.append(" />");
+		element.appendChild(document.createTextNode(orders));
+		for (final UnitMember member : unit) {
+			writeSPObject(document, element, member);
 		}
-		ostream.append(LineEnd.LINE_SEP);
+		parent.appendChild(element);
 	}
 	/**
-	 * Write a fortress to a stream.
+	 * Write a fortress to XML.
 	 *
-	 * @param ostream The stream to write to.
 	 * @param obj     The object to write. Must be a Fortress
-	 * @param indent  The current indentation level.
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	private void writeFortress(final Appendable ostream, final Object obj, final int indent)
-			throws IOException {
+	private void writeFortress(final Document document, final Node parent,
+							   Object obj) {
 		if (!(obj instanceof Fortress)) {
 			throw new IllegalArgumentException("Can only write Fortress");
 		}
 		final Fortress fort = (Fortress) obj;
-		writeTag(ostream, "fortress", indent);
-		writeIntegerAttribute(ostream, "owner", fort.getOwner().getPlayerId());
-		writeNonEmptyAttribute(ostream, "name", fort.getName());
-		writeIntegerAttribute(ostream, "id", fort.getID());
-		writeImage(ostream, fort);
-		writeNonEmptyAttribute(ostream, "portrait", fort.getPortrait());
-		ostream.append('>');
-		if (fort.iterator().hasNext()) {
-			ostream.append(LineEnd.LINE_SEP);
-			//noinspection unchecked: checked as first operation of method
-			for (final FortressMember unit : (Iterable<FortressMember>) obj) {
-				writeSPObject(ostream, unit, indent + 1);
-			}
-			indent(ostream, indent);
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "fortress");
+		writeIntegerAttribute(element, "owner", fort.getOwner().getPlayerId());
+		writeNonEmptyAttribute(element, "name", fort.getName());
+		writeIntegerAttribute(element, "id", fort.getID());
+		writeImage(element, fort);
+		writeNonEmptyAttribute(element, "portrait", fort.getPortrait());
+		//noinspection unchecked: checked as first operation of method
+		for (final FortressMember unit : (Iterable<FortressMember>) obj) {
+			writeSPObject(document, element, unit);
 		}
-		ostream.append("</fortress>");
-		ostream.append(LineEnd.LINE_SEP);
+		parent.appendChild(element);
 	}
 	/**
 	 * Write a map to XML.
-	 * @param ostream the stream to write to
 	 * @param obj the map to write. Must be an IMapNG.
-	 * @param indent the current indentation level
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	private void writeMap(final Appendable ostream, final Object obj, final int indent)
-			throws IOException {
+	private void writeMap(final Document document, final Node parent,
+						  Object obj) {
 		if (!(obj instanceof IMapNG)) {
 			throw new IllegalArgumentException("Can only write IMapNG");
 		}
 		final IMapNG map = (IMapNG) obj;
-		writeTag(ostream, "view", indent);
-		writeIntegerAttribute(ostream, "current_player",
+		final Element viewElement = document.createElementNS(ISPReader.NAMESPACE, "view");
+		writeIntegerAttribute(viewElement, "current_player",
 				map.getCurrentPlayer().getPlayerId());
-		writeIntegerAttribute(ostream, "current_turn", map.getCurrentTurn());
-		ostream.append(">");
-		ostream.append(LineEnd.LINE_SEP);
-		writeTag(ostream, "map", indent + 1);
+		writeIntegerAttribute(viewElement, "current_turn", map.getCurrentTurn());
+		final Element mapElement = document.createElementNS(ISPReader.NAMESPACE, "map");
 		final MapDimensions dim = map.dimensions();
-		writeIntegerAttribute(ostream, "version", dim.version);
-		writeIntegerAttribute(ostream, "rows", dim.rows);
-		writeIntegerAttribute(ostream, "columns", dim.cols);
-		ostream.append(">");
-		ostream.append(LineEnd.LINE_SEP);
+		writeIntegerAttribute(mapElement, "version", dim.version);
+		writeIntegerAttribute(mapElement, "rows", dim.rows);
+		writeIntegerAttribute(mapElement, "columns", dim.cols);
 		for (final Player player : map.players()) {
-			writeSPObject(ostream, player, indent + 2);
+			writeSPObject(document, mapElement, player);
 		}
 		for (int i = 0; i < dim.rows; i++) {
 			boolean rowEmpty = true;
+			final Element rowElement =
+					document.createElementNS(ISPReader.NAMESPACE, "row");
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				final TileType terrain = map.getBaseTerrain(point);
@@ -312,101 +376,63 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 							|| map.streamOtherFixtures(point).anyMatch(x->true)) {
 					if (rowEmpty) {
 						rowEmpty = false;
-						writeTag(ostream, "row", indent + 2);
-						writeIntegerAttribute(ostream, "index", i);
-						ostream.append(">");
-						ostream.append(LineEnd.LINE_SEP);
+						writeIntegerAttribute(rowElement, "index", i);
 					}
-					writeTag(ostream, "tile", indent + 3);
-					writeIntegerAttribute(ostream, "row", i);
-					writeIntegerAttribute(ostream, "column", j);
+					final Element element =
+							document.createElementNS(ISPReader.NAMESPACE, "tile");
+					writeIntegerAttribute(element, "row", i);
+					writeIntegerAttribute(element, "column", j);
 					if (TileType.NotVisible != terrain) {
-						writeAttribute(ostream, "kind", terrain.toXML());
+						writeAttribute(element, "kind", terrain.toXML());
 					}
-					ostream.append(">");
-					boolean needEOL = true;
 					if (map.isMountainous(point)) {
-						eolIfNeeded(true, ostream);
-						needEOL = false;
-						writeTag(ostream, "mountain", indent + 4);
-						ostream.append(" />");
-						ostream.append(LineEnd.LINE_SEP);
+						element.appendChild(document.createElementNS(ISPReader.NAMESPACE,
+								"mountain"));
 					}
 					for (final River river : map.getRivers(point)) {
-						eolIfNeeded(needEOL, ostream);
-						needEOL = false;
-						writeSPObject(ostream, river, indent + 4);
+						writeSPObject(document, element, river);
 					}
 					final Ground ground = map.getGround(point);
 					if (ground != null) {
-						eolIfNeeded(needEOL, ostream);
-						needEOL = false;
-						writeSPObject(ostream, ground, indent + 4);
+						writeSPObject(document, element, ground);
 					}
 					final Forest forest = map.getForest(point);
 					if (forest != null) {
-						eolIfNeeded(needEOL, ostream);
-						needEOL = false;
-						writeSPObject(ostream, forest, indent + 4);
+						writeSPObject(document, element, forest);
 					}
 					for (final TileFixture fixture : map.getOtherFixtures(point)) {
-						eolIfNeeded(needEOL, ostream);
-						needEOL = false;
-						writeSPObject(ostream, fixture, indent + 4);
+						writeSPObject(document, element, fixture);
 					}
-					if (!needEOL) {
-						indent(ostream, indent + 3);
-					}
-					ostream.append("</tile>");
-					ostream.append(LineEnd.LINE_SEP);
+					rowElement.appendChild(element);
 				}
 			}
 			if (!rowEmpty) {
-				indent(ostream, indent + 2);
-				ostream.append("</row>");
-				ostream.append(LineEnd.LINE_SEP);
+				mapElement.appendChild(rowElement);
 			}
 		}
-		indent(ostream, indent + 1);
-		ostream.append("</map>");
-		ostream.append(LineEnd.LINE_SEP);
-		indent(ostream, indent);
-		ostream.append("</view>");
-		ostream.append(LineEnd.LINE_SEP);
+		viewElement.appendChild(mapElement);
+		parent.appendChild(viewElement);
 	}
+
 	/**
-	 * Write a newline if needed.
-	 *
-	 * @param writer  the writer to write to
-	 * @param needEOL whether we need a newline.
-	 * @throws IOException on I/O error
-	 */
-	private static void eolIfNeeded(final boolean needEOL,
-									final Appendable writer) throws IOException {
-		if (needEOL) {
-			writer.append(LineEnd.LINE_SEP);
-		}
-	}
-	/**
-	 * Write a player to a stream. This is here because it's not a good fit for any of
+	 * Write a player to XML. This is here because it's not a good fit for any of
 	 * the other classes that collect methods.
 	 *
-	 * @param ostream The stream to write to.
 	 * @param obj     The object to write. Must be a Player.
-	 * @param indent  The current indentation level.
-	 * @throws IOException on I/O error
+	 * @param document the Document object, used to get new Elements
+	 * @param parent the parent tag, to which the subtree should be attached
+	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	private static void writePlayer(final Appendable ostream, final Object obj,
-										  final int indent) throws IOException {
+	private static void writePlayer(final Document document, final Node parent,
+									Object obj) {
 		if (!(obj instanceof Player)) {
 			throw new IllegalArgumentException("Can only write Player");
 		}
 		final Player player = (Player) obj;
-		writeTag(ostream, "player", indent);
-		writeIntegerAttribute(ostream, "number", player.getPlayerId());
-		writeAttribute(ostream, "code_name", player.getName());
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		final Element element = document.createElementNS(ISPReader.NAMESPACE, "player");
+		writeIntegerAttribute(element, "number", player.getPlayerId());
+		writeAttribute(element, "code_name", player.getName());
+		parent.appendChild(element);
 	}
 
 	@SuppressWarnings("MethodReturnAlwaysConstant")

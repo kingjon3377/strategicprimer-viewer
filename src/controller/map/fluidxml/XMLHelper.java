@@ -24,6 +24,7 @@ import model.map.HasMutableImage;
 import model.map.IPlayerCollection;
 import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;
+import org.w3c.dom.Element;
 import util.EqualsAny;
 import util.NullCleaner;
 import util.Warning;
@@ -307,6 +308,19 @@ public final class XMLHelper {
 	}
 
 	/**
+	 * If the object has a custom (non-default) image, write it to XML.
+	 * @param element the tag to attach the attribute to
+	 * @param obj an object being written out that might have a custom image
+	 * @throws IOException on I/O error when writing
+	 */
+	@SuppressWarnings("TypeMayBeWeakened")
+	public static void writeImage(final Element element, final HasImage obj) {
+		final String image = obj.getImage();
+		if (!image.equals(obj.getDefaultImage())) {
+			writeNonEmptyAttribute(element, "image", image);
+		}
+	}
+	/**
 	 * A parser for numeric data.
 	 */
 	private static final NumberFormat NUM_PARSER = NullCleaner
@@ -408,6 +422,18 @@ public final class XMLHelper {
 		ostream.append('"');
 	}
 	/**
+	 * Write an attribute.
+	 * @param element the element to add the attribute to
+	 * @param name the name of the attribute to write
+	 * @param value the value of the attribute
+	 * @throws IOException on I/O error
+	 */
+	@SuppressWarnings("TypeMayBeWeakened")
+	public static void writeAttribute(final Element element, final String name,
+									  final String value) {
+		element.setAttribute(name, value);
+	}
+	/**
 	 * Write an attribute whose value is an integer. And the space before it.
 	 * @param ostream the stream to write to
 	 * @param name the name of the attribute to write
@@ -423,6 +449,18 @@ public final class XMLHelper {
 		ostream.append("=\"");
 		ostream.append(Integer.toString(value));
 		ostream.append('"');
+	}
+	/**
+	 * Write an attribute whose value is an integer.
+	 * @param element the tag to attach the attribute to
+	 * @param name the name of the attribute to write
+	 * @param value the value of the attribute
+	 * @throws IOException on I/O error
+	 */
+	@SuppressWarnings("TypeMayBeWeakened")
+	public static void writeIntegerAttribute(final Element element,
+											 final String name, final int value) {
+		element.setAttribute(name, Integer.toString(value));
 	}
 	/**
 	 * Write an attribute, and a space before it, if its value is nonempty.
@@ -443,6 +481,20 @@ public final class XMLHelper {
 		}
 	}
 	/**
+	 * Write an attribute if its value is nonempty.
+	 * @param element the tag to attach the attribute to
+	 * @param name the name of the attribute to write
+	 * @param value the value of the attribute
+	 * @throws IOException on I/O error
+	 */
+	@SuppressWarnings("TypeMayBeWeakened")
+	public static void writeNonEmptyAttribute(final Element element, final String name,
+											  final String value) {
+		if (!value.isEmpty()) {
+			element.setAttribute(name, value);
+		}
+	}
+	/**
 	 * Write an attribute whose value is a boolean value. And the space before it.
 	 * @param ostream the stream to write to
 	 * @param name the name of the attribute to write
@@ -459,6 +511,19 @@ public final class XMLHelper {
 		ostream.append("=\"");
 		ostream.append(Boolean.toString(value));
 		ostream.append('"');
+	}
+	/**
+	 * Write an attribute whose value is a boolean value.
+	 * @param element the element to attach the attribute to
+	 * @param name the name of the attribute to write
+	 * @param value the value of the attribute
+	 * @throws IOException on I/O error
+	 */
+	@SuppressWarnings("TypeMayBeWeakened")
+	public static void writeBooleanAttribute(final Element element,
+											 final String name, final boolean
+																		value) {
+		element.setAttribute(name, Boolean.toString(value));
 	}
 	/**
 	 * If the specified tag has an "owner" property, return the player it indicates;

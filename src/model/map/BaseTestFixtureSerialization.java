@@ -528,7 +528,7 @@ public abstract class BaseTestFixtureSerialization {
 		if (deprecated) {
 			CompactXMLWriter.writeSPObject(writer, obj);
 		} else {
-			new SPFluidWriter().writeSPObject(writer, obj, 0);
+			new SPFluidWriter().writeSPObject(writer, obj);
 		}
 		return NullCleaner.assertNotNull(writer.toString());
 	}
