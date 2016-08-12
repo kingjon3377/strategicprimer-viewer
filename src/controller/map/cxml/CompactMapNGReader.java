@@ -207,6 +207,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 									(StoneKind.Laterite ==
 											 ((StoneDeposit) fix).stone()) &&
 									(TileType.Jungle != retval.getBaseTerrain(point))) {
+							//noinspection ObjectAllocationInLoop
 							warner.warn(new UnsupportedPropertyException(current,
 																				"laterite"));
 						}

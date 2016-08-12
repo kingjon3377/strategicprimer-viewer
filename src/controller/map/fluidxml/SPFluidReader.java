@@ -597,7 +597,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 								   (TileType.Jungle !=
 											map.getBaseTerrain(
 													point))) {
-						warner.warn(new UnsupportedPropertyException(current,
+					//noinspection ObjectAllocationInLoop
+					warner.warn(new UnsupportedPropertyException(current,
 																			"laterite"));
 					map.addFixture(point, (TileFixture) child);
 				} else if (child instanceof TileFixture) {
