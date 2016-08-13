@@ -5,7 +5,12 @@ import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.Set;
 import java.util.function.DoubleToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,12 +18,15 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import model.exploration.HerdModel;
 import model.exploration.HuntingModel;
+import model.exploration.SurroundingPointIterable;
+import model.map.DistanceComparator;
 import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
+import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
@@ -132,6 +140,19 @@ public final class QueryCLI implements SimpleDriver {
 			break;
 		case 'c':
 			count(model.getMap(), CLIHelper.toList(model.getMap().players()), cli);
+			break;
+		case 'u':
+			Point base = selectPoint(cli);
+			final Optional<Point> unexplored = findUnexplored(model.getMap(), base);
+			if (unexplored.isPresent()) {
+				final Point point = unexplored.get();
+				cli.printf("Nearest unexplored tile is (%d, %d), %.1f tiles away%n",
+						Integer.valueOf(point.getRow()), Integer.valueOf(point.getCol()),
+						Double.valueOf(
+								distance(base, point, model.getMap().dimensions())));
+			} else {
+				cli.println("No unexplored tiles found.");
+			}
 			break;
 		default:
 			cli.println("Unknown command.");
@@ -396,7 +417,43 @@ public final class QueryCLI implements SimpleDriver {
 			forests.stream().map(Object::toString).forEach(cli::println);
 		}
 	}
-
+	/**
+	 * @param map the map
+	 * @param base the starting point
+	 * @return the nearest obviously-reachable unexplored point
+	 */
+	private static Optional<Point> findUnexplored(final IMapNG map, final Point base) {
+		final Set<Point> considered = new HashSet<>();
+		final Queue<Point> queue = new LinkedList<>();
+		final List<Point> retval = new ArrayList<>();
+		queue.add(base);
+		final MapDimensions dimensions = map.dimensions();
+		while (!queue.isEmpty()) {
+			final Point current = queue.remove();
+			final TileType currentTerrain = map.getBaseTerrain(current);
+			if (considered.contains(current)) {
+				continue;
+			} else if (currentTerrain == TileType.NotVisible) {
+				retval.add(current);
+			} else if (currentTerrain != TileType.Ocean) {
+				final double baseDistance = distance(base, current, dimensions);
+				// TODO: Use Stream API instead of loop
+				for (final Point neighbor : new SurroundingPointIterable
+													(current, dimensions, 1)) {
+					if (distance(base, neighbor, dimensions) >= baseDistance) {
+						queue.add(neighbor);
+					}
+				}
+			}
+			considered.add(current);
+		}
+		if (retval.isEmpty()) {
+			return Optional.empty();
+		} else {
+			retval.sort(new DistanceComparator(base));
+			return Optional.of(retval.get(0));
+		}
+	}
 	/**
 	 * @param cli the interface to the user
 	 * @return the point the user specifies.
@@ -437,6 +494,7 @@ public final class QueryCLI implements SimpleDriver {
 		cli.println("to run trapping or fish-trapping.");
 		cli.println("Distance: Report the distance between two points.");
 		cli.println("Count: Count how many workers belong to a player.");
+		cli.println("Unexplored: Find the nearest unexplored water not behind water.");
 		cli.println("Quit: Exit the program.");
 	}
 
