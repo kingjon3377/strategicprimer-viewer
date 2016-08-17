@@ -1,8 +1,8 @@
 package controller.map.misc;
 
+import controller.map.cxml.CompactXMLWriter;
 import controller.map.drivers.DriverFailedException;
 import controller.map.fluidxml.SPFluidReader;
-import controller.map.fluidxml.SPFluidWriter;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.SPWriter;
@@ -69,7 +69,8 @@ public final class MapReaderAdapter {
 	 */
 	public MapReaderAdapter() {
 		reader = new SPFluidReader();
-		spWriter = new SPFluidWriter();
+		// TODO: Change to SPFluidWriter once DOM usage is reverted
+		spWriter = new CompactXMLWriter();
 	}
 
 	/**

@@ -29,6 +29,7 @@ import org.w3c.dom.Node;
 @FunctionalInterface
 public interface FluidXMLWriter {
 	/**
+	 * TODO: Rever the conversion to Document, and convert to use XMLStreamWriter instead
 	 * Create DOM subtree representing the given object.
 	 * @param document the Document object, used to get new Elements
 	 * @param parent the parent tag, to which the subtree should be attached
