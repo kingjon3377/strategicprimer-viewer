@@ -6,7 +6,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.ListModel;
+import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import model.exploration.HuntingModel;
@@ -200,6 +200,11 @@ public final class ExplorationListListener implements ListDataListener {
 				}
 				i++;
 			}
+			// FIXME: Doing the possibly-see-tracks thing *here* is plainly wrong.
+			// It causes *too many* track objects to be added, and causes
+			// SPMapNG.addFixture to detect duplicate-ID objects being added (even though
+			// the logic should make that impossible!). And it slows this "critical
+			// section" down noticeably.
 			final String possibleTracks;
 			if (Ocean == model.getMap().getBaseTerrain(model.getSelectedUnitLocation())) {
 				possibleTracks = huntingModel.fish(model.getSelectedUnitLocation(), 1).get(0);
