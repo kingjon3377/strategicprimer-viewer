@@ -158,6 +158,7 @@ public final class ExplorationCLI implements MovementCostSource {
 		final int directionNum = helper.inputNumber("Direction to move: ");
 		if (directionNum > 8) {
 			fireMovementCost(Integer.MAX_VALUE);
+			return;
 		}
 		final IExplorationModel.Direction direction =
 				assertNotNull(IExplorationModel.Direction.values()[directionNum]);
