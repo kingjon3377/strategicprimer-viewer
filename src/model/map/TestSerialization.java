@@ -297,8 +297,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				ISPReader.NAMESPACE);
 		assertThat("Multiple units", createSerializedForm(five, true), equalTo(xmlTwoLogical));
 		assertThat("Multiple units", createSerializedForm(five, false),
-				anyOf(equalTo(xmlTwoLogical.replaceAll("\t", "    ")),
-						equalTo(xmlTwoAlphabetical.replaceAll("\t", "    "))));
+				anyOf(equalTo(xmlTwoLogical), equalTo(xmlTwoAlphabetical)));
 		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
 						createSimpleMap(point(1, 1), Pair.of(point(0, 0), TileType.NotVisible)),
@@ -318,7 +317,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 								"columns=\"1\">%n\t</map>%n</view>%n",
 						ISPReader.NAMESPACE)), equalTo(String.format(
 						"<view current_player=\"-1\" current_turn=\"-1\" " +
-								"xmlns=\"%s\">%n    <map columns=\"1\" rows=\"1\" " +
+								"xmlns=\"%s\">%n\t<map columns=\"1\" rows=\"1\" " +
 								"version=\"2\"/>%n</view>%n", ISPReader.NAMESPACE))));
 		assertImageSerialization("Unit image property is preserved",
 				new Unit(new Player(5, ""), "herder", "herderName", 9));

@@ -1,13 +1,9 @@
 package controller.map.fluidxml;
 
 import controller.map.iointerfaces.SPWriter;
-import java.io.Closeable;
-import java.io.Flushable;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.io.Writer;
-import java.nio.CharBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -218,34 +214,9 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 			transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-			final Writer writer;
-			if (ostream instanceof Writer) {
-				writer = (Writer) ostream;
-			} else if (ostream instanceof OutputStream) {
-				writer = new OutputStreamWriter((OutputStream) ostream);
-			} else {
-				writer = new Writer() {
-					@Override
-					public void write(final char[] cbuf, final int off, final int len)
-							throws IOException {
-						ostream.append(CharBuffer.wrap(cbuf, off, len));
-					}
-					@Override
-					public void flush() throws IOException {
-						if (ostream instanceof Flushable) {
-							((Flushable) ostream).flush();
-						}
-					}
-
-					@Override
-					public void close() throws IOException {
-						if (ostream instanceof Closeable) {
-							((Closeable) ostream).close();
-						}
-					}
-				};
-			}
+			final StringWriter writer = new StringWriter();
 			transformer.transform(new DOMSource(document), new StreamResult(writer));
+			ostream.append(writer.toString().replaceAll("    ", "\t"));
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (TransformerConfigurationException e) {
