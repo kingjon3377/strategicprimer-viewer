@@ -106,7 +106,7 @@ public final class CompactAdventureReader extends
 		if (!obj.getFullDescription().isEmpty()) {
 			ostream.append("full=\"");
 			ostream.append(obj.getFullDescription());
-			ostream.append("\" ");
+			ostream.append("\"");
 		}
 		ostream.append(imageXML(obj));
 		ostream.append(" />");
