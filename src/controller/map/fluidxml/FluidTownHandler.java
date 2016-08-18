@@ -1,9 +1,10 @@
 package controller.map.fluidxml;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
 import java.util.Random;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IPlayerCollection;
@@ -14,13 +15,9 @@ import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.createElement;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
@@ -33,6 +30,7 @@ import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
+import static controller.map.fluidxml.XMLHelper.writeTag;
 import static model.map.fixtures.towns.TownStatus.parseTownStatus;
 
 /**
@@ -183,58 +181,57 @@ public final class FluidTownHandler {
 	}
 	/**
 	 * Write a Village to XML.
-	 * @param obj the object to write. Must be a Village.
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
+	 * @param obj The object being written.
+	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeVillage(final Document document, final Node parent,
-									Object obj) {
+	public static void writeVillage(final XMLStreamWriter ostream, final Object obj,
+									final int indent) throws XMLStreamException {
 		if (!(obj instanceof Village)) {
 			throw new IllegalArgumentException("Can only write Village");
 		}
 		final Village fix = (Village) obj;
-		final Element element = createElement(document, "village");
-		writeAttribute(element, "status", fix.status().toString());
-		writeNonEmptyAttribute(element, "name", fix.getName());
-		writeIntegerAttribute(element, "id", fix.getID());
-		writeIntegerAttribute(element, "owner", fix.getOwner().getPlayerId());
-		writeAttribute(element, "race", fix.getRace());
-		writeImage(element, fix);
-		writeNonEmptyAttribute(element, "portrait", fix.getPortrait());
-		parent.appendChild(element);
+		writeTag(ostream, "village", indent, true);
+		writeAttribute(ostream, "status", fix.status().toString());
+		writeNonEmptyAttribute(ostream, "name", fix.getName());
+		writeIntegerAttribute(ostream, "id", fix.getID());
+		writeIntegerAttribute(ostream, "owner", fix.getOwner().getPlayerId());
+		writeAttribute(ostream, "race", fix.getRace());
+		writeImage(ostream, fix);
+		writeNonEmptyAttribute(ostream, "portrait", fix.getPortrait());
 	}
 	/**
 	 * Write an AbstractTown to XML.
-	 * @param obj the object to write. Must be an AbstractTown.
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
+	 * @param obj The object being written.
+	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeTown(final Document document, final Node parent,
-								 Object obj) {
+	public static void writeTown(final XMLStreamWriter ostream, final Object obj,
+								 final int indent) throws XMLStreamException {
 		if (!(obj instanceof AbstractTown)) {
 			throw new IllegalArgumentException("Can only write AbstractTown");
 		}
 		final AbstractTown fix = (AbstractTown) obj;
-		final Element element;
 		if (fix instanceof Fortification) {
-			element = createElement(document, "fortification");
+			writeTag(ostream, "fortification", indent, true);
 		} else if (fix instanceof Town) {
-			element = createElement(document, "town");
+			writeTag(ostream, "town", indent, true);
 		} else if (fix instanceof City) {
-			element = createElement(document, "city");
+			writeTag(ostream, "city", indent, true);
 		} else {
 			throw new IllegalStateException("Unknown AbstractTownEvent type");
 		}
-		writeAttribute(element, "status", fix.status().toString());
-		writeAttribute(element, "size", fix.size().toString());
-		writeIntegerAttribute(element, "dc", fix.getDC());
-		writeNonEmptyAttribute(element, "name", fix.getName());
-		writeIntegerAttribute(element, "id", fix.getID());
-		writeIntegerAttribute(element, "owner", fix.getOwner().getPlayerId());
-		writeImage(element, fix);
-		writeNonEmptyAttribute(element, "portrait", fix.getPortrait());
-		parent.appendChild(element);
+		writeAttribute(ostream, "status", fix.status().toString());
+		writeAttribute(ostream, "size", fix.size().toString());
+		writeIntegerAttribute(ostream, "dc", fix.getDC());
+		writeNonEmptyAttribute(ostream, "name", fix.getName());
+		writeIntegerAttribute(ostream, "id", fix.getID());
+		writeIntegerAttribute(ostream, "owner", fix.getOwner().getPlayerId());
+		writeImage(ostream, fix);
+		writeNonEmptyAttribute(ostream, "portrait", fix.getPortrait());
 	}
 }

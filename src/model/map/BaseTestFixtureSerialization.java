@@ -26,6 +26,7 @@ import util.FatalWarningException;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
+import view.util.SystemOut;
 
 import static jdk.internal.dynalink.support.Guards.isNull;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -393,10 +394,14 @@ public abstract class BaseTestFixtureSerialization {
 					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(), warner),
 					equalTo(obj));
 		}
+		final String str = createSerializedForm(obj, false);
 		try (StringReader stringReader = new StringReader(createSerializedForm(obj, false))) {
 			assertThat(message,
 					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(), warner),
 					equalTo(obj));
+		} catch (NoSuchElementException except) {
+			SystemOut.SYS_OUT.println(str);
+			throw except;
 		}
 	}
 
@@ -523,7 +528,7 @@ public abstract class BaseTestFixtureSerialization {
 	@SuppressWarnings("deprecation")
 	protected static String createSerializedForm(final Object obj,
 												final boolean deprecated)
-			throws IOException {
+			throws IOException, XMLStreamException {
 		final StringWriter writer = new StringWriter();
 		if (deprecated) {
 			CompactXMLWriter.writeSPObject(writer, obj);

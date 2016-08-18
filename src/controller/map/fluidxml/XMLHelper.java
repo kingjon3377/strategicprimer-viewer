@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -27,6 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.EqualsAny;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -284,12 +287,13 @@ public final class XMLHelper {
 	/**
 	 * @param ostream the stream to write the tabs to
 	 * @param tabs a non-negative integer: how many tabs to add to the stream
-	 * @throws IOException on I/O error writing to ostream
+	 * @throws XMLStreamException on I/O error writing to ostream
 	 */
-	public static void indent(final Appendable ostream, final int tabs)
-			throws IOException {
+	public static void indent(final XMLStreamWriter ostream, final int tabs)
+			throws XMLStreamException {
+		ostream.writeCharacters(LineEnd.LINE_SEP);
 		for (int i = 0; i < tabs; i++) {
-			ostream.append('\t');
+			ostream.writeCharacters("\t");
 		}
 	}
 
@@ -297,11 +301,11 @@ public final class XMLHelper {
 	 * If the object has a custom (non-default) image, write it to XML.
 	 * @param ostream the stream to write to
 	 * @param obj an object being written out that might have a custom image
-	 * @throws IOException on I/O error when writing
+	 * @throws XMLStreamException on I/O error when writing
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public static void writeImage(final Appendable ostream, final HasImage obj)
-			throws IOException {
+	public static void writeImage(final XMLStreamWriter ostream, final HasImage obj)
+			throws XMLStreamException {
 		final String image = obj.getImage();
 		if (!image.equals(obj.getDefaultImage())) {
 			writeNonEmptyAttribute(ostream, "image", image);
@@ -391,19 +395,25 @@ public final class XMLHelper {
 	 * bracket to close the tag.
 	 * @param ostream the stream to write to
 	 * @param tag the tag to write
-	 * @param indent the indentation level
-	 * @throws IOException on I/O error writing to stream
+	 * @param indent the indentation level. If positive, write a newline before
+	 *                  indenting.
+	 * @param leaf Whether to automatically close the tag (use writeEmptyElement()
+	 * @throws XMLStreamException on I/O error writing to stream
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public static void writeTag(final Appendable ostream, final String tag,
-								   final int indent) throws IOException {
-		indent(ostream, indent);
-		ostream.append('<');
-		ostream.append(tag);
-		if (indent == 0) {
-			ostream.append(" xmlns=\"");
-			ostream.append(ISPReader.NAMESPACE);
-			ostream.append("\"");
+	public static void writeTag(final XMLStreamWriter ostream, final String tag,
+								final int indent, final boolean leaf)
+			throws XMLStreamException {
+		if (indent > 0) {
+			indent(ostream, indent);
+		}
+		if (leaf) {
+			ostream.writeEmptyElement(ISPReader.NAMESPACE, tag);
+		} else {
+			ostream.writeStartElement(ISPReader.NAMESPACE, tag);
+		}
+		if (indent <= 0) {
+			ostream.writeDefaultNamespace(ISPReader.NAMESPACE);
 		}
 	}
 	/**
@@ -411,16 +421,12 @@ public final class XMLHelper {
 	 * @param ostream the stream to write to
 	 * @param name the name of the attribute to write
 	 * @param value the value of the attribute
-	 * @throws IOException on I/O error
+	 * @throws XMLStreamException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public static void writeAttribute(final Appendable ostream, final String name,
-									  final String value) throws IOException {
-		ostream.append(' ');
-		ostream.append(name);
-		ostream.append("=\"");
-		ostream.append(value);
-		ostream.append('"');
+	public static void writeAttribute(final XMLStreamWriter ostream, final String name,
+									  final String value) throws XMLStreamException {
+		ostream.writeAttribute(ISPReader.NAMESPACE, name, value);
 	}
 	/**
 	 * Write an attribute.
@@ -439,17 +445,13 @@ public final class XMLHelper {
 	 * @param ostream the stream to write to
 	 * @param name the name of the attribute to write
 	 * @param value the value of the attribute
-	 * @throws IOException on I/O error
+	 * @throws XMLStreamException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public static void writeIntegerAttribute(final Appendable ostream,
+	public static void writeIntegerAttribute(final XMLStreamWriter ostream,
 											 final String name, final int value)
-			throws IOException {
-		ostream.append(' ');
-		ostream.append(name);
-		ostream.append("=\"");
-		ostream.append(Integer.toString(value));
-		ostream.append('"');
+			throws XMLStreamException {
+		ostream.writeAttribute(ISPReader.NAMESPACE, name, Integer.toString(value));
 	}
 	/**
 	 * Write an attribute whose value is an integer.
@@ -471,14 +473,11 @@ public final class XMLHelper {
 	 * @throws IOException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public static void writeNonEmptyAttribute(final Appendable ostream, final String name,
-											  final String value) throws IOException {
+	public static void writeNonEmptyAttribute(final XMLStreamWriter ostream,
+											  final String name, final String value)
+			throws XMLStreamException {
 		if (!value.isEmpty()) {
-			ostream.append(' ');
-			ostream.append(name);
-			ostream.append("=\"");
-			ostream.append(value);
-			ostream.append('"');
+			ostream.writeAttribute(ISPReader.NAMESPACE, name, value);
 		}
 	}
 	/**
@@ -503,15 +502,9 @@ public final class XMLHelper {
 	 * @throws IOException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public static void writeBooleanAttribute(final Appendable ostream,
-											 final String name, final boolean
-																			  value)
-			throws IOException {
-		ostream.append(' ');
-		ostream.append(name);
-		ostream.append("=\"");
-		ostream.append(Boolean.toString(value));
-		ostream.append('"');
+	public static void writeBooleanAttribute(final XMLStreamWriter ostream, final String name, final boolean value)
+			throws XMLStreamException {
+		ostream.writeAttribute(ISPReader.NAMESPACE, name, Boolean.toString(value));
 	}
 	/**
 	 * Write an attribute whose value is a boolean value.

@@ -1,8 +1,8 @@
 package controller.map.misc;
 
-import controller.map.cxml.CompactXMLWriter;
 import controller.map.drivers.DriverFailedException;
 import controller.map.fluidxml.SPFluidReader;
+import controller.map.fluidxml.SPFluidWriter;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.SPWriter;
@@ -70,7 +70,7 @@ public final class MapReaderAdapter {
 	public MapReaderAdapter() {
 		reader = new SPFluidReader();
 		// TODO: Change to SPFluidWriter once DOM usage is reverted
-		spWriter = new CompactXMLWriter();
+		spWriter = new SPFluidWriter();
 	}
 
 	/**
@@ -184,8 +184,10 @@ public final class MapReaderAdapter {
 	 * @param file the file to write to
 	 * @param map  the map to write
 	 * @throws IOException on error opening the file
+	 * @throws XMLStreamException on error creating the XML to write to the file
 	 */
-	public void write(final Path file, final IMapNG map) throws IOException {
+	public void write(final Path file, final IMapNG map)
+			throws IOException, XMLStreamException {
 		spWriter.write(file, map);
 	}
 
@@ -207,6 +209,9 @@ public final class MapReaderAdapter {
 				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException("I/O error writing to " + mainFile,
 													   except);
+			} catch (final XMLStreamException except) {
+				throw new DriverFailedException("Error creating XML to write to " +
+														mainFile, except);
 			}
 		} else {
 			LOGGER.severe(
@@ -222,6 +227,10 @@ public final class MapReaderAdapter {
 					} catch (final IOException except) {
 						//noinspection HardcodedFileSeparator
 						throw new DriverFailedException("I/O error writing to " +
+																filename, except);
+					} catch (final XMLStreamException except) {
+						throw new DriverFailedException("Error creating XML to write to" +
+																" " +
 																filename, except);
 					}
 				} else {

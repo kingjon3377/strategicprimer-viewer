@@ -8,6 +8,8 @@ import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
 import java.util.Optional;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasPortrait;
@@ -20,16 +22,13 @@ import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.createElement;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
+import static controller.map.fluidxml.XMLHelper.indent;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
@@ -39,6 +38,7 @@ import static controller.map.fluidxml.XMLHelper.writeBooleanAttribute;
 import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
+import static controller.map.fluidxml.XMLHelper.writeTag;
 import static java.lang.Boolean.parseBoolean;
 import static util.EqualsAny.equalsAny;
 import static util.NullCleaner.assertNotNull;
@@ -242,75 +242,80 @@ public final class FluidUnitMemberHandler {
 	/**
 	 * Write a worker to XML.
 	 *
-	 * @param obj     The object to write. Must be an IWorker
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
+	 * @param obj The object being written.
+	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeWorker(final Document document, final Node parent,
-								   Object obj) {
+	public static void writeWorker(final XMLStreamWriter ostream, Object obj, final int indent) throws
+			XMLStreamException {
 		if (!(obj instanceof IWorker)) {
 			throw new IllegalArgumentException("Can only write IWorker");
 		}
 		final IWorker work = (IWorker) obj;
-		final Element element = createElement(document, "worker");
-		writeAttribute(element, "name", work.getName());
+		final Optional<WorkerStats> stats = Optional.ofNullable(work.getStats());
+		final boolean hasJobs = work.iterator().hasNext();
+		writeTag(ostream, "worker", indent, !hasJobs && !stats.isPresent());
+		writeAttribute(ostream, "name", work.getName());
 		if (!"human".equals(work.getRace())) {
-			writeAttribute(element, "race", work.getRace());
+			writeAttribute(ostream, "race", work.getRace());
 		}
-		writeIntegerAttribute(element, "id", work.getID());
-		writeImage(element, work);
+		writeIntegerAttribute(ostream, "id", work.getID());
+		writeImage(ostream, work);
 		if (work instanceof HasPortrait) {
-			writeNonEmptyAttribute(element, "portrait",
+			writeNonEmptyAttribute(ostream, "portrait",
 					((HasPortrait) work).getPortrait());
 		}
-		final Optional<WorkerStats> stats;
-		stats = Optional.ofNullable(work.getStats());
 		if (stats.isPresent()) {
-			writeStats(document, element, stats.get());
+			writeStats(ostream, stats.get(), indent + 1);
 		}
 		for (final IJob job : work) {
 			if (job instanceof Job) {
-				writeJob(document, element, job);
+				writeJob(ostream, job, indent + 1);
 			}
 		}
-		parent.appendChild(element);
+		if (hasJobs || stats.isPresent()) {
+			indent(ostream, indent);
+			ostream.writeEndElement();
+		}
 	}
 	/**
 	 * Write the worker's stats.
 	 *
-	 * @param obj   the object to write. Must be a WorkerStats
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
+	 * @param obj The object being written.
+	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeStats(final Document document, final Node parent,
-								  Object obj) {
+	public static void writeStats(final XMLStreamWriter ostream, Object obj, final int indent) throws
+			XMLStreamException {
 		if (!(obj instanceof WorkerStats)) {
 			throw new IllegalArgumentException("Can only write WorkerStats");
 		}
 		final WorkerStats stats = (WorkerStats) obj;
-		final Element element = createElement(document, "stats");
-		writeIntegerAttribute(element, "hp", stats.getHitPoints());
-		writeIntegerAttribute(element, "max", stats.getMaxHitPoints());
-		writeIntegerAttribute(element, "str", stats.getStrength());
-		writeIntegerAttribute(element, "dex", stats.getDexterity());
-		writeIntegerAttribute(element, "con", stats.getConstitution());
-		writeIntegerAttribute(element, "int", stats.getIntelligence());
-		writeIntegerAttribute(element, "wis", stats.getWisdom());
-		writeIntegerAttribute(element, "cha", stats.getCharisma());
-		parent.appendChild(element);
+		writeTag(ostream, "stats", indent, true);
+		writeIntegerAttribute(ostream, "hp", stats.getHitPoints());
+		writeIntegerAttribute(ostream, "max", stats.getMaxHitPoints());
+		writeIntegerAttribute(ostream, "str", stats.getStrength());
+		writeIntegerAttribute(ostream, "dex", stats.getDexterity());
+		writeIntegerAttribute(ostream, "con", stats.getConstitution());
+		writeIntegerAttribute(ostream, "int", stats.getIntelligence());
+		writeIntegerAttribute(ostream, "wis", stats.getWisdom());
+		writeIntegerAttribute(ostream, "cha", stats.getCharisma());
 	}
 	/**
 	 * Write a Job to XML.
 	 *
-	 * @param obj     The object to write. Must be an IJob
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
+	 * @param obj The object being written.
+	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeJob(final Document document, final Node parent,
-								Object obj) {
+	public static void writeJob(final XMLStreamWriter ostream, Object obj, final int indent) throws
+			XMLStreamException {
 		if (!(obj instanceof IJob)) {
 			throw new IllegalArgumentException("Can only write IJob");
 		}
@@ -318,35 +323,39 @@ public final class FluidUnitMemberHandler {
 		if ((job.getLevel() <= 0) && !job.iterator().hasNext()) {
 			return;
 		}
-		final Element element = createElement(document, "job");
-		writeAttribute(element, "name", job.getName());
-		writeIntegerAttribute(element, "level", job.getLevel());
-		for (final ISkill skill : job) {
-			if (skill instanceof Skill) {
-				writeSkill(document, element, skill);
+		final boolean hasSkills = job.iterator().hasNext();
+		writeTag(ostream, "job", indent, !hasSkills);
+		writeAttribute(ostream, "name", job.getName());
+		writeIntegerAttribute(ostream, "level", job.getLevel());
+		if (hasSkills) {
+			for (final ISkill skill : job) {
+				if (skill instanceof Skill) {
+					writeSkill(ostream, skill, indent + 1);
+				}
 			}
+			indent(ostream, indent);
+			ostream.writeEndElement();
 		}
-		parent.appendChild(element);
 	}
 	/**
 	 * Write a Skill to XML.
 	 *
-	 * @param obj     The object to write. Must be an ISkill
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
+	 * @param obj The object being written.
+	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeSkill(final Document document, final Node parent,
-								  Object obj) {
+	public static void writeSkill(final XMLStreamWriter ostream, Object obj, final int indent) throws
+			XMLStreamException {
 		if (!(obj instanceof ISkill)) {
 			throw new IllegalArgumentException("Can only write ISkill");
 		}
 		final ISkill skl = (ISkill) obj;
-		final Element element = createElement(document, "skill");
-		writeAttribute(element, "name", skl.getName());
-		writeIntegerAttribute(element, "level", skl.getLevel());
-		writeIntegerAttribute(element, "hours", skl.getHours());
-		parent.appendChild(element);
+		writeTag(ostream, "skill", indent, true);
+		writeAttribute(ostream, "name", skl.getName());
+		writeIntegerAttribute(ostream, "level", skl.getLevel());
+		writeIntegerAttribute(ostream, "hours", skl.getHours());
 	}
 
 	/**
@@ -379,30 +388,30 @@ public final class FluidUnitMemberHandler {
 	/**
 	 * Write an Animal to XML.
 	 *
-	 * @param obj the object to write. Must be an instance of Animal.
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
+	 * @param obj The object being written.
+	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeAnimal(final Document document, final Node parent,
-								   Object obj) {
+	public static void writeAnimal(final XMLStreamWriter ostream, Object obj, final int indent) throws
+			XMLStreamException {
 		if (!(obj instanceof Animal)) {
 			throw new IllegalArgumentException("Can only write Animal");
 		}
 		final Animal fix = (Animal) obj;
-		final Element element = createElement(document, "animal");
-		writeAttribute(element, "kind", fix.getKind());
+		writeTag(ostream, "animal", indent, true);
+		writeAttribute(ostream, "kind", fix.getKind());
 		if (fix.isTraces()) {
-			writeAttribute(element, "traces", "");
+			writeAttribute(ostream, "traces", "");
 		}
 		if (fix.isTalking()) {
-			writeBooleanAttribute(element, "talking", true);
+			writeBooleanAttribute(ostream, "talking", true);
 		}
 		if (!"wild".equals(fix.getStatus())) {
-			writeAttribute(element, "status", fix.getStatus());
+			writeAttribute(ostream, "status", fix.getStatus());
 		}
-		writeIntegerAttribute(element, "id", fix.getID());
-		writeImage(element, fix);
-		parent.appendChild(element);
+		writeIntegerAttribute(ostream, "id", fix.getID());
+		writeImage(ostream, fix);
 	}
 }

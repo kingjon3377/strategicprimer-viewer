@@ -214,7 +214,7 @@ public final class TestConverter {
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
-	public void testOneToTwoConversion() throws IOException {
+	public void testOneToTwoConversion() throws IOException, XMLStreamException {
 		final IMutableMapNG original =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
 		original.setBaseTerrain(PointFactory.point(0, 0), TileType.BorealForest);
@@ -470,7 +470,7 @@ public final class TestConverter {
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
-	public void testMoreOneToTwoConversion() throws IOException {
+	public void testMoreOneToTwoConversion() throws IOException, XMLStreamException {
 		final IMutableMapNG original =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
 		original.setBaseTerrain(PointFactory.point(0, 0), TileType.Jungle);
@@ -720,7 +720,7 @@ public final class TestConverter {
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
-	public void testThirdOneToTwoConversion() throws IOException {
+	public void testThirdOneToTwoConversion() throws IOException, XMLStreamException {
 		final IMutableMapNG original =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
 		original.setGround(PointFactory.point(0, 0), new Ground(ROCK_TYPE, false));
@@ -1033,7 +1033,7 @@ public final class TestConverter {
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
-	public void testFourthOneToTwoConversion() throws IOException {
+	public void testFourthOneToTwoConversion() throws IOException, XMLStreamException {
 		final IMutableMapNG original =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
 		original.setBaseTerrain(PointFactory.point(0, 0), TileType.Ocean);

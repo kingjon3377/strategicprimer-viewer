@@ -230,6 +230,9 @@ public final class TODOFixerDriver {
 				} catch (final IOException e) {
 					//noinspection HardcodedFileSeparator
 					LOGGER.log(Level.SEVERE, "I/O error writing map to " + arg, e);
+				} catch (final XMLStreamException except) {
+					LOGGER.log(Level.SEVERE, "Error creating XML to write to " + arg,
+							except);
 				}
 			}
 		} catch (final IOException except) {

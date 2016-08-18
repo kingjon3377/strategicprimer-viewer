@@ -297,7 +297,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				ISPReader.NAMESPACE);
 		assertThat("Multiple units", createSerializedForm(five, true), equalTo(xmlTwoLogical));
 		assertThat("Multiple units", createSerializedForm(five, false),
-				anyOf(equalTo(xmlTwoLogical), equalTo(xmlTwoAlphabetical)));
+				anyOf(equalTo(xmlTwoLogical), equalTo(xmlTwoAlphabetical),
+						equalTo(xmlTwoLogical.replaceAll("\" />", "\"/>"))));
 		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
 						createSimpleMap(point(1, 1), Pair.of(point(0, 0), TileType.NotVisible)),

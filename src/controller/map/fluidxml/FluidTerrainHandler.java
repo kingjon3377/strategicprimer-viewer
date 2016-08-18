@@ -2,6 +2,8 @@ package controller.map.fluidxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
@@ -11,12 +13,8 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.createElement;
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
@@ -27,6 +25,7 @@ import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeBooleanAttribute;
 import static controller.map.fluidxml.XMLHelper.writeImage;
+import static controller.map.fluidxml.XMLHelper.writeTag;
 import static java.lang.Boolean.parseBoolean;
 import static util.NullCleaner.assertNotNull;
 
@@ -127,61 +126,61 @@ public final class FluidTerrainHandler {
 	/**
 	 * Write Ground to XML.
 	 *
-	 * @param obj     The object to write. Must be an instance of Ground
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
+	 * @param obj The object being written.
+	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeGround(final Document document, final Node parent,
-								   Object obj) {
+	public static void writeGround(final XMLStreamWriter ostream, Object obj,
+								   final int indent) throws XMLStreamException {
 		if (!(obj instanceof Ground)) {
 			throw new IllegalArgumentException("Can only write Ground");
 		}
 		final Ground grd = (Ground) obj;
-		final Element element = createElement(document, "ground");
-		writeAttribute(element, "kind", grd.getKind());
-		writeBooleanAttribute(element, "exposed", grd.isExposed());
-		writeImage(element, grd);
-		parent.appendChild(element);
+		writeTag(ostream, "ground", indent, true);
+		writeAttribute(ostream, "kind", grd.getKind());
+		writeBooleanAttribute(ostream, "exposed", grd.isExposed());
+		writeImage(ostream, grd);
 	}
 	/**
 	 * Write a Mountain to XML.
 	 *
-	 * @param obj     The object to write. Must be an instance of Mountain
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
+	 * @param obj The object being written.
+	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeMountain(final Document document, final Node parent,
-									 Object obj) {
+	public static void writeMountain(final XMLStreamWriter ostream, Object obj,
+									 final int indent) throws XMLStreamException {
 		if (!(obj instanceof Mountain)) {
 			throw new IllegalArgumentException("Can only write Mountain");
 		}
-		final Element element = createElement(document, "mountain");
-		writeImage(element, (HasImage) obj);
-		parent.appendChild(element);
+		writeTag(ostream, "mountain", indent, true);
+		writeImage(ostream, (HasImage) obj);
 	}
 	/**
 	 * Write a Forest to XML.
 	 *
-	 * @param obj     The object to write. Must be an instance of Forest
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
+	 * @param obj The object being written.
+	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeForest(final Document document, final Node parent,
-								   Object obj) {
+	public static void writeForest(final XMLStreamWriter ostream, Object obj,
+								   final int indent) throws XMLStreamException {
 		if (!(obj instanceof Forest)) {
 			throw new IllegalArgumentException("Can only write Forest");
 		}
 		final Forest forest = (Forest) obj;
-		final Element element = createElement(document, "forest");
-		writeAttribute(element, "kind", forest.getKind());
+		writeTag(ostream, "forest", indent, true);
+		writeAttribute(ostream, "kind", forest.getKind());
 		if (forest.isRows()) {
-			writeBooleanAttribute(element, "rows", true);
+			writeBooleanAttribute(ostream, "rows", true);
 		}
-		writeImage(element, forest);
-		parent.appendChild(element);
+		writeImage(ostream, forest);
 	}
 	/**
 	 * Parse a river.
@@ -232,21 +231,21 @@ public final class FluidTerrainHandler {
 	/**
 	 * Write a river, or a collection of rivers.
 	 *
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
 	 * @param obj The object being written.
 	 */
-	public static void writeRivers(final Document document, final Node parent, final Object obj) {
+	public static void writeRivers(final XMLStreamWriter ostream, Object obj,
+								   final int indent) throws XMLStreamException {
 		if (River.Lake == obj) {
-			parent.appendChild(createElement(document, "lake"));
+			writeTag(ostream, "lake", indent, true);
 		} else if (obj instanceof River) {
-			final Element element = createElement(document, "river");
-			writeAttribute(element, "direction", ((River) obj).getDescription());
-			parent.appendChild(element);
+			writeTag(ostream, "river", indent, true);
+			writeAttribute(ostream, "direction", ((River) obj).getDescription());
 		} else if (obj instanceof RiverFixture) {
 			// TODO: Test
 			for (final River river : (RiverFixture) obj) {
-				writeRivers(document, parent, river);
+				writeRivers(ostream, river, indent);
 			}
 			return;
 		} else {

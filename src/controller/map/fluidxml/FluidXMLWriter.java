@@ -1,11 +1,17 @@
 package controller.map.fluidxml;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * An interface for writers-to-XML. It's expected that most "implementations" will in
  * fact be method references.
+ *
+ * In the interests of having two *entirely different* XML I/O implementations, we'd
+ * like to use the DOM APIs for writing. Unfortunately, however, their output proves
+ * unusable for our purposes---both our tests and the readability of the generated XML
+ * depend on attributes being in an order that makes sense within the domain, and the
+ * DOM APIs only output attributes in alphabetical order.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -29,11 +35,12 @@ import org.w3c.dom.Node;
 @FunctionalInterface
 public interface FluidXMLWriter {
 	/**
-	 * TODO: Rever the conversion to Document, and convert to use XMLStreamWriter instead
-	 * Create DOM subtree representing the given object.
-	 * @param document the Document object, used to get new Elements
-	 * @param parent the parent tag, to which the subtree should be attached
+	 * Write XML representing an object.
+	 * @param ostream the writer to write to
+	 * @param indent the indentation level
 	 * @param obj The object being written.
+	 * @throws XMLStreamException on error in the writer
 	 */
-	void writeSPObject(final Document document, final Node parent, Object obj);
+	void writeSPObject(final XMLStreamWriter ostream, final Object obj, final int indent)
+			throws XMLStreamException;
 }
