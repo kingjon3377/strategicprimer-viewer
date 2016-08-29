@@ -738,9 +738,10 @@ public class SPMapNG implements IMutableMapNG {
 					} else {
 						local.add(fix);
 						LOGGER.log(Level.WARNING,
-								"Inserted duplicate-ID fixture at " + location, new Throwable());
-						LOGGER.info("Existing fixture was: " + existing.shortDesc());
-						LOGGER.info("Added: " + fix.shortDesc());
+								"Inserted duplicate-ID fixture at " + location);
+						LOGGER.log(Level.FINE, "Stack trace of this location: ", new Throwable());
+						LOGGER.fine("Existing fixture was: " + existing.shortDesc());
+						LOGGER.fine("Added: " + fix.shortDesc());
 					}
 				} catch (final IOException except) {
 					//noinspection HardcodedFileSeparator
