@@ -55,17 +55,24 @@ public interface SimpleDriver extends ISPDriver {
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	default void startDriver(final String... args) throws DriverFailedException {
+		ParamCount desiderata = usage().getParamsWanted();
 		if (args.length == 0) {
-			if (EqualsAny.equalsAny(usage().getParamsWanted(), ParamCount.None,
+			if (EqualsAny.equalsAny(desiderata, ParamCount.None,
 					ParamCount.AnyNumber)) {
 				startDriver();
+			} else if (EqualsAny.equalsAny(desiderata, ParamCount.Two, ParamCount.AtLeastTwo)) {
+				final Path masterPath = askUserForFile();
+				final Path subPath = askUserForFile();
+				startDriver(new MapReaderAdapter()
+									.readMultiMapModel(Warning.DEFAULT, masterPath,
+											subPath));
 			} else {
 				startDriver(new MapReaderAdapter().readMultiMapModel(Warning.DEFAULT,
 						askUserForFile()));
 			}
-		} else if (ParamCount.None == usage().getParamsWanted()) {
+		} else if (ParamCount.None == desiderata) {
 			throw new IncorrectUsageException(usage());
-		} else if ((args.length == 1) && EqualsAny.equalsAny(usage().getParamsWanted(),
+		} else if ((args.length == 1) && EqualsAny.equalsAny(desiderata,
 				ParamCount.Two, ParamCount.AtLeastTwo)) {
 			startDriver(new MapReaderAdapter()
 								.readMultiMapModel(Warning.DEFAULT, Paths.get(args[0]),
