@@ -11,6 +11,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import model.exploration.HuntingModel;
 import model.exploration.IExplorationModel;
+import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
@@ -20,6 +21,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
 import util.NullCleaner;
+import util.Pair;
 import util.SingletonRandom;
 import view.map.details.FixtureList;
 
@@ -57,7 +59,11 @@ public final class ExplorationListListener implements ListDataListener {
 	 * The list this is attached to.
 	 */
 	private final FixtureList list;
-
+	/**
+	 * A list of animal-tracks objects, which we want to remove from the main map
+	 * whenever the list's target gets changed.
+	 */
+	private final List<Pair<Point, Animal>> tracks = new ArrayList<>();
 	/**
 	 * Constructor.
 	 *
@@ -187,6 +193,10 @@ public final class ExplorationListListener implements ListDataListener {
 		final IUnit selUnit = model.getSelectedUnit();
 		if (outsideCritical && (selUnit != null)) {
 			outsideCritical = false;
+			for (Pair<Point, Animal> pair : tracks) {
+				model.getMap().removeFixture(pair.first(), pair.second());
+			}
+			tracks.clear();
 			list.clearSelection();
 			final List<IntPair<TileFixture>> constants = new ArrayList<>();
 			final List<IntPair<TileFixture>> possibles = new ArrayList<>();
@@ -206,16 +216,21 @@ public final class ExplorationListListener implements ListDataListener {
 			// the logic should make that impossible!). And it slows this "critical
 			// section" down noticeably.
 			final String possibleTracks;
-			if (Ocean == model.getMap().getBaseTerrain(model.getSelectedUnitLocation())) {
-				possibleTracks = huntingModel.fish(model.getSelectedUnitLocation(), 1).get(0);
-			} else {
-				possibleTracks = huntingModel.hunt(model.getSelectedUnitLocation(), 1).get(0);
-			}
-			if (!HuntingModel.NOTHING.equals(possibleTracks)) {
-				final TileFixture animal =
-						new Animal(possibleTracks, true, false, "wild", idf.createID());
-				((FixtureListModel) list.getModel()).addFixture(animal);
-				possibles.add(IntPair.of(i, animal));
+			final Point currentLocation = model.getSelectedUnitLocation();
+			if (currentLocation.getRow() >= 0 && currentLocation.getCol() >= 0) {
+				if (Ocean == model.getMap().getBaseTerrain(currentLocation)) {
+					possibleTracks = huntingModel.fish(currentLocation, 1).get(0);
+				} else {
+					possibleTracks = huntingModel.hunt(currentLocation, 1).get(0);
+				}
+				if (!HuntingModel.NOTHING.equals(possibleTracks)) {
+					final Animal animal =
+							new Animal(possibleTracks, true, false, "wild",
+											  idf.createID());
+					((FixtureListModel) list.getModel()).addFixture(animal);
+					possibles.add(IntPair.of(i, animal));
+					tracks.add(Pair.of(currentLocation, animal));
+				}
 			}
 			Collections.shuffle(possibles);
 			if ((possibles.size() > 1) && (SingletonRandom.RANDOM.nextDouble() < 0.1)) {
