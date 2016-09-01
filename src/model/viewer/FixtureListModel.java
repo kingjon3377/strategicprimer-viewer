@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.stream.Collectors;
 import javax.swing.DefaultListModel;
 import model.listeners.SelectionChangeListener;
 import model.map.IMapNG;
@@ -93,7 +94,8 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 		if (forest != null) {
 			addElement(forest);
 		}
-		map.streamOtherFixtures(newPoint).forEach(this::addElement);
+		map.streamOtherFixtures(newPoint).collect(Collectors.toList())
+				.forEach(this::addElement);
 		point = newPoint;
 	}
 
