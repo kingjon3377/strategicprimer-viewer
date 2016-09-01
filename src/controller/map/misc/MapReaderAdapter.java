@@ -69,7 +69,6 @@ public final class MapReaderAdapter {
 	 */
 	public MapReaderAdapter() {
 		reader = new SPFluidReader();
-		// TODO: Change to SPFluidWriter once DOM usage is reverted
 		spWriter = new SPFluidWriter();
 	}
 
