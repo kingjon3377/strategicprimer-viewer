@@ -175,7 +175,9 @@ public final class ExplorationPanel extends BorderedPanel
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		mpDocument = mpDoc;
-		headerPanel.add(new JTextField(mpDocument, null, 5));
+		final JPanel mpPanel = new JPanel();
+		mpPanel.add(new JTextField(mpDocument, null, 5));
+		headerPanel.add(mpPanel);
 		setCenter(SplitWithWeights.verticalSplit(0.5, 0.5, headerPanel,
 				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
 	}
