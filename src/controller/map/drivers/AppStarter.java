@@ -24,7 +24,6 @@ import util.TypesafeLogger;
 import view.util.AppChooserFrame;
 import view.util.DriverQuit;
 import view.util.ErrorShower;
-import view.util.SystemOut;
 
 /**
  * A driver to start other drivers. At first it just starts one.
@@ -298,39 +297,40 @@ public final class AppStarter implements ISPDriver {
 		try {
 			new AppStarter().startDriver(args);
 		} catch (final IncorrectUsageException except) {
-			// TODO: Should this be stderr?
-			SystemOut.SYS_OUT.print("Usage: java ");
-			SystemOut.SYS_OUT.print(AppStarter.class.getCanonicalName());
+			final StringBuilder buff = new StringBuilder();
+			buff.append("Usage: java ");
+			buff.append(AppStarter.class.getCanonicalName());
 			final DriverUsage usage = except.getCorrectUsage();
 			if (usage.isGraphical()) {
-				SystemOut.SYS_OUT.print(" [-g|--gui] ");
+				buff.append(" [-g|--gui] ");
 			} else {
-				SystemOut.SYS_OUT.print(" -c|--cli ");
+				buff.append(" -c|--cli ");
 			}
-			SystemOut.SYS_OUT.print(usage.getShortOption());
-			SystemOut.SYS_OUT.print('|');
-			SystemOut.SYS_OUT.print(usage.getLongOption());
+			buff.append(usage.getShortOption());
+			buff.append('|');
+			buff.append(usage.getLongOption());
 			switch (usage.getParamsWanted()) {
 			case None:
-				SystemOut.SYS_OUT.println();
 				break;
 			case One:
-				SystemOut.SYS_OUT.println(" filename.xml");
+				buff.append(" filename.xml");
 				break;
 			case AtLeastOne:
-				SystemOut.SYS_OUT.println(" filename.xml [filename.xml ...]");
+				buff.append(" filename.xml [filename.xml ...]");
 				break;
 			case Two:
-				SystemOut.SYS_OUT.println(" filename.xml filename.xml");
+				buff.append(" filename.xml filename.xml");
 				break;
 			case AtLeastTwo:
-				SystemOut.SYS_OUT.println(" filename.xml filename.xml [filename.xml ...]");
+				buff.append(" filename.xml filename.xml [filename.xml ...]");
 				break;
 			case AnyNumber:
-				SystemOut.SYS_OUT.println(" [filename.xml ...]");
+				buff.append(" [filename.xml ...]");
 				break;
 			}
-			SystemOut.SYS_OUT.println(usage.getShortDescription());
+			buff.append('\n');
+			buff.append(usage.getShortDescription());
+			System.err.println(buff);
 			DriverQuit.quit(1);
 		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getLocalizedMessage(),
