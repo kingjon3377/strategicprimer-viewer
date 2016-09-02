@@ -430,13 +430,10 @@ public final class QueryCLI implements SimpleDriver {
 				retval.add(current);
 			} else if (currentTerrain != TileType.Ocean) {
 				final double baseDistance = distance(base, current, dimensions);
-				// TODO: Use Stream API instead of loop
-				for (final Point neighbor : new SurroundingPointIterable
-													(current, dimensions, 1)) {
-					if (distance(base, neighbor, dimensions) >= baseDistance) {
-						queue.add(neighbor);
-					}
-				}
+				StreamSupport.stream(new SurroundingPointIterable(current, dimensions, 1)
+											 .spliterator(), false)
+						.filter(neighbor -> distance(base, neighbor, dimensions) >=
+													baseDistance).forEach(queue::add);
 			}
 			considered.add(current);
 		}
