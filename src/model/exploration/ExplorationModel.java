@@ -601,9 +601,16 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					final Ground locGround = map.getGround(currPoint);
 					if ((locGround == null) || locGround.equals(oldFix)) {
 						map.setGround(currPoint, (Ground) newFix.copy(subsequent));
-					} else if (StreamSupport.stream(map.getOtherFixtures(currPoint).spliterator(),
-							false).anyMatch(fix -> fix.equals(oldFix))) {
-						// FIXME: DCs break equals() on StoneDeposits and MineralVeins
+					// In StoneDeposit and MineralVein, equals() is false if DCs !=
+					} else if (StreamSupport.stream(map.getOtherFixtures(currPoint)
+															.spliterator(), false)
+									   .anyMatch(fix -> fix.equals(oldFix) ||
+																(((fix instanceof
+																		   StoneDeposit) ||
+																		  (fix instanceof MineralVein)) &&
+																		 fix.copy(true)
+																				 .equals(oldFix.copy(
+																						 true))))) {
 						map.removeFixture(currPoint, oldFix);
 						map.addFixture(currPoint, newFix.copy(subsequent));
 					} else {
