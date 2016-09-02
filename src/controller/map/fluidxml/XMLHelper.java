@@ -11,8 +11,6 @@ import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
@@ -32,8 +30,6 @@ import util.EqualsAny;
 import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
-
-import static java.lang.String.format;
 
 /**
  * A class to hold helper methods that XML I/O code will frequently call. These methods
@@ -63,25 +59,22 @@ public final class XMLHelper {
 	 * Require that an element be one of the specified tags.
 	 *
 	 * @param element the element to check
+	 * @param parent the parent tag
 	 * @param tags    the tags we accept here
+	 * @throws SPFormatException on a tag other than one we accept
 	 */
 	public static void requireTag(final StartElement element,
-									 final String... tags) {
+								  final QName parent,
+									 final String... tags) throws SPFormatException {
 		if (!EqualsAny.equalsAny(
 				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-			throw new IllegalArgumentException("requireTag given a tag that is in " +
-													   "neither our namespace nor the " +
-													   "default namespace");
+			throw new UnwantedChildException(parent, element);
 		}
 		final String localName = element.getName().getLocalPart();
 		final int line = element.getLocation().getLineNumber();
 		if (!EqualsAny.equalsAny(localName, tags)) {
-			throw new IllegalArgumentException(Stream.concat(Stream.of(format(
-					"Unexpected tag %s on line %d, expected one of the following: ",
-					localName, Integer.valueOf(line))), Stream.of(tags))
-													   .collect(Collectors.joining(", "))
-			);
+			throw new UnwantedChildException(parent, element);
 		}
 	}
 	/**

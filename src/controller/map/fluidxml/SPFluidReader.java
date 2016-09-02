@@ -16,8 +16,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.function.IntFunction;
 import java.util.regex.Pattern;
@@ -182,7 +184,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final Object retval = readSPObject(
-						assertNotNull(event.asStartElement()),
+						assertNotNull(event.asStartElement()), new QName("root"),
 						eventReader, players, warner, idFactory);
 				if (type.isAssignableFrom(retval.getClass())) {
 					//noinspection unchecked
@@ -237,6 +239,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 
 	@Override
 	public Object readSPObject(final StartElement element,
+							   final QName parent,
 							   final Iterable<XMLEvent> stream,
 							   final IMutablePlayerCollection players,
 							   final Warning warner,
@@ -247,7 +250,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		if (namespace.isEmpty() || NAMESPACE.equals(namespace)) {
 			if (readers.containsKey(tag)) {
 				return assertNotNull(readers.get(tag))
-							   .readSPObject(element, stream, players, warner, idFactory);
+							   .readSPObject(element, parent, stream, players, warner,
+									   idFactory);
 			} else {
 				throw new UnsupportedTagException(element);
 			}
@@ -264,8 +268,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 *                  number in its constructor, and nothing else.
 	 */
 	private void createSimpleFixtureReader(final String tag, final IntFunction<?> factory) {
-		readers.put(tag, (element, stream, players, warner, idFactory) -> {
-			requireTag(element, tag);
+		readers.put(tag, (element, parent, stream, players, warner, idFactory) -> {
+			requireTag(element, parent, tag);
 			spinUntilEnd(assertNotNull(element.getName()), stream);
 			return setImage(factory.apply(getOrGenerateID(element, warner, idFactory)),
 					element, warner);
@@ -295,8 +299,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 *                  order, and nothing else.
 	 */
 	private void createSimpleHasKindReader(final String tag, final HasKindFactory factory) {
-		readers.put(tag, (element, stream, players, warner, idFactory) -> {
-			requireTag(element, tag);
+		readers.put(tag, (element, parent, stream, players, warner, idFactory) -> {
+			requireTag(element, parent, tag);
 			spinUntilEnd(assertNotNull(element.getName()), stream);
 			return setImage(factory.create(getAttribute(element, "kind"),
 					getOrGenerateID(element, warner, idFactory)), element, warner);
@@ -306,6 +310,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * Read a Unit from XML. This is here to avoid a circular dependency between whatever
 	 * class it would be in and this class.
 	 * @param element   the XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -313,11 +318,11 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @return the parsed unit
 	 * @throws SPFormatException on SP format problem
 	 */
-	private Unit readUnit(final StartElement element,
+	private Unit readUnit(final StartElement element, final QName parent,
 					 final Iterable<XMLEvent> stream,
 					 final IMutablePlayerCollection players, final Warning warner,
 					 final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "unit");
+		requireTag(element, parent, "unit");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		requireNonEmptyAttribute(element, "owner", false, warner);
 		String kind;
@@ -340,8 +345,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object child =
-						readSPObject(event.asStartElement(), stream, players, warner,
-								idFactory);
+						readSPObject(event.asStartElement(), element.getName(), stream,
+								players, warner, idFactory);
 				if (child instanceof UnitMember) {
 					retval.addMember((UnitMember) child);
 				} else {
@@ -361,6 +366,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * Parse a fortress.
 	 *
 	 * @param element   the XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -369,6 +375,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @throws SPFormatException on SP format problems
 	 */
 	private Fortress readFortress(final StartElement element,
+								  final QName parent,
 											  final Iterable<XMLEvent> stream,
 											  final IMutablePlayerCollection players,
 											  final Warning warner,
@@ -383,8 +390,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object child =
-						readSPObject(event.asStartElement(), stream, players, warner,
-								idFactory);
+						readSPObject(event.asStartElement(), element.getName(), stream,
+								players, warner, idFactory);
 				if (child instanceof FortressMember) {
 					retval.addMember((FortressMember) child);
 				} else {
@@ -404,6 +411,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	/**
 	 * Parse a map from XML.
 	 * @param element the element being parsed
+	 * @param parent the parent tag
 	 * @param stream the stream of further XML elements
 	 * @param players the collection of players
 	 * @param warner to use to report format irregularities
@@ -412,11 +420,12 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @throws SPFormatException on format error
 	 */
 	private IMutableMapNG readMap(final StartElement element,
+								  final QName parent,
 										final Iterable<XMLEvent> stream,
 										final IMutablePlayerCollection players,
 										final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "map", "view");
+		requireTag(element, parent, "map", "view");
 		final int currentTurn;
 		final StartElement mapTag;
 		final String outerTag = assertNotNull(element.getName().getLocalPart());
@@ -437,6 +446,9 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 										 getIntegerAttribute(mapTag, "columns"),
 										 getIntegerAttribute(mapTag, "version"));
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
+		final Deque<QName> tagStack = new LinkedList<>();
+		tagStack.push(element.getName());
+		tagStack.push(mapTag.getName());
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && equalsAny(
 					assertNotNull(
@@ -446,6 +458,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				final String type = current.getName().getLocalPart();
 				switch (type) {
 				case "row":
+					tagStack.push(current.getName());
 					// Deliberately ignore
 					continue;
 				case "tile":
@@ -458,13 +471,18 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					continue;
 				}
 				final Object child =
-						readSPObject(current, stream, players, warner, idFactory);
+						readSPObject(current, tagStack.peek(), stream, players, warner,
+								idFactory);
 				if (child instanceof Player) {
 					retval.addPlayer((Player) child);
 				} else {
 					throw new UnwantedChildException(mapTag.getName(), current);
 				}
 			} else if (event.isEndElement()) {
+				if (!tagStack.isEmpty() &&
+							tagStack.peek().equals(event.asEndElement().getName())) {
+					tagStack.pop();
+				}
 				if (element.getName().equals(event.asEndElement().getName())) {
 					break;
 				}
@@ -474,7 +492,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				if (!data.isEmpty()) {
 					//noinspection ObjectAllocationInLoop
 					warner.warn(
-							new UnwantedChildException(new QName(NULL_NS_URI, "unknown"),
+							new UnwantedChildException(tagStack.peek(),
 															  new QName(NULL_NS_URI,
 																			   "text"),
 															  event.getLocation(),
@@ -538,22 +556,9 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				} else if ("tile".equals(type)) {
 					throw new UnwantedChildException(element.getName(), current);
 				}
-				final Object child;
-				try {
-					child = readSPObject(current, stream, players, warner, idFactory);
-				} catch (final UnwantedChildException except) {
-					if ("unknown".equals(except.getTag().getLocalPart())) {
-						throw new UnwantedChildException(element.getName(), except);
-					} else {
-						throw except;
-					}
-				} catch (final IllegalStateException except) {
-					if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
-						throw new UnwantedChildException(element.getName(), current, except);
-					} else {
-						throw except;
-					}
-				}
+				final Object child =
+						readSPObject(current, element.getName(), stream, players, warner,
+								idFactory);
 				if (child instanceof River) {
 					map.addRivers(point, (River) child);
 				} else if (child instanceof Mountain) {
@@ -637,6 +642,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * Read a player from XML. This is here because it's not a good fit for any of the
 	 * other classes that collect related methods.
 	 * @param element   the XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -646,10 +652,11 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 */
 	@SuppressWarnings("UnusedParameters")
 	private static Player readPlayer(final StartElement element,
+					   final QName parent,
 					   final Iterable<XMLEvent> stream,
 					   final IMutablePlayerCollection players, final Warning warner,
 					   final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "player");
+		requireTag(element, parent, "player");
 		requireNonEmptyAttribute(element, "number", true, warner);
 		requireNonEmptyAttribute(element, "code_name", true, warner);
 		spinUntilEnd(assertNotNull(element.getName()), stream);

@@ -4,6 +4,7 @@ import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
@@ -65,6 +66,7 @@ public final class FluidResourceHandler {
 	 * Parse a resource pile.
 	 *
 	 * @param element   the element to read from
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -76,11 +78,12 @@ public final class FluidResourceHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static ResourcePile readResource(final StartElement element,
+											final QName parent,
 											final Iterable<XMLEvent> stream,
 											final IMutablePlayerCollection players,
 											final Warning warner,
 											final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "resource");
+		requireTag(element, parent, "resource");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final ResourcePile retval =
 				new ResourcePile(getOrGenerateID(element, warner, idFactory),
@@ -97,6 +100,7 @@ public final class FluidResourceHandler {
 	 * Parse a cache.
 	 *
 	 * @param element   the element to read from
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -108,11 +112,12 @@ public final class FluidResourceHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static CacheFixture readCache(final StartElement element,
+										 final QName parent,
 										 final Iterable<XMLEvent> stream,
 										 final IMutablePlayerCollection players,
 										 final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "cache");
+		requireTag(element, parent, "cache");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new CacheFixture(getAttribute(element, "kind"),
 												getAttribute(element, "contents"),
@@ -123,6 +128,7 @@ public final class FluidResourceHandler {
 	 * Parse a grove.
 	 *
 	 * @param element   the element to read from
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -134,11 +140,12 @@ public final class FluidResourceHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Grove readGrove(final StartElement element,
+								  final QName parent,
 								  final Iterable<XMLEvent> stream,
 								  final IMutablePlayerCollection players,
 								  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "grove");
+		requireTag(element, parent, "grove");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final boolean cultivated;
 		if (hasAttribute(element, "cultivated")) {
@@ -159,6 +166,7 @@ public final class FluidResourceHandler {
 	 * Parse an orchard.
 	 *
 	 * @param element   the element to read from
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -170,11 +178,12 @@ public final class FluidResourceHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Grove readOrchard(final StartElement element,
+									final QName parent,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
 									final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "orchard");
+		requireTag(element, parent, "orchard");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final boolean cultivated;
 		if (hasAttribute(element, "cultivated")) {
@@ -195,6 +204,7 @@ public final class FluidResourceHandler {
 	 * Parse a meadow.
 	 *
 	 * @param element   the element to read from
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -206,11 +216,12 @@ public final class FluidResourceHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Meadow readMeadow(final StartElement element,
+									final QName parent,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
 									final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "meadow");
+		requireTag(element, parent, "meadow");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final int id = getOrGenerateID(element, warner, idFactory);
 		if (!hasAttribute(element, "status")) {
@@ -224,6 +235,7 @@ public final class FluidResourceHandler {
 	 * Parse a field.
 	 *
 	 * @param element   the element to read from
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -235,11 +247,12 @@ public final class FluidResourceHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Meadow readField(final StartElement element,
+								   final QName parent,
 								   final Iterable<XMLEvent> stream,
 								   final IMutablePlayerCollection players,
 								   final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "field");
+		requireTag(element, parent, "field");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final int id = getOrGenerateID(element, warner, idFactory);
 		if (!hasAttribute(element, "status")) {
@@ -253,6 +266,7 @@ public final class FluidResourceHandler {
 	 * Parse a mine.
 	 *
 	 * @param element   the element to read from
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -264,11 +278,12 @@ public final class FluidResourceHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Mine readMine(final StartElement element,
+								final QName parent,
 								final Iterable<XMLEvent> stream,
 								final IMutablePlayerCollection players,
 								final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "mine");
+		requireTag(element, parent, "mine");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(
 				new Mine(getAttrWithDeprecatedForm(element, "kind", "product", warner),
@@ -280,6 +295,7 @@ public final class FluidResourceHandler {
 	 * Parse a Mineral.
 	 *
 	 * @param element   the element to read from
+	 * @param parent the parent tag
 	 * @param stream    a stream of more elements
 	 * @param players   the list of players
 	 * @param warner    the Warning instance to use for warnings
@@ -291,11 +307,12 @@ public final class FluidResourceHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static MineralVein readMineral(final StartElement element,
+										  final QName parent,
 										  final Iterable<XMLEvent> stream,
 										  final IMutablePlayerCollection players,
 										  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "mineral");
+		requireTag(element, parent, "mineral");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(
 				new MineralVein(getAttrWithDeprecatedForm(element, "kind", "mineral",
@@ -308,6 +325,7 @@ public final class FluidResourceHandler {
 	 * Parse a shrub.
 	 *
 	 * @param element   the element to read from
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -319,11 +337,12 @@ public final class FluidResourceHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Shrub readShrub(final StartElement element,
+								  final QName parent,
 								  final Iterable<XMLEvent> stream,
 								  final IMutablePlayerCollection players,
 								  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "shrub");
+		requireTag(element, parent, "shrub");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Shrub(getAttrWithDeprecatedForm(element,
 				"kind", "shrub", warner), getOrGenerateID(element, warner,
@@ -333,6 +352,7 @@ public final class FluidResourceHandler {
 	 * Parse a Stone.
 	 *
 	 * @param element   the element to read from
+	 * @param parent the parent tag
 	 * @param stream    a stream of more elements
 	 * @param players   the list of players
 	 * @param warner    the Warning instance to use for warnings
@@ -344,11 +364,12 @@ public final class FluidResourceHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static StoneDeposit readStone(final StartElement element,
+										 final QName parent,
 										 final Iterable<XMLEvent> stream,
 										 final IMutablePlayerCollection players,
 										 final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "stone");
+		requireTag(element, parent, "stone");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new StoneDeposit(parseStoneKind(
 				getAttrWithDeprecatedForm(element, "kind", "stone", warner)),

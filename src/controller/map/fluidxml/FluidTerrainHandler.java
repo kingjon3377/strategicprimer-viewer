@@ -2,6 +2,7 @@ package controller.map.fluidxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
@@ -54,6 +55,7 @@ public final class FluidTerrainHandler {
 	/**
 	 * Read Ground from XML.
 	 * @param element   the XML element to parse
+	 * @param parent	the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -63,10 +65,11 @@ public final class FluidTerrainHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Ground readGround(final StartElement element,
+									final QName parent,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players, final Warning warner,
 									final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "ground");
+		requireTag(element, parent, "ground");
 		final String kind = getAttrWithDeprecatedForm(element, "kind",
 				"ground", warner);
 		requireNonEmptyAttribute(element, "exposed", true, warner);
@@ -77,6 +80,7 @@ public final class FluidTerrainHandler {
 	/**
 	 * Read a Forest from XML.
 	 * @param element   the XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -86,10 +90,11 @@ public final class FluidTerrainHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Forest readForest(final StartElement element,
+									final QName parent,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players, final Warning warner,
 									final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "forest");
+		requireTag(element, parent, "forest");
 		final Forest retval =
 				new Forest(getAttribute(element, "kind"), hasAttribute(element, "rows"));
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -99,6 +104,7 @@ public final class FluidTerrainHandler {
 	/**
 	 * Read a Mountain from XML.
 	 * @param element   the XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -108,10 +114,11 @@ public final class FluidTerrainHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Mountain readMountain(final StartElement element,
+										final QName parent,
 										final Iterable<XMLEvent> stream,
 										final IMutablePlayerCollection players, final Warning warner,
 										final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "mountain");
+		requireTag(element, parent, "mountain");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Mountain(), element, warner);
 	}
@@ -190,11 +197,12 @@ public final class FluidTerrainHandler {
 	 */
 	@SuppressWarnings({"SameReturnValue", "UnusedParameters"})
 	public static River readLake(final StartElement element,
+								 final QName parent,
 								 final Iterable<XMLEvent> stream,
 								 final IMutablePlayerCollection players,
 								 final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "lake");
+		requireTag(element, parent, "lake");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return River.Lake;
 	}
@@ -202,6 +210,7 @@ public final class FluidTerrainHandler {
 	 * Parse a river.
 	 *
 	 * @param element   the element to read from
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -213,11 +222,12 @@ public final class FluidTerrainHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static River readRiver(final StartElement element,
+								  final QName parent,
 								  final Iterable<XMLEvent> stream,
 								  final IMutablePlayerCollection players,
 								  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "river");
+		requireTag(element, parent, "river");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return River.getRiver(getAttribute(element, "direction"));
 	}

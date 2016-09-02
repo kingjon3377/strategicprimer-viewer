@@ -2,6 +2,7 @@ package controller.map.fluidxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -27,6 +28,7 @@ import util.Warning;
 public interface FluidXMLReader {
 	/**
 	 * @param element the XML tag being parsed
+	 * @param parent the parent tag
 	 * @param stream the stream of XML elements we're reading from
 	 * @param players the collection of players in the current map
 	 * @param warner the Warning instance to use to handle warning conditions
@@ -35,7 +37,7 @@ public interface FluidXMLReader {
 	 * @throws SPFormatException on SP format errors
 	 * @throws IllegalArgumentException if the tag is not one we know how to read
 	 */
-	Object readSPObject(StartElement element, Iterable<XMLEvent> stream,
+	Object readSPObject(StartElement element, QName parent, Iterable<XMLEvent> stream,
 						IMutablePlayerCollection players, Warning warner,
 						IDRegistrar idFactory)
 			throws SPFormatException, IllegalArgumentException;

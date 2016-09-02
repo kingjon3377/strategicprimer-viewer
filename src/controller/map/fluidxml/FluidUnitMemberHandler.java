@@ -70,6 +70,7 @@ public final class FluidUnitMemberHandler {
 	 * Parse a worker from XML.
 	 *
 	 * @param element   the current tag
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more tags from
 	 * @param players   ignored
 	 * @param warner    the Warning instance to report errors on
@@ -78,11 +79,12 @@ public final class FluidUnitMemberHandler {
 	 * @throws SPFormatException on SP format error
 	 */
 	public static Worker readWorker(final StartElement element,
+									final QName parent,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
 									final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "worker");
+		requireTag(element, parent, "worker");
 		final Worker retval = setImage(new Worker(getAttribute(element, "name"),
 												getAttribute(element, "race", "human"),
 												getOrGenerateID(element, warner,
@@ -94,11 +96,13 @@ public final class FluidUnitMemberHandler {
 				switch (startElement.getName().getLocalPart()) {
 				case "job":
 					retval.addJob(
-							readJob(startElement, stream, players, warner, idFactory));
+							readJob(startElement, element.getName(), stream, players,
+									warner, idFactory));
 					break;
 				case "stats":
 					retval.setStats(
-							readStats(startElement, stream, players, warner, idFactory));
+							readStats(startElement, element.getName(), stream, players,
+									warner, idFactory));
 					break;
 				default:
 					throw new UnwantedChildException(assertNotNull(element.getName()),
@@ -115,6 +119,7 @@ public final class FluidUnitMemberHandler {
 	 * Parse a job from XML.
 	 *
 	 * @param element   the current tag
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more tags from
 	 * @param players   ignored
 	 * @param warner    the Warning instance to report errors on
@@ -123,11 +128,12 @@ public final class FluidUnitMemberHandler {
 	 * @throws SPFormatException on SP format error
 	 */
 	public static IJob readJob(final StartElement element,
+							   final QName parent,
 							   final Iterable<XMLEvent> stream,
 							   final IMutablePlayerCollection players,
 							   final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "job");
+		requireTag(element, parent, "job");
 		if (hasAttribute(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException(element, "hours"));
 		}
@@ -146,7 +152,8 @@ public final class FluidUnitMemberHandler {
 						anySkills = true;
 					}
 					retval.addSkill(
-							readSkill(startElement, stream, players, warner, idFactory));
+							readSkill(startElement, element.getName(), stream, players,
+									warner, idFactory));
 					lastSkill = startElement;
 				} else {
 					throw new UnwantedChildException(assertNotNull(element.getName()),
@@ -175,6 +182,7 @@ public final class FluidUnitMemberHandler {
 	 * Parse a skill from XML.
 	 *
 	 * @param element   the current tag
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more tags from
 	 * @param players   ignored
 	 * @param warner    the Warning instance to report errors on
@@ -184,11 +192,12 @@ public final class FluidUnitMemberHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static ISkill readSkill(final StartElement element,
+								   final QName parent,
 								   final Iterable<XMLEvent> stream,
 								   final IMutablePlayerCollection players,
 								   final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "skill");
+		requireTag(element, parent, "skill");
 		requireNonEmptyAttribute(element, "name", true, warner);
 		requireNonEmptyAttribute(element, "level", true, warner);
 		requireNonEmptyAttribute(element, "hours", true, warner);
@@ -206,6 +215,7 @@ public final class FluidUnitMemberHandler {
 	 * Parse stats from XML.
 	 *
 	 * @param element   the current tag
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more tags from
 	 * @param players   ignored
 	 * @param warner    the Warning instance to report errors on
@@ -215,11 +225,12 @@ public final class FluidUnitMemberHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static WorkerStats readStats(final StartElement element,
+										final QName parent,
 										final Iterable<XMLEvent> stream,
 										final IMutablePlayerCollection players,
 										final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "stats");
+		requireTag(element, parent, "stats");
 		final WorkerStats retval =
 				new WorkerStats(getIntegerAttribute(element, "hp"),
 									   getIntegerAttribute(element, "max"),
@@ -353,6 +364,7 @@ public final class FluidUnitMemberHandler {
 
 	/**
 	 * @param element   the element containing an animal
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -364,11 +376,12 @@ public final class FluidUnitMemberHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Animal readAnimal(final StartElement element,
+									final QName parent,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
 									final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "animal");
+		requireTag(element, parent, "animal");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Animal(getAttribute(element, "kind"), hasAttribute(element,
 				"traces"),

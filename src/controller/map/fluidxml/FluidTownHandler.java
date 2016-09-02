@@ -3,6 +3,7 @@ package controller.map.fluidxml;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
 import java.util.Random;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
@@ -59,6 +60,7 @@ public final class FluidTownHandler {
 	 * Parse a town.
 	 *
 	 * @param element   the XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players in the map
 	 * @param warner    the Warning instance to use for warnings
@@ -67,11 +69,12 @@ public final class FluidTownHandler {
 	 * @throws SPFormatException on SP format problems
 	 */
 	public static Town readTown(final StartElement element,
+								final QName parent,
 								final Iterable<XMLEvent> stream,
 								final IPlayerCollection players,
 								final Warning warner,
 								final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "town");
+		requireTag(element, parent, "town");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Town fix =
@@ -88,6 +91,7 @@ public final class FluidTownHandler {
 	 * Parse a fortification.
 	 *
 	 * @param element   the XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players in the map
 	 * @param warner    the Warning instance to use for warnings
@@ -96,11 +100,12 @@ public final class FluidTownHandler {
 	 * @throws SPFormatException on SP format problems
 	 */
 	public static Fortification readFortification(final StartElement element,
+												  final QName parent,
 												  final Iterable<XMLEvent> stream,
 												  final IPlayerCollection players,
 												  final Warning warner,
 												  final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "fortification");
+		requireTag(element, parent, "fortification");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Fortification fix =
@@ -117,6 +122,7 @@ public final class FluidTownHandler {
 	 * Parse a city.
 	 *
 	 * @param element   the XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players in the map
 	 * @param warner    the Warning instance to use for warnings
@@ -125,11 +131,12 @@ public final class FluidTownHandler {
 	 * @throws SPFormatException on SP format problems
 	 */
 	public static City readCity(final StartElement element,
+								final QName parent,
 								final Iterable<XMLEvent> stream,
 								final IPlayerCollection players,
 								final Warning warner,
 								final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "city");
+		requireTag(element, parent, "city");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final City fix =
@@ -146,6 +153,7 @@ public final class FluidTownHandler {
 	 * Parse a village.
 	 *
 	 * @param element   the XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players in the map
 	 * @param warner    the Warning instance to use for warnings
@@ -154,12 +162,13 @@ public final class FluidTownHandler {
 	 * @throws SPFormatException on SP format problems
 	 */
 	public static Village readVillage(final StartElement element,
+									  final QName parent,
 									  final Iterable<XMLEvent> stream,
 									  final IPlayerCollection players,
 									  final Warning warner,
 									  final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "village");
+		requireTag(element, parent, "village");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final int idNum = getOrGenerateID(element, warner, idFactory);

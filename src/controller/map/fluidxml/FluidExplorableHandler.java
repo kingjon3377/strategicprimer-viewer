@@ -5,6 +5,7 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
 import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
@@ -60,6 +61,7 @@ public final class FluidExplorableHandler {
 	 * Read an adventure from XML.
 	 *
 	 * @param element   The XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -68,12 +70,13 @@ public final class FluidExplorableHandler {
 	 * @throws SPFormatException on SP format problems
 	 */
 	public static AdventureFixture readAdventure(final StartElement element,
+												 final QName parent,
 												 final Iterable<XMLEvent> stream,
 												 final IPlayerCollection players,
 												 final Warning warner,
 												 final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "adventure");
+		requireTag(element, parent, "adventure");
 		final Player player;
 		if (XMLHelper.hasAttribute(element, "owner")) {
 			player = players.getPlayer(getIntegerAttribute(element, "owner"));
@@ -91,6 +94,7 @@ public final class FluidExplorableHandler {
 	 * Read a portal from XML.
 	 *
 	 * @param element   The XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -100,11 +104,12 @@ public final class FluidExplorableHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Portal readPortal(final StartElement element,
+									final QName parent,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
 									final Warning warner,
 									final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "portal");
+		requireTag(element, parent, "portal");
 		final Portal retval = setImage(new Portal(getAttribute(element, "world"),
 												PointFactory.point(getIntegerAttribute(
 														element, "row"),
@@ -118,6 +123,7 @@ public final class FluidExplorableHandler {
 
 	/**
 	 * @param element   the XML element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -127,11 +133,12 @@ public final class FluidExplorableHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Cave readCave(final StartElement element,
+								final QName parent,
 								final Iterable<XMLEvent> stream,
 								final IMutablePlayerCollection players,
 								final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "cave");
+		requireTag(element, parent, "cave");
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Cave retval = new Cave(getIntegerAttribute(element, "dc"), idNum);
 		spinUntilEnd(element.getName(), stream);
@@ -140,6 +147,7 @@ public final class FluidExplorableHandler {
 
 	/**
 	 * @param element   the XML element to parse
+	 * @param parent	the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -149,13 +157,14 @@ public final class FluidExplorableHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static Battlefield readBattlefield(final StartElement element,
+											  final QName parent,
 											  final Iterable<XMLEvent> stream,
 											  final IMutablePlayerCollection
 															players,
 											  final Warning warner,
 											  final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "battlefield");
+		requireTag(element, parent, "battlefield");
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Battlefield retval =
 				new Battlefield(getIntegerAttribute(element, "dc"), idNum);
@@ -166,6 +175,7 @@ public final class FluidExplorableHandler {
 	 * Parse a TextFixture.
 	 *
 	 * @param element   the element to parse
+	 * @param parent the parent tag
 	 * @param stream    the stream to get more elements (in this case, the text) from
 	 * @param players   ignored
 	 * @param warner    the Warning instance to use for warnings
@@ -177,11 +187,12 @@ public final class FluidExplorableHandler {
 	 */
 	@SuppressWarnings("UnusedParameters")
 	public static TextFixture readTextFixture(final StartElement element,
+											  final QName parent,
 											  final Iterable<XMLEvent> stream,
 											  final IMutablePlayerCollection players,
 											  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, "text");
+		requireTag(element, parent, "text");
 		// Of all our uses of StringBuilder, here we can't know how much size
 		// we're going to need beforehand. But cases where we'll need more than
 		// 2K will be vanishingly rare in practice.
