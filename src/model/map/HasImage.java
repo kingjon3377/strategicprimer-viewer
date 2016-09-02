@@ -19,9 +19,6 @@ package model.map;
  */
 public interface HasImage {
 	/**
-	 * FIXME: This is model-view mixing, but should fix code-complexity problems in the
-	 * tile-draw helper.
-	 *
 	 * This is the image to use if the individual fixture doesn't specify a different
 	 * image. It should be a "constant function."
 	 *
