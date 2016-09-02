@@ -1,6 +1,7 @@
 package controller.map.cxml;
 
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Arrays;
@@ -91,7 +92,7 @@ public final class CompactReaderAdapter {
 				return reader.read(element, parent, players, warner, idFactory, stream);
 			}
 		}
-		throw new IllegalStateException("Unhandled tag " + tag);
+		throw new UnwantedChildException(parent, element);
 	}
 
 	/**

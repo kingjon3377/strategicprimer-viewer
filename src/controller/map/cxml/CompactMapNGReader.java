@@ -200,29 +200,18 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					tagStack.push(current.getName());
 					retval.setMountainous(point, true);
 				} else {
-					try {
-						final TileFixture fix =
-								parseFixture(current, tagStack.peek(), stream, players,
-										idFactory, warner);
-						if ((fix instanceof StoneDeposit) &&
-									(StoneKind.Laterite ==
-											 ((StoneDeposit) fix).stone()) &&
-									(TileType.Jungle != retval.getBaseTerrain(point))) {
-							//noinspection ObjectAllocationInLoop
-							warner.warn(new UnsupportedPropertyException(current,
-																				"laterite"));
-						}
-						retval.addFixture(point, fix);
-					} catch (final IllegalStateException except) {
-						// TODO: Tests should cover this
-						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
-							throw new UnwantedChildException(
-									assertNotNull(mapTag.getName()),
-									current, except);
-						} else {
-							throw except;
-						}
+					final TileFixture fix =
+							parseFixture(current, tagStack.peek(), stream, players,
+									idFactory, warner);
+					if ((fix instanceof StoneDeposit) &&
+								(StoneKind.Laterite ==
+										 ((StoneDeposit) fix).stone()) &&
+								(TileType.Jungle != retval.getBaseTerrain(point))) {
+						//noinspection ObjectAllocationInLoop
+						warner.warn(new UnsupportedPropertyException(current,
+																			"laterite"));
 					}
+					retval.addFixture(point, fix);
 				}
 			} else if (event.isEndElement()) {
 				if (!tagStack.isEmpty() &&
