@@ -28,6 +28,7 @@ import util.Warning;
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @Deprecated
+@SuppressWarnings("ClassHasNoToStringMethod")
 public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	/**
 	 * Singleton object.
@@ -96,16 +97,6 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 		ostream.append(LineEnd.LINE_SEP);
 	}
 
-	/**
-	 * TODO: Either remove toString() from CXML classes (and add suppression to make
-	 * that not warn) or make test code call them.
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactGroundReader";
-	}
 	/**
 	 * @param obj an object
 	 * @return whether we can write it

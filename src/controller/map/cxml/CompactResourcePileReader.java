@@ -27,6 +27,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactResourcePileReader
 		extends AbstractCompactReader<ResourcePile> {
@@ -111,14 +112,6 @@ public final class CompactResourcePileReader
 		ostream.append(LineEnd.LINE_SEP);
 	}
 
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactResourcePileReader";
-	}
 	/**
 	 * @param obj an object
 	 * @return whether we can write it

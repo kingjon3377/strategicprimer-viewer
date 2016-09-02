@@ -24,6 +24,7 @@ import model.map.IMapNG;
  * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactXMLWriter implements SPWriter {
 	/**
@@ -87,14 +88,5 @@ public final class CompactXMLWriter implements SPWriter {
 	public static void writeSPObject(final Appendable ostream, final Object obj)
 			throws IOException {
 		CompactReaderAdapter.write(ostream, obj, 0);
-	}
-
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactXMLWriter";
 	}
 }

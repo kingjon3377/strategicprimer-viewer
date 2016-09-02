@@ -28,6 +28,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 	/**
@@ -98,14 +99,6 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 		return "portal".equalsIgnoreCase(tag);
 	}
 
-	/**
-	 * @return a string representation of this class
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactPortalReader";
-	}
 	/**
 	 * @param obj an object
 	 * @return whether we can write it

@@ -35,6 +35,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactReaderAdapter {
 	/**
@@ -135,14 +136,5 @@ public final class CompactReaderAdapter {
 													" readers, don't know how to write a " +
 													obj.getClass().getSimpleName());
 		}
-	}
-
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactReaderAdapter";
 	}
 }

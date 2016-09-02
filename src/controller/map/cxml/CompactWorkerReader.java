@@ -41,6 +41,7 @@ import static util.EqualsAny.equalsAny;
  * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	/**
@@ -359,15 +360,6 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	@Override
 	public boolean isSupportedTag(final String tag) {
 		return "worker".equals(tag);
-	}
-
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactWorkerReader";
 	}
 	/**
 	 * @param obj an object

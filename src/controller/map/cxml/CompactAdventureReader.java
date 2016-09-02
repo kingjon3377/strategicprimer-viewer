@@ -28,6 +28,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactAdventureReader extends
 		AbstractCompactReader<AdventureFixture> {
@@ -115,14 +116,6 @@ public final class CompactAdventureReader extends
 		return "adventure".equalsIgnoreCase(tag);
 	}
 
-	/**
-	 * @return a string representation of this class
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactAdventureReader";
-	}
 	/**
 	 * @param obj an object
 	 * @return whether we can write it

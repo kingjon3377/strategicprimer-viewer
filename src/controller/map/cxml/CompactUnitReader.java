@@ -41,6 +41,7 @@ import static java.util.Collections.unmodifiableList;
  * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	/**
@@ -229,15 +230,6 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 			ostream.append(" />");
 			ostream.append(LineEnd.LINE_SEP);
 		}
-	}
-
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactUnitReader";
 	}
 	/**
 	 * @param obj an object

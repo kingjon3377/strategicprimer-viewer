@@ -34,6 +34,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactExplorableReader
 		extends AbstractCompactReader<ExplorableFixture> {
@@ -132,14 +133,6 @@ public final class CompactExplorableReader
 		ostream.append(LineEnd.LINE_SEP);
 	}
 
-	/**
-	 * @return a string representation of this class
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactExplorableReader";
-	}
 	/**
 	 * @param obj an object
 	 * @return whether we can write it

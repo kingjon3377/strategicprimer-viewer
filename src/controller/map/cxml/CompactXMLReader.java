@@ -39,6 +39,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactXMLReader implements IMapReader, ISPReader {
 	/**
@@ -105,14 +106,5 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 								 final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, SPMapNG.class, warner);
-	}
-
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactXMLReader";
 	}
 }

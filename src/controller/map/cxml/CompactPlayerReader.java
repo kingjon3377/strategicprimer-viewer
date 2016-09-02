@@ -26,6 +26,7 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	/**
@@ -90,14 +91,6 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 		ostream.append(LineEnd.LINE_SEP);
 	}
 
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactPlayerReader";
-	}
 	/**
 	 * @param obj an object
 	 * @return whether we can write it

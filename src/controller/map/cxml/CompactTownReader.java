@@ -50,6 +50,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactTownReader extends AbstractCompactReader<ITownFixture> {
 	/**
@@ -377,14 +378,6 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		ostream.append(LineEnd.LINE_SEP);
 	}
 
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactTownReader";
-	}
 	/**
 	 * @param obj an object
 	 * @return whether we can write it

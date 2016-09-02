@@ -59,6 +59,7 @@ import static util.NullCleaner.assertNotNull;
  * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
 public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	/**
@@ -536,14 +537,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		}
 	}
 
-	/**
-	 * @return a string representation of this class
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "CompactMapNGReader";
-	}
 	/**
 	 * @param obj an object
 	 * @return whether we can write it
