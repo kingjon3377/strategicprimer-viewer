@@ -15,6 +15,8 @@ import model.map.Point;
 import model.map.River;
 import model.map.TileFixture;
 import model.map.fixtures.FortressMember;
+import model.map.fixtures.Implement;
+import model.map.fixtures.ResourcePile;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
@@ -285,22 +287,51 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		if (item.iterator().hasNext()) {
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:")
 					.append(LineEnd.LINE_SEP).append(OPEN_LIST);
+			final Collection<Implement> impls = new ArrayList<>();
+			final Collection<ResourcePile> resources = new ArrayList<>();
 			final Collection<FortressMember> contents = new ArrayList<>();
 			for (final FortressMember member : item) {
 				if (member instanceof Unit) {
 					builder.append(OPEN_LIST_ITEM)
 							.append(urg.produce(fixtures, map, currentPlayer,
 									(Unit) member, loc)).append(CLOSE_LIST_ITEM);
+				} else if (member instanceof Implement) {
+					impls.add((Implement) member);
+				} else if (member instanceof ResourcePile) {
+					resources.add((ResourcePile) member);
 				} else {
 					contents.add(member);
 				}
 			}
 			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+			if (!resources.isEmpty()) {
+				builder.append(OPEN_LIST_ITEM).append("Resources:")
+						.append(LineEnd.LINE_SEP).append(OPEN_LIST);
+				for (final ResourcePile resource : resources) {
+					builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
+																  .produce(fixtures, map,
+																		  currentPlayer,
+																		  resource, loc))
+							.append(CLOSE_LIST_ITEM);
+				}
+				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+			}
+			if (!impls.isEmpty()) {
+				builder.append(OPEN_LIST_ITEM).append("Equipment:")
+						.append(LineEnd.LINE_SEP).append(OPEN_LIST);
+				for (final Implement implement : impls) {
+					builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
+																  .produce(fixtures, map,
+																		  currentPlayer,
+																		  implement, loc))
+							.append(CLOSE_LIST_ITEM);
+				}
+				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+			}
 			if (!contents.isEmpty()) {
 				builder.append(OPEN_LIST_ITEM)
 						.append("Other fortress contents:").append(LineEnd.LINE_SEP)
 						.append(OPEN_LIST);
-				// TODO: Group resources and implements separately
 				for (final FortressMember member : contents) {
 					builder.append(OPEN_LIST_ITEM)
 							.append(memberReportGenerator
@@ -344,13 +375,22 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		if (item.iterator().hasNext()) {
 			final IReportNode units = new ListReportNode(loc,
 																"Units on the tile:");
+			final IReportNode resources = new ListReportNode(loc, "Resources");
+			final IReportNode impls = new ListReportNode(loc, "Equipment:");
 			final IReportNode contents =
 					new ListReportNode(loc, "Other Contents of Fortress:");
-			// TODO: Group resources and equipment separately
 			for (final FortressMember unit : item) {
 				if (unit instanceof Unit) {
 					units.add(urg.produceRIR(fixtures, map, currentPlayer,
 							(Unit) unit, loc));
+				} else if (unit instanceof Implement) {
+					impls.add(memberReportGenerator
+									  .produceRIR(fixtures, map, currentPlayer, unit,
+											  loc));
+				} else if (unit instanceof ResourcePile) {
+					resources.add(memberReportGenerator
+										  .produceRIR(fixtures, map, currentPlayer, unit,
+												  loc));
 				} else {
 					contents.add(
 							memberReportGenerator
@@ -359,6 +399,12 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			}
 			if (units.getChildCount() != 0) {
 				retval.add(units);
+			}
+			if (resources.getChildCount() != 0) {
+				retval.add(resources);
+			}
+			if (impls.getChildCount() != 0) {
+				retval.add(impls);
 			}
 			if (contents.getChildCount() != 0) {
 				retval.add(contents);
