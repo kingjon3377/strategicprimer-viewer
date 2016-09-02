@@ -756,7 +756,8 @@ public abstract class BaseTestFixtureSerialization {
 		}
 	}
 	/**
-	 * Assert that a given piece of XML will fail with NoSuchElementException.
+	 * Assert that a given piece of XML will fail with NoSuchElementException or
+	 * IllegalArgumentException.
 	 * @param xml the XML to check
 	 * @throws XMLStreamException on unexpected reader failure
 	 * @throws SPFormatException on unexpected reader objection
@@ -766,13 +767,13 @@ public abstract class BaseTestFixtureSerialization {
 		try (StringReader stringReader = new StringReader(xml)) {
 			oldReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Ignore);
 			fail("Old reader didn't object to invalid XML");
-		} catch (final NoSuchElementException ignored) {
+		} catch (final NoSuchElementException|IllegalArgumentException ignored) {
 			// pass()
 		}
 		try (StringReader stringReader = new StringReader(xml)) {
 			newReader.readXML(FAKE_FILENAME, stringReader, Object.class, Warning.Ignore);
 			fail("Old reader didn't object to invalid XML");
-		} catch (final NoSuchElementException ignored) {
+		} catch (final NoSuchElementException|IllegalArgumentException ignored) {
 			// pass()
 		}
 	}

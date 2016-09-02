@@ -173,6 +173,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				equalTo(encapsulateRivers(point(1, 2), River.North, River.South)));
 		assertSerialization("Two rivers",
 				encapsulateRivers(point, River.North, River.South));
+		assertInvalid(encapsulateTileString("<river direction=\"invalid\" />"));
 	}
 
 	/**

@@ -56,8 +56,6 @@ public enum River {
 	/**
 	 * Parse a river direction.
 	 *
-	 * TODO: improve testing of this
-	 *
 	 * @param description a string giving the direction
 	 * @return the river direction
 	 */
