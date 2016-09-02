@@ -492,7 +492,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			fail("Map in an unsupported namespace shouldn't be accepted");
 		} catch (final UnwantedChildException except) {
 			assertThat("'Tag' that had the unwanted child was what we expected",
-					except.getTag().getLocalPart(), equalTo("unknown"));
+					except.getTag().getLocalPart(), equalTo("root"));
 			assertThat("Unwanted child was the one we expected",
 					except.getChild(), equalTo(new QName("xyzzy", "map")));
 		}

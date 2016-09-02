@@ -61,17 +61,16 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * Require that an element be one of the specified tags.
 	 *
 	 * @param element the element to check
-	 * @param tags    the tags we accept here
-	 * @throws SPFormatException on something other than one of the tags we accept in a
+	 * @param parent the parent tag
+	 * @param tags    the tags we accept here  @throws SPFormatException on something other than one of the tags we accept in a
 	 * namespace we expect.
 	 */
 	protected static void requireTag(final StartElement element,
-									final String... tags) throws SPFormatException {
+									 final QName parent, final String... tags) throws SPFormatException {
 		if (!EqualsAny.equalsAny(
 				assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-			// TODO: Pass in parent tag? Somehow?
-			throw new UnwantedChildException(new QName("unknown"), element,
+			throw new UnwantedChildException(parent, element,
 													new IllegalArgumentException
 															("Unrecognized namespace"));
 		}
@@ -80,7 +79,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		if (!EqualsAny.equalsAny(localName, tags)) {
 			// While we'd like tests to exercise this, we're always careful
 			// to only call readers when we know they support the tag ...
-			throw new UnwantedChildException(new QName("unknown"), element,
+			throw new UnwantedChildException(parent, element,
 					new IllegalArgumentException(Stream.concat(Stream.of(format(
 						"Unexpected tag %s on line %d, expected one of the following: ",
 						localName, Integer.valueOf(line))), Stream.of(tags))

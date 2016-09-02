@@ -3,6 +3,7 @@ package controller.map.cxml;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -43,19 +44,19 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
+	 * @param parent
+	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed tile
+	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public Ground read(final StartElement element,
-						final Iterable<XMLEvent> stream,
-						final IMutablePlayerCollection players, final Warning warner,
-						final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "ground");
+					   final QName parent, final IMutablePlayerCollection players,
+					   final Warning warner, final IDRegistrar idFactory,
+					   final Iterable<XMLEvent> stream) throws SPFormatException {
+		requireTag(element, parent, "ground");
 		final String kind = getParamWithDeprecatedForm(element, "kind",
 				"ground", warner);
 		requireNonEmptyParameter(element, "exposed", true, warner);

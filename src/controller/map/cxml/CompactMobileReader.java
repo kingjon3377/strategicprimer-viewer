@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -108,28 +109,27 @@ public final class CompactMobileReader extends
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
+	 * @param parent
+	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed tile
+	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public MobileFixture read(final StartElement element,
-							final Iterable<XMLEvent> stream,
-							final IMutablePlayerCollection players,
-							final Warning warner,
-							final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "animal", "centaur", "djinn", "dragon", "fairy",
+							  final QName parent, final IMutablePlayerCollection players,
+							  final Warning warner, final IDRegistrar idFactory,
+							  final Iterable<XMLEvent> stream) throws SPFormatException {
+		requireTag(element, parent, "animal", "centaur", "djinn", "dragon", "fairy",
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",
 				"sphinx", "troll", "unit");
 		final MobileFixture retval;
 		final String type = element.getName().getLocalPart().toLowerCase();
 		switch (type) {
 		case "unit":
-			return CompactUnitReader.READER.read(element, stream, players,
-					warner, idFactory);
+			return CompactUnitReader.READER.read(element, parent, players,
+					warner, idFactory, stream);
 		case "animal":
 			retval = createAnimal(element,
 					getOrGenerateID(element, warner, idFactory));

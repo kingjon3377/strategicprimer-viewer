@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutableMapNG;
@@ -65,7 +66,7 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 			if (event.isStartElement()) {
 				final Object retval = CompactReaderAdapter.parse(
 						NullCleaner.assertNotNull(event.asStartElement()),
-						eventReader, players, warner, idFactory);
+						new QName("root"), eventReader, players, warner, idFactory);
 				if (type.isAssignableFrom(retval.getClass())) {
 					//noinspection unchecked
 					return (T) retval;

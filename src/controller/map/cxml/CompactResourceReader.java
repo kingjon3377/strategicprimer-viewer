@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IEvent;
@@ -94,20 +95,20 @@ public final class CompactResourceReader extends
 
 	/**
 	 * @param element      the XML element to parse
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
+	 * @param parent
+	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed resource
+	 * @param stream    the stream to read more elements from     @return the parsed resource
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public HarvestableFixture read(final StartElement element,
-								final Iterable<XMLEvent> stream,
-								final IMutablePlayerCollection players,
-								final Warning warner,
-								final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "cache", "grove", "orchard",
+								   final QName parent,
+								   final IMutablePlayerCollection players,
+								   final Warning warner, final IDRegistrar idFactory,
+								   final Iterable<XMLEvent> stream) throws SPFormatException {
+		requireTag(element, parent, "cache", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final HarvestableFixture retval;

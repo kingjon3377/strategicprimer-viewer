@@ -57,19 +57,19 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	}
 	/**
 	 * @param element   the XML element to parse
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
+	 * @param parent
+	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed worker
+	 * @param stream    the stream to read more elements from     @return the parsed worker
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public Worker read(final StartElement element,
-					final Iterable<XMLEvent> stream,
-					final IMutablePlayerCollection players, final Warning warner,
-					final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "worker");
+					   final QName parent, final IMutablePlayerCollection players,
+					   final Warning warner, final IDRegistrar idFactory,
+					   final Iterable<XMLEvent> stream) throws SPFormatException {
+		requireTag(element, parent, "worker");
 		final Worker retval = new Worker(getParameter(element, "name"),
 												getParameter(element, "race", "human"),
 												getOrGenerateID(
@@ -86,7 +86,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 																			.getLocalPart()))) {
 					retval.addJob(parseJob(
 							NullCleaner.assertNotNull(event.asStartElement()),
-							stream, warner));
+							element.getName(), stream, warner));
 				} else if ("stats".equalsIgnoreCase(NullCleaner
 															.assertNotNull(
 																	event
@@ -95,6 +95,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 																			.getLocalPart()))) {
 					retval.setStats(parseStats(
 							NullCleaner.assertNotNull(event.asStartElement()),
+							element.getName(),
 							stream));
 				} else {
 					throw new UnwantedChildException(
@@ -113,14 +114,16 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * Parse the worker's stats.
 	 *
 	 * @param element the element to parse
+	 * @param parent the parent tag
 	 * @param stream  the stream to read further elements from
 	 * @return the parsed stats
 	 * @throws SPFormatException on SP format problem
 	 */
 	private static WorkerStats parseStats(final StartElement element,
+										final QName parent,
 										final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, "stats");
+		requireTag(element, parent, "stats");
 		final WorkerStats retval =
 				new WorkerStats(getIntegerParameter(element, "hp"),
 									getIntegerParameter(element, "max"),
@@ -138,15 +141,17 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * Parse a Job.
 	 *
 	 * @param element the element to parse
+	 * @param parent the parent tag
 	 * @param stream  the stream to read further elements from
 	 * @param warner  the Warning instance to use for warnings
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format problem
 	 */
 	public static IJob parseJob(final StartElement element,
+								final QName parent,
 								final Iterable<XMLEvent> stream, final Warning warner)
 			throws SPFormatException {
-		requireTag(element, "job");
+		requireTag(element, parent, "job");
 		final IJob retval =
 				new Job(getParameter(element, "name"),
 							getIntegerParameter(element, "level"));
@@ -166,7 +171,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 																			.getLocalPart()))) {
 					retval.addSkill(parseSkill(
 							NullCleaner.assertNotNull(event.asStartElement()),
-							warner));
+							element.getName(), warner));
 					if (anySkills) {
 						onlyOneSkill = false;
 					} else {
@@ -203,13 +208,15 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * Parse a Skill.
 	 *
 	 * @param element the element to parse
+	 * @param parent the parent tag
 	 * @param warner  the Warning instance to use
 	 * @return the parsed skill
 	 * @throws SPFormatException on SP format problem
 	 */
 	public static ISkill parseSkill(final StartElement element,
+									final QName parent,
 									final Warning warner) throws SPFormatException {
-		requireTag(element, "skill");
+		requireTag(element, parent, "skill");
 		final ISkill retval =
 				new Skill(getParameter(element, "name"),
 								getIntegerParameter(element, "level"),

@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -65,6 +66,7 @@ public final class CompactReaderAdapter {
 	/**
 	 * Parse an object from XML.
 	 * @param element   the element we're immediately dealing with
+	 * @param parent	the parent tag
 	 * @param stream    the stream from which to read more elements
 	 * @param players   the PlayerCollection to use when needed
 	 * @param warner    the Warning instance if warnings need to be issued
@@ -73,6 +75,7 @@ public final class CompactReaderAdapter {
 	 * @throws SPFormatException on SP format problems
 	 */
 	public static Object parse(final StartElement element,
+							final QName parent,
 							final Iterable<XMLEvent> stream,
 							final IMutablePlayerCollection players,
 							final Warning warner, final IDRegistrar idFactory)
@@ -81,11 +84,11 @@ public final class CompactReaderAdapter {
 		final String tag = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		// Handle rivers specially.
 		if ("river".equals(tag) || "lake".equals(tag)) {
-			return CompactMapNGReader.parseRiver(element, warner);
+			return CompactMapNGReader.parseRiver(element, parent, warner);
 		}
 		for (final CompactReader<@NonNull ?> reader : READERS) {
 			if (reader.isSupportedTag(tag)) {
-				return reader.read(element, stream, players, warner, idFactory);
+				return reader.read(element, parent, players, warner, idFactory, stream);
 			}
 		}
 		throw new IllegalStateException("Unhandled tag " + tag);

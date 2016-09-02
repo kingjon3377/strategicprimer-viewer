@@ -3,6 +3,7 @@ package controller.map.cxml;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -30,15 +31,15 @@ import util.Warning;
 public interface CompactReader<@NonNull T> {
 	/**
 	 * @param element   the element being parsed
-	 * @param stream    to read more elements from
+	 * @param parent	the parent tag
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use as needed
 	 * @param idFactory the ID factory to use as needed
-	 * @return the object parsed from XML
+	 * @param stream    to read more elements from     @return the object parsed from XML
 	 * @throws SPFormatException on SP format errors
 	 */
-	T read(StartElement element, Iterable<XMLEvent> stream,
-		   IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
+	T read(StartElement element, final QName parent, IMutablePlayerCollection players,
+		   Warning warner, IDRegistrar idFactory, Iterable<XMLEvent> stream)
 			throws SPFormatException;
 
 	/**

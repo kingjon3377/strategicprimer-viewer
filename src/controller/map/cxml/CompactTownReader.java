@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Logger;
 import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -90,20 +91,19 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
+	 * @param parent
+	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed town
+	 * @param stream    the stream to read more elements from     @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public ITownFixture read(final StartElement element,
-							final Iterable<XMLEvent> stream,
-							final IMutablePlayerCollection players,
-							final Warning warner,
-							final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "village", "fortress", "town", "city",
+							 final QName parent, final IMutablePlayerCollection players,
+							 final Warning warner, final IDRegistrar idFactory,
+							 final Iterable<XMLEvent> stream) throws SPFormatException {
+		requireTag(element, parent, "village", "fortress", "town", "city",
 				"fortification");
 		final ITownFixture retval;
 		if ("village".equals(element.getName().getLocalPart())) {
@@ -244,17 +244,17 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 				case "unit":
 					retval.addMember(CompactUnitReader.READER.read(
 							NullCleaner.assertNotNull(event.asStartElement()),
-							stream, players, warner, idFactory));
+							element.getName(), players, warner, idFactory, stream));
 					break;
 				case "implement":
 					retval.addMember(CompactImplementReader.READER.read(
 							NullCleaner.assertNotNull(event.asStartElement()),
-							stream, players, warner, idFactory));
+							element.getName(), players, warner, idFactory, stream));
 					break;
 				case "resource":
 					retval.addMember(CompactResourcePileReader.READER.read(
 							NullCleaner.assertNotNull(event.asStartElement()),
-							stream, players, warner, idFactory));
+							element.getName(), players, warner, idFactory, stream));
 					break;
 				default:
 					throw new UnwantedChildException(

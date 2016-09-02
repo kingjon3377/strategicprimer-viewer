@@ -4,6 +4,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -53,19 +54,19 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
+	 * @param parent
+	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed tile
+	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format errors
 	 */
 	@Override
 	public TextFixture read(final StartElement element,
-							final Iterable<XMLEvent> stream,
-							final IMutablePlayerCollection players, final Warning warner,
-							final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "text");
+							final QName parent, final IMutablePlayerCollection players,
+							final Warning warner, final IDRegistrar idFactory,
+							final Iterable<XMLEvent> stream) throws SPFormatException {
+		requireTag(element, parent, "text");
 		// Of all the uses of a StringBuilder, this one can't know what size we
 		// need. But cases above 2K will be vanishingly rare in practice.
 		final StringBuilder builder = new StringBuilder(2048);

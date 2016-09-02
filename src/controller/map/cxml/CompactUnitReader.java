@@ -76,19 +76,19 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
+	 * @param parent
+	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed tile
+	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
 	public Unit read(final StartElement element,
-					final Iterable<XMLEvent> stream,
-					final IMutablePlayerCollection players, final Warning warner,
-					final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, UNIT_TAG);
+					 final QName parent, final IMutablePlayerCollection players,
+					 final Warning warner, final IDRegistrar idFactory,
+					 final Iterable<XMLEvent> stream) throws SPFormatException {
+		requireTag(element, parent, UNIT_TAG);
 		requireNonEmptyParameter(element, "name", false, warner);
 		requireNonEmptyParameter(element, "owner", false, warner);
 		final Unit retval = new Unit(
@@ -110,7 +110,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				retval.addMember(parseChild(
 						NullCleaner.assertNotNull(event.asStartElement()),
-						stream, players, idFactory, warner));
+						element.getName(), stream, players, idFactory, warner));
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
 			} else if (event.isEndElement() &&
@@ -126,6 +126,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 * Parse what should be a TileFixture from the XML.
 	 *
 	 * @param element   the XML element to parse
+	 * @param parent	the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param idFactory the ID factory to generate IDs with
@@ -134,6 +135,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private UnitMember parseChild(final StartElement element,
+								final QName parent,
 								final Iterable<XMLEvent> stream,
 								final IMutablePlayerCollection players,
 								final IDRegistrar idFactory,
@@ -141,8 +143,8 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		final String name = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends IFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
-				final IFixture retval = item.read(element, stream, players,
-						warner, idFactory);
+				final IFixture retval = item.read(element, parent, players,
+						warner, idFactory, stream);
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {

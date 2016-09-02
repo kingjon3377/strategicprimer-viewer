@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -73,20 +74,19 @@ public final class CompactTerrainReader extends
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
+	 * @param parent
+	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed tile
+	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
 	public TerrainFixture read(final StartElement element,
-							final Iterable<XMLEvent> stream,
-							final IMutablePlayerCollection players,
-							final Warning warner,
-							final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "forest", "hill", "mountain", "oasis", "sandbar");
+							   final QName parent, final IMutablePlayerCollection players,
+							   final Warning warner, final IDRegistrar idFactory,
+							   final Iterable<XMLEvent> stream) throws SPFormatException {
+		requireTag(element, parent, "forest", "hill", "mountain", "oasis", "sandbar");
 		final TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "forest":

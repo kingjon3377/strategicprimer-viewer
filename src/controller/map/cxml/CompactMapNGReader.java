@@ -11,6 +11,8 @@ import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
@@ -96,20 +98,19 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * Read a map from XML.
 	 *
 	 * @param element   the element we're parsing
-	 * @param stream    the source to read more elements from
-	 * @param players   The collection to put players in
+	 * @param parent
+	 *@param players   The collection to put players in
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs.
-	 * @return the parsed map
+	 * @param stream    the source to read more elements from     @return the parsed map
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
 	public IMutableMapNG read(final StartElement element,
-							final Iterable<XMLEvent> stream,
-							final IMutablePlayerCollection players,
-							final Warning warner,
-							final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "map", "view");
+							  final QName parent, final IMutablePlayerCollection players,
+							  final Warning warner, final IDRegistrar idFactory,
+							  final Iterable<XMLEvent> stream) throws SPFormatException {
+		requireTag(element, parent, "map", "view");
 		final int currentTurn;
 		final StartElement mapTag;
 		final String outerTag = assertNotNull(element.getName().getLocalPart());
@@ -133,6 +134,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
+		final Deque<QName> tagStack = new LinkedList<>();
+		tagStack.push(element.getName());
+		tagStack.push(mapTag.getName());
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement current = event.asStartElement();
@@ -143,17 +147,16 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					continue;
 				} else if ("player".equalsIgnoreCase(type)) {
 					retval.addPlayer(CompactPlayerReader.READER.read(current,
-							stream, players, warner, idFactory));
+							tagStack.peek(), players, warner, idFactory, stream));
 				} else if ("row".equalsIgnoreCase(type)) {
+					tagStack.push(current.getName());
 					// Deliberately ignore "row"s.
 					continue;
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
-						throw new UnwantedChildException(new QName(current.getName()
-																		.getNamespaceURI(),
-																		"tile"),
-																current);
+						throw new UnwantedChildException(tagStack.peek(), current);
 					}
+					tagStack.push(current.getName());
 					point = PointFactory.point(
 							getIntegerParameter(current, "row"),
 							getIntegerParameter(current, "column"));
@@ -171,32 +174,36 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						warner.warn(new MissingPropertyException(current, "kind"));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
+					tagStack.push(current.getName());
 					//noinspection ObjectAllocationInLoop
 					warner.warn(new UnsupportedTagException(current));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
-					throw new UnwantedChildException(
-							assertNotNull(mapTag.getName()),
-							current);
+					throw new UnwantedChildException(tagStack.peek(), current);
 				} else if ("lake".equalsIgnoreCase(type)
 								|| "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point,
-							parseRiver(current, warner));
+							parseRiver(current, tagStack.peek(), warner));
 					spinUntilEnd(assertNotNull(current.getName()),
 							stream);
 				} else if ("ground".equalsIgnoreCase(type)) {
 					addFixture(retval, point,
-							CompactGroundReader.READER.read(current, stream, players,
-									warner, idFactory));
+							CompactGroundReader.READER
+									.read(current, tagStack.peek(), players, warner,
+											idFactory, stream));
 				} else if ("forest".equalsIgnoreCase(type)) {
-					addFixture(retval, point, CompactTerrainReader.READER.read(current,
-							stream, players, warner, idFactory));
+					addFixture(retval, point, CompactTerrainReader.READER
+													  .read(current, tagStack.peek(),
+															  players, warner, idFactory,
+															  stream));
 				} else if ("mountain".equalsIgnoreCase(type)) {
+					tagStack.push(current.getName());
 					retval.setMountainous(point, true);
 				} else {
 					try {
-						final TileFixture fix = parseFixture(current, stream,
-								players, idFactory, warner);
+						final TileFixture fix =
+								parseFixture(current, tagStack.peek(), stream, players,
+										idFactory, warner);
 						if ((fix instanceof StoneDeposit) &&
 									(StoneKind.Laterite ==
 											 ((StoneDeposit) fix).stone()) &&
@@ -206,15 +213,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 																				"laterite"));
 						}
 						retval.addFixture(point, fix);
-					} catch (final UnwantedChildException except) {
-						if ("unknown".equals(except.getTag().getLocalPart())) {
-							// TODO: Tests should cover this
-							throw new UnwantedChildException(
-									assertNotNull(mapTag.getName()),
-									except);
-						} else {
-							throw except;
-						}
 					} catch (final IllegalStateException except) {
 						// TODO: Tests should cover this
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
@@ -227,6 +225,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					}
 				}
 			} else if (event.isEndElement()) {
+				if (!tagStack.isEmpty() &&
+							tagStack.peek().equals(event.asEndElement().getName())) {
+					tagStack.pop();
+				}
 				if (element.getName().equals(event.asEndElement().getName())) {
 					break;
 				} else if ("tile".equalsIgnoreCase(event.asEndElement()
@@ -305,6 +307,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * Parse what should be a TileFixture from the XML.
 	 *
 	 * @param element   the XML element to parse
+	 * @param parent	the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param idFactory the ID factory to generate IDs with
@@ -313,6 +316,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private TileFixture parseFixture(final StartElement element,
+									final QName parent,
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
 									final IDRegistrar idFactory,
@@ -320,7 +324,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		final String name = assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends TileFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
-				return item.read(element, stream, players, warner, idFactory);
+				return item.read(element, parent, players, warner, idFactory, stream);
 			}
 		}
 		throw new UnwantedChildException(new QName(element.getName().getNamespaceURI(),
@@ -484,13 +488,14 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * tag.
 	 *
 	 * @param element the element to parse
+	 * @param parent  the parent tag
 	 * @param warner  the Warning instance to use as needed
 	 * @return the parsed river
 	 * @throws SPFormatException on SP format problem
 	 */
-	public static River parseRiver(final StartElement element,
+	public static River parseRiver(final StartElement element, final QName parent,
 								final Warning warner) throws SPFormatException {
-		requireTag(element, "river", "lake");
+		requireTag(element, parent, "river", "lake");
 		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
 			return River.Lake;
 		} else {

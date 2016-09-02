@@ -3,6 +3,7 @@ package controller.map.cxml;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -43,19 +44,19 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
+	 * @param parent
+	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed implement
+	 * @param stream    the stream to read more elements from     @return the parsed implement
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public Implement read(final StartElement element,
-						final Iterable<XMLEvent> stream,
-						final IMutablePlayerCollection players, final Warning warner,
-						final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, "implement");
+						  final QName parent, final IMutablePlayerCollection players,
+						  final Warning warner, final IDRegistrar idFactory,
+						  final Iterable<XMLEvent> stream) throws SPFormatException {
+		requireTag(element, parent, "implement");
 		final Implement retval =
 				new Implement(getParameter(element, "kind"),
 									 getOrGenerateID(element, warner, idFactory)
