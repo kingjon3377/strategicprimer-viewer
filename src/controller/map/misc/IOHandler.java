@@ -362,7 +362,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 															+ model.getMapFile());
 				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				ErrorShower.showErrorDialog(source,
 						"Error creating XML to write to file " + model.getMapFile());
 				LOGGER.log(Level.SEVERE,
@@ -392,7 +392,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 								+ path);
 				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				ErrorShower.showErrorDialog(source,
 						"Error creating XML to write to file " + path);
 				LOGGER.log(Level.SEVERE, "Error creating XML to write", except);
@@ -433,7 +433,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 								"I/O error writing to file " + file.get());
 						//noinspection HardcodedFileSeparator
 						LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
-					} catch (XMLStreamException except) {
+					} catch (final XMLStreamException except) {
 						ErrorShower.showErrorDialog(source,
 								"Error creating XML to write to file " + file.get());
 						LOGGER.log(Level.SEVERE, "Error creating XML to write", except);

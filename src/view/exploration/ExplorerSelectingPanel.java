@@ -135,7 +135,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 			}
 			return NullCleaner.assertNotNull(retval);
 		});
-		ActionListener buttonListener = evt -> {
+		final ActionListener buttonListener = evt -> {
 			final IUnit selectedValue =
 					unitList.getSelectedValue();
 			if (!unitList.isSelectionEmpty()) {

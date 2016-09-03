@@ -135,7 +135,7 @@ public final class QueryCLI implements SimpleDriver {
 			count(model.getMap(), CLIHelper.toList(model.getMap().players()), cli);
 			break;
 		case 'u':
-			Point base = selectPoint(cli);
+			final Point base = selectPoint(cli);
 			final Optional<Point> unexplored = findUnexplored(model.getMap(), base);
 			if (unexplored.isPresent()) {
 				final Point point = unexplored.get();

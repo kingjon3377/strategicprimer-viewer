@@ -392,7 +392,7 @@ public abstract class BaseTestFixtureSerialization {
 			assertThat(message,
 					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(), warner),
 					equalTo(obj));
-		} catch (NoSuchElementException except) {
+		} catch (final NoSuchElementException except) {
 			SystemOut.SYS_OUT.println(str);
 			throw except;
 		}

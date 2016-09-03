@@ -164,7 +164,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 		final IUnit selUnit = model.getSelectedUnit();
 		if (outsideCritical && (selUnit != null)) {
 			outsideCritical = false;
-			for (Pair<Point, Animal> pair : tracks) {
+			for (final Pair<Point, Animal> pair : tracks) {
 				model.getMap().removeFixture(pair.first(), pair.second());
 			}
 			tracks.clear();
