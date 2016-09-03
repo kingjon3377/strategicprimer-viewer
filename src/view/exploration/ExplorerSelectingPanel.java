@@ -1,6 +1,7 @@
 package view.exploration;
 
 import java.awt.Component;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -134,20 +135,22 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 			}
 			return NullCleaner.assertNotNull(retval);
 		});
+		ActionListener buttonListener = evt -> {
+			final IUnit selectedValue =
+					unitList.getSelectedValue();
+			if (!unitList.isSelectionEmpty()) {
+				model.selectUnit(selectedValue);
+				cListeners.forEach(CompletionListener::finished);
+			}
+		};
+		mpField.addActionListener(buttonListener);
 		setCenter(SplitWithWeights.horizontalSplit(PROPORTION, PROPORTION,
 				vertical(label("Players in all maps:"), playerList, null), vertical(
 						label(html("Units belonging to that player:",
 								"(Selected unit will be used for exploration.)")),
 						new JScrollPane(unitList), vertical(null,
 								horizontal(label("Unit's Movement Points"), null,
-										mpField), new ListenedButton(BUTTON_TEXT, evt -> {
-									final IUnit selectedValue =
-											unitList.getSelectedValue();
-									if (!unitList.isSelectionEmpty()) {
-										model.selectUnit(selectedValue);
-										cListeners.forEach(CompletionListener::finished);
-									}
-								})))));
+										mpField), new ListenedButton(BUTTON_TEXT, buttonListener)))));
 	}
 
 	/**
