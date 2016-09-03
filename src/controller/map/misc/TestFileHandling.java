@@ -28,7 +28,8 @@ public class TestFileHandling {
 	 */
 	@Test
 	public void testNamesToFiles() {
-		final Path[] expectedOne = new Path[]{Paths.get("two"), Paths.get("three"), Paths.get("four")};
+		final Path[] expectedOne =
+				new Path[]{Paths.get("two"), Paths.get("three"), Paths.get("four")};
 		assertThat("Returns all names when dropFirst is false",
 				MapReaderAdapter.namesToFiles(false, "two", "three", "four"),
 				equalTo(expectedOne));

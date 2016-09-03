@@ -488,7 +488,8 @@ public final class XMLHelper {
 	 * @throws IOException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public static void writeBooleanAttribute(final XMLStreamWriter ostream, final String name, final boolean value)
+	public static void writeBooleanAttribute(final XMLStreamWriter ostream,
+											 final String name, final boolean value)
 			throws XMLStreamException {
 		ostream.writeAttribute(ISPReader.NAMESPACE, name, Boolean.toString(value));
 	}
