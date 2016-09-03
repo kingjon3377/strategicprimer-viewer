@@ -98,7 +98,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * Read a map from XML.
 	 *
 	 * @param element   the element we're parsing
-	 * @param parent
+	 * @param parent    the parent tag
 	 *@param players   The collection to put players in
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs.

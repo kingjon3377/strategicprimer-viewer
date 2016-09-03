@@ -204,6 +204,7 @@ public final class TestConverter {
 	 * Test version-1 to version-2 conversion.
 	 *
 	 * @throws IOException on I/O error causing test failure
+	 * @throws XMLStreamException on error in creating XML
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
@@ -460,6 +461,7 @@ public final class TestConverter {
 	 * Test more version-1 to version-2 conversion.
 	 *
 	 * @throws IOException on I/O error causing test failure
+	 * @throws XMLStreamException on error creating XML
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
@@ -710,6 +712,7 @@ public final class TestConverter {
 	 * Test more version-1 to version-2 conversion.
 	 *
 	 * @throws IOException on I/O error causing test failure
+	 * @throws XMLStreamException on error creating XML
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
@@ -1023,6 +1026,7 @@ public final class TestConverter {
 	 * Test more version-1 to version-2 conversion.
 	 *
 	 * @throws IOException on I/O error causing test failure
+	 * @throws XMLStreamException on error creating XML
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test

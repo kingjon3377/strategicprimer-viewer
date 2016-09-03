@@ -186,12 +186,12 @@ public final class FluidTerrainHandler {
 	 * Parse a river.
 	 *
 	 * @param element   the element to read from
+	 * @param parent	the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate new
-	 *                     ones as
-	 *                  needed
+	 *                     ones as needed
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
@@ -237,6 +237,7 @@ public final class FluidTerrainHandler {
 	 * @param ostream the writer to write to
 	 * @param indent the indentation level
 	 * @param obj The object being written.
+	 * @throws XMLStreamException on XML-creation problem
 	 */
 	public static void writeRivers(final XMLStreamWriter ostream, Object obj,
 								   final int indent) throws XMLStreamException {

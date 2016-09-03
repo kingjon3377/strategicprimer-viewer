@@ -77,7 +77,7 @@ public final class CompactExplorableReader
 
 	/**
 	 * @param element      the XML element to parse
-	 * @param parent
+	 * @param parent       the parent tag
 	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs

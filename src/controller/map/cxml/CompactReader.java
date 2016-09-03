@@ -35,7 +35,8 @@ public interface CompactReader<@NonNull T> {
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use as needed
 	 * @param idFactory the ID factory to use as needed
-	 * @param stream    to read more elements from     @return the object parsed from XML
+	 * @param stream    to read more elements from
+	 * @return the object parsed from XML
 	 * @throws SPFormatException on SP format errors
 	 */
 	T read(StartElement element, final QName parent, IMutablePlayerCollection players,

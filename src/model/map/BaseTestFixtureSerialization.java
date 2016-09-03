@@ -517,6 +517,7 @@ public abstract class BaseTestFixtureSerialization {
 	 * @param deprecated whether to use the deprecated XML-serialization idiom
 	 * @return its serialized form
 	 * @throws IOException on I/O error creating it
+	 * @throws XMLStreamException on XML error creating it
 	 */
 	@SuppressWarnings("deprecation")
 	protected static String createSerializedForm(final Object obj,

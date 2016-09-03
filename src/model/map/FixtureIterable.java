@@ -15,6 +15,7 @@ package model.map;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @param <T> the type of fixtures in the iterable
  */
 @FunctionalInterface
 public interface FixtureIterable<T extends IFixture> extends Iterable<T> {

@@ -8,7 +8,6 @@ import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import javax.xml.XMLConstants;
@@ -302,7 +301,6 @@ public final class XMLHelper {
 	 * If the object has a custom (non-default) image, write it to XML.
 	 * @param element the tag to attach the attribute to
 	 * @param obj an object being written out that might have a custom image
-	 * @throws IOException on I/O error when writing
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeImage(final Element element, final HasImage obj) {
@@ -419,7 +417,6 @@ public final class XMLHelper {
 	 * @param element the element to add the attribute to
 	 * @param name the name of the attribute to write
 	 * @param value the value of the attribute
-	 * @throws IOException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeAttribute(final Element element, final String name,
@@ -444,7 +441,6 @@ public final class XMLHelper {
 	 * @param element the tag to attach the attribute to
 	 * @param name the name of the attribute to write
 	 * @param value the value of the attribute
-	 * @throws IOException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeIntegerAttribute(final Element element,
@@ -456,7 +452,7 @@ public final class XMLHelper {
 	 * @param ostream the stream to write to
 	 * @param name the name of the attribute to write
 	 * @param value the value of the attribute
-	 * @throws IOException on I/O error
+	 * @throws XMLStreamException on error creating XML
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeNonEmptyAttribute(final XMLStreamWriter ostream,
@@ -471,7 +467,6 @@ public final class XMLHelper {
 	 * @param element the tag to attach the attribute to
 	 * @param name the name of the attribute to write
 	 * @param value the value of the attribute
-	 * @throws IOException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeNonEmptyAttribute(final Element element, final String name,
@@ -485,7 +480,7 @@ public final class XMLHelper {
 	 * @param ostream the stream to write to
 	 * @param name the name of the attribute to write
 	 * @param value the value of the attribute
-	 * @throws IOException on I/O error
+	 * @throws XMLStreamException on error creating XML
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeBooleanAttribute(final XMLStreamWriter ostream,
@@ -498,7 +493,6 @@ public final class XMLHelper {
 	 * @param element the element to attach the attribute to
 	 * @param name the name of the attribute to write
 	 * @param value the value of the attribute
-	 * @throws IOException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeBooleanAttribute(final Element element,
