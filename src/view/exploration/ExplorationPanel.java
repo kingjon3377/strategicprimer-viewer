@@ -244,8 +244,10 @@ public final class ExplorationPanel extends BorderedPanel
 		dtb.getActionMap().put(direction.toString(), ecl);
 		ecl.addSelectionChangeListener(this);
 		ecl.addMovementCostListener(this);
-		mainList.getModel().addListDataListener(
-				new ExplorationListListener(model, mainList));
+		ExplorationListListener ell = new ExplorationListListener(model, mainList);
+//		mainList.getModel().addListDataListener(ell);
+		model.addSelectionChangeListener(ell);
+		ecl.addSelectionChangeListener(ell);
 		final Iterator<Pair<IMutableMapNG, Optional<Path>>> subMaps =
 				model.getSubordinateMaps().iterator();
 		final Iterable<Player> players;
@@ -261,6 +263,7 @@ public final class ExplorationPanel extends BorderedPanel
 		mains.put(direction, mainPCS);
 		buttons.put(direction, dtb);
 		seconds.put(direction, secPCS);
+		ell.selectedPointChanged(null, model.getSelectedUnitLocation());
 	}
 
 	/**

@@ -6,11 +6,11 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
+import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 import model.exploration.HuntingModel;
 import model.exploration.IExplorationModel;
+import model.listeners.SelectionChangeListener;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Animal;
@@ -43,7 +43,7 @@ import static model.map.TileType.Ocean;
  *
  * @author Jonathan Lovelace
  */
-public final class ExplorationListListener implements ListDataListener {
+public final class ExplorationListListener implements SelectionChangeListener {
 	/**
 	 * The exploration model, which tells us the currently selected unit and tile.
 	 */
@@ -71,31 +71,9 @@ public final class ExplorationListListener implements ListDataListener {
 		idf = IDFactoryFiller.createFactory(model);
 	}
 
-	/**
-	 * @param evt an event indicating items were removed from the list
-	 */
-	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public void intervalRemoved(@Nullable final ListDataEvent evt) {
-		randomizeSelection();
-	}
-
-	/**
-	 * @param evt an event indicating items were added to the list
-	 */
-	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-	@Override
-	public void intervalAdded(@Nullable final ListDataEvent evt) {
-		randomizeSelection();
-	}
-
-	/**
-	 * @param evt an event indicating items were changed in the list
-	 */
-	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-	@Override
-	public void contentsChanged(@Nullable final ListDataEvent evt) {
-		randomizeSelection();
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+		SwingUtilities.invokeLater(this::randomizeSelection);
 	}
 
 	/**
@@ -203,11 +181,6 @@ public final class ExplorationListListener implements ListDataListener {
 				}
 				i++;
 			}
-			// FIXME: Doing the possibly-see-tracks thing *here* is plainly wrong.
-			// It causes *too many* track objects to be added, and causes
-			// SPMapNG.addFixture to detect duplicate-ID objects being added (even though
-			// the logic should make that impossible!). And it slows this "critical
-			// section" down noticeably.
 			final String possibleTracks;
 			final Point currentLocation = model.getSelectedUnitLocation();
 			if (currentLocation.getRow() >= 0 && currentLocation.getCol() >= 0) {
