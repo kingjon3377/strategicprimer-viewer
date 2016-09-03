@@ -8,7 +8,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 /**
- * TODO: explain this class
+ * Test of file-handling in MapReaderAdapter.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
