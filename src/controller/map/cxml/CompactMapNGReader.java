@@ -374,7 +374,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				final TileType terrain = obj.getBaseTerrain(point);
-				// TODO: Test cases that fit only one of these
 				if ((TileType.NotVisible != terrain)
 							|| obj.isMountainous(point)
 							|| (obj.getGround(point) != null)

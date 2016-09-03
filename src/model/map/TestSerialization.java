@@ -13,9 +13,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.explorable.AdventureFixture;
+import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Griffin;
 import model.map.fixtures.mobile.Ogre;
 import model.map.fixtures.mobile.Unit;
@@ -316,6 +318,18 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 								"version=\"2\"/>%n</view>%n", ISPReader.NAMESPACE))));
 		assertImageSerialization("Unit image property is preserved",
 				new Unit(new Player(5, ""), "herder", "herderName", 9));
+		final IMutableMapNG six =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 5);
+		six.setMountainous(point(0, 0), true);
+		six.setGround(point(0, 1), new Ground("basalt", false));
+		six.setForest(point(1, 0), new Forest("pine", false));
+		six.addFixture(point(1, 1), new Animal("beaver", false, false, "wild", 18));
+		assertMissingPropertyDeserialization(
+				"Not-visible tiles with contents are serialized", six,
+				createSerializedForm(six, false), "kind");
+		assertMissingPropertyDeserialization(
+				"Not-visible tiles with contents are serialized", six,
+				createSerializedForm(six, true), "kind");
 	}
 
 	/**
