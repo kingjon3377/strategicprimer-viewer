@@ -242,7 +242,6 @@ public final class MapReaderAdapter {
 	}
 
 	/**
-	 * TODO: Tests
 	 * @param names     some filenames
 	 * @param dropFirst whether to skip the first filename.
 	 * @return an array of equivalent Files
