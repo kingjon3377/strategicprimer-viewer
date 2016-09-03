@@ -88,8 +88,6 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	}
 	/**
 	 * Constructor.
-	 *
-	 * @param what            what we're adding or removing
 	 */
 	private AddRemovePanel() {
 		// Use factory method.
