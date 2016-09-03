@@ -50,7 +50,8 @@ public final class CompactResourcePileReader
 	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @param stream    the stream to read more elements from     @return the parsed implement
+	 * @param stream    the stream to read more elements from
+	 * @return the parsed implement
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override

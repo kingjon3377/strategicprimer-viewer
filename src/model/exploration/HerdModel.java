@@ -127,9 +127,9 @@ public enum HerdModel {
 		return dailyTimePerHead;
 	}
 	/**
-	 * @return How much time, in minutes, must be spent on the entire herd or flock each turn,
-	 * regardless of its size. This should be *added* to the quotient of the total time
-	 * for the entire herd divided by the number of herders.
+	 * @return How much time, in minutes, must be spent on the entire herd or flock each
+	 * turn, regardless of its size. This should be *added* to the quotient of the total
+	 * time for the entire herd divided by the number of herders.
 	 */
 	public int getDailyTimeFloor() {
 		return dailyTimeFloor;
@@ -141,9 +141,9 @@ public enum HerdModel {
 		return extraTimePerHead;
 	}
 	/**
-	 * @return How many turns at most should elapse between "extra chores" days. A return value
-	 * less than or equal to zero indicates that there are no extra chores that should
-	 * be regularly, but not daily, scheduled.
+	 * @return How many turns at most should elapse between "extra chores" days. A
+	 * return value less than or equal to zero indicates that there are no extra chores
+	 * that should be regularly, but not daily, scheduled.
 	 */
 	public int getExtraChoresInterval() {
 		return extraChoresInterval;
