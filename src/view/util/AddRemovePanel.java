@@ -44,6 +44,7 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	 * @param what what the panel allows the user to add or remove
 	 * @return the constructed panel.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public static AddRemovePanel addRemovePanel(final String what) {
 		final AddRemovePanel retval = new AddRemovePanel();
 		final CardLayout layout = new CardLayout();
