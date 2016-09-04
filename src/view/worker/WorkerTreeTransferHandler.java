@@ -125,6 +125,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 */
 	@Override
 	public boolean canImport(@Nullable final TransferSupport support) {
+		//noinspection ConstantConditions
 		if ((support != null) &&
 					support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR)) {
 			final DropLocation dropLocation = support.getDropLocation();
@@ -156,6 +157,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 */
 	@Override
 	public boolean importData(@Nullable final TransferSupport support) {
+		//noinspection ConstantConditions
 		if ((support != null) && canImport(support)) {
 			final DropLocation dropLocation = support.getDropLocation();
 			if (!(dropLocation instanceof JTree.DropLocation)) {

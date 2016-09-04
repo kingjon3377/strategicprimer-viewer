@@ -44,6 +44,7 @@ public class ImprovedComboBox<T> extends JComboBox<T> {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void processKeyEvent(@Nullable final KeyEvent evt) {
+		//noinspection ConstantConditions
 		if (evt == null) {
 			return;
 		}

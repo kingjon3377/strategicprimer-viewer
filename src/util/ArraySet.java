@@ -137,6 +137,7 @@ public final class ArraySet<U> implements Set<U> {
 	@Override
 	public boolean addAll(@Nullable final Collection<? extends U> coll) {
 		boolean retval = false;
+		//noinspection ConstantConditions
 		if (coll != null) {
 			for (final U obj : coll) {
 				if (add(obj)) {
