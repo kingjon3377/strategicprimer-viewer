@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
-import model.map.HasMutableImage;
 import model.map.Player;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -89,7 +88,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 		assertSerialization(
 				"Second City serialization test, status " + status + ", size " + size,
 				new City(status, size, 40, "twoCity", 1, owner));
-		final HasMutableImage thirdCity = new City(status, size, 30, "", 3, owner);
+		final City thirdCity = new City(status, size, 30, "", 3, owner);
 		assertSerialization("Serialization of CityEvent without a name", thirdCity,
 				Warning.Ignore);
 		assertMissingProperty(createSerializedForm(thirdCity, true), City.class,
@@ -106,6 +105,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 									"\" name=\"name\" dc=\"0\" id=\"0\" />", City.class,
 				"owner", true);
 		assertImageSerialization("City image property is preserved", thirdCity);
+		assertPortraitSerialization("City portrait property is preserved", thirdCity);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 		assertSerialization(
 				"Fortification serialization test, status " + status + " and size " +
 						size, new Fortification(status, size, 40, "two", 2, owner));
-		final HasMutableImage thirdFort =
+		final Fortification thirdFort =
 				new Fortification(status, size, 30, "", 3, owner);
 		assertSerialization("Serialization of FortificationEvent without a name",
 				thirdFort, Warning.Ignore);
@@ -146,6 +146,8 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 									"\" name=\"name\"" + " dc=\"0\" id=\"0\"/>",
 				Fortification.class, "owner", true);
 		assertImageSerialization("Fortification image property is preserved", thirdFort);
+		assertPortraitSerialization("Fortification portrait property is preserved",
+				thirdFort);
 	}
 
 	/**
@@ -167,7 +169,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 		assertSerialization(
 				"Second Town serialization test, status " + status + " and size " + size,
 				new Town(status, size, 40, "two", 2, owner));
-		final HasMutableImage thirdTown = new Town(status, size, 30, "", 3, owner);
+		final Town thirdTown = new Town(status, size, 30, "", 3, owner);
 		assertSerialization("Serialization of TownEvent without a name", thirdTown,
 				Warning.Ignore);
 		assertMissingProperty(createSerializedForm(thirdTown, true), Town.class,
@@ -189,5 +191,6 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 									"\" name=\"name\" dc=\"0\" id=\"0\" />", Town.class,
 				"owner", true);
 		assertImageSerialization("Town image property is preserved", thirdTown);
+		assertPortraitSerialization("Town portrait property is preserved", thirdTown);
 	}
 }

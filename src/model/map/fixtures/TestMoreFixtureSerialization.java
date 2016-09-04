@@ -389,6 +389,8 @@ public final class TestMoreFixtureSerialization extends
 						"column=\"0\"><worker name=\"name\" id=\"1\" " +
 						"/></tile></row></map>",
 				IMapNG.class, false);
+		assertPortraitSerialization("Worker portrait property is preserved",
+				secondWorker);
 	}
 
 	/**

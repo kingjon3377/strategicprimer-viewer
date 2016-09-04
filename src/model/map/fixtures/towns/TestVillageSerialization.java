@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
-import model.map.HasMutableImage;
 import model.map.Player;
 import model.workermgmt.RaceFactory;
 import org.junit.Test;
@@ -96,7 +95,7 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 				new Village(status, "villageOne", 1, owner, race));
 		assertSerialization("2nd Village serialization test,  " + status,
 				new Village(status, "villageTwo", 2, owner, race));
-		final HasMutableImage thirdVillage = new Village(status, "", 3, owner, race);
+		final Village thirdVillage = new Village(status, "", 3, owner, race);
 		assertMissingPropertyDeserialization(
 				"Village serialization with no or empty name does The Right Thing",
 				thirdVillage, createSerializedForm(thirdVillage, true), NAME_PROPERTY);
@@ -113,5 +112,7 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 				"<village name=\"name\" status=\"" + status + "\" id=\"0\" />",
 				Village.class, OWNER_PROPERTY, true);
 		assertImageSerialization("Village image property is preserved", thirdVillage);
+		assertPortraitSerialization("Village portrait property is preserved",
+				thirdVillage);
 	}
 }
