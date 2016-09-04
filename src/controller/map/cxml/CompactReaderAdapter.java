@@ -41,11 +41,6 @@ import util.Warning;
 @Deprecated
 public final class CompactReaderAdapter {
 	/**
-	 * Singleton object.
-	 */
-	public static final CompactReaderAdapter ADAPTER = new CompactReaderAdapter();
-
-	/**
 	 * Singleton constructor.
 	 */
 	private CompactReaderAdapter() {
