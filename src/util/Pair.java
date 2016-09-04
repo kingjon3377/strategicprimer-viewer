@@ -5,8 +5,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * From <http://stackoverflow.com/questions/156275/what-is-the-equivalent-of-the-
- * c-pairl-r-in-java/3646398#3646398>.
+ * From <http://stackoverflow.com/a/3646398>.
  *
  * @param <L> The first type in the pair.
  * @param <R> The second type in the pair.

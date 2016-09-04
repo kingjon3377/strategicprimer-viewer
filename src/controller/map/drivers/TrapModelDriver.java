@@ -57,7 +57,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	/**
 	 * The number of minutes in an hour.
 	 */
-	private static final int MINS_PER_HOUR = 60;
+	private static final int MIN_PER_HOUR = 60;
 
 	/**
 	 * How many minutes a fruitless check of a fishing trap takes.
@@ -135,7 +135,8 @@ public final class TrapModelDriver implements SimpleDriver {
 				name = "trapper";
 			}
 			int minutes = cli.inputNumber("How many hours will the " + name + " work? ") *
-								MINS_PER_HOUR;
+
+								  MIN_PER_HOUR;
 			final int row = cli.inputNumber("Row of the tile where the "
 													+ name + " is working: ");
 			final int col = cli.inputNumber("Column of that tile: ");
@@ -178,11 +179,11 @@ public final class TrapModelDriver implements SimpleDriver {
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static String inHours(final int minutes) {
-		if (minutes < MINS_PER_HOUR) {
+		if (minutes < MIN_PER_HOUR) {
 			return Integer.toString(minutes) + " minutes";
 		} else {
-			return Integer.toString(minutes / MINS_PER_HOUR) + " hours, " +
-						Integer.toString(minutes % MINS_PER_HOUR) + " minutes";
+			return Integer.toString(minutes / MIN_PER_HOUR) + " hours, " +
+						Integer.toString(minutes % MIN_PER_HOUR) + " minutes";
 		}
 	}
 

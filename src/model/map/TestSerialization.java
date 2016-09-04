@@ -557,10 +557,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">");
 		assertInvalid(
 				"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\"><></map>");
-		assertInvalid("<include file=\"nonexistentfile\" />");
+		assertInvalid("<include file=\"nonexistent\" />");
 		assertInvalid("<include file=\"string:&lt;ogre id=&quot;1&quot;&gt;\" />");
 		assertInvalid("<include />");
-		assertInvalid("<include file=\"nonexistentfile\">");
+		assertInvalid("<include file=\"nonexistent\">");
 		assertInvalid("<include file=\"string:&lt;");
 		assertInvalid("<include file=\"\" />");
 		assertInvalid("<include file=\"string:&lt;xyzzy\" />");

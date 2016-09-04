@@ -287,7 +287,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		if (item.iterator().hasNext()) {
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:")
 					.append(LineEnd.LINE_SEP).append(OPEN_LIST);
-			final Collection<Implement> impls = new ArrayList<>();
+			final Collection<Implement> equipment = new ArrayList<>();
 			final Collection<ResourcePile> resources = new ArrayList<>();
 			final Collection<FortressMember> contents = new ArrayList<>();
 			for (final FortressMember member : item) {
@@ -296,7 +296,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 							.append(urg.produce(fixtures, map, currentPlayer,
 									(Unit) member, loc)).append(CLOSE_LIST_ITEM);
 				} else if (member instanceof Implement) {
-					impls.add((Implement) member);
+					equipment.add((Implement) member);
 				} else if (member instanceof ResourcePile) {
 					resources.add((ResourcePile) member);
 				} else {
@@ -316,10 +316,10 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				}
 				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 			}
-			if (!impls.isEmpty()) {
+			if (!equipment.isEmpty()) {
 				builder.append(OPEN_LIST_ITEM).append("Equipment:")
 						.append(LineEnd.LINE_SEP).append(OPEN_LIST);
-				for (final Implement implement : impls) {
+				for (final Implement implement : equipment) {
 					builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
 																  .produce(fixtures, map,
 																		  currentPlayer,
@@ -376,7 +376,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			final IReportNode units = new ListReportNode(loc,
 																"Units on the tile:");
 			final IReportNode resources = new ListReportNode(loc, "Resources");
-			final IReportNode impls = new ListReportNode(loc, "Equipment:");
+			final IReportNode equipment = new ListReportNode(loc, "Equipment:");
 			final IReportNode contents =
 					new ListReportNode(loc, "Other Contents of Fortress:");
 			for (final FortressMember unit : item) {
@@ -384,7 +384,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 					units.add(urg.produceRIR(fixtures, map, currentPlayer,
 							(Unit) unit, loc));
 				} else if (unit instanceof Implement) {
-					impls.add(memberReportGenerator
+					equipment.add(memberReportGenerator
 									  .produceRIR(fixtures, map, currentPlayer, unit,
 											  loc));
 				} else if (unit instanceof ResourcePile) {
@@ -403,8 +403,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			if (resources.getChildCount() != 0) {
 				retval.add(resources);
 			}
-			if (impls.getChildCount() != 0) {
-				retval.add(impls);
+			if (equipment.getChildCount() != 0) {
+				retval.add(equipment);
 			}
 			if (contents.getChildCount() != 0) {
 				retval.add(contents);

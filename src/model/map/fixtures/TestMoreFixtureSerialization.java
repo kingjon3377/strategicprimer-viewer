@@ -432,7 +432,7 @@ public final class TestMoreFixtureSerialization extends
 				containsString("portraitFile"));
 		assertThat("Serialized form contains portrait", createSerializedForm(unit, false),
 				containsString("portraitFile"));
-		assertPortraitSerialization("Unit portrait property is preservedd", unit);
+		assertPortraitSerialization("Unit portrait property is preserved", unit);
 	}
 	/**
 	 * Test serialization of adventure hooks and portals.

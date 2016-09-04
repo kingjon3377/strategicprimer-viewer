@@ -76,7 +76,7 @@ public final class CompactReaderAdapter {
 							final IMutablePlayerCollection players,
 							final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		// Since all impls of necessity check tag's namespace, we leave that to them.
+		// Since all implementations of necessity check tag's namespace, we leave that to them.
 		final String tag = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		// Handle rivers specially.
 		if ("river".equals(tag) || "lake".equals(tag)) {

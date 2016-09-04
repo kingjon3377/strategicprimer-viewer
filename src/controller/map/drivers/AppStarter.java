@@ -94,7 +94,7 @@ public final class AppStarter implements ISPDriver {
 	static {
 		addChoice(new WorkerReportDriver(), new ViewerStart());
 		addChoice(new AdvancementCLIDriver(), new AdvancementStart());
-		// FIXME: Add strategy-generating CLI app equivalent to worker-mgmt GUI
+		// FIXME: Add strategy-generating CLI app equivalent to worker-management GUI
 		addChoice(new WorkerStart());
 		addChoice(new ExplorationCLIDriver(), new ExplorationGUI());
 		addChoice(new ReaderComparator(), new DrawHelperComparator());
