@@ -2,7 +2,6 @@ package controller.map.report.tabular;
 
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
-import controller.map.report.IReportGenerator;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -106,25 +105,7 @@ public final class TableReportGenerator {
 		}
 		return retval;
 	}
-	/**
-	 * Produce sub-reports, appending them to the buffer and calling coalesce() on the
-	 * fixtures collection after each.
-	 * @param builder the buffer to write to
-	 * @param fixtures the collection of fixtures to report on
-	 * @param map the map being reported on
-	 * @param player the current player
-	 * @param generators report-generators to run
-	 */
-	private static void createSubReports(final StringBuilder builder,
-										 final PatientMap<Integer, Pair<Point,
-																			   IFixture>> fixtures,
-										 final IMapNG map, final Player player,
-										 final IReportGenerator<?>... generators) {
-		for (final IReportGenerator<?> generator : generators) {
-			builder.append(generator.produce(fixtures, map, player));
-			fixtures.coalesce();
-		}
-	}
+
 	/**
 	 * @param map the map to base the report on
 	 * @param source a function returning an output stream for each new report.
