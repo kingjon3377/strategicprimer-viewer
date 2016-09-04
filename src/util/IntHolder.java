@@ -43,4 +43,11 @@ public class IntHolder implements Accumulator {
 	public int getValue() {
 		return count;
 	}
+	/**
+	 * @return a diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "IntHolder: " + count;
+	}
 }
