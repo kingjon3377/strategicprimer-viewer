@@ -483,8 +483,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		} else if (levels == 1) {
 			cli.println("Worker has 1 job level");
 		}
-		final boolean pregenStats = cli
-											.inputBoolean("Enter pre-generated stats? ");
+		final boolean pregenStats = cli.inputBoolean("Enter pre-generated stats? ");
 		if (pregenStats) {
 			retval.setStats(enterStats(cli));
 		} else {
