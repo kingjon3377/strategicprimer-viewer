@@ -310,7 +310,6 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			throw new IllegalArgumentException("Can only write IMapNG");
 		}
 		final IMapNG map = (IMapNG) obj;
-		final int temp;
 		writeTag(ostream, "view", indent, false);
 		writeIntegerAttribute(ostream, "current_player",
 				map.getCurrentPlayer().getPlayerId());

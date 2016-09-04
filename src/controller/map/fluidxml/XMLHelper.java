@@ -71,7 +71,6 @@ public final class XMLHelper {
 			throw new UnwantedChildException(parent, element);
 		}
 		final String localName = element.getName().getLocalPart();
-		final int line = element.getLocation().getLineNumber();
 		if (!EqualsAny.equalsAny(localName, tags)) {
 			throw new UnwantedChildException(parent, element);
 		}
