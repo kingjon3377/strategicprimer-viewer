@@ -381,6 +381,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	/**
 	 * A component to show the portrait of the currently selected member.
 	 */
+	@SuppressWarnings("ClassHasNoToStringMethod")
 	private static class PortraitComponent extends JComponent {
 		/**
 		 * The image to draw.

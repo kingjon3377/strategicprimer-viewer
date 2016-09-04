@@ -28,6 +28,7 @@ import model.listeners.AddRemoveListener;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	/**
 	 * The maximum height of the widget.
