@@ -132,7 +132,7 @@ public final class FluidTerrainHandler {
 	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeGround(final XMLStreamWriter ostream, Object obj,
+	public static void writeGround(final XMLStreamWriter ostream, final Object obj,
 								   final int indent) throws XMLStreamException {
 		if (!(obj instanceof Ground)) {
 			throw new IllegalArgumentException("Can only write Ground");
@@ -152,7 +152,7 @@ public final class FluidTerrainHandler {
 	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeMountain(final XMLStreamWriter ostream, Object obj,
+	public static void writeMountain(final XMLStreamWriter ostream, final Object obj,
 									 final int indent) throws XMLStreamException {
 		if (!(obj instanceof Mountain)) {
 			throw new IllegalArgumentException("Can only write Mountain");
@@ -169,7 +169,7 @@ public final class FluidTerrainHandler {
 	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeForest(final XMLStreamWriter ostream, Object obj,
+	public static void writeForest(final XMLStreamWriter ostream, final Object obj,
 								   final int indent) throws XMLStreamException {
 		if (!(obj instanceof Forest)) {
 			throw new IllegalArgumentException("Can only write Forest");
@@ -239,7 +239,7 @@ public final class FluidTerrainHandler {
 	 * @param obj The object being written.
 	 * @throws XMLStreamException on XML-creation problem
 	 */
-	public static void writeRivers(final XMLStreamWriter ostream, Object obj,
+	public static void writeRivers(final XMLStreamWriter ostream, final Object obj,
 								   final int indent) throws XMLStreamException {
 		if (River.Lake == obj) {
 			writeTag(ostream, "lake", indent, true);

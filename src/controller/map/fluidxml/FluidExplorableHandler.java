@@ -221,7 +221,7 @@ public final class FluidExplorableHandler {
 	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeAdventure(final XMLStreamWriter ostream, Object obj,
+	public static void writeAdventure(final XMLStreamWriter ostream, final Object obj,
 									  final int indent) throws XMLStreamException {
 		// TODO: Create helper method for this idiom, so we don't have to sacrifice
 		// one coverage-miss line per method.
@@ -246,7 +246,7 @@ public final class FluidExplorableHandler {
 	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writePortal(final XMLStreamWriter ostream, Object obj,
+	public static void writePortal(final XMLStreamWriter ostream, final Object obj,
 								   final int indent) throws XMLStreamException {
 		if (!(obj instanceof Portal)) {
 			throw new IllegalArgumentException("Can only write Portals");
@@ -269,7 +269,7 @@ public final class FluidExplorableHandler {
 	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeCave(final XMLStreamWriter ostream, Object obj,
+	public static void writeCave(final XMLStreamWriter ostream, final Object obj,
 								 final int indent) throws XMLStreamException {
 		if (!(obj instanceof Cave)) {
 			throw new IllegalArgumentException("Can only write Caves");
@@ -288,7 +288,7 @@ public final class FluidExplorableHandler {
 	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeBattlefield(final XMLStreamWriter ostream, Object obj,
+	public static void writeBattlefield(final XMLStreamWriter ostream, final Object obj,
 										final int indent) throws XMLStreamException {
 		if (!(obj instanceof Battlefield)) {
 			throw new IllegalArgumentException("Can only write Caves");
@@ -307,7 +307,7 @@ public final class FluidExplorableHandler {
 	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeTextFixture(final XMLStreamWriter ostream, Object obj,
+	public static void writeTextFixture(final XMLStreamWriter ostream, final Object obj,
 										final int indent) throws XMLStreamException {
 		if (!(obj instanceof TextFixture)) {
 			throw new IllegalArgumentException("Can only write TextFixture");
