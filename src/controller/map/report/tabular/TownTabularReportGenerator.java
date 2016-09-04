@@ -42,6 +42,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	 * @param currentPlayer the player for whom this report is being produced
 	 * @param hq his or her HQ location
 	 */
+	@SuppressWarnings("QuestionableName")
 	public TownTabularReportGenerator(final Player currentPlayer, final Point hq) {
 		player = currentPlayer;
 		base = hq;
