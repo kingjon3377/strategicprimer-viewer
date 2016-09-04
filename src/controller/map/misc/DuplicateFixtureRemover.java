@@ -1,27 +1,18 @@
-package controller.map.drivers;
+package controller.map.misc;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.resources.CacheFixture;
-import model.misc.IDriverModel;
-import model.misc.IMultiMapModel;
 import util.LineEnd;
-import util.Pair;
-
-import static view.util.SystemOut.SYS_OUT;
 
 /**
- * A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
- * takes up on disk and the memory and CPU it takes to deal with it).
- *
- * TODO: Refactor the actual app out from the ISPDriver implementation.
+ * A utility class to remove duplicate hills, forests, etc. from the map (to reduce the
+ * size it takes up on disk and the memory and CPU it takes to deal with it).
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -35,17 +26,7 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class DuplicateFixtureRemover implements SimpleCLIDriver {
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-u", "--duplicates", ParamCount.One,
-								"Remove duplicate fixtures",
-								"Remove duplicate fixtures---identical except ID# and" +
-										" on the same tile---from a map.",
-								DuplicateFixtureRemover.class);
-
+public class DuplicateFixtureRemover {
 	/**
 	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills, forests of the
 	 * same kind, oases, etc.---we use TileFixture#equalsIgnoringID(TileFixture)) from
@@ -55,7 +36,7 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 	 * @param ostream the stream to report IDs of removed fixtures on.
 	 * @throws IOException on I/O error writing to stream
 	 */
-	private static void filter(final IMutableMapNG map, final Appendable ostream)
+	public static void filter(final IMutableMapNG map, final Appendable ostream)
 			throws IOException {
 		for (final Point point : map.locations()) {
 			filter(map, point, ostream);
@@ -73,9 +54,9 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void filter(final IMutableMapNG map, final Point location,
-							final Appendable ostream) throws IOException {
-		final Collection<TileFixture> fixtures = new ArrayList<>();
-		final Collection<TileFixture> toRemove = new ArrayList<>();
+							  final Appendable ostream) throws IOException {
+		final Collection<TileFixture> fixtures = new ArrayList<TileFixture>();
+		final Collection<TileFixture> toRemove = new ArrayList<TileFixture>();
 		// We ignore ground and forests because they don't have IDs.
 		// TODO: Try to use Streams API instead of complicated loop
 		for (final TileFixture fix : map.getOtherFixtures(location)) {
@@ -97,45 +78,5 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 		for (final TileFixture fix : toRemove) {
 			map.removeFixture(location, fix);
 		}
-	}
-
-	/**
-	 * Run the driver.
-	 *
-	 * @param model the driver model
-	 * @throws DriverFailedException on error
-	 */
-	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		try {
-			if (model instanceof IMultiMapModel) {
-				for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
-																	.getAllMaps()) {
-					filter(pair.first(), SYS_OUT);
-				}
-			} else {
-				filter(model.getMap(), SYS_OUT);
-			}
-		} catch (final IOException except) {
-			//noinspection HardcodedFileSeparator
-			throw new DriverFailedException("I/O error interacting with user", except);
-		}
-	}
-
-	/**
-	 * @return an object indicating how to use and invoke this driver.
-	 */
-	@Override
-	public DriverUsage usage() {
-		return USAGE;
-	}
-
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "DuplicateFixtureRemover";
 	}
 }
