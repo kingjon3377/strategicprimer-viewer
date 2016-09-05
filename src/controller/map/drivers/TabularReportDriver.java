@@ -46,7 +46,7 @@ public class TabularReportDriver implements SimpleDriver {
 				try {
 					TableReportGenerator.createReports(pair.first(), s -> {
 						try {
-							return new FileOutputStream(pair.second().toString() + '.' + s +
+							return new FileOutputStream(pair.second().get().toString() + '.' + s +
 																".csv");
 						} catch (final FileNotFoundException e) {
 							throw new IOError(e);
@@ -60,7 +60,7 @@ public class TabularReportDriver implements SimpleDriver {
 			try {
 				TableReportGenerator.createReports(model.getMap(), s -> {
 					try {
-						return new FileOutputStream(model.getMapFile().toString() + '.' + s +
+						return new FileOutputStream(model.getMapFile().get().toString() + '.' + s +
 															".csv");
 					} catch (final FileNotFoundException e) {
 						throw new IOError(e);
