@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -102,7 +103,7 @@ public final class ReaderComparator implements UtilityDriver {
 		final String contents;
 		try {
 			contents = readIntoBuffer(arg);
-		} catch (final FileNotFoundException except) {
+		} catch (final FileNotFoundException|NoSuchFileException except) {
 			LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 			return;
 		} catch (final IOException except) {

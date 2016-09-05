@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.NumberFormat;
@@ -260,7 +261,7 @@ public final class TableLoader {
 						runner.loadTable(table.getFileName().toString(),
 								loadTable(table));
 					}
-				} catch (final FileNotFoundException e) {
+				} catch (final FileNotFoundException|NoSuchFileException e) {
 					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
 				} catch (final IOException e) {
 					//noinspection HardcodedFileSeparator

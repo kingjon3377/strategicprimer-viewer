@@ -11,6 +11,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -134,7 +135,8 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 					"Map version in " + filename + " not acceptable to reader", except);
 			printParagraph("ERROR: Map version not acceptable to reader",
 					ERROR_COLOR);
-		} else if (except instanceof FileNotFoundException) {
+		} else if (except instanceof FileNotFoundException ||
+						   except instanceof NoSuchFileException) {
 			printParagraph("ERROR: File not found", ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, filename + " not found", except);
 		} else if (except instanceof IOException) {

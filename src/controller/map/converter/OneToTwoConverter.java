@@ -8,6 +8,7 @@ import controller.map.misc.IDRegistrar;
 import controller.map.misc.MapReaderAdapter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -686,7 +687,8 @@ public final class OneToTwoConverter {
 			LOGGER.warning("Unsupported map version while reading " + filename);
 		} else if (except instanceof XMLStreamException) {
 			LOGGER.log(Level.WARNING, "Malformed XML in " + filename, except);
-		} else if (except instanceof FileNotFoundException) {
+		} else if (except instanceof FileNotFoundException ||
+						   except instanceof NoSuchFileException) {
 			LOGGER.warning("File " + filename + " not found");
 		} else if (except instanceof IOException) {
 			//noinspection HardcodedFileSeparator

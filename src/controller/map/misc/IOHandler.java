@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -328,7 +329,8 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 		final String msg;
 		if (except instanceof XMLStreamException) {
 			msg = "Error reading XML file %s";
-		} else if (except instanceof FileNotFoundException) {
+		} else if (except instanceof FileNotFoundException ||
+						   except instanceof NoSuchFileException) {
 			//noinspection StringConcatenationMissingWhitespace
 			msg = "File %s not found";
 		} else if (except instanceof IOException) {

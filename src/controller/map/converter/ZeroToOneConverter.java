@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.NoSuchFileException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Deque;
@@ -327,7 +328,7 @@ public final class ZeroToOneConverter {
 				convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
 													.createXMLEventReader(reader)),
 						SystemOut.SYS_OUT);
-			} catch (final FileNotFoundException except) {
+			} catch (final FileNotFoundException|NoSuchFileException except) {
 				LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 			} catch (final XMLStreamException except) {
 				LOGGER.log(Level.SEVERE, "XML error", except);

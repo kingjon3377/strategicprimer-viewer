@@ -5,6 +5,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -81,7 +82,7 @@ public final class MapChecker implements UtilityDriver {
 			LOGGER.log(Level.SEVERE,
 					"Map version in " + file + " not acceptable to reader", e);
 			retval = false;
-		} catch (final FileNotFoundException e) {
+		} catch (final FileNotFoundException|NoSuchFileException e) {
 			LOGGER.log(Level.SEVERE, file + " not found", e);
 			retval = false;
 		} catch (final IOException e) {

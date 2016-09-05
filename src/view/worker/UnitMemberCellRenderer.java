@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -232,7 +233,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	private static Icon getIconForFile(final String filename) {
 		try {
 			return ImageLoader.getLoader().loadIcon(filename);
-		} catch (final FileNotFoundException except) {
+		} catch (final FileNotFoundException|NoSuchFileException except) {
 			LOGGER.severe(
 					"image file images" + File.separatorChar + filename + " not found");
 			LOGGER.log(Level.FINEST, "with stack trace", except);

@@ -8,6 +8,7 @@ import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -161,7 +162,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private static void logLoadingError(final IOException except,
 										final String filename, final boolean fallback) {
-		if (except instanceof FileNotFoundException) {
+		if (except instanceof FileNotFoundException ||
+					except instanceof NoSuchFileException) {
 			final String msg = "Image " + filename + " not found";
 			if (fallback) {
 				LOGGER.log(Level.SEVERE, msg, except);
@@ -360,7 +362,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private Image getImage(final String filename) {
 		try {
 			return loader.loadImage(filename);
-		} catch (final FileNotFoundException e) {
+		} catch (final FileNotFoundException|NoSuchFileException e) {
 			if (!missingFiles.contains(filename)) {
 				LOGGER.log(Level.SEVERE,
 						"images" + File.separatorChar + filename + " not found");

@@ -7,6 +7,7 @@ import controller.map.misc.MapReaderAdapter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -108,7 +109,7 @@ public final class ConverterDriver implements UtilityDriver {
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
 												+ " not acceptable to reader", e);
-			} catch (final FileNotFoundException e) {
+			} catch (final FileNotFoundException|NoSuchFileException e) {
 				LOGGER.log(Level.SEVERE, filename + " not found", e);
 			} catch (final IOException e) {
 				//noinspection HardcodedFileSeparator

@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -186,7 +187,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 			throws SPFormatException, XMLStreamException, IOException {
 		try {
 			mainMap = reader.readMap(arg, Warning.Ignore);
-		} catch (final FileNotFoundException except) {
+		} catch (final FileNotFoundException|NoSuchFileException except) {
 			printParagraph("File " + arg + " not found", ERROR_COLOR);
 			throw except;
 		} catch (final MapVersionException except) {
@@ -283,7 +284,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 			printParagraph("ERROR: Map version not acceptable to reader",
 					ERROR_COLOR);
 			return;
-		} catch (final FileNotFoundException except) {
+		} catch (final FileNotFoundException|NoSuchFileException except) {
 			printParagraph("FAIL: File not found", ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, arg + " not found", except);
 			return;

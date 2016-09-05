@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -115,7 +116,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 		Icon retval;
 		try {
 			retval = ImageLoader.getLoader().loadIcon(image);
-		} catch (final FileNotFoundException e) {
+		} catch (final FileNotFoundException|NoSuchFileException e) {
 			LOGGER.log(Level.SEVERE,
 					"image file images" + File.separatorChar + image + " not found");
 			LOGGER.log(Level.FINEST, "With stack trace", e);
