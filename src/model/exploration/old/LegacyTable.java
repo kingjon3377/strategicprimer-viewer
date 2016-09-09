@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 import model.map.IEvent;
+import model.map.MapDimensions;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
@@ -86,14 +87,16 @@ public final class LegacyTable implements EncounterTable {
 	}
 
 	/**
-	 * @param terrain  ignored
 	 * @param point    ignored
+	 * @param terrain  ignored
 	 * @param fixtures any fixtures on the tile
+	 * @param mapDimensions
 	 * @return the event on that tile
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-								final Iterable<TileFixture> fixtures) {
+								final Iterable<TileFixture> fixtures,
+								final MapDimensions mapDimensions) {
 		for (final TileFixture fix : fixtures) {
 			if (fix instanceof IEvent) {
 				return ((IEvent) fix).getText();
@@ -102,14 +105,16 @@ public final class LegacyTable implements EncounterTable {
 		return "Nothing interesting here ...";
 	}
 	/**
-	 * @param terrain  ignored
 	 * @param point    ignored
+	 * @param terrain  ignored
 	 * @param fixtures any fixtures on the tile
+	 * @param mapDimensions
 	 * @return the event on that tile
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-								final Stream<TileFixture> fixtures) {
+								final Stream<TileFixture> fixtures,
+								final MapDimensions mapDimensions) {
 		return fixtures.filter(IEvent.class::isInstance).map(IEvent.class::cast)
 					.map(IEvent::getText).findFirst()
 					.orElse("Nothing interesting here ...");

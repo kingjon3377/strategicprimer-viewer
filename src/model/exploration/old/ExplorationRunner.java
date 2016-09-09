@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+import model.map.MapDimensions;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -39,25 +40,27 @@ public final class ExplorationRunner {
 			TypesafeLogger.getLogger(ExplorationRunner.class);
 
 	/**
+	 * @param point    the tile's location
 	 * @param terrain  the terrain at the location
 	 * @param fixtures any fixtures at the location
-	 * @param point    the tile's location
+	 * @param mapDimensions
 	 * @return what the owner of a fortress on the tile knows
 	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
 	public String defaultResults(final Point point, final TileType terrain,
-								final Stream<TileFixture> fixtures)
+								 final Stream<TileFixture> fixtures,
+								 final MapDimensions mapDimensions)
 			throws MissingTableException {
 		final StringBuilder builder =
 				new StringBuilder(80).append("The primary rock type here is ");
-		builder.append(getPrimaryRock(point, terrain, fixtures));
+		builder.append(getPrimaryRock(point, terrain, fixtures, mapDimensions));
 		builder.append('.');
 		builder.append(LineEnd.LINE_SEP);
 		if ((TileType.BorealForest == terrain) || (TileType.TemperateForest ==
 														terrain)) {
 			builder.append("The main kind of tree is ");
-			builder.append(getPrimaryTree(point, terrain, fixtures));
+			builder.append(getPrimaryTree(point, terrain, fixtures, mapDimensions));
 			builder.append('.');
 			builder.append(LineEnd.LINE_SEP);
 		}
@@ -80,36 +83,40 @@ public final class ExplorationRunner {
 	}
 
 	/**
+	 * @param point    the location of the tile
 	 * @param terrain  the terrain of the tile
 	 * @param fixtures any fixtures on the tile
-	 * @param point    the location of the tile
+	 * @param mapDimensions
 	 * @return the main kind of rock on the tile
 	 * @throws MissingTableException if table missing
 	 */
 	public String getPrimaryRock(final Point point, final TileType terrain,
-								final Stream<TileFixture> fixtures)
+								 final Stream<TileFixture> fixtures,
+								 final MapDimensions mapDimensions)
 			throws MissingTableException {
 		return getTable("major_rock").generateEvent(point,
-				terrain, fixtures);
+				terrain, fixtures, mapDimensions);
 	}
 
 	/**
+	 * @param point    the location of the tile
 	 * @param terrain  the tile type
 	 * @param fixtures any fixtures on the tile
-	 * @param point    the location of the tile
+	 * @param mapDimensions
 	 * @return the main kind of tree on the tile
 	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
 	public String getPrimaryTree(final Point point, final TileType terrain,
-								final Stream<TileFixture> fixtures)
+								 final Stream<TileFixture> fixtures,
+								 final MapDimensions mapDimensions)
 			throws MissingTableException {
 		if (TileType.BorealForest == terrain) {
 			return getTable("boreal_major_tree").generateEvent(point,
-					TileType.BorealForest, fixtures);
+					TileType.BorealForest, fixtures, mapDimensions);
 		} else if (TileType.TemperateForest == terrain) {
 			return getTable("temperate_major_tree").generateEvent(point,
-					TileType.TemperateForest, fixtures);
+					TileType.TemperateForest, fixtures, mapDimensions);
 		} else {
 			throw new IllegalArgumentException("Only forests have primary trees");
 		}
@@ -121,16 +128,18 @@ public final class ExplorationRunner {
 	 * table, which should then be consulted.
 	 *
 	 * @param table    the name of the table to consult
+	 * @param point    the location of the tile
 	 * @param terrain  the tile type
 	 * @param fixtures any fixtures on the tile
-	 * @param point    the location of the tile
+	 * @param mapDimensions
 	 * @return the result of the consultation
 	 * @throws MissingTableException if the table is missing
 	 */
 	public String consultTable(final String table, final Point point,
-							final TileType terrain, final Stream<TileFixture> fixtures)
+							   final TileType terrain, final Stream<TileFixture> fixtures,
+							   final MapDimensions mapDimensions)
 			throws MissingTableException {
-		return getTable(table).generateEvent(point, terrain, fixtures);
+		return getTable(table).generateEvent(point, terrain, fixtures, mapDimensions);
 	}
 
 	/**
@@ -151,6 +160,7 @@ public final class ExplorationRunner {
 		}
 	}
 
+
 	/**
 	 * Consult a table, and if the result indicates recursion, perform it. Recursion is
 	 * indicated by hash-marks around the name of the table to call; results are
@@ -159,24 +169,28 @@ public final class ExplorationRunner {
 	 * beginning or the end of the string, since we use String.split .
 	 *
 	 * @param table    the name of the table to consult
+	 * @param point    the location of the tile
 	 * @param terrain  the tile type
 	 * @param fixtures any fixtures on the tile
-	 * @param point    the location of the tile
+	 * @param mapDimensions
 	 * @return the result of the consultation
 	 * @throws MissingTableException on missing table
 	 */
 	public String recursiveConsultTable(final String table, final Point point,
 										final TileType terrain,
-										final Stream<TileFixture> fixtures)
+										final Stream<TileFixture> fixtures,
+										final MapDimensions mapDimensions)
 			throws MissingTableException {
-		final String result = consultTable(table, point, terrain, fixtures);
+		final String result =
+				consultTable(table, point, terrain, fixtures, mapDimensions);
 		if (result.contains("#")) {
 			final String[] split = result.split("#", 3);
 			final String before = NullCleaner.assertNotNull(split[0]);
 			final String middle = NullCleaner.assertNotNull(split[1]);
 			final StringBuilder builder = new StringBuilder(100);
 			builder.append(before);
-			builder.append(recursiveConsultTable(middle, point, terrain, fixtures));
+			builder.append(recursiveConsultTable(middle, point, terrain, fixtures,
+					mapDimensions));
 			if (split.length > 2) {
 				builder.append(split[2]);
 			}

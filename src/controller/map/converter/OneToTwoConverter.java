@@ -300,29 +300,23 @@ public final class OneToTwoConverter {
 				map.setMountainous(point, true);
 			} else if (TileType.TemperateForest == map.getBaseTerrain(point)) {
 				if (isPointUnforested(map, point)) {
-					map.setForest(
-							point,
-							new Forest(runner.getPrimaryTree(point,
-									map.getBaseTerrain(point),
-									map.streamOtherFixtures(point)), false));
+					map.setForest(point, new Forest(runner.getPrimaryTree(point,
+							map.getBaseTerrain(point), map.streamOtherFixtures(point),
+							map.dimensions()), false));
 				}
 				map.setBaseTerrain(point, TileType.Plains);
 			} else if (TileType.BorealForest == map.getBaseTerrain(point)) {
 				if (isPointUnforested(map, point)) {
-					map.setForest(
-							point,
-							new Forest(runner.getPrimaryTree(point,
-									map.getBaseTerrain(point),
-									map.streamOtherFixtures(point)), false));
+					map.setForest(point, new Forest(runner.getPrimaryTree(point,
+							map.getBaseTerrain(point), map.streamOtherFixtures(point),
+							map.dimensions()), false));
 				}
 				map.setBaseTerrain(point, TileType.Steppe);
 			}
-			addFixture(
-					map,
-					point,
-					new Ground(runner.getPrimaryRock(point,
-							map.getBaseTerrain(point),
-							map.streamOtherFixtures(point)), false), main);
+			addFixture(map, point,
+					new Ground(runner.getPrimaryRock(point, map.getBaseTerrain(point),
+							map.streamOtherFixtures(point), map.dimensions()), false),
+					main);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing table", e);
 		}
@@ -433,21 +427,17 @@ public final class OneToTwoConverter {
 		try {
 			final int id = idFactory.createID();
 			if (field) {
-				addFixture(
-						map,
-						point,
+				addFixture(map, point,
 						new Meadow(runner.recursiveConsultTable("grain", point,
-								map.getBaseTerrain(point),
-								map.streamOtherFixtures(point)), true, true, id,
-										FieldStatus.random(id)), main);
+								map.getBaseTerrain(point), map.streamOtherFixtures
+																	   (point),
+								map.dimensions()), true, true, id,
+										  FieldStatus.random(id)), main);
 			} else {
-				addFixture(
-						map,
-						point,
-						new Grove(true, true, runner.recursiveConsultTable(
-								"fruit_trees", point,
-								map.getBaseTerrain(point),
-								map.streamOtherFixtures(point)), id), main);
+				addFixture(map, point, new Grove(true, true, runner
+																	 .recursiveConsultTable(
+						"fruit_trees", point, map.getBaseTerrain(point),
+						map.streamOtherFixtures(point), map.dimensions()), id), main);
 			}
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
@@ -466,13 +456,11 @@ public final class OneToTwoConverter {
 	private void addForest(final Point point, final IMutableMapNG map,
 						final boolean main) {
 		try {
-			addFixture(
-					map,
-					point,
-					new Forest(runner.recursiveConsultTable(
-							"temperate_major_tree", point,
-							map.getBaseTerrain(point),
-							map.streamOtherFixtures(point)), false), main);
+			addFixture(map, point,
+					new Forest(runner.recursiveConsultTable("temperate_major_tree",
+							point,
+							map.getBaseTerrain(point), map.streamOtherFixtures(point),
+							map.dimensions()), false), main);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
 		}

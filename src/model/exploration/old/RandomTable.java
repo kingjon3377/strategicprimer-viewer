@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import model.map.MapDimensions;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -35,27 +36,31 @@ public final class RandomTable implements EncounterTable {
 	private final List<ComparablePair<Integer, String>> table;
 
 	/**
+	 * @param point    ignored
 	 * @param terrain  ignored
 	 * @param fixtures ignored
-	 * @param point    ignored
+	 * @param mapDimensions
 	 * @return a random item from the table, or the last item in the table if the normal
 	 * procedure fails.
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-								final Iterable<TileFixture> fixtures) {
+								final Iterable<TileFixture> fixtures,
+								final MapDimensions mapDimensions) {
 		final int roll = SingletonRandom.RANDOM.nextInt(100);
 		return getLowestMatch(roll);
 	}
 	/**
-	 * @param terrain  ignored
 	 * @param point    ignored
+	 * @param terrain  ignored
 	 * @param fixtures any fixtures on the tile
+	 * @param mapDimensions
 	 * @return the event on that tile
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-								final Stream<TileFixture> fixtures) {
+								final Stream<TileFixture> fixtures,
+								final MapDimensions mapDimensions) {
 		return getLowestMatch(SingletonRandom.RANDOM.nextInt(100));
 	}
 

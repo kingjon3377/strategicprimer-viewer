@@ -1,11 +1,13 @@
 package model.exploration.old;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
+import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
@@ -37,9 +39,17 @@ public final class QuadrantTable implements EncounterTable {
 	 */
 	private static final int MAP_SIZE_COLS = 88;
 	/**
-	 * The collection of results.
+	 * The items to allocate by quadrant.
 	 */
-	private final Map<Point, String> quadrants;
+	private final List<String> possibleResults;
+	/**
+	 * How many rows of quadrants there should be
+	 */
+	private final int quadrantRows;
+	/**
+	 * The collection of collections of results.
+	 */
+	private final Map<MapDimensions, Map<Point, String>> quadrants = new HashMap<>();
 	/**
 	 * Constructor.
 	 * @param mapRows the size of the map in rows
@@ -49,25 +59,39 @@ public final class QuadrantTable implements EncounterTable {
 	 */
 	public QuadrantTable(final int mapRows, final int mapCols, final int rows,
 						final List<String> items) {
-		if ((items.size() % rows) != 0) {
-			throw new IllegalArgumentException(Integer.toString(items.size()) +
-													" items won't divide evenly into " +
-													Integer.toString(rows));
-		}
-		final int cols = items.size() / rows;
-		quadrants = new HashMap<>();
-		int i = 0;
-		final int colRemain = mapCols % cols;
-		final int rowRemain = mapRows % rows;
-		final int colStep = mapCols / cols;
-		final int rowStep = mapRows / rows;
-		for (int row = 0; row < (mapRows - rowRemain); row += rowStep) {
-			for (int col = 0; col < (mapCols - colRemain); col += colStep) {
-				quadrants.put(PointFactory.point(row, col), items.get(i));
-				i++;
+		possibleResults = new ArrayList<>(items);
+		quadrantRows = rows;
+		MapDimensions dimensions = new MapDimensions(mapRows, mapCols, 2);
+		final Map<Point, String> firstQuadrants =
+				getValuesFor(dimensions);
+		quadrants.put(dimensions, firstQuadrants);
+	}
+
+	private Map<Point, String> getValuesFor(final MapDimensions mapDimensions) {
+		if (quadrants.containsKey(mapDimensions)) {
+			return quadrants.get(mapDimensions);
+		} else {
+			final Map<Point, String> retval = new HashMap<>();
+			final int cols = possibleResults.size() / quadrantRows;
+			int i = 0;
+			final int mapCols = mapDimensions.cols;
+			final int mapRows = mapDimensions.rows;
+			final int colRemain = mapCols % cols;
+			final int rowRemain = mapRows % quadrantRows;
+			final int colStep = mapCols / cols;
+			final int rowStep = mapRows / quadrantRows;
+			for (int row = 0; row < (mapRows - rowRemain); row += rowStep) {
+				for (int col = 0; col < (mapCols - colRemain); col += colStep) {
+					retval
+							.put(PointFactory.point(row, col), possibleResults.get(i));
+					i++;
+				}
 			}
+			quadrants.put(mapDimensions, retval);
+			return retval;
 		}
 	}
+
 	/**
 	 * Constructor.
 	 *
@@ -75,46 +99,54 @@ public final class QuadrantTable implements EncounterTable {
 	 * @param items the items to allocate by quadrant
 	 */
 	public QuadrantTable(final int rows, final List<String> items) {
-		this(MAP_SIZE_ROWS, MAP_SIZE_COLS, rows, items);
+		possibleResults = new ArrayList<>(items);
+		quadrantRows = rows;
 	}
 
 	/**
 	 * @param row the row of a tile
 	 * @param col the column of a tile
+	 * @param mapDimensions
 	 * @return the result from the quadrant containing that tile.
 	 */
-	public String getQuadrantValue(final int row, final int col) {
+	public String getQuadrantValue(final int row, final int col,
+								   final MapDimensions mapDimensions) {
+		final Map<Point, String> resultsMap = getValuesFor(mapDimensions);
 		Point bestKey = PointFactory.point(-1, -1);
-		for (final Point iter : quadrants.keySet()) {
+		for (final Point iter : resultsMap.keySet()) {
 			if ((iter.getRow() <= row) && (iter.getRow() > bestKey.getRow()) &&
 						(iter.getCol() <= col) && (iter.getCol() > bestKey.getCol())) {
 				bestKey = iter;
 			}
 		}
-		return NullCleaner.valueOrDefault(quadrants.get(bestKey), "");
+		return NullCleaner.valueOrDefault(resultsMap.get(bestKey), "");
 	}
 
 	/**
+	 * @param point    the location of the tile
 	 * @param terrain  ignored
 	 * @param fixtures ignored
-	 * @param point    the location of the tile
+	 * @param mapDimensions
 	 * @return what the table has for that tile
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-								final Iterable<TileFixture> fixtures) {
-		return getQuadrantValue(point.getRow(), point.getCol());
+								final Iterable<TileFixture> fixtures,
+								final MapDimensions mapDimensions) {
+		return getQuadrantValue(point.getRow(), point.getCol(), mapDimensions);
 	}
 	/**
-	 * @param terrain  ignored
 	 * @param point    ignored
+	 * @param terrain  ignored
 	 * @param fixtures any fixtures on the tile
+	 * @param mapDimensions
 	 * @return the event on that tile
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-								final Stream<TileFixture> fixtures) {
-		return getQuadrantValue(point.getRow(), point.getCol());
+								final Stream<TileFixture> fixtures,
+								final MapDimensions mapDimensions) {
+		return getQuadrantValue(point.getRow(), point.getCol(), mapDimensions);
 	}
 
 	/**
@@ -122,7 +154,7 @@ public final class QuadrantTable implements EncounterTable {
 	 */
 	@Override
 	public Set<String> allEvents() {
-		return new HashSet<>(quadrants.values());
+		return new HashSet<>(possibleResults);
 	}
 
 	/**

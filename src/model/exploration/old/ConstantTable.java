@@ -3,6 +3,7 @@ package model.exploration.old;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
+import model.map.MapDimensions;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -45,25 +46,29 @@ public final class ConstantTable implements EncounterTable {
 	}
 
 	/**
-	 * @param terrain  ignored
 	 * @param point    ignored
+	 * @param terrain  ignored
 	 * @param fixtures ignored
+	 * @param mapDimensions
 	 * @return our specified value.
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-								final Iterable<TileFixture> fixtures) {
+								final Iterable<TileFixture> fixtures,
+								final MapDimensions mapDimensions) {
 		return value;
 	}
 	/**
-	 * @param terrain  ignored
 	 * @param point    ignored
+	 * @param terrain  ignored
 	 * @param fixtures any fixtures on the tile
+	 * @param mapDimensions
 	 * @return the event on that tile
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-								final Stream<TileFixture> fixtures) {
+								final Stream<TileFixture> fixtures,
+								final MapDimensions mapDimensions) {
 		return value;
 	}
 

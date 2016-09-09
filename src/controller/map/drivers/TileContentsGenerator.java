@@ -118,8 +118,8 @@ public final class TileContentsGenerator {
 			throws MissingTableException {
 		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
 		for (int i = 0; i < reps; i++) {
-			println(runner.recursiveConsultTable("fisher", point,
-					terrain, NullCleaner.assertNotNull(Stream.empty())));
+			println(runner.recursiveConsultTable("fisher", point, terrain,
+					NullCleaner.assertNotNull(Stream.empty()), map.dimensions()));
 		}
 	}
 
