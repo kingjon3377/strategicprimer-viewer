@@ -32,8 +32,7 @@ public final class City extends AbstractTown {
 	public City(final TownStatus tStatus, final TownSize tSize,
 				final int discoverDC, final String tName, final int idNum,
 				final Player player) {
-		super(tStatus, tSize, tName, player);
-		dc = discoverDC;
+		super(tStatus, tSize, tName, player, discoverDC);
 		id = idNum;
 	}
 
@@ -50,23 +49,10 @@ public final class City extends AbstractTown {
 		if (zero) {
 			retval = new City(status(), size(), 0, getName(), id, getOwner());
 		} else {
-			retval = new City(status(), size(), dc, getName(), id, getOwner());
+			retval = new City(status(), size(), getDC(), getName(), id, getOwner());
 		}
 		retval.setImage(getImage());
 		return retval;
-	}
-
-	/**
-	 * The DC to discover the city. TODO: Should perhaps be mutable.
-	 */
-	private final int dc;
-
-	/**
-	 * @return the DC to discover the event.
-	 */
-	@Override
-	public int getDC() {
-		return dc;
 	}
 
 	/**

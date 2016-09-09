@@ -35,8 +35,7 @@ public final class Fortification extends AbstractTown {
 	public Fortification(final TownStatus tStatus, final TownSize tSize,
 						final int discoverDC, final String tName, final int idNum,
 						final Player player) {
-		super(tStatus, tSize, tName, player);
-		dc = discoverDC;
+		super(tStatus, tSize, tName, player, discoverDC);
 		id = idNum;
 	}
 
@@ -57,19 +56,6 @@ public final class Fortification extends AbstractTown {
 		}
 		retval.setImage(getImage());
 		return retval;
-	}
-
-	/**
-	 * The DC to discover the fortification. TODO: Should perhaps be mutable.
-	 */
-	private final int dc;
-
-	/**
-	 * @return the DC to discover the event.
-	 */
-	@Override
-	public int getDC() {
-		return dc;
 	}
 
 	/**

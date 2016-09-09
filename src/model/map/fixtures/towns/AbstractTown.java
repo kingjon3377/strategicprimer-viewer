@@ -24,6 +24,10 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixture {
 	/**
+	 * The DC to discover the city. TODO: Should perhaps be mutable.
+	 */
+	protected final int dc;
+	/**
 	 * The size of the town, fortress, or city.
 	 */
 	private final TownSize size;
@@ -53,11 +57,12 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 * @param player  the owner of the town, fortress, or city
 	 */
 	protected AbstractTown(final TownStatus tStatus, final TownSize tSize,
-							final String tName, final Player player) {
+						   final String tName, final Player player, final int discoverDC) {
 		status = tStatus;
 		size = tSize;
 		name = tName;
 		owner = player;
+		dc = discoverDC;
 	}
 
 	/**
@@ -278,5 +283,13 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	@Override
 	public void setPortrait(final String portrait) {
 		portraitName = portrait;
+	}
+
+	/**
+	 * @return the DC to discover the event.
+	 */
+	@Override
+	public int getDC() {
+		return dc;
 	}
 }
