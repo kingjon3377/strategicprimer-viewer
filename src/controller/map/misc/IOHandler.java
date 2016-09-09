@@ -361,14 +361,14 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			} catch (final IOException e) {
 				//noinspection HardcodedFileSeparator
 				ErrorShower.showErrorDialog(source, "I/O error writing to file "
-															+ model.getMapFile());
+															+ givenFile.get());
 				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 			} catch (final XMLStreamException except) {
 				ErrorShower.showErrorDialog(source,
-						"Error creating XML to write to file " + model.getMapFile());
+						"Error creating XML to write to file " + givenFile.get());
 				LOGGER.log(Level.SEVERE,
-						"Error creating XML to write to " + model.getMapFile(), except);
+						"Error creating XML to write to " + givenFile.get(), except);
 			}
 		} else {
 			saveMapAs(model.getMap(), source);

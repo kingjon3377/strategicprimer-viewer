@@ -502,7 +502,12 @@ public final class DrawHelperComparator implements SimpleDriver {
 			}
 		} else {
 			SYS_OUT.print("Testing using ");
-			SYS_OUT.println(model.getMapFile());
+			Optional<Path> mapFile = model.getMapFile();
+			if (mapFile.isPresent()) {
+				SYS_OUT.println(mapFile.get());
+			} else {
+				SYS_OUT.println("an unsaved map");
+			}
 			final IMapNG map = model.getMap();
 			PointFactory.clearCache();
 			if (random.nextBoolean()) {

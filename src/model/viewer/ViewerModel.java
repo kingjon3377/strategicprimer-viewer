@@ -161,7 +161,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 */
 	@Override
 	public String toString() {
-		return "ViewerModel for " + getMapFile();
+		return "ViewerModel for " + getMapFile().get();
 	}
 
 	/**

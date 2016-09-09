@@ -132,7 +132,7 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 	 */
 	@Override
 	public String toString() {
-		return "ViewerFrame showing map in " + model.getMapFile();
+		return "ViewerFrame showing map in " + model.getMapFile().get();
 	}
 
 	/**

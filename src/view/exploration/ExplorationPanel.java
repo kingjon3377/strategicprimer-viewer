@@ -223,6 +223,7 @@ public final class ExplorationPanel extends BorderedPanel
 				new FixtureList(panel, model, model.getMap().players());
 		mainPCS.addSelectionChangeListener(mainList);
 		panel.add(new JScrollPane(mainList));
+		// FIXME: This *will* break if there isn't a subordinate map, and the app shouldn't *need* 2+ maps!
 		final DualTileButton dtb =
 				new DualTileButton(model.getMap(),
 										model.getSubordinateMaps().iterator().next()

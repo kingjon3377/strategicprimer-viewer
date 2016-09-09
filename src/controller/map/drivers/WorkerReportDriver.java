@@ -1,8 +1,9 @@
 package controller.map.drivers;
 
 import controller.map.report.ReportGenerator;
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 import model.map.IMutableMapNG;
@@ -49,9 +50,9 @@ public final class WorkerReportDriver implements SimpleDriver {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :
 					((IMultiMapModel) model).getAllMaps()) {
 				final String report = ReportGenerator.createReport(pair.first());
-				//noinspection ObjectAllocationInLoop
-				try (final FileWriter writer = new FileWriter(pair.second() +
-																	  ".report.html")) {
+				final Path mapFile = pair.second().get();
+				try (final BufferedWriter writer = Files.newBufferedWriter(
+						mapFile.resolveSibling(mapFile.getFileName() + ".report.html"))) {
 					writer.write(report);
 				} catch (final IOException except) {
 					//noinspection HardcodedFileSeparator
@@ -60,8 +61,9 @@ public final class WorkerReportDriver implements SimpleDriver {
 			}
 		} else {
 			final String report = ReportGenerator.createReport(model.getMap());
-			try (final FileWriter writer = new FileWriter(model.getMapFile() +
-																  ".report.html")) {
+			final Path mapFile = model.getMapFile().get();
+			try (final BufferedWriter writer = Files.newBufferedWriter(
+					mapFile.resolveSibling(mapFile.getFileName() + ".report.html"))) {
 				writer.write(report);
 			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator

@@ -199,11 +199,11 @@ public final class MapReaderAdapter {
 				spWriter.write(mainFile.get(), model.getMap());
 			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator
-				throw new DriverFailedException("I/O error writing to " + mainFile,
+				throw new DriverFailedException("I/O error writing to " + mainFile.get(),
 													   except);
 			} catch (final XMLStreamException except) {
 				throw new DriverFailedException("Error creating XML to write to " +
-														mainFile, except);
+														mainFile.get(), except);
 			}
 		} else {
 			LOGGER.severe(

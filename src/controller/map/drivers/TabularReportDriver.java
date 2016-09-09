@@ -1,10 +1,9 @@
 package controller.map.drivers;
 
 import controller.map.report.tabular.TableReportGenerator;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOError;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 import model.map.IMutableMapNG;
@@ -46,9 +45,10 @@ public class TabularReportDriver implements SimpleDriver {
 				try {
 					TableReportGenerator.createReports(pair.first(), s -> {
 						try {
-							return new FileOutputStream(pair.second().get().toString() + '.' + s +
-																".csv");
-						} catch (final FileNotFoundException e) {
+							final Path mapFile = pair.second().get();
+							return Files.newOutputStream(mapFile.resolveSibling(
+									mapFile.getFileName() + "." + s + ".csv"));
+						} catch (final IOException e) {
 							throw new IOError(e);
 						}
 					});
@@ -60,9 +60,10 @@ public class TabularReportDriver implements SimpleDriver {
 			try {
 				TableReportGenerator.createReports(model.getMap(), s -> {
 					try {
-						return new FileOutputStream(model.getMapFile().get().toString() + '.' + s +
-															".csv");
-					} catch (final FileNotFoundException e) {
+						Path mapFile = model.getMapFile().get();
+						return Files.newOutputStream(mapFile.resolveSibling(
+								mapFile.getFileName() + "." + s + ".csv"));
+					} catch (final IOException e) {
 						throw new IOError(e);
 					}
 				});
