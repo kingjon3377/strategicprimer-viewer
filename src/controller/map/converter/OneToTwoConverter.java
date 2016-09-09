@@ -638,8 +638,8 @@ public final class OneToTwoConverter {
 			for (final String arg : args) {
 				//noinspection ObjectAllocationInLoop
 				final IMapNG old;
+				final Path file = Paths.get(arg);
 				try {
-					final Path file = Paths.get(arg);
 					old = reader.readMap(file, Warning.DEFAULT);
 				} catch (final IOException | XMLStreamException | SPFormatException
 													except) {
@@ -654,7 +654,9 @@ public final class OneToTwoConverter {
 				final IMapNG newMap = converter.convert(old, first);
 				try {
 					//noinspection ObjectAllocationInLoop
-					reader.write(Paths.get(arg + ".converted.xml"), newMap);
+					reader.write(
+							file.resolveSibling(file.getFileName() + ".converted.xml"),
+							newMap);
 				} catch (final IOException except) {
 					//noinspection HardcodedFileSeparator
 					LOGGER.log(Level.SEVERE,
