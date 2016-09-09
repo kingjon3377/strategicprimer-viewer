@@ -67,12 +67,6 @@ public final class FileChooser {
 	 */
 	private Optional<Path> file;
 	/**
-	 * Whether we should return the filename (if not, we'll show the dialog, then
-	 * throw an
-	 * exception if that fails).
-	 */
-	private boolean shouldWait = true;
-	/**
 	 * A file chooser.
 	 */
 	private final JFileChooser chooser;
@@ -135,7 +129,7 @@ public final class FileChooser {
 	 */
 	@SuppressWarnings("NewExceptionWithoutArguments")
 	public Path getFile() throws ChoiceInterruptedException {
-		if (shouldWait) {
+		if (!file.isPresent()) {
 			if (SwingUtilities.isEventDispatchThread()) {
 				final int status = chooserFunc.applyAsInt(null);
 				if (status == APPROVE_OPTION) {
@@ -218,7 +212,6 @@ public final class FileChooser {
 	 * @param loc the file to return
 	 */
 	public void setFile(final Optional<Path> loc) {
-		shouldWait = !loc.isPresent();
 		file = loc;
 	}
 
