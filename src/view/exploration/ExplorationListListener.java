@@ -4,6 +4,7 @@ import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.ListModel;
@@ -56,7 +57,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 	 * A list of animal-tracks objects, which we want to remove from the main map
 	 * whenever the list's target gets changed.
 	 */
-	private final List<Pair<Point, Animal>> tracks = new ArrayList<>();
+	private final Collection<Pair<Point, Animal>> tracks = new ArrayList<>();
 	/**
 	 * Constructor.
 	 *
