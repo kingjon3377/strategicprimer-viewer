@@ -131,12 +131,12 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				new MapDimensions(getIntegerParameter(mapTag, "rows"),
 										getIntegerParameter(mapTag, "columns"),
 										getIntegerParameter(mapTag, "version"));
-		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
-		final Point nullPoint = PointFactory.point(-1, -1);
-		Point point = nullPoint;
 		final Deque<QName> tagStack = new LinkedList<>();
 		tagStack.push(element.getName());
 		tagStack.push(mapTag.getName());
+		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
+		final Point nullPoint = PointFactory.point(-1, -1);
+		Point point = nullPoint;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement current = event.asStartElement();

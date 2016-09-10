@@ -55,11 +55,11 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadQuadrantTable() throws IOException {
 		// TODO: Test using different dimensions!
-		final MapDimensions dimensions = new MapDimensions(69, 88, 2);
 		try (final BufferedReader reader = new BufferedReader(new StringReader
 																	(String.format("quadrant%n2%none%ntwo%nthree%nfour%nfive%nsix")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(0, 0);
+			final MapDimensions dimensions = new MapDimensions(69, 88, 2);
 			assertThat("loading quadrant table",
 					result.generateEvent(point, TileType.Tundra, EMPTY, dimensions),
 					equalTo(ONE_STRING));

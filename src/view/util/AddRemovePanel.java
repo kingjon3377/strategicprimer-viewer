@@ -49,7 +49,6 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	public static AddRemovePanel addRemovePanel(final String what) {
 		final AddRemovePanel retval = new AddRemovePanel();
 		final CardLayout layout = new CardLayout();
-		final String category = what;
 		retval.setLayout(layout);
 		setPanelSizes(retval);
 		final JPanel first = new BoxPanel(true);
@@ -67,6 +66,7 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 		retval.add(first);
 		final JPanel second = new BoxPanel(false);
 		second.add(field);
+		final String category = what;
 		final ActionListener okListener = evt -> {
 			final String text = field.getText();
 			for (final AddRemoveListener listener : retval.arListeners) {

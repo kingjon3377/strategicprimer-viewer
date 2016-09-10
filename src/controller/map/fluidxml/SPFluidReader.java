@@ -445,10 +445,10 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				new MapDimensions(getIntegerAttribute(mapTag, "rows"),
 										 getIntegerAttribute(mapTag, "columns"),
 										 getIntegerAttribute(mapTag, "version"));
-		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Deque<QName> tagStack = new LinkedList<>();
 		tagStack.push(element.getName());
 		tagStack.push(mapTag.getName());
+		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && equalsAny(
 					assertNotNull(

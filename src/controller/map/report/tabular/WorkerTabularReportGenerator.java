@@ -59,8 +59,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 		writeFieldDelimiter(ostream);
 		writeField(ostream, item.getName());
 		writeFieldDelimiter(ostream);
-		final Optional<WorkerStats> stats;
-		stats = Optional.ofNullable(item.getStats());
+		final Optional<WorkerStats> stats = Optional.ofNullable(item.getStats());
 		if (stats.isPresent()) {
 			final WorkerStats actual = stats.get();
 			writeField(ostream, Integer.toString(actual.getHitPoints()));

@@ -59,10 +59,9 @@ public final class MapSizeListener extends ComponentAdapter {
 				int minRow = model.getDimensions().getMinimumRow();
 				int maxRow = model.getDimensions().getMaximumRow();
 				final MapDimensions mapDim = model.getMapDimensions();
-				final int totalRows = mapDim.rows;
-				final int totalCols = mapDim.cols;
 				if ((visibleCols != (maxCol - minCol)) ||
 							(visibleRows != (maxRow - minRow))) {
+					final int totalCols = mapDim.cols;
 					if (visibleCols >= totalCols) {
 						minCol = 0;
 						maxCol = totalCols - 1;
@@ -72,6 +71,7 @@ public final class MapSizeListener extends ComponentAdapter {
 					} else {
 						maxCol = (minCol + visibleCols) - 1;
 					}
+					final int totalRows = mapDim.rows;
 					if (visibleRows >= totalRows) {
 						minRow = 0;
 						maxRow = totalRows - 1;

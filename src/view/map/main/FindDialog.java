@@ -119,9 +119,9 @@ public final class FindDialog extends JDialog {
 		search.addActionListener(okListener);
 		search.setActionCommand("OK");
 
-		final JPanel contentPane = new BoxPanel(false);
 		final JPanel searchBoxPane = new JPanel();
 		searchBoxPane.add(search);
+		final JPanel contentPane = new BoxPanel(false);
 		contentPane.add(searchBoxPane);
 		contentPane.add(backwards);
 		contentPane.add(vertically);
