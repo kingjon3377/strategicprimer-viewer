@@ -191,8 +191,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 */
 	private static boolean hasUnstattedWorker(final Iterable<UnitMember> unit) {
 		return StreamSupport.stream(unit.spliterator(), false).anyMatch(
-				member -> (member instanceof Worker) &&
-								(((Worker) member).getStats() == null));
+				member -> (member instanceof IWorker) &&
+								(((IWorker) member).getStats() == null));
 	}
 
 	/**
