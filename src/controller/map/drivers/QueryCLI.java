@@ -416,7 +416,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @return the nearest obviously-reachable unexplored point
 	 */
 	private static Optional<Point> findUnexplored(final IMapNG map, final Point base) {
-		final Set<Point> considered = new HashSet<>();
+		final Collection<Point> considered = new HashSet<>();
 		final Queue<Point> queue = new LinkedList<>();
 		final List<Point> retval = new ArrayList<>();
 		queue.add(base);
