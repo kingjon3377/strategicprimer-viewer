@@ -182,7 +182,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			if ((jobNum < 0) || (jobNum == jobs.size())) {
 				worker.addJob(new Job(cli.inputString("Name of new Job: "), 0));
 				jobs.clear();
-				jobs.addAll(CLIHelper.toList(worker));
+				worker.forEach(jobs::add);
 				SYS_OUT.println("Select the new job at the next prompt.");
 				continue;
 			} else {
@@ -214,7 +214,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			if ((skillNum < 0) || (skillNum == skills.size())) {
 				job.addSkill(new Skill(cli.inputString("Name of new Skill: "), 0, 0));
 				skills.clear();
-				skills.addAll(CLIHelper.toList(job));
+				job.forEach(skills::add);
 				SYS_OUT.println("Select the new skill at the next prompt.");
 				continue;
 			} else {
