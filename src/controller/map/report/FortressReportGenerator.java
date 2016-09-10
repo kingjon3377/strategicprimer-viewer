@@ -17,7 +17,7 @@ import model.map.TileFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
@@ -64,7 +64,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	/**
 	 * Instance we use.
 	 */
-	private final IReportGenerator<Unit> urg = new UnitReportGenerator(pairComparator);
+	private final IReportGenerator<IUnit> urg = new UnitReportGenerator(pairComparator);
 	/**
 	 * Instance we use.
 	 */
@@ -291,10 +291,10 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			final Collection<ResourcePile> resources = new ArrayList<>();
 			final Collection<FortressMember> contents = new ArrayList<>();
 			for (final FortressMember member : item) {
-				if (member instanceof Unit) {
+				if (member instanceof IUnit) {
 					builder.append(OPEN_LIST_ITEM)
 							.append(urg.produce(fixtures, map, currentPlayer,
-									(Unit) member, loc)).append(CLOSE_LIST_ITEM);
+									(IUnit) member, loc)).append(CLOSE_LIST_ITEM);
 				} else if (member instanceof Implement) {
 					equipment.add((Implement) member);
 				} else if (member instanceof ResourcePile) {
@@ -380,9 +380,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			final IReportNode contents =
 					new ListReportNode(loc, "Other Contents of Fortress:");
 			for (final FortressMember unit : item) {
-				if (unit instanceof Unit) {
+				if (unit instanceof IUnit) {
 					units.add(urg.produceRIR(fixtures, map, currentPlayer,
-							(Unit) unit, loc));
+							(IUnit) unit, loc));
 				} else if (unit instanceof Implement) {
 					equipment.add(memberReportGenerator
 									  .produceRIR(fixtures, map, currentPlayer, unit,

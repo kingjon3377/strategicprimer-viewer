@@ -10,6 +10,7 @@ import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
@@ -46,7 +47,7 @@ import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
  *
  * @author Jonathan Lovelace
  */
-public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
+public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
@@ -75,7 +76,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer, final Unit item,
+						  final IMapNG map, final Player currentPlayer, final IUnit item,
 						  final Point loc) {
 		final StringBuilder builder =
 				new StringBuilder(52 + item.getKind().length() + item.getName().length() +
@@ -129,7 +130,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
 											  fixtures,
 								  final IMapNG map, final Player currentPlayer,
-								  final Unit item, final Point loc) {
+								  final IUnit item, final Point loc) {
 		final String simple;
 		if (item.getOwner().isIndependent()) {
 			simple = concat("Unit of type ", item.getKind(), ", named ",
