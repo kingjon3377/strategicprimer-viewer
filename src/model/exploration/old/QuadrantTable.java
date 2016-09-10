@@ -61,7 +61,7 @@ public final class QuadrantTable implements EncounterTable {
 						final List<String> items) {
 		possibleResults = new ArrayList<>(items);
 		quadrantRows = rows;
-		MapDimensions dimensions = new MapDimensions(mapRows, mapCols, 2);
+		final MapDimensions dimensions = new MapDimensions(mapRows, mapCols, 2);
 		final Map<Point, String> firstQuadrants =
 				getValuesFor(dimensions);
 		quadrants.put(dimensions, firstQuadrants);

@@ -60,7 +60,7 @@ public class TabularReportDriver implements SimpleDriver {
 			try {
 				TableReportGenerator.createReports(model.getMap(), s -> {
 					try {
-						Path mapFile = model.getMapFile().get();
+						final Path mapFile = model.getMapFile().get();
 						return Files.newOutputStream(mapFile.resolveSibling(
 								mapFile.getFileName() + "." + s + ".csv"));
 					} catch (final IOException e) {
