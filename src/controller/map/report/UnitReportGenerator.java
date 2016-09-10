@@ -11,8 +11,8 @@ import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
@@ -98,8 +98,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				builder.append(". Members of the unit:").append(LineEnd.LINE_SEP).append(OPEN_LIST);
 			}
 			builder.append(OPEN_LIST_ITEM);
-			if (member instanceof Worker) {
-				builder.append(workerReport((Worker) member,
+			if (member instanceof IWorker) {
+				builder.append(workerReport((IWorker) member,
 						currentPlayer.equals(item.getOwner())));
 			} else {
 				builder.append(member);
@@ -146,8 +146,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 																		concat(simple,
 																				". Members of the unit:"));
 			for (final UnitMember member : item) {
-				if (member instanceof Worker) {
-					retval.add(produceWorkerRIR(loc, (Worker) member,
+				if (member instanceof IWorker) {
+					retval.add(produceWorkerRIR(loc, (IWorker) member,
 							currentPlayer.equals(item.getOwner())));
 				} else {
 					// TODO: what about others?
@@ -168,7 +168,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 *                experience---true only if the current player owns the worker.
 	 * @return a sub-report on that worker.
 	 */
-	private static String workerReport(final Worker worker, final boolean details) {
+	private static String workerReport(final IWorker worker, final boolean details) {
 		final StringBuilder builder = new StringBuilder(2048);
 		builder.append(worker.getName());
 		builder.append(", a ");
@@ -243,7 +243,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 * @return a sub-report on that worker.
 	 */
 	private static MutableTreeNode produceWorkerRIR(final Point loc,
-													final Worker worker,
+													final IWorker worker,
 													final boolean details) {
 		final IReportNode retval = new ComplexReportNode(loc,
 																worker.getName() +
@@ -269,9 +269,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		if (worker.iterator().hasNext() && details) {
 			final IReportNode jobs = new ListReportNode(loc, HAS_TRAINING);
 			for (final IJob job : worker) {
-				if (job instanceof Job) {
-					jobs.add(produceJobRIR((Job) job, loc));
-				}
+				jobs.add(produceJobRIR(job, loc));
 			}
 			retval.add(jobs);
 		}
@@ -283,7 +281,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 * @param job a Job
 	 * @return a sub-report on that Job.
 	 */
-	private static MutableTreeNode produceJobRIR(final Job job, final Point loc) {
+	private static MutableTreeNode produceJobRIR(final IJob job, final Point loc) {
 		return new SimpleReportNode(loc, Integer.toString(job.getLevel()),
 										" levels in ", job.getName(), getSkills(job));
 	}
@@ -318,8 +316,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		boolean anyForeign = false;
 		boolean anyOurs = false;
 		for (final Pair<Point, IFixture> pair : values) {
-			if (pair.second() instanceof Unit) {
-				final Unit unit = (Unit) pair.second();
+			if (pair.second() instanceof IUnit) {
+				final IUnit unit = (IUnit) pair.second();
 				if (currentPlayer.equals(unit.getOwner())) {
 					anyOurs = true;
 					ours.append(OPEN_LIST_ITEM)
@@ -377,7 +375,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		final IReportNode theirs = new SectionListReportNode(5, "Foreign units");
 		final IReportNode ours = new SectionListReportNode(5, "Your units");
 		values.stream().filter(pair -> pair.second() instanceof Unit).forEach(pair -> {
-			final Unit unit = (Unit) pair.second();
+			final IUnit unit = (IUnit) pair.second();
 			final IReportNode unitNode = produceRIR(fixtures, map,
 					currentPlayer, unit, pair.first());
 			unitNode.setText(concat(atPoint(pair.first()), unitNode.getText(), " ",
