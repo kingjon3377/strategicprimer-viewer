@@ -24,7 +24,6 @@ import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.ProxyWorker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.IWorkerTreeModel;
@@ -261,8 +260,8 @@ public final class WorkerTree extends JTree
 	@Nullable
 	private String getStatsToolTip(final Object node) {
 		final Object localNode = ((IWorkerTreeModel) getModel()).getModelObject(node);
-		if (localNode instanceof Worker) {
-			final WorkerStats stats = ((Worker) localNode).getStats();
+		if (localNode instanceof IWorker) {
+			final WorkerStats stats = ((IWorker) localNode).getStats();
 			if (stats == null) {
 				return null;
 			} else {
@@ -274,17 +273,6 @@ public final class WorkerTree extends JTree
 						getModifierString(stats.getWisdom()),
 						getModifierString(stats.getCharisma()));
 			}
-		} else if (localNode instanceof ProxyWorker) {
-			for (final IWorker proxied : ((ProxyWorker) localNode).getProxied()) {
-				final WorkerStats stats = proxied.getStats();
-				if (stats == null) {
-					continue;
-				} else {
-					//noinspection TailRecursion
-					return getStatsToolTip(proxied);
-				}
-			}
-			return null;
 		} else {
 			return null;
 		}
