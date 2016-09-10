@@ -177,8 +177,8 @@ public final class SimpleMovement {
 	 */
 	private static int getPerception(final Iterable<IJob> worker) {
 		final int ability;
-		if (worker instanceof Worker) {
-			final WorkerStats stats = ((Worker) worker).getStats();
+		if (worker instanceof IWorker) {
+			final WorkerStats stats = ((IWorker) worker).getStats();
 			if (stats != null) {
 				ability = WorkerStats.getModifier(stats.getWisdom());
 			} else {
