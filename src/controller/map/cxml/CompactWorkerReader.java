@@ -252,15 +252,15 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append('"');
 		ostream.append(imageXML(obj));
-		ostream.append(portraitXML(obj));
+		if (obj instanceof HasPortrait) {
+			ostream.append(portraitXML((HasPortrait) obj));
+		}
 		if (obj.iterator().hasNext() || (obj.getStats() != null)) {
 			ostream.append(">");
 			ostream.append(LineEnd.LINE_SEP);
 			writeStats(ostream, obj.getStats(), indent + 1);
 			for (final IJob job : obj) {
-				if (job instanceof Job) {
-					writeJob(ostream, (Job) job, indent + 1);
-				}
+				writeJob(ostream, job, indent + 1);
 			}
 			indent(ostream, indent);
 			ostream.append("</worker>");
@@ -328,9 +328,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 			ostream.append('>');
 			ostream.append(LineEnd.LINE_SEP);
 			for (final ISkill skill : obj) {
-				if (skill instanceof Skill) {
-					writeSkill(ostream, skill, indent + 1);
-				}
+				writeSkill(ostream, skill, indent + 1);
 			}
 			indent(ostream, indent);
 			ostream.append("</job>");
