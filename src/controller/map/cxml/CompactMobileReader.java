@@ -26,6 +26,7 @@ import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
 import model.map.fixtures.mobile.Griffin;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Minotaur;
 import model.map.fixtures.mobile.MobileFixture;
 import model.map.fixtures.mobile.Ogre;
@@ -202,8 +203,8 @@ public final class CompactMobileReader extends
 	@Override
 	public void write(final Appendable ostream, final MobileFixture obj,
 						final int indent) throws IOException {
-		if (obj instanceof Unit) {
-			CompactUnitReader.READER.write(ostream, (Unit) obj, indent);
+		if (obj instanceof IUnit) {
+			CompactUnitReader.READER.write(ostream, (IUnit) obj, indent);
 		} else if (obj instanceof Animal) {
 			writeTag(ostream, "animal", indent);
 			ostream.append(" kind=\"");

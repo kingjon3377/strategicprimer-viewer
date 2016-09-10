@@ -12,9 +12,11 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
@@ -43,7 +45,7 @@ import static java.util.Collections.unmodifiableList;
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
-public final class CompactUnitReader extends AbstractCompactReader<Unit> {
+public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	/**
 	 * The tag used for a unit.
 	 */
@@ -57,7 +59,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactReader<Unit> READER = new CompactUnitReader();
+	public static final CompactReader<IUnit> READER = new CompactUnitReader();
 
 	/**
 	 * Singleton.
@@ -201,7 +203,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 */
 	@Override
 	public void
-	write(final Appendable ostream, final Unit obj, final int indent)
+	write(final Appendable ostream, final IUnit obj, final int indent)
 			throws IOException {
 		writeTag(ostream, "unit", indent);
 		ostream.append(" owner=\"");
@@ -218,7 +220,9 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append('"');
 		ostream.append(imageXML(obj));
-		ostream.append(portraitXML(obj));
+		if (obj instanceof HasPortrait) {
+			ostream.append(portraitXML((HasPortrait) obj));
+		}
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
 			ostream.append('>').append(obj.getOrders().trim());
 			ostream.append(LineEnd.LINE_SEP);
