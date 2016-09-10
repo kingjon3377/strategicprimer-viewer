@@ -1,13 +1,17 @@
 package controller.exploration;
 
+import controller.map.drivers.DriverFailedException;
+import controller.map.drivers.DriverUsage;
+import controller.map.drivers.ParamCount;
+import controller.map.drivers.SimpleCLIDriver;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.exploration.old.EncounterTable;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
+import model.misc.IDriverModel;
 import util.LineEnd;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -28,7 +32,23 @@ import view.util.SystemOut;
  *
  * @author Jonathan Lovelace
  */
-public final class TableDebugger {
+public final class TableDebugger implements SimpleCLIDriver {
+	/**
+	 * Usage object.
+	 */
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-T", "--table-debug", ParamCount.None,
+								   "Debug old-model encounter tables",
+								   "See whether old-model encounter tables refer to a " +
+										   "nonexistent table",
+								   TableDebugger.class);
+	/**
+	 * @return the usage object
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE;
+	}
 	/**
 	 * Logger.
 	 */
@@ -124,23 +144,29 @@ public final class TableDebugger {
 	/**
 	 * A utility driver method that loads all files in tables/ under the current
 	 * directory, then checks to see whether any references a nonexistent table, then
-	 * does
-	 * further tests for debugging purposes.
-	 *
-	 * @param args ignored
+	 * does further tests for debugging purposes.
+	 * @throws DriverFailedException on missing table or I/O error
 	 */
-	public static void main(final String... args) {
+	@Override
+	public void startDriver() throws DriverFailedException {
 		final ExplorationRunner runner = new ExplorationRunner();
 		TableLoader.loadAllTables("tables", runner);
 		try {
 			new TableDebugger(runner).debugTables(SystemOut.SYS_OUT);
 		} catch (final MissingTableException e) {
-			LOGGER.log(Level.SEVERE, "Missing table", e);
-			System.exit(1);
+			throw new DriverFailedException("Missing table", e);
 		} catch (final IOException e) {
-			//noinspection HardcodedFileSeparator
-			LOGGER.log(Level.SEVERE, "I/O error writing to stdout", e);
-			System.exit(2);
+			throw new DriverFailedException("I/O error writing to stdout", e);
 		}
+	}
+
+	/**
+	 * @param model ignored
+	 * @throws DriverFailedException on missing table or I/O error
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		LOGGER.warning("TableDebugger doesn't need a driver model");
+		startDriver();
 	}
 }
