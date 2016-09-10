@@ -11,7 +11,9 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import model.map.HasPortrait;
 import model.map.IMutablePlayerCollection;
+import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
@@ -43,11 +45,11 @@ import static util.EqualsAny.equalsAny;
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
 @Deprecated
-public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
+public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactReader<Worker> READER = new CompactWorkerReader();
+	public static final CompactReader<IWorker> READER = new CompactWorkerReader();
 
 	/**
 	 * Singleton.
@@ -237,7 +239,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Appendable ostream, final Worker obj,
+	public void write(final Appendable ostream, final IWorker obj,
 					final int indent) throws IOException {
 		writeTag(ostream, "worker", indent);
 		ostream.append(" name=\"");
