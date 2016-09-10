@@ -16,8 +16,8 @@ import model.map.IMutablePlayerCollection;
 import model.map.River;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.mobile.ProxyFor;
-import model.map.fixtures.mobile.worker.Job;
-import model.map.fixtures.mobile.worker.Skill;
+import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.ISkill;
 import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -105,10 +105,6 @@ public final class CompactReaderAdapter {
 			CompactMapNGReader.writeRiver(ostream, (River) obj, indent);
 		} else if (obj instanceof RiverFixture) {
 			CompactMapNGReader.writeAllRivers(ostream, (RiverFixture) obj, indent);
-		} else if (obj instanceof Job) {
-			CompactWorkerReader.writeJob(ostream, (Job) obj, indent);
-		} else if (obj instanceof Skill) {
-			CompactWorkerReader.writeSkill(ostream, (Skill) obj, indent);
 		} else if (obj instanceof ProxyFor) {
 			final Iterator<?> iter = ((ProxyFor<?>) obj).getProxied().iterator();
 			if (iter.hasNext()) {
@@ -119,6 +115,10 @@ public final class CompactReaderAdapter {
 						new IllegalArgumentException("Wanted to write a proxy object"));
 				write(ostream, proxied, indent);
 				return;
+		} else if (obj instanceof IJob) {
+			CompactWorkerReader.writeJob(ostream, (IJob) obj, indent);
+		} else if (obj instanceof ISkill) {
+			CompactWorkerReader.writeSkill(ostream, (ISkill) obj, indent);
 			} else {
 				throw new IllegalStateException("Don't know how to write this type (a " +
 														"proxy not proxying any " +

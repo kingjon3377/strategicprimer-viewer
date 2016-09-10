@@ -311,7 +311,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static void writeJob(final Appendable ostream, final Job obj,
+	public static void writeJob(final Appendable ostream, final IJob obj,
 								final int indent) throws IOException {
 		if ((obj.getLevel() <= 0) && !obj.iterator().hasNext()) {
 			return;
