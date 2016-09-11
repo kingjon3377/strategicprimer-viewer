@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.logging.Logger;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import util.Pair;
+import util.TypesafeLogger;
 
 /**
  * A driver to produce tabular (CSV) reports of the contents of a player's map.
@@ -35,40 +37,54 @@ public class TabularReportDriver implements SimpleDriver {
 								   "Tabular Report Generator",
 								   "Produce CSV reports of contents of a map.",
 								   TabularReportDriver.class);
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(TabularReportDriver.class);
 	@SuppressWarnings("ErrorNotRethrown")
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :
 					((IMultiMapModel) model).getAllMaps()) {
+				final Optional<Path> mapFileOpt = pair.second();
+				if (mapFileOpt.isPresent()) {
+					final Path mapFile = mapFileOpt.get();
+					try {
+						TableReportGenerator.createReports(pair.first(), s -> {
+							try {
+								return Files.newOutputStream(mapFile.resolveSibling(
+										mapFile.getFileName() + "." + s + ".csv"));
+							} catch (final IOException e) {
+								throw new IOError(e);
+							}
+						});
+					} catch (IOException | IOError e) {
+						throw new DriverFailedException(e);
+					}
+				} else {
+					LOGGER.severe("Asked to create reports from map with no filename");
+				}
+			}
+		} else {
+			final Optional<Path> mapFileOpt = model.getMapFile();
+			if (mapFileOpt.isPresent()) {
+				final Path mapFile = mapFileOpt.get();
 				try {
-					TableReportGenerator.createReports(pair.first(), s -> {
+					TableReportGenerator.createReports(model.getMap(), s -> {
 						try {
-							final Path mapFile = pair.second().get();
 							return Files.newOutputStream(mapFile.resolveSibling(
 									mapFile.getFileName() + "." + s + ".csv"));
 						} catch (final IOException e) {
 							throw new IOError(e);
 						}
 					});
-				} catch (IOException|IOError e) {
+				} catch (IOException | IOError e) {
 					throw new DriverFailedException(e);
 				}
-			}
-		} else {
-			try {
-				TableReportGenerator.createReports(model.getMap(), s -> {
-					try {
-						final Path mapFile = model.getMapFile().get();
-						return Files.newOutputStream(mapFile.resolveSibling(
-								mapFile.getFileName() + "." + s + ".csv"));
-					} catch (final IOException e) {
-						throw new IOError(e);
-					}
-				});
-			} catch (IOException|IOError e) {
-				throw new DriverFailedException(e);
+			} else {
+				LOGGER.severe("Asked to create reports from map with no filename");
 			}
 		}
 	}

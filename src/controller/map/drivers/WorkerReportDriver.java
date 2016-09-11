@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.logging.Logger;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import util.Pair;
+import util.TypesafeLogger;
 
 /**
  * A driver to produce a report of the units in a map.
@@ -35,6 +37,11 @@ public final class WorkerReportDriver implements SimpleDriver {
 								"Report Generator",
 								"Produce HTML report of the contents of a map",
 								WorkerReportDriver.class);
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(WorkerReportDriver.class);
 
 	/**
 	 * Run the driver.
@@ -49,25 +56,37 @@ public final class WorkerReportDriver implements SimpleDriver {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :
 					((IMultiMapModel) model).getAllMaps()) {
-				final String report = ReportGenerator.createReport(pair.first());
-				final Path mapFile = pair.second().get();
+				final Optional<Path> mapFile = pair.second();
+				if (mapFile.isPresent()) {
+					final String report = ReportGenerator.createReport(pair.first());
+					final Path mapPath = mapFile.get();
+					try (final BufferedWriter writer = Files.newBufferedWriter(
+							mapPath.resolveSibling(
+									mapPath.getFileName() + ".report.html"))) {
+						writer.write(report);
+					} catch (final IOException except) {
+						//noinspection HardcodedFileSeparator
+						throw new DriverFailedException("I/O error writing report",
+															   except);
+					}
+				} else {
+					LOGGER.severe("Asked to make report from map with no filename");
+				}
+			}
+		} else {
+			final Optional<Path> mapFile = model.getMapFile();
+			if (mapFile.isPresent()) {
+				final String report = ReportGenerator.createReport(model.getMap());
+				final Path mapPath = mapFile.get();
 				try (final BufferedWriter writer = Files.newBufferedWriter(
-						mapFile.resolveSibling(mapFile.getFileName() + ".report.html"))) {
+						mapPath.resolveSibling(mapPath.getFileName() + ".report.html"))) {
 					writer.write(report);
 				} catch (final IOException except) {
 					//noinspection HardcodedFileSeparator
 					throw new DriverFailedException("I/O error writing report", except);
 				}
-			}
-		} else {
-			final String report = ReportGenerator.createReport(model.getMap());
-			final Path mapFile = model.getMapFile().get();
-			try (final BufferedWriter writer = Files.newBufferedWriter(
-					mapFile.resolveSibling(mapFile.getFileName() + ".report.html"))) {
-				writer.write(report);
-			} catch (final IOException except) {
-				//noinspection HardcodedFileSeparator
-				throw new DriverFailedException("I/O error writing report", except);
+			} else {
+				LOGGER.severe("Asked to create report from map with no filename");
 			}
 		}
 	}

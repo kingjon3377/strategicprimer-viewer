@@ -161,7 +161,12 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 */
 	@Override
 	public String toString() {
-		return "ViewerModel for " + getMapFile().get();
+		final Optional<Path> mapFile = getMapFile();
+		if (mapFile.isPresent()) {
+			return "ViewerModel for " + mapFile.get();
+		} else {
+			return "ViewerModel for an unsaved map";
+		}
 	}
 
 	/**
