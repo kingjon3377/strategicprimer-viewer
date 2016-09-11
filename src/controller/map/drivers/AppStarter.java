@@ -18,6 +18,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.misc.IDriverModel;
 import util.EqualsAny;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
@@ -328,7 +329,7 @@ public final class AppStarter implements ISPDriver {
 				buff.append(" [filename.xml ...]");
 				break;
 			}
-			buff.append('\n');
+			buff.append(LineEnd.LINE_SEP);
 			buff.append(usage.getShortDescription());
 			System.err.println(buff);
 			DriverQuit.quit(1);
