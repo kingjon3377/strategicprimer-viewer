@@ -55,6 +55,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 * @param tStatus the status of the town, fortress, or city
 	 * @param tName   the name of the town, fortress, or city
 	 * @param player  the owner of the town, fortress, or city
+	 * @param discoverDC the DC to discover the town
 	 */
 	protected AbstractTown(final TownStatus tStatus, final TownSize tSize,
 						   final String tName, final Player player, final int discoverDC) {

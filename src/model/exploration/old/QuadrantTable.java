@@ -67,6 +67,12 @@ public final class QuadrantTable implements EncounterTable {
 		quadrants.put(dimensions, firstQuadrants);
 	}
 
+	/**
+	 * Get the maximum-Point-to-event mapping for a given map size, possibly from the
+	 * cache.
+	 * @param mapDimensions the dimensions of the map
+	 * @return the quadrant mapping
+	 */
 	private Map<Point, String> getValuesFor(final MapDimensions mapDimensions) {
 		if (quadrants.containsKey(mapDimensions)) {
 			return quadrants.get(mapDimensions);
@@ -106,7 +112,7 @@ public final class QuadrantTable implements EncounterTable {
 	/**
 	 * @param row the row of a tile
 	 * @param col the column of a tile
-	 * @param mapDimensions
+	 * @param mapDimensions the dimensions of the map
 	 * @return the result from the quadrant containing that tile.
 	 */
 	public String getQuadrantValue(final int row, final int col,
@@ -126,7 +132,7 @@ public final class QuadrantTable implements EncounterTable {
 	 * @param point    the location of the tile
 	 * @param terrain  ignored
 	 * @param fixtures ignored
-	 * @param mapDimensions
+	 * @param mapDimensions the dimensions of the map
 	 * @return what the table has for that tile
 	 */
 	@Override
@@ -139,7 +145,7 @@ public final class QuadrantTable implements EncounterTable {
 	 * @param point    ignored
 	 * @param terrain  ignored
 	 * @param fixtures any fixtures on the tile
-	 * @param mapDimensions
+	 * @param mapDimensions the dimensions of the map
 	 * @return the event on that tile
 	 */
 	@Override

@@ -43,7 +43,7 @@ public final class ExplorationRunner {
 	 * @param point    the tile's location
 	 * @param terrain  the terrain at the location
 	 * @param fixtures any fixtures at the location
-	 * @param mapDimensions
+	 * @param mapDimensions the dimensions of the map
 	 * @return what the owner of a fortress on the tile knows
 	 * @throws MissingTableException on missing table
 	 */
@@ -86,7 +86,7 @@ public final class ExplorationRunner {
 	 * @param point    the location of the tile
 	 * @param terrain  the terrain of the tile
 	 * @param fixtures any fixtures on the tile
-	 * @param mapDimensions
+	 * @param mapDimensions the dimensions of the map
 	 * @return the main kind of rock on the tile
 	 * @throws MissingTableException if table missing
 	 */
@@ -102,7 +102,7 @@ public final class ExplorationRunner {
 	 * @param point    the location of the tile
 	 * @param terrain  the tile type
 	 * @param fixtures any fixtures on the tile
-	 * @param mapDimensions
+	 * @param mapDimensions the dimensions of the map
 	 * @return the main kind of tree on the tile
 	 * @throws MissingTableException on missing table
 	 */
@@ -131,7 +131,7 @@ public final class ExplorationRunner {
 	 * @param point    the location of the tile
 	 * @param terrain  the tile type
 	 * @param fixtures any fixtures on the tile
-	 * @param mapDimensions
+	 * @param mapDimensions the dimensions of the map
 	 * @return the result of the consultation
 	 * @throws MissingTableException if the table is missing
 	 */
@@ -172,7 +172,7 @@ public final class ExplorationRunner {
 	 * @param point    the location of the tile
 	 * @param terrain  the tile type
 	 * @param fixtures any fixtures on the tile
-	 * @param mapDimensions
+	 * @param mapDimensions the dimensions of the map
 	 * @return the result of the consultation
 	 * @throws MissingTableException on missing table
 	 */

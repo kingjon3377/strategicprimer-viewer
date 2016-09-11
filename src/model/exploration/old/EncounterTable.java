@@ -32,7 +32,7 @@ public interface EncounterTable {
 	 * @param point    the location of the tile
 	 * @param terrain  the terrain at the location
 	 * @param fixtures the fixtures on the tile, if any
-	 * @param mapDimensions
+	 * @param mapDimensions the dimensions of the map
 	 * @return an appropriate event for that tile
 	 */
 	String generateEvent(Point point, TileType terrain, Iterable<TileFixture> fixtures,
@@ -45,7 +45,7 @@ public interface EncounterTable {
 	 * @param point    the location of the tile
 	 * @param terrain  the terrain at the location
 	 * @param fixtures the fixtures on the tile, if any
-	 * @param mapDimensions
+	 * @param mapDimensions the dimensions of the map
 	 * @return an appropriate event for that tile
 	 */
 	String generateEvent(Point point, TileType terrain, Stream<TileFixture> fixtures,

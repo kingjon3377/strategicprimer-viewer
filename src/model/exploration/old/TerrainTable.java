@@ -48,7 +48,7 @@ public final class TerrainTable implements EncounterTable {
 	 * @param point    the location of the tile
 	 * @param terrain  the terrain at the location
 	 * @param fixtures ignored
-	 * @param mapDimensions
+	 * @param mapDimensions ignored
 	 * @return what the table has for that kind of tile.
 	 */
 	@Override
@@ -66,7 +66,7 @@ public final class TerrainTable implements EncounterTable {
 	 * @param point    ignored
 	 * @param terrain  ignored
 	 * @param fixtures any fixtures on the tile
-	 * @param mapDimensions
+	 * @param mapDimensions ignored
 	 * @return the event on that tile
 	 */
 	@Override

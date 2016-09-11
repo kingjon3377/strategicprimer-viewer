@@ -90,7 +90,7 @@ public final class LegacyTable implements EncounterTable {
 	 * @param point    ignored
 	 * @param terrain  ignored
 	 * @param fixtures any fixtures on the tile
-	 * @param mapDimensions
+	 * @param mapDimensions ignored
 	 * @return the event on that tile
 	 */
 	@Override
@@ -108,7 +108,7 @@ public final class LegacyTable implements EncounterTable {
 	 * @param point    ignored
 	 * @param terrain  ignored
 	 * @param fixtures any fixtures on the tile
-	 * @param mapDimensions
+	 * @param mapDimensions ignored
 	 * @return the event on that tile
 	 */
 	@Override

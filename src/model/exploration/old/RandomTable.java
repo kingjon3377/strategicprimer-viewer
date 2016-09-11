@@ -39,7 +39,7 @@ public final class RandomTable implements EncounterTable {
 	 * @param point    ignored
 	 * @param terrain  ignored
 	 * @param fixtures ignored
-	 * @param mapDimensions
+	 * @param mapDimensions ignored
 	 * @return a random item from the table, or the last item in the table if the normal
 	 * procedure fails.
 	 */
@@ -54,7 +54,7 @@ public final class RandomTable implements EncounterTable {
 	 * @param point    ignored
 	 * @param terrain  ignored
 	 * @param fixtures any fixtures on the tile
-	 * @param mapDimensions
+	 * @param mapDimensions ignored
 	 * @return the event on that tile
 	 */
 	@Override
