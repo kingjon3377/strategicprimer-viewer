@@ -55,8 +55,8 @@ public class DuplicateFixtureRemover {
 	 */
 	private static void filter(final IMutableMapNG map, final Point location,
 							  final Appendable ostream) throws IOException {
-		final Collection<TileFixture> fixtures = new ArrayList<TileFixture>();
-		final Collection<TileFixture> toRemove = new ArrayList<TileFixture>();
+		final Collection<TileFixture> fixtures = new ArrayList<>();
+		final Collection<TileFixture> toRemove = new ArrayList<>();
 		// We ignore ground and forests because they don't have IDs.
 		// TODO: Try to use Streams API instead of complicated loop
 		for (final TileFixture fix : map.getOtherFixtures(location)) {
