@@ -87,7 +87,7 @@ public final class FileChooser {
 	public FileChooser(final Optional<Path> loc, final JFileChooser fileChooser,
 					   final FileChooserOperation operation) {
 		file = Optional.empty();
-		setFile(loc);
+		file = loc;
 		chooser = fileChooser;
 		switch (operation) {
 		case Open:
@@ -134,7 +134,7 @@ public final class FileChooser {
 				final int status = chooserFunc.applyAsInt(null);
 				if (status == APPROVE_OPTION) {
 					final File selectedFile = chooser.getSelectedFile();
-					setFile(Optional.of(selectedFile.toPath()));
+					file = Optional.of(selectedFile.toPath());
 					if (selectedFile.toString().isEmpty()) {
 						LOGGER.severe("JFileChooser produced empty file");
 					} else if (file.toString().isEmpty()) {
@@ -150,8 +150,8 @@ public final class FileChooser {
 				invoke(() -> {
 					final int status = chooserFunc.applyAsInt(null);
 					if (status == APPROVE_OPTION) {
-						setFile(Optional.of(NullCleaner.valueOrDefault(fileChooser.getSelectedFile(),
-								new File("")).toPath()));
+						file = Optional.of(NullCleaner.valueOrDefault(fileChooser.getSelectedFile(),
+												new File("")).toPath());
 						if (file.toString().isEmpty()) {
 							LOGGER.severe("Selection supposedly empty");
 						}

@@ -174,13 +174,13 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 		final String statusString = status.toString();
 		if (owner.isIndependent()) {
 			return String.format("An independent %s %s %s of DC %d %s", sizeString,
-					statusString, kind(), Integer.valueOf(getDC()), nameString);
+					statusString, kind(), Integer.valueOf(dc), nameString);
 		} else if (owner.isCurrent()) {
 			return String.format("A %s %s %s of DC %d %s, owned by you", sizeString,
-					statusString, kind(), Integer.valueOf(getDC()), nameString);
+					statusString, kind(), Integer.valueOf(dc), nameString);
 		} else {
 			return String.format("A %s %s %s of DC %d %s, owned by %s", sizeString,
-					statusString, kind(), Integer.valueOf(getDC()), nameString,
+					statusString, kind(), Integer.valueOf(dc), nameString,
 					owner.getName());
 		}
 	}
