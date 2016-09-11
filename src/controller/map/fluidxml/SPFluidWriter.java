@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -93,6 +94,11 @@ import static controller.map.fluidxml.XMLHelper.writeTag;
  * @author Jonathan Lovelace
  */
 public class SPFluidWriter implements SPWriter, FluidXMLWriter {
+	/**
+	 * An extracted compiled Pattern for a close-tag without a space.
+	 */
+	private static final Pattern SNUG_END_TAG =
+			Pattern.compile("([^ ])/>");
 	/**
 	 * A map from classes to the writers that write them to XML.
 	 */
@@ -202,7 +208,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		xsw.writeEndDocument();
 		xsw.flush();
 		xsw.close();
-		ostream.append(writer.toString().replaceAll("([^ ])/>", "$1 />"));
+		ostream.append(SNUG_END_TAG.matcher(writer.toString()).replaceAll("$1 />"));
 	}
 	/**
 	 * Create a writer for the simplest cases (only an ID number and maybe an image, or

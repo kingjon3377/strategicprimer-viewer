@@ -64,6 +64,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	private static final Pattern KIND_PATTERN =
 			assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
+	/**
+	 * An extracted compiled Pattern to match the ends of tags that do have spaces.
+	 */
+	private static final Pattern LOOSE_END_TAG = Pattern.compile("\" />");
 
 	/**
 	 * Test Player serialization.
@@ -294,7 +298,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertThat("Multiple units", createSerializedForm(five, true), equalTo(xmlTwoLogical));
 		assertThat("Multiple units", createSerializedForm(five, false),
 				anyOf(equalTo(xmlTwoLogical), equalTo(xmlTwoAlphabetical),
-						equalTo(xmlTwoLogical.replaceAll("\" />", "\"/>"))));
+						equalTo(LOOSE_END_TAG.matcher(xmlTwoLogical).replaceAll("\"/>"))));
 		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
 						createSimpleMap(point(1, 1), Pair.of(point(0, 0), TileType.NotVisible)),
