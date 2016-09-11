@@ -252,8 +252,8 @@ public final class FluidUnitMemberHandler {
 	 * @throws XMLStreamException on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeWorker(final XMLStreamWriter ostream, final Object obj, final int indent) throws
-			XMLStreamException {
+	public static void writeWorker(final XMLStreamWriter ostream, final Object obj,
+								   final int indent) throws XMLStreamException {
 		if (!(obj instanceof IWorker)) {
 			throw new IllegalArgumentException("Can only write IWorker");
 		}
