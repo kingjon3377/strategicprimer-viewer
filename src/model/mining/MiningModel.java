@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.stream.StreamSupport;
 import model.map.Point;
 import model.map.PointFactory;
@@ -29,6 +30,19 @@ import view.util.SystemOut;
  */
 public final class MiningModel {
 	/**
+	 * Kinds of mines we know how to create.
+	 */
+	public enum MineKind {
+		/**
+		 * "Normal," which *tries* to create randomly-branching "veins".
+		 */
+		Normal,
+		/**
+		 * A mine which emphasizes layers, such as a sand mine.
+		 */
+		Banded;
+	}
+	/**
 	 * A mapping from positions (normalized so they could be spit out into a spreadsheet)
 	 * to LodeStatuses.
 	 */
@@ -43,9 +57,10 @@ public final class MiningModel {
 	 *
 	 * @param initial the status to give to the mine's starting point
 	 * @param seed    a number to seed the RNG
+	 * @param kind what kind of mine to model
 	 */
 	@SuppressWarnings("resource")
-	public MiningModel(final LodeStatus initial, final long seed) {
+	public MiningModel(final LodeStatus initial, final long seed, final MineKind kind) {
 		final Map<Point, LodeStatus> unnormalized = new HashMap<>();
 		unnormalized.put(PointFactory.point(0, 0), initial);
 		final Queue<Point> queue = new LinkedList<>();
@@ -53,6 +68,19 @@ public final class MiningModel {
 		long counter = 0;
 		long pruneCounter = 0;
 		final Random rng = new Random(seed);
+		final Function<LodeStatus, LodeStatus> horizontalGen;
+		switch (kind) {
+		case Normal:
+			horizontalGen = current -> LodeStatus.adjacent(current, rng);
+			break;
+		case Banded:
+			horizontalGen = current -> LodeStatus.bandedAdjacent(current, rng);
+			break;
+		default:
+			throw new IllegalStateException("Unimplemented mine type");
+		}
+		final Function<LodeStatus, LodeStatus> verticalGen =
+				current -> LodeStatus.adjacent(current, rng);
 		while (!queue.isEmpty()) {
 			final Point point = queue.remove();
 			counter++;
@@ -62,7 +90,7 @@ public final class MiningModel {
 				SystemOut.SYS_OUT.append('.');
 			}
 			// Limit the size of the output spreadsheet
-			if ((Math.abs(point.getRow()) > 400) || (Math.abs(point.getCol()) > 300)) {
+			if ((Math.abs(point.getRow()) > 200) || (Math.abs(point.getCol()) > 100)) {
 				pruneCounter++;
 				continue;
 			} else {
@@ -79,15 +107,15 @@ public final class MiningModel {
 					continue;
 				}
 				if (!unnormalized.containsKey(right)) {
-					unnormalized.put(right, LodeStatus.adjacent(current, rng));
+					unnormalized.put(right, horizontalGen.apply(current));
 					queue.add(right);
 				}
 				if (!unnormalized.containsKey(down)) {
-					unnormalized.put(down, LodeStatus.adjacent(current, rng));
+					unnormalized.put(down, verticalGen.apply(current));
 					queue.add(down);
 				}
 				if (!unnormalized.containsKey(left)) {
-					unnormalized.put(left, LodeStatus.adjacent(current, rng));
+					unnormalized.put(left, horizontalGen.apply(current));
 					queue.add(left);
 				}
 			}

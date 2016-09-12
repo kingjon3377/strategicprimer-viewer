@@ -159,4 +159,23 @@ public enum LodeStatus {
 			return higher(state);
 		}
 	}
+	/**
+	 * @param state the status of one location
+	 * @param rng a random-number generator
+	 * @return the status of a horizontally-adjacent location in a "banded" (e.g. sand)
+	 * mine
+	 */
+	public static LodeStatus bandedAdjacent(final LodeStatus state, final Random rng) {
+		// "normal" distribution with mean 0.5 and standard deviation 0.25
+		final double rand = rng.nextGaussian() * 0.25 + 0.5;
+		if (state == None) {
+			return None;
+		} else if (rand < state.lowerProbability) {
+			return lower(state);
+		} else if (rand < state.notHigherProbability) {
+			return state;
+		} else {
+			return higher(state);
+		}
+	}
 }

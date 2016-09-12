@@ -76,9 +76,18 @@ public final class MiningCLI {
 		} else {
 			seed = System.currentTimeMillis();
 		}
+		final int actualIndex;
+		final MiningModel.MineKind mineKind;
+		if (index >= 0) {
+			actualIndex = index;
+			mineKind = MiningModel.MineKind.Normal;
+		} else {
+			actualIndex = -index;
+			mineKind = MiningModel.MineKind.Banded;
+		}
 		final LodeStatus initial =
-				NullCleaner.assertNotNull(LodeStatus.values()[index]);
-		final MiningModel model = new MiningModel(initial, seed);
+				NullCleaner.assertNotNull(LodeStatus.values()[actualIndex]);
+		final MiningModel model = new MiningModel(initial, seed, mineKind);
 		final Point lowerRight = model.getMaxPoint();
 		final int maxCol = lowerRight.getCol() + 1;
 		final int maxRow = lowerRight.getRow() + 1;
