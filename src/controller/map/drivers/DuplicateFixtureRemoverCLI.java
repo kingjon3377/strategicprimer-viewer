@@ -1,6 +1,8 @@
 package controller.map.drivers;
 
+import controller.map.misc.CLIHelper;
 import controller.map.misc.DuplicateFixtureRemover;
+import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -8,8 +10,6 @@ import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import util.Pair;
-
-import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
@@ -46,14 +46,14 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		try {
+		try (final ICLIHelper cli = new CLIHelper()) {
 			if (model instanceof IMultiMapModel) {
 				for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
 																	.getAllMaps()) {
-					DuplicateFixtureRemover.filter(pair.first(), SYS_OUT);
+					DuplicateFixtureRemover.filter(pair.first(), cli);
 				}
 			} else {
-				DuplicateFixtureRemover.filter(model.getMap(), SYS_OUT);
+				DuplicateFixtureRemover.filter(model.getMap(), cli);
 			}
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
