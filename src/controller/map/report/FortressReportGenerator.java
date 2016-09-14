@@ -83,15 +83,12 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer) {
 		// This can get long. We'll give it 16K.
-		// TODO: Reformat these
-		final StringBuilder ours = new StringBuilder(16384)
-										.append("<h4>Your fortresses in the " +
-														"map:</h4>").append(
-						LineEnd.LINE_SEP);
+		final StringBuilder ours =
+				new StringBuilder(16384).append("<h4>Your fortresses in the map:</h4>")
+						.append(LineEnd.LINE_SEP);
 		final StringBuilder builder =
-				new StringBuilder(16384)
-						.append("<h4>Foreign fortresses in the map:</h4>").append(
-						LineEnd.LINE_SEP);
+				new StringBuilder(16384).append("<h4>Other fortresses in the map:</h4>")
+						.append(LineEnd.LINE_SEP);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		boolean anyForts = false;
