@@ -1,15 +1,21 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javax.swing.tree.MutableTreeNode;
+import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
+import model.map.fixtures.FortressMember;
+import model.map.fixtures.Implement;
+import model.map.fixtures.ResourcePile;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Unit;
@@ -57,6 +63,16 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	/**
+	 * Instance we use.
+	 */
+	private final IReportGenerator<FortressMember> memberReportGenerator =
+			new FortressMemberReportGenerator(pairComparator);
+	/**
+	 * Instance we use.
+	 */
+	private final IReportGenerator<Animal> animalReportGenerator =
+			new AnimalReportGenerator(pairComparator);
+	/**
 	 * A string to indicate a worker has training or experience.
 	 */
 	private static final String HAS_TRAINING =
@@ -91,21 +107,88 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			builder.append(", owned by ");
 			builder.append(playerNameOrYou(item.getOwner()));
 		}
+		final Collection<IWorker> workers = new ArrayList<>();
+		final Collection<Implement> equipment = new ArrayList<>();
+		final Collection<ResourcePile> resources = new ArrayList<>();
+		final Collection<Animal> animals = new ArrayList<>();
+		final Collection<UnitMember> others = new ArrayList<>();
 		boolean hasMembers = false;
 		for (final UnitMember member : item) {
-			if (!hasMembers) {
-				hasMembers = true;
-				builder.append(". Members of the unit:").append(LineEnd.LINE_SEP).append(OPEN_LIST);
-			}
-			builder.append(OPEN_LIST_ITEM);
+			hasMembers = true;
 			if (member instanceof IWorker) {
-				builder.append(workerReport((IWorker) member,
-						currentPlayer.equals(item.getOwner())));
+				workers.add((IWorker) member);
+			} else if (member instanceof Implement) {
+				equipment.add((Implement) member);
+			} else if (member instanceof ResourcePile) {
+				resources.add((ResourcePile) member);
+			} else if (member instanceof Animal) {
+				animals.add((Animal) member);
 			} else {
-				builder.append(member);
+				others.add(member);
 			}
-			builder.append(CLOSE_LIST_ITEM);
-			fixtures.remove(Integer.valueOf(member.getID()));
+		}
+		if (hasMembers) {
+			builder.append(". Members of the unit:").append(LineEnd.LINE_SEP)
+					.append(OPEN_LIST);
+		}
+		if (!workers.isEmpty()) {
+			builder.append(OPEN_LIST_ITEM).append("Workers:").append(LineEnd.LINE_SEP)
+					.append(OPEN_LIST);
+			for (final IWorker worker : workers) {
+				builder.append(OPEN_LIST_ITEM).append(workerReport(worker,
+						worker instanceof HasOwner &&
+								currentPlayer.equals(((HasOwner) worker).getOwner())))
+						.append(CLOSE_LIST_ITEM);
+				fixtures.remove(worker.getID());
+			}
+			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+		}
+		if (!animals.isEmpty()) {
+			builder.append(OPEN_LIST_ITEM).append("Animals:").append(LineEnd.LINE_SEP)
+					.append(OPEN_LIST);
+			for (final Animal animal : animals) {
+				builder.append(OPEN_LIST_ITEM).append(animalReportGenerator
+															  .produce(fixtures, map,
+																	  currentPlayer,
+																	  animal, loc));
+				fixtures.remove(animal.getID());
+			}
+			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+		}
+		if (!equipment.isEmpty()) {
+			builder.append(OPEN_LIST_ITEM).append("Equipment:").append(LineEnd.LINE_SEP)
+					.append(OPEN_LIST);
+			for (final Implement implement : equipment) {
+				builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
+															  .produce(fixtures, map,
+																	  currentPlayer,
+																	  implement, loc))
+						.append(CLOSE_LIST_ITEM);
+				fixtures.remove(implement.getID());
+			}
+			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+		}
+		if (!resources.isEmpty()) {
+			builder.append(OPEN_LIST_ITEM).append("Resources:").append(LineEnd.LINE_SEP)
+					.append(OPEN_LIST);
+			for (final ResourcePile resource : resources) {
+				builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
+															  .produce(fixtures, map,
+																	  currentPlayer,
+																	  resource, loc))
+						.append(CLOSE_LIST_ITEM);
+				fixtures.remove(resource.getID());
+			}
+			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+		}
+		if (!others.isEmpty()) {
+			builder.append(OPEN_LIST_ITEM).append("Others:").append(LineEnd.LINE_SEP)
+					.append(OPEN_LIST);
+			for (final UnitMember member : others) {
+				builder.append(OPEN_LIST_ITEM).append(member);
+				fixtures.remove(member.getID());
+			}
+			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 		}
 		if (hasMembers) {
 			builder.append(CLOSE_LIST);
@@ -140,6 +223,11 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 					item.getName(),
 					", owned by " + playerNameOrYou(item.getOwner()));
 		}
+		final ListReportNode workers = new ListReportNode("Workers:");
+		final ListReportNode animals = new ListReportNode("Animals:");
+		final ListReportNode equipment = new ListReportNode("Equipment:");
+		final ListReportNode resources = new ListReportNode("Resources:");
+		final ListReportNode others = new ListReportNode("Others:");
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.iterator().hasNext()) {
 			final IReportNode retval = new ListReportNode(loc,
@@ -147,14 +235,40 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 																				". Members of the unit:"));
 			for (final UnitMember member : item) {
 				if (member instanceof IWorker) {
-					retval.add(produceWorkerRIR(loc, (IWorker) member,
+					workers.add(produceWorkerRIR(loc, (IWorker) member,
 							currentPlayer.equals(item.getOwner())));
+				} else if (member instanceof Animal) {
+					animals.add(animalReportGenerator
+										.produceRIR(fixtures, map, currentPlayer,
+												(Animal) member, loc));
+				} else if (member instanceof Implement) {
+					equipment.add(memberReportGenerator
+										  .produceRIR(fixtures, map, currentPlayer,
+												  (Implement) member, loc));
+				} else if (member instanceof ResourcePile) {
+					resources.add(memberReportGenerator
+										  .produceRIR(fixtures, map, currentPlayer,
+												  (ResourcePile) member, loc));
 				} else {
-					// TODO: what about others?
 					//noinspection ObjectAllocationInLoop
-					retval.add(new SimpleReportNode(loc, member.toString()));
+					others.add(new SimpleReportNode(loc, member.toString()));
 				}
 				fixtures.remove(Integer.valueOf(member.getID()));
+			}
+			if (workers.getChildCount() != 0) {
+				retval.add(workers);
+			}
+			if (animals.getChildCount() != 0) {
+				retval.add(animals);
+			}
+			if (equipment.getChildCount() != 0) {
+				retval.add(equipment);
+			}
+			if (resources.getChildCount() != 0) {
+				retval.add(resources);
+			}
+			if (others.getChildCount() != 0) {
+				retval.add(others);
 			}
 			return retval;
 		} else {
