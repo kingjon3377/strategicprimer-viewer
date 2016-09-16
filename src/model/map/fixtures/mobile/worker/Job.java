@@ -1,15 +1,13 @@
 package model.map.fixtures.mobile.worker;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.ArraySet;
 import util.LineEnd;
 import util.Pair;
 
@@ -42,7 +40,7 @@ public class Job implements IJob {
 	/**
 	 * The worker's level in various skills associated with the job.
 	 */
-	private final Collection<ISkill> skillSet = new ArraySet<>();
+	private final Map<String, ISkill> skillSet = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -55,7 +53,7 @@ public class Job implements IJob {
 				final @NonNull ISkill @NonNull ... skills) {
 		name = jobName;
 		level = levels;
-		skillSet.addAll(Arrays.asList(skills));
+		Stream.of(skills).forEach(this::addSkill);
 	}
 
 	/**
@@ -83,7 +81,18 @@ public class Job implements IJob {
 	 */
 	@Override
 	public boolean addSkill(final ISkill skill) {
-		return skillSet.add(skill);
+		if (skillSet.containsKey(skill.getName())) {
+			final ISkill existing = skillSet.get(skill.getName());
+			if (existing.equals(skill)) {
+				return false;
+			} else {
+				skillSet.put(skill.getName(), skill);
+				return true;
+			}
+		} else {
+			skillSet.put(skill.getName(), skill);
+			return true;
+		}
 	}
 
 	/**
@@ -108,7 +117,7 @@ public class Job implements IJob {
 	 */
 	@Override
 	public final Iterator<ISkill> iterator() {
-		return assertNotNull(skillSet.iterator());
+		return assertNotNull(skillSet.values().iterator());
 	}
 
 	/**
