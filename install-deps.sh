@@ -13,9 +13,9 @@ sudo apt-get update -qq
 sudo apt-get install genisoimage
 wget http://mirrors.kernel.org/ubuntu/pool/main/libh/libhamcrest-java/libhamcrest-java_1.3-4_all.deb
 sudo dpkg -i libhamcrest-java_1.3-4_all.deb
-wget https://github.com/tofi86/universalJavaApplicationStub/archive/v0.9.0.tar.gz -O \
-        universalJavaApplicationStub-0.9.0.tar.gz
-tar xzf universalJavaApplicationStub-0.9.0.tar.gz
+wget https://github.com/tofi86/universalJavaApplicationStub/archive/v1.0.1.tar.gz -O \
+        universalJavaApplicationStub-1.0.1.tar.gz
+tar xzf universalJavaApplicationStub-1.0.1.tar.gz
 if test -n "${TRAVIS_TAG}"; then
     echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\)$@s:SNAPSHOT:\1:@' | \
         sed -f - -i version.properties
