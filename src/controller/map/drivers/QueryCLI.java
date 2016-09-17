@@ -245,16 +245,16 @@ public final class QueryCLI implements SimpleDriver {
 			throws IOException {
 		final HerdModel herdModel;
 		final boolean poultry;
-		if (cli.inputBoolean("Are these small animals, like sheep?\t")) {
+		if (cli.inputBooleanInSeries("Are these small animals, like sheep?\t")) {
 			herdModel = HerdModel.SmallMammals;
 			poultry = false;
-		} else if (cli.inputBoolean("Are these dairy cattle?\t")) {
+		} else if (cli.inputBooleanInSeries("Are these dairy cattle?\t")) {
 			herdModel = HerdModel.DairyCattle;
 			poultry = false;
-		} else if (cli.inputBoolean("Are these chickens?\t")) {
+		} else if (cli.inputBooleanInSeries("Are these chickens?\t")) {
 			herdModel = HerdModel.Chickens;
 			poultry = true;
-		} else if (cli.inputBoolean("Are these turkeys?\t")) {
+		} else if (cli.inputBooleanInSeries("Are these turkeys?\t")) {
 			herdModel = HerdModel.Turkeys;
 			poultry = true;
 		} else {
@@ -292,7 +292,7 @@ public final class QueryCLI implements SimpleDriver {
 						herdModel.getProductionUnit(),
 						Double.valueOf(herdModel.getProductionPerHead() *
 											   herdModel.getPoundsCoefficient() * count));
-				if (cli.inputBoolean("Do they do the cleaning this turn? ")) {
+				if (cli.inputBooleanInSeries("Do they do the cleaning this turn? ")) {
 					hours = round.applyAsInt(
 							(animalsPerHerder * (herdModel.getDailyTimePerHead() +
 														 herdModel
@@ -318,7 +318,7 @@ public final class QueryCLI implements SimpleDriver {
 						herdModel.getProductionUnit(),
 						Double.valueOf(herdModel.getProductionPerHead() *
 											   herdModel.getPoundsCoefficient() * count));
-				if (cli.inputBoolean("Are the herders experts? ")) {
+				if (cli.inputBooleanInSeries("Are the herders experts? ")) {
 					hours = round.applyAsInt(
 							((animalsPerHerder * (herdModel.getDailyTimePerHead() - 5)) +
 									 herdModel.getDailyTimeFloor()) / 60.0);
@@ -329,7 +329,7 @@ public final class QueryCLI implements SimpleDriver {
 				}
 			}
 			if ((hours < HUNTER_HOURS) &&
-						cli.inputBoolean("Spend remaining time as Food Gatherers? ")) {
+						cli.inputBooleanInSeries("Spend remaining time as Food Gatherers? ")) {
 				gather(huntModel, selectPoint(cli), cli, HUNTER_HOURS - hours);
 			}
 		}

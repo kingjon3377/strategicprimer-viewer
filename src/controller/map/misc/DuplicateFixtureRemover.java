@@ -76,13 +76,13 @@ public class DuplicateFixtureRemover {
 			final Optional<TileFixture> matching =
 					fixtures.stream().filter(match -> match.equalsIgnoringID(fix))
 							.findAny();
-			if (matching.isPresent() && cli.inputBoolean(String.format(
+			if (matching.isPresent() && cli.inputBooleanInSeries(String.format(
 					"Remove '%s', of class '%s', ID #%d, which matches '%s', of class " +
 							"'%s', ID #%d? ",
 					fix.shortDesc(), fix.getClass().getSimpleName(),
 					Integer.valueOf(fix.getID()), matching.get().shortDesc(),
 					matching.get().getClass().getSimpleName(),
-					Integer.valueOf(matching.get().getID())))) {
+					Integer.valueOf(matching.get().getID())), "duplicate")) {
 				toRemove.add(fix);
 			} else {
 				fixtures.add(fix);
@@ -133,7 +133,7 @@ public class DuplicateFixtureRemover {
 			}
 			cli.println("The following resources could be combined:");
 			list.stream().map(Object::toString).forEach(cli::println);
-			if (cli.inputBoolean("Combine them? ")) {
+			if (cli.inputBooleanInSeries("Combine them? ")) {
 				final ResourcePile top = list.get(0);
 				final ResourcePile combined =
 						new ResourcePile(top.getID(), top.getKind(), top.getContents(),

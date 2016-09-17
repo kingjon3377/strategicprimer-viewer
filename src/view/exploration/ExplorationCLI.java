@@ -206,11 +206,11 @@ public final class ExplorationCLI implements MovementCostSource {
 					.add(new Animal(possibleTracks, true, false, "wild", idf.createID()));
 		}
 		if ((IExplorationModel.Direction.Nowhere == direction) &&
-					helper.inputBoolean(FEALTY_PROMPT)) {
+					helper.inputBooleanInSeries(FEALTY_PROMPT)) {
 			model.swearVillages();
 			fireMovementCost(5);
 		} else if ((IExplorationModel.Direction.Nowhere == direction) &&
-						helper.inputBoolean("Dig to expose some ground here?")) {
+						helper.inputBooleanInSeries("Dig to expose some ground here?")) {
 			model.dig();
 			fireMovementCost(4);
 		}

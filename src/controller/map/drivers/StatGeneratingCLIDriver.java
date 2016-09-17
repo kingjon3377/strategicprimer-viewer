@@ -113,7 +113,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			driverModel = new ExplorationModel(model);
 		}
 		try (final ICLIHelper cli = new CLIHelper()) {
-			if (cli.inputBoolean(PREGEN_PROMPT)) {
+			if (cli.inputBooleanInSeries(PREGEN_PROMPT)) {
 				enterStats(driverModel, cli);
 			} else {
 				createWorkers(driverModel, IDFactoryFiller.createFactory(driverModel), cli);
@@ -358,7 +358,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 					throws IOException {
 		boolean again = true;
 		while (again) {
-			if (cli.inputBoolean("Add worker(s) to an existing unit? ")) {
+			if (cli.inputBooleanInSeries("Add worker(s) to an existing unit? ")) {
 				final List<IUnit> units = model.getUnits(player);
 				final int unitNum = cli.chooseFromList(units,
 						"Which unit contains the worker in question?",
@@ -366,7 +366,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 						"Unit selection: ", false);
 				if ((unitNum >= 0) && (unitNum < units.size())) {
 					final IUnit unit = units.get(unitNum);
-					if (cli.inputBoolean(LOAD_NAMES)) {
+					if (cli.inputBooleanInSeries(LOAD_NAMES)) {
 						createWorkersFromFile(model, idf, unit, cli);
 					} else {
 						createWorkersForUnit(model, idf, unit, cli);
@@ -383,14 +383,13 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
 					pair.first().addFixture(point, unit);
 				}
-				if (cli.inputBoolean(LOAD_NAMES)) {
+				if (cli.inputBooleanInSeries(LOAD_NAMES)) {
 					createWorkersFromFile(model, idf, unit, cli);
 				} else {
 					createWorkersForUnit(model, idf, unit, cli);
 				}
 			}
-			again = cli
-							.inputBoolean("Add more workers to another unit? ");
+			again = cli.inputBoolean("Add more workers to another unit? ");
 		}
 	}
 
@@ -483,7 +482,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		} else if (levels == 1) {
 			cli.println("Worker has 1 job level");
 		}
-		final boolean pregenStats = cli.inputBoolean("Enter pre-generated stats? ");
+		final boolean pregenStats = cli.inputBooleanInSeries("Enter pre-generated stats? ");
 		if (pregenStats) {
 			retval.setStats(enterStats(cli));
 		} else {

@@ -9,8 +9,10 @@ import java.io.Reader;
 import java.io.Writer;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import model.map.HasName;
@@ -215,6 +217,55 @@ public final class CLIHelper implements ICLIHelper {
 			} else {
 				ostream.println("Please enter 'yes', 'no', 'true', or 'false',");
 				ostream.println("or the first character of any of those.");
+			}
+		}
+	}
+	/**
+	 * The current state of the yes-to-all or no-to-all possibility. Absent if not set,
+	 * present if set, and the boolean value is what to return.
+	 */
+	private Map<String, Boolean> seriesState = new HashMap<>();
+	/**
+	 * Ask the user a yes-or-no question, allowing "yes to all" or "no to all" to skip
+	 * further questions.
+	 *
+	 * @param prompt the string to prompt the user with
+	 * @param key
+	 * @throws IOException on I/O error
+	 */
+	@Override
+	public boolean inputBooleanInSeries(final String prompt, final String key) throws IOException {
+		if (seriesState.containsKey(key)) {
+			ostream.print(prompt);
+			final boolean retval = seriesState.get(key).booleanValue();
+			if (retval) {
+				ostream.println("yes");
+			} else {
+				ostream.println("no");
+			}
+			return retval;
+		} else {
+			//noinspection ForLoopWithMissingComponent
+			for (String input = lower(inputString(prompt)); ;
+					input = lower(inputString(prompt))) {
+				if (EqualsAny.equalsAny(input, "all", "ya", "ta", "always")) {
+					seriesState.put(key, Boolean.TRUE);
+					return true;
+				} else if (EqualsAny.equalsAny(input, "yes", "true", "y", "t")) {
+					return true;
+				} else if (EqualsAny.equalsAny(input, "none", "na", "fa", "never")) {
+					seriesState.put(key, Boolean.FALSE);
+					return false;
+				} else if (EqualsAny.equalsAny(input, "no", "false", "n", "f")) {
+					return false;
+				} else {
+					ostream.println(
+							"Please enter 'yes', 'no', 'true', or 'false', the first");
+					ostream.println(
+							"character of any of those, or 'all', 'none', 'always'");
+					ostream.println(
+							"or 'never' to use the same answer for all further questions");
+				}
 			}
 		}
 	}

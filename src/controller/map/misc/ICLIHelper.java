@@ -81,6 +81,27 @@ public interface ICLIHelper extends Closeable {
 	 */
 	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	boolean inputBoolean(String prompt) throws IOException;
+
+	/**
+	 * Ask the user a yes-or-no question, allowing "yes to all" or "no to all" to skip
+	 * further similar questions.
+	 *
+	 * @param prompt the string to prompt the user with
+	 * @throws IOException on I/O error
+	 */
+	default boolean inputBooleanInSeries(String prompt) throws IOException {
+		return inputBooleanInSeries(prompt, prompt);
+	}
+
+	/**
+	 * Ask the user a yes-or-no question, allowing "yes to all" or "no to all" to skip
+	 * further similar questions.
+	 *
+	 * @param prompt the string to prompt the user with
+	 * @param key the prompt to compare to others to define "similar" questions.
+	 * @throws IOException on I/O error
+	 */
+	boolean inputBooleanInSeries(String prompt, final String key) throws IOException;
 	/**
 	 * Print a formatted string.
 	 * @param format the format string

@@ -113,7 +113,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	private static void advanceWorkers(final IWorkerModel model,
 			final Player player, final ICLIHelper cli) throws IOException {
 		final boolean proxy =
-				!cli.inputBoolean("Add experience to workers individually? ");
+				!cli.inputBooleanInSeries("Add experience to workers individually? ");
 		final List<IUnit> units = model.getUnits(player);
 		while (!units.isEmpty()) {
 			final int unitNum = cli.chooseFromList(units,

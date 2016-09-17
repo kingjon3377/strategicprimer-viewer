@@ -73,9 +73,9 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 					playerNum = choice.choose()) {
 				final Player player = players.get(playerNum);
 				while (cli.inputBoolean("Keep going? ")) {
-					if (cli.inputBoolean("Enter a (quantified) resource? ")) {
+					if (cli.inputBooleanInSeries("Enter a (quantified) resource? ")) {
 						enterResource(idf, driverModel, cli, player);
-					} else if (cli.inputBoolean("Enter equipment etc.? ")) {
+					} else if (cli.inputBooleanInSeries("Enter equipment etc.? ")) {
 						enterImplement(idf, driverModel, cli, player);
 					}
 				}
@@ -100,7 +100,8 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 		final String kind = getResourceKind(cli);
 		String contents = getResourceContents(kind, cli);
 		final String units = getResourceUnits(contents, cli);
-		if (cli.inputBoolean("Qualify the particular resource with a prefix? ")) {
+		if (cli.inputBooleanInSeries("Qualify the particular resource with a prefix? ",
+				"prefix" + contents)) {
 			contents = cli.inputString("Prefix to use: ").trim() + ' ' + contents;
 		}
 		model.addResource(new ResourcePile(idf.createID(), kind, contents,
@@ -201,9 +202,9 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			throws IOException {
 		if (resourceUnits.containsKey(resource)) {
 			final String unit = resourceUnits.get(resource);
-			if ((unit != null) &&
-						cli.inputBoolean(NullCleaner.assertNotNull(String.format(
-								"Is %s the correct units for %s? ", unit, resource)))) {
+			if ((unit != null) && cli.inputBooleanInSeries(NullCleaner.assertNotNull(
+					String.format("Is %s the correct units for %s? ", unit, resource)),
+					"correct/" + unit + "/" + resource)) {
 				return unit;
 			}
 		}

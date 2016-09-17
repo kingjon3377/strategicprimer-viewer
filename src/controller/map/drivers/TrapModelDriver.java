@@ -127,7 +127,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	 */
 	private static void repl(final IMapNG map, final ICLIHelper cli) {
 		try {
-			final boolean fishing = cli.inputBoolean(FISH_OR_TRAP);
+			final boolean fishing = cli.inputBooleanInSeries(FISH_OR_TRAP);
 			final String name;
 			if (fishing) {
 				name = "fisherman";
