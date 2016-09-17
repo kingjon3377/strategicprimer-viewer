@@ -248,6 +248,13 @@
         <include name=".project" />
         <include name="checkstyle.xml" />
         <include name="launch4j.cfg.xml" />
+        <include name=".eclipse-pmd" />
+        <include name=".travis.yml" />
+        <include name="COPYING" />
+        <include name="README.md" />
+        <include name="*.sh" />
+        <include name="viewer.eml" />
+        <include name="viewer.iml" />
       </tarfileset>
       <tarfileset dir="${source_dir}" prefix="${basename}/src">
         <include name="**" />
@@ -257,6 +264,22 @@
       </tarfileset>
       <tarfileset dir="${javadoc_dir}" prefix="${basename}/javadocs">
         <include name="**" />
+      </tarfileset>
+      <tarfileset dir=".idea" prefix="${basename}/.idea">
+          <include name="**" />
+          <exclude name="workspace.xml" />
+      </tarfileset>
+      <tarfileset dir="annotations" prefix="${basename}/annotations">
+          <include name="**" />
+      </tarfileset>
+      <tarfileset dir="tables" prefix="${basename}/tables">
+          <include name="**" />
+      </tarfileset>
+      <tarfileset dir=".codepro" prefix="${basename}/.codepro">
+          <include name="**" />
+      </tarfileset>
+      <tarfileset dir=".settings" prefix="${basename}/.settings">
+          <include name="**" />
       </tarfileset>
     </tar>
   </target>
