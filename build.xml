@@ -240,14 +240,14 @@
     <tar destfile="${release}/${basename}.tbz2" compression="bzip2">
       <tarfileset dir="${project_home}" prefix="${basename}">
         <include name="*.properties" />
-    <include name="build.xml" />
-    <include name=".checkstyle" />
-    <include name=".classpath" />
-    <include name=".lint4jprefs" />
-    <include name=".pmd" />
-    <include name=".project" />
-    <include name="checkstyle.xml" />
-    <include name="launch4j.cfg.xml" />
+        <include name="build.xml" />
+        <include name=".checkstyle" />
+        <include name=".classpath" />
+        <include name=".lint4jprefs" />
+        <include name=".pmd" />
+        <include name=".project" />
+        <include name="checkstyle.xml" />
+        <include name="launch4j.cfg.xml" />
       </tarfileset>
       <tarfileset dir="${source_dir}" prefix="${basename}/src">
         <include name="**" />
