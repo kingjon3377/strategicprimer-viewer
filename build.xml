@@ -220,7 +220,11 @@
     <delete file="${release}/${shortname}.jar" />
   </target>
   <target name="dmg" depends="app">
-    <exec executable="${mkisofs.path}" dir="${release}/${basename}.app/">
+    <mkdir dir="${release}/dmgtmp" />
+    <copy todir="${release}/dmgtmp/${basename}.app">
+        <fileset dir="${release}/${basename}.app" />
+    </copy>
+    <exec executable="${mkisofs.path}" dir="${release}/dmgtmp">
       <arg value="-V" />
       <arg value="${appname}" />
       <arg value="-no-pad" />
@@ -230,6 +234,7 @@
       <arg value="." />
     </exec>
     <delete dir="${release}/${basename}.app" />
+    <delete dir="${release}/dmgtmp" />
   </target>
   <target name="dist" depends="build,doc">
     <tar destfile="${release}/${basename}.tbz2" compression="bzip2">
