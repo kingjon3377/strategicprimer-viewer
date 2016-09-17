@@ -1,9 +1,9 @@
 #!/bin/sh
 set -ex
 mkdir -p "${HOME}/.ant/lib"
-wget http://sf.net/projects/launch4j/files/launch4j-3/3.8/launch4j-3.8-linux.tgz/download \
-        -O launch4j-3.8-linux.tgz
-tar xzf launch4j-3.8-linux.tgz
+wget http://sf.net/projects/launch4j/files/launch4j-3/3.9/launch4j-3.9-linux.tgz/download \
+        -O launch4j-3.9-linux.tgz
+tar xzf launch4j-3.9-linux.tgz
 wget https://github.com/tofi86/Jarbundler/releases/download/v2.4.0/jarbundler-2.4.0.tar.gz
 tar xzf jarbundler-2.4.0.tar.gz
 mv jarbundler-2.4.0/jarbundler-2.4.0.jar "${HOME}/.ant/lib/"
