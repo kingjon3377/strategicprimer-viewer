@@ -234,7 +234,7 @@
       <arg value="." />
     </exec>
     <delete dir="${release}/${basename}.app" />
-    <delete dir="${release}/dmgtmp" />
+    <delete><fileset dir="${release}/dmgtmp" /></delete>
   </target>
   <target name="dist" depends="build,doc">
     <tar destfile="${release}/${basename}.tbz2" compression="bzip2">
