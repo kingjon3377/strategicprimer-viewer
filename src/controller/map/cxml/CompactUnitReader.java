@@ -101,9 +101,6 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 											getOrGenerateID(element, warner, idFactory));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
-		if (!retval.getPortrait().isEmpty()) {
-			SystemOut.SYS_OUT.println("Portrait is " + retval.getPortrait());
-		}
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
