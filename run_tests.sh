@@ -1,5 +1,6 @@
 #!/bin/sh
 # This is for use by Travis CI, to reduce too-long lines in .travis.yml
+updatedb
 locate hamcrest-core-1.3.jar
 ant \
     -Dlaunch4j.dir=./launch4j \
