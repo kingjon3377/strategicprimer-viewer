@@ -4,6 +4,7 @@ import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import model.map.Player;
@@ -179,17 +180,27 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 				() -> cli.chooseFromList(jobs, hdr, none, prompt, false);
 		for (int jobNum = choice.choose(); jobNum <= jobs.size();
 				jobNum = choice.choose()) {
+			final IJob job;
 			if ((jobNum < 0) || (jobNum == jobs.size())) {
-				worker.addJob(new Job(cli.inputString("Name of new Job: "), 0));
+				String jobName = cli.inputString("Name of new Job: ");
+				worker.addJob(new Job(jobName, 0));
 				jobs.clear();
 				worker.forEach(jobs::add);
-				SYS_OUT.println("Select the new job at the next prompt.");
-				continue;
-			} else {
-				advanceJob(NullCleaner.assertNotNull(jobs.get(jobNum)), cli);
-				if (!cli.inputBoolean("Select another Job in this worker? ")) {
-					break;
+				final Optional<IJob> temp =
+						jobs.stream().filter(item -> jobName.equals(item.getName()))
+								.findAny();
+				if (temp.isPresent()) {
+					job = temp.get();
+				} else {
+					SYS_OUT.println("Select the new job at the next prompt.");
+					continue;
 				}
+			} else {
+				job = jobs.get(jobNum);
+			}
+			advanceJob(NullCleaner.assertNotNull(job), cli);
+			if (!cli.inputBoolean("Select another Job in this worker? ")) {
+				break;
 			}
 		}
 	}
@@ -211,23 +222,32 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 				() -> cli.chooseFromList(skills, hdr, none, prompt, false);
 		for (int skillNum = choice.choose(); skillNum <= skills.size();
 				skillNum = choice.choose()) {
+			final ISkill skill;
 			if ((skillNum < 0) || (skillNum == skills.size())) {
-				job.addSkill(new Skill(cli.inputString("Name of new Skill: "), 0, 0));
+				final String skillName = cli.inputString("Name of new Skill: ");
+				job.addSkill(new Skill(skillName, 0, 0));
 				skills.clear();
 				job.forEach(skills::add);
-				SYS_OUT.println("Select the new skill at the next prompt.");
-				continue;
+				final Optional<ISkill> temp =
+						skills.stream().filter(item -> skillName.equals(item.getName()))
+								.findAny();
+				if (temp.isPresent()) {
+					skill = temp.get();
+				} else {
+					SYS_OUT.println("Select the new skill at the next prompt.");
+					continue;
+				}
 			} else {
-				final ISkill skill = skills.get(skillNum);
-				final int oldLevel = skill.getLevel();
-				skill.addHours(cli.inputNumber("Hours of experience to add: "),
-								SingletonRandom.RANDOM.nextInt(100));
-				if (skill.getLevel() != oldLevel) {
-					cli.printf("Worker(s) gained a level in %s%n", skill.getName());
-				}
-				if (!cli.inputBoolean("Select another Skill in this Job? ")) {
-					break;
-				}
+				skill = skills.get(skillNum);
+			}
+			final int oldLevel = skill.getLevel();
+			skill.addHours(cli.inputNumber("Hours of experience to add: "),
+							SingletonRandom.RANDOM.nextInt(100));
+			if (skill.getLevel() != oldLevel) {
+				cli.printf("Worker(s) gained a level in %s%n", skill.getName());
+			}
+			if (!cli.inputBoolean("Select another Skill in this Job? ")) {
+				break;
 			}
 		}
 	}
