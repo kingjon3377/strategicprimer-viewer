@@ -34,7 +34,7 @@ public interface IJob
 					Arrays.asList("hunter", "hunting", "explorer", "exploration",
 							"research", "carpentry", "woodcutting", "farming",
 							"food gathering", "scientist", "woodcutter", "farmer",
-							"brickmaker", "brickmaking")));
+							"brickmaker", "brickmaking", "administration")));
 	/**
 	 * Add a skill.
 	 *
