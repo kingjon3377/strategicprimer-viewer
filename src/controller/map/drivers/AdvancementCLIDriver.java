@@ -218,9 +218,13 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 				SYS_OUT.println("Select the new skill at the next prompt.");
 				continue;
 			} else {
-				skills.get(skillNum)
-						.addHours(cli.inputNumber("Hours of experience to add: "),
+				final ISkill skill = skills.get(skillNum);
+				final int oldLevel = skill.getLevel();
+				skill.addHours(cli.inputNumber("Hours of experience to add: "),
 								SingletonRandom.RANDOM.nextInt(100));
+				if (skill.getLevel() != oldLevel) {
+					cli.printf("Worker(s) gained a level in %s%n", skill.getName());
+				}
 				if (!cli.inputBoolean("Select another Skill in this Job? ")) {
 					break;
 				}
