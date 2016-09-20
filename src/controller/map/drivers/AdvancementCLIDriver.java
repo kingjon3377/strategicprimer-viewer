@@ -116,6 +116,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final boolean proxy =
 				!cli.inputBooleanInSeries("Add experience to workers individually? ");
 		final List<IUnit> units = model.getUnits(player);
+		units.removeIf(unit -> !unit.iterator().hasNext());
 		while (!units.isEmpty()) {
 			final int unitNum = cli.chooseFromList(units,
 					player.getName() + "'s units:",
