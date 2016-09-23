@@ -101,7 +101,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 		String contents = getResourceContents(kind, cli);
 		final String units = getResourceUnits(contents, cli);
 		if (cli.inputBooleanInSeries("Qualify the particular resource with a prefix? ",
-				"prefix" + contents)) {
+				"prefix " + contents)) {
 			contents = cli.inputString("Prefix to use: ").trim() + ' ' + contents;
 		}
 		model.addResource(new ResourcePile(idf.createID(), kind, contents,
