@@ -18,9 +18,10 @@ package view.util;
 @FunctionalInterface
 public interface ISPWindow {
 	/**
-	 * @return The name of this window.
+	 * This method should *not* return a string including the loaded file, since it is
+	 * used only in the About dialog to "personalize" it for the particular app.
 	 *
-	 * TODO: Should this include the file being edited or viewed?
+	 * @return The name of this window.
 	 */
 	String getWindowName();
 }
