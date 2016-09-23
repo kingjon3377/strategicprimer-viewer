@@ -114,4 +114,19 @@ public interface IMapNG
 	 * @return a copy of this map
 	 */
 	IMapNG copy(boolean zero);
+
+	/**
+	 * A location is empty if it has no terrain, no Ground, no Forest, no rivers, and no
+	 * fixtures.
+	 *
+	 * @param location a location
+	 * @return whether the map is empty at that location
+	 */
+	default boolean isLocationEmpty(final Point location) {
+		return TileType.NotVisible == getBaseTerrain(location) &&
+					   !isMountainous(location) && getGround(location) == null &&
+					   getForest(location) == null &&
+					   !getRivers(location).iterator().hasNext() &&
+					   streamOtherFixtures(location).anyMatch(i -> true);
+	}
 }

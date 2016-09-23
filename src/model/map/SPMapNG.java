@@ -565,6 +565,9 @@ public class SPMapNG implements IMutableMapNG {
 		builder.append("Contents:");
 		builder.append(LineEnd.LINE_SEP);
 		for (final Point location : locations()) {
+			if (isLocationEmpty(location)) {
+				continue;
+			}
 			builder.append("At ");
 			builder.append(location);
 			builder.append(": ");
@@ -595,13 +598,15 @@ public class SPMapNG implements IMutableMapNG {
 				}
 				builder.append(", ");
 			}
-			builder.append("other: ");
-			for (final TileFixture fixture : getOtherFixtures(location)) {
-				builder.append(LineEnd.LINE_SEP);
-				builder.append(fixture);
-				// builder.append(" (");
-				// builder.append(fixture.getClass().getSimpleName());
-				// builder.append(")");
+			if (streamOtherFixtures(location).anyMatch(i -> true)) {
+				builder.append("other: ");
+				for (final TileFixture fixture : getOtherFixtures(location)) {
+					builder.append(LineEnd.LINE_SEP);
+					builder.append(fixture);
+					// builder.append(" (");
+					// builder.append(fixture.getClass().getSimpleName());
+					// builder.append(")");
+				}
 			}
 			builder.append(LineEnd.LINE_SEP);
 		}
