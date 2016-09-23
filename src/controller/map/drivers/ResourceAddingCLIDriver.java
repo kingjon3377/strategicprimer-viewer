@@ -204,7 +204,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			final String unit = resourceUnits.get(resource);
 			if ((unit != null) && cli.inputBooleanInSeries(NullCleaner.assertNotNull(
 					String.format("Is %s the correct units for %s? ", unit, resource)),
-					"correct;" + unit + ";" + resource)) {
+					"correct;" + unit + ';' + resource)) {
 				return unit;
 			}
 		}

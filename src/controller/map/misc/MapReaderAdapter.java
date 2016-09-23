@@ -221,8 +221,7 @@ public final class MapReaderAdapter {
 						throw new DriverFailedException("I/O error writing to " +
 																filename, except);
 					} catch (final XMLStreamException except) {
-						throw new DriverFailedException("Error creating XML to write to" +
-																" " +
+						throw new DriverFailedException("Error creating XML for " +
 																filename, except);
 					}
 				} else {
