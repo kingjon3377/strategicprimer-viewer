@@ -58,6 +58,12 @@ public interface IReportNode
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void add(@Nullable final MutableTreeNode node);
 	/**
+	 * Add a node as our first child. Do nothing if null.
+	 * @param node the node to add
+	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	void addAsFirst(@Nullable final MutableTreeNode node);
+	/**
 	 * @return the point, if any, in the map that this represents something on
 	 */
 	default Point getPoint() {

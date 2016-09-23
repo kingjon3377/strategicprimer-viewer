@@ -135,7 +135,13 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	public void add(final @Nullable MutableTreeNode newChild) {
 		// Do nothing
 	}
-
+	/**
+	 * This method is ignored; a simple node cannot have children.
+	 */
+	@Override
+	public void addAsFirst(final @Nullable MutableTreeNode node) {
+		// Do nothing
+	}
 	/**
 	 * @return an iterator over the children
 	 */

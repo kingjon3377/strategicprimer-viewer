@@ -116,7 +116,13 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	public void add(final @Nullable MutableTreeNode newChild) {
 		// Do nothing.
 	}
-
+	/**
+	 * @param node ignored: nothing done to an empty node has any effect
+	 */
+	@Override
+	public void addAsFirst(final @Nullable MutableTreeNode node) {
+		// Do nothing.
+	}
 	/**
 	 * @return an iterator over the children
 	 */
