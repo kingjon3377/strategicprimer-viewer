@@ -197,6 +197,7 @@ public final class ReportGenerator {
 				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID())));
 		fixtures.coalesce();
 		createSubReports(builder, fixtures, map, player,
+				new FortressMemberReportGenerator(comparator),
 				new FortressReportGenerator(comparator),
 				new UnitReportGenerator(comparator), new TextReportGenerator(comparator),
 				new TownReportGenerator(comparator),
@@ -285,6 +286,7 @@ public final class ReportGenerator {
 		final IReportNode retval =
 				new RootReportNode("Strategic Primer map summary abbreviated report");
 		createSubReportsIR(retval, fixtures, map, player,
+				new FortressMemberReportGenerator(comparator),
 				new FortressReportGenerator(comparator),
 				new UnitReportGenerator(comparator), new TextReportGenerator(comparator),
 				new TownReportGenerator(comparator),

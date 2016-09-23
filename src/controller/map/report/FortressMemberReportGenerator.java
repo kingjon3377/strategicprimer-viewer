@@ -54,6 +54,8 @@ public final class FortressMemberReportGenerator
 	 * actually be called and do anything, since nearly all resources will be in
 	 * fortresses and should be reported as such, but we'll handle this properly anyway.
 	 *
+	 * TODO: Group resources by kind
+	 *
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -115,6 +117,8 @@ public final class FortressMemberReportGenerator
 	 * this report are removed from the collection. This method should probably never
 	 * actually be called and do anything, since nearly all resources will be in
 	 * fortresses and should be reported as such, but we'll handle this properly anyway.
+	 *
+	 * TODO: Group resources by kind
 	 *
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
