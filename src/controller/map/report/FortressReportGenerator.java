@@ -147,16 +147,18 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 								(Fortress) pair.second(), pair.first()));
 					}
 				});
-		final IReportNode retval = new ComplexReportNode();
-		if (ours.getChildCount() != 0) {
-			retval.add(ours);
-		}
-		if (foreign.getChildCount() != 0) {
-			retval.add(foreign);
-		}
-		if (retval.getChildCount() == 0) {
-			return EmptyReportNode.NULL_NODE;
+		if (ours.getChildCount() == 0) {
+			if (foreign.getChildCount() == 0) {
+				return EmptyReportNode.NULL_NODE;
+			} else {
+				return foreign;
+			}
+		} else if (foreign.getChildCount() == 0) {
+			return ours;
 		} else {
+			final IReportNode retval = new ComplexReportNode();
+			retval.add(ours);
+			retval.add(foreign);
 			return retval;
 		}
 	}
