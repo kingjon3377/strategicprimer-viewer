@@ -480,10 +480,6 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
 											  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
-		final IReportNode retval =
-				new SectionReportNode(4, "Units in the map");
-		retval.add(
-				new SimpleReportNode("(Any units reported above are not described again.)"));
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final IReportNode theirs = new SectionListReportNode(5, "Foreign units");
@@ -500,15 +496,26 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				theirs.add(unitNode);
 			}
 		});
-		if (ours.getChildCount() != 0) {
-			retval.add(ours);
-		}
-		if (theirs.getChildCount() != 0) {
-			retval.add(theirs);
-		}
-		if (retval.getChildCount() == 1) { // 1, not 0, because of "any units ..."
-			return EmptyReportNode.NULL_NODE;
+		final IReportNode retval;
+		final SimpleReportNode textNode =
+				new SimpleReportNode("(Any units reported above are not described again.)");
+		if (ours.getChildCount() == 0) {
+			if (theirs.getChildCount() == 0) {
+				return EmptyReportNode.NULL_NODE;
+			} else {
+				theirs.addAsFirst(textNode);
+				theirs.setText("Foreign units in the map:");
+				return theirs;
+			}
+		} else if (theirs.getChildCount() == 0) {
+			ours.addAsFirst(textNode);
+			ours.setText("Your units in the map:");
+			return ours;
 		} else {
+			retval = new SectionReportNode(4, "Units in the map");
+			retval.add(textNode);
+			retval.add(ours);
+			retval.add(theirs);
 			return retval;
 		}
 	}
