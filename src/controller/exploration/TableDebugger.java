@@ -149,10 +149,10 @@ public final class TableDebugger implements SimpleCLIDriver {
 	 */
 	@Override
 	public void startDriver() throws DriverFailedException {
-		final ExplorationRunner runner = new ExplorationRunner();
-		TableLoader.loadAllTables("tables", runner);
+		final ExplorationRunner localRunner = new ExplorationRunner();
+		TableLoader.loadAllTables("tables", localRunner);
 		try {
-			new TableDebugger(runner).debugTables(SystemOut.SYS_OUT);
+			new TableDebugger(localRunner).debugTables(SystemOut.SYS_OUT);
 		} catch (final MissingTableException e) {
 			throw new DriverFailedException("Missing table", e);
 		} catch (final IOException e) {
