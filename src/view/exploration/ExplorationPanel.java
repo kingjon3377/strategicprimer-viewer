@@ -6,13 +6,11 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Path;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -258,12 +256,12 @@ public final class ExplorationPanel extends BorderedPanel
 //		mainList.getModel().addListDataListener(ell);
 		model.addSelectionChangeListener(ell);
 		ecl.addSelectionChangeListener(ell);
-		// TODO: Just in case of race condition, use Stream API and Optional here
-		final Iterator<Pair<IMutableMapNG, Optional<Path>>> subMaps =
-				model.getSubordinateMaps().iterator();
+		final Optional<Iterable<Player>> subMapPlayers =
+				StreamSupport.stream(model.getSubordinateMaps().spliterator(), false)
+						.map(Pair::first).map(IMapNG::players).findFirst();
 		final Iterable<Player> players;
-		if (subMaps.hasNext()) {
-			players = subMaps.next().first().players();
+		if (subMapPlayers.isPresent()) {
+			players = subMapPlayers.get();
 		} else {
 			players = model.getMap().players();
 		}
