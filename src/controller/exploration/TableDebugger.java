@@ -156,6 +156,7 @@ public final class TableDebugger implements SimpleCLIDriver {
 		} catch (final MissingTableException e) {
 			throw new DriverFailedException("Missing table", e);
 		} catch (final IOException e) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error writing to stdout", e);
 		}
 	}
