@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 import javax.swing.InputMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,6 +32,7 @@ import model.listeners.CompletionSource;
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
+import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
@@ -198,9 +200,18 @@ public final class ExplorationPanel extends BorderedPanel
 	 */
 	private JPanel setupTilesGUIImpl(final JPanel panel,
 									 final IExplorationModel.Direction... directions) {
+		final IMapNG secondMap;
+		final Optional<IMutableMapNG> subordinateMap =
+				StreamSupport.stream(model.getSubordinateMaps().spliterator(), false)
+						.map(Pair::first).findFirst();
+		if (subordinateMap.isPresent()) {
+			secondMap = subordinateMap.get();
+		} else {
+			secondMap = model.getMap();
+		}
 		for (final IExplorationModel.Direction direction : directions) {
 			if (direction != null) {
-				addTileGUI(panel, direction);
+				addTileGUI(panel, secondMap, direction);
 			}
 		}
 		return panel;
@@ -208,26 +219,24 @@ public final class ExplorationPanel extends BorderedPanel
 
 	/**
 	 * Set up the GUI representation of a tile---a list of its contents in the main
-	 * map, a
-	 * visual representation, and a list of its contents in a secondary map.
+	 * map, a visual representation, and a list of its contents in a secondary map.
 	 *
 	 * @param panel     the panel to add them to
+	 * @param subordinateMap the map to use for the subordinate map.
 	 * @param direction which direction from the currently selected tile this GUI
 	 *                  represents.
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private void addTileGUI(final JPanel panel,
+	private void addTileGUI(final JPanel panel, final IMapNG subordinateMap,
 							final IExplorationModel.Direction direction) {
 		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
 		final FixtureList mainList =
 				new FixtureList(panel, model, model.getMap().players());
 		mainPCS.addSelectionChangeListener(mainList);
 		panel.add(new JScrollPane(mainList));
-		// FIXME: This *will* break if no subordinate maps, and we shouldn't *need* 2+!
 		final DualTileButton dtb =
 				new DualTileButton(model.getMap(),
-										model.getSubordinateMaps().iterator().next()
-												.first());
+										  subordinateMap);
 		// At some point we tried wrapping the button in a JScrollPane.
 		panel.add(dtb);
 		final ExplorationClickListener ecl =
@@ -249,6 +258,7 @@ public final class ExplorationPanel extends BorderedPanel
 //		mainList.getModel().addListDataListener(ell);
 		model.addSelectionChangeListener(ell);
 		ecl.addSelectionChangeListener(ell);
+		// TODO: Just in case of race condition, use Stream API and Optional here
 		final Iterator<Pair<IMutableMapNG, Optional<Path>>> subMaps =
 				model.getSubordinateMaps().iterator();
 		final Iterable<Player> players;

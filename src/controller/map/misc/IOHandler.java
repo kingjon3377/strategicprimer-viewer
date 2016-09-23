@@ -173,14 +173,19 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				break;
 			case "open secondary map in map viewer":
 				if (model instanceof IMultiMapModel) {
-					final Pair<IMutableMapNG, Optional<Path>> mapPair =
-							((IMultiMapModel) model).getSubordinateMaps().iterator()
-									.next();
-					final IViewerModel newModel =
-							new ViewerModel(mapPair.first(), mapPair.second());
-					SwingUtilities.invokeLater(
-							() -> new ViewerFrame(newModel, new IOHandler(newModel, chooser))
-										.setVisible(true));
+					final Optional<Pair<IMutableMapNG, Optional<Path>>> mapPair =
+							StreamSupport
+									.stream(((IMultiMapModel) model).getSubordinateMaps()
+													.spliterator(), false).findFirst();
+					if (mapPair.isPresent()) {
+						final IViewerModel newModel =
+								new ViewerModel(mapPair.get().first(),
+													   mapPair.get().second());
+						SwingUtilities.invokeLater(
+								() -> new ViewerFrame(newModel, new IOHandler(newModel,
+																					 chooser))
+											  .setVisible(true));
+					}
 				}
 				break;
 			case "go to tile":
