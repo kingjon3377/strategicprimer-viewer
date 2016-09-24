@@ -531,10 +531,10 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final IUnit mover = selUnit;
 		if (mover != null) {
 			final Player owner = mover.getOwner();
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : getAllMaps()) {
-				pair.first().streamOtherFixtures(currPoint).filter(Village.class::isInstance).map(
-						HasMutableOwner.class::cast).forEach(fix -> fix.setOwner(owner));
-			}
+			StreamSupport.stream(getAllMaps().spliterator(), false).map(Pair::first)
+					.flatMap(map -> map.streamOtherFixtures(currPoint))
+					.filter(Village.class::isInstance).map(HasMutableOwner.class::cast)
+					.forEach(fix -> fix.setOwner(owner));
 			fireMovementCost(5);
 		}
 	}
