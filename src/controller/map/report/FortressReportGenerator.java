@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import model.map.HasOwner;
@@ -35,6 +37,7 @@ import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
+import util.SimpleMultiMap;
 
 /**
  * A report generator for fortresses.
@@ -287,7 +290,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:")
 					.append(LineEnd.LINE_SEP).append(OPEN_LIST);
 			final Collection<Implement> equipment = new ArrayList<>();
-			final Collection<ResourcePile> resources = new ArrayList<>();
+			final Map<String, Collection<ResourcePile>> resources =
+					new SimpleMultiMap<>();
 			final Collection<FortressMember> contents = new ArrayList<>();
 			for (final FortressMember member : item) {
 				if (member instanceof IUnit) {
@@ -297,7 +301,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				} else if (member instanceof Implement) {
 					equipment.add((Implement) member);
 				} else if (member instanceof ResourcePile) {
-					resources.add((ResourcePile) member);
+					resources.get(((ResourcePile) member).getKind())
+							.add((ResourcePile) member);
 				} else {
 					contents.add(member);
 				}
@@ -306,12 +311,20 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			if (!resources.isEmpty()) {
 				builder.append(OPEN_LIST_ITEM).append("Resources:")
 						.append(LineEnd.LINE_SEP).append(OPEN_LIST);
-				for (final ResourcePile resource : resources) {
-					builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
-																  .produce(fixtures, map,
-																		  currentPlayer,
-																		  resource, loc))
-							.append(CLOSE_LIST_ITEM);
+				for (final Map.Entry<String, Collection<ResourcePile>> entry :
+						resources.entrySet()) {
+					builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(':')
+							.append(OPEN_LIST);
+					for (final ResourcePile resource : entry.getValue()) {
+						builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
+																	  .produce(fixtures,
+																			  map,
+																			  currentPlayer,
+																			  resource,
+																			  loc))
+								.append(CLOSE_LIST_ITEM);
+					}
+					builder.append(CLOSE_LIST);
 				}
 				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 			}
@@ -375,6 +388,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			final IReportNode units = new ListReportNode(loc,
 																"Units on the tile:");
 			final IReportNode resources = new ListReportNode(loc, "Resources");
+			final Map<String, IReportNode> resourceKinds = new HashMap<>();
 			final IReportNode equipment = new ListReportNode(loc, "Equipment:");
 			final IReportNode contents =
 					new ListReportNode(loc, "Other Contents of Fortress:");
@@ -387,9 +401,18 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 									  .produceRIR(fixtures, map, currentPlayer, unit,
 											  loc));
 				} else if (unit instanceof ResourcePile) {
-					resources.add(memberReportGenerator
-										  .produceRIR(fixtures, map, currentPlayer, unit,
-												  loc));
+					final String kind = ((ResourcePile) unit).getKind();
+					final IReportNode list;
+					if (resourceKinds.containsKey(kind)) {
+						list = resourceKinds.get(kind);
+					} else {
+						list = new ListReportNode(kind + ":");
+						resourceKinds.put(kind, list);
+						resources.add(list);
+					}
+					list.add(memberReportGenerator
+									 .produceRIR(fixtures, map, currentPlayer, unit,
+											 loc));
 				} else {
 					contents.add(
 							memberReportGenerator

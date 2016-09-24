@@ -1,9 +1,12 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -22,6 +25,7 @@ import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
+import util.SimpleMultiMap;
 
 /**
  * A report generator for equipment and resources.
@@ -54,8 +58,6 @@ public final class FortressMemberReportGenerator
 	 * actually be called and do anything, since nearly all resources will be in
 	 * fortresses and should be reported as such, but we'll handle this properly anyway.
 	 *
-	 * TODO: Group resources by kind
-	 *
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -69,6 +71,7 @@ public final class FortressMemberReportGenerator
 		final StringBuilder builder =
 				new StringBuilder(2048).append("<h4>Resources and Equipment</h4>")
 						.append(LineEnd.LINE_SEP).append(OPEN_LIST);
+		final Map<String, Collection<Pair<Point, ResourcePile>>> resources = new SimpleMultiMap<>();
 		// Similarly, I doubt either of these will ever be over half a K, but
 		// we'll give each a whole K just in case.
 		final StringBuilder rsrBuilder =
@@ -84,10 +87,8 @@ public final class FortressMemberReportGenerator
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof ResourcePile) {
 				anyResources = true;
-				rsrBuilder.append(OPEN_LIST_ITEM)
-						.append(produce(fixtures, map, currentPlayer,
-								(FortressMember) pair.second(), pair.first()))
-						.append(CLOSE_LIST_ITEM);
+				final ResourcePile resource = (ResourcePile) pair.second();
+				resources.get(resource.getKind()).add(Pair.of(pair.first(), resource));
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof Implement) {
 				anyEquipment = true;
@@ -97,6 +98,17 @@ public final class FortressMemberReportGenerator
 						.append(CLOSE_LIST_ITEM);
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			}
+		}
+		for (final Map.Entry<String, Collection<Pair<Point, ResourcePile>>> entry :
+				resources.entrySet()) {
+			rsrBuilder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(':')
+					.append(OPEN_LIST);
+			for (final Pair<Point, ResourcePile> pair : entry.getValue()) {
+				rsrBuilder.append(OPEN_LIST_ITEM)
+						.append(produce(fixtures, map, currentPlayer, pair.second(),
+								pair.first())).append(CLOSE_LIST_ITEM);
+			}
+			rsrBuilder.append(CLOSE_LIST);
 		}
 		eqBuilder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 		rsrBuilder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
@@ -118,8 +130,6 @@ public final class FortressMemberReportGenerator
 	 * actually be called and do anything, since nearly all resources will be in
 	 * fortresses and should be reported as such, but we'll handle this properly anyway.
 	 *
-	 * TODO: Group resources by kind
-	 *
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -132,10 +142,21 @@ public final class FortressMemberReportGenerator
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final IReportNode rsr = new ListReportNode("Resources:");
+		final Map<String, IReportNode> resourceKinds = new HashMap<>();
 		final IReportNode equip = new ListReportNode("Equipment:");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof ResourcePile) {
-				rsr.add(produceRIR(fixtures, map, currentPlayer,
+				final ResourcePile resource = (ResourcePile) pair.second();
+				final String kind = resource.getKind();
+				final IReportNode list;
+				if (resourceKinds.containsKey(kind)) {
+					list = resourceKinds.get(kind);
+				} else {
+					list = new ListReportNode(kind + ":");
+					resourceKinds.put(kind, list);
+					rsr.add(list);
+				}
+				list.add(produceRIR(fixtures, map, currentPlayer,
 						(FortressMember) pair.second(), pair.first()));
 			} else if (pair.second() instanceof Implement) {
 				equip.add(produceRIR(fixtures, map, currentPlayer,
