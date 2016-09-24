@@ -1,9 +1,13 @@
 package model.map.fixtures.explorable;
 
+import java.io.IOException;
 import model.map.IFixture;
 import model.map.Point;
 import model.map.PointFactory;
+import model.map.SubsettableFixture;
 import org.eclipse.jdt.annotation.Nullable;
+import util.EqualsAny;
+import util.LineEnd;
 
 /**
  * A fixture representing a portal to another world.
@@ -20,7 +24,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Portal implements ExplorableFixture {
+public class Portal implements ExplorableFixture, SubsettableFixture {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -191,5 +195,59 @@ public class Portal implements ExplorableFixture {
 	 */
 	public void setDestinationCoordinates(final Point destination) {
 		destinationCoordinates = destination;
+	}
+
+	/**
+	 * TODO: test this
+	 *
+	 * @param obj     an object
+	 * @param ostream the stream to write details to
+	 * @param context a string to print before every line of output, describing the
+	 *                context; it should be passed through and appended to. Whenever
+	 *                it is
+	 *                put onto ostream, it should probably be followed by a tab.
+	 * @return whether that object equals, or is a zeroed-out equivalent of, this one
+	 * @throws IOException
+	 */
+	@Override
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
+							final String context) throws IOException {
+		if (obj.getID() == id) {
+			if (obj instanceof Portal) {
+				final Portal other = (Portal) obj;
+				if (!EqualsAny.equalsAny(other.getDestinationWorld(), "unknown",
+						destinationWorld)) {
+					ostream.append(context);
+					ostream.append("\tIn portal with ID #");
+					ostream.append(Integer.toString(getID()));
+					ostream.append(": Different destination world");
+					ostream.append(LineEnd.LINE_SEP);
+					return false;
+				} else if (other.getDestinationCoordinates().getRow() > 0 &&
+								   other.getDestinationCoordinates().getCol() > 0 &&
+								   !destinationCoordinates
+											.equals(other.getDestinationCoordinates())) {
+					ostream.append(context);
+					ostream.append("\tIn portal with ID #");
+					ostream.append(Integer.toString(getID()));
+					ostream.append(": Different destination coordinates");
+					ostream.append(LineEnd.LINE_SEP);
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				ostream.append(context);
+				ostream.append("\tDifferent kinds of fixtures for ID #");
+				ostream.append(Integer.toString(getID()));
+				ostream.append(LineEnd.LINE_SEP);
+				return false;
+			}
+		} else {
+			ostream.append(context);
+			ostream.append("\tCalled with different-ID-# argument");
+			ostream.append(LineEnd.LINE_SEP);
+			return false;
+		}
 	}
 }
