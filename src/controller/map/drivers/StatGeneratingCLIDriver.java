@@ -373,9 +373,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 					}
 				}
 			} else {
-				final Point point = PointFactory.point(
-						cli.inputNumber("Row to put new unit: "),
-						cli.inputNumber("Column to put new unit: "));
+				final Point point = cli.inputPoint("Where to put new unit? ");
 				//noinspection ObjectAllocationInLoop
 				final TileFixture unit =
 						new Unit(player, cli.inputString("Kind of unit: "),

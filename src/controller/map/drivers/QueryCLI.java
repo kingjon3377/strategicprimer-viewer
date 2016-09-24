@@ -110,16 +110,19 @@ public final class QueryCLI implements SimpleDriver {
 			usage(cli);
 			break;
 		case 'f':
-			fortressInfo(model.getMap(), selectPoint(cli), cli);
+			fortressInfo(model.getMap(), cli.inputPoint("Location of fortress? "), cli);
 			break;
 		case 'h':
-			hunt(huntModel, selectPoint(cli), true, cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
+			hunt(huntModel, cli.inputPoint("Location to hunt? "), true, cli,
+					HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		case 'i':
-			hunt(huntModel, selectPoint(cli), false, cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
+			hunt(huntModel, cli.inputPoint("Location to fish? "), false, cli,
+					HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		case 'g':
-			gather(huntModel, selectPoint(cli), cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
+			gather(huntModel, cli.inputPoint("Location to gather? "), cli,
+					HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		case 'e':
 			herd(cli, huntModel);
@@ -134,7 +137,7 @@ public final class QueryCLI implements SimpleDriver {
 			count(model.getMap(), CLIHelper.toList(model.getMap().players()), cli);
 			break;
 		case 'u':
-			final Point base = selectPoint(cli);
+			final Point base = cli.inputPoint("Starting point? ");
 			final Optional<Point> unexplored = findUnexplored(model.getMap(), base);
 			if (unexplored.isPresent()) {
 				final Point point = unexplored.get();
@@ -201,10 +204,8 @@ public final class QueryCLI implements SimpleDriver {
 	 */
 	private static void distance(final MapDimensions dims, final ICLIHelper cli)
 			throws IOException {
-		cli.print("Starting point:\t");
-		final Point start = selectPoint(cli);
-		cli.print("Destination:\t");
-		final Point end = selectPoint(cli);
+		final Point start = cli.inputPoint("Starting point:\t");
+		final Point end = cli.inputPoint("Destination:\t");
 		cli.printf("Distance (as the crow flies, in tiles):\t%.0f%n",
 				Double.valueOf(distance(start, end, dims)));
 	}
@@ -330,7 +331,8 @@ public final class QueryCLI implements SimpleDriver {
 			}
 			if ((hours < HUNTER_HOURS) &&
 						cli.inputBooleanInSeries("Spend remaining time as Food Gatherers? ")) {
-				gather(huntModel, selectPoint(cli), cli, HUNTER_HOURS - hours);
+				gather(huntModel, cli.inputPoint("Gathering location? "), cli,
+						HUNTER_HOURS - hours);
 			}
 		}
 	}
@@ -443,16 +445,6 @@ public final class QueryCLI implements SimpleDriver {
 			return Optional.of(retval.get(0));
 		}
 	}
-	/**
-	 * @param cli the interface to the user
-	 * @return the point the user specifies.
-	 * @throws IOException on I/O error.
-	 */
-	private static Point selectPoint(final ICLIHelper cli) throws IOException {
-		return PointFactory.point(cli.inputNumber("Row: "),
-				cli.inputNumber("Column: "));
-	}
-
 	/**
 	 * @return a String representation of the object.
 	 */

@@ -16,8 +16,6 @@ import model.misc.IDriverModel;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
-import static model.map.PointFactory.point;
-
 /**
  * A driver to run a player's trapping activity.
  *
@@ -137,10 +135,7 @@ public final class TrapModelDriver implements SimpleDriver {
 			int minutes = cli.inputNumber("How many hours will the " + name + " work? ") *
 
 								  MIN_PER_HOUR;
-			final int row = cli.inputNumber("Row of the tile where the "
-													+ name + " is working: ");
-			final int col = cli.inputNumber("Column of that tile: ");
-			final Point point = point(row, col);
+			final Point point = cli.inputPoint("Where is the " + name + " working? ");
 			final List<String> fixtures;
 			final HuntingModel huntModel = new HuntingModel(map);
 			if (fishing) {

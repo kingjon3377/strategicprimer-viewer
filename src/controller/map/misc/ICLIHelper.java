@@ -4,6 +4,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 import model.map.HasName;
+import model.map.Point;
+import model.map.PointFactory;
 
 /**
  * An interface for the "CLI helper", to make automated testing of exploration possible.
@@ -130,5 +132,14 @@ public interface ICLIHelper extends Closeable {
 		 * @throws IOException on I/O error interacting with the user
 		 */
 		int choose() throws IOException;
+	}
+	/**
+	 * Get a Point from the user. This is a convenience wrapper around two calls to
+	 * inputNumber.
+	 * @param prompt the prompt to use
+	 */
+	default Point inputPoint(final String prompt) throws IOException {
+		print(prompt);
+		return PointFactory.point(inputNumber("Row: "), inputNumber("Column: "));
 	}
 }
