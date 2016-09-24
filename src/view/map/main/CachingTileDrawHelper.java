@@ -161,7 +161,7 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 													"Graphics2D");
 		}
 		final Graphics2D pen2d = (Graphics2D) pen;
-		TileType terrain = map.getBaseTerrain(location);
+		final TileType terrain = map.getBaseTerrain(location);
 		pen2d.setColor(getTileColor(1, terrain));
 		pen2d.fill(backgroundShape);
 		pen2d.setColor(Color.BLACK);

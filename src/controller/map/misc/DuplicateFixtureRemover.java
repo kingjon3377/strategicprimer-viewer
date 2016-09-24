@@ -101,8 +101,8 @@ public class DuplicateFixtureRemover {
 	 * @param cli the interface to talk to the user
 	 * @throws IOException on I/O error interacting with the user
 	 */
-	private static void coalesceResources(final FixtureIterable<?> iter, ICLIHelper cli)
-			throws IOException {
+	private static void coalesceResources(final FixtureIterable<?> iter,
+										  final ICLIHelper cli) throws IOException {
 		final Map<Pair<String, Pair<String, Pair<String, Integer>>>, List<ResourcePile>> resources =
 				new HashMap<>();
 		for (final IFixture fix : iter) {

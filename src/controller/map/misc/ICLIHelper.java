@@ -91,7 +91,7 @@ public interface ICLIHelper extends Closeable {
 	 * @param prompt the string to prompt the user with
 	 * @throws IOException on I/O error
 	 */
-	default boolean inputBooleanInSeries(String prompt) throws IOException {
+	default boolean inputBooleanInSeries(final String prompt) throws IOException {
 		return inputBooleanInSeries(prompt, prompt);
 	}
 

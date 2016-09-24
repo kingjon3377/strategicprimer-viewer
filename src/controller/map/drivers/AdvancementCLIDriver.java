@@ -183,7 +183,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 				jobNum = choice.choose()) {
 			final IJob job;
 			if ((jobNum < 0) || (jobNum == jobs.size())) {
-				String jobName = cli.inputString("Name of new Job: ");
+				final String jobName = cli.inputString("Name of new Job: ");
 				worker.addJob(new Job(jobName, 0));
 				jobs.clear();
 				worker.forEach(jobs::add);
