@@ -59,8 +59,6 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
-	 * TODO: Should we "zero out" (to "unknown") the destination world?
-	 *
 	 * @param zero whether to "zero out" the destination coordinates
 	 * @return a copy of this portal
 	 */
@@ -69,7 +67,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	public Portal copy(final boolean zero) {
 		final Portal retval;
 		if (zero) {
-			retval = new Portal(destinationWorld, PointFactory.point(-1, -1), id);
+			retval = new Portal("unknown", PointFactory.point(-1, -1), id);
 		} else {
 			retval = new Portal(destinationWorld, destinationCoordinates, id);
 		}
