@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collections;
 import model.map.Player;
+import model.map.PointFactory;
 import org.junit.Test;
 import util.NullCleaner;
 import util.NullStream;
@@ -19,8 +20,6 @@ import static org.junit.Assert.assertThat;
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
- *
- * TODO: tests of inputPoint()
  *
  * Copyright (C) 2016 Jonathan Lovelace
  *
@@ -551,6 +550,31 @@ public class TestCLIHelper {
 			 ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
 			cli.printf("test %s", "three");
 			assertThat("printf() works", out.toString(), equalTo("test three"));
+		}
+	}
+	/**
+	 * Test inputPoint().
+	 * @throws IOException never
+	 */
+	@Test
+	public void testInputPoint() throws IOException {
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("2%n3%n")),
+												   out)) {
+			assertThat("reads row then column", cli.inputPoint("point prompt one"),
+					equalTo(PointFactory.point(2, 3)));
+			assertThat("prompts as expected", "point prompt oneRow: Column: ",
+					equalTo(out.toString()));
+		}
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
+					 "-1%n0%n-1%n4%n")), out)) {
+			assertThat("doesn't accept negative row or column",
+					cli.inputPoint("point prompt two"),
+					equalTo(PointFactory.point(0, 4)));
+			assertThat("prompts as expected",
+					"point prompt twoRow: Row: Column: Column: ",
+					equalTo(out.toString()));
 		}
 	}
 }
