@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import model.map.HasName;
 import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
@@ -120,24 +118,6 @@ public final class CLIHelper implements ICLIHelper {
 			printList(items);
 			return inputNumber(prompt);
 		}
-	}
-
-	/**
-	 * Turn an Iterable into a List. This is, of course, an eager implementation; make
-	 * sure not to use on anything with an infinite iterator!
-	 *
-	 * FIXME: This is probably more generally useful and should be moved elsewhere, if
-	 * it's not already somewhere I forgot about.
-	 *
-	 * TODO: Tests
-	 *
-	 * @param <T>  the type contained in the iterable.
-	 * @param iter the thing to iterate over
-	 * @return a List representing the same data.
-	 */
-	public static <T> List<T> toList(final Iterable<T> iter) {
-		return StreamSupport.stream(iter.spliterator(), false)
-					.collect(Collectors.toList());
 	}
 
 	/**

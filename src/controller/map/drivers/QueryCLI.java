@@ -32,6 +32,7 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.Nullable;
+import util.ListMaker;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
@@ -133,7 +134,7 @@ public final class QueryCLI implements SimpleDriver {
 			distance(model.getMapDimensions(), cli);
 			break;
 		case 'c':
-			count(model.getMap(), CLIHelper.toList(model.getMap().players()), cli);
+			count(model.getMap(), ListMaker.toList(model.getMap().players()), cli);
 			break;
 		case 'u':
 			final Point base = cli.inputPoint("Starting point? ");

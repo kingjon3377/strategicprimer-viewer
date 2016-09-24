@@ -19,6 +19,7 @@ import model.map.fixtures.mobile.worker.Skill;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
+import util.ListMaker;
 import util.NullCleaner;
 import util.SingletonRandom;
 
@@ -173,7 +174,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 */
 	private static void advanceSingleWorker(final IWorker worker,
 			final ICLIHelper cli) throws IOException {
-		final List<IJob> jobs = CLIHelper.toList(worker);
+		final List<IJob> jobs = ListMaker.toList(worker);
 		final String hdr = "Jobs in worker:";
 		final String none = "No existing jobs.";
 		final String prompt = "Job to advance: ";
@@ -215,7 +216,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 */
 	private static void advanceJob(final IJob job, final ICLIHelper cli)
 			throws IOException {
-		final List<ISkill> skills = CLIHelper.toList(job);
+		final List<ISkill> skills = ListMaker.toList(job);
 		final String hdr = "Skills in Job:";
 		final String none = "No existing skills.";
 		final String prompt = "Skill to advance: ";

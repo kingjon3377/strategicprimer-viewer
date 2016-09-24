@@ -1,6 +1,5 @@
 package model.map.fixtures.mobile;
 
-import controller.map.misc.CLIHelper;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,6 +15,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.LineEnd;
+import util.ListMaker;
 import util.NullCleaner;
 
 /**
@@ -169,7 +169,7 @@ public class Worker implements IWorker, HasPortrait {
 	 */
 	private boolean equalsIgIDImpl(final IWorker fix) {
 		return fix.getName().equals(name) &&
-					   areJobSetsEqual(jobSet, CLIHelper.toList(fix)) &&
+					   areJobSetsEqual(jobSet, ListMaker.toList(fix)) &&
 					   fix.getRace().equals(race) &&
 					   Objects.equals(stats, fix.getStats());
 	}
