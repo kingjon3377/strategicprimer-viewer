@@ -224,7 +224,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * The current state of the yes-to-all or no-to-all possibility. Absent if not set,
 	 * present if set, and the boolean value is what to return.
 	 */
-	private Map<String, Boolean> seriesState = new HashMap<>();
+	private final Map<String, Boolean> seriesState = new HashMap<>();
 	/**
 	 * Ask the user a yes-or-no question, allowing "yes to all" or "no to all" to skip
 	 * further questions.
