@@ -60,14 +60,10 @@ import view.util.SystemOut;
 public final class ExplorationModel extends SimpleMultiMapModel implements
 		IExplorationModel {
 	/**
-	 * The currently selected unit.
+	 * The currently selected unit and its location.
 	 */
-	@Nullable
-	private IUnit selUnit = null;
-	/**
-	 * Its location.
-	 */
-	private Point selUnitLoc = PointFactory.point(-1, -1);
+	private Pair<Point, Optional<IUnit>> selection =
+			Pair.of(PointFactory.point(-1, -1), Optional.empty());
 	/**
 	 * The list of movement-cost listeners.
 	 */
@@ -158,12 +154,11 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	public int move(final Direction direction)
 			throws SimpleMovement.TraversalImpossibleException {
-		final IUnit unit = selUnit;
-		if (unit == null) {
-			throw new IllegalStateException("move() called when no unit selected");
-		}
+		final Pair<Point, Optional<IUnit>> local = selection;
+		final IUnit unit = local.second().orElseThrow(
+				() -> new IllegalStateException("move() called when no unit selected"));
 		final IMutableMapNG map = getMap();
-		final Point point = selUnitLoc;
+		final Point point = local.first();
 		final Point dest = getDestination(point, direction);
 		if (SimpleMovement.isLandMovementPossible(map.getBaseTerrain(dest))) {
 			final int retval;
@@ -189,7 +184,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				removeImpl(subMap, point, unit);
 				subMap.addFixture(dest, unit);
 			}
-			selUnitLoc = dest;
+			selection = Pair.of(dest, Optional.of(unit));
 			fireSelectionChange(point, dest);
 			fireMovementCost(retval);
 			checkAllNearbyWatchers(getMap(), unit, dest);
@@ -451,7 +446,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	@Nullable
 	public IUnit getSelectedUnit() {
-		return selUnit;
+		return selection.second().orElse(null);
 	}
 
 	/**
@@ -459,14 +454,15 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@Override
 	public void selectUnit(@Nullable final IUnit unit) {
-		final Point oldLoc = selUnitLoc;
-		selUnit = unit;
+		final Point oldLoc = selection.first();
+		final Point loc;
 		if (unit == null) {
-			selUnitLoc = PointFactory.point(-1, -1);
+			loc = PointFactory.point(-1, -1);
 		} else {
-			selUnitLoc = find(unit);
+			loc = find(unit);
 		}
-		fireSelectionChange(oldLoc, selUnitLoc);
+		selection = Pair.of(loc, Optional.ofNullable(unit));
+		fireSelectionChange(oldLoc, loc);
 	}
 
 	/**
@@ -474,7 +470,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@Override
 	public Point getSelectedUnitLocation() {
-		return selUnitLoc;
+		return selection.first();
 	}
 
 	/**
@@ -526,10 +522,11 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@Override
 	public void swearVillages() {
-		// TODO: Possible data race here (one of *many* in this suite ...)
-		final Point currPoint = selUnitLoc;
-		final IUnit mover = selUnit;
-		if (mover != null) {
+		final Pair<Point, Optional<IUnit>> localSelection = selection;
+		final Point currPoint = localSelection.first();
+		final Optional<IUnit> temp = localSelection.second();
+		if (temp.isPresent()) {
+			final IUnit mover = temp.get();
 			final Player owner = mover.getOwner();
 			StreamSupport.stream(getAllMaps().spliterator(), false).map(Pair::first)
 					.flatMap(map -> map.streamOtherFixtures(currPoint))
@@ -545,7 +542,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@Override
 	public void dig() {
-		final Point currPoint = selUnitLoc;
+		final Point currPoint = selection.first();
 		if (currPoint.getRow() >= 0) {
 			final List<TileFixture> diggables = new ArrayList<>();
 			final IMutableMapNG mainMap = getMap();
