@@ -166,10 +166,10 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 		if (node != null) {
 			if (node instanceof IReportNode) {
 				if (!((IReportNode) node).isEmptyNode()) {
-					super.insert(node, 0);
+					insert(node, 0);
 				}
 			} else {
-				super.insert(node, 0);
+				insert(node, 0);
 			}
 		}
 	}
