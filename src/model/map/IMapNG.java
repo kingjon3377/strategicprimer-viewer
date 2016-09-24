@@ -127,7 +127,7 @@ public interface IMapNG
 					   !isMountainous(location) && getGround(location) == null &&
 					   getForest(location) == null &&
 					   !getRivers(location).iterator().hasNext() &&
-					   streamOtherFixtures(location).anyMatch(i -> true);
+					   streamOtherFixtures(location).anyMatch(x -> true);
 	}
 	/**
 	 * A map is empty if *every* location is empty. Note that calculating this can be

@@ -598,7 +598,7 @@ public class SPMapNG implements IMutableMapNG {
 				}
 				builder.append(", ");
 			}
-			if (streamOtherFixtures(location).anyMatch(i -> true)) {
+			if (streamOtherFixtures(location).anyMatch(x -> true)) {
 				builder.append("other: ");
 				for (final TileFixture fixture : getOtherFixtures(location)) {
 					builder.append(LineEnd.LINE_SEP);
