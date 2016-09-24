@@ -92,6 +92,7 @@ public interface ICLIHelper extends Closeable {
 	 * @throws IOException on I/O error
 	 * @return the user's answer (minus the "to all")
 	 */
+	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	default boolean inputBooleanInSeries(final String prompt) throws IOException {
 		return inputBooleanInSeries(prompt, prompt);
 	}
@@ -105,6 +106,7 @@ public interface ICLIHelper extends Closeable {
 	 * @throws IOException on I/O error
 	 * @return the user's answer (minus the "to all")
 	 */
+	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	boolean inputBooleanInSeries(String prompt, final String key) throws IOException;
 	/**
 	 * Print a formatted string.
