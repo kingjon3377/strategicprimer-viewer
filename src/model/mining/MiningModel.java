@@ -40,7 +40,7 @@ public final class MiningModel {
 		/**
 		 * A mine which emphasizes layers, such as a sand mine.
 		 */
-		Banded;
+		Banded
 	}
 	/**
 	 * A mapping from positions (normalized so they could be spit out into a spreadsheet)
