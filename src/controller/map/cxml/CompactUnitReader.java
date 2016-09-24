@@ -23,7 +23,6 @@ import util.EqualsAny;
 import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
-import view.util.SystemOut;
 
 import static java.util.Collections.unmodifiableList;
 

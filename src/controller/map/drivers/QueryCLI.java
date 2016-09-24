@@ -23,7 +23,6 @@ import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.Point;
-import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;

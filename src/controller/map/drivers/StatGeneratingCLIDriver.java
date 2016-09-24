@@ -26,7 +26,6 @@ import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
-import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
