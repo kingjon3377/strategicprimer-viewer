@@ -230,8 +230,9 @@ public final class CLIHelper implements ICLIHelper {
 	 * further questions.
 	 *
 	 * @param prompt the string to prompt the user with
-	 * @param key
+	 * @param key a string passed here for all questions that should be skipped if "X to all"
 	 * @throws IOException on I/O error
+	 * @return the user's answer (minus the "to all")
 	 */
 	@Override
 	public boolean inputBooleanInSeries(final String prompt, final String key) throws IOException {

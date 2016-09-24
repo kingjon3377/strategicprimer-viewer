@@ -90,6 +90,7 @@ public interface ICLIHelper extends Closeable {
 	 *
 	 * @param prompt the string to prompt the user with
 	 * @throws IOException on I/O error
+	 * @return the user's answer (minus the "to all")
 	 */
 	default boolean inputBooleanInSeries(final String prompt) throws IOException {
 		return inputBooleanInSeries(prompt, prompt);
@@ -102,6 +103,7 @@ public interface ICLIHelper extends Closeable {
 	 * @param prompt the string to prompt the user with
 	 * @param key the prompt to compare to others to define "similar" questions.
 	 * @throws IOException on I/O error
+	 * @return the user's answer (minus the "to all")
 	 */
 	boolean inputBooleanInSeries(String prompt, final String key) throws IOException;
 	/**
@@ -137,6 +139,7 @@ public interface ICLIHelper extends Closeable {
 	 * Get a Point from the user. This is a convenience wrapper around two calls to
 	 * inputNumber.
 	 * @param prompt the prompt to use
+	 * @return the point the user input
 	 */
 	default Point inputPoint(final String prompt) throws IOException {
 		print(prompt);
