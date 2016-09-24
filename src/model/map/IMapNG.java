@@ -129,4 +129,13 @@ public interface IMapNG
 					   !getRivers(location).iterator().hasNext() &&
 					   streamOtherFixtures(location).anyMatch(i -> true);
 	}
+	/**
+	 * A map is empty if *every* location is empty. Note that calculating this can be
+	 * quite expensive!
+	 *
+	 * @return whether the map is entirely empty
+	 */
+	default boolean isEmpty() {
+		return locationStream().allMatch(this::isLocationEmpty);
+	}
 }
