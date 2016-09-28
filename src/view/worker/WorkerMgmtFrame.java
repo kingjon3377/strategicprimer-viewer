@@ -4,6 +4,7 @@ import com.bric.window.WindowList;
 import controller.map.misc.FileChooser;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
+import controller.map.misc.StrategyExporter;
 import controller.map.report.ReportGenerator;
 import java.awt.Component;
 import java.awt.Dimension;

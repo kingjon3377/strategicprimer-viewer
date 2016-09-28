@@ -1,4 +1,4 @@
-package view.worker;
+package controller.map.misc;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -26,8 +26,6 @@ import static java.util.logging.Level.SEVERE;
 
 /**
  * A class to export a "proto-strategy" to file.
- *
- * FIXME: This belongs in the controller.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
