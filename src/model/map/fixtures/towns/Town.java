@@ -36,8 +36,6 @@ public final class Town extends AbstractTown {
 	}
 
 	/**
-	 * TODO: Should we "zero out" the name or owner?
-	 *
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this town
 	 */
