@@ -9,8 +9,6 @@ public class ListMaker {
 	 * Turn an Iterable into a List. This is, of course, an eager implementation; make
 	 * sure not to use on anything with an infinite iterator!
 	 *
-	 * TODO: Tests
-	 *
 	 * @param <T>  the type contained in the iterable.
 	 * @param iter the thing to iterate over
 	 * @return a List representing the same data.
