@@ -314,8 +314,6 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	}
 
 	/**
-	 * TODO: Add support for different sizes (but leave 'small' the default).
-	 *
 	 * @return the size of the fortress.
 	 */
 	@Override
