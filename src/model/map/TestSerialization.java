@@ -23,6 +23,7 @@ import model.map.fixtures.mobile.Ogre;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.TownSize;
 import org.junit.Test;
 import util.Pair;
 import util.Warning;
@@ -225,7 +226,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("Tile with two fixtures", secondMap);
 		final IMutableMapNG thirdMap =
 				createSimpleMap(point(4, 4), Pair.of(point(3, 3), Jungle));
-		final Fortress fort = new Fortress(new Player(2, ""), "fortOne", 1);
+		final Fortress fort = new Fortress(new Player(2, ""), "fortOne", 1,
+												  TownSize.Small);
 		fort.addMember(new Unit(new Player(2, ""), "unitTwo", "secondUnit", 2));
 		thirdMap.addFixture(point(3, 3), fort);
 		thirdMap.addFixture(point(3, 3), new TextFixture("Random text here", 5));

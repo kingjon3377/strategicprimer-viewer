@@ -152,25 +152,31 @@ public final class TestSubsets {
 	/**
 	 * A test of Fortress's subset feature.
 	 *
+	 * TODO: test subsets when one is named "unknown"
+	 *
 	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testFortressSubset() throws IOException {
-		final Fortress firstFort = new Fortress(new Player(1, ONE_STR), "fOne", 1);
-		final Fortress secondFort = new Fortress(new Player(2, "two"), "fOne", 1);
+		final Fortress firstFort = new Fortress(new Player(1, ONE_STR), "fOne", 1,
+													   TownSize.Small);
+		final Fortress secondFort = new Fortress(new Player(2, "two"), "fOne", 1,
+														TownSize.Small);
 		assertThat("Subset requires same owner, first test",
 				Boolean.valueOf(firstFort.isSubset(secondFort, DEV_NULL, "")),
 				equalTo(Boolean.FALSE));
 		assertThat("Subset requires same owner, second test",
 				Boolean.valueOf(secondFort.isSubset(firstFort, DEV_NULL, "")),
 				equalTo(Boolean.FALSE));
-		final Fortress thirdFort = new Fortress(new Player(1, ONE_STR), "fTwo", 2);
+		final Fortress thirdFort = new Fortress(new Player(1, ONE_STR), "fTwo", 2,
+													   TownSize.Small);
 		assertThat("Subset requires same name, first test",
 				Boolean.valueOf(firstFort.isSubset(thirdFort, DEV_NULL, "")), equalTo(Boolean.FALSE));
 		assertThat("Subset requires same name, second test",
 				Boolean.valueOf(thirdFort.isSubset(firstFort, DEV_NULL, "")), equalTo(Boolean.FALSE));
-		final Fortress fourthFort = new Fortress(new Player(1, ONE_STR), "fOne", 3);
+		final Fortress fourthFort = new Fortress(new Player(1, ONE_STR), "fOne", 3,
+														TownSize.Small);
 		assertThat("Subset doesn't require identity or ID equality",
 				Boolean.valueOf(firstFort.isSubset(fourthFort, DEV_NULL, "")), equalTo(Boolean.TRUE));
 		assertThat("Subset doesn't require identity or ID equality",

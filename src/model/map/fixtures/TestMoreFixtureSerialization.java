@@ -33,6 +33,7 @@ import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import org.junit.Test;
 import util.NullCleaner;
@@ -493,7 +494,8 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testFortressMemberSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
-		final Fortress firstFort = new Fortress(new Player(1, ""), "fortName", 1);
+		final Fortress firstFort = new Fortress(new Player(1, ""), "fortName", 1,
+													   TownSize.Small);
 		firstFort.addMember(new Implement("implKind", 2));
 		assertSerialization("Fortress can have an Implement as a member", firstFort);
 		firstFort.addMember(

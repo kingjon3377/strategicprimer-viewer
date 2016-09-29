@@ -67,6 +67,7 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.TownSize;
 import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
 import util.Warning;
@@ -386,7 +387,9 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		final Fortress retval =
 				new Fortress(getPlayerOrIndependent(element, warner, players),
 									getAttribute(element, "name", ""),
-									getOrGenerateID(element, warner, idFactory));
+									getOrGenerateID(element, warner, idFactory),
+									TownSize.parseTownSize(
+											getAttribute(element, "size", "small")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object child =

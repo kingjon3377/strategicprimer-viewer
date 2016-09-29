@@ -55,23 +55,28 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	 */
 	private String name;
 	/**
+	 * The size of the fortress.
+	 */
+	private final TownSize size;
+	/**
 	 * The units in the fortress.
 	 */
 	private final List<FortressMember> units; // Should this be a Set?
 
 	/**
 	 * Constructor.
-	 *
-	 * @param fortOwner the player that owns the fortress
+	 *  @param fortOwner the player that owns the fortress
 	 * @param fortName  the name of the fortress
 	 * @param idNum     the ID number.
+	 * @param fortSize
 	 */
 	public Fortress(final Player fortOwner, final String fortName,
-					final int idNum) {
+					final int idNum, final TownSize fortSize) {
 		owner = fortOwner;
 		name = fortName;
 		units = new ArrayList<>();
 		id = idNum;
+		size = fortSize;
 	}
 
 	/**
@@ -83,9 +88,9 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	public Fortress copy(final boolean zero) {
 		final Fortress retval;
 		if (zero) {
-			retval = new Fortress(owner, "unknown", id);
+			retval = new Fortress(owner, "unknown", id, size);
 		} else {
-			retval = new Fortress(owner, name, id);
+			retval = new Fortress(owner, name, id, size);
 			for (final FortressMember unit : this) {
 				retval.addMember(unit.copy(false));
 			}
@@ -296,7 +301,10 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	}
 
 	/**
-	 * TODO: Add support for having a different status (but leave 'active' the default).
+	 * TODO: Add support for having a different status? (but leave 'active' the default).
+	 *
+	 * Or maybe a non-'active' fortress is a Fortification, and an active fortification
+	 * is a Fortress.
 	 *
 	 * @return the status of the fortress
 	 */
@@ -312,7 +320,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	 */
 	@Override
 	public TownSize size() {
-		return TownSize.Small;
+		return size;
 	}
 
 	/**

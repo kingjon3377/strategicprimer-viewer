@@ -35,6 +35,7 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.TownSize;
 import org.junit.Test;
 
 /**
@@ -243,15 +244,15 @@ public final class TestFixtureSerialization extends
 		// pass a set of players in
 		final Player firstPlayer = new Player(1, "");
 		assertSerialization("First test of Fortress serialization",
-				new Fortress(firstPlayer, "one", 1));
+				new Fortress(firstPlayer, "one", 1, TownSize.Small));
 		assertSerialization("Second test of Fortress serialization",
-				new Fortress(firstPlayer, "two", 2));
+				new Fortress(firstPlayer, "two", 2, TownSize.Medium));
 		final Player secondPlayer = new Player(2, "");
 		assertSerialization("Third test of Fortress serialization",
-				new Fortress(secondPlayer, "three", 3));
+				new Fortress(secondPlayer, "three", 3, TownSize.Large));
 		assertSerialization("Fourth test of Fortress serialization",
-				new Fortress(secondPlayer, "four", 4));
-		final Fortress five = new Fortress(secondPlayer, "five", 5);
+				new Fortress(secondPlayer, "four", 4, TownSize.Small));
+		final Fortress five = new Fortress(secondPlayer, "five", 5, TownSize.Small);
 		five.addMember(new Unit(secondPlayer, "unitOne", "unitTwo", 1));
 		assertSerialization("Fifth test of Fortress serialization", five);
 		assertUnwantedChild("<fortress><hill /></fortress>", Fortress.class,

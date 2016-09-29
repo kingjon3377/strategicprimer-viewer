@@ -52,10 +52,11 @@ public class TestTownComparator {
 			}
 			input.add(new Village(status, "inputVillage", id++, owner, "inputRace"));
 		}
-		input.add(new Fortress(owner, "inputFortress", id++));
+		// TODO: Cover other sizes of fortress
+		input.add(new Fortress(owner, "inputFortress", id++, TownSize.Small));
 		input.add(new City(TownStatus.Active, TownSize.Large, -1, "inputCityTwo", id++,
 								  owner));
-		input.add(new Fortress(owner, "inputFortressTwo", id++));
+		input.add(new Fortress(owner, "inputFortressTwo", id++, TownSize.Small));
 		input.add(new Town(TownStatus.Ruined, TownSize.Medium, -1, "inputTownTwo", id++,
 								  owner));
 		input.add(new Fortification(TownStatus.Burned, TownSize.Small, -1,
@@ -73,8 +74,8 @@ public class TestTownComparator {
 				new Town(TownStatus.Active, TownSize.Medium, -1, "inputTown", 3, owner),
 				new Fortification(TownStatus.Active, TownSize.Medium, -1,
 										 "inputFortification", 5, owner),
-				new Fortress(owner, "inputFortress", 40),
-				new Fortress(owner, "inputFortressTwo", 42),
+				new Fortress(owner, "inputFortress", 40, TownSize.Small),
+				new Fortress(owner, "inputFortressTwo", 42, TownSize.Small),
 				new City(TownStatus.Active, TownSize.Small, -1, "inputCity", 1, owner),
 				new Town(TownStatus.Active, TownSize.Small, -1, "inputTown", 0, owner),
 				new Fortification(TownStatus.Active, TownSize.Small, -1,

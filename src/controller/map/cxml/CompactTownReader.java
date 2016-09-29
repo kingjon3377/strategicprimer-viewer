@@ -229,10 +229,12 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			throws SPFormatException {
 		requireNonEmptyParameter(element, OWNER_PARAM, false, warner);
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
-		final Fortress retval = new Fortress(getOwnerOrIndependent(element,
-				warner, players), getParameter(element, NAME_PARAM, ""),
-													getOrGenerateID(element, warner,
-															idFactory));
+		final Fortress retval =
+				new Fortress(getOwnerOrIndependent(element, warner, players),
+									getParameter(element, NAME_PARAM, ""),
+									getOrGenerateID(element, warner, idFactory),
+									TownSize.parseTownSize(
+											getParameter(element, "size", "small")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
 					NullCleaner.assertNotNull(
@@ -309,6 +311,10 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			if (!obj.getName().isEmpty()) {
 				ostream.append("\" name=\"");
 				ostream.append(obj.getName());
+			}
+			if (TownSize.Small != obj.size()) {
+				ostream.append("\" size=\"");
+				ostream.append(obj.size().toString());
 			}
 			ostream.append("\" id=\"");
 			ostream.append(Integer.toString(obj.getID()));

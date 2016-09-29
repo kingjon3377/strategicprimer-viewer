@@ -126,7 +126,8 @@ public final class TestConverter {
 		start.addFixture(pointThree, fixtureThree);
 		start.setBaseTerrain(pointThree, TileType.Desert);
 		final Point pointFour = PointFactory.point(1, 1);
-		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"), "HQ", 4);
+		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"), "HQ", 4,
+														 TownSize.Small);
 		start.addFixture(pointFour, fixtureFour);
 		start.setBaseTerrain(pointFour, TileType.Plains);
 		final IMapNG converted = ResolutionDecreaseConverter.convert(start);
@@ -1287,7 +1288,8 @@ public final class TestConverter {
 		expected.addFixture(PointFactory.point(1, 0),
 				new Town(TownStatus.Burned, TownSize.Small, 0, "", 0,
 								new Player(-1, "Independent")));
-		expected.addFixture(PointFactory.point(1, 0), new Fortress(player, "HQ", 15));
+		expected.addFixture(PointFactory.point(1, 0), new Fortress(player, "HQ", 15,
+																		  TownSize.Small));
 		expected.addFixture(PointFactory.point(1, 1), new MineralVein("coal", true, 0, 1));
 
 		final StringWriter expectedXML = new StringWriter();

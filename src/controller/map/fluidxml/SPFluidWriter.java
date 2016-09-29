@@ -68,6 +68,7 @@ import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.Village;
 import util.LineEnd;
 import util.NullCleaner;
@@ -288,6 +289,9 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writeTag(ostream, "fortress", indent, false);
 		writeIntegerAttribute(ostream, "owner", fort.getOwner().getPlayerId());
 		writeNonEmptyAttribute(ostream, "name", fort.getName());
+		if (TownSize.Small != fort.size()) {
+			writeAttribute(ostream, "size", fort.size().toString());
+		}
 		writeIntegerAttribute(ostream, "id", fort.getID());
 		writeImage(ostream, fort);
 		writeNonEmptyAttribute(ostream, "portrait", fort.getPortrait());

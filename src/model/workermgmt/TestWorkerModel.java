@@ -24,6 +24,7 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.TownSize;
 import org.junit.Test;
 import util.NullCleaner;
 
@@ -63,7 +64,8 @@ public final class TestWorkerModel {
 		final Player playerTwo = new Player(1, "player2");
 		addItem(new Unit(playerTwo, "two", "unitTwo", 3), fixtures,
 				listTwo);
-		final Fortress fort = new Fortress(new Player(3, "player4"), "fort", 4);
+		final Fortress fort = new Fortress(new Player(3, "player4"), "fort", 4,
+												  TownSize.Small);
 		final Player playerThree = new Player(2, "player3");
 		final IUnit unit = new Unit(playerThree, "three", "unitThree", 5);
 		fort.addMember(unit);
