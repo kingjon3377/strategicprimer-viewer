@@ -1,10 +1,7 @@
 package model.map.fixtures.mobile;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -364,81 +361,6 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 			return "a(n) " + kind + " unit belonging to " + owner.getName();
 		}
 	}
-
-	/**
-	 * @param obj     another unit
-	 * @param ostream the stream to report results on
-	 * @param context a string to print before every line of output, describing the
-	 *                context
-	 * @return whether the unit is a strict subset of this one.
-	 * @throws IOException on I/O error writing output to the stream
-	 */
-	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream,
-							final String context) throws IOException {
-		if (obj.getID() != id) {
-			ostream.append(context);
-			ostream.append("\tFixtures have different IDs");
-			ostream.append(LineEnd.LINE_SEP);
-			return false;
-		} else if (!(obj instanceof IUnit)) {
-			ostream.append(context);
-			ostream.append("Different kinds of fixtures for ID #");
-			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(LineEnd.LINE_SEP);
-			return false;
-		} else if (areIntItemsEqual(ostream, owner.getPlayerId(),
-				((IUnit) obj).getOwner().getPlayerId(), context, " Unit of ID #",
-				Integer.toString(id), ":\tOwners differ.", LineEnd.LINE_SEP) &&
-						areObjectsEqual(ostream, name, ((IUnit) obj).getName(), context,
-								" Unit of ID #", Integer.toString(id),
-								":\tNames differ", LineEnd.LINE_SEP) &&
-						areObjectsEqual(ostream, kind, ((IUnit) obj).getKind(), context,
-								" Unit of ID #", Integer.toString(id),
-								":\tKinds differ", LineEnd.LINE_SEP)) {
-			final Iterable<UnitMember> other = (IUnit) obj;
-			final Map<Integer, UnitMember> ours = new HashMap<>();
-			for (final UnitMember member : this) {
-				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())),
-						member);
-			}
-			final String localContext =
-					NullCleaner.assertNotNull(String.format(
-							"%s In unit of kind %s named %s (ID #%d):",
-							context, kind, name, Integer.valueOf(id)));
-			boolean retval = true;
-			for (final UnitMember member : other) {
-				if (!ours.containsKey(Integer.valueOf(member.getID()))) {
-					ostream.append(localContext);
-					ostream.append(" Extra member:\t");
-					ostream.append(member.toString());
-					ostream.append(", ID #");
-					ostream.append(Integer.toString(member.getID()));
-					ostream.append(LineEnd.LINE_SEP);
-					retval = false;
-				} else if (!NullCleaner.assertNotNull(
-						ours.get(Integer.valueOf(member.getID())))
-									.isSubset(member, ostream, localContext)) {
-					retval = false;
-				}
-			}
-			if (retval) {
-				if (("unassigned".equals(name) || "unassigned".equals(kind)) &&
-						!members.isEmpty() && !other.iterator().hasNext()) {
-					ostream.append(localContext);
-					ostream.append(" Nonempty 'unassigned' when submap has it empty");
-					ostream.append(LineEnd.LINE_SEP);
-				}
-				return true;
-			} else {
-				return false;
-			}
-			//			return retval;
-		} else {
-			return false;
-		}
-	}
-
 	/**
 	 * The filename of an image to use as a portrait for the unit.
 	 */

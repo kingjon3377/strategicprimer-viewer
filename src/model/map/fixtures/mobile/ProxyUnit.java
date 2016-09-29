@@ -18,6 +18,7 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EmptyIterator;
+import util.LineEnd;
 import util.TypesafeLogger;
 
 import static util.NullCleaner.assertNotNull;
@@ -392,8 +393,6 @@ public final class ProxyUnit
 	}
 
 	/**
-	 * TODO: implement properly?
-	 *
 	 * @param obj     ignored
 	 * @param ostream the stream to write to
 	 * @param context the context to write before writing our results
@@ -406,7 +405,8 @@ public final class ProxyUnit
 			throws IOException {
 		ostream.append(context);
 		ostream.append("Called isSubset() in ProxyUnit");
-		return false;
+		ostream.append(LineEnd.LINE_SEP);
+		return IUnit.super.isSubset(obj, ostream, context + "\tIn proxy unit:");
 	}
 
 	/**
