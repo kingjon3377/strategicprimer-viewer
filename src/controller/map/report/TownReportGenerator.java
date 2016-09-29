@@ -28,6 +28,8 @@ import util.PatientMap;
 /**
  * A report generator for towns.
  *
+ * TODO: Figure out some way to report what was found at any of the towns.
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -61,8 +63,6 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * specifies {@link ITownFixture}, this method ignores {@link Fortress}es and {@link
 	 * Village}s. All fixtures referred to in this report are removed from the
 	 * collection.
-	 *
-	 * TODO: Figure out some way to report what was found at any of the towns.
 	 *
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
@@ -110,8 +110,6 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * specifies {@link ITownFixture}, this method ignores {@link Fortress}es and {@link
 	 * Village}s. All fixtures referred to in this report are removed from the
 	 * collection.
-	 *
-	 * TODO: Figure out some way to report what was found at any of the towns.
 	 *
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
