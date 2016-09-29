@@ -443,13 +443,19 @@ public final class ProxyUnit
 	}
 
 	/**
-	 * FIXME: Implement properly.
-	 *
 	 * @return a "verbose" description of the unit
 	 */
 	@Override
 	public String verbose() {
-		return "A proxy for units in several maps";
+		if (parallel) {
+			for (final IUnit unit : proxied) {
+				return "A proxy for units in several maps, such as the following:" +
+							   LineEnd.LINE_SEP + unit.verbose();
+			}
+			return "A proxy for units in several maps, but no units yet";
+		} else {
+			return "A proxy for units of kind " + kind;
+		}
 	}
 
 	/**
