@@ -15,6 +15,7 @@ import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import util.EqualsAny;
 import util.LineEnd;
 
 import static util.NullCleaner.assertNotNull;
@@ -74,16 +75,17 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	}
 
 	/**
-	 * TODO: Should we omit its name?
-	 *
 	 * @param zero whether to omit the fortress's contents
 	 * @return a copy of this fortress
 	 */
 	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Fortress copy(final boolean zero) {
-		final Fortress retval = new Fortress(owner, name, id);
-		if (!zero) {
+		final Fortress retval;
+		if (zero) {
+			retval = new Fortress(owner, "unknown", id);
+		} else {
+			retval = new Fortress(owner, name, id);
 			for (final FortressMember unit : this) {
 				retval.addMember(unit.copy(false));
 			}
@@ -231,7 +233,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 			return false;
 		}
 		final Fortress fort = (Fortress) obj;
-		if (name.equals(fort.name)
+		if (EqualsAny.equalsAny(fort.name, name, "unknown")
 					&& (fort.owner.getPlayerId() == owner.getPlayerId())) {
 			final Map<Integer, FortressMember> ours = new HashMap<>();
 			for (final FortressMember member : this) {
