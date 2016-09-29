@@ -1,11 +1,13 @@
 package model.map.fixtures.mobile.worker;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 import model.map.fixtures.mobile.ProxyFor;
 import org.eclipse.jdt.annotation.NonNull;
+import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -238,5 +240,21 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 		// FIXME: Because this is a ProxyFor<IJob>, it should probably return true
 		// always ...
 		return parallel;
+	}
+	/**
+	 * @param obj     ignored
+	 * @param ostream a stream to report this call on
+	 * @param context a string to print before every line of output, describing the
+	 *                context
+	 * @return false
+	 * @throws IOException on I/O error writing output to the stream
+	 */
+	@Override
+	public boolean isSubset(final ISkill obj, final Appendable ostream,
+							final String context) throws IOException {
+		ostream.append(context);
+		ostream.append("\tisSubset called on ProxySkill");
+		ostream.append(LineEnd.LINE_SEP);
+		return false;
 	}
 }

@@ -1,6 +1,11 @@
 package model.map.fixtures.mobile.worker;
 
+import java.io.IOException;
+import java.util.Objects;
 import model.map.HasMutableName;
+import model.map.Subsettable;
+import org.eclipse.jdt.annotation.NonNull;
+import util.LineEnd;
 
 /**
  * An interface for Skills.
@@ -17,7 +22,7 @@ import model.map.HasMutableName;
  *
  * @author Jonathan Lovelace
  */
-public interface ISkill extends HasMutableName {
+public interface ISkill extends HasMutableName, Subsettable<@NonNull ISkill> {
 	/**
 	 * @return how many levels the worker has in the skill
 	 */
@@ -50,4 +55,44 @@ public interface ISkill extends HasMutableName {
 	 * @return whether this skill is "empty"
 	 */
 	boolean isEmpty();
+	/**
+	 * @param obj another Skill
+	 * @param ostream a stream to explain our results on
+	 * @param context a string to print before every line of output, describing the
+	 *                context
+	 * @return whether the Skill is a "subset" of this---same name, equal or lower level,
+	 * equal or lower number of hours if equal level.
+	 * @throws IOException on I/O error writing output to the stream
+	 */
+	@Override
+	default boolean isSubset(final ISkill obj, final Appendable ostream,
+							 final String context) throws IOException {
+		final int lvl = getLevel();
+		final int hours = getHours();
+		if (Objects.equals(obj.getName(), getName())) {
+			if (obj.getLevel() > lvl) {
+				ostream.append(context);
+				ostream.append("\tExtra level(s) in ");
+				ostream.append(obj.getName());
+				ostream.append(LineEnd.LINE_SEP);
+				return false;
+			} else if ((obj.getLevel() == lvl) && (obj.getHours() > hours)) {
+				ostream.append(context);
+				ostream.append("\tExtra hours in ");
+				ostream.append(obj.getName());
+				ostream.append(LineEnd.LINE_SEP);
+				return false;
+			}
+			return true;
+		} else {
+			ostream.append(context);
+			ostream.append("\tCalled with non-corresponding skill, ");
+			ostream.append(obj.getName());
+			ostream.append(" (this is ");
+			ostream.append(getName());
+			ostream.append(")");
+			ostream.append(LineEnd.LINE_SEP);
+			return false;
+		}
+	}
 }

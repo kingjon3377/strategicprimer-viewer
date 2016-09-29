@@ -9,7 +9,6 @@ import java.util.stream.StreamSupport;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
-import util.Pair;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -153,7 +152,7 @@ public class Job implements IJob {
 			return false;
 		} else {
 			boolean retval = true;
-			final Map<String, Pair<Integer, Integer>> ours = new HashMap<>();
+			final Map<String, ISkill> ours = new HashMap<>();
 			for (final ISkill skill : this) {
 				if (ours.containsKey(skill.getName())) {
 					ostream.append(context);
@@ -164,35 +163,13 @@ public class Job implements IJob {
 					ostream.append(LineEnd.LINE_SEP);
 					retval = false;
 				} else {
-					ours.put(skill.getName(),
-							Pair.of(assertNotNull(Integer.valueOf(skill.getLevel())),
-									assertNotNull(Integer.valueOf(skill.getHours()))));
+					ours.put(skill.getName(), skill);
 				}
 			}
 			for (final ISkill skill : obj) {
 				if (ours.containsKey(skill.getName())) {
-					// TODO: Move this logic into Skill?
-					final Pair<Integer, Integer> pair =
-							assertNotNull(ours.get(skill.getName()));
-					final int lvl = pair.first().intValue();
-					final int hours = pair.second().intValue();
-					if (skill.getLevel() > lvl) {
-						ostream.append(context);
-						ostream.append(" In Job ");
-						ostream.append(name);
-						ostream.append(":\tExtra level(s) in ");
-						ostream.append(skill.getName());
-						ostream.append(LineEnd.LINE_SEP);
-						retval = false;
-					} else if ((skill.getLevel() == lvl) && (skill.getHours() > hours)) {
-						ostream.append(context);
-						ostream.append(" In Job ");
-						ostream.append(name);
-						ostream.append(":\tExtra hours in ");
-						ostream.append(skill.getName());
-						ostream.append(LineEnd.LINE_SEP);
-						retval = false;
-					}
+					retval &= ours.get(skill.getName()).isSubset(skill, ostream,
+							context + " In Job " + name + ":");
 				} else {
 					ostream.append(context);
 					ostream.append(" In Job ");
