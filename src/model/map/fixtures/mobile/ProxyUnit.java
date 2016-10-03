@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 import model.map.HasMutableImage;
@@ -448,11 +449,13 @@ public final class ProxyUnit
 	@Override
 	public String verbose() {
 		if (parallel) {
-			for (final IUnit unit : proxied) {
+			final Optional<IUnit> first = proxied.stream().findFirst();
+			if (first.isPresent()) {
 				return "A proxy for units in several maps, such as the following:" +
-							   LineEnd.LINE_SEP + unit.verbose();
+							   LineEnd.LINE_SEP + first.get().verbose();
+			} else {
+				return "A proxy for units in several maps, but no units yet";
 			}
-			return "A proxy for units in several maps, but no units yet";
 		} else {
 			return "A proxy for units of kind " + kind;
 		}
