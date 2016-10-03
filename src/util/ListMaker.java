@@ -4,7 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class ListMaker {
+public final class ListMaker {
+	/**
+	 * No need to instantiate.
+	 */
+	private ListMaker() {
+		// No need to instantiate.
+	}
 	/**
 	 * Turn an Iterable into a List. This is, of course, an eager implementation; make
 	 * sure not to use on anything with an infinite iterator!

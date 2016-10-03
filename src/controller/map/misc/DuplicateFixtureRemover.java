@@ -35,7 +35,13 @@ import util.Pair;
  *
  * @author Jonathan Lovelace
  */
-public class DuplicateFixtureRemover {
+public final class DuplicateFixtureRemover {
+	/**
+	 * No need to instantiate.
+	 */
+	private DuplicateFixtureRemover() {
+		// No need to instantiate.
+	}
 	/**
 	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills, forests of the
 	 * same kind, oases, etc.---we use TileFixture#equalsIgnoringID(TileFixture)) from
