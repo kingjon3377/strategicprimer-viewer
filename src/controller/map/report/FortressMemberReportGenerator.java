@@ -156,8 +156,8 @@ public final class FortressMemberReportGenerator
 					resourceKinds.put(kind, list);
 					rsr.add(list);
 				}
-				list.add(produceRIR(fixtures, map, currentPlayer,
-						(FortressMember) pair.second(), pair.first()));
+				list.add(
+						produceRIR(fixtures, map, currentPlayer, resource, pair.first()));
 			} else if (pair.second() instanceof Implement) {
 				equip.add(produceRIR(fixtures, map, currentPlayer,
 						(FortressMember) pair.second(), pair.first()));
