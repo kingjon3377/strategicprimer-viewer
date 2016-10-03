@@ -153,7 +153,7 @@ public interface ITableGenerator<@NonNull T> {
 	/**
 	 * @return the character delimiting rows in the output
 	 */
-	@SuppressWarnings("SameReturnValue")
+	@SuppressWarnings({"SameReturnValue", "TypeMayBeWeakened"})
 	default String getRowDelimiter() {
 		return LineEnd.LINE_SEP;
 	}
