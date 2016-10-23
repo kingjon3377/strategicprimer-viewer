@@ -16,7 +16,7 @@ import model.map.fixtures.mobile.worker.WorkerStats;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
-import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.ITownFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 
@@ -206,7 +206,7 @@ public final class SimpleMovement {
 											@Nullable final TileFixture fix) {
 		return (fix instanceof Mountain) || (fix instanceof RiverFixture) ||
 					(fix instanceof Hill) || (fix instanceof Forest) ||
-					((fix instanceof Fortress) &&
-								((Fortress) fix).getOwner().equals(unit.getOwner()));
+					((fix instanceof ITownFixture) &&
+								((ITownFixture) fix).getOwner().equals(unit.getOwner()));
 	}
 }
