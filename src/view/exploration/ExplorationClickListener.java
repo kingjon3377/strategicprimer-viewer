@@ -34,6 +34,7 @@ import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
+import model.map.fixtures.towns.Village;
 import model.viewer.TileTypeFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
@@ -121,6 +122,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 */
 	protected void handleMove() {
 		try {
+			final List<TileFixture> fixtures = getSelectedValuesList();
 			if (IExplorationModel.Direction.Nowhere == direction) {
 				final int swearing = JOptionPane.showConfirmDialog(null,
 						"Should the explorer swear any villages on this tile?");
@@ -129,6 +131,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 					return;
 				case JOptionPane.YES_OPTION:
 					model.swearVillages();
+					model.getMap().streamOtherFixtures(model.getSelectedUnitLocation())
+							.filter(Village.class::isInstance).forEach(fixtures::add);
 					break;
 				default: // NO_OPTION
 					break;
@@ -145,7 +149,6 @@ public final class ExplorationClickListener extends AbstractAction implements
 					break;
 				}
 			}
-			final List<TileFixture> fixtures = getSelectedValuesList();
 			model.move(direction);
 			final Point dPoint = model.getSelectedUnitLocation();
 			final Player player =
