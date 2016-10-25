@@ -3,7 +3,9 @@ package controller.map.drivers;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -14,6 +16,7 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
+import model.map.fixtures.mobile.worker.ProxyJob;
 import model.map.fixtures.mobile.worker.ProxyWorker;
 import model.map.fixtures.mobile.worker.Skill;
 import model.misc.IDriverModel;
@@ -114,8 +117,6 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 */
 	private static void advanceWorkers(final IWorkerModel model,
 			final Player player, final ICLIHelper cli) throws IOException {
-		final boolean proxy =
-				!cli.inputBooleanInSeries("Add experience to workers individually? ");
 		final List<IUnit> units = model.getUnits(player);
 		units.removeIf(unit -> !unit.iterator().hasNext());
 		while (!units.isEmpty()) {
@@ -123,17 +124,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 					player.getName() + "'s units:",
 					"No unadvanced units remain.", "Chosen unit: ", false);
 			if ((unitNum >= 0) && (unitNum < units.size())) {
-				if (proxy) {
-					//noinspection ObjectAllocationInLoop
-					advanceSingleWorker(new ProxyWorker(
-															NullCleaner.assertNotNull(
-																	units.remove(
-																			unitNum)
-															)), cli);
-				} else {
-					advanceWorkersInUnit(
-							NullCleaner.assertNotNull(units.remove(unitNum)), cli);
-				}
+				advanceWorkersInUnit(NullCleaner.assertNotNull(units.remove(unitNum)),
+						cli);
 			} else {
 				break;
 			}
@@ -153,18 +145,154 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 											.filter(IWorker.class::isInstance)
 											.map(IWorker.class::cast)
 											.collect(Collectors.toList());
-		while (!workers.isEmpty()) {
-			final int workerNum = cli.chooseFromList(workers, "Workers in unit:",
-					"No unadvanced workers remain.", "Chosen worker: ", false);
-			if ((workerNum >= 0) && (workerNum < workers.size())) {
-				advanceSingleWorker(
-						NullCleaner.assertNotNull(workers.remove(workerNum)), cli);
+		if (cli.inputBoolean("Add experience to workers individually? ")) {
+			while (!workers.isEmpty()) {
+				final int workerNum = cli.chooseFromList(workers, "Workers in unit:",
+						"No unadvanced workers remain.", "Chosen worker: ", false);
+				if ((workerNum >= 0) && (workerNum < workers.size())) {
+					advanceSingleWorker(
+							NullCleaner.assertNotNull(workers.remove(workerNum)), cli);
+				} else {
+					break;
+				}
+			}
+		} else {
+			if (workers.isEmpty()) {
+				cli.println("No workers in unit.");
+				return;
+			}
+			final List<IJob> jobs = ListMaker.toList(new ProxyWorker(unit));
+			final String hdr = "Jobs in workers:";
+			final String none = "No existing jobs.";
+			final String prompt = "Job to advance: ";
+			final ICLIHelper.ChoiceOperation choice =
+					() -> cli.chooseFromList(jobs, hdr, none, prompt, false);
+			for (int jobNum = choice.choose(); jobNum <= jobs.size();
+					jobNum = choice.choose()) {
+				final IJob job;
+				if ((jobNum < 0) || (jobNum == jobs.size())) {
+					final String jobName = cli.inputString("Name of new Job: ");
+					workers.forEach(worker -> worker.addJob(new Job(jobName, 0)));
+					jobs.clear();
+					new ProxyWorker(unit).forEach(jobs::add);
+					final Optional<IJob> temp =
+							jobs.stream().filter(item -> jobName.equals(item.getName()))
+									.findAny();
+					if (temp.isPresent()) {
+						job = temp.get();
+					} else {
+						SYS_OUT.println("Select the new job at the next prompt.");
+						continue;
+					}
+				} else {
+					job = jobs.get(jobNum);
+				}
+				advanceWorkersInJob(workers, job.getName(), cli);
+				if (!cli.inputBoolean("Select another Job in these workers? ")) {
+					break;
+				}
+			}
+		}
+	}
+	/**
+	 * Let the user add experience in a given Job to all of a list of workers.
+	 * @param workers the workers in quesiton
+	 * @param jobName the name of the Job to consider
+	 * @param cli the interface to the user
+	 * @throws IOException on I/O error getting input from user
+	 */
+	private static void advanceWorkersInJob(final List<IWorker> workers,
+											final String jobName, final ICLIHelper cli)
+			throws IOException {
+		final Map<String, IJob> jobs = new HashMap<>();
+		for (final IWorker worker : workers) {
+			final IJob job = worker.getJob(jobName);
+			if (job == null) {
+				final IJob temp = new Job(jobName, 0);
+				worker.addJob(temp);
+				jobs.put(worker.getName(), temp);
 			} else {
+				jobs.put(worker.getName(), job);
+			}
+		}
+		final List<ISkill> skills = ListMaker.toList(
+				new ProxyJob(jobName, false, workers.stream().toArray(IWorker[]::new)));
+		final String hdr = "Skills in Jobs:";
+		final String none = "No existing skills.";
+		final String prompt = "Skill to advance: ";
+		final ICLIHelper.ChoiceOperation choice =
+				() -> cli.chooseFromList(skills, hdr, none, prompt, false);
+		for (int skillNum = choice.choose(); skillNum <= skills.size();
+				skillNum = choice.choose()) {
+			final ISkill skill;
+			if ((skillNum < 0) || (skillNum == skills.size())) {
+				final String skillName = cli.inputString("Name of new Skill: ");
+				jobs.values().forEach(job -> job.addSkill(new Skill(skillName, 0, 0)));
+				skills.clear();
+				new ProxyJob(jobName, false, workers.stream().toArray(IWorker[]::new))
+						.forEach(skills::add);
+				final Optional<ISkill> temp =
+						skills.stream().filter(item -> skillName.equals(item.getName()))
+								.findAny();
+				if (temp.isPresent()) {
+					skill = temp.get();
+				} else {
+					SYS_OUT.println("Select the new skill at the next prompt.");
+					continue;
+				}
+			} else {
+				skill = skills.get(skillNum);
+			}
+			advanceWorkersInSkill(workers, jobName, skill.getName(), cli);
+			if (!cli.inputBoolean("Select another Skill in this Job? ")) {
 				break;
 			}
 		}
 	}
-
+	/**
+	 * Let the user add experience in a single skill to all of a list of workers.
+	 * @param workers the list of workers
+	 * @param jobName the name of the Job we're considering
+	 * @param skillName the name of the Skill to advance
+	 * @param cli the interface to interact with the user
+	 * @throws IOException on I/O error getting input from user
+	 */
+	private static void advanceWorkersInSkill(final Iterable<IWorker> workers,
+											  final String jobName,
+											  final String skillName,
+											  final ICLIHelper cli) throws IOException {
+		final int hours = cli.inputNumber("Hours of experience to add: ");
+		for (final IWorker worker : workers) {
+			final Optional<IJob> tempJob = Optional.ofNullable(worker.getJob(jobName));
+			final IJob job;
+			if (tempJob.isPresent()) {
+				job = tempJob.get();
+			} else {
+				worker.addJob(new Job(jobName, 0));
+				job = worker.getJob(jobName);
+				if (job == null) {
+					throw new IllegalStateException("Worker lacks Job after adding it");
+				}
+			}
+			final Optional<ISkill> tempSkill =
+					Optional.ofNullable(job.getSkill(skillName));
+			final ISkill skill;
+			if (tempSkill.isPresent()) {
+				skill = tempSkill.get();
+			} else {
+				job.addSkill(new Skill(skillName, 0, 0));
+				skill = job.getSkill(skillName);
+				if (skill == null) {
+					throw new IllegalStateException("Job lacks Skill after adding it");
+				}
+			}
+			final int oldLevel = skill.getLevel();
+			skill.addHours(hours, SingletonRandom.RANDOM.nextInt(100));
+			if (skill.getLevel() != oldLevel) {
+				cli.printf("%s gained a level in %s%n", worker.getName(), skill.getName());
+			}
+		}
+	}
 	/**
 	 * Let the user add experience to a worker.
 	 *
