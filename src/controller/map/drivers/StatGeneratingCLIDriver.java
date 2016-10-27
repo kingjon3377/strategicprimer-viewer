@@ -521,6 +521,28 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final int racialIntBonus;
 		final int racialWisBonus;
 		final int racialChaBonus;
+		final int baseCon = threeDeeSix();
+		final int baseStr = threeDeeSix();
+		final int baseDex = threeDeeSix();
+		final int baseInt = threeDeeSix();
+		final int baseWis = threeDeeSix();
+		final int baseCha = threeDeeSix();
+		final int lowestScore;
+		if (baseStr <= baseDex && baseStr <= baseCon && baseStr <= baseInt &&
+					baseStr <= baseWis && baseStr <= baseCha) {
+			lowestScore = 0;
+		} else if (baseDex <= baseCon && baseDex <= baseInt && baseDex <= baseWis &&
+						   baseDex <= baseCha) {
+			lowestScore = 1;
+		} else if (baseCon <= baseInt && baseCon <= baseWis && baseCon <= baseCha) {
+			lowestScore = 2;
+		} else if (baseInt <= baseWis && baseInt <= baseCha) {
+			lowestScore = 3;
+		} else if (baseWis <= baseCha) {
+			lowestScore = 4;
+		} else {
+			lowestScore = 5;
+		}
 		switch (race) {
 		case "dwarf":
 			racialDexBonus = 0;
@@ -564,11 +586,19 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			break;
 		case "human": // fall through; treat undefined as human
 		default:
-			switch (cli.chooseStringFromList(
+			final int chosenBonus = cli.chooseStringFromList(
 					Arrays.asList("Strength", "Dexterity", "Constitution",
-							"Intelligence", "Wisdom", "Charisma"),
-					"Character is a " + race + "; which stat should get a +2 bonus?",
-					"", "Stat for bonus: ", false)) {
+							"Intelligence",
+							"Wisdom", "Charisma", "Lowest"),
+					"Character is a " + race + "; which stat should get a +2 bonus?", "",
+					"Stat for bonus: ", false);
+			final int bonusStat;
+			if (chosenBonus < 6) {
+				bonusStat = chosenBonus;
+			} else {
+				bonusStat = lowestScore;
+			}
+			switch (bonusStat) {
 			case 0:
 				racialStrBonus = 2;
 				racialDexBonus = 0;
@@ -621,14 +651,14 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			}
 			break;
 		}
-		final int constitution = threeDeeSix() + racialConBonus;
+		final int constitution = baseCon + racialConBonus;
 		final int conBonus = (constitution - STAT_BASIS) / 2;
 		final int hitP = 8 + conBonus + rollDeeEight(levels, conBonus);
-		return new WorkerStats(hitP, hitP, threeDeeSix() + racialStrBonus,
-									threeDeeSix() + racialDexBonus, constitution,
-									threeDeeSix() + racialIntBonus,
-									threeDeeSix() + racialWisBonus,
-									threeDeeSix() + racialChaBonus);
+		return new WorkerStats(hitP, hitP, baseStr + racialStrBonus,
+									baseDex + racialDexBonus, constitution,
+									baseInt + racialIntBonus,
+									baseWis + racialWisBonus,
+									baseCha + racialChaBonus);
 	}
 	/**
 	 * Create a randomly-generated worker using a name from file, asking the user for
