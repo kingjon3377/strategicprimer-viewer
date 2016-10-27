@@ -32,6 +32,7 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.misc.IDriverModel;
@@ -491,10 +492,15 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			}
 		}
 		for (int i = 0; i < levels; i++) {
-			//noinspection ObjectAllocationInLoop
-			retval.addJob(
-					new Job(cli.inputString("Which Job does worker have a level in? "),
-								1));
+			String jobName = cli.inputString("Which Job does worker have a level in? ");
+			final Optional<IJob> existing = Optional.ofNullable(retval.getJob(jobName));
+			if (existing.isPresent()) {
+				final IJob job = existing.get();
+				job.setLevel(job.getLevel() + 1);
+			} else {
+				//noinspection ObjectAllocationInLoop
+				retval.addJob(new Job(jobName, 1));
+			}
 		}
 		return retval;
 	}
