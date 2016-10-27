@@ -55,6 +55,11 @@ public interface IJob
 	int getLevel();
 
 	/**
+	 * @param newLevel the worker's new level in the job. Must not be negative.
+	 */
+	void setLevel(final int newLevel);
+
+	/**
 	 * @param zero whether to "zero out" sensitive details
 	 * @return a copy of this Job
 	 */

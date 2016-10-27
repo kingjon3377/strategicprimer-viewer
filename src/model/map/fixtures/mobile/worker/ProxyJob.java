@@ -163,6 +163,14 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	public int getLevel() {
 		return 0;
 	}
+	/**
+	 * @param newLevel Ignored; always throws
+	 */
+	@Override
+	public void setLevel(final int newLevel) {
+		throw new IllegalStateException
+					  ("Tried to set the level of all a worker's Jobs at once");
+	}
 
 	/**
 	 * @return a String representation of the Job.

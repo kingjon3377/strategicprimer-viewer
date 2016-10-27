@@ -35,7 +35,7 @@ public class Job implements IJob {
 	/**
 	 * How many levels the worker has in the job.
 	 */
-	private final int level;
+	private int level;
 	/**
 	 * The worker's level in various skills associated with the job.
 	 */
@@ -109,7 +109,15 @@ public class Job implements IJob {
 	public int getLevel() {
 		return level;
 	}
-
+	/**
+	 * @param newLevel the worker's new level in the job. Must not be negative.
+	 */
+	public void setLevel(final int newLevel) {
+		if (newLevel < 0) {
+			throw new IllegalArgumentException("Job level cannot be negative");
+		}
+		level = newLevel;
+	}
 	/**
 	 * @return an iterator over the worker's level in the various skills associated with
 	 * the job
