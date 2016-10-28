@@ -92,7 +92,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public int hashCode() {
-		return fixComp.hashCode();
+		return zof.hashCode();
 	}
 
 	/**
