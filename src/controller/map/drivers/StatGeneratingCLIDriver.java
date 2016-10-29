@@ -410,6 +410,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				final IFixture fix = find(pair.first(), unit.getID());
 				if (fix instanceof IUnit) {
 					((IUnit) fix).addMember(worker);
+					if (((IUnit) fix).getOrders().isEmpty()) {
+						((IUnit) fix).setOrders("TODO: assign");
+					}
 				}
 			}
 		}
@@ -445,6 +448,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				final IFixture fix = find(pair.first(), unit.getID());
 				if (fix instanceof IUnit) {
 					((IUnit) fix).addMember(worker);
+					if (((IUnit) fix).getOrders().isEmpty()) {
+						((IUnit) fix).setOrders("TODO: assign");
+					}
 				}
 			}
 		}
