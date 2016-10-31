@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -59,7 +60,30 @@ public final class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 		add(none);
 		addSeparator();
 	}
-
+	/**
+	 * @param predicate a predicate to match some tile fixtures
+	 * @param desc a description of such fixtures
+	 * @return the menu item to control whether matching fixtures are visible
+	 */
+	private JCheckBoxMenuItem createMenuItem(final Predicate<TileFixture> predicate,
+											 final String desc) {
+		final FixtureMatcher matcher = new FixtureMatcher(predicate, desc);
+		final JCheckBoxMenuItem item = new JCheckBoxMenuItem(desc, true);
+		item.getModel().addItemListener(e -> matcher.setDisplayed(item.isSelected()));
+		mapping.put(matcher, item);
+		return item;
+	}
+	/**
+	 * Add an item to the menu where it belongs in the alphabetical sequence.
+	 * @param item the item to add
+	 */
+	private void addSorted(final JCheckBoxMenuItem item) {
+		final String text = item.getText();
+		itemNames.add(text);
+		Collections.sort(itemNames);
+		final int index = itemNames.indexOf(text);
+		add(item, index + 3); // "All", "None", and the separator
+	}
 	/**
 	 * @param fix a kind of fixture. We mark it Nullable because nulls got passed in
 	 *            anyway.
@@ -79,19 +103,11 @@ public final class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 				}
 			}
 			final Class<? extends TileFixture> cls = fix.getClass();
-			final FixtureMatcher matcher =
-					new FixtureMatcher(cls::isInstance, fix.plural());
-			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(fix.plural(), true);
-			item.getModel().addItemListener(e -> matcher.setDisplayed(item.isSelected()));
-			mapping.put(matcher, item);
+			final JCheckBoxMenuItem item = createMenuItem(cls::isInstance, fix.plural());
 			if ("null".equals(fix.shortDesc())) {
 				item.setSelected(false);
 			} else {
-				final String text = fix.plural();
-				itemNames.add(text);
-				Collections.sort(itemNames);
-				final int index = itemNames.indexOf(text);
-				add(item, index + 3); // "All", "None", and the separator
+				addSorted(item);
 			}
 			return item.isSelected();
 		}
