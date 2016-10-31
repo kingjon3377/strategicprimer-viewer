@@ -10,18 +10,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.TileFixture;
+import model.viewer.FixtureMatcher;
 import model.viewer.TileTypeFixture;
 import model.viewer.ZOrderFilter;
-import util.NullCleaner;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A menu to let the player turn of display of kinds of fixtures.
@@ -42,7 +38,7 @@ public final class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 	/**
 	 * Map from fixture classes to menu-items representing them.
 	 */
-	private final Map<Class<? extends TileFixture>, JCheckBoxMenuItem> mapping =
+	private final Map<FixtureMatcher, JCheckBoxMenuItem> mapping =
 			new HashMap<>();
 	/**
 	 * The list of menu item names.
@@ -77,22 +73,28 @@ public final class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 		if (fix instanceof TileTypeFixture) {
 			return false;
 		} else {
+			for (final FixtureMatcher matcher : mapping.keySet()) {
+				if (matcher.matches(fix)) {
+					return matcher.isDisplayed();
+				}
+			}
+			final Class<? extends TileFixture> cls = fix.getClass();
+			final FixtureMatcher matcher =
+					new FixtureMatcher(cls::isInstance, fix.plural());
 			final JCheckBoxMenuItem item;
-			if (mapping.containsKey(fix.getClass())) {
-				item = NullCleaner.assertNotNull(mapping.get(fix.getClass()));
-			} else if ("null".equals(fix.shortDesc())) {
+			if ("null".equals(fix.shortDesc())) {
+				matcher.setDisplayed(false);
 				item = new JCheckBoxMenuItem(fix.plural(), false);
-				final @NonNull TileFixture localFix = fix;
-				mapping.put(localFix.getClass(), item);
 			} else {
 				item = new JCheckBoxMenuItem(fix.plural(), true);
-				mapping.put(NullCleaner.assertNotNull(fix).getClass(), item);
 				final String text = fix.plural();
 				itemNames.add(text);
 				Collections.sort(itemNames);
 				final int index = itemNames.indexOf(text);
 				add(item, index + 3); // "All", "None", and the separator
 			}
+			item.getModel().addItemListener(e -> matcher.setDisplayed(item.isSelected()));
+			mapping.put(matcher, item);
 			return item.isSelected();
 		}
 	}

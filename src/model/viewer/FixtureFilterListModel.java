@@ -5,11 +5,9 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-
 import javax.swing.AbstractListModel;
-
-import model.map.TileFixture;
 import util.NullCleaner;
 
 /**
@@ -28,11 +26,11 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public final class FixtureFilterListModel extends
-		AbstractListModel<Class<? extends TileFixture>> {
+		AbstractListModel<FixtureMatcher> implements Iterable<FixtureMatcher> {
 	/**
 	 * The list backing this model.
 	 */
-	private final List<Class<? extends TileFixture>> backing = new ArrayList<>();
+	private final List<FixtureMatcher> backing = new ArrayList<>();
 
 	/**
 	 * @return the size of the list
@@ -47,7 +45,7 @@ public final class FixtureFilterListModel extends
 	 * @return the element there
 	 */
 	@Override
-	public Class<? extends TileFixture> getElementAt(final int index) {
+	public FixtureMatcher getElementAt(final int index) {
 		return NullCleaner.assertNotNull(backing.get(index));
 	}
 
@@ -55,7 +53,7 @@ public final class FixtureFilterListModel extends
 	 * @param item an item in the list
 	 * @return its index
 	 */
-	public int indexOf(final Class<? extends TileFixture> item) {
+	public int indexOf(final FixtureMatcher item) {
 		return backing.indexOf(item);
 	}
 
@@ -63,7 +61,7 @@ public final class FixtureFilterListModel extends
 	 * @param item an item to add to the list
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	public void add(final Class<? extends TileFixture> item) {
+	public void add(final FixtureMatcher item) {
 		backing.add(item);
 		fireIntervalAdded(item, getSize() - 1, getSize() - 1);
 	}
@@ -95,5 +93,12 @@ public final class FixtureFilterListModel extends
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * @return an iterator over the list's contents
+	 */
+	@Override
+	public Iterator<FixtureMatcher> iterator() {
+		return backing.iterator();
 	}
 }

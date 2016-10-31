@@ -14,6 +14,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import model.map.TileFixture;
 import model.viewer.FixtureFilterListModel;
+import model.viewer.FixtureMatcher;
 import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
@@ -33,8 +34,8 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
-		implements ZOrderFilter, ListCellRenderer<Class<? extends TileFixture>> {
+public final class FixtureFilterList extends JList<FixtureMatcher>
+		implements ZOrderFilter, ListCellRenderer<FixtureMatcher> {
 	/**
 	 * The renderer that does most of the work.
 	 */
@@ -62,6 +63,11 @@ public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 		setModel(model);
 		lsm = NullCleaner.assertNotNull(getSelectionModel());
 		lsm.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		lsm.addListSelectionListener(e -> {
+			for (int i = 0; i < model.getSize(); i++) {
+				model.getElementAt(i).setDisplayed(lsm.isSelectedIndex(i));
+			}
+		});
 		setCellRenderer(this);
 	}
 
@@ -71,14 +77,16 @@ public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	 */
 	@Override
 	public boolean shouldDisplay(final TileFixture fix) {
+		for (final FixtureMatcher matcher : model) {
+			if (matcher.matches(fix)) {
+				return matcher.isDisplayed();
+			}
+		}
 		final Class<? extends TileFixture> cls = fix.getClass();
 		if (cls == null) {
 			return false;
-		} else if (plurals.containsKey(cls)) {
-			return lsm.isSelectedIndex(model.indexOf(cls));
 		} else {
-			model.add(cls);
-			plurals.put(cls, fix.plural());
+			model.add(new FixtureMatcher(cls::isInstance, fix.plural()));
 			final int size = model.getSize();
 			lsm.addSelectionInterval(size - 1, size - 1);
 			return true;
@@ -95,10 +103,8 @@ public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	 */
 	@Override
 	public Component getListCellRendererComponent(@Nullable
-												final JList<? extends Class<? extends
-															TileFixture>> list,
-												final Class<? extends TileFixture>
-														value,
+												final JList<? extends FixtureMatcher> list,
+												final FixtureMatcher value,
 												final int index,
 												final boolean isSelected,
 												final boolean cellHasFocus) {
@@ -108,7 +114,7 @@ public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 		final Component retval = lcr.getListCellRendererComponent(list, value,
 				index, isSelected, cellHasFocus);
 		if (retval instanceof JLabel) {
-			((JLabel) retval).setText(plurals.get(value));
+			((JLabel) retval).setText(value.getDescription());
 		} else if (retval == null) {
 			throw new IllegalStateException("Default produced null");
 		}
