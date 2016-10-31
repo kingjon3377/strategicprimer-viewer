@@ -81,20 +81,18 @@ public final class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 			final Class<? extends TileFixture> cls = fix.getClass();
 			final FixtureMatcher matcher =
 					new FixtureMatcher(cls::isInstance, fix.plural());
-			final JCheckBoxMenuItem item;
+			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(fix.plural(), true);
+			item.getModel().addItemListener(e -> matcher.setDisplayed(item.isSelected()));
+			mapping.put(matcher, item);
 			if ("null".equals(fix.shortDesc())) {
-				matcher.setDisplayed(false);
-				item = new JCheckBoxMenuItem(fix.plural(), false);
+				item.setSelected(false);
 			} else {
-				item = new JCheckBoxMenuItem(fix.plural(), true);
 				final String text = fix.plural();
 				itemNames.add(text);
 				Collections.sort(itemNames);
 				final int index = itemNames.indexOf(text);
 				add(item, index + 3); // "All", "None", and the separator
 			}
-			item.getModel().addItemListener(e -> matcher.setDisplayed(item.isSelected()));
-			mapping.put(matcher, item);
 			return item.isSelected();
 		}
 	}
