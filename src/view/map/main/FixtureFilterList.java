@@ -13,6 +13,9 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import model.map.TileFixture;
+import model.map.fixtures.Ground;
+import model.map.fixtures.resources.Grove;
+import model.map.fixtures.resources.Meadow;
 import model.viewer.FixtureFilterListModel;
 import model.viewer.FixtureMatcher;
 import model.viewer.ZOrderFilter;
@@ -69,6 +72,22 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 			}
 		});
 		setCellRenderer(this);
+		model.add(new FixtureMatcher(fix -> fix instanceof Ground &&
+													((Ground) fix).isExposed(),
+											"Ground (exposed)"));
+		model.add(new FixtureMatcher(
+				fix -> fix instanceof Ground && !((Ground) fix).isExposed(), "Ground"));
+		model.add(new FixtureMatcher(fix -> fix instanceof Grove &&
+													((Grove) fix).isOrchard(),
+											"Orchards"));
+		model.add(new FixtureMatcher(fix -> fix instanceof Grove &&
+													!((Grove) fix).isOrchard(),
+											"Groves"));
+		model.add(new FixtureMatcher(fix -> fix instanceof Meadow &&
+													((Meadow) fix).isField(), "Fields"));
+		model.add(new FixtureMatcher(fix -> fix instanceof Meadow &&
+													!((Meadow) fix).isField(),
+											"Meadows"));
 	}
 
 	/**

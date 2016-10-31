@@ -15,6 +15,9 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import model.map.TileFixture;
+import model.map.fixtures.Ground;
+import model.map.fixtures.resources.Grove;
+import model.map.fixtures.resources.Meadow;
 import model.viewer.FixtureMatcher;
 import model.viewer.TileTypeFixture;
 import model.viewer.ZOrderFilter;
@@ -59,6 +62,24 @@ public final class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 		none.addActionListener(evt -> deselectAll());
 		add(none);
 		addSeparator();
+		addSorted(
+				createMenuItem(fix -> fix instanceof Ground && ((Ground) fix)
+																	   .isExposed(),
+						"Ground (exposed)"));
+		addSorted(createMenuItem(
+				fix -> fix instanceof Ground && !((Ground) fix).isExposed(), "Ground"));
+		addSorted(createMenuItem(fix -> fix instanceof Grove && ((Grove) fix)
+																		.isOrchard(),
+				"Orchards"));
+		addSorted(
+				createMenuItem(fix -> fix instanceof Grove && !((Grove) fix).isOrchard(),
+						"Groves"));
+		addSorted(createMenuItem(fix -> fix instanceof Meadow && ((Meadow) fix)
+																		 .isField(),
+				"Fields"));
+		addSorted(
+				createMenuItem(fix -> fix instanceof Meadow && !((Meadow) fix).isField(),
+						"Meadows"));
 	}
 	/**
 	 * @param predicate a predicate to match some tile fixtures
