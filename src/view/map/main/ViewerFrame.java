@@ -10,7 +10,9 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.util.Optional;
 import javax.swing.DropMode;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -20,6 +22,7 @@ import model.viewer.FixtureFilterTableModel;
 import model.viewer.IViewerModel;
 import util.NullCleaner;
 import view.map.details.DetailPanelNG;
+import view.util.BorderedPanel;
 import view.util.ISPWindow;
 import view.util.SplitWithWeights;
 
@@ -104,9 +107,24 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		final JButton allButton = new JButton("Display All");
+		allButton.addActionListener(
+				e -> {
+					tableModel.forEach(matcher -> matcher.setDisplayed(true));
+					tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
+				});
+		final JButton noneButton = new JButton("Display None");
+		noneButton.addActionListener(
+				e -> {
+					tableModel.forEach(matcher -> matcher.setDisplayed(false));
+					tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
+				});
+		BorderedPanel tablePanel = BorderedPanel.vertical(new JLabel("Display ..."),
+				new JScrollPane(table),
+				BorderedPanel.horizontal(allButton, null, noneButton));
 		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
 				SplitWithWeights.horizontalSplit(0.8, 0.8,
-						ScrollListener.mapScrollPanel(map, mapPanel), new JScrollPane(table)),
+						ScrollListener.mapScrollPanel(map, mapPanel), tablePanel),
 				detailPanel));
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
