@@ -96,7 +96,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 		final int data = payload.intValue();
 		if ((component instanceof JList)) {
 			final JList<?> list = (JList<?>) component;
-			final ListModel tempModel = list.getModel();
+			final ListModel<?> tempModel = list.getModel();
 			if (!(tempModel instanceof DefaultListModel)) {
 				return false;
 			}
