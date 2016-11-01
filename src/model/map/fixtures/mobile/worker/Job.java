@@ -112,6 +112,7 @@ public class Job implements IJob {
 	/**
 	 * @param newLevel the worker's new level in the job. Must not be negative.
 	 */
+	@Override
 	public void setLevel(final int newLevel) {
 		if (newLevel < 0) {
 			throw new IllegalArgumentException("Job level cannot be negative");
