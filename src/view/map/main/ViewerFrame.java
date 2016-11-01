@@ -11,9 +11,11 @@ import java.nio.file.Path;
 import java.util.Optional;
 import javax.swing.DropMode;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
+import javax.swing.table.TableColumn;
 import model.viewer.FixtureFilterTableModel;
 import model.viewer.IViewerModel;
 import util.NullCleaner;
@@ -96,9 +98,15 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 		table.setDropMode(DropMode.INSERT_ROWS);
 		table.setTransferHandler(new FixtureFilterTransferHandler());
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		final TableColumn firstColumn = table.getColumnModel().getColumn(0);
+		firstColumn.setMinWidth(30);
+		firstColumn.setMaxWidth(50);
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+		table.setFillsViewportHeight(true);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
 				SplitWithWeights.horizontalSplit(0.8, 0.8,
-						ScrollListener.mapScrollPanel(map, mapPanel), table),
+						ScrollListener.mapScrollPanel(map, mapPanel), new JScrollPane(table)),
 				detailPanel));
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
