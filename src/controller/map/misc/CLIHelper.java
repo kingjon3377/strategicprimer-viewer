@@ -215,7 +215,8 @@ public final class CLIHelper implements ICLIHelper {
 	 * @return the user's answer (minus the "to all")
 	 */
 	@Override
-	public boolean inputBooleanInSeries(final String prompt, final String key) throws IOException {
+	public boolean inputBooleanInSeries(final String prompt, final String key)
+			throws IOException {
 		if (seriesState.containsKey(key)) {
 			ostream.print(prompt);
 			final boolean retval = seriesState.get(key).booleanValue();

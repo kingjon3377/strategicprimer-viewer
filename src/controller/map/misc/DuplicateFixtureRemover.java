@@ -109,8 +109,8 @@ public final class DuplicateFixtureRemover {
 	 */
 	private static void coalesceResources(final Iterable<? extends IFixture> iter,
 										  final ICLIHelper cli) throws IOException {
-		final Map<Pair<String, Pair<String, Pair<String, Integer>>>, List<ResourcePile>> resources =
-				new HashMap<>();
+		final Map<Pair<String, Pair<String, Pair<String, Integer>>>, List<ResourcePile>>
+				resources = new HashMap<>();
 		for (final IFixture fix : iter) {
 			if (fix instanceof FixtureIterable) {
 				coalesceResources((FixtureIterable<?>) fix, cli);
