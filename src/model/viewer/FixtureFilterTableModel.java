@@ -6,8 +6,41 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
+import model.map.fixtures.RiverFixture;
+import model.map.fixtures.TextFixture;
+import model.map.fixtures.explorable.AdventureFixture;
+import model.map.fixtures.explorable.Battlefield;
+import model.map.fixtures.explorable.Cave;
+import model.map.fixtures.explorable.Portal;
+import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.mobile.Centaur;
+import model.map.fixtures.mobile.Djinn;
+import model.map.fixtures.mobile.Dragon;
+import model.map.fixtures.mobile.Fairy;
+import model.map.fixtures.mobile.Giant;
+import model.map.fixtures.mobile.Griffin;
+import model.map.fixtures.mobile.Minotaur;
+import model.map.fixtures.mobile.Ogre;
+import model.map.fixtures.mobile.Phoenix;
+import model.map.fixtures.mobile.Simurgh;
+import model.map.fixtures.mobile.Sphinx;
+import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
+import model.map.fixtures.resources.Mine;
+import model.map.fixtures.resources.MineralVein;
+import model.map.fixtures.resources.Shrub;
+import model.map.fixtures.resources.StoneDeposit;
+import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.terrain.Hill;
+import model.map.fixtures.terrain.Mountain;
+import model.map.fixtures.terrain.Oasis;
+import model.map.fixtures.terrain.Sandbar;
+import model.map.fixtures.towns.AbstractTown;
+import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.Village;
 import util.Reorderable;
 
 /**
@@ -31,22 +64,74 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 * Constructor. Initialize with data that the default algorithm won't handle properly.
 	 */
 	public FixtureFilterTableModel() {
-		list.add(new FixtureMatcher(fix -> fix instanceof Ground &&
-												   ((Ground) fix).isExposed(),
-										   "Ground (exposed)"));
-		list.add(new FixtureMatcher(fix -> fix instanceof Ground &&
-												   !((Ground) fix).isExposed(),
-										   "Ground"));
+		list.add(new FixtureMatcher(Unit.class::isInstance, "Units"));
+		list.add(new FixtureMatcher(Fortress.class::isInstance, "Fortresses"));
+		// TODO: Towns should be broken up by kind or size, and maybe by status or owner
+		list.add(new FixtureMatcher(AbstractTown.class::isInstance,
+										   "Cities, Towns, and Fortifications"));
+		// TODO: Village through Centaur were all 45, so their ordering happened by chance
+		list.add(new FixtureMatcher(Village.class::isInstance, "Villages"));
+		list.add(new FixtureMatcher(Troll.class::isInstance, "Trolls"));
+		list.add(new FixtureMatcher(Sphinx.class::isInstance, "Sphinxes"));
+		list.add(new FixtureMatcher(Simurgh.class::isInstance, "Simurghs"));
+		list.add(new FixtureMatcher(Phoenix.class::isInstance, "Phoenixes"));
+		list.add(new FixtureMatcher(Ogre.class::isInstance, "Ogres"));
+		list.add(new FixtureMatcher(Minotaur.class::isInstance, "Minotaurs"));
+		list.add(new FixtureMatcher(Mine.class::isInstance, "Mine"));
+		list.add(new FixtureMatcher(Griffin.class::isInstance, "Griffins"));
+		list.add(new FixtureMatcher(Djinn.class::isInstance, "Djinni"));
+		list.add(new FixtureMatcher(Centaur.class::isInstance, "Centaurs"));
+		// TODO: StoneDeposit through Animal were all 40; they too should be reviewed
+		list.add(new FixtureMatcher(StoneDeposit.class::isInstance, "Stone Deposits"));
+		list.add(new FixtureMatcher(MineralVein.class::isInstance, "Mineral Veins"));
+		list.add(new FixtureMatcher(Giant.class::isInstance, "Giants"));
+		list.add(new FixtureMatcher(Fairy.class::isInstance, "Fairies"));
+		list.add(new FixtureMatcher(Dragon.class::isInstance, "Dragons"));
+		list.add(new FixtureMatcher(Cave.class::isInstance, "Caves"));
+		list.add(new FixtureMatcher(Battlefield.class::isInstance, "Battlefields"));
+		list.add(new FixtureMatcher(Animal.class::isInstance, "Animals"));
+
 		list.add(new FixtureMatcher(fix -> fix instanceof Grove &&
 												   ((Grove) fix).isOrchard(),
 										   "Orchards"));
 		list.add(new FixtureMatcher(fix -> fix instanceof Grove &&
 												   !((Grove) fix).isOrchard(),
 										   "Groves"));
+
+		// TODO: Since rivers are usually handled specially, should this really be included?
+		list.add(new FixtureMatcher(RiverFixture.class::isInstance, "Rivers"));
+
+		// TODO: TextFixture through AdventureFixture were all 25, and should be considered
+		list.add(new FixtureMatcher(TextFixture.class::isInstance,
+										   "Arbitrary-Text Notes"));
+		list.add(new FixtureMatcher(Portal.class::isInstance, "Portals"));
+		list.add(new FixtureMatcher(Oasis.class::isInstance, "Oases"));
+		list.add(new FixtureMatcher(AdventureFixture.class::isInstance, "Adventures"));
+
+		list.add(new FixtureMatcher(CacheFixture.class::isInstance, "Caches"));
+
+		list.add(new FixtureMatcher(Forest.class::isInstance, "Forests"));
+
+		// TODO: Shrub and Meadow were both 15; consider
+		list.add(new FixtureMatcher(Shrub.class::isInstance, "Shrubs"));
 		list.add(new FixtureMatcher(fix -> fix instanceof Meadow &&
 												   ((Meadow) fix).isField(), "Fields"));
 		list.add(new FixtureMatcher(fix -> fix instanceof Meadow &&
 												   !((Meadow) fix).isField(), "Meadows"));
+
+		// TODO: Since mountains are now a separate aspect of a tile, should this be omitted?
+		list.add(new FixtureMatcher(Mountain.class::isInstance, "Mountains"));
+
+		// TODO: Sandbar and Hill were both 5; consider.
+		list.add(new FixtureMatcher(Sandbar.class::isInstance, "Sandbars"));
+		list.add(new FixtureMatcher(Hill.class::isInstance, "Hills"));
+
+		list.add(new FixtureMatcher(fix -> fix instanceof Ground &&
+												   ((Ground) fix).isExposed(),
+										   "Ground (exposed)"));
+		list.add(new FixtureMatcher(fix -> fix instanceof Ground &&
+												   !((Ground) fix).isExposed(),
+										   "Ground"));
 	}
 	/**
 	 * The backing collection.
