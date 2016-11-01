@@ -378,8 +378,6 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
-	 * TODO: Should we add and return a new Job instead of null if not present?
-	 *
 	 * @param jobName the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none
 	 */
@@ -391,7 +389,11 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 				return job;
 			}
 		}
-		return null;
+		final IJob retval = new ProxyJob(jobName, parallel, assertNotNull(
+				workers.toArray(new IWorker[workers.size()])));
+		jobNames.add(jobName);
+		proxyJobs.add(retval);
+		return retval;
 	}
 
 	/**

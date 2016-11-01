@@ -233,8 +233,6 @@ public class Job implements IJob {
 	}
 
 	/**
-	 * TODO: Should we add and return a new Skill in the not-present case?
-	 *
 	 * @param skillName the name of a Skill
 	 * @return the Skill by that name in the Job, or none if not present
 	 */
@@ -247,6 +245,8 @@ public class Job implements IJob {
 				return skill;
 			}
 		}
-		return null;
+		final Skill retval = new Skill(skillName, 0, 0);
+		skillSet.put(skillName, retval);
+		return retval;
 	}
 }

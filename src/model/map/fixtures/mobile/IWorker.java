@@ -61,8 +61,6 @@ public interface IWorker
 	IWorker copy(boolean zero);
 
 	/**
-	 * TODO: Should we create and return a new Job instead of null if not present?
-	 *
 	 * @param jobName the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none
 	 */

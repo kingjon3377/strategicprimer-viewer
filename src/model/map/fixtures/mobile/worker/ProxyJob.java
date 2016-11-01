@@ -243,8 +243,6 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
-	 * TODO: Should we return a new Skill (and add it) instead of null if not present?
-	 *
 	 * @param skillName the name of a Skill
 	 * @return the Skill by that name the Job has, or null if it has none
 	 */
@@ -256,7 +254,10 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 				return skill;
 			}
 		}
-		return null;
+		ProxySkill retval = new ProxySkill(skillName, parallel, NullCleaner.assertNotNull(
+				proxiedJobs.toArray(new IJob[proxiedJobs.size()])));
+		proxied.add(retval);
+		return retval;
 	}
 
 	/**

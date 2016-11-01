@@ -74,8 +74,6 @@ public interface IJob
 	boolean isEmpty();
 
 	/**
-	 * TODO: Should we add and return a new Skill in the not-present case?
-	 *
 	 * @param skillName the name of a Skill
 	 * @return the Skill by that name in the Job, or none if not present
 	 */

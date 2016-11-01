@@ -10,6 +10,7 @@ import java.util.Objects;
 import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -351,8 +352,6 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
-	 * TODO: Should we add and return a new Job instead of null if not present?
-	 *
 	 * @param jobName the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none
 	 */
@@ -365,7 +364,9 @@ public class Worker implements IWorker, HasPortrait {
 				return job;
 			}
 		}
-		return null;
+		final Job retval = new Job(jobName, 0);
+		jobSet.add(retval);
+		return retval;
 	}
 	/**
 	 * The filename of an image to use as a portrait for the unit.
