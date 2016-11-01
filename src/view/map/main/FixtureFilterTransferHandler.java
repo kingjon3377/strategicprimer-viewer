@@ -6,10 +6,13 @@ import java.awt.datatransfer.Transferable;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.JTable;
 import javax.swing.ListModel;
 import javax.swing.TransferHandler;
+import javax.swing.table.TableModel;
 import model.viewer.FixtureMatcher;
 import util.IntTransferable;
+import util.Reorderable;
 
 /**
  * A transfer-handler to let the user drag items in the list to control Z-order.
@@ -56,11 +59,14 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 	 */
 	@Override
 	protected Transferable createTransferable(final JComponent component) {
-		if (!(component instanceof JList)) {
+		if ((component instanceof JList)) {
+			final JList<?> list = (JList<?>) component;
+			return new IntTransferable(FLAVOR, list.getSelectedIndex());
+		} else if (component instanceof JTable) {
+			return new IntTransferable(FLAVOR, ((JTable) component).getSelectedRow());
+		} else {
 			throw new IllegalStateException("Tried to create transferrable from non-list");
 		}
-		final JList<?> list = (JList<?>) component;
-		return new IntTransferable(FLAVOR, list.getSelectedIndex());
 	}
 
 	/**
@@ -79,24 +85,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 			return false;
 		}
 		final Component component = support.getComponent();
-		if (!(component instanceof JList)) {
-			return false;
-		}
-		final JList<?> list = (JList<?>) component;
-		final ListModel tempModel = list.getModel();
-		if (!(tempModel instanceof DefaultListModel)) {
-			return false;
-		}
-		// To add the item back, we have to specify its type here.
-		final DefaultListModel<FixtureMatcher> model =
-				(DefaultListModel<FixtureMatcher>) tempModel;
 		final DropLocation tempDropLoc = support.getDropLocation();
-		if (!(tempDropLoc instanceof JList.DropLocation)) {
-			return false;
-		}
-		final JList.DropLocation dropLocation = (JList.DropLocation) tempDropLoc;
-		final int index = dropLocation.getIndex();
-		final boolean insert = dropLocation.isInsert();
 		final Transferable transfer = support.getTransferable();
 		final Integer payload;
 		try {
@@ -105,19 +94,54 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 			return false;
 		}
 		final int data = payload.intValue();
-		if (index == data) {
-			// no-op
-			return true;
-		} else if (index > data) {
-			final FixtureMatcher item = model.getElementAt(data);
-			model.removeElementAt(data);
-			model.add(index - 1, item);
+		if ((component instanceof JList)) {
+			final JList<?> list = (JList<?>) component;
+			final ListModel tempModel = list.getModel();
+			if (!(tempModel instanceof DefaultListModel)) {
+				return false;
+			}
+			// To add the item back, we have to specify its type here.
+			final DefaultListModel<FixtureMatcher> model =
+					(DefaultListModel<FixtureMatcher>) tempModel;
+			if (!(tempDropLoc instanceof JList.DropLocation)) {
+				return false;
+			}
+			final JList.DropLocation dropLocation = (JList.DropLocation) tempDropLoc;
+			final int index = dropLocation.getIndex();
+			final boolean insert = dropLocation.isInsert();
+			if (index == data) {
+				// no-op
+				return true;
+			} else if (index > data) {
+				final FixtureMatcher item = model.getElementAt(data);
+				model.removeElementAt(data);
+				model.add(index - 1, item);
+				return true;
+			} else {
+				final FixtureMatcher item = model.getElementAt(data);
+				model.removeElementAt(data);
+				model.add(index, item);
+				return true;
+			}
+		} else if (component instanceof JTable) {
+			final TableModel model = ((JTable) component).getModel();
+			if (!(model instanceof Reorderable)) {
+				return false;
+			} else if (!(tempDropLoc instanceof JTable.DropLocation)) {
+				return false;
+			}
+			final JTable.DropLocation dropLocation = (JTable.DropLocation) tempDropLoc;
+			final int index = dropLocation.getRow();
+			final int selection = ((JTable) component).getSelectedRow();
+			((Reorderable) model).reorder(data, index);
+			if (selection == data) {
+				((JTable) component).setRowSelectionInterval(index, index);
+			} else if (selection > index && selection < data) {
+				((JTable) component).setRowSelectionInterval(selection - 1, selection - 1);
+			}
 			return true;
 		} else {
-			final FixtureMatcher item = model.getElementAt(data);
-			model.removeElementAt(data);
-			model.add(index, item);
-			return true;
+			return false;
 		}
 	}
 }

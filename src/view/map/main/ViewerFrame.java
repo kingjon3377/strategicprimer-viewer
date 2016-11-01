@@ -9,8 +9,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.util.Optional;
+import javax.swing.DropMode;
 import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
+import model.viewer.FixtureFilterTableModel;
 import model.viewer.IViewerModel;
 import util.NullCleaner;
 import view.map.details.DetailPanelNG;
@@ -77,8 +81,9 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 					filename.get().toFile());
 		}
 		model = map;
-		final FixtureFilterMenu filterMenu = new FixtureFilterMenu();
-		final MapComponent mapPanel = new MapComponent(map, filterMenu);
+		final FixtureFilterTableModel tableModel = new FixtureFilterTableModel();
+		final MapComponent mapPanel = new MapComponent(map, tableModel);
+		tableModel.addTableModelListener(e -> mapPanel.repaint());
 		map.addGraphicalParamsListener(mapPanel);
 		map.addMapChangeListener(mapPanel);
 		map.addSelectionChangeListener(mapPanel);
@@ -86,8 +91,15 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 				new DetailPanelNG(map.getMapDimensions().version, map);
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
+		final JTable table = new JTable(tableModel);
+		table.setDragEnabled(true);
+		table.setDropMode(DropMode.INSERT_ROWS);
+		table.setTransferHandler(new FixtureFilterTransferHandler());
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
-				ScrollListener.mapScrollPanel(map, mapPanel), detailPanel));
+				SplitWithWeights.horizontalSplit(0.8, 0.8,
+						ScrollListener.mapScrollPanel(map, mapPanel), table),
+				detailPanel));
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		mapPanel.requestFocusInWindow();
@@ -97,7 +109,6 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 
 		setJMenuBar(new ViewerMenu(NullCleaner.assertNotNull(ioHandler), this,
 				map));
-		getJMenuBar().add(filterMenu);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
