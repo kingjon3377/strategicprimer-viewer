@@ -36,7 +36,7 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
-import model.viewer.FixtureComparator;
+import model.viewer.FixtureMatcher;
 import model.viewer.TileTypeFixture;
 import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.NonNull;
@@ -85,7 +85,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Comparator to find which fixture to draw.
 	 */
-	private final Comparator<@NonNull TileFixture> fixComp = new FixtureComparator();
+	private final Comparator<@NonNull TileFixture> fixComp;
 
 	/**
 	 * @return a hash value for the object
@@ -101,8 +101,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Ver2TileDrawHelper) && fixComp.equals(
-				((Ver2TileDrawHelper) obj).fixComp));
+		return (this == obj) || ((obj instanceof Ver2TileDrawHelper) && fixMatchers.equals(
+				((Ver2TileDrawHelper) obj).fixMatchers));
 	}
 
 	/**
@@ -122,16 +122,38 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * A fallback image.
 	 */
 	private Image fallbackImage;
+	/**
+	 * The matchers to use to say what's on top.
+	 */
+	private final Iterable<FixtureMatcher> fixMatchers;
 
 	/**
 	 * Constructor. We need to initialize the cache.
 	 *
 	 * @param imageObserver   the class to notify when images finish drawing.
 	 * @param filter the class to query about whether to display a fixture
+	 * @param matchers a series of matchers to use to determine what's on top
 	 */
-	public Ver2TileDrawHelper(final ImageObserver imageObserver, final ZOrderFilter filter) {
+	public Ver2TileDrawHelper(final ImageObserver imageObserver,
+							  final ZOrderFilter filter,
+							  final Iterable<FixtureMatcher> matchers) {
 		observer = imageObserver;
 		zof = filter;
+		fixMatchers = matchers;
+		fixComp = (o1, o2) -> {
+			for (final FixtureMatcher matcher : fixMatchers) {
+				if (matcher.matches(o1)) {
+					if (matcher.matches(o2)) {
+						return 0;
+					} else {
+						return -1;
+					}
+				} else if (matcher.matches(o2)) {
+					return 1;
+				}
+			}
+			return 0;
+		};
 		final String[] files = {"trees.png", "mountain.png"};
 		createRiverFiles();
 		for (final String file : files) {

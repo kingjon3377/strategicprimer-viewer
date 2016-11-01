@@ -6,15 +6,14 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
+import java.util.Collections;
 import javax.swing.JButton;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;
+import model.viewer.FixtureMatcher;
 import model.viewer.ZOrderFilter;
+import org.eclipse.jdt.annotation.Nullable;
 import view.map.main.TileDrawHelper;
 import view.map.main.TileDrawHelperFactory;
 
@@ -78,8 +77,10 @@ public final class DualTileButton extends JButton {
 			throw new IllegalArgumentException("Graphics cannot be null");
 		}
 		super.paintComponent(pen);
+		// TODO: When the model has a suitable list of matchers, use it instead of this stub
 		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2,
-				this, NULL_ZOF);
+				this, NULL_ZOF,
+				Collections.singleton(new FixtureMatcher(fix -> true, "stub")));
 		pen.setClip(new Polygon(
 									new int[]{getWidth() - MARGIN, MARGIN, MARGIN},
 									new int[]{

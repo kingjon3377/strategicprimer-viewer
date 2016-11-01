@@ -3,6 +3,7 @@ package controller.map.drivers;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Random;
 import model.map.IMapNG;
@@ -12,6 +13,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
+import model.viewer.FixtureMatcher;
 import model.viewer.TileViewSize;
 import model.viewer.ViewerModel;
 import util.NullCleaner;
@@ -373,7 +375,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 		final TileDrawHelper hThree =
 				new Ver2TileDrawHelper((img, infoFlags, xCoordinate, yCoordinate, width,
 										height) -> false,
-											  fix -> true);
+											  fix -> true, Collections.singleton(
+						new FixtureMatcher(fix -> true, "test")));
 		SYS_OUT.println("1. All in one place:");
 		final TileDrawHelper hOne = new CachingTileDrawHelper();
 		long oneTotal =

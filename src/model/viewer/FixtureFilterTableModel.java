@@ -1,6 +1,7 @@
 package model.viewer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import model.map.TileFixture;
@@ -25,7 +26,7 @@ import util.Reorderable;
  * @author Jonathan Lovelace
  */
 public class FixtureFilterTableModel extends AbstractTableModel
-		implements Reorderable, ZOrderFilter {
+		implements Reorderable, ZOrderFilter, Iterable<FixtureMatcher> {
 	/**
 	 * Constructor. Initialize with data that the default algorithm won't handle properly.
 	 */
@@ -169,5 +170,12 @@ public class FixtureFilterTableModel extends AbstractTableModel
 			fireTableRowsInserted(size - 1, size - 1);
 			return true;
 		}
+	}
+	/**
+	 * @return an iterator over fixture-matchers.
+	 */
+	@Override
+	public Iterator<FixtureMatcher> iterator() {
+		return list.iterator();
 	}
 }

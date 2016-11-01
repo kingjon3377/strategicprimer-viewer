@@ -82,7 +82,7 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 		}
 		model = map;
 		final FixtureFilterTableModel tableModel = new FixtureFilterTableModel();
-		final MapComponent mapPanel = new MapComponent(map, tableModel);
+		final MapComponent mapPanel = new MapComponent(map, tableModel, tableModel);
 		tableModel.addTableModelListener(e -> mapPanel.repaint());
 		map.addGraphicalParamsListener(mapPanel);
 		map.addMapChangeListener(mapPanel);

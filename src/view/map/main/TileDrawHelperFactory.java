@@ -3,6 +3,7 @@ package view.map.main;
 import java.awt.image.ImageObserver;
 import java.util.HashMap;
 import java.util.Map;
+import model.viewer.FixtureMatcher;
 import model.viewer.ZOrderFilter;
 import util.NullCleaner;
 
@@ -46,16 +47,21 @@ public final class TileDrawHelperFactory {
 	 * @param version the version of the map that'll be drawn
 	 * @param observer    the object to be notified when images finish drawing
 	 * @param zof     a filter to tell a ver-two helper which tiles to draw
+	 * @param matchers a series of matchers to tell a ver-two helper which fixture is on
+	 *                    top.
 	 * @return a draw helper for the specified map version
 	 */
 	public TileDrawHelper factory(final int version, final ImageObserver observer,
-								final ZOrderFilter zof) {
+								  final ZOrderFilter zof,
+								  final Iterable<FixtureMatcher> matchers) {
 		switch (version) {
 		case 1:
 			return verOneHelper;
 		case 2:
+			// FIXME: We really shouldn't cache ver-two helpers anymore.
 			if (!verTwoHelpers.containsKey(observer)) {
-				verTwoHelpers.put(observer, new Ver2TileDrawHelper(observer, zof));
+				verTwoHelpers
+						.put(observer, new Ver2TileDrawHelper(observer, zof, matchers));
 			}
 			return NullCleaner.assertNotNull(verTwoHelpers.get(observer));
 		default:

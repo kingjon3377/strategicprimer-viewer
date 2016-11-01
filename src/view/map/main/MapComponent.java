@@ -21,6 +21,7 @@ import model.listeners.SelectionChangeListener;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
+import model.viewer.FixtureMatcher;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
@@ -64,6 +65,10 @@ public final class MapComponent extends JComponent
 	 * The fixture filter (probably a menu).
 	 */
 	private final ZOrderFilter zof;
+	/**
+	 * The matchers to tell the order in which to draw fixtures.
+	 */
+	private final Iterable<FixtureMatcher> matchers;
 
 	/**
 	 * Constructor.
@@ -71,13 +76,15 @@ public final class MapComponent extends JComponent
 	 * @param theMap The model containing the map this represents
 	 * @param filter the filter telling which fixtures to draw
 	 */
-	public MapComponent(final IViewerModel theMap, final ZOrderFilter filter) {
+	public MapComponent(final IViewerModel theMap, final ZOrderFilter filter,
+						final Iterable<FixtureMatcher> fixOrderer) {
 		setDoubleBuffered(true);
 		model = theMap;
 		zof = filter;
+		matchers = fixOrderer;
 		//noinspection TrivialMethodReference
 		helper = TileDrawHelperFactory.INSTANCE.factory(
-				model.getMapDimensions().version, this::imageUpdate, zof);
+				model.getMapDimensions().version, this::imageUpdate, zof, matchers);
 		cml = new ComponentMouseListener(model);
 		//noinspection TrivialMethodReference
 		cml.addSelectionChangeListener(this::selectedPointChanged);
@@ -285,7 +292,7 @@ public final class MapComponent extends JComponent
 	@Override
 	public void mapChanged() {
 		helper = TileDrawHelperFactory.INSTANCE.factory(
-				model.getMapDimensions().version, this, zof);
+				model.getMapDimensions().version, this, zof, matchers);
 		repaint();
 	}
 
