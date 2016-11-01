@@ -123,7 +123,7 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 				new JScrollPane(table),
 				BorderedPanel.horizontal(allButton, null, noneButton));
 		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
-				SplitWithWeights.horizontalSplit(0.8, 0.8,
+				SplitWithWeights.horizontalSplit(0.95, 0.95,
 						ScrollListener.mapScrollPanel(map, mapPanel), tablePanel),
 				detailPanel));
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
