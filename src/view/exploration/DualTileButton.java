@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collections;
 import javax.swing.JButton;
 import model.map.IMapNG;
 import model.map.Point;
@@ -45,14 +44,20 @@ public final class DualTileButton extends JButton {
 	 * The subordinate map.
 	 */
 	private final IMapNG mapTwo;
-
+	/**
+	 * The matchers to determine which fixture to draw on top
+	 */
+	private final Iterable<FixtureMatcher> fixMatchers;
 	/**
 	 * @param master      the first map
 	 * @param subordinate the second map
+	 * @param matchers the matchers to determine which fixture to draw on top
 	 */
-	public DualTileButton(final IMapNG master, final IMapNG subordinate) {
+	public DualTileButton(final IMapNG master, final IMapNG subordinate,
+						  final Iterable<FixtureMatcher> matchers) {
 		mapOne = master;
 		mapTwo = subordinate;
+		fixMatchers = matchers;
 	}
 
 	/**
@@ -77,10 +82,8 @@ public final class DualTileButton extends JButton {
 			throw new IllegalArgumentException("Graphics cannot be null");
 		}
 		super.paintComponent(pen);
-		// TODO: When the model has a suitable list of matchers, use it instead of this stub
 		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2,
-				this, NULL_ZOF,
-				Collections.singleton(new FixtureMatcher(fix -> true, "stub")));
+				this, NULL_ZOF, fixMatchers);
 		pen.setClip(new Polygon(
 									new int[]{getWidth() - MARGIN, MARGIN, MARGIN},
 									new int[]{

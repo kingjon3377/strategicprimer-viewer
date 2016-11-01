@@ -34,6 +34,8 @@ import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
+import model.viewer.FixtureFilterTableModel;
+import model.viewer.FixtureMatcher;
 import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
 import util.NullCleaner;
@@ -93,6 +95,10 @@ public final class ExplorationPanel extends BorderedPanel
 	 */
 	private final Map<IExplorationModel.Direction, DualTileButton> buttons =
 			new EnumMap<>(IExplorationModel.Direction.class);
+	/**
+	 * A source of matchers to determine which fixtures to draw on top.
+	 */
+	private final Iterable<FixtureMatcher> matchers = new FixtureFilterTableModel();
 
 	/**
 	 * @param direction a direction
@@ -233,8 +239,7 @@ public final class ExplorationPanel extends BorderedPanel
 		mainPCS.addSelectionChangeListener(mainList);
 		panel.add(new JScrollPane(mainList));
 		final DualTileButton dtb =
-				new DualTileButton(model.getMap(),
-										  subordinateMap);
+				new DualTileButton(model.getMap(), subordinateMap, matchers);
 		// At some point we tried wrapping the button in a JScrollPane.
 		panel.add(dtb);
 		final ExplorationClickListener ecl =
