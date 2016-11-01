@@ -35,8 +35,6 @@ import static util.NullCleaner.assertNotNull;
 /**
  * A class to produce a report based on a map for a player.
  *
- * TODO: Use an IR for lists, producing "" if empty, to simplify these methods!
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
