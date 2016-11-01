@@ -108,7 +108,6 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 			}
 			final JList.DropLocation dropLocation = (JList.DropLocation) tempDropLoc;
 			final int index = dropLocation.getIndex();
-			final boolean insert = dropLocation.isInsert();
 			if (index == data) {
 				// no-op
 				return true;
