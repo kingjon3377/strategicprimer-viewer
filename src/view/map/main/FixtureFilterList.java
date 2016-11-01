@@ -8,6 +8,8 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.DropMode;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -16,7 +18,6 @@ import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
-import model.viewer.FixtureFilterListModel;
 import model.viewer.FixtureMatcher;
 import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
@@ -55,14 +56,14 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 	/**
 	 * The data model.
 	 */
-	private final FixtureFilterListModel model;
+	private final DefaultListModel<FixtureMatcher> model;
 
 	/**
 	 * Constructor.
 	 */
 	public FixtureFilterList() {
 		plurals = new HashMap<>();
-		model = new FixtureFilterListModel();
+		model = new DefaultListModel<>();
 		setModel(model);
 		lsm = NullCleaner.assertNotNull(getSelectionModel());
 		lsm.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -72,22 +73,25 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 			}
 		});
 		setCellRenderer(this);
-		model.add(new FixtureMatcher(fix -> fix instanceof Ground &&
+		model.addElement(new FixtureMatcher(fix -> fix instanceof Ground &&
 													((Ground) fix).isExposed(),
 											"Ground (exposed)"));
-		model.add(new FixtureMatcher(
+		model.addElement(new FixtureMatcher(
 				fix -> fix instanceof Ground && !((Ground) fix).isExposed(), "Ground"));
-		model.add(new FixtureMatcher(fix -> fix instanceof Grove &&
+		model.addElement(new FixtureMatcher(fix -> fix instanceof Grove &&
 													((Grove) fix).isOrchard(),
 											"Orchards"));
-		model.add(new FixtureMatcher(fix -> fix instanceof Grove &&
+		model.addElement(new FixtureMatcher(fix -> fix instanceof Grove &&
 													!((Grove) fix).isOrchard(),
 											"Groves"));
-		model.add(new FixtureMatcher(fix -> fix instanceof Meadow &&
+		model.addElement(new FixtureMatcher(fix -> fix instanceof Meadow &&
 													((Meadow) fix).isField(), "Fields"));
-		model.add(new FixtureMatcher(fix -> fix instanceof Meadow &&
+		model.addElement(new FixtureMatcher(fix -> fix instanceof Meadow &&
 													!((Meadow) fix).isField(),
 											"Meadows"));
+		setTransferHandler(new FixtureFilterTransferHandler());
+		setDropMode(DropMode.INSERT);
+		setDragEnabled(true);
 	}
 
 	/**
@@ -96,7 +100,8 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 	 */
 	@Override
 	public boolean shouldDisplay(final TileFixture fix) {
-		for (final FixtureMatcher matcher : model) {
+		for (int i = 0; i < model.getSize(); i++) {
+			final FixtureMatcher matcher = model.getElementAt(i);
 			if (matcher.matches(fix)) {
 				return matcher.isDisplayed();
 			}
@@ -105,7 +110,7 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 		if (cls == null) {
 			return false;
 		} else {
-			model.add(new FixtureMatcher(cls::isInstance, fix.plural()));
+			model.addElement(new FixtureMatcher(cls::isInstance, fix.plural()));
 			final int size = model.getSize();
 			lsm.addSelectionInterval(size - 1, size - 1);
 			return true;
