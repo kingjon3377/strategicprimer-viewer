@@ -143,17 +143,6 @@ public class Animal
 	}
 
 	/**
-	 * TODO: Should depend on the kind of animal ...
-	 *
-	 * @return a z-value for use in determining the top fixture on a tile
-	 */
-	@SuppressWarnings("MagicNumber")
-	@Override
-	public int getZValue() {
-		return 40;
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */

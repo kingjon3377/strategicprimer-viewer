@@ -120,17 +120,6 @@ public final class ProxyUnit
 	private final int id;
 
 	/**
-	 * This should never be actually called
-	 *
-	 * @return a Z-value for the fixture
-	 */
-	@Override
-	public int getZValue() {
-		LOGGER.warning("getZValue called on a ProxyUnit");
-		return -10;
-	}
-
-	/**
 	 * @return "Units"
 	 */
 	@Override

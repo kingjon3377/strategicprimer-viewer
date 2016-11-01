@@ -95,14 +95,6 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
-	 * @return a z-value for use in ordering tile icons on a tile
-	 */
-	@Override
-	public int getZValue() {
-		return 25;
-	}
-
-	/**
 	 * @return the text this fixture encapsulates
 	 */
 	public String getText() {

@@ -138,17 +138,6 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
-	 * TODO: Should probably depend.
-	 *
-	 * @return a z-value for use in determining the top fixture on a tile
-	 */
-	@SuppressWarnings("MagicNumber")
-	@Override
-	public int getZValue() {
-		return 15;
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */

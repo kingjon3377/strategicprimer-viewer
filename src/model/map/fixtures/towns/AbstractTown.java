@@ -196,15 +196,6 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
-	 * @return a z-value for use in determining the top fixture on a tile
-	 */
-	@SuppressWarnings("MagicNumber")
-	@Override
-	public int getZValue() {
-		return 50;
-	}
-
-	/**
 	 * @return the player that owns the town
 	 */
 	@Override

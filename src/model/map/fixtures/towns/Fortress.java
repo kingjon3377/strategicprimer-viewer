@@ -213,15 +213,6 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	}
 
 	/**
-	 * @return a z-value for use in determining the top fixture on a tile
-	 */
-	@SuppressWarnings("MagicNumber")
-	@Override
-	public int getZValue() {
-		return 60;
-	}
-
-	/**
 	 * @param obj     another Fortress
 	 * @param ostream a stream to write details to
 	 * @param context a string to print before every line of output, describing the

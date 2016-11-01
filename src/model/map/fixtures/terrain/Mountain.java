@@ -60,14 +60,6 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	private static final int Z_VALUE = 10;
 
 	/**
-	 * @return a z-value for use in determining the top fixture on a tile
-	 */
-	@Override
-	public int getZValue() {
-		return Z_VALUE;
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */

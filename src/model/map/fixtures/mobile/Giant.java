@@ -86,15 +86,6 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
-	 * @return a z-value for use in determining the top fixture on a tile
-	 */
-	@SuppressWarnings("MagicNumber")
-	@Override
-	public int getZValue() {
-		return 40;
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */

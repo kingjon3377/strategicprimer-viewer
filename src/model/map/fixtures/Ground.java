@@ -88,18 +88,6 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
-	 * @return a z-value for use in determining the top fixture on a tile
-	 */
-	@Override
-	public int getZValue() {
-		if (exposed) {
-			return 3;
-		} else {
-			return 0;
-		}
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */

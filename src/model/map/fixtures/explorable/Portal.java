@@ -109,15 +109,6 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
-	 * @return a Z-value for use in ordering tile icons on a tile
-	 */
-	@SuppressWarnings("MagicNumber")
-	@Override
-	public int getZValue() {
-		return 25;
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */

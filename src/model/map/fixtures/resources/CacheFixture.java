@@ -98,15 +98,6 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
-	 * @return a z-value for use in determining the top fixture on a tile
-	 */
-	@SuppressWarnings("MagicNumber")
-	@Override
-	public int getZValue() {
-		return 22;
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */

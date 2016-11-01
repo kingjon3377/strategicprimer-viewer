@@ -52,14 +52,6 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
-	 * @return a z-value for use in determining the top fixture on a tile
-	 */
-	@Override
-	public int getZValue() {
-		return 5;
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */

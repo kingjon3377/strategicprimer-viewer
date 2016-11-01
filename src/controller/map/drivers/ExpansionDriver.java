@@ -121,10 +121,6 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 																currentPlayer))
 														.collect(Collectors.toSet());
 		final IUnit mock = new IUnit() {
-			@Override
-			public int getZValue() {
-				throw ise;
-			}
 
 			@Override
 			public String plural() {

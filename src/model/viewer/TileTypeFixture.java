@@ -74,19 +74,6 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
-	 * @return a Z-value
-	 * @deprecated This class should only ever be in a FixtureListModel, so this method
-	 * should never be called.
-	 */
-	@Deprecated
-	@Override
-	public int getZValue() {
-		LOGGER.log(Level.WARNING, "TileTypeFixture#getZValue() called",
-				new Exception("dummy"));
-		return Integer.MIN_VALUE;
-	}
-
-	/**
 	 * @return an "ID".
 	 * @deprecated This class should only ever be in a FixtureListModel, so this method
 	 * should never be called.
