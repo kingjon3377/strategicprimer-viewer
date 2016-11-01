@@ -1,11 +1,8 @@
 package view.map.main;
 
 import java.awt.image.ImageObserver;
-import java.util.HashMap;
-import java.util.Map;
 import model.viewer.FixtureMatcher;
 import model.viewer.ZOrderFilter;
-import util.NullCleaner;
 
 /**
  * A factory for TileDrawHelpers.
@@ -31,10 +28,6 @@ public final class TileDrawHelperFactory {
 	 * A version-1 tile draw helper.
 	 */
 	private final TileDrawHelper verOneHelper = new DirectTileDrawHelper();
-	/**
-	 * A mapping from ImageObservers to version-2 helpers.
-	 */
-	private final Map<ImageObserver, TileDrawHelper> verTwoHelpers = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -58,12 +51,7 @@ public final class TileDrawHelperFactory {
 		case 1:
 			return verOneHelper;
 		case 2:
-			// FIXME: We really shouldn't cache ver-two helpers anymore.
-			if (!verTwoHelpers.containsKey(observer)) {
-				verTwoHelpers
-						.put(observer, new Ver2TileDrawHelper(observer, zof, matchers));
-			}
-			return NullCleaner.assertNotNull(verTwoHelpers.get(observer));
+			return new Ver2TileDrawHelper(observer, zof, matchers);
 		default:
 			throw new IllegalArgumentException("Unsupported map version");
 		}
