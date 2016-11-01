@@ -196,7 +196,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	 *                it is
 	 *                put onto ostream, it should probably be followed by a tab.
 	 * @return whether that object equals, or is a zeroed-out equivalent of, this one
-	 * @throws IOException
+	 * @throws IOException on I/O error writing to stream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,

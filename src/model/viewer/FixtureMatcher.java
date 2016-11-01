@@ -37,7 +37,7 @@ public class FixtureMatcher {
 	}
 	/**
 	 * @param fixture a fixture
-	 * @preturn whether we match it.
+	 * @return whether we match it.
 	 */
 	public boolean matches(final TileFixture fixture) {
 		return predicate.test(fixture);

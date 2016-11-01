@@ -142,6 +142,7 @@ public interface ICLIHelper extends Closeable {
 	 * inputNumber.
 	 * @param prompt the prompt to use
 	 * @return the point the user input
+	 * @throws IOException on error getting input from the user
 	 */
 	default Point inputPoint(final String prompt) throws IOException {
 		print(prompt);

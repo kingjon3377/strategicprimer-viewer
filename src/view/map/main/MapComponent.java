@@ -75,6 +75,7 @@ public final class MapComponent extends JComponent
 	 *
 	 * @param theMap The model containing the map this represents
 	 * @param filter the filter telling which fixtures to draw
+	 * @param fixOrderer a stream of matchers to say which fixture is "on top"
 	 */
 	public MapComponent(final IViewerModel theMap, final ZOrderFilter filter,
 						final Iterable<FixtureMatcher> fixOrderer) {

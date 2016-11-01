@@ -68,7 +68,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	 *  @param fortOwner the player that owns the fortress
 	 * @param fortName  the name of the fortress
 	 * @param idNum     the ID number.
-	 * @param fortSize
+	 * @param fortSize the size of the fortress
 	 */
 	public Fortress(final Player fortOwner, final String fortName,
 					final int idNum, final TownSize fortSize) {
