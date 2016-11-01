@@ -204,21 +204,21 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 		if (obj.getID() == id) {
 			if (obj instanceof Portal) {
 				final Portal other = (Portal) obj;
-				if (!EqualsAny.equalsAny(other.getDestinationWorld(), "unknown",
+				if (!EqualsAny.equalsAny(other.destinationWorld, "unknown",
 						destinationWorld)) {
 					ostream.append(context);
 					ostream.append("\tIn portal with ID #");
-					ostream.append(Integer.toString(getID()));
+					ostream.append(Integer.toString(id));
 					ostream.append(": Different destination world");
 					ostream.append(LineEnd.LINE_SEP);
 					return false;
-				} else if (other.getDestinationCoordinates().getRow() > 0 &&
-								   other.getDestinationCoordinates().getCol() > 0 &&
+				} else if (other.destinationCoordinates.getRow() > 0 &&
+								   other.destinationCoordinates.getCol() > 0 &&
 								   !destinationCoordinates
-											.equals(other.getDestinationCoordinates())) {
+											.equals(other.destinationCoordinates)) {
 					ostream.append(context);
 					ostream.append("\tIn portal with ID #");
-					ostream.append(Integer.toString(getID()));
+					ostream.append(Integer.toString(id));
 					ostream.append(": Different destination coordinates");
 					ostream.append(LineEnd.LINE_SEP);
 					return false;
@@ -228,7 +228,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 			} else {
 				ostream.append(context);
 				ostream.append("\tDifferent kinds of fixtures for ID #");
-				ostream.append(Integer.toString(getID()));
+				ostream.append(Integer.toString(id));
 				ostream.append(LineEnd.LINE_SEP);
 				return false;
 			}
