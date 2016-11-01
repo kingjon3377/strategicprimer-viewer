@@ -178,7 +178,7 @@ public class Job implements IJob {
 			for (final ISkill skill : obj) {
 				if (ours.containsKey(skill.getName())) {
 					retval &= ours.get(skill.getName()).isSubset(skill, ostream,
-							context + " In Job " + name + ":");
+							context + " In Job " + name + ':');
 				} else {
 					ostream.append(context);
 					ostream.append(" In Job ");

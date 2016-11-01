@@ -153,7 +153,7 @@ public final class FortressMemberReportGenerator
 				if (resourceKinds.containsKey(kind)) {
 					list = resourceKinds.get(kind);
 				} else {
-					list = new ListReportNode(kind + ":");
+					list = new ListReportNode(kind + ':');
 					resourceKinds.put(kind, list);
 					rsr.add(list);
 				}
