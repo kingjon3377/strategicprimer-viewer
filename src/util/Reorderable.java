@@ -22,5 +22,5 @@ public interface Reorderable {
 	 * @param fromIndex the index to remove from
 	 * @param toIndex the index to move to (its index *before* removing the old!)
 	 */
-	public void reorder(int fromIndex, int toIndex);
+	void reorder(int fromIndex, int toIndex);
 }
