@@ -59,7 +59,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 	 */
 	@Override
 	protected Transferable createTransferable(final JComponent component) {
-		if ((component instanceof JList)) {
+		if (component instanceof JList) {
 			final JList<?> list = (JList<?>) component;
 			return new IntTransferable(FLAVOR, list.getSelectedIndex());
 		} else if (component instanceof JTable) {
@@ -94,7 +94,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 			return false;
 		}
 		final int data = payload.intValue();
-		if ((component instanceof JList)) {
+		if (component instanceof JList) {
 			final JList<?> list = (JList<?>) component;
 			final ListModel<?> tempModel = list.getModel();
 			if (!(tempModel instanceof DefaultListModel)) {
