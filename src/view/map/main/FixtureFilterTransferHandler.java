@@ -1,14 +1,9 @@
 package view.map.main;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import javax.swing.DefaultListModel;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JTable;
-import javax.swing.ListModel;
-import javax.swing.TransferHandler;
+import javax.swing.*;
 import javax.swing.table.TableModel;
 import model.viewer.FixtureMatcher;
 import util.IntTransferable;
@@ -94,41 +89,29 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 			return false;
 		}
 		final int data = payload.intValue();
+		final Reorderable model;
 		if (component instanceof JList) {
 			final JList<?> list = (JList<?>) component;
 			final ListModel<?> tempModel = list.getModel();
-			if (!(tempModel instanceof DefaultListModel)) {
+			if (!(tempModel instanceof Reorderable)) {
 				return false;
 			}
-			// To add the item back, we have to specify its type here.
-			final DefaultListModel<FixtureMatcher> model =
-					(DefaultListModel<FixtureMatcher>) tempModel;
+			model = (Reorderable) tempModel;
 			if (!(tempDropLoc instanceof JList.DropLocation)) {
 				return false;
 			}
 			final JList.DropLocation dropLocation = (JList.DropLocation) tempDropLoc;
 			final int index = dropLocation.getIndex();
-			if (index == data) {
-				// no-op
-				return true;
-			} else if (index > data) {
-				final FixtureMatcher item = model.getElementAt(data);
-				model.removeElementAt(data);
-				model.add(index - 1, item);
-				return true;
-			} else {
-				final FixtureMatcher item = model.getElementAt(data);
-				model.removeElementAt(data);
-				model.add(index, item);
-				return true;
-			}
+			model.reorder(data, index);
+			return true;
 		} else if (component instanceof JTable) {
-			final TableModel model = ((JTable) component).getModel();
-			if (!(model instanceof Reorderable)) {
+			final TableModel tempModel = ((JTable) component).getModel();
+			if (!(tempModel instanceof Reorderable)) {
 				return false;
 			} else if (!(tempDropLoc instanceof JTable.DropLocation)) {
 				return false;
 			}
+			model = (Reorderable) tempModel;
 			final JTable.DropLocation dropLocation = (JTable.DropLocation) tempDropLoc;
 			final int index = dropLocation.getRow();
 			final int selection = ((JTable) component).getSelectedRow();

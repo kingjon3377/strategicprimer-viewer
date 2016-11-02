@@ -20,6 +20,7 @@ import model.viewer.FixtureMatcher;
 import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
+import util.ReorderableListModel;
 
 /**
  * A list to let the user select which fixtures ought to be searched.
@@ -56,7 +57,7 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 	 * Constructor.
 	 */
 	public FixtureFilterList() {
-		model = new DefaultListModel<>();
+		model = new ReorderableListModel<>();
 		setModel(model);
 		lsm = NullCleaner.assertNotNull(getSelectionModel());
 		lsm.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
