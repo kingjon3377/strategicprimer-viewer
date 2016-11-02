@@ -16,6 +16,7 @@ package util;
  * @author Aaron Davidson, in http://stackoverflow.com/a/4769575
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface Reorderable {
 	/**
 	 * Move a row of a list or table from one position to another.
