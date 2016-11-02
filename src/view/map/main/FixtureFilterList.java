@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
@@ -46,10 +44,6 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 	private final ListCellRenderer<Object> lcr = new DefaultListCellRenderer();
 
 	/**
-	 * A mapping from classes of fixtures to their plurals.
-	 */
-	private final Map<Class<? extends TileFixture>, String> plurals;
-	/**
 	 * The selection model.
 	 */
 	private final ListSelectionModel lsm;
@@ -62,7 +56,6 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 	 * Constructor.
 	 */
 	public FixtureFilterList() {
-		plurals = new HashMap<>();
 		model = new DefaultListModel<>();
 		setModel(model);
 		lsm = NullCleaner.assertNotNull(getSelectionModel());
