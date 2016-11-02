@@ -148,7 +148,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	public void apply() {
 		if (sel instanceof IUnit) {
 			final IUnit selection = (IUnit) sel;
-			selection.setOrders(NullCleaner
+			selection.setOrders(model.getMap().getCurrentTurn(), NullCleaner
 										.assertNotNull(area.getText().trim()));
 			getParent().getParent().repaint();
 		}
@@ -162,7 +162,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	@Override
 	public void revert() {
 		if (sel instanceof IUnit) {
-			area.setText(((IUnit) sel).getOrders().trim());
+			area.setText(((IUnit) sel).getLatestOrders(model.getMap().getCurrentTurn())
+								 .trim());
 		} else {
 			area.setText("");
 		}

@@ -2,6 +2,8 @@ package model.map.fixtures.mobile;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -44,11 +46,16 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 
 	/**
 	 * The unit's orders. This is serialized to and from XML, but does not affect
-	 * equality
-	 * or hashing, and is not printed in toString.
+	 * equality or hashing, and is not printed in toString.
 	 */
-	private String orders;
-
+	private final NavigableMap<Integer, String> orders = new TreeMap<>();
+	/**
+	 * @return the unit's orders for all turns.
+	 */
+	@Override
+	public NavigableMap<Integer, String> getAllOrders() {
+		return orders;
+	}
 	/**
 	 * The player that owns the unit.
 	 */
@@ -83,7 +90,6 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 		kind = unitType;
 		name = unitName;
 		id = idNum;
-		orders = "";
 	}
 
 	/**
@@ -99,7 +105,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	public Unit copy(final boolean zero) {
 		final Unit retval = new Unit(owner, kind, name, id);
 		if (!zero) {
-			retval.orders = orders;
+			retval.orders.putAll(orders);
 			for (final UnitMember member : this) {
 				retval.addMember(member.copy(false));
 			}
@@ -300,19 +306,27 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * @param turn
 	 * @param newOrders the unit's new orders
 	 */
 	@Override
-	public final void setOrders(final String newOrders) {
-		orders = newOrders;
+	public final void setOrders(final int turn, final String newOrders) {
+		orders.put(Integer.valueOf(turn), newOrders);
 	}
 
 	/**
 	 * @return the unit's orders
+	 * @param turn
 	 */
 	@Override
-	public String getOrders() {
-		return orders;
+	public String getOrders(final int turn) {
+		if (orders.containsKey(Integer.valueOf(turn))) {
+			return orders.get(Integer.valueOf(turn));
+		} else if (turn < 0 && orders.containsKey(Integer.valueOf(-1))) {
+			return orders.get(Integer.valueOf(-1));
+		} else {
+			return "";
+		}
 	}
 
 	/**

@@ -406,7 +406,7 @@ public final class TestMoreFixtureSerialization extends
 			throws XMLStreamException, SPFormatException, IOException {
 		final Player player = new Player(0, "");
 		final IUnit secondUnit = new Unit(player, "kind of unit", "name of unit", 2);
-		secondUnit.setOrders("some orders");
+		secondUnit.setOrders(-1, "some orders");
 		final IUnit firstUnit = new Unit(player, "kind of unit", "name of unit", 2);
 		assertThat("Orders have no effect on equals", secondUnit, equalTo(firstUnit));
 		assertSerialization("Orders don't mess up deserialization", secondUnit,
@@ -415,7 +415,18 @@ public final class TestMoreFixtureSerialization extends
 				createSerializedForm(secondUnit, true), containsString("some orders"));
 		assertThat("Serialized form contains orders",
 				createSerializedForm(secondUnit, false), containsString("some orders"));
-
+		secondUnit.setOrders(2, "some other orders");
+		assertThat("Serialized form contains original orders",
+				createSerializedForm(secondUnit, true), containsString("some orders"));
+		assertThat("Serialized form contains original orders",
+				createSerializedForm(secondUnit, false), containsString("some orders"));
+		assertThat("Serialized form contains new orders too",
+				createSerializedForm(secondUnit, true),
+				containsString("some other orders"));
+		assertThat("Serialized form contains new orders too",
+				createSerializedForm(secondUnit, false),
+				containsString("some other orders"));
+		// TODO: Test old non-tag-based orders deserialization
 	}
 	/**
 	 * Test serialization of portraits.

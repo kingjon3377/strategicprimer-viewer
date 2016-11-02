@@ -63,7 +63,6 @@ public final class StrategyExporter implements PlayerChangeListener {
 		model = workerModel;
 		currentPlayer = workerModel.getMap().getCurrentPlayer();
 	}
-
 	/**
 	 * @param dismissed the list of dismissed members
 	 * @return the proto-strategy as a String
@@ -71,10 +70,12 @@ public final class StrategyExporter implements PlayerChangeListener {
 	@SuppressWarnings("TypeMayBeWeakened")
 	public String createStrategy(final Iterable<UnitMember> dismissed) {
 		final String playerName = currentPlayer.getName();
-		final String turn = Integer.toString(model.getMap().getCurrentTurn());
+		final int turn = model.getMap().getCurrentTurn();
+		final String turnString = Integer.toString(turn);
 		final List<IUnit> units = model.getUnits(currentPlayer);
 
 		final Map<String, List<IUnit>> unitsByKind = new HashMap<>();
+		final Map<IUnit, String> orders = new HashMap<>();
 		for (final IUnit unit : units) {
 			if (!unit.iterator().hasNext()) {
 				// FIXME: This should be exposed as a user option. Sometimes
@@ -92,7 +93,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 			list.add(unit);
 		}
 
-		int size = 58 + playerName.length() + turn.length();
+		int size = 58 + playerName.length() + turnString.length();
 		for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 			size += 4;
 			size += entry.getKey().length();
@@ -100,7 +101,9 @@ public final class StrategyExporter implements PlayerChangeListener {
 				size += 10;
 				size += unit.getName().length();
 				size += unitMemberSize(unit);
-				size += unit.getOrders().length();
+				final String unitOrders = unit.getLatestOrders(turn);
+				orders.put(unit, unitOrders);
+				size += unitOrders.length();
 			}
 		}
 		for (final UnitMember member : dismissed) {
@@ -116,7 +119,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 		builder.append(playerName);
 		builder.append(LineEnd.LINE_SEP);
 		builder.append("Turn ");
-		builder.append(turn);
+		builder.append(turnString);
 		builder.append(']');
 		builder.append(LineEnd.LINE_SEP);
 		builder.append(LineEnd.LINE_SEP);
@@ -152,7 +155,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 				builder.append(':');
 				builder.append(LineEnd.LINE_SEP);
 				builder.append(LineEnd.LINE_SEP);
-				final String orders = unit.getOrders().trim();
+				final String unitOrders = orders.get(unit);
 				if (orders.isEmpty()) {
 					builder.append("TODO");
 				} else {

@@ -8,6 +8,7 @@ import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
@@ -81,7 +82,8 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 *@param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @param stream    the stream to read more elements from     @return the parsed tile
+	 * @param stream    the stream to read more elements from
+	 * @return the parsed unit
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
@@ -106,9 +108,13 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 					NullCleaner.assertNotNull(
 							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-				retval.addMember(parseChild(
-						NullCleaner.assertNotNull(event.asStartElement()),
-						element.getName(), stream, players, idFactory, warner));
+				if ("orders".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
+					parseOrders(event.asStartElement(), element.getName(), retval, warner, stream);
+				} else {
+					retval.addMember(parseChild(
+							NullCleaner.assertNotNull(event.asStartElement()),
+							element.getName(), stream, players, idFactory, warner));
+				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
 			} else if (event.isEndElement() &&
@@ -116,8 +122,39 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 				break;
 			}
 		}
-		retval.setOrders(NullCleaner.assertNotNull(orders.toString().trim()));
+		final String tempOrders = orders.toString().trim();
+		if (!tempOrders.isEmpty()) {
+			retval.setOrders(-1, NullCleaner.assertNotNull(tempOrders));
+		}
 		return retval;
+	}
+
+	/**
+	 * Parse orders for a unit for a specified turn.
+	 * @param element the orders element
+	 * @param parent the parent tag
+	 * @param unit the unit to whom these orders are directed
+	 * @param warner the Warning instance to use for warnings
+	 * @param stream the stream of further tags.
+	 * @throws SPFormatException on SP format problem
+	 */
+	private void parseOrders(final StartElement element, final QName parent,
+							 final Unit unit, final Warning warner,
+							 final Iterable<XMLEvent> stream) throws SPFormatException {
+		final int turn = getIntegerParameter(element, "turn", -1);
+		final StringBuilder builder = new StringBuilder(512);
+		for (final XMLEvent event : stream) {
+			if (event.isCharacters()) {
+				builder.append(event.asCharacters().getData().trim());
+			} else if (event.isStartElement()) {
+				throw new UnwantedChildException(element.getName(),
+														event.asStartElement());
+			} else if (event.isEndElement() &&
+							   element.getName().equals(event.asEndElement().getName())) {
+				break;
+			}
+		}
+		unit.setOrders(turn, builder.toString().trim());
 	}
 
 	/**
@@ -219,9 +256,26 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 		if (obj instanceof HasPortrait) {
 			ostream.append(portraitXML((HasPortrait) obj));
 		}
-		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
-			ostream.append('>').append(obj.getOrders().trim());
+		if (obj.iterator().hasNext() || !obj.getAllOrders().isEmpty()) {
+			ostream.append('>');
 			ostream.append(LineEnd.LINE_SEP);
+			for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
+				if (entry.getValue().trim().isEmpty()) {
+					continue;
+				}
+				indent(ostream, indent + 1);
+				ostream.append("<orders");
+				if (entry.getKey().intValue() >= 0) {
+					ostream.append(" turn=\"");
+					ostream.append(Integer.toString(entry.getKey().intValue()));
+					ostream.append('"');
+				}
+				ostream.append('>');
+				// FIXME: Ensure, and test, that XML special characters are escaped
+				ostream.append(entry.getValue().trim());
+				ostream.append("</orders>");
+				ostream.append(LineEnd.LINE_SEP);
+			}
 			for (final UnitMember member : obj) {
 				CompactReaderAdapter.write(ostream, member, indent + 1);
 			}

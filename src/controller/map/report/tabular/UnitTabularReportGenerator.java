@@ -69,7 +69,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 		writeFieldDelimiter(ostream);
 		writeField(ostream, item.getName());
 		writeFieldDelimiter(ostream);
-		writeField(ostream, item.getOrders());
+		writeField(ostream, item.getAllOrders().lastEntry().getValue());
 		ostream.append(getRowDelimiter());
 		for (final UnitMember member : item) {
 			if (member instanceof Animal) {

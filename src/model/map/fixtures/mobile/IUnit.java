@@ -3,6 +3,7 @@ package model.map.fixtures.mobile;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NavigableMap;
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.HasKind;
@@ -36,14 +37,35 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 									FixtureIterable<@NonNull UnitMember>, HasOwner,
 									FortressMember {
 	/**
-	 * @return the unit's orders
+	 * @param turn the current turn
+	 * @return that unit's latest orders as of that turn
 	 */
-	String getOrders();
+	default String getLatestOrders(final int turn) {
+		final NavigableMap<Integer, String> orders = getAllOrders();
+		for (int i = turn; i >= -1; i--) {
+			final String turnOrders = orders.get(Integer.valueOf(i)).trim();
+			if (!turnOrders.isEmpty()) {
+				return turnOrders;
+			}
+		}
+		return "";
+	}
+	/**
+	 * @return the unit's orders
+	 * @param turn which turn these are orders for
+	 */
+	String getOrders(final int turn);
 
 	/**
+	 * @return the unit's orders for all turns
+	 */
+	NavigableMap<Integer, String> getAllOrders();
+
+	/**
+	 * @param turn which turn these are orders for
 	 * @param newOrders the unit's new orders
 	 */
-	void setOrders(String newOrders);
+	void setOrders(final int turn, String newOrders);
 
 	/**
 	 * @return a verbose description of the Unit.

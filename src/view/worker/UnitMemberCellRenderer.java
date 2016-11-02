@@ -127,7 +127,9 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		} else if (internal instanceof IUnit) {
 			final IUnit unit = (IUnit) internal;
 			((JLabel) component).setText(unit.getName());
-			final String orders = unit.getOrders().toLowerCase();
+			// TODO: operate on the *current* turn, not the *highest* turn.
+			final String orders =
+					unit.getAllOrders().lastEntry().getValue().toLowerCase();
 			if (warn && orders.contains("fixme") && unit.iterator().hasNext()) {
 				((DefaultTreeCellRenderer) component)
 						.setBackgroundSelectionColor(Color.PINK);
@@ -145,7 +147,8 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 			for (final TreeNode node : (WorkerTreeModelAlt.KindNode) value) {
 				if (node instanceof WorkerTreeModelAlt.UnitNode) {
 					final IUnit unit = (IUnit) assertNotNull(getNodeValue(node));
-					final String orders = unit.getOrders().toLowerCase();
+					final String orders =
+							unit.getAllOrders().lastEntry().getValue().toLowerCase();
 					if (orders.contains("fixme") && unit.iterator().hasNext()) {
 						shouldErr = true;
 						break;

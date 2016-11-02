@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -121,6 +122,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 																currentPlayer))
 														.collect(Collectors.toSet());
 		final IUnit mock = new IUnit() {
+			@Override
+			public NavigableMap<Integer, String> getAllOrders() { throw ise; }
 
 			@Override
 			public String plural() {
@@ -184,12 +187,12 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			}
 
 			@Override
-			public String getOrders() {
+			public String getOrders(final int turn) {
 				throw ise;
 			}
 
 			@Override
-			public void setOrders(final String newOrders) {
+			public void setOrders(final int turn, final String newOrders) {
 				throw ise;
 			}
 

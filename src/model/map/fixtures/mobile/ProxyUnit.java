@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.logging.Logger;
@@ -42,6 +44,29 @@ import static util.NullCleaner.assertNotNull;
 public final class ProxyUnit
 		implements IUnit, ProxyFor<IUnit>, HasMutableKind, HasMutableImage,
 						HasMutableName, HasMutableOwner {
+	/**
+	 * TODO: This is probably highly inefficient, and is likely to get called often, I think
+	 * @return the units' orders for all turns
+	 */
+	@Override
+	public NavigableMap<Integer, String> getAllOrders() {
+		final NavigableMap<Integer, String> retval = new TreeMap<>();
+		final List<Integer> toRemove = new ArrayList<>();
+		for (final IUnit unit : proxied) {
+			for (final Map.Entry<Integer, String> entry : unit.getAllOrders().entrySet()) {
+				if (retval.containsKey(entry.getKey())) {
+					if (!retval.get(entry.getKey()).equals(entry.getValue())) {
+						retval.put(entry.getKey(), "");
+						toRemove.add(entry.getKey());
+					}
+				} else {
+					retval.put(entry.getKey(), entry.getValue());
+				}
+			}
+		}
+		toRemove.forEach(retval::remove);
+		return retval;
+	}
 	/**
 	 * Logger.
 	 */
@@ -402,16 +427,17 @@ public final class ProxyUnit
 	/**
 	 * @return the orders shared by the units, or the empty string if their orders are
 	 * different.
+	 * @param turn
 	 */
 	@Override
-	public String getOrders() {
+	public String getOrders(final int turn) {
 		@Nullable String orders = null;
 		for (final IUnit unit : proxied) {
 			if (orders == null) {
-				orders = unit.getOrders();
+				orders = unit.getOrders(turn);
 			} else if (orders.isEmpty()) {
 				continue;
-			} else if (!orders.equals(unit.getOrders())) {
+			} else if (!orders.equals(unit.getOrders(turn))) {
 				return "";
 			}
 		}
@@ -423,12 +449,13 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * @param turn
 	 * @param newOrders The units' new orders
 	 */
 	@Override
-	public void setOrders(final String newOrders) {
+	public void setOrders(final int turn, final String newOrders) {
 		for (final IUnit unit : proxied) {
-			unit.setOrders(newOrders);
+			unit.setOrders(turn, newOrders);
 		}
 	}
 

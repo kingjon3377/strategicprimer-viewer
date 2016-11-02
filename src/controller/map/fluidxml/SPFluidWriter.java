@@ -250,8 +250,8 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			throw new IllegalArgumentException("Can only write IUnit");
 		}
 		final IUnit unit = (IUnit) obj;
-		final String orders = unit.getOrders().trim();
-		final boolean hasContents = unit.iterator().hasNext() || !orders.isEmpty();
+		final boolean hasContents =
+				unit.iterator().hasNext() || !unit.getAllOrders().isEmpty();
 		writeTag(ostream, "unit", indent, !hasContents);
 		writeIntegerAttribute(ostream, "owner", unit.getOwner().getPlayerId());
 		writeNonEmptyAttribute(ostream, "kind", unit.getKind());
@@ -262,7 +262,18 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			writeNonEmptyAttribute(ostream, "portrait",
 					((HasPortrait) unit).getPortrait());
 		}
-		ostream.writeCharacters(orders);
+		for (final Map.Entry<Integer, String> entry : unit.getAllOrders().entrySet()) {
+			if (entry.getValue().trim().isEmpty()) {
+				continue;
+			}
+			writeTag(ostream, "orders", indent + 1, false);
+			if (entry.getKey().intValue() >= 0) {
+				writeIntegerAttribute(ostream, "turn", entry.getKey().intValue());
+			}
+			// FIXME: Ensure, and test, that XML special characters are escaped
+			ostream.writeCharacters(entry.getValue().trim());
+			ostream.writeEndElement();
+		}
 		for (final UnitMember member : unit) {
 			writeSPObject(ostream, member, indent + 1);
 		}
