@@ -498,7 +498,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			}
 		}
 		for (int i = 0; i < levels; i++) {
-			String jobName = cli.inputString("Which Job does worker have a level in? ");
+			final String jobName = cli.inputString("Which Job does worker have a level in? ");
 			final Optional<IJob> existing = Optional.ofNullable(retval.getJob(jobName));
 			if (existing.isPresent()) {
 				final IJob job = existing.get();
@@ -705,7 +705,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			cli.print(stats.toString());
 		}
 		for (int i = 0; i < levels; i++) {
-			String jobName = cli.inputString("Which Job does worker have a level in? ");
+			final String jobName = cli.inputString("Which Job does worker have a level in? ");
 			final Optional<IJob> existing = Optional.ofNullable(retval.getJob(jobName));
 			if (existing.isPresent()) {
 				final IJob job = existing.get();
