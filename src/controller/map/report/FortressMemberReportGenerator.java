@@ -71,8 +71,6 @@ public final class FortressMemberReportGenerator
 		final StringBuilder builder =
 				new StringBuilder(2048).append("<h4>Resources and Equipment</h4>")
 						.append(LineEnd.LINE_SEP).append(OPEN_LIST);
-		final Map<String, Collection<Pair<Point, ResourcePile>>> resources =
-				new SimpleMultiMap<>();
 		// Similarly, I doubt either of these will ever be over half a K, but
 		// we'll give each a whole K just in case.
 		final StringBuilder rsrBuilder =
@@ -85,6 +83,8 @@ public final class FortressMemberReportGenerator
 		Collections.sort(values, pairComparator);
 		boolean anyResources = false;
 		boolean anyEquipment = false;
+		final Map<String, Collection<Pair<Point, ResourcePile>>> resources =
+				new SimpleMultiMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof ResourcePile) {
 				anyResources = true;

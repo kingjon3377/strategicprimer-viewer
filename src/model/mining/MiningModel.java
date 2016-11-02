@@ -65,8 +65,6 @@ public final class MiningModel {
 		unnormalized.put(PointFactory.point(0, 0), initial);
 		final Queue<Point> queue = new LinkedList<>();
 		queue.add(PointFactory.point(0, 0));
-		long counter = 0;
-		long pruneCounter = 0;
 		final Random rng = new Random(seed);
 		final Function<LodeStatus, LodeStatus> horizontalGen;
 		switch (kind) {
@@ -81,6 +79,8 @@ public final class MiningModel {
 		}
 		final Function<LodeStatus, LodeStatus> verticalGen =
 				current -> LodeStatus.adjacent(current, rng);
+		long counter = 0;
+		long pruneCounter = 0;
 		while (!queue.isEmpty()) {
 			final Point point = queue.remove();
 			counter++;
