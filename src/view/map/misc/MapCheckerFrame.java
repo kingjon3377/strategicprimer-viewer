@@ -63,8 +63,8 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	 */
 	public MapCheckerFrame() {
 		super("Strategic Primer Map Checker");
-		Warning.Custom.setCustomPrinter(str -> printParagraph(str,
-				NullCleaner.assertNotNull(StreamingLabel.LabelTextColor.yellow)));
+		Warning.Custom.setCustomPrinter(Warning.wrapHandler(str -> printParagraph(str,
+				NullCleaner.assertNotNull(StreamingLabel.LabelTextColor.yellow))));
 		setBackground(Color.black);
 		setMinimumSize(new Dimension(640, 320));
 		setContentPane(new JScrollPane(label));

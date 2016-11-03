@@ -44,12 +44,24 @@ public enum Warning {
 	 * The output stream to log to. Used only by Custom.
 	 */
 	@SuppressWarnings("NonFinalFieldInEnum")
-	private Consumer<String> customHandle = SystemOut.SYS_OUT::println;
+	private Consumer<Exception> customHandle = wrapHandler(SystemOut.SYS_OUT::println);
+	/**
+	 * Default handler for Custom.
+	 */
+	public static Consumer<Exception> wrapHandler(final Consumer<String> handler) {
+		return warning -> {
+			if (warning instanceof SPFormatException) {
+				handler.accept("SP format warning: " + warning.getLocalizedMessage());
+			} else {
+				handler.accept("Warning: " + warning.getLocalizedMessage());
+			}
+		};
+	};
 	/**
 	 * In Custom, set the custom printing method. In others, throw.
 	 * @param printer the printing method to use
 	 */
-	public void setCustomPrinter(final Consumer<String> printer) {
+	public void setCustomPrinter(final Consumer<Exception> printer) {
 		if (this == Custom) {
 			customHandle = printer;
 		} else {
@@ -82,12 +94,7 @@ public enum Warning {
 		case Ignore:
 			break;
 		case Custom:
-			// TODO: Should this switch be outside, and the handle take the Exception?
-			if (warning instanceof SPFormatException) {
-				customHandle.accept("SP format warning: " + warning.getLocalizedMessage());
-			} else {
-				customHandle.accept("Warning: " + warning.getLocalizedMessage());
-			}
+			customHandle.accept(warning);
 			break;
 		default:
 			TypesafeLogger.getLogger(Warning.class)
