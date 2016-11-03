@@ -75,6 +75,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 			scs.fireChanges(null, point);
 		});
 		newUnitItem.addActionListener(e -> nuDialog.setVisible(true));
+		nuDialog.dispose();
 		updateForVersion(version);
 	}
 

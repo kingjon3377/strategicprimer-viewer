@@ -13,6 +13,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -237,6 +239,12 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		for (int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);
 		}
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(final WindowEvent e) {
+				newUnitFrame.dispose();
+			}
+		});
 		pack();
 	}
 
