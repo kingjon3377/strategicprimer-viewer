@@ -51,6 +51,19 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 		return "";
 	}
 	/**
+	 * @param orders an orders string
+	 * @return the latest turn those orders are our orders, or -1 if they're not
+	 */
+	default int getOrdersTurn(final String orders) {
+		int retval = -1;
+		for (final Map.Entry<Integer, String> entry : getAllOrders().entrySet()) {
+			if (orders.equals(entry.getValue()) && entry.getKey().intValue() > retval) {
+				retval = entry.getKey().intValue();
+			}
+		}
+		return retval;
+	}
+	/**
 	 * @return the unit's orders
 	 * @param turn which turn these are orders for
 	 */

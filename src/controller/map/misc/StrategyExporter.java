@@ -101,7 +101,14 @@ public final class StrategyExporter implements PlayerChangeListener {
 				size += 10;
 				size += unit.getName().length();
 				size += unitMemberSize(unit);
-				final String unitOrders = unit.getLatestOrders(turn);
+				final String tempOrders = unit.getLatestOrders(turn);
+				final String unitOrders;
+				if (tempOrders.equals(unit.getOrders(turn))) {
+					unitOrders = tempOrders;
+				} else {
+					unitOrders = "(From turn #" + unit.getOrdersTurn(tempOrders) + ") " +
+										 tempOrders;
+				}
 				orders.put(unit, unitOrders);
 				size += unitOrders.length();
 			}
