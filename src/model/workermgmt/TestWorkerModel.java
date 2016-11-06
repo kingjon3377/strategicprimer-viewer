@@ -72,7 +72,7 @@ public final class TestWorkerModel {
 		final Collection<IUnit> listThree = new ArrayList<>();
 		listThree.add(unit);
 		fixtures.add(fort);
-		fixtures.add(new Forest("forest", false));
+		fixtures.add(new Forest("forest", false, 10));
 		fixtures.add(new Hill(7));
 		addItem(new Unit(playerOne, "four", "unitFour", 6), fixtures,
 				listOne);

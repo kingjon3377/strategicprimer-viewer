@@ -259,7 +259,7 @@ public final class TestSubsets {
 				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(), -1);
 		baseMap.locationStream()
 				.forEach(point -> baseMap.setBaseTerrain(point, TileType.Plains));
-		baseMap.setForest(PointFactory.point(1, 1), new Forest("elm", false));
+		baseMap.setForest(PointFactory.point(1, 1), new Forest("elm", false, 1));
 		baseMap.addFixture(PointFactory.point(1, 1),
 				new Animal("skunk", false, false, "wild", 1));
 		baseMap.addRivers(PointFactory.point(1, 1), River.East);
@@ -268,7 +268,7 @@ public final class TestSubsets {
 				new SPMapNG(baseMap.dimensions(), new PlayerCollection(), -1);
 		testMap.locationStream()
 				.forEach(point -> testMap.setBaseTerrain(point, TileType.Plains));
-		final Forest forest = new Forest("elm", false);
+		final Forest forest = new Forest("elm", false, 1);
 		final TileFixture animal = new Animal("skunk", false, false, "wild", 1);
 		final Consumer<IMutableMapNG> testTrue =
 				map -> {

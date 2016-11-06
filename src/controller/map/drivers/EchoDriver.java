@@ -2,12 +2,17 @@ package controller.map.drivers;
 
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IDRegistrar;
 import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
+import model.map.Point;
+import model.map.TileFixture;
+import model.map.fixtures.terrain.Forest;
 import util.Warning;
 
 /**
@@ -64,6 +69,22 @@ public final class EchoDriver implements UtilityDriver {
 			throw new DriverFailedException("Malformed XML", except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("SP map format error", except);
+		}
+		// Fix forest IDs in a way that shouldn't break consistency between main and
+		// player maps too much.
+		final IDRegistrar idFactory = IDFactoryFiller.createFactory(map);
+		for (final Point location : map.locations()) {
+			final Forest mainForest = map.getForest(location);
+			if (mainForest != null && mainForest.getID() < 0) {
+				final int id = 1147200 + location.getRow() * 176 + location.getCol();
+				idFactory.register(id);
+				mainForest.setID(id);
+			}
+			for (final TileFixture fix : map.getOtherFixtures(location)) {
+				if (fix instanceof Forest && fix.getID() < 0) {
+					((Forest) fix).setID(idFactory.createID());
+				}
+			}
 		}
 		final Path outfile = Paths.get(args[1]);
 		try {

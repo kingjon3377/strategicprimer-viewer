@@ -1,11 +1,10 @@
 package model.map.fixtures.terrain;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.TerrainFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A forest on a tile.
@@ -40,6 +39,10 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	public String getKind() {
 		return trees;
 	}
+	/**
+	 * Unique identifying number for this instance.
+	 */
+	private int id;
 
 	/**
 	 * Whether this is "rows of" trees.
@@ -51,10 +54,12 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	 *
 	 * @param kind  what kind of trees dominate.
 	 * @param rowed whether the trees are in rows
+	 * @param idNum a number to uniquely identify this instance
 	 */
-	public Forest(final String kind, final boolean rowed) {
+	public Forest(final String kind, final boolean rowed, final int idNum) {
 		trees = kind;
 		rows = rowed;
+		id = idNum;
 	}
 
 	/**
@@ -64,7 +69,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Forest copy(final boolean zero) {
-		final Forest retval = new Forest(trees, rows);
+		final Forest retval = new Forest(trees, rows, id);
 		retval.image = image;
 		return retval;
 	}
@@ -112,7 +117,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	 * @return whether it's equal to this one
 	 */
 	private boolean equalsImpl(final Forest obj) {
-		return trees.equals(obj.trees) && (rows == obj.rows);
+		return id == obj.id && trees.equals(obj.trees) && (rows == obj.rows);
 	}
 
 	/**
@@ -120,30 +125,31 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	 */
 	@Override
 	public int hashCode() {
-		if (rows) {
-			return trees.hashCode() << 1;
-		} else {
-			return trees.hashCode();
-		}
+		return id;
 	}
 
 	/**
-	 * TODO: support different IDs for different instances.
-	 *
 	 * @return an ID for the object
 	 */
 	@Override
 	public int getID() {
-		return -1;
+		return id;
 	}
-
+	/**
+	 * Set the ID for the object.
+	 */
+	public void setID(final int idNum) {
+		id = idNum;
+	}
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return equals(fix);
+		return (this == fix) ||
+					   ((fix instanceof Forest) && trees.equals(((Forest) fix).trees) &&
+								(rows == ((Forest) fix).rows));
 	}
 
 	/**

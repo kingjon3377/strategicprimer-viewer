@@ -91,7 +91,7 @@ public final class CompactTerrainReader extends
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "forest":
 			retval = new Forest(getParameter(element, "kind"), hasParameter(
-					element, "rows"));
+					element, "rows"), getIntegerParameter(element, "id", -1));
 			break;
 		case "hill":
 			retval = new Hill(getOrGenerateID(element, warner, idFactory));
@@ -137,25 +137,21 @@ public final class CompactTerrainReader extends
 			if (((Forest) obj).isRows()) {
 				ostream.append("\" rows=\"true");
 			}
-			ostream.append('"').append(imageXML((Forest) obj)).append(" />");
-			ostream.append(LineEnd.LINE_SEP);
-			return; // Neither do Forests.
+			ostream.append('"');
+		} else if (obj instanceof Hill) {
+			writeTag(ostream, "hill", indent);
+		} else if (obj instanceof Oasis) {
+			writeTag(ostream, "oasis", indent);
+		} else if (obj instanceof Sandbar) {
+			writeTag(ostream, "sandbar", indent);
 		} else {
-			if (obj instanceof Hill) {
-				writeTag(ostream, "hill", indent);
-			} else if (obj instanceof Oasis) {
-				writeTag(ostream, "oasis", indent);
-			} else if (obj instanceof Sandbar) {
-				writeTag(ostream, "sandbar", indent);
-			} else {
-				throw new IllegalStateException("Unexpected TerrainFixture type.");
-			}
-			ostream.append(imageXML((HasImage) obj));
-			ostream.append(" id=\"");
-			ostream.append(Integer.toString(obj.getID()));
-			ostream.append("\" />");
-			ostream.append(LineEnd.LINE_SEP);
+			throw new IllegalStateException("Unexpected TerrainFixture type.");
 		}
+		ostream.append(imageXML((HasImage) obj));
+		ostream.append(" id=\"");
+		ostream.append(Integer.toString(obj.getID()));
+		ostream.append("\" />");
+		ostream.append(LineEnd.LINE_SEP);
 	}
 
 	/**

@@ -222,7 +222,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				createSimpleMap(point(3, 3), Pair.of(point(2, 2), Steppe));
 		secondMap.addFixture(point(2, 2),
 				new Unit(new Player(1, ""), "unitOne", "firstUnit", 1));
-		secondMap.setForest(point(2, 2), new Forest("forestKind", true));
+		secondMap.setForest(point(2, 2), new Forest("forestKind", true, 8));
 		assertSerialization("Tile with two fixtures", secondMap);
 		final IMutableMapNG thirdMap =
 				createSimpleMap(point(4, 4), Pair.of(point(3, 3), Jungle));
@@ -328,7 +328,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 5);
 		six.setMountainous(point(0, 0), true);
 		six.setGround(point(0, 1), new Ground("basalt", false));
-		six.setForest(point(1, 0), new Forest("pine", false));
+		six.setForest(point(1, 0), new Forest("pine", false, 19));
 		six.addFixture(point(1, 1), new Animal("beaver", false, false, "wild", 18));
 		assertMissingPropertyDeserialization(
 				"Not-visible tiles with contents are serialized", six,

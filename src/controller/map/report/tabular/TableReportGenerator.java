@@ -200,7 +200,7 @@ public final class TableReportGenerator {
 				retval.put(Integer.valueOf(idf.createID()), Pair.of(point, ground));
 			}
 			if (forest != null) {
-				retval.put(Integer.valueOf(idf.createID()), Pair.of(point, forest));
+				retval.put(Integer.valueOf(forest.getID()), Pair.of(point, forest));
 			}
 		}
 		return retval;

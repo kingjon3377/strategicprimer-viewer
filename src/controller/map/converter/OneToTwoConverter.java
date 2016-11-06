@@ -176,7 +176,7 @@ public final class OneToTwoConverter {
 	private List<Point> createInitialSubtiles(final Point point,
 											final IMapNG oldMap,
 											final IMutableMapNG newMap,
-											final boolean main) {
+											final boolean main, final IDRegistrar idFac) {
 		final List<Point> initial = new LinkedList<>();
 		if (doesPointHaveContents(oldMap, point)) {
 			for (int i = 0; i < RES_JUMP; i++) {
@@ -186,7 +186,7 @@ public final class OneToTwoConverter {
 					final Point subPoint = PointFactory.point(row, col);
 					newMap.setBaseTerrain(subPoint, oldMap.getBaseTerrain(point));
 					initial.add(subPoint);
-					convertSubTile(subPoint, newMap, main);
+					convertSubTile(subPoint, newMap, main, idFac);
 				}
 			}
 		}
@@ -209,7 +209,7 @@ public final class OneToTwoConverter {
 										final IDRegistrar idFactory,
 										final Player independentPlayer) {
 		final List<Point> initial = createInitialSubtiles(point,
-				oldMap, newMap, main);
+				oldMap, newMap, main, idFactory);
 		if (doesPointHaveContents(oldMap, point)) {
 			final int idNum = idFactory.createID();
 			if (oldMap instanceof IMutableMapNG) {
@@ -290,10 +290,11 @@ public final class OneToTwoConverter {
 	 * @param map   the map
 	 * @param point the location to convert
 	 * @param main  whether this is the main map or a player's map
+	 * @param idFac the ID factory.
 	 */
 	@SuppressWarnings("deprecation")
 	private void convertSubTile(final Point point, final IMutableMapNG map,
-								final boolean main) {
+								final boolean main, final IDRegistrar idFac) {
 		try {
 			if (TileType.Mountain == map.getBaseTerrain(point)) {
 				map.setBaseTerrain(point, TileType.Plains);
@@ -302,14 +303,14 @@ public final class OneToTwoConverter {
 				if (isPointUnforested(map, point)) {
 					map.setForest(point, new Forest(runner.getPrimaryTree(point,
 							map.getBaseTerrain(point), map.streamOtherFixtures(point),
-							map.dimensions()), false));
+							map.dimensions()), false, idFac.createID()));
 				}
 				map.setBaseTerrain(point, TileType.Plains);
 			} else if (TileType.BorealForest == map.getBaseTerrain(point)) {
 				if (isPointUnforested(map, point)) {
 					map.setForest(point, new Forest(runner.getPrimaryTree(point,
 							map.getBaseTerrain(point), map.streamOtherFixtures(point),
-							map.dimensions()), false));
+							map.dimensions()), false, idFac.createID()));
 				}
 				map.setBaseTerrain(point, TileType.Steppe);
 			}
@@ -387,7 +388,7 @@ public final class OneToTwoConverter {
 				final boolean watered = hasAdjacentWater(point, map);
 				waterDesert(map, point, random, watered);
 			} else if (random.nextDouble() < ADD_FOREST_PROB) {
-				addForest(point, map, main);
+				addForest(point, map, main, idFac);
 			}
 		}
 	}
@@ -454,13 +455,18 @@ public final class OneToTwoConverter {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addForest(final Point point, final IMutableMapNG map,
-						final boolean main) {
+						final boolean main, final IDRegistrar idFac) {
 		try {
-			addFixture(map, point,
-					new Forest(runner.recursiveConsultTable("temperate_major_tree",
+			final String forestType =
+					runner.recursiveConsultTable("temperate_major_tree",
 							point,
 							map.getBaseTerrain(point), map.streamOtherFixtures(point),
-							map.dimensions()), false), main);
+							map.dimensions());
+			final Forest existingForest = map.getForest(point);
+			if (existingForest == null || !forestType.equals(existingForest.getKind())) {
+				addFixture(map, point,
+						new Forest(forestType, false, idFac.createID()), main);
+			}
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
 		}

@@ -18,6 +18,7 @@ import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
+import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
@@ -26,6 +27,7 @@ import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeBooleanAttribute;
 import static controller.map.fluidxml.XMLHelper.writeImage;
+import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
 import static java.lang.Boolean.parseBoolean;
 import static util.NullCleaner.assertNotNull;
@@ -96,7 +98,8 @@ public final class FluidTerrainHandler {
 									final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "forest");
 		final Forest retval =
-				new Forest(getAttribute(element, "kind"), hasAttribute(element, "rows"));
+				new Forest(getAttribute(element, "kind"), hasAttribute(element, "rows"),
+								  getIntegerAttribute(element, "id", -1));
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(retval, element, warner);
 	}
@@ -180,6 +183,7 @@ public final class FluidTerrainHandler {
 		if (forest.isRows()) {
 			writeBooleanAttribute(ostream, "rows", true);
 		}
+		writeIntegerAttribute(ostream, "id", forest.getID());
 		writeImage(ostream, forest);
 	}
 	/**
