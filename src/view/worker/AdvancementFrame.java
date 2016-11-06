@@ -73,7 +73,8 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 		ioHandler.addPlayerChangeListener(playerLabel);
 		final IWorkerTreeModel treeModel = new WorkerTreeModelAlt(player, source);
 		final WorkerTree tree =
-				WorkerTree.factory(treeModel, map.players(), false);
+				WorkerTree.factory(treeModel, map.players(),
+						() -> source.getMap().getCurrentTurn(), false);
 		ioHandler.addPlayerChangeListener(treeModel);
 		final WorkerCreationListener nwl = new WorkerCreationListener(treeModel,
 																			IDFactoryFiller

@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.IntSupplier;
 import javax.swing.JTree;
 import javax.swing.ToolTipManager;
 import javax.swing.event.TreeModelEvent;
@@ -64,13 +65,15 @@ public final class WorkerTree extends JTree
 	 * Factory method, to avoid leaking 'this' references.
 	 * @param wtModel the tree model
 	 * @param players the players in the map
+	 * @param turnSource how to get the current turn
 	 * @param orderCheck whether to visually warn on units needing orders
 	 * @return the constructed tree.
 	 */
 	public static WorkerTree factory(final IWorkerTreeModel wtModel,
 									 final Iterable<Player> players,
+									 final IntSupplier turnSource,
 									 final boolean orderCheck) {
-		final WorkerTree retval = new WorkerTree(wtModel, orderCheck);
+		final WorkerTree retval = new WorkerTree(turnSource, wtModel, orderCheck);
 		wtModel.addTreeModelListener(new TreeModelListener() {
 			@Override
 			public void treeStructureChanged(@Nullable final TreeModelEvent e) {
@@ -113,12 +116,14 @@ public final class WorkerTree extends JTree
 		return retval;
 	}
 	/**
+	 * @param turnSource how to get the current turn
 	 * @param wtModel    the tree model
 	 * @param orderCheck whether we should visually warn if orders contain substrings
 	 *                      indicating remaining work or if a unit named "unassigned" is
 	 *                      nonempty
 	 */
-	private WorkerTree(final IWorkerTreeModel wtModel, final boolean orderCheck) {
+	private WorkerTree(final IntSupplier turnSource, final IWorkerTreeModel wtModel,
+					   final boolean orderCheck) {
 		setModel(wtModel);
 		setRootVisible(false);
 		setDragEnabled(true);
@@ -129,7 +134,7 @@ public final class WorkerTree extends JTree
 																		getSelectionModel()),
 
 																wtModel));
-		setCellRenderer(new UnitMemberCellRenderer(orderCheck));
+		setCellRenderer(new UnitMemberCellRenderer(turnSource, orderCheck));
 		tsl = new WorkerTreeSelectionListener(wtModel);
 		addTreeSelectionListener(tsl);
 		for (int i = 0; i < getRowCount(); i++) {

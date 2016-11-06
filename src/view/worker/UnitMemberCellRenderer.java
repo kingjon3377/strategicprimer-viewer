@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import java.util.function.IntSupplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -75,12 +76,17 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * Whether we warn on certain ominous conditions.
 	 */
 	private final boolean warn;
-
 	/**
+	 * How to get the current turn.
+	 */
+	private final IntSupplier turnSupplier;
+	/**
+	 * @param turnSource how to get the current turn.
 	 * @param check whether to visually warn on certain ominous conditions
 	 */
-	public UnitMemberCellRenderer(final boolean check) {
+	public UnitMemberCellRenderer(final IntSupplier turnSource, final boolean check) {
 		warn = check;
+		turnSupplier = turnSource;
 	}
 
 	/**
@@ -127,9 +133,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		} else if (internal instanceof IUnit) {
 			final IUnit unit = (IUnit) internal;
 			((JLabel) component).setText(unit.getName());
-			// TODO: operate on the *current* turn, not the *highest* turn.
-			final String orders =
-					unit.getAllOrders().lastEntry().getValue().toLowerCase();
+			final String orders = unit.getLatestOrders(turnSupplier.getAsInt()).toLowerCase();
 			if (warn && orders.contains("fixme") && unit.iterator().hasNext()) {
 				((DefaultTreeCellRenderer) component)
 						.setBackgroundSelectionColor(Color.PINK);
@@ -148,7 +152,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 				if (node instanceof WorkerTreeModelAlt.UnitNode) {
 					final IUnit unit = (IUnit) assertNotNull(getNodeValue(node));
 					final String orders =
-							unit.getAllOrders().lastEntry().getValue().toLowerCase();
+							unit.getLatestOrders(turnSupplier.getAsInt()).toLowerCase();
 					if (orders.contains("fixme") && unit.iterator().hasNext()) {
 						shouldErr = true;
 						break;
