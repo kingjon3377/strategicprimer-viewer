@@ -282,7 +282,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	@Nullable
 	private static IFixture find(final IMapNG map, final int idNum) {
 		for (final Point point : map.locations()) {
-			// TODO: If Ground or Forest ever gets ID, check it here.
+			final IFixture forest = map.getForest(point);
+			if (forest != null && forest.getID() == idNum) {
+				return forest;
+			}
+			// TODO: If Ground ever gets ID, check it here.
 			for (final IFixture fixture : map.getOtherFixtures(point)) {
 				if (fixture.getID() == idNum) {
 					return fixture;
