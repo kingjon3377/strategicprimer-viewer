@@ -68,6 +68,29 @@ public final class ProxyUnit
 		return retval;
 	}
 	/**
+	 * TODO: This is probably highly inefficient
+	 * @return the units' orders for all turns
+	 */
+	@Override
+	public NavigableMap<Integer, String> getAllResults() {
+		final NavigableMap<Integer, String> retval = new TreeMap<>();
+		final List<Integer> toRemove = new ArrayList<>();
+		for (final IUnit unit : proxied) {
+			for (final Map.Entry<Integer, String> entry : unit.getAllResults().entrySet()) {
+				if (retval.containsKey(entry.getKey())) {
+					if (!retval.get(entry.getKey()).equals(entry.getValue())) {
+						retval.put(entry.getKey(), "");
+						toRemove.add(entry.getKey());
+					}
+				} else {
+					retval.put(entry.getKey(), entry.getValue());
+				}
+			}
+		}
+		toRemove.forEach(retval::remove);
+		return retval;
+	}
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(ProxyUnit.class);
@@ -449,6 +472,29 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * @return the results shared by the units, or the empty string if their results are
+	 * different.
+	 * @param turn
+	 */
+	@Override
+	public String getResults(final int turn) {
+		@Nullable String results = null;
+		for (final IUnit unit : proxied) {
+			if (results == null) {
+				results = unit.getResults(turn);
+			} else if (results.isEmpty()) {
+				continue;
+			} else if (!results.equals(unit.getResults(turn))) {
+				return "";
+			}
+		}
+		if (results == null) {
+			return "";
+		} else {
+			return results;
+		}
+	}
+	/**
 	 * @param turn
 	 * @param newOrders The units' new orders
 	 */
@@ -459,6 +505,16 @@ public final class ProxyUnit
 		}
 	}
 
+	/**
+	 * @param turn a turn
+	 * @param newResults The units' new results for that turn
+	 */
+	@Override
+	public void setResults(final int turn, final String newResults) {
+		for (final IUnit unit : proxied) {
+			unit.setResults(turn, newResults);
+		}
+	}
 	/**
 	 * @return a "verbose" description of the unit
 	 */

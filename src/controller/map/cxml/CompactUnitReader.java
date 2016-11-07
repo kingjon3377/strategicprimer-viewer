@@ -108,8 +108,14 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 					NullCleaner.assertNotNull(
 							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-				if ("orders".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
-					parseOrders(event.asStartElement(), element.getName(), retval, warner, stream);
+				if ("orders".equalsIgnoreCase(
+						event.asStartElement().getName().getLocalPart())) {
+					parseOrders(event.asStartElement(), element.getName(), retval,
+							warner, stream);
+				} else if ("results".equalsIgnoreCase(
+						event.asStartElement().getName().getLocalPart())) {
+					parseResults(event.asStartElement(), element.getName(), retval,
+							warner, stream);
 				} else {
 					retval.addMember(parseChild(
 							NullCleaner.assertNotNull(event.asStartElement()),
@@ -155,6 +161,33 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 			}
 		}
 		unit.setOrders(turn, builder.toString().trim());
+	}
+	/**
+	 * Parse results for a unit for a specified turn.
+	 * @param element the results element
+	 * @param parent the parent tag
+	 * @param unit the unit to whom these orders are directed
+	 * @param warner the Warning instance to use for warnings
+	 * @param stream the stream of further tags.
+	 * @throws SPFormatException on SP format problem
+	 */
+	private void parseResults(final StartElement element, final QName parent,
+							 final Unit unit, final Warning warner,
+							 final Iterable<XMLEvent> stream) throws SPFormatException {
+		final int turn = getIntegerParameter(element, "turn", -1);
+		final StringBuilder builder = new StringBuilder(512);
+		for (final XMLEvent event : stream) {
+			if (event.isCharacters()) {
+				builder.append(event.asCharacters().getData().trim());
+			} else if (event.isStartElement()) {
+				throw new UnwantedChildException(element.getName(),
+														event.asStartElement());
+			} else if (event.isEndElement() &&
+							   element.getName().equals(event.asEndElement().getName())) {
+				break;
+			}
+		}
+		unit.setResults(turn, builder.toString().trim());
 	}
 
 	/**
@@ -256,7 +289,8 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 		if (obj instanceof HasPortrait) {
 			ostream.append(portraitXML((HasPortrait) obj));
 		}
-		if (obj.iterator().hasNext() || !obj.getAllOrders().isEmpty()) {
+		if (obj.iterator().hasNext() || !obj.getAllOrders().isEmpty() ||
+					!obj.getAllResults().isEmpty()) {
 			ostream.append('>');
 			ostream.append(LineEnd.LINE_SEP);
 			for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
@@ -265,6 +299,24 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 				}
 				indent(ostream, indent + 1);
 				ostream.append("<orders");
+				if (entry.getKey().intValue() >= 0) {
+					ostream.append(" turn=\"");
+					ostream.append(Integer.toString(entry.getKey().intValue()));
+					ostream.append('"');
+				}
+				ostream.append('>');
+				// FIXME: Ensure, and test, that XML special characters are escaped
+				ostream.append(entry.getValue().trim());
+				ostream.append("</orders>");
+				ostream.append(LineEnd.LINE_SEP);
+			}
+			for (final Map.Entry<Integer, String> entry : obj.getAllResults()
+																  .entrySet()) {
+				if (entry.getValue().trim().isEmpty()) {
+					continue;
+				}
+				indent(ostream, indent + 1);
+				ostream.append("<results");
 				if (entry.getKey().intValue() >= 0) {
 					ostream.append(" turn=\"");
 					ostream.append(Integer.toString(entry.getKey().intValue()));

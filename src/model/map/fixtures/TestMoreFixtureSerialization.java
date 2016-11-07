@@ -426,6 +426,18 @@ public final class TestMoreFixtureSerialization extends
 		assertThat("Serialized form contains new orders too",
 				createSerializedForm(secondUnit, false),
 				containsString("some other orders"));
+		secondUnit.setResults(3, "some results");
+		secondUnit.setResults(-1, "some other results");
+		assertThat("Serialized form contains original results",
+				createSerializedForm(secondUnit, true), containsString("some results"));
+		assertThat("Serialized form contains original results",
+				createSerializedForm(secondUnit, false), containsString("some results"));
+		assertThat("Serialized form contains new results too",
+				createSerializedForm(secondUnit, true),
+				containsString("some other results"));
+		assertThat("Serialized form contains new results too",
+				createSerializedForm(secondUnit, false),
+				containsString("some other results"));
 		// TODO: Test old non-tag-based orders deserialization
 	}
 	/**

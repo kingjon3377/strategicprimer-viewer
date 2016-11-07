@@ -126,6 +126,9 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			public NavigableMap<Integer, String> getAllOrders() { throw ise; }
 
 			@Override
+			public NavigableMap<Integer, String> getAllResults() { throw ise; }
+
+			@Override
 			public String plural() {
 				throw ise;
 			}
@@ -193,6 +196,16 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 
 			@Override
 			public void setOrders(final int turn, final String newOrders) {
+				throw ise;
+			}
+
+			@Override
+			public String getResults(final int turn) {
+				throw ise;
+			}
+
+			@Override
+			public void setResults(final int turn, final String newOrders) {
 				throw ise;
 			}
 

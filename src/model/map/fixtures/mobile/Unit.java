@@ -50,11 +50,23 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	 */
 	private final NavigableMap<Integer, String> orders = new TreeMap<>();
 	/**
+	 * The unit's orders. This is serialized to and from XML, but does not affect
+	 * equality or hashing, and is not printed in toString.
+	 */
+	private final NavigableMap<Integer, String> results = new TreeMap<>();
+	/**
 	 * @return the unit's orders for all turns.
 	 */
 	@Override
 	public NavigableMap<Integer, String> getAllOrders() {
 		return orders;
+	}
+	/**
+	 * @return the unit's results for all turns.
+	 */
+	@Override
+	public NavigableMap<Integer, String> getAllResults() {
+		return results;
 	}
 	/**
 	 * The player that owns the unit.
@@ -106,6 +118,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 		final Unit retval = new Unit(owner, kind, name, id);
 		if (!zero) {
 			retval.orders.putAll(orders);
+			retval.results.putAll(results);
 			for (final UnitMember member : this) {
 				retval.addMember(member.copy(false));
 			}
@@ -324,6 +337,29 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 			return orders.get(Integer.valueOf(turn));
 		} else if (turn < 0 && orders.containsKey(Integer.valueOf(-1))) {
 			return orders.get(Integer.valueOf(-1));
+		} else {
+			return "";
+		}
+	}
+	/**
+	 * @param turn a turn
+	 * @param newResults the unit's new results for that turn
+	 */
+	@Override
+	public final void setResults(final int turn, final String newResults) {
+		results.put(Integer.valueOf(turn), newResults);
+	}
+
+	/**
+	 * @param turn a turn
+	 * @return the unit's results for that turn
+	 */
+	@Override
+	public String getResults(final int turn) {
+		if (results.containsKey(Integer.valueOf(turn))) {
+			return results.get(Integer.valueOf(turn));
+		} else if (turn < 0 && results.containsKey(Integer.valueOf(-1))) {
+			return results.get(Integer.valueOf(-1));
 		} else {
 			return "";
 		}

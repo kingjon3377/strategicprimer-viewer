@@ -251,7 +251,8 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		}
 		final IUnit unit = (IUnit) obj;
 		final boolean hasContents =
-				unit.iterator().hasNext() || !unit.getAllOrders().isEmpty();
+				unit.iterator().hasNext() || !unit.getAllOrders().isEmpty() ||
+						!unit.getAllResults().isEmpty();
 		writeTag(ostream, "unit", indent, !hasContents);
 		writeIntegerAttribute(ostream, "owner", unit.getOwner().getPlayerId());
 		writeNonEmptyAttribute(ostream, "kind", unit.getKind());
@@ -267,6 +268,18 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 				continue;
 			}
 			writeTag(ostream, "orders", indent + 1, false);
+			if (entry.getKey().intValue() >= 0) {
+				writeIntegerAttribute(ostream, "turn", entry.getKey().intValue());
+			}
+			// FIXME: Ensure, and test, that XML special characters are escaped
+			ostream.writeCharacters(entry.getValue().trim());
+			ostream.writeEndElement();
+		}
+		for (final Map.Entry<Integer, String> entry : unit.getAllResults().entrySet()) {
+			if (entry.getValue().trim().isEmpty()) {
+				continue;
+			}
+			writeTag(ostream, "results", indent + 1, false);
 			if (entry.getKey().intValue() >= 0) {
 				writeIntegerAttribute(ostream, "turn", entry.getKey().intValue());
 			}

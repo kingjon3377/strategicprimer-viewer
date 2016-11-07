@@ -81,6 +81,37 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	void setOrders(final int turn, String newOrders);
 
 	/**
+	 * @return the unit's results
+	 * @param turn which turn these are results for
+	 */
+	String getResults(final int turn);
+
+	/**
+	 * @return the unit's results for all turns
+	 */
+	NavigableMap<Integer, String> getAllResults();
+
+	/**
+	 * @param turn which turn these are results for
+	 * @param newResults the unit's new results
+	 */
+	void setResults(final int turn, String newResults);
+
+	/**
+	 * @param turn the current turn
+	 * @return that unit's latest results as of that turn
+	 */
+	default String getLatestResults(final int turn) {
+		final NavigableMap<Integer, String> results = getAllResults();
+		for (int i = turn; i >= -1; i--) {
+			final String turnResults = results.get(Integer.valueOf(i)).trim();
+			if (!turnResults.isEmpty()) {
+				return turnResults;
+			}
+		}
+		return "";
+	}
+	/**
 	 * @return a verbose description of the Unit.
 	 */
 	String verbose();
