@@ -69,10 +69,11 @@ public final class SubsetDriver implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
+	 * @param options
 	 * @param model the driver model
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) {
+	public void startDriver(final SPOptions options, final IDriverModel model) {
 		final IMultiMapModel mapModel;
 		if (model instanceof IMultiMapModel) {
 			mapModel = (IMultiMapModel) model;
@@ -95,16 +96,18 @@ public final class SubsetDriver implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
+	 *
+	 * @param options
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if the main map fails to load
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final String... args) throws DriverFailedException {
 		if (args.length < 2) {
 			throw new IncorrectUsageException(usage());
 		}
-		SimpleDriver.super.startDriver(args);
+		SimpleDriver.super.startDriver(options, args);
 	}
 
 	/**

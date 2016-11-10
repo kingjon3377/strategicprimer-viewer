@@ -88,10 +88,11 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
+	 * @param options
 	 * @param model the driver model
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) {
+	public void startDriver(final SPOptions options, final IDriverModel model) {
 		final IMultiMapModel mapModel;
 		if (model instanceof IMultiMapModel) {
 			mapModel = (IMultiMapModel) model;

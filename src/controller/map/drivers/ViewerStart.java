@@ -37,17 +37,19 @@ public final class ViewerStart implements SimpleDriver {
 	/**
 	 * Run the driver. If the model is a multi-map model, we open one window per map.
 	 *
+	 * @param options
 	 * @param model the driver model
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) {
+	public void startDriver(final SPOptions options, final IDriverModel model) {
 		final IViewerModel viewerModel;
 		if (model instanceof IViewerModel) {
 			viewerModel = (IViewerModel) model;
 		} else if (model instanceof IMultiMapModel) {
 			StreamSupport
 					.stream(((IMultiMapModel) model).getAllMaps().spliterator(), false)
-					.map(ViewerModel::new).forEach(this::startDriver);
+					.map(ViewerModel::new)
+					.forEach(indiv -> startDriver(options.copy(), indiv));
 			return;
 		} else {
 			viewerModel = new ViewerModel(model);

@@ -27,12 +27,13 @@ public interface UtilityDriver extends ISPDriver {
 	/**
 	 * Try to start the driver. This default method always throws, because a utility
 	 * driver most often can't operate on a driver model.
+	 * @param options
 	 * @param model the driver-model that should be used by the app
 	 * @throws DriverFailedException always: a utility driver operates on files
 	 * directly, not a driver model.
 	 */
 	@Override
-	default void startDriver(final IDriverModel model) throws DriverFailedException {
+	default void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
 		throw new DriverFailedException(new IllegalStateException(ERR_STR));
 	}
 }

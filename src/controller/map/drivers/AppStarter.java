@@ -29,8 +29,6 @@ import view.util.ErrorShower;
 /**
  * A driver to start other drivers. At first it just starts one.
  *
- * TODO: make it possible to start multiple specified drivers.
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -125,11 +123,13 @@ public final class AppStarter implements ISPDriver {
 	 * our
 	 * choice to the user.
 	 *
+	 * @param options
 	 * @param model the driver model
 	 * @throws DriverFailedException always, for the moment
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model)
+			throws DriverFailedException {
 		if (GraphicsEnvironment.isHeadless()) {
 			final List<ISPDriver> drivers =
 					new ArrayList<>(CACHE.values().stream().map(Pair::first)
@@ -138,7 +138,7 @@ public final class AppStarter implements ISPDriver {
 				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
 								"No applications available", "App to start: ", true))),
-						model);
+						options, model);
 			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE,
@@ -146,71 +146,86 @@ public final class AppStarter implements ISPDriver {
 				return;
 			}
 		} else {
-			SwingUtilities.invokeLater(() -> new AppChooserFrame(model).setVisible(
-					true));
+			SwingUtilities.invokeLater(
+					() -> new AppChooserFrame(model, options).setVisible(true));
 		}
 	}
 
 	/**
 	 * Start the driver, and then start the specified other driver.
 	 *
+	 *
+	 * @param options
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on fatal error.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		final Collection<String> options = new ArrayList<>();
-		final List<String> others = new ArrayList<>();
-		for (final String arg : args) {
-			if (arg.trim().charAt(0) == '-') {
-				options.add(arg);
-			} else {
-				others.add(arg);
-			}
-		}
-		// FIXME: We assume no driver uses options.
+	public void startDriver(final SPOptions options, final String... args)
+			throws DriverFailedException {
 		boolean gui = !GraphicsEnvironment.isHeadless();
+		SPOptions currentOptions = options.copy();
+		if (!currentOptions.hasOption("--gui")) {
+			currentOptions.setOption("--gui", Boolean.toString(gui));
+		}
+		final Collection<String> optionsList = new ArrayList<>();
+		final List<String> others = new ArrayList<>();
 		// FIXME: To reduce calculated complexity and fix the null-object
 		// pattern here, make a driver class for CLI driver choosing, and make a
 		// Pair of it and the AppChooserFrame be the default.
 		Pair<ISPDriver, ISPDriver> drivers = null;
-		for (final String option : options) {
-			if (EqualsAny.equalsAny(option, "-g", "--gui")) {
+		for (final String arg : args) {
+			if (EqualsAny.equalsAny(arg, "-g", "--gui")) {
+				currentOptions.setOption("--gui", "true");
 				gui = true;
-			} else if (EqualsAny.equalsAny(option, "-c", "--cli")) {
+			} else if (EqualsAny.equalsAny(arg, "-c", "--cli")) {
+				currentOptions.setOption("--gui", "false");
 				gui = false;
-			} else if (CACHE.containsKey(option.toLowerCase(Locale.ENGLISH))) {
-				drivers = CACHE.get(option.toLowerCase(Locale.ENGLISH));
+			} else if (arg.startsWith("--gui=")) {
+				final String value = arg.substring(6);
+				currentOptions.setOption("--gui", value);
+				gui = Boolean.parseBoolean(value);
+			} else if (arg.startsWith("-") && arg.contains("=")) {
+				final String[] broken = arg.split("=", 2);
+				currentOptions.setOption(broken[0], broken[1]);
+			} else if (CACHE.containsKey(arg.toLowerCase(Locale.ENGLISH))) {
+				if (drivers != null) {
+					if (gui) {
+						startChosenGUIDriver(drivers.second(), currentOptions,
+								new ArrayList<>(others));
+					} else {
+						startChosenDriver(drivers.first(), currentOptions,
+								new ArrayList<>(others));
+					}
+					currentOptions = options.copy();
+					currentOptions.setOption("--gui", Boolean.toString(gui));
+					others.clear();
+				}
+				drivers = CACHE.get(arg.toLowerCase(Locale.ENGLISH));
+			} else if (arg.startsWith("-")) {
+				currentOptions.addOption(arg);
+			} else {
+				others.add(arg);
 			}
 		}
 		final boolean localGui = gui;
 		final Logger lgr = LOGGER;
 		if (drivers == null) {
-			SwingUtilities.invokeLater(() -> {
-				try {
-					startChooser(localGui, others);
-				} catch (final DriverFailedException e) {
-					final String message =
-							NullCleaner.assertNotNull(e.getMessage());
-					lgr.log(Level.SEVERE, message, e.getCause());
-					ErrorShower.showErrorDialog(null, message);
-				}
-			});
+			// No need to wrap startChooser() with invokeLater(), since it handles it
+			// internally.
+			try {
+				startChooser(localGui, currentOptions, others);
+			} catch (final DriverFailedException e) {
+				final String message =
+						NullCleaner.assertNotNull(e.getMessage());
+				lgr.log(Level.SEVERE, message, e.getCause());
+				SwingUtilities
+						.invokeLater(() -> ErrorShower.showErrorDialog(null, message));
+			}
 		} else if (gui) {
-			final ISPDriver driver = drivers.second();
-			SwingUtilities.invokeLater(() -> {
-				try {
-					startChosenDriver(driver, others);
-				} catch (final DriverFailedException e) {
-					final String message =
-							NullCleaner.assertNotNull(e.getMessage());
-					lgr.log(Level.SEVERE, message, e.getCause());
-					ErrorShower.showErrorDialog(null, message);
-				}
-			});
+			startChosenGUIDriver(drivers.second(), currentOptions, others);
 		} else {
-			startChosenDriver(drivers.first(), others);
+			startChosenDriver(drivers.first(), currentOptions, others);
 		}
 	}
 
@@ -218,15 +233,16 @@ public final class AppStarter implements ISPDriver {
 	 * Start the app-chooser window.
 	 *
 	 * @param gui    whether to show the GUI chooser (or a CLI list)
-	 * @param others the parameters to pass to the chosen driver
+	 * @param options the option parameters to pass to the chosen driver
+	 * @param others the non-option parameters to pass to the chosen driver
 	 * @throws DriverFailedException if the chosen driver fails
 	 */
-	private static void startChooser(final boolean gui,
+	private static void startChooser(final boolean gui, final SPOptions options,
 									final List<String> others)
 			throws DriverFailedException {
 		if (gui) {
 			SwingUtilities
-					.invokeLater(() -> new AppChooserFrame(others).setVisible(true));
+					.invokeLater(() -> new AppChooserFrame(options, others).setVisible(true));
 		} else {
 			final List<ISPDriver> drivers =
 					new ArrayList<>(CACHE.values().stream().map(Pair::first)
@@ -235,7 +251,7 @@ public final class AppStarter implements ISPDriver {
 				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
 								"No applications available", "App to start: ", true))),
-						others);
+						options, others);
 			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE,
@@ -248,29 +264,69 @@ public final class AppStarter implements ISPDriver {
 	 * Start a driver.
 	 *
 	 * @param driver the driver to start
+	 * @param options option parameters
 	 * @param params non-option parameters
 	 * @throws DriverFailedException on fatal error
 	 */
-	private static void startChosenDriver(final ISPDriver driver,
-										final List<String> params)
+	private static void startChosenDriver(final ISPDriver driver, final SPOptions
+																		  options,
+										  final List<String> params)
 			throws DriverFailedException {
-		driver.startDriver(NullCleaner.assertNotNull(params.toArray(
+		driver.startDriver(options, NullCleaner.assertNotNull(params.toArray(
 				new String[params.size()])));
+	}
+
+	/**
+	 * Start a GUI driver.
+	 *
+	 * @param driver the driver to start
+	 * @param options option parameters
+	 * @param model  the driver model
+	 * @throws DriverFailedException on fatal error
+	 */
+	private static void startChosenDriver(final ISPDriver driver, final SPOptions options,
+										final IDriverModel model)
+			throws DriverFailedException {
+		driver.startDriver(options, model);
+	}
+
+	/**
+	 * Start a GUI driver.
+	 *
+	 * @param driver the driver to start
+	 * @param options option parameters
+	 * @param params non-option parameters
+	 * @throws DriverFailedException on fatal error
+	 */
+	private static void startChosenGUIDriver(final ISPDriver driver,
+											 final SPOptions options,
+											 final List<String> params) {
+		final Logger lgr = LOGGER;
+		SwingUtilities.invokeLater(() -> {
+			try {
+				startChosenDriver(driver, options, params);
+			} catch (final DriverFailedException e) {
+				final String message =
+						NullCleaner.assertNotNull(e.getMessage());
+				lgr.log(Level.SEVERE, message, e.getCause());
+				ErrorShower.showErrorDialog(null, message);
+			}
+		});
 	}
 
 	/**
 	 * Start a driver.
 	 *
 	 * @param driver the driver to start
+	 * @param options option parameters
 	 * @param model  the driver model
 	 * @throws DriverFailedException on fatal error
 	 */
-	private static void startChosenDriver(final ISPDriver driver,
-										final IDriverModel model)
+	private static void startChosenGUIDriver(final ISPDriver driver, final SPOptions options,
+										  final IDriverModel model)
 			throws DriverFailedException {
-		driver.startDriver(model);
+		driver.startDriver(options, model);
 	}
-
 	/**
 	 * Logger.
 	 */
@@ -296,7 +352,7 @@ public final class AppStarter implements ISPDriver {
 		}
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		try {
-			new AppStarter().startDriver(args);
+			new AppStarter().startDriver(new SPOptions(), args);
 		} catch (final IncorrectUsageException except) {
 			final StringBuilder buff = new StringBuilder();
 			buff.append("Usage: java ");

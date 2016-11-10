@@ -1,5 +1,12 @@
 package view.util;
 
+import controller.map.drivers.AdvancementStart;
+import controller.map.drivers.DriverFailedException;
+import controller.map.drivers.ExplorationGUI;
+import controller.map.drivers.ISPDriver;
+import controller.map.drivers.SPOptions;
+import controller.map.drivers.ViewerStart;
+import controller.map.drivers.WorkerStart;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -10,23 +17,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-
-import org.eclipse.jdt.annotation.NonNull;
-
-import controller.map.drivers.AdvancementStart;
-import controller.map.drivers.DriverFailedException;
-import controller.map.drivers.ExplorationGUI;
-import controller.map.drivers.ISPDriver;
-import controller.map.drivers.ViewerStart;
-import controller.map.drivers.WorkerStart;
 import model.misc.IDriverModel;
+import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
@@ -56,15 +54,17 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 	 *
 	 * @param desc   the descriptive string
 	 * @param params the parameters to pass to the chosen app
+	 * @param options options to pass to the driver
 	 * @param target the class
 	 * @return the button
 	 */
 	private JButton button(final String desc, final List<String> params,
-							final Class<? extends ISPDriver> target) {
+						   final SPOptions options,
+						   final Class<? extends ISPDriver> target) {
 		return new ListenedButton(desc, evt -> {
 			try {
 				target.getConstructor().newInstance()
-						.startDriver(params.toArray(new String[params.size()]));
+						.startDriver(options, params.toArray(new String[params.size()]));
 			} catch (final InstantiationException | IllegalAccessException
 								| NoSuchMethodException | InvocationTargetException
 								| DriverFailedException except) {
@@ -88,13 +88,15 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 	 * @param desc   the descriptive string
 	 * @param model  the driver model to pass to the chosen app
 	 * @param target the class
+	 * @param options options to pass to the driver
 	 * @return the button
 	 */
 	private JButton button(final String desc, final IDriverModel model,
-						final Class<? extends ISPDriver> target) {
+						   final SPOptions options,
+						   final Class<? extends ISPDriver> target) {
 		return new ListenedButton(desc, evt -> {
 			try {
-				target.getConstructor().newInstance().startDriver(model);
+				target.getConstructor().newInstance().startDriver(options, model);
 			} catch (final InstantiationException | IllegalAccessException
 								| NoSuchMethodException | InvocationTargetException
 								| DriverFailedException except) {
@@ -116,19 +118,20 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 	 * Constructor taking a driver model.
 	 *
 	 * @param model the driver model
+	 * @param options options to pass to the driver
 	 */
-	public AppChooserFrame(final IDriverModel model) {
+	public AppChooserFrame(final IDriverModel model, final SPOptions options) {
 		super("SP App Chooser");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		buttonPanel.add(button("Map Viewer", NullCleaner.assertNotNull(model),
-				ViewerStart.class));
-		buttonPanel.add(button("Worker Skill Advancement", model,
+				options, ViewerStart.class));
+		buttonPanel.add(button("Worker Skill Advancement", model, options,
 				AdvancementStart.class));
-		buttonPanel.add(button("Unit Orders and Worker Management", model,
+		buttonPanel.add(button("Unit Orders and Worker Management", model, options,
 				WorkerStart.class));
-		buttonPanel.add(button("Exploration", model, ExplorationGUI.class));
+		buttonPanel.add(button("Exploration", model, options, ExplorationGUI.class));
 		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
 												new JLabel("Please choose one of the " +
 																"applications below:"),
@@ -140,20 +143,21 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 	 * Constructor.
 	 *
 	 * @param params the non-option parameters passed to main().
+	 * @param options options to pass to the driver
 	 */
-	public AppChooserFrame(final List<@NonNull String> params) {
+	public AppChooserFrame(final SPOptions options, final List<@NonNull String> params) {
 		super("SP App Chooser");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		final List<@NonNull String> parameters =
 				NullCleaner.assertNotNull(Collections.unmodifiableList(params));
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
-		buttonPanel.add(button("Map Viewer", parameters, ViewerStart.class));
-		buttonPanel.add(button("Worker Skill Advancement", parameters,
+		buttonPanel.add(button("Map Viewer", parameters, options, ViewerStart.class));
+		buttonPanel.add(button("Worker Skill Advancement", parameters, options,
 				AdvancementStart.class));
-		buttonPanel.add(button("Unit Orders and Worker Management", parameters,
+		buttonPanel.add(button("Unit Orders and Worker Management", parameters, options,
 				WorkerStart.class));
-		buttonPanel.add(button("Exploration", parameters, ExplorationGUI.class));
+		buttonPanel.add(button("Exploration", parameters, options, ExplorationGUI.class));
 		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
 												new JLabel("Please choose one of the " +
 																"applications below:"),

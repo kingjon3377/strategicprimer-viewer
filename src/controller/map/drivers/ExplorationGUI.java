@@ -36,10 +36,11 @@ public final class ExplorationGUI implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
+	 * @param options
 	 * @param model the driver model
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) {
+	public void startDriver(final SPOptions options, final IDriverModel model) {
 		final IExplorationModel explorationModel;
 		if (model instanceof IExplorationModel) {
 			explorationModel = (IExplorationModel) model;

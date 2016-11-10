@@ -45,12 +45,14 @@ public final class EchoDriver implements UtilityDriver {
 	/**
 	 * Run the driver.
 	 *
+	 *
+	 * @param options
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on error
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final String... args) throws DriverFailedException {
 		if (args.length != 2) {
 			throw new IncorrectUsageException(usage());
 		}

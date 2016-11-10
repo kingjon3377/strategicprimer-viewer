@@ -29,12 +29,14 @@ public interface SimpleCLIDriver extends SimpleDriver {
 	 * default implementation assumes a CLI driver, and writes the model back to file(s)
 	 * after calling startDriver with the model.
 	 *
+	 *
+	 * @param options
 	 * @param args any command-line arguments that should be passed to the driver.
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	default void startDriver(final String... args) throws DriverFailedException {
+	default void startDriver(final SPOptions options, final String... args) throws DriverFailedException {
 		switch (usage().getParamsWanted()) {
 		case None:
 			if (args.length == 0) {
@@ -75,7 +77,7 @@ public interface SimpleCLIDriver extends SimpleDriver {
 		final IDriverModel model =
 				reader.readMultiMapModel(Warning.Ignore, Paths.get(args[0]),
 						MapReaderAdapter.namesToFiles(true, args));
-		startDriver(model);
+		startDriver(options, model);
 		reader.writeModel(model);
 	}
 }

@@ -176,11 +176,12 @@ public final class ReaderComparator implements UtilityDriver {
 	/**
 	 * Run the driver, comparing the readers' performance.
 	 *
+	 * @param options
 	 * @param args The files to test on
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final String... args) {
+	public void startDriver(final SPOptions options, final String... args) {
 		compareReaders(args);
 	}
 

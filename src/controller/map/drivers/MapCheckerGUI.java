@@ -33,11 +33,12 @@ public final class MapCheckerGUI implements UtilityDriver {
 	/**
 	 * Run the driver.
 	 *
+	 * @param options
 	 * @param args command-line arguments
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final String... args) {
+	public void startDriver(final SPOptions options, final String... args) {
 		final MapCheckerFrame window = new MapCheckerFrame();
 		window.setVisible(true);
 		Stream.of(args).map(Paths::get).forEach(window::check);

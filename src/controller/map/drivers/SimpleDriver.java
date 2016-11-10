@@ -42,36 +42,39 @@ public interface SimpleDriver extends ISPDriver {
 	 * default implementation does not write to file after running the driver on the
 	 * driver model.
 	 *
+	 *
+	 * @param options
 	 * @param args any command-line arguments that should be passed to the driver.
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	default void startDriver(final String... args) throws DriverFailedException {
+	default void startDriver(final SPOptions options, final String... args) throws DriverFailedException {
 		final ParamCount desiderata = usage().getParamsWanted();
 		if (args.length == 0) {
 			if (EqualsAny.equalsAny(desiderata, ParamCount.None,
 					ParamCount.AnyNumber)) {
-				startDriver();
+				startDriver(options);
 			} else if (EqualsAny.equalsAny(desiderata, ParamCount.Two, ParamCount.AtLeastTwo)) {
 				final Path masterPath = askUserForFile();
 				final Path subPath = askUserForFile();
-				startDriver(new MapReaderAdapter()
+				startDriver(options, new MapReaderAdapter()
 									.readMultiMapModel(Warning.DEFAULT, masterPath,
 											subPath));
 			} else {
-				startDriver(new MapReaderAdapter().readMultiMapModel(Warning.DEFAULT,
-						askUserForFile()));
+				startDriver(options, new MapReaderAdapter()
+											 .readMultiMapModel(Warning.DEFAULT,
+													 askUserForFile()));
 			}
 		} else if (ParamCount.None == desiderata) {
 			throw new IncorrectUsageException(usage());
 		} else if ((args.length == 1) && EqualsAny.equalsAny(desiderata,
 				ParamCount.Two, ParamCount.AtLeastTwo)) {
-			startDriver(new MapReaderAdapter()
+			startDriver(options, new MapReaderAdapter()
 								.readMultiMapModel(Warning.DEFAULT, Paths.get(args[0]),
 										askUserForFile()));
 		} else {
-			startDriver(new MapReaderAdapter()
+			startDriver(options, new MapReaderAdapter()
 								.readMultiMapModel(Warning.DEFAULT, Paths.get(args[0]),
 										MapReaderAdapter.namesToFiles(true, args)));
 		}

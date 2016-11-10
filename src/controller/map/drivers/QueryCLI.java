@@ -77,15 +77,17 @@ public final class QueryCLI implements SimpleDriver {
 	private static final int HOURLY_ENCOUNTERS = 4;
 
 	/**
+	 * @param options options passed to the driver
 	 * @param model   the driver model containing the map to explore
 	 * @param cli the interface to the user
 	 */
-	private static void repl(final IDriverModel model, final ICLIHelper cli) {
+	private static void repl(final SPOptions options, final IDriverModel model,
+							 final ICLIHelper cli) {
 		final HuntingModel huntModel = new HuntingModel(model.getMap());
 		try {
 			String input = cli.inputString("Command: ");
 			while (!input.isEmpty() && (input.charAt(0) != 'q')) {
-				handleCommand(model, huntModel, cli, input.charAt(0));
+				handleCommand(options, model, huntModel, cli, input.charAt(0));
 				input = cli.inputString("Command: ");
 			}
 		} catch (final IOException | DriverFailedException except) {
@@ -95,6 +97,7 @@ public final class QueryCLI implements SimpleDriver {
 	}
 
 	/**
+	 * @param options options passed to the driver
 	 * @param model   the driver model
 	 * @param huntModel  the hunting model
 	 * @param cli the interface to the user
@@ -102,7 +105,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @throws IOException           on I/O error
 	 * @throws DriverFailedException on I/O error in trap-model driver
 	 */
-	public static void handleCommand(final IDriverModel model,
+	public static void handleCommand(final SPOptions options, final IDriverModel model,
 			final HuntingModel huntModel, final ICLIHelper cli, final char input)
 					throws IOException, DriverFailedException {
 		switch (input) {
@@ -128,7 +131,7 @@ public final class QueryCLI implements SimpleDriver {
 			herd(cli, huntModel);
 			break;
 		case 't':
-			new TrapModelDriver().startDriver(model);
+			new TrapModelDriver().startDriver(options, model);
 			break;
 		case 'd':
 			distance(model.getMapDimensions(), cli);
@@ -482,13 +485,14 @@ public final class QueryCLI implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
+	 * @param options
 	 * @param model the driver model
 	 * @throws DriverFailedException on I/O error
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
 		try (final ICLIHelper cli = new CLIHelper()) {
-			repl(model, cli);
+			repl(options, model, cli);
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error closing CLIHelper", except);
@@ -498,16 +502,18 @@ public final class QueryCLI implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
+	 *
+	 * @param options
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if something goes wrong
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final String... args) throws DriverFailedException {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(usage());
 		}
-		SimpleDriver.super.startDriver(args);
+		SimpleDriver.super.startDriver(options, args);
 	}
 
 	/**

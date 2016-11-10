@@ -73,11 +73,12 @@ public final class WorkerReportDriver implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
+	 * @param options
 	 * @param model ignored
 	 * @throws DriverFailedException always: this driver has to write to the filesystem
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :
 					((IMultiMapModel) model).getAllMaps()) {
@@ -88,6 +89,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 		}
 	}
 	/**
+	 * TODO: Somehow make usage message show optional parameters
 	 * @return an object indicating how to use and invoke this driver
 	 */
 	@Override

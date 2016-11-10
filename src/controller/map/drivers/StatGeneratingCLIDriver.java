@@ -101,11 +101,12 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
+	 * @param options
 	 * @param model the driver model
 	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
 		final IExplorationModel driverModel;
 		if (model instanceof IExplorationModel) {
 			driverModel = (IExplorationModel) model;

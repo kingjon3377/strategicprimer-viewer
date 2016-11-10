@@ -47,11 +47,12 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 
 	/**
 	 * Start the driver.
+	 * @param options
 	 * @param model the driver-model that should be used by the app
 	 * @throws DriverFailedException on any failure
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
 		final ResourceManagementDriver driverModel;
 		if (model instanceof ResourceManagementDriver) {
 			driverModel = (ResourceManagementDriver) model;
