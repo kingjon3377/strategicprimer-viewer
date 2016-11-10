@@ -1,7 +1,9 @@
 package controller.map.iointerfaces;
 
 import controller.map.cxml.CompactXMLReader;
+import controller.map.cxml.CompactXMLWriter;
 import controller.map.fluidxml.SPFluidReader;
+import controller.map.fluidxml.SPFluidWriter;
 
 /**
  * A factory to produce instances of the current and old map readers, to test against. (So
@@ -40,5 +42,17 @@ public final class TestReaderFactory {
 	 */
 	public static ISPReader createNewReader() {
 		return new SPFluidReader();
+	}
+	/**
+	 * @return an instance of the old writer
+	 */
+	public static SPWriter createOldWriter() {
+		return new CompactXMLWriter();
+	}
+	/**
+	 * @return an instance of the new writer
+	 */
+	public static SPWriter createNewWriter() {
+		return new SPFluidWriter();
 	}
 }

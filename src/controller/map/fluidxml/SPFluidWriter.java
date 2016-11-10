@@ -198,17 +198,23 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	 * @throws IOException on I/O error
 	 * @throws XMLStreamException on error in XML creation
 	 */
+	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj)
-			throws IOException, XMLStreamException {
+			throws IOException {
 		final XMLOutputFactory xof = XMLOutputFactory.newInstance();
 		final StringWriter writer = new StringWriter();
-		final XMLStreamWriter xsw = xof.createXMLStreamWriter(writer);
-		xsw.setDefaultNamespace(ISPReader.NAMESPACE);
-		writeSPObject(xsw, obj, 0);
-		xsw.writeCharacters(LineEnd.LINE_SEP);
-		xsw.writeEndDocument();
-		xsw.flush();
-		xsw.close();
+		final XMLStreamWriter xsw;
+		try {
+			xsw = xof.createXMLStreamWriter(writer);
+			xsw.setDefaultNamespace(ISPReader.NAMESPACE);
+			writeSPObject(xsw, obj, 0);
+			xsw.writeCharacters(LineEnd.LINE_SEP);
+			xsw.writeEndDocument();
+			xsw.flush();
+			xsw.close();
+		} catch (XMLStreamException except) {
+			throw new IOException("Failure in creating XML", except);
+		}
 		ostream.append(SNUG_END_TAG.matcher(writer.toString()).replaceAll("$1 />"));
 	}
 	/**

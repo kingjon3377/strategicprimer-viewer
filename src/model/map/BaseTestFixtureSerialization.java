@@ -1,7 +1,5 @@
 package model.map;
 
-import controller.map.cxml.CompactXMLWriter;
-import controller.map.fluidxml.SPFluidWriter;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -525,9 +523,9 @@ public abstract class BaseTestFixtureSerialization {
 			throws IOException, XMLStreamException {
 		final StringWriter writer = new StringWriter();
 		if (deprecated) {
-			CompactXMLWriter.writeSPObject(writer, obj);
+			TestReaderFactory.createOldWriter().writeSPObject(writer, obj);
 		} else {
-			new SPFluidWriter().writeSPObject(writer, obj);
+			TestReaderFactory.createNewWriter().writeSPObject(writer, obj);
 		}
 		return NullCleaner.assertNotNull(writer.toString());
 	}

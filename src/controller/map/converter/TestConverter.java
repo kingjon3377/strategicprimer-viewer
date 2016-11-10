@@ -1,10 +1,9 @@
 package controller.map.converter;
 
-import controller.map.cxml.CompactXMLWriter;
-import controller.map.fluidxml.SPFluidWriter;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.iointerfaces.SPWriter;
+import controller.map.iointerfaces.TestReaderFactory;
 import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
 import java.io.StringReader;
@@ -431,7 +430,7 @@ public final class TestConverter {
 //				new OneToTwoConverter().convert(original, true));
 		try (StringWriter outOne = new StringWriter();
 			 StringWriter outTwo = new StringWriter()) {
-			final SPWriter writer = new SPFluidWriter();
+			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			assertThat("Produces expected result", outTwo.toString(),
@@ -439,7 +438,7 @@ public final class TestConverter {
 		}
 		try (StringWriter outOne = new StringWriter();
 			 StringWriter outTwo = new StringWriter()) {
-			final SPWriter writer = new CompactXMLWriter();
+			final SPWriter writer = TestReaderFactory.createOldWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			//noinspection HardcodedFileSeparator
@@ -693,7 +692,7 @@ public final class TestConverter {
 //				new OneToTwoConverter().convert(original, true));
 		try (StringWriter outOne = new StringWriter();
 			 StringWriter outTwo = new StringWriter()) {
-			final SPWriter writer = new SPFluidWriter();
+			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			assertThat("Produces expected result", outTwo.toString(),
@@ -1007,7 +1006,7 @@ public final class TestConverter {
 //				new OneToTwoConverter().convert(original, true));
 		try (StringWriter outOne = new StringWriter();
 			 StringWriter outTwo = new StringWriter()) {
-			final SPWriter writer = new SPFluidWriter();
+			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			assertEquals("Produces expected result", outOne.toString(),
@@ -1216,7 +1215,7 @@ public final class TestConverter {
 //				new OneToTwoConverter().convert(original, true));
 		try (StringWriter outOne = new StringWriter();
 			 StringWriter outTwo = new StringWriter()) {
-			final SPWriter writer = new SPFluidWriter();
+			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			assertThat("Produces expected result", outTwo.toString(),
@@ -1279,7 +1278,8 @@ public final class TestConverter {
 																		new StringReader(orig))),
 				out);
 		final StringWriter actualXML = new StringWriter();
-		CompactXMLWriter.writeSPObject(actualXML, new MapReaderAdapter()
+		final SPWriter writer = TestReaderFactory.createOldWriter();
+		writer.writeSPObject(actualXML, new MapReaderAdapter()
 														.readMapFromStream(
 																new StringReader(out.toString()),
 																Warning.Ignore));
@@ -1300,7 +1300,7 @@ public final class TestConverter {
 		expected.addFixture(PointFactory.point(1, 1), new MineralVein("coal", true, 0, 1));
 
 		final StringWriter expectedXML = new StringWriter();
-		CompactXMLWriter.writeSPObject(expectedXML, expected);
+		writer.writeSPObject(expectedXML, expected);
 		assertThat("Converted map's serialized form was as expected",
 				actualXML.toString(), equalTo(expectedXML.toString()));
 		assertThat("Converted map was as expected",
