@@ -30,6 +30,8 @@ import util.ArraySet;
 import util.EmptyIterator;
 import util.IteratorWrapper;
 import util.LineEnd;
+import util.NullStream;
+import util.SimpleMultiMap;
 import util.TypesafeLogger;
 
 import static util.NullCleaner.assertNotNull;
@@ -131,8 +133,8 @@ public class SPMapNG implements IMutableMapNG {
 			}
 			// Declared here to avoid object allocations in the loop.
 			final Collection<TileFixture> ourFixtures = new ArrayList<>();
-			final Map<Integer, SubsettableFixture> ourSubsettables =
-					new HashMap<>();
+			final Map<Integer, Collection<SubsettableFixture>> ourSubsettables =
+					new SimpleMultiMap<>();
 			// Because IUnit is Subsettable<IUnit> and thus incompatible
 			// with SubsettableFixture
 			final Map<Integer, IUnit> ourUnits = new HashMap<>();
@@ -213,8 +215,7 @@ public class SPMapNG implements IMutableMapNG {
 					if (fix instanceof IUnit) {
 						ourUnits.put(idNum, (IUnit) fix);
 					} else if (fix instanceof SubsettableFixture) {
-						ourSubsettables.put(idNum,
-								(SubsettableFixture) fix);
+						ourSubsettables.get(idNum).add((SubsettableFixture) fix);
 					} else {
 						ourFixtures.add(fix);
 					}
@@ -236,9 +237,40 @@ public class SPMapNG implements IMutableMapNG {
 																			.containsKey(
 																					Integer.valueOf(
 																							fix.getID()))) {
-						retval &= assertNotNull(
-								ourSubsettables.get(Integer.valueOf(fix.getID())))
-										.isSubset(fix, ostream, localContext);
+						int count = 0;
+						boolean temp = false;
+						@Nullable SubsettableFixture match = null;
+						for (final SubsettableFixture subsettable : ourSubsettables
+																			.get(Integer
+																						 .valueOf(
+																					fix.getID()))) {
+							count++;
+							match = subsettable;
+							if (subsettable.isSubset(fix, NullStream.DEV_NULL, "")) {
+								temp = true;
+								break;
+							} else {
+								temp = false;
+							}
+						}
+						if (count == 0) {
+							ostream.append(localContext);
+							ostream.append(" Extra fixture:\t");
+							ostream.append(fix.toString());
+							ostream.append(LineEnd.LINE_SEP);
+							retval = false;
+							break;
+						} else if (count == 1) {
+							retval &= match.isSubset(fix, ostream, localContext);
+						} else if (!temp) {
+							ostream.append(localContext);
+							ostream.append("Fixture with ID #");
+							ostream.append(Integer.toString(fix.getID()));
+							ostream.append(" didn't match any of the subsettable fixtures here sharing that ID");
+							ostream.append(LineEnd.LINE_SEP);
+							retval = false;
+							break;
+						}
 					} else {
 						ostream.append(localContext);
 						ostream.append(" Extra fixture:\t");
