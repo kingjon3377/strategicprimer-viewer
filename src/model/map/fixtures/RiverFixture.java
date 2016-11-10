@@ -166,7 +166,7 @@ public final class RiverFixture
 			}
 		} else {
 			ostream.append(context);
-			ostream.append("Incompatible types");
+			ostream.append("Incompatible types to RiverFixture");
 			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		}

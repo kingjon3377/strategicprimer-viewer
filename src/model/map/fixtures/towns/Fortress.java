@@ -225,7 +225,9 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
 							final String context) throws IOException {
 		if (!(obj instanceof Fortress)) {
-			ostream.append("Incompatible types");
+			ostream.append(context);
+			ostream.append("Incompatible type to Fortress");
+			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		}
 		final Fortress fort = (Fortress) obj;

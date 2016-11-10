@@ -297,7 +297,8 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 									Integer.toString(id), "):\tOwners differ",
 									LineEnd.LINE_SEP));
 		} else {
-			ostream.append("Incompatible types");
+			ostream.append(context);
+			ostream.append("Incompatible type to Village");
 			ostream.append(LineEnd.LINE_SEP);
 			return false;
 		}
