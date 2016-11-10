@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.logging.Logger;
 import model.map.IMapNG;
@@ -46,24 +47,31 @@ public final class WorkerReportDriver implements SimpleDriver {
 	/**
 	 * Extracted method operating on exactly one filename and map.
 	 *
-	 * TODO: Allow user to specify output filename
-	 *
 	 * @param maybeFilename an Optional containing the filename the map was loaded from
+	 * @param options the options that were passed to the driver
 	 * @param map the map to generate the report from
 	 * @throws DriverFailedException if writing to file fails for some reason
 	 */
-	private void writeReport(final Optional<Path> maybeFilename, final IMapNG map)
+	private void writeReport(final Optional<Path> maybeFilename, final SPOptions options,
+							 final IMapNG map)
 			throws DriverFailedException {
 		if (maybeFilename.isPresent()) {
 			final Path filename = maybeFilename.get();
 			final String report = ReportGenerator.createReport(map);
-			final Path out =
-					filename.resolveSibling(filename.getFileName() + ".report.html");
+			final String outString;
+			final Path out;
+			if (options.hasOption("--out")) {
+				outString = options.getArgument("--out");
+				out = Paths.get(outString);
+			} else {
+				outString = filename.getFileName() + ".report.html";
+				out = filename.resolveSibling(outString);
+			}
 			try (final BufferedWriter writer = Files.newBufferedWriter(out)) {
 				writer.write(report);
 			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator
-				throw new DriverFailedException("I/O error writing report to " + out,
+				throw new DriverFailedException("I/O error writing report to " + outString,
 													   except);
 			}
 		} else {
@@ -82,10 +90,10 @@ public final class WorkerReportDriver implements SimpleDriver {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :
 					((IMultiMapModel) model).getAllMaps()) {
-				writeReport(pair.second(), pair.first());
+				writeReport(pair.second(), options, pair.first());
 			}
 		} else {
-			writeReport(model.getMapFile(), model.getMap());
+			writeReport(model.getMapFile(), options, model.getMap());
 		}
 	}
 	/**
