@@ -1,5 +1,6 @@
 package controller.map.misc;
 
+import controller.map.drivers.SPOptions;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -64,11 +65,13 @@ public final class StrategyExporter implements PlayerChangeListener {
 		currentPlayer = workerModel.getMap().getCurrentPlayer();
 	}
 	/**
+	 * // TODO: Make usage message of the app that calls this include --print-empty
 	 * @param dismissed the list of dismissed members
 	 * @return the proto-strategy as a String
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public String createStrategy(final Iterable<UnitMember> dismissed) {
+	public String createStrategy(final SPOptions options,
+								 final Iterable<UnitMember> dismissed) {
 		final String playerName = currentPlayer.getName();
 		final int turn = model.getMap().getCurrentTurn();
 		final String turnString = Integer.toString(turn);
@@ -77,9 +80,8 @@ public final class StrategyExporter implements PlayerChangeListener {
 		final Map<String, List<IUnit>> unitsByKind = new HashMap<>();
 		final Map<IUnit, String> orders = new HashMap<>();
 		for (final IUnit unit : units) {
-			if (!unit.iterator().hasNext()) {
-				// FIXME: This should be exposed as a user option. Sometimes
-				// users *want* empty units printed.
+			if (!unit.iterator().hasNext() &&
+						"false".equals(options.getArgument("--print-empty"))) {
 				continue;
 			}
 			final List<IUnit> list;
@@ -177,12 +179,14 @@ public final class StrategyExporter implements PlayerChangeListener {
 	/**
 	 * Write the strategy to file.
 	 * @param dismissed the list of dismissed members
+	 * @param options options passed to the driver
 	 * @param file a file (name) to write to
 	 */
-	public void writeStrategy(final Path file, final Iterable<UnitMember> dismissed) {
+	public void writeStrategy(final Path file, final SPOptions options,
+							  final Iterable<UnitMember> dismissed) {
 		try (final BufferedWriter writer = Files.newBufferedWriter(file)) {
 			//noinspection resource
-			writer.append(createStrategy(dismissed));
+			writer.append(createStrategy(options, dismissed));
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			LOGGER.log(SEVERE, "I/O error exporting strategy", except);

@@ -1,6 +1,7 @@
 package view.worker;
 
 import com.bric.window.WindowList;
+import controller.map.drivers.SPOptions;
 import controller.map.misc.FileChooser;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
@@ -107,10 +108,12 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	/**
 	 * At this point (proof-of-concept) we default to the first player of the choices.
 	 *
+	 * @param options options passed to the driver
 	 * @param model     the driver model.
 	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
 	 */
-	public WorkerMgmtFrame(final IWorkerModel model, final IOHandler ioHandler) {
+	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model,
+						   final IOHandler ioHandler) {
 		super("Worker Management");
 		final Optional<Path> filename = model.getMapFile();
 		if (filename.isPresent()) {
@@ -230,6 +233,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 																		 .call(file -> strategyExporter
 																							   .writeStrategy(
 																									   file,
+																									   options,
 																									   treeModel
 																											   .dismissed()))))),
 				BorderedPanel

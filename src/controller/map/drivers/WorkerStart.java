@@ -55,8 +55,10 @@ public final class WorkerStart implements SimpleDriver {
 		} else {
 			driverModel = new WorkerModel(model);
 		}
-		SwingUtilities.invokeLater(
-				() -> new WorkerMgmtFrame(driverModel, new IOHandler(driverModel)).setVisible(true));
+		SwingUtilities.invokeLater(() -> new WorkerMgmtFrame(options, driverModel,
+																	new IOHandler
+																			(driverModel))
+												 .setVisible(true));
 	}
 
 	/**
