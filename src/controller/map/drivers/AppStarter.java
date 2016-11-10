@@ -27,7 +27,7 @@ import view.util.DriverQuit;
 import view.util.ErrorShower;
 
 /**
- * A driver to start other drivers. At first it just starts one.
+ * A driver to start other drivers.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -120,12 +120,11 @@ public final class AppStarter implements ISPDriver {
 
 	/**
 	 * Since there's no way of choosing which driver programmatically here, we present
-	 * our
-	 * choice to the user.
+	 * our choice to the user.
 	 *
-	 * @param options
+	 * @param options options to pass to the driver
 	 * @param model the driver model
-	 * @throws DriverFailedException always, for the moment
+	 * @throws DriverFailedException on driver failure
 	 */
 	@Override
 	public void startDriver(final SPOptions options, final IDriverModel model)
@@ -154,8 +153,7 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * Start the driver, and then start the specified other driver.
 	 *
-	 *
-	 * @param options
+	 * @param options options to pass to the driver.
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on fatal error.
 	 */
