@@ -3,6 +3,8 @@ package view.map.main;
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JTable;
@@ -89,7 +91,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 		final Integer payload;
 		try {
 			payload = (Integer) transfer.getTransferData(FLAVOR);
-		} catch (final Exception except) {
+		} catch (final UnsupportedFlavorException |IOException except) {
 			return false;
 		}
 		final int data = payload.intValue();
