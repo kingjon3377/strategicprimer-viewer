@@ -215,7 +215,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
 		if (columnIndex == 0 && aValue instanceof Boolean) {
 			list.get(rowIndex).setDisplayed(((Boolean) aValue).booleanValue());
-			fireTableCellUpdated(rowIndex, columnIndex);
+			fireTableCellUpdated(rowIndex, 0);
 		}
 	}
 	/**
