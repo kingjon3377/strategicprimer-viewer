@@ -9,8 +9,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import org.eclipse.jdt.annotation.NonNull;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A wrapper around {@link XMLEventReader} that makes the Iterator declaration take a type
  * argument. Also contains factory methods so callers don't need to deal *at all* with the
@@ -49,8 +47,7 @@ public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent>
 	 */
 	public TypesafeXMLEventReader(final Reader reader)
 			throws XMLStreamException {
-		wrapped =
-				assertNotNull(XMLInputFactory.newInstance().createXMLEventReader(reader));
+		this(XMLInputFactory.newInstance().createXMLEventReader(reader));
 	}
 
 	/**
