@@ -237,7 +237,7 @@ public class SPMapNG implements IMutableMapNG {
 																					Integer.valueOf(
 																							fix.getID()))) {
 						int count = 0;
-						boolean temp = false;
+						boolean unmatched = true;
 						@Nullable SubsettableFixture match = null;
 						for (final SubsettableFixture subsettable : ourSubsettables
 																			.get(Integer
@@ -246,10 +246,10 @@ public class SPMapNG implements IMutableMapNG {
 							count++;
 							match = subsettable;
 							if (subsettable.isSubset(fix, NullStream.DEV_NULL, "")) {
-								temp = true;
+								unmatched = false;
 								break;
 							} else {
-								temp = false;
+								unmatched = true;
 							}
 						}
 						if (count == 0) {
@@ -261,7 +261,7 @@ public class SPMapNG implements IMutableMapNG {
 							break;
 						} else if (count == 1) {
 							retval &= match.isSubset(fix, ostream, localContext);
-						} else if (!temp) {
+						} else if (unmatched) {
 							ostream.append(localContext);
 							ostream.append("Fixture with ID #");
 							ostream.append(Integer.toString(fix.getID()));
