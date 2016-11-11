@@ -47,6 +47,8 @@ public enum Warning {
 	private Consumer<Exception> customHandle = wrapHandler(SystemOut.SYS_OUT::println);
 	/**
 	 * Default handler for Custom.
+	 * @param handler a method handle that does something with a String
+	 * @return a method handle that applies it to the message of any given exception.
 	 */
 	public static Consumer<Exception> wrapHandler(final Consumer<String> handler) {
 		return warning -> {

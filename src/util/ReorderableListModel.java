@@ -16,6 +16,7 @@ import javax.swing.DefaultListModel;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @param <T> the type of things stored in the list
  */
 public class ReorderableListModel<T> extends DefaultListModel<T> implements Reorderable {
 	/**
