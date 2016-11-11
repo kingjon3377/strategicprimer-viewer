@@ -438,6 +438,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @return the parsed fortress
 	 * @throws SPFormatException on SP format problems
 	 */
+	@SuppressWarnings("UnusedParameters")
 	private Fortress readFortress(final StartElement element,
 								  final QName parent,
 											  final Iterable<XMLEvent> stream,
