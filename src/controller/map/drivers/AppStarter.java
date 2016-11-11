@@ -313,19 +313,6 @@ public final class AppStarter implements ISPDriver {
 	}
 
 	/**
-	 * Start a driver.
-	 *
-	 * @param driver the driver to start
-	 * @param options option parameters
-	 * @param model  the driver model
-	 * @throws DriverFailedException on fatal error
-	 */
-	private static void startChosenGUIDriver(final ISPDriver driver, final SPOptions options,
-										  final IDriverModel model)
-			throws DriverFailedException {
-		driver.startDriver(options, model);
-	}
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
