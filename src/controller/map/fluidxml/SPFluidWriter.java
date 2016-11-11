@@ -179,7 +179,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 
 	@Override
 	public void write(final Path file, final IMapNG map)
-			throws IOException, XMLStreamException {
+			throws IOException {
 		try (final Writer writer = Files.newBufferedWriter(file)) {
 			writeSPObject(writer, map);
 		}
@@ -187,7 +187,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 
 	@Override
 	public void write(final Appendable ostream, final IMapNG map)
-			throws IOException, XMLStreamException {
+			throws IOException {
 		writeSPObject(ostream, map);
 	}
 	/**

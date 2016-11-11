@@ -201,9 +201,6 @@ public final class MapReaderAdapter {
 				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException("I/O error writing to " + mainFile.get(),
 													   except);
-			} catch (final XMLStreamException except) {
-				throw new DriverFailedException("Error creating XML to write to " +
-														mainFile.get(), except);
 			}
 		} else {
 			LOGGER.severe(
@@ -219,9 +216,6 @@ public final class MapReaderAdapter {
 					} catch (final IOException except) {
 						//noinspection HardcodedFileSeparator
 						throw new DriverFailedException("I/O error writing to " +
-																filename, except);
-					} catch (final XMLStreamException except) {
-						throw new DriverFailedException("Error creating XML for " +
 																filename, except);
 					}
 				} else {

@@ -5,7 +5,6 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 
 /**
@@ -30,9 +29,8 @@ public interface SPWriter {
 	 * @param file the file to write to
 	 * @param map  the map to write.
 	 * @throws IOException on error opening the file
-	 * @throws XMLStreamException on error creating the XML to write to the file
 	 */
-	void write(Path file, IMapNG map) throws IOException, XMLStreamException;
+	void write(Path file, IMapNG map) throws IOException;
 
 	/**
 	 * Write a map.
@@ -40,9 +38,8 @@ public interface SPWriter {
 	 * @param ostream the writer to write to
 	 * @param map     the map to write
 	 * @throws IOException on error in writing
-	 * @throws XMLStreamException on error creating the XML to write to the file
 	 */
-	void write(Appendable ostream, IMapNG map) throws IOException, XMLStreamException;
+	void write(Appendable ostream, IMapNG map) throws IOException;
 
 	/**
 	 * Write an object to file.
