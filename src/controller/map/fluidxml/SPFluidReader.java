@@ -347,13 +347,13 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			if (event.isStartElement()) {
 				if ("orders".equalsIgnoreCase(
 						event.asStartElement().getName().getLocalPart())) {
-					parseOrders(event.asStartElement(), element.getName(), retval,
-							warner, stream);
+					parseOrders(event.asStartElement(), retval,
+							stream);
 					continue;
 				} else if ("results".equalsIgnoreCase(
 						event.asStartElement().getName().getLocalPart())) {
-					parseResults(event.asStartElement(), element.getName(), retval,
-							warner, stream);
+					parseResults(event.asStartElement(), retval,
+							stream);
 				}
 				final Object child =
 						readSPObject(event.asStartElement(), element.getName(), stream,
@@ -379,14 +379,12 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	/**
 	 * Parse orders for a unit for a specified turn.
 	 * @param element the orders element
-	 * @param parent the parent tag
 	 * @param unit the unit to whom these orders are directed
-	 * @param warner the Warning instance to use for warnings
 	 * @param stream the stream of further tags.
 	 * @throws SPFormatException on SP format problem
 	 */
-	private void parseOrders(final StartElement element, final QName parent,
-							 final Unit unit, final Warning warner,
+	private void parseOrders(final StartElement element,
+							 final Unit unit,
 							 final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerAttribute(element, "turn", -1);
 		final StringBuilder builder = new StringBuilder(512);
@@ -406,15 +404,13 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	/**
 	 * Parse results for a unit for a specified turn.
 	 * @param element the results element
-	 * @param parent the parent tag
 	 * @param unit the unit to whom these orders are directed
-	 * @param warner the Warning instance to use for warnings
 	 * @param stream the stream of further tags.
 	 * @throws SPFormatException on SP format problem
 	 */
-	private void parseResults(final StartElement element, final QName parent,
-							 final Unit unit, final Warning warner,
-							 final Iterable<XMLEvent> stream) throws SPFormatException {
+	private void parseResults(final StartElement element,
+							  final Unit unit,
+							  final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerAttribute(element, "turn", -1);
 		final StringBuilder builder = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
