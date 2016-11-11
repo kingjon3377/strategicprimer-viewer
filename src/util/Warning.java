@@ -58,7 +58,7 @@ public enum Warning {
 				handler.accept("Warning: " + warning.getLocalizedMessage());
 			}
 		};
-	};
+	}
 	/**
 	 * In Custom, set the custom printing method. In others, throw.
 	 * @param printer the printing method to use
