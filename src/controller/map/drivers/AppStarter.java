@@ -207,7 +207,6 @@ public final class AppStarter implements ISPDriver {
 			}
 		}
 		final boolean localGui = gui;
-		final Logger lgr = LOGGER;
 		if (drivers == null) {
 			// No need to wrap startChooser() with invokeLater(), since it handles it
 			// internally.
@@ -216,7 +215,7 @@ public final class AppStarter implements ISPDriver {
 			} catch (final DriverFailedException e) {
 				final String message =
 						NullCleaner.assertNotNull(e.getMessage());
-				lgr.log(Level.SEVERE, message, e.getCause());
+				LOGGER.log(Level.SEVERE, message, e.getCause());
 				SwingUtilities
 						.invokeLater(() -> ErrorShower.showErrorDialog(null, message));
 			}
