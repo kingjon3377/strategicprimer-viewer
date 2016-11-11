@@ -112,9 +112,8 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 			return true;
 		} else if (component instanceof JTable) {
 			final TableModel tempModel = ((JTable) component).getModel();
-			if (!(tempModel instanceof Reorderable)) {
-				return false;
-			} else if (!(tempDropLoc instanceof JTable.DropLocation)) {
+			if (!(tempModel instanceof Reorderable) ||
+						!(tempDropLoc instanceof JTable.DropLocation)) {
 				return false;
 			}
 			model = (Reorderable) tempModel;
