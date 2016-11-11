@@ -108,24 +108,6 @@ public final class HuntingModel {
 	}
 
 	/**
-	 * @param map   one of the mappings
-	 * @param point a point
-	 * @param value a string to put in the map at that point.
-	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void addToMap(final Map<Point, Collection<String>> map, final Point point,
-								final String value) {
-		final Collection<String> list;
-		if (map.containsKey(point)) {
-			list = NullCleaner.assertNotNull(map.get(point));
-		} else {
-			list = new ArrayList<>();
-			map.put(point, list);
-		}
-		list.add(value);
-	}
-
-	/**
 	 * @param point a point
 	 * @param items how many items to limit the list to
 	 * @return a list of hunting results from the surrounding area. About half will be

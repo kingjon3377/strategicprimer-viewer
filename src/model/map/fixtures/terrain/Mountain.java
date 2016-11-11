@@ -55,11 +55,6 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
-	 * The z-value given to a mountain.
-	 */
-	private static final int Z_VALUE = 10;
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */

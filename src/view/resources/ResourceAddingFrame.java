@@ -88,11 +88,6 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	private final SpinnerNumberModel resCreatedModel =
 			new SpinnerNumberModel(-1, -1, 2000, 1);
 	/**
-	 * The parser for integers.
-	 */
-	private final NumberFormat nf =
-			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
-	/**
 	 * The combo box for resource types.
 	 */
 	private final UpdatedComboBox resourceBox = new UpdatedComboBox();

@@ -5,7 +5,6 @@ import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Comparator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,24 +60,6 @@ public final class TableReportGenerator {
 	private TableReportGenerator() {
 		// So don't instantiate.
 	}
-
-	/**
-	 * A simple comparator for fixtures.
-	 */
-	private static final Comparator<@NonNull IFixture> SIMPLE_COMPARATOR =
-			(firstFixture, secondFixture) -> {
-				if (firstFixture.equals(secondFixture)) {
-					return 0;
-				} else {
-					if (firstFixture.hashCode() > secondFixture.hashCode()) {
-						return 1;
-					} else if (firstFixture.hashCode() == secondFixture.hashCode()) {
-						return 0;
-					} else {
-						return -1;
-					}
-				}
-			};
 
 	/**
 	 * @param map    a map

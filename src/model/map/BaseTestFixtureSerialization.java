@@ -597,18 +597,6 @@ public abstract class BaseTestFixtureSerialization {
 	}
 
 	/**
-	 * Determine the size of an iterable. Note that its iterator will have been advanced
-	 * to the end.
-	 *
-	 * @param iter an iterable
-	 * @param <T>  the type of thing it contains
-	 * @return the number of items in the iterable
-	 */
-	protected static <T> long iteratorSize(final Iterable<T> iter) {
-		return StreamSupport.stream(iter.spliterator(), false).count();
-	}
-
-	/**
 	 * Assert that the given object, if serialized and deserialized, will have its image
 	 * property preserved. We modify its image property, but set it back to the original
 	 * value before exiting the method.

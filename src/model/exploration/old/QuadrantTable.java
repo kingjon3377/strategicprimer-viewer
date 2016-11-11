@@ -31,14 +31,6 @@ import util.NullCleaner;
  */
 public final class QuadrantTable implements EncounterTable {
 	/**
-	 * The default size of the map in rows.
-	 */
-	private static final int MAP_SIZE_ROWS = 69;
-	/**
-	 * The default size of the map in columns.
-	 */
-	private static final int MAP_SIZE_COLS = 88;
-	/**
 	 * The items to allocate by quadrant.
 	 */
 	private final List<String> possibleResults;

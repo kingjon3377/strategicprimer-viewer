@@ -578,12 +578,6 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	}
 
 	/**
-	 * Pre-compiled pattern for the regular expression to detect unwanted-child
-	 * exceptions where the parent was unknown.
-	 */
-	private static final Pattern EXCEPT_PATTERN =
-			assertNotNull(Pattern.compile("^Wanted [^ ]*, was [^ ]*$"));
-	/**
 	 * Parse the contents of a tile. There are no Tile objects in the current model
 	 * framework, but this is cleaner than using a marker variable in the map-reading
 	 * loop.

@@ -88,10 +88,6 @@ import static view.util.SplitWithWeights.verticalSplit;
  */
 public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	/**
-	 * The logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(WorkerMgmtFrame.class);
-	/**
 	 * The header to put above the report.
 	 */
 	private static final String RPT_HDR =

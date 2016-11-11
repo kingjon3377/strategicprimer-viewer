@@ -369,28 +369,6 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
-	 * If there's an entry in the map for the thing's kind already, add the point to its
-	 * list; if not, create such an entry and add the point to it.
-	 *
-	 * @param mapping the mapping we're dealing with
-	 * @param item    the item under consideration
-	 * @param point   its location in the map
-	 */
-	private static void separateByKind(final Map<String, List<Point>> mapping,
-									final HasKind item, final Point point) {
-		final List<Point> points;
-		// For the three classes we deal with here, we don't want just the kind,
-		// we want the full toString, so we use that instead of getKind.
-		if (mapping.containsKey(item.toString())) {
-			points = NullCleaner.assertNotNull(mapping.get(item.toString()));
-		} else {
-			points = new ArrayList<>();
-			mapping.put(NullCleaner.assertNotNull(item.toString()), points);
-		}
-		points.add(point);
-	}
-
-	/**
 	 * If there's an entry in the map for the thing's kind already, return that entry; if
 	 * not, create one, add it to the map, and return it..
 	 *

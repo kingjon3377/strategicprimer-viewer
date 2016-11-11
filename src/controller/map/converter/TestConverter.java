@@ -1284,19 +1284,6 @@ public final class TestConverter {
 				new OneToTwoConverter().convert(original, true), SystemOut.SYS_OUT,
 				""), equalTo(true));
 	}
-	/**
-	 * Test whether an item is in a Stream. Note that this is a stream-modifying operation.
-	 *
-	 * @param stream a stream
-	 * @param item an item
-	 * @param <T> the type of the items in the stream
-	 * @param <U> the type of the item
-	 * @return whether the stream contains the item
-	 */
-	private static <T, U extends T> boolean doesStreamContain(final Stream<T> stream,
-															final U item) {
-		return stream.anyMatch(each -> Objects.equals(each, item));
-	}
 
 	/**
 	 * Test version-0 to version-1 conversion.
