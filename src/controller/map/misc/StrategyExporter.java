@@ -78,7 +78,6 @@ public final class StrategyExporter implements PlayerChangeListener {
 		final List<IUnit> units = model.getUnits(currentPlayer);
 
 		final Map<String, List<IUnit>> unitsByKind = new HashMap<>();
-		final Map<IUnit, String> orders = new HashMap<>();
 		for (final IUnit unit : units) {
 			if (!unit.iterator().hasNext() &&
 						"false".equals(options.getArgument("--print-empty"))) {
@@ -96,6 +95,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 		}
 
 		int size = 58 + playerName.length() + turnString.length();
+		final Map<IUnit, String> orders = new HashMap<>();
 		for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 			size += 4;
 			size += entry.getKey().length();

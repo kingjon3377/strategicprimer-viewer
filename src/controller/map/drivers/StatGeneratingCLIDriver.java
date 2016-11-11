@@ -528,12 +528,6 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	private static WorkerStats createWorkerStats(final String race, final int levels,
 												final ICLIHelper cli)
 			throws IOException {
-		final int racialStrBonus;
-		final int racialDexBonus;
-		final int racialConBonus;
-		final int racialIntBonus;
-		final int racialWisBonus;
-		final int racialChaBonus;
 		final int baseCon = threeDeeSix();
 		final int baseStr = threeDeeSix();
 		final int baseDex = threeDeeSix();
@@ -556,6 +550,12 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		} else {
 			lowestScore = 5;
 		}
+		final int racialStrBonus;
+		final int racialDexBonus;
+		final int racialConBonus;
+		final int racialIntBonus;
+		final int racialWisBonus;
+		final int racialChaBonus;
 		switch (race) {
 		case "dwarf":
 			racialDexBonus = 0;

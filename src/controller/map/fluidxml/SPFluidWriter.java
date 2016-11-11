@@ -203,9 +203,8 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			throws IOException {
 		final XMLOutputFactory xof = XMLOutputFactory.newInstance();
 		final StringWriter writer = new StringWriter();
-		final XMLStreamWriter xsw;
 		try {
-			xsw = xof.createXMLStreamWriter(writer);
+			final XMLStreamWriter xsw = xof.createXMLStreamWriter(writer);
 			xsw.setDefaultNamespace(ISPReader.NAMESPACE);
 			writeSPObject(xsw, obj, 0);
 			xsw.writeCharacters(LineEnd.LINE_SEP);

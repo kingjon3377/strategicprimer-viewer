@@ -223,12 +223,12 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 					item.getName(),
 					", owned by " + playerNameOrYou(item.getOwner()));
 		}
+		fixtures.remove(Integer.valueOf(item.getID()));
 		final ListReportNode workers = new ListReportNode("Workers:");
 		final ListReportNode animals = new ListReportNode("Animals:");
 		final ListReportNode equipment = new ListReportNode("Equipment:");
 		final ListReportNode resources = new ListReportNode("Resources:");
 		final ListReportNode others = new ListReportNode("Others:");
-		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.iterator().hasNext()) {
 			final IReportNode retval = new ListReportNode(loc,
 																		concat(simple,
