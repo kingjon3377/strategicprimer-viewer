@@ -115,7 +115,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 			final JTable.DropLocation dropLocation = (JTable.DropLocation) tempDropLoc;
 			final int index = dropLocation.getRow();
 			final int selection = ((JTable) component).getSelectedRow();
-			((Reorderable) model).reorder(data, index);
+			model.reorder(data, index);
 			if (selection == data) {
 				((JTable) component).setRowSelectionInterval(index, index);
 			} else if (selection > index && selection < data) {
