@@ -265,7 +265,8 @@ public class SPMapNG implements IMutableMapNG {
 							ostream.append(localContext);
 							ostream.append("Fixture with ID #");
 							ostream.append(Integer.toString(fix.getID()));
-							ostream.append(" didn't match any of the subsettable fixtures here sharing that ID");
+							ostream.append(
+									" didn't match any of the subsettable fixtures here sharing that ID");
 							ostream.append(LineEnd.LINE_SEP);
 							retval = false;
 							break;

@@ -239,7 +239,8 @@ public final class TrapModelDriver implements SimpleDriver {
 	 * @throws DriverFailedException on I/O error
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model)
+			throws DriverFailedException {
 		try (final ICLIHelper cli = new CLIHelper()) {
 			repl(model.getMap(), cli);
 		} catch (final IOException except) {
@@ -258,7 +259,8 @@ public final class TrapModelDriver implements SimpleDriver {
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final SPOptions options, final String... args) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final String... args)
+			throws DriverFailedException {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(usage());
 		}

@@ -49,7 +49,8 @@ public interface SimpleDriver extends ISPDriver {
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	default void startDriver(final SPOptions options, final String... args) throws DriverFailedException {
+	default void startDriver(final SPOptions options, final String... args)
+			throws DriverFailedException {
 		final ParamCount desiderata = usage().getParamsWanted();
 		if (args.length == 0) {
 			if (EqualsAny.equalsAny(desiderata, ParamCount.None,

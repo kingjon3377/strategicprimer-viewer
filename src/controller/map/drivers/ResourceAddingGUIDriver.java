@@ -1,7 +1,7 @@
 package controller.map.drivers;
 
 import controller.map.misc.IOHandler;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import view.resources.ResourceAddingFrame;
@@ -48,7 +48,8 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	 * @throws DriverFailedException if the driver fails for some reason
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model)
+			throws DriverFailedException {
 		final ResourceManagementDriver driverModel;
 		if (model instanceof ResourceManagementDriver) {
 			driverModel = (ResourceManagementDriver) model;

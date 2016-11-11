@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.stream.Stream;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
@@ -79,7 +79,8 @@ public final class SubsetGUIDriver implements ISPDriver {
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final SPOptions options, final String... args) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final String... args)
+			throws DriverFailedException {
 		if (args.length < 2) {
 			throw new IncorrectUsageException(usage());
 		}

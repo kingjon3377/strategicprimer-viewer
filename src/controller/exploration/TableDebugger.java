@@ -168,7 +168,8 @@ public final class TableDebugger implements SimpleCLIDriver {
 	 * @throws DriverFailedException on missing table or I/O error
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model)
+			throws DriverFailedException {
 		LOGGER.warning("TableDebugger doesn't need a driver model");
 		startDriver();
 	}

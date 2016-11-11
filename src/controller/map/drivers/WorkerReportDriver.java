@@ -86,7 +86,8 @@ public final class WorkerReportDriver implements SimpleDriver {
 	 * @throws DriverFailedException always: this driver has to write to the filesystem
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model)
+			throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :
 					((IMultiMapModel) model).getAllMaps()) {

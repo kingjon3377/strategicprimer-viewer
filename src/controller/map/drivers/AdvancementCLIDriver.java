@@ -81,7 +81,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * @throws DriverFailedException if the driver fails for some reason
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model)
+			throws DriverFailedException {
 		final IWorkerModel workerModel;
 		if (model instanceof IWorkerModel) {
 			workerModel = (IWorkerModel) model;

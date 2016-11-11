@@ -42,7 +42,8 @@ public interface ISPDriver extends HasName {
 	 * @param model the driver-model that should be used by the app
 	 * @throws DriverFailedException if the driver fails for some reason
 	 */
-	void startDriver(final SPOptions options, IDriverModel model) throws DriverFailedException;
+	void startDriver(final SPOptions options, IDriverModel model)
+			throws DriverFailedException;
 
 	/**
 	 * @return an object indicating how to use and invoke the driver.

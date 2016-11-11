@@ -33,7 +33,8 @@ public interface UtilityDriver extends ISPDriver {
 	 * directly, not a driver model.
 	 */
 	@Override
-	default void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
+	default void startDriver(final SPOptions options, final IDriverModel model)
+			throws DriverFailedException {
 		throw new DriverFailedException(new IllegalStateException(ERR_STR));
 	}
 }

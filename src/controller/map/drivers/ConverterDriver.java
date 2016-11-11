@@ -89,7 +89,8 @@ public final class ConverterDriver implements UtilityDriver {
 	 */
 	@SuppressWarnings({"OverloadedVarargsMethod", "resource"})
 	@Override
-	public void startDriver(final SPOptions options, final String... args) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final String... args)
+			throws DriverFailedException {
 		if (args.length < 1) {
 			throw new IncorrectUsageException(usage());
 		}

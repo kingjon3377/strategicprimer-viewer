@@ -103,7 +103,8 @@ public final class SubsetDriver implements SimpleDriver {
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final SPOptions options, final String... args) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final String... args)
+			throws DriverFailedException {
 		if (args.length < 2) {
 			throw new IncorrectUsageException(usage());
 		}

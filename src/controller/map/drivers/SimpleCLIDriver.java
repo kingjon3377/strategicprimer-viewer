@@ -36,7 +36,8 @@ public interface SimpleCLIDriver extends SimpleDriver {
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	default void startDriver(final SPOptions options, final String... args) throws DriverFailedException {
+	default void startDriver(final SPOptions options, final String... args)
+			throws DriverFailedException {
 		switch (usage().getParamsWanted()) {
 		case None:
 			if (args.length == 0) {

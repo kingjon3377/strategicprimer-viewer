@@ -44,7 +44,8 @@ public class TabularReportDriver implements SimpleDriver {
 			TypesafeLogger.getLogger(TabularReportDriver.class);
 	@SuppressWarnings("ErrorNotRethrown")
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model)
+			throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :
 					((IMultiMapModel) model).getAllMaps()) {

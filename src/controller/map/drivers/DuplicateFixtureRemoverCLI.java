@@ -46,7 +46,8 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model)
+			throws DriverFailedException {
 		try (final ICLIHelper cli = new CLIHelper()) {
 			if (model instanceof IMultiMapModel) {
 				for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)

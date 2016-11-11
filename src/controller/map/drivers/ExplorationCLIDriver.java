@@ -44,7 +44,8 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final SPOptions options, final IDriverModel model)
+			throws DriverFailedException {
 		final IExplorationModel explorationModel;
 		if (model instanceof IExplorationModel) {
 			explorationModel = (IExplorationModel) model;
