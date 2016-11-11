@@ -35,7 +35,6 @@ import util.SimpleMultiMap;
 import util.TypesafeLogger;
 
 import static util.NullCleaner.assertNotNull;
-import static util.NullStream.DEV_NULL;
 
 /**
  * A proper implementation of IMapNG.
@@ -759,10 +758,10 @@ public class SPMapNG implements IMutableMapNG {
 					if (existing.equals(fix) ||
 								((existing instanceof SubsettableFixture) &&
 										((SubsettableFixture) existing)
-												.isSubset(fix, DEV_NULL, "")) ||
+												.isSubset(fix, NullStream.DEV_NULL, "")) ||
 								((fix instanceof SubsettableFixture) &&
 										((SubsettableFixture) fix)
-												.isSubset(existing, DEV_NULL, ""))) {
+												.isSubset(existing, NullStream.DEV_NULL, ""))) {
 						local.remove(existing);
 						local.add(fix);
 					} else {
