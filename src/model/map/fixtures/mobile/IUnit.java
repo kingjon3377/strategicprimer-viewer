@@ -43,9 +43,11 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	default String getLatestOrders(final int turn) {
 		final NavigableMap<Integer, String> orders = getAllOrders();
 		for (int i = turn; i >= -1; i--) {
-			final String turnOrders = orders.get(Integer.valueOf(i)).trim();
-			if (!turnOrders.isEmpty()) {
-				return turnOrders;
+			if (orders.containsKey(Integer.valueOf(i))) {
+				final String turnOrders = orders.get(Integer.valueOf(i)).trim();
+				if (!turnOrders.isEmpty()) {
+					return turnOrders;
+				}
 			}
 		}
 		return "";
