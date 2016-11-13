@@ -220,17 +220,20 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
-	 * TODO: Use a StringBuilder, specifying the size.
-	 *
 	 * @return a String representation of the Unit.
 	 */
 	@Override
 	public String toString() {
 		if (owner.isIndependent()) {
-			return "Independent unit of type " + kind + ", named " + name;
+			return new StringBuilder(30 + kind.length() + name.length())
+						   .append("Independent unit of type ").append(kind)
+						   .append(", named ").append(name).toString();
 		} else {
-			return "Unit of type " + kind + ", belonging to " + owner + ", named " +
-						name;
+			return new StringBuilder(37 + kind.length() + name.length() +
+											 owner.getName().length())
+						   .append("Unit of type ").append(kind)
+						   .append(", belonging to ").append(owner).append(", named ")
+						   .append(name).toString();
 		}
 	}
 
