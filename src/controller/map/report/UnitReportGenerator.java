@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.swing.tree.MutableTreeNode;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -193,6 +195,28 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		if (hasMembers) {
 			builder.append(CLOSE_LIST);
 		}
+		if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
+			builder.append("Orders and Results:").append(OPEN_LIST);
+			final Set<Integer> turns = new TreeSet<>();
+			turns.addAll(item.getAllOrders().keySet());
+			turns.addAll(item.getAllResults().keySet());
+			for (final Integer turn : turns) {
+				builder.append(OPEN_LIST_ITEM).append("Turn ")
+						.append(Integer.toString(turn)).append(":").append(OPEN_LIST);
+				final String orders = item.getOrders(turn);
+				if (!orders.isEmpty()) {
+					builder.append(OPEN_LIST_ITEM).append("Orders: ").append(orders)
+							.append(CLOSE_LIST_ITEM);
+				}
+				final String results = item.getResults(turn);
+				if (!results.isEmpty()) {
+					builder.append(OPEN_LIST_ITEM).append("Results: ").append(results)
+							.append(CLOSE_LIST_ITEM);
+				}
+				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+			}
+			builder.append(CLOSE_LIST);
+		}
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return NullCleaner.assertNotNull(builder.toString());
 	}
@@ -229,7 +253,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		final ListReportNode equipment = new ListReportNode("Equipment:");
 		final ListReportNode resources = new ListReportNode("Resources:");
 		final ListReportNode others = new ListReportNode("Others:");
-		if (item.iterator().hasNext()) {
+		if (item.iterator().hasNext() || !item.getAllOrders().isEmpty() ||
+					!item.getAllResults().isEmpty()) {
 			final IReportNode retval = new ListReportNode(loc,
 																		concat(simple,
 																				". Members of the unit:"));
@@ -269,6 +294,27 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			}
 			if (others.getChildCount() != 0) {
 				retval.add(others);
+			}
+			final ListReportNode ordersNode = new ListReportNode("Orders and Results:");
+			final Set<Integer> turns = new TreeSet<>();
+			turns.addAll(item.getAllOrders().keySet());
+			turns.addAll(item.getAllResults().keySet());
+			for (final Integer turn : turns) {
+				final ListReportNode current = new ListReportNode("Turn " + turn + ':');
+				final String orders = item.getOrders(turn);
+				if (!orders.isEmpty()) {
+					current.add(new SimpleReportNode("Orders: ", orders));
+				}
+				final String results = item.getResults(turn);
+				if (!results.isEmpty()) {
+					current.add(new SimpleReportNode("Results: ", results));
+				}
+				if (current.getChildCount() != 0) {
+					ordersNode.add(current);
+				}
+			}
+			if (ordersNode.getChildCount() != 0) {
+				retval.add(ordersNode);
 			}
 			return retval;
 		} else {
