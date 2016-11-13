@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.fixtures.mobile.worker.IJob;
@@ -176,25 +178,16 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
-	 * TODO: Improve performance.
-	 *
 	 * @param firstSet  a set of Jobs
 	 * @param secondSet a set of Jobs
 	 * @return whether they are equal, ignoring any "empty" Jobs.
 	 */
-	private static boolean areJobSetsEqual(final Collection<IJob> firstSet, final
-	Collection<IJob> secondSet) {
-		for (final IJob job : firstSet) {
-			if (!job.isEmpty() && !secondSet.contains(job)) {
-				return false;
-			}
-		}
-		for (final IJob job : secondSet) {
-			if (!job.isEmpty() && !firstSet.contains(job)) {
-				return false;
-			}
-		}
-		return true;
+	private static boolean areJobSetsEqual(final Collection<IJob> firstSet,
+										   final Collection<IJob> secondSet) {
+		final Predicate<IJob> nonempty = job -> !job.isEmpty();
+		return firstSet.stream().filter(nonempty).collect(Collectors.toSet())
+					   .equals(secondSet.stream().filter(nonempty)
+									   .collect(Collectors.toSet()));
 	}
 
 	/**
