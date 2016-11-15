@@ -1,26 +1,26 @@
 package controller.map.converter;
 
 import controller.exploration.TableLoader;
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
+import controller.map.drivers.DriverFailedException;
+import controller.map.drivers.DriverUsage;
+import controller.map.drivers.ParamCount;
+import controller.map.drivers.SPOptions;
+import controller.map.drivers.SimpleDriver;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import controller.map.misc.MapReaderAdapter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.xml.stream.XMLStreamException;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import model.map.IMapNG;
@@ -47,18 +47,17 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.ITownFixture;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
+import model.misc.IDriverModel;
+import model.misc.IMultiMapModel;
 import model.workermgmt.RaceFactory;
 import org.eclipse.jdt.annotation.Nullable;
+import util.Pair;
 import util.TypesafeLogger;
-import util.Warning;
-import view.util.DriverQuit;
 
 import static util.NullCleaner.assertNotNull;
 
 /**
  * A class to convert a version-1 map to a version-2 map with greater resolution.
- *
- * TODO: Convert to an ISPDriver
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -72,7 +71,26 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
-public final class OneToTwoConverter {
+public final class OneToTwoConverter implements SimpleDriver {
+	/**
+	 * An object describing how to use the driver.
+	 */
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-12", "--one-to-two", ParamCount.AtLeastOne,
+								   "Convert a map's format from version 1 to 2",
+								   "Convert a map from format version 1 to format version 2");
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+		USAGE.setFirstParamDesc("mainMap.xml");
+		USAGE.setSubsequentParamDesc("playerMap.xml");
+	}
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE;
+	}
 	/**
 	 * Sixty percent. Our probability for a couple of perturbations.
 	 */
@@ -620,80 +638,51 @@ public final class OneToTwoConverter {
 	}
 
 	/**
-	 * @param args command-line arguments, main map first, then players' maps
+	 * @param options options passed to the driver
+	 * @param model the driver model containing the maps to convert
+	 * @throws DriverFailedException on driver failure
 	 */
-	public static void main(final String... args) {
-		if (args.length == 0) {
-			System.err.printf("Usage: %s mainMap.xml [playerMap.xml ...]%n",
-					OneToTwoConverter.class.getSimpleName());
-			System.exit(1);
-		} else {
-			boolean first = true;
-			final OneToTwoConverter converter = new OneToTwoConverter();
-			final MapReaderAdapter reader = new MapReaderAdapter();
-			for (final String arg : args) {
-				//noinspection ObjectAllocationInLoop
-				final IMapNG old;
-				final Path file = Paths.get(arg);
-				try {
-					old = reader.readMap(file, Warning.DEFAULT);
-				} catch (final IOException | XMLStreamException | SPFormatException
-													except) {
-					printReadError(except, arg);
-					if (first) {
-						System.exit(2);
-						break;
-					} else {
-						continue;
-					}
+	public void startDriver(final SPOptions options, final IDriverModel model) throws
+			DriverFailedException {
+		final OneToTwoConverter converter = new OneToTwoConverter();
+		final MapReaderAdapter reader = new MapReaderAdapter();
+		final IMapNG oldMain = model.getMap();
+		final Path oldMainPath = model.getMapFile().orElseThrow(
+				() -> new DriverFailedException("No path for main map",
+													   new IllegalStateException("No path for main map")));
+		final IMapNG newMain = converter.convert(oldMain, true);
+		try {
+			reader.write(oldMainPath.resolveSibling(
+					oldMainPath.getFileName() + ".converted.xml"), newMain);
+		} catch (final IOException except) {
+			throw new DriverFailedException("I/O error writing to " +
+													oldMainPath.getFileName() +
+													".converted.xml", except);
+		}
+		if (model instanceof IMultiMapModel) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
+																		   model)
+																		  .getSubordinateMaps()) {
+				final IMapNG map = pair.first();
+				final Optional<Path> temp = pair.second();
+				final Path path;
+				if (temp.isPresent()) {
+					path = temp.get();
+				} else {
+					LOGGER.warning("No file path associated with map, skipping ...");
+					continue;
 				}
-				final IMapNG newMap = converter.convert(old, first);
+				final IMapNG newMap = converter.convert(map, false);
 				try {
-					//noinspection ObjectAllocationInLoop
 					reader.write(
-							file.resolveSibling(file.getFileName() + ".converted.xml"),
+							path.resolveSibling(path.getFileName() + ".converted.xml"),
 							newMap);
 				} catch (final IOException except) {
-					//noinspection HardcodedFileSeparator
 					LOGGER.log(Level.SEVERE,
-							"I/O error writing to " + arg + ".converted.xml", except);
-					if (first) {
-						System.exit(4);
-					}
+							"I/O error writing to " + path.getFileName() +
+									".converted.xml", except);
 				}
-				first = false;
 			}
-		}
-	}
-
-	/**
-	 * Print a suitable error message.
-	 *
-	 * @param except   the exception to handle
-	 * @param filename the file being read
-	 */
-	private static void printReadError(final Exception except,
-									final String filename) {
-		if (except instanceof MapVersionException) {
-			LOGGER.warning("Unsupported map version while reading " + filename);
-		} else if (except instanceof XMLStreamException) {
-			LOGGER.log(Level.WARNING, "Malformed XML in " + filename, except);
-		} else if (except instanceof FileNotFoundException ||
-						   except instanceof NoSuchFileException) {
-			LOGGER.warning("File " + filename + " not found");
-		} else if (except instanceof IOException) {
-			//noinspection HardcodedFileSeparator
-			LOGGER.log(Level.WARNING, "I/O error reading " + filename, except);
-		} else if (except instanceof SPFormatException) {
-			LOGGER.log(Level.WARNING,
-					String.format("Bad SP XML in %s on line %d, as explained below:%n",
-							filename,
-							Integer.valueOf(((SPFormatException) except).getLine())),
-					except);
-		} else {
-			LOGGER.log(Level.SEVERE, "Unexpected error while reading " + filename,
-					except);
-			DriverQuit.quit(3);
 		}
 	}
 }
