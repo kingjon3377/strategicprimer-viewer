@@ -1,31 +1,29 @@
 package controller.map.drivers;
 
-import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
-import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.stream.XMLStreamException;
+import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.fixtures.mobile.Unit;
+import model.misc.IDriverModel;
+import model.misc.IMultiMapModel;
 import util.NullCleaner;
+import util.Pair;
 import util.TypesafeLogger;
-import util.Warning;
 
 /**
  * A hackish class to help fix TODOs (missing content) in the map.
  *
  * TODO: Add tests of this functionality.
- *
- * TODO: Convert to ISPDriver, so we can have SPOptions
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -39,30 +37,20 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-public final class TODOFixerDriver {
-	/**
-	 * The map we operate on.
-	 */
-	private final IMutableMapNG map;
+public final class TODOFixerDriver implements SimpleCLIDriver {
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(TODOFixerDriver.class);
 
 	/**
-	 * @param operand the map we operate on
-	 */
-	public TODOFixerDriver(final IMutableMapNG operand) {
-		map = operand;
-	}
-
-	/**
 	 * Search for and fix units with kinds missing.
+	 * @param map the map we're operating on
 	 * @param cli the interface to the user
 	 */
-	public void fixAllUnits(final ICLIHelper cli) {
+	public void fixAllUnits(final IMutableMapNG map, final ICLIHelper cli) {
 		for (final Point point : map.locations()) {
-			final SimpleTerrain terrain = getTerrain(point);
+			final SimpleTerrain terrain = getTerrain(map, point);
 			map.streamOtherFixtures(point).filter(Unit.class::isInstance)
 					.map(Unit.class::cast).filter(unit -> "TODO".equals(unit.getKind()))
 					.forEach(unit -> fixUnit(NullCleaner.assertNotNull(unit), terrain, cli));
@@ -161,11 +149,12 @@ public final class TODOFixerDriver {
 	private final Collection<String> oceanList = new ArrayList<>();
 
 	/**
+	 * @param map the map we're dealing with
 	 * @param location a location in the map
 	 * @return the kind of terrain, with very coarse granularity, here
 	 */
 	@SuppressWarnings("deprecation")
-	private SimpleTerrain getTerrain(final Point location) {
+	private SimpleTerrain getTerrain(final IMapNG map, final Point location) {
 		switch (map.getBaseTerrain(location)) {
 		case Jungle:
 		case BorealForest:
@@ -180,16 +169,17 @@ public final class TODOFixerDriver {
 		case Ocean:
 			return SimpleTerrain.Ocean;
 		case Plains:
-			return getPlainsTerrain(location);
+			return getPlainsTerrain(map, location);
 		default:
 			return SimpleTerrain.Unforested; // Should never get here, but ...
 		}
 	}
 	/**
+	 * @param map the map we're dealing with
 	 * @param location a location
 	 * @return the appropriate terrain for it if it is plains
 	 */
-	private SimpleTerrain getPlainsTerrain(final Point location) {
+	private SimpleTerrain getPlainsTerrain(final IMapNG map, final Point location) {
 		if (map.isMountainous(location) || (map.getForest(location) == null)) {
 			return SimpleTerrain.Unforested;
 		} else {
@@ -199,36 +189,19 @@ public final class TODOFixerDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param args maps to run on
+	 * @param options options passed to the driver
+	 * @param model the driver model to operate on
 	 */
 	@SuppressWarnings("NestedTryStatement")
-	public static void main(final String... args) {
+	public void startDriver(final SPOptions options, final IDriverModel model) {
 		try (final ICLIHelper cli = new CLIHelper()) {
-			final MapReaderAdapter reader = new MapReaderAdapter();
-			for (final String arg : args) {
-				if (arg == null) {
-					continue;
+			if (model instanceof IMultiMapModel) {
+				for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
+																	.getAllMaps()) {
+					fixAllUnits(pair.first(), cli);
 				}
-				final IMutableMapNG map;
-				//noinspection ObjectAllocationInLoop
-				final Path file = Paths.get(arg);
-				try {
-					map = reader.readMap(file, Warning.DEFAULT);
-				} catch (final IOException | XMLStreamException | SPFormatException e) {
-					LOGGER.log(Level.SEVERE, "Error reading map " + arg, e);
-					continue;
-				}
-				//noinspection ObjectAllocationInLoop
-				new TODOFixerDriver(map).fixAllUnits(cli);
-				try {
-					reader.write(file, map);
-				} catch (final IOException e) {
-					//noinspection HardcodedFileSeparator
-					LOGGER.log(Level.SEVERE, "I/O error writing map to " + arg, e);
-				} catch (final XMLStreamException except) {
-					LOGGER.log(Level.SEVERE, "Error creating XML to write to " + arg,
-							except);
-				}
+			} else {
+				fixAllUnits(model.getMap(), cli);
 			}
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
