@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -101,7 +102,12 @@ public final class ConverterDriver implements UtilityDriver {
 			ostream.printf("Reading %s ... ", filename);
 			try {
 				//noinspection ObjectAllocationInLoop
-				final IMapNG old = READER.readMap(Paths.get(filename), Warning.DEFAULT);
+				final IMutableMapNG old = READER.readMap(Paths.get(filename), Warning.DEFAULT);
+				if (options.hasOption("--current-turn")) {
+					final int currentTurn =
+							Integer.parseInt(options.getArgument("--current-turn"));
+					old.setCurrentTurn(currentTurn);
+				}
 				ostream.println(" ... Converting ... ");
 				final IMapNG map = ResolutionDecreaseConverter.convert(old);
 				ostream.print("About to write ");

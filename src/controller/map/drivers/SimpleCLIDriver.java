@@ -2,7 +2,9 @@ package controller.map.drivers;
 
 import controller.map.misc.MapReaderAdapter;
 import java.nio.file.Paths;
-import model.misc.IDriverModel;
+import java.util.stream.StreamSupport;
+import model.misc.IMultiMapModel;
+import util.Pair;
 import util.Warning;
 
 /**
@@ -75,9 +77,17 @@ public interface SimpleCLIDriver extends SimpleDriver {
 			break;
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final IDriverModel model =
+		// We declare it as an IMultiMapModel so we can correct the current turn
+		// in all maps if needed
+		final IMultiMapModel model =
 				reader.readMultiMapModel(Warning.Ignore, Paths.get(args[0]),
 						MapReaderAdapter.namesToFiles(true, args));
+		if (options.hasOption("--current-turn")) {
+			final int currentTurn =
+					Integer.parseInt(options.getArgument("--current-turn"));
+			StreamSupport.stream(model.getAllMaps().spliterator(), false)
+					.map(Pair::first).forEach(map -> map.setCurrentTurn(currentTurn));
+		}
 		startDriver(options, model);
 		reader.writeModel(model);
 	}

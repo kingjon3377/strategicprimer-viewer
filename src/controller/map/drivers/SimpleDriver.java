@@ -5,7 +5,12 @@ import controller.map.misc.MapReaderAdapter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.stream.StreamSupport;
+import model.map.IMutableMapNG;
+import model.misc.IMultiMapModel;
 import util.EqualsAny;
+import util.Pair;
 import util.Warning;
 
 /**
@@ -52,6 +57,14 @@ public interface SimpleDriver extends ISPDriver {
 	default void startDriver(final SPOptions options, final String... args)
 			throws DriverFailedException {
 		final ParamCount desiderata = usage().getParamsWanted();
+		final Consumer<IMutableMapNG> turnFixer;
+		if (options.hasOption("--current-turn")) {
+			final int currentTurn =
+					Integer.parseInt(options.getArgument("--current-turn"));
+			turnFixer = map -> map.setCurrentTurn(currentTurn);
+		} else {
+			turnFixer = map -> {};
+		}
 		if (args.length == 0) {
 			if (EqualsAny.equalsAny(desiderata, ParamCount.None,
 					ParamCount.AnyNumber)) {
@@ -59,25 +72,42 @@ public interface SimpleDriver extends ISPDriver {
 			} else if (EqualsAny.equalsAny(desiderata, ParamCount.Two, ParamCount.AtLeastTwo)) {
 				final Path masterPath = askUserForFile();
 				final Path subPath = askUserForFile();
-				startDriver(options, new MapReaderAdapter()
-									.readMultiMapModel(Warning.DEFAULT, masterPath,
-											subPath));
+				final IMultiMapModel mapModel = new MapReaderAdapter()
+													 .readMultiMapModel(Warning.DEFAULT,
+															 masterPath,
+															 subPath);
+				StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
+						.map(Pair::first).forEach(turnFixer);
+				startDriver(options, mapModel);
 			} else {
-				startDriver(options, new MapReaderAdapter()
-											 .readMultiMapModel(Warning.DEFAULT,
-													 askUserForFile()));
+				final IMultiMapModel mapModel = new MapReaderAdapter()
+													 .readMultiMapModel(Warning.DEFAULT,
+															 askUserForFile());
+				StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
+						.map(Pair::first).forEach(turnFixer);
+				startDriver(options, mapModel);
 			}
 		} else if (ParamCount.None == desiderata) {
 			throw new IncorrectUsageException(usage());
 		} else if ((args.length == 1) && EqualsAny.equalsAny(desiderata,
 				ParamCount.Two, ParamCount.AtLeastTwo)) {
-			startDriver(options, new MapReaderAdapter()
-								.readMultiMapModel(Warning.DEFAULT, Paths.get(args[0]),
-										askUserForFile()));
+			final IMultiMapModel mapModel = new MapReaderAdapter()
+												 .readMultiMapModel(Warning.DEFAULT,
+														 Paths.get(args[0]),
+														 askUserForFile());
+			StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
+					.map(Pair::first).forEach(turnFixer);
+			startDriver(options, mapModel);
 		} else {
-			startDriver(options, new MapReaderAdapter()
-								.readMultiMapModel(Warning.DEFAULT, Paths.get(args[0]),
-										MapReaderAdapter.namesToFiles(true, args)));
+			final IMultiMapModel mapModel = new MapReaderAdapter()
+													.readMultiMapModel(Warning.DEFAULT,
+															Paths.get(args[0]),
+															MapReaderAdapter
+																	.namesToFiles(true,
+																			args));
+			StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
+					.map(Pair::first).forEach(turnFixer);
+			startDriver(options, mapModel);
 		}
 	}
 	/**

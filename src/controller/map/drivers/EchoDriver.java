@@ -8,11 +8,13 @@ import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.StreamSupport;
 import javax.xml.stream.XMLStreamException;
-import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.terrain.Forest;
+import util.Pair;
 import util.Warning;
 
 /**
@@ -57,7 +59,7 @@ public final class EchoDriver implements UtilityDriver {
 		if (args.length != 2) {
 			throw new IncorrectUsageException(usage());
 		}
-		final IMapNG map;
+		final IMutableMapNG map;
 		final Path infile = Paths.get(args[0]);
 		try {
 			map =
@@ -88,6 +90,11 @@ public final class EchoDriver implements UtilityDriver {
 					((Forest) fix).setID(idFactory.createID());
 				}
 			}
+		}
+		if (options.hasOption("--current-turn")) {
+			final int currentTurn =
+					Integer.parseInt(options.getArgument("--current-turn"));
+			map.setCurrentTurn(currentTurn);
 		}
 		final Path outfile = Paths.get(args[1]);
 		try {

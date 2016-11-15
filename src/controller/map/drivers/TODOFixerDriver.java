@@ -25,6 +25,8 @@ import util.Warning;
  *
  * TODO: Add tests of this functionality.
  *
+ * TODO: Convert to ISPDriver, so we can have SPOptions
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
