@@ -660,13 +660,6 @@ public final class OneToTwoConverter {
 					if (first) {
 						System.exit(4);
 					}
-				} catch (final XMLStreamException except) {
-					LOGGER.log(Level.SEVERE,
-							"Error creating XML to write to " + arg + ".converted.xml",
-							except);
-					if (first) {
-						System.exit(5);
-					}
 				}
 				first = false;
 			}

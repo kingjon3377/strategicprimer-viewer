@@ -176,10 +176,9 @@ public final class MapReaderAdapter {
 	 * @param file the file to write to
 	 * @param map  the map to write
 	 * @throws IOException on error opening the file
-	 * @throws XMLStreamException on error creating the XML to write to the file
 	 */
 	public void write(final Path file, final IMapNG map)
-			throws IOException, XMLStreamException {
+			throws IOException {
 		spWriter.write(file, map);
 	}
 

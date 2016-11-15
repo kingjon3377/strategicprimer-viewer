@@ -105,9 +105,6 @@ public final class EchoDriver implements UtilityDriver {
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error writing " + outfile, except);
-		} catch (final XMLStreamException except) {
-			throw new DriverFailedException("Error creating XML to write to " + outfile,
-												   except);
 		}
 	}
 
