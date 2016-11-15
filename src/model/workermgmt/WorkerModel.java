@@ -2,7 +2,6 @@ package model.workermgmt;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -67,9 +66,9 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public List<Player> getPlayers() {
-		return new ArrayList<>(StreamSupport.stream(getAllMaps().spliterator(), false).flatMap(
+		return StreamSupport.stream(getAllMaps().spliterator(), false).flatMap(
 				pair -> StreamSupport.stream(pair.first().players().spliterator(),
-						false)).collect(Collectors.toSet()));
+						false)).distinct().collect(Collectors.toList());
 	}
 
 	/**
@@ -134,9 +133,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public List<String> getUnitKinds(final Player player) {
-		return NullCleaner.assertNotNull(Collections.unmodifiableList(
-				new ArrayList<>(getUnits(player).stream().map(IUnit::getKind)
-										.collect(Collectors.toSet()))));
+		return getUnits(player).stream().map(IUnit::getKind).distinct()
+					   .collect(Collectors.toList());
 	}
 
 	/**

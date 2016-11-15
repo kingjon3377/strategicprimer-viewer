@@ -131,8 +131,8 @@ public final class AppStarter implements ISPDriver {
 			throws DriverFailedException {
 		if (GraphicsEnvironment.isHeadless()) {
 			final List<ISPDriver> drivers =
-					new ArrayList<>(CACHE.values().stream().map(Pair::first)
-											.collect(Collectors.toSet()));
+					CACHE.values().stream().map(Pair::first).distinct()
+							.collect(Collectors.toList());
 			try (final ICLIHelper cli = new CLIHelper()) {
 				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
@@ -242,8 +242,8 @@ public final class AppStarter implements ISPDriver {
 					.invokeLater(() -> new AppChooserFrame(options, others).setVisible(true));
 		} else {
 			final List<ISPDriver> drivers =
-					new ArrayList<>(CACHE.values().stream().map(Pair::first)
-											.collect(Collectors.toSet()));
+					CACHE.values().stream().map(Pair::first).distinct()
+							.collect(Collectors.toList());
 			try (final ICLIHelper cli = new CLIHelper()) {
 				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
