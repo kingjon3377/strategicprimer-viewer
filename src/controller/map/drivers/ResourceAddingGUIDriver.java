@@ -30,6 +30,9 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 								"Add resources to maps",
 								"Add resources for players to maps"
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.

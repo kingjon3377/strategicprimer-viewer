@@ -33,6 +33,9 @@ public final class ViewerStart implements SimpleDriver {
 								"Look at the map visually. This is probably the app you" +
 										" want."
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 
 	/**
 	 * Run the driver. If the model is a multi-map model, we open one window per map.

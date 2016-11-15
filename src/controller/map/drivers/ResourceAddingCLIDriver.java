@@ -44,6 +44,9 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 								"Add resources to maps",
 								"Add resources for players to maps"
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 
 	/**
 	 * Start the driver.

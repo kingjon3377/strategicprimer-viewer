@@ -55,6 +55,9 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 										"each worker's Jobs, and his or her level in " +
 										"each Skill in each Job."
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

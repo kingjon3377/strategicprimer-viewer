@@ -37,6 +37,9 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 								"Remove duplicate fixtures---identical except ID# and" +
 										" on the same tile---from a map."
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 
 	/**
 	 * Run the driver.

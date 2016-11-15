@@ -95,6 +95,9 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 								"Add specified kinds of fixtures to suitable points " +
 										"throughout a map"
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 
 	/**
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but

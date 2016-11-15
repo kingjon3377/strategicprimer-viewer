@@ -89,6 +89,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 								"Enter stats for existing workers or generate new " +
 										"workers randomly."
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.

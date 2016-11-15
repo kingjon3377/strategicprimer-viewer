@@ -31,6 +31,9 @@ public final class WorkerStart implements SimpleDriver {
 								"Manage a player's workers in units",
 								"Organize the members of a player's units."
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.

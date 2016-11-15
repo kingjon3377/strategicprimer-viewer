@@ -33,6 +33,9 @@ public final class AdvancementStart implements SimpleDriver {
 										+ "worker's Jobs, and his or her level in each "
 										+ "Skill in each Job."
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 
 	/**
 	 * Run the driver

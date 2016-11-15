@@ -39,6 +39,10 @@ public final class WorkerReportDriver implements SimpleDriver {
 								"Report Generator",
 								"Produce HTML report of the contents of a map"
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+		USAGE.addSupportedOption("--out=/path/to/output.html");
+	}
 	/**
 	 * Logger.
 	 */

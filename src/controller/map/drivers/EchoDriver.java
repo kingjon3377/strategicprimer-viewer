@@ -41,6 +41,11 @@ public final class EchoDriver implements UtilityDriver {
 								"Read, then write a map.",
 								"Read and write a map, correcting deprecated syntax."
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+		USAGE.setFirstParamDesc("input.xml");
+		USAGE.setSubsequentParamDesc("output.xml");
+	}
 
 	/**
 	 * Run the driver.

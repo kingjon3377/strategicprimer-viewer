@@ -35,6 +35,9 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 								"Move a unit around the map, updating the player's " +
 										"map with what it sees."
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 
 	/**
 	 * Run the driver.

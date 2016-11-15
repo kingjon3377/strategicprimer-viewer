@@ -60,6 +60,7 @@ public final class ConverterDriver implements UtilityDriver {
 											 "Convert a map. At present, this means reducing its resolution."
 
 		);
+		usageObject.addSupportedOption("--current-turn=NN");
 	}
 	/**
 	 * The stream to write progress information to.

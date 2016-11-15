@@ -63,6 +63,9 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 								"Ensure a player's map covers all terrain allied villages can see."
 
 			);
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 	/**
 	 * Logger.
 	 */
