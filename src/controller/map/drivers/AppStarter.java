@@ -116,6 +116,8 @@ public final class AppStarter implements ISPDriver {
 		addChoice(new ResourceAddingCLIDriver(), new ResourceAddingGUIDriver());
 		// TODO: Add a GUI equivalent of TabularReportDriver
 		addChoice(new TabularReportDriver());
+		// TODO: Add a GUI to allow the user to visually explore a mine
+		addChoice(new MiningCLI());
 	}
 
 	/**

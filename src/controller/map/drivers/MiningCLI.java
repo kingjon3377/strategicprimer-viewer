@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.map.Point;
 import model.map.PointFactory;
 import model.mining.LodeStatus;
@@ -15,8 +13,6 @@ import util.NullCleaner;
 
 /**
  * A driver to create a spreadsheet model of a mine.
- *
- * TODO: Convert to an ISPDriver and hook into AppStarter.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -31,47 +27,50 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 @SuppressWarnings("UtilityClassCanBeEnum")
-public final class MiningCLI {
+public final class MiningCLI implements UtilityDriver {
 	/**
-	 * Do not instantiate.
+	 * An object describing how to use the driver.
 	 */
-	private MiningCLI() {
-		// Do nothing
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-i", "--mining", ParamCount.Two,
+								   "Create a model of a mine",
+								   "Create a CSV spreadsheet representing the area of a mine");
+	static {
+		USAGE.addSupportedOption("--seed=NN");
+		USAGE.setFirstParamDesc("output.csv");
+		USAGE.setSubsequentParamDesc("status");
+	}
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE;
 	}
 
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(MiningCLI.class.getName()));
-
-	/**
+	 * @param options any options passed to the driver
 	 * @param args Arg 0 is the name of a file to write the CSV to; Arg 1 is the value of
-	 *             the top center (as an index into the LodeStatus values array); Arg 2
-	 *             (optional) is a value to seed the RNG with.
+	 *             the top center (as an index into the LodeStatus values array)
+	 * @throws DriverFailedException on incorrect usage
 	 */
-	public static void main(final String... args) {
-		if (args.length < 2) {
-			System.err.println("Usage: MiningCLI output.csv status [seed]");
-			System.exit(1);
-			return;
+	public void startDriver(final SPOptions options, final String... args)
+			throws DriverFailedException {
+		if (args.length != 2) {
+			throw new IncorrectUsageException(USAGE);
 		}
 		final int index;
 		try {
 			index = NumberFormat.getIntegerInstance().parse(args[1]).intValue();
 		} catch (final ParseException e) {
-			LOGGER.log(Level.SEVERE, "non-numeric status index", e);
-			System.exit(2);
-			return;
+			throw new DriverFailedException("non-numeric status index", e);
 		}
 		final long seed;
-		if (args.length >= 3) {
+		if (options.hasOption("--seed")) {
 			try {
-				seed = Long.parseLong(args[2]);
+				seed = Long.parseLong(options.getArgument("--seed"));
 			} catch (final NumberFormatException except) {
-				LOGGER.log(Level.SEVERE, "non-numeric seed", except);
-				System.exit(2);
-				return;
+				throw new DriverFailedException("non-numeric seed", except);
 			}
 		} else {
 			seed = System.currentTimeMillis();
@@ -103,8 +102,7 @@ public final class MiningCLI {
 			}
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
-			LOGGER.log(Level.SEVERE, "I/O error writing to file", except);
-			System.exit(2);
+			throw new DriverFailedException("I/O error writing to file", except);
 		}
 	}
 
