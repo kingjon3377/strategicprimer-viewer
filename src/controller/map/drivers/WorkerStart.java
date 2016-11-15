@@ -29,8 +29,8 @@ public final class WorkerStart implements SimpleDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-w", "--worker", ParamCount.AtLeastOne,
 								"Manage a player's workers in units",
-								"Organize the members of a player's units.",
-								WorkerStart.class);
+								"Organize the members of a player's units."
+			);
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.

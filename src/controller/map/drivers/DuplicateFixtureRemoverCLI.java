@@ -35,8 +35,8 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 			new DriverUsage(false, "-u", "--duplicates", ParamCount.One,
 								"Remove duplicate fixtures",
 								"Remove duplicate fixtures---identical except ID# and" +
-										" on the same tile---from a map.",
-								DuplicateFixtureRemoverCLI.class);
+										" on the same tile---from a map."
+			);
 
 	/**
 	 * Run the driver.

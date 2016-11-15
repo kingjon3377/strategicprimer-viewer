@@ -37,8 +37,8 @@ public final class WorkerReportDriver implements SimpleDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-m", "--map", ParamCount.One,
 								"Report Generator",
-								"Produce HTML report of the contents of a map",
-								WorkerReportDriver.class);
+								"Produce HTML report of the contents of a map"
+			);
 	/**
 	 * Logger.
 	 */

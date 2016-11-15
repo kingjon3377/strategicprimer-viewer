@@ -57,8 +57,9 @@ public final class ConverterDriver implements UtilityDriver {
 		ostream = outputStream;
 		usageObject = new DriverUsage(gui, "-v", "--convert", ParamCount.One,
 											 "Convert a map's format",
-											 "Convert a map. At present, this means reducing its resolution.",
-											 ConverterDriver.class);
+											 "Convert a map. At present, this means reducing its resolution."
+
+		);
 	}
 	/**
 	 * The stream to write progress information to.

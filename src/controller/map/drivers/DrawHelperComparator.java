@@ -70,8 +70,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 								String.format("Test the performance of the TileDrawHelper " +
 										"classes---which do the heavy lifting of " +
 										"rendering the map%nin the viewer---using a " +
-										"variety of automated tests."),
-								DrawHelperComparator.class);
+										"variety of automated tests.")
+			);
 
 	/**
 	 * Label to put before every direct-helper test result.

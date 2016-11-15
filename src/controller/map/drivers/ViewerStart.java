@@ -31,8 +31,8 @@ public final class ViewerStart implements SimpleDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-m", "--map", ParamCount.One, "Map viewer",
 								"Look at the map visually. This is probably the app you" +
-										" want.",
-								ViewerStart.class);
+										" want."
+			);
 
 	/**
 	 * Run the driver. If the model is a multi-map model, we open one window per map.

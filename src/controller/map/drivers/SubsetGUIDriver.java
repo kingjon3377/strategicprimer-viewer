@@ -43,8 +43,8 @@ public final class SubsetGUIDriver implements ISPDriver {
 								"Check players' maps against master",
 								"Check that subordinate maps are subsets of the main " +
 										"map, containing nothing that it does not " +
-										"contain in the same place",
-								SubsetGUIDriver.class);
+										"contain in the same place"
+			);
 
 	/**
 	 * Run the driver.

@@ -31,10 +31,6 @@ public class DriverUsage {
 	 * A longer description of the driver.
 	 */
 	private final String longDescription;
-	/**
-	 * The type of the driver this describes.
-	 */
-	private final Class<? extends ISPDriver> driverClass;
 
 	/**
 	 * Constructor.
@@ -46,19 +42,16 @@ public class DriverUsage {
 	 * @param params    how many parameters the driver wants
 	 * @param shortDesc a short description of the driver
 	 * @param longDesc  a longer description of the driver.
-	 * @param driver    the Class object referring to the type of driver this describes
 	 */
 	public DriverUsage(final boolean graph, final String shortOpt,
-					final String longOpt, final ParamCount params,
-					final String shortDesc, final String longDesc,
-					final Class<? extends ISPDriver> driver) {
+					   final String longOpt, final ParamCount params,
+					   final String shortDesc, final String longDesc) {
 		graphical = graph;
 		shortOption = shortOpt;
 		longOption = longOpt;
 		paramsWanted = params;
 		shortDescription = shortDesc;
 		longDescription = longDesc;
-		driverClass = driver;
 	}
 
 	/**
@@ -103,12 +96,6 @@ public class DriverUsage {
 		return longDescription;
 	}
 
-	/**
-	 * @return the type this driver describes.
-	 */
-	public Class<? extends ISPDriver> getDriverClass() {
-		return driverClass;
-	}
 	/**
 	 * @return a description of the driver
 	 */

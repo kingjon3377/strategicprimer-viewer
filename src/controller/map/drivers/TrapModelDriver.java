@@ -40,8 +40,8 @@ public final class TrapModelDriver implements SimpleDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-r", "--trap", ParamCount.One,
 								"Run a player's trapping",
-								"Determine the results a player's trapper finds.",
-								TrapModelDriver.class);
+								"Determine the results a player's trapper finds."
+			);
 	/**
 	 * A somewhat lengthy prompt.
 	 */

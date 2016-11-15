@@ -40,8 +40,8 @@ public final class SubsetDriver implements SimpleDriver {
 								"Check players' maps against master",
 								"Check that subordinate maps are subsets of the main " +
 										"map, containing nothing that it does not " +
-										"contain in the same place",
-								SubsetDriver.class);
+										"contain in the same place"
+			);
 	/**
 	 * Logger.
 	 */

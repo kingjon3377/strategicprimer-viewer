@@ -93,8 +93,8 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 			new DriverUsage(false, "-l", "--populate", ParamCount.One,
 								"Add missing fixtures to a map",
 								"Add specified kinds of fixtures to suitable points " +
-										"throughout a map",
-								MapPopulatorDriver.class);
+										"throughout a map"
+			);
 
 	/**
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but

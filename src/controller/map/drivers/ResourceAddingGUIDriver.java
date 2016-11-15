@@ -28,8 +28,8 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-d", "--add-resource", ParamCount.AtLeastOne,
 								"Add resources to maps",
-								"Add resources for players to maps",
-								ResourceAddingCLIDriver.class);
+								"Add resources for players to maps"
+			);
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.

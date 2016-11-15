@@ -35,8 +35,8 @@ public class TabularReportDriver implements SimpleDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-b", "--tabular", ParamCount.AtLeastOne,
 								   "Tabular Report Generator",
-								   "Produce CSV reports of contents of a map.",
-								   TabularReportDriver.class);
+								   "Produce CSV reports of contents of a map."
+			);
 	/**
 	 * Logger.
 	 */

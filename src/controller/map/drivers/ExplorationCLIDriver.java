@@ -33,8 +33,8 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 			new DriverUsage(false, "-x", "--explore", ParamCount.AtLeastOne,
 								"Run exploration.",
 								"Move a unit around the map, updating the player's " +
-										"map with what it sees.",
-								ExplorationCLIDriver.class);
+										"map with what it sees."
+			);
 
 	/**
 	 * Run the driver.

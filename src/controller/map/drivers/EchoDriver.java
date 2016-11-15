@@ -8,13 +8,11 @@ import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.StreamSupport;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.terrain.Forest;
-import util.Pair;
 import util.Warning;
 
 /**
@@ -41,8 +39,8 @@ public final class EchoDriver implements UtilityDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-e", "--echo", ParamCount.Two,
 								"Read, then write a map.",
-								"Read and write a map, correcting deprecated syntax.",
-								EchoDriver.class);
+								"Read and write a map, correcting deprecated syntax."
+			);
 
 	/**
 	 * Run the driver.

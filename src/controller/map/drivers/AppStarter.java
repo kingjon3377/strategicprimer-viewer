@@ -47,8 +47,8 @@ public final class AppStarter implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-p", "--app-starter", ParamCount.AnyNumber, "App Chooser",
-								"Let the user choose an app to start, or handle options.",
-								AppStarter.class);
+								"Let the user choose an app to start, or handle options."
+			);
 
 	/**
 	 * A map from options to the drivers they represent.

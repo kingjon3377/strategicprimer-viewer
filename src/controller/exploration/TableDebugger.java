@@ -41,8 +41,8 @@ public final class TableDebugger implements SimpleCLIDriver {
 			new DriverUsage(false, "-T", "--table-debug", ParamCount.None,
 								   "Debug old-model encounter tables",
 								   "See whether old-model encounter tables refer to a " +
-										   "nonexistent table",
-								   TableDebugger.class);
+										   "nonexistent table"
+			);
 	/**
 	 * @return the usage object
 	 */
