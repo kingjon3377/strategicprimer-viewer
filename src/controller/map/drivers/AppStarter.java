@@ -350,6 +350,11 @@ public final class AppStarter implements ISPDriver {
 			buff.append(usage.getShortOption());
 			buff.append('|');
 			buff.append(usage.getLongOption());
+			for (final String option : usage.getSupportedOptions()) {
+				buff.append(" [");
+				buff.append(option);
+				buff.append(']');
+			}
 			switch (usage.getParamsWanted()) {
 			case None:
 				break;

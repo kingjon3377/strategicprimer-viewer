@@ -1,5 +1,9 @@
 package controller.map.drivers;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * A class to represent usage information for drivers, for use in the AppStarter and in
  * help text.
@@ -42,6 +46,10 @@ public class DriverUsage {
 	 * "filename.xml"
 	 */
 	private String subsequentParamDesc = "filename.xml";
+	/**
+	 * The options this driver supports.
+	 */
+	private final List<String> supportedOptions = new ArrayList<>();
 
 	/**
 	 * Constructor.
@@ -140,5 +148,18 @@ public class DriverUsage {
 	 */
 	public String getSubsequentParamDesc() {
 		return subsequentParamDesc;
+	}
+	/**
+	 * This is only used to tell the user about the option, so describe it accordingly.
+	 * @param option an option to add to the list of supported options.
+	 */
+	public void addSupportedOption(final String option) {
+		supportedOptions.add(option);
+	}
+	/**
+	 * @return a list of the options this driver supports, to show the user.
+	 */
+	public List<String> getSupportedOptions() {
+		return Collections.unmodifiableList(supportedOptions);
 	}
 }
