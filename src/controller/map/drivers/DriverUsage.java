@@ -31,6 +31,17 @@ public class DriverUsage {
 	 * A longer description of the driver.
 	 */
 	private final String longDescription;
+	/**
+	 * A description of the first (non-option) parameter, for use in a usage statement.
+	 * Defaults to "filename.xml"
+	 */
+	private String firstParamDesc = "filename.xml";
+	/**
+	 * A description of a later parameter, for use in a usage statement. (We assume that
+	 * all parameters after the first should be described similarly.) Defaults to
+	 * "filename.xml"
+	 */
+	private String subsequentParamDesc = "filename.xml";
 
 	/**
 	 * Constructor.
@@ -102,5 +113,32 @@ public class DriverUsage {
 	@Override
 	public String toString() {
 		return shortDescription;
+	}
+	/**
+	 * Note that this is ignored by its users if getParamsWanted() returns AnyNumber.
+	 * @param newDesc a new description for the first parameter
+	 */
+	public void setFirstParamDesc(final String newDesc) {
+		firstParamDesc = newDesc;
+	}
+	/**
+	 * @return a description of the first parameter for use in a usage statement;
+	 * defaults to "filename.xml"
+	 */
+	public String getFirstParamDesc() {
+		return firstParamDesc;
+	}
+	/**
+	 * @param newDesc a new description for each parameter after the first
+	 */
+	public void setSubsequentParamDesc(final String newDesc) {
+		subsequentParamDesc = newDesc;
+	}
+	/**
+	 * @return a description of each parameter after the first for use in a usage
+	 * statement; defaults to "filename.xml"
+	 */
+	public String getSubsequentParamDesc() {
+		return subsequentParamDesc;
 	}
 }

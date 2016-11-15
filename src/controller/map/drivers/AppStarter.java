@@ -354,19 +354,37 @@ public final class AppStarter implements ISPDriver {
 			case None:
 				break;
 			case One:
-				buff.append(" filename.xml");
+				buff.append(' ');
+				buff.append(usage.getFirstParamDesc());
 				break;
 			case AtLeastOne:
-				buff.append(" filename.xml [filename.xml ...]");
+				buff.append(' ');
+				buff.append(usage.getFirstParamDesc());
+				buff.append(" [");
+				buff.append(usage.getSubsequentParamDesc());
+				buff.append(" ...]");
 				break;
 			case Two:
-				buff.append(" filename.xml filename.xml");
+				buff.append(' ');
+				buff.append(usage.getFirstParamDesc());
+				buff.append(' ');
+				buff.append(usage.getSubsequentParamDesc());
 				break;
 			case AtLeastTwo:
-				buff.append(" filename.xml filename.xml [filename.xml ...]");
+				buff.append(' ');
+				buff.append(usage.getFirstParamDesc());
+				buff.append(' ');
+				buff.append(usage.getSubsequentParamDesc());
+				buff.append(" [");
+				buff.append(usage.getSubsequentParamDesc());
+				buff.append(" ...]");
 				break;
 			case AnyNumber:
-				buff.append(" [filename.xml ...]");
+				buff.append(' ');
+				buff.append(usage.getSubsequentParamDesc());
+				buff.append(" [");
+				buff.append(usage.getSubsequentParamDesc());
+				buff.append(" ...]");
 				break;
 			}
 			buff.append(LineEnd.LINE_SEP);
