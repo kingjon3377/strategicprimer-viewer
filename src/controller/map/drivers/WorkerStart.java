@@ -34,6 +34,7 @@ public final class WorkerStart implements SimpleDriver {
 			);
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
+		USAGE.addSupportedOption("--print-empty");
 	}
 
 	/**

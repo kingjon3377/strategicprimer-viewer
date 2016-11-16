@@ -65,7 +65,6 @@ public final class StrategyExporter implements PlayerChangeListener {
 		currentPlayer = workerModel.getMap().getCurrentPlayer();
 	}
 	/**
-	 * // TODO: Make usage message of the app that calls this include --print-empty
 	 * @param dismissed the list of dismissed members
 	 * @return the proto-strategy as a String
 	 */
