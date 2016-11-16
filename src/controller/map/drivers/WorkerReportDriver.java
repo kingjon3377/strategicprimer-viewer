@@ -106,7 +106,6 @@ public final class WorkerReportDriver implements SimpleDriver {
 		}
 	}
 	/**
-	 * TODO: Somehow make usage message show optional parameters
 	 * @return an object indicating how to use and invoke this driver
 	 */
 	@Override
