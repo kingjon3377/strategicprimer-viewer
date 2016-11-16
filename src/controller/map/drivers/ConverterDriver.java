@@ -3,6 +3,7 @@ package controller.map.drivers;
 import controller.map.converter.ResolutionDecreaseConverter;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -86,13 +87,16 @@ public final class ConverterDriver implements UtilityDriver {
 	 * Run the driver.
 	 *
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param args command-line argument
 	 * @throws DriverFailedException on fatal error
 	 */
 	@SuppressWarnings({"OverloadedVarargsMethod", "resource"})
 	@Override
-	public void startDriver(final SPOptions options, final String... args)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final String... args)
 			throws DriverFailedException {
 		if (args.length < 1) {
 			throw new IncorrectUsageException(usage());

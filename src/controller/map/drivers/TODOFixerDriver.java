@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -189,23 +188,21 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
+	 * @param cli
 	 * @param options options passed to the driver
 	 * @param model the driver model to operate on
 	 */
 	@SuppressWarnings("NestedTryStatement")
-	public void startDriver(final SPOptions options, final IDriverModel model) {
-		try (final ICLIHelper cli = new CLIHelper()) {
-			if (model instanceof IMultiMapModel) {
-				for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
-																	.getAllMaps()) {
-					fixAllUnits(pair.first(), cli);
-				}
-			} else {
-				fixAllUnits(model.getMap(), cli);
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) {
+		if (model instanceof IMultiMapModel) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
+																		   model)
+																		  .getAllMaps()) {
+				fixAllUnits(pair.first(), cli);
 			}
-		} catch (final IOException except) {
-			//noinspection HardcodedFileSeparator
-			LOGGER.log(Level.SEVERE, "I/O error closing CLIHelper", except);
+		} else {
+			fixAllUnits(model.getMap(), cli);
 		}
 	}
 

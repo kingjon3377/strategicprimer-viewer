@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import controller.map.misc.MapReaderAdapter;
@@ -51,13 +52,16 @@ public final class EchoDriver implements UtilityDriver {
 	 * Run the driver.
 	 *
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on error
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final SPOptions options, final String... args)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final String... args)
 			throws DriverFailedException {
 		if (args.length != 2) {
 			throw new IncorrectUsageException(usage());

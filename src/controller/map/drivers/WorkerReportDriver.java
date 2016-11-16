@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import controller.map.misc.ICLIHelper;
 import controller.map.report.ReportGenerator;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -85,12 +86,15 @@ public final class WorkerReportDriver implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param model ignored
 	 * @throws DriverFailedException always: this driver has to write to the filesystem
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model)
 			throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :

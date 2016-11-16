@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import controller.map.misc.ICLIHelper;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -49,12 +50,15 @@ public final class MiningCLI implements UtilityDriver {
 	}
 
 	/**
+	 *
+	 * @param cli
 	 * @param options any options passed to the driver
 	 * @param args Arg 0 is the name of a file to write the CSV to; Arg 1 is the value of
 	 *             the top center (as an index into the LodeStatus values array)
 	 * @throws DriverFailedException on incorrect usage
 	 */
-	public void startDriver(final SPOptions options, final String... args)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final String... args)
 			throws DriverFailedException {
 		if (args.length != 2) {
 			throw new IncorrectUsageException(USAGE);

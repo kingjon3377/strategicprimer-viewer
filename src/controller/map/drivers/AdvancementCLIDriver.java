@@ -79,12 +79,15 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but
 	 * that may change.
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param model the driver-model that should be used by the app
 	 * @throws DriverFailedException if the driver fails for some reason
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model)
 			throws DriverFailedException {
 		final IWorkerModel workerModel;
 		if (model instanceof IWorkerModel) {
@@ -93,7 +96,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			workerModel = new WorkerModel(model);
 		}
 		final List<Player> playerList = workerModel.getPlayers();
-		try (final ICLIHelper cli = new CLIHelper()) {
+		try {
 			final String hdr = "Available players:";
 			final String none = "No players found.";
 			final String prompt = "Chosen player: ";

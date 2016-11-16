@@ -1,6 +1,8 @@
 package controller.map.drivers;
 
+import controller.map.misc.CLIHelper;
 import controller.map.misc.FileChooser;
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,13 +50,16 @@ public interface SimpleDriver extends ISPDriver {
 	 * driver model.
 	 *
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param args any command-line arguments that should be passed to the driver.
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	default void startDriver(final SPOptions options, final String... args)
+	default void startDriver(final ICLIHelper cli, final SPOptions options,
+							 final String... args)
 			throws DriverFailedException {
 		final ParamCount desiderata = usage().getParamsWanted();
 		final Consumer<IMutableMapNG> turnFixer;
@@ -78,14 +83,14 @@ public interface SimpleDriver extends ISPDriver {
 															 subPath);
 				StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
 						.map(Pair::first).forEach(turnFixer);
-				startDriver(options, mapModel);
+				startDriver(new CLIHelper(), options, mapModel);
 			} else {
 				final IMultiMapModel mapModel = new MapReaderAdapter()
 													 .readMultiMapModel(Warning.DEFAULT,
 															 askUserForFile());
 				StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
 						.map(Pair::first).forEach(turnFixer);
-				startDriver(options, mapModel);
+				startDriver(new CLIHelper(), options, mapModel);
 			}
 		} else if (ParamCount.None == desiderata) {
 			throw new IncorrectUsageException(usage());
@@ -97,7 +102,7 @@ public interface SimpleDriver extends ISPDriver {
 														 askUserForFile());
 			StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
 					.map(Pair::first).forEach(turnFixer);
-			startDriver(options, mapModel);
+			startDriver(new CLIHelper(), options, mapModel);
 		} else {
 			final IMultiMapModel mapModel = new MapReaderAdapter()
 													.readMultiMapModel(Warning.DEFAULT,
@@ -107,7 +112,7 @@ public interface SimpleDriver extends ISPDriver {
 																			args));
 			StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
 					.map(Pair::first).forEach(turnFixer);
-			startDriver(options, mapModel);
+			startDriver(new CLIHelper(), options, mapModel);
 		}
 	}
 	/**

@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
@@ -104,12 +103,15 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param model the driver model
 	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model)
 			throws DriverFailedException {
 		final IExplorationModel driverModel;
 		if (model instanceof IExplorationModel) {
@@ -117,7 +119,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		} else {
 			driverModel = new ExplorationModel(model);
 		}
-		try (final ICLIHelper cli = new CLIHelper()) {
+		try {
 			if (cli.inputBooleanInSeries(PREGEN_PROMPT)) {
 				enterStats(driverModel, cli);
 			} else {

@@ -5,6 +5,7 @@ import controller.map.fluidxml.SPFluidReader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
+import controller.map.misc.ICLIHelper;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
@@ -176,12 +177,14 @@ public final class ReaderComparator implements UtilityDriver {
 	/**
 	 * Run the driver, comparing the readers' performance.
 	 *
+	 * @param cli
 	 * @param options
 	 * @param args The files to test on
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final SPOptions options, final String... args) {
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final String... args) {
 		compareReaders(args);
 	}
 

@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.util.Arrays;
@@ -234,32 +233,31 @@ public final class TrapModelDriver implements SimpleDriver {
 	/**
 	 * Start the driver.
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param model the driver model to operate on
-	 * @throws DriverFailedException on I/O error
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model)
-			throws DriverFailedException {
-		try (final ICLIHelper cli = new CLIHelper()) {
-			repl(model.getMap(), cli);
-		} catch (final IOException except) {
-			//noinspection HardcodedFileSeparator
-			throw new DriverFailedException("I/O error closing CLIHelper", except);
-		}
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) {
+		repl(model.getMap(), cli);
 	}
 
 	/**
 	 * Run the driver.
 	 *
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if something goes wrong
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final SPOptions options, final String... args)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final String... args)
 			throws DriverFailedException {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(usage());

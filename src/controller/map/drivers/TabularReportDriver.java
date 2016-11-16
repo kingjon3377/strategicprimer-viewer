@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import controller.map.misc.ICLIHelper;
 import controller.map.report.tabular.TableReportGenerator;
 import java.io.IOError;
 import java.io.IOException;
@@ -44,7 +45,8 @@ public class TabularReportDriver implements SimpleDriver {
 			TypesafeLogger.getLogger(TabularReportDriver.class);
 	@SuppressWarnings("ErrorNotRethrown")
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model)
 			throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :

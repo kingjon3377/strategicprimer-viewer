@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
 import java.util.stream.StreamSupport;
 import javax.swing.SwingUtilities;
@@ -40,11 +42,13 @@ public final class ViewerStart implements SimpleDriver {
 	/**
 	 * Run the driver. If the model is a multi-map model, we open one window per map.
 	 *
+	 * @param cli
 	 * @param options
 	 * @param model the driver model
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) {
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) {
 		final IViewerModel viewerModel;
 		if (model instanceof IViewerModel) {
 			viewerModel = (IViewerModel) model;
@@ -52,7 +56,7 @@ public final class ViewerStart implements SimpleDriver {
 			StreamSupport
 					.stream(((IMultiMapModel) model).getAllMaps().spliterator(), false)
 					.map(ViewerModel::new)
-					.forEach(indiv -> startDriver(options.copy(), indiv));
+					.forEach(indiv -> startDriver(new CLIHelper(), options.copy(), indiv));
 			return;
 		} else {
 			viewerModel = new ViewerModel(model);

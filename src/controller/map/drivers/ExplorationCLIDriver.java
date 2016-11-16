@@ -42,12 +42,15 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param model the driver model
 	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model)
+	public void startDriver(final ICLIHelper cliHelper, final SPOptions options,
+							final IDriverModel model)
 			throws DriverFailedException {
 		final IExplorationModel explorationModel;
 		if (model instanceof IExplorationModel) {
@@ -55,7 +58,7 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 		} else {
 			explorationModel = new ExplorationModel(model);
 		}
-		try (final ICLIHelper cliHelper = new CLIHelper()) {
+		try {
 			final ExplorationCLI cli = new ExplorationCLI(explorationModel, cliHelper);
 			final Player player = cli.choosePlayer();
 			if (player == null) {

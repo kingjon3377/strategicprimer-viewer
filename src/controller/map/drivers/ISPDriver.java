@@ -1,5 +1,8 @@
 package controller.map.drivers;
 
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
+import java.io.IOException;
 import model.map.HasName;
 import model.misc.IDriverModel;
 
@@ -30,19 +33,62 @@ public interface ISPDriver extends HasName {
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
-	void startDriver(final SPOptions options, String... args) throws DriverFailedException;
+	default void startDriver(final SPOptions options, String... args)
+			throws DriverFailedException {
+		try (final CLIHelper cli = new CLIHelper()) {
+			startDriver(cli, options, args);
+		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
+			throw new DriverFailedException("I/O error interacting with user", except);
+		}
+	}
 
+	/**
+	 * Run the driver. If the driver is a GUIDriver, this should use
+	 * SwingUtilities.invokeLater(); if it's a CLIDriver, that's not necessary.
+	 *
+	 *
+	 *
+	 * @param cli the interface to interact with the console user
+	 * @param options any (already-processed) command-line options
+	 * @param args any command-line arguments that should be passed to the driver.
+	 * @throws DriverFailedException if it's impossible for the driver to start.
+	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
+	void startDriver(final ICLIHelper cli, final SPOptions options, String... args)
+			throws DriverFailedException;
 
 	/**
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but
 	 * that may change. At the moment implementations should *not* interact with the
 	 * filesystem, including calling methods that will.
 	 *
+	 *
 	 * @param options any options that were passed on the command line.
 	 * @param model the driver-model that should be used by the app
 	 * @throws DriverFailedException if the driver fails for some reason
 	 */
-	void startDriver(final SPOptions options, IDriverModel model)
+	default void startDriver(final SPOptions options, final IDriverModel model)
+			throws DriverFailedException {
+		try (final ICLIHelper cli = new CLIHelper()) {
+			startDriver(cli, options, model);
+		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
+			throw new DriverFailedException("I/O error interacting with user", except);
+		}
+	}
+	/**
+	 * Run the driver. This form is, at the moment, primarily for use in test code, but
+	 * that may change. At the moment implementations should *not* interact with the
+	 * filesystem, including calling methods that will.
+	 *
+	 *
+	 * @param cli the interface to interact with the console user
+	 * @param options any options that were passed on the command line.
+	 * @param model the driver-model that should be used by the app
+	 * @throws DriverFailedException if the driver fails for some reason
+	 */
+	void startDriver(final ICLIHelper cli, final SPOptions options, IDriverModel model)
 			throws DriverFailedException;
 
 	/**

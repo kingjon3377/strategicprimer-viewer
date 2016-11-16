@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -69,11 +70,13 @@ public final class SubsetDriver implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
+	 * @param cli
 	 * @param options
 	 * @param model the driver model
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) {
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) {
 		final IMultiMapModel mapModel;
 		if (model instanceof IMultiMapModel) {
 			mapModel = (IMultiMapModel) model;
@@ -97,13 +100,16 @@ public final class SubsetDriver implements SimpleDriver {
 	 * Run the driver.
 	 *
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if the main map fails to load
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final SPOptions options, final String... args)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final String... args)
 			throws DriverFailedException {
 		if (args.length < 2) {
 			throw new IncorrectUsageException(usage());

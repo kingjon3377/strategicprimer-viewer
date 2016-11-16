@@ -124,18 +124,21 @@ public final class AppStarter implements ISPDriver {
 	 * Since there's no way of choosing which driver programmatically here, we present
 	 * our choice to the user.
 	 *
+	 *
+	 * @param cli
 	 * @param options options to pass to the driver
 	 * @param model the driver model
 	 * @throws DriverFailedException on driver failure
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model)
 			throws DriverFailedException {
 		if (GraphicsEnvironment.isHeadless()) {
 			final List<ISPDriver> drivers =
 					CACHE.values().stream().map(Pair::first).distinct()
 							.collect(Collectors.toList());
-			try (final ICLIHelper cli = new CLIHelper()) {
+			try {
 				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
 								"No applications available", "App to start: ", true))),
@@ -155,13 +158,16 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * Start the driver, and then start the specified other driver.
 	 *
+	 *
+	 * @param cli
 	 * @param options options to pass to the driver.
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on fatal error.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final SPOptions options, final String... args)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final String... args)
 			throws DriverFailedException {
 		boolean gui = !GraphicsEnvironment.isHeadless();
 		SPOptions currentOptions = options.copy();
@@ -286,7 +292,7 @@ public final class AppStarter implements ISPDriver {
 	private static void startChosenDriver(final ISPDriver driver, final SPOptions options,
 										final IDriverModel model)
 			throws DriverFailedException {
-		driver.startDriver(options, model);
+		driver.startDriver(new CLIHelper(), options, model);
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
@@ -50,12 +49,15 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 
 	/**
 	 * Start the driver.
+	 *
+	 * @param cli
 	 * @param options
 	 * @param model the driver-model that should be used by the app
 	 * @throws DriverFailedException on any failure
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model)
 			throws DriverFailedException {
 		final ResourceManagementDriver driverModel;
 		if (model instanceof ResourceManagementDriver) {
@@ -67,7 +69,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 				StreamSupport.stream(driverModel.getPlayers().spliterator(), false).collect(
 						Collectors.toList());
 		final IDRegistrar idf = IDFactoryFiller.createFactory(driverModel);
-		try (ICLIHelper cli = new CLIHelper()) {
+		try {
 			final String desc = "Players in the maps:";
 			final String none = "No players found.";
 			final String prompt = "Player to add resources for: ";

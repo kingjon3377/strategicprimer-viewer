@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
 import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
@@ -47,11 +48,13 @@ public final class WorkerStart implements SimpleDriver {
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but
 	 * that may change.
 	 *
+	 * @param cli
 	 * @param options
 	 * @param model the driver-model that should be used by the app
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) {
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) {
 		final IWorkerModel driverModel;
 		if (model instanceof IWorkerModel) {
 			driverModel = (IWorkerModel) model;

@@ -5,6 +5,7 @@ import controller.map.drivers.DriverUsage;
 import controller.map.drivers.ParamCount;
 import controller.map.drivers.SPOptions;
 import controller.map.drivers.SimpleCLIDriver;
+import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -163,12 +164,15 @@ public final class TableDebugger implements SimpleCLIDriver {
 	}
 
 	/**
+	 *
+	 * @param cli
 	 * @param options
 	 * @param model ignored
 	 * @throws DriverFailedException on missing table or I/O error
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model)
 			throws DriverFailedException {
 		LOGGER.warning("TableDebugger doesn't need a driver model");
 		startDriver();

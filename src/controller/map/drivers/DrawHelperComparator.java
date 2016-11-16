@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import controller.map.misc.ICLIHelper;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
@@ -469,11 +470,13 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * Start the driver.
 	 *
+	 * @param cli
 	 * @param options
 	 * @param model the driver model to run on
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) {
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) {
 		final Random random = new Random();
 		final int reps = 50;
 		if (model instanceof IMultiMapModel) {

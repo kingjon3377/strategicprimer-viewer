@@ -131,7 +131,7 @@ public final class QueryCLI implements SimpleDriver {
 			herd(cli, huntModel);
 			break;
 		case 't':
-			new TrapModelDriver().startDriver(options, model);
+			new TrapModelDriver().startDriver(new CLIHelper(), options, model);
 			break;
 		case 'd':
 			distance(model.getMapDimensions(), cli);
@@ -485,32 +485,31 @@ public final class QueryCLI implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param options
+	 *
+	 * @param cli the interface for console I/O
+	 * @param options options passed to the driver
 	 * @param model the driver model
-	 * @throws DriverFailedException on I/O error
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model)
-			throws DriverFailedException {
-		try (final ICLIHelper cli = new CLIHelper()) {
-			repl(options, model, cli);
-		} catch (final IOException except) {
-			//noinspection HardcodedFileSeparator
-			throw new DriverFailedException("I/O error closing CLIHelper", except);
-		}
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) {
+		repl(options, model, cli);
 	}
 
 	/**
 	 * Run the driver.
 	 *
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if something goes wrong
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final SPOptions options, final String... args)
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final String... args)
 			throws DriverFailedException {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(usage());

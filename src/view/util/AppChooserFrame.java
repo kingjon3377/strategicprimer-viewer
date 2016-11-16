@@ -7,6 +7,7 @@ import controller.map.drivers.ISPDriver;
 import controller.map.drivers.SPOptions;
 import controller.map.drivers.ViewerStart;
 import controller.map.drivers.WorkerStart;
+import controller.map.misc.CLIHelper;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -96,7 +97,7 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 						   final Class<? extends ISPDriver> target) {
 		return new ListenedButton(desc, evt -> {
 			try {
-				target.getConstructor().newInstance().startDriver(options, model);
+				target.getConstructor().newInstance().startDriver(new CLIHelper(), options, model);
 			} catch (final InstantiationException | IllegalAccessException
 								| NoSuchMethodException | InvocationTargetException
 								| DriverFailedException except) {

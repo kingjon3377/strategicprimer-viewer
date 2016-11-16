@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import controller.map.misc.ICLIHelper;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 import view.map.misc.MapCheckerFrame;
@@ -33,12 +34,14 @@ public final class MapCheckerGUI implements UtilityDriver {
 	/**
 	 * Run the driver.
 	 *
+	 * @param cli
 	 * @param options
 	 * @param args command-line arguments
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	public void startDriver(final SPOptions options, final String... args) {
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final String... args) {
 		final MapCheckerFrame window = new MapCheckerFrame();
 		window.setVisible(true);
 		Stream.of(args).map(Paths::get).forEach(window::check);

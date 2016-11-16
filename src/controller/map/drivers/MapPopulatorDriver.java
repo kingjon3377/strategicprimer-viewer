@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import java.io.PrintStream;
@@ -103,11 +104,13 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but
 	 * that may change.
 	 *
+	 * @param cli
 	 * @param options
 	 * @param model the driver-model that should be used by the app
 	 */
 	@Override
-	public void startDriver(final SPOptions options, final IDriverModel model) {
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) {
 		populate(model.getMap());
 		// SystemOut.close() delegates to flush() but doesn't close stdout
 		try (final PrintStream stdout = SystemOut.SYS_OUT) {

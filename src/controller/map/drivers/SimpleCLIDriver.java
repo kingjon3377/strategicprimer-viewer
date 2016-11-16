@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
 import java.nio.file.Paths;
 import java.util.stream.StreamSupport;
@@ -32,13 +34,16 @@ public interface SimpleCLIDriver extends SimpleDriver {
 	 * after calling startDriver with the model.
 	 *
 	 *
+	 *
+	 * @param cli
 	 * @param options
 	 * @param args any command-line arguments that should be passed to the driver.
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
-	default void startDriver(final SPOptions options, final String... args)
+	default void startDriver(final ICLIHelper cli, final SPOptions options,
+							 final String... args)
 			throws DriverFailedException {
 		switch (usage().getParamsWanted()) {
 		case None:
@@ -88,7 +93,7 @@ public interface SimpleCLIDriver extends SimpleDriver {
 			StreamSupport.stream(model.getAllMaps().spliterator(), false)
 					.map(Pair::first).forEach(map -> map.setCurrentTurn(currentTurn));
 		}
-		startDriver(options, model);
+		startDriver(new CLIHelper(), options, model);
 		reader.writeModel(model);
 	}
 }

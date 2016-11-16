@@ -6,6 +6,7 @@ import controller.map.drivers.DriverUsage;
 import controller.map.drivers.ParamCount;
 import controller.map.drivers.SPOptions;
 import controller.map.drivers.SimpleDriver;
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import controller.map.misc.MapReaderAdapter;
@@ -638,11 +639,14 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 *
+	 * @param cli
 	 * @param options options passed to the driver
 	 * @param model the driver model containing the maps to convert
 	 * @throws DriverFailedException on driver failure
 	 */
-	public void startDriver(final SPOptions options, final IDriverModel model) throws
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) throws
 			DriverFailedException {
 		final OneToTwoConverter converter = new OneToTwoConverter();
 		final MapReaderAdapter reader = new MapReaderAdapter();
