@@ -15,7 +15,9 @@ import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
+import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
@@ -150,8 +152,11 @@ public final class ReportGenerator {
 		builder.append("</html>").append(LineEnd.LINE_SEP);
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fix = pair.second();
-			if ((fix instanceof Hill) || (fix instanceof Sandbar)
-						|| (fix instanceof Oasis)) {
+			if (fix.getID() < 0) {
+				continue;
+			} else if ((fix instanceof Hill) || (fix instanceof Sandbar)
+						|| (fix instanceof Oasis) || (fix instanceof Forest) ||
+						(fix instanceof Ground)) {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 				continue;
 			}
