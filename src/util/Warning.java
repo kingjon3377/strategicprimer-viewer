@@ -88,7 +88,7 @@ public enum Warning {
 			final Logger logger = TypesafeLogger.getLogger(warnClass);
 			if ((warning instanceof SPFormatException) ||
 						(warning instanceof DuplicateIDException)) {
-				logger.warning("Warning: " + warning.getMessage());
+				logger.warning(warning.getMessage());
 			} else {
 				logger.log(Level.WARNING, "Warning: ", warning);
 			}
