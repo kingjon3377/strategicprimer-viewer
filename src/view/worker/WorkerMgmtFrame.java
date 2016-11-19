@@ -64,11 +64,11 @@ import util.NullCleaner;
 import util.OnMac;
 import util.TypesafeLogger;
 import view.map.main.ViewerFrame;
-import view.util.BorderedPanel;
 import view.util.ISPWindow;
 import view.util.ListenedButton;
 import view.util.SystemOut;
 
+import static view.util.BorderedPanel.verticalPanel;
 import static view.util.SplitWithWeights.horizontalSplit;
 import static view.util.SplitWithWeights.verticalSplit;
 
@@ -194,11 +194,11 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		final StrategyExporter strategyExporter = new StrategyExporter(model);
 		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
 				verticalSplit(TWO_THIRDS, TWO_THIRDS,
-						BorderedPanel.verticalPanel(playerLabel, new JScrollPane(tree), null),
-						BorderedPanel.verticalPanel(new ListenedButton("Add New Unit",
-																		evt -> newUnitFrame
-																					.setVisible(
-																							true)),
+						verticalPanel(playerLabel, new JScrollPane(tree), null),
+						verticalPanel(new ListenedButton("Add New Unit",
+																evt -> newUnitFrame
+																			   .setVisible(
+																					   true)),
 								ordersPanel,
 								new ListenedButton("Export a proto-strategy",
 														  evt -> new FileChooser(Optional.empty(),
@@ -210,8 +210,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 																									   options,
 																									   treeModel
 																											   .dismissed()))))),
-				BorderedPanel
-						.verticalPanel(new JLabel(RPT_HDR), new JScrollPane(report), mdp)));
+				verticalPanel(new JLabel(RPT_HDR), new JScrollPane(report), mdp)));
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
 		setJMenuBar(new WorkerMenu(ioHandler, this, model));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
