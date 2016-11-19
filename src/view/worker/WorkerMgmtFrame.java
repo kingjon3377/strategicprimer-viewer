@@ -163,30 +163,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		report.expandPath(
 				new TreePath(((DefaultMutableTreeNode) reportModel.getRoot()).getPath()));
 
-		@NonNull
-		Point hqLoc = PointFactory.point(-1, -1);
-		boolean found = false;
-		for (final Point location : model.getMap().locations()) {
-			if (found) {
-				break;
-			} else {
-				for (final TileFixture fix : model.getMap().getOtherFixtures(location)) {
-					if ((fix instanceof Fortress) && ((Fortress) fix).getOwner()
-															.equals(model.getMap()
-																			.getCurrentPlayer())) {
-						if ("HQ".equals(((Fortress) fix).getName())) {
-							hqLoc = location;
-							found = true;
-							break;
-						} else if ((hqLoc.getRow() < 0) && (location.getRow() >= 0)) {
-							hqLoc = location;
-							break;
-						}
-					}
-				}
-			}
-		}
-		final DistanceComparator distCalculator = new DistanceComparator(hqLoc);
+		final DistanceComparator distCalculator = new DistanceComparator(findHQ(model));
 		report.setCellRenderer(
 				(renderedTree, value, selected, expanded, leaf, row, hasFocus) -> {
 					final TreeCellRenderer defRender = new DefaultTreeCellRenderer();
@@ -247,6 +224,30 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 			}
 		});
 		pack();
+	}
+
+	/**
+	 * @param model a driver model
+	 * @return the location of the current player's headquarters
+	 */
+	private static Point findHQ(final IWorkerModel model) {
+		@NonNull
+		Point retval = PointFactory.point(-1, -1);
+		for (final Point location : model.getMap().locations()) {
+			for (final TileFixture fix : model.getMap().getOtherFixtures(location)) {
+				if ((fix instanceof Fortress) && ((Fortress) fix).getOwner()
+														 .equals(model.getMap()
+																		 .getCurrentPlayer())) {
+					if ("HQ".equals(((Fortress) fix).getName())) {
+						return location;
+					} else if ((retval.getRow() < 0) && (location.getRow() >= 0)) {
+						retval = location;
+						break;
+					}
+				}
+			}
+		}
+		return retval;
 	}
 
 	/**
