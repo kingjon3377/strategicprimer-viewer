@@ -44,7 +44,7 @@ import view.util.ListenedButton;
 
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
-import static view.util.BorderedPanel.vertical;
+import static view.util.BorderedPanel.verticalPanel;
 import static view.util.SplitWithWeights.horizontalSplit;
 import static view.util.SystemOut.SYS_OUT;
 
@@ -141,7 +141,7 @@ public final class FindDialog extends JDialog {
 		ffl = new FixtureFilterList();
 		SwingUtilities.invokeLater(new FilterPopulator(ffl, model));
 		setContentPane(horizontalSplit(FILTER_PROPORTION, FILTER_PROPORTION,
-				contentPane, vertical(new JLabel("Find only ..."),
+				contentPane, verticalPanel(new JLabel("Find only ..."),
 						new JScrollPane(ffl, VERTICAL_SCROLLBAR_AS_NEEDED,
 											   HORIZONTAL_SCROLLBAR_NEVER), null)));
 		map = model;

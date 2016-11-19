@@ -145,11 +145,11 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		};
 		mpField.addActionListener(buttonListener);
 		setCenter(SplitWithWeights.horizontalSplit(PROPORTION, PROPORTION,
-				vertical(label("Players in all maps:"), playerList, null), vertical(
+				verticalPanel(label("Players in all maps:"), playerList, null), verticalPanel(
 						label(html("Units belonging to that player:",
 								"(Selected unit will be used for exploration.)")),
-						new JScrollPane(unitList), vertical(null,
-								horizontal(label("Unit's Movement Points"), null,
+						new JScrollPane(unitList), verticalPanel(null,
+								horizontalPanel(label("Unit's Movement Points"), null,
 										mpField), new ListenedButton(BUTTON_TEXT, buttonListener)))));
 	}
 

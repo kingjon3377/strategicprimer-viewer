@@ -85,7 +85,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		final PortraitPanel portrait = new PortraitPanel(fixList);
 		fixList.addListSelectionListener(portrait);
 		final JPanel listPanel =
-				BorderedPanel.vertical(header, new JScrollPane(fixList), null);
+				BorderedPanel.verticalPanel(header, new JScrollPane(fixList), null);
 
 		keyPanel = new KeyPanel(version);
 		setLeftComponent(SplitWithWeights.horizontalSplit(0.5, 0.5, listPanel, portrait));

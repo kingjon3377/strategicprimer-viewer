@@ -119,9 +119,9 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 					tableModel.forEach(matcher -> matcher.setDisplayed(false));
 					tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
 				});
-		final BorderedPanel tablePanel = BorderedPanel.vertical(new JLabel("Display ..."),
+		final BorderedPanel tablePanel = BorderedPanel.verticalPanel(new JLabel("Display ..."),
 				new JScrollPane(table),
-				BorderedPanel.horizontal(allButton, null, noneButton));
+				BorderedPanel.horizontalPanel(allButton, null, noneButton));
 		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
 				SplitWithWeights.horizontalSplit(0.95, 0.95,
 						ScrollListener.mapScrollPanel(map, mapPanel), tablePanel),

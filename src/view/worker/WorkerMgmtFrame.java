@@ -194,8 +194,8 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		final StrategyExporter strategyExporter = new StrategyExporter(model);
 		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
 				verticalSplit(TWO_THIRDS, TWO_THIRDS,
-						BorderedPanel.vertical(playerLabel, new JScrollPane(tree), null),
-						BorderedPanel.vertical(new ListenedButton("Add New Unit",
+						BorderedPanel.verticalPanel(playerLabel, new JScrollPane(tree), null),
+						BorderedPanel.verticalPanel(new ListenedButton("Add New Unit",
 																		evt -> newUnitFrame
 																					.setVisible(
 																							true)),
@@ -211,7 +211,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 																									   treeModel
 																											   .dismissed()))))),
 				BorderedPanel
-						.vertical(new JLabel(RPT_HDR), new JScrollPane(report), mdp)));
+						.verticalPanel(new JLabel(RPT_HDR), new JScrollPane(report), mdp)));
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
 		setJMenuBar(new WorkerMenu(ioHandler, this, model));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
