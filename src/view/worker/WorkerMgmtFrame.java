@@ -10,6 +10,7 @@ import controller.map.report.ReportGenerator;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -217,12 +218,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		for (int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);
 		}
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(final WindowEvent e) {
-				newUnitFrame.dispose();
-			}
-		});
+		addWindowListener(new CloseListener(newUnitFrame));
 		pack();
 	}
 
@@ -528,5 +524,30 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	@Override
 	public String getWindowName() {
 		return "Worker Management";
+	}
+
+	/**
+	 * A listener to make sure the NewUnitDialog gets disposed when we do.
+	 */
+	private static class CloseListener extends WindowAdapter {
+		/**
+		 * The dialog to keep track of.
+		 */
+		private final Window dialog;
+
+		/**
+		 * @param subWindow The window that we are to eventually dispose.
+		 */
+		protected CloseListener(final NewUnitDialog subWindow) {
+			this.dialog = subWindow;
+		}
+
+		/**
+		 * @param event the event to handle by disposing the dialog
+		 */
+		@Override
+		public void windowClosed(final WindowEvent event) {
+			dialog.dispose();
+		}
 	}
 }
