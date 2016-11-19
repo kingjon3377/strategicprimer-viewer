@@ -164,9 +164,9 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 				new TreePath(((DefaultMutableTreeNode) reportModel.getRoot()).getPath()));
 
 		final DistanceComparator distCalculator = new DistanceComparator(findHQ(model));
+		final TreeCellRenderer defRender = new DefaultTreeCellRenderer();
 		report.setCellRenderer(
 				(renderedTree, value, selected, expanded, leaf, row, hasFocus) -> {
-					final TreeCellRenderer defRender = new DefaultTreeCellRenderer();
 					final Component retval = defRender.getTreeCellRendererComponent(
 							renderedTree, value, selected, expanded, leaf, row,
 							hasFocus);
