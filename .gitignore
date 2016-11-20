@@ -32,3 +32,4 @@ dist/*
 /compiled/
 /dist/
 .idea/workspace.xml
+infer-out/*
