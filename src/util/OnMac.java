@@ -26,6 +26,13 @@ public final class OnMac {
 	 * Whether this system is a mac.
 	 */
 	@SuppressWarnings("AccessOfSystemProperties")
-	public static final boolean SYSTEM_IS_MAC =
-			System.getProperty("os.name").toLowerCase().startsWith("mac os x");
+	public static final boolean SYSTEM_IS_MAC;
+	static {
+		final String temp = System.getProperty("os.name");
+		if (temp == null) {
+			SYSTEM_IS_MAC = false;
+		} else {
+			SYSTEM_IS_MAC = temp.toLowerCase().startsWith("mac os x");
+		}
+	}
 }
