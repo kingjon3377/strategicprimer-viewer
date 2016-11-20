@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
 import java.util.stream.StreamSupport;
@@ -56,7 +55,7 @@ public final class ViewerStart implements SimpleDriver {
 			StreamSupport
 					.stream(((IMultiMapModel) model).getAllMaps().spliterator(), false)
 					.map(ViewerModel::new)
-					.forEach(indiv -> startDriver(new CLIHelper(), options.copy(), indiv));
+					.forEach(indiv -> startDriver(cli, options.copy(), indiv));
 			return;
 		} else {
 			viewerModel = new ViewerModel(model);

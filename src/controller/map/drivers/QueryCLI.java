@@ -131,7 +131,7 @@ public final class QueryCLI implements SimpleDriver {
 			herd(cli, huntModel);
 			break;
 		case 't':
-			new TrapModelDriver().startDriver(new CLIHelper(), options, model);
+			new TrapModelDriver().startDriver(cli, options, model);
 			break;
 		case 'd':
 			distance(model.getMapDimensions(), cli);
