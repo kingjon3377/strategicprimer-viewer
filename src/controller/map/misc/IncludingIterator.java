@@ -165,6 +165,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	private void handleInclude(final StartElement tag) {
 		try {
 			final String file = getFileAttribute(tag);
+			// FIXME: The MagicReader here (and thus the file it opens!) get leaked!
 			stack.addFirst(Pair.of(file,
 					new ComparableIterator<>(new TypesafeXMLEventReader(new MagicReader(
 							file)))));
