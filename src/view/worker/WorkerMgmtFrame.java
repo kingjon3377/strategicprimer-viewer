@@ -153,7 +153,6 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		ioHandler.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel = new OrdersPanel(model);
 		ioHandler.addPlayerChangeListener(ordersPanel);
-		ordersPanel.playerChanged(null, mainMap.getCurrentPlayer());
 		tree.addTreeSelectionListener(ordersPanel);
 		final DefaultTreeModel reportModel =
 				new DefaultTreeModel(new SimpleReportNode("Please wait, loading report" +

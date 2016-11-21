@@ -54,13 +54,9 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	 */
 	private final IWorkerModel model;
 	/**
-	 * The "null" player.
-	 */
-	private static final Player NULL_PLAYER = new Player(-1, "none");
-	/**
 	 * The current player.
 	 */
-	private Player player = NULL_PLAYER;
+	private Player player;
 	/**
 	 * The current selection.
 	 */
@@ -139,6 +135,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 					localArea.selectAll();
 				}
 			}));
+		player = model.getMap().getCurrentPlayer();
 	}
 
 	/**
