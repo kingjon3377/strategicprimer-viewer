@@ -11,8 +11,10 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -67,6 +69,10 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	 * The text area in which the user writes the orders.
 	 */
 	private final JTextArea area = new JTextArea();
+	/**
+	 * The model for the spinner to let the user choose what turn the orders go with.
+	 */
+	private final SpinnerNumberModel spinnerModel;
 
 	/**
 	 * Constructor.
@@ -125,6 +131,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 					localArea.selectAll();
 				}
 			}));
+		// TODO: We really ought to support writing the orders *then* setting the turn
+		spinnerModel.addChangeListener(event -> revert());
 		player = model.getMap().getCurrentPlayer();
 	}
 
@@ -135,7 +143,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	public void apply() {
 		if (sel instanceof IUnit) {
 			final IUnit selection = (IUnit) sel;
-			selection.setOrders(model.getMap().getCurrentTurn(), NullCleaner
+			selection.setOrders(spinnerModel.getNumber().intValue(), NullCleaner
 										.assertNotNull(area.getText().trim()));
 			getParent().getParent().repaint();
 		}
@@ -149,7 +157,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	@Override
 	public void revert() {
 		if (sel instanceof IUnit) {
-			area.setText(((IUnit) sel).getLatestOrders(model.getMap().getCurrentTurn())
+			area.setText(((IUnit) sel).getLatestOrders(spinnerModel.getNumber().intValue())
 								 .trim());
 		} else {
 			area.setText("");
