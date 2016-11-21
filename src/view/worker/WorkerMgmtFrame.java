@@ -44,6 +44,7 @@ import javax.swing.tree.TreePath;
 import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
 import model.map.DistanceComparator;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
@@ -118,15 +119,16 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 			getRootPane().putClientProperty("Window.documentFile",
 					filename.get().toFile());
 		}
+		final IMapNG mainMap = model.getMap();
 		setMinimumSize(new Dimension(640, 480));
 		final NewUnitDialog newUnitFrame =
-				new NewUnitDialog(model.getMap().getCurrentPlayer(),
-										IDFactoryFiller.createFactory(model.getMap()));
+				new NewUnitDialog(mainMap.getCurrentPlayer(),
+										IDFactoryFiller.createFactory(mainMap));
 		final IWorkerTreeModel treeModel =
-				new WorkerTreeModelAlt(model.getMap().getCurrentPlayer(), model);
+				new WorkerTreeModelAlt(mainMap.getCurrentPlayer(), model);
 		final WorkerTree tree =
-				WorkerTree.factory(treeModel, model.getMap().players(),
-						() -> model.getMap().getCurrentTurn(), true);
+				WorkerTree.factory(treeModel, mainMap.players(),
+						() -> mainMap.getCurrentTurn(), true);
 		ioHandler.addPlayerChangeListener(treeModel);
 		newUnitFrame.addNewUnitListener(treeModel);
 		final boolean onMac = OnMac.SYSTEM_IS_MAC;
@@ -145,19 +147,19 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
 		actionMap.put("openUnits", new FocusRequester(tree));
 		final PlayerLabel playerLabel =
-				new PlayerLabel("Units belonging to ", model.getMap().getCurrentPlayer(),
+				new PlayerLabel("Units belonging to ", mainMap.getCurrentPlayer(),
 									keyDesc);
 		ioHandler.addPlayerChangeListener(playerLabel);
 		ioHandler.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel = new OrdersPanel(model);
 		ioHandler.addPlayerChangeListener(ordersPanel);
-		ordersPanel.playerChanged(null, model.getMap().getCurrentPlayer());
+		ordersPanel.playerChanged(null, mainMap.getCurrentPlayer());
 		tree.addTreeSelectionListener(ordersPanel);
 		final DefaultTreeModel reportModel =
 				new DefaultTreeModel(new SimpleReportNode("Please wait, loading report" +
 																" ..."));
 		new Thread(new ReportGeneratorThread(reportModel, model,
-													model.getMap().getCurrentPlayer()))
+													mainMap.getCurrentPlayer()))
 				.start();
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
