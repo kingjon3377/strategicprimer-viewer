@@ -89,13 +89,11 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 		}
 		setPageStart(
 				new JLabel("Orders for current selection, if a unit: (" + prefix + "D)"))
-				.setCenter(new JScrollPane(area)).setPageEnd(new BorderedPanel()
-																	.setLineStart(
-																			new
-																					ListenedButton("Apply", evt -> apply()))
-																	.setLineEnd(
-																			new ListenedButton("Revert",
-																									evt -> revert())));
+				.setCenter(new JScrollPane(area)).setPageEnd(
+						new BorderedPanel()
+								.setLineStart(new ListenedButton("Apply", evt -> apply()))
+								.setLineEnd(
+										new ListenedButton("Revert", evt -> revert())));
 		area.addKeyListener(new KeyAdapter() {
 			/**
 			 * @param evt a key-event
