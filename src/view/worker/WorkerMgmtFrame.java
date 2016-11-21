@@ -158,8 +158,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 				new DefaultTreeModel(new SimpleReportNode("Please wait, loading report" +
 																" ..."));
 		new Thread(new ReportGeneratorThread(reportModel, model,
-													mainMap.getCurrentPlayer()))
-				.start();
+													mainMap.getCurrentPlayer())).start();
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
 		report.expandPath(
