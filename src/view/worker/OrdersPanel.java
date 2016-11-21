@@ -87,36 +87,28 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 			prefix = "Ctrl+";
 			keyMask = InputEvent.CTRL_DOWN_MASK;
 		}
-		setPageStart(
-				new JLabel("Orders for current selection, if a unit: (" + prefix + "D)"))
+		final int initialTurn = workerModel.getMap().getCurrentTurn();
+		final int minTurn;
+		if (initialTurn < 0) {
+			minTurn = initialTurn;
+		} else {
+			minTurn = -1;
+		}
+		final int maxTurn;
+		if (initialTurn > 100) {
+			maxTurn = initialTurn;
+		} else {
+			maxTurn = 100;
+		}
+		spinnerModel = new SpinnerNumberModel(initialTurn, minTurn, maxTurn, 1);
+		setPageStart(horizontalPanel(
+				new JLabel("Orders for current selection, if a unit: (" + prefix + "D)"), new JLabel("Turn "), new JSpinner(spinnerModel)))
 				.setCenter(new JScrollPane(area)).setPageEnd(
 						new BorderedPanel()
 								.setLineStart(new ListenedButton("Apply", evt -> apply()))
 								.setLineEnd(
 										new ListenedButton("Revert", evt -> revert())));
-		area.addKeyListener(new KeyAdapter() {
-			/**
-			 * @param evt a key-event
-			 * @return whether it records the system modifier key being pressed.
-			 */
-			private boolean isModifierPressed(final KeyEvent evt) {
-				if (onMac) {
-					return evt.isMetaDown();
-				} else {
-					return evt.isControlDown();
-				}
-			}
-
-			@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-			@Override
-			public void keyPressed(@Nullable final KeyEvent evt) {
-				if ((evt != null) && (evt.getKeyCode() == KeyEvent.VK_ENTER)
-							&& isModifierPressed(evt)) {
-					apply();
-
-				}
-			}
-		});
+		area.addKeyListener(new ModifiedEnterListener());
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);
 		model = workerModel;
@@ -223,5 +215,48 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	@Override
 	public String toString() {
 		return "OrdersPanel for player " + player;
+	}
+
+	/**
+	 * A class to listen for ctrl-enter/cmd-enter.
+	 */
+	private class ModifiedEnterListener extends KeyAdapter {
+		/**
+		 * Whether we're running on a Mac.
+		 */
+		private final boolean onMac = OnMac.SYSTEM_IS_MAC;
+
+		/**
+		 * Protected so we can call it without synthetic-access warnings.
+		 */
+		protected ModifiedEnterListener() {
+			// do nothing
+		}
+
+		/**
+		 * @param evt a key-event
+		 * @return whether it records the system modifier key being pressed.
+		 */
+		private boolean isModifierPressed(final KeyEvent evt) {
+			if (onMac) {
+				return evt.isMetaDown();
+			} else {
+				return evt.isControlDown();
+			}
+		}
+
+		/**
+		 * On Control-Enter, or Command-Enter on a Mac, calls apply().
+		 * @param evt
+		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
+		@Override
+		public void keyPressed(@Nullable final KeyEvent evt) {
+			if ((evt != null) && (evt.getKeyCode() == KeyEvent.VK_ENTER)
+						&& isModifierPressed(evt)) {
+				apply();
+
+			}
+		}
 	}
 }
