@@ -184,7 +184,6 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 					assert retval != null;
 					return retval;
 				});
-		ToolTipManager.sharedInstance().registerComponent(report);
 		report.addMouseListener(new ReportMouseHandler(report, model, ioHandler));
 		final ReportUpdater reportUpdater = new ReportUpdater(model, reportModel);
 		ioHandler.addPlayerChangeListener(reportUpdater);
@@ -466,6 +465,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 			report = reportTree;
 			model = workerModel;
 			ioh = ioHandler;
+			ToolTipManager.sharedInstance().registerComponent(report);
 		}
 
 		/**
