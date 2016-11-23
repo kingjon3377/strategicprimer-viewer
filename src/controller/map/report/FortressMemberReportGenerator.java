@@ -205,13 +205,13 @@ public final class FortressMemberReportGenerator
 				age = " from turn " + rsr.getCreated();
 			}
 			if (rsr.getUnits().isEmpty()) {
-				return NullCleaner.assertNotNull(String.format("A pile of %d %s (%s)%s",
-						Integer.valueOf(rsr.getQuantity()), rsr.getContents(),
+				return NullCleaner.assertNotNull(String.format("A pile of %s %s (%s)%s",
+						rsr.getQuantity().toString(), rsr.getContents(),
 						rsr.getKind(), age));
 			} else {
 				return NullCleaner.assertNotNull(
-						String.format("A pile of %d %s of %s (%s)%s",
-								Integer.valueOf(rsr.getQuantity()), rsr.getUnits(),
+						String.format("A pile of %s %s of %s (%s)%s",
+								rsr.getQuantity().toString(), rsr.getUnits(),
 								rsr.getContents(), rsr.getKind(), age));
 			}
 		} else if (item instanceof Implement) {
@@ -250,12 +250,12 @@ public final class FortressMemberReportGenerator
 			}
 			if (rsr.getUnits().isEmpty()) {
 				return new SimpleReportNode("A pile of ",
-												Integer.toString(rsr.getQuantity()),
+												rsr.getQuantity().toString(),
 												rsr.getContents(), " (", rsr.getKind(),
 												")", age);
 			} else {
 				return new SimpleReportNode("A pile of ",
-												Integer.toString(rsr.getQuantity()),
+												rsr.getQuantity().toString(),
 												" ", rsr.getUnits(), " of ",
 												rsr.getContents(), " (", rsr.getKind(),
 												")", age);

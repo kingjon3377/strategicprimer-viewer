@@ -43,7 +43,11 @@ public class ResourcePile
 	/**
 	 * How much of that thing is in the pile.
 	 */
-	private int quantity;
+	private Number quantity;
+	/**
+	 * A quantity of zero.
+	 */
+	private static final Number ZERO = Integer.valueOf(0);
 	/**
 	 * The units the quantity is measured in.
 	 */
@@ -65,7 +69,7 @@ public class ResourcePile
 	 * @param qtyUnit     what units the quantity is measured in
 	 */
 	public ResourcePile(final int idNum, final String resKind,
-						final String resContents, final int qty, final String qtyUnit) {
+						final String resContents, final Number qty, final String qtyUnit) {
 		id = idNum;
 		kind = resKind;
 		contents = resContents;
@@ -186,8 +190,8 @@ public class ResourcePile
 				ostream.append(LineEnd.LINE_SEP);
 				retval = false;
 			}
-			if ((quantity != ((ResourcePile) obj).quantity)
-						&& (0 != ((ResourcePile) obj).quantity)) {
+			if (!quantity.equals(((ResourcePile) obj).quantity)
+						&& !ZERO.equals(((ResourcePile) obj).quantity)) {
 				ostream.append(localContext);
 				ostream.append("Quantities differ");
 				ostream.append(LineEnd.LINE_SEP);
@@ -219,14 +223,16 @@ public class ResourcePile
 	/**
 	 * @return the quantity of resource in the pile
 	 */
-	public int getQuantity() {
+	public Number getQuantity() {
 		return quantity;
 	}
 
 	/**
-	 * @param qty the new quantity of resource in the pile
+	 * Using Number implementations other than Integer or BigDecimal may lead to
+	 * unwanted behavior (such as either exceptions or data loss) down the line.
+	 * @param qty the new quantity of resource in the pile.
 	 */
-	public void setQuantity(final int qty) {
+	public void setQuantity(final Number qty) {
 		quantity = qty;
 	}
 
@@ -255,7 +261,7 @@ public class ResourcePile
 		final int prime = 31;
 		return (prime * ((prime * ((prime * ((prime * (prime + contents.hashCode())) +
 													id)) + kind.hashCode())) +
-								quantity)) + unit.hashCode();
+								quantity.intValue())) + unit.hashCode();
 	}
 
 	/**
@@ -266,7 +272,7 @@ public class ResourcePile
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof ResourcePile) &&
 										(id == ((ResourcePile) obj).id) &&
-										(quantity == ((ResourcePile) obj).quantity) &&
+										quantity.equals(((ResourcePile) obj).quantity) &&
 										contents.equals(((ResourcePile) obj)
 																.contents) &&
 										kind.equals(((ResourcePile) obj).kind) &&
@@ -287,11 +293,11 @@ public class ResourcePile
 		}
 		if (unit.isEmpty()) {
 			return assertNotNull(
-					String.format("A pile of %d %s (%s)%s", Integer.valueOf(quantity),
+					String.format("A pile of %s %s (%s)%s", quantity.toString(),
 							contents, kind, age));
 		} else {
-			return assertNotNull(String.format("A pile of %d %s of %s (%s)%s",
-					Integer.valueOf(quantity), unit, contents, kind, age));
+			return assertNotNull(String.format("A pile of %s %s of %s (%s)%s",
+					quantity.toString(), unit, contents, kind, age));
 		}
 	}
 

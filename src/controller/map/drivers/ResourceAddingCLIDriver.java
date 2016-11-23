@@ -111,6 +111,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 				"prefix " + contents)) {
 			contents = cli.inputString("Prefix to use: ").trim() + ' ' + contents;
 		}
+		// TODO: Support inputting non-integer quantities (in CLIHelper?)
 		model.addResource(new ResourcePile(idf.createID(), kind, contents,
 				cli.inputNumber(NullCleaner.assertNotNull(
 						String.format("Quantity in %s? ", units))),

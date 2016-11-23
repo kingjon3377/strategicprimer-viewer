@@ -3,6 +3,7 @@ package controller.map.cxml;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
+import java.math.BigDecimal;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -60,11 +61,18 @@ public final class CompactResourcePileReader
 							 final Warning warner, final IDRegistrar idFactory,
 							 final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, "resource");
+		final String quantityStr = getParameter(element, "quantity");
+		final Number quantity;
+		if (quantityStr.contains(".")) {
+			quantity = new BigDecimal(quantityStr);
+		} else {
+			quantity = Integer.parseInt(quantityStr);
+		}
 		final ResourcePile retval =
 				new ResourcePile(getOrGenerateID(element, warner, idFactory),
 										getParameter(element, "kind"),
 										getParameter(element, "contents"),
-										getIntegerParameter(element, "quantity"),
+										quantity,
 										getParameter(element, "unit", ""));
 		if (hasParameter(element, "created")) {
 			retval.setCreated(getIntegerParameter(element, "created"));
@@ -102,7 +110,7 @@ public final class CompactResourcePileReader
 		ostream.append("\" contents=\"");
 		ostream.append(obj.getContents());
 		ostream.append("\" quantity=\"");
-		ostream.append(Integer.toString(obj.getQuantity()));
+		ostream.append(obj.getQuantity().toString());
 		ostream.append("\" unit=\"");
 		ostream.append(obj.getUnits());
 		if (obj.getCreated() >= 0) {

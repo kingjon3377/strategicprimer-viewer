@@ -1,6 +1,7 @@
 package controller.map.report.tabular;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,7 +59,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			writeField(ostream, ((ResourcePile) item).getKind());
 			writeFieldDelimiter(ostream);
 			writeField(ostream,
-					String.format("%d %s", Integer.valueOf(((ResourcePile) item).getQuantity()),
+					String.format("%s %s", ((ResourcePile) item).getQuantity().toString(),
 							((ResourcePile) item).getUnits()));
 			writeFieldDelimiter(ostream);
 			writeField(ostream, ((ResourcePile) item).getContents());
@@ -109,7 +110,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 						final int unitsCmp = ((ResourcePile) first).getUnits().compareTo(
 								((ResourcePile) second).getUnits());
 						if (unitsCmp == 0) {
-							return Integer.compare(((ResourcePile) first).getQuantity(),
+							return compareNumbers(((ResourcePile) first).getQuantity(),
 									((ResourcePile) second).getQuantity());
 						} else {
 							return unitsCmp;
@@ -147,6 +148,25 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			}
 		} else {
 			throw new IllegalArgumentException("Unhandleable argument");
+		}
+	}
+	/**
+	 * Compare two Numbers. If they're both Integers or BigDecimals, use the native
+	 * conversion. If their integer parts are equal, compare using doubleValue(); if
+	 * not, compare using those integer parts.
+	 * @param first the first number
+	 * @param second the second number
+	 * @return the result of the comparison
+	 */
+	private static int compareNumbers(final Number first, final Number second) {
+		if (first instanceof Integer && second instanceof Integer) {
+			return ((Integer) first).compareTo((Integer) second);
+		} else if (first instanceof BigDecimal && second instanceof BigDecimal) {
+			return ((BigDecimal) first).compareTo((BigDecimal) second);
+		} else if (first.intValue() == second.intValue()) {
+			return Double.compare(first.doubleValue(), second.doubleValue());
+		} else {
+			return Integer.compare(first.intValue(), second.intValue());
 		}
 	}
 	/**

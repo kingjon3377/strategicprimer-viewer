@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import controller.map.formatexceptions.SPFormatException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.stream.XMLStreamException;
@@ -529,6 +530,9 @@ public final class TestMoreFixtureSerialization extends
 				new ResourcePile(4, "generalKind", "specificKind", 15, "pounds");
 		resource.setCreated(5);
 		assertSerialization("Resource pile can know what turn it was created", resource);
+		assertSerialization("Resource pile can have non-integer quantity",
+				new ResourcePile(5, "resourceKind", "specificKind2",
+										new BigDecimal("1.5"), "cubic feet"));
 	}
 	/**
 	 * Test that desired warnings get fired when workers have "suspicious" skills.

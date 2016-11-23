@@ -4,6 +4,7 @@ import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
+import java.math.BigDecimal;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -85,11 +86,18 @@ public final class FluidResourceHandler {
 											final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "resource");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
+		final String quantityStr = getAttribute(element, "quantity");
+		final Number quantity;
+		if (quantityStr.contains(".")) {
+			quantity = new BigDecimal(quantityStr);
+		} else {
+			quantity = Integer.parseInt(quantityStr);
+		}
 		final ResourcePile retval =
 				new ResourcePile(getOrGenerateID(element, warner, idFactory),
 										getAttribute(element, "kind"),
 										getAttribute(element, "contents"),
-										getIntegerAttribute(element, "quantity"),
+										quantity,
 										getAttribute(element, "unit", ""));
 		if (hasAttribute(element, "created")) {
 			retval.setCreated(getIntegerAttribute(element, "created"));
@@ -398,7 +406,20 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", pile.getID());
 		writeAttribute(ostream, "kind", pile.getKind());
 		writeAttribute(ostream, "contents", pile.getContents());
-		writeIntegerAttribute(ostream, "quantity", pile.getQuantity());
+		final Number quantity = pile.getQuantity();
+		if (quantity instanceof Integer) {
+			writeIntegerAttribute(ostream, "quantity", quantity.intValue());
+		} else if (quantity instanceof BigDecimal) {
+			if (((BigDecimal) quantity).scale() > 0) {
+				writeAttribute(ostream, "quantity",
+						((BigDecimal) quantity).toPlainString());
+			} else {
+				writeIntegerAttribute(ostream, "quantity", quantity.intValue());
+			}
+		} else {
+			throw new IllegalArgumentException("ResourcePile with non-Integer, " +
+													   "non-BigDecimal quantity");
+		}
 		writeAttribute(ostream, "unit", pile.getUnits());
 		if (pile.getCreated() >= 0) {
 			writeIntegerAttribute(ostream, "created", pile.getCreated());

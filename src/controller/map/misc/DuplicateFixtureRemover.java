@@ -1,6 +1,8 @@
 package controller.map.misc;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -143,8 +145,12 @@ public final class DuplicateFixtureRemover {
 				final ResourcePile top = list.get(0);
 				final ResourcePile combined =
 						new ResourcePile(top.getID(), top.getKind(), top.getContents(),
-												list.stream().mapToInt(
-														ResourcePile::getQuantity).sum(),
+												list.stream()
+														.map(ResourcePile::getQuantity)
+														.map
+																 (DuplicateFixtureRemover::toBigDecimal)
+														.reduce(BigDecimal.ZERO,
+																BigDecimal::add),
 												top.getUnits());
 				combined.setCreated(top.getCreated());
 				if (iter instanceof Unit) {
@@ -155,6 +161,23 @@ public final class DuplicateFixtureRemover {
 					((Fortress) iter).addMember(combined);
 				}
 			}
+		}
+	}
+	/**
+	 * Convert a Number to a BigDecimal.
+	 * @param num the number to convert
+	 */
+	private static BigDecimal toBigDecimal(final Number num) {
+		if (num instanceof BigDecimal) {
+			return (BigDecimal) num;
+		} else if (num instanceof BigInteger) {
+			return new BigDecimal((BigInteger) num);
+		} else if (num instanceof Integer || num instanceof Long) {
+			return BigDecimal.valueOf(num.longValue());
+		} else if (num instanceof Float || num instanceof Double) {
+			return BigDecimal.valueOf(num.doubleValue());
+		} else {
+			return new BigDecimal(num.toString());
 		}
 	}
 }
