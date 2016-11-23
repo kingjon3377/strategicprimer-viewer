@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import model.map.Player;
@@ -179,6 +180,50 @@ public class TestCLIHelper {
 					equalTo(Integer.valueOf(0)));
 			assertThat("inputNumber asks again on negative input",
 					out.toString(), equalTo(" test prompt four test prompt four"));
+		}
+	}
+	/**
+	 * Test inputDecimal().
+	 * @throws IOException on I/O error causing test failure
+	 */
+	@SuppressWarnings("static-method")
+	@Test
+	public void testInputDecimal() throws IOException {
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("10%n")),
+												   out)) {
+			assertThat("inputDecimal works with integers",
+					cli.inputDecimal("test prompt"), equalTo(BigDecimal.TEN));
+			assertThat("inputDecimal uses given prompt", out.toString(),
+					equalTo("test prompt"));
+		}
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("2.5%n")),
+												   out)) {
+			assertThat("inputDecimal works with decimals",
+					cli.inputDecimal("test prompt two"),
+					equalTo(new BigDecimal(5).divide(new BigDecimal(2))));
+			assertThat("inputDecimal uses given prompt", out.toString(),
+					equalTo("test prompt two"));
+		}
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
+					 "-2.5%n0.5%n")), out)) {
+			assertThat("inputDecimal asks again on negative input",
+					cli.inputDecimal("test prompt three"),
+					equalTo(BigDecimal.ONE.divide(new BigDecimal(2))));
+			assertThat("inputDecimal asks again on negative input", out.toString(),
+					equalTo("test prompt threetest prompt three"));
+		}
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
+					 "non-number%n.1%n")), out)) {
+			assertThat("inputDecimal asks again on non-numeric input",
+					cli.inputDecimal(" test prompt four "),
+					equalTo(BigDecimal.ONE.divide(BigDecimal.TEN)));
+			assertThat("inputDecimal asks again on non-numeric input", out.toString(),
+					equalTo(String.format(
+							" test prompt four Invalid number.%n test prompt four ")));
 		}
 	}
 	/**

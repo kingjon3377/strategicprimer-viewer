@@ -7,6 +7,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -147,6 +149,33 @@ public final class CLIHelper implements ICLIHelper {
 							new NumberFormatException("Failed to parse number from input");
 					numFormatExcept.initCause(e);
 					throw numFormatExcept;
+				}
+			}
+		}
+		return retval;
+	}
+	/**
+	 * Read input from stdin repeatedly until a valid non-negative decimal number is
+	 * entered, and return it.
+	 * @param prompt the prompt to prompt the user with
+	 * @return the number entered
+	 * @throws IOException on I/O error
+	 */
+	@Override
+	public BigDecimal inputDecimal(String prompt) throws IOException {
+		BigDecimal retval = BigDecimal.ZERO.subtract(BigDecimal.ONE);
+		while (retval.compareTo(BigDecimal.ZERO) < 0) {
+			ostream.print(prompt);
+			ostream.flush();
+			final String input = istream.readLine();
+			if (input == null) {
+				throw new IOException("Null line of input");
+			} else {
+				try {
+					retval = new BigDecimal(input.trim(), MathContext.UNLIMITED);
+				} catch (final NumberFormatException except) {
+					ostream.println("Invalid number.");
+					continue;
 				}
 			}
 		}

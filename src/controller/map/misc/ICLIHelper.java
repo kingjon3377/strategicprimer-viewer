@@ -2,6 +2,7 @@ package controller.map.misc;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import model.map.HasName;
 import model.map.Point;
@@ -64,6 +65,14 @@ public interface ICLIHelper extends Closeable {
 	 * @throws IOException on I/O error
 	 */
 	int inputNumber(String prompt) throws IOException;
+	/**
+	 * Read input from stdin repeatedly until a valid non-negative decimal number is
+	 * entered, and return it.
+	 * @param prompt the prompt to prompt the user with
+	 * @return the number entered
+	 * @throws IOException on I/O error
+	 */
+	BigDecimal inputDecimal(String prompt) throws IOException;
 
 	/**
 	 * Read input from stdin. (The input is trimmed of leading and trailing whitespace.)
