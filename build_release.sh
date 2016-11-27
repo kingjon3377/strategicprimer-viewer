@@ -9,4 +9,5 @@ ant \
     -Djunit.jar.path=/usr/share/java/junit4.jar \
     -Dwindowmenu.jar.path=./WindowMenu.jar \
     -Dstub-script-path=./universalJavaApplicationStub-0.9.0/src/universalJavaApplicationStub \
+    -Dapple.extensions.path=./orange-extensions-1.3.0.jar \
     release

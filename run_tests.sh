@@ -6,4 +6,5 @@ ant \
     -Djunit.jar.path=/usr/share/java/junit4.jar \
     -Dwindowmenu.jar.path=./WindowMenu.jar \
     -Dhamcrest.jar.path=/usr/share/java/hamcrest-core-1.3.jar \
+    -Dapple.extensions.path=./orange-extensions-1.3.0.jar \
     test

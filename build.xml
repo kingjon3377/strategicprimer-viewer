@@ -14,6 +14,9 @@
   <!-- Paths to find necessary files and paths within the repository -->
   <property file="paths.local.properties" />
   <property file="paths.properties" />
+  <condition property="onmac">
+      <os family="mac" />
+  </condition>
 
   <!-- Paths within the repository. This should just work, so long
        as the directories exist. -->
@@ -23,13 +26,25 @@
     <pathelement location="${hamcrest.jar.path}" />
     <pathelement location="${windowmenu.jar.path}" />
   </path>
-  <path id="viewer.classpath">
-    <pathelement location="${bin_dir}" />
-    <path refid="junit.classpath" />
-    <!-- See comment in paths.properties -->
-    <pathelement location="${nullness.jar.path}" />
-    <pathelement location="${windowmenu.jar.path}" />
-  </path>
+  <target name="set-classpath-on-mac" if="onmac">
+    <path id="viewer.classpath">
+      <pathelement location="${bin_dir}" />
+      <path refid="junit.classpath" />
+      <!-- See comment in paths.properties -->
+      <pathelement location="${nullness.jar.path}" />
+      <pathelement location="${windowmenu.jar.path}" />
+    </path>
+  </target>
+  <target name="set-classpath-on-non-mac" unless="onmac">
+    <path id="viewer.classpath">
+      <pathelement location="${bin_dir}" />
+      <path refid="junit.classpath" />
+      <!-- See comment in paths.properties -->
+      <pathelement location="${nullness.jar.path}" />
+      <pathelement location="${windowmenu.jar.path}" />
+      <pathelement location="${apple.extensions.path}" />
+    </path>
+  </target>
 
 
   <!-- Clean targets -->
@@ -63,7 +78,7 @@
   </target>
 
   <!-- Build targets -->
-  <target name="init">
+  <target name="init" depends="set-classpath-on-mac,set-classpath-on-non-mac">
     <mkdir dir="${bin_dir}" />
     <copy includeemptydirs="false" todir="bin">
       <fileset dir="${source_dir}">
@@ -87,6 +102,9 @@
       <src path="src" />
       <exclude name="tables/" />
       <classpath refid="viewer.classpath" />
+      <!-- We use Apple extensions, which are a "private API" in rt.jar in Oracle JDK,
+           and so compilation will fail without this hacky compiler flag. -->
+      <compilerarg value="-XDignore.symbol.file"/>
     </javac>
   </target>
   <target name="doc" depends="init">
