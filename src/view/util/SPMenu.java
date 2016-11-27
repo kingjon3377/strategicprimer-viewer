@@ -1,5 +1,9 @@
 package view.util;
 
+import com.apple.eawt.Application;
+import com.bric.window.WindowList;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -110,10 +114,22 @@ public class SPMenu extends JMenuBar {
 		fileMenu.add(createMenuItem("Close", KeyEvent.VK_W, createHotKey(KeyEvent.VK_W),
 				"Close this window", handler));
 		fileMenu.addSeparator();
-		fileMenu.add(createMenuItem("About", KeyEvent.VK_B,
-				createHotKey(KeyEvent.VK_B), "Show development credits", handler));
-		fileMenu.addSeparator();
-		if (!OnMac.SYSTEM_IS_MAC) {
+		if (OnMac.SYSTEM_IS_MAC) {
+			Application.getApplication().setAboutHandler(e -> {
+				final Window[] windows = WindowList.getWindows(true, false);
+				final Object source;
+				if (windows.length == 0) {
+					source = e;
+				} else {
+					source = windows[windows.length - 1];
+				}
+				handler.actionPerformed(
+						new ActionEvent(source, ActionEvent.ACTION_FIRST, "About"));
+			});
+		} else {
+			fileMenu.add(createMenuItem("About", KeyEvent.VK_B,
+					createHotKey(KeyEvent.VK_B), "Show development credits", handler));
+			fileMenu.addSeparator();
 			fileMenu.add(
 					createMenuItem("Quit", KeyEvent.VK_Q, createHotKey(KeyEvent.VK_Q),
 							"Quit the application", handler));
