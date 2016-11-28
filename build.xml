@@ -34,6 +34,7 @@
       <pathelement location="${nullness.jar.path}" />
       <pathelement location="${windowmenu.jar.path}" />
     </path>
+    <filelist id="apple.extensions.fileset" />
   </target>
   <target name="set-classpath-on-non-mac" unless="onmac">
     <path id="viewer.classpath">
@@ -44,6 +45,7 @@
       <pathelement location="${windowmenu.jar.path}" />
       <pathelement location="${apple.extensions.path}" />
     </path>
+    <zipfileset id="apple.extensions.fileset" excludes="META-INF/**/*" src="${apple.extensions.path}" />
   </target>
 
 
@@ -187,6 +189,7 @@
       </manifest>
       <fileset dir="${project_home}/bin" />
       <zipfileset excludes="META-INF/**/*" src="${windowmenu.jar.path}" />
+      <resources refid="apple.extensions.fileset" />
     </jar>
   </target>
   <target name="icon">
