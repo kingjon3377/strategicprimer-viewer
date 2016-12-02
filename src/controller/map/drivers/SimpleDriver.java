@@ -1,7 +1,5 @@
 package controller.map.drivers;
 
-import com.apple.eawt.Application;
-import com.apple.eawt.QuitStrategy;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.FileChooser;
 import controller.map.misc.ICLIHelper;
@@ -14,7 +12,6 @@ import java.util.stream.StreamSupport;
 import model.map.IMutableMapNG;
 import model.misc.IMultiMapModel;
 import util.EqualsAny;
-import util.OnMac;
 import util.Pair;
 import util.Warning;
 
@@ -72,9 +69,6 @@ public interface SimpleDriver extends ISPDriver {
 			turnFixer = map -> map.setCurrentTurn(currentTurn);
 		} else {
 			turnFixer = map -> {};
-		}
-		if (usage().isGraphical() && OnMac.SYSTEM_IS_MAC) {
-			Application.getApplication().setQuitStrategy(QuitStrategy.CLOSE_ALL_WINDOWS);
 		}
 		if (args.length == 0) {
 			if (EqualsAny.equalsAny(desiderata, ParamCount.None,

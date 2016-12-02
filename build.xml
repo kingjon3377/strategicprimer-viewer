@@ -230,7 +230,9 @@
     <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
       jar="${release}/${shortname}.jar" version="${version-number}"
       shortname="SPHelpers" stubfile="${stub-script-path}"
-      icon="icon.icns" useJavaXKey="true" />
+      icon="icon.icns" useJavaXKey="true">
+      <javaproperty name="apple.eawt.quitStrategy" value="CLOSE_ALL_WINDOWS" />
+    </jarbundler>
     <tar destfile="${release}/${basename}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">
         <include name="${basename}.app/**" />
