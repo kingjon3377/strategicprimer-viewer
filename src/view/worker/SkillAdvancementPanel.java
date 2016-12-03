@@ -21,6 +21,7 @@ import model.listeners.LevelGainSource;
 import model.listeners.SkillSelectionListener;
 import model.map.fixtures.mobile.worker.ISkill;
 import org.eclipse.jdt.annotation.Nullable;
+import util.OnMac;
 import util.SingletonRandom;
 import util.TypesafeLogger;
 import view.util.BoxPanel;
@@ -98,8 +99,6 @@ public final class SkillAdvancementPanel extends BoxPanel
 		firstPanel.add(hours);
 		firstPanel.add(new JLabel(" hours to skill?"));
 		add(firstPanel);
-		final JPanel secondPanel = new JPanel();
-		secondPanel.setLayout(new FlowLayout());
 		final ActionListener okListener = evt -> {
 			final ISkill skl = skill;
 			if (skl != null) {
@@ -121,12 +120,31 @@ public final class SkillAdvancementPanel extends BoxPanel
 			// successfully adding skill
 			hours.setText("");
 		};
-		secondPanel.add(new ListenedButton("OK", okListener));
+		final ListenedButton okButton = new ListenedButton("OK", okListener);
 		hours.setActionCommand("OK");
 		hours.addActionListener(okListener);
 		// Clear if OK and no skill selected, on Cancel, and after
 		// successfully adding skill
-		secondPanel.add(new ListenedButton("Cancel", evt -> hours.setText("")));
+		final ListenedButton cancelButton =
+				new ListenedButton("Cancel", evt -> hours.setText(""));
+		final JPanel secondPanel;
+		if (OnMac.SYSTEM_IS_MAC) {
+			okButton.putClientProperty("JButton.buttonType", "segmented");
+			cancelButton.putClientProperty("JButton.buttonType", "segmented");
+			okButton.putClientProperty("JButton.segmentPosition", "first");
+			cancelButton.putClientProperty("JButton.segmentPosition", "last");
+			secondPanel = new BoxPanel(true);
+			((BoxPanel) secondPanel).addGlue();
+			secondPanel.add(okButton);
+			((BoxPanel) secondPanel).addRigidArea(2);
+			secondPanel.add(cancelButton);
+			((BoxPanel) secondPanel).addGlue();
+		} else {
+			secondPanel = new JPanel();
+			secondPanel.setLayout(new FlowLayout());
+			secondPanel.add(okButton);
+			secondPanel.add(cancelButton);
+		}
 		add(secondPanel);
 		setMinimumSize(new Dimension(200, 40));
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));

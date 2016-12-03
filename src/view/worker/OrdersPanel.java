@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -30,6 +31,7 @@ import util.NullCleaner;
 import util.OnMac;
 import view.util.Applyable;
 import view.util.BorderedPanel;
+import view.util.BoxPanel;
 import view.util.ListenedButton;
 import view.util.Revertible;
 
@@ -107,13 +109,28 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 			maxTurn = 100;
 		}
 		spinnerModel = new SpinnerNumberModel(initialTurn, minTurn, maxTurn, 1);
+		final ListenedButton applyButton = new ListenedButton("Apply", evt -> apply());
+		final ListenedButton revertButton = new ListenedButton("Revert", evt -> revert());
+		final JPanel buttonPanel;
+		if (OnMac.SYSTEM_IS_MAC) {
+			applyButton.putClientProperty("JButton.buttonType", "segmented");
+			revertButton.putClientProperty("JButton.buttonType", "segmented");
+			applyButton.putClientProperty("JButton.segmentPosition", "first");
+			revertButton.putClientProperty("JButton.segmentPosition", "last");
+			buttonPanel = new BoxPanel(true);
+			((BoxPanel) buttonPanel).addGlue();
+			buttonPanel.add(applyButton);
+			((BoxPanel) buttonPanel).addRigidArea(2);
+			buttonPanel.add(revertButton);
+			((BoxPanel) buttonPanel).addGlue();
+		} else {
+			buttonPanel = horizontalPanel(applyButton, null, revertButton);
+		}
 		setPageStart(horizontalPanel(
-				new JLabel("Orders for current selection, if a unit: (" + prefix + "D)"), new JLabel("Turn "), new JSpinner(spinnerModel)))
+				new JLabel("Orders for current selection, if a unit: (" + prefix + "D)"),
+				new JLabel("Turn "), new JSpinner(spinnerModel)))
 				.setCenter(new JScrollPane(area)).setPageEnd(
-						new BorderedPanel()
-								.setLineStart(new ListenedButton("Apply", evt -> apply()))
-								.setLineEnd(
-										new ListenedButton("Revert", evt -> revert())));
+				buttonPanel);
 		area.addKeyListener(new ModifiedEnterListener());
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);

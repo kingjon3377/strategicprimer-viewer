@@ -13,6 +13,7 @@ import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -21,8 +22,10 @@ import javax.swing.table.TableColumn;
 import model.viewer.FixtureFilterTableModel;
 import model.viewer.IViewerModel;
 import util.NullCleaner;
+import util.OnMac;
 import view.map.details.DetailPanelNG;
 import view.util.BorderedPanel;
+import view.util.BoxPanel;
 import view.util.ISPWindow;
 import view.util.SplitWithWeights;
 
@@ -119,9 +122,24 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 					tableModel.forEach(matcher -> matcher.setDisplayed(false));
 					tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
 				});
+		final JPanel buttonPanel;
+		if (OnMac.SYSTEM_IS_MAC) {
+			allButton.putClientProperty("JButton.buttonType", "segmented");
+			noneButton.putClientProperty("JButton.buttonType", "segmented");
+			allButton.putClientProperty("JButton.segmentPosition", "first");
+			noneButton.putClientProperty("JButton.segmentPosition", "last");
+			buttonPanel = new BoxPanel(true);
+			((BoxPanel) buttonPanel).addGlue();
+			buttonPanel.add(allButton);
+			((BoxPanel) buttonPanel).addRigidArea(2);
+			buttonPanel.add(noneButton);
+			((BoxPanel) buttonPanel).addGlue();
+		} else {
+			buttonPanel = BorderedPanel.horizontalPanel(allButton, null, noneButton);
+		}
 		final BorderedPanel tablePanel = BorderedPanel.verticalPanel(new JLabel("Display ..."),
 				new JScrollPane(table),
-				BorderedPanel.horizontalPanel(allButton, null, noneButton));
+				buttonPanel);
 		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
 				SplitWithWeights.horizontalSplit(0.95, 0.95,
 						ScrollListener.mapScrollPanel(map, mapPanel), tablePanel),

@@ -39,6 +39,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
 import util.IteratorWrapper;
 import util.NullCleaner;
+import util.OnMac;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
 
@@ -129,13 +130,24 @@ public final class FindDialog extends JDialog {
 
 		final BoxPanel buttonPanel = new BoxPanel(true);
 		buttonPanel.addGlue();
-		buttonPanel.add(new ListenedButton("OK", okListener));
-		buttonPanel.addGlue();
-		buttonPanel.add(new ListenedButton("Cancel", evt -> {
+		final ListenedButton okButton = new ListenedButton("OK", okListener);
+		final ListenedButton cancelButton = new ListenedButton("Cancel", evt -> {
 			setVisible(false);
 			parentFrame.requestFocus();
 			dispose();
-		}));
+		});
+		if (OnMac.SYSTEM_IS_MAC) {
+			okButton.putClientProperty("JButton.buttonType", "segmented");
+			cancelButton.putClientProperty("JButton.buttonType", "segmented");
+			okButton.putClientProperty("JButton.segmentPosition", "first");
+			cancelButton.putClientProperty("JButton.segmentPosition", "last");
+			buttonPanel.add(okButton);
+			buttonPanel.add(cancelButton);
+		} else {
+			buttonPanel.add(okButton);
+			buttonPanel.addGlue();
+			buttonPanel.add(cancelButton);
+		}
 		buttonPanel.addGlue();
 		contentPane.add(buttonPanel);
 		ffl = new FixtureFilterList();

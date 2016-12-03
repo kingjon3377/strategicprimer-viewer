@@ -12,6 +12,7 @@ import java.util.Collection;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import model.listeners.AddRemoveListener;
+import util.OnMac;
 
 /**
  * A panel to be the GUI to add or remove items from a list.
@@ -53,15 +54,17 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 		setPanelSizes(retval);
 		final JPanel first = new BoxPanel(true);
 		final JTextField field = new JTextField(10);
-		first.add(new ListenedButton("+", evt -> {
+		final ListenedButton addButton = new ListenedButton("+", evt -> {
 			layout.next(retval);
 			field.requestFocusInWindow();
-		}));
-		first.add(new ListenedButton("-", evt -> {
+		});
+		first.add(addButton);
+		final ListenedButton removeButton = new ListenedButton("-", evt -> {
 			for (final AddRemoveListener listener : retval.arListeners) {
 				listener.remove(what);
 			}
-		}));
+		});
+		first.add(removeButton);
 		setPanelSizes(first);
 		retval.add(first);
 		final JPanel second = new BoxPanel(false);
@@ -78,11 +81,23 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 		field.addActionListener(okListener);
 		field.setActionCommand("OK");
 		final JPanel okPanel = new BoxPanel(true);
-		okPanel.add(new ListenedButton("OK", okListener));
-		okPanel.add(new ListenedButton("Cancel", evt -> {
+		final ListenedButton okButton = new ListenedButton("OK", okListener);
+		okPanel.add(okButton);
+		final ListenedButton cancelButton = new ListenedButton("Cancel", evt -> {
 			layout.first(retval);
 			field.setText("");
-		}));
+		});
+		if (OnMac.SYSTEM_IS_MAC) {
+			addButton.putClientProperty("JButton.buttonType", "segmented");
+			removeButton.putClientProperty("JButton.buttonType", "segmented");
+			addButton.putClientProperty("JButton.segmentPosition", "first");
+			removeButton.putClientProperty("JButton.segmentPosition", "last");
+			okButton.putClientProperty("JButton.buttonType", "segmented");
+			cancelButton.putClientProperty("JButton.buttonType", "segmented");
+			okButton.putClientProperty("JButton.segmentPosition", "first");
+			cancelButton.putClientProperty("JButton.segmentPosition", "last");
+		}
+		okPanel.add(cancelButton);
 		second.add(okPanel);
 		setPanelSizes(second);
 		retval.add(second);

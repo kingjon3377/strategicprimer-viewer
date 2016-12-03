@@ -27,6 +27,7 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
+import util.OnMac;
 import util.TypesafeLogger;
 import view.util.ListenedButton;
 
@@ -143,13 +144,21 @@ public final class NewUnitDialog extends JFrame
 		idField.setColumns(10);
 		add(setupField(idField, okListener));
 
-		add(new ListenedButton("OK", okListener));
-		add(new ListenedButton("Cancel", evt -> {
+		final ListenedButton okButton = new ListenedButton("OK", okListener);
+		add(okButton);
+		final ListenedButton cancelButton = new ListenedButton("Cancel", evt -> {
 			nameField.setText("");
 			kindField.setText("");
 			setVisible(false);
 			dispose();
-		}));
+		});
+		if (OnMac.SYSTEM_IS_MAC) {
+			okButton.putClientProperty("JButton.buttonType", "segmented");
+			cancelButton.putClientProperty("JButton.buttonType", "segmented");
+			okButton.putClientProperty("JButton.segmentPosition", "first");
+			cancelButton.putClientProperty("JButton.segmentPosition", "last");
+		}
+		add(cancelButton);
 
 		setMinimumSize(new Dimension(150, 80));
 		setPreferredSize(new Dimension(200, PREF_HEIGHT));

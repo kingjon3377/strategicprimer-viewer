@@ -27,6 +27,7 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.RaceFactory;
 import util.LineEnd;
+import util.OnMac;
 import util.Pair;
 import util.SingletonRandom;
 import util.TypesafeLogger;
@@ -137,7 +138,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 		addLabeledField(statsPanel, "Charisma:", cha);
 
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
-		buttonPanel.add(new ListenedButton("Add Worker", evt -> {
+		final ListenedButton addButton = new ListenedButton("Add Worker", evt -> {
 			final String nameText = name.getText().trim();
 			final String raceText = race.getText().trim();
 			if (nameText.isEmpty() || raceText.isEmpty() ||
@@ -150,10 +151,11 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 				final Worker retval = new Worker(nameText, raceText, idf.createID());
 				try {
 					retval.setStats(new WorkerStats(parseInt(hpBox), parseInt(maxHP),
-														parseInt(strength),
-														parseInt(dex), parseInt(con),
-														parseInt(intel), parseInt(wis),
-														parseInt(cha)));
+														   parseInt(strength),
+														   parseInt(dex), parseInt(con),
+														   parseInt(intel), parseInt
+																					(wis),
+														   parseInt(cha)));
 				} catch (final ParseException e) {
 					LOGGER.log(Level.FINE, "Non-numeric input", e);
 					ErrorShower.showErrorDialog(this, "All stats must be numbers");
@@ -165,11 +167,19 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 				setVisible(false);
 				dispose();
 			}
-		}));
-		buttonPanel.add(new ListenedButton("Cancel", evt -> {
+		});
+		buttonPanel.add(addButton);
+		final ListenedButton cancelButton = new ListenedButton("Cancel", evt -> {
 			setVisible(false);
 			dispose();
-		}));
+		});
+		if (OnMac.SYSTEM_IS_MAC) {
+			addButton.putClientProperty("JButton.buttonType", "segmented");
+			addButton.putClientProperty("JButton.segmentPosition", "first");
+			cancelButton.putClientProperty("JButton.buttonType", "segmented");
+			cancelButton.putClientProperty("JButton.segmentPosition", "last");
+		}
+		buttonPanel.add(cancelButton);
 		setContentPane(new BorderedPanel(statsPanel, textPanel, buttonPanel,
 												null, null));
 		setMinimumSize(new Dimension(320, 240));

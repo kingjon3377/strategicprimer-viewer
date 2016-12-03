@@ -9,12 +9,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import model.listeners.AddRemoveListener;
 import util.NullCleaner;
+import util.OnMac;
 
 /**
  * A panel to be the GUI to add items from a list.
@@ -85,11 +84,19 @@ public final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 		field.addActionListener(okListener);
 		field.setActionCommand("OK");
 		final JPanel okPanel = new BoxPanel(true);
-		okPanel.add(new ListenedButton("OK", okListener));
-		okPanel.add(new ListenedButton("Cancel", evt -> {
+		final ListenedButton okButton = new ListenedButton("OK", okListener);
+		okPanel.add(okButton);
+		final ListenedButton cancelButton = new ListenedButton("Cancel", evt -> {
 			layout.first(this);
 			field.setText("");
-		}));
+		});
+		if (OnMac.SYSTEM_IS_MAC) {
+			okButton.putClientProperty("JButton.buttonType", "segmented");
+			cancelButton.putClientProperty("JButton.buttonType", "segmented");
+			okButton.putClientProperty("JButton.segmentPosition", "first");
+			cancelButton.putClientProperty("JButton.segmentPosition", "last");
+		}
+		okPanel.add(cancelButton);
 		second.add(okPanel);
 		setPanelSizes(second);
 		add(second);
