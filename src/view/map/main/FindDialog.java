@@ -143,6 +143,10 @@ public final class FindDialog extends JDialog {
 			cancelButton.putClientProperty("JButton.segmentPosition", "last");
 			buttonPanel.add(okButton);
 			buttonPanel.add(cancelButton);
+			search.putClientProperty("JTextField.variant", "search");
+			search.putClientProperty("JTextField.Search.FindAction", okListener);
+			final ActionListener clearListener = evt -> search.setText("");
+			search.putClientProperty("JTextField.Search.CancelAction", clearListener);
 		} else {
 			buttonPanel.add(okButton);
 			buttonPanel.addGlue();
