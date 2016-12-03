@@ -8,6 +8,6 @@ ant \
     -Dnullness.jar.path=./org.eclipse.jdt.annotation-2.0.0.jar \
     -Djunit.jar.path=/usr/share/java/junit4.jar \
     -Dwindowmenu.jar.path=./WindowMenu.jar \
-    -Dstub-script-path=./universalJavaApplicationStub-0.9.0/src/universalJavaApplicationStub \
+    -Dstub-script-path=./universalJavaApplicationStub-2.0.1/src/universalJavaApplicationStub \
     -Dapple.extensions.path=./orange-extensions-1.3.0.jar \
     release
