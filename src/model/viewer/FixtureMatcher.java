@@ -50,7 +50,6 @@ public class FixtureMatcher {
 																			   method,
 																	   final String
 																			   desc) {
-		final Predicate<? extends TileFixture> instanceTest = cls::isInstance;
 		return new FixtureMatcher(fix -> cls.isInstance(fix) && method.test((T) fix),
 										 desc);
 	}
