@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.function.IntFunction;
-import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
