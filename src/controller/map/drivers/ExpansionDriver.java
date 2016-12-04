@@ -70,9 +70,144 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	private static final Logger LOGGER =
 			NullCleaner.assertNotNull(Logger.getLogger(ExpansionDriver.class.getName()));
+	/**
+	 * The exception to throw if our mock-object's expectations are violoated
+	 */
+	private static final IllegalStateException ISE =
+			new IllegalStateException("Unsupported method called on mock object");
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
+	}
+
+	/**
+	 * @param player a player
+	 * @return a mock Unit that responds to getOwner() with that player and throws on
+	 * any other method call
+	 */
+	private static IUnit mock(final Player player) {
+		return new IUnit() {
+			@Override
+			public NavigableMap<Integer, String> getAllOrders() {
+				throw ISE;
+			}
+
+			@Override
+			public NavigableMap<Integer, String> getAllResults() {
+				throw ISE;
+			}
+
+			@Override
+			public String plural() {
+				throw ISE;
+			}
+
+			@Override
+			public String shortDesc() {
+				throw ISE;
+			}
+
+			@Override
+			public int getID() {
+				throw ISE;
+			}
+
+			@Override
+			public boolean equalsIgnoringID(final IFixture fix) {
+				throw ISE;
+			}
+
+			@Override
+			public int compareTo(final TileFixture fix) {
+				throw ISE;
+			}
+
+			@Override
+			public String getDefaultImage() {
+				throw ISE;
+			}
+
+			@Override
+			public String getImage() {
+				throw ISE;
+			}
+
+			@Override
+			public String getKind() {
+				throw ISE;
+			}
+
+			@Override
+			public Iterator<UnitMember> iterator() {
+				throw ISE;
+			}
+
+			@Override
+			public String getName() {
+				throw ISE;
+			}
+
+			@Override
+			public Player getOwner() {
+				return player;
+			}
+
+			@Override
+			public boolean isSubset(final IFixture obj, final Appendable ostream,
+									final String context) {
+				throw ISE;
+			}
+
+			@Override
+			public String getOrders(final int turn) {
+				throw ISE;
+			}
+
+			@Override
+			public void setOrders(final int turn, final String newOrders) {
+				throw ISE;
+			}
+
+			@Override
+			public String getResults(final int turn) {
+				throw ISE;
+			}
+
+			@Override
+			public void setResults(final int turn, final String newOrders) {
+				throw ISE;
+			}
+
+			@Override
+			public String verbose() {
+				throw ISE;
+			}
+
+			@Override
+			public void addMember(final UnitMember member) {
+				throw ISE;
+			}
+
+			@Override
+			public void removeMember(final UnitMember member) {
+				throw ISE;
+			}
+
+			@Override
+			public IUnit copy(final boolean zero) {
+				throw ISE;
+			}
+
+			@Override
+			public boolean equals(@Nullable final Object obj) {
+				throw ISE;
+			}
+
+			@Override
+			public int hashCode() {
+				throw ISE;
+			}
+		};
 	}
 
 	/**
@@ -81,10 +216,6 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	private static void expand(final IMapNG master, final IMutableMapNG map) {
 		final Player currentPlayer = map.getCurrentPlayer();
-		final IllegalStateException ise =
-				new IllegalStateException(
-												 "Unsupported method called on mock " +
-														 "object");
 		final Collection<Point> villagePoints = map.locationStream()
 														.filter(point ->
 																		containsSwornVillage(
@@ -92,130 +223,9 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 																				point,
 																				currentPlayer))
 														.collect(Collectors.toSet());
-		final IUnit mock = new IUnit() {
-			@Override
-			public NavigableMap<Integer, String> getAllOrders() {
-				throw ise;
-			}
-
-			@Override
-			public NavigableMap<Integer, String> getAllResults() {
-				throw ise;
-			}
-
-			@Override
-			public String plural() {
-				throw ise;
-			}
-
-			@Override
-			public String shortDesc() {
-				throw ise;
-			}
-
-			@Override
-			public int getID() {
-				throw ise;
-			}
-
-			@Override
-			public boolean equalsIgnoringID(final IFixture fix) {
-				throw ise;
-			}
-
-			@Override
-			public int compareTo(final TileFixture fix) {
-				throw ise;
-			}
-
-			@Override
-			public String getDefaultImage() {
-				throw ise;
-			}
-
-			@Override
-			public String getImage() {
-				throw ise;
-			}
-
-			@Override
-			public String getKind() {
-				throw ise;
-			}
-
-			@Override
-			public Iterator<UnitMember> iterator() {
-				throw ise;
-			}
-
-			@Override
-			public String getName() {
-				throw ise;
-			}
-
-			@Override
-			public Player getOwner() {
-				return currentPlayer;
-			}
-
-			@Override
-			public boolean isSubset(final IFixture obj, final Appendable ostream,
-									final String context) {
-				throw ise;
-			}
-
-			@Override
-			public String getOrders(final int turn) {
-				throw ise;
-			}
-
-			@Override
-			public void setOrders(final int turn, final String newOrders) {
-				throw ise;
-			}
-
-			@Override
-			public String getResults(final int turn) {
-				throw ise;
-			}
-
-			@Override
-			public void setResults(final int turn, final String newOrders) {
-				throw ise;
-			}
-
-			@Override
-			public String verbose() {
-				throw ise;
-			}
-
-			@Override
-			public void addMember(final UnitMember member) {
-				throw ise;
-			}
-
-			@Override
-			public void removeMember(final UnitMember member) {
-				throw ise;
-			}
-
-			@Override
-			public IUnit copy(final boolean zero) {
-				throw ise;
-			}
-
-			@Override
-			public boolean equals(@Nullable final Object obj) {
-				throw ise;
-			}
-
-			@Override
-			public int hashCode() {
-				throw ise;
-			}
-		};
 		final Map<Point, Set<TileFixture>> fixAdditions = new HashMap<>();
 		final Map<Point, TileType> terrainAdditions = new HashMap<>();
+		final IUnit mock = mock(currentPlayer);
 		for (final Point point : villagePoints) {
 			addSurroundingTerrain(point, master, map, terrainAdditions);
 			addSurroundingFixtures(point, master, fixAdditions, mock);
