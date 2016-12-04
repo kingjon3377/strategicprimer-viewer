@@ -10,7 +10,8 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
- * A utility class to create menu items in a more functional style.
+ * An interface to hold methods that allow menu items to be created in a more
+ * functional style.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -24,7 +25,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class MenuItemCreator {
+public interface MenuItemCreator {
 	/**
 	 * Create a menu item.
 	 *
@@ -35,7 +36,7 @@ public final class MenuItemCreator {
 	 * @param list     the listener to handle when the item is selected.
 	 * @return the configured menu item.
 	 */
-	public static JMenuItem createMenuItem(final String item, final int mnemonic,
+	default JMenuItem createMenuItem(final String item, final int mnemonic,
 											@Nullable final KeyStroke accelerator,
 											final String desc,
 											final ActionListener list) {
@@ -54,7 +55,7 @@ public final class MenuItemCreator {
 	 * @param key the base key
 	 * @return the hot-key
 	 */
-	public static KeyStroke createHotKey(final int key) {
+	default KeyStroke createHotKey(final int key) {
 		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
@@ -65,18 +66,9 @@ public final class MenuItemCreator {
 	 * @param key the base key
 	 * @return the hot-key
 	 */
-	public static KeyStroke createShiftHotKey(final int key) {
+	default KeyStroke createShiftHotKey(final int key) {
 		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() |
 						InputEvent.SHIFT_DOWN_MASK));
-	}
-
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "MenuItemCreator";
 	}
 }

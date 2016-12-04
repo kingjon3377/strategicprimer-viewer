@@ -23,10 +23,6 @@ import model.viewer.IViewerModel;
 import model.workermgmt.IWorkerModel;
 import util.OnMac;
 
-import static view.util.MenuItemCreator.createHotKey;
-import static view.util.MenuItemCreator.createMenuItem;
-import static view.util.MenuItemCreator.createShiftHotKey;
-
 /**
  * A common superclass for application-specific menu bars.
  *
@@ -42,7 +38,7 @@ import static view.util.MenuItemCreator.createShiftHotKey;
  *
  * @author Jonathan Lovelace
  */
-public class SPMenu extends JMenuBar {
+public class SPMenu extends JMenuBar implements MenuItemCreator {
 	/**
 	 * Create the file menu.
 	 *
@@ -51,7 +47,7 @@ public class SPMenu extends JMenuBar {
 	 *                menu items to disable.
 	 * @return the file menu
 	 */
-	protected static JMenu createFileMenu(final ActionListener handler,
+	protected JMenu createFileMenu(final ActionListener handler,
 										final IDriverModel model) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
@@ -149,7 +145,7 @@ public class SPMenu extends JMenuBar {
 	 * @param handler the menu-item-handler
 	 * @return the menu created
 	 */
-	protected static JMenu createMapMenu(final ActionListener handler,
+	protected JMenu createMapMenu(final ActionListener handler,
 										final IDriverModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
@@ -213,7 +209,7 @@ public class SPMenu extends JMenuBar {
 	 * @return the "edit" menu
 	 * @param handler the listener to handle item selections
 	 */
-	protected static JMenu createViewMenu(final ActionListener handler,
+	protected JMenu createViewMenu(final ActionListener handler,
 										  final IDriverModel model) {
 		final JMenu viewMenu = new JMenu("View");
 		viewMenu.setMnemonic(KeyEvent.VK_E);
