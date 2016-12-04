@@ -79,9 +79,7 @@ public final class EchoDriver implements UtilityDriver {
 			fixForestIDs(map, idFactory, location);
 		}
 		if (options.hasOption("--current-turn")) {
-			final int currentTurn =
-					Integer.parseInt(options.getArgument("--current-turn"));
-			map.setCurrentTurn(currentTurn);
+			map.setCurrentTurn(Integer.parseInt(options.getArgument("--current-turn")));
 		}
 		final Path outfile = Paths.get(args[1]);
 		try {
