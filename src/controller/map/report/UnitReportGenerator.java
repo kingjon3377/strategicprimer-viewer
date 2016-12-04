@@ -303,10 +303,20 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		if (hasMembers) {
 			builder.append(CLOSE_LIST);
 		}
+		produceOrders(item, builder);
+		fixtures.remove(Integer.valueOf(item.getID()));
+		return NullCleaner.assertNotNull(builder.toString());
+	}
+
+	/**
+	 * Produce the sub-sub-report about a unit's orders and results.
+	 * @param item the unit
+	 * @param builder the builder to write to
+	 */
+	private void produceOrders(final IUnit item, final StringBuilder builder) {
 		if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
 			builder.append("Orders and Results:").append(OPEN_LIST);
-			final Set<Integer> turns = new TreeSet<>();
-			turns.addAll(item.getAllOrders().keySet());
+			final Set<Integer> turns = new TreeSet<>(item.getAllOrders().keySet());
 			turns.addAll(item.getAllResults().keySet());
 			for (final Integer turn : turns) {
 				builder.append(OPEN_LIST_ITEM).append("Turn ")
@@ -325,8 +335,6 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			}
 			builder.append(CLOSE_LIST);
 		}
-		fixtures.remove(Integer.valueOf(item.getID()));
-		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
