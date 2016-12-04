@@ -137,19 +137,11 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		addPair(panel, new JLabel("Specific Resource"), resourceBox);
 		addPair(panel, new JLabel("Quantity"), new JSpinner(resQtyModel));
 		addPair(panel, new JLabel("Units"), resUnitsBox);
-		final Function<JComboBox<?>, String> selectedItem = box -> {
-			final Object sel = box.getSelectedItem();
-			if (sel == null) {
-				return "";
-			} else {
-				return NullCleaner.assertNotNull(sel.toString().trim());
-			}
-		};
 		final ActionListener resListener = evt -> {
 			confirmPlayer(ioh);
-			final String kind = selectedItem.apply(resKindBox);
-			final String resource = selectedItem.apply(resourceBox);
-			final String units = selectedItem.apply(resUnitsBox);
+			final String kind = resKindBox.getSelectedItem();
+			final String resource = resourceBox.getSelectedItem();
+			final String units = resUnitsBox.getSelectedItem();
 			if (kind.isEmpty()) {
 				resKindBox.requestFocusInWindow();
 				return;
@@ -197,7 +189,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		secondPanel.add(implKindBox);
 		final ActionListener implListener = evt -> {
 			confirmPlayer(ioh);
-			final String kind = selectedItem.apply(implKindBox);
+			final String kind = implKindBox.getSelectedItem();
 			if (kind.isEmpty()) {
 				return;
 			}
@@ -385,6 +377,21 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		@Override
 		public String toString() {
 			return "UpdatedComboBox with " + values.size() + " items";
+		}
+
+		/**
+		 * @return the selected item, as a String
+		 */
+		@Override
+		public String getSelectedItem() {
+			final Object retval = super.getSelectedItem();
+			if (retval == null) {
+				return "";
+			} else if (retval instanceof String) {
+				return ((String) retval).trim();
+			} else {
+				return retval.toString().trim();
+			}
 		}
 	}
 }
