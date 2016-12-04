@@ -49,10 +49,6 @@ public final class TerrainChangingMenu extends JPopupMenu
 	 */
 	private final JMenuItem newUnitItem = new JMenuItem("Add New Unit");
 	/**
-	 * The window to allow the user to create a new unit.
-	 */
-	private final NewUnitDialog nuDialog;
-	/**
 	 * The point at which we might change terrain.
 	 */
 	private Point point = PointFactory.point(-1, -1);
@@ -65,7 +61,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	 */
 	public TerrainChangingMenu(final int version, final IViewerModel driverModel) {
 		model = driverModel;
-		nuDialog =
+		final NewUnitDialog nuDialog =
 				new NewUnitDialog(driverModel.getMap().getCurrentPlayer(),
 										 IDFactoryFiller
 																				   .createFactory(
