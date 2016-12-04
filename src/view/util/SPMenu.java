@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.InputMap;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -18,6 +20,7 @@ import javax.swing.KeyStroke;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
+import model.workermgmt.IWorkerModel;
 import util.OnMac;
 
 import static view.util.MenuItemCreator.createHotKey;
@@ -201,10 +204,6 @@ public class SPMenu extends JMenuBar {
 		retval.add(createMenuItem("Center", KeyEvent.VK_C,
 				createHotKey(KeyEvent.VK_C),
 				"Center the view on the selected tile", handler));
-		retval.addSeparator();
-		retval.add(createMenuItem(
-				"Change current player", KeyEvent.VK_P, null,
-				"Mark a player as the current player in the map", handler));
 		return retval;
 	}
 
@@ -214,23 +213,39 @@ public class SPMenu extends JMenuBar {
 	 * @return the "edit" menu
 	 * @param handler the listener to handle item selections
 	 */
-	protected static JMenu createViewMenu(final ActionListener handler) {
+	protected static JMenu createViewMenu(final ActionListener handler,
+										  final IDriverModel model) {
 		final JMenu viewMenu = new JMenu("View");
 		viewMenu.setMnemonic(KeyEvent.VK_E);
-		viewMenu.add(createMenuItem(
-				"Change current player", KeyEvent.VK_P,
-				createHotKey(KeyEvent.VK_P),
-				"Look at a different player's units and workers", handler));
-		viewMenu.add(createMenuItem("Reload tree",
+
+		// We *create* these items here (early) so that we can enable or disable them
+		// without an extra branch.
+		final List<JMenuItem> treeItems = new ArrayList<>();
+		treeItems.add(createMenuItem("Reload tree",
 				KeyEvent.VK_R, createHotKey(KeyEvent.VK_R),
 				"Refresh the view of the workers", handler));
-		viewMenu.add(createMenuItem("Expand All", KeyEvent.VK_X, null,
+		treeItems.add(createMenuItem("Expand All", KeyEvent.VK_X, null,
 				"Expand all nodes in the unit tree", handler));
-		viewMenu.add(
+		treeItems.add(
 				createMenuItem("Expand Unit Kinds", KeyEvent.VK_K, null,
 						"Expand all unit kinds to show the units", handler));
-		viewMenu.add(createMenuItem("Collapse All", KeyEvent.VK_C, null,
+		treeItems.add(createMenuItem("Collapse All", KeyEvent.VK_C, null,
 				"Collapse all nodes in the unit tree", handler));
+
+		final JMenuItem currentPlayerItem;
+		if (model instanceof IWorkerModel) {
+			currentPlayerItem = createMenuItem(
+					"Change current player", KeyEvent.VK_P,
+					createHotKey(KeyEvent.VK_P),
+					"Look at a different player's units and workers", handler);
+		} else {
+			currentPlayerItem = createMenuItem(
+					"Change current player", KeyEvent.VK_P, null,
+					"Mark a player as the current player in the map", handler);
+			treeItems.forEach(item -> item.setEnabled(false));
+		}
+		viewMenu.add(currentPlayerItem);
+		treeItems.forEach(viewMenu::add);
 		return viewMenu;
 	}
 

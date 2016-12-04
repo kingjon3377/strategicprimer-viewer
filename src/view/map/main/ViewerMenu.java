@@ -37,7 +37,7 @@ public final class ViewerMenu extends SPMenu {
 					final IDriverModel model) {
 		add(createFileMenu(handler, model));
 		add(createMapMenu(handler, model));
-		addDisabled(createViewMenu(handler));
+		add(createViewMenu(handler, model));
 		add(new WindowMenu(parent));
 	}
 
