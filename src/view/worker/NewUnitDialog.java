@@ -61,10 +61,6 @@ public final class NewUnitDialog extends JFrame
 	 */
 	private final Collection<NewUnitListener> nuListeners = new ArrayList<>();
 	/**
-	 * The factory to use to generate ID numbers.
-	 */
-	private final IDRegistrar idf;
-	/**
 	 * The field to let the user give the name of the unit.
 	 */
 	private final JTextField nameField = new JTextField(10);
@@ -93,7 +89,6 @@ public final class NewUnitDialog extends JFrame
 		setLayout(new GridLayout(0, 2));
 
 		owner = player;
-		idf = idFactory;
 
 		final ActionListener okListener = evt -> {
 			final String name = nameField.getText().trim();
@@ -109,14 +104,14 @@ public final class NewUnitDialog extends JFrame
 					try {
 						idNum = NumberFormat.getIntegerInstance().parse(reqId)
 										.intValue();
-						idf.register(idNum);
+						idFactory.register(idNum);
 					} catch (final ParseException e) {
 						LOGGER.log(Level.INFO,
 								"Parse error parsing user-specified ID", e);
-						idNum = idf.createID();
+						idNum = idFactory.createID();
 					}
 				} else {
-					idNum = idf.createID();
+					idNum = idFactory.createID();
 				}
 				final IUnit unit = new Unit(owner, kind, name, idNum);
 				for (final NewUnitListener list : nuListeners) {
