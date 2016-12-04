@@ -24,6 +24,7 @@ import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
 import util.TypesafeLogger;
+import view.util.FunctionalGroupLayout;
 import view.util.SplitWithWeights;
 
 import static java.util.stream.Collectors.joining;
@@ -102,7 +103,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 */
 	private JPanel createStatPanel() {
 		final JPanel groupedPanel = new JPanel();
-		final GroupLayout layout = new GroupLayout(groupedPanel);
+		final FunctionalGroupLayout layout = new FunctionalGroupLayout(groupedPanel);
 		groupedPanel.setLayout(layout);
 		groupedPanel.setBorder(BorderFactory.createEmptyBorder());
 		layout.setAutoCreateGaps(true);
@@ -127,94 +128,27 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		final JLabel wisCaption = new JLabel("<html><b>Wis:</b></html>");
 		final JLabel chaCaption = new JLabel("<html><b>Cha:</b></html>");
 		final JLabel jobsCaption = new JLabel("<html><b>Job Levels:</b></html>");
-		layout.setVerticalGroup(layout.createSequentialGroup()
-										.addGroup(layout.createParallelGroup()
-														  .addComponent(typeCaption)
-														  .addComponent(typeLabel))
-										.addGroup(layout.createParallelGroup()
-														  .addComponent(nameCaption)
-														  .addComponent(nameLabel))
-										.addGroup(layout.createParallelGroup()
-														  .addComponent(kindCaption)
-														  .addComponent(kindLabel))
-										.addGroup(layout.createParallelGroup()
-														  .addComponent(strCaption)
-														  .addComponent(strLabel)
-														  .addComponent(intCaption)
-														  .addComponent(intLabel))
-										.addGroup(layout.createParallelGroup()
-														  .addComponent(dexCaption)
-														  .addComponent(dexLabel)
-														  .addComponent(wisCaption)
-														  .addComponent(wisLabel))
-										.addGroup(layout.createParallelGroup()
-														  .addComponent(conCaption)
-														  .addComponent(conLabel)
-														  .addComponent(chaCaption)
-														  .addComponent(chaLabel))
-										.addGroup(layout.createParallelGroup()
-														  .addComponent(jobsCaption)
-														  .addComponent(jobsPanel)));
-		layout.setHorizontalGroup(layout.createParallelGroup()
-										  .addGroup(layout.createSequentialGroup()
-															.addGroup(
-																	layout
-																			.createParallelGroup()
-																			.addComponent(
-																					typeCaption)
-																			.addComponent(
-																					nameCaption)
-																			.addComponent(
-																					kindCaption)
-																			.addGroup(
-																					layout.createSequentialGroup()
-																							.addComponent(
-																									strCaption)
-																							.addComponent(
-																									strLabel))
-																			.addGroup(
-																					layout.createSequentialGroup()
-																							.addComponent(
-																									dexCaption)
-																							.addComponent(
-																									dexLabel))
-																			.addGroup(
-																					layout.createSequentialGroup()
-																							.addComponent(
-																									conCaption)
-																							.addComponent(
-																									conLabel))
-																			.addComponent(
-																					jobsCaption))
-															.addGroup(
-																	layout
-																			.createParallelGroup()
-																			.addComponent(
-																					typeLabel)
-																			.addComponent(
-																					nameLabel)
-																			.addComponent(
-																					kindLabel)
-																			.addGroup(
-																					layout.createSequentialGroup()
-																							.addComponent(
-																									intCaption)
-																							.addComponent(
-																									intLabel))
-																			.addGroup(
-																					layout.createSequentialGroup()
-																							.addComponent(
-																									wisCaption)
-																							.addComponent(
-																									wisLabel))
-																			.addGroup(
-																					layout.createSequentialGroup()
-																							.addComponent(
-																									chaCaption)
-																							.addComponent(
-																									chaLabel))
-																			.addComponent(
-																					jobsPanel))));
+		layout.setVerticalGroup(layout.createSequentialGroupOf(
+				layout.createParallelGroupOf(typeCaption, typeLabel),
+				layout.createParallelGroupOf(nameCaption, nameLabel),
+				layout.createParallelGroupOf(kindCaption, kindLabel),
+				layout.createParallelGroupOf(strCaption, strLabel, intCaption, intLabel),
+				layout.createParallelGroupOf(dexCaption, dexLabel, wisCaption, wisLabel),
+				layout.createParallelGroupOf(conCaption, conLabel, chaCaption, chaLabel),
+				layout.createParallelGroupOf(jobsCaption, jobsPanel)));
+		layout.setHorizontalGroup(layout.createParallelGroupOf(
+				layout.createSequentialGroupOf(
+						layout.createParallelGroupOf(typeCaption, nameCaption,
+								kindCaption,
+								layout.createSequentialGroupOf(strCaption, strLabel),
+								layout.createSequentialGroupOf(dexCaption, dexLabel),
+								layout.createSequentialGroupOf(conCaption, conLabel),
+								jobsCaption),
+						layout.createParallelGroupOf(typeLabel, nameLabel, kindLabel,
+								layout.createSequentialGroupOf(intCaption, intLabel),
+								layout.createSequentialGroupOf(wisCaption, wisLabel),
+								layout.createSequentialGroupOf(chaCaption, chaLabel),
+								jobsPanel))));
 		layout.linkSize(SwingConstants.HORIZONTAL, typeCaption, nameCaption,
 				kindCaption, jobsCaption);
 		layout.linkSize(SwingConstants.HORIZONTAL, typeLabel, nameLabel,
