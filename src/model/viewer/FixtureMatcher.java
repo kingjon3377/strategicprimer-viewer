@@ -6,9 +6,6 @@ import model.map.TileFixture;
 /**
  * A wrapper around a Predicate-of-TileFixture, used to determine z-order of fixtures.
  *
- * TODO: Provide a convenience factory method that takes a Class and a method reference
- * on that class to simplify the "obj instanceof X && ((X) obj).method()" pattern
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -66,5 +63,19 @@ public class FixtureMatcher {
 	 */
 	public String getDescription() {
 		return description;
+	}
+	/**
+	 * A factory method.
+	 * @param cls the class of fixtures we want to match
+	 * @param method a method on that class to use as a second predicate
+	 * @param desc the description to use for the matcher
+	 */
+	public static <T extends TileFixture> FixtureMatcher simpleMatcher(final Class<?
+																						   extends T> cls,
+																	   Predicate<T>
+																			   method,
+																	   final String desc) {
+		final Predicate<? extends TileFixture> instanceTest = cls::isInstance;
+		return new FixtureMatcher(fix -> cls.isInstance(fix) && method.test((T) fix), desc);
 	}
 }

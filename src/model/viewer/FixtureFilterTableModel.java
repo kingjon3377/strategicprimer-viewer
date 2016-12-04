@@ -43,6 +43,8 @@ import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
 import util.Reorderable;
 
+import static model.viewer.FixtureMatcher.simpleMatcher;
+
 /**
  * A class to allow the Z-order of fixtures to be represented as a table.
  *
@@ -91,12 +93,8 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		list.add(new FixtureMatcher(Battlefield.class::isInstance, "Battlefields"));
 		list.add(new FixtureMatcher(Animal.class::isInstance, "Animals"));
 
-		list.add(new FixtureMatcher(fix -> fix instanceof Grove &&
-												   ((Grove) fix).isOrchard(),
-										   "Orchards"));
-		list.add(new FixtureMatcher(fix -> fix instanceof Grove &&
-												   !((Grove) fix).isOrchard(),
-										   "Groves"));
+		list.add(simpleMatcher(Grove.class, Grove::isOrchard, "Orchards"));
+		list.add(simpleMatcher(Grove.class, fix -> !fix.isOrchard(), "Groves"));
 
 		// TODO: Since rivers are usually handled specially, should this really be included?
 		list.add(new FixtureMatcher(RiverFixture.class::isInstance, "Rivers"));
@@ -114,10 +112,8 @@ public class FixtureFilterTableModel extends AbstractTableModel
 
 		// TODO: Shrub and Meadow were both 15; consider
 		list.add(new FixtureMatcher(Shrub.class::isInstance, "Shrubs"));
-		list.add(new FixtureMatcher(fix -> fix instanceof Meadow &&
-												   ((Meadow) fix).isField(), "Fields"));
-		list.add(new FixtureMatcher(fix -> fix instanceof Meadow &&
-												   !((Meadow) fix).isField(), "Meadows"));
+		list.add(simpleMatcher(Meadow.class, Meadow::isField, "Fields"));
+		list.add(simpleMatcher(Meadow.class, fix -> !fix.isField(), "Meadows"));
 
 		// TODO: Since mountains are now a separate aspect of a tile, should this be omitted?
 		list.add(new FixtureMatcher(Mountain.class::isInstance, "Mountains"));
@@ -126,12 +122,8 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		list.add(new FixtureMatcher(Sandbar.class::isInstance, "Sandbars"));
 		list.add(new FixtureMatcher(Hill.class::isInstance, "Hills"));
 
-		list.add(new FixtureMatcher(fix -> fix instanceof Ground &&
-												   ((Ground) fix).isExposed(),
-										   "Ground (exposed)"));
-		list.add(new FixtureMatcher(fix -> fix instanceof Ground &&
-												   !((Ground) fix).isExposed(),
-										   "Ground"));
+		list.add(simpleMatcher(Ground.class, Ground::isExposed, "Ground (exposed)"));
+		list.add(simpleMatcher(Ground.class, fix -> !fix.isExposed(), "Ground"));
 	}
 	/**
 	 * The backing collection.

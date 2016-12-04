@@ -1,17 +1,11 @@
 package view.map.main;
 
-import java.awt.Component;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
-import javax.swing.DropMode;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.resources.Grove;
@@ -21,6 +15,8 @@ import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.ReorderableListModel;
+
+import static model.viewer.FixtureMatcher.simpleMatcher;
 
 /**
  * A list to let the user select which fixtures ought to be searched.
@@ -67,22 +63,13 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 			}
 		});
 		setCellRenderer(this);
-		model.addElement(new FixtureMatcher(fix -> fix instanceof Ground &&
-													((Ground) fix).isExposed(),
-											"Ground (exposed)"));
-		model.addElement(new FixtureMatcher(
-				fix -> fix instanceof Ground && !((Ground) fix).isExposed(), "Ground"));
-		model.addElement(new FixtureMatcher(fix -> fix instanceof Grove &&
-													((Grove) fix).isOrchard(),
-											"Orchards"));
-		model.addElement(new FixtureMatcher(fix -> fix instanceof Grove &&
-													!((Grove) fix).isOrchard(),
-											"Groves"));
-		model.addElement(new FixtureMatcher(fix -> fix instanceof Meadow &&
-													((Meadow) fix).isField(), "Fields"));
-		model.addElement(new FixtureMatcher(fix -> fix instanceof Meadow &&
-													!((Meadow) fix).isField(),
-											"Meadows"));
+		model.addElement(
+				simpleMatcher(Ground.class, Ground::isExposed, "Ground (exposed)"));
+		model.addElement(simpleMatcher(Ground.class, fix -> !fix.isExposed(), "Ground"));
+		model.addElement(simpleMatcher(Grove.class, Grove::isOrchard, "Orchards"));
+		model.addElement(simpleMatcher(Grove.class, fix -> !fix.isOrchard(), "Groves"));
+		model.addElement(simpleMatcher(Meadow.class, Meadow::isField, "Fields"));
+		model.addElement(simpleMatcher(Meadow.class, fix -> !fix.isField(), "Meadows"));
 		setTransferHandler(new FixtureFilterTransferHandler());
 		setDropMode(DropMode.INSERT);
 		setDragEnabled(true);
