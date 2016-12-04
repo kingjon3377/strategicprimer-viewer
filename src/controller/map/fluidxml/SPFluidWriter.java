@@ -266,7 +266,29 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			}
 		});
 	}
+	/**
+	 * Write a unit's orders or results to XML.
+	 * @param ostream the writer to write to
+	 * @param indent  the indentation level
+	 * @param turn which turn this is for
+	 * @param tag the tag to use, either "orders" or "results"
+	 * @param text the text of the orders or results
+	 * @throws XMLStreamException       on error in the writer
+	 */
+	private static void writeUnitOrders(final XMLStreamWriter ostream, final int indent, final int turn, final String tag, final String text)
 
+			throws XMLStreamException {
+		if (text.isEmpty()) {
+			return;
+		}
+		writeTag(ostream, tag, indent, false);
+		if (turn >= 0) {
+			writeIntegerAttribute(ostream, "turn", turn);
+		}
+		// FIXME: Ensure, and test, that XML special characters are escaped
+		ostream.writeCharacters(text);
+		ostream.writeEndElement();
+	}
 	/**
 	 * Write a unit to XML.
 	 *
@@ -296,28 +318,12 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 					((HasPortrait) unit).getPortrait());
 		}
 		for (final Map.Entry<Integer, String> entry : unit.getAllOrders().entrySet()) {
-			if (entry.getValue().trim().isEmpty()) {
-				continue;
-			}
-			writeTag(ostream, "orders", indent + 1, false);
-			if (entry.getKey().intValue() >= 0) {
-				writeIntegerAttribute(ostream, "turn", entry.getKey().intValue());
-			}
-			// FIXME: Ensure, and test, that XML special characters are escaped
-			ostream.writeCharacters(entry.getValue().trim());
-			ostream.writeEndElement();
+			writeUnitOrders(ostream, indent + 1, entry.getKey().intValue(), "orders",
+					entry.getValue().trim());
 		}
 		for (final Map.Entry<Integer, String> entry : unit.getAllResults().entrySet()) {
-			if (entry.getValue().trim().isEmpty()) {
-				continue;
-			}
-			writeTag(ostream, "results", indent + 1, false);
-			if (entry.getKey().intValue() >= 0) {
-				writeIntegerAttribute(ostream, "turn", entry.getKey().intValue());
-			}
-			// FIXME: Ensure, and test, that XML special characters are escaped
-			ostream.writeCharacters(entry.getValue().trim());
-			ostream.writeEndElement();
+			writeUnitOrders(ostream, indent + 1, entry.getKey().intValue(), "results",
+					entry.getValue().trim());
 		}
 		for (final UnitMember member : unit) {
 			writeSPObject(ostream, member, indent + 1);
