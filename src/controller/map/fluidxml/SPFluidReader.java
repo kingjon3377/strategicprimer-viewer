@@ -354,6 +354,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 						event.asStartElement().getName().getLocalPart())) {
 					parseResults(event.asStartElement(), retval,
 							stream);
+					continue;
 				}
 				final Object child =
 						readSPObject(event.asStartElement(), element.getName(), stream,
