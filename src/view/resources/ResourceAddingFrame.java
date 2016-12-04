@@ -48,14 +48,6 @@ import view.worker.WorkerMenu;
  */
 public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	/**
-	 * The "resource" label.
-	 */
-	private final JLabel resourceLabel;
-	/**
-	 * The "implement" label.
-	 */
-	private final JLabel implementLabel;
-	/**
 	 * The combo box for resource kinds.
 	 */
 	private final UpdatedComboBox resKindBox = new UpdatedComboBox();
@@ -120,9 +112,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		current = StreamSupport.stream(driverModel.getPlayers().spliterator(), false)
 						  .filter(player -> player.isCurrent())
 						  .findAny().orElse(new Player(-1, ""));
-		resourceLabel =
+		final JLabel resourceLabel =
 				new JLabel(String.format("Add resource for %s:", current.getName()));
-		implementLabel =
+		final JLabel implementLabel =
 				new JLabel(String.format("Add equipment for %s:", current.getName()));
 		ioh.addPlayerChangeListener(
 				(final Player old, @Nullable final Player newPlayer) -> {
