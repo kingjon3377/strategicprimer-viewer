@@ -126,12 +126,8 @@ public final class HarvestableReportGenerator
 				mines.add(produce(fixtures, map, currentPlayer, (Mine) item, point));
 			} else if (item instanceof MineralVein) {
 				final MineralVein mineral = (MineralVein) item;
-				if (mineral.isExposed()) {
-					minerals.get("exposed " + mineral.getKind()).add(point);
-				} else {
-					minerals.get("unexposed " + mineral.getKind())
-							.add(point);
-				}
+				minerals.get(ternary(mineral.isExposed(), "exposed ", "unexposed ") +
+									 mineral.getKind()).add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (item instanceof Shrub) {
 				shrubs.get(((Shrub) item).getKind()).add(point);
@@ -215,13 +211,10 @@ public final class HarvestableReportGenerator
 				} else if (item instanceof Mine) {
 					mines.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof MineralVein) {
-					final String kind;
 					final MineralVein mineral = (MineralVein) item;
-					if (mineral.isExposed()) {
-						kind = "exposed " + mineral.getKind();
-					} else {
-						kind = "unexposed " + mineral.getKind();
-					}
+					final String kind =
+							ternary(mineral.isExposed(), "exposed ", "unexposed ") +
+									mineral.getKind();
 					final IReportNode collection;
 					if (minerals.containsKey(kind)) {
 						collection = NullCleaner.assertNotNull(minerals.get(kind));
