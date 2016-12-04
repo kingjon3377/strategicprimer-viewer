@@ -34,18 +34,7 @@ public class FunctionalGroupLayout extends GroupLayout {
 	 * @return that group
 	 */
 	public ParallelGroup createParallelGroupOf(final Object... components) {
-		final ParallelGroup retval = createParallelGroup();
-		for (final Object component : components) {
-			if (component instanceof Component) {
-				retval.addComponent((Component) component);
-			} else if (component instanceof Group) {
-				retval.addGroup((Group) component);
-			} else {
-				throw new IllegalArgumentException(
-						"Can only handle Components and Groups");
-			}
-		}
-		return retval;
+		return initializeGroup(createParallelGroup(), components);
 	}
 	/**
 	 * @param components components to add in a sequential group. Can be Components or
@@ -53,17 +42,26 @@ public class FunctionalGroupLayout extends GroupLayout {
 	 * @return that group
 	 */
 	public SequentialGroup createSequentialGroupOf(final Object... components) {
-		final SequentialGroup retval = createSequentialGroup();
+		return initializeGroup(createSequentialGroup(), components);
+	}
+	/**
+	 * @param group a group
+	 * @param components components to add to it. Can be Components or Groups; will
+	 *                      throw IllegalArgumentException on anything else
+	 * @return the group
+	 */
+	private <T extends Group> T initializeGroup(final T group,
+												final Object... components) {
 		for (final Object component : components) {
 			if (component instanceof Component) {
-				retval.addComponent((Component) component);
+				group.addComponent((Component) component);
 			} else if (component instanceof Group) {
-				retval.addGroup((Group) component);
+				group.addGroup((Group) component);
 			} else {
 				throw new IllegalArgumentException(
 						"Can only handle Components and Groups");
 			}
 		}
-		return retval;
+		return group;
 	}
 }
