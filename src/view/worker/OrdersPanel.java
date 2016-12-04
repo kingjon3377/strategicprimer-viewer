@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
+import java.util.function.BiFunction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JLabel;
@@ -24,7 +26,6 @@ import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.ProxyUnit;
-import model.workermgmt.IWorkerModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ActionWrapper;
 import util.NullCleaner;
@@ -54,9 +55,39 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 																		TreeSelectionListener,
 																		PlayerChangeListener {
 	/**
-	 * The worker model to get units from if the user selected a kind.
+	 * An interface for a function to give us the orders (or results) for a particular
+	 * unit for a particular turn.
 	 */
-	private final IWorkerModel model;
+	@FunctionalInterface
+	public interface OrdersSupplier {
+		/**
+		 * @param unit the unit whose orders (or results) are wanted
+		 * @param turn the turn for which the orders (or results) are wanted
+		 * @return the orders (or results) for that unit for that turn
+		 */
+		String getOrders(IUnit unit, int turn);
+	}
+	/**
+	 * An interface for a method to set the orders (or results) for a particular unit
+	 * for a particular turn.
+	 */
+	@FunctionalInterface
+	public interface OrdersConsumer {
+		/**
+		 * @param unit the unit whose orders (or results) are being set
+		 * @param turn the turn for which the orders (or results) are being set
+		 * @param orders the orders (or results) to set for that unit for that turn
+		 */
+		void setOrders(IUnit unit, int turn, String orders);
+	}
+	/**
+	 * The source of orders (or results).
+	 */
+	private final OrdersSupplier supplier;
+	/**
+	 * The consumer of orders (or results).
+	 */
+	private final OrdersConsumer consumer;
 	/**
 	 * The current player.
 	 */
@@ -75,14 +106,30 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	 * The model for the spinner to let the user choose what turn the orders go with.
 	 */
 	private final SpinnerNumberModel spinnerModel;
+	/**
+	 * A way to get all units belonging to the current player of a given kind, for
+	 * proxying.
+	 */
+	private final BiFunction<Player, String, List<IUnit>> proxiedFunction;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param workerModel the worker model
+	 * @param currentTurn the turn to treat as current to start with
+	 * @param currentPlayer the player whose units we start with
+	 * @param proxyingFunction A way to get all units belonging to the current player of
+	 *                            a given kind, for proxying
+	 * @param ordersSupplier the method to get the current orders for a given unit for a
+	 *                          given turn
+	 * @param ordersConsumer the method to set the current orders for a given unit for a
+	 *                          given turn
 	 */
 	@SuppressWarnings("StringConcatenationMissingWhitespace")
-	public OrdersPanel(final IWorkerModel workerModel) {
+	public OrdersPanel(final int currentTurn, final Player currentPlayer,
+					   final BiFunction<Player, String, List<IUnit>> proxyingFunction,
+					   final OrdersSupplier ordersSupplier,
+					   final OrdersConsumer ordersConsumer) {
+		supplier = ordersSupplier;
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
 		final boolean onMac = OnMac.SYSTEM_IS_MAC;
@@ -95,7 +142,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 			prefix = "Ctrl+";
 			keyMask = InputEvent.CTRL_DOWN_MASK;
 		}
-		final int initialTurn = workerModel.getMap().getCurrentTurn();
+		final int initialTurn = currentTurn;
 		final int minTurn;
 		if (initialTurn < 0) {
 			minTurn = initialTurn;
@@ -109,32 +156,44 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 			maxTurn = 100;
 		}
 		spinnerModel = new SpinnerNumberModel(initialTurn, minTurn, maxTurn, 1);
-		final ListenedButton applyButton = new ListenedButton("Apply", evt -> apply());
-		final ListenedButton revertButton = new ListenedButton("Revert", evt -> revert());
-		final JPanel buttonPanel;
-		if (OnMac.SYSTEM_IS_MAC) {
-			applyButton.putClientProperty("JButton.buttonType", "segmented");
-			revertButton.putClientProperty("JButton.buttonType", "segmented");
-			applyButton.putClientProperty("JButton.segmentPosition", "first");
-			revertButton.putClientProperty("JButton.segmentPosition", "last");
-			buttonPanel = new BoxPanel(true);
-			((BoxPanel) buttonPanel).addGlue();
-			buttonPanel.add(applyButton);
-			((BoxPanel) buttonPanel).addRigidArea(2);
-			buttonPanel.add(revertButton);
-			((BoxPanel) buttonPanel).addGlue();
+		if (ordersConsumer == null) {
+			consumer = (unit, turn, orders) -> {};
+			setPageStart(horizontalPanel(
+					new JLabel("Results for current selection, if a unit"),
+					null, horizontalPanel(null,
+					new JLabel("Turn "), new JSpinner(spinnerModel))))
+					.setCenter(new JScrollPane(area));
 		} else {
-			buttonPanel = horizontalPanel(applyButton, null, revertButton);
+			consumer = ordersConsumer;
+			final ListenedButton applyButton =
+					new ListenedButton("Apply", evt -> apply());
+			final ListenedButton revertButton =
+					new ListenedButton("Revert", evt -> revert());
+			final JPanel buttonPanel;
+			if (OnMac.SYSTEM_IS_MAC) {
+				applyButton.putClientProperty("JButton.buttonType", "segmented");
+				revertButton.putClientProperty("JButton.buttonType", "segmented");
+				applyButton.putClientProperty("JButton.segmentPosition", "first");
+				revertButton.putClientProperty("JButton.segmentPosition", "last");
+				buttonPanel = new BoxPanel(true);
+				((BoxPanel) buttonPanel).addGlue();
+				buttonPanel.add(applyButton);
+				((BoxPanel) buttonPanel).addRigidArea(2);
+				buttonPanel.add(revertButton);
+				((BoxPanel) buttonPanel).addGlue();
+			} else {
+				buttonPanel = horizontalPanel(applyButton, null, revertButton);
+			}
+			setPageStart(horizontalPanel(
+					new JLabel("Orders for current selection, if a unit: (" + prefix +
+									   "D)"), null,
+					horizontalPanel(null, new JLabel("Turn "),
+							new JSpinner(spinnerModel)))).setCenter(new JScrollPane(area))
+					.setPageEnd(buttonPanel);
 		}
-		setPageStart(horizontalPanel(
-				new JLabel("Orders for current selection, if a unit: (" + prefix + "D)"),
-				new JLabel("Turn "), new JSpinner(spinnerModel)))
-				.setCenter(new JScrollPane(area)).setPageEnd(
-				buttonPanel);
 		area.addKeyListener(new ModifiedEnterListener());
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);
-		model = workerModel;
 		final InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
 		final ActionMap actionMap = getActionMap();
 		assert (inputMap != null) && (actionMap != null);
@@ -150,7 +209,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 			}));
 		// TODO: We really ought to support writing the orders *then* setting the turn
 		spinnerModel.addChangeListener(event -> revert());
-		player = model.getMap().getCurrentPlayer();
+		player = currentPlayer;
+		proxiedFunction = proxyingFunction;
 	}
 
 	/**
@@ -159,9 +219,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	@Override
 	public void apply() {
 		if (sel instanceof IUnit) {
-			final IUnit selection = (IUnit) sel;
-			selection.setOrders(spinnerModel.getNumber().intValue(), NullCleaner
-										.assertNotNull(area.getText().trim()));
+			consumer.setOrders((IUnit) sel, spinnerModel.getNumber().intValue(),
+					NullCleaner.assertNotNull(area.getText()));
 			getParent().getParent().repaint();
 		}
 	}
@@ -174,8 +233,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	@Override
 	public void revert() {
 		if (sel instanceof IUnit) {
-			area.setText(((IUnit) sel).getLatestOrders(spinnerModel.getNumber().intValue())
-								 .trim());
+			area.setText(
+					supplier.getOrders((IUnit) sel, spinnerModel.getNumber().intValue()));
 		} else {
 			area.setText("");
 		}
@@ -199,7 +258,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 			if (sel instanceof String) {
 				final String kind = (String) sel;
 				final ProxyUnit proxyUnit = new ProxyUnit(kind);
-				model.getUnits(player, kind).forEach(proxyUnit::addProxied);
+				proxiedFunction.apply(player, kind).forEach(proxyUnit::addProxied);
 				sel = proxyUnit;
 			}
 			revert();

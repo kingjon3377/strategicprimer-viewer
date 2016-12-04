@@ -92,12 +92,12 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 
 	/**
 	 * Constructor: lay out, then clear, the panel.
+	 * @param resultsPanel the panel to display unit results
 	 */
-	public MemberDetailPanel() {
+	public MemberDetailPanel(final JPanel resultsPanel) {
 		super(new BorderLayout());
-		final JComponent split = SplitWithWeights.horizontalSplit(0.6, 0.6,
-				createStatPanel(),
-				portraitComponent);
+		final JComponent split = SplitWithWeights.verticalSplit(0.5, 0.5, SplitWithWeights.horizontalSplit(0.6, 0.6,
+				createStatPanel(), portraitComponent), resultsPanel);
 		split.setBorder(BorderFactory.createEmptyBorder());
 		add(split);
 		recache();

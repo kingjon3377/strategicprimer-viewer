@@ -151,7 +151,13 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 									keyDesc);
 		ioHandler.addPlayerChangeListener(playerLabel);
 		ioHandler.addPlayerChangeListener(newUnitFrame);
-		final OrdersPanel ordersPanel = new OrdersPanel(model);
+		final OrdersPanel ordersPanel =
+				new OrdersPanel(model.getMap().getCurrentTurn(),
+									   model.getMap().getCurrentPlayer(),
+									   model::getUnits,
+									   (unit, turn) -> unit.getLatestOrders(turn),
+									   (unit, turn, orders) -> unit.setOrders(turn,
+											   orders));
 		ioHandler.addPlayerChangeListener(ordersPanel);
 		tree.addTreeSelectionListener(ordersPanel);
 		final DefaultTreeModel reportModel =
@@ -188,7 +194,13 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		final ReportUpdater reportUpdater = new ReportUpdater(model, reportModel);
 		ioHandler.addPlayerChangeListener(reportUpdater);
 		model.addMapChangeListener(reportUpdater);
-		final MemberDetailPanel mdp = new MemberDetailPanel();
+		final OrdersPanel resultsPanel =
+				new OrdersPanel(mainMap.getCurrentTurn(), mainMap.getCurrentPlayer(),
+									   model::getUnits,
+									   (unit, turn) -> unit.getResults(turn), null);
+		ioHandler.addPlayerChangeListener(resultsPanel);
+		tree.addTreeSelectionListener(resultsPanel);
+		final MemberDetailPanel mdp = new MemberDetailPanel(resultsPanel);
 		tree.addUnitMemberListener(mdp);
 		final StrategyExporter strategyExporter = new StrategyExporter(model);
 		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
@@ -209,7 +221,10 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 																									   options,
 																									   treeModel
 																											   .dismissed()))))),
-				verticalPanel(new JLabel(RPT_HDR), new JScrollPane(report), mdp)));
+				verticalSplit(0.6, 0.6,
+						verticalPanel(new JLabel(RPT_HDR), new JScrollPane(report),
+								null),
+						mdp)));
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
 		setJMenuBar(new WorkerMenu(ioHandler, this, model));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
