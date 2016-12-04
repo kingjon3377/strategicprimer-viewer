@@ -61,10 +61,6 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 */
 	private static final String BUTTON_TEXT = "Start exploring!";
 	/**
-	 * The list of players.
-	 */
-	private final JList<Player> playerList;
-	/**
 	 * The list of completion listeners listening to us.
 	 */
 	private final Collection<CompletionListener> cListeners = new ArrayList<>();
@@ -80,10 +76,6 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 * The text-field containing the running MP total.
 	 */
 	private final JTextField mpField = new JTextField(5);
-	/**
-	 * The exploration model.
-	 */
-	private final IExplorationModel model;
 
 	/**
 	 * Constructor.
@@ -91,10 +83,9 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 * @param explorationModel the driver model
 	 */
 	public ExplorerSelectingPanel(final IExplorationModel explorationModel) {
-		model = explorationModel;
 		final PlayerListModel playerListModel = new PlayerListModel(explorationModel);
 		explorationModel.addMapChangeListener(playerListModel);
-		playerList = new JList<>(playerListModel);
+		final JList<Player> playerList = new JList<>(playerListModel);
 		playerList.addListSelectionListener(evt -> {
 			if (!playerList.isSelectionEmpty()) {
 				final Player newPlayer = playerList.getSelectedValue();
@@ -132,7 +123,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 			final IUnit selectedValue =
 					unitList.getSelectedValue();
 			if (!unitList.isSelectionEmpty()) {
-				model.selectUnit(selectedValue);
+				explorationModel.selectUnit(selectedValue);
 				cListeners.forEach(CompletionListener::finished);
 			}
 		};
