@@ -138,7 +138,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		final IReportNode retval = new SectionListReportNode(4, TOWN_HDR);
 		Stream.of(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
 				TownStatus.Burned).map(separated::get)
-				.filter(node -> (node != null) && (node.getChildCount() != 0)).forEach(retval::add);
+				.filter(Objects::nonNull).forEach(retval::addIfNonEmpty);
 		if (retval.getChildCount() == 0) {
 			return EmptyReportNode.NULL_NODE;
 		} else {

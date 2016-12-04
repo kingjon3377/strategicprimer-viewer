@@ -166,12 +166,7 @@ public final class FortressMemberReportGenerator
 		}
 		final IReportNode retval =
 				new SectionListReportNode(4, "Resources and Equipment");
-		if (rsr.getChildCount() > 0) {
-			retval.add(rsr);
-		}
-		if (equip.getChildCount() > 0) {
-			retval.add(equip);
-		}
+		retval.addIfNonEmpty(rsr, equip);
 		if (retval.getChildCount() > 0) {
 			return retval;
 		} else {

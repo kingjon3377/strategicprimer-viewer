@@ -113,4 +113,14 @@ public interface IReportNode
 	default int compareTo(final IReportNode obj) {
 		return produce().compareTo(obj.produce());
 	}
+	/**
+	 * @param children new children to add, each only if it has children of its own
+	 */
+	default void addIfNonEmpty(final MutableTreeNode... children) {
+		for (final MutableTreeNode child : children) {
+			if (child.getChildCount() != 0) {
+				add(child);
+			}
+		}
+	}
 }

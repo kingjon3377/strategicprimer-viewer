@@ -153,15 +153,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 			}
 		});
 		final IReportNode retval = new SectionReportNode(4, "Villages:");
-		if (own.getChildCount() != 0) {
-			retval.add(own);
-		}
-		if (independents.getChildCount() != 0) {
-			retval.add(independents);
-		}
-		if (others.getChildCount() != 0) {
-			retval.add(others);
-		}
+		retval.addIfNonEmpty(own, independents, others);
 		if (retval.getChildCount() == 0) {
 			return EmptyReportNode.NULL_NODE;
 		} else {

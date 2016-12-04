@@ -238,7 +238,7 @@ public final class ImmortalsReportGenerator
 			}
 		}
 		final IReportNode retval = new SectionListReportNode(4, "Immortals");
-		optionallyAdd(retval, coalesce("Dragons", dragons),
+		retval.addIfNonEmpty(coalesce("Dragons", dragons),
 				coalesce("Fairies", fairies), trolls, djinni, sphinxes,
 				coalesce("Giants", giants), minotaurs, ogres,
 				coalesce("Centaurs", centaurs), phoenixes, simurghs, griffins);
@@ -259,16 +259,6 @@ public final class ImmortalsReportGenerator
 		final IReportNode retval = new ListReportNode(header);
 		mapping.values().forEach(retval::add);
 		return retval;
-	}
-
-	/**
-	 * @param parent   a node
-	 * @param children possible children to add, if they have children of their own
-	 */
-	private static void optionallyAdd(final IReportNode parent,
-									final IReportNode... children) {
-		Stream.of(children).filter(child -> child.getChildCount() > 0)
-				.forEach(parent::add);
 	}
 
 	/**

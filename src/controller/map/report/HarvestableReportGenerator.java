@@ -251,29 +251,12 @@ public final class HarvestableReportGenerator
 				new SortedSectionListReportNode(5, "Exposed stone deposits");
 		stone.values().forEach(stoneNode::add);
 		final SectionReportNode retval = new SectionReportNode(4, "Resource Sources");
-		if (addAllNonEmpty(retval, caches, groves, meadows, mines, mineralsNode,
-				stoneNode, shrubsNode)) {
+		retval.addIfNonEmpty(caches, groves, meadows, mines, mineralsNode, stoneNode, shrubsNode);
+		if (retval.getChildCount() != 0) {
 			return retval;
 		} else {
 			return EmptyReportNode.NULL_NODE;
 		}
-	}
-
-	/**
-	 * @param parent   a parent node
-	 * @param children nodes to add iff they have children of their own
-	 * @return whether any of them was added
-	 */
-	private static boolean addAllNonEmpty(final DefaultMutableTreeNode parent,
-										final MutableTreeNode... children) {
-		boolean retval = false;
-		for (final MutableTreeNode child : children) {
-			if (child.getChildCount() != 0) {
-				parent.add(child);
-				retval = true;
-			}
-		}
-		return retval;
 	}
 
 	/**

@@ -280,21 +280,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				}
 				fixtures.remove(Integer.valueOf(member.getID()));
 			}
-			if (workers.getChildCount() != 0) {
-				retval.add(workers);
-			}
-			if (animals.getChildCount() != 0) {
-				retval.add(animals);
-			}
-			if (equipment.getChildCount() != 0) {
-				retval.add(equipment);
-			}
-			if (resources.getChildCount() != 0) {
-				retval.add(resources);
-			}
-			if (others.getChildCount() != 0) {
-				retval.add(others);
-			}
+			retval.addIfNonEmpty(workers, animals, equipment, resources, others);
 			final ListReportNode ordersNode = new ListReportNode("Orders and Results:");
 			final Set<Integer> turns = new TreeSet<>();
 			turns.addAll(item.getAllOrders().keySet());
@@ -309,13 +295,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				if (!results.isEmpty()) {
 					current.add(new SimpleReportNode("Results: ", results));
 				}
-				if (current.getChildCount() != 0) {
-					ordersNode.add(current);
-				}
+				ordersNode.addIfNonEmpty(current);
 			}
-			if (ordersNode.getChildCount() != 0) {
-				retval.add(ordersNode);
-			}
+			retval.addIfNonEmpty(ordersNode);
 			return retval;
 		} else {
 			return new SimpleReportNode(loc, simple);

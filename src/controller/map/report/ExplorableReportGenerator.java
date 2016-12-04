@@ -189,15 +189,7 @@ public final class ExplorableReportGenerator
 		}
 		final IReportNode retval =
 				new SectionListReportNode(4, "Caves, Battlefields, and Portals");
-		if (caves.getChildCount() > 0) {
-			retval.add(caves);
-		}
-		if (battles.getChildCount() > 0) {
-			retval.add(battles);
-		}
-		if (portals.getChildCount() > 0) {
-			retval.add(portals);
-		}
+		retval.addIfNonEmpty(caves, battles, portals);
 		if (retval.getChildCount() > 0) {
 			if (adventures.getChildCount() > 0) {
 				final IReportNode real = new ComplexReportNode();

@@ -419,18 +419,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 									.produceRIR(fixtures, map, currentPlayer, unit, loc));
 				}
 			}
-			if (units.getChildCount() != 0) {
-				retval.add(units);
-			}
-			if (resources.getChildCount() != 0) {
-				retval.add(resources);
-			}
-			if (equipment.getChildCount() != 0) {
-				retval.add(equipment);
-			}
-			if (contents.getChildCount() != 0) {
-				retval.add(contents);
-			}
+			retval.addIfNonEmpty(units, resources, equipment, contents);
 		}
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return retval;
