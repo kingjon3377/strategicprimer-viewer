@@ -95,6 +95,18 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 */
 	public MemberDetailPanel() {
 		super(new BorderLayout());
+		final JComponent split = SplitWithWeights.horizontalSplit(0.6, 0.6,
+				createStatPanel(),
+				portraitComponent);
+		split.setBorder(BorderFactory.createEmptyBorder());
+		add(split);
+		recache();
+	}
+
+	/**
+	 * @return the panel for showing worker stats, all laid out.
+	 */
+	private JPanel createStatPanel() {
 		final JPanel groupedPanel = new JPanel();
 		final GroupLayout layout = new GroupLayout(groupedPanel);
 		groupedPanel.setLayout(layout);
@@ -190,11 +202,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		layout.linkSize(SwingConstants.VERTICAL, typeCaption, typeLabel);
 		layout.linkSize(SwingConstants.VERTICAL, nameCaption, nameLabel);
 		layout.linkSize(SwingConstants.VERTICAL, kindCaption, kindLabel);
-		final JComponent split = SplitWithWeights.horizontalSplit(0.6, 0.6, groupedPanel,
-				portraitComponent);
-		split.setBorder(BorderFactory.createEmptyBorder());
-		add(split);
-		recache();
+		return groupedPanel;
 	}
 
 	/**
