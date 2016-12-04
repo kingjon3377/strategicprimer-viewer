@@ -352,7 +352,6 @@ public final class AppStarter implements ISPDriver {
 		if (!currentOptions.hasOption("--gui")) {
 			currentOptions.setOption("--gui", Boolean.toString(gui));
 		}
-		final Collection<String> optionsList = new ArrayList<>();
 		final List<String> others = new ArrayList<>();
 		// FIXME: To reduce calculated complexity and fix the null-object
 		// pattern here, make a driver class for CLI driver choosing, and make a
