@@ -70,16 +70,8 @@ public final class EchoDriver implements UtilityDriver {
 		try {
 			map =
 					new MapReaderAdapter().readMap(infile, Warning.Ignore);
-		} catch (final MapVersionException except) {
-			throw new DriverFailedException("Unsupported map version", except);
-		} catch (final IOException except) {
-			//noinspection HardcodedFileSeparator
-			throw new DriverFailedException("I/O error reading file " + infile,
-												   except);
-		} catch (final XMLStreamException except) {
-			throw new DriverFailedException("Malformed XML", except);
-		} catch (final SPFormatException except) {
-			throw new DriverFailedException("SP map format error", except);
+		} catch (final IOException | SPFormatException | XMLStreamException except) {
+			throw new DriverFailedException(message(infile, except), except);
 		}
 		// Fix forest IDs in a way that shouldn't break consistency between main and
 		// player maps too much.
@@ -110,7 +102,25 @@ public final class EchoDriver implements UtilityDriver {
 			throw new DriverFailedException("I/O error writing " + outfile, except);
 		}
 	}
-
+	/**
+	 * @param filename the name of the file being read or written
+	 * @param except the exception being wrapped
+	 * @return an appropriate message for the DriverFailedException
+	 */
+	private static String message(final Path filename, final Exception except) {
+		if (except instanceof MapVersionException) {
+			return "Unsupported map version";
+		} else if (except instanceof IOException) {
+			//noinspection HardcodedFileSeparator
+			return "I/O error reading file " + filename;
+		} else if (except instanceof XMLStreamException) {
+			return "Malformed XML";
+		} else if (except instanceof SPFormatException) {
+			return "SP map format error";
+		} else {
+			return "Unknown error";
+		}
+	}
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
