@@ -27,7 +27,10 @@ public class FixtureMatcher {
 	 * Whether matching fixtures should be displayed.
 	 */
 	private boolean displayed = true;
-
+	/**
+	 * A description of items matched by this matcher.
+	 */
+	private final String description;
 	/**
 	 * @param matcher the predicate to use to match fixtures.
 	 * @param desc    a description of the fixtures that it matches
@@ -67,10 +70,7 @@ public class FixtureMatcher {
 	 */
 	public boolean isDisplayed() {
 		return displayed;
-	}	/**
-	 * A description of items matched by this matcher.
-	 */
-	private final String description;
+	}
 
 	/**
 	 * @param display whether matching fixtures should be displayed
