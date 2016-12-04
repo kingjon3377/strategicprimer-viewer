@@ -68,8 +68,7 @@ public final class EchoDriver implements UtilityDriver {
 		final IMutableMapNG map;
 		final Path infile = Paths.get(args[0]);
 		try {
-			map =
-					new MapReaderAdapter().readMap(infile, Warning.Ignore);
+			map = new MapReaderAdapter().readMap(infile, Warning.Ignore);
 		} catch (final IOException | SPFormatException | XMLStreamException except) {
 			throw new DriverFailedException(message(infile, except), except);
 		}
@@ -77,17 +76,7 @@ public final class EchoDriver implements UtilityDriver {
 		// player maps too much.
 		final IDRegistrar idFactory = IDFactoryFiller.createFactory(map);
 		for (final Point location : map.locations()) {
-			final Forest mainForest = map.getForest(location);
-			if (mainForest != null && mainForest.getID() < 0) {
-				final int id = 1147200 + location.getRow() * 176 + location.getCol();
-				idFactory.register(id);
-				mainForest.setID(id);
-			}
-			for (final TileFixture fix : map.getOtherFixtures(location)) {
-				if (fix instanceof Forest && fix.getID() < 0) {
-					((Forest) fix).setID(idFactory.createID());
-				}
-			}
+			fixForestIDs(map, idFactory, location);
 		}
 		if (options.hasOption("--current-turn")) {
 			final int currentTurn =
@@ -102,6 +91,32 @@ public final class EchoDriver implements UtilityDriver {
 			throw new DriverFailedException("I/O error writing " + outfile, except);
 		}
 	}
+
+	/**
+	 * Fix forest IDs in a way that shouldn't break consistency between main and player
+	 * maps too much. Forests used to all be "ID -1," but can now have positive
+	 * IDs---but simply using "the first unused ID" in the reading code would cause
+	 * chaos from a subset-consistency standpoint.
+	 * @param map the map
+	 * @param idFactory the ID factory
+	 * @param location the point we're handling now
+	 */
+	private static void fixForestIDs(final IMutableMapNG map,
+									 final IDRegistrar idFactory,
+									 final Point location) {
+		final Forest mainForest = map.getForest(location);
+		if (mainForest != null && mainForest.getID() < 0) {
+			final int id = 1147200 + location.getRow() * 176 + location.getCol();
+			idFactory.register(id);
+			mainForest.setID(id);
+		}
+		for (final TileFixture fix : map.getOtherFixtures(location)) {
+			if (fix instanceof Forest && fix.getID() < 0) {
+				((Forest) fix).setID(idFactory.createID());
+			}
+		}
+	}
+
 	/**
 	 * @param filename the name of the file being read or written
 	 * @param except the exception being wrapped
