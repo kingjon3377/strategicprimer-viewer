@@ -102,10 +102,11 @@ public final class HarvestableReportGenerator
 			} else if (item instanceof Mine) {
 				mines.add(produce(fixtures, map, currentPlayer, (Mine) item, point));
 			} else if (item instanceof MineralVein) {
-				if (((MineralVein) item).isExposed()) {
-					minerals.get("exposed " + ((MineralVein) item).getKind()).add(point);
+				final MineralVein mineral = (MineralVein) item;
+				if (mineral.isExposed()) {
+					minerals.get("exposed " + mineral.getKind()).add(point);
 				} else {
-					minerals.get("unexposed " + ((MineralVein) item).getKind())
+					minerals.get("unexposed " + mineral.getKind())
 							.add(point);
 				}
 				fixtures.remove(Integer.valueOf(item.getID()));
@@ -197,10 +198,11 @@ public final class HarvestableReportGenerator
 					mines.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof MineralVein) {
 					final String kind;
-					if (((MineralVein) item).isExposed()) {
-						kind = "exposed " + ((MineralVein) item).getKind();
+					final MineralVein mineral = (MineralVein) item;
+					if (mineral.isExposed()) {
+						kind = "exposed " + mineral.getKind();
 					} else {
-						kind = "unexposed " + ((MineralVein) item).getKind();
+						kind = "unexposed " + mineral.getKind();
 					}
 					final IReportNode collection;
 					if (minerals.containsKey(kind)) {
@@ -214,23 +216,26 @@ public final class HarvestableReportGenerator
 							loc));
 				} else if (item instanceof Shrub) {
 					final IReportNode collection;
-					if (shrubs.containsKey(((Shrub) item).getKind())) {
-						collection = NullCleaner.assertNotNull(shrubs.get(((Shrub) item).getKind()));
+					final Shrub shrub = (Shrub) item;
+					if (shrubs.containsKey(shrub.getKind())) {
+						collection = NullCleaner.assertNotNull(shrubs.get(shrub.getKind()));
 					} else {
 						//noinspection ObjectAllocationInLoop
-						collection = new ListReportNode(((Shrub) item).getKind());
-						shrubs.put(((Shrub) item).getKind(), collection);
+						collection = new ListReportNode(shrub.getKind());
+						shrubs.put(shrub.getKind(), collection);
 					}
 					collection.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 					fixtures.remove(Integer.valueOf(item.getID()));
 				} else if (item instanceof StoneDeposit) {
 					final IReportNode collection;
-					if (stone.containsKey(((StoneDeposit) item).getKind())) {
-						collection = NullCleaner.assertNotNull(stone.get(((StoneDeposit) item).getKind()));
+					final StoneDeposit deposit = (StoneDeposit) item;
+					if (stone.containsKey(deposit.getKind())) {
+						collection = NullCleaner.assertNotNull(stone.get(
+								deposit.getKind()));
 					} else {
 						//noinspection ObjectAllocationInLoop
-						collection = new ListReportNode(((StoneDeposit) item).getKind());
-						stone.put(((StoneDeposit) item).getKind(), collection);
+						collection = new ListReportNode(deposit.getKind());
+						stone.put(deposit.getKind(), collection);
 					}
 					collection.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				}
@@ -287,28 +292,31 @@ public final class HarvestableReportGenerator
 						  final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
+			final CacheFixture cache = (CacheFixture) item;
 			return concat(atPoint(loc), " ", distCalculator.distanceString(loc),
 					"A cache of ",
-					((CacheFixture) item).getKind(), ", containing ",
-					((CacheFixture) item).getContents());
+					cache.getKind(), ", containing ",
+					cache.getContents());
 		} else if (item instanceof Grove) {
 			fixtures.remove(Integer.valueOf(item.getID()));
+			final Grove grove = (Grove) item;
 			return concat(
 					atPoint(loc),
 					"A ",
-					ternary(((Grove) item).isCultivated(), "cultivated ",
-							"wild "), ((Grove) item).getKind(),
-					ternary(((Grove) item).isOrchard(), " orchard", " grove"), " ",
+					ternary(grove.isCultivated(), "cultivated ",
+							"wild "), grove.getKind(),
+					ternary(grove.isOrchard(), " orchard", " grove"), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
+			final Meadow meadow = (Meadow) item;
 			return concat(
 					atPoint(loc),
 					"A ",
-					((Meadow) item).getStatus().toString(),
-					ternary(((Meadow) item).isCultivated(), " cultivated ",
-							" wild or abandoned "), ((Meadow) item).getKind(),
-					ternary(((Meadow) item).isField(), " field", " meadow"), " ",
+					meadow.getStatus().toString(),
+					ternary(meadow.isCultivated(), " cultivated ",
+							" wild or abandoned "), meadow.getKind(),
+					ternary(meadow.isField(), " field", " meadow"), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -316,12 +324,13 @@ public final class HarvestableReportGenerator
 					distCalculator.distanceString(loc));
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
+			final MineralVein mineral = (MineralVein) item;
 			return concat(
 					atPoint(loc),
 					"An ",
-					ternary(((MineralVein) item).isExposed(), "exposed ",
+					ternary(mineral.isExposed(), "exposed ",
 							"unexposed "), "vein of ",
-					((MineralVein) item).getKind(), " ",
+					mineral.getKind(), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -354,30 +363,33 @@ public final class HarvestableReportGenerator
 									   final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
+			final CacheFixture cache = (CacheFixture) item;
 			return new SimpleReportNode(loc, atPoint(loc), " ",
 											distCalculator.distanceString(loc),
 											" A cache of ",
-											((CacheFixture) item).getKind(),
+											cache.getKind(),
 											", containing ",
-											((CacheFixture) item).getContents());
+											cache.getContents());
 		} else if (item instanceof Grove) {
 			fixtures.remove(Integer.valueOf(item.getID()));
+			final Grove grove = (Grove) item;
 			return new SimpleReportNode(loc, atPoint(loc), "A ",
-											ternary(((Grove) item).isCultivated(),
+											ternary(grove.isCultivated(),
 													"cultivated ", "wild "),
-											((Grove) item).getKind(),
-											ternary(((Grove) item).isOrchard(),
+											grove.getKind(),
+											ternary(grove.isOrchard(),
 													" orchard", " grove"), " ",
 											distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
+			final Meadow meadow = (Meadow) item;
 			return new SimpleReportNode(loc, atPoint(loc), "A ",
-											((Meadow) item).getStatus().toString(),
-											ternary(((Meadow) item).isCultivated(),
+											meadow.getStatus().toString(),
+											ternary(meadow.isCultivated(),
 													" cultivated ",
 													" wild or abandoned "),
-											((Meadow) item).getKind(),
-											ternary(((Meadow) item).isField(),
+											meadow.getKind(),
+											ternary(meadow.isField(),
 													" field", " meadow"), " ",
 											distCalculator.distanceString(loc));
 		} else if (item instanceof Mine) {
@@ -387,11 +399,12 @@ public final class HarvestableReportGenerator
 													.distanceString(loc));
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
+			final MineralVein mineral = (MineralVein) item;
 			return new SimpleReportNode(loc, atPoint(loc), "An ",
-											ternary(((MineralVein) item).isExposed(),
+											ternary(mineral.isExposed(),
 													"exposed ",
 													"unexposed "), "vein of ",
-											((MineralVein) item).getKind(), " ",
+											mineral.getKind(), " ",
 											distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));

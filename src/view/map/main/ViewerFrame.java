@@ -129,11 +129,12 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 			allButton.putClientProperty("JButton.segmentPosition", "first");
 			noneButton.putClientProperty("JButton.segmentPosition", "last");
 			buttonPanel = new BoxPanel(true);
-			((BoxPanel) buttonPanel).addGlue();
+			final BoxPanel boxView = (BoxPanel) buttonPanel;
+			boxView.addGlue();
 			buttonPanel.add(allButton);
-			((BoxPanel) buttonPanel).addRigidArea(2);
+			boxView.addRigidArea(2);
 			buttonPanel.add(noneButton);
-			((BoxPanel) buttonPanel).addGlue();
+			boxView.addGlue();
 		} else {
 			buttonPanel = BorderedPanel.horizontalPanel(allButton, null, noneButton);
 		}

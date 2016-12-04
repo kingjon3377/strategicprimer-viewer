@@ -247,36 +247,41 @@ public final class CompactResourceReader extends
 					final int indent) throws IOException {
 		if (obj instanceof CacheFixture) {
 			writeTag(ostream, "cache", indent);
+			final CacheFixture cache = (CacheFixture) obj;
 			ostream.append(" kind=\"");
-			ostream.append(((CacheFixture) obj).getKind());
+			ostream.append(cache.getKind());
 			ostream.append("\" contents=\"");
-			ostream.append(((CacheFixture) obj).getContents());
+			ostream.append(cache.getContents());
 		} else if (obj instanceof Meadow) {
 			writeTag(ostream, getMeadowTag((Meadow) obj), indent);
+			final Meadow meadow = (Meadow) obj;
 			ostream.append(" kind=\"");
-			ostream.append(((Meadow) obj).getKind());
+			ostream.append(meadow.getKind());
 			ostream.append("\" cultivated=\"");
-			ostream.append(Boolean.toString(((Meadow) obj).isCultivated()));
+			ostream.append(Boolean.toString(meadow.isCultivated()));
 			ostream.append("\" status=\"");
-			ostream.append(((Meadow) obj).getStatus().toString());
+			ostream.append(meadow.getStatus().toString());
 		} else if (obj instanceof Grove) {
 			writeTag(ostream, getGroveTag((Grove) obj), indent);
+			final Grove grove = (Grove) obj;
 			ostream.append(" cultivated=\"");
-			ostream.append(Boolean.toString(((Grove) obj).isCultivated()));
+			ostream.append(Boolean.toString(grove.isCultivated()));
 			ostream.append("\" kind=\"");
-			ostream.append(((Grove) obj).getKind());
+			ostream.append(grove.getKind());
 		} else if (obj instanceof Mine) {
 			writeTag(ostream, "mine", indent);
 			ostream.append(" kind=\"");
-			ostream.append(((Mine) obj).getKind());
+			final Mine mine = (Mine) obj;
+			ostream.append(mine.getKind());
 			ostream.append("\" status=\"");
-			ostream.append(((Mine) obj).getStatus().toString());
+			ostream.append(mine.getStatus().toString());
 		} else if (obj instanceof MineralVein) {
 			writeTag(ostream, "mineral", indent);
 			ostream.append(" kind=\"");
-			ostream.append(((MineralVein) obj).getKind());
+			final MineralVein mineral = (MineralVein) obj;
+			ostream.append(mineral.getKind());
 			ostream.append("\" exposed=\"");
-			ostream.append(Boolean.toString(((MineralVein) obj).isExposed()));
+			ostream.append(Boolean.toString(mineral.isExposed()));
 			ostream.append("\" dc=\"");
 			ostream.append(Integer.toString(((IEvent) obj).getDC()));
 		} else if (obj instanceof Shrub) {
@@ -286,9 +291,10 @@ public final class CompactResourceReader extends
 		} else if (obj instanceof StoneDeposit) {
 			writeTag(ostream, "stone", indent);
 			ostream.append(" kind=\"");
-			ostream.append(((StoneDeposit) obj).stone().toString());
+			final StoneDeposit stone = (StoneDeposit) obj;
+			ostream.append(stone.stone().toString());
 			ostream.append("\" dc=\"");
-			ostream.append(Integer.toString(((StoneDeposit) obj).getDC()));
+			ostream.append(Integer.toString(stone.getDC()));
 		} else {
 			throw new IllegalStateException("Unhandled HarvestableFixture subtype");
 		}

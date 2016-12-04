@@ -207,21 +207,22 @@ public final class CompactMobileReader extends
 			CompactUnitReader.READER.write(ostream, (IUnit) obj, indent);
 		} else if (obj instanceof Animal) {
 			writeTag(ostream, "animal", indent);
+			final Animal animal = (Animal) obj;
 			ostream.append(" kind=\"");
-			ostream.append(((Animal) obj).getKind());
-			if (((Animal) obj).isTraces()) {
+			ostream.append(animal.getKind());
+			if (animal.isTraces()) {
 				ostream.append("\" traces=\"");
 			}
-			if (((Animal) obj).isTalking()) {
+			if (animal.isTalking()) {
 				ostream.append("\" talking=\"true");
 			}
-			if (!"wild".equals(((Animal) obj).getStatus())) {
+			if (!"wild".equals(animal.getStatus())) {
 				ostream.append("\" status=\"");
-				ostream.append(((Animal) obj).getStatus());
+				ostream.append(animal.getStatus());
 			}
 			ostream.append("\" id=\"");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('"').append(imageXML((Animal) obj)).append(" />");
+			ostream.append('"').append(imageXML(animal)).append(" />");
 			ostream.append(LineEnd.LINE_SEP);
 		} else {
 			writeTag(ostream, NullCleaner.assertNotNull(TAG_MAP.get(obj.getClass())), indent);

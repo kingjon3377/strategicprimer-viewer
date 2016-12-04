@@ -176,11 +176,12 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 				applyButton.putClientProperty("JButton.segmentPosition", "first");
 				revertButton.putClientProperty("JButton.segmentPosition", "last");
 				buttonPanel = new BoxPanel(true);
-				((BoxPanel) buttonPanel).addGlue();
+				final BoxPanel boxView = (BoxPanel) buttonPanel;
+				boxView.addGlue();
 				buttonPanel.add(applyButton);
-				((BoxPanel) buttonPanel).addRigidArea(2);
+				boxView.addRigidArea(2);
 				buttonPanel.add(revertButton);
-				((BoxPanel) buttonPanel).addGlue();
+				boxView.addGlue();
 			} else {
 				buttonPanel = horizontalPanel(applyButton, null, revertButton);
 			}

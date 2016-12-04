@@ -154,11 +154,13 @@ public final class DuplicateFixtureRemover {
 												top.getUnits());
 				combined.setCreated(top.getCreated());
 				if (iter instanceof Unit) {
-					list.forEach(((Unit) iter)::removeMember);
-					((Unit) iter).addMember(combined);
+					final Unit unit = (Unit) iter;
+					list.forEach(unit::removeMember);
+					unit.addMember(combined);
 				} else if (iter instanceof Fortress) {
-					list.forEach(((Fortress) iter)::removeMember);
-					((Fortress) iter).addMember(combined);
+					final Fortress fortress = (Fortress) iter;
+					list.forEach(fortress::removeMember);
+					fortress.addMember(combined);
 				}
 			}
 		}

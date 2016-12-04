@@ -306,14 +306,15 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			jobsPanel.removeAll();
 		} else if (local instanceof Worker) {
 			typeLabel.setText("Worker");
-			nameLabel.setText(((Worker) local).getName());
-			kindLabel.setText(((Worker) local).getKind());
-			final WorkerStats stats = ((Worker) local).getStats();
+			final Worker worker = (Worker) local;
+			nameLabel.setText(worker.getName());
+			kindLabel.setText(worker.getKind());
+			final WorkerStats stats = worker.getStats();
 			for (final StatLabel label : statLabels) {
 				label.recache(stats);
 			}
 			jobsPanel.removeAll();
-			for (final IJob job : (Worker) local) {
+			for (final IJob job : worker) {
 				if (job.isEmpty()) {
 					continue;
 				}

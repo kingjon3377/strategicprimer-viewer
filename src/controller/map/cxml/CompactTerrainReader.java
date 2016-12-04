@@ -133,8 +133,9 @@ public final class CompactTerrainReader extends
 		} else if (obj instanceof Forest) {
 			writeTag(ostream, "forest", indent);
 			ostream.append(" kind=\"");
-			ostream.append(((Forest) obj).getKind());
-			if (((Forest) obj).isRows()) {
+			final Forest forest = (Forest) obj;
+			ostream.append(forest.getKind());
+			if (forest.isRows()) {
 				ostream.append("\" rows=\"true");
 			}
 			ostream.append('"');

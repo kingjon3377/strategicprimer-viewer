@@ -134,11 +134,12 @@ public final class SkillAdvancementPanel extends BoxPanel
 			okButton.putClientProperty("JButton.segmentPosition", "first");
 			cancelButton.putClientProperty("JButton.segmentPosition", "last");
 			secondPanel = new BoxPanel(true);
-			((BoxPanel) secondPanel).addGlue();
+			final BoxPanel boxView = (BoxPanel) secondPanel;
+			boxView.addGlue();
 			secondPanel.add(okButton);
-			((BoxPanel) secondPanel).addRigidArea(2);
+			boxView.addRigidArea(2);
 			secondPanel.add(cancelButton);
-			((BoxPanel) secondPanel).addGlue();
+			boxView.addGlue();
 		} else {
 			secondPanel = new JPanel();
 			secondPanel.setLayout(new FlowLayout());

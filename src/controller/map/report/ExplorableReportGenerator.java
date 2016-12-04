@@ -239,21 +239,22 @@ public final class ExplorableReportGenerator
 			return concat("Signs of a long-ago battle on ", loc.toString(), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof AdventureFixture) {
-			if (((AdventureFixture) item).getOwner().isIndependent()) {
-				return concat(((AdventureFixture) item).getBriefDescription(),
+			final AdventureFixture adventure = (AdventureFixture) item;
+			if (adventure.getOwner().isIndependent()) {
+				return concat(adventure.getBriefDescription(),
 						" at ", loc.toString(), ": ",
-						((AdventureFixture) item).getFullDescription(), " ",
+						adventure.getFullDescription(), " ",
 						distCalculator.distanceString(loc));
-			} else if (currentPlayer.equals(((AdventureFixture) item).getOwner())) {
-				return concat(((AdventureFixture) item).getBriefDescription(),
+			} else if (currentPlayer.equals(adventure.getOwner())) {
+				return concat(adventure.getBriefDescription(),
 						" at ", loc.toString(), ": ",
-						((AdventureFixture) item).getFullDescription(), " ",
+						adventure.getFullDescription(), " ",
 						distCalculator.distanceString(loc),
 						" (already investigated by you)");
 			} else {
-				return concat(((AdventureFixture) item).getBriefDescription(),
+				return concat(adventure.getBriefDescription(),
 						" at ", loc.toString(), ": ",
-						((AdventureFixture) item).getFullDescription(), " ",
+						adventure.getFullDescription(), " ",
 						distCalculator.distanceString(loc),
 						" (already investigated by another player)");
 			}
@@ -293,30 +294,31 @@ public final class ExplorableReportGenerator
 											distCalculator.distanceString(loc));
 		} else if (item instanceof AdventureFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			if (((AdventureFixture) item).getOwner().isIndependent()) {
+			final AdventureFixture adventure = (AdventureFixture) item;
+			if (adventure.getOwner().isIndependent()) {
 				return new SimpleReportNode(loc,
-												((AdventureFixture) item)
+												adventure
 														.getBriefDescription(), " at ",
 												loc.toString(),
-												((AdventureFixture) item)
+												adventure
 														.getFullDescription(),
 												" ", distCalculator.distanceString(loc));
-			} else if (currentPlayer.equals(((AdventureFixture) item).getOwner())) {
+			} else if (currentPlayer.equals(adventure.getOwner())) {
 				return new SimpleReportNode(loc,
-												((AdventureFixture) item)
+												adventure
 														.getBriefDescription(), " at ",
 												loc.toString(),
-												((AdventureFixture) item)
+												adventure
 														.getFullDescription(),
 												" ",
 												distCalculator.distanceString(loc),
 												" (already investigated by you)");
 			} else {
 				return new SimpleReportNode(loc,
-												((AdventureFixture) item)
+												adventure
 														.getBriefDescription(), " at ",
 												loc.toString(),
-												((AdventureFixture) item)
+												adventure
 														.getFullDescription(),
 												" ",
 												distCalculator.distanceString(loc),

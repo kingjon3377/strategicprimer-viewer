@@ -56,13 +56,14 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   final IFixture item, final Point loc) throws IOException {
 		if (item instanceof ResourcePile) {
-			writeField(ostream, ((ResourcePile) item).getKind());
+			final ResourcePile pile = (ResourcePile) item;
+			writeField(ostream, pile.getKind());
 			writeFieldDelimiter(ostream);
 			writeField(ostream,
-					String.format("%s %s", ((ResourcePile) item).getQuantity().toString(),
-							((ResourcePile) item).getUnits()));
+					String.format("%s %s", pile.getQuantity().toString(),
+							pile.getUnits()));
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((ResourcePile) item).getContents());
+			writeField(ostream, pile.getContents());
 			ostream.append(getRowDelimiter());
 			return true;
 		} else if (item instanceof Implement) {
@@ -74,11 +75,12 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			ostream.append(getRowDelimiter());
 			return true;
 		} else if (item instanceof CacheFixture) {
-			writeField(ostream, ((CacheFixture) item).getKind());
+			final CacheFixture cache = (CacheFixture) item;
+			writeField(ostream, cache.getKind());
 			writeFieldDelimiter(ostream);
 			writeField(ostream, "---");
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((CacheFixture) item).getContents());
+			writeField(ostream, cache.getContents());
 			ostream.append(getRowDelimiter());
 			return true;
 		} else {
@@ -100,18 +102,20 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 		}
 		if (first instanceof ResourcePile) {
 			if (second instanceof ResourcePile) {
-				final int kindCmp = ((ResourcePile) first).getKind()
-											.compareTo(((ResourcePile) second).getKind());
+				final ResourcePile firstPile = (ResourcePile) first;
+				final ResourcePile secondPile = (ResourcePile) second;
+				final int kindCmp = firstPile.getKind()
+											.compareTo(secondPile.getKind());
 				if (kindCmp == 0) {
-					final int contentsCmp = ((ResourcePile) first).getContents()
-													.compareTo(((ResourcePile) second)
+					final int contentsCmp = firstPile.getContents()
+													.compareTo(secondPile
 																	   .getContents());
 					if (contentsCmp == 0) {
-						final int unitsCmp = ((ResourcePile) first).getUnits().compareTo(
-								((ResourcePile) second).getUnits());
+						final int unitsCmp = firstPile.getUnits().compareTo(
+								secondPile.getUnits());
 						if (unitsCmp == 0) {
-							return compareNumbers(((ResourcePile) first).getQuantity(),
-									((ResourcePile) second).getQuantity());
+							return compareNumbers(firstPile.getQuantity(),
+									secondPile.getQuantity());
 						} else {
 							return unitsCmp;
 						}
@@ -134,12 +138,12 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			}
 		} else if (first instanceof CacheFixture) {
 			if (second instanceof CacheFixture) {
-				final int kindCmp = ((CacheFixture) first).getKind()
-											.compareTo(((CacheFixture) second).getKind
-																					   ());
+				final CacheFixture firstCache = (CacheFixture) first;
+				final CacheFixture secondCache = (CacheFixture) second;
+				final int kindCmp = firstCache.getKind()
+											.compareTo(secondCache.getKind());
 				if (kindCmp == 0) {
-					return ((CacheFixture) first).getContents()
-								   .compareTo(((CacheFixture) second).getContents());
+					return firstCache.getContents().compareTo(secondCache.getContents());
 				} else {
 					return kindCmp;
 				}

@@ -299,8 +299,9 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			ostream.append("\" owner=\"");
 			ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
 			ostream.append("\" race=\"");
-			ostream.append(((Village) obj).getRace());
-			ostream.append("\" ").append(imageXML((Village) obj));
+			final Village village = (Village) obj;
+			ostream.append(village.getRace());
+			ostream.append("\" ").append(imageXML(village));
 			ostream.append(portraitXML(obj));
 			ostream.append("/>");
 			ostream.append(LineEnd.LINE_SEP);
@@ -318,12 +319,13 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			}
 			ostream.append("\" id=\"");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('"').append(imageXML((Fortress) obj));
+			final Fortress fortress = (Fortress) obj;
+			ostream.append('"').append(imageXML(fortress));
 			ostream.append(portraitXML(obj));
 			ostream.append('>');
-			if (((Fortress) obj).iterator().hasNext()) {
+			if ((fortress).iterator().hasNext()) {
 				ostream.append(LineEnd.LINE_SEP);
-				for (final FortressMember unit : (Fortress) obj) {
+				for (final FortressMember unit : fortress) {
 					if (unit instanceof Unit) {
 						CompactUnitReader.READER.write(ostream, (Unit) unit,
 								indent + 1);

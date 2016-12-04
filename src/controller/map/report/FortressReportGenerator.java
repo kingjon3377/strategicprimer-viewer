@@ -301,8 +301,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				} else if (member instanceof Implement) {
 					equipment.add((Implement) member);
 				} else if (member instanceof ResourcePile) {
-					resources.get(((ResourcePile) member).getKind())
-							.add((ResourcePile) member);
+					final ResourcePile pile = (ResourcePile) member;
+					resources.get(pile.getKind()).add(pile);
 				} else {
 					contents.add(member);
 				}

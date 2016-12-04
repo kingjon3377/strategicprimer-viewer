@@ -261,9 +261,10 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				outside = true;
 				break;
 			} else if (fix instanceof Fortress) {
-				for (final FortressMember item : (Fortress) fix) {
+				final Fortress fortress = (Fortress) fix;
+				for (final FortressMember item : fortress) {
 					if (unit.equals(item)) {
-						((Fortress) fix).removeMember(unit);
+						fortress.removeMember(unit);
 						return;
 					}
 				}

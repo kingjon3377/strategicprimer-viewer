@@ -92,11 +92,12 @@ public class ExplorableTabularReportGenerator
 			writeFieldDelimiter(ostream);
 			writeField(ostream, loc.toString());
 			writeFieldDelimiter(ostream);
-			if (((Portal) item).getDestinationCoordinates().getRow() < 0) {
+			final Portal portal = (Portal) item;
+			if (portal.getDestinationCoordinates().getRow() < 0) {
 				writeField(ostream, "portal to another world");
 			} else {
 				writeField(ostream,
-						"portal to world " + ((Portal) item).getDestinationWorld());
+						"portal to world " + portal.getDestinationWorld());
 			}
 			writeFieldDelimiter(ostream);
 			writeField(ostream, "---");
@@ -108,18 +109,19 @@ public class ExplorableTabularReportGenerator
 			writeFieldDelimiter(ostream);
 			writeField(ostream, loc.toString());
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((AdventureFixture) item).getBriefDescription());
+			final AdventureFixture adventure = (AdventureFixture) item;
+			writeField(ostream, adventure.getBriefDescription());
 			writeFieldDelimiter(ostream);
-			if (player.equals(((AdventureFixture) item).getOwner())) {
+			if (player.equals(adventure.getOwner())) {
 				writeField(ostream, "You");
-			} else if (((AdventureFixture) item).getOwner().isIndependent()) {
+			} else if (adventure.getOwner().isIndependent()) {
 				writeField(ostream, "No-one");
 			} else {
 				writeField(ostream,
-						getOwnerString(player, ((AdventureFixture) item).getOwner()));
+						getOwnerString(player, adventure.getOwner()));
 			}
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((AdventureFixture) item).getFullDescription());
+			writeField(ostream, adventure.getFullDescription());
 			ostream.append(getRowDelimiter());
 			return true;
 		} else {

@@ -107,8 +107,9 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 			map.setForest(point, (Forest) fix);
 			selectedPointChanged(null, point);
 		} else if (fix instanceof TileTypeFixture) {
-			if (map.getBaseTerrain(point) != ((TileTypeFixture) fix).getTileType()) {
-				map.setBaseTerrain(point, ((TileTypeFixture) fix).getTileType());
+			final TileTypeFixture typeFix = (TileTypeFixture) fix;
+			if (map.getBaseTerrain(point) != typeFix.getTileType()) {
+				map.setBaseTerrain(point, typeFix.getTileType());
 				selectedPointChanged(null, point);
 			}
 		} else {

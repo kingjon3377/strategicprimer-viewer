@@ -73,9 +73,10 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 			writeFieldDelimiter(ostream);
 			writeField(ostream, "ground");
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((Ground) item).getKind());
+			final Ground ground = (Ground) item;
+			writeField(ostream, ground.getKind());
 			writeFieldDelimiter(ostream);
-			if (((Ground) item).isExposed()) {
+			if (ground.isExposed()) {
 				writeField(ostream, "exposed");
 			} else {
 				writeField(ostream, "not exposed");
@@ -89,9 +90,10 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 			writeFieldDelimiter(ostream);
 			writeField(ostream, "mine");
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((Mine) item).getKind());
+			final Mine mine = (Mine) item;
+			writeField(ostream, mine.getKind());
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((Mine) item).getStatus().toString());
+			writeField(ostream, mine.getStatus().toString());
 			ostream.append(getRowDelimiter());
 			return true;
 		} else if (item instanceof StoneDeposit) {
@@ -113,9 +115,10 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 			writeFieldDelimiter(ostream);
 			writeField(ostream, "vein");
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((MineralVein) item).getKind());
+			final MineralVein mineral = (MineralVein) item;
+			writeField(ostream, mineral.getKind());
 			writeFieldDelimiter(ostream);
-			if (((MineralVein) item).isExposed()) {
+			if (mineral.isExposed()) {
 				writeField(ostream, "exposed");
 			} else {
 				writeField(ostream, "not exposed");

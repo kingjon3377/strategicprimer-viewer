@@ -71,7 +71,8 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 			writeFieldDelimiter(ostream);
 			writeField(ostream, loc.toString());
 			writeFieldDelimiter(ostream);
-			if (((Forest) item).isRows()) {
+			final Forest forest = (Forest) item;
+			if (forest.isRows()) {
 				writeField(ostream, "rows");
 			} else {
 				writeField(ostream, "forest");
@@ -81,7 +82,7 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 			writeFieldDelimiter(ostream);
 			writeField(ostream, "---");
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((Forest) item).getKind());
+			writeField(ostream, forest.getKind());
 			ostream.append(getRowDelimiter());
 			return true;
 		} else if (item instanceof Shrub) {
@@ -103,21 +104,22 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 			writeFieldDelimiter(ostream);
 			writeField(ostream, loc.toString());
 			writeFieldDelimiter(ostream);
-			if (((Meadow) item).isField()) {
+			final Meadow meadow = (Meadow) item;
+			if (meadow.isField()) {
 				writeField(ostream, "field");
 			} else {
 				writeField(ostream, "meadow");
 			}
 			writeFieldDelimiter(ostream);
-			if (((Meadow) item).isCultivated()) {
+			if (meadow.isCultivated()) {
 				writeField(ostream, "cultivated");
 			} else {
 				writeField(ostream, "wild");
 			}
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((Meadow) item).getStatus().toString());
+			writeField(ostream, meadow.getStatus().toString());
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((Meadow) item).getKind());
+			writeField(ostream, meadow.getKind());
 			ostream.append(getRowDelimiter());
 			return true;
 		} else if (item instanceof Grove) {
@@ -125,13 +127,14 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 			writeFieldDelimiter(ostream);
 			writeField(ostream, loc.toString());
 			writeFieldDelimiter(ostream);
-			if (((Grove) item).isOrchard()) {
+			final Grove grove = (Grove) item;
+			if (grove.isOrchard()) {
 				writeField(ostream, "orchard");
 			} else {
 				writeField(ostream, "grove");
 			}
 			writeFieldDelimiter(ostream);
-			if (((Grove) item).isCultivated()) {
+			if (grove.isCultivated()) {
 				writeField(ostream, "cultivated");
 			} else {
 				writeField(ostream, "wild");
@@ -139,7 +142,7 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 			writeFieldDelimiter(ostream);
 			writeField(ostream, "---");
 			writeFieldDelimiter(ostream);
-			writeField(ostream, ((Grove) item).getKind());
+			writeField(ostream, grove.getKind());
 			ostream.append(getRowDelimiter());
 			return true;
 		} else {

@@ -6,6 +6,9 @@ import model.map.TileFixture;
 /**
  * A wrapper around a Predicate-of-TileFixture, used to determine z-order of fixtures.
  *
+ * TODO: Provide a convenience factory method that takes a Class and a method reference
+ * on that class to simplify the "obj instanceof X && ((X) obj).method()" pattern
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
