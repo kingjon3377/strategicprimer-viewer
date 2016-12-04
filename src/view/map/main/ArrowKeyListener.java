@@ -47,15 +47,6 @@ public final class ArrowKeyListener {
 	private static final Map<String, Consumer<DirectionSelectionChanger>> ARROW_ACTIONS =
 			new HashMap<>();
 	/**
-	 * @param first one method reference
-	 * @param second a second such reference
-	 * @return a reference combining the two
-	 */
-	private static <T> Consumer<T> join(final Consumer<T> first,
-										final Consumer<T> second) {
-		return first.andThen(second);
-	}
-	/**
 	 * A map from key-codes that are used, when modified with a platform-specific
 	 * modifier, for "jumping," to the Strings we'll use to represent them.
 	 */
@@ -64,6 +55,7 @@ public final class ArrowKeyListener {
 	 * A map from other key-codes to the Strings we'll use to represent them.
 	 */
 	private static final Map<Integer, String> INPUTS = new HashMap<>();
+
 	static {
 		final ObjIntConsumer<String> arrow =
 				(str, value) -> ARROW_INPUTS.put(Integer.valueOf(value), str);
@@ -128,6 +120,17 @@ public final class ArrowKeyListener {
 			jumps.accept("dollar", KeyEvent.VK_NUMPAD6);
 		}
 	}
+
+	/**
+	 * @param first one method reference
+	 * @param second a second such reference
+	 * @return a reference combining the two
+	 */
+	private static <T> Consumer<T> join(final Consumer<T> first,
+										final Consumer<T> second) {
+		return first.andThen(second);
+	}
+
 	/**
 	 * @param selListener the listener we're setting up
 	 * @param consumer a method reference to that class
