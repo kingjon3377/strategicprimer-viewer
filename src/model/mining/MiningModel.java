@@ -80,33 +80,7 @@ public final class MiningModel {
 				pruneCounter++;
 				continue;
 			} else {
-				final Point left = PointFactory.point(point.getRow(), point.getCol() -
-																			  1);
-				final Point down = PointFactory.point(point.getRow() + 1, point.getCol
-																						());
-				final Point right =
-						PointFactory.point(point.getRow(), point.getCol() + 1);
-				final LodeStatus current;
-				if (unnormalized.containsKey(point)) {
-					current = unnormalized.get(point);
-				} else {
-					current = LodeStatus.None;
-				}
-				if ((current == null) || (LodeStatus.None == current)) {
-					continue;
-				}
-				if (!unnormalized.containsKey(right)) {
-					unnormalized.put(right, horizontalGen.apply(current));
-					queue.add(right);
-				}
-				if (!unnormalized.containsKey(down)) {
-					unnormalized.put(down, verticalGen.apply(current));
-					queue.add(down);
-				}
-				if (!unnormalized.containsKey(left)) {
-					unnormalized.put(left, horizontalGen.apply(current));
-					queue.add(left);
-				}
+				modelPoint(unnormalized, queue, horizontalGen, verticalGen, point);
 			}
 		}
 		SystemOut.SYS_OUT.printf("%nPruned %d branches beyond our boundaries%n",
@@ -119,6 +93,46 @@ public final class MiningModel {
 					entry.getValue());
 		}
 		maxPoint = createMaxPoint(NullCleaner.assertNotNull(data.keySet()));
+	}
+
+	/**
+	 * Add a point to the model. "Unnormalized" means we haven't shifted it to avoid
+	 * negative rows or columns.
+	 * @param unnormalized the WIP model
+	 * @param queue the queue of points
+	 * @param horizontalGen the generator to use for horizontally-adjacent points
+	 * @param verticalGen the generator to use for vertically-adjacent points
+	 * @param point the point to consider now
+	 */
+	private void modelPoint(final Map<Point, LodeStatus> unnormalized,
+							final Queue<Point> queue,
+							final Function<LodeStatus, LodeStatus> horizontalGen,
+							final Function<LodeStatus, LodeStatus> verticalGen,
+							final Point point) {
+		final Point left = PointFactory.point(point.getRow(), point.getCol() -
+																	  1);
+		final Point down = PointFactory.point(point.getRow() + 1, point.getCol
+																				());
+		final Point right =
+				PointFactory.point(point.getRow(), point.getCol() + 1);
+		final LodeStatus current;
+		if (unnormalized.containsKey(point)) {
+			current = unnormalized.get(point);
+		} else {
+			return;
+		}
+		if (!unnormalized.containsKey(right)) {
+			unnormalized.put(right, horizontalGen.apply(current));
+			queue.add(right);
+		}
+		if (!unnormalized.containsKey(down)) {
+			unnormalized.put(down, verticalGen.apply(current));
+			queue.add(down);
+		}
+		if (!unnormalized.containsKey(left)) {
+			unnormalized.put(left, horizontalGen.apply(current));
+			queue.add(left);
+		}
 	}
 
 	/**
