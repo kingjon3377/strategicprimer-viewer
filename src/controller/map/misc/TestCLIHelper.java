@@ -98,6 +98,15 @@ public class TestCLIHelper {
 					out.toString(),
 					equalTo(String.format("test desc%n0: one%nprompt")));
 		}
+	}
+	/**
+	 * A second test of chooseFromList().
+	 *
+	 * @throws IOException on I/O error causing test failure
+	 */
+	@SuppressWarnings("static-method")
+	@Test
+	public void testChooseFromListMore() throws IOException {
 		try (StringWriter out = new StringWriter(); ICLIHelper cli =
 															new CLIHelper(new
 																				  StringReader(String.format(
@@ -450,6 +459,14 @@ public class TestCLIHelper {
 			assertThat("inputBooleanInSeries displays prompt", out.toString(),
 					equalTo("prompt eight"));
 		}
+	}
+	/**
+	 * Another test of the input-boolean-with-skipping functionality.
+	 *
+	 * @throws IOException on I/O error causing test failure
+	 */
+	@Test
+	public void testInputBooleanInSeriesMore() throws IOException {
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
 					 "xyzzy%nyes%n")), out)) {
@@ -586,6 +603,16 @@ public class TestCLIHelper {
 					"chooseStringFromList didn't automatically chose only choice",
 					out.toString(), equalTo(String.format("test desc%n0: one%nprompt")));
 		}
+	}
+
+	/**
+	 * A second test of chooseStringFromList().
+	 *
+	 * @throws IOException on I/O error causing test failure
+	 */
+	@SuppressWarnings("static-method")
+	@Test
+	public void testStringChooseFromListMore() throws IOException {
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("1%n")),
 												   out)) {
