@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 import javax.swing.tree.MutableTreeNode;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -205,7 +206,31 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		return new SimpleReportNode(loc, Integer.toString(job.getLevel()),
 										   " levels in ", job.getName(), getSkills(job));
 	}
-
+	/**
+	 * If the collection is nonempty, append its sub-sub-report to the stream.
+	 * @param <T> the type of member in the collection
+	 * @param fixtures      the set of fixtures
+	 * @param collection	the collection of members in question
+	 * @param heading		the heading to use
+	 * @param generator		the report generator to use for members in the collection
+	 * @param builder 		the StringBuilder to append the report to
+	 */
+	private <T extends UnitMember> void produceInner(final StringBuilder builder,
+													 final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+													 final Collection<T> collection,
+													 final String heading,
+													 final Function<? super T, String> generator) {
+		if (!collection.isEmpty()) {
+			builder.append(OPEN_LIST_ITEM).append(heading).append(LineEnd.LINE_SEP)
+					.append(OPEN_LIST);
+			for (final T item : collection) {
+				builder.append(OPEN_LIST_ITEM).append(generator.apply(item))
+						.append(CLOSE_LIST_ITEM);
+				fixtures.remove(item.getID());
+			}
+			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+		}
+	}
 	/**
 	 * We assume we're already in the middle of a paragraph or bullet point.
 	 *
@@ -260,65 +285,21 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			builder.append(". Members of the unit:").append(LineEnd.LINE_SEP)
 					.append(OPEN_LIST);
 		}
-		if (!workers.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM).append("Workers:").append(LineEnd.LINE_SEP)
-					.append(OPEN_LIST);
-			for (final IWorker worker : workers) {
-				builder.append(OPEN_LIST_ITEM).append(workerReport(worker,
-						worker instanceof HasOwner &&
-								currentPlayer.equals(((HasOwner) worker).getOwner())))
-						.append(CLOSE_LIST_ITEM);
-				fixtures.remove(worker.getID());
-			}
-			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
-		}
-		if (!animals.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM).append("Animals:").append(LineEnd.LINE_SEP)
-					.append(OPEN_LIST);
-			for (final Animal animal : animals) {
-				builder.append(OPEN_LIST_ITEM).append(animalReportGenerator
-															  .produce(fixtures, map,
-																	  currentPlayer,
-																	  animal, loc));
-				fixtures.remove(animal.getID());
-			}
-			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
-		}
-		if (!equipment.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM).append("Equipment:").append(LineEnd.LINE_SEP)
-					.append(OPEN_LIST);
-			for (final Implement implement : equipment) {
-				builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
-															  .produce(fixtures, map,
-																	  currentPlayer,
-																	  implement, loc))
-						.append(CLOSE_LIST_ITEM);
-				fixtures.remove(implement.getID());
-			}
-			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
-		}
-		if (!resources.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM).append("Resources:").append(LineEnd.LINE_SEP)
-					.append(OPEN_LIST);
-			for (final ResourcePile resource : resources) {
-				builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
-															  .produce(fixtures, map,
-																	  currentPlayer,
-																	  resource, loc))
-						.append(CLOSE_LIST_ITEM);
-				fixtures.remove(resource.getID());
-			}
-			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
-		}
-		if (!others.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM).append("Others:").append(LineEnd.LINE_SEP)
-					.append(OPEN_LIST);
-			for (final UnitMember member : others) {
-				builder.append(OPEN_LIST_ITEM).append(member);
-				fixtures.remove(member.getID());
-			}
-			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
-		}
+		produceInner(builder, fixtures, workers, "Workers:",
+				worker -> workerReport(worker, worker instanceof HasOwner &&
+													   currentPlayer
+																					 .equals(((HasOwner) worker)
+																									 .getOwner())));
+		produceInner(builder, fixtures, animals, "Animals:",
+				animal -> animalReportGenerator
+								  .produce(fixtures, map, currentPlayer, animal, loc));
+		produceInner(builder, fixtures, equipment, "Equipment:",
+				member -> memberReportGenerator
+								  .produce(fixtures, map, currentPlayer, member, loc));
+		produceInner(builder, fixtures, resources, "Resources:",
+				member -> memberReportGenerator
+								  .produce(fixtures, map, currentPlayer, member, loc));
+		produceInner(builder, fixtures, resources, "Others:", Object::toString);
 		if (hasMembers) {
 			builder.append(CLOSE_LIST);
 		}
