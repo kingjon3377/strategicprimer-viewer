@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JFrame;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 
@@ -35,28 +35,32 @@ public final class WorkerMenu extends SPMenu {
 	 * @param model   the current driver model
 	 */
 	public WorkerMenu(final ActionListener handler, final JFrame parent,
-					final IDriverModel model) {
+					  final IDriverModel model) {
 		add(createFileMenu(handler, model));
 		addDisabled(createMapMenu(handler, model));
 		add(createViewMenu(handler, model));
 		add(new WindowMenu(parent));
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

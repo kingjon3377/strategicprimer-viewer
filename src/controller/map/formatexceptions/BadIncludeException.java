@@ -23,15 +23,15 @@ public final class BadIncludeException extends SPFormatException {
 	/**
 	 * Constructor.
 	 *
-	 * @param file  the missing file
-	 * @param cause the exception that caused this one to be thrown.
-	 * @param location  the location of the "include" tag.
+	 * @param file     the missing file
+	 * @param cause    the exception that caused this one to be thrown.
+	 * @param location the location of the "include" tag.
 	 */
 	public BadIncludeException(final String file, final Throwable cause,
-								final Location location) {
+							   final Location location) {
 		super("File " + file + ", referenced by <include> tag on line " +
-					location.getLineNumber() +
-					", contains XML format errors (see specified cause)", location,
+					  location.getLineNumber() +
+					  ", contains XML format errors (see specified cause)", location,
 				cause);
 	}
 }

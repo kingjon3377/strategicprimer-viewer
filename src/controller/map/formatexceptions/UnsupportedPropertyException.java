@@ -40,11 +40,12 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	 */
 	public UnsupportedPropertyException(final StartElement tag, final String parameter) {
 		super("Unsupported property " + parameter + " in tag "
-				+ tag.getName().getLocalPart(),
+					  + tag.getName().getLocalPart(),
 				NullCleaner.assertNotNull(tag.getLocation()));
 		context = NullCleaner.assertNotNull(tag.getName());
 		param = parameter;
 	}
+
 	/**
 	 * @return the current tag
 	 */
@@ -58,22 +59,26 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	public String getParam() {
 		return param;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

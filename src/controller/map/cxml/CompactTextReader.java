@@ -36,6 +36,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	 * Singleton object.
 	 */
 	public static final CompactReader<TextFixture> READER = new CompactTextReader();
+
 	/**
 	 * Singleton.
 	 */
@@ -54,8 +55,8 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param parent	the parent tag
-	 *@param players   the collection of players
+	 * @param parent    the parent tag
+	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed tile
@@ -73,12 +74,16 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException(
-						NullCleaner.assertNotNull(element.getName()),
-						NullCleaner.assertNotNull(event.asStartElement()));
+														NullCleaner.assertNotNull(
+																element.getName()),
+														NullCleaner.assertNotNull(
+																event.asStartElement()));
 			} else if (event.isCharacters()) {
 				builder.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
-							&& element.getName().equals(event.asEndElement().getName())) {
+							   &&
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
@@ -98,7 +103,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	 */
 	@Override
 	public void write(final Appendable ostream, final TextFixture obj,
-					final int indent) throws IOException {
+					  final int indent) throws IOException {
 		writeTag(ostream, "text", indent);
 		if (obj.getTurn() != -1) {
 			ostream.append(" turn=\"");

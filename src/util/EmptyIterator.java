@@ -16,8 +16,8 @@ import java.util.NoSuchElementException;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the type parameter
+ * @author Jonathan Lovelace
  */
 public final class EmptyIterator<T> implements Iterator<T> {
 	/**

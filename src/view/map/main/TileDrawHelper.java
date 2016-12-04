@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.Graphics;
+import java.awt.*;
 import model.map.IEvent;
 import model.map.IMapNG;
 import model.map.Point;
@@ -49,7 +49,8 @@ public interface TileDrawHelper {
 	 * @param dimensions  the width (X) and height (Y) of the tile
 	 */
 	void drawTile(Graphics pen, IMapNG map, Point location, Coordinate coordinates,
-				Coordinate dimensions);
+				  Coordinate dimensions);
+
 	/**
 	 * @param map      a map
 	 * @param location a location

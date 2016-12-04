@@ -52,7 +52,8 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	 */
 	public int distance(final Point point) {
 		return ((point.getCol() - base.getCol()) * (point.getCol() - base.getCol())) +
-					((point.getRow() - base.getRow()) * (point.getRow() - base.getRow()));
+					   ((point.getRow() - base.getRow()) *
+								(point.getRow() - base.getRow()));
 	}
 
 	/**

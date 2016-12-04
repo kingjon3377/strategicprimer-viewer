@@ -59,12 +59,47 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	/**
 	 * Constructor.
 	 *
-	 * @param player the player whose units and workers will be shown in the tree
+	 * @param player      the player whose units and workers will be shown in the tree
 	 * @param driverModel the driver model
 	 */
 	public WorkerTreeModelAlt(final Player player, final IWorkerModel driverModel) {
 		super(new PlayerNode(player, driverModel), true);
 		model = driverModel;
+	}
+
+	/**
+	 * @param node a node
+	 * @param obj  an object
+	 * @return the node in the subtree under the node representing the object, or null if
+	 * it isn't in this subtree
+	 */
+	@SuppressWarnings("ReturnOfNull")
+	@Nullable
+	private static MutableTreeNode getNode(final TreeNode node, final Object obj) {
+		if ((node instanceof MutableTreeNode) && areTreeObjectsEqual(node, obj)) {
+			return (MutableTreeNode) node;
+		} else if ((node instanceof WorkerTreeNode) && node.getAllowsChildren()) {
+			for (final TreeNode child : (WorkerTreeNode<?>) node) {
+				@Nullable final MutableTreeNode result = getNode(child, obj);
+				if (result != null) {
+					return result;
+				}
+			}
+			return null;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * @param node a node
+	 * @param obj  an object
+	 * @return whether the object is or equals the node's user-object
+	 */
+	private static boolean areTreeObjectsEqual(final TreeNode node, final Object obj) {
+		return (node instanceof DefaultMutableTreeNode) &&
+					   Objects.equals(obj,
+							   ((DefaultMutableTreeNode) node).getUserObject());
 	}
 
 	/**
@@ -76,25 +111,26 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old,
-							final IUnit newOwner) {
+						   final IUnit newOwner) {
 		final PlayerNode playerNode = assertNotNull((PlayerNode) root);
 		final UnitNode oldNode = assertNotNull((UnitNode) getNode(playerNode, old));
 		final UnitNode newNode = assertNotNull((UnitNode) getNode(playerNode, newOwner));
 		final MutableTreeNode node = getNode(playerNode, member);
-		fireTreeNodesRemoved(this, new Object[]{playerNode, getNode(old.getKind()), oldNode},
+		fireTreeNodesRemoved(this,
+				new Object[]{playerNode, getNode(old.getKind()), oldNode},
 				new int[]{oldNode.getIndex(node)}, new Object[]{node});
 		oldNode.remove(node);
 		if ((member instanceof ProxyFor) && (old instanceof ProxyUnit)
 					&& (newOwner instanceof ProxyUnit)) {
 			//noinspection unchecked
 			if ((((Collection<IUnit>) ((ProxyUnit) old).getProxied()).size() ==
-						((Collection<IUnit>) ((ProxyUnit) newOwner).getProxied())
-								.size()) &&
+						 ((Collection<IUnit>) ((ProxyUnit) newOwner).getProxied())
+								 .size()) &&
 						(((Collection<IUnit>) ((ProxyUnit) old).getProxied()).size() ==
-								((Collection<? extends UnitMember>) ((ProxyFor<?
-																					extends UnitMember>) member)
-																			.getProxied())
-										.size())) {
+								 ((Collection<? extends UnitMember>) ((ProxyFor<?
+																						extends UnitMember>) member)
+																			 .getProxied())
+										 .size())) {
 				final Queue<UnitMember> members = new LinkedList<>();
 				final Queue<IUnit> newList = new LinkedList<>();
 				final Iterator<IUnit> oldIter = ((ProxyUnit) old).getProxied()
@@ -103,7 +139,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 						((ProxyUnit) newOwner).getProxied().iterator();
 				//noinspection unchecked
 				for (final UnitMember item : ((ProxyFor<? extends UnitMember>) member)
-													.getProxied()) {
+													 .getProxied()) {
 					assert oldIter.hasNext() && newIter.hasNext();
 					final IUnit innerOld = oldIter.next();
 					final IUnit innerNew = newIter.next();
@@ -148,335 +184,6 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
-	 * A base class for our nodes.
-	 * @param <T> the type of thing stored in the node
-	 */
-	@SuppressWarnings("CloneableClassInSecureContext")
-	public static class WorkerTreeNode<T> extends
-			DefaultMutableTreeNode implements Iterable<TreeNode> {
-		/**
-		 * @param userObj         the user object the node wraps
-		 * @param permitsChildren whether to allow children
-		 */
-		protected WorkerTreeNode(final T userObj, final boolean permitsChildren) {
-			super(userObj, permitsChildren);
-		}
-
-		/**
-		 * Allows children without having to pass that to us.
-		 *
-		 * @param userObj the user object the node wraps.
-		 */
-		protected WorkerTreeNode(final T userObj) {
-			this(userObj, true);
-		}
-
-		/**
-		 * @return an iterator over the immediate children of this node
-		 */
-		@SuppressWarnings("unchecked")
-		@Override
-		public Iterator<TreeNode> iterator() {
-			return new EnumerationWrapper<>(children());
-		}
-		/**
-		 * Prevent serialization.
-		 * @param out ignored
-		 * @throws IOException always
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void writeObject(final ObjectOutputStream out) throws IOException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-		/**
-		 * Prevent serialization
-		 * @param in ignored
-		 * @throws IOException always
-		 * @throws ClassNotFoundException never
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void readObject(final ObjectInputStream in)
-				throws IOException, ClassNotFoundException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-		/**
-		 * Superclass removes CloneNotSupportedException from method signature, but we still
-		 * want to throw it, so we wrap it in a RuntimeException
-		 * @return never
-		 */
-		@SuppressWarnings("MethodReturnOfConcreteClass")
-		@Override
-		public final WorkerTreeNode<T> clone() {
-			throw new IllegalStateException("cloning prohibited",
-											  new CloneNotSupportedException("cloning prohibited"));
-		}
-	}
-
-	/**
-	 * A node representing the player.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
-	public static final class PlayerNode extends WorkerTreeNode<Player> {
-		/**
-		 * Constructor.
-		 *
-		 * @param player      the player the node represents
-		 * @param workerModel the worker model we're drawing from
-		 */
-		public PlayerNode(final Player player, final IWorkerModel workerModel) {
-			super(player);
-			final List<String> kinds = workerModel.getUnitKinds(player);
-			int index = 0;
-			for (final String kind : kinds) {
-				//noinspection ObjectAllocationInLoop
-				insert(new KindNode(kind, workerModel.getUnits(player, kind)),
-						index);
-				index++;
-			}
-		}
-
-		/**
-		 * @return the node's user object, asserting it is a Player
-		 */
-		@Override
-		public Player getUserObject() {
-			final Object obj = super.getUserObject();
-			assert obj instanceof Player;
-			return (Player) obj;
-		}
-
-		/**
-		 * @param userObj the new user-object for the node, which must be a Player
-		 */
-		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-		@Override
-		public void setUserObject(@Nullable final Object userObj) {
-			if (userObj instanceof Player) {
-				super.setUserObject(userObj);
-			} else {
-				throw new IllegalArgumentException("PlayerNode can only contain a " +
-														"Player");
-			}
-		}
-		/**
-		 * Prevent serialization.
-		 * @param out ignored
-		 * @throws IOException always
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void writeObject(final ObjectOutputStream out) throws IOException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-		/**
-		 * Prevent serialization
-		 * @param in ignored
-		 * @throws IOException always
-		 * @throws ClassNotFoundException never
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void readObject(final ObjectInputStream in)
-				throws IOException, ClassNotFoundException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-	}
-
-	/**
-	 * A node representing a kind of unit.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
-	public static final class KindNode extends WorkerTreeNode<String> {
-		/**
-		 * Constructor.
-		 *
-		 * @param kind  what kind of unit
-		 * @param units the units of this kind
-		 */
-		public KindNode(final String kind, final Iterable<IUnit> units) {
-			super(kind);
-			int index = 0;
-			for (final IUnit unit : units) {
-				//noinspection ObjectAllocationInLoop
-				insert(new UnitNode(unit), index);
-				index++;
-			}
-		}
-
-		/**
-		 * @return the user object for the node, asserting that it is a String
-		 */
-		@Override
-		public String getUserObject() {
-			final Object obj = super.getUserObject();
-			assert obj instanceof String;
-			return (String) obj;
-		}
-
-		/**
-		 * @param userObj the user object for the node, which must be a String
-		 */
-		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-		@Override
-		public void setUserObject(@Nullable final Object userObj) {
-			if (userObj instanceof String) {
-				super.setUserObject(userObj);
-			} else {
-				throw new IllegalArgumentException("KindNode can only contain a String");
-			}
-		}
-		/**
-		 * Prevent serialization.
-		 * @param out ignored
-		 * @throws IOException always
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void writeObject(final ObjectOutputStream out) throws IOException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-		/**
-		 * Prevent serialization
-		 * @param in ignored
-		 * @throws IOException always
-		 * @throws ClassNotFoundException never
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void readObject(final ObjectInputStream in)
-				throws IOException, ClassNotFoundException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-	}
-
-	/**
-	 * A node representing a unit.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
-	public static final class UnitNode extends WorkerTreeNode<IUnit> {
-		/**
-		 * Constructor.
-		 *
-		 * @param unit the unit we represent.
-		 */
-		public UnitNode(final IUnit unit) {
-			super(unit);
-			int index = 0;
-			for (final UnitMember member : unit) {
-				//noinspection ObjectAllocationInLoop
-				insert(new UnitMemberNode(member), index);
-				index++;
-			}
-		}
-
-		/**
-		 * @return the user object for the node, asserting that it is an IUnit
-		 */
-		@Override
-		public IUnit getUserObject() {
-			final Object obj = super.getUserObject();
-			assert obj instanceof IUnit;
-			return (IUnit) obj;
-		}
-
-		/**
-		 * @param userObj the new user object for the node, which must be an IUnit
-		 */
-		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-		@Override
-		public void setUserObject(@Nullable final Object userObj) {
-			if (userObj instanceof IUnit) {
-				super.setUserObject(userObj);
-			} else {
-				throw new IllegalArgumentException("UnitNode can only contain an IUnit");
-			}
-		}
-		/**
-		 * Prevent serialization.
-		 * @param out ignored
-		 * @throws IOException always
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void writeObject(final ObjectOutputStream out) throws IOException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-		/**
-		 * Prevent serialization
-		 * @param in ignored
-		 * @throws IOException always
-		 * @throws ClassNotFoundException never
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void readObject(final ObjectInputStream in)
-				throws IOException, ClassNotFoundException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-	}
-
-	/**
-	 * A node representing a unit member.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
-	public static final class UnitMemberNode extends WorkerTreeNode<UnitMember> {
-		/**
-		 * Constructor.
-		 *
-		 * @param member the unit member we represent.
-		 */
-		public UnitMemberNode(final UnitMember member) {
-			super(member, false);
-		}
-
-		/**
-		 * @return the user-object for the node, asserting that it is a UnitMember
-		 */
-		@Override
-		public UnitMember getUserObject() {
-			final Object obj = super.getUserObject();
-			assert obj instanceof UnitMember;
-			return (UnitMember) obj;
-		}
-
-		/**
-		 * @param userObj the new user-object for the node, which must be a UnitMember
-		 */
-		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-		@Override
-		public void setUserObject(@Nullable final Object userObj) {
-			if (userObj instanceof UnitMember) {
-				super.setUserObject(userObj);
-			} else {
-				throw new IllegalArgumentException("UnitMemberNode can only contain a " +
-														   "UnitMember");
-			}
-		}
-		/**
-		 * Prevent serialization.
-		 * @param out ignored
-		 * @throws IOException always
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void writeObject(final ObjectOutputStream out) throws IOException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-		/**
-		 * Prevent serialization
-		 * @param in ignored
-		 * @throws IOException always
-		 * @throws ClassNotFoundException never
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void readObject(final ObjectInputStream in)
-				throws IOException, ClassNotFoundException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-	}
-
-	/**
 	 * Add a unit.
 	 *
 	 * @param unit the unit to add
@@ -485,7 +192,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	public void addUnit(final IUnit unit) {
 		model.addUnit(unit);
 		final IUnit matchingUnit = model
-				.getUnitByID(((PlayerNode) root).getUserObject(), unit.getID());
+										   .getUnitByID(
+												   ((PlayerNode) root).getUserObject(),
+												   unit.getID());
 		if (matchingUnit != null) {
 			final MutableTreeNode node = new UnitNode(matchingUnit);
 			final String kind = unit.getKind();
@@ -527,7 +236,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Override
 	public void playerChanged(@Nullable final Player old,
-							final Player newPlayer) {
+							  final Player newPlayer) {
 		setRoot(new PlayerNode(newPlayer, model));
 	}
 
@@ -578,7 +287,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public String toString() {
 		return "WorkerTreeModelAlt representing units of player " +
-					Objects.toString(getModelObject(root));
+					   Objects.toString(getModelObject(root));
 	}
 
 	/**
@@ -593,40 +302,6 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		} else {
 			return null;
 		}
-	}
-
-	/**
-	 * @param node a node
-	 * @param obj  an object
-	 * @return the node in the subtree under the node representing the object, or null if
-	 * it isn't in this subtree
-	 */
-	@SuppressWarnings("ReturnOfNull")
-	@Nullable
-	private static MutableTreeNode getNode(final TreeNode node, final Object obj) {
-		if ((node instanceof MutableTreeNode) && areTreeObjectsEqual(node, obj)) {
-			return (MutableTreeNode) node;
-		} else if ((node instanceof WorkerTreeNode) && node.getAllowsChildren()) {
-			for (final TreeNode child : (WorkerTreeNode<?>) node) {
-				@Nullable final MutableTreeNode result = getNode(child, obj);
-				if (result != null) {
-					return result;
-				}
-			}
-			return null;
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * @param node a node
-	 * @param obj  an object
-	 * @return whether the object is or equals the node's user-object
-	 */
-	private static boolean areTreeObjectsEqual(final TreeNode node, final Object obj) {
-		return (node instanceof DefaultMutableTreeNode) &&
-					Objects.equals(obj, ((DefaultMutableTreeNode) node).getUserObject());
 	}
 
 	/**
@@ -744,24 +419,381 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	public Iterable<UnitMember> dismissed() {
 		return new ArrayList<>(dismissedMembers);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * A base class for our nodes.
+	 *
+	 * @param <T> the type of thing stored in the node
+	 */
+	@SuppressWarnings("CloneableClassInSecureContext")
+	public static class WorkerTreeNode<T> extends
+			DefaultMutableTreeNode implements Iterable<TreeNode> {
+		/**
+		 * @param userObj         the user object the node wraps
+		 * @param permitsChildren whether to allow children
+		 */
+		protected WorkerTreeNode(final T userObj, final boolean permitsChildren) {
+			super(userObj, permitsChildren);
+		}
+
+		/**
+		 * Allows children without having to pass that to us.
+		 *
+		 * @param userObj the user object the node wraps.
+		 */
+		protected WorkerTreeNode(final T userObj) {
+			this(userObj, true);
+		}
+
+		/**
+		 * @return an iterator over the immediate children of this node
+		 */
+		@SuppressWarnings("unchecked")
+		@Override
+		public Iterator<TreeNode> iterator() {
+			return new EnumerationWrapper<>(children());
+		}
+
+		/**
+		 * Prevent serialization.
+		 *
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void writeObject(final ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+
+		/**
+		 * Prevent serialization
+		 *
+		 * @param in ignored
+		 * @throws IOException            always
+		 * @throws ClassNotFoundException never
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void readObject(final ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+
+		/**
+		 * Superclass removes CloneNotSupportedException from method signature, but we
+		 * still want to throw it, so we wrap it in a RuntimeException
+		 *
+		 * @return never
+		 */
+		@SuppressWarnings("MethodReturnOfConcreteClass")
+		@Override
+		public final WorkerTreeNode<T> clone() {
+			throw new IllegalStateException("cloning prohibited",
+												   new CloneNotSupportedException
+														   ("cloning prohibited"));
+		}
+	}
+
+	/**
+	 * A node representing the player.
+	 *
+	 * @author Jonathan Lovelace
+	 */
+	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
+	public static final class PlayerNode extends WorkerTreeNode<Player> {
+		/**
+		 * Constructor.
+		 *
+		 * @param player      the player the node represents
+		 * @param workerModel the worker model we're drawing from
+		 */
+		public PlayerNode(final Player player, final IWorkerModel workerModel) {
+			super(player);
+			final List<String> kinds = workerModel.getUnitKinds(player);
+			int index = 0;
+			for (final String kind : kinds) {
+				//noinspection ObjectAllocationInLoop
+				insert(new KindNode(kind, workerModel.getUnits(player, kind)),
+						index);
+				index++;
+			}
+		}
+
+		/**
+		 * @return the node's user object, asserting it is a Player
+		 */
+		@Override
+		public Player getUserObject() {
+			final Object obj = super.getUserObject();
+			assert obj instanceof Player;
+			return (Player) obj;
+		}
+
+		/**
+		 * @param userObj the new user-object for the node, which must be a Player
+		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
+		@Override
+		public void setUserObject(@Nullable final Object userObj) {
+			if (userObj instanceof Player) {
+				super.setUserObject(userObj);
+			} else {
+				throw new IllegalArgumentException("PlayerNode can only contain a " +
+														   "Player");
+			}
+		}
+
+		/**
+		 * Prevent serialization.
+		 *
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void writeObject(final ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+
+		/**
+		 * Prevent serialization
+		 *
+		 * @param in ignored
+		 * @throws IOException            always
+		 * @throws ClassNotFoundException never
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void readObject(final ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+	}
+
+	/**
+	 * A node representing a kind of unit.
+	 *
+	 * @author Jonathan Lovelace
+	 */
+	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
+	public static final class KindNode extends WorkerTreeNode<String> {
+		/**
+		 * Constructor.
+		 *
+		 * @param kind  what kind of unit
+		 * @param units the units of this kind
+		 */
+		public KindNode(final String kind, final Iterable<IUnit> units) {
+			super(kind);
+			int index = 0;
+			for (final IUnit unit : units) {
+				//noinspection ObjectAllocationInLoop
+				insert(new UnitNode(unit), index);
+				index++;
+			}
+		}
+
+		/**
+		 * @return the user object for the node, asserting that it is a String
+		 */
+		@Override
+		public String getUserObject() {
+			final Object obj = super.getUserObject();
+			assert obj instanceof String;
+			return (String) obj;
+		}
+
+		/**
+		 * @param userObj the user object for the node, which must be a String
+		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
+		@Override
+		public void setUserObject(@Nullable final Object userObj) {
+			if (userObj instanceof String) {
+				super.setUserObject(userObj);
+			} else {
+				throw new IllegalArgumentException("KindNode can only contain a String");
+			}
+		}
+
+		/**
+		 * Prevent serialization.
+		 *
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void writeObject(final ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+
+		/**
+		 * Prevent serialization
+		 *
+		 * @param in ignored
+		 * @throws IOException            always
+		 * @throws ClassNotFoundException never
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void readObject(final ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+	}
+
+	/**
+	 * A node representing a unit.
+	 *
+	 * @author Jonathan Lovelace
+	 */
+	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
+	public static final class UnitNode extends WorkerTreeNode<IUnit> {
+		/**
+		 * Constructor.
+		 *
+		 * @param unit the unit we represent.
+		 */
+		public UnitNode(final IUnit unit) {
+			super(unit);
+			int index = 0;
+			for (final UnitMember member : unit) {
+				//noinspection ObjectAllocationInLoop
+				insert(new UnitMemberNode(member), index);
+				index++;
+			}
+		}
+
+		/**
+		 * @return the user object for the node, asserting that it is an IUnit
+		 */
+		@Override
+		public IUnit getUserObject() {
+			final Object obj = super.getUserObject();
+			assert obj instanceof IUnit;
+			return (IUnit) obj;
+		}
+
+		/**
+		 * @param userObj the new user object for the node, which must be an IUnit
+		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
+		@Override
+		public void setUserObject(@Nullable final Object userObj) {
+			if (userObj instanceof IUnit) {
+				super.setUserObject(userObj);
+			} else {
+				throw new IllegalArgumentException("UnitNode can only contain an IUnit");
+			}
+		}
+
+		/**
+		 * Prevent serialization.
+		 *
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void writeObject(final ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+
+		/**
+		 * Prevent serialization
+		 *
+		 * @param in ignored
+		 * @throws IOException            always
+		 * @throws ClassNotFoundException never
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void readObject(final ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+	}
+
+	/**
+	 * A node representing a unit member.
+	 *
+	 * @author Jonathan Lovelace
+	 */
+	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
+	public static final class UnitMemberNode extends WorkerTreeNode<UnitMember> {
+		/**
+		 * Constructor.
+		 *
+		 * @param member the unit member we represent.
+		 */
+		public UnitMemberNode(final UnitMember member) {
+			super(member, false);
+		}
+
+		/**
+		 * @return the user-object for the node, asserting that it is a UnitMember
+		 */
+		@Override
+		public UnitMember getUserObject() {
+			final Object obj = super.getUserObject();
+			assert obj instanceof UnitMember;
+			return (UnitMember) obj;
+		}
+
+		/**
+		 * @param userObj the new user-object for the node, which must be a UnitMember
+		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
+		@Override
+		public void setUserObject(@Nullable final Object userObj) {
+			if (userObj instanceof UnitMember) {
+				super.setUserObject(userObj);
+			} else {
+				throw new IllegalArgumentException("UnitMemberNode can only contain a " +
+														   "UnitMember");
+			}
+		}
+
+		/**
+		 * Prevent serialization.
+		 *
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void writeObject(final ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+
+		/**
+		 * Prevent serialization
+		 *
+		 * @param in ignored
+		 * @throws IOException            always
+		 * @throws ClassNotFoundException never
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void readObject(final ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
 	}
 }

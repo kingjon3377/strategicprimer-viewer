@@ -56,7 +56,8 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	@Deprecated
 	@Override
 	public TileTypeFixture copy(final boolean zero) {
-		LOGGER.log(Level.WARNING, "TileTypeFixture#copy() called", new Exception("dummy"));
+		LOGGER.log(Level.WARNING, "TileTypeFixture#copy() called",
+				new Exception("dummy"));
 		return new TileTypeFixture(tileType);
 	}
 
@@ -112,7 +113,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof TileTypeFixture) &&
-										(((TileTypeFixture) obj).tileType == tileType));
+										 (((TileTypeFixture) obj).tileType == tileType));
 	}
 
 	/**

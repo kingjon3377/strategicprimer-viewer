@@ -1,9 +1,6 @@
 package view.worker;
 
-import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -15,12 +12,7 @@ import java.util.Iterator;
 import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import model.listeners.UnitMemberListener;
 import model.map.HasPortrait;
 import model.map.fixtures.UnitMember;
@@ -60,11 +52,6 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(MemberDetailPanel.class);
 	/**
-	 * The currently selected unit member, or null if no selection.
-	 */
-	@Nullable
-	private UnitMember current = null;
-	/**
 	 * The component displaying the portrait of the currently selected unit member, if
 	 * it has one.
 	 */
@@ -89,15 +76,22 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 * The sub-panel to show a worker's Job experience or training.
 	 */
 	private final JPanel jobsPanel = new JPanel(new GridLayout(0, 1));
+	/**
+	 * The currently selected unit member, or null if no selection.
+	 */
+	@Nullable
+	private UnitMember current = null;
 
 	/**
 	 * Constructor: lay out, then clear, the panel.
+	 *
 	 * @param resultsPanel the panel to display unit results
 	 */
 	public MemberDetailPanel(final JPanel resultsPanel) {
 		super(new BorderLayout());
-		final JComponent split = SplitWithWeights.verticalSplit(0.5, 0.5, SplitWithWeights.horizontalSplit(0.6, 0.6,
-				createStatPanel(), portraitComponent), resultsPanel);
+		final JComponent split = SplitWithWeights.verticalSplit(0.5, 0.5,
+				SplitWithWeights.horizontalSplit(0.6, 0.6,
+						createStatPanel(), portraitComponent), resultsPanel);
 		split.setBorder(BorderFactory.createEmptyBorder());
 		add(split);
 		recache();
@@ -135,63 +129,92 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		final JLabel jobsCaption = new JLabel("<html><b>Job Levels:</b></html>");
 		layout.setVerticalGroup(layout.createSequentialGroup()
 										.addGroup(layout.createParallelGroup()
-														.addComponent(typeCaption)
-														.addComponent(typeLabel))
+														  .addComponent(typeCaption)
+														  .addComponent(typeLabel))
 										.addGroup(layout.createParallelGroup()
-														.addComponent(nameCaption)
-														.addComponent(nameLabel))
+														  .addComponent(nameCaption)
+														  .addComponent(nameLabel))
 										.addGroup(layout.createParallelGroup()
-														.addComponent(kindCaption)
-														.addComponent(kindLabel))
+														  .addComponent(kindCaption)
+														  .addComponent(kindLabel))
 										.addGroup(layout.createParallelGroup()
-														.addComponent(strCaption)
-														.addComponent(strLabel)
-														.addComponent(intCaption)
-														.addComponent(intLabel))
+														  .addComponent(strCaption)
+														  .addComponent(strLabel)
+														  .addComponent(intCaption)
+														  .addComponent(intLabel))
 										.addGroup(layout.createParallelGroup()
-														.addComponent(dexCaption)
-														.addComponent(dexLabel)
-														.addComponent(wisCaption)
-														.addComponent(wisLabel))
+														  .addComponent(dexCaption)
+														  .addComponent(dexLabel)
+														  .addComponent(wisCaption)
+														  .addComponent(wisLabel))
 										.addGroup(layout.createParallelGroup()
-														.addComponent(conCaption)
-														.addComponent(conLabel)
-														.addComponent(chaCaption)
-														.addComponent(chaLabel))
+														  .addComponent(conCaption)
+														  .addComponent(conLabel)
+														  .addComponent(chaCaption)
+														  .addComponent(chaLabel))
 										.addGroup(layout.createParallelGroup()
-														.addComponent(jobsCaption)
-														.addComponent(jobsPanel)));
+														  .addComponent(jobsCaption)
+														  .addComponent(jobsPanel)));
 		layout.setHorizontalGroup(layout.createParallelGroup()
-										.addGroup(layout.createSequentialGroup()
-														.addGroup(
-																layout.createParallelGroup()
-																		.addComponent(typeCaption)
-																		.addComponent(nameCaption)
-																		.addComponent(kindCaption)
-																		.addGroup(layout.createSequentialGroup()
-																						.addComponent(strCaption)
-																						.addComponent(strLabel))
-																		.addGroup(layout.createSequentialGroup()
-																						.addComponent(dexCaption)
-																						.addComponent(dexLabel))
-																		.addGroup(layout.createSequentialGroup()
-																						.addComponent(conCaption)
-																						.addComponent(conLabel))
-																		.addComponent(jobsCaption))
-														.addGroup(layout.createParallelGroup()
-																		.addComponent(typeLabel)
-																		.addComponent(nameLabel)
-																		.addComponent(kindLabel)
-																		.addGroup(layout.createSequentialGroup()
-																						.addComponent(intCaption)
-																						.addComponent(intLabel))
-																		.addGroup(layout.createSequentialGroup()
-																						.addComponent(wisCaption)
-																						.addComponent(wisLabel))
-																		.addGroup(layout.createSequentialGroup()
-																						.addComponent(chaCaption)
-																						.addComponent(chaLabel))
-																		.addComponent(jobsPanel))));
+										  .addGroup(layout.createSequentialGroup()
+															.addGroup(
+																	layout
+																			.createParallelGroup()
+																			.addComponent(
+																					typeCaption)
+																			.addComponent(
+																					nameCaption)
+																			.addComponent(
+																					kindCaption)
+																			.addGroup(
+																					layout.createSequentialGroup()
+																							.addComponent(
+																									strCaption)
+																							.addComponent(
+																									strLabel))
+																			.addGroup(
+																					layout.createSequentialGroup()
+																							.addComponent(
+																									dexCaption)
+																							.addComponent(
+																									dexLabel))
+																			.addGroup(
+																					layout.createSequentialGroup()
+																							.addComponent(
+																									conCaption)
+																							.addComponent(
+																									conLabel))
+																			.addComponent(
+																					jobsCaption))
+															.addGroup(
+																	layout
+																			.createParallelGroup()
+																			.addComponent(
+																					typeLabel)
+																			.addComponent(
+																					nameLabel)
+																			.addComponent(
+																					kindLabel)
+																			.addGroup(
+																					layout.createSequentialGroup()
+																							.addComponent(
+																									intCaption)
+																							.addComponent(
+																									intLabel))
+																			.addGroup(
+																					layout.createSequentialGroup()
+																							.addComponent(
+																									wisCaption)
+																							.addComponent(
+																									wisLabel))
+																			.addGroup(
+																					layout.createSequentialGroup()
+																							.addComponent(
+																									chaCaption)
+																							.addComponent(
+																									chaLabel))
+																			.addComponent(
+																					jobsPanel))));
 		layout.linkSize(SwingConstants.HORIZONTAL, typeCaption, nameCaption,
 				kindCaption, jobsCaption);
 		layout.linkSize(SwingConstants.HORIZONTAL, typeLabel, nameLabel,
@@ -215,7 +238,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	@SuppressWarnings("ObjectEquality")
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
-							@Nullable final UnitMember selected) {
+							   @Nullable final UnitMember selected) {
 		if (selected instanceof ProxyFor) {
 			if (((ProxyFor<?>) selected).isParallel()) {
 				@SuppressWarnings("unchecked")
@@ -236,61 +259,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			recache();
 		}
 	}
-	/**
-	 * A label to represent a stat.
-	 */
-	private static class StatLabel extends JLabel {
-		/**
-		 * A handle for the stat in question.
-		 */
-		private final ToIntFunction<WorkerStats> handle;
-		/**
-		 * Constructor.
-		 * @param stat a handle for the stat we represent
-		 */
-		protected StatLabel(final ToIntFunction<WorkerStats> stat) {
-			super("+NaN");
-			handle = stat;
-		}
-		/**
-		 * Update the label.
-		 * @param stats the stats to show
-		 */
-		public void recache(@Nullable final WorkerStats stats) {
-			if (stats == null) {
-				setText("");
-			} else {
-				setText(getModifierString(handle.applyAsInt(stats)));
-			}
-		}
-		/**
-		 * Prevent serialization.
-		 * @param out ignored
-		 * @throws IOException always
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void writeObject(final ObjectOutputStream out) throws IOException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-		/**
-		 * Prevent serialization
-		 * @param in ignored
-		 * @throws IOException always
-		 * @throws ClassNotFoundException never
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void readObject(final ObjectInputStream in)
-				throws IOException, ClassNotFoundException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-		/**
-		 * @return a diagnostic String
-		 */
-		@Override
-		public String toString() {
-			return "StatLabel: " + getText();
-		}
-	}
+
 	/**
 	 * Invalidate and recompute the display.
 	 */
@@ -321,9 +290,9 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 				//noinspection ObjectAllocationInLoop
 				final JLabel label = new JLabel(job.getName() + ' ' + job.getLevel());
 				final String skills = stream(job.spliterator(), false)
-											.map(skill -> skill.getName() + ' ' +
+											  .map(skill -> skill.getName() + ' ' +
 																	skill.getLevel())
-											.collect(joining(", ", "Skills: ", ""));
+											  .collect(joining(", ", "Skills: ", ""));
 				if ("Skills: ".length() != skills.length()) {
 					label.setToolTipText(skills);
 				}
@@ -352,7 +321,8 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			if (!portraitName.isEmpty()) {
 				try {
 					portraitComponent
-							.setPortrait(ImageLoader.getLoader().loadImage(portraitName));
+							.setPortrait(ImageLoader.getLoader().loadImage
+																		 (portraitName));
 				} catch (final IOException except) {
 					LOGGER.log(Level.WARNING, "Failed to load portrait", except);
 				}
@@ -360,26 +330,31 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		}
 		portraitComponent.repaint();
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a diagnostic String
 	 */
@@ -387,6 +362,72 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	public String toString() {
 		return "MemberDetailPanel, currently showing a " + typeLabel.getText();
 	}
+
+	/**
+	 * A label to represent a stat.
+	 */
+	private static class StatLabel extends JLabel {
+		/**
+		 * A handle for the stat in question.
+		 */
+		private final ToIntFunction<WorkerStats> handle;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param stat a handle for the stat we represent
+		 */
+		protected StatLabel(final ToIntFunction<WorkerStats> stat) {
+			super("+NaN");
+			handle = stat;
+		}
+
+		/**
+		 * Update the label.
+		 *
+		 * @param stats the stats to show
+		 */
+		public void recache(@Nullable final WorkerStats stats) {
+			if (stats == null) {
+				setText("");
+			} else {
+				setText(getModifierString(handle.applyAsInt(stats)));
+			}
+		}
+
+		/**
+		 * Prevent serialization.
+		 *
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void writeObject(final ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+
+		/**
+		 * Prevent serialization
+		 *
+		 * @param in ignored
+		 * @throws IOException            always
+		 * @throws ClassNotFoundException never
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void readObject(final ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+
+		/**
+		 * @return a diagnostic String
+		 */
+		@Override
+		public String toString() {
+			return "StatLabel: " + getText();
+		}
+	}
+
 	/**
 	 * A component to show the portrait of the currently selected member.
 	 */
@@ -398,12 +439,14 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		@SuppressWarnings("FieldHasSetterButNoGetter")
 		@Nullable
 		private Image portrait = null;
+
 		/**
 		 * @param image the image to draw from now on
 		 */
 		public void setPortrait(@Nullable final Image image) {
 			portrait = image;
 		}
+
 		/**
 		 * @param pen the graphics context
 		 */
@@ -416,22 +459,26 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 				pen.drawImage(local, 0, 0, getWidth(), getHeight(), this);
 			}
 		}
+
 		/**
 		 * Prevent serialization.
+		 *
 		 * @param out ignored
 		 * @throws IOException always
 		 */
-		@SuppressWarnings({ "unused", "static-method" })
+		@SuppressWarnings({"unused", "static-method"})
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
+
 		/**
 		 * Prevent serialization
+		 *
 		 * @param in ignored
-		 * @throws IOException always
+		 * @throws IOException            always
 		 * @throws ClassNotFoundException never
 		 */
-		@SuppressWarnings({ "unused", "static-method" })
+		@SuppressWarnings({"unused", "static-method"})
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");

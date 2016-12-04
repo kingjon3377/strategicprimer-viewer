@@ -1,6 +1,6 @@
 package view.map.details;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -13,9 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 import model.map.HasKind;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
@@ -66,7 +64,8 @@ public final class FixtureEditMenu extends JPopupMenu {
 	 *                        name or kind has changed.
 	 */
 	public FixtureEditMenu(final IFixture fixture, final Iterable<Player> players,
-						final @NonNull IWorkerTreeModel @NonNull ... changeListeners) {
+						   final @NonNull IWorkerTreeModel @NonNull ...
+								   changeListeners) {
 		Collections.addAll(listeners, changeListeners);
 		boolean immutable = true;
 		final Component outer = this;
@@ -76,7 +75,8 @@ public final class FixtureEditMenu extends JPopupMenu {
 						"Fixture's new name:", "Rename Fixture",
 						PLAIN_MESSAGE, null, null,
 						((HasMutableName) fixture).getName());
-				if ((result != null) && !result.equals(((HasMutableName) fixture).getName())) {
+				if ((result != null) &&
+							!result.equals(((HasMutableName) fixture).getName())) {
 					((HasMutableName) fixture).setName(result);
 					for (final IWorkerTreeModel listener : listeners) {
 						listener.renameItem((HasMutableName) fixture);
@@ -129,7 +129,9 @@ public final class FixtureEditMenu extends JPopupMenu {
 			addMenuItem(new JMenuItem("Dismiss", KeyEvent.VK_D),
 					event -> {
 						final int reply = showConfirmDialog(
-								outer, String.format("Are you sure you want to dismiss %s?", name),
+								outer,
+								String.format("Are you sure you want to dismiss %s?",
+										name),
 								"Confirm Dismissal", YES_NO_OPTION);
 						if (YES_OPTION == reply) {
 							for (final IWorkerTreeModel listener : listeners) {
@@ -152,7 +154,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 			return ((PlayerCollection) players).asArray();
 		} else {
 			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
-											.collect(Collectors.toList());
+											  .collect(Collectors.toList());
 			return NullCleaner.assertNotNull(list.toArray(new Player[list.size()]));
 		}
 	}
@@ -168,26 +170,31 @@ public final class FixtureEditMenu extends JPopupMenu {
 		add(item);
 		item.addActionListener(listener);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a diagnostic String
 	 */

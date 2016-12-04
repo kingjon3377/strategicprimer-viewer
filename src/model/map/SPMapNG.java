@@ -53,6 +53,10 @@ import static util.NullCleaner.assertNotNull;
  */
 public class SPMapNG implements IMutableMapNG {
 	/**
+	 * Map max version.
+	 */
+	public static final int MAX_VERSION = 1;
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(SPMapNG.class);
@@ -68,10 +72,6 @@ public class SPMapNG implements IMutableMapNG {
 	 * The players in the map.
 	 */
 	private final IMutablePlayerCollection playerCollection;
-	/**
-	 * The current turn.
-	 */
-	private int turn;
 	/**
 	 * The forests in the map. If there's more than one forest, only one goes here, and
 	 * the rest go in the "miscellaneous fixtures" pile.
@@ -102,13 +102,86 @@ public class SPMapNG implements IMutableMapNG {
 	private final Map<@NonNull Point, @NonNull EnumSet<@NonNull River>> rivers =
 			new HashMap<>();
 	/**
-	 * Map max version.
+	 * The current turn.
 	 */
-	public static final int MAX_VERSION = 1;
+	private int turn;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param dimensions  the dimensions of the map
+	 * @param players     the players in the map
+	 * @param currentTurn the current turn
+	 */
+	public SPMapNG(final MapDimensions dimensions,
+				   final IMutablePlayerCollection players,
+				   final int currentTurn) {
+		dims = dimensions;
+		playerCollection = players;
+		turn = currentTurn;
+	}
+
+	/**
+	 * FIXME: This is probably very slow ...
+	 *
+	 * @param firstIterable  one iterable
+	 * @param secondIterable another
+	 * @param <T>            the type of thing they contain
+	 * @return whether they contain the same elements.
+	 */
+	private static <T> boolean areIterablesEqual(final Iterable<T> firstIterable,
+												 final Iterable<T> secondIterable) {
+		final Collection<T> first = StreamSupport.stream(firstIterable.spliterator(),
+				false).collect(Collectors.toList());
+		final Collection<T> firstCopy =
+				StreamSupport.stream(firstIterable.spliterator(), false)
+						.collect(Collectors.toList());
+		final Collection<T> second =
+				StreamSupport.stream(secondIterable.spliterator(), false)
+						.collect(Collectors.toList());
+		final Collection<T> secondCopy =
+				StreamSupport.stream(secondIterable.spliterator(), false)
+						.collect(Collectors.toList());
+		firstCopy.removeAll(second);
+		secondCopy.removeAll(first);
+		return first.containsAll(second) && second.containsAll(first) &&
+					   secondCopy.isEmpty() && firstCopy.isEmpty();
+	}
+
+	/**
+	 * Note that this consumes the streams!
+	 *
+	 * FIXME: This is probably very slow ...
+	 *
+	 * @param firstStream  one stream
+	 * @param secondStream another
+	 * @param <T>          the type of thing they contain
+	 * @return whether they contain the same elements.
+	 */
+	private static <T> boolean areStreamsEqual(final Stream<T> firstStream,
+											   final Stream<T> secondStream) {
+		final Collection<T> first = firstStream.collect(Collectors.toList());
+		final Collection<T> firstCopy = new ArrayList<>(first);
+		final Collection<T> second = secondStream.collect(Collectors.toList());
+		firstCopy.removeAll(second);
+		final Collection<T> secondCopy = new ArrayList<>(second);
+		secondCopy.removeAll(first);
+		return first.containsAll(second) && second.containsAll(first) &&
+					   secondCopy.isEmpty() && firstCopy.isEmpty();
+	}
+
+	/**
+	 * @param fix a fixture
+	 * @return whether strict-subset calculations should skip it.
+	 */
+	public static boolean shouldSkip(final TileFixture fix) {
+		return (fix instanceof CacheFixture) || (fix instanceof TextFixture) ||
+					   ((fix instanceof Animal) && ((Animal) fix).isTraces());
+	}
 
 	/**
 	 * @param obj     another map
-	 * @param ostream     the stream to write verbose results to
+	 * @param ostream the stream to write verbose results to
 	 * @param context a string to print before every line of output, describing the
 	 *                context
 	 * @return whether the other map is a subset of this one
@@ -196,7 +269,7 @@ public class SPMapNG implements IMutableMapNG {
 						// They just don't have the exposed bit set; carry on
 						// ...
 					} else if ((ourGround == null) || !assertNotNull(fixtures.get(point))
-															.contains(theirGround)) {
+															   .contains(theirGround)) {
 						ostream.append(localContext);
 						ostream.append(
 								"\tHas different primary ground, or ground we don't");
@@ -224,25 +297,26 @@ public class SPMapNG implements IMutableMapNG {
 				for (final TileFixture fix : theirFixtures) {
 					if (ourFixtures.contains(fix) || shouldSkip(fix) ||
 								((fix instanceof Ground) &&
-										Objects.equals(fix, getGround(point))) ||
+										 Objects.equals(fix, getGround(point))) ||
 								((fix instanceof Forest) &&
-										Objects.equals(fix, getForest(point)))) {
+										 Objects.equals(fix, getForest(point)))) {
 						continue;
 					} else if ((fix instanceof IUnit) && ourUnits.containsKey(
 							Integer.valueOf(fix.getID()))) {
-						retval &= assertNotNull(ourUnits.get(Integer.valueOf(fix.getID())))
+						retval &=
+								assertNotNull(ourUnits.get(Integer.valueOf(fix.getID())))
 										.isSubset(fix, ostream, localContext);
 					} else if ((fix instanceof SubsettableFixture) && ourSubsettables
-																			.containsKey(
-																					Integer.valueOf(
-																							fix.getID()))) {
+																			  .containsKey(
+																					  Integer.valueOf(
+																							  fix.getID()))) {
 						int count = 0;
 						boolean unmatched = true;
 						@Nullable SubsettableFixture match = null;
 						for (final SubsettableFixture subsettable : ourSubsettables
 																			.get(Integer
 																						 .valueOf(
-																					fix.getID()))) {
+																								 fix.getID()))) {
 							count++;
 							match = subsettable;
 							if (subsettable.isSubset(fix, NullStream.DEV_NULL, "")) {
@@ -266,7 +340,8 @@ public class SPMapNG implements IMutableMapNG {
 							ostream.append("Fixture with ID #");
 							ostream.append(Integer.toString(fix.getID()));
 							ostream.append(
-									" didn't match any of the subsettable fixtures here sharing that ID");
+									" didn't match any of the subsettable fixtures here " +
+											"sharing that ID");
 							ostream.append(LineEnd.LINE_SEP);
 							retval = false;
 							break;
@@ -326,21 +401,6 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
-	 * Constructor.
-	 *
-	 * @param dimensions  the dimensions of the map
-	 * @param players     the players in the map
-	 * @param currentTurn the current turn
-	 */
-	public SPMapNG(final MapDimensions dimensions,
-				final IMutablePlayerCollection players,
-				final int currentTurn) {
-		dims = dimensions;
-		playerCollection = players;
-		turn = currentTurn;
-	}
-
-	/**
 	 * @return the map's dimensions
 	 */
 	@Override
@@ -363,6 +423,7 @@ public class SPMapNG implements IMutableMapNG {
 	public Iterable<@NonNull Point> locations() {
 		return new IteratorWrapper<>(new PointIterator(dimensions(), null, true, true));
 	}
+
 	/**
 	 * @return the locations in the map
 	 */
@@ -373,6 +434,7 @@ public class SPMapNG implements IMutableMapNG {
 						new PointIterator(dimensions(), null, true, true), 0),
 				false));
 	}
+
 	/**
 	 * @param location a location
 	 * @return the base terrain at that location
@@ -440,6 +502,7 @@ public class SPMapNG implements IMutableMapNG {
 			return new IteratorWrapper<>(new EmptyIterator<>());
 		}
 	}
+
 	/**
 	 * @param location a location
 	 * @return a stream of any other fixtures there
@@ -452,6 +515,7 @@ public class SPMapNG implements IMutableMapNG {
 			return assertNotNull(Stream.empty());
 		}
 	}
+
 	/**
 	 * @return the current turn
 	 */
@@ -461,11 +525,28 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * @param currentTurn the new current turn
+	 */
+	@Override
+	public void setCurrentTurn(final int currentTurn) {
+		turn = currentTurn;
+	}
+
+	/**
 	 * @return the current player
 	 */
 	@Override
 	public Player getCurrentPlayer() {
 		return playerCollection.getCurrentPlayer();
+	}
+
+	/**
+	 * @param player the new current player
+	 */
+	@Override
+	public void setCurrentPlayer(final Player player) {
+		playerCollection.getCurrentPlayer().setCurrent(false);
+		playerCollection.getPlayer(player.getPlayerId()).setCurrent(true);
 	}
 
 	/**
@@ -488,66 +569,19 @@ public class SPMapNG implements IMutableMapNG {
 					&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			return locationStream().allMatch(
 					point -> (getBaseTerrain(point) == obj.getBaseTerrain(point)) &&
-									(isMountainous(point) == obj.isMountainous(point)) &&
-									areIterablesEqual(getRivers(point),
-											obj.getRivers(point)) &&
-									Objects.equals(getForest(point),
-											obj.getForest(point)) &&
-									Objects.equals(getGround(point),
-											obj.getGround(point)) &&
-									areStreamsEqual(streamOtherFixtures(point),
-											obj.streamOtherFixtures(point)));
+									 (isMountainous(point) == obj.isMountainous(point)
+									 ) &&
+									 areIterablesEqual(getRivers(point),
+											 obj.getRivers(point)) &&
+									 Objects.equals(getForest(point),
+											 obj.getForest(point)) &&
+									 Objects.equals(getGround(point),
+											 obj.getGround(point)) &&
+									 areStreamsEqual(streamOtherFixtures(point),
+											 obj.streamOtherFixtures(point)));
 		} else {
 			return false;
 		}
-	}
-
-	/**
-	 * FIXME: This is probably very slow ...
-	 *
-	 * @param firstIterable  one iterable
-	 * @param secondIterable another
-	 * @param <T>            the type of thing they contain
-	 * @return whether they contain the same elements.
-	 */
-	private static <T> boolean areIterablesEqual(final Iterable<T> firstIterable,
-												final Iterable<T> secondIterable) {
-		final Collection<T> first = StreamSupport.stream(firstIterable.spliterator(),
-				false).collect(Collectors.toList());
-		final Collection<T> firstCopy =
-				StreamSupport.stream(firstIterable.spliterator(), false)
-						.collect(Collectors.toList());
-		final Collection<T> second =
-				StreamSupport.stream(secondIterable.spliterator(), false)
-						.collect(Collectors.toList());
-		final Collection<T> secondCopy =
-				StreamSupport.stream(secondIterable.spliterator(), false)
-						.collect(Collectors.toList());
-		firstCopy.removeAll(second);
-		secondCopy.removeAll(first);
-		return first.containsAll(second) && second.containsAll(first) &&
-					secondCopy.isEmpty() && firstCopy.isEmpty();
-	}
-	/**
-	 * Note that this consumes the streams!
-	 *
-	 * FIXME: This is probably very slow ...
-	 *
-	 * @param firstStream  one stream
-	 * @param secondStream another
-	 * @param <T>            the type of thing they contain
-	 * @return whether they contain the same elements.
-	 */
-	private static <T> boolean areStreamsEqual(final Stream<T> firstStream,
-											final Stream<T> secondStream) {
-		final Collection<T> first = firstStream.collect(Collectors.toList());
-		final Collection<T> firstCopy = new ArrayList<>(first);
-		final Collection<T> second = secondStream.collect(Collectors.toList());
-		firstCopy.removeAll(second);
-		final Collection<T> secondCopy = new ArrayList<>(second);
-		secondCopy.removeAll(first);
-		return first.containsAll(second) && second.containsAll(first) &&
-					secondCopy.isEmpty() && firstCopy.isEmpty();
 	}
 
 	/**
@@ -561,7 +595,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public int hashCode() {
 		return dimensions().hashCode() + (turn << 3) +
-					(getCurrentPlayer().hashCode() << 5);
+					   (getCurrentPlayer().hashCode() << 5);
 	}
 
 	/**
@@ -654,8 +688,8 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
-	 * @param location a location
-	 * @param terrainType    the terrain there
+	 * @param location    a location
+	 * @param terrainType the terrain there
 	 */
 	@Override
 	public void setBaseTerrain(final Point location, final TileType terrainType) {
@@ -676,12 +710,12 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
-	 * @param location a location
-	 * @param addedRivers     rivers to add to that location
+	 * @param location    a location
+	 * @param addedRivers rivers to add to that location
 	 */
 	@Override
 	public void addRivers(final Point location,
-						final @NonNull River @NonNull ... addedRivers) {
+						  final @NonNull River @NonNull ... addedRivers) {
 		final EnumSet<@NonNull River> localRivers;
 		if (rivers.containsKey(location)) {
 			localRivers = rivers.get(location);
@@ -693,8 +727,8 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
-	 * @param location a location
-	 * @param removedRivers     rivers to remove from it
+	 * @param location      a location
+	 * @param removedRivers rivers to remove from it
 	 */
 	@Override
 	public void removeRivers(final Point location, final River... removedRivers) {
@@ -718,8 +752,8 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
-	 * @param location a location
-	 * @param newGround     what the ground there should be, if any
+	 * @param location  a location
+	 * @param newGround what the ground there should be, if any
 	 */
 	@Override
 	public void setGround(final Point location, @Nullable final Ground newGround) {
@@ -753,23 +787,27 @@ public class SPMapNG implements IMutableMapNG {
 					local.stream().anyMatch(matcher);
 			if (found) {
 				final TileFixture existing = local.stream().filter(matcher).findAny()
-													.orElseThrow(
-															() -> new IllegalStateException("Fixture vanished"));
+													 .orElseThrow(
+															 () -> new
+																		   IllegalStateException("Fixture vanished"));
 				try {
 					if (existing.equals(fix) ||
 								((existing instanceof SubsettableFixture) &&
-										((SubsettableFixture) existing)
-												.isSubset(fix, NullStream.DEV_NULL, "")) ||
+										 ((SubsettableFixture) existing)
+												 .isSubset(fix, NullStream.DEV_NULL,
+														 "")) ||
 								((fix instanceof SubsettableFixture) &&
-										((SubsettableFixture) fix)
-												.isSubset(existing, NullStream.DEV_NULL, ""))) {
+										 ((SubsettableFixture) fix)
+												 .isSubset(existing, NullStream.DEV_NULL,
+														 ""))) {
 						local.remove(existing);
 						local.add(fix);
 					} else {
 						local.add(fix);
 						LOGGER.log(Level.WARNING,
 								"Inserted duplicate-ID fixture at " + location);
-						LOGGER.log(Level.FINE, "Stack trace of this location: ", new Throwable());
+						LOGGER.log(Level.FINE, "Stack trace of this location: ",
+								new Throwable());
 						LOGGER.fine("Existing fixture was: " + existing.shortDesc());
 						LOGGER.fine("Added: " + fix.shortDesc());
 					}
@@ -794,32 +832,6 @@ public class SPMapNG implements IMutableMapNG {
 		if (fixtures.containsKey(location)) {
 			assertNotNull(fixtures.get(location)).remove(fix);
 		}
-	}
-
-	/**
-	 * @param player the new current player
-	 */
-	@Override
-	public void setCurrentPlayer(final Player player) {
-		playerCollection.getCurrentPlayer().setCurrent(false);
-		playerCollection.getPlayer(player.getPlayerId()).setCurrent(true);
-	}
-
-	/**
-	 * @param currentTurn the new current turn
-	 */
-	@Override
-	public void setCurrentTurn(final int currentTurn) {
-		turn = currentTurn;
-	}
-
-	/**
-	 * @param fix a fixture
-	 * @return whether strict-subset calculations should skip it.
-	 */
-	public static boolean shouldSkip(final TileFixture fix) {
-		return (fix instanceof CacheFixture) || (fix instanceof TextFixture) ||
-					((fix instanceof Animal) && ((Animal) fix).isTraces());
 	}
 
 	/**

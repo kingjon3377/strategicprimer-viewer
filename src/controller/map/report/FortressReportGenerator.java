@@ -56,15 +56,6 @@ import util.SimpleMultiMap;
  */
 public final class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	/**
-	 * @param comparator a comparator for pairs of Points and fixtures.
-	 */
-	public FortressReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-																		@NonNull
-																				IFixture>> comparator) {
-		super(comparator);
-	}
-
-	/**
 	 * Instance we use.
 	 */
 	private final IReportGenerator<IUnit> urg = new UnitReportGenerator(pairComparator);
@@ -73,6 +64,104 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 */
 	private final IReportGenerator<FortressMember> memberReportGenerator =
 			new FortressMemberReportGenerator(pairComparator);
+	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	public FortressReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
+																		 @NonNull
+																				 IFixture>> comparator) {
+		super(comparator);
+	}
+
+	/**
+	 * @param map      the map
+	 * @param point    a point
+	 * @param fixtures the set of fixtures, so we can schedule the removal the terrain
+	 *                 fixtures from it
+	 * @return a String describing the terrain on it
+	 */
+	private static String getTerrain(final IMapNG map, final Point point,
+									 final PatientMap<Integer, Pair<Point, IFixture>>
+											 fixtures) {
+		final StringBuilder builder = new StringBuilder(130).append(
+				"Surrounding terrain: ").append(
+				map.getBaseTerrain(point).toXML().replace('_', ' '));
+		boolean unforested = true;
+		final Forest forest = map.getForest(point);
+		if (forest != null) {
+			builder.append(", forested with ").append(forest.getKind());
+			unforested = false;
+		}
+		if (map.isMountainous(point)) {
+			builder.append(", mountainous");
+		}
+		for (final TileFixture fix : map.getOtherFixtures(point)) {
+			if (fix instanceof Forest) {
+				if (unforested) {
+					unforested = false;
+					builder.append(", forested with ").append(
+							((Forest) fix).getKind());
+				}
+				fixtures.remove(Integer.valueOf(fix.getID()));
+			} else if (fix instanceof Mountain) {
+				builder.append(", mountainous");
+				fixtures.remove(Integer.valueOf(fix.getID()));
+			} else if (fix instanceof Hill) {
+				builder.append(", hilly");
+				fixtures.remove(Integer.valueOf(fix.getID()));
+			} else if (fix instanceof Oasis) {
+				builder.append(", with a nearby oasis");
+				fixtures.remove(Integer.valueOf(fix.getID()));
+			}
+		}
+		return NullCleaner.assertNotNull(builder.toString());
+	}
+
+	/**
+	 * @param rivers a collection of rivers
+	 * @return an equivalent string.
+	 */
+	private static String riversToString(final Collection<River> rivers) {
+		final StringBuilder builder = new StringBuilder(64);
+		if (rivers.contains(River.Lake)) {
+			builder.append("<li>There is a nearby lake.</li>");
+			builder.append(LineEnd.LINE_SEP);
+			rivers.remove(River.Lake);
+		}
+		if (!rivers.isEmpty()) {
+			builder.append(OPEN_LIST_ITEM);
+			builder.append("There is a river on the tile, ");
+			builder.append("flowing through the following borders: ");
+			builder.append(rivers.stream().map(River::getDescription)
+								   .collect(Collectors.joining(", ")));
+			builder.append(CLOSE_LIST_ITEM);
+		}
+		return NullCleaner.assertNotNull(builder.toString());
+	}
+
+	/**
+	 * @param loc    where this is
+	 * @param parent the node to add nodes describing rivers to
+	 * @param rivers the collection of rivers
+	 */
+	private static void riversToNode(final Point loc, final IReportNode parent,
+									 final Collection<River> rivers) {
+		if (rivers.contains(River.Lake)) {
+			parent.add(new SimpleReportNode(loc, "There is a nearby lake."));
+			rivers.remove(River.Lake);
+		}
+		if (!rivers.isEmpty()) {
+			parent.add(new SimpleReportNode(loc,
+												   "There is a river on the tile, " +
+														   "flowing " +
+														   "through the following " +
+														   "borders: ",
+												   rivers.stream()
+														   .map(River::getDescription)
+														   .collect(Collectors.joining(
+																   ", "))));
+		}
+	}
 
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
@@ -132,7 +221,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
@@ -167,93 +256,6 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	}
 
 	/**
-	 * @param map      the map
-	 * @param point    a point
-	 * @param fixtures the set of fixtures, so we can schedule the removal the terrain
-	 *                 fixtures from it
-	 * @return a String describing the terrain on it
-	 */
-	private static String getTerrain(final IMapNG map, final Point point,
-									 final PatientMap<Integer, Pair<Point, IFixture>> fixtures) {
-		final StringBuilder builder = new StringBuilder(130).append(
-				"Surrounding terrain: ").append(
-				map.getBaseTerrain(point).toXML().replace('_', ' '));
-		boolean unforested = true;
-		final Forest forest = map.getForest(point);
-		if (forest != null) {
-			builder.append(", forested with ").append(forest.getKind());
-			unforested = false;
-		}
-		if (map.isMountainous(point)) {
-			builder.append(", mountainous");
-		}
-		for (final TileFixture fix : map.getOtherFixtures(point)) {
-			if (fix instanceof Forest) {
-				if (unforested) {
-					unforested = false;
-					builder.append(", forested with ").append(
-							((Forest) fix).getKind());
-				}
-				fixtures.remove(Integer.valueOf(fix.getID()));
-			} else if (fix instanceof Mountain) {
-				builder.append(", mountainous");
-				fixtures.remove(Integer.valueOf(fix.getID()));
-			} else if (fix instanceof Hill) {
-				builder.append(", hilly");
-				fixtures.remove(Integer.valueOf(fix.getID()));
-			} else if (fix instanceof Oasis) {
-				builder.append(", with a nearby oasis");
-				fixtures.remove(Integer.valueOf(fix.getID()));
-			}
-		}
-		return NullCleaner.assertNotNull(builder.toString());
-	}
-
-	/**
-	 * @param rivers a collection of rivers
-	 * @return an equivalent string.
-	 */
-	private static String riversToString(final Collection<River> rivers) {
-		final StringBuilder builder = new StringBuilder(64);
-		if (rivers.contains(River.Lake)) {
-			builder.append("<li>There is a nearby lake.</li>");
-			builder.append(LineEnd.LINE_SEP);
-			rivers.remove(River.Lake);
-		}
-		if (!rivers.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM);
-			builder.append("There is a river on the tile, ");
-			builder.append("flowing through the following borders: ");
-			builder.append(rivers.stream().map(River::getDescription)
-								.collect(Collectors.joining(", ")));
-			builder.append(CLOSE_LIST_ITEM);
-		}
-		return NullCleaner.assertNotNull(builder.toString());
-	}
-
-	/**
-	 * @param loc    where this is
-	 * @param parent the node to add nodes describing rivers to
-	 * @param rivers the collection of rivers
-	 */
-	private static void riversToNode(final Point loc, final IReportNode parent,
-									final Collection<River> rivers) {
-		if (rivers.contains(River.Lake)) {
-			parent.add(new SimpleReportNode(loc, "There is a nearby lake."));
-			rivers.remove(River.Lake);
-		}
-		if (!rivers.isEmpty()) {
-			parent.add(new SimpleReportNode(loc,
-												"There is a river on the tile, flowing " +
-														"through the following borders: ",
-												rivers.stream()
-														.map(River::getDescription)
-														.collect(Collectors.joining(
-																", "))));
-		}
-	}
-
-	/**
 	 * All fixtures referred to in this report are removed from the collection.
 	 *
 	 * @param item          the fortress to report on
@@ -269,22 +271,22 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 						  final Fortress item, final Point loc) {
 		// This can get long. we'll give it 16K.
 		final StringBuilder builder = new StringBuilder(16384).append("<h5>Fortress ")
-											.append(item.getName())
-											.append(" belonging to ")
-											.append(playerNameOrYou(item.getOwner()))
-											.append("</h5>").append(LineEnd.LINE_SEP)
-											.append(OPEN_LIST).append(OPEN_LIST_ITEM)
-											.append("Located at ")
-											.append(loc).append(' ')
-											.append(distCalculator.distanceString(loc))
-											.append(CLOSE_LIST_ITEM)
-											.append(OPEN_LIST_ITEM);
+											  .append(item.getName())
+											  .append(" belonging to ")
+											  .append(playerNameOrYou(item.getOwner()))
+											  .append("</h5>").append(LineEnd.LINE_SEP)
+											  .append(OPEN_LIST).append(OPEN_LIST_ITEM)
+											  .append("Located at ")
+											  .append(loc).append(' ')
+											  .append(distCalculator.distanceString(loc))
+											  .append(CLOSE_LIST_ITEM)
+											  .append(OPEN_LIST_ITEM);
 		builder.append(getTerrain(map, loc, fixtures)).append(CLOSE_LIST_ITEM);
 		if (map.getRivers(loc).iterator().hasNext()) {
 			builder.append(riversToString(
 					StreamSupport.stream(map.getRivers(loc).spliterator(), false)
 							.collect(
-							Collectors.toSet())));
+									Collectors.toSet())));
 		}
 		if (item.iterator().hasNext()) {
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:")
@@ -335,7 +337,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 					builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
 																  .produce(fixtures, map,
 																		  currentPlayer,
-																		  implement, loc))
+																		  implement,
+																		  loc))
 							.append(CLOSE_LIST_ITEM);
 				}
 				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
@@ -347,8 +350,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				for (final FortressMember member : contents) {
 					builder.append(OPEN_LIST_ITEM)
 							.append(memberReportGenerator
-											.produce(fixtures, map, currentPlayer, member,
-									loc)).append(CLOSE_LIST_ITEM);
+											.produce(fixtures, map, currentPlayer,
+													member,
+													loc)).append(CLOSE_LIST_ITEM);
 				}
 				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 			}
@@ -370,14 +374,14 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 */
 	@Override
 	public SectionListReportNode produceRIR(final PatientMap<Integer, Pair<Point,
-																					  IFixture>> fixtures,
+																				  IFixture>> fixtures,
 											final IMapNG map, final Player currentPlayer,
 											final Fortress item, final Point loc) {
 		final SectionListReportNode retval = new SectionListReportNode(loc, 5, concat(
 				"Fortress ", item.getName(), " belonging to ",
 				playerNameOrYou(item.getOwner())));
 		retval.add(new SimpleReportNode(loc, "Located at ", loc.toString(), " ",
-											distCalculator.distanceString(loc)));
+											   distCalculator.distanceString(loc)));
 		retval.add(new SimpleReportNode(loc, getTerrain(map, loc, fixtures)));
 		if (map.getRivers(loc).iterator().hasNext()) {
 			riversToNode(loc, retval,
@@ -398,8 +402,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 							(IUnit) unit, loc));
 				} else if (unit instanceof Implement) {
 					equipment.add(memberReportGenerator
-									  .produceRIR(fixtures, map, currentPlayer, unit,
-											  loc));
+										  .produceRIR(fixtures, map, currentPlayer, unit,
+												  loc));
 				} else if (unit instanceof ResourcePile) {
 					final String kind = ((ResourcePile) unit).getKind();
 					final IReportNode list;
@@ -416,7 +420,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				} else {
 					contents.add(
 							memberReportGenerator
-									.produceRIR(fixtures, map, currentPlayer, unit, loc));
+									.produceRIR(fixtures, map, currentPlayer, unit,
+											loc));
 				}
 			}
 			retval.addIfNonEmpty(units, resources, equipment, contents);

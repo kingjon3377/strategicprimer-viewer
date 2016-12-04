@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -12,13 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
@@ -70,6 +64,16 @@ public final class FindDialog extends JDialog {
 	 */
 	private static final double FILTER_PROPORTION = 0.6;
 	/**
+	 * A parser to convert from strings to integers.
+	 */
+	private static final NumberFormat NUM_PARSER =
+			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER =
+			NullCleaner.assertNotNull(Logger.getLogger(FindDialog.class.getName()));
+	/**
 	 * The text field holding the search string.
 	 */
 	private final JTextField search = new JTextField("", 20);
@@ -98,7 +102,6 @@ public final class FindDialog extends JDialog {
 	 * The frame that is this frame's parent.
 	 */
 	private final Frame parentFrame;
-
 	/**
 	 * Constructor.
 	 *
@@ -165,15 +168,82 @@ public final class FindDialog extends JDialog {
 	}
 
 	/**
-	 * A parser to convert from strings to integers.
+	 * @param pattern         a pattern
+	 * @param idNum           the ID number that is the pattern if the pattern is numeric
+	 * @param fix             a fixture
+	 * @param caseSensitivity whether to search case-sensitively
+	 * @return whether the fixture has an owner that matches the pattern.
 	 */
-	private static final NumberFormat NUM_PARSER =
-			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+	private static boolean matchesOwner(final String pattern, final int idNum,
+										final IFixture fix, final boolean
+																	caseSensitivity) {
+		if (fix instanceof HasOwner) {
+			final Player owner = ((HasOwner) fix).getOwner();
+			final String ownerName;
+			if (caseSensitivity) {
+				ownerName = owner.getName();
+			} else {
+				ownerName = owner.getName().toLowerCase();
+			}
+			return (owner.getPlayerId() == idNum) || ownerName.contains(pattern) ||
+						   matchesOwnerSpecials(pattern, owner);
+		} else {
+			return false;
+		}
+	}
+
 	/**
-	 * Logger.
+	 * @param player  the player owning a fixture
+	 * @param pattern a pattern
+	 * @return whether the pattern is "me" and the fixture is owned by the current
+	 * player,
+	 * or if the pattern is "none" and the fixture is independent.
 	 */
-	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(FindDialog.class.getName()));
+	private static boolean matchesOwnerSpecials(final String pattern,
+												final Player player) {
+		return ("me".equalsIgnoreCase(pattern.trim()) && player.isCurrent()) ||
+					   ("none".equalsIgnoreCase(pattern.trim()) &&
+								player.isIndependent());
+	}
+
+	/**
+	 * @param pattern         a pattern
+	 * @param fix             a fixture
+	 * @param caseSensitivity whether to search case-sensitively
+	 * @return whether the fixture has a 'kind' that matches the pattern
+	 */
+	private static boolean matchesKind(@SuppressWarnings("TypeMayBeWeakened")
+									   final String pattern, final IFixture fix,
+									   final boolean caseSensitivity) {
+		if (caseSensitivity) {
+			return (fix instanceof HasKind) &&
+						   ((HasKind) fix).getKind().contains(pattern);
+		} else {
+			return (fix instanceof HasKind)
+						   && ((HasKind) fix).getKind().toLowerCase()
+									  .contains(pattern);
+		}
+	}
+
+	/**
+	 * @param pattern         a patter
+	 * @param fix             a fixture
+	 * @param caseSensitivity whether to search case-sensitively
+	 * @return whether the fixture has a name that matches the pattern
+	 */
+	private static boolean matchesName(@SuppressWarnings("TypeMayBeWeakened") final
+									   String pattern,
+									   final IFixture fix,
+									   final boolean caseSensitivity) {
+		if (caseSensitivity) {
+			return (fix instanceof HasName) &&
+						   ((HasName) fix).getName().contains(pattern);
+		} else {
+			return (fix instanceof HasName)
+						   && ((HasName) fix).getName().toLowerCase()
+									  .contains(pattern);
+		}
+	}
 
 	/**
 	 * Search for the current pattern. If the pattern is found (as the ID of a
@@ -202,14 +272,16 @@ public final class FindDialog extends JDialog {
 		}
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(map.getMapDimensions(),
-															map.getSelectedPoint(),
-															!backwards.isSelected(),
-															!vertically.isSelected()));
+															   map.getSelectedPoint(),
+															   !backwards.isSelected(),
+															   !vertically.isSelected
+																				   ()));
 		for (final Point point : iter) {
 			final TileFixture ground = map.getMap().getGround(point);
 			final TileFixture forest = map.getMap().getForest(point);
 			if (((ground != null) && matches(pattern, idNum, ground, caseSensitivity))
-						|| ((forest != null) && matches(pattern, idNum, forest, caseSensitivity))) {
+						|| ((forest != null) &&
+									matches(pattern, idNum, forest, caseSensitivity))) {
 				SYS_OUT.print("Found in point");
 				SYS_OUT.println(point);
 				map.setSelection(point);
@@ -227,10 +299,11 @@ public final class FindDialog extends JDialog {
 	}
 
 	/**
-	 * @param pattern a pattern
-	 * @param idNum   either MIN_INT, or (if pattern is numeric) its numeric equivalent
-	 * @param fix     a fixture. May be null, in which case we return false.
-	 * @param caseSensitivity    whether to search case-sensitively
+	 * @param pattern         a pattern
+	 * @param idNum           either MIN_INT, or (if pattern is numeric) its numeric
+	 *                        equivalent
+	 * @param fix             a fixture. May be null, in which case we return false.
+	 * @param caseSensitivity whether to search case-sensitively
 	 * @return whether the fixture matches the pattern or has id as its ID.
 	 */
 	private boolean matches(final String pattern, final int idNum,
@@ -239,106 +312,64 @@ public final class FindDialog extends JDialog {
 			return true;
 		} else if (fix instanceof FixtureIterable) {
 			return StreamSupport
-					.stream(((FixtureIterable<@NonNull ?>) fix).spliterator(),
-							false)
-					.anyMatch((final IFixture member) -> matches(pattern, idNum,
-							NullCleaner.assertNotNull(member), caseSensitivity));
+						   .stream(((FixtureIterable<@NonNull ?>) fix).spliterator(),
+								   false)
+						   .anyMatch((final IFixture member) -> matches(pattern, idNum,
+								   NullCleaner.assertNotNull(member), caseSensitivity));
 		} else {
 			return false;
 		}
 	}
 
 	/**
-	 * @param pattern a pattern
-	 * @param idNum   either MIN_INT, or (if pattern is numeric) its numeric equivalent
-	 * @param fix     a fixture.
-	 * @param caseSensitivity    whether to search case-sensitively
+	 * @param pattern         a pattern
+	 * @param idNum           either MIN_INT, or (if pattern is numeric) its numeric
+	 *                        equivalent
+	 * @param fix             a fixture.
+	 * @param caseSensitivity whether to search case-sensitively
 	 * @return whether the fixture has id as its ID or matches the pattern in any of the
 	 * simple ways; if this fails the caller will go on to the recursive test.
 	 */
 	private boolean matchesSimple(final String pattern, final int idNum,
-								final IFixture fix, final boolean caseSensitivity) {
+								  final IFixture fix, final boolean caseSensitivity) {
 		return !pattern.isEmpty() && (!(fix instanceof TileFixture) ||
-											ffl.shouldDisplay((TileFixture) fix)) &&
-					((fix.getID() == idNum) || matchesName(pattern, fix, caseSensitivity) ||
+											  ffl.shouldDisplay((TileFixture) fix)) &&
+					   ((fix.getID() == idNum) ||
+								matchesName(pattern, fix, caseSensitivity) ||
 								matchesKind(pattern, fix, caseSensitivity) ||
 								matchesOwner(pattern, idNum, fix, caseSensitivity));
 	}
 
 	/**
-	 * @param pattern a pattern
-	 * @param idNum   the ID number that is the pattern if the pattern is numeric
-	 * @param fix     a fixture
-	 * @param caseSensitivity    whether to search case-sensitively
-	 * @return whether the fixture has an owner that matches the pattern.
+	 * Prevent serialization.
+	 *
+	 * @param out ignored
+	 * @throws IOException always
 	 */
-	private static boolean matchesOwner(final String pattern, final int idNum,
-										final IFixture fix, final boolean caseSensitivity) {
-		if (fix instanceof HasOwner) {
-			final Player owner = ((HasOwner) fix).getOwner();
-			final String ownerName;
-			if (caseSensitivity) {
-				ownerName = owner.getName();
-			} else {
-				ownerName = owner.getName().toLowerCase();
-			}
-			return (owner.getPlayerId() == idNum) || ownerName.contains(pattern) ||
-						matchesOwnerSpecials(pattern, owner);
-		} else {
-			return false;
-		}
+	@SuppressWarnings({"unused", "static-method"})
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 
 	/**
-	 * @param player  the player owning a fixture
-	 * @param pattern a pattern
-	 * @return whether the pattern is "me" and the fixture is owned by the current
-	 * player,
-	 * or if the pattern is "none" and the fixture is independent.
+	 * Prevent serialization
+	 *
+	 * @param in ignored
+	 * @throws IOException            always
+	 * @throws ClassNotFoundException never
 	 */
-	private static boolean matchesOwnerSpecials(final String pattern,
-												final Player player) {
-		return ("me".equalsIgnoreCase(pattern.trim()) && player.isCurrent()) ||
-					("none".equalsIgnoreCase(pattern.trim()) &&
-								player.isIndependent());
+	@SuppressWarnings({"unused", "static-method"})
+	private void readObject(final ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 
 	/**
-	 * @param pattern a pattern
-	 * @param fix     a fixture
-	 * @param caseSensitivity    whether to search case-sensitively
-	 * @return whether the fixture has a 'kind' that matches the pattern
+	 * @return a diagnostic String
 	 */
-	private static boolean matchesKind(@SuppressWarnings("TypeMayBeWeakened")
-									final String pattern, final IFixture fix,
-									final boolean caseSensitivity) {
-		if (caseSensitivity) {
-			return (fix instanceof HasKind) &&
-						((HasKind) fix).getKind().contains(pattern);
-		} else {
-			return (fix instanceof HasKind)
-						&& ((HasKind) fix).getKind().toLowerCase()
-									.contains(pattern);
-		}
-	}
-
-	/**
-	 * @param pattern a patter
-	 * @param fix     a fixture
-	 * @param caseSensitivity    whether to search case-sensitively
-	 * @return whether the fixture has a name that matches the pattern
-	 */
-	private static boolean matchesName(@SuppressWarnings("TypeMayBeWeakened") final
-									String pattern,
-									final IFixture fix, final boolean caseSensitivity) {
-		if (caseSensitivity) {
-			return (fix instanceof HasName) &&
-						((HasName) fix).getName().contains(pattern);
-		} else {
-			return (fix instanceof HasName)
-						&& ((HasName) fix).getName().toLowerCase()
-									.contains(pattern);
-		}
+	@Override
+	public String toString() {
+		return "FindDialog: last searched for " + search.getText();
 	}
 
 	/**
@@ -414,32 +445,5 @@ public final class FindDialog extends JDialog {
 		public String toString() {
 			return "FilterPopulator";
 		}
-	}
-	/**
-	 * Prevent serialization.
-	 * @param out ignored
-	 * @throws IOException always
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void writeObject(final ObjectOutputStream out) throws IOException {
-		throw new NotSerializableException("Serialization is not allowed");
-	}
-	/**
-	 * Prevent serialization
-	 * @param in ignored
-	 * @throws IOException always
-	 * @throws ClassNotFoundException never
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void readObject(final ObjectInputStream in)
-			throws IOException, ClassNotFoundException {
-		throw new NotSerializableException("Serialization is not allowed");
-	}
-	/**
-	 * @return a diagnostic String
-	 */
-	@Override
-	public String toString() {
-		return "FindDialog: last searched for " + search.getText();
 	}
 }

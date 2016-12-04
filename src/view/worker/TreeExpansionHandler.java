@@ -1,6 +1,6 @@
 package view.worker;
 
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.TreePath;
 import view.util.TreeExpansionOrderListener;
 
@@ -65,6 +65,7 @@ public final class TreeExpansionHandler implements TreeExpansionOrderListener {
 
 	/**
 	 * Expand some rows of the tree.
+	 *
 	 * @param levels how many levels from the root, inclusive, to expand
 	 */
 	@Override

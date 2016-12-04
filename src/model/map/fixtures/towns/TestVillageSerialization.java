@@ -44,15 +44,6 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	 */
 	private static final String OWNER_PROPERTY = "owner";
 	/**
-	 * @param villageStatus the status to use for the village in the test
-	 * @param villageRace the race to use for the village in the test
-	 */
-	public TestVillageSerialization(final TownStatus villageStatus,
-									final String villageRace) {
-		status = villageStatus;
-		race = villageRace;
-	}
-	/**
 	 * The status to use for the village in the test.
 	 */
 	private final TownStatus status;
@@ -60,9 +51,19 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	 * The race to use for the village in the test.
 	 */
 	private final String race;
+	/**
+	 * @param villageStatus the status to use for the village in the test
+	 * @param villageRace   the race to use for the village in the test
+	 */
+	public TestVillageSerialization(final TownStatus villageStatus,
+									final String villageRace) {
+		status = villageStatus;
+		race = villageRace;
+	}
 
 	/**
 	 * A factory method for the data to use as parameters for the test.
+	 *
 	 * @return the data to use as parameters for the test.
 	 */
 	@SuppressWarnings("ObjectAllocationInLoop")
@@ -70,7 +71,8 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	public static Collection<Object[]> generateData() {
 		final TownStatus[] statuses = TownStatus.values();
 		final Collection<String> races = new HashSet<>(RaceFactory.getRaces());
-		final Collection<Object[]> retval = new ArrayList<>(statuses.length * races.size());
+		final Collection<Object[]> retval =
+				new ArrayList<>(statuses.length * races.size());
 		for (final TownStatus status : statuses) {
 			for (final String race : races) {
 				retval.add(new Object[]{status, race});
@@ -78,6 +80,7 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 		}
 		return retval;
 	}
+
 	/**
 	 * Test Village serialization.
 	 *

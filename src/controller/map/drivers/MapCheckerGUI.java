@@ -27,8 +27,8 @@ public final class MapCheckerGUI implements UtilityDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-k", "--check", ParamCount.AtLeastOne,
-								"Check map for errors",
-								"Check a map file for errors, deprecated syntax, etc."
+								   "Check map for errors",
+								   "Check a map file for errors, deprecated syntax, etc."
 			);
 
 	/**
@@ -36,7 +36,7 @@ public final class MapCheckerGUI implements UtilityDriver {
 	 *
 	 * @param cli
 	 * @param options
-	 * @param args command-line arguments
+	 * @param args    command-line arguments
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override

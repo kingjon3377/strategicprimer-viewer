@@ -45,13 +45,6 @@ public final class TableDebugger implements SimpleCLIDriver {
 										   "nonexistent table"
 			);
 	/**
-	 * @return the usage object
-	 */
-	@Override
-	public DriverUsage usage() {
-		return USAGE;
-	}
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(TableDebugger.class);
@@ -59,7 +52,6 @@ public final class TableDebugger implements SimpleCLIDriver {
 	 * The exploration runner.
 	 */
 	private final ExplorationRunner runner;
-
 	/**
 	 * Constructor.
 	 *
@@ -67,6 +59,14 @@ public final class TableDebugger implements SimpleCLIDriver {
 	 */
 	protected TableDebugger(final ExplorationRunner explorationRunner) {
 		runner = explorationRunner;
+	}
+
+	/**
+	 * @return the usage object
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE;
 	}
 
 	/**
@@ -99,10 +99,10 @@ public final class TableDebugger implements SimpleCLIDriver {
 	 */
 	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	private void debugSingleTable(final String before, final String after,
-								final EncounterTable table,
-								@SuppressWarnings("TypeMayBeWeakened")
-								final String tableName, final Appendable ostream,
-								final Set<EncounterTable> set)
+								  final EncounterTable table,
+								  @SuppressWarnings("TypeMayBeWeakened")
+								  final String tableName, final Appendable ostream,
+								  final Set<EncounterTable> set)
 			throws MissingTableException, IOException {
 		if (set.contains(table)) {
 			ostream.append("table ");
@@ -147,6 +147,7 @@ public final class TableDebugger implements SimpleCLIDriver {
 	 * A utility driver method that loads all files in tables/ under the current
 	 * directory, then checks to see whether any references a nonexistent table, then
 	 * does further tests for debugging purposes.
+	 *
 	 * @throws DriverFailedException on missing table or I/O error
 	 */
 	@Override
@@ -164,10 +165,9 @@ public final class TableDebugger implements SimpleCLIDriver {
 	}
 
 	/**
-	 *
 	 * @param cli
 	 * @param options
-	 * @param model ignored
+	 * @param model   ignored
 	 * @throws DriverFailedException on missing table or I/O error
 	 */
 	@Override

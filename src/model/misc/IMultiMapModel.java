@@ -25,7 +25,8 @@ import util.Pair;
 public interface IMultiMapModel extends IDriverModel {
 	/**
 	 * Add a subordinate map.
-	 *  @param map  the map to remove
+	 *
+	 * @param map  the map to remove
 	 * @param file the file it was loaded from
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")

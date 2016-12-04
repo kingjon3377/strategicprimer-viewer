@@ -38,12 +38,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  */
 public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableImage,
-									HasMutableOwner, HasPortrait {
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
-
+									 HasMutableOwner, HasPortrait {
 	/**
 	 * The unit's orders. This is serialized to and from XML, but does not affect
 	 * equality or hashing, and is not printed in toString.
@@ -55,19 +50,17 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	 */
 	private final NavigableMap<Integer, String> results = new TreeMap<>();
 	/**
-	 * @return the unit's orders for all turns.
+	 * The members of the unit.
 	 */
-	@Override
-	public NavigableMap<Integer, String> getAllOrders() {
-		return orders;
-	}
+	private final Collection<UnitMember> members = new ArraySet<>();
 	/**
-	 * @return the unit's results for all turns.
+	 * ID number.
 	 */
-	@Override
-	public NavigableMap<Integer, String> getAllResults() {
-		return results;
-	}
+	private final int id;
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
 	/**
 	 * The player that owns the unit.
 	 */
@@ -80,11 +73,10 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	 * The name of this unit.
 	 */
 	private String name;
-
 	/**
-	 * The members of the unit.
+	 * The filename of an image to use as a portrait for the unit.
 	 */
-	private final Collection<UnitMember> members = new ArraySet<>();
+	private String portraitName = "";
 
 	/**
 	 * FIXME: We need some more members -- something about stats. What else?
@@ -102,6 +94,22 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 		kind = unitType;
 		name = unitName;
 		id = idNum;
+	}
+
+	/**
+	 * @return the unit's orders for all turns.
+	 */
+	@Override
+	public NavigableMap<Integer, String> getAllOrders() {
+		return orders;
+	}
+
+	/**
+	 * @return the unit's results for all turns.
+	 */
+	@Override
+	public NavigableMap<Integer, String> getAllResults() {
+		return results;
 	}
 
 	/**
@@ -136,6 +144,14 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * @param player the town's new owner
+	 */
+	@Override
+	public final void setOwner(final Player player) {
+		owner = player;
+	}
+
+	/**
 	 * @return the kind of unit
 	 */
 	@Override
@@ -144,11 +160,27 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
+	}
+
+	/**
 	 * @return the name of the unit
 	 */
 	@Override
 	public final String getName() {
 		return name;
+	}
+
+	/**
+	 * @param newName the unit's new name
+	 */
+	@Override
+	public final void setName(final String newName) {
+		name = newName;
 	}
 
 	/**
@@ -192,12 +224,12 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof IUnit)
-										&& (((IUnit) obj).getOwner().getPlayerId() ==
-													owner.getPlayerId())
-										&& ((IUnit) obj).getKind().equals(kind)
-										&& ((IUnit) obj).getName().equals(name)
-										&& areMembersEqual((IUnit) obj)
-										&& (((IUnit) obj).getID() == id));
+										 && (((IUnit) obj).getOwner().getPlayerId() ==
+													 owner.getPlayerId())
+										 && ((IUnit) obj).getKind().equals(kind)
+										 && ((IUnit) obj).getName().equals(name)
+										 && areMembersEqual((IUnit) obj)
+										 && (((IUnit) obj).getID() == id));
 	}
 
 	/**
@@ -269,11 +301,6 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
-	 * ID number.
-	 */
-	private final int id;
-
-	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -291,34 +318,10 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof IUnit)
-										&& (((IUnit) fix).getOwner().getPlayerId() ==
-													owner.getPlayerId())
-										&& ((IUnit) fix).getKind().equals(kind)
-										&& ((IUnit) fix).getName().equals(name));
-	}
-
-	/**
-	 * @param player the town's new owner
-	 */
-	@Override
-	public final void setOwner(final Player player) {
-		owner = player;
-	}
-
-	/**
-	 * @param newName the unit's new name
-	 */
-	@Override
-	public final void setName(final String newName) {
-		name = newName;
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
+										 && (((IUnit) fix).getOwner().getPlayerId() ==
+													 owner.getPlayerId())
+										 && ((IUnit) fix).getKind().equals(kind)
+										 && ((IUnit) fix).getName().equals(name));
 	}
 
 	/**
@@ -331,8 +334,8 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
-	 * @return the unit's orders
 	 * @param turn
+	 * @return the unit's orders
 	 */
 	@Override
 	public String getOrders(final int turn) {
@@ -344,8 +347,9 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 			return "";
 		}
 	}
+
 	/**
-	 * @param turn a turn
+	 * @param turn       a turn
 	 * @param newResults the unit's new results for that turn
 	 */
 	@Override
@@ -369,19 +373,19 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public final void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public final void setImage(final String img) {
+		image = img;
 	}
 
 	/**
@@ -403,10 +407,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 			return "a(n) " + kind + " unit belonging to " + owner.getName();
 		}
 	}
-	/**
-	 * The filename of an image to use as a portrait for the unit.
-	 */
-	private String portraitName = "";
+
 	/**
 	 * @return The filename of an image to use as a portrait for the unit.
 	 */

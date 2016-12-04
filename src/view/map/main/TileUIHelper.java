@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -101,7 +101,7 @@ public final class TileUIHelper {
 	public boolean supportsType(final int version, final TileType type) {
 		final Integer ver = Integer.valueOf(version);
 		return colors.containsKey(ver) &&
-					NullCleaner.assertNotNull(colors.get(ver)).containsKey(type);
+					   NullCleaner.assertNotNull(colors.get(ver)).containsKey(type);
 	}
 
 	/**
@@ -112,13 +112,15 @@ public final class TileUIHelper {
 	public Color get(final int version, final TileType type) {
 		final Integer ver = Integer.valueOf(version);
 		if (colors.containsKey(ver)) {
-			final Map<TileType, Color> colorMap = NullCleaner.assertNotNull(colors.get(ver));
+			final Map<TileType, Color> colorMap =
+					NullCleaner.assertNotNull(colors.get(ver));
 			if (colorMap.containsKey(type)) {
 				return NullCleaner.assertNotNull(colorMap.get(type));
 			} else {
 				throw new IllegalArgumentException(type +
-														" is not a terrain type version "
-														+ version + " can handle");
+														   " is not a terrain type " +
+														   "version "
+														   + version + " can handle");
 			}
 		} else {
 			throw new IllegalArgumentException("Not a version we can handle");

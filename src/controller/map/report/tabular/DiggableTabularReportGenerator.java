@@ -31,17 +31,6 @@ import util.PatientMap;
  */
 public class DiggableTabularReportGenerator implements ITableGenerator<TileFixture> {
 	/**
-	 * @param obj an object
-	 * @return whether this report generator covers it
-	 */
-	@Override
-	public boolean applies(final IFixture obj) {
-		return (obj instanceof Ground) || (obj instanceof Mine) ||
-					   (obj instanceof MineralVein) ||
-					   (obj instanceof StoneDeposit);
-	}
-
-	/**
 	 * The base point to use for distance calculations.
 	 */
 	private final Point base;
@@ -53,6 +42,17 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 	 */
 	public DiggableTabularReportGenerator(final Point distBase) {
 		base = distBase;
+	}
+
+	/**
+	 * @param obj an object
+	 * @return whether this report generator covers it
+	 */
+	@Override
+	public boolean applies(final IFixture obj) {
+		return (obj instanceof Ground) || (obj instanceof Mine) ||
+					   (obj instanceof MineralVein) ||
+					   (obj instanceof StoneDeposit);
 	}
 
 	/**
@@ -129,10 +129,12 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 			return false;
 		}
 	}
+
 	@Override
 	public String headerRow() {
 		return "Distance,Location,Kind,Product,Status";
 	}
+
 	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, TileFixture> one,
@@ -142,9 +144,11 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 		if (!applies(first) || !applies(second)) {
 			throw new IllegalArgumentException("Unhandleable argument");
 		}
-		final int prodCmp = ((HasKind) first).getKind().compareTo(((HasKind) second).getKind());
+		final int prodCmp =
+				((HasKind) first).getKind().compareTo(((HasKind) second).getKind());
 		if (prodCmp == 0) {
-			final int cmp = new DistanceComparator(base).compare(one.first(), two.first());
+			final int cmp =
+					new DistanceComparator(base).compare(one.first(), two.first());
 			if (cmp == 0) {
 				final int kindCmp = Integer.compare(first.getClass().hashCode(),
 						second.getClass().hashCode());

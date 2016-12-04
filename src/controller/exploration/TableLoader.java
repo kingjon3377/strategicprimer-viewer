@@ -82,8 +82,9 @@ public final class TableLoader {
 		} catch (final IllegalArgumentException except) {
 			if ("unknown table type".equals(except.getMessage())) {
 				throw new IllegalArgumentException("File " + filename +
-														" specifies an unknown table type",
-														except);
+														   " specifies an unknown table " +
+														   "type",
+														  except);
 			} else {
 				throw except;
 			}
@@ -99,7 +100,8 @@ public final class TableLoader {
 			throws IOException {
 		final String line = reader.readLine();
 		if (line == null) {
-			throw new IOException("File doesn't start by specifying which kind of table.");
+			throw new IOException("File doesn't start by specifying which kind of table" +
+										  ".");
 		} else {
 			final char cmd = Character.toLowerCase(line.charAt(0));
 			switch (cmd) {
@@ -131,14 +133,14 @@ public final class TableLoader {
 		final String firstLine = reader.readLine();
 		if (firstLine == null) {
 			throw new IOException("File doesn't start with the number of rows of " +
-										"quadrants");
+										  "quadrants");
 		}
 		final int rows;
 		try {
 			rows = NumberFormat.getIntegerInstance().parse(firstLine).intValue();
 		} catch (final NumberFormatException | ParseException except) {
 			throw new IOException("File doesn't start with number of rows of quadrants",
-										except);
+										 except);
 		}
 		final List<String> items = new LinkedList<>();
 		try {
@@ -201,7 +203,7 @@ public final class TableLoader {
 			} else {
 				list.add(
 						Pair.of(TileType.getTileType(NullCleaner.assertNotNull
-																		(array[0])),
+																		 (array[0])),
 								NullCleaner.assertNotNull(array[1])));
 			}
 			line = reader.readLine();
@@ -235,15 +237,6 @@ public final class TableLoader {
 	}
 
 	/**
-	 * @return a String representation of this class
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "TableLoader";
-	}
-
-	/**
 	 * Load all tables in the specified path.
 	 *
 	 * @param path   the directory to look in
@@ -261,7 +254,7 @@ public final class TableLoader {
 						runner.loadTable(table.getFileName().toString(),
 								loadTable(table));
 					}
-				} catch (final FileNotFoundException|NoSuchFileException e) {
+				} catch (final FileNotFoundException | NoSuchFileException e) {
 					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
 				} catch (final IOException e) {
 					//noinspection HardcodedFileSeparator
@@ -282,5 +275,14 @@ public final class TableLoader {
 											 "directory",
 					e);
 		}
+	}
+
+	/**
+	 * @return a String representation of this class
+	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
+	@Override
+	public String toString() {
+		return "TableLoader";
 	}
 }

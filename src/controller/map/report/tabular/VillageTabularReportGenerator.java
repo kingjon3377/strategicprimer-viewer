@@ -34,10 +34,12 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	 * His or her HQ location.
 	 */
 	private final Point base;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param currentPlayer the player for whom this report is being produced
-	 * @param hq his or her HQ location
+	 * @param hq            his or her HQ location
 	 */
 	public VillageTabularReportGenerator(final Player currentPlayer, final Point hq) {
 		player = currentPlayer;
@@ -45,10 +47,10 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	}
 
 	/**
-	 * @param ostream the stream to write the row to
+	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
-	 * @param item the village to base the line on
-	 * @param loc its location
+	 * @param item     the village to base the line on
+	 * @param loc      its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@Override
@@ -65,6 +67,7 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 		ostream.append(getRowDelimiter());
 		return true;
 	}
+
 	/**
 	 * @return the header row for the tabular report
 	 */
@@ -72,6 +75,7 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	public String headerRow() {
 		return "Distance,Location,Owner,Name";
 	}
+
 	/**
 	 * @param one a Pair of one village and its location (in the other order)
 	 * @param two a Pair of another village and its location (in the other order)

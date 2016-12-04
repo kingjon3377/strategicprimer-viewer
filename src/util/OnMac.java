@@ -17,16 +17,11 @@ package util;
  */
 public final class OnMac {
 	/**
-	 * Do not instantiate.
-	 */
-	private OnMac() {
-		// Do not instantiate.
-	}
-	/**
 	 * Whether this system is a mac.
 	 */
 	@SuppressWarnings("AccessOfSystemProperties")
 	public static final boolean SYSTEM_IS_MAC;
+
 	static {
 		final String temp = System.getProperty("os.name");
 		if (temp == null) {
@@ -34,5 +29,12 @@ public final class OnMac {
 		} else {
 			SYSTEM_IS_MAC = temp.toLowerCase().startsWith("mac os x");
 		}
+	}
+
+	/**
+	 * Do not instantiate.
+	 */
+	private OnMac() {
+		// Do not instantiate.
 	}
 }

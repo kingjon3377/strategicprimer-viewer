@@ -88,12 +88,12 @@ public final class TableReportGenerator {
 	}
 
 	/**
-	 * @param map the map to base the report on
+	 * @param map    the map to base the report on
 	 * @param source a function returning an output stream for each new report.
 	 * @throws IOException on I/O error while writing
 	 */
 	public static void createReports(final IMapNG map,
-									  final Function<String, OutputStream> source) throws
+									 final Function<String, OutputStream> source) throws
 			IOException {
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
@@ -174,7 +174,7 @@ public final class TableReportGenerator {
 											  } else {
 												  return Integer.valueOf(fix.getID());
 											  }
-										  } , fix -> Pair.of(point, fix)))));
+										  }, fix -> Pair.of(point, fix)))));
 			final Ground ground = map.getGround(point);
 			final Forest forest = map.getForest(point);
 			if (ground != null) {
@@ -197,7 +197,8 @@ public final class TableReportGenerator {
 			if (fix instanceof FixtureIterable) {
 				return Stream.concat(Stream.of(fix), getFixtures(assertNotNull(
 						StreamSupport
-								.stream(((FixtureIterable<@NonNull ?>) fix).spliterator(),
+								.stream(((FixtureIterable<@NonNull ?>) fix)
+												.spliterator(),
 										false))));
 			} else {
 				return Stream.of(fix);

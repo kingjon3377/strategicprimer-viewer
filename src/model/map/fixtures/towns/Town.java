@@ -20,14 +20,19 @@ import model.map.Player;
 @SuppressWarnings("ClassHasNoToStringMethod")
 public final class Town extends AbstractTown {
 	/**
+	 * ID number.
+	 */
+	private final int id;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param tStatus The status of the town
-	 * @param tSize   The size of the town
-	 * @param discoverDC  The DC to discover it.
-	 * @param tName   the name of the town, fortress, or city
-	 * @param idNum   the ID number.
-	 * @param player  the owner of the town
+	 * @param tStatus    The status of the town
+	 * @param tSize      The size of the town
+	 * @param discoverDC The DC to discover it.
+	 * @param tName      the name of the town, fortress, or city
+	 * @param idNum      the ID number.
+	 * @param player     the owner of the town
 	 */
 	public Town(final TownStatus tStatus, final TownSize tSize, final int discoverDC,
 				final String tName, final int idNum, final Player player) {
@@ -51,11 +56,6 @@ public final class Town extends AbstractTown {
 		retval.setImage(getImage());
 		return retval;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.

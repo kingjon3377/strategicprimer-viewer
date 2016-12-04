@@ -162,6 +162,62 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put("lake", FluidTerrainHandler::readLake);
 		readers.put("player", SPFluidReader::readPlayer);
 	}
+
+	/**
+	 * @param stream a stream of XMLEvents
+	 * @param parent the parent tag
+	 * @return the first start-element in the stream
+	 * @throws SPFormatException if no start element in stream
+	 */
+	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream,
+													 final StartElement parent)
+			throws SPFormatException {
+		final StartElement retval = StreamSupport
+											.stream(stream.spliterator(), false)
+											.filter(XMLEvent::isStartElement).map
+																					  (XMLEvent::asStartElement)
+											.filter(elem -> equalsAny(
+													assertNotNull(
+															elem.getName()
+																	.getNamespaceURI()),
+													ISPReader.NAMESPACE, NULL_NS_URI))
+											.findFirst()
+											.orElseThrow(
+													() -> new MissingChildException
+																  (parent));
+		assert retval != null;
+		return retval;
+	}
+
+	/**
+	 * Read a player from XML. This is here because it's not a good fit for any of the
+	 * other classes that collect related methods.
+	 *
+	 * @param element   the XML element to parse
+	 * @param parent    the parent tag
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players
+	 * @param warner    the Warning instance to use for warnings
+	 * @param idFactory the ID factory to use to generate IDs
+	 * @return the parsed tile
+	 * @throws SPFormatException on SP format problems
+	 */
+	@SuppressWarnings("UnusedParameters")
+	private static Player readPlayer(final StartElement element,
+									 final QName parent,
+									 final Iterable<XMLEvent> stream,
+									 final IMutablePlayerCollection players,
+									 final Warning warner,
+									 final IDRegistrar idFactory)
+			throws SPFormatException {
+		requireTag(element, parent, "player");
+		requireNonEmptyAttribute(element, "number", true, warner);
+		requireNonEmptyAttribute(element, "code_name", true, warner);
+		spinUntilEnd(assertNotNull(element.getName()), stream);
+		return new Player(getIntegerAttribute(element, "number"),
+								 getAttribute(element, "code_name"));
+	}
+
 	/**
 	 * @param <T>     A supertype of the object the XML represents
 	 * @param file    the file we're reading from
@@ -190,7 +246,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					//noinspection unchecked
 					return (T) retval;
 				} else {
-					throw new IllegalStateException("Reader produced different type than we expected");
+					throw new IllegalStateException("Reader produced different type than" +
+															" we expected");
 				}
 			}
 		}
@@ -263,11 +320,13 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	/**
 	 * Create a reader for a simple object having only an ID number and maybe an image,
 	 * and add this reader to our collection.
-	 * @param tag the tag this class should be instantiated from
+	 *
+	 * @param tag     the tag this class should be instantiated from
 	 * @param factory the constructor to create an object of the class. Must take the ID
-	 *                  number in its constructor, and nothing else.
+	 *                number in its constructor, and nothing else.
 	 */
-	private void createSimpleFixtureReader(final String tag, final IntFunction<?> factory) {
+	private void createSimpleFixtureReader(final String tag, final IntFunction<?>
+																	 factory) {
 		readers.put(tag, (element, parent, stream, players, warner, idFactory) -> {
 			requireTag(element, parent, tag);
 			spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -277,28 +336,16 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	}
 
 	/**
-	 * An interface for constructors and factory methods to create simple HasKind
-	 * instances.
-	 */
-	@FunctionalInterface
-	private interface HasKindFactory {
-		/**
-		 * The constructor or factory method.
-		 * @param kind the "kind" property of the object
-		 * @param idNum the object's ID #
-		 * @return the object
-		 */
-		HasKind create(String kind, int idNum);
-	}
-	/**
-	 * Create a reader for a simple object having a kind, an ID number, and maybe an image,
-	 * and add this reader to our collection.
-	 * @param tag the tag this class should be instantiated from
+	 * Create a reader for a simple object having a kind, an ID number, and maybe an
+	 * image, and add this reader to our collection.
+	 *
+	 * @param tag     the tag this class should be instantiated from
 	 * @param factory the constructor to create an object of the class. Must take the
-	 *                  "kind" parameter and the ID number in its constructor, in that
-	 *                  order, and nothing else.
+	 *                "kind" parameter and the ID number in its constructor, in that
+	 *                order, and nothing else.
 	 */
-	private void createSimpleHasKindReader(final String tag, final HasKindFactory factory) {
+	private void createSimpleHasKindReader(final String tag, final HasKindFactory
+																	 factory) {
 		readers.put(tag, (element, parent, stream, players, warner, idFactory) -> {
 			requireTag(element, parent, tag);
 			spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -306,11 +353,13 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					getOrGenerateID(element, warner, idFactory)), element, warner);
 		});
 	}
+
 	/**
 	 * Read a Unit from XML. This is here to avoid a circular dependency between whatever
 	 * class it would be in and this class.
+	 *
 	 * @param element   the XML element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -319,9 +368,9 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @throws SPFormatException on SP format problem
 	 */
 	private Unit readUnit(final StartElement element, final QName parent,
-					 final Iterable<XMLEvent> stream,
-					 final IMutablePlayerCollection players, final Warning warner,
-					 final IDRegistrar idFactory) throws SPFormatException {
+						  final Iterable<XMLEvent> stream,
+						  final IMutablePlayerCollection players, final Warning warner,
+						  final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "unit");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		requireNonEmptyAttribute(element, "owner", false, warner);
@@ -337,7 +386,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		}
 		final Unit retval =
 				setImage(new Unit(getPlayerOrIndependent(element, warner, players),
-								kind, getAttribute(element, "name", ""),
+										 kind, getAttribute(element, "name", ""),
 										 getOrGenerateID(element, warner, idFactory)),
 						element, warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
@@ -361,12 +410,14 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				if (child instanceof UnitMember) {
 					retval.addMember((UnitMember) child);
 				} else {
-					throw new UnwantedChildException(element.getName(), event.asStartElement());
+					throw new UnwantedChildException(element.getName(),
+															event.asStartElement());
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
 			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName())) {
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
@@ -376,11 +427,13 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		}
 		return retval;
 	}
+
 	/**
 	 * Parse orders for a unit for a specified turn.
+	 *
 	 * @param element the orders element
-	 * @param unit the unit to whom these orders are directed
-	 * @param stream the stream of further tags.
+	 * @param unit    the unit to whom these orders are directed
+	 * @param stream  the stream of further tags.
 	 * @throws SPFormatException on SP format problem
 	 */
 	private void parseOrders(final StartElement element,
@@ -395,17 +448,20 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				throw new UnwantedChildException(element.getName(),
 														event.asStartElement());
 			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName())) {
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
 		unit.setOrders(turn, builder.toString().trim());
 	}
+
 	/**
 	 * Parse results for a unit for a specified turn.
+	 *
 	 * @param element the results element
-	 * @param unit the unit to whom these orders are directed
-	 * @param stream the stream of further tags.
+	 * @param unit    the unit to whom these orders are directed
+	 * @param stream  the stream of further tags.
 	 * @throws SPFormatException on SP format problem
 	 */
 	private void parseResults(final StartElement element,
@@ -420,17 +476,19 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				throw new UnwantedChildException(element.getName(),
 														event.asStartElement());
 			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName())) {
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
 		unit.setResults(turn, builder.toString().trim());
 	}
+
 	/**
 	 * Parse a fortress.
 	 *
 	 * @param element   the XML element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -441,10 +499,10 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	@SuppressWarnings("UnusedParameters")
 	private Fortress readFortress(final StartElement element,
 								  final QName parent,
-											  final Iterable<XMLEvent> stream,
-											  final IMutablePlayerCollection players,
-											  final Warning warner,
-											  final IDRegistrar idFactory)
+								  final Iterable<XMLEvent> stream,
+								  final IMutablePlayerCollection players,
+								  final Warning warner,
+								  final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireNonEmptyAttribute(element, "owner", false, warner);
 		requireNonEmptyAttribute(element, "name", false, warner);
@@ -464,10 +522,13 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				} else {
 					throw new UnwantedChildException(assertNotNull(element.getName()),
 															assertNotNull(
-																	event.asStartElement()));
+																	event.asStartElement
+																				  ()));
 				}
 			} else if (event.isEndElement()
-							   && element.getName().equals(event.asEndElement().getName())) {
+							   &&
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
@@ -477,20 +538,22 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 
 	/**
 	 * Parse a map from XML.
-	 * @param element the element being parsed
-	 * @param parent the parent tag
-	 * @param stream the stream of further XML elements
-	 * @param players the collection of players
-	 * @param warner to use to report format irregularities
+	 *
+	 * @param element   the element being parsed
+	 * @param parent    the parent tag
+	 * @param stream    the stream of further XML elements
+	 * @param players   the collection of players
+	 * @param warner    to use to report format irregularities
 	 * @param idFactory to register ID numbers or get new ones
 	 * @return the parsed map
 	 * @throws SPFormatException on format error
 	 */
 	private IMutableMapNG readMap(final StartElement element,
 								  final QName parent,
-										final Iterable<XMLEvent> stream,
-										final IMutablePlayerCollection players,
-										final Warning warner, final IDRegistrar idFactory)
+								  final Iterable<XMLEvent> stream,
+								  final IMutablePlayerCollection players,
+								  final Warning warner, final IDRegistrar
+																idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "map", "view");
 		final int currentTurn;
@@ -500,7 +563,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			currentTurn = getIntegerAttribute(element, "current_turn");
 			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
-				throw new UnwantedChildException(assertNotNull(element.getName()), mapTag);
+				throw new UnwantedChildException(assertNotNull(element.getName()),
+														mapTag);
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
@@ -563,7 +627,11 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 															  new QName(NULL_NS_URI,
 																			   "text"),
 															  event.getLocation(),
-															  new IllegalStateException("Random text outside any tile")));
+															  new IllegalStateException
+																	  ("Random text " +
+																			   "outside " +
+																			   "any " +
+																			   "tile")));
 				}
 			}
 		}
@@ -581,11 +649,12 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * Parse the contents of a tile. There are no Tile objects in the current model
 	 * framework, but this is cleaner than using a marker variable in the map-reading
 	 * loop.
-	 * @param map the map being read
-	 * @param element the tag currently being read
-	 * @param stream the stream to read more tags from
-	 * @param players the collection of players
-	 * @param warner to report format irregularities
+	 *
+	 * @param map       the map being read
+	 * @param element   the tag currently being read
+	 * @param stream    the stream to read more tags from
+	 * @param players   the collection of players
+	 * @param warner    to report format irregularities
 	 * @param idFactory to get ID numbers when needed, and report numbers in use
 	 * @throws SPFormatException on malformed or invalid-in-our-domain XML
 	 */
@@ -658,7 +727,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 													point))) {
 					//noinspection ObjectAllocationInLoop
 					warner.warn(new UnsupportedPropertyException(current,
-																			"laterite"));
+																		"laterite"));
 					map.addFixture(point, (TileFixture) child);
 				} else if (child instanceof TileFixture) {
 					map.addFixture(point, (TileFixture) child);
@@ -666,7 +735,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					throw new UnwantedChildException(element.getName(), current);
 				}
 			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName())) {
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 
 				break;
 			} else if (event.isCharacters()) {
@@ -678,50 +748,20 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			}
 		}
 	}
+
 	/**
-	 * @param stream a stream of XMLEvents
-	 * @param parent the parent tag
-	 * @return the first start-element in the stream
-	 * @throws SPFormatException if no start element in stream
+	 * An interface for constructors and factory methods to create simple HasKind
+	 * instances.
 	 */
-	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream,
-													 final StartElement parent)
-			throws SPFormatException {
-		final StartElement retval = StreamSupport
-											.stream(stream.spliterator(), false)
-											.filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
-											.filter(elem -> equalsAny(
-													assertNotNull(
-															elem.getName().getNamespaceURI()),
-													ISPReader.NAMESPACE, NULL_NS_URI))
-											.findFirst()
-											.orElseThrow(() -> new MissingChildException(parent));
-		assert retval != null;
-		return retval;
-	}
-	/**
-	 * Read a player from XML. This is here because it's not a good fit for any of the
-	 * other classes that collect related methods.
-	 * @param element   the XML element to parse
-	 * @param parent the parent tag
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed tile
-	 * @throws SPFormatException on SP format problems
-	 */
-	@SuppressWarnings("UnusedParameters")
-	private static Player readPlayer(final StartElement element,
-					   final QName parent,
-					   final Iterable<XMLEvent> stream,
-					   final IMutablePlayerCollection players, final Warning warner,
-					   final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "player");
-		requireNonEmptyAttribute(element, "number", true, warner);
-		requireNonEmptyAttribute(element, "code_name", true, warner);
-		spinUntilEnd(assertNotNull(element.getName()), stream);
-		return new Player(getIntegerAttribute(element, "number"),
-								 getAttribute(element, "code_name"));
+	@FunctionalInterface
+	private interface HasKindFactory {
+		/**
+		 * The constructor or factory method.
+		 *
+		 * @param kind  the "kind" property of the object
+		 * @param idNum the object's ID #
+		 * @return the object
+		 */
+		HasKind create(String kind, int idNum);
 	}
 }

@@ -48,10 +48,11 @@ public final class FortressMemberReportGenerator
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public FortressMemberReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-																			@NonNull
-																					IFixture>> comparator) {
+																			   @NonNull
+																					   IFixture>> comparator) {
 		super(comparator);
 	}
+
 	/**
 	 * Produce the sub-report on equipment and resources. All fixtures referred to in
 	 * this report are removed from the collection. This method should probably never
@@ -125,6 +126,7 @@ public final class FortressMemberReportGenerator
 			return "";
 		}
 	}
+
 	/**
 	 * Produce the sub-report on equipment and resources. All fixtures referred to in
 	 * this report are removed from the collection. This method should probably never
@@ -138,7 +140,7 @@ public final class FortressMemberReportGenerator
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
@@ -158,7 +160,8 @@ public final class FortressMemberReportGenerator
 					rsr.add(list);
 				}
 				list.add(
-						produceRIR(fixtures, map, currentPlayer, resource, pair.first()));
+						produceRIR(fixtures, map, currentPlayer, resource, pair.first
+																						()));
 			} else if (pair.second() instanceof Implement) {
 				equip.add(produceRIR(fixtures, map, currentPlayer,
 						(FortressMember) pair.second(), pair.first()));
@@ -173,6 +176,7 @@ public final class FortressMemberReportGenerator
 			return EmptyReportNode.NULL_NODE;
 		}
 	}
+
 	/**
 	 * Produces a sub-report on a resource or piece of equipment
 	 *
@@ -189,7 +193,7 @@ public final class FortressMemberReportGenerator
 						  final FortressMember item, final Point loc) {
 		if (item instanceof Unit) {
 			return new UnitReportGenerator(pairComparator)
-						.produce(fixtures, map, currentPlayer, (Unit) item, loc);
+						   .produce(fixtures, map, currentPlayer, (Unit) item, loc);
 		} else if (item instanceof ResourcePile) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final ResourcePile rsr = (ResourcePile) item;
@@ -216,6 +220,7 @@ public final class FortressMemberReportGenerator
 			throw new IllegalArgumentException("Unexpected FortressMember type");
 		}
 	}
+
 	/**
 	 * Produces a sub-report on a resource or piece of equipment
 	 *
@@ -228,12 +233,13 @@ public final class FortressMemberReportGenerator
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer,
 								  final FortressMember item, final Point loc) {
 		if (item instanceof Unit) {
-			return new UnitReportGenerator(pairComparator).produceRIR(fixtures, map, currentPlayer,
-					(Unit) item, loc);
+			return new UnitReportGenerator(pairComparator)
+						   .produceRIR(fixtures, map, currentPlayer,
+								   (Unit) item, loc);
 		} else if (item instanceof ResourcePile) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final ResourcePile rsr = (ResourcePile) item;
@@ -245,15 +251,17 @@ public final class FortressMemberReportGenerator
 			}
 			if (rsr.getUnits().isEmpty()) {
 				return new SimpleReportNode("A pile of ",
-												rsr.getQuantity().toString(),
-												rsr.getContents(), " (", rsr.getKind(),
-												")", age);
+												   rsr.getQuantity().toString(),
+												   rsr.getContents(), " (", rsr
+																					.getKind(),
+												   ")", age);
 			} else {
 				return new SimpleReportNode("A pile of ",
-												rsr.getQuantity().toString(),
-												" ", rsr.getUnits(), " of ",
-												rsr.getContents(), " (", rsr.getKind(),
-												")", age);
+												   rsr.getQuantity().toString(),
+												   " ", rsr.getUnits(), " of ",
+												   rsr.getContents(), " (", rsr
+																					.getKind(),
+												   ")", age);
 			}
 		} else if (item instanceof Implement) {
 			fixtures.remove(Integer.valueOf(item.getID()));

@@ -50,22 +50,6 @@ public final class SimpleMovement {
 	}
 
 	/**
-	 * An exception thrown to signal traversal is impossible.
-	 *
-	 * FIXME: Ocean isn't impassable to everything, of course.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	public static final class TraversalImpossibleException extends Exception {
-		/**
-		 * Constructor.
-		 */
-		public TraversalImpossibleException() {
-			super("Traversal is impossible.");
-		}
-	}
-
-	/**
 	 * @param terrain a terrain type
 	 * @return whether it's passable by land movement.
 	 */
@@ -82,13 +66,13 @@ public final class SimpleMovement {
 	 * @return the movement cost to traverse the location.
 	 */
 	public static int getMovementCost(final TileType terrain,
-									final boolean forest, final boolean mountain,
-									final boolean river,
-									final Supplier<Stream<TileFixture>> fixtures) {
+									  final boolean forest, final boolean mountain,
+									  final boolean river,
+									  final Supplier<Stream<TileFixture>> fixtures) {
 		if ((TileType.Ocean == terrain) || (TileType.NotVisible == terrain)) {
 			return Integer.MAX_VALUE;
 		} else if (forest || mountain || isForest(fixtures.get()) ||
-						isHill(fixtures.get()) || (TileType.Desert == terrain)) {
+						   isHill(fixtures.get()) || (TileType.Desert == terrain)) {
 			if (river) {
 				return 2;
 			} else {
@@ -119,7 +103,7 @@ public final class SimpleMovement {
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static boolean isForest(final Stream<TileFixture> fixtures) {
 		return StreamSupport.stream(fixtures.spliterator(), false)
-					.anyMatch(fix -> fix instanceof Forest);
+					   .anyMatch(fix -> fix instanceof Forest);
 	}
 
 	/**
@@ -154,8 +138,10 @@ public final class SimpleMovement {
 			return true;
 		}
 	}
+
 	/**
 	 * TODO: This does not properly handle the unusual case of a very unobservant unit.
+	 *
 	 * @param unit a unit
 	 * @return the highest Perception score of any member, or 0 if no members
 	 */
@@ -171,6 +157,7 @@ public final class SimpleMovement {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param worker a worker
 	 * @return the worker's Perception score
@@ -197,16 +184,33 @@ public final class SimpleMovement {
 		}
 		return ability + (ranks * 2);
 	}
+
 	/**
 	 * @param unit a unit
 	 * @param fix  a fixture
 	 * @return whether the unit should always notice it. A null fixture is never noticed
 	 */
 	public static boolean shouldAlwaysNotice(final HasOwner unit,
-											@Nullable final TileFixture fix) {
+											 @Nullable final TileFixture fix) {
 		return (fix instanceof Mountain) || (fix instanceof RiverFixture) ||
-					(fix instanceof Hill) || (fix instanceof Forest) ||
-					((fix instanceof ITownFixture) &&
+					   (fix instanceof Hill) || (fix instanceof Forest) ||
+					   ((fix instanceof ITownFixture) &&
 								((ITownFixture) fix).getOwner().equals(unit.getOwner()));
+	}
+
+	/**
+	 * An exception thrown to signal traversal is impossible.
+	 *
+	 * FIXME: Ocean isn't impassable to everything, of course.
+	 *
+	 * @author Jonathan Lovelace
+	 */
+	public static final class TraversalImpossibleException extends Exception {
+		/**
+		 * Constructor.
+		 */
+		public TraversalImpossibleException() {
+			super("Traversal is impossible.");
+		}
 	}
 }

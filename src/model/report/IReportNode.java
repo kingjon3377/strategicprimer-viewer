@@ -23,7 +23,8 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public interface IReportNode
-		extends Comparable<@NonNull IReportNode>, MutableTreeNode, Iterable<IReportNode> {
+		extends Comparable<@NonNull IReportNode>, MutableTreeNode,
+						Iterable<IReportNode> {
 	/**
 	 * @return the HTML representation of the node.
 	 */
@@ -57,12 +58,15 @@ public interface IReportNode
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void add(@Nullable final MutableTreeNode node);
+
 	/**
 	 * Add a node as our first child. Do nothing if null.
+	 *
 	 * @param node the node to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addAsFirst(@Nullable final MutableTreeNode node);
+
 	/**
 	 * @return the point, if any, in the map that this represents something on
 	 */
@@ -87,16 +91,19 @@ public interface IReportNode
 			}
 		}
 	}
+
+	/**
+	 * @param pt the point, if any, in the map that this represents something on
+	 */
+	void setPoint(final Point pt);
+
 	/**
 	 * @return the point, if any, in the map that this node, as opposed to any of its
 	 * children, represents something on.
 	 */
 	@Nullable
 	Point getLocalPoint();
-	/**
-	 * @param pt the point, if any, in the map that this represents something on
-	 */
-	void setPoint(final Point pt);
+
 	/**
 	 * @return whether this is "the empty node," which should always be ignored.
 	 */
@@ -104,6 +111,7 @@ public interface IReportNode
 	default boolean isEmptyNode() {
 		return false;
 	}
+
 	/**
 	 * @param obj an object to compare to.
 	 * @return the result of the comparison
@@ -113,6 +121,7 @@ public interface IReportNode
 	default int compareTo(final IReportNode obj) {
 		return produce().compareTo(obj.produce());
 	}
+
 	/**
 	 * @param children new children to add, each only if it has children of its own
 	 */

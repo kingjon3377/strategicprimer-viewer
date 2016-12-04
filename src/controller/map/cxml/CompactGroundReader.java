@@ -35,6 +35,7 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	 * Singleton object.
 	 */
 	public static final CompactReader<Ground> READER = new CompactGroundReader();
+
 	/**
 	 * Singleton.
 	 */
@@ -45,7 +46,7 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 *@param players   the collection of players
+	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed tile

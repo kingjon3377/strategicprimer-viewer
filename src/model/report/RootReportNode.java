@@ -70,7 +70,8 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		builder.append("<html>").append(LineEnd.LINE_SEP).append("<head><title>").append(text)
+		builder.append("<html>").append(LineEnd.LINE_SEP).append("<head><title>")
+				.append(text)
 				.append("</title></head>").append(LineEnd.LINE_SEP).append("<body>");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
@@ -105,9 +106,10 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof RootReportNode) &&
-										text.equals(((IReportNode) obj).getText()) &&
-										children()
-												.equals(((IReportNode) obj).children()));
+										 text.equals(((IReportNode) obj).getText()) &&
+										 children()
+												 .equals(((IReportNode) obj).children
+																					 ()));
 	}
 
 	/**
@@ -139,6 +141,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	/**
 	 * Add a node at the beginning of our list of children. Do nothing if null, rather
 	 * than crashing.
+	 *
 	 * @param node the node to add
 	 */
 	@Override
@@ -153,6 +156,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 			}
 		}
 	}
+
 	/**
 	 * @return an iterator over the children
 	 */
@@ -215,35 +219,42 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	public Point getLocalPoint() {
 		return point;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Superclass removes CloneNotSupportedException from method signature, but we still
 	 * want to throw it, so we wrap it in a RuntimeException
+	 *
 	 * @return never
 	 */
 	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public RootReportNode clone() {
 		throw new IllegalStateException("cloning prohibited",
-										  new CloneNotSupportedException("cloning prohibited"));
+											   new CloneNotSupportedException("cloning " +
+																					  "prohibited"));
 	}
 }

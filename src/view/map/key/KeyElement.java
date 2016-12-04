@@ -1,14 +1,11 @@
 package view.map.key;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.*;
 import model.map.TileType;
 import model.viewer.TileViewSize;
 import org.eclipse.jdt.annotation.Nullable;
@@ -64,7 +61,7 @@ public final class KeyElement extends BoxPanel {
 		panel.addRigidArea(4);
 		final int tileSize = TileViewSize.scaleZoom(DEF_ZOOM_LEVEL, version);
 		panel.add(new KeyElementComponent(T_UI_H.get(version, type), MIN_SIZE, PREF_SIZE,
-												new Dimension(tileSize, tileSize)));
+												 new Dimension(tileSize, tileSize)));
 		panel.addRigidArea(4);
 		final JLabel label = new JLabel(T_UI_H.getDescription(type));
 		panel.add(label);
@@ -74,8 +71,33 @@ public final class KeyElement extends BoxPanel {
 		addGlue();
 		final Dimension captionSize = label.getMinimumSize();
 		setMinimumSize(
-				new Dimension(Math.max(MIN_SIZE.width, captionSize.width) + (HORIZ_BUF * 2),
-									MIN_SIZE.height + captionSize.height + 12));
+				new Dimension(Math.max(MIN_SIZE.width, captionSize.width) +
+									  (HORIZ_BUF * 2),
+									 MIN_SIZE.height + captionSize.height + 12));
+	}
+
+	/**
+	 * Prevent serialization.
+	 *
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	@SuppressWarnings({"unused", "static-method"})
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * Prevent serialization
+	 *
+	 * @param in ignored
+	 * @throws IOException            always
+	 * @throws ClassNotFoundException never
+	 */
+	@SuppressWarnings({"unused", "static-method"})
+	private void readObject(final ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 
 	/**
@@ -98,7 +120,7 @@ public final class KeyElement extends BoxPanel {
 		 * @param max  the component's maximum size
 		 */
 		protected KeyElementComponent(final Color col, final Dimension min,
-									final Dimension pref, final Dimension max) {
+									  final Dimension pref, final Dimension max) {
 			color = col;
 			setMinimumSize(min);
 			setPreferredSize(pref);
@@ -122,26 +144,31 @@ public final class KeyElement extends BoxPanel {
 				context.dispose();
 			}
 		}
+
 		/**
 		 * Prevent serialization.
+		 *
 		 * @param out ignored
 		 * @throws IOException always
 		 */
-		@SuppressWarnings({ "unused", "static-method" })
+		@SuppressWarnings({"unused", "static-method"})
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
+
 		/**
 		 * Prevent serialization
+		 *
 		 * @param in ignored
-		 * @throws IOException always
+		 * @throws IOException            always
 		 * @throws ClassNotFoundException never
 		 */
-		@SuppressWarnings({ "unused", "static-method" })
+		@SuppressWarnings({"unused", "static-method"})
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -149,25 +176,5 @@ public final class KeyElement extends BoxPanel {
 		public String toString() {
 			return "KeyElementComponent with color " + color;
 		}
-	}
-	/**
-	 * Prevent serialization.
-	 * @param out ignored
-	 * @throws IOException always
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void writeObject(final ObjectOutputStream out) throws IOException {
-		throw new NotSerializableException("Serialization is not allowed");
-	}
-	/**
-	 * Prevent serialization
-	 * @param in ignored
-	 * @throws IOException always
-	 * @throws ClassNotFoundException never
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void readObject(final ObjectInputStream in)
-			throws IOException, ClassNotFoundException {
-		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

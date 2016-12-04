@@ -108,11 +108,12 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 	 */
 	@Override
 	public Component getListCellRendererComponent(@Nullable
-												final JList<? extends FixtureMatcher> list,
-												final FixtureMatcher value,
-												final int index,
-												final boolean isSelected,
-												final boolean cellHasFocus) {
+												  final JList<? extends FixtureMatcher>
+															  list,
+												  final FixtureMatcher value,
+												  final int index,
+												  final boolean isSelected,
+												  final boolean cellHasFocus) {
 		if (list == null) {
 			throw new IllegalArgumentException("Asked to render null list");
 		}
@@ -128,24 +129,28 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a quasi-diagnostic String
 	 */

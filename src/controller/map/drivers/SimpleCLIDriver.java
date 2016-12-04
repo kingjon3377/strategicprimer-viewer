@@ -33,11 +33,9 @@ public interface SimpleCLIDriver extends SimpleDriver {
 	 * default implementation assumes a CLI driver, and writes the model back to file(s)
 	 * after calling startDriver with the model.
 	 *
-	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param args any command-line arguments that should be passed to the driver.
+	 * @param args    any command-line arguments that should be passed to the driver.
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")

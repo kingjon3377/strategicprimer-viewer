@@ -29,25 +29,29 @@ public class AnimalTabularReportGenerator implements ITableGenerator<Animal> {
 	 * The base point to use for distance calculations
 	 */
 	private final Point base;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param hq the HQ location of the player for whom the report is being produced
 	 */
 	public AnimalTabularReportGenerator(final Point hq) {
 		base = hq;
 	}
+
 	/**
 	 * Produce a single line of the tabular report on animals. The fixture that this
 	 * report references should be removed from the set before returning.
-	 * @param ostream the stream to write the row to
+	 *
+	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
-	 * @param item the item to base the line on
-	 * @param loc the location of this item
+	 * @param item     the item to base the line on
+	 * @param loc      the location of this item
 	 */
 	@Override
 	public boolean produce(final Appendable ostream,
-						final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						final Animal item, final Point loc) throws IOException {
+						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						   final Animal item, final Point loc) throws IOException {
 		writeField(ostream, distanceString(loc, base));
 		writeFieldDelimiter(ostream);
 		writeField(ostream, loc.toString());

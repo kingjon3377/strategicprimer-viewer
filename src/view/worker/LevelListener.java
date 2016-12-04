@@ -40,6 +40,19 @@ public final class LevelListener
 	private ISkill skill = null;
 
 	/**
+	 * @param named something that may have a name
+	 * @return its name if it has one, "null" if null, or its toString otherwise.
+	 */
+	@SuppressWarnings("TypeMayBeWeakened")
+	private static String getName(final Object named) {
+		if (named instanceof HasName) {
+			return ((HasName) named).getName();
+		} else {
+			return NullCleaner.valueOrDefault(named.toString(), "");
+		}
+	}
+
+	/**
 	 * @param selectedSkill the newly selected skill
 	 */
 	@Override
@@ -68,21 +81,8 @@ public final class LevelListener
 	 */
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
-							@Nullable final UnitMember selected) {
+							   @Nullable final UnitMember selected) {
 		worker = selected;
-	}
-
-	/**
-	 * @param named something that may have a name
-	 * @return its name if it has one, "null" if null, or its toString otherwise.
-	 */
-	@SuppressWarnings("TypeMayBeWeakened")
-	private static String getName(final Object named) {
-		if (named instanceof HasName) {
-			return ((HasName) named).getName();
-		} else {
-			return NullCleaner.valueOrDefault(named.toString(), "");
-		}
 	}
 
 	/**

@@ -37,8 +37,8 @@ public interface IDRegistrar {
 	 * Register an ID.
 	 *
 	 * @param warning the Warning instance to use to report if the ID has already been
-	 *                   registered
-	 * @param idNum the ID to register.
+	 *                registered
+	 * @param idNum   the ID to register.
 	 * @return the id, so this can be used functionally.
 	 */
 	int register(Warning warning, int idNum);

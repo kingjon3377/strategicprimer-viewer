@@ -157,7 +157,8 @@ public final class TestExplorationRunner {
 		assertThat(
 				"two levels of recursion",
 				runner.recursiveConsultTable(TEST_TABLE_ONE, point,
-						TileType.Tundra, EMPTY, dimensions), equalTo("( ( test_three ) )"));
+						TileType.Tundra, EMPTY, dimensions),
+				equalTo("( ( test_three ) )"));
 		assertThat(
 				"one level of recursion",
 				runner.recursiveConsultTable(TEST_TABLE_TWO, point,
@@ -192,11 +193,16 @@ public final class TestExplorationRunner {
 		assertThat("defaultResults in boreal forest",
 				runner.defaultResults(point, TileType.BorealForest, EMPTY, dimensions),
 				equalTo(String.format("The primary rock type here is test_rock.%n"
-						+ "The main kind of tree is boreal_tree.%n")));
+											  +
+											  "The main kind of tree is boreal_tree" +
+											  ".%n")));
 		assertThat("defaultResults in temperate forest",
-				runner.defaultResults(point, TileType.TemperateForest, EMPTY, dimensions),
+				runner.defaultResults(point, TileType.TemperateForest, EMPTY,
+						dimensions),
 				equalTo(String.format("The primary rock type here is test_rock.%n"
-						+ "The main kind of tree is temperate_tree.%n")));
+											  +
+											  "The main kind of tree is temperate_tree" +
+											  ".%n")));
 	}
 
 	/**
@@ -211,16 +217,19 @@ public final class TestExplorationRunner {
 						runner.recursiveCheck("non-existent-table")),
 				equalTo(Boolean.TRUE));
 		assertThat("base case of existent table",
-				Boolean.valueOf(runner.recursiveCheck("existent_table")), equalTo(Boolean.FALSE));
+				Boolean.valueOf(runner.recursiveCheck("existent_table")),
+				equalTo(Boolean.FALSE));
 		runner.loadTable("referent_one", new ConstantTable("#existent_table#"));
 		runner.loadTable("referent_two", new ConstantTable("( #existent_table# )"));
 		runner.loadTable("referent_three", new QuadrantTable(1, assertNotNull(
 				Arrays.asList("#referent_one#", "#referent_two#"))));
 		assertThat("recursive case to exercise cache-hits",
-				Boolean.valueOf(runner.recursiveCheck("referent_three")), equalTo(Boolean.FALSE));
+				Boolean.valueOf(runner.recursiveCheck("referent_three")),
+				equalTo(Boolean.FALSE));
 		runner.loadTable("false_referent", new ConstantTable("#nonexistent#"));
 		assertThat("reference to nonexistent table",
-				Boolean.valueOf(runner.recursiveCheck("false_referent")), equalTo(Boolean.TRUE));
+				Boolean.valueOf(runner.recursiveCheck("false_referent")),
+				equalTo(Boolean.TRUE));
 	}
 
 	/**

@@ -71,7 +71,8 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 					//noinspection unchecked
 					return (T) retval;
 				} else {
-					throw new IllegalStateException("Reader produced different type than we expected");
+					throw new IllegalStateException("Reader produced different type than" +
+															" we expected");
 				}
 			}
 		}

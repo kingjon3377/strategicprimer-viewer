@@ -28,8 +28,8 @@ import util.PatientMap;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the type of thing an implementer can report on
+ * @author Jonathan Lovelace
  */
 public interface ITableGenerator<@NonNull T> {
 	/**
@@ -40,8 +40,9 @@ public interface ITableGenerator<@NonNull T> {
 	/**
 	 * Produce a tabular report on a particular category of fixtures in the map. All
 	 * fixtures covered in this table should be removed from the set before returning.
-	 * @param ostream the stream to write the table to
-	 * @param type the type of object being looked for
+	 *
+	 * @param ostream  the stream to write the table to
+	 * @param type     the type of object being looked for
 	 * @param fixtures the set of fixtures
 	 * @throws IOException on I/O error writing to the stream
 	 */
@@ -55,7 +56,8 @@ public interface ITableGenerator<@NonNull T> {
 																		 .second()) &&
 																 type.isInstance(
 																		 entry.getValue()
-																				 .second()))
+																				 .second
+																						  ()))
 										.map(entry -> Pair.of(entry.getKey(),
 												Pair.of(entry.getValue().first(),
 														type.cast(entry.getValue()
@@ -68,51 +70,61 @@ public interface ITableGenerator<@NonNull T> {
 			ostream.append(getRowDelimiter());
 		}
 		for (final Pair<Integer, Pair<Point, T>> pair : values) {
-			if (produce(ostream, fixtures, pair.second().second(), pair.second().first())) {
+			if (produce(ostream, fixtures, pair.second().second(),
+					pair.second().first())) {
 				fixtures.remove(pair.first());
 			}
 		}
 		fixtures.coalesce();
 	}
+
 	/**
 	 * Produce a single line of a tabular report.
-	 * @param ostream the stream to write the row to
+	 *
+	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
-	 * @param item the item to base the line on
-	 * @param loc the location of this item
+	 * @param item     the item to base the line on
+	 * @param loc      the location of this item
 	 * @return whether to remove this item from the Map
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
-	boolean produce(Appendable ostream, PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-				 T item, Point loc) throws IOException;
+	boolean produce(Appendable ostream,
+					PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+					T item, Point loc) throws IOException;
+
 	/**
 	 * Note that this returns the *square* of the distance; for *comparison* that
 	 * suffices, and is far faster than taking umpteen square roots. For *display*
 	 * remember to take the square root.
 	 *
-	 * @param first one point
+	 * @param first  one point
 	 * @param second a second point
 	 * @return the square of the distance between them
 	 */
 	default int distance(final Point first, final Point second) {
-		return ((first.getCol() - second.getCol()) * (first.getCol() - second.getCol())) +
-					   ((first.getRow() - second.getRow()) * (first.getRow() - second.getRow()));
+		return ((first.getCol() - second.getCol()) * (first.getCol() - second.getCol()
+		)) +
+					   ((first.getRow() - second.getRow()) *
+								(first.getRow() - second.getRow()));
 	}
 
 	/**
-	 * @param first one point
+	 * @param first  one point
 	 * @param second another point
 	 * @return the distance between them, formatted for print
 	 */
 	default String distanceString(final Point first, final Point second) {
 		return String.format("%.0f", Double.valueOf(Math.sqrt(distance(first, second))));
 	}
+
 	/**
 	 * This should not include the newline.
+	 *
 	 * @return the CSV header row to print at the top of the report
 	 */
 	String headerRow();
+
 	/**
 	 * @param one a Pair of one fixture and its location (in the other order)
 	 * @param two a Pair of another fixture and its location (in the other order)
@@ -120,9 +132,10 @@ public interface ITableGenerator<@NonNull T> {
 	 */
 	@SuppressWarnings("QuestionableName")
 	int comparePairs(Pair<Point, T> one, Pair<Point, T> two);
+
 	/**
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @param owner the owner of the current fixture
+	 * @param owner         the owner of the current fixture
 	 * @return a string describing the owner of the current fixture, either "you",
 	 * "independent", or the owner's name.
 	 */
@@ -135,6 +148,7 @@ public interface ITableGenerator<@NonNull T> {
 			return owner.getName();
 		}
 	}
+
 	/**
 	 * @return the character delimiting fields in output files.
 	 */
@@ -142,14 +156,17 @@ public interface ITableGenerator<@NonNull T> {
 	default char getFieldDelimiter() {
 		return ',';
 	}
+
 	/**
 	 * Write the field delimiter to a stream.
+	 *
 	 * @param ostream the stream to write to
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	default void writeFieldDelimiter(final Appendable ostream) throws IOException {
 		ostream.append(getFieldDelimiter());
 	}
+
 	/**
 	 * @return the character delimiting rows in the output
 	 */
@@ -157,10 +174,12 @@ public interface ITableGenerator<@NonNull T> {
 	default String getRowDelimiter() {
 		return LineEnd.LINE_SEP;
 	}
+
 	/**
 	 * Write a field to a stream, quoting it if necessary.
+	 *
 	 * @param ostream the stream to write to
-	 * @param field the field-value to write
+	 * @param field   the field-value to write
 	 * @throws IOException on I/O error while writing
 	 */
 	default void writeField(final Appendable ostream, final String field)
@@ -177,6 +196,7 @@ public interface ITableGenerator<@NonNull T> {
 			ostream.append(quotesQuoted);
 		}
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether this table generator can handle that object

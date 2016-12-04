@@ -1,12 +1,11 @@
 package view.util;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JPanel;
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -44,10 +43,10 @@ public class BorderedPanel extends JPanel {
 	 * @param center    the central component. Ignored if null.
 	 */
 	public BorderedPanel(@Nullable final Component center,
-						@Nullable final Component pageStart,
-						@Nullable final Component pageEnd,
-						@Nullable final Component lineEnd,
-						@Nullable final Component lineStart) {
+						 @Nullable final Component pageStart,
+						 @Nullable final Component pageEnd,
+						 @Nullable final Component lineEnd,
+						 @Nullable final Component lineStart) {
 		this();
 		if (center != null) {
 			setCenter(center);
@@ -64,6 +63,36 @@ public class BorderedPanel extends JPanel {
 		if (lineStart != null) {
 			setLineStart(lineStart);
 		}
+	}
+
+	/**
+	 * Factory method. Handles the common case of two or three components in a vertical
+	 * line.
+	 *
+	 * @param pageStart the component to put at page start
+	 * @param center    the component to put at the center
+	 * @param pageEnd   the component to put at page end
+	 * @return a vertical BorderedPanel.
+	 */
+	public static BorderedPanel verticalPanel(@Nullable final Component pageStart,
+											  @Nullable final Component center,
+											  @Nullable final Component pageEnd) {
+		return new BorderedPanel(center, pageStart, pageEnd, null, null);
+	}
+
+	/**
+	 * Factory method. Handles the common case of two or three components in a
+	 * horizontal line.
+	 *
+	 * @param lineStart the component to put at line start
+	 * @param center    the component to put at the center
+	 * @param lineEnd   the component to put at line end
+	 * @return a horizontal BorderedPanel.
+	 */
+	public static BorderedPanel horizontalPanel(@Nullable final Component lineStart,
+												@Nullable final Component center,
+												@Nullable final Component lineEnd) {
+		return new BorderedPanel(center, null, null, lineEnd, lineStart);
 	}
 
 	/**
@@ -110,50 +139,28 @@ public class BorderedPanel extends JPanel {
 		add(component, BorderLayout.LINE_END);
 		return this;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
-	}
-	/**
-	 * Factory method. Handles the common case of two or three components in a vertical
-	 * line.
-	 * @param pageStart the component to put at page start
-	 * @param center the component to put at the center
-	 * @param pageEnd the component to put at page end
-	 * @return a vertical BorderedPanel.
-	 */
-	public static BorderedPanel verticalPanel(@Nullable final Component pageStart,
-											  @Nullable final Component center,
-											  @Nullable final Component pageEnd) {
-		return new BorderedPanel(center, pageStart, pageEnd, null, null);
-	}
-	/**
-	 * Factory method. Handles the common case of two or three components in a
-	 * horizontal line.
-	 * @param lineStart the component to put at line start
-	 * @param center the component to put at the center
-	 * @param lineEnd the component to put at line end
-	 * @return a horizontal BorderedPanel.
-	 */
-	public static BorderedPanel horizontalPanel(@Nullable final Component lineStart,
-												@Nullable final Component center,
-												@Nullable final Component lineEnd) {
-		return new BorderedPanel(center, null, null, lineEnd, lineStart);
 	}
 }

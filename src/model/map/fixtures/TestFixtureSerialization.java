@@ -225,8 +225,10 @@ public final class TestFixtureSerialization extends
 		assertForwardDeserialization("Duplicate Forests ignored", map,
 				"<view current_turn=\"-1\"><map version=\"2\" rows=\"1\" " +
 						"columns=\"1\"><tile row=\"0\" column=\"0\" " +
-						"kind=\"plains\"><forest kind=\"trees\" id=\"4\"/><forest kind=\"trees\"" +
-						" id=\"4\"/><forest kind=\"secondForest\" rows=\"true\" id=\"5\"" +
+						"kind=\"plains\"><forest kind=\"trees\" id=\"4\"/><forest " +
+						"kind=\"trees\"" +
+						" id=\"4\"/><forest kind=\"secondForest\" rows=\"true\" " +
+						"id=\"5\"" +
 						"/></tile></map></view>");
 	}
 
@@ -312,18 +314,21 @@ public final class TestFixtureSerialization extends
 				"<view current_turn=\"-1\"><map version=\"2\" rows=\"1\" " +
 						"columns=\"1\"><tile row=\"0\" column=\"0\" " +
 						"kind=\"plains\"><ground kind=\"four\" exposed=\"true\" " +
-						"/><ground kind=\"four\" exposed=\"true\" /></tile></map></view>");
+						"/><ground kind=\"four\" exposed=\"true\" " +
+						"/></tile></map></view>");
 		map.addFixture(point, new Ground("five", false));
 		assertForwardDeserialization("Exposed Ground made main", map,
 				"<view current_turn=\"-1\"><map version=\"2\" rows=\"1\" " +
 						"columns=\"1\"><tile row=\"0\" column=\"0\" " +
 						"kind=\"plains\"><ground kind=\"five\" exposed=\"false\" " +
-						"/><ground kind=\"four\" exposed=\"true\" /></tile></map></view>");
+						"/><ground kind=\"four\" exposed=\"true\" " +
+						"/></tile></map></view>");
 		assertForwardDeserialization("Exposed Ground left as main", map,
 				"<view current_turn=\"-1\"><map version=\"2\" rows=\"1\" " +
 						"columns=\"1\"><tile row=\"0\" column=\"0\" " +
 						"kind=\"plains\"><ground kind=\"four\" exposed=\"true\" " +
-						"/><ground kind=\"five\" exposed=\"false\" /></tile></map></view>");
+						"/><ground kind=\"five\" exposed=\"false\" " +
+						"/></tile></map></view>");
 		assertUnwantedChild(
 				"<ground kind=\"sand\" exposed=\"true\"><hill /></ground>",
 				Ground.class, false);
@@ -380,7 +385,8 @@ public final class TestFixtureSerialization extends
 		assertImageSerialization("Djinn image property is preserved", new Djinn(3));
 		assertImageSerialization("Griffin image property is preserved", new Griffin(3));
 		assertImageSerialization("Hill image property is preserved", new Hill(3));
-		assertImageSerialization("Minotaur image property is preserved", new Minotaur(3));
+		assertImageSerialization("Minotaur image property is preserved", new Minotaur
+																				 (3));
 		assertImageSerialization("Mountain image property is preserved", new Mountain());
 		assertImageSerialization("Oasis image property is preserved", new Oasis(3));
 		assertImageSerialization("Ogre image property is preserved", new Ogre(3));

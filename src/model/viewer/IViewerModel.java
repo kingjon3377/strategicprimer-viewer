@@ -36,14 +36,14 @@ public interface IViewerModel
 	void setSelection(Point point);
 
 	/**
-	 * @param dim the new visible dimensions of the map
-	 */
-	void setDimensions(VisibleDimensions dim);
-
-	/**
 	 * @return the visible dimensions of the map
 	 */
 	VisibleDimensions getDimensions();
+
+	/**
+	 * @param dim the new visible dimensions of the map
+	 */
+	void setDimensions(VisibleDimensions dim);
 
 	/**
 	 * @return the current zoom level

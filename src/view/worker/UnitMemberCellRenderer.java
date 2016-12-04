@@ -1,8 +1,6 @@
 package view.worker;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,10 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
@@ -53,11 +48,6 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 */
 	private static final Logger LOGGER = getLogger(UnitMemberCellRenderer.class);
 	/**
-	 * the default fixture icon.
-	 */
-	private final Icon defaultFixtureIcon = createDefaultFixtureIcon();
-
-	/**
 	 * Default renderer, for cases we don't know how to handle.
 	 */
 	private static final DefaultTreeCellRenderer DEFAULT =
@@ -73,6 +63,10 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	private static final Color DEF_BKGD_NON_SEL =
 			assertNotNull(DEFAULT.getBackgroundNonSelectionColor());
 	/**
+	 * the default fixture icon.
+	 */
+	private final Icon defaultFixtureIcon = createDefaultFixtureIcon();
+	/**
 	 * Whether we warn on certain ominous conditions.
 	 */
 	private final boolean warn;
@@ -80,13 +74,101 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * How to get the current turn.
 	 */
 	private final IntSupplier turnSupplier;
+
 	/**
 	 * @param turnSource how to get the current turn.
-	 * @param check whether to visually warn on certain ominous conditions
+	 * @param check      whether to visually warn on certain ominous conditions
 	 */
 	public UnitMemberCellRenderer(final IntSupplier turnSource, final boolean check) {
 		warn = check;
 		turnSupplier = turnSource;
+	}
+
+	/**
+	 * @param value a node of the tree
+	 * @return it, unless it's a DefaultMutableTreeNode, in which case return the
+	 * associated user object
+	 */
+	@Nullable
+	private static Object getNodeValue(final Object value) {
+		if (value instanceof DefaultMutableTreeNode) {
+			return ((DefaultMutableTreeNode) value).getUserObject();
+		} else {
+			return value;
+		}
+	}
+
+	/**
+	 * @param iter something containing Jobs
+	 * @return a comma-separated list of them, in parentheses, prepended by a space, if
+	 * there are any.
+	 */
+	private static String jobCSL(final Iterable<IJob> iter) {
+		final String retval = StreamSupport.stream(iter.spliterator(), false)
+									  .filter(job -> !job.isEmpty())
+									  .map(job -> String.format("%s %d", job.getName(),
+											  Integer.valueOf(job.getLevel())))
+									  .collect(Collectors.joining(", ", " (", ")"));
+		if (" ()".equals(retval)) {
+			return "";
+		} else {
+			return retval;
+		}
+	}
+
+	/**
+	 * This method exists to log and eat exceptions.
+	 *
+	 * @param filename the filename of an image
+	 * @return the image contained in that file, or null on error
+	 */
+	@SuppressWarnings("StringConcatenationMissingWhitespace")
+	@Nullable
+	private static Icon getIconForFile(final String filename) {
+		try {
+			return ImageLoader.getLoader().loadIcon(filename);
+		} catch (final FileNotFoundException | NoSuchFileException except) {
+			LOGGER.severe(
+					"image file images" + File.separatorChar + filename + " not found");
+			LOGGER.log(Level.FINEST, "with stack trace", except);
+			return null;
+		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
+			LOGGER.log(Level.SEVERE, "I/O error reading image", except);
+			return null;
+		}
+	}
+
+	/**
+	 * @return the default icon for fixtures.
+	 */
+	private static Icon createDefaultFixtureIcon() {
+		/*
+		 * The margin we allow around the chit itself in the default image.
+		 */
+		final int imageSize = 24;
+		final BufferedImage temp =
+				new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D pen = temp.createGraphics();
+		final Color saveColor = pen.getColor();
+		pen.setColor(Color.RED);
+		final double margin = 0.15;
+		pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
+				(int) Math.round(imageSize * margin) + 1,
+				(int) Math.round(imageSize * (1.0 - (margin * 2.0))),
+				(int) Math.round(imageSize * (1.0 - (margin * 2.0))),
+				(int) Math.round(imageSize * (margin / 2.0)),
+				(int) Math.round(imageSize * (margin / 2.0)));
+		pen.setColor(saveColor);
+		pen.fillRoundRect(
+				(int) Math.round((imageSize / 2.0) - (imageSize * margin)) + 1,
+				(int) Math.round((imageSize / 2.0) - (imageSize * margin)) + 1,
+				(int) Math.round(imageSize * margin * 2.0),
+				(int) Math.round(imageSize * margin * 2.0),
+				(int) Math.round((imageSize * margin) / 2.0),
+				(int) Math.round((imageSize * margin) / 2.0));
+		return new ImageIcon(temp);
+
 	}
 
 	/**
@@ -101,11 +183,11 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 */
 	@Override
 	public Component getTreeCellRendererComponent(@Nullable final JTree tree,
-												@Nullable final Object value,
-												final boolean selected,
-												final boolean expanded,
-												final boolean leaf, final int row,
-												final boolean hasFocus) {
+												  @Nullable final Object value,
+												  final boolean selected,
+												  final boolean expanded,
+												  final boolean leaf, final int row,
+												  final boolean hasFocus) {
 		assert (tree != null) && (value != null) :
 				"UnitMemberCellRenderer passed a null tree or value";
 		final Component component = assertNotNull(
@@ -133,7 +215,8 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		} else if (internal instanceof IUnit) {
 			final IUnit unit = (IUnit) internal;
 			((JLabel) component).setText(unit.getName());
-			final String orders = unit.getLatestOrders(turnSupplier.getAsInt()).toLowerCase();
+			final String orders =
+					unit.getLatestOrders(turnSupplier.getAsInt()).toLowerCase();
 			if (warn && orders.contains("fixme") && unit.iterator().hasNext()) {
 				((DefaultTreeCellRenderer) component)
 						.setBackgroundSelectionColor(Color.PINK);
@@ -178,38 +261,6 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	}
 
 	/**
-	 * @param value a node of the tree
-	 * @return it, unless it's a DefaultMutableTreeNode, in which case return the
-	 * associated user object
-	 */
-	@Nullable
-	private static Object getNodeValue(final Object value) {
-		if (value instanceof DefaultMutableTreeNode) {
-			return ((DefaultMutableTreeNode) value).getUserObject();
-		} else {
-			return value;
-		}
-	}
-
-	/**
-	 * @param iter something containing Jobs
-	 * @return a comma-separated list of them, in parentheses, prepended by a space, if
-	 * there are any.
-	 */
-	private static String jobCSL(final Iterable<IJob> iter) {
-		final String retval = StreamSupport.stream(iter.spliterator(), false)
-									  .filter(job -> !job.isEmpty())
-									  .map(job -> String.format("%s %d", job.getName(),
-											  Integer.valueOf(job.getLevel())))
-									  .collect(Collectors.joining(", ", " (", ")"));
-		if (" ()".equals(retval)) {
-			return "";
-		} else {
-			return retval;
-		}
-	}
-
-	/**
 	 * @param obj a HasImage object
 	 * @return an icon representing it
 	 */
@@ -227,61 +278,6 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		} else {
 			return icon;
 		}
-	}
-
-	/**
-	 * This method exists to log and eat exceptions.
-	 *
-	 * @param filename the filename of an image
-	 * @return the image contained in that file, or null on error
-	 */
-	@SuppressWarnings("StringConcatenationMissingWhitespace")
-	@Nullable
-	private static Icon getIconForFile(final String filename) {
-		try {
-			return ImageLoader.getLoader().loadIcon(filename);
-		} catch (final FileNotFoundException|NoSuchFileException except) {
-			LOGGER.severe(
-					"image file images" + File.separatorChar + filename + " not found");
-			LOGGER.log(Level.FINEST, "with stack trace", except);
-			return null;
-		} catch (final IOException except) {
-			//noinspection HardcodedFileSeparator
-			LOGGER.log(Level.SEVERE, "I/O error reading image", except);
-			return null;
-		}
-	}
-
-	/**
-	 * @return the default icon for fixtures.
-	 */
-	private static Icon createDefaultFixtureIcon() {
-		/*
-		 * The margin we allow around the chit itself in the default image.
-		 */
-		final int imageSize = 24;
-		final BufferedImage temp =
-				new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D pen = temp.createGraphics();
-		final Color saveColor = pen.getColor();
-		pen.setColor(Color.RED);
-		final double margin = 0.15;
-		pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
-				(int) Math.round(imageSize * margin) + 1,
-				(int) Math.round(imageSize * (1.0 - (margin * 2.0))),
-				(int) Math.round(imageSize * (1.0 - (margin * 2.0))),
-				(int) Math.round(imageSize * (margin / 2.0)),
-				(int) Math.round(imageSize * (margin / 2.0)));
-		pen.setColor(saveColor);
-		pen.fillRoundRect(
-				(int) Math.round((imageSize / 2.0) - (imageSize * margin)) + 1,
-				(int) Math.round((imageSize / 2.0) - (imageSize * margin)) + 1,
-				(int) Math.round(imageSize * margin * 2.0),
-				(int) Math.round(imageSize * margin * 2.0),
-				(int) Math.round((imageSize * margin) / 2.0),
-				(int) Math.round((imageSize * margin) / 2.0));
-		return new ImageIcon(temp);
-
 	}
 
 	/**

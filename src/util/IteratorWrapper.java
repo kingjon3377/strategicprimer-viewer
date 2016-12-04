@@ -3,7 +3,6 @@ package util;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
-
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -23,8 +22,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the type of the iterator.
+ * @author Jonathan Lovelace
  */
 public final class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 	/**
@@ -54,7 +53,7 @@ public final class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 	 * @param comparator the comparator to use for sorting elements.
 	 */
 	public IteratorWrapper(final Iterator<T> iterator,
-							final Comparator<T> comparator) {
+						   final Comparator<T> comparator) {
 		final PriorityQueue<T> queue = new PriorityQueue<>(1, comparator);
 		while (iterator.hasNext()) {
 			queue.add(iterator.next());

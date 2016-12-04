@@ -56,7 +56,8 @@ public final class TestTableLoader {
 	public void testLoadQuadrantTable() throws IOException {
 		// TODO: Test using different dimensions!
 		try (final BufferedReader reader = new BufferedReader(new StringReader
-																	(String.format("quadrant%n2%none%ntwo%nthree%nfour%nfive%nsix")))) {
+																	  (String.format(
+																			  "quadrant%n2%none%ntwo%nthree%nfour%nfive%nsix")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(0, 0);
 			final MapDimensions dimensions = new MapDimensions(69, 88, 2);
@@ -65,7 +66,7 @@ public final class TestTableLoader {
 					equalTo(ONE_STRING));
 		}
 		try (final BufferedReader readerTwo = new BufferedReader(new StringReader
-																		("quadrant"))) {
+																		 ("quadrant"))) {
 			TableLoader.loadTableFromStream(readerTwo);
 			fail("Didn't object to quadrant table without number of rows");
 		} catch (final IOException except) {
@@ -84,7 +85,8 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadRandomTable() throws IOException {
 		try (final BufferedReader reader = new BufferedReader(new StringReader(
-				String.format("random%n0 one%n99 two")))) {
+																					  String.format(
+																							  "random%n0 one%n99 two")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(30, 30);
 			assertThat("loading random table",
@@ -102,8 +104,9 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadTerrainTable() throws IOException {
 		try (final BufferedReader reader = new BufferedReader(new StringReader(
-																	String.format("terrain%ntundra " +
-																			"one%nplains two%nocean three")))) {
+																					  String.format(
+																							  "terrain%ntundra " +
+																									  "one%nplains two%nocean three")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point firstPoint = PointFactory.point(30, 30);
 			// TODO: Make MapDimensions an interface and use a mock object here
@@ -113,7 +116,8 @@ public final class TestTableLoader {
 					equalTo(ONE_STRING));
 			final Point secondPoint = PointFactory.point(15, 15);
 			assertThat("loading terrain table: plains",
-					result.generateEvent(secondPoint, TileType.Plains, EMPTY, dimensions),
+					result.generateEvent(secondPoint, TileType.Plains, EMPTY,
+							dimensions),
 					equalTo("two"));
 			assertThat("loading terrain table: ocean",
 					result.generateEvent(secondPoint, TileType.Ocean, EMPTY, dimensions),
@@ -130,7 +134,9 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadConstantTable() throws IOException {
 		try (BufferedReader reader = new BufferedReader(new StringReader
-																(String.format("constant%none")))) {
+																(String.format(
+																		"constant%none")
+																))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(10, 5);
 			assertThat("loading constant table: first test",
@@ -156,7 +162,8 @@ public final class TestTableLoader {
 					equalTo("File doesn't start by specifying which kind of table."));
 		}
 		try (BufferedReader reader = new BufferedReader(new StringReader
-																(String.format("2%ninvalidData%ninvalidData")))) {
+																(String.format(
+																		"2%ninvalidData%ninvalidData")))) {
 			TableLoader.loadTableFromStream(reader);
 			fail("Accepted table without header");
 		} catch (final IllegalArgumentException except) {

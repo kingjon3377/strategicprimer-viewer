@@ -39,9 +39,10 @@ public final class EchoDriver implements UtilityDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-e", "--echo", ParamCount.Two,
-								"Read, then write a map.",
-								"Read and write a map, correcting deprecated syntax."
+								   "Read, then write a map.",
+								   "Read and write a map, correcting deprecated syntax."
 			);
+
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
 		USAGE.setFirstParamDesc("input.xml");
@@ -51,11 +52,9 @@ public final class EchoDriver implements UtilityDriver {
 	/**
 	 * Run the driver.
 	 *
-	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param args command-line arguments
+	 * @param args    command-line arguments
 	 * @throws DriverFailedException on error
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
@@ -76,7 +75,7 @@ public final class EchoDriver implements UtilityDriver {
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error reading file " + infile,
-												except);
+												   except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML", except);
 		} catch (final SPFormatException except) {

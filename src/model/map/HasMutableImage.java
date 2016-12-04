@@ -19,7 +19,7 @@ package model.map;
 public interface HasMutableImage extends HasImage {
 	/**
 	 * @param img the new image for this *individual* fixture. If null or the empty
-	 *              string, the default image will be used.
+	 *            string, the default image will be used.
 	 */
 	void setImage(String img);
 }

@@ -34,8 +34,8 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
-									FixtureIterable<@NonNull UnitMember>, HasOwner,
-									FortressMember {
+									   FixtureIterable<@NonNull UnitMember>, HasOwner,
+									   FortressMember {
 	/**
 	 * @param turn the current turn
 	 * @return that unit's latest orders as of that turn
@@ -52,6 +52,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 		}
 		return "";
 	}
+
 	/**
 	 * @param orders an orders string
 	 * @return the latest turn those orders are our orders, or -1 if they're not
@@ -65,9 +66,10 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 		}
 		return retval;
 	}
+
 	/**
-	 * @return the unit's orders
 	 * @param turn which turn these are orders for
+	 * @return the unit's orders
 	 */
 	String getOrders(final int turn);
 
@@ -77,14 +79,14 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	NavigableMap<Integer, String> getAllOrders();
 
 	/**
-	 * @param turn which turn these are orders for
+	 * @param turn      which turn these are orders for
 	 * @param newOrders the unit's new orders
 	 */
 	void setOrders(final int turn, String newOrders);
 
 	/**
-	 * @return the unit's results
 	 * @param turn which turn these are results for
+	 * @return the unit's results
 	 */
 	String getResults(final int turn);
 
@@ -94,7 +96,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	NavigableMap<Integer, String> getAllResults();
 
 	/**
-	 * @param turn which turn these are results for
+	 * @param turn       which turn these are results for
 	 * @param newResults the unit's new results
 	 */
 	void setResults(final int turn, String newResults);
@@ -113,6 +115,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 		}
 		return "";
 	}
+
 	/**
 	 * @return a verbose description of the Unit.
 	 */
@@ -142,6 +145,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	 */
 	@Override
 	IUnit copy(boolean zero);
+
 	/**
 	 * @param obj     another unit
 	 * @param ostream the stream to report results on
@@ -152,7 +156,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	 */
 	@Override
 	default boolean isSubset(final IFixture obj, final Appendable ostream,
-							final String context) throws IOException {
+							 final String context) throws IOException {
 		if (obj.getID() != getID()) {
 			ostream.append(context);
 			ostream.append("\tFixtures have different IDs");
@@ -167,10 +171,12 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 		} else if (areIntItemsEqual(ostream, getOwner().getPlayerId(),
 				((IUnit) obj).getOwner().getPlayerId(), context, " Unit of ID #",
 				Integer.toString(getID()), ":\tOwners differ.", LineEnd.LINE_SEP) &&
-						   areObjectsEqual(ostream, getName(), ((IUnit) obj).getName(), context,
+						   areObjectsEqual(ostream, getName(), ((IUnit) obj).getName(),
+								   context,
 								   " Unit of ID #", Integer.toString(getID()),
 								   ":\tNames differ", LineEnd.LINE_SEP) &&
-						   areObjectsEqual(ostream, getKind(), ((IUnit) obj).getKind(), context,
+						   areObjectsEqual(ostream, getKind(), ((IUnit) obj).getKind(),
+								   context,
 								   " Unit of ID #", Integer.toString(getID()),
 								   ":\tKinds differ", LineEnd.LINE_SEP)) {
 			final Iterable<UnitMember> other = (IUnit) obj;

@@ -1,11 +1,8 @@
 package view.map.main;
 
-import java.awt.Adjustable;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.AdjustmentListener;
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
-import javax.swing.JScrollBar;
+import javax.swing.*;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
@@ -42,14 +39,6 @@ public final class ScrollListener
 	 */
 	private final IViewerModel model;
 	/**
-	 * The dimensions of the map.
-	 */
-	private MapDimensions mapDimensions;
-	/**
-	 * The current visible dimensions of the map.
-	 */
-	private VisibleDimensions dimensions;
-	/**
 	 * The horizontal scroll-bar we deal with.
 	 */
 	private final JScrollBar horizontalBar;
@@ -57,16 +46,24 @@ public final class ScrollListener
 	 * The vertical scroll-bar we deal with.
 	 */
 	private final JScrollBar verticalBar;
+	/**
+	 * The dimensions of the map.
+	 */
+	private MapDimensions mapDimensions;
+	/**
+	 * The current visible dimensions of the map.
+	 */
+	private VisibleDimensions dimensions;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param map      the map model to work with
+	 * @param map        the map model to work with
 	 * @param horizontal the horizontal scroll bar to work with
-	 * @param vertical  the vertical scroll bar to work with
+	 * @param vertical   the vertical scroll bar to work with
 	 */
 	public ScrollListener(final IViewerModel map, final JScrollBar horizontal,
-						final JScrollBar vertical) {
+						  final JScrollBar vertical) {
 		model = map;
 		dimensions = map.getDimensions();
 		final MapDimensions mapDim = map.getMapDimensions();
@@ -82,9 +79,11 @@ public final class ScrollListener
 		verticalBar.setInputVerifier(new LocalInputVerifier(mapDim, map, false));
 		final AdjustmentListener adjList = evt -> model.setDimensions(
 				new VisibleDimensions(verticalBar.getValue(),
-											verticalBar.getValue() + dimensions.getHeight(),
-											horizontalBar.getValue(),
-											horizontalBar.getValue() + dimensions.getWidth()));
+											 verticalBar.getValue() +
+													 dimensions.getHeight(),
+											 horizontalBar.getValue(),
+											 horizontalBar.getValue() +
+													 dimensions.getWidth()));
 		horizontalBar.addAdjustmentListener(adjList);
 		verticalBar.addAdjustmentListener(adjList);
 	}
@@ -106,17 +105,29 @@ public final class ScrollListener
 
 	/**
 	 * Factory method.
+	 *
 	 * @param viewerModel the viewer model
-	 * @param component the map component
+	 * @param component   the map component
 	 * @return the panel encapsulating the component with scrollbars.
 	 */
 	public static BorderedPanel mapScrollPanel(final IViewerModel viewerModel,
 											   final JComponent component) {
-		final BorderedPanel retval = new BorderedPanel(component, null, null, null, null);
+		final BorderedPanel retval = new BorderedPanel(component, null, null, null,
+															  null);
 		final ScrollListener scrollListener = new ScrollListener(viewerModel, retval);
 		viewerModel.addGraphicalParamsListener(scrollListener);
 		viewerModel.addMapChangeListener(scrollListener);
 		return retval;
+	}
+
+	/**
+	 * @param min   the start of a range
+	 * @param value a value
+	 * @param max   the end of te range
+	 * @return whether the value is in the range
+	 */
+	protected static boolean isInRange(final int min, final int value, final int max) {
+		return (value >= min) && (value <= max);
 	}
 
 	/**
@@ -125,7 +136,7 @@ public final class ScrollListener
 	 */
 	@Override
 	public void dimensionsChanged(final VisibleDimensions oldDim,
-								final VisibleDimensions newDim) {
+								  final VisibleDimensions newDim) {
 		dimensions = newDim;
 		horizontalBar.getModel().setRangeProperties(
 				Math.max(model.getSelectedPoint().getCol(), 0), 1, 0,
@@ -179,16 +190,6 @@ public final class ScrollListener
 	}
 
 	/**
-	 * @param min   the start of a range
-	 * @param value a value
-	 * @param max   the end of te range
-	 * @return whether the value is in the range
-	 */
-	protected static boolean isInRange(final int min, final int value, final int max) {
-		return (value >= min) && (value <= max);
-	}
-
-	/**
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -216,14 +217,16 @@ public final class ScrollListener
 
 		/**
 		 * Constructor.
-		 * @param mapDim the dimensions of the map
-		 * @param mapModel the map model
+		 *
+		 * @param mapDim     the dimensions of the map
+		 * @param mapModel   the map model
 		 * @param horizontal whether we're verifying the horizontal scrollbar, rather
-		 *                         than the vertical.
+		 *                         than
+		 *                   the vertical.
 		 */
 		protected LocalInputVerifier(final MapDimensions mapDim,
-									final IViewerModel mapModel,
-									final boolean horizontal) {
+									 final IViewerModel mapModel,
+									 final boolean horizontal) {
 			dimensions = mapDim;
 			map = mapModel;
 			horizontalAxis = horizontal;
@@ -255,6 +258,7 @@ public final class ScrollListener
 		 * A scrollbar is valid if its value is between 0 and the size of the map minus
 		 * the visible size of the map---that last because we don't want to show empty
 		 * tiles to the right of or below the map.
+		 *
 		 * @param input a component
 		 * @return true iff it is a scrollbar and its value is between 0 and the size of
 		 * the map minus the visible size of the map.
@@ -262,9 +266,10 @@ public final class ScrollListener
 		@Override
 		public boolean verify(@Nullable final JComponent input) {
 			return (input instanceof JScrollBar)
-						&& isInRange(0, ((JScrollBar) input).getValue(),
+						   && isInRange(0, ((JScrollBar) input).getValue(),
 					dimension() - visibleDimension() - 1);
 		}
+
 		/**
 		 * @return a quasi-diagnostic String
 		 */

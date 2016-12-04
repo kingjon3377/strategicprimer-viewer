@@ -29,6 +29,10 @@ import static util.NullCleaner.assertNotNull;
  */
 public class Job implements IJob {
 	/**
+	 * The worker's level in various skills associated with the job.
+	 */
+	private final Map<String, ISkill> skillSet = new HashMap<>();
+	/**
 	 * The name of the job.
 	 */
 	private String name;
@@ -36,10 +40,6 @@ public class Job implements IJob {
 	 * How many levels the worker has in the job.
 	 */
 	private int level;
-	/**
-	 * The worker's level in various skills associated with the job.
-	 */
-	private final Map<String, ISkill> skillSet = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -49,7 +49,7 @@ public class Job implements IJob {
 	 * @param skills  the worker's level in the various skills associated with the job.
 	 */
 	public Job(final String jobName, final int levels,
-				final @NonNull ISkill @NonNull ... skills) {
+			   final @NonNull ISkill @NonNull ... skills) {
 		name = jobName;
 		level = levels;
 		Stream.of(skills).forEach(this::addSkill);
@@ -103,12 +103,21 @@ public class Job implements IJob {
 	}
 
 	/**
+	 * @param newName the job's new name
+	 */
+	@Override
+	public final void setName(final String newName) {
+		name = newName;
+	}
+
+	/**
 	 * @return the worker's level in the job
 	 */
 	@Override
 	public int getLevel() {
 		return level;
 	}
+
 	/**
 	 * @param newLevel the worker's new level in the job. Must not be negative.
 	 */
@@ -119,6 +128,7 @@ public class Job implements IJob {
 		}
 		level = newLevel;
 	}
+
 	/**
 	 * @return an iterator over the worker's level in the various skills associated with
 	 * the job
@@ -135,8 +145,8 @@ public class Job implements IJob {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Job) && name.equals(((Job) obj).name) &&
-										(level == ((Job) obj).level) &&
-										skillSet.equals(((Job) obj).skillSet));
+										 (level == ((Job) obj).level) &&
+										 skillSet.equals(((Job) obj).skillSet));
 	}
 
 	/**
@@ -157,7 +167,8 @@ public class Job implements IJob {
 		if (!areObjectsEqual(ostream, name, obj.getName(), context,
 				"\tPassed Jobs with different names", LineEnd.LINE_SEP) ||
 					!isConditionTrue(ostream, level >= obj.getLevel(), context,
-							"\tSubmap has higher level for Job ", name, LineEnd.LINE_SEP)) {
+							"\tSubmap has higher level for Job ", name,
+							LineEnd.LINE_SEP)) {
 			return false;
 		} else {
 			boolean retval = true;
@@ -207,14 +218,6 @@ public class Job implements IJob {
 	@Override
 	public String toString() {
 		return name + " (" + Integer.toString(level) + ')';
-	}
-
-	/**
-	 * @param newName the job's new name
-	 */
-	@Override
-	public final void setName(final String newName) {
-		name = newName;
 	}
 
 	/**

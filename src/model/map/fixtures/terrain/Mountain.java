@@ -1,10 +1,9 @@
 package model.map.fixtures.terrain;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A mountain on the map---or at least a fixture representing mountainous terrain.
@@ -22,6 +21,11 @@ import model.map.TerrainFixture;
  * @author Jonathan Lovelace
  */
 public final class Mountain implements TerrainFixture, HasMutableImage {
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
 	/**
 	 * Even though Mountains have no state other than their image, we still copy because
 	 * they might eventually.
@@ -90,9 +94,12 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
-	 * The name of an image to use for this particular fixture.
+	 * @return the name of an image to use for this particular fixture.
 	 */
-	private String image = "";
+	@Override
+	public String getImage() {
+		return image;
+	}
 
 	/**
 	 * @param img the name of an image to use for this particular fixture
@@ -100,14 +107,6 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**

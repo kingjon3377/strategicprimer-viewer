@@ -47,16 +47,6 @@ public final class LegacyTable implements EncounterTable {
 	private final List<String> data = new ArrayList<>();
 
 	/**
-	 * Add the text from an Event to the list.
-	 *
-	 * @param event the event to get the text from
-	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private void addData(final IEvent event) {
-		data.add(NullCleaner.assertNotNull(event.toString()));
-	}
-
-	/**
 	 * Constructor.
 	 */
 	public LegacyTable() {
@@ -87,9 +77,19 @@ public final class LegacyTable implements EncounterTable {
 	}
 
 	/**
-	 * @param point    ignored
-	 * @param terrain  ignored
-	 * @param fixtures any fixtures on the tile
+	 * Add the text from an Event to the list.
+	 *
+	 * @param event the event to get the text from
+	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	private void addData(final IEvent event) {
+		data.add(NullCleaner.assertNotNull(event.toString()));
+	}
+
+	/**
+	 * @param point         ignored
+	 * @param terrain       ignored
+	 * @param fixtures      any fixtures on the tile
 	 * @param mapDimensions ignored
 	 * @return the event on that tile
 	 */
@@ -104,10 +104,11 @@ public final class LegacyTable implements EncounterTable {
 		}
 		return "Nothing interesting here ...";
 	}
+
 	/**
-	 * @param point    ignored
-	 * @param terrain  ignored
-	 * @param fixtures any fixtures on the tile
+	 * @param point         ignored
+	 * @param terrain       ignored
+	 * @param fixtures      any fixtures on the tile
 	 * @param mapDimensions ignored
 	 * @return the event on that tile
 	 */
@@ -116,8 +117,8 @@ public final class LegacyTable implements EncounterTable {
 								final Stream<TileFixture> fixtures,
 								final MapDimensions mapDimensions) {
 		return fixtures.filter(IEvent.class::isInstance).map(IEvent.class::cast)
-					.map(IEvent::getText).findFirst()
-					.orElse("Nothing interesting here ...");
+					   .map(IEvent::getText).findFirst()
+					   .orElse("Nothing interesting here ...");
 	}
 
 	/**

@@ -28,60 +28,14 @@ import util.Pair;
  */
 public final class UnitMemberTransferable implements Transferable {
 	/**
-	 * The object we're transferring.
-	 */
-	private final UnitMemberPairList data;
-	/**
 	 * a DataFlavor representing its class.
 	 */
 	public static final DataFlavor FLAVOR =
 			new DataFlavor(UnitMemberPairList.class, "List<Worker>");
 	/**
-	 * A list of pairs of unit members and their containing units. The purpose of this
-	 * class is to fix the type parameters in the type hierarchy, avoiding unchecked-cast
-	 * warnings later.
-	 * @author Jonathan Lovelace
+	 * The object we're transferring.
 	 */
-	@SuppressWarnings("PublicField")
-	public static final class UnitMemberPairList extends
-			AbstractList<Pair<UnitMember, IUnit>> {
-		/**
-		 * The list we wrap.
-		 */
-		private final List<Pair<UnitMember, IUnit>> wrapped;
-		/**
-		 * Constructor.
-		 * @param list the list to wrap
-		 */
-		public UnitMemberPairList(final List<Pair<UnitMember, IUnit>> list) {
-			wrapped = new ArrayList<>(list);
-		}
-
-		/**
-		 * @param index an index into the list
-		 * @return the item at that index
-		 */
-		@Override
-		public Pair<UnitMember, IUnit> get(final int index) {
-			return wrapped.get(index);
-		}
-
-		/**
-		 * @return the size of the list
-		 */
-		@Override
-		public int size() {
-			return wrapped.size();
-		}
-
-		/**
-		 * @return a String representation of the object
-		 */
-		@Override
-		public String toString() {
-			return "UnitMemberPairList with " + size() + " members";
-		}
-	}
+	private final UnitMemberPairList data;
 
 	/**
 	 * Constructor.
@@ -152,5 +106,55 @@ public final class UnitMemberTransferable implements Transferable {
 	@Override
 	public int hashCode() {
 		return data.hashCode();
+	}
+
+	/**
+	 * A list of pairs of unit members and their containing units. The purpose of this
+	 * class is to fix the type parameters in the type hierarchy, avoiding unchecked-cast
+	 * warnings later.
+	 *
+	 * @author Jonathan Lovelace
+	 */
+	@SuppressWarnings("PublicField")
+	public static final class UnitMemberPairList extends
+			AbstractList<Pair<UnitMember, IUnit>> {
+		/**
+		 * The list we wrap.
+		 */
+		private final List<Pair<UnitMember, IUnit>> wrapped;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param list the list to wrap
+		 */
+		public UnitMemberPairList(final List<Pair<UnitMember, IUnit>> list) {
+			wrapped = new ArrayList<>(list);
+		}
+
+		/**
+		 * @param index an index into the list
+		 * @return the item at that index
+		 */
+		@Override
+		public Pair<UnitMember, IUnit> get(final int index) {
+			return wrapped.get(index);
+		}
+
+		/**
+		 * @return the size of the list
+		 */
+		@Override
+		public int size() {
+			return wrapped.size();
+		}
+
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "UnitMemberPairList with " + size() + " members";
+		}
 	}
 }

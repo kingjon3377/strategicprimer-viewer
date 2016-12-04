@@ -54,7 +54,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public TownReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
-																					IFixture>> comparator) {
+																					  IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -73,11 +73,13 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	@Override
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer) {
-		final Map<TownStatus, Collection<String>> separated = new EnumMap<>(TownStatus.class);
+		final Map<TownStatus, Collection<String>> separated =
+				new EnumMap<>(TownStatus.class);
 		separated.put(TownStatus.Abandoned,
 				new HtmlList("<h5>Abandoned Communities</h5>"));
 		separated.put(TownStatus.Active, new HtmlList("<h5>Active Communities</h5>"));
-		separated.put(TownStatus.Burned, new HtmlList("<h5>Burned-Out Communities</h5>"));
+		separated.put(TownStatus.Burned, new HtmlList("<h5>Burned-Out " +
+															  "Communities</h5>"));
 		separated.put(TownStatus.Ruined, new HtmlList("<h5>Ruined Communities</h5>"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
 				.sorted(pairComparator).forEach(
@@ -87,7 +89,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 										(ITownFixture) pair.second(), pair.first())));
 		final StringBuilder builder =
 				new StringBuilder((separated.values().stream().mapToInt(Collection::size)
-										.sum() * 512) + 80);
+										   .sum() * 512) + 80);
 		builder.append("<h4>Cities, towns, and/or fortifications you know about:</h4>");
 		builder.append(LineEnd.LINE_SEP);
 		builder.append(OPEN_LIST);
@@ -119,15 +121,17 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final Map<TownStatus, IReportNode> separated = new EnumMap<>(TownStatus.class);
 		separated.put(TownStatus.Abandoned,
 				new SectionListReportNode(5, "Abandoned Communities"));
-		separated.put(TownStatus.Active, new SectionListReportNode(5, "Active Communities"));
+		separated.put(TownStatus.Active,
+				new SectionListReportNode(5, "Active Communities"));
 		separated.put(TownStatus.Burned,
 				new SectionListReportNode(5, "Burned-Out Communities"));
-		separated.put(TownStatus.Ruined, new SectionListReportNode(5, "Ruined Communities"));
+		separated.put(TownStatus.Ruined,
+				new SectionListReportNode(5, "Ruined Communities"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
 				.sorted(pairComparator).forEach(
 				pair -> NullCleaner.assertNotNull(
@@ -199,7 +203,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer,
 								  final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
@@ -212,20 +216,21 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {
 				return new SimpleReportNode(loc, atPoint(loc), item.getName(),
-												", an independent ",
-												item.size().toString(), " ",
-												item.status().toString(), " ",
-												item.kind(), " ",
-												distCalculator.distanceString(loc));
+												   ", an independent ",
+												   item.size().toString(), " ",
+												   item.status().toString(), " ",
+												   item.kind(), " ",
+												   distCalculator.distanceString(loc));
 			} else {
 				return new SimpleReportNode(loc, atPoint(loc), item.getName(), ", a ",
-												item.size().toString(), " ",
-												item.status().toString(), " ",
-												item.kind(), " allied with " +
+												   item.size().toString(), " ",
+												   item.status().toString(), " ",
+												   item.kind(), " allied with " +
 																		playerNameOrYou(
-																				item.getOwner()),
-												" ",
-												distCalculator.distanceString(loc));
+																				item
+																						.getOwner()),
+												   " ",
+												   distCalculator.distanceString(loc));
 			}
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");

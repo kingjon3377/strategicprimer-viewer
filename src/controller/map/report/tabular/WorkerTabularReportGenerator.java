@@ -34,8 +34,10 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	 * His or her HQ location.
 	 */
 	private final Point base;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param hq his or her HQ location
 	 */
 	public WorkerTabularReportGenerator(final Point hq) {
@@ -43,10 +45,10 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	}
 
 	/**
-	 * @param ostream the stream to write the row to
+	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
-	 * @param item the worker to base the line on
-	 * @param loc its location
+	 * @param item     the worker to base the line on
+	 * @param loc      its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@Override
@@ -83,6 +85,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 		ostream.append(getRowDelimiter());
 		return true;
 	}
+
 	/**
 	 * @return the header row for the tabular report
 	 */

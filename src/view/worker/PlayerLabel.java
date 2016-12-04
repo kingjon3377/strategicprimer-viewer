@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JLabel;
+import javax.swing.*;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;
@@ -35,16 +35,6 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	private final String after;
 
 	/**
-	 * Wrap a string in HTML tags.
-	 *
-	 * @param text the string to wrap
-	 * @return the wrapped string
-	 */
-	private static String htmlWrapped(final String text) {
-		return "<html><body>" + text + "</body></html>";
-	}
-
-	/**
 	 * Constructor.
 	 *
 	 * @param prefix  text to give before the current player's name. Doesn't have to
@@ -56,11 +46,21 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	 */
 	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	public PlayerLabel(final String prefix,
-					@SuppressWarnings("TypeMayBeWeakened") final Player player,
-					final String postfix) {
+					   @SuppressWarnings("TypeMayBeWeakened") final Player player,
+					   final String postfix) {
 		super(htmlWrapped(prefix + ' ' + player.getName() + postfix));
 		before = prefix;
 		after = postfix;
+	}
+
+	/**
+	 * Wrap a string in HTML tags.
+	 *
+	 * @param text the string to wrap
+	 * @return the wrapped string
+	 */
+	private static String htmlWrapped(final String text) {
+		return "<html><body>" + text + "</body></html>";
 	}
 
 	/**
@@ -72,26 +72,31 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		setText(htmlWrapped(before + ' ' + newPlayer.getName() + after));
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

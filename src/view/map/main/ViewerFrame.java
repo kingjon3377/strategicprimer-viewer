@@ -1,7 +1,7 @@
 package view.map.main;
 
 import controller.map.misc.IOHandler;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -9,15 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.util.Optional;
-import javax.swing.DropMode;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.table.TableColumn;
 import model.viewer.FixtureFilterTableModel;
 import model.viewer.IViewerModel;
@@ -61,18 +53,6 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 	 * The driver model.
 	 */
 	private final IViewerModel model;
-
-	/**
-	 * Initialize size to the specified dimensions. Not that this actually works ...
-	 *
-	 * @param width  the specified width
-	 * @param height the specified height
-	 */
-	private void initializeDimensions(final int width, final int height) {
-		setPreferredSize(new Dimension(width, height));
-		setSize(width, height);
-		setMinimumSize(new Dimension(width, height));
-	}
 
 	/**
 	 * Constructor.
@@ -138,9 +118,10 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 		} else {
 			buttonPanel = BorderedPanel.horizontalPanel(allButton, null, noneButton);
 		}
-		final BorderedPanel tablePanel = BorderedPanel.verticalPanel(new JLabel("Display ..."),
-				new JScrollPane(table),
-				buttonPanel);
+		final BorderedPanel tablePanel =
+				BorderedPanel.verticalPanel(new JLabel("Display ..."),
+						new JScrollPane(table),
+						buttonPanel);
 		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
 				SplitWithWeights.horizontalSplit(0.95, 0.95,
 						ScrollListener.mapScrollPanel(map, mapPanel), tablePanel),
@@ -153,8 +134,20 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 		addWindowStateListener(windowSizeListener);
 
 		setJMenuBar(new ViewerMenu(NullCleaner.assertNotNull(ioHandler), this,
-				map));
+										  map));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+	}
+
+	/**
+	 * Initialize size to the specified dimensions. Not that this actually works ...
+	 *
+	 * @param width  the specified width
+	 * @param height the specified height
+	 */
+	private void initializeDimensions(final int width, final int height) {
+		setPreferredSize(new Dimension(width, height));
+		setSize(width, height);
+		setMinimumSize(new Dimension(width, height));
 	}
 
 	/**
@@ -163,26 +156,31 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 	public IViewerModel getModel() {
 		return model;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a quasi-diagnostic String
 	 */

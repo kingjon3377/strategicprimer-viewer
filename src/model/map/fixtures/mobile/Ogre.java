@@ -1,13 +1,11 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
+import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
 
 /**
@@ -26,6 +24,10 @@ import util.LineEnd;
  * @author Jonathan Lovelace
  */
 public class Ogre implements MobileFixture, HasMutableImage, UnitMember {
+	/**
+	 * ID number.
+	 */
+	private final int id;
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -76,7 +78,7 @@ public class Ogre implements MobileFixture, HasMutableImage, UnitMember {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Ogre)
-										&& (id == ((TileFixture) obj).getID()));
+										 && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**
@@ -86,11 +88,6 @@ public class Ogre implements MobileFixture, HasMutableImage, UnitMember {
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -135,19 +132,19 @@ public class Ogre implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

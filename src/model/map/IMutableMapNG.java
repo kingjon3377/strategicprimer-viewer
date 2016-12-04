@@ -28,8 +28,8 @@ public interface IMutableMapNG extends IMapNG {
 	void addPlayer(Player player);
 
 	/**
-	 * @param location a location
-	 * @param terrainType  the new "base terrain" at that location
+	 * @param location    a location
+	 * @param terrainType the new "base terrain" at that location
 	 */
 	void setBaseTerrain(Point location, TileType terrainType);
 
@@ -40,15 +40,15 @@ public interface IMutableMapNG extends IMapNG {
 	void setMountainous(Point location, boolean mtn);
 
 	/**
-	 * @param location a location
-	 * @param addedRivers   rivers to add there
+	 * @param location    a location
+	 * @param addedRivers rivers to add there
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addRivers(Point location, @NonNull River @NonNull ... addedRivers);
 
 	/**
-	 * @param location a location
-	 * @param removedRivers   rivers to remove there
+	 * @param location      a location
+	 * @param removedRivers rivers to remove there
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeRivers(Point location, @NonNull River @NonNull ... removedRivers);
@@ -61,8 +61,8 @@ public interface IMutableMapNG extends IMapNG {
 	void setForest(Point location, @Nullable Forest forest);
 
 	/**
-	 * @param location a location
-	 * @param newGround   the Ground at that location; null to remove any that is there
+	 * @param location  a location
+	 * @param newGround the Ground at that location; null to remove any that is there
 	 */
 	void setGround(Point location, @Nullable Ground newGround);
 

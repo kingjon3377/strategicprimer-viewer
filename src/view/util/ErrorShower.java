@@ -1,7 +1,7 @@
 package view.util;
 
-import java.awt.Component;
-import javax.swing.JOptionPane;
+import java.awt.*;
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -36,7 +36,7 @@ public final class ErrorShower {
 	 * @param message the error message.
 	 */
 	public static void showErrorDialog(@Nullable final Component parent,
-									final String message) {
+									   final String message) {
 		JOptionPane.showMessageDialog(parent, message,
 				"Strategic Primer Map Viewer error", JOptionPane.ERROR_MESSAGE);
 	}

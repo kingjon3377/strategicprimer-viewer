@@ -16,9 +16,9 @@ import java.util.Map;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <K> the first type parameter
  * @param <V> the second type parameter
+ * @author Jonathan Lovelace
  */
 public interface PatientMap<K, V> extends Map<K, V> {
 

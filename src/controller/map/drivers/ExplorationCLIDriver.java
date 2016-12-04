@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import model.exploration.ExplorationModel;
@@ -31,10 +30,11 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-x", "--explore", ParamCount.AtLeastOne,
-								"Run exploration.",
-								"Move a unit around the map, updating the player's " +
-										"map with what it sees."
+								   "Run exploration.",
+								   "Move a unit around the map, updating the player's " +
+										   "map with what it sees."
 			);
+
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
 	}
@@ -42,10 +42,9 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver model
+	 * @param model   the driver model
 	 * @throws DriverFailedException on error
 	 */
 	@Override

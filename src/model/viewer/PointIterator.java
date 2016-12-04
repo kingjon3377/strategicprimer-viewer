@@ -63,6 +63,51 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	private boolean started = false;
 
 	/**
+	 * Constructor.
+	 *
+	 * @param dims             the dimensions of the map we're helping to go through
+	 * @param sel              the selected point; we start from 0, 0 if null
+	 * @param searchForwards   Whether we should search forwards (if true) or backwards
+	 *                         (if false)
+	 * @param searchHorizontal Whether we should search horizontally (if true) or
+	 *                         vertically (if false)
+	 */
+	public PointIterator(final MapDimensions dims, @Nullable final Point sel,
+						 final boolean searchForwards, final boolean searchHorizontal) {
+		horizontal = searchHorizontal;
+		forwards = searchForwards;
+		maxRow = dims.getRows() - 1;
+		maxCol = dims.getColumns() - 1;
+		if (sel == null) {
+			if (forwards) {
+				startRow = maxRow;
+				startCol = maxCol;
+			} else {
+				startRow = 0;
+				startCol = 0;
+			}
+		} else {
+			startRow = wrap(sel.getRow(), maxRow);
+			startCol = wrap(sel.getCol(), maxCol);
+		}
+		row = startRow;
+		col = startCol;
+	}
+
+	/**
+	 * @param val  a value
+	 * @param wrap another
+	 * @return the first, unless it's negative, in which case the second
+	 */
+	private static int wrap(final int val, final int wrap) {
+		if (val < 0) {
+			return wrap;
+		} else {
+			return val;
+		}
+	}
+
+	/**
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -93,52 +138,6 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 		builder.append(maxCol);
 		builder.append(").");
 		return NullCleaner.assertNotNull(builder.toString());
-	}
-
-	/**
-	 * @param val  a value
-	 * @param wrap another
-	 * @return the first, unless it's negative, in which case the second
-	 */
-	private static int wrap(final int val, final int wrap) {
-		if (val < 0) {
-			return wrap;
-		} else {
-			return val;
-		}
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param dims           the dimensions of the map we're helping to go through
-	 * @param sel            the selected point; we start from 0, 0 if null
-	 * @param searchForwards Whether we should search forwards (if true) or backwards (if
-	 *                       false)
-	 * @param searchHorizontal    Whether we should search horizontally (if true) or
-	 *                          vertically
-	 *                       (if false)
-	 */
-	public PointIterator(final MapDimensions dims, @Nullable final Point sel,
-						final boolean searchForwards, final boolean searchHorizontal) {
-		horizontal = searchHorizontal;
-		forwards = searchForwards;
-		maxRow = dims.getRows() - 1;
-		maxCol = dims.getColumns() - 1;
-		if (sel == null) {
-			if (forwards) {
-				startRow = maxRow;
-				startCol = maxCol;
-			} else {
-				startRow = 0;
-				startCol = 0;
-			}
-		} else {
-			startRow = wrap(sel.getRow(), maxRow);
-			startCol = wrap(sel.getCol(), maxCol);
-		}
-		row = startRow;
-		col = startCol;
 	}
 
 	/**

@@ -56,11 +56,12 @@ public final class FluidTownHandler {
 	private FluidTownHandler() {
 		// Do not instantiate
 	}
+
 	/**
 	 * Parse a town.
 	 *
 	 * @param element   the XML element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players in the map
 	 * @param warner    the Warning instance to use for warnings
@@ -87,11 +88,12 @@ public final class FluidTownHandler {
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		return setImage(fix, element, warner);
 	}
+
 	/**
 	 * Parse a fortification.
 	 *
 	 * @param element   the XML element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players in the map
 	 * @param warner    the Warning instance to use for warnings
@@ -104,25 +106,29 @@ public final class FluidTownHandler {
 												  final Iterable<XMLEvent> stream,
 												  final IPlayerCollection players,
 												  final Warning warner,
-												  final IDRegistrar idFactory) throws SPFormatException {
+												  final IDRegistrar idFactory)
+			throws SPFormatException {
 		requireTag(element, parent, "fortification");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Fortification fix =
 				new Fortification(parseTownStatus(getAttribute(element, "status")),
-								TownSize.parseTownSize(getAttribute(element, "size")),
-								getIntegerAttribute(element, "dc"),
-								getAttribute(element, "name", ""),
-								getOrGenerateID(element, warner, idFactory),
-								getPlayerOrIndependent(element, warner, players));
+										 TownSize.parseTownSize(
+												 getAttribute(element, "size")),
+										 getIntegerAttribute(element, "dc"),
+										 getAttribute(element, "name", ""),
+										 getOrGenerateID(element, warner, idFactory),
+										 getPlayerOrIndependent(element, warner,
+												 players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		return setImage(fix, element, warner);
 	}
+
 	/**
 	 * Parse a city.
 	 *
 	 * @param element   the XML element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players in the map
 	 * @param warner    the Warning instance to use for warnings
@@ -149,11 +155,12 @@ public final class FluidTownHandler {
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		return setImage(fix, element, warner);
 	}
+
 	/**
 	 * Parse a village.
 	 *
 	 * @param element   the XML element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players in the map
 	 * @param warner    the Warning instance to use for warnings
@@ -181,12 +188,14 @@ public final class FluidTownHandler {
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		return setImage(retval, element, warner);
 	}
+
 	/**
 	 * Write a Village to XML.
+	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeVillage(final XMLStreamWriter ostream, final Object obj,
@@ -204,12 +213,14 @@ public final class FluidTownHandler {
 		writeImage(ostream, fix);
 		writeNonEmptyAttribute(ostream, "portrait", fix.getPortrait());
 	}
+
 	/**
 	 * Write an AbstractTown to XML.
+	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeTown(final XMLStreamWriter ostream, final Object obj,

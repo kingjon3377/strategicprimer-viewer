@@ -38,10 +38,11 @@ public final class SubsetDriver implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-s", "--subset", ParamCount.AtLeastTwo,
-								"Check players' maps against master",
-								"Check that subordinate maps are subsets of the main " +
-										"map, containing nothing that it does not " +
-										"contain in the same place"
+								   "Check players' maps against master",
+								   "Check that subordinate maps are subsets of the main" +
+										   " " +
+										   "map, containing nothing that it does not " +
+										   "contain in the same place"
 			);
 	/**
 	 * Logger.
@@ -50,29 +51,11 @@ public final class SubsetDriver implements SimpleDriver {
 			NullCleaner.assertNotNull(Logger.getLogger(SubsetDriver.class.getName()));
 
 	/**
-	 * Possible return values for sub-maps.
-	 */
-	private enum Returns {
-		/**
-		 * The map is a subset.
-		 */
-		OK,
-		/**
-		 * The map isn't a subset.
-		 */
-		Warn,
-		/**
-		 * The map failed to load.
-		 */
-		Fail
-	}
-
-	/**
 	 * Run the driver.
 	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver model
+	 * @param model   the driver model
 	 */
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
@@ -84,12 +67,14 @@ public final class SubsetDriver implements SimpleDriver {
 			mapModel = new SimpleMultiMapModel(model);
 			LOGGER.warning("Subset checking does nothing with no subordinate maps");
 		}
-		for (final Pair<IMutableMapNG, Optional<Path>> pair : mapModel.getSubordinateMaps()) {
+		for (final Pair<IMutableMapNG, Optional<Path>> pair : mapModel
+																	  .getSubordinateMaps()) {
 			final Optional<Path> filename = pair.second();
 			if (filename.isPresent()) {
 				SYS_OUT.print(filename.get());
 				SYS_OUT.print("\t...\t\t");
-				printReturn(doSubsetTest(mapModel.getMap(), pair.first(), filename.get()));
+				printReturn(
+						doSubsetTest(mapModel.getMap(), pair.first(), filename.get()));
 			} else {
 				SYS_OUT.println("Map didn't have a filename; skipping ...");
 			}
@@ -99,11 +84,9 @@ public final class SubsetDriver implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
-	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param args command-line arguments
+	 * @param args    command-line arguments
 	 * @throws DriverFailedException if the main map fails to load
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
@@ -169,6 +152,22 @@ public final class SubsetDriver implements SimpleDriver {
 	}
 
 	/**
+	 * Possible return values for sub-maps.
+	 */
+	private enum Returns {
+		/**
+		 * The map is a subset.
+		 */
+		OK,
+		/**
+		 * The map isn't a subset.
+		 */
+		Warn,
+		/**
+		 * The map failed to load.
+		 */
+		Fail
+	}	/**
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

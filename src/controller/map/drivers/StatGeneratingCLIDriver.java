@@ -84,62 +84,24 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-t", "--stats", ParamCount.AtLeastOne,
-								"Enter worker stats or generate new workers.",
-								"Enter stats for existing workers or generate new " +
-										"workers randomly."
+								   "Enter worker stats or generate new workers.",
+								   "Enter stats for existing workers or generate new " +
+										   "workers randomly."
 			);
+
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
-	}
-
-	/**
-	 * @return an object indicating how to use and invoke this driver.
-	 */
-	@Override
-	public DriverUsage usage() {
-		return USAGE;
-	}
-
-	/**
-	 * Run the driver.
-	 *
-	 *
-	 * @param cli
-	 * @param options
-	 * @param model the driver model
-	 * @throws DriverFailedException on error
-	 */
-	@Override
-	public void startDriver(final ICLIHelper cli, final SPOptions options,
-							final IDriverModel model)
-			throws DriverFailedException {
-		final IExplorationModel driverModel;
-		if (model instanceof IExplorationModel) {
-			driverModel = (IExplorationModel) model;
-		} else {
-			driverModel = new ExplorationModel(model);
-		}
-		try {
-			if (cli.inputBooleanInSeries(PREGEN_PROMPT)) {
-				enterStats(driverModel, cli);
-			} else {
-				createWorkers(driverModel, IDFactoryFiller.createFactory(driverModel), cli);
-			}
-		} catch (final IOException except) {
-			//noinspection HardcodedFileSeparator
-			throw new DriverFailedException("I/O error interacting with user", except);
-		}
 	}
 
 	/**
 	 * Let the user enter stats for workers already in the maps.
 	 *
 	 * @param model the driver model.
-	 * @param cli the interface to the user
+	 * @param cli   the interface to the user
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void enterStats(final IExplorationModel model,
-			final ICLIHelper cli) throws IOException {
+								   final ICLIHelper cli) throws IOException {
 		final List<Player> players = model.getPlayerChoices();
 		final String hdr = "Which player owns the worker in question?";
 		final String none = "There are no players shared by all the maps.";
@@ -159,11 +121,12 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 *
 	 * @param model  the driver model
 	 * @param player the player owning the worker
-	 * @param cli the interface to the user
+	 * @param cli    the interface to the user
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void enterStats(final IExplorationModel model,
-			final Player player, final ICLIHelper cli) throws IOException {
+								   final Player player, final ICLIHelper cli)
+			throws IOException {
 		final List<IUnit> units = removeStattedUnits(model.getUnits(player));
 		final String hdr = "Which unit contains the worker in question?";
 		final String none = "All that player's units already have stats.";
@@ -183,11 +146,12 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	/**
 	 * @param model the exploration model
 	 * @param idNum an ID number
-	 * @return true if the number designates a unit containing a worker without stats, and
+	 * @return true if the number designates a unit containing a worker without stats,
+	 * and
 	 * false otherwise.
 	 */
 	private static boolean hasUnstattedWorker(final IDriverModel model,
-											final int idNum) {
+											  final int idNum) {
 		final IFixture fix = find(model.getMap(), idNum);
 		return (fix instanceof IUnit) && hasUnstattedWorker((IUnit) fix);
 	}
@@ -199,7 +163,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	private static boolean hasUnstattedWorker(final Iterable<UnitMember> unit) {
 		return StreamSupport.stream(unit.spliterator(), false).anyMatch(
 				member -> (member instanceof IWorker) &&
-								(((IWorker) member).getStats() == null));
+								  (((IWorker) member).getStats() == null));
 	}
 
 	/**
@@ -209,7 +173,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static List<IUnit> removeStattedUnits(final Collection<IUnit> units) {
 		return units.stream().filter(StatGeneratingCLIDriver::hasUnstattedWorker)
-					.collect(Collectors.toList());
+					   .collect(Collectors.toList());
 	}
 
 	/**
@@ -218,17 +182,26 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 *
 	 * @param model the driver model
 	 * @param unit  the unit containing the worker
-	 * @param cli the interface to the user
+	 * @param cli   the interface to the user
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void enterStats(final IMultiMapModel model,
-			final Iterable<UnitMember> unit, final ICLIHelper cli)
-					throws IOException {
+								   final Iterable<UnitMember> unit, final ICLIHelper cli)
+			throws IOException {
 		final List<Worker> workers = NullCleaner.assertNotNull(StreamSupport
-				.stream(unit.spliterator(), false)
-				.filter(Worker.class::isInstance).map(Worker.class::cast)
-				.filter(wkr -> wkr.getStats() == null)
-				.collect(Collectors.toList()));
+																	   .stream(unit
+																					   .spliterator(),
+																			   false)
+																	   .filter(Worker
+																					   .class::isInstance)
+																	   .map(Worker
+																					.class::cast)
+																	   .filter(wkr ->
+																					   wkr.getStats() ==
+																							  null)
+																	   .collect
+																				(Collectors
+																						.toList()));
 		final String hdr = "Which worker do you want to enter stats for?";
 		final String none = "There are no workers without stats in that unit.";
 		final String prompt = "Worker to modify: ";
@@ -247,11 +220,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 *
 	 * @param model the driver model
 	 * @param idNum the worker's ID.
-	 * @param cli the interface to the user
+	 * @param cli   the interface to the user
 	 * @throws IOException on I/O error interacting with user.
 	 */
 	private static void enterStats(final IMultiMapModel model, final int idNum,
-			final ICLIHelper cli) throws IOException {
+								   final ICLIHelper cli) throws IOException {
 		final WorkerStats stats = enterStats(cli);
 		for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
 			final IMapNG map = pair.first();
@@ -335,11 +308,12 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 *
 	 * @param model the driver model
 	 * @param idf   the ID factory
-	 * @param cli the interface to the user
+	 * @param cli   the interface to the user
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void createWorkers(final IExplorationModel model,
-			final IDRegistrar idf, final ICLIHelper cli) throws IOException {
+									  final IDRegistrar idf, final ICLIHelper cli)
+			throws IOException {
 		final List<Player> players = model.getPlayerChoices();
 		final String hdr = "Which player owns the new worker(s)?";
 		final String none = "There are no players shared by all the maps.";
@@ -361,12 +335,14 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @param model  the driver model
 	 * @param idf    the ID factory
 	 * @param player the player to own the workers
-	 * @param cli the interface to the user
+	 * @param cli    the interface to the user
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void createWorkersForPlayer(final IExplorationModel model,
-			final IDRegistrar idf, final Player player, final ICLIHelper cli)
-					throws IOException {
+											   final IDRegistrar idf, final Player
+																			  player,
+											   final ICLIHelper cli)
+			throws IOException {
 		boolean again = true;
 		while (again) {
 			if (cli.inputBooleanInSeries("Add worker(s) to an existing unit? ")) {
@@ -389,7 +365,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				final TileFixture unit =
 						new Unit(player, cli.inputString("Kind of unit: "),
 										cli.inputString("Unit name: "), idf.createID());
-				for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
+				for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps
+																					()) {
 					pair.first().addFixture(point, unit);
 				}
 				if (cli.inputBooleanInSeries(LOAD_NAMES)) {
@@ -408,12 +385,13 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @param model the driver model
 	 * @param idf   the ID factory.
 	 * @param unit  the unit to contain them.
-	 * @param cli the interface to the user
+	 * @param cli   the interface to the user
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private static void createWorkersForUnit(final IMultiMapModel model,
-			final IDRegistrar idf, final IFixture unit, final ICLIHelper cli)
-					throws IOException {
+											 final IDRegistrar idf, final IFixture unit,
+											 final ICLIHelper cli)
+			throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
 			final IWorker worker = createSingleWorker(idf, cli);
@@ -437,20 +415,23 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @param model the driver model
 	 * @param idf   the ID factory.
 	 * @param unit  the unit to contain them.
-	 * @param cli the interface to the user
+	 * @param cli   the interface to the user
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private static void createWorkersFromFile(final IMultiMapModel model,
-			final IDRegistrar idf, final IFixture unit, final ICLIHelper cli)
-					throws IOException {
+											  final IDRegistrar idf, final IFixture unit,
+											  final ICLIHelper cli)
+			throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		final String filename = cli.inputString("Filename to load names from: ");
 		final List<String> names = new ArrayList<>();
 		try (final FileSystem fileSystem = FileSystems.getDefault()) {
 			names.addAll(
-					Files.readAllLines(fileSystem.getPath(filename), Charset.defaultCharset()));
+					Files.readAllLines(fileSystem.getPath(filename),
+							Charset.defaultCharset()));
 		} catch (final UnsupportedOperationException ignored) {
-			// Can't close a FileSystem, but IDEA screams if we don't use try-with-res ...
+			// Can't close a FileSystem, but IDEA screams if we don't use try-with-res
+			// ...
 		}
 		for (int i = 0; i < count; i++) {
 			final IWorker worker =
@@ -483,7 +464,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private static IWorker createSingleWorker(final IDRegistrar idf,
-			final ICLIHelper cli) throws IOException {
+											  final ICLIHelper cli) throws IOException {
 		final String race = RaceFactory.getRace();
 		final String name = cli.inputString("Worker is a " + race
 													+ ". Worker name: ");
@@ -499,7 +480,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		} else if (levels == 1) {
 			cli.println("Worker has 1 job level");
 		}
-		final boolean pregenStats = cli.inputBooleanInSeries("Enter pre-generated stats? ");
+		final boolean pregenStats =
+				cli.inputBooleanInSeries("Enter pre-generated stats? ");
 		if (pregenStats) {
 			retval.setStats(enterStats(cli));
 		} else {
@@ -511,7 +493,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			}
 		}
 		for (int i = 0; i < levels; i++) {
-			final String jobName = cli.inputString("Which Job does worker have a level in? ");
+			final String jobName =
+					cli.inputString("Which Job does worker have a level in? ");
 			final Optional<IJob> existing = Optional.ofNullable(retval.getJob(jobName));
 			if (existing.isPresent()) {
 				final IJob job = existing.get();
@@ -523,16 +506,18 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		}
 		return retval;
 	}
+
 	/**
 	 * Create randomly-generated stats for a worker, with racial adjustments applied.
-	 * @param race the worker's race
+	 *
+	 * @param race   the worker's race
 	 * @param levels how many Job levels the worker has
-	 * @param cli to ask any questions of the user
-	 * @throws IOException on I/O error interacting with user
+	 * @param cli    to ask any questions of the user
 	 * @return the stats
+	 * @throws IOException on I/O error interacting with user
 	 */
 	private static WorkerStats createWorkerStats(final String race, final int levels,
-												final ICLIHelper cli)
+												 final ICLIHelper cli)
 			throws IOException {
 		final int baseCon = threeDeeSix();
 		final int baseStr = threeDeeSix();
@@ -674,11 +659,12 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final int conBonus = (constitution - STAT_BASIS) / 2;
 		final int hitP = 8 + conBonus + rollDeeEight(levels, conBonus);
 		return new WorkerStats(hitP, hitP, baseStr + racialStrBonus,
-									baseDex + racialDexBonus, constitution,
-									baseInt + racialIntBonus,
-									baseWis + racialWisBonus,
-									baseCha + racialChaBonus);
+									  baseDex + racialDexBonus, constitution,
+									  baseInt + racialIntBonus,
+									  baseWis + racialWisBonus,
+									  baseCha + racialChaBonus);
 	}
+
 	/**
 	 * Create a randomly-generated worker using a name from file, asking the user for
 	 * Jobs
@@ -691,12 +677,14 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 *
 	 * @param name the name of the worker
 	 * @param idf  the ID factory
-	 * @param cli the interface to the user
+	 * @param cli  the interface to the user
 	 * @return the generated worker
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private static IWorker createWorkerFromNameFile(final String name,
-			final IDRegistrar idf, final ICLIHelper cli) throws IOException {
+													final IDRegistrar idf,
+													final ICLIHelper cli)
+			throws IOException {
 		final String race = RaceFactory.getRace();
 		cli.printf("Worker %s is a %s%n", name, race);
 		final Worker retval = new Worker(name, race, idf.createID());
@@ -718,7 +706,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			cli.print(stats.toString());
 		}
 		for (int i = 0; i < levels; i++) {
-			final String jobName = cli.inputString("Which Job does worker have a level in? ");
+			final String jobName =
+					cli.inputString("Which Job does worker have a level in? ");
 			final Optional<IJob> existing = Optional.ofNullable(retval.getJob(jobName));
 			if (existing.isPresent()) {
 				final IJob job = existing.get();
@@ -750,6 +739,45 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	private static int threeDeeSix() {
 		final Random random = RANDOM;
 		return random.nextInt(6) + random.nextInt(6) + random.nextInt(6) + 3;
+	}
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE;
+	}
+
+	/**
+	 * Run the driver.
+	 *
+	 * @param cli
+	 * @param options
+	 * @param model   the driver model
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model)
+			throws DriverFailedException {
+		final IExplorationModel driverModel;
+		if (model instanceof IExplorationModel) {
+			driverModel = (IExplorationModel) model;
+		} else {
+			driverModel = new ExplorationModel(model);
+		}
+		try {
+			if (cli.inputBooleanInSeries(PREGEN_PROMPT)) {
+				enterStats(driverModel, cli);
+			} else {
+				createWorkers(driverModel, IDFactoryFiller.createFactory(driverModel),
+						cli);
+			}
+		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
+			throw new DriverFailedException("I/O error interacting with user", except);
+		}
 	}
 
 	/**

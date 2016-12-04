@@ -24,12 +24,14 @@ public final class SystemIn extends FilterInputStream {
 	 * Singleton.
 	 */
 	public static final InputStream SYS_IN = new SystemIn();
+
 	/**
 	 * Constructor.
 	 */
 	private SystemIn() {
 		super(System.in);
 	}
+
 	/**
 	 * Do *not* close.
 	 */

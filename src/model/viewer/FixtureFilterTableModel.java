@@ -63,7 +63,13 @@ import static model.viewer.FixtureMatcher.simpleMatcher;
 public class FixtureFilterTableModel extends AbstractTableModel
 		implements Reorderable, ZOrderFilter, Iterable<FixtureMatcher> {
 	/**
-	 * Constructor. Initialize with data that the default algorithm won't handle properly.
+	 * The backing collection.
+	 */
+	private final List<FixtureMatcher> list = new ArrayList<>();
+
+	/**
+	 * Constructor. Initialize with data that the default algorithm won't handle
+	 * properly.
 	 */
 	public FixtureFilterTableModel() {
 		list.add(new FixtureMatcher(Unit.class::isInstance, "Units"));
@@ -71,7 +77,8 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		// TODO: Towns should be broken up by kind or size, and maybe by status or owner
 		list.add(new FixtureMatcher(AbstractTown.class::isInstance,
 										   "Cities, Towns, and Fortifications"));
-		// TODO: Village through Centaur were all 45, so their ordering happened by chance
+		// TODO: Village through Centaur were all 45, so their ordering happened by
+		// chance
 		list.add(new FixtureMatcher(Village.class::isInstance, "Villages"));
 		list.add(new FixtureMatcher(Troll.class::isInstance, "Trolls"));
 		list.add(new FixtureMatcher(Sphinx.class::isInstance, "Sphinxes"));
@@ -96,10 +103,12 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		list.add(simpleMatcher(Grove.class, Grove::isOrchard, "Orchards"));
 		list.add(simpleMatcher(Grove.class, fix -> !fix.isOrchard(), "Groves"));
 
-		// TODO: Since rivers are usually handled specially, should this really be included?
+		// TODO: Since rivers are usually handled specially, should this really be
+		// included?
 		list.add(new FixtureMatcher(RiverFixture.class::isInstance, "Rivers"));
 
-		// TODO: TextFixture through AdventureFixture were all 25, and should be considered
+		// TODO: TextFixture through AdventureFixture were all 25, and should be
+		// considered
 		list.add(new FixtureMatcher(TextFixture.class::isInstance,
 										   "Arbitrary-Text Notes"));
 		list.add(new FixtureMatcher(Portal.class::isInstance, "Portals"));
@@ -115,7 +124,8 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		list.add(simpleMatcher(Meadow.class, Meadow::isField, "Fields"));
 		list.add(simpleMatcher(Meadow.class, fix -> !fix.isField(), "Meadows"));
 
-		// TODO: Since mountains are now a separate aspect of a tile, should this be omitted?
+		// TODO: Since mountains are now a separate aspect of a tile, should this be
+		// omitted?
 		list.add(new FixtureMatcher(Mountain.class::isInstance, "Mountains"));
 
 		// TODO: Sandbar and Hill were both 5; consider.
@@ -125,10 +135,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		list.add(simpleMatcher(Ground.class, Ground::isExposed, "Ground (exposed)"));
 		list.add(simpleMatcher(Ground.class, fix -> !fix.isExposed(), "Ground"));
 	}
-	/**
-	 * The backing collection.
-	 */
-	private final List<FixtureMatcher> list = new ArrayList<>();
+
 	/**
 	 * @return the number of rows in the model
 	 */
@@ -161,6 +168,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 			throw new IllegalArgumentException("Only two columns");
 		}
 	}
+
 	/**
 	 * @param column the column being queried
 	 * @return the name of that column
@@ -175,6 +183,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 			return super.getColumnName(column);
 		}
 	}
+
 	/**
 	 * @param columnIndex the column being queried
 	 * @return the class of the data in that column
@@ -189,8 +198,9 @@ public class FixtureFilterTableModel extends AbstractTableModel
 			return Object.class;
 		}
 	}
+
 	/**
-	 * @param rowIndex the row being queried
+	 * @param rowIndex    the row being queried
 	 * @param columnIndex the column being queried
 	 * @return whether that cell is editable
 	 */
@@ -198,22 +208,26 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
 		return columnIndex == 0;
 	}
+
 	/**
-	 * @param aValue value assign to a cell
-	 * @param rowIndex the row of the cell
+	 * @param aValue      value assign to a cell
+	 * @param rowIndex    the row of the cell
 	 * @param columnIndex the column of the cell
 	 */
 	@Override
-	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+	public void setValueAt(final Object aValue, final int rowIndex,
+						   final int columnIndex) {
 		if (columnIndex == 0 && aValue instanceof Boolean) {
 			list.get(rowIndex).setDisplayed(((Boolean) aValue).booleanValue());
 			fireTableCellUpdated(rowIndex, 0);
 		}
 	}
+
 	/**
 	 * Move a row of a list or table from one position to another.
+	 *
 	 * @param fromIndex the index to remove from
-	 * @param toIndex the index to move to (its index *before* removing the old!)
+	 * @param toIndex   the index to move to (its index *before* removing the old!)
 	 */
 	@Override
 	public void reorder(final int fromIndex, final int toIndex) {
@@ -227,6 +241,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 			fireTableRowsInserted(toIndex, toIndex);
 		}
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it should be displayed
@@ -248,6 +263,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 			return true;
 		}
 	}
+
 	/**
 	 * @return an iterator over fixture-matchers.
 	 */

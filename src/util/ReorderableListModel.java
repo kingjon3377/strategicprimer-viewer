@@ -1,6 +1,6 @@
 package util;
 
-import javax.swing.DefaultListModel;
+import javax.swing.*;
 
 /**
  * Adds an implementation of Reorderable to the DefaultListModel class.
@@ -15,8 +15,8 @@ import javax.swing.DefaultListModel;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the type of things stored in the list
+ * @author Jonathan Lovelace
  */
 public class ReorderableListModel<T> extends DefaultListModel<T> implements Reorderable {
 	/**

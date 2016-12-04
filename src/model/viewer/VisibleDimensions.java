@@ -15,7 +15,7 @@ package model.viewer;
  *
  * @author Jonathan Lovelace
  *
- * TODO: tests
+ *         TODO: tests
  */
 public final class VisibleDimensions {
 	/**
@@ -44,7 +44,7 @@ public final class VisibleDimensions {
 	 * @param maximumCol the maximum column
 	 */
 	public VisibleDimensions(final int minimumRow, final int maximumRow,
-							final int minimumCol, final int maximumCol) {
+							 final int minimumCol, final int maximumCol) {
 		minRow = minimumRow;
 		maxRow = maximumRow;
 		minCol = minimumCol;
@@ -85,7 +85,8 @@ public final class VisibleDimensions {
 	@Override
 	public String toString() {
 		return String.format("VisibleDimensions: (%d, %d) to (%d, %d)",
-				Integer.valueOf(minRow), Integer.valueOf(minCol), Integer.valueOf(maxRow),
+				Integer.valueOf(minRow), Integer.valueOf(minCol), Integer.valueOf
+																				  (maxRow),
 				Integer.valueOf(maxCol));
 	}
 
@@ -95,7 +96,7 @@ public final class VisibleDimensions {
 	 */
 	public boolean isSameSize(final VisibleDimensions other) {
 		return ((maxCol - minCol) == (other.maxCol - other.minCol)) &&
-					((maxRow - minRow) == (other.maxRow - other.minRow));
+					   ((maxRow - minRow) == (other.maxRow - other.minRow));
 	}
 
 	/**

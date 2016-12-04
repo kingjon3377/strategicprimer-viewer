@@ -1,8 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
@@ -64,10 +62,18 @@ import static util.NullCleaner.assertNotNull;
  */
 public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
+	 * The filename of the fallback image.
+	 */
+	private static final String FALLBACK_FILE = "event_fallback.png";
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(Ver2TileDrawHelper.class);
+	/**
 	 * Image cache.
 	 */
 	private final ImageLoader loader = ImageLoader.getLoader();
-
 	/**
 	 * The images we've already determined aren't there.
 	 */
@@ -76,35 +82,10 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * A mapping from river-sets to filenames.
 	 */
 	private final Map<Set<River>, String> riverFiles = new HashMap<>();
-
-	/**
-	 * The filename of the fallback image.
-	 */
-	private static final String FALLBACK_FILE = "event_fallback.png";
-
 	/**
 	 * Comparator to find which fixture to draw.
 	 */
 	private final Comparator<@NonNull TileFixture> fixComp;
-
-	/**
-	 * @return a hash value for the object
-	 */
-	@Override
-	public int hashCode() {
-		return zof.hashCode();
-	}
-
-	/**
-	 * @param obj an object
-	 * @return whether it's the same as this
-	 */
-	@Override
-	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Ver2TileDrawHelper) && fixMatchers.equals(
-				((Ver2TileDrawHelper) obj).fixMatchers));
-	}
-
 	/**
 	 * The observer to be notified when images finish drawing.
 	 */
@@ -114,25 +95,19 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private final ZOrderFilter zof;
 	/**
-	 * Logger.
+	 * The matchers to use to say what's on top.
 	 */
-	private static final Logger LOGGER =
-			TypesafeLogger.getLogger(Ver2TileDrawHelper.class);
+	private final Iterable<FixtureMatcher> fixMatchers;
 	/**
 	 * A fallback image.
 	 */
 	private Image fallbackImage;
 	/**
-	 * The matchers to use to say what's on top.
-	 */
-	private final Iterable<FixtureMatcher> fixMatchers;
-
-	/**
 	 * Constructor. We need to initialize the cache.
 	 *
-	 * @param imageObserver   the class to notify when images finish drawing.
-	 * @param filter the class to query about whether to display a fixture
-	 * @param matchers a series of matchers to use to determine what's on top
+	 * @param imageObserver the class to notify when images finish drawing.
+	 * @param filter        the class to query about whether to display a fixture
+	 * @param matchers      a series of matchers to use to determine what's on top
 	 */
 	public Ver2TileDrawHelper(final ImageObserver imageObserver,
 							  final ZOrderFilter filter,
@@ -200,6 +175,36 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * @param rivers any number of rivers
+	 * @return a set containing them
+	 */
+	private static Set<River> createRiverSet(final @NonNull River @NonNull ... rivers) {
+		final Set<@NonNull River> set =
+				assertNotNull(EnumSet.noneOf(assertNotNull(River.class)));
+		Collections.addAll(set, rivers);
+		return set;
+	}
+
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return zof.hashCode();
+	}
+
+	/**
+	 * @param obj an object
+	 * @return whether it's the same as this
+	 */
+	@Override
+	public boolean equals(@Nullable final Object obj) {
+		return (this == obj) ||
+					   ((obj instanceof Ver2TileDrawHelper) && fixMatchers.equals(
+							   ((Ver2TileDrawHelper) obj).fixMatchers));
+	}
+
+	/**
 	 * Draw a tile at the specified coordinates. Because this is at present only
 	 * called in
 	 * a loop that's the last thing before the context is disposed, we alter the state
@@ -213,7 +218,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final IMapNG map, final Point location,
-						final Coordinate coordinates, final Coordinate dimensions) {
+						 final Coordinate coordinates, final Coordinate dimensions) {
 		if (needsFixtureColor(map, location)) {
 			pen.setColor(getFixtureColor(map, location));
 		} else {
@@ -244,8 +249,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTileTranslated(final Graphics pen, final IMapNG map,
-									final Point location, final int width,
-									final int height) {
+								   final Point location, final int width,
+								   final int height) {
 		drawTile(pen, map, location, PointFactory.coordinate(0, 0),
 				PointFactory.coordinate(width, height));
 	}
@@ -336,7 +341,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private boolean hasTerrainFixture(final IMapNG map, final Point location) {
 		return getDrawableFixtures(map, location)
-					.anyMatch(fix -> fix instanceof TerrainFixture);
+					   .anyMatch(fix -> fix instanceof TerrainFixture);
 	}
 
 	/**
@@ -384,7 +389,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private Image getImage(final String filename) {
 		try {
 			return loader.loadImage(filename);
-		} catch (final FileNotFoundException|NoSuchFileException e) {
+		} catch (final FileNotFoundException | NoSuchFileException e) {
 			if (!missingFiles.contains(filename)) {
 				LOGGER.log(Level.SEVERE,
 						"images" + File.separatorChar + filename + " not found");
@@ -451,17 +456,6 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		riverFiles.put(createRiverSet(River.East, River.South, River.West,
 				River.Lake), "riv30.png");
 		riverFiles.put(assertNotNull(EnumSet.allOf(River.class)), "riv31.png");
-	}
-
-	/**
-	 * @param rivers any number of rivers
-	 * @return a set containing them
-	 */
-	private static Set<River> createRiverSet(final @NonNull River @NonNull ... rivers) {
-		final Set<@NonNull River> set =
-				assertNotNull(EnumSet.noneOf(assertNotNull(River.class)));
-		Collections.addAll(set, rivers);
-		return set;
 	}
 
 	/**

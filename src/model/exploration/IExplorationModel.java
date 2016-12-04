@@ -29,6 +29,78 @@ import org.eclipse.jdt.annotation.Nullable;
 public interface IExplorationModel
 		extends IMultiMapModel, SelectionChangeSource, MovementCostSource {
 	/**
+	 * @return all the players that are shared by all the maps
+	 */
+	List<Player> getPlayerChoices();
+
+	/**
+	 * @param player a player
+	 * @return all that player's units in the master map
+	 */
+	List<IUnit> getUnits(Player player);
+
+	/**
+	 * Move the currently selected unit from its current tile one tile in the specified
+	 * direction. Moves the unit in all maps where the unit *was* in the specified tile,
+	 * copying terrain information if the tile didn't exist in a subordinate map. If
+	 * movement in the specified direction is impossible, we update all subordinate maps
+	 * with the terrain information showing that, then re-throw the exception; callers
+	 * should deduct a minimal MP cost.
+	 *
+	 * @param direction the direction to move
+	 * @return the movement cost
+	 * @throws SimpleMovement.TraversalImpossibleException if movement in that direction
+	 *                                                     is impossible
+	 */
+	int move(Direction direction) throws SimpleMovement.TraversalImpossibleException;
+
+	/**
+	 * @param point     a point
+	 * @param direction a direction
+	 * @return the point bordering the specified one in the specified direction
+	 */
+	Point getDestination(Point point, Direction direction);
+
+	/**
+	 * @param fix a fixture
+	 * @return the first location found (search order is not defined) containing a
+	 * fixture
+	 * "equal to" the specified one. (Using it on mountains, e.g., will *not* do what you
+	 * want ...)
+	 */
+	Point find(TileFixture fix);
+
+	/**
+	 * @return the currently selected unit---may be null!
+	 */
+	@Nullable IUnit getSelectedUnit();
+
+	/**
+	 * @param unit the new selected unit
+	 */
+	void selectUnit(@Nullable IUnit unit);
+
+	/**
+	 * @return its location. This will *not* be null.
+	 */
+	Point getSelectedUnitLocation();
+
+	/**
+	 * If there is a currently selected unit, make any independent villages at its
+	 * location change to be owned by the owner of the currently selected unit. This
+	 * costs
+	 * MP.
+	 */
+	void swearVillages();
+
+	/**
+	 * If there is a currently selected unit, change one Ground, StoneDeposit, or
+	 * MineralVein at the location of that unit from unexposed to exposed (and discover
+	 * it). This costs MP.
+	 */
+	void dig();
+
+	/**
 	 * An enumeration of directions.
 	 */
 	enum Direction {
@@ -69,73 +141,4 @@ public interface IExplorationModel
 		 */
 		Nowhere
 	}
-
-	/**
-	 * @return all the players that are shared by all the maps
-	 */
-	List<Player> getPlayerChoices();
-
-	/**
-	 * @param player a player
-	 * @return all that player's units in the master map
-	 */
-	List<IUnit> getUnits(Player player);
-
-	/**
-	 * Move the currently selected unit from its current tile one tile in the specified
-	 * direction. Moves the unit in all maps where the unit *was* in the specified tile,
-	 * copying terrain information if the tile didn't exist in a subordinate map. If
-	 * movement in the specified direction is impossible, we update all subordinate maps
-	 * with the terrain information showing that, then re-throw the exception; callers
-	 * should deduct a minimal MP cost.
-	 *
-	 * @param direction the direction to move
-	 * @return the movement cost
-	 * @throws SimpleMovement.TraversalImpossibleException if movement in that direction
-	 * is impossible
-	 */
-	int move(Direction direction) throws SimpleMovement.TraversalImpossibleException;
-
-	/**
-	 * @param point     a point
-	 * @param direction a direction
-	 * @return the point bordering the specified one in the specified direction
-	 */
-	Point getDestination(Point point, Direction direction);
-
-	/**
-	 * @param fix a fixture
-	 * @return the first location found (search order is not defined) containing a
-	 * fixture
-	 * "equal to" the specified one. (Using it on mountains, e.g., will *not* do what you
-	 * want ...)
-	 */
-	Point find(TileFixture fix);
-
-	/**
-	 * @return the currently selected unit---may be null!
-	 */
-	@Nullable IUnit getSelectedUnit();
-
-	/**
-	 * @param unit the new selected unit
-	 */
-	void selectUnit(@Nullable IUnit unit);
-
-	/**
-	 * @return its location. This will *not* be null.
-	 */
-	Point getSelectedUnitLocation();
-	/**
-	 * If there is a currently selected unit, make any independent villages at its
-	 * location change to be owned by the owner of the currently selected unit. This costs
-	 * MP.
-	 */
-	void swearVillages();
-	/**
-	 * If there is a currently selected unit, change one Ground, StoneDeposit, or
-	 * MineralVein at the location of that unit from unexposed to exposed (and discover
-	 * it). This costs MP.
-	 */
-	void dig();
 }

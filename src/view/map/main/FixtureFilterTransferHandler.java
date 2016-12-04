@@ -1,15 +1,11 @@
 package view.map.main;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JTable;
-import javax.swing.ListModel;
-import javax.swing.TransferHandler;
+import javax.swing.*;
 import javax.swing.table.TableModel;
 import model.viewer.FixtureMatcher;
 import util.IntTransferable;
@@ -39,6 +35,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 
 	/**
 	 * Whether a given drag/drop operation is supported
+	 *
 	 * @param support the information about the current operation
 	 * @return whether it's supported
 	 */
@@ -66,12 +63,14 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 		} else if (component instanceof JTable) {
 			return new IntTransferable(FLAVOR, ((JTable) component).getSelectedRow());
 		} else {
-			throw new IllegalStateException("Tried to create transferrable from non-list");
+			throw new IllegalStateException("Tried to create transferrable from " +
+													"non-list");
 		}
 	}
 
 	/**
 	 * We can only move.
+	 *
 	 * @param c ignored
 	 * @return MOVE
 	 */
@@ -91,7 +90,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 		final Integer payload;
 		try {
 			payload = (Integer) transfer.getTransferData(FLAVOR);
-		} catch (final UnsupportedFlavorException |IOException except) {
+		} catch (final UnsupportedFlavorException | IOException except) {
 			return false;
 		}
 		final int data = payload.intValue();
@@ -124,7 +123,8 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 			if (selection == data) {
 				((JTable) component).setRowSelectionInterval(index, index);
 			} else if (selection > index && selection < data) {
-				((JTable) component).setRowSelectionInterval(selection - 1, selection - 1);
+				((JTable) component)
+						.setRowSelectionInterval(selection - 1, selection - 1);
 			}
 			return true;
 		} else {

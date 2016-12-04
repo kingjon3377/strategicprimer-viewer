@@ -32,20 +32,10 @@ public class Animal
 	 * ID number.
 	 */
 	private final int id;
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
-
 	/**
 	 * Whether this is really the animal, or only traces.
 	 */
 	private final boolean traces;
-	/**
-	 * Kind of animal.
-	 */
-	private String kind;
 	/**
 	 * Whether this is a talking animal.
 	 */
@@ -56,14 +46,14 @@ public class Animal
 	 * TODO: Should this be an enumerated type?
 	 */
 	private final String status;
-
 	/**
-	 * @return a UID for the fixture.
+	 * The name of an image to use for this particular fixture.
 	 */
-	@Override
-	public int getID() {
-		return id;
-	}
+	private String image = "";
+	/**
+	 * Kind of animal.
+	 */
+	private String kind;
 
 	/**
 	 * Constructor.
@@ -75,12 +65,20 @@ public class Animal
 	 * @param idNum   the ID number.
 	 */
 	public Animal(final String animal, final boolean tracks,
-				final boolean talks, final String dStatus, final int idNum) {
+				  final boolean talks, final String dStatus, final int idNum) {
 		kind = animal;
 		traces = tracks;
 		talking = talks;
 		status = dStatus;
 		id = idNum;
+	}
+
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public int getID() {
+		return id;
 	}
 
 	/**
@@ -103,6 +101,14 @@ public class Animal
 	@Override
 	public String getKind() {
 		return kind;
+	}
+
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 
 	/**
@@ -149,11 +155,11 @@ public class Animal
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Animal)
-										&& kind.equals(((Animal) obj).kind)
-										&& (((Animal) obj).traces == traces)
-										&& (((Animal) obj).talking == talking)
-										&& status.equals(((Animal) obj).status)
-										&& (((Animal) obj).id == id));
+										 && kind.equals(((Animal) obj).kind)
+										 && (((Animal) obj).traces == traces)
+										 && (((Animal) obj).talking == talking)
+										 && status.equals(((Animal) obj).status)
+										 && (((Animal) obj).id == id));
 	}
 
 	/**
@@ -176,14 +182,15 @@ public class Animal
 						talking || !((Animal) obj).talking, context, "\tIn animal ID #",
 						Integer.toString(id),
 						":\tSubmap's is talking and master's isn't", LineEnd.LINE_SEP) &&
-							isConditionTrue(ostream, !traces || ((Animal) obj).traces,
-									context, "\tIn animal ID #", Integer.toString(id),
-									":\tSubmap has animal and master only tracks",
-									LineEnd.LINE_SEP) &&
-							areObjectsEqual(ostream, status, ((Animal) obj).status,
-									context,
-									"\tDomestication status of animal differs at ID #",
-									Integer.toString(id), LineEnd.LINE_SEP);
+							   isConditionTrue(ostream, !traces || ((Animal) obj).traces,
+									   context, "\tIn animal ID #", Integer.toString(id),
+									   ":\tSubmap has animal and master only tracks",
+									   LineEnd.LINE_SEP) &&
+							   areObjectsEqual(ostream, status, ((Animal) obj).status,
+									   context,
+									   "\tDomestication status of animal differs at ID" +
+											   " #",
+									   Integer.toString(id), LineEnd.LINE_SEP);
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");
@@ -218,25 +225,9 @@ public class Animal
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Animal) && ((Animal) fix).kind.equals(kind)
-					&& (((Animal) fix).traces == traces)
-					&& ((Animal) fix).status.equals(status)
-					&& (((Animal) fix).talking == talking);
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
-	}
-
-	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
+					   && (((Animal) fix).traces == traces)
+					   && ((Animal) fix).status.equals(status)
+					   && (((Animal) fix).talking == talking);
 	}
 
 	/**
@@ -245,6 +236,14 @@ public class Animal
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

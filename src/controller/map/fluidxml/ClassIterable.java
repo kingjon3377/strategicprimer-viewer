@@ -28,15 +28,32 @@ public class ClassIterable implements Iterable<Class<?>> {
 
 	/**
 	 * Constructor.
+	 *
 	 * @param obj the object whose superclasses we want to iterate over.
 	 */
 	public ClassIterable(final Object obj) {
 		final Class<?> base = obj.getClass();
 		classes.add(base);
 		addInterfaces(classes, base);
-		for (Class<?> cls = base.getSuperclass(); cls != null; cls = cls.getSuperclass()) {
+		for (Class<?> cls = base.getSuperclass(); cls != null;
+				cls = cls.getSuperclass()) {
 			classes.add(cls);
 			addInterfaces(classes, cls);
+		}
+	}
+
+	/**
+	 * Add the interfaces satisfied by the given class, recursively, to the given list.
+	 *
+	 * @param list the list of classes
+	 * @param cls  the class to get the interfaces of
+	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	private static void addInterfaces(final Collection<Class<?>> list,
+									  final Class<?> cls) {
+		for (final Class<?> iface : cls.getInterfaces()) {
+			list.add(iface);
+			addInterfaces(list, iface);
 		}
 	}
 
@@ -48,18 +65,6 @@ public class ClassIterable implements Iterable<Class<?>> {
 		return classes.iterator();
 	}
 
-	/**
-	 * Add the interfaces satisfied by the given class, recursively, to the given list.
-	 * @param list the list of classes
-	 * @param cls the class to get the interfaces of
-	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void addInterfaces(final Collection<Class<?>> list, final Class<?> cls) {
-		for (final Class<?> iface : cls.getInterfaces()) {
-			list.add(iface);
-			addInterfaces(list, iface);
-		}
-	}
 	/**
 	 * @return a String representation of the object.
 	 */

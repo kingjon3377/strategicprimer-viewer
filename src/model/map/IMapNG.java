@@ -45,10 +45,12 @@ public interface IMapNG
 	 * @return a view of the locations on the map
 	 */
 	Iterable<Point> locations();
+
 	/**
 	 * @return a view of the locations on the map
 	 */
 	Stream<Point> locationStream();
+
 	/**
 	 * @param location a location
 	 * @return the "base terrain" at that location
@@ -92,6 +94,7 @@ public interface IMapNG
 	 * methods.
 	 */
 	Iterable<@NonNull TileFixture> getOtherFixtures(Point location);
+
 	/**
 	 * @param location a location
 	 * @return a stream of any fixtures on the map that aren't covered in the other
@@ -129,6 +132,7 @@ public interface IMapNG
 					   !getRivers(location).iterator().hasNext() &&
 					   streamOtherFixtures(location).anyMatch(x -> true);
 	}
+
 	/**
 	 * A map is empty if *every* location is empty. Note that calculating this can be
 	 * quite expensive!

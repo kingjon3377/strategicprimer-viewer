@@ -1,10 +1,9 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.towns.TownStatus;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A mine---a source of mineral resources.
@@ -23,18 +22,21 @@ import model.map.fixtures.towns.TownStatus;
  */
 public class Mine implements HarvestableFixture, HasMutableKind {
 	/**
+	 * The status of the mine.
+	 */
+	private final TownStatus status;
+	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
-
 	/**
 	 * What the mine produces.
 	 */
 	private String kind;
-	/**
-	 * The status of the mine.
-	 */
-	private final TownStatus status;
 
 	/**
 	 * Constructor.
@@ -70,6 +72,14 @@ public class Mine implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
+	}
+
+	/**
 	 * @return the status of the mine
 	 */
 	public TownStatus getStatus() {
@@ -99,9 +109,9 @@ public class Mine implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Mine)
-										&& kind.equals(((Mine) obj).kind)
-										&& (status == ((Mine) obj).status) &&
-										(id == ((Mine) obj).id));
+										 && kind.equals(((Mine) obj).kind)
+										 && (status == ((Mine) obj).status) &&
+										 (id == ((Mine) obj).id));
 	}
 
 	/**
@@ -111,11 +121,6 @@ public class Mine implements HarvestableFixture, HasMutableKind {
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -133,23 +138,7 @@ public class Mine implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Mine) && kind.equals(((Mine) fix).kind)
-					&& (status == ((Mine) fix).status);
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
-	}
-
-	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
+					   && (status == ((Mine) fix).status);
 	}
 
 	/**
@@ -158,6 +147,14 @@ public class Mine implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

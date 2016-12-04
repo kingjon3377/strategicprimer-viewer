@@ -17,13 +17,14 @@ package util;
  */
 public final class LineEnd {
 	/**
+	 * The system line separator.
+	 */
+	public static final String LINE_SEP = System.lineSeparator();
+
+	/**
 	 * Do not instantiate.
 	 */
 	private LineEnd() {
 		// Never called.
 	}
-	/**
-	 * The system line separator.
-	 */
-	public static final String LINE_SEP = System.lineSeparator();
 }

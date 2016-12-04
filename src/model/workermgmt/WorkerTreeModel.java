@@ -35,9 +35,9 @@ import util.TypesafeLogger;
  */
 public final class WorkerTreeModel implements IWorkerTreeModel {
 	/**
-	 * The player to whom the units and workers belong, the root of the tree.
+	 * Logger.
 	 */
-	private Player root;
+	private static final Logger LOGGER = TypesafeLogger.getLogger(WorkerTreeModel.class);
 	/**
 	 * The driver model.
 	 */
@@ -50,21 +50,48 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * The listeners registered to listen for model changes.
 	 */
 	private final Collection<TreeModelListener> listeners = new ArrayList<>();
-
 	/**
-	 * Logger.
+	 * The player to whom the units and workers belong, the root of the tree.
 	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(WorkerTreeModel.class);
+	private Player root;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param player the player whose units and workers will be shown in the tree
+	 * @param player      the player whose units and workers will be shown in the tree
 	 * @param workerModel the driver model
 	 */
 	public WorkerTreeModel(final Player player, final IWorkerModel workerModel) {
 		root = player;
 		model = workerModel;
+	}
+
+	/**
+	 * Create a singleton array.
+	 *
+	 * @param obj the object it should contain
+	 * @return the array
+	 */
+	private static Object[] singletonObj(final Object obj) {
+		return new Object[]{obj};
+	}
+
+	/**
+	 * Create a singleton array.
+	 *
+	 * @param num the integer it should contain
+	 * @return the array
+	 */
+	private static int[] singletonInt(final int num) {
+		return new int[]{num};
+	}
+
+	/**
+	 * @param args a series of objects
+	 * @return them as an array
+	 */
+	private static Object[] asArray(final Object... args) {
+		return args;
 	}
 
 	/**
@@ -86,11 +113,11 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		if (index < 0) {
 			throw new ArrayIndexOutOfBoundsException(index);
 		} else if ((parent instanceof Player) && parent.equals(root) &&
-						(index < model.getUnitKinds(root).size())) {
+						   (index < model.getUnitKinds(root).size())) {
 			return NullCleaner.assertNotNull(model.getUnitKinds(root).get(index));
 		} else if ((parent instanceof String) &&
-						model.getUnitKinds(root).contains(parent) &&
-						(index < model.getUnits(root, (String) parent).size())) {
+						   model.getUnitKinds(root).contains(parent) &&
+						   (index < model.getUnits(root, (String) parent).size())) {
 			// A String here is a unit's kind.
 			return NullCleaner.assertNotNull(model.getUnits(root,
 					(String) parent).get(index));
@@ -123,7 +150,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			return model.getUnits((Player) parent).size();
 		} else if (parent instanceof IUnit) {
 			return (int) StreamSupport.stream(((IUnit) parent).spliterator(), false)
-								.count();
+								 .count();
 		} else {
 			throw new IllegalArgumentException("Not a possible member of the tree");
 		}
@@ -136,7 +163,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	@Override
 	public boolean isLeaf(@Nullable final Object node) {
 		return !(node instanceof Player) && !(node instanceof IUnit) &&
-					!(node instanceof String);
+					   !(node instanceof String);
 	}
 
 	/**
@@ -156,8 +183,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 */
 	@Override
 	public int getIndexOfChild(@Nullable final Object parent,
-							@Nullable final Object child) {
-		if ((parent instanceof Player) && parent.equals(root) && (child instanceof IUnit)) {
+							   @Nullable final Object child) {
+		if ((parent instanceof Player) && parent.equals(root) &&
+					(child instanceof IUnit)) {
 			return model.getUnits(root).indexOf(child);
 		} else if (parent instanceof IUnit) {
 			int index = 0;
@@ -202,12 +230,12 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 */
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old,
-						final IUnit newOwner) {
+						   final IUnit newOwner) {
 		final int oldIndex = getIndexOfChild(old, member);
 		old.removeMember(member);
 		final TreeModelEvent removedEvent =
 				new TreeModelEvent(this, new TreePath(asArray(root, old)),
-										singletonInt(oldIndex), singletonObj(member));
+										  singletonInt(oldIndex), singletonObj(member));
 		final TreeModelEvent removedChEvent =
 				new TreeModelEvent(this, new TreePath(asArray(root, old)));
 		for (final TreeModelListener listener : listeners) {
@@ -217,8 +245,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		newOwner.addMember(member);
 		final TreeModelEvent insertedEvent =
 				new TreeModelEvent(this, new TreePath(asArray(root, newOwner)),
-										singletonInt(getIndexOfChild(newOwner, member)),
-										singletonObj(member));
+										  singletonInt(getIndexOfChild(newOwner,
+												  member)),
+										  singletonObj(member));
 		final TreeModelEvent insertedChEvent =
 				new TreeModelEvent(this, new TreePath(asArray(root, newOwner)));
 		for (final TreeModelListener listener : listeners) {
@@ -242,26 +271,6 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(event);
 		}
-	}
-
-	/**
-	 * Create a singleton array.
-	 *
-	 * @param obj the object it should contain
-	 * @return the array
-	 */
-	private static Object[] singletonObj(final Object obj) {
-		return new Object[]{obj};
-	}
-
-	/**
-	 * Create a singleton array.
-	 *
-	 * @param num the integer it should contain
-	 * @return the array
-	 */
-	private static int[] singletonInt(final int num) {
-		return new int[]{num};
 	}
 
 	/**
@@ -418,13 +427,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			listener.treeNodesChanged(event);
 		}
 	}
-	/**
-	 * @param args a series of objects
-	 * @return them as an array
-	 */
-	private static Object[] asArray(final Object... args) {
-		return args;
-	}
+
 	/**
 	 * Dismiss a member from a unit and the player's service.
 	 *
@@ -440,8 +443,8 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 					unit.removeMember(member);
 					final TreeModelEvent evt =
 							new TreeModelEvent(this, new TreePath(asArray(root, unit)),
-													singletonInt(index),
-													singletonObj(member));
+													  singletonInt(index),
+													  singletonObj(member));
 					for (final TreeModelListener listener : listeners) {
 						listener.treeNodesRemoved(evt);
 					}

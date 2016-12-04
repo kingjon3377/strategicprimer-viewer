@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
+import java.awt.*;
 import model.map.TileType;
 import util.NullCleaner;
 
@@ -29,18 +29,17 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 */
 	protected static final Color UNIT_COLOR = new Color(148, 0, 211);
 	/**
-	 * Mapping from tile types to colors.
-	 */
-	private static final TileUIHelper COLORS = new TileUIHelper();
-	/**
 	 * The number of sides on the symbol for a miscellaneous event.
 	 */
 	protected static final int MISC_EVENT_SIDES = 3;
-
 	/**
 	 * The color of the icon used to show that a tile has an event or associated text.
 	 */
 	protected static final Color EVENT_COLOR = NullCleaner.assertNotNull(Color.pink);
+	/**
+	 * Mapping from tile types to colors.
+	 */
+	private static final TileUIHelper COLORS = new TileUIHelper();
 
 	/**
 	 * @param ver  the map version

@@ -35,7 +35,9 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * Compiled pattern of it.
 	 */
 	private static final Pattern KIND_PATTERN = NullCleaner
-			.assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
+														.assertNotNull(Pattern.compile(
+																KIND_PROPERTY,
+																Pattern.LITERAL));
 
 	/**
 	 * Test serialization of CaveEvents.
@@ -102,6 +104,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				MineralVein.class, "id", true);
 		assertImageSerialization("Mineral image property is preserved", secondVein);
 	}
+
 	/**
 	 * First test of serialization of BattlefieldEvents.
 	 *

@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
-
 import util.NullCleaner;
 
 /**
@@ -31,6 +30,15 @@ public final class MissingChildException extends SPFormatException {
 	private final QName context;
 
 	/**
+	 * @param tag the current tag (the one that needs a child)
+	 */
+	public MissingChildException(final StartElement tag) {
+		super("Tag " + tag.getName().getLocalPart() + " missing a child",
+				NullCleaner.assertNotNull(tag.getLocation()));
+		context = NullCleaner.assertNotNull(tag.getName());
+	}
+
+	/**
 	 * @return the current tag.
 	 */
 	public QName getTag() {
@@ -38,29 +46,24 @@ public final class MissingChildException extends SPFormatException {
 	}
 
 	/**
-	 * @param tag  the current tag (the one that needs a child)
-	 */
-	public MissingChildException(final StartElement tag) {
-		super("Tag " + tag.getName().getLocalPart() + " missing a child",
-				NullCleaner.assertNotNull(tag.getLocation()));
-		context = NullCleaner.assertNotNull(tag.getName());
-	}
-	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

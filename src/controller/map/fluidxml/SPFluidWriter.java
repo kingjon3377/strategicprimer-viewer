@@ -155,11 +155,34 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writers.put(IMapNG.class, this::writeMap);
 		writers.put(Player.class, SPFluidWriter::writePlayer);
 	}
+
+	/**
+	 * Write a player to XML. This is here because it's not a good fit for any of
+	 * the other classes that collect methods.
+	 *
+	 * @param ostream the writer to write to
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
+	 * @throws IllegalArgumentException if obj is not the type we expect
+	 */
+	private static void writePlayer(final XMLStreamWriter ostream, final Object obj,
+									final int indent) throws XMLStreamException {
+		if (!(obj instanceof Player)) {
+			throw new IllegalArgumentException("Can only write Player");
+		}
+		final Player player = (Player) obj;
+		writeTag(ostream, "player", indent, true);
+		writeIntegerAttribute(ostream, "number", player.getPlayerId());
+		writeAttribute(ostream, "code_name", player.getName());
+	}
+
 	/**
 	 * Create DOM subtree representing the given object.
+	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
 	 * @throws XMLStreamException on error in the writer
 	 */
 	@Override
@@ -190,12 +213,13 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			throws IOException {
 		writeSPObject(ostream, map);
 	}
+
 	/**
 	 * Write an object to a stream.
 	 *
 	 * @param ostream the stream to write to
 	 * @param obj     the object to write
-	 * @throws IOException on I/O error
+	 * @throws IOException        on I/O error
 	 * @throws XMLStreamException on error in XML creation
 	 */
 	@Override
@@ -216,9 +240,11 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		}
 		ostream.append(SNUG_END_TAG.matcher(writer.toString()).replaceAll("$1 />"));
 	}
+
 	/**
 	 * Create a writer for the simplest cases (only an ID number and maybe an image, or
 	 * an ID number and a kind), and add this writer to our collection.
+	 *
 	 * @param cls the class of objects to use this writer for
 	 * @param tag the tag to be used for this class
 	 */
@@ -240,13 +266,14 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			}
 		});
 	}
+
 	/**
 	 * Write a unit to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	private void writeUnit(final XMLStreamWriter ostream, final Object obj,
@@ -300,13 +327,14 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			ostream.writeEndElement();
 		}
 	}
+
 	/**
 	 * Write a fortress to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	private void writeFortress(final XMLStreamWriter ostream, final Object obj,
@@ -335,12 +363,14 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		}
 		ostream.writeEndElement();
 	}
+
 	/**
 	 * Write a map to XML.
+	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	private void writeMap(final XMLStreamWriter ostream, final Object obj,
@@ -370,7 +400,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 							|| map.isMountainous(point)
 							|| (map.getGround(point) != null)
 							|| (map.getForest(point) != null)
-							|| map.streamOtherFixtures(point).anyMatch(x->true)) {
+							|| map.streamOtherFixtures(point).anyMatch(x -> true)) {
 					if (rowEmpty) {
 						writeTag(ostream, "row", indent + 2, false);
 						rowEmpty = false;
@@ -420,27 +450,6 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		ostream.writeEndElement();
 		XMLHelper.indent(ostream, indent);
 		ostream.writeEndElement();
-	}
-
-	/**
-	 * Write a player to XML. This is here because it's not a good fit for any of
-	 * the other classes that collect methods.
-	 *
-	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
-	 * @throws IllegalArgumentException if obj is not the type we expect
-	 */
-	private static void writePlayer(final XMLStreamWriter ostream, final Object obj,
-									final int indent) throws XMLStreamException {
-		if (!(obj instanceof Player)) {
-			throw new IllegalArgumentException("Can only write Player");
-		}
-		final Player player = (Player) obj;
-		writeTag(ostream, "player", indent, true);
-		writeIntegerAttribute(ostream, "number", player.getPlayerId());
-		writeAttribute(ostream, "code_name", player.getName());
 	}
 
 	@SuppressWarnings("MethodReturnAlwaysConstant")

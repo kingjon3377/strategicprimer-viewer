@@ -37,6 +37,15 @@ import static view.util.SystemOut.SYS_OUT;
  */
 public final class ConverterDriver implements UtilityDriver {
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+												 .getLogger(ConverterDriver.class);
+	/**
+	 * The map reader we'll use.
+	 */
+	private static final MapReaderAdapter READER = new MapReaderAdapter();
+	/**
 	 * The stream to write progress information to.
 	 */
 	private final PrintStream ostream;
@@ -47,37 +56,32 @@ public final class ConverterDriver implements UtilityDriver {
 	private final DriverUsage usageObject;
 
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(ConverterDriver.class);
-	/**
-	 * The map reader we'll use.
-	 */
-	private static final MapReaderAdapter READER = new MapReaderAdapter();
-	/**
 	 * Default constructor, for when this is run at a command line. Sets output to
 	 * stdout.
 	 */
 	public ConverterDriver() {
 		this(SYS_OUT, false);
 	}
+
 	/**
 	 * @param outputStream the stream to write progress information to
 	 */
 	public ConverterDriver(final PrintStream outputStream) {
 		this(outputStream, true);
 	}
+
 	/**
 	 * @param outputStream the stream to write progress information to
-	 * @param gui whether it is (presumed to be) connected to a GUI window rather than
-	 *               stdout
+	 * @param gui          whether it is (presumed to be) connected to a GUI window
+	 *                        rather
+	 *                     than stdout
 	 */
 	private ConverterDriver(final PrintStream outputStream, final boolean gui) {
 		ostream = outputStream;
 		usageObject = new DriverUsage(gui, "-v", "--convert", ParamCount.One,
 											 "Convert a map's format",
-											 "Convert a map. At present, this means reducing its resolution."
+											 "Convert a map. At present, this means " +
+													 "reducing its resolution."
 
 		);
 		usageObject.addSupportedOption("--current-turn=NN");
@@ -86,11 +90,9 @@ public final class ConverterDriver implements UtilityDriver {
 	/**
 	 * Run the driver.
 	 *
-	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param args command-line argument
+	 * @param args    command-line argument
 	 * @throws DriverFailedException on fatal error
 	 */
 	@SuppressWarnings({"OverloadedVarargsMethod", "resource"})
@@ -108,7 +110,8 @@ public final class ConverterDriver implements UtilityDriver {
 			ostream.printf("Reading %s ... ", filename);
 			try {
 				//noinspection ObjectAllocationInLoop
-				final IMutableMapNG old = READER.readMap(Paths.get(filename), Warning.DEFAULT);
+				final IMutableMapNG old =
+						READER.readMap(Paths.get(filename), Warning.DEFAULT);
 				if (options.hasOption("--current-turn")) {
 					final int currentTurn =
 							Integer.parseInt(options.getArgument("--current-turn"));
@@ -123,8 +126,8 @@ public final class ConverterDriver implements UtilityDriver {
 				READER.write(Paths.get(newFilename), map);
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
-												+ " not acceptable to reader", e);
-			} catch (final FileNotFoundException|NoSuchFileException e) {
+												 + " not acceptable to reader", e);
+			} catch (final FileNotFoundException | NoSuchFileException e) {
 				LOGGER.log(Level.SEVERE, filename + " not found", e);
 			} catch (final IOException e) {
 				//noinspection HardcodedFileSeparator
@@ -134,7 +137,7 @@ public final class ConverterDriver implements UtilityDriver {
 						"XML stream error reading " + filename, e);
 			} catch (final SPFormatException e) {
 				LOGGER.log(Level.SEVERE, "SP map format error reading "
-												+ filename, e);
+												 + filename, e);
 			}
 		}
 	}

@@ -1,12 +1,11 @@
 package view.exploration;
 
-import java.awt.Graphics;
-import java.awt.Polygon;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JButton;
+import javax.swing.*;
 import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;
@@ -37,6 +36,10 @@ public final class DualTileButton extends JButton {
 	 */
 	private static final int MARGIN = 2;
 	/**
+	 * The ZOrderFilter instance to pass to the factory rather than null.
+	 */
+	private static final ZOrderFilter NULL_ZOF = fix -> true;
+	/**
 	 * The main map map.
 	 */
 	private final IMapNG mapOne;
@@ -49,9 +52,14 @@ public final class DualTileButton extends JButton {
 	 */
 	private final Iterable<FixtureMatcher> fixMatchers;
 	/**
+	 * The currently selected point.
+	 */
+	@SuppressWarnings("FieldHasSetterButNoGetter")
+	private Point point = PointFactory.point(-1, -1);
+	/**
 	 * @param master      the first map
 	 * @param subordinate the second map
-	 * @param matchers the matchers to determine which fixture to draw on top
+	 * @param matchers    the matchers to determine which fixture to draw on top
 	 */
 	public DualTileButton(final IMapNG master, final IMapNG subordinate,
 						  final Iterable<FixtureMatcher> matchers) {
@@ -59,16 +67,6 @@ public final class DualTileButton extends JButton {
 		mapTwo = subordinate;
 		fixMatchers = matchers;
 	}
-
-	/**
-	 * The currently selected point.
-	 */
-	@SuppressWarnings("FieldHasSetterButNoGetter")
-	private Point point = PointFactory.point(-1, -1);
-	/**
-	 * The ZOrderFilter instance to pass to the factory rather than null.
-	 */
-	private static final ZOrderFilter NULL_ZOF = fix -> true;
 
 	/**
 	 * Paint the component.
@@ -85,10 +83,10 @@ public final class DualTileButton extends JButton {
 		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2,
 				this, NULL_ZOF, fixMatchers);
 		pen.setClip(new Polygon(
-									new int[]{getWidth() - MARGIN, MARGIN, MARGIN},
-									new int[]{
-											MARGIN, getHeight() - MARGIN, MARGIN},
-									3));
+									   new int[]{getWidth() - MARGIN, MARGIN, MARGIN},
+									   new int[]{
+											   MARGIN, getHeight() - MARGIN, MARGIN},
+									   3));
 		helper.drawTileTranslated(pen, mapOne, point, getWidth(), getHeight());
 		pen.setClip(new Polygon(new int[]{getWidth() - MARGIN,
 				getWidth() - MARGIN, MARGIN}, new int[]{MARGIN,
@@ -105,26 +103,31 @@ public final class DualTileButton extends JButton {
 		point = newPoint;
 		repaint();
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a diagnostic String
 	 */

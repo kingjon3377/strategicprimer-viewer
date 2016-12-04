@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -65,13 +63,38 @@ public final class HarvestableReportGenerator
 	}
 
 	/**
+	 * @param collections a series of lists to be sorted
+	 */
+	@SafeVarargs
+	private static void sortAll(final List<String>... collections) {
+		Stream.of(collections).map(ArrayList::new).forEach(Collections::sort);
+	}
+
+	/**
+	 * We need this to reduce the calculated complexity.
+	 *
+	 * @param condition a Boolean
+	 * @param first     what to return if true
+	 * @param second    what to return if false
+	 * @return the result of the ternary operator.
+	 */
+	private static String ternary(final boolean condition, final String first,
+								  final String second) {
+		if (condition) {
+			return first;
+		} else {
+			return second;
+		}
+	}
+
+	/**
 	 * Produce the sub-reports dealing with "harvestable" fixtures. All fixtures referred
 	 * to in this report are to be removed from the collection. Caves and battlefields,
 	 * though HarvestableFixtures, are presumed to have been handled already.
 	 *
-	 * @param fixtures the set of fixtures
-	 * @param map      ignored
-	 * @param currentPlayer   the player for whom the report is being produced
+	 * @param fixtures      the set of fixtures
+	 * @param map           ignored
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
@@ -130,10 +153,12 @@ public final class HarvestableReportGenerator
 				};
 		shrubsText.addAll(shrubs.entrySet().stream().map(listPrinter)
 								  .collect(Collectors.toList()));
-		final HeadedList<String> mineralsText = new HtmlList("<h5>Mineral deposits</h5>");
+		final HeadedList<String> mineralsText = new HtmlList("<h5>Mineral " +
+																	 "deposits</h5>");
 		mineralsText.addAll(minerals.entrySet().stream().map(listPrinter)
 									.collect(Collectors.toList()));
-		final HeadedList<String> stoneText = new HtmlList("<h5>Exposed stone deposits</h5>");
+		final HeadedList<String> stoneText =
+				new HtmlList("<h5>Exposed stone deposits</h5>");
 		stoneText.addAll(stone.entrySet().stream().map(listPrinter)
 								 .collect(Collectors.toList()));
 		sortAll(caches, groves, meadows, mines, mineralsText, stoneText, shrubsText);
@@ -142,7 +167,8 @@ public final class HarvestableReportGenerator
 					&& shrubs.isEmpty()) {
 			return "";
 		} else {
-			return concat("<h4>Resource Sources</h4>", LineEnd.LINE_SEP, caches.toString(),
+			return concat("<h4>Resource Sources</h4>", LineEnd.LINE_SEP,
+					caches.toString(),
 					groves.toString(), meadows.toString(), mines.toString(),
 					minerals.toString(), stone.toString(),
 					shrubsText.toString());
@@ -150,25 +176,17 @@ public final class HarvestableReportGenerator
 	}
 
 	/**
-	 * @param collections a series of lists to be sorted
-	 */
-	@SafeVarargs
-	private static void sortAll(final List<String>... collections) {
-		Stream.of(collections).map(ArrayList::new).forEach(Collections::sort);
-	}
-
-	/**
 	 * Produce the sub-reports dealing with "harvestable" fixtures. All fixtures referred
 	 * to in this report are to be removed from the collection.
 	 *
-	 * @param fixtures the set of fixtures
-	 * @param map      ignored
-	 * @param currentPlayer   the player for whom the report is being produced
+	 * @param fixtures      the set of fixtures
+	 * @param map           ignored
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		//  TODO: Use Guava MultiMaps to reduce cyclomatic complexity
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
@@ -182,8 +200,8 @@ public final class HarvestableReportGenerator
 		final IReportNode groves =
 				new SortedSectionListReportNode(5, "Groves and orchards");
 		final IReportNode caches = new SortedSectionListReportNode(5,
-																		"Caches " +
-																				"collected by your explorers and workers:");
+																		  "Caches " +
+																				  "collected by your explorers and workers:");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof HarvestableFixture) {
 				final HarvestableFixture item = (HarvestableFixture) pair.second();
@@ -218,7 +236,8 @@ public final class HarvestableReportGenerator
 					final IReportNode collection;
 					final Shrub shrub = (Shrub) item;
 					if (shrubs.containsKey(shrub.getKind())) {
-						collection = NullCleaner.assertNotNull(shrubs.get(shrub.getKind()));
+						collection =
+								NullCleaner.assertNotNull(shrubs.get(shrub.getKind()));
 					} else {
 						//noinspection ObjectAllocationInLoop
 						collection = new ListReportNode(shrub.getKind());
@@ -251,7 +270,8 @@ public final class HarvestableReportGenerator
 				new SortedSectionListReportNode(5, "Exposed stone deposits");
 		stone.values().forEach(stoneNode::add);
 		final SectionReportNode retval = new SectionReportNode(4, "Resource Sources");
-		retval.addIfNonEmpty(caches, groves, meadows, mines, mineralsNode, stoneNode, shrubsNode);
+		retval.addIfNonEmpty(caches, groves, meadows, mines, mineralsNode, stoneNode,
+				shrubsNode);
 		if (retval.getChildCount() != 0) {
 			return retval;
 		} else {
@@ -341,85 +361,68 @@ public final class HarvestableReportGenerator
 	 */
 	@Override
 	public SimpleReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-												   fixtures,
+											   fixtures,
 									   final IMapNG map, final Player currentPlayer,
 									   final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final CacheFixture cache = (CacheFixture) item;
 			return new SimpleReportNode(loc, atPoint(loc), " ",
-											distCalculator.distanceString(loc),
-											" A cache of ",
-											cache.getKind(),
-											", containing ",
-											cache.getContents());
+											   distCalculator.distanceString(loc),
+											   " A cache of ",
+											   cache.getKind(),
+											   ", containing ",
+											   cache.getContents());
 		} else if (item instanceof Grove) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final Grove grove = (Grove) item;
 			return new SimpleReportNode(loc, atPoint(loc), "A ",
-											ternary(grove.isCultivated(),
-													"cultivated ", "wild "),
-											grove.getKind(),
-											ternary(grove.isOrchard(),
-													" orchard", " grove"), " ",
-											distCalculator.distanceString(loc));
+											   ternary(grove.isCultivated(),
+													   "cultivated ", "wild "),
+											   grove.getKind(),
+											   ternary(grove.isOrchard(),
+													   " orchard", " grove"), " ",
+											   distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final Meadow meadow = (Meadow) item;
 			return new SimpleReportNode(loc, atPoint(loc), "A ",
-											meadow.getStatus().toString(),
-											ternary(meadow.isCultivated(),
-													" cultivated ",
-													" wild or abandoned "),
-											meadow.getKind(),
-											ternary(meadow.isField(),
-													" field", " meadow"), " ",
-											distCalculator.distanceString(loc));
+											   meadow.getStatus().toString(),
+											   ternary(meadow.isCultivated(),
+													   " cultivated ",
+													   " wild or abandoned "),
+											   meadow.getKind(),
+											   ternary(meadow.isField(),
+													   " field", " meadow"), " ",
+											   distCalculator.distanceString(loc));
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), item.toString(), " ",
-											distCalculator
-													.distanceString(loc));
+											   distCalculator
+													   .distanceString(loc));
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final MineralVein mineral = (MineralVein) item;
 			return new SimpleReportNode(loc, atPoint(loc), "An ",
-											ternary(mineral.isExposed(),
-													"exposed ",
-													"unexposed "), "vein of ",
-											mineral.getKind(), " ",
-											distCalculator.distanceString(loc));
+											   ternary(mineral.isExposed(),
+													   "exposed ",
+													   "unexposed "), "vein of ",
+											   mineral.getKind(), " ",
+											   distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final String kind = ((Shrub) item).getKind();
 			return new SimpleReportNode(loc, atPoint(loc), kind, " ",
-											distCalculator
-													.distanceString(loc));
+											   distCalculator
+													   .distanceString(loc));
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "An exposed ",
-											((StoneDeposit) item).getKind(),
-											" deposit", " ",
-											distCalculator.distanceString(loc));
+											   ((StoneDeposit) item).getKind(),
+											   " deposit", " ",
+											   distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected HarvestableFixture type");
-		}
-	}
-
-	/**
-	 * We need this to reduce the calculated complexity.
-	 *
-	 * @param condition a Boolean
-	 * @param first     what to return if true
-	 * @param second    what to return if false
-	 * @return the result of the ternary operator.
-	 */
-	private static String ternary(final boolean condition, final String first,
-								final String second) {
-		if (condition) {
-			return first;
-		} else {
-			return second;
 		}
 	}
 

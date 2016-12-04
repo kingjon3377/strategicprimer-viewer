@@ -2,7 +2,6 @@ package view.util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

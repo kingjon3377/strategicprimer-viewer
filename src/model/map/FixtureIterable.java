@@ -14,8 +14,8 @@ package model.map;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the type of fixtures in the iterable
+ * @author Jonathan Lovelace
  */
 @FunctionalInterface
 public interface FixtureIterable<T extends IFixture> extends Iterable<T> {

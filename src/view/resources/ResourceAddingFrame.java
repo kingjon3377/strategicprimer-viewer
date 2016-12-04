@@ -3,9 +3,7 @@ package view.resources;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import controller.map.misc.IOHandler;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -13,23 +11,12 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.StreamSupport;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
@@ -65,11 +52,6 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 */
 	private final ResourceManagementDriver model;
 	/**
-	 * The current player.
-	 */
-	@SuppressWarnings({"FieldMayBeFinal", "CanBeFinal"})
-	private Player current;
-	/**
 	 * The "resource" label.
 	 */
 	private final JLabel resourceLabel;
@@ -96,7 +78,6 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 * the low maximum.
 	 */
 	private final SpinnerNumberModel resQtyModel = new SpinnerNumberModel(0, 0, 2000, 1);
-
 	/**
 	 * The combo box for resource units.
 	 */
@@ -105,7 +86,8 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 * The model for the spinner to add more than one identical implement. See end of
 	 * constructor for why the low maximum.
 	 */
-	private final SpinnerNumberModel implQtyModel = new SpinnerNumberModel(1, 1, 2000, 1);
+	private final SpinnerNumberModel implQtyModel = new SpinnerNumberModel(1, 1, 2000,
+																				  1);
 	/**
 	 * The field to let the user say how many identical implements to add.
 	 */
@@ -119,24 +101,20 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 */
 	private final StreamingLabel logLabel = new StreamingLabel();
 	/**
+	 * The current player.
+	 */
+	@SuppressWarnings({"FieldMayBeFinal", "CanBeFinal"})
+	private Player current;
+	/**
 	 * Whether we have yet to ask the user to choose a player.
 	 */
 	private boolean playerIsDefault = true;
-	/**
-	 * Ask the user to choose a player, if the current player is unlikely to be what he
-	 * or she wants and we haven't already done so.
-	 * @param ioh the menu handler to use to show the dialog
-	 */
-	private void confirmPlayer(final IOHandler ioh) {
-		if (playerIsDefault && current.getName().trim().isEmpty()) {
-			ioh.actionPerformed(new ActionEvent(this, 1, "change current player"));
-		}
-		playerIsDefault = false;
-	}
+
 	/**
 	 * Constructor.
+	 *
 	 * @param driverModel the driver model
-	 * @param ioh the I/O handler for menu items
+	 * @param ioh         the I/O handler for menu items
 	 */
 	@SuppressWarnings("ObjectAllocationInLoop")
 	public ResourceAddingFrame(final ResourceManagementDriver driverModel,
@@ -145,23 +123,26 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		model = driverModel;
 		final IDRegistrar idf = IDFactoryFiller.createFactory(model);
 		current = StreamSupport.stream(driverModel.getPlayers().spliterator(), false)
-						.filter(player -> player.isCurrent())
-						.findAny().orElse(new Player(-1, ""));
+						  .filter(player -> player.isCurrent())
+						  .findAny().orElse(new Player(-1, ""));
 		resourceLabel =
 				new JLabel(String.format("Add resource for %s:", current.getName()));
 		implementLabel =
 				new JLabel(String.format("Add equipment for %s:", current.getName()));
-		ioh.addPlayerChangeListener((final Player old, @Nullable final Player newPlayer) -> {
-			if (newPlayer == null) {
-				current = new Player(-1, "");
-			} else {
-				current = newPlayer;
-			}
-			resourceLabel
-					.setText(String.format("Add resource for %s:", current.getName()));
-			implementLabel
-					.setText(String.format("Add equipment for %s:", current.getName()));
-		});
+		ioh.addPlayerChangeListener(
+				(final Player old, @Nullable final Player newPlayer) -> {
+					if (newPlayer == null) {
+						current = new Player(-1, "");
+					} else {
+						current = newPlayer;
+					}
+					resourceLabel
+							.setText(String.format("Add resource for %s:",
+									current.getName()));
+					implementLabel
+							.setText(String.format("Add equipment for %s:",
+									current.getName()));
+				});
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 		mainPanel.add(resourceLabel);
@@ -197,8 +178,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 				return;
 			}
 			final ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
-															resQtyModel.getNumber()
-																	.intValue(), units);
+															  resQtyModel.getNumber()
+																	  .intValue(),
+															  units);
 			pile.setCreated(resCreatedModel.getNumber().intValue());
 			model.addResource(pile, current);
 			logAddition(pile.toString());
@@ -267,22 +249,14 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		resQtyModel.setMaximum(Integer.valueOf(Integer.MAX_VALUE));
 		implQtyModel.setMaximum(Integer.valueOf(Integer.MAX_VALUE));
 	}
-	/**
-	 * Log the addition of something.
-	 * @param addend what was added
-	 */
-	@SuppressWarnings("resource")
-	private void logAddition(final String addend) {
-		try (final PrintWriter writer = logLabel.getWriter()) {
-			writer.print("<p style=\"color:white; margin-bottom: 0.5em; ");
-			writer.printf(" margin-top: 0.5em;\">Added %s for %s</p>%n", addend,
-					current.getName());
-		}
-	}
+
 	/**
 	 * Add two components in a panel joining them vertically.
-	 * @param container the container to add the panel containing the two components to
-	 * @param firstComponent the first component
+	 *
+	 * @param container       the container to add the panel containing the two
+	 *                           components
+	 *                        to
+	 * @param firstComponent  the first component
 	 * @param secondComponent the second component
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
@@ -299,87 +273,56 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	}
 
 	/**
-	 * Extends ImprovedComboBox to keep a running collection of values.
+	 * Ask the user to choose a player, if the current player is unlikely to be what he
+	 * or she wants and we haven't already done so.
+	 *
+	 * @param ioh the menu handler to use to show the dialog
 	 */
-	private static class UpdatedComboBox extends ImprovedComboBox<String> {
-		/**
-		 * The values we've had in the past.
-		 */
-		private final Collection<String> values;
-		/**
-		 * Constructor. We need it to be neither private nor public for this to
-		 * work with as few warnings as possible as a private inner class, and
-		 * it needs to do something to not be an empty method, so we moved the
-		 * initialization of the collection here.
-		 */
-		protected UpdatedComboBox() {
-			values = new HashSet<>();
+	private void confirmPlayer(final IOHandler ioh) {
+		if (playerIsDefault && current.getName().trim().isEmpty()) {
+			ioh.actionPerformed(new ActionEvent(this, 1, "change current player"));
 		}
-		/**
-		 * Clear the combo box, but if its value was one we haven't had previously, add
-		 * it to the drop-down list.
-		 */
-		@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-		public void checkAndClear() {
-			final Object raw = getSelectedItem();
-			if (raw == null) {
-				return;
-			}
-			final String item = NullCleaner.assertNotNull(getSelectedItem().toString().trim());
-			if (!values.contains(item)) {
-				values.add(item);
-				addItem(item);
-			}
-			setSelectedItem(null);
-		}
-		/**
-		 * Prevent serialization.
-		 * @param out ignored
-		 * @throws IOException always
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void writeObject(final ObjectOutputStream out) throws IOException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-		/**
-		 * Prevent serialization
-		 * @param in ignored
-		 * @throws IOException always
-		 * @throws ClassNotFoundException never
-		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void readObject(final ObjectInputStream in)
-				throws IOException, ClassNotFoundException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-		/**
-		 * @return a quasi-diagnostic String
-		 */
-		@Override
-		public String toString() {
-			return "UpdatedComboBox with " + values.size() + " items";
+		playerIsDefault = false;
+	}
+
+	/**
+	 * Log the addition of something.
+	 *
+	 * @param addend what was added
+	 */
+	@SuppressWarnings("resource")
+	private void logAddition(final String addend) {
+		try (final PrintWriter writer = logLabel.getWriter()) {
+			writer.print("<p style=\"color:white; margin-bottom: 0.5em; ");
+			writer.printf(" margin-top: 0.5em;\">Added %s for %s</p>%n", addend,
+					current.getName());
 		}
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a quasi-diagnostic String
 	 */
@@ -394,5 +337,76 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	@Override
 	public String getWindowName() {
 		return "Resource Entry";
+	}
+
+	/**
+	 * Extends ImprovedComboBox to keep a running collection of values.
+	 */
+	private static class UpdatedComboBox extends ImprovedComboBox<String> {
+		/**
+		 * The values we've had in the past.
+		 */
+		private final Collection<String> values;
+
+		/**
+		 * Constructor. We need it to be neither private nor public for this to
+		 * work with as few warnings as possible as a private inner class, and
+		 * it needs to do something to not be an empty method, so we moved the
+		 * initialization of the collection here.
+		 */
+		protected UpdatedComboBox() {
+			values = new HashSet<>();
+		}
+
+		/**
+		 * Clear the combo box, but if its value was one we haven't had previously, add
+		 * it to the drop-down list.
+		 */
+		@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+		public void checkAndClear() {
+			final Object raw = getSelectedItem();
+			if (raw == null) {
+				return;
+			}
+			final String item =
+					NullCleaner.assertNotNull(getSelectedItem().toString().trim());
+			if (!values.contains(item)) {
+				values.add(item);
+				addItem(item);
+			}
+			setSelectedItem(null);
+		}
+
+		/**
+		 * Prevent serialization.
+		 *
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void writeObject(final ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+
+		/**
+		 * Prevent serialization
+		 *
+		 * @param in ignored
+		 * @throws IOException            always
+		 * @throws ClassNotFoundException never
+		 */
+		@SuppressWarnings({"unused", "static-method"})
+		private void readObject(final ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+
+		/**
+		 * @return a quasi-diagnostic String
+		 */
+		@Override
+		public String toString() {
+			return "UpdatedComboBox with " + values.size() + " items";
+		}
 	}
 }

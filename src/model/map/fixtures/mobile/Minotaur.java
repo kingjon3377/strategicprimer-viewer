@@ -25,6 +25,10 @@ import util.LineEnd;
  */
 public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
@@ -74,7 +78,7 @@ public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Minotaur)
-										&& (id == ((TileFixture) obj).getID()));
+										 && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**
@@ -84,11 +88,6 @@ public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -108,19 +107,19 @@ public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

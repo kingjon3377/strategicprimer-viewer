@@ -55,7 +55,7 @@ public final class ResolutionDecreaseConverter {
 		final int newRows = old.dimensions().rows / 2;
 		final IMutableMapNG retval =
 				new SPMapNG(new MapDimensions(newRows, newCols, 2), players,
-								old.getCurrentTurn());
+								   old.getCurrentTurn());
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				final Point point = PointFactory.point(row, col);
@@ -122,8 +122,9 @@ public final class ResolutionDecreaseConverter {
 	private static void checkRequirements(final IMapNG map) {
 		if (((map.dimensions().rows % 2) != 0)
 					|| ((map.dimensions().cols % 2) != 0)) {
-			throw new IllegalArgumentException("Can only convert maps with even numbers " +
-													"of rows and columns.");
+			throw new IllegalArgumentException("Can only convert maps with even numbers" +
+													   " " +
+													   "of rows and columns.");
 		}
 	}
 
@@ -156,7 +157,7 @@ public final class ResolutionDecreaseConverter {
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	@SafeVarargs
 	private static void addRivers(final RiverFixture fix,
-								final Iterable<River>... rivers) {
+								  final Iterable<River>... rivers) {
 		Stream.of(rivers).flatMap(iter -> StreamSupport.stream(iter.spliterator(),
 				false))
 				.forEach(fix::addRiver);
@@ -168,7 +169,7 @@ public final class ResolutionDecreaseConverter {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void removeRivers(final Collection<River> set,
-									final River... rivers) {
+									 final River... rivers) {
 		set.removeAll(Arrays.asList(rivers));
 	}
 
@@ -181,9 +182,9 @@ public final class ResolutionDecreaseConverter {
 	 * representation one selected from among them at random.
 	 */
 	private static TileType consensus(final TileType firstType,
-									final TileType secondType,
-									final TileType thirdType,
-									final TileType fourthType) {
+									  final TileType secondType,
+									  final TileType thirdType,
+									  final TileType fourthType) {
 		final EnumCounter<TileType> counter = new EnumCounter<>(TileType.class);
 		counter.countMany(firstType, secondType, thirdType, fourthType);
 		final Set<TileType> twos = EnumSet.noneOf(TileType.class);

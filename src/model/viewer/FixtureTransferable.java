@@ -23,14 +23,14 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class FixtureTransferable implements Transferable {
 	/**
-	 * The object we're transferring.
-	 */
-	private final TileFixture data;
-	/**
 	 * a DataFlavor representing its class.
 	 */
 	public static final DataFlavor FLAVOR =
 			new DataFlavor(TileFixture.class, "TileFixture");
+	/**
+	 * The object we're transferring.
+	 */
+	private final TileFixture data;
 
 	/**
 	 * Constructor.
@@ -92,7 +92,7 @@ public final class FixtureTransferable implements Transferable {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof FixtureTransferable) &&
-										data.equals(((FixtureTransferable) obj).data));
+										 data.equals(((FixtureTransferable) obj).data));
 	}
 
 	/**

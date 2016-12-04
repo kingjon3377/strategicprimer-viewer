@@ -1,13 +1,12 @@
 package view.map.key;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.stream.StreamSupport;
-import javax.swing.JPanel;
+import javax.swing.*;
 import model.listeners.VersionChangeListener;
 import model.map.TileType;
 
@@ -36,7 +35,7 @@ public final class KeyPanel extends JPanel implements VersionChangeListener {
 		super(new GridLayout(0, 4));
 		updateForVersion(version);
 		setMinimumSize(new Dimension(new KeyElement(version, TileType.NotVisible)
-											.getMinimumSize().width * 4,
+											 .getMinimumSize().width * 4,
 											getMinimumSize().height));
 		setPreferredSize(getMinimumSize());
 	}
@@ -60,22 +59,26 @@ public final class KeyPanel extends JPanel implements VersionChangeListener {
 	public void changeVersion(final int old, final int newVersion) {
 		updateForVersion(newVersion);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

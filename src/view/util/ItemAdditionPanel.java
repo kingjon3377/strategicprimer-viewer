@@ -1,7 +1,6 @@
 package view.util;
 
-import java.awt.CardLayout;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -9,8 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import model.listeners.AddRemoveListener;
 import util.NullCleaner;
 import util.OnMac;
@@ -57,7 +55,7 @@ public final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 	/**
 	 * Constructor.
 	 *
-	 * @param what            what we're adding or removing
+	 * @param what what we're adding or removing
 	 */
 	public ItemAdditionPanel(final String what) {
 		layout = new CardLayout();
@@ -128,26 +126,31 @@ public final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 	public void removeAddRemoveListener(final AddRemoveListener list) {
 		arListeners.remove(list);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a diagnostic String
 	 */

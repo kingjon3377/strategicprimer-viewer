@@ -35,18 +35,6 @@ import util.NullCleaner;
 public class SectionListReportNode extends DefaultMutableTreeNode
 		implements IReportNode {
 	/**
-	 * The header level.
-	 */
-	private int level;
-
-	/**
-	 * An optional sub-header. Since this only comes up once at present, we only
-	 * expose it
-	 * in the constructor.
-	 */
-	private final String subHeader;
-
-	/**
 	 * The size of the boilerplate text we have even before we add the size of the
 	 * children and the header.
 	 */
@@ -56,6 +44,16 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 * The size of the boilerplate text we have to add for each child.
 	 */
 	private static final int PER_CHILD_BPLATE = "<li></li>".length() + 1;
+	/**
+	 * An optional sub-header. Since this only comes up once at present, we only
+	 * expose it
+	 * in the constructor.
+	 */
+	private final String subHeader;
+	/**
+	 * The header level.
+	 */
+	private int level;
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -70,12 +68,12 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	/**
 	 * Constructor.
 	 *
-	 * @param pt  the point, if any, in the map that this represents something on
+	 * @param pt     the point, if any, in the map that this represents something on
 	 * @param lvl    the header level
 	 * @param header the header text
 	 */
 	public SectionListReportNode(final Point pt, final int lvl,
-								final String header) {
+								 final String header) {
 		super(header);
 		text = header; // required by Eclipse
 		setText(header);
@@ -152,17 +150,17 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @param lvl the new header level
-	 */
-	public final void setHeaderLevel(final int lvl) {
-		level = lvl;
-	}
-
-	/**
 	 * @return the header level
 	 */
 	public final int getHeaderLevel() {
 		return level;
+	}
+
+	/**
+	 * @param lvl the new header level
+	 */
+	public final void setHeaderLevel(final int lvl) {
+		level = lvl;
 	}
 
 	/**
@@ -172,11 +170,12 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof SectionListReportNode) &&
-										(((SectionListReportNode) obj).level ==
-												level) &&
-										text.equals(((IReportNode) obj).getText()) &&
-										children()
-												.equals(((IReportNode) obj).children()));
+										 (((SectionListReportNode) obj).level ==
+												  level) &&
+										 text.equals(((IReportNode) obj).getText()) &&
+										 children()
+												 .equals(((IReportNode) obj).children
+																					 ()));
 	}
 
 	/**
@@ -208,6 +207,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	/**
 	 * Add a node at the beginning of our list of children. Do nothing if null, rather
 	 * than crashing.
+	 *
 	 * @param node the node to add
 	 */
 	@Override
@@ -222,6 +222,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 			}
 		}
 	}
+
 	/**
 	 * @return an iterator over the children
 	 */
@@ -284,35 +285,43 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	public final Point getLocalPoint() {
 		return point;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Superclass removes CloneNotSupportedException from method signature, but we still
 	 * want to throw it, so we wrap it in a RuntimeException
+	 *
 	 * @return never
 	 */
 	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public final SectionListReportNode clone() {
 		throw new IllegalStateException("cloning prohibited",
-										  new CloneNotSupportedException("cloning prohibited"));
+											   new CloneNotSupportedException("cloning" +
+																					  " " +
+																					  "prohibited"));
 	}
 }

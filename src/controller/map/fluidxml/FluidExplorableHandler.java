@@ -57,11 +57,12 @@ public final class FluidExplorableHandler {
 	private FluidExplorableHandler() {
 		// Do not instantiate
 	}
+
 	/**
 	 * Read an adventure from XML.
 	 *
 	 * @param element   The XML element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -85,16 +86,19 @@ public final class FluidExplorableHandler {
 		}
 		final AdventureFixture retval =
 				setImage(new AdventureFixture(player, getAttribute(element, "brief", ""),
-											getAttribute(element, "full", ""),
-											getOrGenerateID(element, warner, idFactory)), element, warner);
+													 getAttribute(element, "full", ""),
+													 getOrGenerateID(element, warner,
+															 idFactory)), element,
+						warner);
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return retval;
 	}
+
 	/**
 	 * Read a portal from XML.
 	 *
 	 * @param element   The XML element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -108,22 +112,27 @@ public final class FluidExplorableHandler {
 									final Iterable<XMLEvent> stream,
 									final IMutablePlayerCollection players,
 									final Warning warner,
-									final IDRegistrar idFactory) throws SPFormatException {
+									final IDRegistrar idFactory)
+			throws SPFormatException {
 		requireTag(element, parent, "portal");
 		final Portal retval = setImage(new Portal(getAttribute(element, "world"),
-												PointFactory.point(getIntegerAttribute(
-														element, "row"),
-														getIntegerAttribute(element,
-																"column")),
-												getOrGenerateID(element, warner,
-														idFactory)), element, warner);
+														 PointFactory
+																 .point
+																		  (getIntegerAttribute(
+																		 element, "row"),
+																		 getIntegerAttribute(
+																				 element,
+																				 "column")),
+														 getOrGenerateID(element, warner,
+																 idFactory)), element,
+				warner);
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return retval;
 	}
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -147,7 +156,7 @@ public final class FluidExplorableHandler {
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param parent	the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -160,7 +169,7 @@ public final class FluidExplorableHandler {
 											  final QName parent,
 											  final Iterable<XMLEvent> stream,
 											  final IMutablePlayerCollection
-															players,
+													  players,
 											  final Warning warner,
 											  final IDRegistrar idFactory)
 			throws SPFormatException {
@@ -171,11 +180,12 @@ public final class FluidExplorableHandler {
 		spinUntilEnd(element.getName(), stream);
 		return setImage(retval, element, warner);
 	}
+
 	/**
 	 * Parse a TextFixture.
 	 *
 	 * @param element   the element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to get more elements (in this case, the text) from
 	 * @param players   ignored
 	 * @param warner    the Warning instance to use for warnings
@@ -190,7 +200,8 @@ public final class FluidExplorableHandler {
 											  final QName parent,
 											  final Iterable<XMLEvent> stream,
 											  final IMutablePlayerCollection players,
-											  final Warning warner, final IDRegistrar idFactory)
+											  final Warning warner,
+											  final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "text");
 		// Of all our uses of StringBuilder, here we can't know how much size
@@ -202,23 +213,28 @@ public final class FluidExplorableHandler {
 					assertNotNull(event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				throw new UnwantedChildException(assertNotNull(element.getName()),
-														assertNotNull(event.asStartElement()));
+														assertNotNull(
+																event.asStartElement()));
 			} else if (event.isCharacters()) {
 				builder.append(event.asCharacters().getData());
 			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName())) {
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
 		return setImage(new TextFixture(assertNotNull(builder.toString().trim()),
-							   getIntegerAttribute(element, "turn", -1)), element, warner);
+											   getIntegerAttribute(element, "turn", -1)),
+				element, warner);
 	}
+
 	/**
 	 * Write an adventure hook to XML.
+	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeAdventure(final XMLStreamWriter ostream, final Object obj,
@@ -238,12 +254,14 @@ public final class FluidExplorableHandler {
 		writeNonEmptyAttribute(ostream, "full", adv.getFullDescription());
 		writeImage(ostream, adv);
 	}
+
 	/**
 	 * Write a portal to XML.
+	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writePortal(final XMLStreamWriter ostream, final Object obj,
@@ -261,12 +279,14 @@ public final class FluidExplorableHandler {
 		writeIntegerAttribute(ostream, "id", portal.getID());
 		writeImage(ostream, portal);
 	}
+
 	/**
 	 * Write a cave to XML.
+	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeCave(final XMLStreamWriter ostream, final Object obj,
@@ -280,12 +300,14 @@ public final class FluidExplorableHandler {
 		writeIntegerAttribute(ostream, "id", cave.getID());
 		writeImage(ostream, cave);
 	}
+
 	/**
 	 * Write a battlefield to XML.
+	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeBattlefield(final XMLStreamWriter ostream, final Object obj,
@@ -299,12 +321,14 @@ public final class FluidExplorableHandler {
 		writeIntegerAttribute(ostream, "id", field.getID());
 		writeImage(ostream, field);
 	}
+
 	/**
 	 * Write an arbitrary-text note to XML.
+	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeTextFixture(final XMLStreamWriter ostream, final Object obj,

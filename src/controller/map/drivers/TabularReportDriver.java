@@ -43,6 +43,7 @@ public class TabularReportDriver implements SimpleDriver {
 	 */
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(TabularReportDriver.class);
+
 	@SuppressWarnings("ErrorNotRethrown")
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,

@@ -32,7 +32,7 @@ public final class CurriedFixtureTransferable implements Transferable {
 	 * The data flavor we handle.
 	 */
 	public static final DataFlavor FLAVOR = new DataFlavor(FixtureTransferable.class,
-														"CurriedFixtureTransferable");
+																  "CurriedFixtureTransferable");
 	/**
 	 * Our payload.
 	 */
@@ -45,9 +45,12 @@ public final class CurriedFixtureTransferable implements Transferable {
 	 */
 	public CurriedFixtureTransferable(final Collection<TileFixture> list) {
 		payload = NullCleaner.assertNotNull(Collections
-										.unmodifiableList(list.stream()
-													.map(FixtureTransferable::new)
-													.collect(Collectors.toList())));
+													.unmodifiableList(list.stream()
+																			  .map
+																					   (FixtureTransferable::new)
+																			  .collect(
+																					  Collectors
+																							  .toList())));
 	}
 
 	/**
@@ -92,6 +95,6 @@ public final class CurriedFixtureTransferable implements Transferable {
 	@Override
 	public String toString() {
 		return "CurriedFixtureTransferable with payload containing " + payload.size() +
-					" elements";
+					   " elements";
 	}
 }

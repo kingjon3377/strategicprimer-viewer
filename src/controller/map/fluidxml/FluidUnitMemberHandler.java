@@ -66,11 +66,12 @@ public final class FluidUnitMemberHandler {
 	private FluidUnitMemberHandler() {
 		// Do not instantiate
 	}
+
 	/**
 	 * Parse a worker from XML.
 	 *
 	 * @param element   the current tag
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more tags from
 	 * @param players   ignored
 	 * @param warner    the Warning instance to report errors on
@@ -86,9 +87,11 @@ public final class FluidUnitMemberHandler {
 			throws SPFormatException {
 		requireTag(element, parent, "worker");
 		final Worker retval = setImage(new Worker(getAttribute(element, "name"),
-												getAttribute(element, "race", "human"),
-												getOrGenerateID(element, warner,
-														idFactory)), element, warner);
+														 getAttribute(element, "race",
+																 "human"),
+														 getOrGenerateID(element, warner,
+																 idFactory)), element,
+				warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
@@ -109,17 +112,19 @@ public final class FluidUnitMemberHandler {
 															startElement);
 				}
 			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName())) {
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
 		return retval;
 	}
+
 	/**
 	 * Parse a job from XML.
 	 *
 	 * @param element   the current tag
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more tags from
 	 * @param players   ignored
 	 * @param warner    the Warning instance to report errors on
@@ -160,29 +165,34 @@ public final class FluidUnitMemberHandler {
 															startElement);
 				}
 			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName())) {
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
 		if (anySkills && onlyOneSkill) {
 			final String skill = retval.iterator().next().getName();
-			if (equalsAny(skill, IJob.SUSPICIOUS_SKILLS) || skill.equals(retval.getName())) {
+			if (equalsAny(skill, IJob.SUSPICIOUS_SKILLS) ||
+						skill.equals(retval.getName())) {
 				warner.warn(new UnwantedChildException(element.getName(),
-															  new QName(ISPReader.NAMESPACE,
+															  new QName(ISPReader
+																				.NAMESPACE,
 																			   skill),
 															  lastSkill.getLocation(),
-															  new DeprecatedPropertyException(lastSkill,
+															  new
+																	  DeprecatedPropertyException(lastSkill,
 																									 skill,
 																									 "miscellaneous")));
 			}
 		}
 		return retval;
 	}
+
 	/**
 	 * Parse a skill from XML.
 	 *
 	 * @param element   the current tag
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more tags from
 	 * @param players   ignored
 	 * @param warner    the Warning instance to report errors on
@@ -203,19 +213,20 @@ public final class FluidUnitMemberHandler {
 		requireNonEmptyAttribute(element, "hours", true, warner);
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final ISkill retval = new Skill(getAttribute(element, "name"),
-											  getIntegerAttribute(element, "level"),
-											  getIntegerAttribute(element, "hours"));
+											   getIntegerAttribute(element, "level"),
+											   getIntegerAttribute(element, "hours"));
 		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
 			warner.warn(
 					new DeprecatedPropertyException(element, "miscellaneous", "other"));
 		}
 		return retval;
 	}
+
 	/**
 	 * Parse stats from XML.
 	 *
 	 * @param element   the current tag
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more tags from
 	 * @param players   ignored
 	 * @param warner    the Warning instance to report errors on
@@ -228,7 +239,8 @@ public final class FluidUnitMemberHandler {
 										final QName parent,
 										final Iterable<XMLEvent> stream,
 										final IMutablePlayerCollection players,
-										final Warning warner, final IDRegistrar idFactory)
+										final Warning warner, final IDRegistrar
+																	  idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "stats");
 		final WorkerStats retval =
@@ -243,13 +255,14 @@ public final class FluidUnitMemberHandler {
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return retval;
 	}
+
 	/**
 	 * Write a worker to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeWorker(final XMLStreamWriter ostream, final Object obj,
@@ -284,13 +297,14 @@ public final class FluidUnitMemberHandler {
 			ostream.writeEndElement();
 		}
 	}
+
 	/**
 	 * Write the worker's stats.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeStats(final XMLStreamWriter ostream, final Object obj,
@@ -309,13 +323,14 @@ public final class FluidUnitMemberHandler {
 		writeIntegerAttribute(ostream, "wis", stats.getWisdom());
 		writeIntegerAttribute(ostream, "cha", stats.getCharisma());
 	}
+
 	/**
 	 * Write a Job to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeJob(final XMLStreamWriter ostream, final Object obj,
@@ -341,13 +356,14 @@ public final class FluidUnitMemberHandler {
 			ostream.writeEndElement();
 		}
 	}
+
 	/**
 	 * Write a Skill to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeSkill(final XMLStreamWriter ostream, final Object obj,
@@ -364,7 +380,7 @@ public final class FluidUnitMemberHandler {
 
 	/**
 	 * @param element   the element containing an animal
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -385,19 +401,20 @@ public final class FluidUnitMemberHandler {
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Animal(getAttribute(element, "kind"), hasAttribute(element,
 				"traces"),
-						  parseBoolean(getAttribute(element, "talking",
-								  "false")),
-						  getAttribute(element, "status", "wild"),
-						  getOrGenerateID(element, warner, idFactory)), element, warner);
+										  parseBoolean(getAttribute(element, "talking",
+												  "false")),
+										  getAttribute(element, "status", "wild"),
+										  getOrGenerateID(element, warner, idFactory)),
+				element, warner);
 	}
 
 	/**
 	 * Write an Animal to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeAnimal(final XMLStreamWriter ostream, final Object obj,

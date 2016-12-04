@@ -43,53 +43,7 @@ import static util.NullCleaner.assertNotNull;
  */
 public final class ProxyUnit
 		implements IUnit, ProxyFor<IUnit>, HasMutableKind, HasMutableImage,
-						HasMutableName, HasMutableOwner {
-	/**
-	 * TODO: This is probably highly inefficient, and is likely to get called often, I think
-	 * @return the units' orders for all turns
-	 */
-	@Override
-	public NavigableMap<Integer, String> getAllOrders() {
-		final NavigableMap<Integer, String> retval = new TreeMap<>();
-		final List<Integer> toRemove = new ArrayList<>();
-		for (final IUnit unit : proxied) {
-			for (final Map.Entry<Integer, String> entry : unit.getAllOrders().entrySet()) {
-				if (retval.containsKey(entry.getKey())) {
-					if (!retval.get(entry.getKey()).equals(entry.getValue())) {
-						retval.put(entry.getKey(), "");
-						toRemove.add(entry.getKey());
-					}
-				} else {
-					retval.put(entry.getKey(), entry.getValue());
-				}
-			}
-		}
-		toRemove.forEach(retval::remove);
-		return retval;
-	}
-	/**
-	 * TODO: This is probably highly inefficient
-	 * @return the units' orders for all turns
-	 */
-	@Override
-	public NavigableMap<Integer, String> getAllResults() {
-		final NavigableMap<Integer, String> retval = new TreeMap<>();
-		final List<Integer> toRemove = new ArrayList<>();
-		for (final IUnit unit : proxied) {
-			for (final Map.Entry<Integer, String> entry : unit.getAllResults().entrySet()) {
-				if (retval.containsKey(entry.getKey())) {
-					if (!retval.get(entry.getKey()).equals(entry.getValue())) {
-						retval.put(entry.getKey(), "");
-						toRemove.add(entry.getKey());
-					}
-				} else {
-					retval.put(entry.getKey(), entry.getValue());
-				}
-			}
-		}
-		toRemove.forEach(retval::remove);
-		return retval;
-	}
+						   HasMutableName, HasMutableOwner {
 	/**
 	 * Logger.
 	 */
@@ -98,6 +52,20 @@ public final class ProxyUnit
 	 * Whether we are proxying parallel units in different maps.
 	 */
 	private final boolean parallel;
+	/**
+	 * The units we're a proxy for.
+	 */
+	private final Collection<IUnit> proxied = new ArrayList<>();
+	/**
+	 * The ID # of the units we are a proxy for.
+	 */
+	private final int id;
+	/**
+	 * The kind of the units we are a proxy for, if we're not proxying parallel units of
+	 * the same ID.
+	 */
+	private String kind;
+
 	/**
 	 * Constructor.
 	 *
@@ -108,8 +76,10 @@ public final class ProxyUnit
 		parallel = true;
 		kind = "";
 	}
+
 	/**
 	 * Constructor.
+	 *
 	 * @param uKind the kind of the units we are a proxy for.
 	 */
 	public ProxyUnit(final String uKind) {
@@ -117,15 +87,59 @@ public final class ProxyUnit
 		parallel = false;
 		kind = uKind;
 	}
+
 	/**
-	 * The kind of the units we are a proxy for, if we're not proxying parallel units of
-	 * the same ID.
+	 * TODO: This is probably highly inefficient, and is likely to get called often, I
+	 * think
+	 *
+	 * @return the units' orders for all turns
 	 */
-	private String kind;
+	@Override
+	public NavigableMap<Integer, String> getAllOrders() {
+		final NavigableMap<Integer, String> retval = new TreeMap<>();
+		final List<Integer> toRemove = new ArrayList<>();
+		for (final IUnit unit : proxied) {
+			for (final Map.Entry<Integer, String> entry : unit.getAllOrders()
+																  .entrySet()) {
+				if (retval.containsKey(entry.getKey())) {
+					if (!retval.get(entry.getKey()).equals(entry.getValue())) {
+						retval.put(entry.getKey(), "");
+						toRemove.add(entry.getKey());
+					}
+				} else {
+					retval.put(entry.getKey(), entry.getValue());
+				}
+			}
+		}
+		toRemove.forEach(retval::remove);
+		return retval;
+	}
+
 	/**
-	 * The units we're a proxy for.
+	 * TODO: This is probably highly inefficient
+	 *
+	 * @return the units' orders for all turns
 	 */
-	private final Collection<IUnit> proxied = new ArrayList<>();
+	@Override
+	public NavigableMap<Integer, String> getAllResults() {
+		final NavigableMap<Integer, String> retval = new TreeMap<>();
+		final List<Integer> toRemove = new ArrayList<>();
+		for (final IUnit unit : proxied) {
+			for (final Map.Entry<Integer, String> entry : unit.getAllResults()
+																  .entrySet()) {
+				if (retval.containsKey(entry.getKey())) {
+					if (!retval.get(entry.getKey()).equals(entry.getValue())) {
+						retval.put(entry.getKey(), "");
+						toRemove.add(entry.getKey());
+					}
+				} else {
+					retval.put(entry.getKey(), entry.getValue());
+				}
+			}
+		}
+		toRemove.forEach(retval::remove);
+		return retval;
+	}
 
 	/**
 	 * @param item a unit to start proxying
@@ -161,11 +175,6 @@ public final class ProxyUnit
 		}
 		return retval;
 	}
-
-	/**
-	 * The ID # of the units we are a proxy for.
-	 */
-	private final int id;
 
 	/**
 	 * @return "Units"
@@ -236,21 +245,6 @@ public final class ProxyUnit
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		LOGGER.warning("setImage() called on a ProxyUnit");
-		for (final IUnit unit : proxied) {
-			if (unit instanceof HasMutableImage) {
-				((HasMutableImage) unit).setImage(img);
-			} else {
-				LOGGER.warning("setImage() skipped unit with immutable image");
-			}
-		}
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -267,6 +261,21 @@ public final class ProxyUnit
 			return "";
 		} else {
 			return image;
+		}
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		LOGGER.warning("setImage() called on a ProxyUnit");
+		for (final IUnit unit : proxied) {
+			if (unit instanceof HasMutableImage) {
+				((HasMutableImage) unit).setImage(img);
+			} else {
+				LOGGER.warning("setImage() skipped unit with immutable image");
+			}
 		}
 	}
 
@@ -296,6 +305,7 @@ public final class ProxyUnit
 
 	/**
 	 * TODO: If there's already a ProxyUnit for that kind, these should join it ...
+	 *
 	 * @param nKind the new kind of the proxied units
 	 */
 	@Override
@@ -336,7 +346,8 @@ public final class ProxyUnit
 								((ProxyWorker) proxy).addProxied((IWorker) member);
 							} else {
 								LOGGER.warning(
-										"Proxy is a ProxyWorker but member isn't a worker");
+										"Proxy is a ProxyWorker but member isn't a " +
+												"worker");
 
 							}
 						} else {
@@ -448,9 +459,9 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * @param turn
 	 * @return the orders shared by the units, or the empty string if their orders are
 	 * different.
-	 * @param turn
 	 */
 	@Override
 	public String getOrders(final int turn) {
@@ -472,9 +483,9 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * @param turn
 	 * @return the results shared by the units, or the empty string if their results are
 	 * different.
-	 * @param turn
 	 */
 	@Override
 	public String getResults(final int turn) {
@@ -494,6 +505,7 @@ public final class ProxyUnit
 			return results;
 		}
 	}
+
 	/**
 	 * @param turn
 	 * @param newOrders The units' new orders
@@ -506,7 +518,7 @@ public final class ProxyUnit
 	}
 
 	/**
-	 * @param turn a turn
+	 * @param turn       a turn
 	 * @param newResults The units' new results for that turn
 	 */
 	@Override
@@ -515,6 +527,7 @@ public final class ProxyUnit
 			unit.setResults(turn, newResults);
 		}
 	}
+
 	/**
 	 * @return a "verbose" description of the unit
 	 */
@@ -590,6 +603,56 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		if (parallel) {
+			return assertNotNull(
+					String.format("ProxyUnit for ID #%d", Integer.valueOf(id)));
+		} else {
+			return "ProxyUnit for units of kind " + kind;
+		}
+	}
+
+	/**
+	 * @param obj an object
+	 * @return whether it's the same as this one
+	 */
+	@Override
+	public boolean equals(@Nullable final Object obj) {
+		return (this == obj) || ((obj instanceof ProxyUnit) &&
+										 (parallel == ((ProxyUnit) obj).parallel) &&
+										 (id == ((ProxyUnit) obj).id) &&
+										 kind.equals(((ProxyUnit) obj).kind) &&
+										 proxied.equals(((ProxyUnit) obj).getProxied()));
+	}
+
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		final Iterator<IUnit> iter = proxied.iterator();
+		if (iter.hasNext()) {
+			return iter.next().hashCode();
+		} else {
+			return -1;
+		}
+	}
+
+	/**
+	 * @return Whether this should be considered (if true) a proxy for multiple
+	 * representations of the same Unit, e.g. in different maps, or (if false) a proxy
+	 * for
+	 * different related Units.
+	 */
+	@Override
+	public boolean isParallel() {
+		return parallel;
+	}
+
+	/**
 	 * A proxy for non-worker unit members.
 	 */
 	private static final class ProxyMember implements UnitMember, ProxyFor<UnitMember> {
@@ -647,7 +710,7 @@ public final class ProxyUnit
 		@Override
 		public boolean equalsIgnoringID(final IFixture fix) {
 			return (fix instanceof ProxyMember) &&
-						((ProxyMember) fix).proxiedMembers.equals(proxiedMembers);
+						   ((ProxyMember) fix).proxiedMembers.equals(proxiedMembers);
 		}
 
 		/**
@@ -706,54 +769,5 @@ public final class ProxyUnit
 		public boolean isParallel() {
 			return true;
 		}
-	}
-
-	/**
-	 * @return a string representation of this class
-	 */
-	@Override
-	public String toString() {
-		if (parallel) {
-			return assertNotNull(
-					String.format("ProxyUnit for ID #%d", Integer.valueOf(id)));
-		} else {
-			return "ProxyUnit for units of kind " + kind;
-		}
-	}
-
-	/**
-	 * @param obj an object
-	 * @return whether it's the same as this one
-	 */
-	@Override
-	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof ProxyUnit) &&
-										(parallel == ((ProxyUnit) obj).parallel) &&
-										(id == ((ProxyUnit) obj).id) &&
-										kind.equals(((ProxyUnit) obj).kind) &&
-										proxied.equals(((ProxyUnit) obj).getProxied()));
-	}
-
-	/**
-	 * @return a hash value for the object
-	 */
-	@Override
-	public int hashCode() {
-		final Iterator<IUnit> iter = proxied.iterator();
-		if (iter.hasNext()) {
-			return iter.next().hashCode();
-		} else {
-			return -1;
-		}
-	}
-
-	/**
-	 * @return Whether this should be considered (if true) a proxy for multiple
-	 * representations of the same Unit, e.g. in different maps, or (if false) a proxy for
-	 * different related Units.
-	 */
-	@Override
-	public boolean isParallel() {
-		return parallel;
 	}
 }

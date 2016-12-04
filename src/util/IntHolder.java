@@ -22,20 +22,24 @@ public class IntHolder implements Accumulator {
 	 * The accumulation.
 	 */
 	private int count;
+
 	/**
 	 * @param initial the initial value
 	 */
 	public IntHolder(final int initial) {
 		count = initial;
 	}
+
 	/**
 	 * Add to the accumulation.
+	 *
 	 * @param addend how much to add
 	 */
 	@Override
 	public void add(final int addend) {
 		count += addend;
 	}
+
 	/**
 	 * @return the current value of the accumulation.
 	 */
@@ -43,6 +47,7 @@ public class IntHolder implements Accumulator {
 	public int getValue() {
 		return count;
 	}
+
 	/**
 	 * @return a diagnostic String
 	 */

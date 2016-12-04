@@ -1,10 +1,9 @@
 package model.map.fixtures.explorable;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableOwner;
 import model.map.IFixture;
 import model.map.Player;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A Fixture representing an adventure hook.
@@ -23,14 +22,6 @@ import model.map.Player;
  */
 public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
-	/**
-	 * The player that has undertaken the adventure.
-	 */
-	private Player owner;
-	/**
 	 * A brief description of the adventure.
 	 */
 	private final String briefDesc;
@@ -42,6 +33,14 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	 * A unique ID # for the fixture.
 	 */
 	private final int id;
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * The player that has undertaken the adventure.
+	 */
+	private Player owner;
 
 	/**
 	 * Constructor.
@@ -118,8 +117,8 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof AdventureFixture)
-										&& (id == ((AdventureFixture) obj).id)
-										&& equalsImpl((AdventureFixture) obj));
+										 && (id == ((AdventureFixture) obj).id)
+										 && equalsImpl((AdventureFixture) obj));
 	}
 
 	/**
@@ -128,7 +127,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	 */
 	private boolean equalsImpl(final AdventureFixture obj) {
 		return isOwnerEqual(obj.owner) && briefDesc.equals(obj.briefDesc)
-					&& fullDesc.equals(obj.fullDesc);
+					   && fullDesc.equals(obj.fullDesc);
 	}
 
 	/**
@@ -168,19 +167,19 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

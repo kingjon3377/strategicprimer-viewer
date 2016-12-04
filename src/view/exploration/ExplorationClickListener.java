@@ -13,11 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.ListModel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.exploration.IExplorationModel;
 import model.listeners.MovementCostListener;
 import model.listeners.MovementCostSource;
@@ -57,9 +53,9 @@ import view.map.details.FixtureList;
  *
  * @author Jonathan Lovelace
  *
- * This can't extend ActionWrapper because it'd need to pass a method reference on
- * 'this' in the lambda it passed to ActionWrapper constructor, which is of course not
- * allowed.
+ *         This can't extend ActionWrapper because it'd need to pass a method reference on
+ *         'this' in the lambda it passed to ActionWrapper constructor, which is of course
+ *         not allowed.
  */
 public final class ExplorationClickListener extends AbstractAction implements
 		MovementCostSource, SelectionChangeSource {
@@ -94,15 +90,27 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * Constructor.
 	 *
-	 * @param explorationModel   the exploration model
-	 * @param direct   what direction this button is from the center.
-	 * @param mainList the list of fixtures on this tile in the main map.
+	 * @param explorationModel the exploration model
+	 * @param direct           what direction this button is from the center.
+	 * @param mainList         the list of fixtures on this tile in the main map.
 	 */
 	public ExplorationClickListener(final IExplorationModel explorationModel,
-									final IExplorationModel.Direction direct, final FixtureList mainList) {
+									final IExplorationModel.Direction direct,
+									final FixtureList mainList) {
 		model = explorationModel;
 		direction = direct;
 		list = mainList;
+	}
+
+	/**
+	 * @param map    a map
+	 * @param dPoint a point
+	 * @param fix    a fixture
+	 * @return whether the map has that fixture there
+	 */
+	private static boolean hasFixture(final IMapNG map, final Point dPoint,
+									  final TileFixture fix) {
+		return map.streamOtherFixtures(dPoint).anyMatch(fix::equals);
 	}
 
 	/**
@@ -154,7 +162,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 			final Player player =
 					NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
 			final Collection<CacheFixture> caches = new HashSet<>();
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : model
+																		  .getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap().getBaseTerrain(dPoint));
 				for (final TileFixture fix : fixtures) {
@@ -162,23 +171,23 @@ public final class ExplorationClickListener extends AbstractAction implements
 						// skip it! It'll corrupt the output XML!
 						continue;
 					} else if ((fix instanceof Ground) &&
-									(map.getGround(dPoint) == null)) {
+									   (map.getGround(dPoint) == null)) {
 						map.setGround(dPoint, ((Ground) fix).copy(false));
 					} else if ((fix instanceof Ground) &&
-									fix.equals(map.getGround(dPoint))) {
+									   fix.equals(map.getGround(dPoint))) {
 						continue;
 					} else if ((fix instanceof Forest) &&
-									(map.getForest(dPoint) == null)) {
+									   (map.getForest(dPoint) == null)) {
 						map.setForest(dPoint, ((Forest) fix).copy(false));
 					} else if ((fix instanceof Forest) &&
-									fix.equals(map.getForest(dPoint))) {
+									   fix.equals(map.getForest(dPoint))) {
 						continue;
 					} else if (fix instanceof Mountain) {
 						map.setMountainous(dPoint, true);
 					} else if (!hasFixture(map, dPoint, fix)) {
 						final boolean zero = (fix instanceof HasOwner) &&
-													!((HasOwner) fix).getOwner()
-															.equals(player);
+													 !((HasOwner) fix).getOwner()
+															  .equals(player);
 						map.addFixture(dPoint, fix.copy(zero));
 						if (fix instanceof CacheFixture) {
 							caches.add((CacheFixture) fix);
@@ -200,17 +209,6 @@ public final class ExplorationClickListener extends AbstractAction implements
 				listener.deduct(1);
 			}
 		}
-	}
-
-	/**
-	 * @param map    a map
-	 * @param dPoint a point
-	 * @param fix    a fixture
-	 * @return whether the map has that fixture there
-	 */
-	private static boolean hasFixture(final IMapNG map, final Point dPoint,
-									final TileFixture fix) {
-		return map.streamOtherFixtures(dPoint).anyMatch(fix::equals);
 	}
 
 	/**
@@ -277,26 +275,31 @@ public final class ExplorationClickListener extends AbstractAction implements
 	public String toString() {
 		return "ExplorationClickListener";
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent cloning.
 	 */

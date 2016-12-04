@@ -32,6 +32,10 @@ public class SimpleDriverModel implements IDriverModel {
 	 */
 	private final Collection<MapChangeListener> mcListeners = new ArrayList<>();
 	/**
+	 * The list of version change listeners.
+	 */
+	private final Collection<VersionChangeListener> vcListeners = new ArrayList<>();
+	/**
 	 * The dimensions of the map.
 	 */
 	private MapDimensions mapDim = new MapDimensions(-1, -1, -1);
@@ -104,11 +108,6 @@ public class SimpleDriverModel implements IDriverModel {
 	}
 
 	/**
-	 * The list of version change listeners.
-	 */
-	private final Collection<VersionChangeListener> vcListeners = new ArrayList<>();
-
-	/**
 	 * Add a version change listener.
 	 *
 	 * @param list the listener to add
@@ -127,6 +126,7 @@ public class SimpleDriverModel implements IDriverModel {
 	public final void removeVersionChangeListener(final VersionChangeListener list) {
 		vcListeners.remove(list);
 	}
+
 	/**
 	 * @return a diagnostic String
 	 */

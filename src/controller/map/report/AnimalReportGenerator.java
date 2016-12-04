@@ -59,7 +59,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 */
 	@Override
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						final IMapNG map, final Player currentPlayer) {
+						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final Map<String, Collection<Point>> items = new SimpleMultiMap<>();
@@ -83,16 +83,18 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 		} else {
 			// We doubt this list will ever be over 16K.
 			final StringBuilder builder = new StringBuilder(16384).append(
-					"<h4>Animal sightings or encounters</h4>").append(LineEnd.LINE_SEP).append(
-					OPEN_LIST);
+					"<h4>Animal sightings or encounters</h4>").append(LineEnd.LINE_SEP)
+												  .append(
+														  OPEN_LIST);
 			for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry.getKey())
 						.append(": at ");
-				pointCSL(builder, entry.getValue().stream().collect(Collectors.toList()));
+				pointCSL(builder, entry.getValue().stream().collect(Collectors.toList
+																					   ()));
 				builder.append(CLOSE_LIST_ITEM);
 			}
 			return NullCleaner.assertNotNull(builder.append(CLOSE_LIST)
-													.toString());
+													 .toString());
 		}
 	}
 
@@ -106,8 +108,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											fixtures,
-								final IMapNG map, final Player currentPlayer) {
+										  fixtures,
+								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final Map<String, IReportNode> items = new HashMap<>();
@@ -150,8 +152,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 */
 	@Override
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						final IMapNG map, final Player currentPlayer,
-						final Animal item, final Point loc) {
+						  final IMapNG map, final Player currentPlayer,
+						  final Animal item, final Point loc) {
 		final String tracesOrTalking;
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";
@@ -174,9 +176,9 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 */
 	@Override
 	public SimpleReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-												fixtures,
-									final IMapNG map, final Player currentPlayer,
-									final Animal item, final Point loc) {
+											   fixtures,
+									   final IMapNG map, final Player currentPlayer,
+									   final Animal item, final Point loc) {
 		final String tracesOrTalking;
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";
@@ -186,8 +188,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			tracesOrTalking = "";
 		}
 		return new SimpleReportNode(loc, atPoint(loc), tracesOrTalking,
-										item.getKind(), " ",
-										distCalculator.distanceString(loc));
+										   item.getKind(), " ",
+										   distCalculator.distanceString(loc));
 	}
 
 	/**

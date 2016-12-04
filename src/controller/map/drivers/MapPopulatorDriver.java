@@ -31,6 +31,16 @@ import view.util.SystemOut;
  */
 public final class MapPopulatorDriver implements SimpleCLIDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-l", "--populate", ParamCount.One,
+								   "Add missing fixtures to a map",
+								   "Add specified kinds of fixtures to suitable points" +
+										   " " +
+										   "throughout a map"
+			);
+	/**
 	 * How many tiles we've found suitable so far.
 	 */
 	@SuppressWarnings("StaticNonFinalField")
@@ -40,6 +50,10 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	 */
 	@SuppressWarnings("StaticNonFinalField")
 	private static int changedCount = 0;
+
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+	}
 
 	/**
 	 * Whether the given location is suitable for the kind of fixture we're creating.
@@ -81,42 +95,10 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	 * @param idf      an ID factory to generate the necessary ID #.
 	 */
 	private static void create(final Point location, final IMutableMapNG map,
-							final IDRegistrar idf) {
+							   final IDRegistrar idf) {
 		changedCount++;
 		map.addFixture(location,
 				new Animal("hare", false, false, "wild", idf.createID()));
-	}
-
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-l", "--populate", ParamCount.One,
-								"Add missing fixtures to a map",
-								"Add specified kinds of fixtures to suitable points " +
-										"throughout a map"
-			);
-	static {
-		USAGE.addSupportedOption("--current-turn=NN");
-	}
-
-	/**
-	 * Run the driver. This form is, at the moment, primarily for use in test code, but
-	 * that may change.
-	 *
-	 * @param cli
-	 * @param options
-	 * @param model the driver-model that should be used by the app
-	 */
-	@Override
-	public void startDriver(final ICLIHelper cli, final SPOptions options,
-							final IDriverModel model) {
-		populate(model.getMap());
-		// SystemOut.close() delegates to flush() but doesn't close stdout
-		try (final PrintStream stdout = SystemOut.SYS_OUT) {
-			stdout.printf("%d out of %d suitable locations were changed",
-					Integer.valueOf(changedCount), Integer.valueOf(suitableCount));
-		}
 	}
 
 	/**
@@ -131,6 +113,25 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 						(SingletonRandom.RANDOM.nextDouble() < chance())) {
 				create(location, map, idf);
 			}
+		}
+	}
+
+	/**
+	 * Run the driver. This form is, at the moment, primarily for use in test code, but
+	 * that may change.
+	 *
+	 * @param cli
+	 * @param options
+	 * @param model   the driver-model that should be used by the app
+	 */
+	@Override
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) {
+		populate(model.getMap());
+		// SystemOut.close() delegates to flush() but doesn't close stdout
+		try (final PrintStream stdout = SystemOut.SYS_OUT) {
+			stdout.printf("%d out of %d suitable locations were changed",
+					Integer.valueOf(changedCount), Integer.valueOf(suitableCount));
 		}
 	}
 

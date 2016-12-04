@@ -28,8 +28,8 @@ public final class SPMalformedInputException extends SPFormatException {
 	}
 
 	/**
-	 * @param location  where this occurred
-	 * @param cause     the underlying exception
+	 * @param location where this occurred
+	 * @param cause    the underlying exception
 	 */
 	public SPMalformedInputException(final Location location, final Throwable cause) {
 		super("Malformed input", location, cause);

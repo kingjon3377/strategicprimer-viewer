@@ -60,19 +60,18 @@ import view.util.SystemOut;
 public final class ExplorationModel extends SimpleMultiMapModel implements
 		IExplorationModel {
 	/**
-	 * The currently selected unit and its location.
-	 */
-	private Pair<Point, Optional<IUnit>> selection =
-			Pair.of(PointFactory.point(-1, -1), Optional.empty());
-	/**
 	 * The list of movement-cost listeners.
 	 */
 	private final Collection<MovementCostListener> mcListeners = new ArrayList<>();
-
 	/**
 	 * The list of selection-change-listeners to notify when the unit moves.
 	 */
 	private final Collection<SelectionChangeListener> scListeners = new ArrayList<>();
+	/**
+	 * The currently selected unit and its location.
+	 */
+	private Pair<Point, Optional<IUnit>> selection =
+			Pair.of(PointFactory.point(-1, -1), Optional.empty());
 
 	/**
 	 * Constructor.
@@ -91,6 +90,170 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	public ExplorationModel(final IDriverModel model) {
 		super(model);
+	}
+
+	/**
+	 * @param stream a sequence of members of that type
+	 * @param player a player
+	 * @return a list of the members of the sequence that are units owned by the player
+	 */
+	private static Stream<IUnit> getUnits(final Stream<@NonNull ? super Unit> stream,
+										  final Player player) {
+		return NullCleaner.assertNotNull(stream.flatMap(obj -> {
+			if (obj instanceof Fortress) {
+				return StreamSupport.stream(((Fortress) obj).spliterator(), false);
+			} else {
+				return Stream.of(obj);
+			}
+		}).filter(IUnit.class::isInstance).map(IUnit.class::cast)
+												 .filter(unit -> unit.getOwner()
+																		 .equals
+																				  (player)));
+	}
+
+	/**
+	 * If a unit's motion could be observed by someone allied to another
+	 * (non-independent)
+	 * player (which at present means the unit is moving *to* a tile two or fewer tiles
+	 * away from the watcher), print a message saying so to stdout.
+	 *
+	 * @param map  the main map.
+	 * @param unit the mover
+	 * @param dest the unit's new location
+	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	private static void checkAllNearbyWatchers(final IMapNG map, final HasOwner unit,
+											   final Point dest) {
+		final MapDimensions dims = map.dimensions();
+		final Collection<Point> done = new HashSet<>(25);
+		for (final Point point : new SurroundingPointIterable(dest, dims)) {
+			if (done.contains(point)) {
+				continue;
+			} else {
+				done.add(point);
+				checkNearbyWatcher(map.streamOtherFixtures(point), point, unit,
+						dest);
+			}
+		}
+	}
+
+	/**
+	 * If a unit's motion to a new tile could be observed by a watcher on a specified
+	 * nearby tile, print a message to stdout saying so.
+	 *
+	 * @param fixtures a collection of fixtures in the location being considered
+	 * @param point    its location
+	 * @param unit     the mover
+	 * @param dest     where the mover moved to
+	 */
+	@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "resource"})
+	private static void checkNearbyWatcher(final Stream<TileFixture> fixtures,
+										   final Point point, final HasOwner unit,
+										   final Point dest) {
+		fixtures.filter(HasOwner.class::isInstance).map(HasOwner.class::cast)
+				.filter(fix -> !fix.getOwner().isIndependent() &&
+									   !fix.getOwner().equals(unit.getOwner())).forEach(
+				fix -> SystemOut.SYS_OUT
+							   .printf("Motion to %s could be observed by %s at %s%n",
+									   dest.toString(), ((TileFixture) fix).shortDesc(),
+									   point.toString()));
+	}
+
+	/**
+	 * @param map   the map we're dealing with
+	 * @param point the location where the unit is
+	 * @param unit  a unit to remove from that location, even if it's in a fortress
+	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	private static void removeImpl(final IMutableMapNG map, final Point point,
+								   final IUnit unit) {
+		boolean outside = false;
+		for (final TileFixture fix : map.getOtherFixtures(point)) {
+			if (unit.equals(fix)) {
+				outside = true;
+				break;
+			} else if (fix instanceof Fortress) {
+				final Fortress fortress = (Fortress) fix;
+				for (final FortressMember item : fortress) {
+					if (unit.equals(item)) {
+						fortress.removeMember(unit);
+						return;
+					}
+				}
+			}
+		}
+		if (outside) {
+			map.removeFixture(point, unit);
+		}
+	}
+
+	/**
+	 * Ensure that a given map has at least terrain information for the specified
+	 * location.
+	 *
+	 * @param map     the map we're operating on
+	 * @param point   the location to look at
+	 * @param terrain the terrain type it should be
+	 */
+	private static void ensureTerrain(final IMutableMapNG map,
+									  final Point point, final TileType terrain) {
+		if (TileType.NotVisible == map.getBaseTerrain(point)) {
+			map.setBaseTerrain(point, terrain);
+		}
+	}
+
+	/**
+	 * @param map   a map
+	 * @param point a location in that map
+	 * @param fix   a fixture
+	 * @return whether the map contains that fixture at that location
+	 */
+	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point,
+												   final TileFixture fix) {
+		if (((fix instanceof Forest) && fix.equals(map.getForest(point)))
+					|| ((fix instanceof Ground) && fix.equals(map.getGround(point)))
+					|| ((fix instanceof Mountain) && map.isMountainous(point))) {
+			return true;
+		}
+		return map.streamOtherFixtures(point).flatMap(fixture -> {
+			if (fixture instanceof FixtureIterable) {
+				return Stream.concat(Stream.of(fixture),
+						StreamSupport.stream(((FixtureIterable<@NonNull ?>) fixture)
+													 .spliterator(), false));
+			} else {
+				return Stream.of(fixture);
+			}
+		}).anyMatch(fix::equals);
+	}
+
+	/**
+	 * A "plus one" method with a configurable, low "overflow".
+	 *
+	 * @param num the number to increment
+	 * @param max the maximum number we want to return
+	 * @return either num + 1, if max or lower, or 0.
+	 */
+	private static int increment(final int num, final int max) {
+		if (num >= max) {
+			return 0;
+		} else {
+			return num + 1;
+		}
+	}
+
+	/**
+	 * A "minus one" method that "underflows" after 0 to a configurable, low value.
+	 *
+	 * @param num the number to decrement.
+	 * @param max the number to "underflow" to.
+	 * @return either num - 1, if 1 or higher, or max.
+	 */
+	private static int decrement(final int num, final int max) {
+		if (num == 0) {
+			return max;
+		} else {
+			return num - 1;
+		}
 	}
 
 	/**
@@ -117,25 +280,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	public List<IUnit> getUnits(final Player player) {
 		return getMap().locationStream().flatMap(
 				point -> getUnits(getMap().streamOtherFixtures(point), player))
-					.collect(Collectors.toList());
-	}
-
-	/**
-	 * @param stream   a sequence of members of that type
-	 * @param player a player
-	 * @return a list of the members of the sequence that are units owned by the player
-	 */
-	private static Stream<IUnit> getUnits(final Stream<@NonNull ? super Unit> stream,
-											final Player player) {
-		return NullCleaner.assertNotNull(stream.flatMap(obj -> {
-			if (obj instanceof Fortress) {
-				return StreamSupport.stream(((Fortress) obj).spliterator(), false);
-			} else {
-				return Stream.of(obj);
-			}
-		}).filter(IUnit.class::isInstance).map(IUnit.class::cast)
-												.filter(unit -> unit.getOwner()
-																		.equals(player)));
+					   .collect(Collectors.toList());
 	}
 
 	/**
@@ -149,7 +294,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param direction the direction to move
 	 * @return the movement cost
 	 * @throws SimpleMovement.TraversalImpossibleException if movement in that direction
-	 * is impossible
+	 *                                                     is impossible
 	 */
 	@Override
 	public int move(final Direction direction)
@@ -170,7 +315,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 								map.getBaseTerrain(dest),
 								map.getForest(dest) != null,
 								map.isMountainous(dest), map.getRivers(dest)
-																.iterator().hasNext(),
+																 .iterator().hasNext(),
 								() -> map.streamOtherFixtures(dest));
 			}
 			removeImpl(map, point, unit);
@@ -200,82 +345,6 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
-	 * If a unit's motion could be observed by someone allied to another
-	 * (non-independent)
-	 * player (which at present means the unit is moving *to* a tile two or fewer tiles
-	 * away from the watcher), print a message saying so to stdout.
-	 *
-	 * @param map  the main map.
-	 * @param unit the mover
-	 * @param dest the unit's new location
-	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void checkAllNearbyWatchers(final IMapNG map, final HasOwner unit,
-											final Point dest) {
-		final MapDimensions dims = map.dimensions();
-		final Collection<Point> done = new HashSet<>(25);
-		for (final Point point : new SurroundingPointIterable(dest, dims)) {
-			if (done.contains(point)) {
-				continue;
-			} else {
-				done.add(point);
-				checkNearbyWatcher(map.streamOtherFixtures(point), point, unit,
-						dest);
-			}
-		}
-	}
-
-	/**
-	 * If a unit's motion to a new tile could be observed by a watcher on a specified
-	 * nearby tile, print a message to stdout saying so.
-	 *
-	 * @param fixtures a collection of fixtures in the location being considered
-	 * @param point    its location
-	 * @param unit     the mover
-	 * @param dest     where the mover moved to
-	 */
-	@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "resource"})
-	private static void checkNearbyWatcher(final Stream<TileFixture> fixtures,
-										final Point point, final HasOwner unit,
-										final Point dest) {
-		fixtures.filter(HasOwner.class::isInstance).map(HasOwner.class::cast)
-				.filter(fix -> !fix.getOwner().isIndependent() &&
-									!fix.getOwner().equals(unit.getOwner())).forEach(
-				fix -> SystemOut.SYS_OUT
-							.printf("Motion to %s could be observed by %s at %s%n",
-									dest.toString(), ((TileFixture) fix).shortDesc(),
-									point.toString()));
-	}
-
-	/**
-	 * @param map   the map we're dealing with
-	 * @param point the location where the unit is
-	 * @param unit  a unit to remove from that location, even if it's in a fortress
-	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void removeImpl(final IMutableMapNG map, final Point point,
-								final IUnit unit) {
-		boolean outside = false;
-		for (final TileFixture fix : map.getOtherFixtures(point)) {
-			if (unit.equals(fix)) {
-				outside = true;
-				break;
-			} else if (fix instanceof Fortress) {
-				final Fortress fortress = (Fortress) fix;
-				for (final FortressMember item : fortress) {
-					if (unit.equals(item)) {
-						fortress.removeMember(unit);
-						return;
-					}
-				}
-			}
-		}
-		if (outside) {
-			map.removeFixture(point, unit);
-		}
-	}
-
-	/**
 	 * Tell listeners that the selected point changed.
 	 *
 	 * @param old    the previous selection
@@ -296,45 +365,6 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		for (final MovementCostListener list : mcListeners) {
 			list.deduct(cost);
 		}
-	}
-
-	/**
-	 * Ensure that a given map has at least terrain information for the specified
-	 * location.
-	 *
-	 * @param map     the map we're operating on
-	 * @param point   the location to look at
-	 * @param terrain the terrain type it should be
-	 */
-	private static void ensureTerrain(final IMutableMapNG map,
-									final Point point, final TileType terrain) {
-		if (TileType.NotVisible == map.getBaseTerrain(point)) {
-			map.setBaseTerrain(point, terrain);
-		}
-	}
-
-	/**
-	 * @param map   a map
-	 * @param point a location in that map
-	 * @param fix   a fixture
-	 * @return whether the map contains that fixture at that location
-	 */
-	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point,
-												final TileFixture fix) {
-		if (((fix instanceof Forest) && fix.equals(map.getForest(point)))
-					|| ((fix instanceof Ground) && fix.equals(map.getGround(point)))
-					|| ((fix instanceof Mountain) && map.isMountainous(point))) {
-			return true;
-		}
-		return map.streamOtherFixtures(point).flatMap(fixture -> {
-			if (fixture instanceof FixtureIterable) {
-				return Stream.concat(Stream.of(fixture),
-						StreamSupport.stream(((FixtureIterable<@NonNull ?>) fixture)
-													 .spliterator(), false));
-			} else {
-				return Stream.of(fixture);
-			}
-		}).anyMatch(fix::equals);
 	}
 
 	/**
@@ -378,36 +408,6 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
-	 * A "plus one" method with a configurable, low "overflow".
-	 *
-	 * @param num the number to increment
-	 * @param max the maximum number we want to return
-	 * @return either num + 1, if max or lower, or 0.
-	 */
-	private static int increment(final int num, final int max) {
-		if (num >= max) {
-			return 0;
-		} else {
-			return num + 1;
-		}
-	}
-
-	/**
-	 * A "minus one" method that "underflows" after 0 to a configurable, low value.
-	 *
-	 * @param num the number to decrement.
-	 * @param max the number to "underflow" to.
-	 * @return either num - 1, if 1 or higher, or max.
-	 */
-	private static int decrement(final int num, final int max) {
-		if (num == 0) {
-			return max;
-		} else {
-			return num - 1;
-		}
-	}
-
-	/**
 	 * @param fix a fixture
 	 * @return the first location found (search order is not defined) containing a
 	 * fixture
@@ -420,16 +420,19 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		for (final Point point : source.locations()) {
 			if (((fix instanceof Mountain) && source.isMountainous(point)) ||
 						((fix instanceof Forest) &&
-								fix.equals(source.getForest(point))) ||
+								 fix.equals(source.getForest(point))) ||
 						((fix instanceof Ground) &&
-								fix.equals(source.getGround(point)))) {
+								 fix.equals(source.getGround(point)))) {
 				return point;
 			}
 			if (source.streamOtherFixtures(point).flatMap(item -> {
 				if (item instanceof FixtureIterable) {
-					return NullCleaner.assertNotNull(Stream.concat(Stream.of(item), StreamSupport
-							.stream(((FixtureIterable<@NonNull ?>) item)
-											.spliterator(), false)));
+					return NullCleaner.assertNotNull(
+							Stream.concat(Stream.of(item), StreamSupport
+																   .stream((
+																   		(FixtureIterable<@NonNull ?>) item)
+																				   .spliterator(),
+																		   false)));
 				} else {
 					return Stream.of(item);
 				}
@@ -516,9 +519,11 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	public String toString() {
 		return "ExplorationModel";
 	}
+
 	/**
 	 * If there is a currently selected unit, make any independent villages at its
-	 * location change to be owned by the owner of the currently selected unit. This costs
+	 * location change to be owned by the owner of the currently selected unit. This
+	 * costs
 	 * MP.
 	 */
 	@Override
@@ -536,6 +541,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			fireMovementCost(5);
 		}
 	}
+
 	/**
 	 * If there is a currently selected unit, change one Ground, StoneDeposit, or
 	 * MineralVein at the location of that unit from unexposed to exposed (and discover
@@ -577,7 +583,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					final Ground locGround = map.getGround(currPoint);
 					if ((locGround == null) || locGround.equals(ground)) {
 						map.setGround(currPoint, newGround.copy(false));
-					} else if (StreamSupport.stream(map.getOtherFixtures(currPoint).spliterator(),
+					} else if (StreamSupport.stream(map.getOtherFixtures(currPoint)
+															.spliterator(),
 							false).anyMatch(fix -> fix.equals(ground))) {
 						map.removeFixture(currPoint, ground);
 						map.addFixture(currPoint, newGround.copy(false));
@@ -599,15 +606,17 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					final Ground locGround = map.getGround(currPoint);
 					if ((locGround == null) || locGround.equals(oldFix)) {
 						map.setGround(currPoint, (Ground) newFix.copy(subsequent));
-					// In StoneDeposit and MineralVein, equals() is false if DCs !=
+						// In StoneDeposit and MineralVein, equals() is false if DCs !=
 					} else if (StreamSupport.stream(map.getOtherFixtures(currPoint)
 															.spliterator(), false)
 									   .anyMatch(fix -> fix.equals(oldFix) ||
 																(((fix instanceof
 																		   StoneDeposit) ||
-																		  (fix instanceof MineralVein)) &&
+																		  (fix
+																				   instanceof MineralVein)) &&
 																		 fix.copy(true)
-																				 .equals(oldFix.copy(
+																				 .equals
+																						  (oldFix.copy(
 																						 true))))) {
 						map.removeFixture(currPoint, oldFix);
 						map.addFixture(currPoint, newFix.copy(subsequent));

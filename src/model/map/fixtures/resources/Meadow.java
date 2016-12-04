@@ -1,9 +1,8 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableKind;
 import model.map.IFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -24,11 +23,6 @@ import util.NullCleaner;
  */
 public class Meadow implements HarvestableFixture, HasMutableKind {
 	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
-
-	/**
 	 * Which season the field is in.
 	 */
 	private final FieldStatus status;
@@ -40,6 +34,14 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	 * Whether it's under cultivation.
 	 */
 	private final boolean cultivated;
+	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
 	/**
 	 * Kind of grass or grain growing there.
 	 */
@@ -55,7 +57,7 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	 * @param stat  the status of the field, i.e. what season it's in
 	 */
 	public Meadow(final String grain, final boolean fld, final boolean cult,
-				final int idNum, final FieldStatus stat) {
+				  final int idNum, final FieldStatus stat) {
 		kind = grain;
 		field = fld;
 		cultivated = cult;
@@ -81,6 +83,14 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getKind() {
 		return kind;
+	}
+
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 
 	/**
@@ -152,7 +162,7 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	 */
 	private boolean equalsImpl(final Meadow obj) {
 		return kind.equals(obj.kind) && (field == obj.field)
-					&& (cultivated == obj.cultivated) && (id == obj.id);
+					   && (cultivated == obj.cultivated) && (id == obj.id);
 	}
 
 	/**
@@ -162,11 +172,6 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -184,25 +189,9 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Meadow) && kind.equals(((Meadow) fix).kind)
-					&& (field == ((Meadow) fix).field)
-					&& (cultivated == ((Meadow) fix).cultivated)
-					&& (status == ((Meadow) fix).status);
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
-	}
-
-	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
+					   && (field == ((Meadow) fix).field)
+					   && (cultivated == ((Meadow) fix).cultivated)
+					   && (status == ((Meadow) fix).status);
 	}
 
 	/**
@@ -211,6 +200,14 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

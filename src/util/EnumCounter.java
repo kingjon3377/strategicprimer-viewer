@@ -16,8 +16,8 @@ import java.util.Map;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the enumerated type we're counting
+ * @author Jonathan Lovelace
  */
 public final class EnumCounter<T extends Enum<T>> {
 	/**
@@ -40,7 +40,8 @@ public final class EnumCounter<T extends Enum<T>> {
 	private void count(final T value) {
 		if (map.containsKey(value)) {
 			map.put(value, NullCleaner.assertNotNull(
-					Integer.valueOf(NullCleaner.assertNotNull(map.get(value)).intValue() + 1)));
+					Integer.valueOf(
+							NullCleaner.assertNotNull(map.get(value)).intValue() + 1)));
 		} else {
 			map.put(value, NullCleaner.assertNotNull(Integer.valueOf(1)));
 		}

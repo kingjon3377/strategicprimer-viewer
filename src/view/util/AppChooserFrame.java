@@ -8,7 +8,7 @@ import controller.map.drivers.SPOptions;
 import controller.map.drivers.ViewerStart;
 import controller.map.drivers.WorkerStart;
 import controller.map.misc.CLIHelper;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -18,12 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
@@ -50,75 +45,11 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(AppChooserFrame.class);
-	/**
-	 * Create a button for a target.
-	 *
-	 * @param desc   the descriptive string
-	 * @param params the parameters to pass to the chosen app
-	 * @param options options to pass to the driver
-	 * @param target the class
-	 * @return the button
-	 */
-	private JButton button(final String desc, final List<String> params,
-						   final SPOptions options,
-						   final Class<? extends ISPDriver> target) {
-		return new ListenedButton(desc, evt -> {
-			try {
-				target.getConstructor().newInstance()
-						.startDriver(options, params.toArray(new String[params.size()]));
-			} catch (final InstantiationException | IllegalAccessException
-								| NoSuchMethodException | InvocationTargetException
-								| DriverFailedException except) {
-				final String msg = except.getMessage();
-				final String message = NullCleaner.valueOrDefault(msg,
-						"Exception with null message");
-				LOGGER.log(Level.SEVERE, message, except.getCause());
-				ErrorShower.showErrorDialog(this, message);
-				return;
-			}
-			SwingUtilities.invokeLater(() -> {
-				setVisible(false);
-				dispose();
-			});
-		});
-	}
-
-	/**
-	 * Create a button for a target.
-	 *
-	 * @param desc   the descriptive string
-	 * @param model  the driver model to pass to the chosen app
-	 * @param target the class
-	 * @param options options to pass to the driver
-	 * @return the button
-	 */
-	private JButton button(final String desc, final IDriverModel model,
-						   final SPOptions options,
-						   final Class<? extends ISPDriver> target) {
-		return new ListenedButton(desc, evt -> {
-			try {
-				target.getConstructor().newInstance().startDriver(new CLIHelper(), options, model);
-			} catch (final InstantiationException | IllegalAccessException
-								| NoSuchMethodException | InvocationTargetException
-								| DriverFailedException except) {
-				final String msg = except.getMessage();
-				final String message = NullCleaner.valueOrDefault(msg,
-						"Exception with null message");
-				LOGGER.log(Level.SEVERE, message, except.getCause());
-				ErrorShower.showErrorDialog(this, message);
-				return;
-			}
-			SwingUtilities.invokeLater(() -> {
-				setVisible(false);
-				dispose();
-			});
-		});
-	}
 
 	/**
 	 * Constructor taking a driver model.
 	 *
-	 * @param model the driver model
+	 * @param model   the driver model
 	 * @param options options to pass to the driver
 	 */
 	public AppChooserFrame(final IDriverModel model, final SPOptions options) {
@@ -135,7 +66,8 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 		buttonPanel.add(button("Exploration", model, options, ExplorationGUI.class));
 		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
 												new JLabel("Please choose one of the " +
-																"applications below:"),
+																   "applications " +
+																   "below:"),
 												null, null, null));
 		pack();
 	}
@@ -143,7 +75,7 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 	/**
 	 * Constructor.
 	 *
-	 * @param params the non-option parameters passed to main().
+	 * @param params  the non-option parameters passed to main().
 	 * @param options options to pass to the driver
 	 */
 	public AppChooserFrame(final SPOptions options, final List<@NonNull String> params) {
@@ -158,30 +90,101 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 				AdvancementStart.class));
 		buttonPanel.add(button("Unit Orders and Worker Management", parameters, options,
 				WorkerStart.class));
-		buttonPanel.add(button("Exploration", parameters, options, ExplorationGUI.class));
+		buttonPanel.add(button("Exploration", parameters, options, ExplorationGUI
+																		   .class));
 		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
 												new JLabel("Please choose one of the " +
-																"applications below:"),
+																   "applications " +
+																   "below:"),
 												null, null, null));
 		pack();
 	}
 
 	/**
+	 * Create a button for a target.
+	 *
+	 * @param desc    the descriptive string
+	 * @param params  the parameters to pass to the chosen app
+	 * @param options options to pass to the driver
+	 * @param target  the class
+	 * @return the button
+	 */
+	private JButton button(final String desc, final List<String> params,
+						   final SPOptions options,
+						   final Class<? extends ISPDriver> target) {
+		return new ListenedButton(desc, evt -> {
+			try {
+				target.getConstructor().newInstance()
+						.startDriver(options, params.toArray(new String[params.size()]));
+			} catch (final InstantiationException | IllegalAccessException
+								   | NoSuchMethodException | InvocationTargetException
+								   | DriverFailedException except) {
+				final String msg = except.getMessage();
+				final String message = NullCleaner.valueOrDefault(msg,
+						"Exception with null message");
+				LOGGER.log(Level.SEVERE, message, except.getCause());
+				ErrorShower.showErrorDialog(this, message);
+				return;
+			}
+			SwingUtilities.invokeLater(() -> {
+				setVisible(false);
+				dispose();
+			});
+		});
+	}
+
+	/**
+	 * Create a button for a target.
+	 *
+	 * @param desc    the descriptive string
+	 * @param model   the driver model to pass to the chosen app
+	 * @param target  the class
+	 * @param options options to pass to the driver
+	 * @return the button
+	 */
+	private JButton button(final String desc, final IDriverModel model,
+						   final SPOptions options,
+						   final Class<? extends ISPDriver> target) {
+		return new ListenedButton(desc, evt -> {
+			try {
+				target.getConstructor().newInstance()
+						.startDriver(new CLIHelper(), options, model);
+			} catch (final InstantiationException | IllegalAccessException
+								   | NoSuchMethodException | InvocationTargetException
+								   | DriverFailedException except) {
+				final String msg = except.getMessage();
+				final String message = NullCleaner.valueOrDefault(msg,
+						"Exception with null message");
+				LOGGER.log(Level.SEVERE, message, except.getCause());
+				ErrorShower.showErrorDialog(this, message);
+				return;
+			}
+			SwingUtilities.invokeLater(() -> {
+				setVisible(false);
+				dispose();
+			});
+		});
+	}
+
+	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

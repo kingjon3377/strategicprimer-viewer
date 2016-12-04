@@ -17,9 +17,9 @@ import org.eclipse.jdt.annotation.NonNull;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the first type in the pair
  * @param <U> the second type in the pair
+ * @author Jonathan Lovelace
  */
 public final class PairComparator<@NonNull T, @NonNull U>
 		extends Pair<@NonNull Comparator<@NonNull T>, @NonNull Comparator<@NonNull U>>
@@ -31,7 +31,7 @@ public final class PairComparator<@NonNull T, @NonNull U>
 	 * @param secondItem the second comparator
 	 */
 	public PairComparator(final Comparator<T> firstItem, final Comparator<U>
-																secondItem) {
+																 secondItem) {
 		super(firstItem, secondItem);
 	}
 

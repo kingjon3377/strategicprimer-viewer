@@ -41,10 +41,11 @@ public final class SubsetGUIDriver implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-s", "--subset", ParamCount.AtLeastTwo,
-								"Check players' maps against master",
-								"Check that subordinate maps are subsets of the main " +
-										"map, containing nothing that it does not " +
-										"contain in the same place"
+								   "Check players' maps against master",
+								   "Check that subordinate maps are subsets of the main" +
+										   " " +
+										   "map, containing nothing that it does not " +
+										   "contain in the same place"
 			);
 
 	/**
@@ -52,7 +53,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver model
+	 * @param model   the driver model
 	 */
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
@@ -61,8 +62,9 @@ public final class SubsetGUIDriver implements ISPDriver {
 			final SubsetFrame frame = new SubsetFrame();
 			SwingUtilities.invokeLater(() -> frame.setVisible(true));
 			frame.loadMain(model.getMap());
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
-																.getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
+																		   model)
+																		  .getSubordinateMaps()) {
 				frame.test(pair.first(), pair.second());
 			}
 		} else {
@@ -75,11 +77,9 @@ public final class SubsetGUIDriver implements ISPDriver {
 	/**
 	 * Run the driver.
 	 *
-	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param args command-line arguments
+	 * @param args    command-line arguments
 	 * @throws DriverFailedException if the main map fails to load
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")

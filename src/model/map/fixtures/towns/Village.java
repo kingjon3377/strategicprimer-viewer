@@ -26,40 +26,45 @@ import util.NullCleaner;
  */
 public class Village implements ITownFixture, HasMutableImage, SubsettableFixture {
 	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
-
-	/**
-	 * The dominant race of the village.
-	 */
-	private String race;
-
-	/**
-	 * The "owner" of the village---the player it's pledged to serve.
-	 */
-	private Player owner;
-
-	/**
 	 * The status of the village.
 	 */
 	private final TownStatus status;
 	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * The dominant race of the village.
+	 */
+	private String race;
+	/**
+	 * The "owner" of the village---the player it's pledged to serve.
+	 */
+	private Player owner;
+	/**
 	 * The name of the village.
 	 */
 	private String name;
+	/**
+	 * The filename of an image to use as a portrait for the village.
+	 */
+	private String portraitName = "";
 
 	/**
 	 * Constructor.
 	 *
 	 * @param villageStatus the status of the village.
-	 * @param vName   the name of the village
-	 * @param idNum   the ID number.
-	 * @param player  the owner of the village
-	 * @param vRace   the dominant race of the village
+	 * @param vName         the name of the village
+	 * @param idNum         the ID number.
+	 * @param player        the owner of the village
+	 * @param vRace         the dominant race of the village
 	 */
 	public Village(final TownStatus villageStatus, final String vName,
-					final int idNum, final Player player, final String vRace) {
+				   final int idNum, final Player player, final String vRace) {
 		status = villageStatus;
 		name = vName;
 		id = idNum;
@@ -120,7 +125,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) ||
-					((obj instanceof Village) && (status == ((Village) obj).status) &&
+					   ((obj instanceof Village) && (status == ((Village) obj).status) &&
 								name.equals(((Village) obj).name) &&
 								(id == ((Village) obj).id) &&
 								owner.equals(((Village) obj).owner) &&
@@ -134,11 +139,6 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -156,9 +156,9 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Village) && (status == ((Village) fix).status) &&
-					name.equals(((Village) fix).name) &&
-					owner.equals(((Village) fix).owner) &&
-					race.equals(((Village) fix).race);
+					   name.equals(((Village) fix).name) &&
+					   owner.equals(((Village) fix).owner) &&
+					   race.equals(((Village) fix).race);
 	}
 
 	/**
@@ -167,6 +167,14 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	@Override
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * @param newName the town's new name
+	 */
+	@Override
+	public final void setName(final String newName) {
+		name = newName;
 	}
 
 	/**
@@ -204,11 +212,11 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
-	 * @param newName the town's new name
+	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
-	public final void setName(final String newName) {
-		name = newName;
+	public String getImage() {
+		return image;
 	}
 
 	/**
@@ -217,14 +225,6 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**
@@ -278,24 +278,25 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 			final Village village = (Village) obj;
 			return !(!areIntItemsEqual(ostream, id, village.id, context,
 					"\tIDs differ", LineEnd.LINE_SEP) ||
-							!areObjectsEqual(ostream, status, village.status, context,
-									" In village (ID #", Integer.toString(id),
-									"):\tVillage status differs", LineEnd.LINE_SEP) ||
-							!areObjectsEqual(ostream, name, village.name, context,
-									" In village (ID #", Integer.toString(id),
-									"):\tVillage name differs", LineEnd.LINE_SEP) ||
-							!areObjectsEqual(ostream, race, village.race, context,
-									" In village ", name, " (ID #", Integer.toString
-																					(id),
-									"):\tDominant race differs", LineEnd.LINE_SEP) ||
-							!isConditionTrue(ostream, (owner.getPlayerId() ==
+							 !areObjectsEqual(ostream, status, village.status, context,
+									 " In village (ID #", Integer.toString(id),
+									 "):\tVillage status differs", LineEnd.LINE_SEP) ||
+							 !areObjectsEqual(ostream, name, village.name, context,
+									 " In village (ID #", Integer.toString(id),
+									 "):\tVillage name differs", LineEnd.LINE_SEP) ||
+							 !areObjectsEqual(ostream, race, village.race, context,
+									 " In village ", name, " (ID #", Integer.toString
+																					 (id),
+									 "):\tDominant race differs", LineEnd.LINE_SEP) ||
+							 !isConditionTrue(ostream, (owner.getPlayerId() ==
 																village.owner
-																		.getPlayerId()) ||
-															village.owner
-																	.isIndependent(),
-									context, " In village ", name, " (ID #",
-									Integer.toString(id), "):\tOwners differ",
-									LineEnd.LINE_SEP));
+																		.getPlayerId()
+									 ) ||
+															   village.owner
+																	   .isIndependent(),
+									 context, " In village ", name, " (ID #",
+									 Integer.toString(id), "):\tOwners differ",
+									 LineEnd.LINE_SEP));
 		} else {
 			ostream.append(context);
 			ostream.append("Incompatible type to Village");
@@ -303,6 +304,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 			return false;
 		}
 	}
+
 	/**
 	 * @return what kind of town this is
 	 */
@@ -310,10 +312,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	public final String kind() {
 		return "village";
 	}
-	/**
-	 * The filename of an image to use as a portrait for the village.
-	 */
-	private String portraitName = "";
+
 	/**
 	 * @return The filename of an image to use as a portrait for the village.
 	 */

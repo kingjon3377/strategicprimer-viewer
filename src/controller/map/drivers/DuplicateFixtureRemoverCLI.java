@@ -32,10 +32,12 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-u", "--duplicates", ParamCount.One,
-								"Remove duplicate fixtures",
-								"Remove duplicate fixtures---identical except ID# and" +
-										" on the same tile---from a map."
+								   "Remove duplicate fixtures",
+								   "Remove duplicate fixtures---identical except ID# " +
+										   "and" +
+										   " on the same tile---from a map."
 			);
+
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
 	}
@@ -43,10 +45,9 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver model
+	 * @param model   the driver model
 	 * @throws DriverFailedException on error
 	 */
 	@Override
@@ -55,8 +56,9 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 			throws DriverFailedException {
 		try {
 			if (model instanceof IMultiMapModel) {
-				for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
-																	.getAllMaps()) {
+				for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
+																			   model)
+																			  .getAllMaps()) {
 					DuplicateFixtureRemover.filter(pair.first(), cli);
 				}
 			} else {

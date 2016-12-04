@@ -32,21 +32,11 @@ import util.PairComparator;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the type of thing the class knows how to generate a report on
+ * @author Jonathan Lovelace
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
 public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> {
-	/**
-	 * A comparator for pairs of Points and fixtures.
-	 */
-	protected final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>>
-			pairComparator;
-	/**
-	 * A distance calculator (comparator).
-	 */
-	protected final DistanceComparator distCalculator;
-
 	/**
 	 * The HTML tag for the end of a bulleted list. Plus a newline.
 	 */
@@ -68,20 +58,97 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 */
 	protected static final String OPEN_LIST_ITEM = "<li>";
 	/**
+	 * A comparator for pairs of Points and fixtures.
+	 */
+	protected final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>>
+			pairComparator;
+	/**
+	 * A distance calculator (comparator).
+	 */
+	protected final DistanceComparator distCalculator;
+
+	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>>
+											  comparator) {
 		pairComparator = comparator;
 		if ((comparator instanceof PairComparator) &&
 					(((PairComparator<Point, IFixture>) comparator)
-							.first() instanceof DistanceComparator)) {
+							 .first() instanceof DistanceComparator)) {
 			distCalculator =
 					(DistanceComparator) ((PairComparator<Point, IFixture>) comparator)
-												.first();
+												 .first();
 		} else {
 			distCalculator = new DistanceComparator(PointFactory.point(-1, -1));
 		}
 	}
+
+	/**
+	 * @param point a point
+	 * @return the string "At " followed by the point's location
+	 */
+	protected static String atPoint(final Point point) {
+		return "At " + point + ": ";
+	}
+
+	/**
+	 * We specify StringBuilder, rather than just Appendable, so we don't have to say we
+	 * throw IOException.
+	 *
+	 * @param points  a list of points
+	 * @param ostream a stream to which to write a comma-separated string representing
+	 *                them.
+	 */
+	protected static void pointCSL(final StringBuilder ostream, final List<?> points) {
+		if (!points.isEmpty()) {
+			if (points.size() == 1) {
+				ostream.append(points.get(0));
+			} else if (points.size() == 2) {
+				ostream.append(points.get(0));
+				ostream.append(" and ");
+				ostream.append(points.get(1));
+			} else {
+				for (int i = 0; i < points.size(); i++) {
+					if (i == (points.size() - 1)) {
+						ostream.append(", and ");
+					} else if (i != 0) {
+						ostream.append(", ");
+					}
+					ostream.append(points.get(i));
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param player a player
+	 * @return the player's name, or "you" if the player is the current player
+	 */
+	protected static String playerNameOrYou(final Player player) {
+		if (player.isCurrent()) {
+			return "you";
+		} else {
+			return player.toString();
+		}
+	}
+
+	/**
+	 * @param strings a series of strings
+	 * @return them concatenated
+	 */
+	protected static String concat(final String... strings) {
+		// We don't use Collectors.joining() because it appears to use a StringBuilder
+		// that isn't initialized to
+		// at least the right size.
+		final StringBuilder buf =
+				new StringBuilder(5 + Stream.of(strings).collect(
+						Collectors.summingInt(String::length)).intValue());
+		Stream.of(strings).forEach(buf::append);
+		final String retval = buf.toString();
+		return NullCleaner.valueOrDefault(retval, "");
+	}
+
 	/**
 	 * A list that prints a header in its toString().
 	 *
@@ -93,8 +160,10 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		 */
 		String getHeader();
 	}
+
 	/**
 	 * A list that produces HTML in its toString().
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	protected static final class HtmlList extends AbstractList<@NonNull String>
@@ -109,20 +178,20 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		private final String header;
 
 		/**
-		 * @return the header
-		 */
-		@Override
-		public String getHeader() {
-			return header;
-		}
-
-		/**
 		 * Constructor.
 		 *
 		 * @param head what to print before opening the list
 		 */
 		protected HtmlList(final String head) {
 			header = head;
+		}
+
+		/**
+		 * @return the header
+		 */
+		@Override
+		public String getHeader() {
+			return header;
 		}
 
 		/**
@@ -137,7 +206,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				final StringBuilder builder =
 						new StringBuilder(header.length() + 15 + stream().collect(
 								Collectors.summingInt(value -> value.length() + 15))
-																		.intValue());
+																		 .intValue());
 				builder
 						.append(header).append(LineEnd.LINE_SEP).append(OPEN_LIST);
 				for (final String item : this) {
@@ -165,75 +234,16 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		public int size() {
 			return wrapped.size();
 		}
+
 		/**
 		 * Add an item to the list.
+		 *
 		 * @param element the item to add
-		 * @param index where to add it
+		 * @param index   where to add it
 		 */
 		@Override
 		public void add(final int index, final String element) {
 			wrapped.add(index, element);
 		}
-	}
-	/**
-	 * @param point a point
-	 * @return the string "At " followed by the point's location
-	 */
-	protected static String atPoint(final Point point) {
-		return "At " + point + ": ";
-	}
-
-	/**
-	 * We specify StringBuilder, rather than just Appendable, so we don't have to say we
-	 * throw IOException.
-	 * @param points a list of points
-	 * @param ostream a stream to which to write a comma-separated string representing them.
-	 */
-	protected static void pointCSL(final StringBuilder ostream, final List<?> points) {
-		if (!points.isEmpty()) {
-			if (points.size() == 1) {
-				ostream.append(points.get(0));
-			} else if (points.size() == 2) {
-				ostream.append(points.get(0));
-				ostream.append(" and ");
-				ostream.append(points.get(1));
-			} else {
-				for (int i = 0; i < points.size(); i++) {
-					if (i == (points.size() - 1)) {
-						ostream.append(", and ");
-					} else if (i != 0) {
-						ostream.append(", ");
-					}
-					ostream.append(points.get(i));
-				}
-			}
-		}
-	}
-	/**
-	 * @param player a player
-	 * @return the player's name, or "you" if the player is the current player
-	 */
-	protected static String playerNameOrYou(final Player player) {
-		if (player.isCurrent()) {
-			return "you";
-		} else {
-			return player.toString();
-		}
-	}
-
-	/**
-	 * @param strings a series of strings
-	 * @return them concatenated
-	 */
-	protected static String concat(final String... strings) {
-		// We don't use Collectors.joining() because it appears to use a StringBuilder
-		// that isn't initialized to
-		// at least the right size.
-		final StringBuilder buf =
-				new StringBuilder(5 + Stream.of(strings).collect(
-						Collectors.summingInt(String::length)).intValue());
-		Stream.of(strings).forEach(buf::append);
-		final String retval = buf.toString();
-		return NullCleaner.valueOrDefault(retval, "");
 	}
 }

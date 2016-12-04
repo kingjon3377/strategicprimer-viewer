@@ -19,11 +19,12 @@ import org.eclipse.jdt.annotation.Nullable;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the type of thing being iterated over
+ * @author Jonathan Lovelace
  */
 public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T>,
-																	Comparable<@NonNull ComparableIterator<@NonNull T>> {
+																	 Comparable<@NonNull
+																						ComparableIterator<@NonNull T>> {
 	/**
 	 * The Iterator we're wrapping.
 	 */
@@ -97,8 +98,8 @@ public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof ComparableIterator) &&
-										wrapped.equals(
-												((ComparableIterator) obj).wrapped));
+										 wrapped.equals(
+												 ((ComparableIterator) obj).wrapped));
 	}
 
 	/**

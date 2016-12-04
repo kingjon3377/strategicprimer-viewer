@@ -38,7 +38,7 @@ public interface ICLIHelper extends Closeable {
 	 * @throws IOException on I/O error getting the user's input
 	 */
 	<T extends HasName> int chooseFromList(List<? extends T> items, String desc,
-										String none, String prompt, boolean auto)
+										   String none, String prompt, boolean auto)
 			throws IOException;
 
 	/**
@@ -53,7 +53,7 @@ public interface ICLIHelper extends Closeable {
 	 * @throws IOException on I/O error getting the user's input
 	 */
 	int chooseStringFromList(List<String> items, String desc, String none, String prompt,
-							boolean auto) throws IOException;
+							 boolean auto) throws IOException;
 
 	/**
 	 * Read input from stdin repeatedly until a non-negative integer is entered, and
@@ -65,9 +65,11 @@ public interface ICLIHelper extends Closeable {
 	 * @throws IOException on I/O error
 	 */
 	int inputNumber(String prompt) throws IOException;
+
 	/**
 	 * Read input from stdin repeatedly until a valid non-negative decimal number is
 	 * entered, and return it.
+	 *
 	 * @param prompt the prompt to prompt the user with
 	 * @return the number entered
 	 * @throws IOException on I/O error
@@ -98,8 +100,8 @@ public interface ICLIHelper extends Closeable {
 	 * further similar questions.
 	 *
 	 * @param prompt the string to prompt the user with
-	 * @throws IOException on I/O error
 	 * @return the user's answer (minus the "to all")
+	 * @throws IOException on I/O error
 	 */
 	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	default boolean inputBooleanInSeries(final String prompt) throws IOException {
@@ -111,28 +113,47 @@ public interface ICLIHelper extends Closeable {
 	 * further similar questions.
 	 *
 	 * @param prompt the string to prompt the user with
-	 * @param key the prompt to compare to others to define "similar" questions.
-	 * @throws IOException on I/O error
+	 * @param key    the prompt to compare to others to define "similar" questions.
 	 * @return the user's answer (minus the "to all")
+	 * @throws IOException on I/O error
 	 */
 	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	boolean inputBooleanInSeries(String prompt, final String key) throws IOException;
+
 	/**
 	 * Print a formatted string.
+	 *
 	 * @param format the format string
-	 * @param args the arguments to fill into the format string.
+	 * @param args   the arguments to fill into the format string.
 	 */
-	void printf(String format, Object ... args);
+	void printf(String format, Object... args);
+
 	/**
 	 * Print the specified string, then a newline.
+	 *
 	 * @param line the line to print
 	 */
 	void println(String line);
+
 	/**
 	 * Print the specified string.
+	 *
 	 * @param text the string to print
 	 */
 	void print(String text);
+
+	/**
+	 * Get a Point from the user. This is a convenience wrapper around two calls to
+	 * inputNumber.
+	 *
+	 * @param prompt the prompt to use
+	 * @return the point the user input
+	 * @throws IOException on error getting input from the user
+	 */
+	default Point inputPoint(final String prompt) throws IOException {
+		print(prompt);
+		return PointFactory.point(inputNumber("Row: "), inputNumber("Column: "));
+	}
 
 	/**
 	 * Interface for getting-an-int-from-the-user operations.
@@ -141,20 +162,10 @@ public interface ICLIHelper extends Closeable {
 	interface ChoiceOperation {
 		/**
 		 * The operation.
+		 *
 		 * @return the value the user chose.
 		 * @throws IOException on I/O error interacting with the user
 		 */
 		int choose() throws IOException;
-	}
-	/**
-	 * Get a Point from the user. This is a convenience wrapper around two calls to
-	 * inputNumber.
-	 * @param prompt the prompt to use
-	 * @return the point the user input
-	 * @throws IOException on error getting input from the user
-	 */
-	default Point inputPoint(final String prompt) throws IOException {
-		print(prompt);
-		return PointFactory.point(inputNumber("Row: "), inputNumber("Column: "));
 	}
 }

@@ -52,7 +52,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 		return StreamSupport.stream(getAllMaps().spliterator(), false).flatMap(
 				pair -> StreamSupport.stream(pair.first().players().spliterator(),
 						false))
-					.collect(Collectors.toSet());
+					   .collect(Collectors.toSet());
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addResourceToMap(final FortressMember resource, final IMapNG map,
-								final Player player) {
+								 final Player player) {
 		map.locationStream().flatMap(map::streamOtherFixtures)
 				.filter(Fortress.class::isInstance).map(Fortress.class::cast)
 				.filter(fort -> "HQ".equals(fort.getName()) && (player.getPlayerId() ==

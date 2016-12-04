@@ -55,8 +55,9 @@ public interface ISkill extends HasMutableName, Subsettable<@NonNull ISkill> {
 	 * @return whether this skill is "empty"
 	 */
 	boolean isEmpty();
+
 	/**
-	 * @param obj another Skill
+	 * @param obj     another Skill
 	 * @param ostream a stream to explain our results on
 	 * @param context a string to print before every line of output, describing the
 	 *                context

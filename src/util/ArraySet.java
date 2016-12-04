@@ -22,8 +22,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <U> the type of thing stored in the set
+ * @author Jonathan Lovelace
  */
 public final class ArraySet<U> implements Set<U> {
 	/**
@@ -34,6 +34,16 @@ public final class ArraySet<U> implements Set<U> {
 	 * The running total of the hash code.
 	 */
 	private int hash = 0;
+
+	/**
+	 * @param firstSet  one set
+	 * @param secondSet another set
+	 * @return whether they are equal according to the Set contract.
+	 */
+	@SuppressWarnings("TypeMayBeWeakened")
+	private static boolean areSetsEqual(final Set<?> firstSet, final Set<?> secondSet) {
+		return firstSet.containsAll(secondSet) && secondSet.containsAll(firstSet);
+	}
 
 	/**
 	 * @return the size of the set
@@ -78,8 +88,8 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
-	 * @param <T> the type
-	 * @param array  an array of that type
+	 * @param <T>   the type
+	 * @param array an array of that type
 	 * @return the contents of the set in that array
 	 */
 	@SuppressWarnings(
@@ -158,7 +168,7 @@ public final class ArraySet<U> implements Set<U> {
 		final boolean retval = impl.retainAll(coll);
 		if (retval) {
 			hash = impl.stream().collect(Collectors.summingInt(Object::hashCode))
-						.intValue();
+						   .intValue();
 		}
 		return retval;
 	}
@@ -173,7 +183,7 @@ public final class ArraySet<U> implements Set<U> {
 		final boolean retval = impl.removeAll(coll);
 		if (retval) {
 			hash = impl.stream().collect(Collectors.summingInt(Object::hashCode))
-						.intValue();
+						   .intValue();
 		}
 		return retval;
 	}
@@ -212,17 +222,7 @@ public final class ArraySet<U> implements Set<U> {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Set)
-										&& areSetsEqual(this, (Set<?>) obj));
-	}
-
-	/**
-	 * @param firstSet  one set
-	 * @param secondSet another set
-	 * @return whether they are equal according to the Set contract.
-	 */
-	@SuppressWarnings("TypeMayBeWeakened")
-	private static boolean areSetsEqual(final Set<?> firstSet, final Set<?> secondSet) {
-		return firstSet.containsAll(secondSet) && secondSet.containsAll(firstSet);
+										 && areSetsEqual(this, (Set<?>) obj));
 	}
 
 	/**

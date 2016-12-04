@@ -45,16 +45,16 @@ public final class ReaderComparator implements UtilityDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-t", "--test", ParamCount.AtLeastOne,
-								"Test map readers",
-								"Test the two map-reading implementations by " +
-										"comparing their results on the same file."
+								   "Test map readers",
+								   "Test the two map-reading implementations by " +
+										   "comparing their results on the same file."
 			);
 
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(ReaderComparator
-																		.class);
+																		  .class);
 	/**
 	 * The first reader.
 	 */
@@ -65,18 +65,10 @@ public final class ReaderComparator implements UtilityDriver {
 	private final IMapReader newReader = new SPFluidReader();
 
 	/**
-	 * Compare the two readers.
-	 *
-	 * @param args The list of specified files to compare them on
-	 */
-	@SuppressWarnings("OverloadedVarargsMethod")
-	public void compareReaders(final String... args) {
-		Stream.of(args).map(Paths::get).forEach(this::compareReaders);
-	}
-	/**
 	 * Handle (log appropriately) an exception.
+	 *
 	 * @param except the exception to handle
-	 * @param file the name of the file being read
+	 * @param file   the name of the file being read
 	 */
 	private static void handleException(final Exception except, final Path file) {
 		if (except instanceof XMLStreamException) {
@@ -93,6 +85,42 @@ public final class ReaderComparator implements UtilityDriver {
 			LOGGER.log(Level.SEVERE, "Unhandled exception type", except);
 		}
 	}
+
+	/**
+	 * Print a description of a method's elapsed time.
+	 *
+	 * @param desc a description of the method ("old" or "new")
+	 * @param time how many time-units it took
+	 */
+	private static void printElapsed(final String desc, final long time) {
+		SYS_OUT.print(desc);
+		SYS_OUT.print(" method took ");
+		SYS_OUT.print(time);
+		SYS_OUT.println(" time-units.");
+	}
+
+	/**
+	 * @param file a file
+	 * @return a string containing its contents, so reading from it won't be
+	 * confounded by
+	 * disk I/O.
+	 * @throws IOException if file not found, or on other I/O error reading from file
+	 */
+	private static String readIntoBuffer(final Path file)
+			throws IOException {
+		return new String(Files.readAllBytes(file));
+	}
+
+	/**
+	 * Compare the two readers.
+	 *
+	 * @param args The list of specified files to compare them on
+	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
+	public void compareReaders(final String... args) {
+		Stream.of(args).map(Paths::get).forEach(this::compareReaders);
+	}
+
 	/**
 	 * Compare the two readers on a file.
 	 *
@@ -104,7 +132,7 @@ public final class ReaderComparator implements UtilityDriver {
 		final String contents;
 		try {
 			contents = readIntoBuffer(arg);
-		} catch (final FileNotFoundException|NoSuchFileException except) {
+		} catch (final FileNotFoundException | NoSuchFileException except) {
 			LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 			return;
 		} catch (final IOException except) {
@@ -141,31 +169,6 @@ public final class ReaderComparator implements UtilityDriver {
 	}
 
 	/**
-	 * Print a description of a method's elapsed time.
-	 *
-	 * @param desc a description of the method ("old" or "new")
-	 * @param time how many time-units it took
-	 */
-	private static void printElapsed(final String desc, final long time) {
-		SYS_OUT.print(desc);
-		SYS_OUT.print(" method took ");
-		SYS_OUT.print(time);
-		SYS_OUT.println(" time-units.");
-	}
-
-	/**
-	 * @param file a file
-	 * @return a string containing its contents, so reading from it won't be
-	 * confounded by
-	 * disk I/O.
-	 * @throws IOException if file not found, or on other I/O error reading from file
-	 */
-	private static String readIntoBuffer(final Path file)
-			throws IOException {
-		return new String(Files.readAllBytes(file));
-	}
-
-	/**
 	 * @return a String representation of this object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -179,7 +182,7 @@ public final class ReaderComparator implements UtilityDriver {
 	 *
 	 * @param cli
 	 * @param options
-	 * @param args The files to test on
+	 * @param args    The files to test on
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override

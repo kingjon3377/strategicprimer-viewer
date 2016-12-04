@@ -2,17 +2,14 @@ package view.worker;
 
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.util.Optional;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import model.map.IMapNG;
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
@@ -77,9 +74,9 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 						() -> source.getMap().getCurrentTurn(), false);
 		ioHandler.addPlayerChangeListener(treeModel);
 		final WorkerCreationListener nwl = new WorkerCreationListener(treeModel,
-																			IDFactoryFiller
-																					.createFactory(
-																							source.getMap()));
+																			 IDFactoryFiller
+																					 .createFactory(
+																							 source.getMap()));
 		tree.addUnitSelectionListener(nwl);
 		final JobTreeModel jobsTreeModel = new JobTreeModel();
 		tree.addUnitMemberListener(jobsTreeModel);
@@ -95,15 +92,20 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 		skillAdvancementPanel.addLevelGainListener(levelListener);
 		final JLabel newJobText = htmlWrapped("Add a job to the Worker:");
 		final JLabel newSkillText = htmlWrapped("Add a Skill to the selected Job:");
-		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY, BorderedPanel.verticalPanel(playerLabel,
-				new JScrollPane(tree),
-				new ListenedButton("Add worker to selected unit ...", nwl)),
+		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
+				BorderedPanel.verticalPanel(playerLabel,
+						new JScrollPane(tree),
+						new ListenedButton("Add worker to selected unit ...", nwl)),
 				verticalSplit(HALF_WAY, RES_WEIGHT, BorderedPanel.verticalPanel(
-						htmlWrapped("Worker's Jobs and Skills:"), new JScrollPane(jobsTree),
-						null), BorderedPanel.verticalPanel(null, BorderedPanel.verticalPanel(
-						BorderedPanel.verticalPanel(newJobText, null, jobAdditionPanel), null,
-						BorderedPanel.verticalPanel(newSkillText, null, skillAdditionPanel)),
-						skillAdvancementPanel))));
+						htmlWrapped("Worker's Jobs and Skills:"),
+						new JScrollPane(jobsTree),
+						null),
+						BorderedPanel.verticalPanel(null, BorderedPanel.verticalPanel(
+								BorderedPanel.verticalPanel(newJobText, null,
+										jobAdditionPanel), null,
+								BorderedPanel.verticalPanel(newSkillText, null,
+										skillAdditionPanel)),
+								skillAdvancementPanel))));
 
 		ioHandler.notifyListeners();
 
@@ -127,22 +129,26 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 	private static JLabel htmlWrapped(final String paragraph) {
 		return new JLabel("<html><p align=\"left\">" + paragraph + "</p></html>");
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

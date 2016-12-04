@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
+import javax.swing.*;
 import util.ActionWrapper;
 import util.OnMac;
 
@@ -40,8 +39,8 @@ public final class ArrowKeyListener {
 	 * @param actionMap   The action map we'll be putting the glue listeners into.
 	 */
 	public static void setUpListeners(final DirectionSelectionChanger selListener,
-									final InputMap inputMap,
-									final ActionMap actionMap) {
+									  final InputMap inputMap,
+									  final ActionMap actionMap) {
 		inputMap.put(getKeyStroke(KeyEvent.VK_UP, 0), "up");
 		inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
 		inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
@@ -195,6 +194,7 @@ public final class ArrowKeyListener {
 	public String toString() {
 		return "ArrowKeyListener";
 	}
+
 	/**
 	 * A listener to move the cursor in a direction. Wraps an ActionListener.
 	 */
@@ -202,7 +202,7 @@ public final class ArrowKeyListener {
 	private static class DirectionListener extends ActionWrapper {
 		/**
 		 * @param action the wrapped action
-		 * @param num how many times to repeat it on each user action
+		 * @param num    how many times to repeat it on each user action
 		 */
 		protected DirectionListener(final ActionListener action, final int num) {
 			super(evt -> {
@@ -211,28 +211,33 @@ public final class ArrowKeyListener {
 				}
 			});
 		}
+
 		/**
 		 * @param action the wrapped action
 		 */
 		protected DirectionListener(final ActionListener action) {
 			this(action, 1);
 		}
+
 		/**
 		 * Prevent serialization.
+		 *
 		 * @param out ignored
 		 * @throws IOException always
 		 */
-		@SuppressWarnings({ "unused", "static-method" })
+		@SuppressWarnings({"unused", "static-method"})
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
+
 		/**
 		 * Prevent serialization
+		 *
 		 * @param in ignored
-		 * @throws IOException always
+		 * @throws IOException            always
 		 * @throws ClassNotFoundException never
 		 */
-		@SuppressWarnings({ "unused", "static-method" })
+		@SuppressWarnings({"unused", "static-method"})
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");

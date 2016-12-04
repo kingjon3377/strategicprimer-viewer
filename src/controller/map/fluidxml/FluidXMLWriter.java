@@ -29,9 +29,10 @@ import javax.xml.stream.XMLStreamWriter;
 public interface FluidXMLWriter {
 	/**
 	 * Write XML representing an object.
+	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
 	 * @throws XMLStreamException on error in the writer
 	 */
 	void writeSPObject(final XMLStreamWriter ostream, final Object obj, final int indent)

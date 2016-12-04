@@ -63,7 +63,7 @@ public class WorkerStats {
 	 *
 	 * @param hitPoints    the worker's health
 	 * @param maxHitPoints the worker's max health
-	 * @param strengthStat     the worker's strength
+	 * @param strengthStat the worker's strength
 	 * @param dexterity    the worker's dexterity
 	 * @param constitution the worker's constitution
 	 * @param intelligence the worker's intelligence
@@ -71,8 +71,9 @@ public class WorkerStats {
 	 * @param charisma     th worker's charisma
 	 */
 	public WorkerStats(final int hitPoints, final int maxHitPoints,
-					final int strengthStat, final int dexterity, final int constitution,
-					final int intelligence, final int wisdom, final int charisma) {
+					   final int strengthStat, final int dexterity,
+					   final int constitution,
+					   final int intelligence, final int wisdom, final int charisma) {
 		hp = hitPoints;
 		maxHP = maxHitPoints;
 		strength = strengthStat;
@@ -81,6 +82,28 @@ public class WorkerStats {
 		intel = intelligence;
 		wis = wisdom;
 		cha = charisma;
+	}
+
+	/**
+	 * @param stat a stat
+	 * @return a String representing the modifier it conveys.
+	 */
+	public static String getModifierString(final int stat) {
+		final int modifier = getModifier(stat);
+		final String modStr = NullCleaner.assertNotNull(Integer.toString(modifier));
+		if (modifier >= 0) {
+			return '+' + modStr;
+		} else {
+			return modStr;
+		}
+	}
+
+	/**
+	 * @param stat a stat
+	 * @return the modifier it conveys
+	 */
+	public static int getModifier(final int stat) {
+		return (stat - STAT_BASIS) / 2;
 	}
 
 	/**
@@ -154,7 +177,7 @@ public class WorkerStats {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (obj == this) ||
-					((obj instanceof WorkerStats) && equalsImpl((WorkerStats) obj));
+					   ((obj instanceof WorkerStats) && equalsImpl((WorkerStats) obj));
 	}
 
 	/**
@@ -163,8 +186,8 @@ public class WorkerStats {
 	 */
 	private boolean equalsImpl(final WorkerStats obj) {
 		return (hp == obj.hp) && (maxHP == obj.maxHP) && (strength == obj.strength) &&
-					(dex == obj.dex) && (con == obj.con) && (intel == obj.intel) &&
-					(wis == obj.wis) && (cha == obj.cha);
+					   (dex == obj.dex) && (con == obj.con) && (intel == obj.intel) &&
+					   (wis == obj.wis) && (cha == obj.cha);
 	}
 
 	/**
@@ -173,29 +196,9 @@ public class WorkerStats {
 	@Override
 	public int hashCode() {
 		return strength + (dex << 3) + (con << 6) + (intel << 9) + (wis << 12) +
-					(cha << 15) + (hp << 18) + (maxHP << 22);
+					   (cha << 15) + (hp << 18) + (maxHP << 22);
 	}
 
-	/**
-	 * @param stat a stat
-	 * @return a String representing the modifier it conveys.
-	 */
-	public static String getModifierString(final int stat) {
-		final int modifier = getModifier(stat);
-		final String modStr = NullCleaner.assertNotNull(Integer.toString(modifier));
-		if (modifier >= 0) {
-			return '+' + modStr;
-		} else {
-			return modStr;
-		}
-	}
-	/**
-	 * @param stat a stat
-	 * @return the modifier it conveys
-	 */
-	public static int getModifier(final int stat) {
-		return (stat - STAT_BASIS) / 2;
-	}
 	/**
 	 * @return a String representation of the object
 	 */

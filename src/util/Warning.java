@@ -41,12 +41,19 @@ public enum Warning {
 	 */
 	Die;
 	/**
+	 * The default level. This is provided so that it can in theory be changed later in
+	 * one place rather than everywhere.
+	 */
+	public static final Warning DEFAULT = Warn;
+	/**
 	 * The output stream to log to. Used only by Custom.
 	 */
 	@SuppressWarnings("NonFinalFieldInEnum")
 	private Consumer<Exception> customHandle = wrapHandler(SystemOut.SYS_OUT::println);
+
 	/**
 	 * Default handler for Custom.
+	 *
 	 * @param handler a method handle that does something with a String
 	 * @return a method handle that applies it to the message of any given exception.
 	 */
@@ -59,8 +66,10 @@ public enum Warning {
 			}
 		};
 	}
+
 	/**
 	 * In Custom, set the custom printing method. In others, throw.
+	 *
 	 * @param printer the printing method to use
 	 */
 	public void setCustomPrinter(final Consumer<Exception> printer) {
@@ -70,8 +79,10 @@ public enum Warning {
 			throw new IllegalStateException("Custom printer is only valid for Custom");
 		}
 	}
+
 	/**
 	 * Handle a warning, e.g. if a particular map-format construct is deprecated.
+	 *
 	 * @param warning the warning
 	 */
 	public void warn(final Exception warning) {
@@ -104,9 +115,4 @@ public enum Warning {
 			Warn.warn(warning);
 		}
 	}
-	/**
-	 * The default level. This is provided so that it can in theory be changed later in
-	 * one place rather than everywhere.
-	 */
-	public static final Warning DEFAULT = Warn;
 }

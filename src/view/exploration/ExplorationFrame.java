@@ -1,10 +1,7 @@
 package view.exploration;
 
 import controller.map.misc.IOHandler;
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -14,8 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Stream;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import model.exploration.IExplorationModel;
 import model.listeners.CompletionListener;
 import util.NullCleaner;
@@ -37,6 +33,76 @@ import view.util.ISPWindow;
  * @author Jonathan Lovelace
  */
 public final class ExplorationFrame extends JFrame implements ISPWindow {
+	/**
+	 * @param explorationModel the exploration model
+	 * @param ioHandler        Passed to menu constructor
+	 */
+	public ExplorationFrame(final IExplorationModel explorationModel,
+							final IOHandler ioHandler) {
+		super("Exploration");
+		final Optional<Path> file = explorationModel.getMapFile();
+		if (file.isPresent()) {
+			setTitle(file.get() + " | Exploration");
+			getRootPane().putClientProperty("Window.documentFile",
+					file.get().toFile());
+		}
+		setMinimumSize(new Dimension(768, 480));
+		setPreferredSize(new Dimension(1024, 640));
+		final CardLayout layout = new CardLayout();
+		setLayout(layout);
+		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(explorationModel);
+		final ExplorationPanel explorationPanel =
+				new ExplorationPanel(explorationModel, esp.getMPDocument());
+		explorationModel.addMovementCostListener(explorationPanel);
+		explorationModel.addSelectionChangeListener(explorationPanel);
+		final CompletionListener swapper =
+				new SwapCompletionListener(layout,
+												  NullCleaner.assertNotNull(
+														  getContentPane()),
+												  explorationPanel, esp);
+		esp.addCompletionListener(swapper);
+		explorationPanel.addCompletionListener(swapper);
+		add(esp);
+		add(explorationPanel);
+
+		setJMenuBar(new ExplorationMenu(NullCleaner.assertNotNull(ioHandler),
+											   explorationModel, this));
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		pack();
+	}
+
+	/**
+	 * Prevent serialization.
+	 *
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	@SuppressWarnings({"unused", "static-method"})
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * Prevent serialization
+	 *
+	 * @param in ignored
+	 * @throws IOException            always
+	 * @throws ClassNotFoundException never
+	 */
+	@SuppressWarnings({"unused", "static-method"})
+	private void readObject(final ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * @return the title of this app
+	 */
+	@Override
+	public String getWindowName() {
+		return "Exploration";
+	}
+
 	/**
 	 * A listener to swap the panels when 'completion' is signalled.
 	 *
@@ -64,13 +130,13 @@ public final class ExplorationFrame extends JFrame implements ISPWindow {
 		/**
 		 * Constructor.
 		 *
-		 * @param cardLayout    the layout to tell to swap panels
+		 * @param cardLayout      the layout to tell to swap panels
 		 * @param parentComponent the component it's laying out
-		 * @param components things to tell to validate their layout before swapping
+		 * @param components      things to tell to validate their layout before swapping
 		 */
 		protected SwapCompletionListener(final CardLayout cardLayout,
-										final Container parentComponent,
-										final Component... components) {
+										 final Container parentComponent,
+										 final Component... components) {
 			layout = cardLayout;
 			parent = parentComponent;
 			Stream.of(components).forEach(compList::add);
@@ -99,71 +165,5 @@ public final class ExplorationFrame extends JFrame implements ISPWindow {
 		public String toString() {
 			return "SwapCompletionListener";
 		}
-	}
-
-	/**
-	 * @param explorationModel    the exploration model
-	 * @param ioHandler Passed to menu constructor
-	 */
-	public ExplorationFrame(final IExplorationModel explorationModel,
-							final IOHandler ioHandler) {
-		super("Exploration");
-		final Optional<Path> file = explorationModel.getMapFile();
-		if (file.isPresent()) {
-			setTitle(file.get() + " | Exploration");
-			getRootPane().putClientProperty("Window.documentFile",
-					file.get().toFile());
-		}
-		setMinimumSize(new Dimension(768, 480));
-		setPreferredSize(new Dimension(1024, 640));
-		final CardLayout layout = new CardLayout();
-		setLayout(layout);
-		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(explorationModel);
-		final ExplorationPanel explorationPanel =
-				new ExplorationPanel(explorationModel, esp.getMPDocument());
-		explorationModel.addMovementCostListener(explorationPanel);
-		explorationModel.addSelectionChangeListener(explorationPanel);
-		final CompletionListener swapper =
-				new SwapCompletionListener(layout,
-												NullCleaner.assertNotNull(
-														getContentPane()),
-												explorationPanel, esp);
-		esp.addCompletionListener(swapper);
-		explorationPanel.addCompletionListener(swapper);
-		add(esp);
-		add(explorationPanel);
-
-		setJMenuBar(new ExplorationMenu(NullCleaner.assertNotNull(ioHandler),
-				explorationModel, this));
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		pack();
-	}
-	/**
-	 * Prevent serialization.
-	 * @param out ignored
-	 * @throws IOException always
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void writeObject(final ObjectOutputStream out) throws IOException {
-		throw new NotSerializableException("Serialization is not allowed");
-	}
-	/**
-	 * Prevent serialization
-	 * @param in ignored
-	 * @throws IOException always
-	 * @throws ClassNotFoundException never
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void readObject(final ObjectInputStream in)
-			throws IOException, ClassNotFoundException {
-		throw new NotSerializableException("Serialization is not allowed");
-	}
-
-	/**
-	 * @return the title of this app
-	 */
-	@Override
-	public String getWindowName() {
-		return "Exploration";
 	}
 }

@@ -52,6 +52,12 @@ public enum MineralKind {
 	 */
 	private final String str;
 
+	static {
+		for (final MineralKind kind : values()) {
+			M_MAP.put(kind.str, kind);
+		}
+	}
+
 	/**
 	 * Constructor.
 	 *
@@ -59,12 +65,6 @@ public enum MineralKind {
 	 */
 	MineralKind(final String desc) {
 		str = desc;
-	}
-
-	static {
-		for (final MineralKind kind : values()) {
-			M_MAP.put(kind.str, kind);
-		}
 	}
 
 	/**

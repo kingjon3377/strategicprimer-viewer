@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -89,11 +88,157 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	}
 
 	/**
+	 * Add a fixture to a point in a map, accounting for the special cases.
+	 *
+	 * @param map   the map
+	 * @param point where to add the fixture
+	 * @param fix   the fixture to add
+	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	private static void addFixture(final IMutableMapNG map, final Point point,
+								   final TileFixture fix) {
+		if (fix instanceof Ground) {
+			final Ground ground = (Ground) fix;
+			final Ground oldGround = map.getGround(point);
+			if (oldGround == null) {
+				map.setGround(point, ground);
+			} else if (ground.isExposed() && !oldGround.isExposed()) {
+				map.setGround(point, ground);
+				map.addFixture(point, oldGround);
+			} else if (!oldGround.equals(ground)) {
+				map.addFixture(point, ground);
+			}
+		} else if (fix instanceof Forest) {
+			final Forest forest = (Forest) fix;
+			final Forest oldForest = map.getForest(point);
+			if (oldForest == null) {
+				map.setForest(point, forest);
+			} else if (!oldForest.equals(forest)) {
+				map.addFixture(point, forest);
+			}
+		} else if (fix instanceof Mountain) {
+			// We shouldn't get here, since the parser above doesn't even
+			// instantiate Mountains, but we don't want to lose data if I
+			// forget.
+			map.setMountainous(point, true);
+		} else if (fix instanceof RiverFixture) {
+			// Similarly
+			for (final River river : (RiverFixture) fix) {
+				map.addRivers(point, river);
+			}
+		} else {
+			// We shouldn't get here either, since the parser above handles
+			// other fixtures directly, but again we don't want to lose data if
+			// I forget.
+			map.addFixture(point, fix);
+		}
+	}
+
+	/**
+	 * @param stream a stream of XMLEvents
+	 * @param parent the parent tag
+	 * @return the first start-element in the stream
+	 * @throws SPFormatException if no start element in stream
+	 */
+	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream,
+													 final StartElement parent)
+			throws SPFormatException {
+		final StartElement retval = StreamSupport
+											.stream(stream.spliterator(), false)
+											.filter(XMLEvent::isStartElement)
+											.map(XMLEvent::asStartElement)
+											.filter(elem -> EqualsAny.equalsAny(
+													assertNotNull(
+															elem.getName()
+																	.getNamespaceURI()),
+													ISPReader.NAMESPACE,
+													XMLConstants.NULL_NS_URI))
+											.findFirst()
+											.orElseThrow(
+													() -> new MissingChildException
+																  (parent));
+		return assertNotNull(retval);
+	}
+
+	/**
+	 * Write a newline if needed.
+	 *
+	 * @param writer  the writer to write to
+	 * @param needEOL whether we need a newline.
+	 * @throws IOException on I/O error
+	 */
+	private static void eolIfNeeded(final boolean needEOL,
+									final Appendable writer) throws IOException {
+		if (needEOL) {
+			writer.append(LineEnd.LINE_SEP);
+		}
+	}
+
+	/**
+	 * Parse a river from XML. The caller is now responsible for getting past the closing
+	 * tag.
+	 *
+	 * @param element the element to parse
+	 * @param parent  the parent tag
+	 * @param warner  the Warning instance to use as needed
+	 * @return the parsed river
+	 * @throws SPFormatException on SP format problem
+	 */
+	public static River parseRiver(final StartElement element, final QName parent,
+								   final Warning warner) throws SPFormatException {
+		requireTag(element, parent, "river", "lake");
+		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
+			return River.Lake;
+		} else {
+			requireNonEmptyParameter(element, "direction", true, warner);
+			return River.getRiver(getParameter(element, "direction"));
+		}
+	}
+
+	/**
+	 * Write a river.
+	 *
+	 * @param ostream the stream we're writing to
+	 * @param obj     the river to write
+	 * @param indent  the indentation level
+	 * @throws IOException on I/O error
+	 */
+	public static void writeRiver(final Appendable ostream, final River obj,
+								  final int indent) throws IOException {
+		if (River.Lake == obj) {
+			writeTag(ostream, "lake", indent);
+		} else {
+			writeTag(ostream, "river", indent);
+			ostream.append(" direction=\"");
+			ostream.append(obj.getDescription());
+			ostream.append("\"");
+		}
+		ostream.append(" />");
+		ostream.append(LineEnd.LINE_SEP);
+	}
+
+	/**
+	 * Write a series of rivers. TODO: test this
+	 *
+	 * @param ostream the stream to write to
+	 * @param iter    a series of rivers to write
+	 * @param indent  the indentation level
+	 * @throws IOException on I/O error
+	 */
+	public static void writeAllRivers(final Appendable ostream,
+									  final Iterable<River> iter, final int indent)
+			throws IOException {
+		for (final River river : iter) {
+			writeRiver(ostream, river, indent);
+		}
+	}
+
+	/**
 	 * Read a map from XML.
 	 *
 	 * @param element   the element we're parsing
 	 * @param parent    the parent tag
-	 *@param players   The collection to put players in
+	 * @param players   The collection to put players in
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs.
 	 * @param stream    the source to read more elements from     @return the parsed map
@@ -113,7 +258,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equalsIgnoreCase(mapTag.getName().getLocalPart())) {
 				throw new UnwantedChildException(
-						assertNotNull(element.getName()), mapTag);
+														assertNotNull(element.getName()),
+														mapTag);
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
@@ -123,8 +269,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		}
 		final MapDimensions dimensions =
 				new MapDimensions(getIntegerParameter(mapTag, "rows"),
-										getIntegerParameter(mapTag, "columns"),
-										getIntegerParameter(mapTag, "version"));
+										 getIntegerParameter(mapTag, "columns"),
+										 getIntegerParameter(mapTag, "version"));
 		final Deque<QName> tagStack = new LinkedList<>();
 		tagStack.push(element.getName());
 		tagStack.push(mapTag.getName());
@@ -159,10 +305,12 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					if (hasParameter(current, "kind")
 								|| hasParameter(current, "type")) {
 						retval.setBaseTerrain(point, TileType
-															.getTileType(
-																	getParamWithDeprecatedForm(
-																			current, "kind",
-																			"type", warner)));
+															 .getTileType(
+																	 getParamWithDeprecatedForm(
+																			 current,
+																			 "kind",
+																			 "type",
+																			 warner)));
 					} else {
 						//noinspection ObjectAllocationInLoop
 						warner.warn(new MissingPropertyException(current, "kind"));
@@ -175,7 +323,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					// fixture outside tile
 					throw new UnwantedChildException(tagStack.peek(), current);
 				} else if ("lake".equalsIgnoreCase(type)
-								|| "river".equalsIgnoreCase(type)) {
+								   || "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point,
 							parseRiver(current, tagStack.peek(), warner));
 					spinUntilEnd(assertNotNull(current.getName()),
@@ -215,7 +363,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				if (element.getName().equals(event.asEndElement().getName())) {
 					break;
 				} else if ("tile".equalsIgnoreCase(event.asEndElement()
-														.getName().getLocalPart())) {
+														   .getName().getLocalPart())) {
 					point = PointFactory.point(-1, -1);
 				}
 			} else if (event.isCharacters()) {
@@ -240,57 +388,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	}
 
 	/**
-	 * Add a fixture to a point in a map, accounting for the special cases.
-	 *
-	 * @param map   the map
-	 * @param point where to add the fixture
-	 * @param fix   the fixture to add
-	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void addFixture(final IMutableMapNG map, final Point point,
-								final TileFixture fix) {
-		if (fix instanceof Ground) {
-			final Ground ground = (Ground) fix;
-			final Ground oldGround = map.getGround(point);
-			if (oldGround == null) {
-				map.setGround(point, ground);
-			} else if (ground.isExposed() && !oldGround.isExposed()) {
-				map.setGround(point, ground);
-				map.addFixture(point, oldGround);
-			} else if (!oldGround.equals(ground)) {
-				map.addFixture(point, ground);
-			}
-		} else if (fix instanceof Forest) {
-			final Forest forest = (Forest) fix;
-			final Forest oldForest = map.getForest(point);
-			if (oldForest == null) {
-				map.setForest(point, forest);
-			} else if (!oldForest.equals(forest)) {
-				map.addFixture(point, forest);
-			}
-		} else if (fix instanceof Mountain) {
-			// We shouldn't get here, since the parser above doesn't even
-			// instantiate Mountains, but we don't want to lose data if I
-			// forget.
-			map.setMountainous(point, true);
-		} else if (fix instanceof RiverFixture) {
-			// Similarly
-			for (final River river : (RiverFixture) fix) {
-				map.addRivers(point, river);
-			}
-		} else {
-			// We shouldn't get here either, since the parser above handles
-			// other fixtures directly, but again we don't want to lose data if
-			// I forget.
-			map.addFixture(point, fix);
-		}
-	}
-
-	/**
 	 * Parse what should be a TileFixture from the XML.
 	 *
 	 * @param element   the XML element to parse
-	 * @param parent	the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param idFactory the ID factory to generate IDs with
@@ -299,11 +400,11 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private TileFixture parseFixture(final StartElement element,
-									final QName parent,
-									final Iterable<XMLEvent> stream,
-									final IMutablePlayerCollection players,
-									final IDRegistrar idFactory,
-									final Warning warner) throws SPFormatException {
+									 final QName parent,
+									 final Iterable<XMLEvent> stream,
+									 final IMutablePlayerCollection players,
+									 final IDRegistrar idFactory,
+									 final Warning warner) throws SPFormatException {
 		final String name = assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends TileFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
@@ -311,29 +412,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			}
 		}
 		throw new UnwantedChildException(new QName(element.getName().getNamespaceURI(),
-														"tile"), element);
+														  "tile"), element);
 	}
 
-	/**
-	 * @param stream a stream of XMLEvents
-	 * @param parent the parent tag
-	 * @return the first start-element in the stream
-	 * @throws SPFormatException if no start element in stream
-	 */
-	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream,
-													final StartElement parent)
-			throws SPFormatException {
-		final StartElement retval = StreamSupport
-				.stream(stream.spliterator(), false)
-				.filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
-				.filter(elem -> EqualsAny.equalsAny(
-						assertNotNull(
-								elem.getName().getNamespaceURI()),
-						ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI))
-				.findFirst()
-				.orElseThrow(() -> new MissingChildException(parent));
-		return assertNotNull(retval);
-	}
 	/**
 	 * @param obj     a map
 	 * @param ostream the stream to write it to
@@ -372,7 +453,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 							|| obj.isMountainous(point)
 							|| (obj.getGround(point) != null)
 							|| (obj.getForest(point) != null)
-							|| obj.streamOtherFixtures(point).anyMatch(x->true)) {
+							|| obj.streamOtherFixtures(point).anyMatch(x -> true)) {
 					if (rowEmpty) {
 						rowEmpty = false;
 						writeTag(ostream, "row", indent + 2);
@@ -449,79 +530,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	@Override
 	public boolean isSupportedTag(final String tag) {
 		return "map".equalsIgnoreCase(tag) || "view".equalsIgnoreCase(tag);
-	}
-
-	/**
-	 * Write a newline if needed.
-	 *
-	 * @param writer  the writer to write to
-	 * @param needEOL whether we need a newline.
-	 * @throws IOException on I/O error
-	 */
-	private static void eolIfNeeded(final boolean needEOL,
-									final Appendable writer) throws IOException {
-		if (needEOL) {
-			writer.append(LineEnd.LINE_SEP);
-		}
-	}
-
-	/**
-	 * Parse a river from XML. The caller is now responsible for getting past the closing
-	 * tag.
-	 *
-	 * @param element the element to parse
-	 * @param parent  the parent tag
-	 * @param warner  the Warning instance to use as needed
-	 * @return the parsed river
-	 * @throws SPFormatException on SP format problem
-	 */
-	public static River parseRiver(final StartElement element, final QName parent,
-								final Warning warner) throws SPFormatException {
-		requireTag(element, parent, "river", "lake");
-		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
-			return River.Lake;
-		} else {
-			requireNonEmptyParameter(element, "direction", true, warner);
-			return River.getRiver(getParameter(element, "direction"));
-		}
-	}
-
-	/**
-	 * Write a river.
-	 *
-	 * @param ostream the stream we're writing to
-	 * @param obj     the river to write
-	 * @param indent  the indentation level
-	 * @throws IOException on I/O error
-	 */
-	public static void writeRiver(final Appendable ostream, final River obj,
-								final int indent) throws IOException {
-		if (River.Lake == obj) {
-			writeTag(ostream, "lake", indent);
-		} else {
-			writeTag(ostream, "river", indent);
-			ostream.append(" direction=\"");
-			ostream.append(obj.getDescription());
-			ostream.append("\"");
-		}
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
-	}
-
-	/**
-	 * Write a series of rivers. TODO: test this
-	 *
-	 * @param ostream the stream to write to
-	 * @param iter    a series of rivers to write
-	 * @param indent  the indentation level
-	 * @throws IOException on I/O error
-	 */
-	public static void writeAllRivers(final Appendable ostream,
-									final Iterable<River> iter, final int indent)
-			throws IOException {
-		for (final River river : iter) {
-			writeRiver(ostream, river, indent);
-		}
 	}
 
 	/**

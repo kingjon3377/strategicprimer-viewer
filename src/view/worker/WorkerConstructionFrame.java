@@ -1,8 +1,7 @@
 package view.worker;
 
 import controller.map.misc.IDRegistrar;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -15,12 +14,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import model.listeners.NewWorkerListener;
 import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
@@ -62,10 +56,14 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(WorkerConstructionFrame.class);
 	/**
+	 * Number parser.
+	 */
+	private static final NumberFormat NUM_PARSER =
+			assertNotNull(NumberFormat.getIntegerInstance());
+	/**
 	 * The ID factory to use to generate IDs.
 	 */
 	private final IDRegistrar idf;
-
 	/**
 	 * The 'name' field.
 	 */
@@ -110,11 +108,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 * The list of listeners to notify on worker creation.
 	 */
 	private final Collection<NewWorkerListener> nwListeners = new ArrayList<>();
-	/**
-	 * Number parser.
-	 */
-	private static final NumberFormat NUM_PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
+
 	/**
 	 * Constructor.
 	 *
@@ -201,6 +195,72 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
+	 * @param numbers a sequence of Pairs of supposedly-numeric Strings and what they
+	 *                represent. If any is non-numeric, the return String includes
+	 *                "such-and-such must be a number."
+	 * @return such an explanation
+	 */
+	@SafeVarargs
+	private static String numericExplanation(final Pair<String, String>... numbers) {
+		final StringBuilder builder = new StringBuilder(40);
+		for (final Pair<String, String> number : numbers) {
+			final String num = assertNotNull(number.first().trim());
+			if (!isNumeric(num)) {
+				builder.append(number.second());
+				builder.append(" must be a number.");
+				builder.append(LineEnd.LINE_SEP);
+			}
+		}
+		return assertNotNull(builder.toString());
+	}
+
+	/**
+	 * @param box a text field
+	 * @return the integer value of its text
+	 * @throws ParseException on non-numeric input
+	 */
+	private static int parseInt(final JTextField box) throws ParseException {
+		return NUM_PARSER.parse(box.getText().trim()).intValue();
+	}
+
+	/**
+	 * @param strings a collection of strings
+	 * @return true if any of them is non-numeric
+	 */
+	@SuppressWarnings("QuestionableName")
+	private static boolean areAnyNonNumeric(final String... strings) {
+		return Stream.of(strings)
+					   .anyMatch(string -> (string == null) || !isNumeric(string));
+	}
+
+	/**
+	 * Add a label and a field to a panel.
+	 *
+	 * @param panel the panel to hold them
+	 * @param text  the text to put on the label
+	 * @param field the text field, or similar, to add
+	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	private static void addLabeledField(final JPanel panel, final String text,
+										final JComponent field) {
+		panel.add(new JLabel(text));
+		panel.add(field);
+	}
+
+	/**
+	 * Fill a stat's text box with an appropriate randomly-generated one. Doesn't take
+	 * race into account.
+	 *
+	 * @param stat the field to fill
+	 */
+	private static void createSingleStat(final JTextField stat) {
+		final Random rng = SingletonRandom.RANDOM;
+		final int threeDeeSix = rng.nextInt(6) + rng.nextInt(6)
+										+ rng.nextInt(6) + 3;
+		stat.setText(Integer.toString(threeDeeSix));
+	}
+
+	/**
 	 * @return an explanation of what's wrong with the user's input.
 	 */
 	private String getErrorExplanation() {
@@ -223,58 +283,6 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
-	 * @param numbers a sequence of Pairs of supposedly-numeric Strings and what they
-	 *                represent. If any is non-numeric, the return String includes
-	 *                "such-and-such must be a number."
-	 * @return such an explanation
-	 */
-	@SafeVarargs
-	private static String numericExplanation(final Pair<String, String>... numbers) {
-		final StringBuilder builder = new StringBuilder(40);
-		for (final Pair<String, String> number : numbers) {
-			final String num = assertNotNull(number.first().trim());
-			if (!isNumeric(num)) {
-				builder.append(number.second());
-				builder.append(" must be a number.");
-				builder.append(LineEnd.LINE_SEP);
-			}
-		}
-		return assertNotNull(builder.toString());
-	}
-	/**
-	 * @param box a text field
-	 * @return the integer value of its text
-	 * @throws ParseException on non-numeric input
-	 */
-	private static int parseInt(final JTextField box) throws ParseException {
-		return NUM_PARSER.parse(box.getText().trim()).intValue();
-	}
-
-	/**
-	 * @param strings a collection of strings
-	 * @return true if any of them is non-numeric
-	 */
-	@SuppressWarnings("QuestionableName")
-	private static boolean areAnyNonNumeric(final String... strings) {
-		return Stream.of(strings)
-					.anyMatch(string -> (string == null) || !isNumeric(string));
-	}
-
-	/**
-	 * Add a label and a field to a panel.
-	 *
-	 * @param panel the panel to hold them
-	 * @param text  the text to put on the label
-	 * @param field the text field, or similar, to add
-	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void addLabeledField(final JPanel panel, final String text,
-										final JComponent field) {
-		panel.add(new JLabel(text));
-		panel.add(field);
-	}
-
-	/**
 	 * Randomly generate stats.
 	 */
 	private void createStats() {
@@ -286,19 +294,6 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 		createSingleStat(intel);
 		createSingleStat(wis);
 		createSingleStat(cha);
-	}
-
-	/**
-	 * Fill a stat's text box with an appropriate randomly-generated one. Doesn't take
-	 * race into account.
-	 *
-	 * @param stat the field to fill
-	 */
-	private static void createSingleStat(final JTextField stat) {
-		final Random rng = SingletonRandom.RANDOM;
-		final int threeDeeSix = rng.nextInt(6) + rng.nextInt(6)
-										+ rng.nextInt(6) + 3;
-		stat.setText(Integer.toString(threeDeeSix));
 	}
 
 	/**
@@ -316,22 +311,26 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	public void removeNewWorkerListener(final NewWorkerListener list) {
 		nwListeners.remove(list);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

@@ -21,8 +21,8 @@ import util.PatientMap;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the type of thing an implementer can report on
+ * @author Jonathan Lovelace
  */
 public interface IReportGenerator<T> {
 

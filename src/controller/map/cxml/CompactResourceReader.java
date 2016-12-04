@@ -74,14 +74,124 @@ public final class CompactResourceReader extends
 	 */
 	private static final Set<String> SUPP_TAGS =
 			NullCleaner.assertNotNull(Collections.unmodifiableSet(new HashSet<>(
-					Arrays.asList("cache", "grove", "orchard", "field",
-							"meadow", "mine", "mineral", "shrub", "stone"))));
+																					   Arrays.asList(
+																							   "cache",
+																							   "grove",
+																							   "orchard",
+																							   "field",
+																							   "meadow",
+																							   "mine",
+																							   "mineral",
+																							   "shrub",
+																							   "stone"))));
 
 	/**
 	 * Singleton.
 	 */
 	private CompactResourceReader() {
 		// Singleton.
+	}
+
+	/**
+	 * @param element a tag
+	 * @return the value of its 'dc' property.
+	 * @throws SPFormatException on SP format problem
+	 */
+	private static int getDC(final StartElement element)
+			throws SPFormatException {
+		return getIntegerParameter(element, "dc");
+	}
+
+	/**
+	 * Create a Meadow, to reduce code duplication between 'field' and 'meadow' cases.
+	 *
+	 * @param element the tag we're parsing
+	 * @param field   whether this is a field (meadow otherwise)
+	 * @param idNum   the ID number parsed or generated
+	 * @param warner  the Warning instance to use for warnings
+	 * @return the parsed Meadow object.
+	 * @throws SPFormatException on SP format problems
+	 */
+	private static HarvestableFixture createMeadow(final StartElement element,
+												   final boolean field, final int idNum,
+												   final Warning warner)
+			throws SPFormatException {
+		if (!hasParameter(element, STATUS_PAR)) {
+			warner.warn(new MissingPropertyException(element, STATUS_PAR));
+		}
+		return new Meadow(getParameter(element, KIND_PAR), field,
+								 parseBoolean(getParameter(element, CULTIVATED_PARAM)),
+								 idNum,
+								 FieldStatus.parse(getParameter(element, STATUS_PAR,
+										 FieldStatus.random(idNum).toString())));
+	}
+
+	/**
+	 * Create a Grove, to reduce code duplication between 'grove' and 'orchard' cases.
+	 *
+	 * @param element the tag we're parsing
+	 * @param orchard whether this is an orchard, a grove otherwise
+	 * @param idNum   the ID number parsed or generated
+	 * @param warner  the Warning instance to use for warnings
+	 * @return the parsed Grove object
+	 * @throws SPFormatException on SP format problems
+	 */
+	private static HarvestableFixture createGrove(final StartElement element,
+												  final boolean orchard, final int idNum,
+												  final Warning warner)
+			throws SPFormatException {
+		return new Grove(orchard, isCultivated(element, warner),
+								getParamWithDeprecatedForm(element, KIND_PAR, "tree",
+										warner),
+								idNum);
+	}
+
+	/**
+	 * @param element a tag representing a grove or orchard
+	 * @param warner  the Warning instance to use
+	 * @return whether the grove or orchard is cultivated
+	 * @throws SPFormatException on SP format problems: use of 'wild' if warnings are
+	 *                           fatal, or if both properties are missing.
+	 */
+	private static boolean isCultivated(final StartElement element,
+										final Warning warner) throws SPFormatException {
+		if (hasParameter(element, CULTIVATED_PARAM)) {
+			return parseBoolean(getParameter(element, CULTIVATED_PARAM));
+		} else {
+			if (hasParameter(element, "wild")) {
+				warner.warn(new DeprecatedPropertyException(element, "wild",
+																   CULTIVATED_PARAM));
+				return !parseBoolean(getParameter(element, "wild"));
+			} else {
+				throw new MissingPropertyException(element, CULTIVATED_PARAM);
+			}
+		}
+	}
+
+	/**
+	 * @param meadow a meadow or field
+	 * @return the proper tag for it
+	 */
+	@SuppressWarnings("TypeMayBeWeakened")
+	private static String getMeadowTag(final Meadow meadow) {
+		if (meadow.isField()) {
+			return "field";
+		} else {
+			return "meadow";
+		}
+	}
+
+	/**
+	 * @param grove a grove or orchard
+	 * @return the proper tag for it
+	 */
+	@SuppressWarnings("TypeMayBeWeakened")
+	private static String getGroveTag(final Grove grove) {
+		if (grove.isOrchard()) {
+			return "orchard";
+		} else {
+			return "grove";
+		}
 	}
 
 	/**
@@ -94,12 +204,13 @@ public final class CompactResourceReader extends
 	}
 
 	/**
-	 * @param element      the XML element to parse
-	 * @param parent	the parent tag
-	 *@param players   the collection of players
+	 * @param element   the XML element to parse
+	 * @param parent    the parent tag
+	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @param stream    the stream to read more elements from     @return the parsed resource
+	 * @param stream    the stream to read more elements from     @return the parsed
+	 *                  resource
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
@@ -107,7 +218,8 @@ public final class CompactResourceReader extends
 								   final QName parent,
 								   final IMutablePlayerCollection players,
 								   final Warning warner, final IDRegistrar idFactory,
-								   final Iterable<XMLEvent> stream) throws SPFormatException {
+								   final Iterable<XMLEvent> stream)
+			throws SPFormatException {
 		requireTag(element, parent, "cache", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
 		final int idNum = getOrGenerateID(element, warner, idFactory);
@@ -115,7 +227,7 @@ public final class CompactResourceReader extends
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "cache":
 			retval = new CacheFixture(getParameter(element, KIND_PAR),
-											getParameter(element, "contents"), idNum);
+											 getParameter(element, "contents"), idNum);
 			break;
 		case "field":
 			retval = createMeadow(element, true, idNum, warner);
@@ -129,9 +241,9 @@ public final class CompactResourceReader extends
 		case "mine":
 			retval = new Mine(getParamWithDeprecatedForm(element, KIND_PAR,
 					"product", warner),
-									TownStatus.parseTownStatus(
-											getParameter(element, STATUS_PAR)),
-									idNum);
+									 TownStatus.parseTownStatus(
+											 getParameter(element, STATUS_PAR)),
+									 idNum);
 			break;
 		case "mineral":
 			retval = new MineralVein(getParamWithDeprecatedForm(element, KIND_PAR,
@@ -159,82 +271,6 @@ public final class CompactResourceReader extends
 	}
 
 	/**
-	 * @param element a tag
-	 * @return the value of its 'dc' property.
-	 * @throws SPFormatException on SP format problem
-	 */
-	private static int getDC(final StartElement element)
-			throws SPFormatException {
-		return getIntegerParameter(element, "dc");
-	}
-
-	/**
-	 * Create a Meadow, to reduce code duplication between 'field' and 'meadow' cases.
-	 *
-	 * @param element the tag we're parsing
-	 * @param field   whether this is a field (meadow otherwise)
-	 * @param idNum   the ID number parsed or generated
-	 * @param warner  the Warning instance to use for warnings
-	 * @return the parsed Meadow object.
-	 * @throws SPFormatException on SP format problems
-	 */
-	private static HarvestableFixture createMeadow(final StartElement element,
-												final boolean field, final int idNum,
-												final Warning warner)
-			throws SPFormatException {
-		if (!hasParameter(element, STATUS_PAR)) {
-			warner.warn(new MissingPropertyException(element, STATUS_PAR));
-		}
-		return new Meadow(getParameter(element, KIND_PAR), field,
-								parseBoolean(getParameter(element, CULTIVATED_PARAM)),
-								idNum,
-								FieldStatus.parse(getParameter(element, STATUS_PAR,
-										FieldStatus.random(idNum).toString())));
-	}
-
-	/**
-	 * Create a Grove, to reduce code duplication between 'grove' and 'orchard' cases.
-	 *
-	 * @param element the tag we're parsing
-	 * @param orchard whether this is an orchard, a grove otherwise
-	 * @param idNum   the ID number parsed or generated
-	 * @param warner  the Warning instance to use for warnings
-	 * @return the parsed Grove object
-	 * @throws SPFormatException on SP format problems
-	 */
-	private static HarvestableFixture createGrove(final StartElement element,
-												final boolean orchard, final int idNum,
-												final Warning warner)
-			throws SPFormatException {
-		return new Grove(orchard, isCultivated(element, warner),
-								getParamWithDeprecatedForm(element, KIND_PAR, "tree",
-										warner),
-								idNum);
-	}
-
-	/**
-	 * @param element a tag representing a grove or orchard
-	 * @param warner  the Warning instance to use
-	 * @return whether the grove or orchard is cultivated
-	 * @throws SPFormatException on SP format problems: use of 'wild' if warnings are
-	 *                           fatal, or if both properties are missing.
-	 */
-	private static boolean isCultivated(final StartElement element,
-										final Warning warner) throws SPFormatException {
-		if (hasParameter(element, CULTIVATED_PARAM)) {
-			return parseBoolean(getParameter(element, CULTIVATED_PARAM));
-		} else {
-			if (hasParameter(element, "wild")) {
-				warner.warn(new DeprecatedPropertyException(element, "wild",
-																CULTIVATED_PARAM));
-				return !parseBoolean(getParameter(element, "wild"));
-			} else {
-				throw new MissingPropertyException(element, CULTIVATED_PARAM);
-			}
-		}
-	}
-
-	/**
 	 * Write an object to a stream.
 	 *
 	 * @param ostream The stream to write to.
@@ -244,7 +280,7 @@ public final class CompactResourceReader extends
 	 */
 	@Override
 	public void write(final Appendable ostream, final HarvestableFixture obj,
-					final int indent) throws IOException {
+					  final int indent) throws IOException {
 		if (obj instanceof CacheFixture) {
 			writeTag(ostream, "cache", indent);
 			final CacheFixture cache = (CacheFixture) obj;
@@ -304,32 +340,6 @@ public final class CompactResourceReader extends
 		ostream.append(imageXML(obj));
 		ostream.append(" />");
 		ostream.append(LineEnd.LINE_SEP);
-	}
-
-	/**
-	 * @param meadow a meadow or field
-	 * @return the proper tag for it
-	 */
-	@SuppressWarnings("TypeMayBeWeakened")
-	private static String getMeadowTag(final Meadow meadow) {
-		if (meadow.isField()) {
-			return "field";
-		} else {
-			return "meadow";
-		}
-	}
-
-	/**
-	 * @param grove a grove or orchard
-	 * @return the proper tag for it
-	 */
-	@SuppressWarnings("TypeMayBeWeakened")
-	private static String getGroveTag(final Grove grove) {
-		if (grove.isOrchard()) {
-			return "orchard";
-		} else {
-			return "grove";
-		}
 	}
 
 	/**

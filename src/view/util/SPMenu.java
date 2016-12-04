@@ -2,7 +2,7 @@ package view.util;
 
 import com.apple.eawt.Application;
 import com.bric.window.WindowList;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,11 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.InputMap;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
@@ -48,7 +44,7 @@ public class SPMenu extends JMenuBar implements MenuItemCreator {
 	 * @return the file menu
 	 */
 	protected JMenu createFileMenu(final ActionListener handler,
-										final IDriverModel model) {
+								   final IDriverModel model) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		final JMenuItem newItem = createMenuItem("New", KeyEvent.VK_N,
@@ -141,12 +137,12 @@ public class SPMenu extends JMenuBar implements MenuItemCreator {
 	 * takes any IDriverModel, because it's expected that apps where none of that makes
 	 * sense will show but disable the menu.
 	 *
-	 * @param model  the driver model
+	 * @param model   the driver model
 	 * @param handler the menu-item-handler
 	 * @return the menu created
 	 */
 	protected JMenu createMapMenu(final ActionListener handler,
-										final IDriverModel model) {
+								  final IDriverModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
 		final int findKey = KeyEvent.VK_F;
@@ -206,11 +202,11 @@ public class SPMenu extends JMenuBar implements MenuItemCreator {
 	/**
 	 * Create the "view" menu.
 	 *
-	 * @return the "edit" menu
 	 * @param handler the listener to handle item selections
+	 * @return the "edit" menu
 	 */
 	protected JMenu createViewMenu(final ActionListener handler,
-										  final IDriverModel model) {
+								   final IDriverModel model) {
 		final JMenu viewMenu = new JMenu("View");
 		viewMenu.setMnemonic(KeyEvent.VK_E);
 
@@ -257,22 +253,26 @@ public class SPMenu extends JMenuBar implements MenuItemCreator {
 		menu.setEnabled(false);
 		return menu;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

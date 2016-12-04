@@ -18,8 +18,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> The type itself.
+ * @author Jonathan Lovelace
  */
 @FunctionalInterface
 public interface Subsettable<T> {
@@ -39,10 +39,11 @@ public interface Subsettable<T> {
 	/**
 	 * A helper method to compare two items and, if they're not equal, report this to
 	 * the stream.
-	 * @param ostream the stream to write to
+	 *
+	 * @param ostream  the stream to write to
 	 * @param messages messages to write if the two aren't equal
-	 * @param first the first item
-	 * @param second the second item
+	 * @param first    the first item
+	 * @param second   the second item
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
@@ -59,18 +60,20 @@ public interface Subsettable<T> {
 			return false;
 		}
 	}
+
 	/**
 	 * A helper method to compare two items and, if they're not equal, report this to
 	 * the stream.
-	 * @param ostream the stream to write to
+	 *
+	 * @param ostream  the stream to write to
 	 * @param messages messages to write if the two aren't equal
-	 * @param first the first item
-	 * @param second the second item
+	 * @param first    the first item
+	 * @param second   the second item
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
 	default boolean areItemsEqual(final Appendable ostream, final boolean first,
-								final boolean second, final String... messages)
+								  final boolean second, final String... messages)
 			throws IOException {
 		if (first == second) {
 			return true;
@@ -81,18 +84,20 @@ public interface Subsettable<T> {
 			return false;
 		}
 	}
+
 	/**
 	 * A helper method to compare two items and, if they're not equal, report this to
 	 * the stream.
-	 * @param ostream the stream to write to
+	 *
+	 * @param ostream  the stream to write to
 	 * @param messages messages to write if the two aren't equal
-	 * @param first the first item
-	 * @param second the second item
+	 * @param first    the first item
+	 * @param second   the second item
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
 	default boolean areIntItemsEqual(final Appendable ostream, final int first,
-									final int second, final String... messages)
+									 final int second, final String... messages)
 			throws IOException {
 		if (first == second) {
 			return true;
@@ -103,11 +108,13 @@ public interface Subsettable<T> {
 			return false;
 		}
 	}
+
 	/**
 	 * A helper method to report a message to the stream if a condition isn't true.
-	 * @param ostream the stream to write to
+	 *
+	 * @param ostream   the stream to write to
 	 * @param condition the condition to check
-	 * @param messages the messages to write if it isn't true
+	 * @param messages  the messages to write if it isn't true
 	 * @return whether it's true
 	 * @throws IOException on error writing to the stream
 	 */

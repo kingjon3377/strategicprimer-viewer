@@ -47,6 +47,12 @@ public enum FieldStatus {
 	 */
 	private final String str;
 
+	static {
+		for (final FieldStatus status : values()) {
+			FST_MAP.put(status.str, status);
+		}
+	}
+
 	/**
 	 * Constructor.
 	 *
@@ -54,12 +60,6 @@ public enum FieldStatus {
 	 */
 	FieldStatus(final String desc) {
 		str = desc;
-	}
-
-	static {
-		for (final FieldStatus status : values()) {
-			FST_MAP.put(status.str, status);
-		}
 	}
 
 	/**
@@ -75,19 +75,19 @@ public enum FieldStatus {
 	}
 
 	/**
-	 * @return a string representation of the status
-	 */
-	@Override
-	public String toString() {
-		return str;
-	}
-
-	/**
 	 * @param seed a number to use to seed the RNG
 	 * @return a random status
 	 */
 	public static FieldStatus random(final int seed) {
 		return NullCleaner.assertNotNull(
 				values()[new Random(seed).nextInt(values().length)]);
+	}
+
+	/**
+	 * @return a string representation of the status
+	 */
+	@Override
+	public String toString() {
+		return str;
 	}
 }

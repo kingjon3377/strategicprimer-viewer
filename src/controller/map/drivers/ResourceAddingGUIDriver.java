@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import view.resources.ResourceAddingFrame;
@@ -28,9 +28,10 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-d", "--add-resource", ParamCount.AtLeastOne,
-								"Add resources to maps",
-								"Add resources for players to maps"
+								   "Add resources to maps",
+								   "Add resources for players to maps"
 			);
+
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
 	}
@@ -47,10 +48,9 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but
 	 * that may change.
 	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver-model that should be used by the app
+	 * @param model   the driver-model that should be used by the app
 	 * @throws DriverFailedException if the driver fails for some reason
 	 */
 	@Override
@@ -65,7 +65,7 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 		}
 		SwingUtilities.invokeLater(
 				() -> new ResourceAddingFrame(driverModel, new IOHandler(driverModel))
-							.setVisible(true));
+							  .setVisible(true));
 	}
 
 	/**

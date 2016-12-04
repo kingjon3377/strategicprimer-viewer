@@ -1,9 +1,6 @@
 package view.map.details;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,13 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 import model.map.HasImage;
@@ -53,82 +44,19 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(FixtureCellRenderer.class);
 	/**
-	 * the default fixture icon.
-	 */
-	private final Icon defaultFixtureIcon = createDefaultFixtureIcon();
-
-	/**
 	 * Default list renderer, for cases we don't know how to handle.
 	 */
 	private static final ListCellRenderer<Object> LIST_DEFAULT =
 			new DefaultListCellRenderer();
-
-	/**
-	 * @param list         the list being rendered
-	 * @param value        the object in the list that's being rendered
-	 * @param index        the index of the item that's being rendered
-	 * @param isSelected   whether the node is selected
-	 * @param cellHasFocus whether the tree has the focus
-	 * @return a component representing the cell
-	 */
-	@Override
-	public Component getListCellRendererComponent(@Nullable
-												final JList<? extends TileFixture> list,
-												final TileFixture value,
-												final int index,
-												final boolean isSelected,
-												final boolean cellHasFocus) {
-		assert list != null;
-		final Component component = LIST_DEFAULT.getListCellRendererComponent(
-				list, value, index, isSelected, cellHasFocus);
-		((JLabel) component).setText("<html><p>" + value + "</p></html>");
-		if (value instanceof HasImage) {
-			((JLabel) component).setIcon(getIcon((HasImage) value));
-		} else {
-			((JLabel) component).setIcon(defaultFixtureIcon);
-		}
-		component.setMaximumSize(new Dimension(component.getMaximumSize().width,
-													component.getMaximumSize().height *
-															2));
-		setComponentPreferredSize((JComponent) component, list.getWidth());
-		return component;
-	}
-
 	/**
 	 * A cache of icon filenames that aren't available.
 	 */
 	private static final Set<String> MISSING =
 			NullCleaner.assertNotNull(Collections.synchronizedSet(new HashSet<>()));
-
 	/**
-	 * @param obj a HasImage object
-	 * @return an icon representing it
+	 * the default fixture icon.
 	 */
-	@SuppressWarnings("StringConcatenationMissingWhitespace")
-	private Icon getIcon(final HasImage obj) {
-		String image = obj.getImage();
-		if (image.isEmpty() || MISSING.contains(image)) {
-			image = obj.getDefaultImage();
-		}
-		if (MISSING.contains(image)) {
-			return defaultFixtureIcon;
-		}
-		Icon retval;
-		try {
-			retval = ImageLoader.getLoader().loadIcon(image);
-		} catch (final FileNotFoundException|NoSuchFileException e) {
-			LOGGER.log(Level.SEVERE,
-					"image file images" + File.separatorChar + image + " not found");
-			LOGGER.log(Level.FINEST, "With stack trace", e);
-			MISSING.add(image);
-			retval = defaultFixtureIcon;
-		} catch (final IOException e) {
-			//noinspection HardcodedFileSeparator
-			LOGGER.log(Level.SEVERE, "I/O error reading image", e);
-			retval = defaultFixtureIcon;
-		}
-		return retval;
-	}
+	private final Icon defaultFixtureIcon = createDefaultFixtureIcon();
 
 	/**
 	 * @return the default icon for fixtures.
@@ -177,12 +105,74 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	 * @param width     the width we're working within
 	 */
 	private static void setComponentPreferredSize(final JComponent component,
-												final int width) {
+												  final int width) {
 		final View view = (View) component.getClientProperty(BasicHTML.propertyKey);
 		view.setSize(width, 0);
 		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
 		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
 		component.setPreferredSize(new Dimension(wid, height));
+	}
+
+	/**
+	 * @param list         the list being rendered
+	 * @param value        the object in the list that's being rendered
+	 * @param index        the index of the item that's being rendered
+	 * @param isSelected   whether the node is selected
+	 * @param cellHasFocus whether the tree has the focus
+	 * @return a component representing the cell
+	 */
+	@Override
+	public Component getListCellRendererComponent(@Nullable
+												  final JList<? extends TileFixture>
+															  list,
+												  final TileFixture value,
+												  final int index,
+												  final boolean isSelected,
+												  final boolean cellHasFocus) {
+		assert list != null;
+		final Component component = LIST_DEFAULT.getListCellRendererComponent(
+				list, value, index, isSelected, cellHasFocus);
+		((JLabel) component).setText("<html><p>" + value + "</p></html>");
+		if (value instanceof HasImage) {
+			((JLabel) component).setIcon(getIcon((HasImage) value));
+		} else {
+			((JLabel) component).setIcon(defaultFixtureIcon);
+		}
+		component.setMaximumSize(new Dimension(component.getMaximumSize().width,
+													  component.getMaximumSize().height *
+															  2));
+		setComponentPreferredSize((JComponent) component, list.getWidth());
+		return component;
+	}
+
+	/**
+	 * @param obj a HasImage object
+	 * @return an icon representing it
+	 */
+	@SuppressWarnings("StringConcatenationMissingWhitespace")
+	private Icon getIcon(final HasImage obj) {
+		String image = obj.getImage();
+		if (image.isEmpty() || MISSING.contains(image)) {
+			image = obj.getDefaultImage();
+		}
+		if (MISSING.contains(image)) {
+			return defaultFixtureIcon;
+		}
+		Icon retval;
+		try {
+			retval = ImageLoader.getLoader().loadIcon(image);
+		} catch (final FileNotFoundException | NoSuchFileException e) {
+			LOGGER.log(Level.SEVERE,
+					"image file images" + File.separatorChar + image + " not found");
+			LOGGER.log(Level.FINEST, "With stack trace", e);
+			MISSING.add(image);
+			retval = defaultFixtureIcon;
+		} catch (final IOException e) {
+			//noinspection HardcodedFileSeparator
+			LOGGER.log(Level.SEVERE, "I/O error reading image", e);
+			retval = defaultFixtureIcon;
+		}
+		return retval;
 	}
 
 	/**

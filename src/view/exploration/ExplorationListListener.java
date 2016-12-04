@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.ListModel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.exploration.HuntingModel;
 import model.exploration.IExplorationModel;
 import model.listeners.SelectionChangeListener;
@@ -59,93 +58,6 @@ public final class ExplorationListListener implements SelectionChangeListener {
 	 */
 	private final Collection<Pair<Point, Animal>> tracks = new ArrayList<>();
 	/**
-	 * Constructor.
-	 *
-	 * @param mainList the list this is attached to
-	 * @param explorationModel   the exploration model
-	 */
-	public ExplorationListListener(final IExplorationModel explorationModel,
-								final FixtureList mainList) {
-		model = explorationModel;
-		list = mainList;
-		huntingModel = new HuntingModel(model.getMap());
-		idf = IDFactoryFiller.createFactory(model);
-	}
-
-	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
-		SwingUtilities.invokeLater(this::randomizeSelection);
-	}
-
-	/**
-	 * Like a Pair<Integer, T>, but without the headaches induced by boxing an int into
-	 * Integer.
-	 *
-	 * TODO: If we start using Guava, use of this class should be replaced by
-	 * Multiset, or
-	 * something?
-	 *
-	 * @param <T> the type in question.
-	 * @author Jonathan Lovelace
-	 */
-	private static final class IntPair<@NonNull T> {
-		/**
-		 * The number in the pair.
-		 */
-		private final int number;
-		/**
-		 * The object in the pair.
-		 */
-		private final T object;
-
-		/**
-		 * Factory method.
-		 *
-		 * @param num the number in the pair
-		 * @param obj the object in the pair
-		 * @param <I> the type of object
-		 * @return the pair
-		 */
-		protected static <@NonNull I> IntPair<I> of(final int num, final I obj) {
-			return new IntPair<>(num, obj);
-		}
-
-		/**
-		 * Constructor. Use the factory method rather than this constructor.
-		 *
-		 * @param num the number in the pair
-		 * @param obj the object in the pair
-		 */
-		protected IntPair(final int num, final T obj) {
-			number = num;
-			object = obj;
-		}
-
-		/**
-		 * @return the number in the pair
-		 */
-		public int first() {
-			return number;
-		}
-
-		/**
-		 * @return the object in the pair
-		 */
-		@SuppressWarnings("unused")
-		public T second() {
-			return object;
-		}
-
-		/**
-		 * @return a String representation of the object
-		 */
-		@Override
-		public String toString() {
-			final String objStr = object.toString();
-			return String.format("(%d, %s)", Integer.valueOf(number), objStr);
-		}
-	}
-	/**
 	 * A "hunting model," to get the animals to have traces of.
 	 */
 	private final HuntingModel huntingModel;
@@ -157,6 +69,26 @@ public final class ExplorationListListener implements SelectionChangeListener {
 	 * Mutex.
 	 */
 	private boolean outsideCritical = true;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param mainList         the list this is attached to
+	 * @param explorationModel the exploration model
+	 */
+	public ExplorationListListener(final IExplorationModel explorationModel,
+								   final FixtureList mainList) {
+		model = explorationModel;
+		list = mainList;
+		huntingModel = new HuntingModel(model.getMap());
+		idf = IDFactoryFiller.createFactory(model);
+	}
+
+	@Override
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+		SwingUtilities.invokeLater(this::randomizeSelection);
+	}
+
 	/**
 	 * Select a suitable but randomized selection of fixtures. Do nothing if there is no
 	 * selected unit.
@@ -174,7 +106,9 @@ public final class ExplorationListListener implements SelectionChangeListener {
 			final List<IntPair<TileFixture>> possibles = new ArrayList<>();
 			int i = 0;
 			for (final TileFixture fix : new ListModelWrapper<>(
-					NullCleaner.assertNotNull(list.getModel()))) {
+																	   NullCleaner
+																			   .assertNotNull(
+																					   list.getModel()))) {
 				if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
 					constants.add(IntPair.of(i, fix));
 				} else if (SimpleMovement.shouldSometimesNotice(selUnit, fix)) {
@@ -223,8 +157,79 @@ public final class ExplorationListListener implements SelectionChangeListener {
 	public String toString() {
 		return "ExplorationListListener";
 	}
+
+	/**
+	 * Like a Pair<Integer, T>, but without the headaches induced by boxing an int into
+	 * Integer.
+	 *
+	 * TODO: If we start using Guava, use of this class should be replaced by
+	 * Multiset, or
+	 * something?
+	 *
+	 * @param <T> the type in question.
+	 * @author Jonathan Lovelace
+	 */
+	private static final class IntPair<@NonNull T> {
+		/**
+		 * The number in the pair.
+		 */
+		private final int number;
+		/**
+		 * The object in the pair.
+		 */
+		private final T object;
+
+		/**
+		 * Constructor. Use the factory method rather than this constructor.
+		 *
+		 * @param num the number in the pair
+		 * @param obj the object in the pair
+		 */
+		protected IntPair(final int num, final T obj) {
+			number = num;
+			object = obj;
+		}
+
+		/**
+		 * Factory method.
+		 *
+		 * @param num the number in the pair
+		 * @param obj the object in the pair
+		 * @param <I> the type of object
+		 * @return the pair
+		 */
+		protected static <@NonNull I> IntPair<I> of(final int num, final I obj) {
+			return new IntPair<>(num, obj);
+		}
+
+		/**
+		 * @return the number in the pair
+		 */
+		public int first() {
+			return number;
+		}
+
+		/**
+		 * @return the object in the pair
+		 */
+		@SuppressWarnings("unused")
+		public T second() {
+			return object;
+		}
+
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			final String objStr = object.toString();
+			return String.format("(%d, %s)", Integer.valueOf(number), objStr);
+		}
+	}
+
 	/**
 	 * A wrapper around a ListModel.
+	 *
 	 * @param <E> the type of thing in the list model.
 	 */
 	private static class ListModelWrapper<E> extends AbstractList<E> {
@@ -232,6 +237,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 		 * The wrapped object.
 		 */
 		private final ListModel<E> wrapped;
+
 		/**
 		 * @param listModel the wrapped object
 		 */
@@ -255,6 +261,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 		public int size() {
 			return wrapped.getSize();
 		}
+
 		/**
 		 * @return a diagnostic String
 		 */

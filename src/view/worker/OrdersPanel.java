@@ -9,15 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.function.BiFunction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -63,16 +55,6 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	 */
 	private final OrdersConsumer consumer;
 	/**
-	 * The current player.
-	 */
-	private Player player;
-	/**
-	 * The current selection.
-	 */
-	@Nullable
-	private Object sel = null;
-
-	/**
 	 * The text area in which the user writes the orders.
 	 */
 	private final JTextArea area = new JTextArea();
@@ -85,18 +67,30 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	 * proxying.
 	 */
 	private final BiFunction<Player, String, List<IUnit>> proxiedFunction;
+	/**
+	 * The current player.
+	 */
+	private Player player;
+	/**
+	 * The current selection.
+	 */
+	@Nullable
+	private Object sel = null;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param currentTurn the turn to treat as current to start with
-	 * @param currentPlayer the player whose units we start with
-	 * @param proxyingFunction A way to get all units belonging to the current player of
-	 *                            a given kind, for proxying
-	 * @param ordersSupplier the method to get the current orders for a given unit for a
-	 *                          given turn
-	 * @param ordersConsumer the method to set the current orders for a given unit for a
-	 *                          given turn
+	 * @param currentTurn      the turn to treat as current to start with
+	 * @param currentPlayer    the player whose units we start with
+	 * @param proxyingFunction A way to get all units belonging to the current player
+	 *                            of a
+	 *                         given kind, for proxying
+	 * @param ordersSupplier   the method to get the current orders for a given unit
+	 *                            for a
+	 *                         given turn
+	 * @param ordersConsumer   the method to set the current orders for a given unit
+	 *                            for a
+	 *                         given turn
 	 */
 	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	public OrdersPanel(final int currentTurn, final Player currentPlayer,
@@ -131,11 +125,12 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 		}
 		spinnerModel = new SpinnerNumberModel(initialTurn, minTurn, maxTurn, 1);
 		if (ordersConsumer == null) {
-			consumer = (unit, turn, orders) -> {};
+			consumer = (unit, turn, orders) -> {
+			};
 			setPageStart(horizontalPanel(
 					new JLabel("Results for current selection, if a unit"),
 					null, horizontalPanel(null,
-					new JLabel("Turn "), new JSpinner(spinnerModel))))
+							new JLabel("Turn "), new JSpinner(spinnerModel))))
 					.setCenter(new JScrollPane(area));
 		} else {
 			consumer = ordersConsumer;
@@ -163,7 +158,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 					new JLabel("Orders for current selection, if a unit: (" + prefix +
 									   "D)"), null,
 					horizontalPanel(null, new JLabel("Turn "),
-							new JSpinner(spinnerModel)))).setCenter(new JScrollPane(area))
+							new JSpinner(spinnerModel)))).setCenter(new JScrollPane
+																						(area))
 					.setPageEnd(buttonPanel);
 		}
 		area.addKeyListener(new ModifiedEnterListener());
@@ -175,13 +171,13 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, keyMask), "openOrders");
 		// Prevent synthetic access warning
 		final JTextArea localArea = area;
-		actionMap.put("openOrders", new ActionWrapper(evt ->  {
-				final boolean newlyGainingFocus = !localArea.isFocusOwner();
-				localArea.requestFocusInWindow();
-				if (newlyGainingFocus) {
-					localArea.selectAll();
-				}
-			}));
+		actionMap.put("openOrders", new ActionWrapper(evt -> {
+			final boolean newlyGainingFocus = !localArea.isFocusOwner();
+			localArea.requestFocusInWindow();
+			if (newlyGainingFocus) {
+				localArea.selectAll();
+			}
+		}));
 		// TODO: We really ought to support writing the orders *then* setting the turn
 		spinnerModel.addChangeListener(event -> revert());
 		player = currentPlayer;
@@ -209,7 +205,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	public void revert() {
 		if (sel instanceof IUnit) {
 			area.setText(
-					supplier.getOrders((IUnit) sel, spinnerModel.getNumber().intValue()));
+					supplier.getOrders((IUnit) sel, spinnerModel.getNumber().intValue
+																					 ()));
 		} else {
 			area.setText("");
 		}
@@ -248,32 +245,65 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		player = newPlayer;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a quasi-diagnostic String
 	 */
 	@Override
 	public String toString() {
 		return "OrdersPanel for player " + player;
+	}
+
+	/**
+	 * An interface for a function to give us the orders (or results) for a particular
+	 * unit for a particular turn.
+	 */
+	@FunctionalInterface
+	public interface OrdersSupplier {
+		/**
+		 * @param unit the unit whose orders (or results) are wanted
+		 * @param turn the turn for which the orders (or results) are wanted
+		 * @return the orders (or results) for that unit for that turn
+		 */
+		String getOrders(IUnit unit, int turn);
+	}
+
+	/**
+	 * An interface for a method to set the orders (or results) for a particular unit
+	 * for a particular turn.
+	 */
+	@FunctionalInterface
+	public interface OrdersConsumer {
+		/**
+		 * @param unit   the unit whose orders (or results) are being set
+		 * @param turn   the turn for which the orders (or results) are being set
+		 * @param orders the orders (or results) to set for that unit for that turn
+		 */
+		void setOrders(IUnit unit, int turn, String orders);
 	}
 
 	/**
@@ -306,6 +336,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 
 		/**
 		 * On Control-Enter, or Command-Enter on a Mac, calls apply().
+		 *
 		 * @param evt
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -317,31 +348,5 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 
 			}
 		}
-	}
-	/**
-	 * An interface for a function to give us the orders (or results) for a particular
-	 * unit for a particular turn.
-	 */
-	@FunctionalInterface
-	public interface OrdersSupplier {
-		/**
-		 * @param unit the unit whose orders (or results) are wanted
-		 * @param turn the turn for which the orders (or results) are wanted
-		 * @return the orders (or results) for that unit for that turn
-		 */
-		String getOrders(IUnit unit, int turn);
-	}
-	/**
-	 * An interface for a method to set the orders (or results) for a particular unit
-	 * for a particular turn.
-	 */
-	@FunctionalInterface
-	public interface OrdersConsumer {
-		/**
-		 * @param unit the unit whose orders (or results) are being set
-		 * @param turn the turn for which the orders (or results) are being set
-		 * @param orders the orders (or results) to set for that unit for that turn
-		 */
-		void setOrders(IUnit unit, int turn, String orders);
 	}
 }

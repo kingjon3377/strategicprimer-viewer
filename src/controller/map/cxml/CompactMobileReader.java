@@ -1,5 +1,6 @@
 package controller.map.cxml;
 
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Collections;
@@ -7,14 +8,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
-import controller.map.formatexceptions.SPFormatException;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasMutableImage;
@@ -35,6 +31,7 @@ import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
+import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
@@ -60,6 +57,11 @@ import util.Warning;
 public final class CompactMobileReader extends
 		AbstractCompactReader<@NonNull MobileFixture> {
 	/**
+	 * Singleton object.
+	 */
+	public static final CompactReader<@NonNull MobileFixture> READER =
+			new CompactMobileReader();
+	/**
 	 * List of supported tags.
 	 */
 	private static final Set<String> SUPP_TAGS;
@@ -67,17 +69,6 @@ public final class CompactMobileReader extends
 	 * Map from types to tags.
 	 */
 	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP;
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactReader<@NonNull MobileFixture> READER =
-			new CompactMobileReader();
-	/**
-	 * Singleton.
-	 */
-	private CompactMobileReader() {
-		// Singleton.
-	}
 
 	static {
 		TAG_MAP = new HashMap<>();
@@ -100,6 +91,69 @@ public final class CompactMobileReader extends
 	}
 
 	/**
+	 * Singleton.
+	 */
+	private CompactMobileReader() {
+		// Singleton.
+	}
+
+	/**
+	 * @param element the current tag
+	 * @return the value of its 'kind' parameter
+	 * @throws SPFormatException on SP format error---if the parameter is missing, e.g.
+	 */
+	private static String getKind(final StartElement element)
+			throws SPFormatException {
+		return getParameter(element, "kind");
+	}
+
+	/**
+	 * Create an animal.
+	 *
+	 * @param element the tag we're reading
+	 * @param idNum   the ID number to give it
+	 * @return the parsed animal
+	 * @throws SPFormatException on SP format error
+	 */
+	private static MobileFixture createAnimal(final StartElement element,
+											  final int idNum) throws SPFormatException {
+		return new Animal(
+								 getKind(element),
+								 hasParameter(element, "traces"),
+								 Boolean.parseBoolean(
+										 getParameter(element, "talking", "false")),
+								 getParameter(element, "status", "wild"), idNum);
+	}
+
+	/**
+	 * @param tag   the tag being read
+	 * @param idNum the ID # to give the fixture
+	 * @return the thing being read
+	 */
+	private static MobileFixture readSimple(final String tag, final int idNum) {
+		switch (tag) {
+		case "djinn":
+			return new Djinn(idNum);
+		case "griffin":
+			return new Griffin(idNum);
+		case "minotaur":
+			return new Minotaur(idNum);
+		case "ogre":
+			return new Ogre(idNum);
+		case "phoenix":
+			return new Phoenix(idNum);
+		case "simurgh":
+			return new Simurgh(idNum);
+		case "sphinx":
+			return new Sphinx(idNum);
+		case "troll":
+			return new Troll(idNum);
+		default:
+			throw new IllegalArgumentException("Unhandled mobile tag " + tag);
+		}
+	}
+
+	/**
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
@@ -111,7 +165,7 @@ public final class CompactMobileReader extends
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 *@param players   the collection of players
+	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed tile
@@ -165,34 +219,6 @@ public final class CompactMobileReader extends
 	}
 
 	/**
-	 * @param element the current tag
-	 * @return the value of its 'kind' parameter
-	 * @throws SPFormatException on SP format error---if the parameter is missing, e.g.
-	 */
-	private static String getKind(final StartElement element)
-			throws SPFormatException {
-		return getParameter(element, "kind");
-	}
-
-	/**
-	 * Create an animal.
-	 *
-	 * @param element the tag we're reading
-	 * @param idNum   the ID number to give it
-	 * @return the parsed animal
-	 * @throws SPFormatException on SP format error
-	 */
-	private static MobileFixture createAnimal(final StartElement element,
-											final int idNum) throws SPFormatException {
-		return new Animal(
-								getKind(element),
-								hasParameter(element, "traces"),
-								Boolean.parseBoolean(
-										getParameter(element, "talking", "false")),
-								getParameter(element, "status", "wild"), idNum);
-	}
-
-	/**
 	 * Write an object to a stream.
 	 *
 	 * @param ostream The stream to write to.
@@ -202,7 +228,7 @@ public final class CompactMobileReader extends
 	 */
 	@Override
 	public void write(final Appendable ostream, final MobileFixture obj,
-						final int indent) throws IOException {
+					  final int indent) throws IOException {
 		if (obj instanceof IUnit) {
 			CompactUnitReader.READER.write(ostream, (IUnit) obj, indent);
 		} else if (obj instanceof Animal) {
@@ -225,7 +251,8 @@ public final class CompactMobileReader extends
 			ostream.append('"').append(imageXML(animal)).append(" />");
 			ostream.append(LineEnd.LINE_SEP);
 		} else {
-			writeTag(ostream, NullCleaner.assertNotNull(TAG_MAP.get(obj.getClass())), indent);
+			writeTag(ostream, NullCleaner.assertNotNull(TAG_MAP.get(obj.getClass())),
+					indent);
 			if (obj instanceof HasKind) {
 				ostream.append(" kind=\"");
 				ostream.append(((HasKind) obj).getKind());
@@ -239,33 +266,6 @@ public final class CompactMobileReader extends
 			}
 			ostream.append(" />");
 			ostream.append(LineEnd.LINE_SEP);
-		}
-	}
-	/**
-	 * @param tag the tag being read
-	 *            @param idNum the ID # to give the fixture
-	 *                         @return the thing being read
-	 */
-	private static MobileFixture readSimple(final String tag, final int idNum) {
-		switch (tag) {
-		case "djinn":
-			return new Djinn(idNum);
-		case "griffin":
-			return new Griffin(idNum);
-		case "minotaur":
-			return new Minotaur(idNum);
-		case "ogre":
-			return new Ogre(idNum);
-		case "phoenix":
-			return new Phoenix(idNum);
-		case "simurgh":
-			return new Simurgh(idNum);
-		case "sphinx":
-			return new Sphinx(idNum);
-		case "troll":
-			return new Troll(idNum);
-		default:
-			throw new IllegalArgumentException("Unhandled mobile tag " + tag);
 		}
 	}
 

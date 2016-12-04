@@ -41,9 +41,26 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(TODOFixerDriver.class);
+	/**
+	 * A list of unit kinds (jobs) for plains etc.
+	 */
+	private final Collection<String> plainsList = new ArrayList<>();
+	/**
+	 * A list of unit kinds (jobs) for forest and jungle.
+	 */
+	private final Collection<String> forestList = new ArrayList<>();
+	/**
+	 * A list of unit kinds (jobs) for ocean.
+	 */
+	private final Collection<String> oceanList = new ArrayList<>();
+	/**
+	 * How many units we've fixed.
+	 */
+	private int count = -1;
 
 	/**
 	 * Search for and fix units with kinds missing.
+	 *
 	 * @param map the map we're operating on
 	 * @param cli the interface to the user
 	 */
@@ -52,44 +69,20 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 			final SimpleTerrain terrain = getTerrain(map, point);
 			map.streamOtherFixtures(point).filter(Unit.class::isInstance)
 					.map(Unit.class::cast).filter(unit -> "TODO".equals(unit.getKind()))
-					.forEach(unit -> fixUnit(NullCleaner.assertNotNull(unit), terrain, cli));
+					.forEach(unit -> fixUnit(NullCleaner.assertNotNull(unit), terrain,
+							cli));
 		}
 	}
 
-	/**
-	 * How many units we've fixed.
-	 */
-	private int count = -1;
-	/**
-	 * Possible kinds of terrain.
-	 */
-	private enum SimpleTerrain {
-		/**
-		 * Plains, desert, and mountains.
-		 */
-		Unforested,
-		/**
-		 * Temperate, forest, boreal forest, and steppe.
-		 */
-		Forested,
-		/**
-		 * Ocean.
-		 */
-		Ocean,
-		/**
-		 * Anything else.
-		 */
-		Other
-	}
 	/**
 	 * Fix a stubbed-out kind for a unit.
 	 *
 	 * @param unit    the unit to fix
 	 * @param terrain the terrain the unit is in
-	 * @param cli the helper to get input from the user
+	 * @param cli     the helper to get input from the user
 	 */
 	private void fixUnit(final Unit unit, final SimpleTerrain terrain,
-						final ICLIHelper cli) {
+						 final ICLIHelper cli) {
 		final Random random = new Random(unit.getID());
 		count++;
 		final Collection<String> jobList;
@@ -135,20 +128,7 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	}
 
 	/**
-	 * A list of unit kinds (jobs) for plains etc.
-	 */
-	private final Collection<String> plainsList = new ArrayList<>();
-	/**
-	 * A list of unit kinds (jobs) for forest and jungle.
-	 */
-	private final Collection<String> forestList = new ArrayList<>();
-	/**
-	 * A list of unit kinds (jobs) for ocean.
-	 */
-	private final Collection<String> oceanList = new ArrayList<>();
-
-	/**
-	 * @param map the map we're dealing with
+	 * @param map      the map we're dealing with
 	 * @param location a location in the map
 	 * @return the kind of terrain, with very coarse granularity, here
 	 */
@@ -173,8 +153,9 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 			return SimpleTerrain.Unforested; // Should never get here, but ...
 		}
 	}
+
 	/**
-	 * @param map the map we're dealing with
+	 * @param map      the map we're dealing with
 	 * @param location a location
 	 * @return the appropriate terrain for it if it is plains
 	 */
@@ -185,12 +166,13 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 			return SimpleTerrain.Forested;
 		}
 	}
+
 	/**
 	 * Run the driver.
 	 *
 	 * @param cli
 	 * @param options options passed to the driver
-	 * @param model the driver model to operate on
+	 * @param model   the driver model to operate on
 	 */
 	@SuppressWarnings("NestedTryStatement")
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
@@ -198,7 +180,8 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
 																		   model)
-																		  .getAllMaps()) {
+																		  .getAllMaps
+																				   ()) {
 				fixAllUnits(pair.first(), cli);
 			}
 		} else {
@@ -213,5 +196,27 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	@Override
 	public String toString() {
 		return "TODOFixerDriver";
+	}
+
+	/**
+	 * Possible kinds of terrain.
+	 */
+	private enum SimpleTerrain {
+		/**
+		 * Plains, desert, and mountains.
+		 */
+		Unforested,
+		/**
+		 * Temperate, forest, boreal forest, and steppe.
+		 */
+		Forested,
+		/**
+		 * Ocean.
+		 */
+		Ocean,
+		/**
+		 * Anything else.
+		 */
+		Other
 	}
 }

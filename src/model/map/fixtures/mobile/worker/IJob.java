@@ -35,6 +35,7 @@ public interface IJob
 							"research", "carpentry", "woodcutting", "farming",
 							"food gathering", "scientist", "woodcutter", "farmer",
 							"brickmaker", "brickmaking", "administration")));
+
 	/**
 	 * Add a skill.
 	 *

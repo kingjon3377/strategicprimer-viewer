@@ -1,17 +1,15 @@
 package controller.map.cxml;
 
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-
-import controller.map.formatexceptions.SPFormatException;
 import model.map.HasImage;
 import model.map.HasMutableImage;
 import model.map.IMutablePlayerCollection;
@@ -48,7 +46,8 @@ public final class CompactTerrainReader extends
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactReader<TerrainFixture> READER = new CompactTerrainReader();
+	public static final CompactReader<TerrainFixture> READER = new
+																	   CompactTerrainReader();
 	/**
 	 * List of supported tags.
 	 */
@@ -74,8 +73,8 @@ public final class CompactTerrainReader extends
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param parent	the parent tag
-	 *@param players   the collection of players
+	 * @param parent    the parent tag
+	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed tile
@@ -83,9 +82,11 @@ public final class CompactTerrainReader extends
 	 */
 	@Override
 	public TerrainFixture read(final StartElement element,
-							   final QName parent, final IMutablePlayerCollection players,
+							   final QName parent, final IMutablePlayerCollection
+														   players,
 							   final Warning warner, final IDRegistrar idFactory,
-							   final Iterable<XMLEvent> stream) throws SPFormatException {
+							   final Iterable<XMLEvent> stream) throws
+			SPFormatException {
 		requireTag(element, parent, "forest", "hill", "mountain", "oasis", "sandbar");
 		final TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
@@ -107,7 +108,7 @@ public final class CompactTerrainReader extends
 			break;
 		default:
 			throw new IllegalArgumentException("Unhandled terrain fixture tag " +
-													element.getName().getLocalPart());
+													   element.getName().getLocalPart());
 		}
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		((HasMutableImage) retval).setImage(getParameter(element, "image", ""));
@@ -124,7 +125,7 @@ public final class CompactTerrainReader extends
 	 */
 	@Override
 	public void write(final Appendable ostream, final TerrainFixture obj,
-					final int indent) throws IOException {
+					  final int indent) throws IOException {
 		if (obj instanceof Mountain) {
 			writeTag(ostream, "mountain", indent);
 			ostream.append(imageXML((Mountain) obj)).append(" />");

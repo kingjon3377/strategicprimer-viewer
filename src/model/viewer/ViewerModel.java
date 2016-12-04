@@ -29,14 +29,10 @@ import util.Pair;
  *
  * @author Jonathan Lovelace
  *
- * TODO: tests
+ *         TODO: tests
  */
 public final class ViewerModel extends SimpleDriverModel implements
 		IViewerModel {
-	/**
-	 * The current zoom level.
-	 */
-	private int zoomLevel = DEF_ZOOM_LEVEL;
 	/**
 	 * The starting zoom level.
 	 */
@@ -45,26 +41,26 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 * The maximum zoom level, to make sure that the tile size never overflows.
 	 */
 	private static final int MAX_ZOOM_LEVEL = Integer.MAX_VALUE / 4;
-
 	/**
 	 * The list of graphical-parameter listeners.
 	 */
 	private final Collection<GraphicalParamsListener> gpListeners = new ArrayList<>();
-
-	/**
-	 * The currently selected point in the main map.
-	 */
-	private Point selPoint;
-
-	/**
-	 * The visible dimensions of the map.
-	 */
-	private VisibleDimensions dimensions;
-
 	/**
 	 * The object to handle notifying selection-change listeners.
 	 */
 	private final SelectionChangeSupport scs = new SelectionChangeSupport();
+	/**
+	 * The current zoom level.
+	 */
+	private int zoomLevel = DEF_ZOOM_LEVEL;
+	/**
+	 * The currently selected point in the main map.
+	 */
+	private Point selPoint;
+	/**
+	 * The visible dimensions of the map.
+	 */
+	private VisibleDimensions dimensions;
 
 	/**
 	 * Constructor.
@@ -74,18 +70,21 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 */
 	public ViewerModel(final IMutableMapNG firstMap, final Optional<Path> file) {
 		dimensions = new VisibleDimensions(0, firstMap.dimensions().rows - 1, 0,
-												firstMap.dimensions().cols - 1);
+												  firstMap.dimensions().cols - 1);
 		selPoint = PointFactory.point(-1, -1);
 		setMap(firstMap, file);
 	}
+
 	/**
 	 * Constructor.
-	 * @param pair a Pair of the initial map and the name it was loaded from or should
-	 *                be saved to
+	 *
+	 * @param pair a Pair of the initial map and the name it was loaded from or should be
+	 *             saved to
 	 */
 	public ViewerModel(final Pair<IMutableMapNG, Optional<Path>> pair) {
 		this(pair.first(), pair.second());
 	}
+
 	/**
 	 * Copy constructor.
 	 *
@@ -97,7 +96,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 			selPoint = ((IViewerModel) model).getSelectedPoint();
 		} else {
 			dimensions = new VisibleDimensions(0, model.getMapDimensions().rows - 1, 0,
-													model.getMapDimensions().cols - 1);
+													  model.getMapDimensions().cols - 1);
 			selPoint = PointFactory.point(-1, -1);
 		}
 		setMap(model.getMap(), model.getMapFile());
@@ -105,14 +104,14 @@ public final class ViewerModel extends SimpleDriverModel implements
 
 	/**
 	 * @param newMap the new map
-	 * @param origin   the file the map was loaded from or should be saved to
+	 * @param origin the file the map was loaded from or should be saved to
 	 */
 	@Override
 	public void setMap(final IMutableMapNG newMap, final Optional<Path> origin) {
 		super.setMap(newMap, origin);
 		clearSelection();
 		setDimensions(new VisibleDimensions(0, newMap.dimensions().rows - 1, 0,
-												newMap.dimensions().cols - 1));
+												   newMap.dimensions().cols - 1));
 		resetZoom();
 	}
 
@@ -138,6 +137,14 @@ public final class ViewerModel extends SimpleDriverModel implements
 	}
 
 	/**
+	 * @return the visible dimensions of the map
+	 */
+	@Override
+	public VisibleDimensions getDimensions() {
+		return dimensions;
+	}
+
+	/**
 	 * @param dim the new visible dimensions of the map
 	 */
 	@Override
@@ -146,14 +153,6 @@ public final class ViewerModel extends SimpleDriverModel implements
 			list.dimensionsChanged(dimensions, dim);
 		}
 		dimensions = dim;
-	}
-
-	/**
-	 * @return the visible dimensions of the map
-	 */
-	@Override
-	public VisibleDimensions getDimensions() {
-		return dimensions;
 	}
 
 	/**

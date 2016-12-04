@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
-import javax.swing.JTree;
-import javax.swing.TransferHandler;
+import javax.swing.*;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import model.map.fixtures.UnitMember;
@@ -30,19 +28,25 @@ import util.TypesafeLogger;
  * Lovelace.
  *
  * Based on the tutorial found on the
- * <a href="http://www.javaprogrammingforums.com/java-swing-tutorials/3141-drag-drop-jtrees.html">Java Programming Forums</a>
+ * <a href="http://www.javaprogrammingforums.com/java-swing-tutorials/3141-drag-drop-jtrees.html">Java
+ * Programming Forums</a>
  *
  * Copyright (C) 2013-2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
- * Foundation; see COPYING or
- * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * Foundation; see COPYING or <a href="http://www.gnu.org/licenses/">http://www.gnu
+ * .org/licenses/</a>.
  *
  * @author helloworld922
  * @author Jonathan Lovelace
  */
 public final class WorkerTreeTransferHandler extends TransferHandler {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(WorkerTreeTransferHandler.class);
 	/**
 	 * The tree's selection model.
 	 */
@@ -53,16 +57,10 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	private final IWorkerTreeModel model;
 
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER =
-			TypesafeLogger.getLogger(WorkerTreeTransferHandler.class);
-
-	/**
 	 * Constructor.
 	 *
-	 * @param selModel the tree's selection model
-	 * @param treeModel   the tree's data model
+	 * @param selModel  the tree's selection model
+	 * @param treeModel the tree's data model
 	 */
 	protected WorkerTreeTransferHandler(final TreeSelectionModel selModel,
 										final IWorkerTreeModel treeModel) {
@@ -75,7 +73,8 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 * @return the actions we support
 	 */
 	@SuppressWarnings(
-			{"MethodReturnAlwaysConstant", "ParameterNameDiffersFromOverriddenParameter"})
+			{"MethodReturnAlwaysConstant",
+					"ParameterNameDiffersFromOverriddenParameter"})
 	@Override
 	public int getSourceActions(@Nullable final JComponent component) {
 		return TransferHandler.MOVE;
@@ -185,7 +184,8 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 							(Iterable<Pair<UnitMember, IUnit>>) trans.getTransferData(
 									UnitMemberTransferable.FLAVOR);
 					for (final Pair<UnitMember, IUnit> pair : list) {
-						model.moveMember(pair.first(), pair.second(), (IUnit) tempTarget);
+						model.moveMember(pair.first(), pair.second(), (IUnit)
+																			  tempTarget);
 					}
 					return true;
 				} catch (final UnsupportedFlavorException except) {
@@ -216,22 +216,26 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	public String toString() {
 		return "WorkerTreeTransferHandler";
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

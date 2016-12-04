@@ -41,6 +41,12 @@ public enum TownSize {
 	 */
 	private final String sizeStr;
 
+	static {
+		for (final TownSize tsz : values()) {
+			TSZ_MAP.put(tsz.sizeStr, tsz);
+		}
+	}
+
 	/**
 	 * Constructor.
 	 *
@@ -48,12 +54,6 @@ public enum TownSize {
 	 */
 	TownSize(final String str) {
 		sizeStr = str;
-	}
-
-	static {
-		for (final TownSize tsz : values()) {
-			TSZ_MAP.put(tsz.sizeStr, tsz);
-		}
 	}
 
 	/**

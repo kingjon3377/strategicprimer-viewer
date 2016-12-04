@@ -26,10 +26,13 @@ import util.LineEnd;
 public class Centaur
 		implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
 	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
 	 * What kind of centaur.
 	 */
 	private String kind;
-
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -67,6 +70,14 @@ public class Centaur
 	}
 
 	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
+	}
+
+	/**
 	 * @return a String representation of the centaur
 	 */
 	@Override
@@ -89,8 +100,8 @@ public class Centaur
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Centaur)
-										&& ((Centaur) obj).kind.equals(kind)
-										&& (((Centaur) obj).id == id));
+										 && ((Centaur) obj).kind.equals(kind)
+										 && (((Centaur) obj).id == id));
 	}
 
 	/**
@@ -100,11 +111,6 @@ public class Centaur
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -159,11 +165,11 @@ public class Centaur
 	}
 
 	/**
-	 * @param nKind the new kind
+	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
+	public String getImage() {
+		return image;
 	}
 
 	/**
@@ -172,14 +178,6 @@ public class Centaur
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**

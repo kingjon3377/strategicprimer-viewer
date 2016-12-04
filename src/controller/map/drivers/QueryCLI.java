@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,9 +56,10 @@ public final class QueryCLI implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-q", "--query", ParamCount.One,
-								"Answer questions about a map.",
-								"Look at tiles on a map. Or run hunting, gathering, " +
-										"or fishing."
+								   "Answer questions about a map.",
+								   "Look at tiles on a map. Or run hunting, gathering," +
+										   " " +
+										   "or fishing."
 			);
 
 	/**
@@ -79,7 +79,7 @@ public final class QueryCLI implements SimpleDriver {
 	/**
 	 * @param options options passed to the driver
 	 * @param model   the driver model containing the map to explore
-	 * @param cli the interface to the user
+	 * @param cli     the interface to the user
 	 */
 	private static void repl(final SPOptions options, final IDriverModel model,
 							 final ICLIHelper cli) {
@@ -97,17 +97,18 @@ public final class QueryCLI implements SimpleDriver {
 	}
 
 	/**
-	 * @param options options passed to the driver
-	 * @param model   the driver model
-	 * @param huntModel  the hunting model
-	 * @param cli the interface to the user
-	 * @param input   the command
+	 * @param options   options passed to the driver
+	 * @param model     the driver model
+	 * @param huntModel the hunting model
+	 * @param cli       the interface to the user
+	 * @param input     the command
 	 * @throws IOException           on I/O error
 	 * @throws DriverFailedException on I/O error in trap-model driver
 	 */
 	public static void handleCommand(final SPOptions options, final IDriverModel model,
-			final HuntingModel huntModel, final ICLIHelper cli, final char input)
-					throws IOException, DriverFailedException {
+									 final HuntingModel huntModel, final ICLIHelper cli,
+									 final char input)
+			throws IOException, DriverFailedException {
 		switch (input) {
 		case '?':
 			usage(cli);
@@ -163,11 +164,11 @@ public final class QueryCLI implements SimpleDriver {
 	 *
 	 * @param map     the map
 	 * @param players the list of players in the map
-	 * @param cli the interface to the user
+	 * @param cli     the interface to the user
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void count(final IMapNG map, final List<Player> players,
-							final ICLIHelper cli) throws IOException {
+							  final ICLIHelper cli) throws IOException {
 		final int playerNum = cli.chooseFromList(players,
 				"Players in the map:", "Map contains no players",
 				"Owner of workers to count: ", true);
@@ -180,16 +181,16 @@ public final class QueryCLI implements SimpleDriver {
 			for (final TileFixture fix : map.getOtherFixtures(loc)) {
 				if ((fix instanceof IUnit) && player.equals(((IUnit) fix).getOwner())) {
 					count += StreamSupport.stream(((IUnit) fix).spliterator(), false)
-									.filter(IWorker.class::isInstance).count();
+									 .filter(IWorker.class::isInstance).count();
 				} else if (fix instanceof Fortress) {
 					count += StreamSupport.stream(((Fortress) fix).spliterator(), false)
-									.filter(IUnit.class::isInstance)
-									.map(IUnit.class::cast)
-									.filter(unit -> player.equals(unit.getOwner()))
-									.flatMap(unit -> StreamSupport
-															.stream(unit.spliterator(),
-																	false))
-									.filter(IWorker.class::isInstance).count();
+									 .filter(IUnit.class::isInstance)
+									 .map(IUnit.class::cast)
+									 .filter(unit -> player.equals(unit.getOwner()))
+									 .flatMap(unit -> StreamSupport
+															  .stream(unit.spliterator(),
+																	  false))
+									 .filter(IWorker.class::isInstance).count();
 				}
 			}
 		}
@@ -201,8 +202,8 @@ public final class QueryCLI implements SimpleDriver {
 	 *
 	 * TODO: use some sort of pathfinding
 	 *
-	 * @param dims    the dimensions of the map
-	 * @param cli the interface to the user
+	 * @param dims the dimensions of the map
+	 * @param cli  the interface to the user
 	 * @throws IOException on I/O error dealing with user input
 	 */
 	private static void distance(final MapDimensions dims, final ICLIHelper cli)
@@ -220,7 +221,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @return the distance between the two points
 	 */
 	private static double distance(final Point base, final Point dest,
-								final MapDimensions dims) {
+								   final MapDimensions dims) {
 		final int rawXDiff = base.getRow() - dest.getRow();
 		final int rawYDiff = base.getCol() - dest.getCol();
 		final int xDiff;
@@ -238,11 +239,13 @@ public final class QueryCLI implements SimpleDriver {
 		return Math.round(Math.sqrt((xDiff * xDiff) + (yDiff * yDiff)));
 
 	}
+
 	/**
 	 * Run herding.
 	 *
-	 * @param cli the interface to the user
-	 * @param huntModel the hunting model (used for hours remaining after herding is done)
+	 * @param cli       the interface to the user
+	 * @param huntModel the hunting model (used for hours remaining after herding is
+	 *                  done)
 	 * @throws IOException on I/O error dealing with user input
 	 */
 	private static void herd(final ICLIHelper cli, final HuntingModel huntModel)
@@ -283,7 +286,8 @@ public final class QueryCLI implements SimpleDriver {
 			final int hours;
 			if (poultry) {
 				cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",
-						Integer.valueOf(animalsPerHerder * herdModel.getDailyTimePerHead()));
+						Integer.valueOf(
+								animalsPerHerder * herdModel.getDailyTimePerHead()));
 				cli.printf(
 						"which should be done every %d turns at least, takes %.1f " +
 								"hours.%n",
@@ -295,7 +299,8 @@ public final class QueryCLI implements SimpleDriver {
 						Double.valueOf(herdModel.getProductionPerHead() * count),
 						herdModel.getProductionUnit(),
 						Double.valueOf(herdModel.getProductionPerHead() *
-											   herdModel.getPoundsCoefficient() * count));
+											   herdModel.getPoundsCoefficient() *
+											   count));
 				if (cli.inputBooleanInSeries("Do they do the cleaning this turn? ")) {
 					hours = round.applyAsInt(
 							(animalsPerHerder * (herdModel.getDailyTimePerHead() +
@@ -310,7 +315,8 @@ public final class QueryCLI implements SimpleDriver {
 			} else {
 				cli.printf("Tending the animals takes %d minutes, or %d minutes with ",
 						Integer.valueOf(
-								(animalsPerHerder * herdModel.getDailyTimePerHead()) / 2),
+								(animalsPerHerder * herdModel.getDailyTimePerHead()) /
+										2),
 						Integer.valueOf(animalsPerHerder *
 												((herdModel.getDailyTimePerHead() / 2) -
 														 5)));
@@ -321,7 +327,8 @@ public final class QueryCLI implements SimpleDriver {
 						Double.valueOf(herdModel.getProductionPerHead() * count),
 						herdModel.getProductionUnit(),
 						Double.valueOf(herdModel.getProductionPerHead() *
-											   herdModel.getPoundsCoefficient() * count));
+											   herdModel.getPoundsCoefficient() *
+											   count));
 				if (cli.inputBooleanInSeries("Are the herders experts? ")) {
 					hours = round.applyAsInt(
 							((animalsPerHerder * (herdModel.getDailyTimePerHead() - 5)) +
@@ -333,7 +340,8 @@ public final class QueryCLI implements SimpleDriver {
 				}
 			}
 			if ((hours < HUNTER_HOURS) &&
-						cli.inputBooleanInSeries("Spend remaining time as Food Gatherers? ")) {
+						cli.inputBooleanInSeries(
+								"Spend remaining time as Food Gatherers? ")) {
 				gather(huntModel, cli.inputPoint("Gathering location? "), cli,
 						HUNTER_HOURS - hours);
 			}
@@ -343,15 +351,15 @@ public final class QueryCLI implements SimpleDriver {
 	/**
 	 * Run hunting, fishing, or trapping.
 	 *
-	 * @param huntModel     the hunting model
+	 * @param huntModel  the hunting model
 	 * @param point      where to hunt or fish
 	 * @param land       true if this is hunting, false if fishing
-	 * @param cli the interface to the user
+	 * @param cli        the interface to the user
 	 * @param encounters how many encounters to show
 	 */
 	private static void hunt(final HuntingModel huntModel, final Point point,
-							final boolean land, final ICLIHelper cli,
-							final int encounters) {
+							 final boolean land, final ICLIHelper cli,
+							 final int encounters) {
 		if (land) {
 			huntModel.hunt(point, encounters).forEach(cli::println);
 		} else {
@@ -362,13 +370,13 @@ public final class QueryCLI implements SimpleDriver {
 	/**
 	 * Run food-gathering.
 	 *
-	 * @param huntModel     the hunting model to get results from
+	 * @param huntModel  the hunting model to get results from
 	 * @param point      around where to gather
-	 * @param cli the interface to the user
+	 * @param cli        the interface to the user
 	 * @param encounters how many encounters to show
 	 */
 	private static void gather(final HuntingModel huntModel, final Point point,
-							final ICLIHelper cli, final int encounters) {
+							   final ICLIHelper cli, final int encounters) {
 		huntModel.gather(point, encounters).forEach(cli::println);
 	}
 
@@ -378,10 +386,10 @@ public final class QueryCLI implements SimpleDriver {
 	 *
 	 * @param map      the map
 	 * @param location the selected location
-	 * @param cli the interface to the user
+	 * @param cli      the interface to the user
 	 */
 	private static void fortressInfo(final IMapNG map, final Point location,
-									final ICLIHelper cli) {
+									 final ICLIHelper cli) {
 		cli.print("Terrain is ");
 		cli.println(NullCleaner.assertNotNull(map.getBaseTerrain(location).toString()));
 		final List<TileFixture> fixtures =
@@ -414,8 +422,9 @@ public final class QueryCLI implements SimpleDriver {
 			forests.stream().map(Object::toString).forEach(cli::println);
 		}
 	}
+
 	/**
-	 * @param map the map
+	 * @param map  the map
 	 * @param base the starting point
 	 * @return the nearest obviously-reachable unexplored point
 	 */
@@ -448,14 +457,6 @@ public final class QueryCLI implements SimpleDriver {
 			return Optional.of(retval.get(0));
 		}
 	}
-	/**
-	 * @return a String representation of the object.
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "QueryCLI";
-	}
 
 	/**
 	 * Prints a usage message.
@@ -468,7 +469,8 @@ public final class QueryCLI implements SimpleDriver {
 		cli.println("about his fortress's tile.");
 		final Integer encounters = Integer.valueOf(HUNTER_HOURS * HOURLY_ENCOUNTERS);
 		//noinspection HardcodedFileSeparator
-		cli.printf("Hunt/fIsh: Generates up to %d encounters with animals.%n", encounters);
+		cli.printf("Hunt/fIsh: Generates up to %d encounters with animals.%n",
+				encounters);
 		cli.printf("Gather: Generates up to %d encounters with fields, meadows, ",
 				encounters);
 		cli.println("groves, orchards, or shrubs.");
@@ -483,12 +485,20 @@ public final class QueryCLI implements SimpleDriver {
 	}
 
 	/**
+	 * @return a String representation of the object.
+	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
+	@Override
+	public String toString() {
+		return "QueryCLI";
+	}
+
+	/**
 	 * Run the driver.
 	 *
-	 *
-	 * @param cli the interface for console I/O
+	 * @param cli     the interface for console I/O
 	 * @param options options passed to the driver
-	 * @param model the driver model
+	 * @param model   the driver model
 	 */
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
@@ -499,11 +509,9 @@ public final class QueryCLI implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
-	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param args command-line arguments
+	 * @param args    command-line arguments
 	 * @throws DriverFailedException if something goes wrong
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")

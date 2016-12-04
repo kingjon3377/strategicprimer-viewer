@@ -1,6 +1,6 @@
 package view.exploration;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -16,12 +16,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import model.exploration.IExplorationModel;
@@ -64,18 +59,30 @@ import view.util.SplitWithWeights;
 public final class ExplorationPanel extends BorderedPanel
 		implements SelectionChangeListener, CompletionSource, MovementCostListener {
 	/**
+	 * A parser for numeric input.
+	 */
+	private static final NumberFormat NUM_PARSER =
+			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER =
+			NullCleaner.assertNotNull(Logger.getLogger(ExplorationPanel.class.getName
+																					  ()));
+	/**
 	 * The label showing the current location of the explorer.
 	 */
 	private final JLabel locLabel = new JLabel("<html><body>Currently exploring (-1, " +
-													"-1); click a tile to explore it." +
-													" Selected fixtures in its left-hand" +
-													" list will be 'discovered'." +
-													"</body></html>");
+													   "-1); click a tile to explore it" +
+													   "." +
+													   " Selected fixtures in its " +
+													   "left-hand" +
+													   " list will be 'discovered'." +
+													   "</body></html>");
 	/**
 	 * The list of completion listeners listening to us.
 	 */
 	private final Collection<CompletionListener> cListeners = new ArrayList<>();
-
 	/**
 	 * The text-field containing the running MP total.
 	 */
@@ -99,6 +106,35 @@ public final class ExplorationPanel extends BorderedPanel
 	 * A source of matchers to determine which fixtures to draw on top.
 	 */
 	private final Iterable<FixtureMatcher> matchers = new FixtureFilterTableModel();
+	/**
+	 * The exploration model.
+	 */
+	private final IExplorationModel model;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param explorationModel the exploration model.
+	 * @param mpDoc            the model underlying the remaining-MP text boxes.
+	 */
+	public ExplorationPanel(final IExplorationModel explorationModel,
+							final Document mpDoc) {
+		model = explorationModel;
+		final JPanel headerPanel = new BoxPanel(true);
+		headerPanel.add(new ListenedButton("Select a different explorer", evt -> {
+			for (final CompletionListener list : cListeners) {
+				list.finished();
+			}
+		}));
+		headerPanel.add(locLabel);
+		headerPanel.add(new JLabel("Remaining Movement Points: "));
+		mpDocument = mpDoc;
+		final JPanel mpPanel = new JPanel();
+		mpPanel.add(new JTextField(mpDocument, null, 5));
+		headerPanel.add(mpPanel);
+		setCenter(SplitWithWeights.verticalSplit(0.5, 0.5, headerPanel,
+				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
+	}
 
 	/**
 	 * @param direction a direction
@@ -152,36 +188,6 @@ public final class ExplorationPanel extends BorderedPanel
 	}
 
 	/**
-	 * The exploration model.
-	 */
-	private final IExplorationModel model;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param explorationModel the exploration model.
-	 * @param mpDoc  the model underlying the remaining-MP text boxes.
-	 */
-	public ExplorationPanel(final IExplorationModel explorationModel,
-							final Document mpDoc) {
-		model = explorationModel;
-		final JPanel headerPanel = new BoxPanel(true);
-		headerPanel.add(new ListenedButton("Select a different explorer", evt -> {
-			for (final CompletionListener list : cListeners) {
-				list.finished();
-			}
-		}));
-		headerPanel.add(locLabel);
-		headerPanel.add(new JLabel("Remaining Movement Points: "));
-		mpDocument = mpDoc;
-		final JPanel mpPanel = new JPanel();
-		mpPanel.add(new JTextField(mpDocument, null, 5));
-		headerPanel.add(mpPanel);
-		setCenter(SplitWithWeights.verticalSplit(0.5, 0.5, headerPanel,
-				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
-	}
-
-	/**
 	 * Set up the GUI for the surrounding tiles.
 	 *
 	 * @param panel the panel to add them all to.
@@ -192,7 +198,8 @@ public final class ExplorationPanel extends BorderedPanel
 				IExplorationModel.Direction.North, IExplorationModel.Direction.Northeast,
 				IExplorationModel.Direction.West, IExplorationModel.Direction.Nowhere,
 				IExplorationModel.Direction.East, IExplorationModel.Direction.Southwest,
-				IExplorationModel.Direction.South, IExplorationModel.Direction.Southeast);
+				IExplorationModel.Direction.South, IExplorationModel.Direction
+														   .Southeast);
 	}
 
 	/**
@@ -225,10 +232,10 @@ public final class ExplorationPanel extends BorderedPanel
 	 * Set up the GUI representation of a tile---a list of its contents in the main
 	 * map, a visual representation, and a list of its contents in a secondary map.
 	 *
-	 * @param panel     the panel to add them to
+	 * @param panel          the panel to add them to
 	 * @param subordinateMap the map to use for the subordinate map.
-	 * @param direction which direction from the currently selected tile this GUI
-	 *                  represents.
+	 * @param direction      which direction from the currently selected tile this GUI
+	 *                       represents.
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addTileGUI(final JPanel panel, final IMapNG subordinateMap,
@@ -281,17 +288,6 @@ public final class ExplorationPanel extends BorderedPanel
 	}
 
 	/**
-	 * A parser for numeric input.
-	 */
-	private static final NumberFormat NUM_PARSER =
-			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(ExplorationPanel.class.getName()));
-
-	/**
 	 * Account for a movement cost.
 	 *
 	 * @param cost how much the movement cost
@@ -320,7 +316,8 @@ public final class ExplorationPanel extends BorderedPanel
 				mpDocument.remove(0, mpDocument.getLength());
 				mpDocument.insertString(0, Integer.toString(movePoints), null);
 			} catch (final BadLocationException except) {
-				LOGGER.log(Level.SEVERE, "Exception trying to update MP counter", except);
+				LOGGER.log(Level.SEVERE, "Exception trying to update MP counter",
+						except);
 			}
 		}
 	}
@@ -332,7 +329,8 @@ public final class ExplorationPanel extends BorderedPanel
 	@Override
 	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		final Point selPoint = model.getSelectedUnitLocation();
-		for (final IExplorationModel.Direction dir : IExplorationModel.Direction.values()) {
+		for (final IExplorationModel.Direction dir : IExplorationModel.Direction
+															 .values()) {
 			assert dir != null;
 			final Point point = model.getDestination(selPoint, dir);
 			NullCleaner.assertNotNull(mains.get(dir)).fireChanges(selPoint, point);
@@ -361,26 +359,31 @@ public final class ExplorationPanel extends BorderedPanel
 	public void removeCompletionListener(final CompletionListener list) {
 		cListeners.remove(list);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a diagnostic String
 	 */
@@ -388,7 +391,7 @@ public final class ExplorationPanel extends BorderedPanel
 	public String toString() {
 		try {
 			return "ExplorationPanel with remaining MP: " +
-						mpDocument.getText(0, mpDocument.getLength());
+						   mpDocument.getText(0, mpDocument.getLength());
 		} catch (final BadLocationException ignored) {
 			return "ExplorationPanel";
 		}

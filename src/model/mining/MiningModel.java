@@ -30,19 +30,6 @@ import view.util.SystemOut;
  */
 public final class MiningModel {
 	/**
-	 * Kinds of mines we know how to create.
-	 */
-	public enum MineKind {
-		/**
-		 * "Normal," which *tries* to create randomly-branching "veins".
-		 */
-		Normal,
-		/**
-		 * A mine which emphasizes layers, such as a sand mine.
-		 */
-		Banded
-	}
-	/**
 	 * A mapping from positions (normalized so they could be spit out into a spreadsheet)
 	 * to LodeStatuses.
 	 */
@@ -51,13 +38,12 @@ public final class MiningModel {
 	 * The max row and col we get to.
 	 */
 	private final Point maxPoint;
-
 	/**
 	 * Constructor.
 	 *
 	 * @param initial the status to give to the mine's starting point
 	 * @param seed    a number to seed the RNG
-	 * @param kind what kind of mine to model
+	 * @param kind    what kind of mine to model
 	 */
 	@SuppressWarnings("resource")
 	public MiningModel(final LodeStatus initial, final long seed, final MineKind kind) {
@@ -94,9 +80,12 @@ public final class MiningModel {
 				pruneCounter++;
 				continue;
 			} else {
-				final Point left = PointFactory.point(point.getRow(), point.getCol() - 1);
-				final Point down = PointFactory.point(point.getRow() + 1, point.getCol());
-				final Point right = PointFactory.point(point.getRow(), point.getCol() + 1);
+				final Point left = PointFactory.point(point.getRow(), point.getCol() -
+																			  1);
+				final Point down = PointFactory.point(point.getRow() + 1, point.getCol
+																						());
+				final Point right =
+						PointFactory.point(point.getRow(), point.getCol() + 1);
 				final LodeStatus current;
 				if (unnormalized.containsKey(point)) {
 					current = unnormalized.get(point);
@@ -133,25 +122,6 @@ public final class MiningModel {
 	}
 
 	/**
-	 * @return the bottom-right corner
-	 */
-	public Point getMaxPoint() {
-		return maxPoint;
-	}
-
-	/**
-	 * @param point a point
-	 * @return what's there
-	 */
-	public LodeStatus statusAt(final Point point) {
-		if (data.containsKey(point)) {
-			return NullCleaner.assertNotNull(data.get(point));
-		} else {
-			return LodeStatus.None;
-		}
-	}
-
-	/**
 	 * @param set a set of Points
 	 * @return the lowest column in the set
 	 */
@@ -181,11 +151,44 @@ public final class MiningModel {
 	}
 
 	/**
+	 * @return the bottom-right corner
+	 */
+	public Point getMaxPoint() {
+		return maxPoint;
+	}
+
+	/**
+	 * @param point a point
+	 * @return what's there
+	 */
+	public LodeStatus statusAt(final Point point) {
+		if (data.containsKey(point)) {
+			return NullCleaner.assertNotNull(data.get(point));
+		} else {
+			return LodeStatus.None;
+		}
+	}
+
+	/**
 	 * @return a string representation of this class
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "MiningModel";
+	}
+
+	/**
+	 * Kinds of mines we know how to create.
+	 */
+	public enum MineKind {
+		/**
+		 * "Normal," which *tries* to create randomly-branching "veins".
+		 */
+		Normal,
+		/**
+		 * A mine which emphasizes layers, such as a sand mine.
+		 */
+		Banded
 	}
 }

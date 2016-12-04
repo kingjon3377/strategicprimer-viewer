@@ -26,31 +26,31 @@ import util.LineEnd;
  */
 public class Portal implements ExplorableFixture, SubsettableFixture {
 	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
-	/**
 	 * A string identifying the world the portal connects to.
 	 *
 	 * TODO: Should this be mutable?
 	 */
 	private final String destinationWorld;
 	/**
+	 * A unique ID # for the fixture.
+	 */
+	private final int id;
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
 	 * The coordinates in that world that the portal connects to. A negative coordinate
 	 * indicates that the coordinate needs to be generated, presumably randomly.
 	 */
 	private Point destinationCoordinates;
-	/**
-	 * A unique ID # for the fixture.
-	 */
-	private final int id;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param dest       a string identifying the world the portal connects to
+	 * @param dest            a string identifying the world the portal connects to
 	 * @param destCoordinates the coordinates in that world that the portal connects to
-	 * @param idNum      the ID # for the portal
+	 * @param idNum           the ID # for the portal
 	 */
 	public Portal(final String dest, final Point destCoordinates, final int idNum) {
 		destinationWorld = dest;
@@ -90,6 +90,13 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * @param destination the new destination coordinates
+	 */
+	public void setDestinationCoordinates(final Point destination) {
+		destinationCoordinates = destination;
+	}
+
+	/**
 	 * @return a String representation of the fixture
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -115,7 +122,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Portal) && (id == ((Portal) obj).id)
-										&& equalsIgnoringID((Portal) obj));
+										 && equalsIgnoringID((Portal) obj));
 	}
 
 	/**
@@ -127,19 +134,19 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**
@@ -174,16 +181,9 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Portal) &&
-					destinationWorld.equals(((Portal) fix).destinationWorld) &&
-					destinationCoordinates
-							.equals(((Portal) fix).destinationCoordinates);
-	}
-
-	/**
-	 * @param destination the new destination coordinates
-	 */
-	public void setDestinationCoordinates(final Point destination) {
-		destinationCoordinates = destination;
+					   destinationWorld.equals(((Portal) fix).destinationWorld) &&
+					   destinationCoordinates
+							   .equals(((Portal) fix).destinationCoordinates);
 	}
 
 	/**

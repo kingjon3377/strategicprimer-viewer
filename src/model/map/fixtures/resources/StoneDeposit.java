@@ -23,11 +23,28 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutableKind {
 	/**
+	 * The DC to discover the stone. TODO: Should perhaps be mutable.
+	 */
+	private final int dc;
+	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
+	 * What kind of stone this deposit is.
+	 */
+	private StoneKind stone;
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * Constructor.
 	 *
-	 * @param kind  the kind of stone
+	 * @param kind       the kind of stone
 	 * @param discoverDC the dc to discover the stone.
-	 * @param idNum  the ID number.
+	 * @param idNum      the ID number.
 	 */
 	public StoneDeposit(final StoneKind kind, final int discoverDC, final int idNum) {
 		stone = kind;
@@ -53,21 +70,11 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	}
 
 	/**
-	 * What kind of stone this deposit is.
-	 */
-	private StoneKind stone;
-
-	/**
 	 * @return what kind of stone this deposit is.
 	 */
 	public StoneKind stone() {
 		return stone;
 	}
-
-	/**
-	 * The DC to discover the stone. TODO: Should perhaps be mutable.
-	 */
-	private final int dc;
 
 	/**
 	 * @return the DC to discover the event.
@@ -93,8 +100,8 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof StoneDeposit) &&
-										(((StoneDeposit) obj).stone == stone) &&
-										(((TileFixture) obj).getID() == id));
+										 (((StoneDeposit) obj).stone == stone) &&
+										 (((TileFixture) obj).getID() == id));
 	}
 
 	/**
@@ -122,11 +129,6 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	}
 
 	/**
-	 * ID number.
-	 */
-	private final int id;
-
-	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -142,7 +144,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof StoneDeposit) &&
-										(((StoneDeposit) fix).stone == stone));
+										 (((StoneDeposit) fix).stone == stone));
 	}
 
 	/**
@@ -164,9 +166,12 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	}
 
 	/**
-	 * The name of an image to use for this particular fixture.
+	 * @return the name of an image to use for this particular fixture.
 	 */
-	private String image = "";
+	@Override
+	public String getImage() {
+		return image;
+	}
 
 	/**
 	 * @param img the name of an image to use for this particular fixture
@@ -174,14 +179,6 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**

@@ -27,12 +27,14 @@ public class SPOptions implements Iterable<Pair<String, String>> {
 	 * Options taking arguments.
 	 */
 	private final Map<String, String> options = new LinkedHashMap<>();
+
 	/**
 	 * @param opt an option without argument
 	 */
 	public void addOption(final String opt) {
 		options.put(opt, "true");
 	}
+
 	/**
 	 * @param opt an option taking an argument
 	 * @param arg its argument
@@ -40,6 +42,7 @@ public class SPOptions implements Iterable<Pair<String, String>> {
 	public void setOption(final String opt, final String arg) {
 		options.put(opt, arg);
 	}
+
 	/**
 	 * @param opt an option
 	 * @return whether that option was given, either with or without an argument
@@ -47,10 +50,11 @@ public class SPOptions implements Iterable<Pair<String, String>> {
 	public boolean hasOption(final String opt) {
 		return options.containsKey(opt);
 	}
+
 	/**
 	 * @param opt an option
-	 * @return the value that was given for that option, or "true" if it didn't have
-	 * one, or "false" if it wasn't given at all
+	 * @return the value that was given for that option, or "true" if it didn't have one,
+	 * or "false" if it wasn't given at all
 	 */
 	public String getArgument(final String opt) {
 		if (options.containsKey(opt)) {
@@ -59,6 +63,7 @@ public class SPOptions implements Iterable<Pair<String, String>> {
 			return "false";
 		}
 	}
+
 	/**
 	 * @return an iterator over the options
 	 */
@@ -70,17 +75,20 @@ public class SPOptions implements Iterable<Pair<String, String>> {
 			public boolean hasNext() {
 				return retval.hasNext();
 			}
+
 			@Override
 			public Pair<String, String> next() {
 				final Map.Entry<String, String> nextVal = retval.next();
 				return Pair.of(nextVal.getKey(), nextVal.getValue());
 			}
+
 			@Override
 			public void remove() {
 				retval.remove();
 			}
 		};
 	}
+
 	/**
 	 * @return a copy of this object.
 	 */

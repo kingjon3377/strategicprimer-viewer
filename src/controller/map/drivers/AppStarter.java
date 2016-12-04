@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,9 +13,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import util.EqualsAny;
 import util.LineEnd;
@@ -46,8 +44,10 @@ public final class AppStarter implements ISPDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(true, "-p", "--app-starter", ParamCount.AnyNumber, "App Chooser",
-								"Let the user choose an app to start, or handle options."
+			new DriverUsage(true, "-p", "--app-starter", ParamCount.AnyNumber,
+								   "App Chooser",
+								   "Let the user choose an app to start, or handle " +
+										   "options."
 			);
 
 	/**
@@ -55,40 +55,11 @@ public final class AppStarter implements ISPDriver {
 	 */
 	private static final Map<String, Pair<ISPDriver, ISPDriver>> CACHE =
 			new HashMap<>();
-
 	/**
-	 * @param driver a driver to add twice.
+	 * Logger.
 	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void addChoice(final ISPDriver driver) {
-		final DriverUsage usage = driver.usage();
-		final Pair<ISPDriver, ISPDriver> pair = Pair.of(driver, driver);
-		CACHE.put(usage.getShortOption(), pair);
-		CACHE.put(usage.getLongOption(), pair);
-	}
-
-	/**
-	 * If the two drivers don't have the same short and long options, or if both are or
-	 * neither is graphical, logs a warning.
-	 *
-	 * @param cliDriver a first driver
-	 * @param guiDriver a second driver
-	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void addChoice(final ISPDriver cliDriver, final ISPDriver guiDriver) {
-		final DriverUsage cliUsage = cliDriver.usage();
-		final DriverUsage guiUsage = guiDriver.usage();
-		if (cliUsage.isGraphical() || !guiUsage.isGraphical()) {
-			//noinspection HardcodedFileSeparator
-			LOGGER.warning("Two-arg addChoice expects non-GUI / GUI pair");
-		} else if (!cliUsage.getShortOption().equals(guiUsage.getShortOption())
-						|| !cliUsage.getLongOption().equals(guiUsage.getLongOption())) {
-			LOGGER.warning("In two-arg addChoice, args' options should match");
-		}
-		final Pair<ISPDriver, ISPDriver> pair = Pair.of(cliDriver, guiDriver);
-		CACHE.put(cliUsage.getShortOption(), pair);
-		CACHE.put(cliUsage.getLongOption(), pair);
-	}
+	private static final Logger LOGGER = TypesafeLogger
+												 .getLogger(AppStarter.class);
 
 	static {
 		addChoice(new WorkerReportDriver(), new ViewerStart());
@@ -121,133 +92,55 @@ public final class AppStarter implements ISPDriver {
 	}
 
 	/**
-	 * Since there's no way of choosing which driver programmatically here, we present
-	 * our choice to the user.
-	 *
-	 *
-	 * @param cli
-	 * @param options options to pass to the driver
-	 * @param model the driver model
-	 * @throws DriverFailedException on driver failure
+	 * @param driver a driver to add twice.
 	 */
-	@Override
-	public void startDriver(final ICLIHelper cli, final SPOptions options,
-							final IDriverModel model)
-			throws DriverFailedException {
-		if (GraphicsEnvironment.isHeadless()) {
-			final List<ISPDriver> drivers =
-					CACHE.values().stream().map(Pair::first).distinct()
-							.collect(Collectors.toList());
-			try {
-				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
-						cli.chooseFromList(drivers, "CLI apps available:",
-								"No applications available", "App to start: ", true))),
-						options, model);
-			} catch (final IOException except) {
-				//noinspection HardcodedFileSeparator
-				LOGGER.log(Level.SEVERE,
-						"I/O error prompting user for app to start", except);
-				return;
-			}
-		} else {
-			SwingUtilities.invokeLater(
-					() -> new AppChooserFrame(model, options).setVisible(true));
-		}
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	private static void addChoice(final ISPDriver driver) {
+		final DriverUsage usage = driver.usage();
+		final Pair<ISPDriver, ISPDriver> pair = Pair.of(driver, driver);
+		CACHE.put(usage.getShortOption(), pair);
+		CACHE.put(usage.getLongOption(), pair);
 	}
 
 	/**
-	 * Start the driver, and then start the specified other driver.
+	 * If the two drivers don't have the same short and long options, or if both are or
+	 * neither is graphical, logs a warning.
 	 *
-	 *
-	 * @param cli
-	 * @param options options to pass to the driver.
-	 * @param args command-line arguments
-	 * @throws DriverFailedException on fatal error.
+	 * @param cliDriver a first driver
+	 * @param guiDriver a second driver
 	 */
-	@SuppressWarnings("OverloadedVarargsMethod")
-	@Override
-	public void startDriver(final ICLIHelper cli, final SPOptions options,
-							final String... args)
-			throws DriverFailedException {
-		boolean gui = !GraphicsEnvironment.isHeadless();
-		SPOptions currentOptions = options.copy();
-		if (!currentOptions.hasOption("--gui")) {
-			currentOptions.setOption("--gui", Boolean.toString(gui));
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	private static void addChoice(final ISPDriver cliDriver, final ISPDriver guiDriver) {
+		final DriverUsage cliUsage = cliDriver.usage();
+		final DriverUsage guiUsage = guiDriver.usage();
+		if (cliUsage.isGraphical() || !guiUsage.isGraphical()) {
+			//noinspection HardcodedFileSeparator
+			LOGGER.warning("Two-arg addChoice expects non-GUI / GUI pair");
+		} else if (!cliUsage.getShortOption().equals(guiUsage.getShortOption())
+						   ||
+						   !cliUsage.getLongOption().equals(guiUsage.getLongOption())) {
+			LOGGER.warning("In two-arg addChoice, args' options should match");
 		}
-		final Collection<String> optionsList = new ArrayList<>();
-		final List<String> others = new ArrayList<>();
-		// FIXME: To reduce calculated complexity and fix the null-object
-		// pattern here, make a driver class for CLI driver choosing, and make a
-		// Pair of it and the AppChooserFrame be the default.
-		Pair<ISPDriver, ISPDriver> drivers = null;
-		for (final String arg : args) {
-			if (EqualsAny.equalsAny(arg, "-g", "--gui")) {
-				currentOptions.setOption("--gui", "true");
-				gui = true;
-			} else if (EqualsAny.equalsAny(arg, "-c", "--cli")) {
-				currentOptions.setOption("--gui", "false");
-				gui = false;
-			} else if (arg.startsWith("--gui=")) {
-				final String value = arg.substring(6);
-				currentOptions.setOption("--gui", value);
-				gui = Boolean.parseBoolean(value);
-			} else if (arg.startsWith("-") && arg.contains("=")) {
-				final String[] broken = arg.split("=", 2);
-				currentOptions.setOption(broken[0], broken[1]);
-			} else if (CACHE.containsKey(arg.toLowerCase(Locale.ENGLISH))) {
-				if (drivers != null) {
-					if (gui) {
-						startChosenGUIDriver(drivers.second(), currentOptions,
-								new ArrayList<>(others));
-					} else {
-						startChosenDriver(drivers.first(), currentOptions,
-								new ArrayList<>(others));
-					}
-					currentOptions = options.copy();
-					currentOptions.setOption("--gui", Boolean.toString(gui));
-					others.clear();
-				}
-				drivers = CACHE.get(arg.toLowerCase(Locale.ENGLISH));
-			} else if (arg.startsWith("-")) {
-				currentOptions.addOption(arg);
-			} else {
-				others.add(arg);
-			}
-		}
-		final boolean localGui = gui;
-		if (drivers == null) {
-			// No need to wrap startChooser() with invokeLater(), since it handles it
-			// internally.
-			try {
-				startChooser(localGui, currentOptions, others);
-			} catch (final DriverFailedException e) {
-				final String message =
-						NullCleaner.assertNotNull(e.getMessage());
-				LOGGER.log(Level.SEVERE, message, e.getCause());
-				SwingUtilities
-						.invokeLater(() -> ErrorShower.showErrorDialog(null, message));
-			}
-		} else if (gui) {
-			startChosenGUIDriver(drivers.second(), currentOptions, others);
-		} else {
-			startChosenDriver(drivers.first(), currentOptions, others);
-		}
+		final Pair<ISPDriver, ISPDriver> pair = Pair.of(cliDriver, guiDriver);
+		CACHE.put(cliUsage.getShortOption(), pair);
+		CACHE.put(cliUsage.getLongOption(), pair);
 	}
 
 	/**
 	 * Start the app-chooser window.
 	 *
-	 * @param gui    whether to show the GUI chooser (or a CLI list)
+	 * @param gui     whether to show the GUI chooser (or a CLI list)
 	 * @param options the option parameters to pass to the chosen driver
-	 * @param others the non-option parameters to pass to the chosen driver
+	 * @param others  the non-option parameters to pass to the chosen driver
 	 * @throws DriverFailedException if the chosen driver fails
 	 */
 	private static void startChooser(final boolean gui, final SPOptions options,
-									final List<String> others)
+									 final List<String> others)
 			throws DriverFailedException {
 		if (gui) {
 			SwingUtilities
-					.invokeLater(() -> new AppChooserFrame(options, others).setVisible(true));
+					.invokeLater(
+							() -> new AppChooserFrame(options, others).setVisible(true));
 		} else {
 			final List<ISPDriver> drivers =
 					CACHE.values().stream().map(Pair::first).distinct()
@@ -268,9 +161,9 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * Start a driver.
 	 *
-	 * @param driver the driver to start
+	 * @param driver  the driver to start
 	 * @param options option parameters
-	 * @param params non-option parameters
+	 * @param params  non-option parameters
 	 * @throws DriverFailedException on fatal error
 	 */
 	private static void startChosenDriver(final ISPDriver driver, final SPOptions
@@ -284,13 +177,14 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * Start a GUI driver.
 	 *
-	 * @param driver the driver to start
+	 * @param driver  the driver to start
 	 * @param options option parameters
-	 * @param model  the driver model
+	 * @param model   the driver model
 	 * @throws DriverFailedException on fatal error
 	 */
-	private static void startChosenDriver(final ISPDriver driver, final SPOptions options,
-										final IDriverModel model)
+	private static void startChosenDriver(final ISPDriver driver, final SPOptions
+																		  options,
+										  final IDriverModel model)
 			throws DriverFailedException {
 		driver.startDriver(new CLIHelper(), options, model);
 	}
@@ -298,9 +192,9 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * Start a GUI driver.
 	 *
-	 * @param driver the driver to start
+	 * @param driver  the driver to start
 	 * @param options option parameters
-	 * @param params non-option parameters
+	 * @param params  non-option parameters
 	 * @throws DriverFailedException on fatal error
 	 */
 	private static void startChosenGUIDriver(final ISPDriver driver,
@@ -320,12 +214,6 @@ public final class AppStarter implements ISPDriver {
 	}
 
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-												.getLogger(AppStarter.class);
-
-	/**
 	 * Entry point: start the driver.
 	 *
 	 * @param args command-line arguments
@@ -338,7 +226,8 @@ public final class AppStarter implements ISPDriver {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final ClassNotFoundException | InstantiationException
-										| IllegalAccessException | UnsupportedLookAndFeelException except) {
+							   | IllegalAccessException |
+										   UnsupportedLookAndFeelException except) {
 			LOGGER.log(Level.SEVERE,
 					"Failed to switch to system look-and-feel", except);
 		}
@@ -408,6 +297,118 @@ public final class AppStarter implements ISPDriver {
 			LOGGER.log(Level.SEVERE, except.getLocalizedMessage(),
 					except.getCause());
 			DriverQuit.quit(2);
+		}
+	}
+
+	/**
+	 * Since there's no way of choosing which driver programmatically here, we present
+	 * our choice to the user.
+	 *
+	 * @param cli
+	 * @param options options to pass to the driver
+	 * @param model   the driver model
+	 * @throws DriverFailedException on driver failure
+	 */
+	@Override
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model)
+			throws DriverFailedException {
+		if (GraphicsEnvironment.isHeadless()) {
+			final List<ISPDriver> drivers =
+					CACHE.values().stream().map(Pair::first).distinct()
+							.collect(Collectors.toList());
+			try {
+				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
+						cli.chooseFromList(drivers, "CLI apps available:",
+								"No applications available", "App to start: ", true))),
+						options, model);
+			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
+				LOGGER.log(Level.SEVERE,
+						"I/O error prompting user for app to start", except);
+				return;
+			}
+		} else {
+			SwingUtilities.invokeLater(
+					() -> new AppChooserFrame(model, options).setVisible(true));
+		}
+	}
+
+	/**
+	 * Start the driver, and then start the specified other driver.
+	 *
+	 * @param cli
+	 * @param options options to pass to the driver.
+	 * @param args    command-line arguments
+	 * @throws DriverFailedException on fatal error.
+	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
+	@Override
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final String... args)
+			throws DriverFailedException {
+		boolean gui = !GraphicsEnvironment.isHeadless();
+		SPOptions currentOptions = options.copy();
+		if (!currentOptions.hasOption("--gui")) {
+			currentOptions.setOption("--gui", Boolean.toString(gui));
+		}
+		final Collection<String> optionsList = new ArrayList<>();
+		final List<String> others = new ArrayList<>();
+		// FIXME: To reduce calculated complexity and fix the null-object
+		// pattern here, make a driver class for CLI driver choosing, and make a
+		// Pair of it and the AppChooserFrame be the default.
+		Pair<ISPDriver, ISPDriver> drivers = null;
+		for (final String arg : args) {
+			if (EqualsAny.equalsAny(arg, "-g", "--gui")) {
+				currentOptions.setOption("--gui", "true");
+				gui = true;
+			} else if (EqualsAny.equalsAny(arg, "-c", "--cli")) {
+				currentOptions.setOption("--gui", "false");
+				gui = false;
+			} else if (arg.startsWith("--gui=")) {
+				final String value = arg.substring(6);
+				currentOptions.setOption("--gui", value);
+				gui = Boolean.parseBoolean(value);
+			} else if (arg.startsWith("-") && arg.contains("=")) {
+				final String[] broken = arg.split("=", 2);
+				currentOptions.setOption(broken[0], broken[1]);
+			} else if (CACHE.containsKey(arg.toLowerCase(Locale.ENGLISH))) {
+				if (drivers != null) {
+					if (gui) {
+						startChosenGUIDriver(drivers.second(), currentOptions,
+								new ArrayList<>(others));
+					} else {
+						startChosenDriver(drivers.first(), currentOptions,
+								new ArrayList<>(others));
+					}
+					currentOptions = options.copy();
+					currentOptions.setOption("--gui", Boolean.toString(gui));
+					others.clear();
+				}
+				drivers = CACHE.get(arg.toLowerCase(Locale.ENGLISH));
+			} else if (arg.startsWith("-")) {
+				currentOptions.addOption(arg);
+			} else {
+				others.add(arg);
+			}
+		}
+		final boolean localGui = gui;
+		if (drivers == null) {
+			// No need to wrap startChooser() with invokeLater(), since it handles it
+			// internally.
+			try {
+				startChooser(localGui, currentOptions, others);
+			} catch (final DriverFailedException e) {
+				final String message =
+						NullCleaner.assertNotNull(e.getMessage());
+				LOGGER.log(Level.SEVERE, message, e.getCause());
+				SwingUtilities
+						.invokeLater(() -> ErrorShower.showErrorDialog(null, message));
+			}
+		} else if (gui) {
+			startChosenGUIDriver(drivers.second(), currentOptions, others);
+		} else {
+			startChosenDriver(drivers.first(), currentOptions, others);
 		}
 	}
 

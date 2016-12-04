@@ -5,7 +5,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.stream.Collectors;
-import javax.swing.DefaultListModel;
+import javax.swing.*;
 import model.listeners.SelectionChangeListener;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -36,7 +36,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  *
- * TODO: tests
+ *         TODO: tests
  */
 public final class FixtureListModel extends DefaultListModel<@NonNull TileFixture>
 		implements SelectionChangeListener {
@@ -62,7 +62,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 */
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
-									final Point newPoint) {
+									 final Point newPoint) {
 		clear();
 		final IMapNG map = model.getMap();
 		final TileType base = map.getBaseTerrain(newPoint);
@@ -164,9 +164,9 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof FixtureListModel) &&
-										((FixtureListModel) obj).model.equals
+										 ((FixtureListModel) obj).model.equals
 																				(model) &&
-										((FixtureListModel) obj).point.equals(point));
+										 ((FixtureListModel) obj).point.equals(point));
 	}
 
 	/**
@@ -176,26 +176,31 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	public int hashCode() {
 		return model.hashCode() | point.hashCode();
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a diagnostic String
 	 */

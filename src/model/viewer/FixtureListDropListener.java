@@ -1,6 +1,6 @@
 package model.viewer;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -12,7 +12,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
+import javax.swing.*;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
@@ -36,15 +36,14 @@ import util.TypesafeLogger;
  */
 public final class FixtureListDropListener extends DropTargetAdapter {
 	/**
-	 * A parent component. If it's an ancestor of the drop, it's an intra-component drop.
-	 */
-	private final JComponent parentComponent;
-
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(FixtureListDropListener.class);
+	/**
+	 * A parent component. If it's an ancestor of the drop, it's an intra-component drop.
+	 */
+	private final JComponent parentComponent;
 	/**
 	 * The List's model.
 	 */
@@ -57,7 +56,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	 * @param parent    a parent of the list.
 	 */
 	public FixtureListDropListener(final JComponent parent,
-								final FixtureListModel listModel) {
+								   final FixtureListModel listModel) {
 		model = listModel;
 		parentComponent = parent;
 	}
@@ -72,9 +71,9 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 		if (dtde != null) {
 			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) &&
 						(dtde.getCurrentDataFlavorsAsList()
-								.contains(FixtureTransferable.FLAVOR) ||
-								dtde.getCurrentDataFlavorsAsList()
-										.contains(CurriedFixtureTransferable.FLAVOR)) &&
+								 .contains(FixtureTransferable.FLAVOR) ||
+								 dtde.getCurrentDataFlavorsAsList()
+										 .contains(CurriedFixtureTransferable.FLAVOR)) &&
 						!isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
@@ -93,7 +92,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	 */
 	private boolean isIntraComponentXfr(final DropTargetEvent dtde) {
 		return (dtde.getSource() instanceof Component) &&
-					parentComponent.isAncestorOf((Component) dtde.getSource());
+					   parentComponent.isAncestorOf((Component) dtde.getSource());
 	}
 
 	/**
@@ -106,9 +105,9 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 		if (dtde != null) {
 			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) &&
 						(dtde.getCurrentDataFlavorsAsList()
-								.contains(FixtureTransferable.FLAVOR) ||
-								dtde.getCurrentDataFlavorsAsList()
-										.contains(CurriedFixtureTransferable.FLAVOR)) &&
+								 .contains(FixtureTransferable.FLAVOR) ||
+								 dtde.getCurrentDataFlavorsAsList()
+										 .contains(CurriedFixtureTransferable.FLAVOR)) &&
 						!isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
@@ -127,9 +126,9 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 		if (dtde != null) {
 			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) &&
 						(dtde.getCurrentDataFlavorsAsList()
-								.contains(FixtureTransferable.FLAVOR) ||
-								dtde.getCurrentDataFlavorsAsList()
-										.contains(CurriedFixtureTransferable.FLAVOR)) &&
+								 .contains(FixtureTransferable.FLAVOR) ||
+								 dtde.getCurrentDataFlavorsAsList()
+										 .contains(CurriedFixtureTransferable.FLAVOR)) &&
 						!isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
@@ -190,7 +189,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 		final DataFlavor[] flavors = trans.getTransferDataFlavors();
 		if (flavors == null) {
 			throw new UnsupportedFlavorException(new DataFlavor(DataFlavor.class,
-																	"null"));
+																	   "null"));
 		} else {
 			for (final DataFlavor flavor : flavors) {
 				if (flavor == null) {

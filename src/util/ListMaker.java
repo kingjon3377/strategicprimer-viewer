@@ -26,6 +26,7 @@ public final class ListMaker {
 	private ListMaker() {
 		// No need to instantiate.
 	}
+
 	/**
 	 * Turn an Iterable into a List. This is, of course, an eager implementation; make
 	 * sure not to use on anything with an infinite iterator!

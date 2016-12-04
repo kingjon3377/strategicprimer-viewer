@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.misc.IDriverModel;
@@ -29,10 +29,11 @@ public final class ExplorationGUI implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-x", "--explore", ParamCount.AtLeastOne,
-								"Run exploration.",
-								"Move a unit around the map, updating the player's " +
-										"map with what it sees."
+								   "Run exploration.",
+								   "Move a unit around the map, updating the player's " +
+										   "map with what it sees."
 			);
+
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
 	}
@@ -42,7 +43,7 @@ public final class ExplorationGUI implements SimpleDriver {
 	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver model
+	 * @param model   the driver model
 	 */
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,

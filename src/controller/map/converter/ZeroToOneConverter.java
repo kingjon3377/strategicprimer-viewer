@@ -60,17 +60,55 @@ public final class ZeroToOneConverter {
 	 * equivalents.
 	 */
 	private static final Map<Integer, String> EQUIVALENTS = new HashMap<>();
+
+	static {
+		addXML("<mineral kind=\"iron\" exposed=\"true\" dc=\"0\" />", 200, 206);
+		addXML("<mineral kind=\"iron\" exposed=\"false\" dc=\"0\" />", 201,
+				202, 207, 208);
+		addXML("<mineral kind=\"copper\" exposed=\"true\" dc=\"0\" />", 203,
+				209);
+		addXML("<mineral kind=\"copper\" exposed=\"false\" dc=\"0\" />", 204,
+				205, 210, 211);
+		addXML("<mineral kind=\"gold\" exposed=\"true\" dc=\"0\" />", 212);
+		addXML("<mineral kind=\"gold\" exposed=\"false\" dc=\"0\" />", 213);
+		addXML("<mineral kind=\"silver\" exposed=\"true\" dc=\"0\" />", 214);
+		addXML("<mineral kind=\"silver\" exposed=\"false\" dc=\"0\" />", 215);
+		addXML("<mineral kind=\"coal\" exposed=\"true\" dc=\"0\" />", 216, 219);
+		addXML("<mineral kind=\"coal\" exposed=\"false\" dc=\"0\" />", 217,
+				218, 220, 221);
+		addXML("<town status=\"active\" size=\"small\" dc=\"0\" />", 222);
+		addXML("<town status=\"abandoned\" size=\"small\" dc=\"0\" />", 223,
+				227, 231);
+		addXML("<fortification status=\"abandoned\" size=\"small\" dc=\"0\" />",
+				224, 228, 232);
+		addXML("<town status=\"burned\" size=\"small\" dc=\"0\" />", 225, 229,
+				233);
+		addXML("<fortification status=\"burned\" size=\"small\" dc=\"0\" />",
+				226, 230, 234);
+		addXML("<battlefield dc=\"0\" />", 235, 236, 237, 238, 239, 240);
+		addXML("<city status=\"ruined\" size=\"medium\" dc=\"0\" />", 241, 243);
+		addXML("<fortification status=\"ruined\" size=\"medium\" dc=\"0\" />",
+				242, 244);
+		addXML("<city status=\"ruined\" size=\"large\" dc=\"0\" />", 245);
+		addXML("<fortification status=\"ruined\" size=\"large\" dc=\"0\" />",
+				246);
+		addXML("<stone kind=\"limestone\" dc=\"0\" />", 247, 248, 249);
+		addXML("<stone kind=\"marble\" dc=\"0\" />", 250, 251, 252);
+		addXML("<cave dc=\"0\" />", 253, 254, 255);
+	}
+
 	/**
-	 * @param tag the name of an XML tag
+	 * @param tag     the name of an XML tag
 	 * @param desired the desired XML tag
 	 * @return whether it matches, either in our namespace or the default namespace
 	 */
 	private static boolean isSpecifiedTag(final QName tag, final String desired) {
 		return tag.equals(new QName(ISPReader.NAMESPACE, desired)) ||
-					tag.equals(new QName(desired));
+					   tag.equals(new QName(desired));
 	}
+
 	/**
-	 * @param stream a stream representing a SP map, format version 0
+	 * @param stream  a stream representing a SP map, format version 0
 	 * @param ostream the stream to write the equivalent map, format version 1, to
 	 * @throws IOException on I/O error writing to ostream
 	 */
@@ -99,7 +137,8 @@ public final class ZeroToOneConverter {
 				ostream.append(event.asCharacters().getData().trim());
 			} else if (event.isEndElement()) {
 				ostream.append(
-						printEndElement(NullCleaner.assertNotNull(event.asEndElement())));
+						printEndElement(NullCleaner.assertNotNull(event.asEndElement()
+						)));
 			} else if (event.isStartDocument()) {
 				ostream.append("<?xml version=\"1.0\"?>").append(LineEnd.LINE_SEP);
 			} else if (event.isEndDocument()) {
@@ -116,13 +155,15 @@ public final class ZeroToOneConverter {
 	 *
 	 * @param element the map element
 	 * @param attrs   its attributes
-	 * @param ostream the stream to which to write the converted tag, in XML representation.
+	 * @param ostream the stream to which to write the converted tag, in XML
+	 *                representation.
 	 * @throws IOException on I/O error writing to ostream
 	 */
 	private static void convertMap(final Appendable ostream, final StartElement element,
-									final Iterable<Attribute> attrs) throws IOException {
+								   final Iterable<Attribute> attrs) throws IOException {
 		ostream.append('<');
-		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
+		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI()
+		)) {
 			ostream.append(element.getName().getPrefix());
 			ostream.append(':');
 		}
@@ -148,15 +189,17 @@ public final class ZeroToOneConverter {
 	 *
 	 * @param element the current element
 	 * @param attrs   its attributes.
-	 * @param ostream the stream to which to write the converted tile, in XML representation
+	 * @param ostream the stream to which to write the converted tile, in XML
+	 *                representation
 	 * @throws NumberFormatException if a tile has a non-numeric 'event'
-	 * @throws IOException on I/O error writing to ostream
+	 * @throws IOException           on I/O error writing to ostream
 	 */
 	private static void convertTile(final Appendable ostream, final StartElement element,
 									final Iterable<Attribute> attrs)
 			throws IOException {
 		ostream.append('<');
-		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
+		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI()
+		)) {
 			ostream.append(element.getName().getPrefix());
 			ostream.append(':');
 		}
@@ -241,16 +284,19 @@ public final class ZeroToOneConverter {
 	 * @throws IOException on I/O error writing to ostream
 	 */
 	private static void printStartElement(final Appendable ostream,
-										final StartElement element) throws IOException {
+										  final StartElement element) throws
+			IOException {
 		ostream.append('<');
-		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
+		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI()
+		)) {
 			ostream.append(element.getName().getPrefix());
 			ostream.append(':');
 		}
 		ostream.append(element.getName().getLocalPart());
 		// getAttributes() isn't actually genericized, so diamond causes compile error
 		//noinspection Convert2Diamond,unchecked
-		for (final Attribute attr : new IteratorWrapper<Attribute>(element.getAttributes())) {
+		for (final Attribute attr : new IteratorWrapper<Attribute>(element.getAttributes
+																				   ())) {
 			ostream.append(printAttribute(attr));
 		}
 		ostream.append('>');
@@ -269,7 +315,7 @@ public final class ZeroToOneConverter {
 	/**
 	 * Add XML for the specified numbers.
 	 *
-	 * @param xml  the XML to add
+	 * @param xml     the XML to add
 	 * @param numbers the numbers to add it for
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
@@ -277,42 +323,6 @@ public final class ZeroToOneConverter {
 		for (final int num : numbers) {
 			EQUIVALENTS.put(NullCleaner.assertNotNull(Integer.valueOf(num)), xml);
 		}
-	}
-
-	static {
-		addXML("<mineral kind=\"iron\" exposed=\"true\" dc=\"0\" />", 200, 206);
-		addXML("<mineral kind=\"iron\" exposed=\"false\" dc=\"0\" />", 201,
-				202, 207, 208);
-		addXML("<mineral kind=\"copper\" exposed=\"true\" dc=\"0\" />", 203,
-				209);
-		addXML("<mineral kind=\"copper\" exposed=\"false\" dc=\"0\" />", 204,
-				205, 210, 211);
-		addXML("<mineral kind=\"gold\" exposed=\"true\" dc=\"0\" />", 212);
-		addXML("<mineral kind=\"gold\" exposed=\"false\" dc=\"0\" />", 213);
-		addXML("<mineral kind=\"silver\" exposed=\"true\" dc=\"0\" />", 214);
-		addXML("<mineral kind=\"silver\" exposed=\"false\" dc=\"0\" />", 215);
-		addXML("<mineral kind=\"coal\" exposed=\"true\" dc=\"0\" />", 216, 219);
-		addXML("<mineral kind=\"coal\" exposed=\"false\" dc=\"0\" />", 217,
-				218, 220, 221);
-		addXML("<town status=\"active\" size=\"small\" dc=\"0\" />", 222);
-		addXML("<town status=\"abandoned\" size=\"small\" dc=\"0\" />", 223,
-				227, 231);
-		addXML("<fortification status=\"abandoned\" size=\"small\" dc=\"0\" />",
-				224, 228, 232);
-		addXML("<town status=\"burned\" size=\"small\" dc=\"0\" />", 225, 229,
-				233);
-		addXML("<fortification status=\"burned\" size=\"small\" dc=\"0\" />",
-				226, 230, 234);
-		addXML("<battlefield dc=\"0\" />", 235, 236, 237, 238, 239, 240);
-		addXML("<city status=\"ruined\" size=\"medium\" dc=\"0\" />", 241, 243);
-		addXML("<fortification status=\"ruined\" size=\"medium\" dc=\"0\" />",
-				242, 244);
-		addXML("<city status=\"ruined\" size=\"large\" dc=\"0\" />", 245);
-		addXML("<fortification status=\"ruined\" size=\"large\" dc=\"0\" />",
-				246);
-		addXML("<stone kind=\"limestone\" dc=\"0\" />", 247, 248, 249);
-		addXML("<stone kind=\"marble\" dc=\"0\" />", 250, 251, 252);
-		addXML("<cave dc=\"0\" />", 253, 254, 255);
 	}
 
 	/**
@@ -326,9 +336,9 @@ public final class ZeroToOneConverter {
 			try (final Reader reader = new FileReader(arg)) {
 				//noinspection unchecked,ObjectAllocationInLoop
 				convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
-													.createXMLEventReader(reader)),
+													  .createXMLEventReader(reader)),
 						SystemOut.SYS_OUT);
-			} catch (final FileNotFoundException|NoSuchFileException except) {
+			} catch (final FileNotFoundException | NoSuchFileException except) {
 				LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 			} catch (final XMLStreamException except) {
 				LOGGER.log(Level.SEVERE, "XML error", except);

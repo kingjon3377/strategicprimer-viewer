@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.AbstractAction;
-
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -33,8 +31,10 @@ public class ActionWrapper extends AbstractAction {
 	 * The ActionListener we wrap.
 	 */
 	private final ActionListener wrapped;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param wrappedListener the listener to wrap
 	 */
 	public ActionWrapper(final ActionListener wrappedListener) {
@@ -43,6 +43,7 @@ public class ActionWrapper extends AbstractAction {
 
 	/**
 	 * Handle an event by passing it to the wrapped listener.
+	 *
 	 * @param evt the event to handle
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -53,21 +54,23 @@ public class ActionWrapper extends AbstractAction {
 
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
 
 	/**
 	 * Prevent deserialization.
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
@@ -75,6 +78,7 @@ public class ActionWrapper extends AbstractAction {
 
 	/**
 	 * Prevent cloning.
+	 *
 	 * @return nothing
 	 * @throws CloneNotSupportedException always
 	 */
@@ -83,6 +87,7 @@ public class ActionWrapper extends AbstractAction {
 	public final ActionWrapper clone() throws CloneNotSupportedException {
 		throw new CloneNotSupportedException("Cloning is not allowed.");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

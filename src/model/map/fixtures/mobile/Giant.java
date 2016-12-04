@@ -25,10 +25,13 @@ import util.LineEnd;
  */
 public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
 	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
-
 	/**
 	 * What kind of giant. (Usually blank, at least at first.)
 	 */
@@ -66,6 +69,14 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
+	}
+
+	/**
 	 * @return a String representation of the giant
 	 */
 	@Override
@@ -92,7 +103,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) ||
-					((obj instanceof Giant) && ((Giant) obj).kind.equals(kind) &&
+					   ((obj instanceof Giant) && ((Giant) obj).kind.equals(kind) &&
 								(id == ((Giant) obj).id));
 	}
 
@@ -103,11 +114,6 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -163,11 +169,11 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
-	 * @param nKind the new kind
+	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
+	public String getImage() {
+		return image;
 	}
 
 	/**
@@ -176,14 +182,6 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**

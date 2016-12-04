@@ -1,9 +1,8 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableKind;
 import model.map.IFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A cache (of vegetables, or a hidden treasure, or ...) on a tile.
@@ -22,21 +21,24 @@ import model.map.IFixture;
  */
 public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	/**
+	 * The contents of this cache. TODO: Should be turned into objects (serialized as
+	 * children) as part of the general Resource framework.
+	 */
+	private final String contents;
+	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
-
 	/**
 	 * What kind of things this is a cache of.
 	 *
 	 * TODO: Should perhaps be enumerated, so we can make images more granular.
 	 */
 	private String kind;
-	/**
-	 * The contents of this cache. TODO: Should be turned into objects (serialized as
-	 * children) as part of the general Resource framework.
-	 */
-	private final String contents;
 
 	/**
 	 * Constructor.
@@ -73,6 +75,14 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
+	}
+
+	/**
 	 * @return the contents of this cache
 	 */
 	public String getContents() {
@@ -104,7 +114,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof CacheFixture)
-										&& equalsImpl((CacheFixture) obj));
+										 && equalsImpl((CacheFixture) obj));
 	}
 
 	/**
@@ -113,7 +123,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	 */
 	private boolean equalsImpl(final CacheFixture obj) {
 		return kind.equals(obj.kind) && contents.equals(obj.contents)
-					&& (id == obj.id);
+					   && (id == obj.id);
 	}
 
 	/**
@@ -123,11 +133,6 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -145,24 +150,8 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof CacheFixture)
-					&& kind.equals(((CacheFixture) fix).kind)
-					&& contents.equals(((CacheFixture) fix).contents);
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
-	}
-
-	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
+					   && kind.equals(((CacheFixture) fix).kind)
+					   && contents.equals(((CacheFixture) fix).contents);
 	}
 
 	/**
@@ -171,6 +160,14 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

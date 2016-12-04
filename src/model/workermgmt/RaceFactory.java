@@ -62,6 +62,7 @@ public final class RaceFactory {
 	public static String getRace() {
 		return getRace(SingletonRandom.RANDOM);
 	}
+
 	/**
 	 * @return the collection of races.
 	 */

@@ -7,14 +7,11 @@ import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Point;
 import model.map.PointFactory;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -116,6 +113,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	public void add(final @Nullable MutableTreeNode newChild) {
 		// Do nothing.
 	}
+
 	/**
 	 * @param node ignored: nothing done to an empty node has any effect
 	 */
@@ -123,6 +121,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	public void addAsFirst(final @Nullable MutableTreeNode node) {
 		// Do nothing.
 	}
+
 	/**
 	 * @return an iterator over the children
 	 */
@@ -180,35 +179,42 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	public Point getLocalPoint() {
 		return point;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Superclass removes CloneNotSupportedException from method signature, but we still
 	 * want to throw it, so we wrap it in a RuntimeException
+	 *
 	 * @return never
 	 */
 	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public EmptyReportNode clone() {
 		throw new IllegalStateException("cloning prohibited",
-										  new CloneNotSupportedException("cloning prohibited"));
+											   new CloneNotSupportedException("cloning " +
+																					  "prohibited"));
 	}
 }

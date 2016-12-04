@@ -48,6 +48,41 @@ import static org.junit.Assert.assertThat;
  */
 public final class TestWorkerModel {
 	/**
+	 * @param list a list
+	 * @param <T>  the type of the list
+	 * @return the contents of that list, with any proxies replaced by the items they
+	 * proxy
+	 */
+	private static <T> List<T> filterProxies(final Iterable<T> list) {
+		return StreamSupport.stream(list.spliterator(), false).flatMap(item -> {
+			if (item instanceof ProxyFor<?>) {
+				// this wouldn't work for Skills, but ...
+				//noinspection unchecked
+				return StreamSupport
+							   .stream(((ProxyFor<T>) item).getProxied().spliterator(),
+									   false);
+			} else {
+				return Stream.of(item);
+			}
+		}).collect(Collectors.toList());
+	}
+
+	/**
+	 * Add to multiple lists.
+	 *
+	 * @param <T>   the type of the item
+	 * @param item  the item to add
+	 * @param lists the lists to add to
+	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	@SafeVarargs
+	private static <T> void addItem(final T item, final List<? super T>... lists) {
+		for (final List<? super T> list : lists) {
+			list.add(item);
+		}
+	}
+
+	/**
 	 * Test for getUnits().
 	 */
 	@SuppressWarnings("static-method")
@@ -100,39 +135,6 @@ public final class TestWorkerModel {
 				hasItems(listThreeA.toArray(new IUnit[listThreeA.size()])));
 		assertThat("Didn't miss any for player 3", listThreeA,
 				hasItems(listThree.toArray(new IUnit[listThree.size()])));
-	}
-
-	/**
-	 * @param list a list
-	 * @param <T>  the type of the list
-	 * @return the contents of that list, with any proxies replaced by the items they
-	 * proxy
-	 */
-	private static <T> List<T> filterProxies(final Iterable<T> list) {
-		return StreamSupport.stream(list.spliterator(), false).flatMap(item -> {
-			if (item instanceof ProxyFor<?>) {
-				// this wouldn't work for Skills, but ...
-				//noinspection unchecked
-				return StreamSupport.stream(((ProxyFor<T>) item).getProxied().spliterator(), false);
-			} else {
-				return Stream.of(item);
-			}
-		}).collect(Collectors.toList());
-	}
-
-	/**
-	 * Add to multiple lists.
-	 *
-	 * @param <T>   the type of the item
-	 * @param item  the item to add
-	 * @param lists the lists to add to
-	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	@SafeVarargs
-	private static <T> void addItem(final T item, final List<? super T>... lists) {
-		for (final List<? super T> list : lists) {
-			list.add(item);
-		}
 	}
 
 	/**

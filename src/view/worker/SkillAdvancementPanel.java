@@ -1,7 +1,6 @@
 package view.worker;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -13,9 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import model.listeners.LevelGainListener;
 import model.listeners.LevelGainSource;
 import model.listeners.SkillSelectionListener;
@@ -53,11 +50,6 @@ public final class SkillAdvancementPanel extends BoxPanel
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(SkillAdvancementPanel.class);
 	/**
-	 * The list of listeners.
-	 */
-	private final Collection<LevelGainListener> listeners = new ArrayList<>();
-
-	/**
 	 * The "die" we "roll" to see whether skill advancement happens.
 	 */
 	private static final int SKILL_DIE = 100;
@@ -66,30 +58,24 @@ public final class SkillAdvancementPanel extends BoxPanel
 	 */
 	private static final int MAX_PANEL_HEIGHT = 60;
 	/**
-	 * The skill we're dealing with. May be null if no skill is selected.
-	 */
-	@Nullable
-	private ISkill skill = null;
-	/**
-	 * Text box.
-	 */
-	private final JTextField hours = new JTextField(3);
-	/**
 	 * Parser for hours field.
 	 */
 	private static final NumberFormat NUM_PARSER =
 			assertNotNull(NumberFormat.getIntegerInstance());
 	/**
-	 * @param selectedSkill the newly selected skill.
+	 * The list of listeners.
 	 */
-	@SuppressWarnings("VariableNotUsedInsideIf")
-	@Override
-	public void selectSkill(@Nullable final ISkill selectedSkill) {
-		skill = selectedSkill;
-		if (skill != null) {
-			hours.requestFocusInWindow();
-		}
-	}
+	private final Collection<LevelGainListener> listeners = new ArrayList<>();
+	/**
+	 * Text box.
+	 */
+	private final JTextField hours = new JTextField(3);
+	/**
+	 * The skill we're dealing with. May be null if no skill is selected.
+	 */
+	@Nullable
+	private ISkill skill = null;
+
 	/**
 	 * Constructor.
 	 */
@@ -153,6 +139,19 @@ public final class SkillAdvancementPanel extends BoxPanel
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));
 		setMaximumSize(new Dimension(240, MAX_PANEL_HEIGHT));
 	}
+
+	/**
+	 * @param selectedSkill the newly selected skill.
+	 */
+	@SuppressWarnings("VariableNotUsedInsideIf")
+	@Override
+	public void selectSkill(@Nullable final ISkill selectedSkill) {
+		skill = selectedSkill;
+		if (skill != null) {
+			hours.requestFocusInWindow();
+		}
+	}
+
 	/**
 	 * @param list the listener to add
 	 */
@@ -168,26 +167,31 @@ public final class SkillAdvancementPanel extends BoxPanel
 	public void removeLevelGainListener(final LevelGainListener list) {
 		listeners.remove(list);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

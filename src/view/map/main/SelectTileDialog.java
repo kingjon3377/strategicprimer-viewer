@@ -1,7 +1,6 @@
 package view.map.main;
 
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -11,10 +10,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
@@ -43,6 +39,16 @@ import static util.NullCleaner.assertNotNull;
  */
 public final class SelectTileDialog extends JDialog {
 	/**
+	 * The parser to use for checking numbers.
+	 */
+	private static final NumberFormat NUM_PARSER =
+			assertNotNull(NumberFormat.getIntegerInstance());
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(SelectTileDialog.class);
+	/**
 	 * The first text field.
 	 */
 	private final JTextField row = new JTextField("-1", 4);
@@ -60,16 +66,6 @@ public final class SelectTileDialog extends JDialog {
 	 */
 	private final IViewerModel map;
 
-	/**
-	 * The parser to use for checking numbers.
-	 */
-	private static final NumberFormat NUM_PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER =
-			TypesafeLogger.getLogger(SelectTileDialog.class);
 	/**
 	 * Constructor.
 	 *
@@ -137,27 +133,6 @@ public final class SelectTileDialog extends JDialog {
 	}
 
 	/**
-	 * Possible states.
-	 */
-	private enum State {
-		/**
-		 * Valid.
-		 */
-		Valid,
-		/**
-		 * Non-numeric.
-		 */
-		NonNumeric,
-		/**
-		 * Negative.
-		 */
-		Negative,
-		/**
-		 * Too large.
-		 */
-		Overflow
-	}
-	/**
 	 * @param text  a String to test, representing a number
 	 * @param bound its maximum value
 	 * @return a State representing any problems with it.
@@ -201,6 +176,7 @@ public final class SelectTileDialog extends JDialog {
 			throw new IllegalStateException("Default case of enum switch");
 		}
 	}
+
 	/**
 	 * Handle the OK button.
 	 *
@@ -214,7 +190,7 @@ public final class SelectTileDialog extends JDialog {
 		final State colState = checkNumber(colText, dim.cols - 1);
 		if (colState != State.Valid) {
 			errorLabel.setText(errorLabel.getText() + "Column " +
-									getErrorMessage(colState, dim.cols));
+									   getErrorMessage(colState, dim.cols));
 			column.setText("-1");
 			column.selectAll();
 		}
@@ -240,31 +216,58 @@ public final class SelectTileDialog extends JDialog {
 			pack();
 		}
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a quasi-diagnostic String
 	 */
 	@Override
 	public String toString() {
 		return "SelectTileDialog: current or last message is " + errorLabel;
+	}
+
+	/**
+	 * Possible states.
+	 */
+	private enum State {
+		/**
+		 * Valid.
+		 */
+		Valid,
+		/**
+		 * Non-numeric.
+		 */
+		NonNumeric,
+		/**
+		 * Negative.
+		 */
+		Negative,
+		/**
+		 * Too large.
+		 */
+		Overflow
 	}
 }

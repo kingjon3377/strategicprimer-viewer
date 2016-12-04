@@ -41,13 +41,16 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<MobileFi
 	 * The base point to use for distance calculations.
 	 */
 	private final Point base;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param hq the HQ location of the player for whom the report is being created
 	 */
 	public ImmortalsTabularReportGenerator(final Point hq) {
 		base = hq;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether this report generator covers it
@@ -61,17 +64,19 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<MobileFi
 					   || (obj instanceof Centaur) || (obj instanceof Phoenix)
 					   || (obj instanceof Simurgh) || (obj instanceof Griffin);
 	}
+
 	/**
-	 * @param ostream the stream to write the row to
+	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
-	 * @param item the fixture to base the line on
-	 * @param loc its location
+	 * @param item     the fixture to base the line on
+	 * @param loc      its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@Override
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						   final MobileFixture item, final Point loc) throws IOException {
+						   final MobileFixture item, final Point loc) throws
+			IOException {
 		if (applies(item)) {
 			writeField(ostream, distanceString(loc, base));
 			writeFieldDelimiter(ostream);

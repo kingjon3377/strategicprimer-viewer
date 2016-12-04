@@ -36,6 +36,27 @@ import util.PatientMap;
  */
 public class ResourceTabularReportGenerator implements ITableGenerator<IFixture> {
 	/**
+	 * Compare two Numbers. If they're both Integers or BigDecimals, use the native
+	 * conversion. If their integer parts are equal, compare using doubleValue(); if
+	 * not, compare using those integer parts.
+	 *
+	 * @param first  the first number
+	 * @param second the second number
+	 * @return the result of the comparison
+	 */
+	private static int compareNumbers(final Number first, final Number second) {
+		if (first instanceof Integer && second instanceof Integer) {
+			return ((Integer) first).compareTo((Integer) second);
+		} else if (first instanceof BigDecimal && second instanceof BigDecimal) {
+			return ((BigDecimal) first).compareTo((BigDecimal) second);
+		} else if (first.intValue() == second.intValue()) {
+			return Double.compare(first.doubleValue(), second.doubleValue());
+		} else {
+			return Integer.compare(first.intValue(), second.intValue());
+		}
+	}
+
+	/**
 	 * @param obj an object
 	 * @return whether this report generator covers it
 	 */
@@ -44,6 +65,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 		return (obj instanceof CacheFixture) || (obj instanceof ResourcePile) ||
 					   (obj instanceof Implement);
 	}
+
 	/**
 	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
@@ -87,10 +109,12 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			return false;
 		}
 	}
+
 	@Override
 	public String headerRow() {
 		return "Kind,Quantity,Specifics";
 	}
+
 	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, IFixture> one,
@@ -130,7 +154,8 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			}
 		} else if (first instanceof Implement) {
 			if (second instanceof Implement) {
-				return ((Implement) first).getKind().compareTo(((Implement) second).getKind());
+				return ((Implement) first).getKind()
+							   .compareTo(((Implement) second).getKind());
 			} else if (second instanceof ResourcePile) {
 				return 1;
 			} else {
@@ -154,37 +179,20 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			throw new IllegalArgumentException("Unhandleable argument");
 		}
 	}
-	/**
-	 * Compare two Numbers. If they're both Integers or BigDecimals, use the native
-	 * conversion. If their integer parts are equal, compare using doubleValue(); if
-	 * not, compare using those integer parts.
-	 * @param first the first number
-	 * @param second the second number
-	 * @return the result of the comparison
-	 */
-	private static int compareNumbers(final Number first, final Number second) {
-		if (first instanceof Integer && second instanceof Integer) {
-			return ((Integer) first).compareTo((Integer) second);
-		} else if (first instanceof BigDecimal && second instanceof BigDecimal) {
-			return ((BigDecimal) first).compareTo((BigDecimal) second);
-		} else if (first.intValue() == second.intValue()) {
-			return Double.compare(first.doubleValue(), second.doubleValue());
-		} else {
-			return Integer.compare(first.intValue(), second.intValue());
-		}
-	}
+
 	/**
 	 * Produce a tabular report on a particular category of fixtures in the map. All
 	 * fixtures covered in this table should be removed from the set before returning.
-	 * @param ostream the stream to write the table to
-	 * @param type the type of object being looked for
+	 *
+	 * @param ostream  the stream to write the table to
+	 * @param type     the type of object being looked for
 	 * @param fixtures the set of fixtures
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@SuppressWarnings("QuestionableName")
 	@Override
 	public void produce(final Appendable ostream, final Class<IFixture> type,
-						 final PatientMap<Integer, Pair<Point, IFixture>> fixtures)
+						final PatientMap<Integer, Pair<Point, IFixture>> fixtures)
 			throws IOException {
 		final List<Pair<Integer, Pair<Point, IFixture>>> values =
 				new ArrayList<>(fixtures.entrySet().stream()
@@ -207,7 +215,8 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 				final String kind = ((Implement) fix).getKind();
 				if (implementCounts.containsKey(kind)) {
 					implementCounts.put(kind, Integer.valueOf(
-							NullCleaner.assertNotNull(implementCounts.get(kind)).intValue() + 1));
+							NullCleaner.assertNotNull(implementCounts.get(kind))
+									.intValue() + 1));
 				} else {
 					implementCounts.put(kind, Integer.valueOf(1));
 				}

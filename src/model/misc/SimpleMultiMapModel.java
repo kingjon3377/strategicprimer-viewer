@@ -27,6 +27,12 @@ import util.Pair;
 public class SimpleMultiMapModel extends SimpleDriverModel
 		implements IMultiMapModel {
 	/**
+	 * The collection of subordinate maps.
+	 */
+	private final List<Pair<IMutableMapNG, Optional<Path>>> subordinateMaps =
+			new ArrayList<>();
+
+	/**
 	 * @param map  the map we're wrapping
 	 * @param file the file the map was loaded from or should be saved to
 	 */
@@ -44,25 +50,21 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	public SimpleMultiMapModel(final IDriverModel model) {
 		super.setMap(model.getMap(), model.getMapFile());
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
-																.getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
+																		   model)
+																		  .getSubordinateMaps()) {
 				addSubordinateMap(pair.first(), pair.second());
 			}
 		}
 	}
 
 	/**
-	 * The collection of subordinate maps.
-	 */
-	private final List<Pair<IMutableMapNG, Optional<Path>>> subordinateMaps =
-			new ArrayList<>();
-
-	/**
 	 * @param map  the subordinate map to add
 	 * @param file the name of the file it was loaded from
 	 */
 	@Override
-	public final void addSubordinateMap(final IMutableMapNG map, final Optional<Path> file) {
+	public final void addSubordinateMap(final IMutableMapNG map,
+										final Optional<Path> file) {
 		subordinateMaps.add(Pair.of(map, file));
 	}
 
@@ -70,8 +72,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	 * FIXME: Test this; I fixed the clearly-wrong implementation, but this
 	 * might cause ConcurrentModificationException.
 	 *
-	 * @param map
-	 *            the subordinate map to remove
+	 * @param map the subordinate map to remove
 	 */
 	@Override
 	public final void removeSubordinateMap(final IMapNG map) {

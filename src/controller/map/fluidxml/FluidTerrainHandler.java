@@ -54,10 +54,12 @@ public final class FluidTerrainHandler {
 	private FluidTerrainHandler() {
 		// Do not instantiate
 	}
+
 	/**
 	 * Read Ground from XML.
+	 *
 	 * @param element   the XML element to parse
-	 * @param parent	the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -69,8 +71,10 @@ public final class FluidTerrainHandler {
 	public static Ground readGround(final StartElement element,
 									final QName parent,
 									final Iterable<XMLEvent> stream,
-									final IMutablePlayerCollection players, final Warning warner,
-									final IDRegistrar idFactory) throws SPFormatException {
+									final IMutablePlayerCollection players,
+									final Warning warner,
+									final IDRegistrar idFactory)
+			throws SPFormatException {
 		requireTag(element, parent, "ground");
 		final String kind = getAttrWithDeprecatedForm(element, "kind",
 				"ground", warner);
@@ -79,10 +83,12 @@ public final class FluidTerrainHandler {
 		return setImage(new Ground(kind, parseBoolean(getAttribute(element, "exposed"))),
 				element, warner);
 	}
+
 	/**
 	 * Read a Forest from XML.
+	 *
 	 * @param element   the XML element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -94,8 +100,10 @@ public final class FluidTerrainHandler {
 	public static Forest readForest(final StartElement element,
 									final QName parent,
 									final Iterable<XMLEvent> stream,
-									final IMutablePlayerCollection players, final Warning warner,
-									final IDRegistrar idFactory) throws SPFormatException {
+									final IMutablePlayerCollection players,
+									final Warning warner,
+									final IDRegistrar idFactory)
+			throws SPFormatException {
 		requireTag(element, parent, "forest");
 		final Forest retval =
 				new Forest(getAttribute(element, "kind"), hasAttribute(element, "rows"),
@@ -106,8 +114,9 @@ public final class FluidTerrainHandler {
 
 	/**
 	 * Read a Mountain from XML.
+	 *
 	 * @param element   the XML element to parse
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -119,8 +128,10 @@ public final class FluidTerrainHandler {
 	public static Mountain readMountain(final StartElement element,
 										final QName parent,
 										final Iterable<XMLEvent> stream,
-										final IMutablePlayerCollection players, final Warning warner,
-										final IDRegistrar idFactory) throws SPFormatException {
+										final IMutablePlayerCollection players,
+										final Warning warner,
+										final IDRegistrar idFactory)
+			throws SPFormatException {
 		requireTag(element, parent, "mountain");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Mountain(), element, warner);
@@ -130,9 +141,9 @@ public final class FluidTerrainHandler {
 	 * Write Ground to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeGround(final XMLStreamWriter ostream, final Object obj,
@@ -146,13 +157,14 @@ public final class FluidTerrainHandler {
 		writeBooleanAttribute(ostream, "exposed", grd.isExposed());
 		writeImage(ostream, grd);
 	}
+
 	/**
 	 * Write a Mountain to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeMountain(final XMLStreamWriter ostream, final Object obj,
@@ -163,13 +175,14 @@ public final class FluidTerrainHandler {
 		writeTag(ostream, "mountain", indent, true);
 		writeImage(ostream, (HasImage) obj);
 	}
+
 	/**
 	 * Write a Forest to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeForest(final XMLStreamWriter ostream, final Object obj,
@@ -186,16 +199,18 @@ public final class FluidTerrainHandler {
 		writeIntegerAttribute(ostream, "id", forest.getID());
 		writeImage(ostream, forest);
 	}
+
 	/**
 	 * Parse a river.
 	 *
 	 * @param element   the element to read from
-	 * @param parent	the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate new
-	 *                     ones as needed
+	 *                     ones as
+	 *                  needed
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
@@ -210,11 +225,12 @@ public final class FluidTerrainHandler {
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return River.Lake;
 	}
+
 	/**
 	 * Parse a river.
 	 *
 	 * @param element   the element to read from
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -235,12 +251,13 @@ public final class FluidTerrainHandler {
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return River.getRiver(getAttribute(element, "direction"));
 	}
+
 	/**
 	 * Write a river, or a collection of rivers.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
 	 * @throws XMLStreamException on XML-creation problem
 	 */
 	public static void writeRivers(final XMLStreamWriter ostream, final Object obj,

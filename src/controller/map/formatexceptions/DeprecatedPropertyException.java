@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
-
 import util.NullCleaner;
 
 /**
@@ -41,6 +40,22 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	private final String preferred;
 
 	/**
+	 * @param tag        the current tag
+	 * @param deprecated the old form
+	 * @param newForm    the preferred form
+	 */
+	public DeprecatedPropertyException(final StartElement tag,
+									   final String deprecated, final String newForm) {
+		super("Use of the property '" + deprecated + "' in tag '"
+					  + tag.getName().getLocalPart() + "' is deprecated; use '"
+					  + newForm + "' instead",
+				NullCleaner.assertNotNull(tag.getLocation()));
+		context = NullCleaner.assertNotNull(tag.getName());
+		old = deprecated;
+		preferred = newForm;
+	}
+
+	/**
 	 * @return the current tag.
 	 */
 	public QName getTag() {
@@ -62,36 +77,24 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	}
 
 	/**
-	 * @param tag        the current tag
-	 * @param deprecated the old form
-	 * @param newForm    the preferred form
-	 */
-	public DeprecatedPropertyException(final StartElement tag,
-									final String deprecated, final String newForm) {
-		super("Use of the property '" + deprecated + "' in tag '"
-				+ tag.getName().getLocalPart() + "' is deprecated; use '"
-				+ newForm + "' instead",
-				NullCleaner.assertNotNull(tag.getLocation()));
-		context = NullCleaner.assertNotNull(tag.getName());
-		old = deprecated;
-		preferred = newForm;
-	}
-	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

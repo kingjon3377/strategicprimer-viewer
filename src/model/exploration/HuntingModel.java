@@ -86,7 +86,7 @@ public final class HuntingModel {
 						animals.get(point).add(kind);
 					}
 				} else if ((fix instanceof Grove) || (fix instanceof Meadow) ||
-								(fix instanceof Shrub)) {
+								   (fix instanceof Shrub)) {
 					plants.get(point).add(fix.toString());
 				}
 			}
@@ -139,7 +139,8 @@ public final class HuntingModel {
 				StreamSupport
 						.stream(new SurroundingPointIterable(point, dims).spliterator(),
 								false).filter(plants::containsKey)
-						.flatMap(local -> NullCleaner.assertNotNull(plants.get(local)).stream())
+						.flatMap(local -> NullCleaner.assertNotNull(plants.get(local))
+												  .stream())
 						.collect(Collectors.toList());
 		final Collection<String> retval = new ArrayList<>();
 		for (int i = 0; i < items; i++) {
@@ -158,14 +159,15 @@ public final class HuntingModel {
 	 * @return a list of results, about one eighth of which will be "nothing."
 	 */
 	private List<String> chooseFromMap(final Point point, final int items,
-									final Map<Point, Collection<String>> chosenMap) {
+									   final Map<Point, Collection<String>> chosenMap) {
 		final List<String> choices = StreamSupport
-											.stream(new SurroundingPointIterable(point,
-																						dims)
-															.spliterator(), false)
-											.filter(chosenMap::containsKey).flatMap(
-						local -> NullCleaner.assertNotNull(chosenMap.get(local)).stream())
-											.collect(Collectors.toList());
+											 .stream(new SurroundingPointIterable(point,
+																						 dims)
+															 .spliterator(), false)
+											 .filter(chosenMap::containsKey).flatMap(
+						local -> NullCleaner.assertNotNull(chosenMap.get(local))
+										 .stream())
+											 .collect(Collectors.toList());
 		final int nothings = choices.size();
 		for (int i = 0; i < nothings; i++) {
 			choices.add(NOTHING);

@@ -20,8 +20,9 @@ package util;
 public interface Reorderable {
 	/**
 	 * Move a row of a list or table from one position to another.
+	 *
 	 * @param fromIndex the index to remove from
-	 * @param toIndex the index to move to (its index *before* removing the old!)
+	 * @param toIndex   the index to move to (its index *before* removing the old!)
 	 */
 	void reorder(int fromIndex, int toIndex);
 }

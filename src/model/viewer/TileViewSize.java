@@ -18,9 +18,9 @@ package model.viewer;
  *
  * @author Jonathan Lovelace
  *
- * TODO: Even better zoom support.
+ *         TODO: Even better zoom support.
  *
- * TODO: tests
+ *         TODO: tests
  */
 public final class TileViewSize {
 	/**

@@ -28,6 +28,7 @@ public interface Point extends Comparable<@NonNull Point> {
 	 * @return the second coordinate.
 	 */
 	int getCol();
+
 	/**
 	 * @param point another point
 	 * @return the result of a comparison with that point

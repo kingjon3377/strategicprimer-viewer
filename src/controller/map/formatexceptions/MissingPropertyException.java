@@ -38,7 +38,7 @@ public final class MissingPropertyException extends SPFormatException {
 	/**
 	 * @param tag       the current tag
 	 * @param parameter the missing parameter
-	 * @param cause the underlying cause
+	 * @param cause     the underlying cause
 	 */
 	public MissingPropertyException(final StartElement tag, final String parameter,
 									final Throwable cause) {
@@ -48,6 +48,7 @@ public final class MissingPropertyException extends SPFormatException {
 		context = NullCleaner.assertNotNull(tag.getName());
 		param = parameter;
 	}
+
 	/**
 	 * @param tag       the current tag
 	 * @param parameter the missing parameter
@@ -59,6 +60,7 @@ public final class MissingPropertyException extends SPFormatException {
 		context = NullCleaner.assertNotNull(tag.getName());
 		param = parameter;
 	}
+
 	/**
 	 * @return the current tag
 	 */
@@ -72,22 +74,26 @@ public final class MissingPropertyException extends SPFormatException {
 	public String getParam() {
 		return param;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

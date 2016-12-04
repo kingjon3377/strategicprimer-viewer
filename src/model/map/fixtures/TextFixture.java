@@ -24,13 +24,13 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class TextFixture implements TileFixture, HasMutableImage {
 	/**
-	 * The text.
-	 */
-	private String text;
-	/**
 	 * The turn it's associated with.
 	 */
 	private final int turn;
+	/**
+	 * The text.
+	 */
+	private String text;
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -73,13 +73,6 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
-	 * @param newText the new text for the fixture
-	 */
-	public void setText(final String newText) {
-		text = newText;
-	}
-
-	/**
 	 * @return the turn this is associated with
 	 */
 	public int getTurn() {
@@ -102,13 +95,20 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * @param newText the new text for the fixture
+	 */
+	public void setText(final String newText) {
+		text = newText;
+	}
+
+	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) ||
-					((obj instanceof TextFixture) && equalsImpl((TextFixture) obj));
+					   ((obj instanceof TextFixture) && equalsImpl((TextFixture) obj));
 	}
 
 	/**
@@ -148,19 +148,19 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

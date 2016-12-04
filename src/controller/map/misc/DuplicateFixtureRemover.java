@@ -44,12 +44,13 @@ public final class DuplicateFixtureRemover {
 	private DuplicateFixtureRemover() {
 		// No need to instantiate.
 	}
+
 	/**
 	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills, forests of the
 	 * same kind, oases, etc.---we use TileFixture#equalsIgnoringID(TileFixture)) from
 	 * every tile in a map.
 	 *
-	 * @param map     the map to filter
+	 * @param map the map to filter
 	 * @param cli the interface to talk to the user
 	 * @throws IOException on I/O error interacting with user
 	 */
@@ -67,11 +68,11 @@ public final class DuplicateFixtureRemover {
 	 *
 	 * @param map      the map
 	 * @param location the location being considered now
-	 * @param cli	to talk to the user
+	 * @param cli      to talk to the user
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void filter(final IMutableMapNG map, final Point location,
-							  final ICLIHelper cli) throws IOException {
+							   final ICLIHelper cli) throws IOException {
 		final Collection<TileFixture> fixtures = new ArrayList<>();
 		final Collection<TileFixture> toRemove = new ArrayList<>();
 		// We ignore ground and forests because they don't have IDs.
@@ -103,10 +104,12 @@ public final class DuplicateFixtureRemover {
 			map.removeFixture(location, fix);
 		}
 	}
+
 	/**
 	 * Offer to combine like resources in a unit or fortress.
+	 *
 	 * @param iter a collection of fixtures.
-	 * @param cli the interface to talk to the user
+	 * @param cli  the interface to talk to the user
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private static void coalesceResources(final Iterable<? extends IFixture> iter,
@@ -118,9 +121,10 @@ public final class DuplicateFixtureRemover {
 				coalesceResources((FixtureIterable<?>) fix, cli);
 			} else if (fix instanceof ResourcePile) {
 				final ResourcePile res = (ResourcePile) fix;
-				final Pair<String, Pair<String, Pair<String, Integer>>> key = Pair.of(res.getKind(),
-						Pair.of(res.getContents(), Pair.of(res.getUnits(),
-								Integer.valueOf(res.getCreated()))));
+				final Pair<String, Pair<String, Pair<String, Integer>>> key =
+						Pair.of(res.getKind(),
+								Pair.of(res.getContents(), Pair.of(res.getUnits(),
+										Integer.valueOf(res.getCreated()))));
 				final List<ResourcePile> piles;
 				if (resources.containsKey(key)) {
 					piles = resources.get(key);
@@ -165,8 +169,10 @@ public final class DuplicateFixtureRemover {
 			}
 		}
 	}
+
 	/**
 	 * Convert a Number to a BigDecimal.
+	 *
 	 * @param num the number to convert
 	 */
 	private static BigDecimal toBigDecimal(final Number num) {

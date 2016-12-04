@@ -25,22 +25,26 @@ import static util.NullCleaner.assertNotNull;
 @SuppressWarnings("UtilityClassCanBeEnum")
 public final class PointFactory {
 	/**
+	 * The point cache.
+	 */
+	private static final Map<Integer, Map<Integer, Point>> POINT_CACHE =
+			new ConcurrentHashMap<>();
+	/**
+	 * Coordinate cache.
+	 */
+	private static final Map<Integer, Map<Integer, Coordinate>> C_CACHE =
+			new ConcurrentHashMap<>();
+	/**
 	 * Whether to use the cache.
 	 */
 	@SuppressWarnings("StaticNonFinalField")
 	private static boolean useCache = true;
 
 	/**
-	 * The point cache.
+	 * Do not instantiate.
 	 */
-	private static final Map<Integer, Map<Integer, Point>> POINT_CACHE =
-			new ConcurrentHashMap<>();
-
-	/**
-	 * Coordinate cache.
-	 */
-	private static final Map<Integer, Map<Integer, Coordinate>> C_CACHE =
-			new ConcurrentHashMap<>();
+	private PointFactory() {
+	}
 
 	/**
 	 * Clear the cache.
@@ -55,12 +59,6 @@ public final class PointFactory {
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public static void shouldUseCache(final boolean shouldUseCache) {
 		useCache = shouldUseCache;
-	}
-
-	/**
-	 * Do not instantiate.
-	 */
-	private PointFactory() {
 	}
 
 	/**
@@ -84,7 +82,8 @@ public final class PointFactory {
 						new ConcurrentHashMap<>());
 			}
 			if (!assertNotNull(POINT_CACHE.get(boxedRow)).containsKey(boxedCol)) {
-				assertNotNull(POINT_CACHE.get(boxedRow)).put(boxedCol, new PointImpl(row, col));
+				assertNotNull(POINT_CACHE.get(boxedRow))
+						.put(boxedCol, new PointImpl(row, col));
 			}
 			return assertNotNull(assertNotNull(POINT_CACHE.get(boxedRow)).get(boxedCol));
 		} else {
@@ -129,6 +128,17 @@ public final class PointFactory {
 		private final int col;
 
 		/**
+		 * Constructor.
+		 *
+		 * @param rowNum The first coordinate
+		 * @param colNum The second coordinate
+		 */
+		protected PointImpl(final int rowNum, final int colNum) {
+			row = rowNum;
+			col = colNum;
+		}
+
+		/**
 		 * @return the first coordinate.
 		 */
 		@Override
@@ -145,24 +155,14 @@ public final class PointFactory {
 		}
 
 		/**
-		 * Constructor.
-		 *
-		 * @param rowNum The first coordinate
-		 * @param colNum The second coordinate
-		 */
-		protected PointImpl(final int rowNum, final int colNum) {
-			row = rowNum;
-			col = colNum;
-		}
-
-		/**
 		 * @param obj the other object
 		 * @return whether this object equals another.
 		 */
 		@Override
 		public boolean equals(@Nullable final Object obj) {
-			return (this == obj) || ((obj instanceof Point) && (((Point) obj).getRow() == row) &&
-											(((Point) obj).getCol() == col));
+			return (this == obj) || ((obj instanceof Point) && (((Point) obj).getRow()
+																		== row) &&
+											 (((Point) obj).getCol() == col));
 		}
 
 		/**

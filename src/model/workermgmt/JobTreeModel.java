@@ -41,10 +41,13 @@ import util.TypesafeLogger;
 public final class JobTreeModel
 		implements TreeModel, UnitMemberListener, AddRemoveListener {
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger.getLogger(WorkerTreeModel.class);
+	/**
 	 * The listeners registered to listen for model changes.
 	 */
 	private final Collection<TreeModelListener> listeners = new ArrayList<>();
-
 	/**
 	 * The worker who the Jobs and Skills describe.
 	 */
@@ -56,9 +59,53 @@ public final class JobTreeModel
 	private TreeSelectionModel tsm = new DefaultTreeSelectionModel();
 
 	/**
-	 * Logger.
+	 * @param <T>      the type of thing we want to get
+	 * @param iterable an iterable
+	 * @param index    the index of the item we want to return
+	 * @return that item
 	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(WorkerTreeModel.class);
+	@SuppressWarnings("ProhibitedExceptionThrown")
+	private static <T> T getFromIter(final Iterable<T> iterable, final int index) {
+		final Iterator<T> iter = iterable.iterator();
+		for (int i = 0; i < index; i++) {
+			if (iter.hasNext()) {
+				iter.next();
+			} else {
+				throw new ArrayIndexOutOfBoundsException(
+																"Parent does not have " +
+																		"that many " +
+																		"children");
+			}
+		}
+		if (iter.hasNext()) {
+			final T retval = iter.next();
+			if (retval == null) {
+				throw new IllegalStateException("Iterable contained null");
+			}
+			return retval;
+		} else {
+			throw new ArrayIndexOutOfBoundsException(
+															"Parent does not have that" +
+																	" " +
+																	"many children");
+		}
+	}
+
+	/**
+	 * @param integer an int
+	 * @return an array containing it
+	 */
+	private static int[] arrayOfInt(final int integer) {
+		return new int[]{integer};
+	}
+
+	/**
+	 * @param obj an object
+	 * @return an array containing it
+	 */
+	private static Object[] arrayOfObj(final Object obj) {
+		return new Object[]{obj};
+	}
 
 	/**
 	 * Set the selection model for the tree we're the model for.
@@ -94,40 +141,9 @@ public final class JobTreeModel
 			return getFromIter((IJob) parent, index);
 		} else {
 			throw new ArrayIndexOutOfBoundsException(
-															"Parent does not have that " +
+															"Parent does not have that" +
+																	" " +
 																	"child.");
-		}
-	}
-
-	/**
-	 * @param <T>      the type of thing we want to get
-	 * @param iterable an iterable
-	 * @param index    the index of the item we want to return
-	 * @return that item
-	 */
-	@SuppressWarnings("ProhibitedExceptionThrown")
-	private static <T> T getFromIter(final Iterable<T> iterable, final int index) {
-		final Iterator<T> iter = iterable.iterator();
-		for (int i = 0; i < index; i++) {
-			if (iter.hasNext()) {
-				iter.next();
-			} else {
-				throw new ArrayIndexOutOfBoundsException(
-																"Parent does not have " +
-																		"that many " +
-																		"children");
-			}
-		}
-		if (iter.hasNext()) {
-			final T retval = iter.next();
-			if (retval == null) {
-				throw new IllegalStateException("Iterable contained null");
-			}
-			return retval;
-		} else {
-			throw new ArrayIndexOutOfBoundsException(
-															"Parent does not have that " +
-																	"many children");
 		}
 	}
 
@@ -175,7 +191,7 @@ public final class JobTreeModel
 	 */
 	@Override
 	public int getIndexOfChild(@Nullable final Object parent,
-							@Nullable final Object child) {
+							   @Nullable final Object child) {
 		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
 			//noinspection ConstantConditions
 			assert parent != null;
@@ -236,8 +252,8 @@ public final class JobTreeModel
 				job.addSkill(skill);
 				fireTreeNodesInserted(
 						new TreeModelEvent(this, new TreePath(new Object[]{root, job}),
-												arrayOfInt(childCount),
-												arrayOfObj(skill)));
+												  arrayOfInt(childCount),
+												  arrayOfObj(skill)));
 			}
 		}
 	}
@@ -248,7 +264,7 @@ public final class JobTreeModel
 	 */
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
-								@Nullable final UnitMember selected) {
+							   @Nullable final UnitMember selected) {
 		if (selected instanceof IWorker) {
 			root = (IWorker) selected;
 			fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(root)));
@@ -256,22 +272,6 @@ public final class JobTreeModel
 			root = null;
 			fireTreeStructureChanged(new TreeModelEvent(this, (TreePath) null));
 		}
-	}
-
-	/**
-	 * @param integer an int
-	 * @return an array containing it
-	 */
-	private static int[] arrayOfInt(final int integer) {
-		return new int[]{integer};
-	}
-
-	/**
-	 * @param obj an object
-	 * @return an array containing it
-	 */
-	private static Object[] arrayOfObj(final Object obj) {
-		return new Object[]{obj};
 	}
 
 	/**

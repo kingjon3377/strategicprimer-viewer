@@ -13,11 +13,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import model.listeners.SelectionChangeListener;
 import model.map.Player;
 import model.map.Point;
@@ -57,12 +53,12 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	/**
 	 * Constructor.
 	 *
-	 * @param parent  a parent of this list
-	 * @param driverModel  the driver model (needed to get at the map for the list model)
-	 * @param players the players in the map
+	 * @param parent      a parent of this list
+	 * @param driverModel the driver model (needed to get at the map for the list model)
+	 * @param players     the players in the map
 	 */
 	public FixtureList(final JComponent parent, final IDriverModel driverModel,
-					final Iterable<Player> players) {
+					   final Iterable<Player> players) {
 		flm = new FixtureListModel(driverModel);
 		setModel(flm);
 		setCellRenderer(new FixtureCellRenderer());
@@ -77,7 +73,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 				"delete");
 		getActionMap().put("delete",
 				new ActionWrapper(event -> ((FixtureListModel) getModel())
-												.removeAll(getSelectedValuesList())));
+												   .removeAll(getSelectedValuesList())));
 		addMouseListener(new FixtureMouseListener(players, this));
 	}
 
@@ -113,7 +109,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof JList) &&
-										getModel().equals(((JList) obj).getModel()));
+										 getModel().equals(((JList) obj).getModel()));
 	}
 
 	/**
@@ -122,6 +118,39 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	@Override
 	public int hashCode() {
 		return flm.hashCode();
+	}
+
+	/**
+	 * @param old      passed to the list model
+	 * @param newPoint passed to the list model
+	 */
+	@Override
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+		flm.selectedPointChanged(old, newPoint);
+	}
+
+	/**
+	 * Prevent serialization.
+	 *
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	@SuppressWarnings({"unused", "static-method"})
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * Prevent serialization
+	 *
+	 * @param in ignored
+	 * @throws IOException            always
+	 * @throws ClassNotFoundException never
+	 */
+	@SuppressWarnings({"unused", "static-method"})
+	private void readObject(final ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 
 	/**
@@ -143,7 +172,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		 * Constructor.
 		 *
 		 * @param playerColl the collection of players in the map
-		 * @param theList the list to listen on
+		 * @param theList    the list to listen on
 		 */
 		protected FixtureMouseListener(final Iterable<Player> playerColl, final
 		JList<TileFixture> theList) {
@@ -204,37 +233,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		public String toString() {
 			return "FixtureMouseListener";
 		}
-	}
-
-	/**
-	 * @param old      passed to the list model
-	 * @param newPoint passed to the list model
-	 */
-	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
-		flm.selectedPointChanged(old, newPoint);
-	}
-	/**
-	 * Prevent serialization.
-	 * @param out ignored
-	 * @throws IOException always
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void writeObject(final ObjectOutputStream out) throws IOException {
-		throw new NotSerializableException("Serialization is not allowed");
-	}
-	/**
-	 * Prevent serialization
-	 * @param in ignored
-	 * @throws IOException always
-	 * @throws ClassNotFoundException never
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void readObject(final ObjectInputStream in)
-			throws IOException, ClassNotFoundException {
-		throw new NotSerializableException("Serialization is not allowed");
-	}
-	/**
+	}	/**
 	 * @return a diagnostic String
 	 */
 	@Override

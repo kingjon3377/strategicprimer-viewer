@@ -1,18 +1,11 @@
 package view.util;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -70,7 +63,8 @@ public final class AboutDialog extends JDialog {
 				"Minotaur, troll, and ogre images by 'www.36peas.com', licensed under " +
 						"CC-BY");
 		builder.append(
-				"<p>Window menu managed by BSD-licensed code by Jeremy Wood, downloaded " +
+				"<p>Window menu managed by BSD-licensed code by Jeremy Wood, downloaded" +
+						" " +
 						"from ");
 		link(builder, "http://javagraphics.java.net", "javagraphics.java.net");
 		builder.append("</p>");
@@ -78,7 +72,8 @@ public final class AboutDialog extends JDialog {
 		link(builder, "https://stackoverflow.com/a/3646398", "StackOverflow");
 		builder.append("</p>");
 		builder.append(
-				"<p>Drag-and-drop implementation uses code adapted from 'helloworld922' " +
+				"<p>Drag-and-drop implementation uses code adapted from 'helloworld922'" +
+						" " +
 						"on the ");
 		//noinspection HardcodedFileSeparator
 		link(builder,
@@ -113,7 +108,7 @@ public final class AboutDialog extends JDialog {
 	 * @param text    the text of the link
 	 */
 	private static void link(final StringBuilder builder, final String href,
-							final String text) {
+							 final String text) {
 		builder.append("<a href=\"");
 		builder.append(href);
 		builder.append("\">");
@@ -132,23 +127,26 @@ public final class AboutDialog extends JDialog {
 		builder.append(text);
 		builder.append("</p>");
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
 
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

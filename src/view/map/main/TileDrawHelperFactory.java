@@ -37,11 +37,11 @@ public final class TileDrawHelperFactory {
 	}
 
 	/**
-	 * @param version the version of the map that'll be drawn
-	 * @param observer    the object to be notified when images finish drawing
-	 * @param zof     a filter to tell a ver-two helper which tiles to draw
+	 * @param version  the version of the map that'll be drawn
+	 * @param observer the object to be notified when images finish drawing
+	 * @param zof      a filter to tell a ver-two helper which tiles to draw
 	 * @param matchers a series of matchers to tell a ver-two helper which fixture is on
-	 *                    top.
+	 *                 top.
 	 * @return a draw helper for the specified map version
 	 */
 	public TileDrawHelper factory(final int version, final ImageObserver observer,

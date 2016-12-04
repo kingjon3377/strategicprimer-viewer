@@ -38,11 +38,15 @@ public final class ExplorationRunner {
 	 */
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(ExplorationRunner.class);
+	/**
+	 * The tables we know about.
+	 */
+	private final Map<String, EncounterTable> tables = new HashMap<>();
 
 	/**
-	 * @param point    the tile's location
-	 * @param terrain  the terrain at the location
-	 * @param fixtures any fixtures at the location
+	 * @param point         the tile's location
+	 * @param terrain       the terrain at the location
+	 * @param fixtures      any fixtures at the location
 	 * @param mapDimensions the dimensions of the map
 	 * @return what the owner of a fortress on the tile knows
 	 * @throws MissingTableException on missing table
@@ -58,7 +62,7 @@ public final class ExplorationRunner {
 		builder.append('.');
 		builder.append(LineEnd.LINE_SEP);
 		if ((TileType.BorealForest == terrain) || (TileType.TemperateForest ==
-														terrain)) {
+														   terrain)) {
 			builder.append("The main kind of tree is ");
 			builder.append(getPrimaryTree(point, terrain, fixtures, mapDimensions));
 			builder.append('.');
@@ -66,11 +70,6 @@ public final class ExplorationRunner {
 		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}
-
-	/**
-	 * The tables we know about.
-	 */
-	private final Map<String, EncounterTable> tables = new HashMap<>();
 
 	/**
 	 * Add a table. This is package-visibility so our test-case can use it.
@@ -83,9 +82,9 @@ public final class ExplorationRunner {
 	}
 
 	/**
-	 * @param point    the location of the tile
-	 * @param terrain  the terrain of the tile
-	 * @param fixtures any fixtures on the tile
+	 * @param point         the location of the tile
+	 * @param terrain       the terrain of the tile
+	 * @param fixtures      any fixtures on the tile
 	 * @param mapDimensions the dimensions of the map
 	 * @return the main kind of rock on the tile
 	 * @throws MissingTableException if table missing
@@ -99,9 +98,9 @@ public final class ExplorationRunner {
 	}
 
 	/**
-	 * @param point    the location of the tile
-	 * @param terrain  the tile type
-	 * @param fixtures any fixtures on the tile
+	 * @param point         the location of the tile
+	 * @param terrain       the tile type
+	 * @param fixtures      any fixtures on the tile
 	 * @param mapDimensions the dimensions of the map
 	 * @return the main kind of tree on the tile
 	 * @throws MissingTableException on missing table
@@ -127,16 +126,17 @@ public final class ExplorationRunner {
 	 * it's a random-encounter table.) Note that the result may be the name of another
 	 * table, which should then be consulted.
 	 *
-	 * @param table    the name of the table to consult
-	 * @param point    the location of the tile
-	 * @param terrain  the tile type
-	 * @param fixtures any fixtures on the tile
+	 * @param table         the name of the table to consult
+	 * @param point         the location of the tile
+	 * @param terrain       the tile type
+	 * @param fixtures      any fixtures on the tile
 	 * @param mapDimensions the dimensions of the map
 	 * @return the result of the consultation
 	 * @throws MissingTableException if the table is missing
 	 */
 	public String consultTable(final String table, final Point point,
-							   final TileType terrain, final Stream<TileFixture> fixtures,
+							   final TileType terrain, final Stream<TileFixture>
+															   fixtures,
 							   final MapDimensions mapDimensions)
 			throws MissingTableException {
 		return getTable(table).generateEvent(point, terrain, fixtures, mapDimensions);
@@ -168,10 +168,10 @@ public final class ExplorationRunner {
 	 * if there are more than two hash marks in any given string, or if either is at the
 	 * beginning or the end of the string, since we use String.split .
 	 *
-	 * @param table    the name of the table to consult
-	 * @param point    the location of the tile
-	 * @param terrain  the tile type
-	 * @param fixtures any fixtures on the tile
+	 * @param table         the name of the table to consult
+	 * @param point         the location of the tile
+	 * @param terrain       the tile type
+	 * @param fixtures      any fixtures on the tile
 	 * @param mapDimensions the dimensions of the map
 	 * @return the result of the consultation
 	 * @throws MissingTableException on missing table
@@ -283,7 +283,7 @@ public final class ExplorationRunner {
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	private void verboseRecursiveCheck(final String table, final Appendable ostream,
-									final Set<String> state) throws IOException {
+									   final Set<String> state) throws IOException {
 		if (!state.contains(table)) {
 			state.add(table);
 			if (tables.keySet().contains(table)) {

@@ -22,8 +22,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <V> the kind of thing stored in the map.
+ * @author Jonathan Lovelace
  */
 public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	/**

@@ -31,9 +31,9 @@ public interface UtilityDriver extends ISPDriver {
 	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver-model that should be used by the app
-	 * @throws DriverFailedException always: a utility driver operates on files
-	 * directly, not a driver model.
+	 * @param model   the driver-model that should be used by the app
+	 * @throws DriverFailedException always: a utility driver operates on files directly,
+	 *                               not a driver model.
 	 */
 	@Override
 	default void startDriver(final ICLIHelper cli, final SPOptions options,

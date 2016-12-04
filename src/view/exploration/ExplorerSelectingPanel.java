@@ -1,6 +1,6 @@
 package view.exploration;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -8,12 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.text.Document;
 import model.exploration.ExplorationUnitListModel;
 import model.exploration.IExplorationModel;
@@ -49,16 +44,6 @@ import view.util.SplitWithWeights;
 public final class ExplorerSelectingPanel extends BorderedPanel implements
 		PlayerChangeSource, CompletionSource {
 	/**
-	 * The list of players.
-	 */
-	private final JList<Player> playerList;
-
-	/**
-	 * The list of completion listeners listening to us.
-	 */
-	private final Collection<CompletionListener> cListeners = new ArrayList<>();
-
-	/**
 	 * The minimum length of the HTML wrapper.
 	 */
 	private static final int MIN_HTML_LEN = "<html><body></body></html>"
@@ -68,20 +53,6 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 */
 	private static final int HTML_PAR_LEN = "<p></p>".length();
 	/**
-	 * The list of units.
-	 */
-	private final JList<IUnit> unitList;
-	/**
-	 * The list of player-change listeners.
-	 */
-	private final Collection<PlayerChangeListener> listeners = new ArrayList<>();
-
-	/**
-	 * The text-field containing the running MP total.
-	 */
-	private final JTextField mpField = new JTextField(5);
-
-	/**
 	 * The proportion between the two sides.
 	 */
 	private static final double PROPORTION = 0.5;
@@ -89,6 +60,26 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 * The text on the 'start exploring' button.
 	 */
 	private static final String BUTTON_TEXT = "Start exploring!";
+	/**
+	 * The list of players.
+	 */
+	private final JList<Player> playerList;
+	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final Collection<CompletionListener> cListeners = new ArrayList<>();
+	/**
+	 * The list of units.
+	 */
+	private final JList<IUnit> unitList;
+	/**
+	 * The list of player-change listeners.
+	 */
+	private final Collection<PlayerChangeListener> listeners = new ArrayList<>();
+	/**
+	 * The text-field containing the running MP total.
+	 */
+	private final JTextField mpField = new JTextField(5);
 	/**
 	 * The exploration model.
 	 */
@@ -120,9 +111,11 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		addPlayerChangeListener(unitListModel);
 		unitList = new JList<>(unitListModel);
 		unitList.setCellRenderer((final JList<? extends @NonNull IUnit> list,
-				@Nullable final IUnit value, final int index,
-				final boolean isSelected, final boolean cellHasFocus) -> {
-			final ListCellRenderer<@Nullable Object> defRenderer = new DefaultListCellRenderer();
+								  @Nullable final IUnit value, final int index,
+								  final boolean isSelected, final boolean cellHasFocus)
+										 -> {
+			final ListCellRenderer<@Nullable Object> defRenderer =
+					new DefaultListCellRenderer();
 			final Component retval =
 					defRenderer.getListCellRendererComponent(
 							NullCleaner.assertNotNull(list), value, index,
@@ -145,12 +138,14 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		};
 		mpField.addActionListener(buttonListener);
 		setCenter(SplitWithWeights.horizontalSplit(PROPORTION, PROPORTION,
-				verticalPanel(label("Players in all maps:"), playerList, null), verticalPanel(
+				verticalPanel(label("Players in all maps:"), playerList, null),
+				verticalPanel(
 						label(html("Units belonging to that player:",
 								"(Selected unit will be used for exploration.)")),
 						new JScrollPane(unitList), verticalPanel(null,
 								horizontalPanel(label("Unit's Movement Points"), null,
-										mpField), new ListenedButton(BUTTON_TEXT, buttonListener)))));
+										mpField),
+								new ListenedButton(BUTTON_TEXT, buttonListener)))));
 	}
 
 	/**
@@ -215,32 +210,37 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	public void removeCompletionListener(final CompletionListener list) {
 		cListeners.remove(list);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a quasi-diagnostic String
 	 */
 	@Override
 	public String toString() {
 		return "ExplorerSelectingPanel including " + unitList.getModel().getSize() +
-					" units";
+					   " units";
 	}
 }

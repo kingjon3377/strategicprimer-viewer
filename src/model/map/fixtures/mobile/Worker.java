@@ -41,29 +41,34 @@ import util.NullCleaner;
  */
 public class Worker implements IWorker, HasPortrait {
 	/**
+	 * The set of jobs the worker is trained or experienced in.
+	 */
+	private final Collection<IJob> jobSet = new ArraySet<>();
+	/**
+	 * The ID number of the worker.
+	 */
+	private final int id;
+	/**
 	 * The worker's name.
 	 */
 	private String name;
-
 	/**
 	 * The worker's race (elf, dwarf, human, etc.).
 	 */
 	private String race;
 	/**
-	 * The set of jobs the worker is trained or experienced in.
-	 */
-	private final Collection<IJob> jobSet = new ArraySet<>();
-
-	/**
 	 * The worker's stats.
 	 */
 	@Nullable
 	private WorkerStats stats = null;
-
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+	/**
+	 * The filename of an image to use as a portrait for the unit.
+	 */
+	private String portraitName = "";
 
 	/**
 	 * Constructor.
@@ -74,11 +79,24 @@ public class Worker implements IWorker, HasPortrait {
 	 * @param jobs       the Jobs the worker is trained in
 	 */
 	public Worker(final String wName, final String workerRace, final int idNum,
-				final @NonNull IJob @NonNull ... jobs) {
+				  final @NonNull IJob @NonNull ... jobs) {
 		name = wName;
 		id = idNum;
 		race = workerRace;
 		jobSet.addAll(Arrays.asList(jobs));
+	}
+
+	/**
+	 * @param firstSet  a set of Jobs
+	 * @param secondSet a set of Jobs
+	 * @return whether they are equal, ignoring any "empty" Jobs.
+	 */
+	private static boolean areJobSetsEqual(final Collection<IJob> firstSet,
+										   final Collection<IJob> secondSet) {
+		final Predicate<IJob> nonempty = job -> !job.isEmpty();
+		return firstSet.stream().filter(nonempty).collect(Collectors.toSet())
+					   .equals(secondSet.stream().filter(nonempty)
+									   .collect(Collectors.toSet()));
 	}
 
 	/**
@@ -99,11 +117,6 @@ public class Worker implements IWorker, HasPortrait {
 	public final Iterator<IJob> iterator() {
 		return NullCleaner.assertNotNull(jobSet.iterator());
 	}
-
-	/**
-	 * The ID number of the worker.
-	 */
-	private final int id;
 
 	/**
 	 * @return the ID number of the worker.
@@ -130,13 +143,22 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * @param newName the worker's new name
+	 */
+	@Override
+	public final void setName(final String newName) {
+		name = newName;
+	}
+
+	/**
 	 * @param obj an object
 	 * @return whether it's the same as this
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof IWorker) && (((IWorker) obj).getID() == id)
-										&& equalsIgIDImpl((IWorker) obj));
+		return (this == obj) ||
+					   ((obj instanceof IWorker) && (((IWorker) obj).getID() == id)
+								&& equalsIgIDImpl((IWorker) obj));
 	}
 
 	/**
@@ -163,7 +185,7 @@ public class Worker implements IWorker, HasPortrait {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof IWorker) && equalsIgIDImpl((IWorker)
-																				fix));
+																					fix));
 	}
 
 	/**
@@ -175,19 +197,6 @@ public class Worker implements IWorker, HasPortrait {
 					   areJobSetsEqual(jobSet, ListMaker.toList(fix)) &&
 					   fix.getRace().equals(race) &&
 					   Objects.equals(stats, fix.getStats());
-	}
-
-	/**
-	 * @param firstSet  a set of Jobs
-	 * @param secondSet a set of Jobs
-	 * @return whether they are equal, ignoring any "empty" Jobs.
-	 */
-	private static boolean areJobSetsEqual(final Collection<IJob> firstSet,
-										   final Collection<IJob> secondSet) {
-		final Predicate<IJob> nonempty = job -> !job.isEmpty();
-		return firstSet.stream().filter(nonempty).collect(Collectors.toSet())
-					   .equals(secondSet.stream().filter(nonempty)
-									   .collect(Collectors.toSet()));
 	}
 
 	/**
@@ -209,10 +218,12 @@ public class Worker implements IWorker, HasPortrait {
 								+ " (ID #" + Integer.toString(id) + "):";
 				if (areObjectsEqual(ostream, name, ((Worker) obj).name, localContext,
 						"\tNames differ", LineEnd.LINE_SEP) &&
-						areObjectsEqual(ostream, race, ((Worker) obj).race, localContext,
-								":\tRaces differ", LineEnd.LINE_SEP) &&
-						areObjectsEqual(ostream, stats, ((Worker) obj).stats, localContext,
-								":\tStats differ", LineEnd.LINE_SEP)) {
+							areObjectsEqual(ostream, race, ((Worker) obj).race,
+									localContext,
+									":\tRaces differ", LineEnd.LINE_SEP) &&
+							areObjectsEqual(ostream, stats, ((Worker) obj).stats,
+									localContext,
+									":\tStats differ", LineEnd.LINE_SEP)) {
 					final Map<String, IJob> ours = new HashMap<>();
 					for (final IJob job : jobSet) {
 						ours.put(job.getName(), job);
@@ -225,8 +236,9 @@ public class Worker implements IWorker, HasPortrait {
 							ostream.append(job.getName());
 							ostream.append(LineEnd.LINE_SEP);
 							retval = false;
-						} else if (!NullCleaner.assertNotNull(ours.get(job.getName())).isSubset(job,
-								ostream, localContext)) {
+						} else if (!NullCleaner.assertNotNull(ours.get(job.getName()))
+											.isSubset(job,
+													ostream, localContext)) {
 							retval = false;
 						}
 					}
@@ -256,14 +268,6 @@ public class Worker implements IWorker, HasPortrait {
 	@Override
 	public String getKind() {
 		return race;
-	}
-
-	/**
-	 * @param newName the worker's new name
-	 */
-	@Override
-	public final void setName(final String newName) {
-		name = newName;
 	}
 
 	/**
@@ -302,19 +306,19 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**
@@ -361,10 +365,7 @@ public class Worker implements IWorker, HasPortrait {
 		jobSet.add(retval);
 		return retval;
 	}
-	/**
-	 * The filename of an image to use as a portrait for the unit.
-	 */
-	private String portraitName = "";
+
 	/**
 	 * @return The filename of an image to use as a portrait for the unit.
 	 */

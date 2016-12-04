@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.listeners.SelectionChangeSupport;
@@ -35,16 +34,12 @@ import view.worker.NewUnitDialog;
  * @author Jonathan Lovelace
  */
 public final class TerrainChangingMenu extends JPopupMenu
-		implements VersionChangeListener, SelectionChangeSource, SelectionChangeListener {
+		implements VersionChangeListener, SelectionChangeSource,
+						   SelectionChangeListener {
 	/**
 	 * The driver model.
 	 */
 	private final IDriverModel model;
-	/**
-	 * The point at which we might change terrain.
-	 */
-	private Point point = PointFactory.point(-1, -1);
-
 	/**
 	 * The helper to handle selection-change listeners for us.
 	 */
@@ -57,18 +52,25 @@ public final class TerrainChangingMenu extends JPopupMenu
 	 * The window to allow the user to create a new unit.
 	 */
 	private final NewUnitDialog nuDialog;
+	/**
+	 * The point at which we might change terrain.
+	 */
+	private Point point = PointFactory.point(-1, -1);
 
 	/**
 	 * Constructor.
 	 *
-	 * @param version the map version
-	 * @param driverModel  the driver model
+	 * @param version     the map version
+	 * @param driverModel the driver model
 	 */
 	public TerrainChangingMenu(final int version, final IViewerModel driverModel) {
 		model = driverModel;
-		nuDialog = new NewUnitDialog(driverModel.getMap().getCurrentPlayer(), IDFactoryFiller
-																				.createFactory(
-																						driverModel.getMap()));
+		nuDialog =
+				new NewUnitDialog(driverModel.getMap().getCurrentPlayer(),
+										 IDFactoryFiller
+																				   .createFactory(
+																						   driverModel
+																								   .getMap()));
 		nuDialog.addNewUnitListener(unit -> {
 			driverModel.getMap().addFixture(point, unit);
 			driverModel.setSelection(point);
@@ -137,26 +139,31 @@ public final class TerrainChangingMenu extends JPopupMenu
 			newUnitItem.setEnabled(true);
 		}
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a quasi-diagnostic String
 	 */

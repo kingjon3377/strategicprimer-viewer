@@ -34,6 +34,7 @@ public final class SystemOut extends FilterOutputStream {
 	private SystemOut() {
 		super(System.out);
 	}
+
 	/**
 	 * Do *not* close; this is stdout. However, flush the stream.
 	 */

@@ -47,19 +47,17 @@ import static java.util.Collections.unmodifiableList;
 @Deprecated
 public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	/**
+	 * Singleton object.
+	 */
+	public static final CompactReader<IUnit> READER = new CompactUnitReader();
+	/**
 	 * The tag used for a unit.
 	 */
 	private static final String UNIT_TAG = "unit";
-
 	/**
 	 * List of readers we'll try sub-tags on.
 	 */
 	private final List<CompactReader<? extends IFixture>> readers;
-
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactReader<IUnit> READER = new CompactUnitReader();
 
 	/**
 	 * Singleton.
@@ -77,9 +75,33 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	}
 
 	/**
+	 * Parse the kind of unit, from the "kind" or "type" parameter---default the empty
+	 * string.
+	 *
+	 * @param element the current element
+	 * @param warner  the Warning instance to use
+	 * @return the kind of unit
+	 * @throws SPFormatException on SP format error.
+	 */
+	private static String parseKind(final StartElement element,
+									final Warning warner) throws SPFormatException {
+		try {
+			final String retval =
+					getParamWithDeprecatedForm(element, "kind", "type", warner);
+			if (retval.isEmpty()) {
+				warner.warn(new MissingPropertyException(element, "kind"));
+			}
+			return retval;
+		} catch (final MissingPropertyException except) {
+			warner.warn(except);
+			return "";
+		}
+	}
+
+	/**
 	 * @param element   the XML element to parse
-	 * @param parent	the parent tag
-	 *@param players   the collection of players
+	 * @param parent    the parent tag
+	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from
@@ -124,7 +146,8 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
 			} else if (event.isEndElement() &&
-							element.getName().equals(event.asEndElement().getName())) {
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
@@ -137,9 +160,10 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 
 	/**
 	 * Parse orders for a unit for a specified turn.
+	 *
 	 * @param element the orders element
-	 * @param unit the unit to whom these orders are directed
-	 * @param stream the stream of further tags.
+	 * @param unit    the unit to whom these orders are directed
+	 * @param stream  the stream of further tags.
 	 * @throws SPFormatException on SP format problem
 	 */
 	private void parseOrders(final StartElement element,
@@ -154,17 +178,20 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 				throw new UnwantedChildException(element.getName(),
 														event.asStartElement());
 			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName())) {
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
 		unit.setOrders(turn, builder.toString().trim());
 	}
+
 	/**
 	 * Parse results for a unit for a specified turn.
+	 *
 	 * @param element the results element
-	 * @param unit the unit to whom these orders are directed
-	 * @param stream the stream of further tags.
+	 * @param unit    the unit to whom these orders are directed
+	 * @param stream  the stream of further tags.
 	 * @throws SPFormatException on SP format problem
 	 */
 	private void parseResults(final StartElement element,
@@ -179,7 +206,8 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 				throw new UnwantedChildException(element.getName(),
 														event.asStartElement());
 			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName())) {
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
@@ -190,7 +218,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 * Parse what should be a TileFixture from the XML.
 	 *
 	 * @param element   the XML element to parse
-	 * @param parent	the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param idFactory the ID factory to generate IDs with
@@ -199,11 +227,11 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private UnitMember parseChild(final StartElement element,
-								final QName parent,
-								final Iterable<XMLEvent> stream,
-								final IMutablePlayerCollection players,
-								final IDRegistrar idFactory,
-								final Warning warner) throws SPFormatException {
+								  final QName parent,
+								  final Iterable<XMLEvent> stream,
+								  final IMutablePlayerCollection players,
+								  final IDRegistrar idFactory,
+								  final Warning warner) throws SPFormatException {
 		final String name = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends IFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
@@ -213,37 +241,14 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 					return (UnitMember) retval;
 				} else {
 					throw new UnwantedChildException(new QName(element.getName()
-																	.getNamespaceURI(),
-																	UNIT_TAG), element);
+																	   .getNamespaceURI(),
+																	  UNIT_TAG),
+															element);
 				}
 			}
 		}
 		throw new UnwantedChildException(new QName(element.getName().getNamespaceURI(),
-														UNIT_TAG), element);
-	}
-
-	/**
-	 * Parse the kind of unit, from the "kind" or "type" parameter---default the empty
-	 * string.
-	 *
-	 * @param element the current element
-	 * @param warner  the Warning instance to use
-	 * @return the kind of unit
-	 * @throws SPFormatException on SP format error.
-	 */
-	private static String parseKind(final StartElement element,
-									final Warning warner) throws SPFormatException {
-		try {
-			final String retval =
-					getParamWithDeprecatedForm(element, "kind", "type", warner);
-			if (retval.isEmpty()) {
-				warner.warn(new MissingPropertyException(element, "kind"));
-			}
-			return retval;
-		} catch (final MissingPropertyException except) {
-			warner.warn(except);
-			return "";
-		}
+														  UNIT_TAG), element);
 	}
 
 	/**
@@ -289,7 +294,8 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 					!obj.getAllResults().isEmpty()) {
 			ostream.append('>');
 			ostream.append(LineEnd.LINE_SEP);
-			for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
+			for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet
+																					 ()) {
 				if (entry.getValue().trim().isEmpty()) {
 					continue;
 				}
@@ -335,6 +341,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 			ostream.append(LineEnd.LINE_SEP);
 		}
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether we can write it

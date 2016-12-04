@@ -56,6 +56,7 @@ public enum DrawingNumericConstants {
 	 * The constant this instance encapsulates.
 	 */
 	public final double constant;
+
 	/**
 	 * @param numConst the constant this instance encapsulates.
 	 */

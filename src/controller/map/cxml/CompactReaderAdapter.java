@@ -41,12 +41,6 @@ import util.Warning;
 @Deprecated
 public final class CompactReaderAdapter {
 	/**
-	 * Singleton constructor.
-	 */
-	private CompactReaderAdapter() {
-		// Singleton.
-	}
-	/**
 	 * The set of readers.
 	 */
 	private static final Set<CompactReader<@NonNull ?>> READERS =
@@ -60,9 +54,17 @@ public final class CompactReaderAdapter {
 					CompactUnitReader.READER, CompactWorkerReader.READER));
 
 	/**
+	 * Singleton constructor.
+	 */
+	private CompactReaderAdapter() {
+		// Singleton.
+	}
+
+	/**
 	 * Parse an object from XML.
+	 *
 	 * @param element   the element we're immediately dealing with
-	 * @param parent	the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream from which to read more elements
 	 * @param players   the PlayerCollection to use when needed
 	 * @param warner    the Warning instance if warnings need to be issued
@@ -71,12 +73,13 @@ public final class CompactReaderAdapter {
 	 * @throws SPFormatException on SP format problems
 	 */
 	public static Object parse(final StartElement element,
-							final QName parent,
-							final Iterable<XMLEvent> stream,
-							final IMutablePlayerCollection players,
-							final Warning warner, final IDRegistrar idFactory)
+							   final QName parent,
+							   final Iterable<XMLEvent> stream,
+							   final IMutablePlayerCollection players,
+							   final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		// Since all implementations of necessity check tag's namespace, we leave that to them.
+		// Since all implementations of necessity check tag's namespace, we leave that
+		// to them.
 		final String tag = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		// Handle rivers specially.
 		if ("river".equals(tag) || "lake".equals(tag)) {
@@ -100,7 +103,7 @@ public final class CompactReaderAdapter {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void write(final Appendable ostream, final Object obj,
-							final int indent) throws IOException {
+							 final int indent) throws IOException {
 		if (obj instanceof River) {
 			CompactMapNGReader.writeRiver(ostream, (River) obj, indent);
 		} else if (obj instanceof RiverFixture) {
@@ -115,10 +118,10 @@ public final class CompactReaderAdapter {
 						new IllegalArgumentException("Wanted to write a proxy object"));
 				write(ostream, proxied, indent);
 				return;
-		} else if (obj instanceof IJob) {
-			CompactWorkerReader.writeJob(ostream, (IJob) obj, indent);
-		} else if (obj instanceof ISkill) {
-			CompactWorkerReader.writeSkill(ostream, (ISkill) obj, indent);
+			} else if (obj instanceof IJob) {
+				CompactWorkerReader.writeJob(ostream, (IJob) obj, indent);
+			} else if (obj instanceof ISkill) {
+				CompactWorkerReader.writeSkill(ostream, (ISkill) obj, indent);
 			} else {
 				throw new IllegalStateException("Don't know how to write this type (a " +
 														"proxy not proxying any " +
@@ -132,8 +135,9 @@ public final class CompactReaderAdapter {
 				}
 			}
 			throw new IllegalArgumentException("After checking " + READERS.size() +
-													" readers, don't know how to write a " +
-													obj.getClass().getSimpleName());
+													   " readers, don't know how to " +
+													   "write a " +
+													   obj.getClass().getSimpleName());
 		}
 	}
 }

@@ -34,23 +34,22 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 */
 	private final boolean parallel;
 	/**
-	 * The name of the skill.
-	 */
-	private String name;
-	/**
 	 * The Jobs we're proxying for.
 	 */
 	private final Collection<IJob> proxied = new ArrayList<>();
+	/**
+	 * The name of the skill.
+	 */
+	private String name;
 
 	/**
-	 * @param skillName  the name of the skill
+	 * @param skillName     the name of the skill
 	 * @param parallelUnits whether the worker containing this represents corresponding
-	 *                         units in different maps, rather than workers in a single
-	 *                         unit
-	 * @param jobs   the Jobs to add skill hours to when asked
+	 *                      units in different maps, rather than workers in a single unit
+	 * @param jobs          the Jobs to add skill hours to when asked
 	 */
 	public ProxySkill(final String skillName, final boolean parallelUnits,
-					final @NonNull IJob @NonNull ... jobs) {
+					  final @NonNull IJob @NonNull ... jobs) {
 		parallel = parallelUnits;
 		name = NullCleaner.assertNotNull(skillName);
 		Collections.addAll(proxied, jobs);
@@ -241,6 +240,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 		// always ...
 		return parallel;
 	}
+
 	/**
 	 * @param obj     ignored
 	 * @param ostream a stream to report this call on

@@ -39,7 +39,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public TextReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
-																					IFixture>> comparator) {
+																					  IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -113,7 +113,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final IReportNode retval =
 				new SectionListReportNode(4, "Miscellaneous Notes");
@@ -147,19 +147,19 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer,
 								  final TextFixture item, final Point loc) {
 		if (item.getTurn() >= 0) {
 			return new SimpleReportNode(loc, "At ", loc.toString(), " ",
-											distCalculator.distanceString(loc), ": ",
-											"On turn ",
-											Integer.toString(item.getTurn()), ": ",
-											item.getText());
+											   distCalculator.distanceString(loc), ": ",
+											   "On turn ",
+											   Integer.toString(item.getTurn()), ": ",
+											   item.getText());
 		} else {
 			return new SimpleReportNode(loc, "At ", loc.toString(), " ",
-											distCalculator.distanceString(loc), ": ",
-											item.getText());
+											   distCalculator.distanceString(loc), ": ",
+											   item.getText());
 		}
 	}
 

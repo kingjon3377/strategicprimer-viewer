@@ -1,7 +1,6 @@
 package controller.map.formatexceptions;
 
 import javax.xml.stream.Location;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

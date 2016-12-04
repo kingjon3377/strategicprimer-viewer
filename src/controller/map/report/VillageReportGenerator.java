@@ -67,7 +67,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		final Collection<String> independents =
 				new HtmlList("<h4>Villages you think are independent:</h4>");
 		final Map<Player, Collection<String>> others = new HashMap<>();
-		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair -> {
+		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
+																						 -> {
 			final Village village = (Village) pair.second();
 			final String product =
 					produce(fixtures, map, currentPlayer, village,
@@ -80,9 +81,9 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				NullCleaner.assertNotNull(others.get(village.getOwner())).add(product);
 			} else {
 				final Collection<String> coll = new HtmlList("<h5>Villages sworn to " +
-																	village.getOwner()
-																			.getName() +
-																	"</h5>");
+																	 village.getOwner()
+																			 .getName() +
+																	 "</h5>");
 				coll.add(product);
 				others.put(village.getOwner(), coll);
 			}
@@ -91,9 +92,9 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		final String independentsString = independents.toString();
 		final StringBuilder retval =
 				new StringBuilder(40 + ownString.length() + independentsString.length() +
-										(others.values().stream()
-												.mapToInt(Collection::size).sum() *
-												512));
+										  (others.values().stream()
+												   .mapToInt(Collection::size).sum() *
+												   512));
 		// HtmlLists will return the empty string if they are empty.
 		retval.append(ownString);
 		retval.append(independentsString);
@@ -116,23 +117,24 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final IReportNode own = new SectionListReportNode(5,
-																		"Villages " +
-																				"pledged" +
-																				" to " +
-																				"your " +
-																				"service:");
+																 "Villages " +
+																		 "pledged" +
+																		 " to " +
+																		 "your " +
+																		 "service:");
 		final IReportNode independents =
 				new SectionListReportNode(5, "Villages you think are independent:");
 		final IReportNode others =
 				new SectionListReportNode(5, "Other villages you know about:");
 		@SuppressWarnings("TooBroadScope") final Map<Player, IReportNode> othersMap =
 				new HashMap<>();
-		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair -> {
+		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
+																						 -> {
 			final Village village = (Village) pair.second();
 			final Player owner = village.getOwner();
 			final IReportNode product =
@@ -146,7 +148,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				NullCleaner.assertNotNull(othersMap.get(owner)).add(product);
 			} else {
 				final IReportNode node =
-						new SectionListReportNode(6, "Villages sworn to " + owner.getName());
+						new SectionListReportNode(6, "Villages sworn to " +
+															 owner.getName());
 				node.add(product);
 				others.add(node);
 				othersMap.put(owner, node);
@@ -204,21 +207,21 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 */
 	@Override
 	public SimpleReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-												   fixtures,
+											   fixtures,
 									   final IMapNG map, final Player currentPlayer,
 									   final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
 			return new SimpleReportNode(loc, atPoint(loc), item.getName(),
-											", a(n) ", item.getRace(), " village",
-											", independent ",
-											distCalculator.distanceString(loc));
+											   ", a(n) ", item.getRace(), " village",
+											   ", independent ",
+											   distCalculator.distanceString(loc));
 		} else {
 			return new SimpleReportNode(loc, atPoint(loc), item.getName(),
-											", a(n) ", item.getRace(), " village",
-											", sworn to ",
-											playerNameOrYou(item.getOwner()), " ",
-											distCalculator.distanceString(loc));
+											   ", a(n) ", item.getRace(), " village",
+											   ", sworn to ",
+											   playerNameOrYou(item.getOwner()), " ",
+											   distCalculator.distanceString(loc));
 		}
 	}
 

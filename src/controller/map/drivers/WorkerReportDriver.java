@@ -37,24 +37,26 @@ public final class WorkerReportDriver implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-m", "--map", ParamCount.One,
-								"Report Generator",
-								"Produce HTML report of the contents of a map"
+								   "Report Generator",
+								   "Produce HTML report of the contents of a map"
 			);
-	static {
-		USAGE.addSupportedOption("--current-turn=NN");
-		USAGE.addSupportedOption("--out=/path/to/output.html");
-	}
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(WorkerReportDriver.class);
+
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
+		USAGE.addSupportedOption("--out=/path/to/output.html");
+	}
+
 	/**
 	 * Extracted method operating on exactly one filename and map.
 	 *
 	 * @param maybeFilename an Optional containing the filename the map was loaded from
-	 * @param options the options that were passed to the driver
-	 * @param map the map to generate the report from
+	 * @param options       the options that were passed to the driver
+	 * @param map           the map to generate the report from
 	 * @throws DriverFailedException if writing to file fails for some reason
 	 */
 	private void writeReport(final Optional<Path> maybeFilename, final SPOptions options,
@@ -76,20 +78,21 @@ public final class WorkerReportDriver implements SimpleDriver {
 				writer.write(report);
 			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator
-				throw new DriverFailedException("I/O error writing report to " + outString,
+				throw new DriverFailedException("I/O error writing report to " +
+														outString,
 													   except);
 			}
 		} else {
 			LOGGER.severe("Asked to make report from map with no filename");
 		}
 	}
+
 	/**
 	 * Run the driver.
 	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param model ignored
+	 * @param model   ignored
 	 * @throws DriverFailedException always: this driver has to write to the filesystem
 	 */
 	@Override
@@ -105,6 +108,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 			writeReport(model.getMapFile(), options, model.getMap());
 		}
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver
 	 */

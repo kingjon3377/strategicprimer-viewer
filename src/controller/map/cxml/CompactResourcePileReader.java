@@ -38,6 +38,7 @@ public final class CompactResourcePileReader
 	 */
 	public static final CompactReader<ResourcePile> READER =
 			new CompactResourcePileReader();
+
 	/**
 	 * Singleton.
 	 */
@@ -47,8 +48,8 @@ public final class CompactResourcePileReader
 
 	/**
 	 * @param element   the XML element to parse
-	 * @param parent	the parent tag
-	 *@param players   the collection of players
+	 * @param parent    the parent tag
+	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from
@@ -101,7 +102,7 @@ public final class CompactResourcePileReader
 	 */
 	@Override
 	public void write(final Appendable ostream, final ResourcePile obj,
-					final int indent) throws IOException {
+					  final int indent) throws IOException {
 		writeTag(ostream, "resource", indent);
 		ostream.append(" id=\"");
 		ostream.append(Integer.toString(obj.getID()));

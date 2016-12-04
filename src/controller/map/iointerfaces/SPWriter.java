@@ -48,7 +48,8 @@ public interface SPWriter {
 	 * @param obj      the object to write
 	 * @throws IOException on I/O error
 	 */
-	default void writeSPObject(final String filename, final Object obj) throws IOException {
+	default void writeSPObject(final String filename, final Object obj)
+			throws IOException {
 		writeSPObject(Paths.get(filename), obj);
 	}
 

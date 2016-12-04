@@ -40,11 +40,43 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-d", "--add-resource", ParamCount.AtLeastOne,
-								"Add resources to maps",
-								"Add resources for players to maps"
+								   "Add resources to maps",
+								   "Add resources for players to maps"
 			);
+	/**
+	 * The kinds of resources the user has entered before.
+	 */
+	private final Set<String> resourceKinds = new HashSet<>();
+	/**
+	 * A map from resource-kinds to the resource-content types the user has entered
+	 * before.
+	 */
+	private final Map<String, Set<String>> resourceContents = new HashMap<>();
+	/**
+	 * A map from resource types to units.
+	 */
+	private final Map<String, String> resourceUnits = new HashMap<>();
+
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
+	}
+
+	/**
+	 * Ask the user to enter an Implement.
+	 *
+	 * @param idf    the ID factory
+	 * @param model  the driver model
+	 * @param cli    how to interact with the user
+	 * @param player the current player
+	 * @throws IOException on I/O error interacting with the user
+	 */
+	private static void enterImplement(final IDRegistrar idf,
+									   final ResourceManagementDriver model,
+									   final ICLIHelper cli, final Player player)
+			throws IOException {
+		model.addResource(
+				new Implement(cli.inputString("Kind of equipment: "), idf.createID()),
+				player);
 	}
 
 	/**
@@ -52,7 +84,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver-model that should be used by the app
+	 * @param model   the driver-model that should be used by the app
 	 * @throws DriverFailedException on any failure
 	 */
 	@Override
@@ -66,8 +98,9 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			driverModel = new ResourceManagementDriver(model);
 		}
 		final List<Player> players =
-				StreamSupport.stream(driverModel.getPlayers().spliterator(), false).collect(
-						Collectors.toList());
+				StreamSupport.stream(driverModel.getPlayers().spliterator(), false)
+						.collect(
+								Collectors.toList());
 		final IDRegistrar idf = IDFactoryFiller.createFactory(driverModel);
 		try {
 			final String desc = "Players in the maps:";
@@ -95,14 +128,16 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 
 	/**
 	 * Ask the user to enter a resource.
-	 * @param idf the ID factory
-	 * @param model the driver model
-	 * @param cli how to interact with the user
+	 *
+	 * @param idf    the ID factory
+	 * @param model  the driver model
+	 * @param cli    how to interact with the user
 	 * @param player the current player
 	 * @throws IOException on I/O error interacting with the user
 	 */
-	private void enterResource(final IDRegistrar idf, final ResourceManagementDriver model,
-							final ICLIHelper cli, final Player player)
+	private void enterResource(final IDRegistrar idf,
+							   final ResourceManagementDriver model,
+							   final ICLIHelper cli, final Player player)
 			throws IOException {
 		final String kind = getResourceKind(cli);
 		String contents = getResourceContents(kind, cli);
@@ -112,35 +147,18 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			contents = cli.inputString("Prefix to use: ").trim() + ' ' + contents;
 		}
 		model.addResource(new ResourcePile(idf.createID(), kind, contents,
-				cli.inputDecimal(NullCleaner.assertNotNull(
-						String.format("Quantity in %s? ", units))),
-				units), player);
+												  cli.inputDecimal(
+														  NullCleaner.assertNotNull(
+																  String.format(
+																		  "Quantity in " +
+																				  "%s? ",
+																		  units))),
+												  units), player);
 	}
-
-	/**
-	 * Ask the user to enter an Implement.
-	 * @param idf the ID factory
-	 * @param model the driver model
-	 * @param cli how to interact with the user
-	 * @param player the current player
-	 * @throws IOException on I/O error interacting with the user
-	 */
-	private static void enterImplement(final IDRegistrar idf,
-								final ResourceManagementDriver model,
-								final ICLIHelper cli, final Player player)
-			throws IOException {
-		model.addResource(
-				new Implement(cli.inputString("Kind of equipment: "), idf.createID()),
-				player);
-	}
-
-	/**
-	 * The kinds of resources the user has entered before.
-	 */
-	private final Set<String> resourceKinds = new HashSet<>();
 
 	/**
 	 * Ask the user to choose or enter a resource kind.
+	 *
 	 * @param cli how to interact with the user
 	 * @return the chosen resource-kind
 	 * @throws IOException on I/O error interacting with the user
@@ -159,14 +177,10 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
-	 * A map from resource-kinds to the resource-content types the user has entered before.
-	 */
-	private final Map<String, Set<String>> resourceContents = new HashMap<>();
-
-	/**
 	 * Ask the user to choose or enter a resource-content-type for a given resource kind.
+	 *
 	 * @param kind the chosen kind
-	 * @param cli how to interact with the user
+	 * @param cli  how to interact with the user
 	 * @return the chosen resource content type
 	 * @throws IOException on I/O error interacting with the user
 	 */
@@ -194,14 +208,10 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
-	 * A map from resource types to units.
-	 */
-	private final Map<String, String> resourceUnits = new HashMap<>();
-
-	/**
 	 * Ask the user to choose units for a type of resource.
+	 *
 	 * @param resource the resource type
-	 * @param cli how to interact with the user
+	 * @param cli      how to interact with the user
 	 * @return the chosen units
 	 * @throws IOException on I/O error interacting with the user
 	 */

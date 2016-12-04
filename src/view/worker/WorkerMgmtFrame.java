@@ -7,10 +7,7 @@ import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.misc.StrategyExporter;
 import controller.map.report.ReportGenerator;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -24,18 +21,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.logging.Logger;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -106,7 +92,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	/**
 	 * At this point (proof-of-concept) we default to the first player of the choices.
 	 *
-	 * @param options options passed to the driver
+	 * @param options   options passed to the driver
 	 * @param model     the driver model.
 	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
 	 */
@@ -123,7 +109,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		setMinimumSize(new Dimension(640, 480));
 		final NewUnitDialog newUnitFrame =
 				new NewUnitDialog(mainMap.getCurrentPlayer(),
-										IDFactoryFiller.createFactory(mainMap));
+										 IDFactoryFiller.createFactory(mainMap));
 		final IWorkerTreeModel treeModel =
 				new WorkerTreeModelAlt(mainMap.getCurrentPlayer(), model);
 		final WorkerTree tree =
@@ -148,7 +134,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		actionMap.put("openUnits", new FocusRequester(tree));
 		final PlayerLabel playerLabel =
 				new PlayerLabel("Units belonging to ", mainMap.getCurrentPlayer(),
-									keyDesc);
+									   keyDesc);
 		ioHandler.addPlayerChangeListener(playerLabel);
 		ioHandler.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel =
@@ -162,13 +148,14 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		tree.addTreeSelectionListener(ordersPanel);
 		final DefaultTreeModel reportModel =
 				new DefaultTreeModel(new SimpleReportNode("Please wait, loading report" +
-																" ..."));
+																  " ..."));
 		new Thread(new ReportGeneratorThread(reportModel, model,
 													mainMap.getCurrentPlayer())).start();
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
 		report.expandPath(
-				new TreePath(((DefaultMutableTreeNode) reportModel.getRoot()).getPath()));
+				new TreePath(((DefaultMutableTreeNode) reportModel.getRoot()).getPath
+																					  ()));
 
 		final DistanceComparator distCalculator = new DistanceComparator(findHQ(model));
 		final TreeCellRenderer defRender = new DefaultTreeCellRenderer();
@@ -182,7 +169,8 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 						// (-inf, -inf) replaces null
 						if (point.getRow() > Integer.MIN_VALUE) {
 							((JComponent) retval)
-									.setToolTipText(distCalculator.distanceString(point));
+									.setToolTipText(distCalculator.distanceString
+																		   (point));
 						} else {
 							((JComponent) retval).setToolTipText(null);
 						}
@@ -212,10 +200,13 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 																					   true)),
 								ordersPanel,
 								new ListenedButton("Export a proto-strategy",
-														  evt -> new FileChooser(Optional.empty(),
+														  evt -> new FileChooser
+																		 (Optional
+																				  .empty(),
 																						new JFileChooser("."),
 																						FileChooser.FileChooserOperation.Save)
-																		 .call(file -> strategyExporter
+																		 .call(file ->
+																					   strategyExporter
 																							   .writeStrategy(
 																									   file,
 																									   options,
@@ -279,12 +270,44 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 			}
 		}
 		final ViewerFrame frame = new ViewerFrame(
-														new ViewerModel(model.getMap(),
+														 new ViewerModel(model.getMap(),
 																				model
 																						.getMapFile()),
-														ioh);
+														 ioh);
 		frame.setVisible(true);
 		return frame.getModel();
+	}
+
+	/**
+	 * Prevent serialization.
+	 *
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	@SuppressWarnings({"unused", "static-method"})
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * Prevent serialization
+	 *
+	 * @param in ignored
+	 * @throws IOException            always
+	 * @throws ClassNotFoundException never
+	 */
+	@SuppressWarnings({"unused", "static-method"})
+	private void readObject(final ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * @return the title of this app
+	 */
+	@Override
+	public String getWindowName() {
+		return "Worker Management";
 	}
 
 	/**
@@ -307,7 +330,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		 * Constructor.
 		 *
 		 * @param workerModel The driver model to get the map from
-		 * @param treeModel the tree model we update
+		 * @param treeModel   the tree model we update
 		 */
 		protected ReportUpdater(final IWorkerModel workerModel,
 								final DefaultTreeModel treeModel) {
@@ -321,7 +344,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		@Override
 		public void mapChanged() {
 			new Thread(new ReportGeneratorThread(reportModel, model, model.getMap()
-																			.getCurrentPlayer()))
+																			 .getCurrentPlayer()))
 					.start();
 		}
 
@@ -390,10 +413,12 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		public void run() {
 			RGT_LOGGER.info("About to generate report");
 			final IReportNode report =
-					ReportGenerator.createAbbreviatedReportIR(driverModel.getMap(), player);
+					ReportGenerator
+							.createAbbreviatedReportIR(driverModel.getMap(), player);
 			RGT_LOGGER.info("Finished generating report");
 			SwingUtilities.invokeLater(() -> reportModel.setRoot(report));
 		}
+
 		/**
 		 * @return a String representation of the thread
 		 */
@@ -412,8 +437,10 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		 * The type of component we're handling.
 		 */
 		private final String type;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param comp The component to request focus in.
 		 */
 		protected FocusRequester(final WorkerTree comp) {
@@ -423,24 +450,28 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 
 		/**
 		 * Prevent serialization.
+		 *
 		 * @param out ignored
 		 * @throws IOException always
 		 */
-		@SuppressWarnings({ "unused", "static-method" })
+		@SuppressWarnings({"unused", "static-method"})
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
+
 		/**
 		 * Prevent serialization
+		 *
 		 * @param in ignored
-		 * @throws IOException always
+		 * @throws IOException            always
 		 * @throws ClassNotFoundException never
 		 */
-		@SuppressWarnings({ "unused", "static-method" })
+		@SuppressWarnings({"unused", "static-method"})
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
+
 		/**
 		 * @return a String representation of the action
 		 */
@@ -470,13 +501,14 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 
 		/**
 		 * Constructor.
-		 * @param reportTree The report tree.
+		 *
+		 * @param reportTree  The report tree.
 		 * @param workerModel the driver model
-		 * @param ioHandler the menu-item handler
+		 * @param ioHandler   the menu-item handler
 		 */
 		protected ReportMouseHandler(final JTree reportTree,
-									final IWorkerModel workerModel,
-									final IOHandler ioHandler) {
+									 final IWorkerModel workerModel,
+									 final IOHandler ioHandler) {
 			report = reportTree;
 			model = workerModel;
 			ioh = ioHandler;
@@ -485,6 +517,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 
 		/**
 		 * Handle a mouse press.
+		 *
 		 * @param evt the event to handle
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -510,34 +543,6 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 				}
 			}
 		}
-	}
-	/**
-	 * Prevent serialization.
-	 * @param out ignored
-	 * @throws IOException always
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void writeObject(final ObjectOutputStream out) throws IOException {
-		throw new NotSerializableException("Serialization is not allowed");
-	}
-	/**
-	 * Prevent serialization
-	 * @param in ignored
-	 * @throws IOException always
-	 * @throws ClassNotFoundException never
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void readObject(final ObjectInputStream in)
-			throws IOException, ClassNotFoundException {
-		throw new NotSerializableException("Serialization is not allowed");
-	}
-
-	/**
-	 * @return the title of this app
-	 */
-	@Override
-	public String getWindowName() {
-		return "Worker Management";
 	}
 
 	/**

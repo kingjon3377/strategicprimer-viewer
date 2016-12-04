@@ -1,10 +1,9 @@
 package model.map.fixtures.explorable;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * "There are the signs of a long-ago battle here".
@@ -23,20 +22,23 @@ import model.map.TileFixture;
  */
 public final class Battlefield implements IEvent, ExplorableFixture {
 	/**
+	 * A (U)ID.
+	 */
+	private final int id;
+	/**
+	 * The DC to discover the battlefield.
+	 */
+	private final int dc;
+	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
 
 	/**
-	 * A (U)ID.
-	 */
-	private final int id;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param discoverDC the DC to discover the battlefield.
-	 * @param idNum  the ID number for the event.
+	 * @param idNum      the ID number for the event.
 	 */
 	public Battlefield(final int discoverDC, final int idNum) {
 		dc = discoverDC;
@@ -61,11 +63,6 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
-	 * The DC to discover the battlefield.
-	 */
-	private final int dc;
-
-	/**
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -88,7 +85,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Battlefield)
-										&& (((TileFixture) obj).getID() == id));
+										 && (((TileFixture) obj).getID() == id));
 	}
 
 	/**
@@ -133,19 +130,19 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

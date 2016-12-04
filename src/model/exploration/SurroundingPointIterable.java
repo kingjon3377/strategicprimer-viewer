@@ -35,6 +35,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	 * The starting point. Used only in diagnostic toString().
 	 */
 	private final Point startingPoint;
+
 	/**
 	 * Pass the default radius of 2.
 	 *
@@ -67,14 +68,6 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	}
 
 	/**
-	 * @return an iterator over the points
-	 */
-	@Override
-	public Iterator<Point> iterator() {
-		return NullCleaner.assertNotNull(points.iterator());
-	}
-
-	/**
 	 * Round a column number to fit within the map.
 	 *
 	 * @param col  the column number
@@ -102,6 +95,14 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 		} else {
 			return row % dims.rows;
 		}
+	}
+
+	/**
+	 * @return an iterator over the points
+	 */
+	@Override
+	public Iterator<Point> iterator() {
+		return NullCleaner.assertNotNull(points.iterator());
 	}
 
 	/**

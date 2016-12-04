@@ -63,7 +63,8 @@ public final class ExplorationCLI implements MovementCostSource {
 	 * The direction prompt.
 	 */
 	private static final String PROMPT =
-			"0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, 6 = W, 7 = NW, 8 = Stay Here, " +
+			"0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, 6 = W, 7 = NW, 8 = Stay Here," +
+					" " +
 					"9 = Quit.";
 	/**
 	 * The prompt to use when the user tells the unit to go nowhere.
@@ -78,12 +79,25 @@ public final class ExplorationCLI implements MovementCostSource {
 	 * The helper to handle user I/O.
 	 */
 	private final ICLIHelper helper;
+	/**
+	 * A "hunting model," to get the animals to have traces of.
+	 */
+	private final HuntingModel huntingModel;
+	/**
+	 * An ID number factory for the animal tracks.
+	 */
+	private final IDRegistrar idf;
+	/**
+	 * The list of movement-cost listeners.
+	 */
+	private final Collection<MovementCostListener> mcListeners = new ArrayList<>();
 
 	/**
-	 * @param explorationModel  the exploration model to use
-	 * @param cli the helper to handle user I/O
+	 * @param explorationModel the exploration model to use
+	 * @param cli              the helper to handle user I/O
 	 */
-	public ExplorationCLI(final IExplorationModel explorationModel, final ICLIHelper cli) {
+	public ExplorationCLI(final IExplorationModel explorationModel,
+						  final ICLIHelper cli) {
 		model = explorationModel;
 		helper = cli;
 		huntingModel = new HuntingModel(model.getMap());
@@ -130,14 +144,6 @@ public final class ExplorationCLI implements MovementCostSource {
 		}
 	}
 
-	/**
-	 * A "hunting model," to get the animals to have traces of.
-	 */
-	private final HuntingModel huntingModel;
-	/**
-	 * An ID number factory for the animal tracks.
-	 */
-	private final IDRegistrar idf;
 	/**
 	 * Have the player move the selected unit. Throws an exception if no unit is
 	 * selected. Movement cost is reported by the driver model to all registered
@@ -197,20 +203,24 @@ public final class ExplorationCLI implements MovementCostSource {
 		}
 		final String possibleTracks;
 		if (Ocean == model.getMap().getBaseTerrain(model.getSelectedUnitLocation())) {
-			possibleTracks = huntingModel.fish(model.getSelectedUnitLocation(), 1).get(0);
+			possibleTracks = huntingModel.fish(model.getSelectedUnitLocation(), 1).get
+																						   (0);
 		} else {
-			possibleTracks = huntingModel.hunt(model.getSelectedUnitLocation(), 1).get(0);
+			possibleTracks = huntingModel.hunt(model.getSelectedUnitLocation(), 1).get
+																						   (0);
 		}
 		if (!HuntingModel.NOTHING.equals(possibleTracks)) {
 			allFixtures
-					.add(new Animal(possibleTracks, true, false, "wild", idf.createID()));
+					.add(new Animal(possibleTracks, true, false, "wild", idf.createID
+																					 ()));
 		}
 		if ((IExplorationModel.Direction.Nowhere == direction) &&
 					helper.inputBooleanInSeries(FEALTY_PROMPT)) {
 			model.swearVillages();
 			fireMovementCost(5);
 		} else if ((IExplorationModel.Direction.Nowhere == direction) &&
-						helper.inputBooleanInSeries("Dig to expose some ground here?")) {
+						   helper.inputBooleanInSeries(
+								   "Dig to expose some ground here?")) {
 			model.dig();
 			fireMovementCost(4);
 		}
@@ -219,7 +229,7 @@ public final class ExplorationCLI implements MovementCostSource {
 		if (allFixtures.isEmpty()) {
 			helper.println("The following fixtures were automatically noticed:");
 		} else if ((allFixtures.size() > 1) &&
-						(SingletonRandom.RANDOM.nextDouble() < 0.1)) {
+						   (SingletonRandom.RANDOM.nextDouble() < 0.1)) {
 			helper.print("The following fixtures were noticed, all but the last ");
 			helper.println("two automatically:");
 			Collections.shuffle(allFixtures);
@@ -244,14 +254,15 @@ public final class ExplorationCLI implements MovementCostSource {
 	 * @param mover  the current unit (needed for its owner)
 	 */
 	private void printAndTransferFixture(final Point dPoint,
-										@Nullable final TileFixture fix,
-										final HasOwner mover) {
+										 @Nullable final TileFixture fix,
+										 final HasOwner mover) {
 		if (fix != null) {
 			helper.println(assertNotNull(fix.toString()));
 			final boolean zero = (fix instanceof HasOwner) &&
-										!((HasOwner) fix).getOwner()
-												.equals(mover.getOwner());
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getSubordinateMaps()) {
+										 !((HasOwner) fix).getOwner()
+												  .equals(mover.getOwner());
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : model
+																		  .getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				if ((fix instanceof Ground) && (map.getGround(dPoint) == null)) {
 					map.setGround(dPoint, ((Ground) fix).copy(false));
@@ -303,10 +314,7 @@ public final class ExplorationCLI implements MovementCostSource {
 	public String toString() {
 		return "ExplorationCLI";
 	}
-	/**
-	 * The list of movement-cost listeners.
-	 */
-	private final Collection<MovementCostListener> mcListeners = new ArrayList<>();
+
 	/**
 	 * @param listener the listener to add
 	 */
@@ -324,6 +332,7 @@ public final class ExplorationCLI implements MovementCostSource {
 	public void removeMovementCostListener(final MovementCostListener listener) {
 		mcListeners.remove(listener);
 	}
+
 	/**
 	 * Tell listeners of a movement cost.
 	 *

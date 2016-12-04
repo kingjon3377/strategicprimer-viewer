@@ -35,12 +35,15 @@ public final class MiningCLI implements UtilityDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-i", "--mining", ParamCount.Two,
 								   "Create a model of a mine",
-								   "Create a CSV spreadsheet representing the area of a mine");
+								   "Create a CSV spreadsheet representing the area of a " +
+										   "mine");
+
 	static {
 		USAGE.addSupportedOption("--seed=NN");
 		USAGE.setFirstParamDesc("output.csv");
 		USAGE.setSubsequentParamDesc("status");
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -50,11 +53,10 @@ public final class MiningCLI implements UtilityDriver {
 	}
 
 	/**
-	 *
 	 * @param cli
 	 * @param options any options passed to the driver
-	 * @param args Arg 0 is the name of a file to write the CSV to; Arg 1 is the value of
-	 *             the top center (as an index into the LodeStatus values array)
+	 * @param args    Arg 0 is the name of a file to write the CSV to; Arg 1 is the value
+	 *                of the top center (as an index into the LodeStatus values array)
 	 * @throws DriverFailedException on incorrect usage
 	 */
 	public void startDriver(final ICLIHelper cli, final SPOptions options,

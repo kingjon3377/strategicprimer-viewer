@@ -1,13 +1,13 @@
 package view.util;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.swing.JEditorPane;
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -27,6 +27,55 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
 public final class StreamingLabel extends JEditorPane {
+	/**
+	 * The writer that can be printed to.
+	 */
+	@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed", "resource"})
+	private final PrintWriter writer = new StreamingLabelWriter(new StringWriter(),
+																		   this);
+
+	/**
+	 * Constructor, to set the background color to black.
+	 */
+	public StreamingLabel() {
+		super("text/html", "<html><body bgcolor=\"#000000\"><p>&nbsp;" +
+								   "</p></body></html>");
+		setEditable(false);
+		setBackground(Color.black);
+		setOpaque(true);
+	}
+
+	/**
+	 * @return the writer to "print" to.
+	 */
+	public PrintWriter getWriter() {
+		return writer;
+	}
+
+	/**
+	 * Prevent serialization.
+	 *
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	@SuppressWarnings({"unused", "static-method"})
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * Prevent serialization
+	 *
+	 * @param in ignored
+	 * @throws IOException            always
+	 * @throws ClassNotFoundException never
+	 */
+	@SuppressWarnings({"unused", "static-method"})
+	private void readObject(final ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+
 	/**
 	 * Colors to use on a StreamingLabel. Enumerated to appease XSS-possibility warnings.
 	 */
@@ -50,22 +99,6 @@ public final class StreamingLabel extends JEditorPane {
 	}
 
 	/**
-	 * The writer that can be printed to.
-	 */
-	@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed", "resource"})
-	private final PrintWriter writer = new StreamingLabelWriter(new StringWriter(), this);
-
-	/**
-	 * Constructor, to set the background color to black.
-	 */
-	public StreamingLabel() {
-		super("text/html", "<html><body bgcolor=\"#000000\"><p>&nbsp;</p></body></html>");
-		setEditable(false);
-		setBackground(Color.black);
-		setOpaque(true);
-	}
-
-	/**
 	 * A PrintWriter that wraps a StringWriter and updates a JLabel with the writer's
 	 * text.
 	 */
@@ -84,7 +117,7 @@ public final class StreamingLabel extends JEditorPane {
 		 * @param label   the component to update when written to
 		 */
 		protected StreamingLabelWriter(final StringWriter wrapped,
-									final JEditorPane label) {
+									   final JEditorPane label) {
 			super(wrapped);
 			stringWriter = wrapped;
 			control = label;
@@ -153,7 +186,7 @@ public final class StreamingLabel extends JEditorPane {
 
 		/**
 		 * @param format a format string
-		 * @param args arguments to place in that string as per the spec
+		 * @param args   arguments to place in that string as per the spec
 		 * @return this
 		 */
 		@SuppressWarnings({"ReturnOfThis", "OverloadedVarargsMethod", "resource"})
@@ -164,32 +197,5 @@ public final class StreamingLabel extends JEditorPane {
 			return this;
 		}
 
-	}
-
-	/**
-	 * @return the writer to "print" to.
-	 */
-	public PrintWriter getWriter() {
-		return writer;
-	}
-	/**
-	 * Prevent serialization.
-	 * @param out ignored
-	 * @throws IOException always
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void writeObject(final ObjectOutputStream out) throws IOException {
-		throw new NotSerializableException("Serialization is not allowed");
-	}
-	/**
-	 * Prevent serialization
-	 * @param in ignored
-	 * @throws IOException always
-	 * @throws ClassNotFoundException never
-	 */
-	@SuppressWarnings({ "unused", "static-method" })
-	private void readObject(final ObjectInputStream in)
-			throws IOException, ClassNotFoundException {
-		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

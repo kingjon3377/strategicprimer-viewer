@@ -32,7 +32,7 @@ public final class EqualsAny {
 	/**
 	 * Compare a value with a number of other (generally constant) values.
 	 *
-	 * @param <T>  the type of objects we'll be comparing
+	 * @param <T>     the type of objects we'll be comparing
 	 * @param against the value to compare the others to
 	 * @param values  the values to compare to it
 	 * @return true if any of theme equal it, false otherwise.
@@ -47,7 +47,7 @@ public final class EqualsAny {
 	/**
 	 * Compare a value with a collection of other (generally constant) values.
 	 *
-	 * @param <T>  the type of objects we'll be comparing
+	 * @param <T>     the type of objects we'll be comparing
 	 * @param against the value to compare the others to
 	 * @param values  the values to compare to it. May be null, in which case we return
 	 *                false.
@@ -59,7 +59,7 @@ public final class EqualsAny {
 			return false;
 		} else {
 			return StreamSupport.stream(values.spliterator(), false)
-						.anyMatch(val -> Objects.equals(against, val));
+						   .anyMatch(val -> Objects.equals(against, val));
 		}
 	}
 }

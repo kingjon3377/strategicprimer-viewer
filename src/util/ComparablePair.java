@@ -16,9 +16,9 @@ import org.eclipse.jdt.annotation.Nullable;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <K> the type of the first item
  * @param <V> the type of the second item
+ * @author Jonathan Lovelace
  * @see Pair
  */
 @SuppressWarnings("EqualsAndHashcode")
@@ -32,6 +32,20 @@ public final class ComparablePair<K extends Comparable<K>, V extends Comparable<
 	 */
 	private ComparablePair(final K firstItem, final V secondItem) {
 		super(firstItem, secondItem);
+	}
+
+	/**
+	 * Create a pair without having to specify the types.
+	 *
+	 * @param <K>    The type of the first element in the pair
+	 * @param <V>    The type of the second element in the pair
+	 * @param first  The first element in the pair.
+	 * @param second The second element in the pair.
+	 * @return a pair containing the two elements
+	 */
+	public static <K extends Comparable<K>, V extends Comparable<V>>
+	ComparablePair<K, V> of(final K first, final V second) {
+		return new ComparablePair<>(first, second);
 	}
 
 	/**
@@ -52,20 +66,6 @@ public final class ComparablePair<K extends Comparable<K>, V extends Comparable<
 	}
 
 	/**
-	 * Create a pair without having to specify the types.
-	 *
-	 * @param <K>    The type of the first element in the pair
-	 * @param <V>    The type of the second element in the pair
-	 * @param first  The first element in the pair.
-	 * @param second The second element in the pair.
-	 * @return a pair containing the two elements
-	 */
-	public static <K extends Comparable<K>, V extends Comparable<V>>
-	ComparablePair<K, V> of(final K first, final V second) {
-		return new ComparablePair<>(first, second);
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it is equal to this one
 	 */
@@ -73,7 +73,9 @@ public final class ComparablePair<K extends Comparable<K>, V extends Comparable<
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof ComparablePair) &&
-										first().equals(((ComparablePair) obj).first()) &&
-										second().equals(((ComparablePair) obj).second()));
+										 first().equals(((ComparablePair) obj).first()
+										 ) &&
+										 second().equals(
+												 ((ComparablePair) obj).second()));
 	}
 }

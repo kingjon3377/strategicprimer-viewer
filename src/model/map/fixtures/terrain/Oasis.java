@@ -23,6 +23,10 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Oasis implements TerrainFixture, HasMutableImage {
 	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
@@ -70,7 +74,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) ||
-					((obj instanceof Oasis) && (id == ((TileFixture) obj).getID()));
+					   ((obj instanceof Oasis) && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**
@@ -80,11 +84,6 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -104,19 +103,19 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

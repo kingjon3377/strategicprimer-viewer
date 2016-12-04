@@ -1,10 +1,9 @@
 package model.map.fixtures.explorable;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * "There are extensive caves beneath this tile".
@@ -23,6 +22,14 @@ import model.map.TileFixture;
  */
 public final class Cave implements IEvent, ExplorableFixture {
 	/**
+	 * The DC to discover the caves.
+	 */
+	private final int dc;
+	/**
+	 * The event's ID number.
+	 */
+	private final int id;
+	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
@@ -31,7 +38,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	 * Constructor.
 	 *
 	 * @param discoverDC the DC to discover the caves
-	 * @param idNum  the ID number for the event.
+	 * @param idNum      the ID number for the event.
 	 */
 	public Cave(final int discoverDC, final int idNum) {
 		dc = discoverDC;
@@ -56,11 +63,6 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
-	 * The DC to discover the caves.
-	 */
-	private final int dc;
-
-	/**
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -83,7 +85,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Cave)
-										&& (((TileFixture) obj).getID() == id));
+										 && (((TileFixture) obj).getID() == id));
 	}
 
 	/**
@@ -102,11 +104,6 @@ public final class Cave implements IEvent, ExplorableFixture {
 	public String toString() {
 		return "Caves with DC " + dc;
 	}
-
-	/**
-	 * The event's ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return the event's ID number.
@@ -138,19 +135,19 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

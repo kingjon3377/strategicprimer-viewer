@@ -1,9 +1,7 @@
 package controller.map.misc;
 
 import controller.map.formatexceptions.SPFormatException;
-import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -18,10 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
@@ -78,26 +73,18 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * The list of player-change listeners.
 	 */
-	private final Collection<PlayerChangeListener> playerChangeListeners = new ArrayList<>();
+	private final Collection<PlayerChangeListener> playerChangeListeners =
+			new ArrayList<>();
 	/**
 	 * The list of tree-expansion-order listeners.
 	 */
 	private final Collection<TreeExpansionOrderListener> treeExpansionListeners =
 			new ArrayList<>();
 	/**
-	 * The current player.
-	 */
-	private Player currentPlayer;
-	/**
 	 * The map model, which needs to be told about newly loaded maps and holds maps to be
 	 * saved.
 	 */
 	private final IDriverModel model;
-	/**
-	 * The "find" dialog, if this is for a map viewer.
-	 */
-	@Nullable
-	private FindDialog finder = null;
 	/**
 	 * The handler for zoom-related items.
 	 *
@@ -105,7 +92,132 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 */
 	@Nullable
 	private final ZoomListener zoomer;
+	/**
+	 * The current player.
+	 */
+	private Player currentPlayer;
+	/**
+	 * The "find" dialog, if this is for a map viewer.
+	 */
+	@Nullable
+	private FindDialog finder = null;
 
+
+	/**
+	 * Constructor.
+	 *
+	 * @param map         the map model
+	 * @param fileChooser the file chooser
+	 */
+	public IOHandler(final IDriverModel map, final JFileChooser fileChooser) {
+		model = NullCleaner.assertNotNull(map);
+		chooser = fileChooser;
+		if (model instanceof IViewerModel) {
+			zoomer = new ZoomListener((IViewerModel) model);
+		} else {
+			zoomer = null;
+		}
+		currentPlayer = model.getMap().getCurrentPlayer();
+	}
+
+	/**
+	 * Constructor. File-chooser defaults to the current directory filtered to include
+	 * only maps.
+	 *
+	 * @param map the map model
+	 */
+	public IOHandler(final IDriverModel map) {
+		this(map, new FilteredFileChooser());
+	}
+
+	/**
+	 * @param obj an object
+	 * @return it if it's a component, or null
+	 */
+	@SuppressWarnings("ReturnOfNull")
+	@Nullable
+	private static Component eventSource(@Nullable final Object obj) {
+		if (obj instanceof Component) {
+			return (Component) obj;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Display an appropriate error message.
+	 *
+	 * @param except   an Exception
+	 * @param filename the file we were trying to process
+	 * @param source   the component to use as the parent of the error dialog. May be
+	 *                 null.
+	 */
+	private static void handleError(final Exception except, final String filename,
+									@Nullable final Component source) {
+		final String msg;
+		if (except instanceof XMLStreamException) {
+			msg = "Error reading XML file %s";
+		} else if (except instanceof FileNotFoundException ||
+						   except instanceof NoSuchFileException) {
+			//noinspection StringConcatenationMissingWhitespace
+			msg = "File %s not found";
+		} else if (except instanceof IOException) {
+			//noinspection HardcodedFileSeparator
+			msg = "I/O error reading file %s";
+		} else if (except instanceof SPFormatException) {
+			msg = "Map contained invalid data in file %s";
+		} else {
+			throw new IllegalStateException("Unknown exception type", except);
+		}
+		final String formatted = String.format(msg, filename);
+		LOGGER.log(Level.SEVERE, formatted, except);
+		ErrorShower.showErrorDialog(source, formatted);
+	}
+
+	/**
+	 * @param file a file to load a map from
+	 * @return the map in that file
+	 * @throws IOException        on other I/O error
+	 * @throws XMLStreamException if the XML isn't well-formed
+	 * @throws SPFormatException  if the file contains invalid data
+	 */
+	private static IMutableMapNG readMap(final Path file)
+			throws IOException, XMLStreamException, SPFormatException {
+		return new MapReaderAdapter().readMap(file, Warning.DEFAULT);
+	}
+
+	/**
+	 * @param players a collection of players
+	 * @return the players as an array
+	 */
+	private static Player[] playersAsArray(final Iterable<Player> players) {
+		if (players instanceof PlayerCollection) {
+			return ((PlayerCollection) players).asArray();
+		} else {
+			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
+											  .collect(Collectors.toList());
+			return NullCleaner.assertNotNull(list.toArray(new Player[list.size()]));
+		}
+	}
+
+	/**
+	 * @param component a component
+	 * @return the frame containing it, if any
+	 */
+	@Nullable
+	private static Frame getContainingFrame(@Nullable final Component component) {
+		Component temp = component;
+		while (temp != null) {
+			if (temp instanceof Frame) {
+				return (Frame) temp;
+			} else if (temp instanceof JPopupMenu) {
+				temp = ((JPopupMenu) temp).getInvoker();
+			} else {
+				temp = temp.getParent();
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Handle the "load" menu item.
@@ -137,7 +249,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			final Component source = eventSource(event.getSource());
 			@Nullable
 			final Frame parent = getContainingFrame(source);
-			switch(event.getActionCommand().toLowerCase()) {
+			switch (event.getActionCommand().toLowerCase()) {
 			case "load":
 				handleLoadMenu(source);
 				break;
@@ -151,7 +263,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				startNewViewerWindow();
 				break;
 			case "about":
-				final String title ;
+				final String title;
 				if (parent instanceof ISPWindow) {
 					title = ((ISPWindow) parent).getWindowName();
 				} else {
@@ -168,8 +280,9 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			case "open in map viewer":
 				final IViewerModel viewModel = new ViewerModel(model);
 				SwingUtilities.invokeLater(
-						() -> new ViewerFrame(viewModel, new IOHandler(viewModel, chooser))
-									.setVisible(true));
+						() -> new ViewerFrame(viewModel,
+													 new IOHandler(viewModel, chooser))
+									  .setVisible(true));
 				break;
 			case "open secondary map in map viewer":
 				if (model instanceof IMultiMapModel) {
@@ -192,7 +305,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				if (model instanceof IViewerModel) {
 					SwingUtilities.invokeLater(
 							() -> new SelectTileDialog(parent, (IViewerModel) model)
-										.setVisible(true));
+										  .setVisible(true));
 				}
 				break;
 			case "close":
@@ -267,88 +380,20 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	}
 
 	/**
-	 * @param obj an object
-	 * @return it if it's a component, or null
-	 */
-	@SuppressWarnings("ReturnOfNull")
-	@Nullable
-	private static Component eventSource(@Nullable final Object obj) {
-		if (obj instanceof Component) {
-			return (Component) obj;
-		} else {
-			return null;
-		}
-	}
-
-	/**
 	 * Start a new viewer window with a blank map of the same size as the model's current
 	 * map.
 	 */
 	private void startNewViewerWindow() {
-		final IViewerModel newModel = new ViewerModel(new SPMapNG(model.getMapDimensions(),
-																	new
-																			PlayerCollection(),
-																	model.getMap()
-																			.getCurrentTurn()),
-														Optional.empty());
+		final IViewerModel newModel =
+				new ViewerModel(new SPMapNG(model.getMapDimensions(),
+												   new
+														   PlayerCollection(),
+												   model.getMap()
+														   .getCurrentTurn()),
+									   Optional.empty());
 		SwingUtilities.invokeLater(
-				() -> new ViewerFrame(newModel, new IOHandler(newModel)).setVisible(true));
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param map      the map model
-	 * @param fileChooser the file chooser
-	 */
-	public IOHandler(final IDriverModel map, final JFileChooser fileChooser) {
-		model = NullCleaner.assertNotNull(map);
-		chooser = fileChooser;
-		if (model instanceof IViewerModel) {
-			zoomer = new ZoomListener((IViewerModel) model);
-		} else {
-			zoomer = null;
-		}
-		currentPlayer = model.getMap().getCurrentPlayer();
-	}
-	/**
-	 * Constructor. File-chooser defaults to the current directory filtered to include
-	 * only maps.
-	 *
-	 * @param map      the map model
-	 */
-	public IOHandler(final IDriverModel map) {
-		this(map, new FilteredFileChooser());
-	}
-
-	/**
-	 * Display an appropriate error message.
-	 *
-	 * @param except   an Exception
-	 * @param filename the file we were trying to process
-	 * @param source   the component to use as the parent of the error dialog. May be
-	 *                 null.
-	 */
-	private static void handleError(final Exception except, final String filename,
-									@Nullable final Component source) {
-		final String msg;
-		if (except instanceof XMLStreamException) {
-			msg = "Error reading XML file %s";
-		} else if (except instanceof FileNotFoundException ||
-						   except instanceof NoSuchFileException) {
-			//noinspection StringConcatenationMissingWhitespace
-			msg = "File %s not found";
-		} else if (except instanceof IOException) {
-			//noinspection HardcodedFileSeparator
-			msg = "I/O error reading file %s";
-		} else if (except instanceof SPFormatException) {
-			msg = "Map contained invalid data in file %s";
-		} else {
-			throw new IllegalStateException("Unknown exception type", except);
-		}
-		final String formatted = String.format(msg, filename);
-		LOGGER.log(Level.SEVERE, formatted, except);
-		ErrorShower.showErrorDialog(source, formatted);
+				() -> new ViewerFrame(newModel, new IOHandler(newModel))
+							  .setVisible(true));
 	}
 
 	/**
@@ -385,29 +430,17 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	private void saveMapAs(final IMapNG map, @Nullable final Component source) {
 		new FileChooser(Optional.empty(), chooser, FileChooser.FileChooserOperation.Save)
 				.call(path -> {
-			try {
-				new MapReaderAdapter().write(path, map);
-			} catch (final IOException e) {
-				//noinspection HardcodedFileSeparator
-				ErrorShower.showErrorDialog(source,
-						"I/O error writing to file "
-								+ path);
-				//noinspection HardcodedFileSeparator
-				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
-			}
+					try {
+						new MapReaderAdapter().write(path, map);
+					} catch (final IOException e) {
+						//noinspection HardcodedFileSeparator
+						ErrorShower.showErrorDialog(source,
+								"I/O error writing to file "
+										+ path);
+						//noinspection HardcodedFileSeparator
+						LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
+					}
 				});
-	}
-
-	/**
-	 * @param file   a file to load a map from
-	 * @return the map in that file
-	 * @throws IOException        on other I/O error
-	 * @throws XMLStreamException if the XML isn't well-formed
-	 * @throws SPFormatException  if the file contains invalid data
-	 */
-	private static IMutableMapNG readMap(final Path file)
-			throws IOException, XMLStreamException, SPFormatException {
-		return new MapReaderAdapter().readMap(file, Warning.DEFAULT);
 	}
 
 	/**
@@ -419,8 +452,10 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	private void saveAll(@Nullable final Component source) {
 		if (model instanceof IMultiMapModel) {
 			final MapReaderAdapter adapter = new MapReaderAdapter();
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
-																.getAllMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
+																		   model)
+																		  .getAllMaps
+																				   ()) {
 				final Optional<Path> file = pair.second();
 				if (file.isPresent()) {
 					try {
@@ -456,6 +491,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			});
 		}
 	}
+
 	/**
 	 * @param component a component
 	 * @return a FindDialog if the driver model is for a map viewer, or null otherwise
@@ -486,6 +522,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	public String toString() {
 		return "IOHandler";
 	}
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -501,19 +538,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	public void removePlayerChangeListener(final PlayerChangeListener list) {
 		playerChangeListeners.remove(list);
 	}
-	/**
-	 * @param players a collection of players
-	 * @return the players as an array
-	 */
-	private static Player[] playersAsArray(final Iterable<Player> players) {
-		if (players instanceof PlayerCollection) {
-			return ((PlayerCollection) players).asArray();
-		} else {
-			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
-											.collect(Collectors.toList());
-			return NullCleaner.assertNotNull(list.toArray(new Player[list.size()]));
-		}
-	}
+
 	/**
 	 * Should only be called once per object lifetime. Notify all listeners, as if the
 	 * current player had changed from null to its current value.
@@ -523,6 +548,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			list.playerChanged(null, currentPlayer);
 		}
 	}
+
 	/**
 	 * @param list the listener to add
 	 */
@@ -530,29 +556,12 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	public void addTreeExpansionListener(final TreeExpansionOrderListener list) {
 		treeExpansionListeners.add(list);
 	}
+
 	/**
 	 * @param list the listener to remove
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void removeTreeExpansionListener(final TreeExpansionOrderListener list) {
 		treeExpansionListeners.remove(list);
-	}
-	/**
-	 * @param component a component
-	 * @return the frame containing it, if any
-	 */
-	@Nullable
-	private static Frame getContainingFrame(@Nullable final Component component) {
-		Component temp = component;
-		while (temp != null) {
-			if (temp instanceof Frame) {
-				return (Frame) temp;
-			} else if (temp instanceof JPopupMenu) {
-				temp = ((JPopupMenu) temp).getInvoker();
-			} else {
-				temp = temp.getParent();
-			}
-		}
-		return null;
 	}
 }

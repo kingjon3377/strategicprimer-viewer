@@ -60,6 +60,12 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 * The workers being proxied.
 	 */
 	private final List<IWorker> workers = new ArrayList<>();
+	/**
+	 * Cached stats for the workers. Null if there are no workers being proxied, or if
+	 * they do not share identical stats.
+	 */
+	@Nullable
+	private WorkerStats stats;
 
 	/**
 	 * No-op constructor for use by copy().
@@ -95,21 +101,8 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		final IWorker @NonNull [] workerArray =
 				assertNotNull(workers.toArray(new IWorker[workers.size()]));
 		proxyJobs.addAll(jobNames.stream()
-								.map(job -> new ProxyJob(job, false, workerArray))
-								.collect(Collectors.toList()));
-	}
-
-	/**
-	 * @param zero whether to "zero out" sensitive information
-	 * @return a copy of this proxy
-	 */
-	@Override
-	public IWorker copy(final boolean zero) {
-		final ProxyWorker retval = new ProxyWorker(parallel);
-		for (final IWorker worker : workers) {
-			retval.addProxied(worker.copy(zero));
-		}
-		return retval;
+								 .map(job -> new ProxyJob(job, false, workerArray))
+								 .collect(Collectors.toList()));
 	}
 
 	/**
@@ -136,7 +129,20 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			}
 		}
 		proxyJobs.addAll(jobNames.stream().map(job -> new ProxyJob(job, true, proxied))
-								.collect(Collectors.toList()));
+								 .collect(Collectors.toList()));
+	}
+
+	/**
+	 * @param zero whether to "zero out" sensitive information
+	 * @return a copy of this proxy
+	 */
+	@Override
+	public IWorker copy(final boolean zero) {
+		final ProxyWorker retval = new ProxyWorker(parallel);
+		for (final IWorker worker : workers) {
+			retval.addProxied(worker.copy(zero));
+		}
+		return retval;
 	}
 
 	/**
@@ -155,7 +161,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof ProxyWorker) &&
-					proxyJobs.equals(((ProxyWorker) fix).proxyJobs);
+					   proxyJobs.equals(((ProxyWorker) fix).proxyJobs);
 	}
 
 	/**
@@ -279,17 +285,6 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		LOGGER.log(Level.WARNING, "setImage() called on a ProxyWorker");
-		for (final IWorker worker : workers) {
-			worker.setImage(img);
-		}
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -306,6 +301,17 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			return "";
 		} else {
 			return image;
+		}
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		LOGGER.log(Level.WARNING, "setImage() called on a ProxyWorker");
+		for (final IWorker worker : workers) {
+			worker.setImage(img);
 		}
 	}
 
@@ -414,12 +420,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	public boolean isParallel() {
 		return parallel;
 	}
-	/**
-	 * Cached stats for the workers. Null if there are no workers being proxied, or if
-	 * they do not share identical stats.
-	 */
-	@Nullable
-	private WorkerStats stats;
+
 	/**
 	 * @return the stats of the proxied workers, or null if either no workers are being
 	 * proxied or their stats are not all identical.

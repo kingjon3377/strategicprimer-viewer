@@ -1,11 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -49,15 +44,14 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * Approximately zero. @see{floatEquals}.
 	 */
 	private static final double APPROX_ZERO = 0.000001;
-
-	/**
-	 * A cached copy of our background.
-	 */
-	private Rectangle backgroundShape = new Rectangle(0, 0, 1, 1);
 	/**
 	 * The shapes representing the rivers on the tile.
 	 */
 	private final Map<River, Shape> rivers = new EnumMap<>(River.class);
+	/**
+	 * A cached copy of our background.
+	 */
+	private Rectangle backgroundShape = new Rectangle(0, 0, 1, 1);
 	/**
 	 * Shape representing the fortress that might be on the tile.
 	 */
@@ -86,6 +80,18 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * Compare two floating-point values.
+	 *
+	 * @param firstNum  the first value
+	 * @param secondNum the second value
+	 * @return whether the two are not approximately equal
+	 */
+	private static boolean areFloatsDifferent(final double firstNum,
+											  final double secondNum) {
+		return Math.abs(firstNum - secondNum) > APPROX_ZERO;
+	}
+
+	/**
 	 * Check, and possibly regenerate, the cache.
 	 *
 	 * @param width  the current width
@@ -93,49 +99,54 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private void updateCache(final int width, final int height) {
 		if (areFloatsDifferent(backgroundShape.getWidth(), (double) width)
-				|| areFloatsDifferent(backgroundShape.getHeight(), (double) height)) {
+					|| areFloatsDifferent(backgroundShape.getHeight(), (double)
+																			   height)) {
 			backgroundShape = new Rectangle(0, 0, width, height);
 			rivers.clear();
 			rivers.put(River.East,
 					new Rectangle2D.Double(width * RiverLongDimension.constant,
-												height * RiverShortStart.constant,
-												width * RiverLongDimension.constant,
-												height * RiverShortDimension.constant));
+												  height * RiverShortStart.constant,
+												  width * RiverLongDimension.constant,
+												  height * RiverShortDimension
+																   .constant));
 			rivers.put(River.Lake, new Ellipse2D.Double(width * LakeStart.constant,
-															height *
-																	LakeStart.constant,
-															width *
-																	RiverLongDimension.constant,
-															height *
-																	RiverLongDimension.constant));
+															   height *
+																	   LakeStart
+																			   .constant,
+															   width *
+																	   RiverLongDimension.constant,
+															   height *
+																	   RiverLongDimension.constant));
 			rivers.put(River.North,
 					new Rectangle2D.Double(width * RiverShortStart.constant, 0,
-												width * RiverShortDimension.constant,
-												height * RiverLongDimension.constant));
+												  width * RiverShortDimension.constant,
+												  height * RiverLongDimension.constant));
 			rivers.put(River.South,
 					new Rectangle2D.Double(width * RiverShortStart.constant,
-												height * RiverLongDimension.constant,
-												width * RiverShortDimension.constant,
-												height * RiverLongDimension.constant));
+												  height * RiverLongDimension.constant,
+												  width * RiverShortDimension.constant,
+												  height * RiverLongDimension.constant));
 			rivers.put(River.West,
 					new Rectangle2D.Double(0, height * RiverShortStart.constant,
-												width * RiverLongDimension.constant,
-												height * RiverShortDimension.constant));
+												  width * RiverLongDimension.constant,
+												  height * RiverShortDimension
+																   .constant));
 			fort = new Rectangle2D.Double((width * FortStart.constant) - 1.0,
-												(height * FortStart.constant) - 1.0,
-												width * FortSize.constant,
-												height * FortSize.constant);
+												 (height * FortStart.constant) - 1.0,
+												 width * FortSize.constant,
+												 height * FortSize.constant);
 			unit = new Ellipse2D.Double(width * UnitSize.constant,
-											height * UnitSize.constant,
-											width * UnitSize.constant,
-											height * UnitSize.constant);
+											   height * UnitSize.constant,
+											   width * UnitSize.constant,
+											   height * UnitSize.constant);
 			event = new Polygon(new int[]{(int) Math.round(width * EventStart.constant),
 					(int) Math.round(width * EventOther.constant), width},
-									new int[]{0, (int) Math.round(
-											height * EventOther.constant),
-											(int) Math.round(height *
-																	EventOther.constant)},
-									MISC_EVENT_SIDES);
+									   new int[]{0, (int) Math.round(
+											   height * EventOther.constant),
+											   (int) Math.round(height *
+																		EventOther
+																				.constant)},
+									   MISC_EVENT_SIDES);
 		}
 	}
 
@@ -153,12 +164,12 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTileTranslated(final Graphics pen, final IMapNG map,
-								final Point location, final int width,
-								final int height) {
+								   final Point location, final int width,
+								   final int height) {
 		updateCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
 			throw new IllegalArgumentException("CachingTileDrawHelper requires " +
-													"Graphics2D");
+													   "Graphics2D");
 		}
 		final Graphics2D pen2d = (Graphics2D) pen;
 		final TileType terrain = map.getBaseTerrain(location);
@@ -187,18 +198,6 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
-	 * Compare two floating-point values.
-	 *
-	 * @param firstNum  the first value
-	 * @param secondNum the second value
-	 * @return whether the two are not approximately equal
-	 */
-	private static boolean areFloatsDifferent(final double firstNum,
-											final double secondNum) {
-		return Math.abs(firstNum - secondNum) > APPROX_ZERO;
-	}
-
-	/**
 	 * Draw a tile at the specified coordinates.
 	 *
 	 * @param pen         the graphics context.
@@ -209,8 +208,8 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final IMapNG map,
-						final Point location, final Coordinate coordinates,
-						final Coordinate dimensions) {
+						 final Point location, final Coordinate coordinates,
+						 final Coordinate dimensions) {
 		final Graphics context = pen.create(coordinates.x, coordinates.y,
 				dimensions.x, dimensions.y);
 		if (context == null) {

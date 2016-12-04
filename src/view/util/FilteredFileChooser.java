@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JFileChooser;
+import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -28,7 +28,9 @@ public final class FilteredFileChooser extends JFileChooser {
 	 * A file filter for maps.
 	 */
 	public static final FileFilter MAP_EXTS =
-			new FileNameExtensionFilter("Strategic Primer world map files", "map", "xml");
+			new FileNameExtensionFilter("Strategic Primer world map files", "map",
+											   "xml");
+
 	/**
 	 * Constructor.
 	 *
@@ -39,28 +41,33 @@ public final class FilteredFileChooser extends JFileChooser {
 		super(current);
 		setFileFilter(filter);
 	}
+
 	/**
 	 * Constructor, setting the default location to the current directory.
 	 */
 	public FilteredFileChooser() {
 		this(".", MAP_EXTS);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

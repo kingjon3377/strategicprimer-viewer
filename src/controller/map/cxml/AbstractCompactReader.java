@@ -43,8 +43,8 @@ import static util.NullCleaner.assertNotNull;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> a type parameter, since we now "implement" the interface
+ * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @Deprecated
@@ -55,6 +55,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 */
 	private static final NumberFormat NUM_PARSER =
 			assertNotNull(NumberFormat.getIntegerInstance());
+
 	/**
 	 * Do not instantiate directly.
 	 */
@@ -66,13 +67,14 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * Require that an element be one of the specified tags.
 	 *
 	 * @param element the element to check
-	 * @param parent the parent tag
+	 * @param parent  the parent tag
 	 * @param tags    the tags we accept here
 	 * @throws SPFormatException on something other than one of the tags we accept in a
-	 * namespace we expect.
+	 *                           namespace we expect.
 	 */
 	protected static void requireTag(final StartElement element,
-									 final QName parent, final String... tags) throws SPFormatException {
+									 final QName parent, final String... tags)
+			throws SPFormatException {
 		if (!EqualsAny.equalsAny(
 				assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
@@ -86,11 +88,23 @@ public abstract class AbstractCompactReader<@NonNull T>
 			// While we'd like tests to exercise this, we're always careful
 			// to only call readers when we know they support the tag ...
 			throw new UnwantedChildException(parent, element,
-					new IllegalArgumentException(Stream.concat(Stream.of(format(
-						"Unexpected tag %s on line %d, expected one of the following: ",
-						localName, Integer.valueOf(line))), Stream.of(tags))
-													.collect(Collectors.joining(", "))
-			));
+													new IllegalArgumentException(Stream
+																						 .concat(
+															Stream.of(format(
+																	"Unexpected tag %s " +
+																			"on line %d," +
+																			" expected " +
+																			"one of the " +
+																			"following: ",
+																	localName,
+																	Integer.valueOf(
+																			line))),
+															Stream.of(tags))
+																						 .collect(
+																								 Collectors
+																										 .joining(
+																												 ", "))
+													));
 		}
 	}
 
@@ -103,7 +117,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException if the tag doesn't have that parameter.
 	 */
 	protected static String getParameter(final StartElement element,
-										final String param) throws SPFormatException {
+										 final String param) throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
 			throw new MissingPropertyException(element, param);
@@ -126,7 +140,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @return the value for that parameter
 	 */
 	protected static String getParameter(final StartElement element,
-										final String param, final String defaultValue) {
+										 final String param, final String defaultValue) {
 		final Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
 			return defaultValue;
@@ -145,13 +159,13 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException if mandatory and missing
 	 */
 	protected static void requireNonEmptyParameter(final StartElement element,
-													final String param,
-													final boolean mandatory,
-													final Warning warner)
+												   final String param,
+												   final boolean mandatory,
+												   final Warning warner)
 			throws SPFormatException {
 		if (getParameter(element, param, "").isEmpty()) {
 			final SPFormatException except = new MissingPropertyException(element,
-																				param);
+																				 param);
 			if (mandatory) {
 				throw except;
 			} else {
@@ -169,7 +183,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException on unwanted child
 	 */
 	protected static void spinUntilEnd(final QName tag,
-										final Iterable<XMLEvent> reader)
+									   final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
@@ -177,9 +191,10 @@ public abstract class AbstractCompactReader<@NonNull T>
 							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				throw new UnwantedChildException(tag,
-						assertNotNull(event.asStartElement()));
+														assertNotNull(
+																event.asStartElement()));
 			} else if (event.isEndElement()
-								&& tag.equals(event.asEndElement().getName())) {
+							   && tag.equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -197,13 +212,15 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
 	protected static int getOrGenerateID(final StartElement element,
-										final Warning warner, final IDRegistrar idFactory)
+										 final Warning warner, final IDRegistrar
+																	   idFactory)
 			throws SPFormatException {
 		if (hasParameter(element, "id")) {
 			try {
 				return idFactory.register(warner, NumberFormat.getIntegerInstance()
-												.parse(getParameter(element, "id"))
-												.intValue());
+														  .parse(getParameter(element,
+																  "id"))
+														  .intValue());
 			} catch (final NumberFormatException | ParseException except) {
 				throw new MissingPropertyException(element, "id", except);
 			}
@@ -212,15 +229,16 @@ public abstract class AbstractCompactReader<@NonNull T>
 			return idFactory.createID();
 		}
 	}
+
 	/**
 	 * @param element the current tag
-	 * @param param the parameter we want
+	 * @param param   the parameter we want
 	 * @return it if it's present in either the default namespace or our namespace, or
 	 * null if not present
 	 */
 	@Nullable
 	protected static Attribute getAttributeByName(final StartElement element,
-													final String param) {
+												  final String param) {
 		final Attribute retval =
 				element.getAttributeByName(new QName(ISPReader.NAMESPACE, param));
 		if (retval == null) {
@@ -229,13 +247,14 @@ public abstract class AbstractCompactReader<@NonNull T>
 			return retval;
 		}
 	}
+
 	/**
 	 * @param element the current tag
 	 * @param param   the parameter we want
 	 * @return whether the tag has that parameter
 	 */
 	protected static boolean hasParameter(final StartElement element,
-											final String param) {
+										  final String param) {
 		return getAttributeByName(element, param) != null;
 	}
 
@@ -249,9 +268,9 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	protected static String getParamWithDeprecatedForm(final StartElement element,
-														final String preferred,
-														final String deprecated,
-														final Warning warner)
+													   final String preferred,
+													   final String deprecated,
+													   final Warning warner)
 			throws SPFormatException {
 		final Attribute prefProp = getAttributeByName(element, preferred);
 		final Attribute deprecatedProp = getAttributeByName(element, deprecated);
@@ -289,7 +308,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 
 	/**
 	 * @param ostream the stream to write the tabs to
-	 * @param tabs a non-negative integer: how many tabs to add to the stream
+	 * @param tabs    a non-negative integer: how many tabs to add to the stream
 	 * @throws IOException on I/O error writing to ostream
 	 */
 	protected static void indent(final Appendable ostream, final int tabs)
@@ -312,6 +331,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 			return " image=\"" + image + '"';
 		}
 	}
+
 	/**
 	 * @param obj an object being written out that might have a custom portrait
 	 * @return the XML for the portrait if it does, or the empty string if not
@@ -325,10 +345,11 @@ public abstract class AbstractCompactReader<@NonNull T>
 			return " portrait=\"" + portrait + '"';
 		}
 	}
+
 	/**
 	 * Parse an integer.
 	 *
-	 * @param str  the text to parse
+	 * @param str      the text to parse
 	 * @param location the current location in the document
 	 * @return the result of parsing the text
 	 * @throws SPFormatException if the string is non-numeric or otherwise malformed
@@ -341,6 +362,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 			throw new SPMalformedInputException(location, e);
 		}
 	}
+
 	/**
 	 * Parse an integer parameter.
 	 *
@@ -348,10 +370,11 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @param parameter the name of the parameter
 	 * @return the result of parsing the text
 	 * @throws SPFormatException if the tag doesn't have that parameter or if its
-	 * value is non-numeric or otherwise malformed
+	 * value is
+	 *                           non-numeric or otherwise malformed
 	 */
 	protected static int getIntegerParameter(final StartElement tag,
-												final String parameter)
+											 final String parameter)
 			throws SPFormatException {
 		return parseInt(getParameter(tag, parameter),
 				assertNotNull(tag.getLocation()));
@@ -368,8 +391,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 *                           malformed
 	 */
 	protected static int getIntegerParameter(final StartElement tag,
-											final String parameter,
-											final int defaultValue)
+											 final String parameter,
+											 final int defaultValue)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
@@ -382,17 +405,19 @@ public abstract class AbstractCompactReader<@NonNull T>
 			return parseInt(val, assertNotNull(tag.getLocation()));
 		}
 	}
+
 	/**
 	 * Write the necessary number of tab characters and a tag. Does not write the right
 	 * bracket to close the tag.
+	 *
 	 * @param ostream the stream to write to
-	 * @param tag the tag to write
-	 * @param indent the indentation level
+	 * @param tag     the tag to write
+	 * @param indent  the indentation level
 	 * @throws IOException on I/O error writing to stream
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	protected static void writeTag(final Appendable ostream, final String tag,
-								final int indent) throws IOException {
+								   final int indent) throws IOException {
 		indent(ostream, indent);
 		ostream.append('<');
 		ostream.append(tag);

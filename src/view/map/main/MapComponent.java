@@ -1,8 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -11,10 +9,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
@@ -47,16 +42,12 @@ import util.NullCleaner;
  */
 public final class MapComponent extends JComponent
 		implements MapGUI, MapChangeListener, SelectionChangeListener,
-						GraphicalParamsListener {
+						   GraphicalParamsListener {
 	/**
 	 * The map model encapsulating the map this represents, the secondary map, and the
 	 * selected tile.
 	 */
 	private final IViewerModel model;
-	/**
-	 * The drawing helper, which does the actual drawing of the tiles.
-	 */
-	private TileDrawHelper helper;
 	/**
 	 * The mouse listener that handles showing the terrain-changing popup menu.
 	 */
@@ -69,12 +60,16 @@ public final class MapComponent extends JComponent
 	 * The matchers to tell the order in which to draw fixtures.
 	 */
 	private final Iterable<FixtureMatcher> matchers;
+	/**
+	 * The drawing helper, which does the actual drawing of the tiles.
+	 */
+	private TileDrawHelper helper;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param theMap The model containing the map this represents
-	 * @param filter the filter telling which fixtures to draw
+	 * @param theMap     The model containing the map this represents
+	 * @param filter     the filter telling which fixtures to draw
 	 * @param fixOrderer a stream of matchers to say which fixture is "on top"
 	 */
 	public MapComponent(final IViewerModel theMap, final ZOrderFilter filter,
@@ -200,16 +195,16 @@ public final class MapComponent extends JComponent
 				model.getMapDimensions().getVersion());
 		final VisibleDimensions dim = model.getDimensions();
 		return NullCleaner.valueOrDefault(rect, new Rectangle(0, 0,
-																	(dim.getMaximumCol
-																				() -
-																			dim
-																					.getMinimumCol()) *
-																			tileSize,
-																	(dim.getMaximumRow
-																				() -
-																			dim
-																					.getMinimumRow()) *
-																			tileSize));
+																	 (dim.getMaximumCol
+																				  () -
+																			  dim
+																					  .getMinimumCol()) *
+																			 tileSize,
+																	 (dim.getMaximumRow
+																				  () -
+																			  dim
+																					  .getMinimumRow()) *
+																			 tileSize));
 	}
 
 	/**
@@ -222,7 +217,7 @@ public final class MapComponent extends JComponent
 	 * @param selected whether the tile is the selected tile
 	 */
 	private void paintTile(final Graphics pen, final Point point, final int row,
-							final int col, final boolean selected) {
+						   final int col, final boolean selected) {
 		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
 				model.getMapDimensions().getVersion());
 		helper.drawTile(pen, model.getMap(), point,
@@ -232,7 +227,8 @@ public final class MapComponent extends JComponent
 			final Graphics context = pen.create();
 			try {
 				context.setColor(Color.black);
-				context.drawRect((col * tileSize) + 1, (row * tileSize) + 1, tileSize - 2,
+				context.drawRect((col * tileSize) + 1, (row * tileSize) + 1, tileSize
+																					 - 2,
 						tileSize - 2);
 			} finally {
 				context.dispose();
@@ -254,7 +250,7 @@ public final class MapComponent extends JComponent
 	 */
 	@Override
 	public void dimensionsChanged(final VisibleDimensions oldDim,
-									final VisibleDimensions newDim) {
+								  final VisibleDimensions newDim) {
 		repaint();
 	}
 
@@ -265,8 +261,8 @@ public final class MapComponent extends JComponent
 	@Override
 	public void tileSizeChanged(final int oldSize, final int newSize) {
 		final ComponentEvent evt = new ComponentEvent(this,
-															ComponentEvent
-																	.COMPONENT_RESIZED);
+															 ComponentEvent
+																	 .COMPONENT_RESIZED);
 		for (final ComponentListener list : getComponentListeners()) {
 			list.componentResized(evt);
 		}
@@ -279,7 +275,7 @@ public final class MapComponent extends JComponent
 	 */
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
-									final Point newPoint) {
+									 final Point newPoint) {
 		SwingUtilities.invokeLater(this::requestFocusInWindow);
 		if (!isSelectionVisible()) {
 			fixVisibility();
@@ -310,9 +306,9 @@ public final class MapComponent extends JComponent
 		final int maxCol = model.getDimensions().getMaximumCol();
 		final MapDimensions mapDim = model.getMapDimensions();
 		return ((selRow < 0) || (selRow >= minRow))
-					&& ((selRow >= mapDim.rows) || (selRow <= maxRow))
-					&& ((selCol < 0) || (selCol >= minCol))
-					&& ((selCol >= mapDim.cols) || (selCol <= maxCol));
+					   && ((selRow >= mapDim.rows) || (selRow <= maxRow))
+					   && ((selCol < 0) || (selCol >= minCol))
+					   && ((selCol >= mapDim.cols) || (selCol <= maxCol));
 	}
 
 	/**
@@ -346,32 +342,37 @@ public final class MapComponent extends JComponent
 		model.setDimensions(
 				new VisibleDimensions(minRow, maxRow, minCol, maxCol));
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a quasi-diagnostic String
 	 */
 	@Override
 	public String toString() {
 		return "MapComponent depicting a map of version " +
-					model.getMapDimensions().version;
+					   model.getMapDimensions().version;
 	}
 }

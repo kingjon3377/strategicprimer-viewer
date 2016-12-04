@@ -68,11 +68,26 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * @param exp whether the ground is exposed
+	 */
+	public final void setExposed(final boolean exp) {
+		exposed = exp;
+	}
+
+	/**
 	 * @return a description of the ground
 	 */
 	@Override
 	public String getKind() {
 		return kind;
+	}
+
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 
 	/**
@@ -94,7 +109,7 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) ||
-					((obj instanceof Ground) && kind.equals(((Ground) obj).kind) &&
+					   ((obj instanceof Ground) && kind.equals(((Ground) obj).kind) &&
 								(exposed == ((Ground) obj).exposed));
 	}
 
@@ -140,18 +155,13 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
+
 	/**
-	 * @param exp whether the ground is exposed
-	 */
-	public final void setExposed(final boolean exp) {
-		exposed = exp;
-	}
-	/**
-	 * @param nKind the new kind
+	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
+	public String getImage() {
+		return image;
 	}
 
 	/**
@@ -160,14 +170,6 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**

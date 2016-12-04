@@ -3,7 +3,7 @@ package controller.map.drivers;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
 import java.util.stream.StreamSupport;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
@@ -31,9 +31,11 @@ public final class ViewerStart implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-m", "--map", ParamCount.One, "Map viewer",
-								"Look at the map visually. This is probably the app you" +
-										" want."
+								   "Look at the map visually. This is probably the app " +
+										   "you" +
+										   " want."
 			);
+
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
 	}
@@ -43,7 +45,7 @@ public final class ViewerStart implements SimpleDriver {
 	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver model
+	 * @param model   the driver model
 	 */
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
@@ -61,7 +63,8 @@ public final class ViewerStart implements SimpleDriver {
 			viewerModel = new ViewerModel(model);
 		}
 		SwingUtilities.invokeLater(
-				() -> new ViewerFrame(viewerModel, new IOHandler(viewerModel)).setVisible(true));
+				() -> new ViewerFrame(viewerModel, new IOHandler(viewerModel))
+							  .setVisible(true));
 	}
 
 	/**

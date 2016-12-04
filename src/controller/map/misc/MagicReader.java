@@ -32,6 +32,7 @@ public class MagicReader extends Reader {
 	 * The name of the file we're reading, or "a string" if reading from a string.
 	 */
 	private final String filename;
+
 	/**
 	 * If filename begins "string:", with the colon followed immediately by the
 	 * angle-bracket to begin the first XML tag, it is not treated as a filename;
@@ -52,6 +53,7 @@ public class MagicReader extends Reader {
 
 	/**
 	 * Read into a buffer.
+	 *
 	 * @param buffer the buffer to read into
 	 * @param offset the offset at which to begin reading
 	 * @param length how much to read
@@ -67,6 +69,7 @@ public class MagicReader extends Reader {
 
 	/**
 	 * Close the reader.
+	 *
 	 * @throws IOException on I/O error doing so
 	 */
 	@Override
@@ -76,6 +79,7 @@ public class MagicReader extends Reader {
 
 	/**
 	 * Read a single character.
+	 *
 	 * @return the character read, or -1 on EOF
 	 * @throws IOException on I/O error
 	 */
@@ -93,9 +97,11 @@ public class MagicReader extends Reader {
 	}
 
 	/**
-	 * Marks the present position in the stream, if the reader we delegate to supports it.
-	 * @param readAheadLimit Limit on the number of characters that may be
-	 *                         read while still preserving the mark.
+	 * Marks the present position in the stream, if the reader we delegate to supports
+	 * it.
+	 *
+	 * @param readAheadLimit Limit on the number of characters that may be read while
+	 *                       still preserving the mark.
 	 * @throws IOException on I/O error
 	 */
 	@Override
@@ -105,12 +111,14 @@ public class MagicReader extends Reader {
 
 	/**
 	 * Reset the stream if the delegate supports it.
+	 *
 	 * @throws IOException on I/O error
 	 */
 	@Override
 	public void reset() throws IOException {
 		delegate.reset();
 	}
+
 	/**
 	 * @return a diagnostic String.
 	 */

@@ -108,7 +108,7 @@ public final class RiverFixture
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof RiverFixture)
-										&& ((RiverFixture) obj).rivers.equals(rivers));
+										 && ((RiverFixture) obj).rivers.equals(rivers));
 	}
 
 	/**
@@ -128,7 +128,8 @@ public final class RiverFixture
 	@Override
 	public String toString() {
 		final StringBuilder builder =
-				new StringBuilder(BASE_STRING.length() + (MAX_RIVER_SIZE * rivers.size()))
+				new StringBuilder(BASE_STRING.length() + (MAX_RIVER_SIZE * rivers.size
+																						  ()))
 						.append(BASE_STRING);
 		for (final River river : rivers) {
 			builder.append(river);

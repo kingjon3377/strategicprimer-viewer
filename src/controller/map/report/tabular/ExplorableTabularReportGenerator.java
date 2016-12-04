@@ -45,26 +45,31 @@ public class ExplorableTabularReportGenerator
 	 * The base point to use for distance calculations.
 	 */
 	private final Point base;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param currentPlayer the player for whom the report is being created
-	 * @param hq the HQ location of the player for whom the report is being created
+	 * @param hq            the HQ location of the player for whom the report is being
+	 *                      created
 	 */
 	public ExplorableTabularReportGenerator(final Player currentPlayer, final Point hq) {
 		player = currentPlayer;
 		base = hq;
 	}
+
 	/**
-	 * @param ostream the stream to write the row to
+	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
-	 * @param item the fixture to base the line on
-	 * @param loc its location
+	 * @param item     the fixture to base the line on
+	 * @param loc      its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@Override
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						   final ExplorableFixture item, final Point loc) throws IOException {
+						   final ExplorableFixture item, final Point loc)
+			throws IOException {
 		if (item instanceof Battlefield) {
 			writeField(ostream, distanceString(loc, base));
 			writeFieldDelimiter(ostream);
@@ -128,9 +133,11 @@ public class ExplorableTabularReportGenerator
 			return false;
 		}
 	}
+
 	@Override
 	public String headerRow() {
-		return "Distance,Location,\"Brief Description\",\"Claimed By\",\"Long Description\"";
+		return "Distance,Location,\"Brief Description\",\"Claimed By\",\"Long " +
+					   "Description\"";
 	}
 
 	@SuppressWarnings("QuestionableName")
@@ -147,6 +154,7 @@ public class ExplorableTabularReportGenerator
 			return cmp;
 		}
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether this report generator covers it
@@ -155,13 +163,15 @@ public class ExplorableTabularReportGenerator
 	public boolean applies(final IFixture obj) {
 		return (obj instanceof ExplorableFixture) || (obj instanceof TextFixture);
 	}
+
 	/**
 	 * Produce a tabular report on a particular category of fixtures in the map. All
 	 * fixtures covered in this table should be removed from the set before returning.
 	 * We override this to, in addition to the fixtures covered by the type parameter,
 	 * report on text fixtures.
-	 * @param ostream the stream to write the table to
-	 * @param type the type of object being looked for
+	 *
+	 * @param ostream  the stream to write the table to
+	 * @param type     the type of object being looked for
 	 * @param fixtures the set of fixtures
 	 * @throws IOException on I/O error writing to the stream
 	 */
@@ -177,7 +187,7 @@ public class ExplorableTabularReportGenerator
 										.map(entry -> Pair.of(entry.getKey(),
 												Pair.of(entry.getValue().first(),
 														entry.getValue()
-																		  .second())))
+																.second())))
 										.collect(Collectors.toList()));
 		Collections
 				.sort(values, (one, two) -> {
@@ -186,7 +196,8 @@ public class ExplorableTabularReportGenerator
 					final Comparator<Point> comparator = new DistanceComparator(base);
 					final int cmp = comparator.compare(first.first(), second.first());
 					if (cmp == 0) {
-						return first.second().toString().compareTo(second.second().toString());
+						return first.second().toString()
+									   .compareTo(second.second().toString());
 					} else {
 						return cmp;
 					}
@@ -208,15 +219,17 @@ public class ExplorableTabularReportGenerator
 		}
 		fixtures.coalesce();
 	}
+
 	/**
 	 * @param ostream the stream to write the row to
-	 * @param item the fixture to base the line on
-	 * @param loc its location
+	 * @param item    the fixture to base the line on
+	 * @param loc     its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	public void produceFromText(final Appendable ostream,
-								final TextFixture item, final Point loc) throws IOException {
+								final TextFixture item, final Point loc)
+			throws IOException {
 		writeField(ostream, distanceString(loc, base));
 		writeFieldDelimiter(ostream);
 		writeField(ostream, loc.toString());

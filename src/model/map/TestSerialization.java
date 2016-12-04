@@ -71,6 +71,59 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	private static final Pattern LOOSE_END_TAG = Pattern.compile("\" />");
 
 	/**
+	 * A factory to encapsulate rivers in a simple map.
+	 *
+	 * @param point  where to put the rivers
+	 * @param rivers the rivers to put on a tile
+	 * @return a map containing them. Declared mutable for the sake of calling code.
+	 */
+	private static IMapNG encapsulateRivers(final Point point,
+											final River... rivers) {
+		final IMutableMapNG retval =
+				new SPMapNG(new MapDimensions(point.getRow() + 1, point.getCol() + 1, 2),
+								   new PlayerCollection(), -1);
+		retval.setBaseTerrain(point, Plains);
+		retval.addRivers(point, assertNotNull(rivers));
+		return retval;
+	}
+
+	/**
+	 * Encapsulate the given string in a 'tile' tag inside a 'map' tag.
+	 *
+	 * @param str a string
+	 * @return it, encapsulated.
+	 */
+	@SuppressWarnings("StringBufferReplaceableByString")
+	private static String encapsulateTileString(final String str) {
+		final StringBuilder builder = new StringBuilder(55 + str.length());
+		builder.append("<map version=\"2\" rows=\"2\" columns=\"2\">");
+		builder.append("<tile row=\"1\" column=\"1\" kind=\"plains\">");
+		builder.append(str);
+		builder.append("</tile></map>");
+		return assertNotNull(builder.toString());
+	}
+
+	/**
+	 * Create a simple SPMapNG.
+	 *
+	 * @param dims    the dimensions of the map
+	 * @param terrain the terrain to set at various points
+	 * @return the map
+	 */
+	@SafeVarargs
+	private static IMutableMapNG createSimpleMap(final Point dims,
+												 final Pair<Point, TileType>...
+														 terrain) {
+		final IMutableMapNG retval =
+				new SPMapNG(new MapDimensions(dims.getRow(), dims.getCol(), 2),
+								   new PlayerCollection(), -1);
+		for (final Pair<Point, TileType> pair : terrain) {
+			retval.setBaseTerrain(pair.first(), pair.second());
+		}
+		return retval;
+	}
+
+	/**
 	 * Test Player serialization.
 	 *
 	 * @throws SPFormatException  on SP format error
@@ -91,39 +144,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"number", false);
 		assertMissingProperty("<player number=\"1\" />", Player.class,
 				"code_name", false);
-	}
-
-	/**
-	 * A factory to encapsulate rivers in a simple map.
-	 *
-	 * @param point  where to put the rivers
-	 * @param rivers the rivers to put on a tile
-	 * @return a map containing them. Declared mutable for the sake of calling code.
-	 */
-	private static IMapNG encapsulateRivers(final Point point,
-											final River... rivers) {
-		final IMutableMapNG retval =
-				new SPMapNG(new MapDimensions(point.getRow() + 1, point.getCol() + 1, 2),
-								new PlayerCollection(), -1);
-		retval.setBaseTerrain(point, Plains);
-		retval.addRivers(point, assertNotNull(rivers));
-		return retval;
-	}
-
-	/**
-	 * Encapsulate the given string in a 'tile' tag inside a 'map' tag.
-	 *
-	 * @param str a string
-	 * @return it, encapsulated.
-	 */
-	@SuppressWarnings("StringBufferReplaceableByString")
-	private static String encapsulateTileString(final String str) {
-		final StringBuilder builder = new StringBuilder(55 + str.length());
-		builder.append("<map version=\"2\" rows=\"2\" columns=\"2\">");
-		builder.append("<tile row=\"1\" column=\"1\" kind=\"plains\">");
-		builder.append(str);
-		builder.append("</tile></map>");
-		return assertNotNull(builder.toString());
 	}
 
 	/**
@@ -184,25 +204,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
-	 * Create a simple SPMapNG.
-	 *
-	 * @param dims    the dimensions of the map
-	 * @param terrain the terrain to set at various points
-	 * @return the map
-	 */
-	@SafeVarargs
-	private static IMutableMapNG createSimpleMap(final Point dims,
-												final Pair<Point, TileType>... terrain) {
-		final IMutableMapNG retval =
-				new SPMapNG(new MapDimensions(dims.getRow(), dims.getCol(), 2),
-								   new PlayerCollection(), -1);
-		for (final Pair<Point, TileType> pair : terrain) {
-			retval.setBaseTerrain(pair.first(), pair.second());
-		}
-		return retval;
-	}
-
-	/**
 	 * Test Tile serialization.
 	 *
 	 * @throws SPFormatException  on SP format error
@@ -240,56 +241,63 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"Deserialization of deprecated tile-type idiom",
 				fourthMap,
 				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(fourthMap, true))
-									.replaceAll(
-											Matcher.quoteReplacement(oldKindProperty))),
+									  .replaceAll(
+											  Matcher.quoteReplacement
+															  (oldKindProperty))),
 				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom", fourthMap,
 				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(fourthMap,
 						false))
-									.replaceAll(
-											Matcher.quoteReplacement
-															(oldKindProperty))),
+									  .replaceAll(
+											  Matcher.quoteReplacement
+															  (oldKindProperty))),
 				oldKindProperty);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
-									+ "<tile column=\"0\" kind=\"plains\" /></map>",
+									  + "<tile column=\"0\" kind=\"plains\" /></map>",
 				IMapNG.class,
 				"row", false);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
-									+ "<tile row=\"0\" kind=\"plains\" /></map>",
+									  + "<tile row=\"0\" kind=\"plains\" /></map>",
 				IMapNG.class,
 				"column", false);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
-									+ "<tile row=\"0\" column=\"0\" /></map>",
+									  + "<tile row=\"0\" column=\"0\" /></map>",
 				IMapNG.class,
 				KIND_PROPERTY, true);
 		assertUnwantedChild(
 				encapsulateTileString("<tile row=\"2\" column=\"0\" "
-											+ "kind=\"plains\" />"), IMapNG.class,
+											  + "kind=\"plains\" />"), IMapNG.class,
 				false);
 		final IMutableMapNG five =
 				createSimpleMap(point(3, 4), Pair.of(point(2, 3), Jungle));
 		five.addFixture(point(2, 3), new Unit(
-													new Player(2, ""), "explorer",
-													"name one", 1));
+													 new Player(2, ""), "explorer",
+													 "name one", 1));
 		five.addFixture(point(2, 3), new Unit(
-													new Player(2, ""), "explorer",
-													"name two", 2));
+													 new Player(2, ""), "explorer",
+													 "name two", 2));
 		assertThat("Just checking ...",
 				Long.valueOf(five.streamOtherFixtures(point(2, 3)).count()),
 				equalTo(Long.valueOf(2L)));
 		assertSerialization("Multiple units should come through", five);
-		final String xmlTwoLogical = String.format("<view xmlns=\"%s\" current_player=\"-1\" " +
-									"current_turn=\"-1\">%n\t<map version=\"2\" " +
-									"rows=\"3\" columns=\"4\">%n\t\t<row " +
-									"index=\"2\">%n\t\t\t<tile row=\"2\" column=\"3\" " +
-									"kind=\"jungle\">%n\t\t\t\t<unit owner=\"2\" " +
-									"kind=\"explorer\" name=\"name one\" id=\"1\" " +
-									"/>%n\t\t\t\t<unit owner=\"2\" kind=\"explorer\" " +
-									"name=\"name two\" id=\"2\" " +
-									"/>%n\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view>%n", ISPReader.NAMESPACE);
+		final String xmlTwoLogical =
+				String.format("<view xmlns=\"%s\" current_player=\"-1\" " +
+									  "current_turn=\"-1\">%n\t<map version=\"2\" " +
+									  "rows=\"3\" columns=\"4\">%n\t\t<row " +
+									  "index=\"2\">%n\t\t\t<tile row=\"2\" column=\"3\"" +
+									  " " +
+									  "kind=\"jungle\">%n\t\t\t\t<unit owner=\"2\" " +
+									  "kind=\"explorer\" name=\"name one\" id=\"1\" " +
+									  "/>%n\t\t\t\t<unit owner=\"2\" kind=\"explorer\"" +
+									  " " +
+									  "name=\"name two\" id=\"2\" " +
+									  "/>%n\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view" +
+									  ">%n",
+						ISPReader.NAMESPACE);
 		final String xmlTwoAlphabetical = String.format(
-				"<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"%s\">%n\t<map " +
+				"<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"%s\">%n\t<map" +
+						" " +
 						"columns=\"4\" rows=\"3\" version=\"2\">%n\t\t<row " +
 						"index=\"2\">%n\t\t\t<tile column=\"3\" kind=\"jungle\" " +
 						"row=\"2\">%n\t\t\t\t<unit id=\"1\" kind=\"explorer\" " +
@@ -297,26 +305,32 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						"kind=\"explorer\" name=\"name two\" " +
 						"owner=\"2\"/>%n\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view>%n",
 				ISPReader.NAMESPACE);
-		assertThat("Multiple units", createSerializedForm(five, true), equalTo(xmlTwoLogical));
+		assertThat("Multiple units", createSerializedForm(five, true),
+				equalTo(xmlTwoLogical));
 		assertThat("Multiple units", createSerializedForm(five, false),
 				anyOf(equalTo(xmlTwoLogical), equalTo(xmlTwoAlphabetical),
-						equalTo(LOOSE_END_TAG.matcher(xmlTwoLogical).replaceAll("\"/>"))));
+						equalTo(LOOSE_END_TAG.matcher(xmlTwoLogical)
+										.replaceAll("\"/>"))));
 		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
-						createSimpleMap(point(1, 1), Pair.of(point(0, 0), TileType.NotVisible)),
+						createSimpleMap(point(1, 1),
+								Pair.of(point(0, 0), TileType.NotVisible)),
 						true),
 				equalTo(String.format(
 						"<view xmlns=\"%s\" current_player=\"-1\" " +
-								"current_turn=\"-1\">%n\t<map version=\"2\" rows=\"1\" " +
+								"current_turn=\"-1\">%n\t<map version=\"2\" rows=\"1\"" +
+								" " +
 								"columns=\"1\">%n\t</map>%n</view>%n",
 						ISPReader.NAMESPACE)));
 		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
-						createSimpleMap(point(1, 1), Pair.of(point(0, 0), TileType.NotVisible)),
+						createSimpleMap(point(1, 1),
+								Pair.of(point(0, 0), TileType.NotVisible)),
 						false),
 				anyOf(equalTo(String.format(
 						"<view xmlns=\"%s\" current_player=\"-1\" " +
-								"current_turn=\"-1\">%n\t<map version=\"2\" rows=\"1\" " +
+								"current_turn=\"-1\">%n\t<map version=\"2\" rows=\"1\"" +
+								" " +
 								"columns=\"1\">%n\t</map>%n</view>%n",
 						ISPReader.NAMESPACE)), equalTo(String.format(
 						"<view current_player=\"-1\" current_turn=\"-1\" " +
@@ -416,7 +430,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		player.setCurrent(true);
 		final IMutablePlayerCollection players = new PlayerCollection();
 		players.add(player);
-		final IMutableMapNG firstMap = new SPMapNG(new MapDimensions(1, 1, 2), players, 0);
+		final IMutableMapNG firstMap =
+				new SPMapNG(new MapDimensions(1, 1, 2), players, 0);
 		final Point point = point(0, 0);
 		firstMap.setBaseTerrain(point, Plains);
 		assertSerialization("Simple Map serialization", firstMap);
@@ -447,10 +462,12 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		firstMap.setBaseTerrain(point, Steppe);
 		assertSerialization("SPMapNG serialization", firstMap);
 		assertMissingProperty("<view current_turn=\"0\">" +
-									"<map version=\"2\" rows=\"1\" columns=\"1\" " +
-									"/></view>", IMapNG.class, "current_player", false);
+									  "<map version=\"2\" rows=\"1\" columns=\"1\" " +
+									  "/></view>", IMapNG.class, "current_player",
+				false);
 		assertMissingProperty("<view current_player=\"0\">" +
-									"<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
+									  "<map version=\"2\" rows=\"1\" columns=\"1\" " +
+									  "/></view>",
 				IMapNG.class, "current_turn", false);
 		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />",
 				IMapNG.class);
@@ -470,6 +487,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						"code_name=\"playerOne\" /><row index=\"0\"><tile row=\"0\" " +
 						"column=\"0\" kind=\"steppe\" /></row></map>");
 	}
+
 	/**
 	 * Test support for XML namespaces.
 	 *
@@ -487,28 +505,32 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final Point point = point(0, 0);
 		firstMap.setBaseTerrain(point, Steppe);
 		assertMapDeserialization("Proper deserialization of namespaced map", firstMap,
-				"<map xmlns=\"" + ISPReader.NAMESPACE + "\" version=\"2\" rows=\"1\" columns=\"1\" " +
+				"<map xmlns=\"" + ISPReader.NAMESPACE +
+						"\" version=\"2\" rows=\"1\" columns=\"1\" " +
 						"current_player=\"1\"><player number=\"1\" " +
 						"code_name=\"playerOne\" /><row index=\"0\"><tile row=\"0\" " +
 						"column=\"0\" kind=\"steppe\" /></row></map>");
 		assertMapDeserialization(
 				"Proper deserialization of map if another namespace is declared default",
 				firstMap, "<sp:map xmlns=\"xyzzy\" xmlns:sp=\"" + ISPReader.NAMESPACE +
-								"\" version=\"2\" rows=\"1\" columns=\"1\" " +
-								"current_player=\"1\"><sp:player number=\"1\" " +
-								"code_name=\"playerOne\" /><sp:row " +
-								"index=\"0\"><sp:tile row=\"0\" column=\"0\" " +
-								"kind=\"steppe\" /></sp:row></sp:map>");
+								  "\" version=\"2\" rows=\"1\" columns=\"1\" " +
+								  "current_player=\"1\"><sp:player number=\"1\" " +
+								  "code_name=\"playerOne\" /><sp:row " +
+								  "index=\"0\"><sp:tile row=\"0\" column=\"0\" " +
+								  "kind=\"steppe\" /></sp:row></sp:map>");
 		assertMapDeserialization("Non-root other-namespace tags ignored", firstMap,
-				"<map xmlns=\"" + ISPReader.NAMESPACE + "\" version=\"2\" rows=\"1\" columns=\"1\" " +
+				"<map xmlns=\"" + ISPReader.NAMESPACE +
+						"\" version=\"2\" rows=\"1\" columns=\"1\" " +
 						"current_player=\"1\" xmlns:xy=\"xyzzy\"><player number=\"1\" " +
-						"code_name=\"playerOne\" /><xy:xyzzy /><row index=\"0\"><tile row=\"0\" " +
+						"code_name=\"playerOne\" /><xy:xyzzy /><row index=\"0\"><tile " +
+						"row=\"0\" " +
 						"column=\"0\" kind=\"steppe\" /></row></map>");
 		try {
 			assertMapDeserialization("Root tag must be in supported namespace", firstMap,
 					"<map xmlns=\"xyzzy\" version=\"2\" rows=\"1\" columns=\"1\" " +
 							"current_player=\"1\"><player number=\"1\" " +
-							"code_name=\"playerOne\" /><row index=\"0\"><tile row=\"0\"" +
+							"code_name=\"playerOne\" /><row index=\"0\"><tile " +
+							"row=\"0\"" +
 							" column=\"0\" kind=\"steppe\" /></row></map>");
 			fail("Map in an unsupported namespace shouldn't be accepted");
 		} catch (final UnwantedChildException except) {
@@ -538,9 +560,11 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertForwardDeserialization("Reading Ogre via <include>", new Ogre(1),
 				"<include file=\"string:&lt;ogre id=&quot;1&quot; /&gt;\" />");
 	}
+
 	/**
 	 * Tests that duplicate IDs are warned about.
-	 * @throws SPFormatException on SP format error
+	 *
+	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML reading error
 	 */
 	@Test
@@ -552,17 +576,20 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						"column=\"0\" kind=\"steppe\"><hill id=\"1\" /><ogre id=\"1\" " +
 						"/></tile></row></map>");
 	}
+
 	/**
 	 * Test that the reader rejects invalid XML.
+	 *
 	 * @throws XMLStreamException never
-	 * @throws SPFormatException never
+	 * @throws SPFormatException  never
 	 */
 	@Test
 	public void testRejectsInvalid() throws XMLStreamException, SPFormatException {
 		assertInvalid(
 				"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">");
 		assertInvalid(
-				"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\"><></map>");
+				"<map version=\"2\" rows=\"1\" columns=\"1\" " +
+						"current_player=\"1\"><></map>");
 		assertInvalid("<include file=\"nonexistent\" />");
 		assertInvalid("<include file=\"string:&lt;ogre id=&quot;1&quot;&gt;\" />");
 		assertInvalid("<include />");
@@ -571,6 +598,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertInvalid("<include file=\"\" />");
 		assertInvalid("<include file=\"string:&lt;xyzzy\" />");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

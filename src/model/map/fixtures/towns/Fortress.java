@@ -39,13 +39,24 @@ import static util.NullCleaner.assertNotNull;
  * @author Jonathan Lovelace
  */
 public class Fortress implements HasMutableImage, ITownFixture,
-										FixtureIterable<@NonNull FortressMember>,
-										SubsettableFixture {
+										 FixtureIterable<@NonNull FortressMember>,
+										 SubsettableFixture {
+	/**
+	 * The size of the fortress.
+	 */
+	private final TownSize size;
+	/**
+	 * The units in the fortress.
+	 */
+	private final List<FortressMember> units; // Should this be a Set?
+	/**
+	 * ID number.
+	 */
+	private final int id;
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
-
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -55,20 +66,17 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	 */
 	private String name;
 	/**
-	 * The size of the fortress.
+	 * The filename of an image to use as a portrait for the fortress.
 	 */
-	private final TownSize size;
-	/**
-	 * The units in the fortress.
-	 */
-	private final List<FortressMember> units; // Should this be a Set?
+	private String portraitName = "";
 
 	/**
 	 * Constructor.
-	 *  @param fortOwner the player that owns the fortress
+	 *
+	 * @param fortOwner the player that owns the fortress
 	 * @param fortName  the name of the fortress
 	 * @param idNum     the ID number.
-	 * @param fortSize the size of the fortress
+	 * @param fortSize  the size of the fortress
 	 */
 	public Fortress(final Player fortOwner, final String fortName,
 					final int idNum, final TownSize fortSize) {
@@ -136,18 +144,26 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	}
 
 	/**
+	 * @param player the fort's new owner
+	 */
+	@Override
+	public final void setOwner(final Player player) {
+		owner = player;
+	}
+
+	/**
 	 * @param obj an object
 	 * @return whether it is an identical fortress
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Fortress)
-										&& name.equals(((Fortress) obj).name)
-										&& (((Fortress) obj).owner.getPlayerId() ==
-													owner.getPlayerId())
-										&& ((Fortress) obj).units.containsAll(units)
-										&& units.containsAll(((Fortress) obj).units)
-										&& (((Fortress) obj).id == id));
+										 && name.equals(((Fortress) obj).name)
+										 && (((Fortress) obj).owner.getPlayerId() ==
+													 owner.getPlayerId())
+										 && ((Fortress) obj).units.containsAll(units)
+										 && units.containsAll(((Fortress) obj).units)
+										 && (((Fortress) obj).id == id));
 	}
 
 	/**
@@ -258,11 +274,6 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	}
 
 	/**
-	 * ID number.
-	 */
-	private final int id;
-
-	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -278,11 +289,11 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof Fortress)
-										&& name.equals(((Fortress) fix).name)
-										&& (((Fortress) fix).owner.getPlayerId() ==
-													owner.getPlayerId())
-										&& ((Fortress) fix).units.containsAll(units)
-										&& units.containsAll(((Fortress) fix).units));
+										 && name.equals(((Fortress) fix).name)
+										 && (((Fortress) fix).owner.getPlayerId() ==
+													 owner.getPlayerId())
+										 && ((Fortress) fix).units.containsAll(units)
+										 && units.containsAll(((Fortress) fix).units));
 	}
 
 	/**
@@ -291,6 +302,14 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	@Override
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * @param newName the fort's new name
+	 */
+	@Override
+	public final void setName(final String newName) {
+		name = newName;
 	}
 
 	/**
@@ -315,19 +334,11 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	}
 
 	/**
-	 * @param player the fort's new owner
+	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
-	public final void setOwner(final Player player) {
-		owner = player;
-	}
-
-	/**
-	 * @param newName the fort's new name
-	 */
-	@Override
-	public final void setName(final String newName) {
-		name = newName;
+	public String getImage() {
+		return image;
 	}
 
 	/**
@@ -336,14 +347,6 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**
@@ -365,6 +368,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 			return "a fortress, " + name + ", owned by " + owner.getName();
 		}
 	}
+
 	/**
 	 * @return what kind of town this is
 	 */
@@ -372,10 +376,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	public final String kind() {
 		return "fortress";
 	}
-	/**
-	 * The filename of an image to use as a portrait for the fortress.
-	 */
-	private String portraitName = "";
+
 	/**
 	 * @return The filename of an image to use as a portrait for the fortress.
 	 */

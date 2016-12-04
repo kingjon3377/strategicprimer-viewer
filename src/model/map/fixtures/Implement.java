@@ -128,19 +128,19 @@ public class Implement
 	}
 
 	/**
-	 * @param img the filename of an image to use for this implement
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the filename of an image to use for this implement
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the filename of an image to use for this implement
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class Implement
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) ||
-					((obj instanceof Implement) && (((Implement) obj).id == id) &&
+					   ((obj instanceof Implement) && (((Implement) obj).id == id) &&
 								((Implement) obj).kind.equals(kind));
 	}
 

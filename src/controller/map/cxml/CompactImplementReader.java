@@ -35,6 +35,7 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 	 * Singleton object.
 	 */
 	public static final CompactReader<Implement> READER = new CompactImplementReader();
+
 	/**
 	 * Singleton.
 	 */
@@ -45,7 +46,7 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 *@param players   the collection of players
+	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from
@@ -86,7 +87,7 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 	 */
 	@Override
 	public void write(final Appendable ostream, final Implement obj,
-					final int indent) throws IOException {
+					  final int indent) throws IOException {
 		writeTag(ostream, "implement", indent);
 		ostream.append(" kind=\"");
 		ostream.append(obj.getKind());

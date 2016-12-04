@@ -1,7 +1,6 @@
 package view.util;
 
-import java.awt.CardLayout;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -9,8 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import model.listeners.AddRemoveListener;
 import util.OnMac;
 
@@ -42,7 +40,15 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	private final Collection<AddRemoveListener> arListeners = new ArrayList<>();
 
 	/**
+	 * Constructor.
+	 */
+	private AddRemovePanel() {
+		// Use factory method.
+	}
+
+	/**
 	 * Factory method.
+	 *
 	 * @param what what the panel allows the user to add or remove
 	 * @return the constructed panel.
 	 */
@@ -103,12 +109,6 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 		retval.add(second);
 		return retval;
 	}
-	/**
-	 * Constructor.
-	 */
-	private AddRemovePanel() {
-		// Use factory method.
-	}
 
 	/**
 	 * Set the sizes we want on a panel.
@@ -136,22 +136,26 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	public void removeAddRemoveListener(final AddRemoveListener list) {
 		arListeners.remove(list);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

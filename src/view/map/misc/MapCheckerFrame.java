@@ -3,8 +3,7 @@ package view.map.misc;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -15,8 +14,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -83,6 +81,7 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	private void printParagraph(final String paragraph) {
 		printParagraph(paragraph, StreamingLabel.LabelTextColor.white);
 	}
+
 	/**
 	 * Enclose a string in HTML paragraph indicators, optionally with a color. And
 	 * repaint the label so it shows up. This is "package-private" because, since the
@@ -146,7 +145,7 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 			LOGGER.log(Level.SEVERE, "I/O error reading " + filename, except);
 		} else if (except instanceof XMLStreamException) {
 			printParagraph("ERROR: Malformed XML in the file" +
-								"; see following error message for details",
+								   "; see following error message for details",
 					ERROR_COLOR);
 			final String message = NullCleaner.valueOrDefault(
 					except.getLocalizedMessage(), "(message was null)");
@@ -155,8 +154,8 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 					except);
 		} else if (except instanceof SPFormatException) {
 			printParagraph("ERROR: SP map format error at line " +
-								((SPFormatException) except).getLine() +
-								"; see following error message for details",
+								   ((SPFormatException) except).getLine() +
+								   "; see following error message for details",
 					ERROR_COLOR);
 			final String message = NullCleaner.valueOrDefault(
 					except.getLocalizedMessage(), "(message was null)");
@@ -167,26 +166,31 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 			throw new IllegalStateException("Unhandled exception class");
 		}
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a diagnostic String
 	 */

@@ -39,10 +39,6 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 */
 	private final boolean parallel;
 	/**
-	 * The name of the Job.
-	 */
-	private String name;
-	/**
 	 * Proxy-skills.
 	 */
 	private final Collection<ISkill> proxied = new ArrayList<>();
@@ -54,13 +50,17 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 * The names of skills we're proxying.
 	 */
 	private final Set<String> skillNames;
+	/**
+	 * The name of the Job.
+	 */
+	private String name;
 
 	/**
-	 * @param jobName   the name of the Job
-	 * @param parallelWorkers  whether the workers containing these jobs are
-	 *                            corresponding workers in different maps (if true) or
-	 *                            workers in the same unit (if false)
-	 * @param workers being proxied
+	 * @param jobName         the name of the Job
+	 * @param parallelWorkers whether the workers containing these jobs are corresponding
+	 *                        workers in different maps (if true) or workers in the same
+	 *                        unit (if false)
+	 * @param workers         being proxied
 	 */
 	public ProxyJob(final String jobName, final boolean parallelWorkers,
 					final IWorker... workers) {
@@ -98,9 +98,11 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 		final IJob @NonNull [] jobsArray = NullCleaner.assertNotNull(
 				proxiedJobs.toArray(new IJob[proxiedJobs.size()]));
 		proxied.addAll(skillNames.stream()
-				.map(skill -> new ProxySkill(skill, parallel,
-						NullCleaner.assertNotNull(jobsArray)))
-				.collect(Collectors.toList()));
+							   .map(skill -> new ProxySkill(skill, parallel,
+																   NullCleaner
+																		   .assertNotNull(
+																				   jobsArray)))
+							   .collect(Collectors.toList()));
 	}
 
 	/**
@@ -163,6 +165,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	public int getLevel() {
 		return 0;
 	}
+
 	/**
 	 * @param newLevel Ignored; always throws
 	 */
@@ -254,8 +257,9 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 				return skill;
 			}
 		}
-		final ProxySkill retval = new ProxySkill(skillName, parallel, NullCleaner.assertNotNull(
-				proxiedJobs.toArray(new IJob[proxiedJobs.size()])));
+		final ProxySkill retval =
+				new ProxySkill(skillName, parallel, NullCleaner.assertNotNull(
+						proxiedJobs.toArray(new IJob[proxiedJobs.size()])));
 		proxied.add(retval);
 		return retval;
 	}

@@ -57,13 +57,10 @@ import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
  */
 public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	/**
-	 * @param comparator a comparator for pairs of Points and fixtures.
+	 * A string to indicate a worker has training or experience.
 	 */
-	public UnitReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
-																					IFixture>> comparator) {
-		super(comparator);
-	}
-
+	private static final String HAS_TRAINING =
+			"(S)he has training or experience in the following Jobs (Skills):";
 	/**
 	 * Instance we use.
 	 */
@@ -75,10 +72,139 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	private final IReportGenerator<Animal> animalReportGenerator =
 			new AnimalReportGenerator(pairComparator);
 	/**
-	 * A string to indicate a worker has training or experience.
+	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	private static final String HAS_TRAINING =
-			"(S)he has training or experience in the following Jobs (Skills):";
+	public UnitReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
+																					  IFixture>> comparator) {
+		super(comparator);
+	}
+
+	/**
+	 * @param worker  a Worker.
+	 * @param details whether we should give details of the worker's stats and
+	 *                experience---true only if the current player owns the worker.
+	 * @return a sub-report on that worker.
+	 */
+	private static String workerReport(final IWorker worker, final boolean details) {
+		final StringBuilder builder = new StringBuilder(2048);
+		builder.append(worker.getName());
+		builder.append(", a ");
+		builder.append(worker.getRace());
+		builder.append(". ");
+		final WorkerStats stats = worker.getStats();
+		if ((stats != null) && details) {
+			builder.append("<p>He or she has the following stats: ");
+			//noinspection HardcodedFileSeparator
+			builder.append(stats.getHitPoints()).append(" / ")
+					.append(stats.getMaxHitPoints()).append(" Hit Points");
+			builder.append(", Strength ").append(
+					getModifierString(stats.getStrength()));
+			builder.append(", Dexterity ").append(
+					getModifierString(stats.getDexterity()));
+			builder.append(", Constitution ").append(
+					getModifierString(stats.getConstitution()));
+			builder.append(", Intelligence ").append(
+					getModifierString(stats.getIntelligence()));
+			builder.append(", Wisdom: ").append(
+					getModifierString(stats.getWisdom()));
+			builder.append(", Charisma: ").append(
+					getModifierString(stats.getCharisma()));
+			builder.append("</p>");
+		}
+		if (worker.iterator().hasNext() && details) {
+			builder.append(HAS_TRAINING).append(LineEnd.LINE_SEP).append(OPEN_LIST);
+			for (final IJob job : worker) {
+				if (job instanceof Job) {
+					builder.append(OPEN_LIST_ITEM);
+					builder.append(job.getLevel());
+					builder.append(" levels in ");
+					builder.append(job.getName());
+					builder.append(getSkills(job));
+					builder.append(CLOSE_LIST_ITEM);
+				}
+			}
+			builder.append(CLOSE_LIST);
+		}
+		return NullCleaner.assertNotNull(builder.toString());
+	}
+
+	/**
+	 * @param job a Job
+	 * @return a String describing its skills.
+	 */
+	private static String getSkills(final Iterable<ISkill> job) {
+		final StringBuilder builder = new StringBuilder(512);
+		if (job.iterator().hasNext()) {
+			boolean first = true;
+			for (final ISkill skill : job) {
+				if (first) {
+					builder.append(" (");
+					first = false;
+				} else {
+					builder.append(", ");
+				}
+				builder.append(skill.getName());
+				builder.append(' ');
+				builder.append(skill.getLevel());
+			}
+			builder.append(')');
+		}
+		return NullCleaner.assertNotNull(builder.toString());
+	}
+
+	/**
+	 * @param loc     the location of the worker in the map
+	 * @param worker  a Worker.
+	 * @param details whether we should give details of the worker's stats and
+	 *                experience---true only if the current player owns the worker.
+	 * @return a sub-report on that worker.
+	 */
+	private static MutableTreeNode produceWorkerRIR(final Point loc,
+													final IWorker worker,
+													final boolean details) {
+		final IReportNode retval = new ComplexReportNode(loc,
+																worker.getName() +
+																		", a " +
+																		worker.getRace
+																					   () +
+																		". ");
+		final WorkerStats stats = worker.getStats();
+		if ((stats != null) && details) {
+			//noinspection HardcodedFileSeparator
+			retval.add(new SimpleReportNode(loc, "He or she has the following stats: ",
+												   Integer.toString(stats.getHitPoints
+																				  ()),
+												   " / ", Integer.toString(
+					stats.getMaxHitPoints()), " Hit Points, Strength ",
+												   getModifierString(stats.getStrength
+																				   ()),
+												   ", Dexterity ", getModifierString(
+					stats.getDexterity()), ", Constitution ", getModifierString(
+					stats.getConstitution()), ", Intelligence ", getModifierString(
+					stats.getIntelligence()), ", Wisdom ",
+												   getModifierString(stats.getWisdom()),
+												   ", Charisma ", getModifierString(
+					stats.getCharisma())));
+		}
+		if (worker.iterator().hasNext() && details) {
+			final IReportNode jobs = new ListReportNode(loc, HAS_TRAINING);
+			for (final IJob job : worker) {
+				jobs.add(produceJobRIR(job, loc));
+			}
+			retval.add(jobs);
+		}
+		return retval;
+	}
+
+	/**
+	 * @param loc the location of the worker in the map
+	 * @param job a Job
+	 * @return a sub-report on that Job.
+	 */
+	private static MutableTreeNode produceJobRIR(final IJob job, final Point loc) {
+		return new SimpleReportNode(loc, Integer.toString(job.getLevel()),
+										   " levels in ", job.getName(), getSkills(job));
+	}
 
 	/**
 	 * We assume we're already in the middle of a paragraph or bullet point.
@@ -97,8 +223,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 						  final IMapNG map, final Player currentPlayer, final IUnit item,
 						  final Point loc) {
 		final StringBuilder builder =
-				new StringBuilder(52 + item.getKind().length() + item.getName().length() +
-										item.getOwner().getName().length());
+				new StringBuilder(52 + item.getKind().length() + item.getName().length
+																						() +
+										  item.getOwner().getName().length());
 		builder.append("Unit of type ");
 		builder.append(item.getKind());
 		builder.append(", named ");
@@ -235,7 +362,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer,
 								  final IUnit item, final Point loc) {
 		final String simple;
@@ -256,8 +383,10 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		if (item.iterator().hasNext() || !item.getAllOrders().isEmpty() ||
 					!item.getAllResults().isEmpty()) {
 			final IReportNode retval = new ListReportNode(loc,
-																		concat(simple,
-																				". Members of the unit:"));
+																 concat(simple,
+																		 ". Members of " +
+																				 "the " +
+																				 "unit:"));
 			for (final UnitMember member : item) {
 				if (member instanceof IWorker) {
 					workers.add(produceWorkerRIR(loc, (IWorker) member,
@@ -302,130 +431,6 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		} else {
 			return new SimpleReportNode(loc, simple);
 		}
-	}
-
-	/**
-	 * @param worker  a Worker.
-	 * @param details whether we should give details of the worker's stats and
-	 *                experience---true only if the current player owns the worker.
-	 * @return a sub-report on that worker.
-	 */
-	private static String workerReport(final IWorker worker, final boolean details) {
-		final StringBuilder builder = new StringBuilder(2048);
-		builder.append(worker.getName());
-		builder.append(", a ");
-		builder.append(worker.getRace());
-		builder.append(". ");
-		final WorkerStats stats = worker.getStats();
-		if ((stats != null) && details) {
-			builder.append("<p>He or she has the following stats: ");
-			//noinspection HardcodedFileSeparator
-			builder.append(stats.getHitPoints()).append(" / ")
-					.append(stats.getMaxHitPoints()).append(" Hit Points");
-			builder.append(", Strength ").append(
-					getModifierString(stats.getStrength()));
-			builder.append(", Dexterity ").append(
-					getModifierString(stats.getDexterity()));
-			builder.append(", Constitution ").append(
-					getModifierString(stats.getConstitution()));
-			builder.append(", Intelligence ").append(
-					getModifierString(stats.getIntelligence()));
-			builder.append(", Wisdom: ").append(
-					getModifierString(stats.getWisdom()));
-			builder.append(", Charisma: ").append(
-					getModifierString(stats.getCharisma()));
-			builder.append("</p>");
-		}
-		if (worker.iterator().hasNext() && details) {
-			builder.append(HAS_TRAINING).append(LineEnd.LINE_SEP).append(OPEN_LIST);
-			for (final IJob job : worker) {
-				if (job instanceof Job) {
-					builder.append(OPEN_LIST_ITEM);
-					builder.append(job.getLevel());
-					builder.append(" levels in ");
-					builder.append(job.getName());
-					builder.append(getSkills(job));
-					builder.append(CLOSE_LIST_ITEM);
-				}
-			}
-			builder.append(CLOSE_LIST);
-		}
-		return NullCleaner.assertNotNull(builder.toString());
-	}
-
-	/**
-	 * @param job a Job
-	 * @return a String describing its skills.
-	 */
-	private static String getSkills(final Iterable<ISkill> job) {
-		final StringBuilder builder = new StringBuilder(512);
-		if (job.iterator().hasNext()) {
-			boolean first = true;
-			for (final ISkill skill : job) {
-				if (first) {
-					builder.append(" (");
-					first = false;
-				} else {
-					builder.append(", ");
-				}
-				builder.append(skill.getName());
-				builder.append(' ');
-				builder.append(skill.getLevel());
-			}
-			builder.append(')');
-		}
-		return NullCleaner.assertNotNull(builder.toString());
-	}
-
-	/**
-	 * @param loc     the location of the worker in the map
-	 * @param worker  a Worker.
-	 * @param details whether we should give details of the worker's stats and
-	 *                experience---true only if the current player owns the worker.
-	 * @return a sub-report on that worker.
-	 */
-	private static MutableTreeNode produceWorkerRIR(final Point loc,
-													final IWorker worker,
-													final boolean details) {
-		final IReportNode retval = new ComplexReportNode(loc,
-																worker.getName() +
-																		", a " +
-																		worker.getRace() +
-																		". ");
-		final WorkerStats stats = worker.getStats();
-		if ((stats != null) && details) {
-			//noinspection HardcodedFileSeparator
-			retval.add(new SimpleReportNode(loc, "He or she has the following stats: ",
-												Integer.toString(stats.getHitPoints()),
-												" / ", Integer.toString(
-					stats.getMaxHitPoints()), " Hit Points, Strength ",
-												getModifierString(stats.getStrength()),
-												", Dexterity ", getModifierString(
-					stats.getDexterity()), ", Constitution ", getModifierString(
-					stats.getConstitution()), ", Intelligence ", getModifierString(
-					stats.getIntelligence()), ", Wisdom ",
-												getModifierString(stats.getWisdom()),
-												", Charisma ", getModifierString(
-					stats.getCharisma())));
-		}
-		if (worker.iterator().hasNext() && details) {
-			final IReportNode jobs = new ListReportNode(loc, HAS_TRAINING);
-			for (final IJob job : worker) {
-				jobs.add(produceJobRIR(job, loc));
-			}
-			retval.add(jobs);
-		}
-		return retval;
-	}
-
-	/**
-	 * @param loc the location of the worker in the map
-	 * @param job a Job
-	 * @return a sub-report on that Job.
-	 */
-	private static MutableTreeNode produceJobRIR(final IJob job, final Point loc) {
-		return new SimpleReportNode(loc, Integer.toString(job.getLevel()),
-										" levels in ", job.getName(), getSkills(job));
 	}
 
 	/**
@@ -506,7 +511,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
@@ -526,7 +531,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		});
 		final IReportNode retval;
 		final SimpleReportNode textNode =
-				new SimpleReportNode("(Any units reported above are not described again.)");
+				new SimpleReportNode("(Any units reported above are not described again" +
+											 ".)");
 		if (ours.getChildCount() == 0) {
 			if (theirs.getChildCount() == 0) {
 				return EmptyReportNode.NULL_NODE;

@@ -1,7 +1,7 @@
 package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -67,11 +67,15 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-t", "--test", ParamCount.AtLeastOne,
-								"Test drawing performance",
-								String.format("Test the performance of the TileDrawHelper " +
-										"classes---which do the heavy lifting of " +
-										"rendering the map%nin the viewer---using a " +
-										"variety of automated tests.")
+								   "Test drawing performance",
+								   String.format(
+										   "Test the performance of the TileDrawHelper" +
+												   " " +
+												   "classes---which do the heavy lifting" +
+												   " of " +
+												   "rendering the map%nin the " +
+												   "viewer---using a " +
+												   "variety of automated tests.")
 			);
 
 	/**
@@ -90,17 +94,17 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * The first test: all in one place.
 	 *
-	 * @param helper the helper to test
-	 * @param map  the map being used for the test
-	 * @param reps   the number of times to run this test between starting and stopping
-	 *               the timer
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper to test
+	 * @param map      the map being used for the test
+	 * @param reps     the number of times to run this test between starting and stopping
+	 *                 the timer
+	 * @param tileSize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
 	private static long first(final TileDrawHelper helper, final IMapNG map,
-							final int reps, final int tileSize) {
+							  final int reps, final int tileSize) {
 		final BufferedImage image = new BufferedImage(tileSize, tileSize,
-															BufferedImage.TYPE_INT_RGB);
+															 BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		firstBody(helper, image, map, reps, tileSize);
 		final long end = System.nanoTime();
@@ -110,17 +114,17 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * The body of the first test.
 	 *
-	 * @param helper the helper to test
-	 * @param image  the image used in the test.
-	 * @param map  the map being used for the test
-	 * @param reps   the number of times to run this test between starting and stopping
-	 *               the timer
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper to test
+	 * @param image    the image used in the test.
+	 * @param map      the map being used for the test
+	 * @param reps     the number of times to run this test between starting and stopping
+	 *                 the timer
+	 * @param tileSize the size to draw each tile
 	 */
 	private static void firstBody(final TileDrawHelper helper,
-								final BufferedImage image, final IMapNG map,
-								final int reps,
-								final int tileSize) {
+								  final BufferedImage image, final IMapNG map,
+								  final int reps,
+								  final int tileSize) {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : map.locations()) {
@@ -134,19 +138,19 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * The second test: Translating.
 	 *
-	 * @param helper the helper to test
-	 * @param map    the map being used for the test
-	 * @param reps   the number of times to run this test between starting and stopping
-	 *               the timer
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper to test
+	 * @param map      the map being used for the test
+	 * @param reps     the number of times to run this test between starting and stopping
+	 *                 the timer
+	 * @param tileSize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
 	private static long second(final TileDrawHelper helper, final IMapNG map,
-							final int reps, final int tileSize) {
+							   final int reps, final int tileSize) {
 		final MapDimensions dim = map.dimensions();
 		final BufferedImage image = new BufferedImage(tileSize * dim.cols,
-															tileSize * dim.rows,
-															BufferedImage.TYPE_INT_RGB);
+															 tileSize * dim.rows,
+															 BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		secondBody(helper, image, map, reps, tileSize);
 		final long end = System.nanoTime();
@@ -156,17 +160,17 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * The body of the second test.
 	 *
-	 * @param helper the helper to test
-	 * @param image  the image used in the test.
-	 * @param map    the map being used for the test
-	 * @param reps   the number of times to run this test between starting and stopping
-	 *               the timer
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper to test
+	 * @param image    the image used in the test.
+	 * @param map      the map being used for the test
+	 * @param reps     the number of times to run this test between starting and stopping
+	 *                 the timer
+	 * @param tileSize the size to draw each tile
 	 */
 	private static void secondBody(final TileDrawHelper helper,
-								final BufferedImage image, final IMapNG map,
-								final int reps,
-								final int tileSize) {
+								   final BufferedImage image, final IMapNG map,
+								   final int reps,
+								   final int tileSize) {
 		final Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -184,15 +188,15 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * Third test: in-place, reusing Graphics.
 	 *
-	 * @param helper the helper to test
-	 * @param map  the map being used for the test
-	 * @param reps   the number of times to run this test between starting and stopping
-	 *               the timer
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper to test
+	 * @param map      the map being used for the test
+	 * @param reps     the number of times to run this test between starting and stopping
+	 *                 the timer
+	 * @param tileSize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
 	private static long third(final TileDrawHelper helper, final IMapNG map,
-							final int reps, final int tileSize) {
+							  final int reps, final int tileSize) {
 		final BufferedImage image =
 				new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
@@ -209,14 +213,14 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * The body of the third test.
 	 *
-	 * @param helper the helper being tested
-	 * @param pen    the Graphics used to draw to the image
-	 * @param map  the map being used for the test
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper being tested
+	 * @param pen      the Graphics used to draw to the image
+	 * @param map      the map being used for the test
+	 * @param tileSize the size to draw each tile
 	 */
 	private static void thirdBody(final TileDrawHelper helper,
-								final Graphics pen, final IMapNG map,
-								final int tileSize) {
+								  final Graphics pen, final IMapNG map,
+								  final int tileSize) {
 		for (final Point point : map.locations()) {
 			helper.drawTileTranslated(pen, map, point, tileSize, tileSize);
 		}
@@ -225,18 +229,19 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * Third test: translating, reusing Graphics.
 	 *
-	 * @param helper the helper to test
-	 * @param map  the map being used for the test
-	 * @param reps   the number of times to run this test between starting and stopping
-	 *               the timer
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper to test
+	 * @param map      the map being used for the test
+	 * @param reps     the number of times to run this test between starting and stopping
+	 *                 the timer
+	 * @param tileSize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
 	private static long fourth(final TileDrawHelper helper, final IMapNG map,
-							final int reps, final int tileSize) {
+							   final int reps, final int tileSize) {
 		final MapDimensions dim = map.dimensions();
-		final BufferedImage image = new BufferedImage(tileSize * dim.cols, tileSize * dim.rows,
-															BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image =
+				new BufferedImage(tileSize * dim.cols, tileSize * dim.rows,
+										 BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -251,14 +256,14 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * The body of the fourth test.
 	 *
-	 * @param helper the helper being tested
-	 * @param pen    the Graphics used to draw to the image
-	 * @param map  the map being used for the test
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper being tested
+	 * @param pen      the Graphics used to draw to the image
+	 * @param map      the map being used for the test
+	 * @param tileSize the size to draw each tile
 	 */
 	private static void fourthBody(final TileDrawHelper helper,
-								final Graphics pen, final IMapNG map,
-								final int tileSize) {
+								   final Graphics pen, final IMapNG map,
+								   final int tileSize) {
 		final Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
 		for (final Point point : map.locations()) {
 			helper.drawTile(pen, map, point, PointFactory.coordinate(
@@ -269,18 +274,20 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * Fifth test, part one: iterating.
 	 *
-	 * @param helper the helper to test
-	 * @param map  the map being used for the test
-	 * @param reps   the number of times to run this test between starting and stopping
-	 *               the timer
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper to test
+	 * @param map      the map being used for the test
+	 * @param reps     the number of times to run this test between starting and stopping
+	 *                 the timer
+	 * @param tileSize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
 	private static long fifthOne(final TileDrawHelper helper, final IMapNG map,
-								final int reps, final int tileSize) {
+								 final int reps, final int tileSize) {
 		final MapDimensions dim = map.dimensions();
-		final BufferedImage image = new BufferedImage(tileSize * dim.cols, tileSize * dim.rows,
-															BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(tileSize * dim.cols, tileSize *
+																				   dim
+																						   .rows,
+															 BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -294,14 +301,14 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * The body of the first part of the fifth test.
 	 *
-	 * @param helper the helper being tested
-	 * @param pen    the Graphics used to draw to the image
-	 * @param map  the map being used for the test
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper being tested
+	 * @param pen      the Graphics used to draw to the image
+	 * @param map      the map being used for the test
+	 * @param tileSize the size to draw each tile
 	 */
 	private static void fifthOneBody(final IMapNG map,
-									final TileDrawHelper helper, final Graphics pen,
-									final int tileSize) {
+									 final TileDrawHelper helper, final Graphics pen,
+									 final int tileSize) {
 		final Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
 		for (int row = TEST_MIN_ROW; row < TEST_MAX_ROW; row++) {
 			for (int col = TEST_MIN_COL; col < TEST_MAX_COL; col++) {
@@ -316,18 +323,20 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * Fifth test, part two: filtering.
 	 *
-	 * @param helper the helper to test
-	 * @param map  the map being used for the test
-	 * @param reps   the number of times to run this test between starting and stopping
-	 *               the timer
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper to test
+	 * @param map      the map being used for the test
+	 * @param reps     the number of times to run this test between starting and stopping
+	 *                 the timer
+	 * @param tileSize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
 	private static long fifthTwo(final TileDrawHelper helper, final IMapNG map,
-								final int reps, final int tileSize) {
+								 final int reps, final int tileSize) {
 		final MapDimensions dim = map.dimensions();
-		final BufferedImage image = new BufferedImage(tileSize * dim.cols, tileSize * dim.rows,
-															BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(tileSize * dim.cols, tileSize *
+																				   dim
+																						   .rows,
+															 BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -342,14 +351,14 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * The body of the first part of the fifth test.
 	 *
-	 * @param helper the helper being tested
-	 * @param pen    the Graphics used to draw to the image
-	 * @param map  the map being used for the test
-	 * @param tileSize  the size to draw each tile
+	 * @param helper   the helper being tested
+	 * @param pen      the Graphics used to draw to the image
+	 * @param map      the map being used for the test
+	 * @param tileSize the size to draw each tile
 	 */
 	private static void fifthTwoBody(final TileDrawHelper helper,
-									final Graphics pen, final IMapNG map,
-									final int tileSize) {
+									 final Graphics pen, final IMapNG map,
+									 final int tileSize) {
 		final Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
 		for (final Point point : map.locations()) {
 			if ((point.getRow() >= TEST_MIN_ROW) && (point.getRow() < TEST_MAX_ROW) &&
@@ -381,7 +390,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 		SYS_OUT.println("1. All in one place:");
 		final TileDrawHelper hOne = new CachingTileDrawHelper();
 		long oneTotal =
-				printStats(CACHING, first(hOne, map, repetitions, tileSize), repetitions);
+				printStats(CACHING, first(hOne, map, repetitions, tileSize),
+						repetitions);
 		final TileDrawHelper hTwo = new DirectTileDrawHelper();
 		long twoTotal =
 				printStats(DIRECT, first(hTwo, map, repetitions, tileSize), repetitions);
@@ -389,24 +399,30 @@ public final class DrawHelperComparator implements SimpleDriver {
 				repetitions);
 		SYS_OUT.println("2. Translating:");
 		oneTotal +=
-				printStats(CACHING, second(hOne, map, repetitions, tileSize), repetitions);
+				printStats(CACHING, second(hOne, map, repetitions, tileSize),
+						repetitions);
 		twoTotal +=
-				printStats(DIRECT, second(hTwo, map, repetitions, tileSize), repetitions);
+				printStats(DIRECT, second(hTwo, map, repetitions, tileSize),
+						repetitions);
 		threeTot +=
 				printStats(VER_TWO, second(hThree, map, repetitions, tileSize),
 						repetitions);
 		SYS_OUT.println("3. In-place, reusing Graphics:");
 		oneTotal +=
-				printStats(CACHING, third(hOne, map, repetitions, tileSize), repetitions);
+				printStats(CACHING, third(hOne, map, repetitions, tileSize),
+						repetitions);
 		twoTotal += printStats(DIRECT, third(hTwo, map, repetitions, tileSize),
 				repetitions);
 		threeTot +=
-				printStats(VER_TWO, third(hThree, map, repetitions, tileSize), repetitions);
+				printStats(VER_TWO, third(hThree, map, repetitions, tileSize),
+						repetitions);
 		SYS_OUT.println("4. Translating, reusing Graphics:");
 		oneTotal +=
-				printStats(CACHING, fourth(hOne, map, repetitions, tileSize), repetitions);
+				printStats(CACHING, fourth(hOne, map, repetitions, tileSize),
+						repetitions);
 		twoTotal +=
-				printStats(DIRECT, fourth(hTwo, map, repetitions, tileSize), repetitions);
+				printStats(DIRECT, fourth(hTwo, map, repetitions, tileSize),
+						repetitions);
 		threeTot +=
 				printStats(VER_TWO, fourth(hThree, map, repetitions, tileSize),
 						repetitions);
@@ -417,7 +433,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 						repetitions);
 		SYS_OUT.print("Iteration, ");
 		twoTotal +=
-				printStats(DIRECT, fifthOne(hTwo, map, repetitions, tileSize), repetitions);
+				printStats(DIRECT, fifthOne(hTwo, map, repetitions, tileSize),
+						repetitions);
 		SYS_OUT.print("Iteration, ");
 		threeTot += printStats(VER_TWO, fifthOne(hThree, map, repetitions, tileSize),
 				repetitions);
@@ -427,7 +444,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 						repetitions);
 		SYS_OUT.print("Filtering, ");
 		twoTotal +=
-				printStats(DIRECT, fifthTwo(hTwo, map, repetitions, tileSize), repetitions);
+				printStats(DIRECT, fifthTwo(hTwo, map, repetitions, tileSize),
+						repetitions);
 		SYS_OUT.print("Filtering, ");
 		threeTot += printStats(VER_TWO, fifthTwo(hThree, map, repetitions, tileSize),
 				repetitions);
@@ -448,7 +466,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 * @return that total
 	 */
 	private static long printStats(final String prefix, final long total,
-								final int reps) {
+								   final int reps) {
 		SYS_OUT.print(prefix);
 		SYS_OUT.print('\t');
 		SYS_OUT.print(total);
@@ -472,7 +490,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver model to run on
+	 * @param model   the driver model to run on
 	 */
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
@@ -480,8 +498,10 @@ public final class DrawHelperComparator implements SimpleDriver {
 		final Random random = new Random();
 		final int reps = 50;
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
-																.getAllMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
+																		   model)
+																		  .getAllMaps
+																				   ()) {
 				SYS_OUT.print("Testing using ");
 				final Optional<Path> file = pair.second();
 				if (file.isPresent()) {

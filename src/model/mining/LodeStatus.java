@@ -63,6 +63,7 @@ public enum LodeStatus {
 	 * same state.
 	 */
 	private final double notHigherProbability;
+
 	/**
 	 * @param qty the number of parts of other rock per part of ore
 	 */
@@ -71,11 +72,12 @@ public enum LodeStatus {
 	}
 
 	/**
-	 * @param qty the number of parts of other rock per part of ore
-	 * @param lowerChance the probability that an adjacent area will be the next state
-	 *                       lower
+	 * @param qty             the number of parts of other rock per part of ore
+	 * @param lowerChance     the probability that an adjacent area will be the next
+	 *                           state
+	 *                        lower
 	 * @param notHigherChance the probability that an adjacent area will be either the
-	 *                           next state lower or the same state
+	 *                        next state lower or the same state
 	 */
 	LodeStatus(final int qty, final double lowerChance, final double notHigherChance) {
 		ratio = qty;
@@ -83,12 +85,6 @@ public enum LodeStatus {
 		notHigherProbability = notHigherChance;
 	}
 
-	/**
-	 * @return the number of parts of other rock per part of ore
-	 */
-	public int getRatio() {
-		return ratio;
-	}
 	/**
 	 * @param state a LodeStatus
 	 * @return the next status lower
@@ -142,6 +138,7 @@ public enum LodeStatus {
 			throw new IllegalStateException("Unhandled case in switch");
 		}
 	}
+
 	/**
 	 * @param state the status of one location
 	 * @param rng   a random-number generator
@@ -159,9 +156,10 @@ public enum LodeStatus {
 			return higher(state);
 		}
 	}
+
 	/**
 	 * @param state the status of one location
-	 * @param rng a random-number generator
+	 * @param rng   a random-number generator
 	 * @return the status of a horizontally-adjacent location in a "banded" (e.g. sand)
 	 * mine
 	 */
@@ -177,5 +175,12 @@ public enum LodeStatus {
 		} else {
 			return higher(state);
 		}
+	}
+
+	/**
+	 * @return the number of parts of other rock per part of ore
+	 */
+	public int getRatio() {
+		return ratio;
 	}
 }

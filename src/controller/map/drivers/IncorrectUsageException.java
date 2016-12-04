@@ -22,39 +22,46 @@ import java.io.ObjectOutputStream;
  */
 public class IncorrectUsageException extends DriverFailedException {
 	/**
+	 * An object describing the correct usage.
+	 */
+	private final DriverUsage usage;
+
+	/**
 	 * Constructor.
+	 *
 	 * @param correctUsage the object describing the correct usage of the driver
 	 */
 	public IncorrectUsageException(final DriverUsage correctUsage) {
 		super("Incorrect usage", new IllegalArgumentException("Incorrect usage"));
 		usage = correctUsage;
 	}
-	/**
-	 * An object describing the correct usage.
-	 */
-	private final DriverUsage usage;
+
 	/**
 	 * @return an object describing the correct usage of the driver
 	 */
 	public final DriverUsage getCorrectUsage() {
 		return usage;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

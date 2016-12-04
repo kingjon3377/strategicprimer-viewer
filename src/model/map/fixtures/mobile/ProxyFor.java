@@ -13,8 +13,8 @@ package model.map.fixtures.mobile;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the type being proxied
+ * @author Jonathan Lovelace
  */
 public interface ProxyFor<T> /* extends T */ {
 	/**

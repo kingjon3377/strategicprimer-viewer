@@ -38,9 +38,16 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	 */
 	private final Point base;
 	/**
+	 * The list of comparators to try in turn in comparePairs() until one produces a
+	 * non-zero result.
+	 */
+	private final List<Comparator<Pair<Point, AbstractTown>>> comps;
+
+	/**
 	 * Constructor.
+	 *
 	 * @param currentPlayer the player for whom this report is being produced
-	 * @param hq his or her HQ location
+	 * @param hq            his or her HQ location
 	 */
 	@SuppressWarnings("QuestionableName")
 	public TownTabularReportGenerator(final Player currentPlayer, final Point hq) {
@@ -48,7 +55,8 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 		base = hq;
 		comps = Arrays.asList(
 				(one, two) -> TownComparator.compareTownKind(one.second(), two.second()),
-				(one, two) -> new DistanceComparator(base).compare(one.first(), two.first()),
+				(one, two) -> new DistanceComparator(base)
+									  .compare(one.first(), two.first()),
 				(one, two) -> TownComparator.compareTownSize(one.second().size(),
 						two.second().size()),
 				(one, two) -> TownComparator.compareTownStatus(one.second().status(),
@@ -57,10 +65,10 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	}
 
 	/**
-	 * @param ostream the stream to write the row to
+	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
-	 * @param item the village to base the line on
-	 * @param loc its location
+	 * @param item     the village to base the line on
+	 * @param loc      its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@Override
@@ -83,6 +91,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 		ostream.append(getRowDelimiter());
 		return true;
 	}
+
 	/**
 	 * @return the header row for the tabular report
 	 */
@@ -91,11 +100,6 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 		return "Distance,Location,Owner,Kind,Size,Status,Name";
 	}
 
-	/**
-	 * The list of comparators to try in turn in comparePairs() until one produces a
-	 * non-zero result.
-	 */
-	private final List<Comparator<Pair<Point, AbstractTown>>> comps;
 	/**
 	 * @param one a Pair of one town and its location (in the other order)
 	 * @param two a Pair of another town and its location (in the other order)

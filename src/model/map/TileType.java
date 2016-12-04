@@ -84,15 +84,44 @@ public enum TileType {
 	 */
 	NotVisible("not_visible", 1, 2);
 	/**
+	 * A cache of the lists of types supported by particular versions. Initializer in the
+	 * static block below because here it made the line too long.
+	 */
+	private static final Map<Integer, Set<TileType>> VALS_BY_VER = new HashMap<>();
+	/**
+	 * The mapping from descriptive strings to tile types. Used to make
+	 * multiple-return-points warnings go away.
+	 */
+	private static final Map<String, TileType> CACHE = new HashMap<>();
+	/**
 	 * The map versions that support the tile type as such. (For example, version 2 and
 	 * later replace forests as a tile type with forests as something on the tile.)
 	 */
 	private final List<Integer> versions;
 	/**
-	 * A cache of the lists of types supported by particular versions. Initializer in the
-	 * static block below because here it made the line too long.
+	 * A descriptive string to represent the type.
 	 */
-	private static final Map<Integer, Set<TileType>> VALS_BY_VER = new HashMap<>();
+	private final String desc;
+
+	static {
+		for (final TileType type : values()) {
+			CACHE.put(type.toXML(), type);
+		}
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @param description        a descriptive string to represent the type.
+	 * @param supportingVersions the map versions that support the tile type.
+	 */
+	TileType(final String description, final int... supportingVersions) {
+		versions = new ArrayList<>();
+		for (final int ver : supportingVersions) {
+			versions.add(NullCleaner.assertNotNull(Integer.valueOf(ver)));
+		}
+		desc = description;
+	}
 
 	/**
 	 * TODO: Write test code using this.
@@ -108,51 +137,14 @@ public enum TileType {
 				final Set<@NonNull TileType> set =
 						NullCleaner.assertNotNull(
 								EnumSet.copyOf(Stream.of(values())
-										.filter(type -> type
-												.isSupportedByVersion(ver))
-								.collect(Collectors.toSet())));
+													   .filter(type -> type
+																			   .isSupportedByVersion(
+																					   ver))
+													   .collect(Collectors.toSet())));
 				VALS_BY_VER.put(boxedVer, set);
 			}
 		}
 		return NullCleaner.assertNotNull(unmodifiableSet(VALS_BY_VER.get(boxedVer)));
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param description a descriptive string to represent the type.
-	 * @param supportingVersions  the map versions that support the tile type.
-	 */
-	TileType(final String description, final int... supportingVersions) {
-		versions = new ArrayList<>();
-		for (final int ver : supportingVersions) {
-			versions.add(NullCleaner.assertNotNull(Integer.valueOf(ver)));
-		}
-		desc = description;
-	}
-
-	/**
-	 * @param ver a map version
-	 * @return whether that version supports this tile type.
-	 */
-	public boolean isSupportedByVersion(final int ver) {
-		return versions.contains(Integer.valueOf(ver));
-	}
-
-	/**
-	 * A descriptive string to represent the type.
-	 */
-	private final String desc;
-	/**
-	 * The mapping from descriptive strings to tile types. Used to make
-	 * multiple-return-points warnings go away.
-	 */
-	private static final Map<String, TileType> CACHE = new HashMap<>();
-
-	static {
-		for (final TileType type : values()) {
-			CACHE.put(type.toXML(), type);
-		}
 	}
 
 	/**
@@ -166,7 +158,15 @@ public enum TileType {
 			return NullCleaner.assertNotNull(CACHE.get(description));
 		} // else
 		throw new IllegalArgumentException("Unrecognized terrain type string " +
-												description);
+												   description);
+	}
+
+	/**
+	 * @param ver a map version
+	 * @return whether that version supports this tile type.
+	 */
+	public boolean isSupportedByVersion(final int ver) {
+		return versions.contains(Integer.valueOf(ver));
 	}
 
 	/**

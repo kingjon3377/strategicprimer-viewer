@@ -1,13 +1,11 @@
 package view.util;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * A JPanel laid out by a BoxLayout, with helper methods.
@@ -33,8 +31,8 @@ public class BoxPanel extends JPanel {
 	/**
 	 * Constructor.
 	 *
-	 * @param lineAxis If true, the panel is laid out on the line axis (horizontally);
-	 *                    if false, on the page axis.
+	 * @param lineAxis If true, the panel is laid out on the line axis (horizontally); if
+	 *                 false, on the page axis.
 	 */
 	@SuppressWarnings("UnnecessarySuperQualifier")
 	public BoxPanel(final boolean lineAxis) {
@@ -71,26 +69,31 @@ public class BoxPanel extends JPanel {
 			add(Box.createRigidArea(new Dimension(0, dim)));
 		}
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

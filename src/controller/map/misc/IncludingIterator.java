@@ -71,6 +71,41 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
+	 * @param element an element
+	 * @param names   names an attribute of it might be known by
+	 * @return the first matching attribute, or null if none found
+	 */
+	@Nullable
+	private static Attribute getAttribute(final StartElement element, final QName...
+																			  names) {
+		for (final QName name : names) {
+			final Attribute retval = element.getAttributeByName(name);
+			if ((retval != null) && (retval.getValue() != null)) {
+				return retval;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @param startElement a tag
+	 * @return the value of the 'file' attribute.
+	 * @throws SPFormatException if the element doesn't have that attribute
+	 */
+	private static String getFileAttribute(final StartElement startElement)
+			throws SPFormatException {
+		final Attribute attr =
+				getAttribute(startElement, new QName(ISPReader.NAMESPACE,
+															FILE_ATTR_NAME),
+						new QName(FILE_ATTR_NAME));
+		if (attr == null) {
+			throw new MissingPropertyException(startElement, FILE_ATTR_NAME);
+		} else {
+			return assertNotNull(attr.getValue());
+		}
+	}
+
+	/**
 	 * Note that this method removes any empty iterators from the top of the stack before
 	 * returning.
 	 *
@@ -111,12 +146,12 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		}
 		XMLEvent retval = stack.getFirst().second().next();
 		while (retval.isStartElement()
-				&& EqualsAny.equalsAny(
-						assertNotNull(retval.asStartElement()
-								.getName().getNamespaceURI()),
+					   && EqualsAny.equalsAny(
+				assertNotNull(retval.asStartElement()
+									  .getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)
-				&& "include".equals(
-						retval.asStartElement().getName().getLocalPart())) {
+					   && "include".equals(
+				retval.asStartElement().getName().getLocalPart())) {
 			handleInclude(assertNotNull(retval.asStartElement()));
 			removeEmptyIterators();
 			if (stack.isEmpty()) {
@@ -125,35 +160,6 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 			retval = stack.getFirst().second().next();
 		}
 		return retval;
-	}
-
-	/**
-	 * A NoSuchElementException that takes a custom cause, unlike its superclass.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	public static final class NoSuchElementBecauseException extends
-			NoSuchElementException {
-		/**
-		 * Constructor.
-		 *
-		 * @param message the message
-		 * @param cause   the cause
-		 */
-		public NoSuchElementBecauseException(final String message,
-											final Throwable cause) {
-			super(message);
-			initCause(cause);
-		}
-
-		/**
-		 * Constructor.
-		 *
-		 * @param cause the cause
-		 */
-		public NoSuchElementBecauseException(final Throwable cause) {
-			initCause(cause);
-		}
 	}
 
 	/**
@@ -168,16 +174,17 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 			// FIXME: The MagicReader here (and thus the file it opens!) get leaked!
 			stack.addFirst(Pair.of(file,
 					new ComparableIterator<>(new TypesafeXMLEventReader(new MagicReader(
-							file)))));
+																							   file)))));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException("File referenced by <include> not " +
 															"found",
-														e);
+														   e);
 		} catch (final XMLStreamException e) {
 			// TODO: Tests should handle include-non-XML case
-			throw new NoSuchElementBecauseException("XML stream error parsing <include> " +
+			throw new NoSuchElementBecauseException("XML stream error parsing <include>" +
+															" " +
 															"tag or opening file",
-														e);
+														   e);
 		} catch (final SPFormatException e) {
 			throw new NoSuchElementBecauseException("SP format problem in <include>", e);
 		}
@@ -224,37 +231,33 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 			return "Empty IncludingIterator";
 		}
 	}
-	/**
-	 * @param element an element
-	 * @param names names an attribute of it might be known by
-	 * @return the first matching attribute, or null if none found
-	 */
-	@Nullable
-	private static Attribute getAttribute(final StartElement element, final QName... names) {
-		for (final QName name : names) {
-			final Attribute retval = element.getAttributeByName(name);
-			if ((retval != null) && (retval.getValue() != null)) {
-				return retval;
-			}
-		}
-		return null;
-	}
 
 	/**
-	 * @param startElement a tag
-	 * @return the value of the 'file' attribute.
-	 * @throws SPFormatException if the element doesn't have that attribute
+	 * A NoSuchElementException that takes a custom cause, unlike its superclass.
+	 *
+	 * @author Jonathan Lovelace
 	 */
-	private static String getFileAttribute(final StartElement startElement)
-			throws SPFormatException {
-		final Attribute attr =
-				getAttribute(startElement, new QName(ISPReader.NAMESPACE,
-															FILE_ATTR_NAME),
-						new QName(FILE_ATTR_NAME));
-		if (attr == null) {
-			throw new MissingPropertyException(startElement, FILE_ATTR_NAME);
-		} else {
-			return assertNotNull(attr.getValue());
+	public static final class NoSuchElementBecauseException extends
+			NoSuchElementException {
+		/**
+		 * Constructor.
+		 *
+		 * @param message the message
+		 * @param cause   the cause
+		 */
+		public NoSuchElementBecauseException(final String message,
+											 final Throwable cause) {
+			super(message);
+			initCause(cause);
+		}
+
+		/**
+		 * Constructor.
+		 *
+		 * @param cause the cause
+		 */
+		public NoSuchElementBecauseException(final Throwable cause) {
+			initCause(cause);
 		}
 	}
 }

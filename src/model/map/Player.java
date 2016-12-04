@@ -60,14 +60,22 @@ public final class Player implements Comparable<Player>, HasMutableName {
 	}
 
 	/**
+	 * @param newName the player's new name
+	 */
+	@Override
+	public void setName(final String newName) {
+		playerName = newName;
+	}
+
+	/**
 	 * @param obj an object
 	 * @return whether it's an identical Player
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Player) &&
-										(playerID == ((Player) obj).playerID) &&
-										playerName.equals(((Player) obj).playerName));
+										 (playerID == ((Player) obj).playerID) &&
+										 playerName.equals(((Player) obj).playerName));
 	}
 
 	/**
@@ -111,17 +119,17 @@ public final class Player implements Comparable<Player>, HasMutableName {
 	}
 
 	/**
-	 * @param curr whether this is the current player or not
-	 */
-	public void setCurrent(final boolean curr) {
-		current = curr;
-	}
-
-	/**
 	 * @return true iff this is the current player
 	 */
 	public boolean isCurrent() {
 		return current;
+	}
+
+	/**
+	 * @param curr whether this is the current player or not
+	 */
+	public void setCurrent(final boolean curr) {
+		current = curr;
 	}
 
 	/**
@@ -130,13 +138,5 @@ public final class Player implements Comparable<Player>, HasMutableName {
 	 */
 	public boolean isIndependent() {
 		return "independent".equalsIgnoreCase(playerName);
-	}
-
-	/**
-	 * @param newName the player's new name
-	 */
-	@Override
-	public void setName(final String newName) {
-		playerName = newName;
 	}
 }

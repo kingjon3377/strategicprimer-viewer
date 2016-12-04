@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
@@ -29,11 +29,15 @@ public final class AdvancementStart implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-a", "--adv", ParamCount.AtLeastOne,
-								"View a player's workers and manage their advancement",
-								"View a player's units, the workers in those units, each "
-										+ "worker's Jobs, and his or her level in each "
-										+ "Skill in each Job."
+								   "View a player's workers and manage their " +
+										   "advancement",
+								   "View a player's units, the workers in those units, " +
+										   "each "
+										   +
+										   "worker's Jobs, and his or her level in each "
+										   + "Skill in each Job."
 			);
+
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
 	}
@@ -43,7 +47,7 @@ public final class AdvancementStart implements SimpleDriver {
 	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver model
+	 * @param model   the driver model
 	 */
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
@@ -55,7 +59,8 @@ public final class AdvancementStart implements SimpleDriver {
 			workerModel = new WorkerModel(model);
 		}
 		SwingUtilities.invokeLater(
-				() -> new AdvancementFrame(workerModel, new IOHandler(workerModel)).setVisible(true));
+				() -> new AdvancementFrame(workerModel, new IOHandler(workerModel))
+							  .setVisible(true));
 	}
 
 	/**

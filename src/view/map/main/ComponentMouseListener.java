@@ -62,6 +62,19 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
+	 * @param strings strings
+	 * @return them concatenated together
+	 */
+	private static String concat(final String... strings) {
+		final StringBuilder build =
+				new StringBuilder(Stream.of(strings)
+										  .collect(Collectors.summingInt(String::length))
+										  .intValue());
+		Stream.of(strings).forEach(build::append);
+		return NullCleaner.assertNotNull(build.toString());
+	}
+
+	/**
 	 * @param event an event representing the current mouse position
 	 * @return a tool-tip message for the tile the mouse is currently over
 	 */
@@ -73,33 +86,21 @@ public final class ComponentMouseListener extends MouseAdapter implements
 				mapDim.getVersion());
 		final VisibleDimensions dimensions = model.getDimensions();
 		final Point point = PointFactory.point((eventPoint.y / tileSize)
-													+ dimensions.getMinimumRow(),
+													   + dimensions.getMinimumRow(),
 				(eventPoint.x / tileSize)
 						+ dimensions.getMinimumCol());
-		if ((point.getRow() < mapDim.getRows()) && (point.getCol() < mapDim.getColumns())) {
+		if ((point.getRow() < mapDim.getRows()) &&
+					(point.getCol() < mapDim.getColumns())) {
 			return concat("<html><body>", point.toString(), ": ", model
-																		.getMap()
-																		.getBaseTerrain(
-																				point)
-																		.toString(),
+																		  .getMap()
+																		  .getBaseTerrain(
+																				  point)
+																		  .toString(),
 					"<br />",
 					getTerrainFixturesAndTop(point), "<br/></body></html>");
 		} else {
 			return null;
 		}
-	}
-
-	/**
-	 * @param strings strings
-	 * @return them concatenated together
-	 */
-	private static String concat(final String... strings) {
-		final StringBuilder build =
-				new StringBuilder(Stream.of(strings)
-										.collect(Collectors.summingInt(String::length))
-										.intValue());
-		Stream.of(strings).forEach(build::append);
-		return NullCleaner.assertNotNull(build.toString());
 	}
 
 	/**
@@ -129,7 +130,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 		map.streamOtherFixtures(point).filter(TerrainFixture.class::isInstance)
 				.forEach(fixes::add);
 		return fixes.stream().map(TileFixture::toString)
-					.collect(Collectors.joining("<br />"));
+					   .collect(Collectors.joining("<br />"));
 	}
 
 	/**
@@ -148,7 +149,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 			final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
 					mapDim.getVersion());
 			final Point point = PointFactory.point((eventPoint.y / tileSize)
-														+ dimensions.getMinimumRow(),
+														   + dimensions.getMinimumRow(),
 					(eventPoint.x / tileSize)
 							+ dimensions.getMinimumCol());
 			if ((point.getRow() < mapDim.getRows()) &&

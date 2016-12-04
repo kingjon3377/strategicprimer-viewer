@@ -31,17 +31,6 @@ import util.PatientMap;
  */
 public class CropTabularReportGenerator implements ITableGenerator<TileFixture> {
 	/**
-	 * @param obj an object
-	 * @return whether this report generator covers it
-	 */
-	@Override
-	public boolean applies(final IFixture obj) {
-		return (obj instanceof Forest) || (obj instanceof Shrub) ||
-					   (obj instanceof Meadow) ||
-					   (obj instanceof Grove);
-	}
-
-	/**
 	 * The base point to use for distance calculations.
 	 */
 	private final Point base;
@@ -53,6 +42,17 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 	 */
 	public CropTabularReportGenerator(final Point distBase) {
 		base = distBase;
+	}
+
+	/**
+	 * @param obj an object
+	 * @return whether this report generator covers it
+	 */
+	@Override
+	public boolean applies(final IFixture obj) {
+		return (obj instanceof Forest) || (obj instanceof Shrub) ||
+					   (obj instanceof Meadow) ||
+					   (obj instanceof Grove);
 	}
 
 	/**
@@ -164,9 +164,11 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 		if (!applies(first) || !applies(second)) {
 			throw new IllegalArgumentException("Unhandleable argument");
 		}
-		final int cropCmp = ((HasKind) first).getKind().compareTo(((HasKind) second).getKind());
+		final int cropCmp =
+				((HasKind) first).getKind().compareTo(((HasKind) second).getKind());
 		if (cropCmp == 0) {
-			final int cmp = new DistanceComparator(base).compare(one.first(), two.first());
+			final int cmp =
+					new DistanceComparator(base).compare(one.first(), two.first());
 			if (cmp == 0) {
 				final int kindCmp = Integer.compare(first.getClass().hashCode(),
 						second.getClass().hashCode());

@@ -38,8 +38,8 @@ public final class TrapModelDriver implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-r", "--trap", ParamCount.One,
-								"Run a player's trapping",
-								"Determine the results a player's trapper finds."
+								   "Run a player's trapping",
+								   "Determine the results a player's trapper finds."
 			);
 	/**
 	 * A somewhat lengthy prompt.
@@ -70,6 +70,159 @@ public final class TrapModelDriver implements SimpleDriver {
 	 */
 	private static final List<TrapperCommand> COMMANDS = NullCleaner.assertNotNull(
 			Collections.unmodifiableList(Arrays.asList(TrapperCommand.values())));
+
+	/**
+	 * @param map the map to explore
+	 * @param cli the interface to interact with the user
+	 */
+	private static void repl(final IMapNG map, final ICLIHelper cli) {
+		try {
+			final boolean fishing = cli.inputBooleanInSeries(FISH_OR_TRAP);
+			final String name;
+			if (fishing) {
+				name = "fisherman";
+			} else {
+				name = "trapper";
+			}
+			int minutes = cli.inputNumber("How many hours will the " + name + " work? " +
+												  "") *
+
+								  MIN_PER_HOUR;
+			final Point point = cli.inputPoint("Where is the " + name + " working? ");
+			final List<String> fixtures;
+			final HuntingModel huntModel = new HuntingModel(map);
+			if (fishing) {
+				fixtures = huntModel.fish(point, minutes);
+			} else {
+				fixtures = huntModel.hunt(point, minutes);
+			}
+			int input = -1;
+			while ((minutes > 0) && (input < TrapperCommand.values().length)) {
+				if (input >= 0) {
+					final TrapperCommand command =
+							NullCleaner
+									.assertNotNull(TrapperCommand.values()[input]);
+					minutes -= handleCommand(fixtures, cli,
+							command, fishing);
+					cli.print(inHours(minutes));
+					cli.println(" remaining");
+					if (command == TrapperCommand.Quit) {
+						break;
+					}
+				}
+				input = cli.chooseFromList(COMMANDS, "What should the "
+															 + name + " do next?",
+						"Oops! No commands",
+						"Next action: ", false);
+			}
+		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
+			LOGGER.log(Level.SEVERE, "I/O exception", except);
+		}
+	}
+
+	/**
+	 * @param minutes a number of minutes
+	 * @return a String representation, including the number of hours
+	 */
+	@SuppressWarnings("TypeMayBeWeakened")
+	private static String inHours(final int minutes) {
+		if (minutes < MIN_PER_HOUR) {
+			return Integer.toString(minutes) + " minutes";
+		} else {
+			return Integer.toString(minutes / MIN_PER_HOUR) + " hours, " +
+						   Integer.toString(minutes % MIN_PER_HOUR) + " minutes";
+		}
+	}
+
+	/**
+	 * Handle a command.
+	 *
+	 * @param fixtures the animals generated from the tile and surrounding tiles.
+	 * @param cli      the interface to interact with the user
+	 * @param command  the command to handle
+	 * @param fishing  whether we're dealing with *fish* traps .. which take different
+	 *                 amounts of time
+	 * @return how many minutes it took to execute the command
+	 * @throws IOException on I/O error interacting with user
+	 */
+	private static int handleCommand(final List<String> fixtures,
+									 final ICLIHelper cli, final TrapperCommand command,
+									 final boolean fishing) throws IOException {
+		switch (command) {
+		case Check: // TODO: extract method?
+			final String top = fixtures.remove(0);
+			if (HuntingModel.NOTHING.equals(top)) {
+				cli.println("Nothing in the trap");
+				if (fishing) {
+					return FRUITLESS_FISH_TRAP;
+				} else {
+					return FRUITLESS_TRAP;
+				}
+			} else {
+				cli.printf("Found either %s or evidence of it escaping.%n", top);
+				return cli.inputNumber("How long to check and deal with animal? ");
+			}
+		case EasyReset:
+			if (fishing) {
+				return 20;
+			} else {
+				return 5;
+			}
+		case Move:
+			return 2;
+		case Quit:
+			return 0;
+		case Set:
+			if (fishing) {
+				return 30;
+			} else {
+				return 45;
+			}
+		default:
+			throw new IllegalArgumentException("Unhandled case");
+		}
+	}
+
+	/**
+	 * Start the driver.
+	 *
+	 * @param cli
+	 * @param options
+	 * @param model   the driver model to operate on
+	 */
+	@Override
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) {
+		repl(model.getMap(), cli);
+	}
+
+	/**
+	 * Run the driver.
+	 *
+	 * @param cli
+	 * @param options
+	 * @param args    command-line arguments
+	 * @throws DriverFailedException if something goes wrong
+	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
+	@Override
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final String... args)
+			throws DriverFailedException {
+		if (args.length == 0) {
+			throw new IncorrectUsageException(usage());
+		}
+		SimpleDriver.super.startDriver(options, args);
+	}
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE;
+	}
 
 	/**
 	 * The possible commands.
@@ -116,164 +269,7 @@ public final class TrapModelDriver implements SimpleDriver {
 		public String getName() {
 			return name;
 		}
-	}
-
-	/**
-	 * @param map     the map to explore
-	 * @param cli the interface to interact with the user
-	 */
-	private static void repl(final IMapNG map, final ICLIHelper cli) {
-		try {
-			final boolean fishing = cli.inputBooleanInSeries(FISH_OR_TRAP);
-			final String name;
-			if (fishing) {
-				name = "fisherman";
-			} else {
-				name = "trapper";
-			}
-			int minutes = cli.inputNumber("How many hours will the " + name + " work? ") *
-
-								  MIN_PER_HOUR;
-			final Point point = cli.inputPoint("Where is the " + name + " working? ");
-			final List<String> fixtures;
-			final HuntingModel huntModel = new HuntingModel(map);
-			if (fishing) {
-				fixtures = huntModel.fish(point, minutes);
-			} else {
-				fixtures = huntModel.hunt(point, minutes);
-			}
-			int input = -1;
-			while ((minutes > 0) && (input < TrapperCommand.values().length)) {
-				if (input >= 0) {
-					final TrapperCommand command =
-							NullCleaner
-									.assertNotNull(TrapperCommand.values()[input]);
-					minutes -= handleCommand(fixtures, cli,
-							command, fishing);
-					cli.print(inHours(minutes));
-					cli.println(" remaining");
-					if (command == TrapperCommand.Quit) {
-						break;
-					}
-				}
-				input = cli.chooseFromList(COMMANDS, "What should the "
-															+ name + " do next?",
-						"Oops! No commands",
-						"Next action: ", false);
-			}
-		} catch (final IOException except) {
-			//noinspection HardcodedFileSeparator
-			LOGGER.log(Level.SEVERE, "I/O exception", except);
-		}
-	}
-
-	/**
-	 * @param minutes a number of minutes
-	 * @return a String representation, including the number of hours
-	 */
-	@SuppressWarnings("TypeMayBeWeakened")
-	private static String inHours(final int minutes) {
-		if (minutes < MIN_PER_HOUR) {
-			return Integer.toString(minutes) + " minutes";
-		} else {
-			return Integer.toString(minutes / MIN_PER_HOUR) + " hours, " +
-						Integer.toString(minutes % MIN_PER_HOUR) + " minutes";
-		}
-	}
-
-	/**
-	 * Handle a command.
-	 *
-	 * @param fixtures the animals generated from the tile and surrounding tiles.
-	 * @param cli  the interface to interact with the user
-	 * @param command  the command to handle
-	 * @param fishing  whether we're dealing with *fish* traps .. which take different
-	 *                 amounts of time
-	 * @return how many minutes it took to execute the command
-	 * @throws IOException on I/O error interacting with user
-	 */
-	private static int handleCommand(final List<String> fixtures,
-			final ICLIHelper cli, final TrapperCommand command,
-			final boolean fishing) throws IOException {
-		switch (command) {
-		case Check: // TODO: extract method?
-			final String top = fixtures.remove(0);
-			if (HuntingModel.NOTHING.equals(top)) {
-				cli.println("Nothing in the trap");
-				if (fishing) {
-					return FRUITLESS_FISH_TRAP;
-				} else {
-					return FRUITLESS_TRAP;
-				}
-			} else {
-				cli.printf("Found either %s or evidence of it escaping.%n", top);
-				return cli.inputNumber("How long to check and deal with animal? ");
-			}
-		case EasyReset:
-			if (fishing) {
-				return 20;
-			} else {
-				return 5;
-			}
-		case Move:
-			return 2;
-		case Quit:
-			return 0;
-		case Set:
-			if (fishing) {
-				return 30;
-			} else {
-				return 45;
-			}
-		default:
-			throw new IllegalArgumentException("Unhandled case");
-		}
-	}
-
-	/**
-	 * Start the driver.
-	 *
-	 *
-	 * @param cli
-	 * @param options
-	 * @param model the driver model to operate on
-	 */
-	@Override
-	public void startDriver(final ICLIHelper cli, final SPOptions options,
-							final IDriverModel model) {
-		repl(model.getMap(), cli);
-	}
-
-	/**
-	 * Run the driver.
-	 *
-	 *
-	 *
-	 * @param cli
-	 * @param options
-	 * @param args command-line arguments
-	 * @throws DriverFailedException if something goes wrong
-	 */
-	@SuppressWarnings("OverloadedVarargsMethod")
-	@Override
-	public void startDriver(final ICLIHelper cli, final SPOptions options,
-							final String... args)
-			throws DriverFailedException {
-		if (args.length == 0) {
-			throw new IncorrectUsageException(usage());
-		}
-		SimpleDriver.super.startDriver(options, args);
-	}
-
-	/**
-	 * @return an object indicating how to use and invoke this driver.
-	 */
-	@Override
-	public DriverUsage usage() {
-		return USAGE;
-	}
-
-	/**
+	}	/**
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

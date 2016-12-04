@@ -35,10 +35,12 @@ public class FortressTabularReportGenerator implements ITableGenerator<Fortress>
 	 * His or her HQ location.
 	 */
 	private final Point base;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param currentPlayer the player for whom this report is being produced
-	 * @param hq his or her HQ location
+	 * @param hq            his or her HQ location
 	 */
 	public FortressTabularReportGenerator(final Player currentPlayer, final Point hq) {
 		player = currentPlayer;
@@ -46,16 +48,16 @@ public class FortressTabularReportGenerator implements ITableGenerator<Fortress>
 	}
 
 	/**
-	 * @param ostream the stream to write the row to
+	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
-	 * @param item the fortress to base the line on
-	 * @param loc its location
+	 * @param item     the fortress to base the line on
+	 * @param loc      its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@Override
 	public boolean produce(final Appendable ostream,
-						final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						final Fortress item, final Point loc) throws IOException {
+						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						   final Fortress item, final Point loc) throws IOException {
 		writeField(ostream, distanceString(loc, base));
 		writeFieldDelimiter(ostream);
 		writeField(ostream, loc.toString());
@@ -80,6 +82,7 @@ public class FortressTabularReportGenerator implements ITableGenerator<Fortress>
 	public String headerRow() {
 		return "Distance,Location,Owner,Name";
 	}
+
 	/**
 	 * @param one a Pair of one fortress and its location (in the other order)
 	 * @param two a Pair of another fortress and its location (in the other order)
@@ -95,7 +98,8 @@ public class FortressTabularReportGenerator implements ITableGenerator<Fortress>
 		final int cmp = comparator.compare(one.first(), two.first());
 		if (player.equals(first.getOwner()) && !player.equals(second.getOwner())) {
 			return -1;
-		} else if (!player.equals(first.getOwner()) && player.equals(second.getOwner())) {
+		} else if (!player.equals(first.getOwner()) && player.equals(second.getOwner()
+		)) {
 			return 1;
 		} else if (cmp == 0) {
 			final int nameCmp = first.getName().compareTo(second.getName());

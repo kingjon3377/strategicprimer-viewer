@@ -60,9 +60,105 @@ public final class ImmortalsReportGenerator
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public ImmortalsReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-																		@NonNull
-																				IFixture>> comparator) {
+																		  @NonNull
+																				  IFixture>> comparator) {
 		super(comparator);
+	}
+
+	/**
+	 * @param collections a list of collections
+	 * @return their total size
+	 */
+	private static int collSize(final Collection<?>... collections) {
+		return Stream.of(collections).collect(Collectors.summingInt(Collection::size))
+					   .intValue();
+	}
+
+	/**
+	 * @param header  the heading to put above the children
+	 * @param mapping a mapping from kinds to nodes
+	 * @return a node with all of the nodes as children
+	 */
+	private static IReportNode coalesce(final String header,
+										final Map<String, IReportNode> mapping) {
+		final IReportNode retval = new ListReportNode(header);
+		mapping.values().forEach(retval::add);
+		return retval;
+	}
+
+	/**
+	 * TODO: Create Immortal marker interface.
+	 *
+	 * @param item a fixture
+	 * @return whether it's an immortal
+	 */
+	private static boolean isImmortal(final MobileFixture item) {
+		return (item instanceof Dragon) || (item instanceof Fairy)
+					   || (item instanceof Troll) || (item instanceof Djinn)
+					   || (item instanceof Sphinx) || (item instanceof Giant)
+					   || (item instanceof Minotaur) || (item instanceof Ogre)
+					   || (item instanceof Centaur) || (item instanceof Phoenix)
+					   || (item instanceof Simurgh) || (item instanceof Griffin);
+	}
+
+	/**
+	 * Prints (to the builder) nothing if the map is empty, or for each entry in the
+	 * entry
+	 * set a list item beginning with the key, followed by the infix, followed by a
+	 * comma-separated list of the points.
+	 *
+	 * @param mapping the mapping from kinds (or whatever) to lists of points
+	 * @param infix   what to print in the middle of each item
+	 * @param builder the builder to print to
+	 */
+	private static void optionallyPrintMap(final Map<String, Collection<Point>> mapping,
+										   final String infix,
+										   final StringBuilder builder) {
+		for (final Map.Entry<String, Collection<Point>> entry : mapping.entrySet()) {
+			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix);
+			pointCSL(builder, entry.getValue().stream().collect(Collectors.toList()));
+			builder.append(CLOSE_LIST_ITEM);
+		}
+	}
+
+	/**
+	 * Prints (to the builder) nothing if the list is empty, or the prefix followed by a
+	 * comma-separated list of the points, all enclosed in a list item.
+	 *
+	 * @param points  a list of points
+	 * @param prefix  what to prepend to it if non-empty
+	 * @param builder the builder to print to
+	 */
+	private static void optionallyPrintList(final List<Point> points,
+											final String prefix,
+											final StringBuilder builder) {
+		if (!points.isEmpty()) {
+			builder.append(OPEN_LIST_ITEM).append(prefix);
+			pointCSL(builder, points);
+			builder.append(CLOSE_LIST_ITEM);
+		}
+	}
+
+	/**
+	 * If there's an entry in the map for the thing's kind already, return that entry; if
+	 * not, create one, add it to the map, and return it..
+	 *
+	 * @param mapping the mapping we're dealing with
+	 * @param item    the item under consideration
+	 * @return the entry in the map for the item's kind
+	 */
+	private static IReportNode separateByKindRIR(final Map<String, IReportNode> mapping,
+												 final HasKind item) {
+		// For the three classes we deal with here, we don't want just the kind,
+		// we want the full toString, so we use that instead of getKind.
+		if (mapping.containsKey(item.toString())) {
+			return NullCleaner.assertNotNull(mapping.get(item.toString()));
+		} else {
+			final IReportNode retval =
+					new ListReportNode(NullCleaner.assertNotNull(item.toString()));
+			mapping.put(NullCleaner.assertNotNull(item.toString()), retval);
+			return retval;
+		}
 	}
 
 	/**
@@ -158,15 +254,6 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
-	 * @param collections a list of collections
-	 * @return their total size
-	 */
-	private static int collSize(final Collection<?>... collections) {
-		return Stream.of(collections).collect(Collectors.summingInt(Collection::size))
-					.intValue();
-	}
-
-	/**
 	 * Produce the sub-report dealing with "immortals".
 	 *
 	 * @param fixtures      the set of fixtures
@@ -176,7 +263,7 @@ public final class ImmortalsReportGenerator
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
@@ -250,18 +337,6 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
-	 * @param header  the heading to put above the children
-	 * @param mapping a mapping from kinds to nodes
-	 * @return a node with all of the nodes as children
-	 */
-	private static IReportNode coalesce(final String header,
-										final Map<String, IReportNode> mapping) {
-		final IReportNode retval = new ListReportNode(header);
-		mapping.values().forEach(retval::add);
-		return retval;
-	}
-
-	/**
 	 * @param fixtures      The set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the current player
@@ -294,89 +369,15 @@ public final class ImmortalsReportGenerator
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer,
 								  final MobileFixture item, final Point loc) {
 		if (isImmortal(item)) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString(), " ",
-											distCalculator.distanceString(loc));
+											   distCalculator.distanceString(loc));
 		} else {
 			return EmptyReportNode.NULL_NODE;
-		}
-	}
-
-	/**
-	 * TODO: Create Immortal marker interface.
-	 * @param item a fixture
-	 * @return whether it's an immortal
-	 */
-	private static boolean isImmortal(final MobileFixture item) {
-		return (item instanceof Dragon) || (item instanceof Fairy)
-					|| (item instanceof Troll) || (item instanceof Djinn)
-					|| (item instanceof Sphinx) || (item instanceof Giant)
-					|| (item instanceof Minotaur) || (item instanceof Ogre)
-					|| (item instanceof Centaur) || (item instanceof Phoenix)
-					|| (item instanceof Simurgh) || (item instanceof Griffin);
-	}
-
-	/**
-	 * Prints (to the builder) nothing if the map is empty, or for each entry in the
-	 * entry
-	 * set a list item beginning with the key, followed by the infix, followed by a
-	 * comma-separated list of the points.
-	 *
-	 * @param mapping the mapping from kinds (or whatever) to lists of points
-	 * @param infix   what to print in the middle of each item
-	 * @param builder the builder to print to
-	 */
-	private static void optionallyPrintMap(final Map<String, Collection<Point>> mapping,
-										final String infix,
-										final StringBuilder builder) {
-		for (final Map.Entry<String, Collection<Point>> entry : mapping.entrySet()) {
-			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix);
-			pointCSL(builder, entry.getValue().stream().collect(Collectors.toList()));
-			builder.append(CLOSE_LIST_ITEM);
-		}
-	}
-
-	/**
-	 * Prints (to the builder) nothing if the list is empty, or the prefix followed by a
-	 * comma-separated list of the points, all enclosed in a list item.
-	 *
-	 * @param points  a list of points
-	 * @param prefix  what to prepend to it if non-empty
-	 * @param builder the builder to print to
-	 */
-	private static void optionallyPrintList(final List<Point> points,
-											final String prefix,
-											final StringBuilder builder) {
-		if (!points.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM).append(prefix);
-			pointCSL(builder, points);
-			builder.append(CLOSE_LIST_ITEM);
-		}
-	}
-
-	/**
-	 * If there's an entry in the map for the thing's kind already, return that entry; if
-	 * not, create one, add it to the map, and return it..
-	 *
-	 * @param mapping the mapping we're dealing with
-	 * @param item    the item under consideration
-	 * @return the entry in the map for the item's kind
-	 */
-	private static IReportNode separateByKindRIR(final Map<String, IReportNode> mapping,
-												final HasKind item) {
-		// For the three classes we deal with here, we don't want just the kind,
-		// we want the full toString, so we use that instead of getKind.
-		if (mapping.containsKey(item.toString())) {
-			return NullCleaner.assertNotNull(mapping.get(item.toString()));
-		} else {
-			final IReportNode retval =
-					new ListReportNode(NullCleaner.assertNotNull(item.toString()));
-			mapping.put(NullCleaner.assertNotNull(item.toString()), retval);
-			return retval;
 		}
 	}
 

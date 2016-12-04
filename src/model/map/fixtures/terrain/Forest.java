@@ -23,31 +23,21 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	/**
+	 * Whether this is "rows of" trees.
+	 */
+	private final boolean rows;
+	/**
 	 * What kind of trees dominate the forest.
 	 */
 	private String trees;
-
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
-
-	/**
-	 * @return what kind of trees
-	 */
-	@Override
-	public String getKind() {
-		return trees;
-	}
 	/**
 	 * Unique identifying number for this instance.
 	 */
 	private int id;
-
-	/**
-	 * Whether this is "rows of" trees.
-	 */
-	private final boolean rows;
 
 	/**
 	 * Constructor.
@@ -60,6 +50,22 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 		trees = kind;
 		rows = rowed;
 		id = idNum;
+	}
+
+	/**
+	 * @return what kind of trees
+	 */
+	@Override
+	public String getKind() {
+		return trees;
+	}
+
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		trees = nKind;
 	}
 
 	/**
@@ -135,12 +141,14 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * Set the ID for the object.
 	 */
 	public void setID(final int idNum) {
 		id = idNum;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
@@ -153,11 +161,11 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
-	 * @param nKind the new kind
+	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
-	public final void setKind(final String nKind) {
-		trees = nKind;
+	public String getImage() {
+		return image;
 	}
 
 	/**
@@ -166,14 +174,6 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**

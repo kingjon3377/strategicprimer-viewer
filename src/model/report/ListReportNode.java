@@ -59,8 +59,8 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	private String text;
 
 	/**
-	 * @param pt the point in the map that this represents something on
-	 * @param txt  the header text
+	 * @param pt  the point in the map that this represents something on
+	 * @param txt the header text
 	 */
 	public ListReportNode(final Point pt, final String txt) {
 		super(txt);
@@ -87,8 +87,8 @@ public final class ListReportNode extends DefaultMutableTreeNode
 		// Assume each child is half a K.
 		final StringBuilder builder = new StringBuilder(text.length() + BOILERPLATE_LEN +
 																(getChildCount() *
-																		CHILD_BUF_SIZE))
-											.append(text).append(LineEnd.LINE_SEP);
+																		 CHILD_BUF_SIZE))
+											  .append(text).append(LineEnd.LINE_SEP);
 		builder.append("<ul>").append(LineEnd.LINE_SEP);
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
@@ -150,9 +150,10 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof ListReportNode) &&
-										text.equals(((IReportNode) obj).getText()) &&
-										children()
-												.equals(((IReportNode) obj).children()));
+										 text.equals(((IReportNode) obj).getText()) &&
+										 children()
+												 .equals(((IReportNode) obj).children
+																					 ()));
 	}
 
 	/**
@@ -184,6 +185,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	/**
 	 * Add a node at the beginning of our list of children. Do nothing if null, rather
 	 * than crashing.
+	 *
 	 * @param node the node to add
 	 */
 	@Override
@@ -198,6 +200,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 			}
 		}
 	}
+
 	/**
 	 * @return an iterator over the children
 	 */
@@ -259,35 +262,42 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	public Point getLocalPoint() {
 		return point;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Superclass removes CloneNotSupportedException from method signature, but we still
 	 * want to throw it, so we wrap it in a RuntimeException
+	 *
 	 * @return never
 	 */
 	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public ListReportNode clone() {
 		throw new IllegalStateException("cloning prohibited",
-										  new CloneNotSupportedException("cloning prohibited"));
+											   new CloneNotSupportedException("cloning " +
+																					  "prohibited"));
 	}
 }

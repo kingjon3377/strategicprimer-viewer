@@ -36,6 +36,10 @@ public class DriverUsage {
 	 */
 	private final String longDescription;
 	/**
+	 * The options this driver supports.
+	 */
+	private final List<String> supportedOptions = new ArrayList<>();
+	/**
 	 * A description of the first (non-option) parameter, for use in a usage statement.
 	 * Defaults to "filename.xml"
 	 */
@@ -46,10 +50,6 @@ public class DriverUsage {
 	 * "filename.xml"
 	 */
 	private String subsequentParamDesc = "filename.xml";
-	/**
-	 * The options this driver supports.
-	 */
-	private final List<String> supportedOptions = new ArrayList<>();
 
 	/**
 	 * Constructor.
@@ -122,26 +122,25 @@ public class DriverUsage {
 	public String toString() {
 		return shortDescription;
 	}
+
+	/**
+	 * @return a description of the first parameter for use in a usage statement;
+	 * defaults
+	 * to "filename.xml"
+	 */
+	public String getFirstParamDesc() {
+		return firstParamDesc;
+	}
+
 	/**
 	 * Note that this is ignored by its users if getParamsWanted() returns AnyNumber.
+	 *
 	 * @param newDesc a new description for the first parameter
 	 */
 	public void setFirstParamDesc(final String newDesc) {
 		firstParamDesc = newDesc;
 	}
-	/**
-	 * @return a description of the first parameter for use in a usage statement;
-	 * defaults to "filename.xml"
-	 */
-	public String getFirstParamDesc() {
-		return firstParamDesc;
-	}
-	/**
-	 * @param newDesc a new description for each parameter after the first
-	 */
-	public void setSubsequentParamDesc(final String newDesc) {
-		subsequentParamDesc = newDesc;
-	}
+
 	/**
 	 * @return a description of each parameter after the first for use in a usage
 	 * statement; defaults to "filename.xml"
@@ -149,13 +148,23 @@ public class DriverUsage {
 	public String getSubsequentParamDesc() {
 		return subsequentParamDesc;
 	}
+
+	/**
+	 * @param newDesc a new description for each parameter after the first
+	 */
+	public void setSubsequentParamDesc(final String newDesc) {
+		subsequentParamDesc = newDesc;
+	}
+
 	/**
 	 * This is only used to tell the user about the option, so describe it accordingly.
+	 *
 	 * @param option an option to add to the list of supported options.
 	 */
 	public void addSupportedOption(final String option) {
 		supportedOptions.add(option);
 	}
+
 	/**
 	 * @return a list of the options this driver supports, to show the user.
 	 */

@@ -38,32 +38,32 @@ public final class WorkerCreationListener
 	private static final String NO_UNIT_TEXT =
 			"As no unit was selected, the new worker wasn't added to a unit.";
 	/**
-	 * The tree model.
-	 */
-	private final IWorkerTreeModel treeModel;
-	/**
 	 * The logger to use for logging.
 	 */
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(WorkerCreationListener.class);
 	/**
-	 * The current unit. May be null, if nothing is selected.
+	 * The tree model.
 	 */
-	@Nullable
-	private IUnit selUnit = null;
+	private final IWorkerTreeModel treeModel;
 	/**
 	 * The ID factory to pass to the worker-creation window.
 	 */
 	private final IDRegistrar idf;
+	/**
+	 * The current unit. May be null, if nothing is selected.
+	 */
+	@Nullable
+	private IUnit selUnit = null;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param model the tree model
-	 * @param idFac     the ID factory to pass to the worker-creation window.
+	 * @param idFac the ID factory to pass to the worker-creation window.
 	 */
 	public WorkerCreationListener(final IWorkerTreeModel model,
-								final IDRegistrar idFac) {
+								  final IDRegistrar idFac) {
 		treeModel = model;
 		idf = idFac;
 	}

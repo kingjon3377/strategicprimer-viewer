@@ -46,19 +46,19 @@ public final class ExplorableReportGenerator
 		extends AbstractReportGenerator<ExplorableFixture> {
 
 	/**
-	 * @param comparator a comparator for pairs of Points and fixtures.
-	 */
-	public ExplorableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-																		@NonNull
-																				IFixture>> comparator) {
-		super(comparator);
-	}
-
-	/**
 	 * A common string in this class.
 	 */
 	private static final Pattern COLON_COMMA_PATTERN =
 			NullCleaner.assertNotNull(Pattern.compile(": , ", Pattern.LITERAL));
+
+	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	public ExplorableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
+																		   @NonNull
+																				   IFixture>> comparator) {
+		super(comparator);
+	}
 
 	/**
 	 * Produce the sub-report on non-town things that can be explored. All fixtures
@@ -89,9 +89,9 @@ public final class ExplorableReportGenerator
 													.append("Portals to other worlds: ");
 		// I doubt this will ever be over a K either
 		final StringBuilder adventureBuilder = new StringBuilder(1024)
-													.append("<h4>Possible " +
-																	"Adventures</h4>")
-													.append(OPEN_LIST);
+													   .append("<h4>Possible " +
+																	   "Adventures</h4>")
+													   .append(OPEN_LIST);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		boolean anyAdventures = false;
@@ -124,17 +124,17 @@ public final class ExplorableReportGenerator
 		if (anyCaves) {
 			builder.append(COLON_COMMA_PATTERN.matcher(
 					caveBuilder.append(CLOSE_LIST_ITEM).toString())
-								.replaceAll(Matcher.quoteReplacement(": ")));
+								   .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		if (anyBattles) {
 			builder.append(COLON_COMMA_PATTERN.matcher(
 					battleBuilder.append(CLOSE_LIST_ITEM).toString())
-								.replaceAll(Matcher.quoteReplacement(": ")));
+								   .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		if (anyPortals) {
 			builder.append(COLON_COMMA_PATTERN.matcher(
 					portalBuilder.append(CLOSE_LIST_ITEM).toString())
-								.replaceAll(Matcher.quoteReplacement(": ")));
+								   .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		adventureBuilder.append(CLOSE_LIST);
 		builder.append(CLOSE_LIST);
@@ -163,7 +163,7 @@ public final class ExplorableReportGenerator
 	 */
 	@Override
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-											  fixtures,
+										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
@@ -272,55 +272,60 @@ public final class ExplorableReportGenerator
 	 */
 	@Override
 	public SimpleReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
-												   fixtures,
+											   fixtures,
 									   final IMapNG map, final Player currentPlayer,
 									   final ExplorableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, "Caves beneath ", loc.toString(), " ",
-											distCalculator.distanceString(loc));
+											   distCalculator.distanceString(loc));
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, "Signs of a long-ago battle on ",
-											loc.toString(), " ",
-											distCalculator.distanceString(loc));
+											   loc.toString(), " ",
+											   distCalculator.distanceString(loc));
 		} else if (item instanceof AdventureFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final AdventureFixture adventure = (AdventureFixture) item;
 			if (adventure.getOwner().isIndependent()) {
 				return new SimpleReportNode(loc,
-												adventure
-														.getBriefDescription(), " at ",
-												loc.toString(),
-												adventure
-														.getFullDescription(),
-												" ", distCalculator.distanceString(loc));
+												   adventure
+														   .getBriefDescription(), " " +
+																																			  "at ",
+												   loc.toString(),
+												   adventure
+														   .getFullDescription(),
+												   " ",
+												   distCalculator.distanceString(loc));
 			} else if (currentPlayer.equals(adventure.getOwner())) {
 				return new SimpleReportNode(loc,
-												adventure
-														.getBriefDescription(), " at ",
-												loc.toString(),
-												adventure
-														.getFullDescription(),
-												" ",
-												distCalculator.distanceString(loc),
-												" (already investigated by you)");
+												   adventure
+														   .getBriefDescription(), " " +
+																																			  "at ",
+												   loc.toString(),
+												   adventure
+														   .getFullDescription(),
+												   " ",
+												   distCalculator.distanceString(loc),
+												   " (already investigated by you)");
 			} else {
 				return new SimpleReportNode(loc,
-												adventure
-														.getBriefDescription(), " at ",
-												loc.toString(),
-												adventure
-														.getFullDescription(),
-												" ",
-												distCalculator.distanceString(loc),
-												" (already investigated by another player)");
+												   adventure
+														   .getBriefDescription(), " " +
+																																			  "at ",
+												   loc.toString(),
+												   adventure
+														   .getFullDescription(),
+												   " ",
+												   distCalculator.distanceString(loc),
+												   " (already investigated by another " +
+														   "player)");
 			}
 		} else if (item instanceof Portal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, "A portal to another world at ",
-											loc.toString(), " ",
-											distCalculator.distanceString(loc));
+											   loc.toString(), " ",
+											   distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected ExplorableFixture type");
 		}

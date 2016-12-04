@@ -53,25 +53,13 @@ public enum StoneKind {
 	 */
 	Shale("shale");
 	/**
-	 * A string representing the StoneKind.
-	 */
-	private final String str;
-	/**
 	 * A mapping from string representation to StoneKind.
 	 */
 	private static final Map<String, StoneKind> SK_MAP = new HashMap<>();
-
 	/**
-	 * @param kind a string representing a StoneKind
-	 * @return the StoneKind it represents
+	 * A string representing the StoneKind.
 	 */
-	public static StoneKind parseStoneKind(final String kind) {
-		if (SK_MAP.containsKey(kind)) {
-			return NullCleaner.assertNotNull(SK_MAP.get(kind));
-		} else {
-			throw new IllegalArgumentException("Unrecognized kind of stone");
-		}
-	}
+	private final String str;
 
 	static {
 		for (final StoneKind kind : values()) {
@@ -86,6 +74,18 @@ public enum StoneKind {
 	 */
 	StoneKind(final String desc) {
 		str = desc;
+	}
+
+	/**
+	 * @param kind a string representing a StoneKind
+	 * @return the StoneKind it represents
+	 */
+	public static StoneKind parseStoneKind(final String kind) {
+		if (SK_MAP.containsKey(kind)) {
+			return NullCleaner.assertNotNull(SK_MAP.get(kind));
+		} else {
+			throw new IllegalArgumentException("Unrecognized kind of stone");
+		}
 	}
 
 	/**

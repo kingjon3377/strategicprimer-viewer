@@ -47,7 +47,8 @@ public final class MapReaderAdapter {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(MapReaderAdapter.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(MapReaderAdapter
+																		  .class);
 	/**
 	 * The implementation we use under the hood.
 	 */
@@ -66,6 +67,20 @@ public final class MapReaderAdapter {
 	}
 
 	/**
+	 * @param names     some filenames
+	 * @param dropFirst whether to skip the first filename.
+	 * @return an array of equivalent Files
+	 */
+	public static Path[] namesToFiles(final boolean dropFirst, final String... names) {
+		final List<Path> retval =
+				Stream.of(names).map(Paths::get).collect(Collectors.toList());
+		if (dropFirst) {
+			retval.remove(0);
+		}
+		return NullCleaner.assertNotNull(retval.toArray(new Path[retval.size()]));
+	}
+
+	/**
 	 * @param file   the file to open
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map it contains
@@ -79,21 +94,25 @@ public final class MapReaderAdapter {
 			throws IOException, XMLStreamException, SPFormatException {
 		return reader.readMap(file, warner);
 	}
+
 	/**
 	 * @param stream the stream to read the map from
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map it contains
 	 * @throws XMLStreamException if the XML is badly formed
 	 * @throws SPFormatException  if the reader can't handle this map version or there
-	 * are map format errors
+	 * are
+	 *                            map format errors
 	 */
 	public IMutableMapNG readMapFromStream(final Reader stream, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		return reader.readMap(Paths.get(""), stream, warner);
 	}
+
 	/**
 	 * Read a map model from a stream. Because this is parallel to readMapModel(), we
 	 * wrap any errors we generate in a DriverFailedException.
+	 *
 	 * @param stream the stream to read a map from
 	 * @param warner the Warning instance to use for warnings.
 	 * @return a driver model containing the map contained in the stream
@@ -109,6 +128,7 @@ public final class MapReaderAdapter {
 			throw new DriverFailedException("SP map format error in stream", except);
 		}
 	}
+
 	/**
 	 * Because this is intended to be used by implementations of ISPDriver, which can
 	 * only throw DriverFailedException, we use that class for all errors we generate.
@@ -125,13 +145,13 @@ public final class MapReaderAdapter {
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error reading " + file,
-												except);
+												   except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in " + file,
-												except);
+												   except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("SP map format error in " + file,
-												except);
+												   except);
 		}
 	}
 
@@ -153,7 +173,8 @@ public final class MapReaderAdapter {
 		String current = master.toString();
 		try {
 			final IMultiMapModel retval =
-					new SimpleMultiMapModel(readMap(master, warner), Optional.of(master));
+					new SimpleMultiMapModel(readMap(master, warner), Optional.of
+																					  (master));
 			for (final Path file : files) {
 				current = file.toString();
 				retval.addSubordinateMap(readMap(file, warner), Optional.of(file));
@@ -162,7 +183,7 @@ public final class MapReaderAdapter {
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error reading from file " + current,
-												except);
+												   except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in " + current, except);
 		} catch (final SPFormatException except) {
@@ -206,8 +227,9 @@ public final class MapReaderAdapter {
 					"Model didn't contain filename for main map, so didn't write it");
 		}
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel) model)
-																.getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
+																		   model)
+																		  .getSubordinateMaps()) {
 				final Optional<Path> filename = pair.second();
 				if (filename.isPresent()) {
 					try {
@@ -231,19 +253,5 @@ public final class MapReaderAdapter {
 	@Override
 	public String toString() {
 		return "MapReaderAdapter";
-	}
-
-	/**
-	 * @param names     some filenames
-	 * @param dropFirst whether to skip the first filename.
-	 * @return an array of equivalent Files
-	 */
-	public static Path[] namesToFiles(final boolean dropFirst, final String... names) {
-		final List<Path> retval =
-				Stream.of(names).map(Paths::get).collect(Collectors.toList());
-		if (dropFirst) {
-			retval.remove(0);
-		}
-		return NullCleaner.assertNotNull(retval.toArray(new Path[retval.size()]));
 	}
 }

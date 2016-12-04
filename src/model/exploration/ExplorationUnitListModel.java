@@ -5,7 +5,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
-import javax.swing.DefaultListModel;
+import javax.swing.*;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
@@ -38,7 +38,7 @@ public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IU
 	 * Constructor.
 	 *
 	 * @param explorationModel the exploration model, so we can select the unit the user
-	 *                            selects
+	 *                         selects
 	 */
 	public ExplorationUnitListModel(final IExplorationModel explorationModel) {
 		model = explorationModel;
@@ -56,26 +56,31 @@ public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IU
 		final List<IUnit> units = model.getUnits(newPlayer);
 		units.forEach(this::addElement);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a diagnostic String
 	 */

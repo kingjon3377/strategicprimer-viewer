@@ -22,11 +22,6 @@ import util.NullCleaner;
  */
 public class Grove implements HarvestableFixture, HasMutableKind {
 	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
-
-	/**
 	 * Whether this is a fruit orchard.
 	 */
 	private final boolean orchard;
@@ -34,6 +29,14 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	 * Whether it's wild (if false) or cultivated.
 	 */
 	private final boolean cultivated;
+	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
 	/**
 	 * Kind of tree.
 	 */
@@ -48,7 +51,7 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	 * @param idNum           the ID number.
 	 */
 	public Grove(final boolean fruit, final boolean cultivatedGrove, final String tree,
-				final int idNum) {
+				 final int idNum) {
 		orchard = fruit;
 		cultivated = cultivatedGrove;
 		kind = tree;
@@ -90,6 +93,14 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
+	}
+
+	/**
 	 * @return the name of an image to represent the grove or orchard
 	 */
 	@Override
@@ -128,7 +139,7 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) ||
-					((obj instanceof Grove) && kind.equals(((Grove) obj).kind) &&
+					   ((obj instanceof Grove) && kind.equals(((Grove) obj).kind) &&
 								(orchard == ((Grove) obj).orchard) &&
 								(cultivated == ((Grove) obj).cultivated) &&
 								(id == ((Grove) obj).id));
@@ -141,11 +152,6 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -163,24 +169,8 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Grove) && kind.equals(((Grove) fix).kind) &&
-					(orchard == ((Grove) fix).orchard) &&
-					(cultivated == ((Grove) fix).cultivated);
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
-	}
-
-	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
+					   (orchard == ((Grove) fix).orchard) &&
+					   (cultivated == ((Grove) fix).cultivated);
 	}
 
 	/**
@@ -189,6 +179,14 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**

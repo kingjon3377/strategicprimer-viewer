@@ -44,6 +44,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 * The (usually header) text. May be empty, but not null.
 	 */
 	private String text;
+
 	/**
 	 * @param concatenated a concatenated string to make the text of the node
 	 */
@@ -52,8 +53,9 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 		text = concatenated; // required by Eclipse
 		setText(concatenated);
 	}
+
 	/**
-	 * @param pt the point, if any, in the map that this represents something on
+	 * @param pt    the point, if any, in the map that this represents something on
 	 * @param texts a number of strings to concatenate and make the text of the node.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
@@ -115,7 +117,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof SimpleReportNode) &&
-										text.equals(((IReportNode) obj).getText()));
+										 text.equals(((IReportNode) obj).getText()));
 	}
 
 	/**
@@ -135,6 +137,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	public void add(final @Nullable MutableTreeNode newChild) {
 		// Do nothing
 	}
+
 	/**
 	 * This method is ignored; a simple node cannot have children.
 	 */
@@ -142,6 +145,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	public void addAsFirst(final @Nullable MutableTreeNode node) {
 		// Do nothing
 	}
+
 	/**
 	 * @return an iterator over the children
 	 */
@@ -203,35 +207,42 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	public Point getLocalPoint() {
 		return point;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Superclass removes CloneNotSupportedException from method signature, but we still
 	 * want to throw it, so we wrap it in a RuntimeException
+	 *
 	 * @return never
 	 */
 	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public SimpleReportNode clone() {
 		throw new IllegalStateException("cloning prohibited",
-										  new CloneNotSupportedException("cloning prohibited"));
+											   new CloneNotSupportedException("cloning " +
+																					  "prohibited"));
 	}
 }

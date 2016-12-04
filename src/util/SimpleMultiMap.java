@@ -21,15 +21,16 @@ import java.util.Set;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <K> the type of keys in the map
  * @param <V> the type of values in the map
+ * @author Jonathan Lovelace
  */
 public class SimpleMultiMap<K, V> implements Map<K, Collection<V>> {
 	/**
 	 * The map to which we delegate most of the implementation.
 	 */
 	private final Map<K, Collection<V>> delegate = new HashMap<>();
+
 	/**
 	 * @return the size of the map
 	 */
@@ -82,7 +83,7 @@ public class SimpleMultiMap<K, V> implements Map<K, Collection<V>> {
 	}
 
 	/**
-	 * @param key a key
+	 * @param key   a key
 	 * @param value a collection of values
 	 * @return the collection that was replaced
 	 */
@@ -102,7 +103,7 @@ public class SimpleMultiMap<K, V> implements Map<K, Collection<V>> {
 
 	/**
 	 * @param m a type-similar map to this one, all of whose collection-values should be
-	 *             set in this one
+	 *          set in this one
 	 */
 	@Override
 	public void putAll(final Map<? extends K, ? extends Collection<V>> m) {
@@ -140,8 +141,10 @@ public class SimpleMultiMap<K, V> implements Map<K, Collection<V>> {
 	public Set<Entry<K, Collection<V>>> entrySet() {
 		return delegate.entrySet();
 	}
+
 	/**
 	 * TODO: Improve this to match the way we use the class
+	 *
 	 * @return a String representation of the map.
 	 */
 	@Override

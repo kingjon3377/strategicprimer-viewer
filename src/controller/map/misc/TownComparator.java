@@ -32,6 +32,16 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 	/**
+	 * A list of comparators in the order to use them.
+	 */
+	@SuppressWarnings("QuestionableName")
+	private static final List<Comparator<ITownFixture>> COMPARATORS =
+			Arrays.asList((one, two) -> compareTownStatus(one.status(), two.status()),
+					(one, two) -> compareTownSize(one.size(), two.size()),
+					TownComparator::compareTownKind,
+					(one, two) -> one.getName().compareTo(two.getName()));
+
+	/**
 	 * @param one One town-size
 	 * @param two Another
 	 * @return the result of a comparison between them
@@ -54,6 +64,7 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 	/**
 	 * A comparator for town-statuses, to put active towns before abandoned ones before
 	 * ruined ones before burned-out ones.
+	 *
 	 * @param one one town-status
 	 * @param two another
 	 * @return the result of the comparison
@@ -80,6 +91,7 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 	/**
 	 * A comparator for towns, sorting them *only* on the basis of kind, putting
 	 * fortresses before cities before towns before fortifications before villages.
+	 *
 	 * @param one a town
 	 * @param two another
 	 * @return the result of a comparison between them only on the basis of town-kind.
@@ -124,15 +136,7 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 			return 0;
 		}
 	}
-	/**
-	 * A list of comparators in the order to use them.
-	 */
-	@SuppressWarnings("QuestionableName")
-	private static final List<Comparator<ITownFixture>> COMPARATORS =
-			Arrays.asList((one, two) -> compareTownStatus(one.status(), two.status()),
-					(one, two) -> compareTownSize(one.size(), two.size()),
-					TownComparator::compareTownKind,
-					(one, two) -> one.getName().compareTo(two.getName()));
+
 	/**
 	 * This implementation is rather a hack; fortunately, in each case I can rely on
 	 * there being only three (or four, for status) possibilities and the two towns'

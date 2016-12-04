@@ -60,57 +60,19 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-n", "--expand", ParamCount.AtLeastTwo,
-								"Expand a player's map.",
-								"Ensure a player's map covers all terrain allied villages can see."
+								   "Expand a player's map.",
+								   "Ensure a player's map covers all terrain allied " +
+										   "villages can see."
 
 			);
-	static {
-		USAGE.addSupportedOption("--current-turn=NN");
-	}
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER =
 			NullCleaner.assertNotNull(Logger.getLogger(ExpansionDriver.class.getName()));
 
-	/**
-	 * @return an object indicating how to use and invoke this driver.
-	 */
-	@Override
-	public DriverUsage usage() {
-		return USAGE;
-	}
-
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "ExpansionDriver";
-	}
-
-	/**
-	 * Run the driver.
-	 *
-	 * @param cli
-	 * @param options
-	 * @param model the driver model
-	 */
-	@Override
-	public void startDriver(final ICLIHelper cli, final SPOptions options,
-							final IDriverModel model) {
-		final IMultiMapModel mapModel;
-		if (model instanceof IMultiMapModel) {
-			mapModel = (IMultiMapModel) model;
-		} else {
-			LOGGER.warning(
-					"Expansion on a master map with no subordinate maps does nothing");
-			mapModel = new SimpleMultiMapModel(model);
-		}
-		for (final Pair<IMutableMapNG, Optional<Path>> pair : mapModel.getSubordinateMaps()) {
-			expand(mapModel.getMap(), pair.first());
-		}
+	static {
+		USAGE.addSupportedOption("--current-turn=NN");
 	}
 
 	/**
@@ -121,20 +83,25 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 		final Player currentPlayer = map.getCurrentPlayer();
 		final IllegalStateException ise =
 				new IllegalStateException(
-												"Unsupported method called on mock " +
-														"object");
+												 "Unsupported method called on mock " +
+														 "object");
 		final Collection<Point> villagePoints = map.locationStream()
 														.filter(point ->
 																		containsSwornVillage(
-																master, point,
-																currentPlayer))
+																				master,
+																				point,
+																				currentPlayer))
 														.collect(Collectors.toSet());
 		final IUnit mock = new IUnit() {
 			@Override
-			public NavigableMap<Integer, String> getAllOrders() { throw ise; }
+			public NavigableMap<Integer, String> getAllOrders() {
+				throw ise;
+			}
 
 			@Override
-			public NavigableMap<Integer, String> getAllResults() { throw ise; }
+			public NavigableMap<Integer, String> getAllResults() {
+				throw ise;
+			}
 
 			@Override
 			public String plural() {
@@ -268,7 +235,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			for (final TileFixture fix : entry.getValue()) {
 				if (fix instanceof HasOwner) {
 					map.addFixture(point,
-							fix.copy(!((HasOwner) fix).getOwner().equals(currentPlayer)));
+							fix.copy(!((HasOwner) fix).getOwner().equals
+																		  (currentPlayer)));
 				} else {
 					map.addFixture(point, fix.copy(true));
 				}
@@ -285,9 +253,10 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addSurroundingFixtures(final Point point,
-											final IMapNG master,
-											final Map<Point, Set<TileFixture>> additions,
-											final IUnit owned) {
+											   final IMapNG master,
+											   final Map<Point, Set<TileFixture>>
+													   additions,
+											   final IUnit owned) {
 		final List<TileFixture> possibilities = new ArrayList<>();
 		for (final Point neighbor : new SurroundingPointIterable(point,
 																		master
@@ -309,7 +278,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 				} else if (SimpleMovement.shouldAlwaysNotice(owned, fix)) {
 					neighborFixtures.add(fix);
 				} else if (SimpleMovement.shouldSometimesNotice(owned, fix)
-								&& !(fix instanceof CacheFixture)) {
+								   && !(fix instanceof CacheFixture)) {
 					possibilities.add(fix);
 				}
 			}
@@ -346,10 +315,11 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addSurroundingTerrain(final Point point, final IMapNG master,
-											final IMutableMapNG map,
-											final Map<Point, TileType> additions) {
+											  final IMutableMapNG map,
+											  final Map<Point, TileType> additions) {
 		for (final Point neighbor : new SurroundingPointIterable(point,
-																		map.dimensions())) {
+																		map.dimensions()
+		)) {
 			if (!additions.containsKey(neighbor)
 						&& (TileType.NotVisible == map.getBaseTerrain(neighbor))) {
 				additions.put(neighbor, master.getBaseTerrain(neighbor));
@@ -371,6 +341,47 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 												final Player player) {
 		return map.streamOtherFixtures(point).anyMatch(
 				fix -> (fix instanceof ITownFixture) &&
-							((HasOwner) fix).getOwner().equals(player));
+							   ((HasOwner) fix).getOwner().equals(player));
+	}
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE;
+	}
+
+	/**
+	 * @return a String representation of the object
+	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
+	@Override
+	public String toString() {
+		return "ExpansionDriver";
+	}
+
+	/**
+	 * Run the driver.
+	 *
+	 * @param cli
+	 * @param options
+	 * @param model   the driver model
+	 */
+	@Override
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
+							final IDriverModel model) {
+		final IMultiMapModel mapModel;
+		if (model instanceof IMultiMapModel) {
+			mapModel = (IMultiMapModel) model;
+		} else {
+			LOGGER.warning(
+					"Expansion on a master map with no subordinate maps does nothing");
+			mapModel = new SimpleMultiMapModel(model);
+		}
+		for (final Pair<IMutableMapNG, Optional<Path>> pair : mapModel
+																	  .getSubordinateMaps()) {
+			expand(mapModel.getMap(), pair.first());
+		}
 	}
 }

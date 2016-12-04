@@ -1,11 +1,9 @@
 package view.util;
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
@@ -29,17 +27,17 @@ public interface MenuItemCreator {
 	/**
 	 * Create a menu item.
 	 *
-	 * @param item     the text of the item
-	 * @param mnemonic the mnemonic key
-	 * @param accelerator    the keyboard accelerator. Null if none is wanted.
-	 * @param desc     the accessible description.
-	 * @param list     the listener to handle when the item is selected.
+	 * @param item        the text of the item
+	 * @param mnemonic    the mnemonic key
+	 * @param accelerator the keyboard accelerator. Null if none is wanted.
+	 * @param desc        the accessible description.
+	 * @param list        the listener to handle when the item is selected.
 	 * @return the configured menu item.
 	 */
 	default JMenuItem createMenuItem(final String item, final int mnemonic,
-											@Nullable final KeyStroke accelerator,
-											final String desc,
-											final ActionListener list) {
+									 @Nullable final KeyStroke accelerator,
+									 final String desc,
+									 final ActionListener list) {
 		final JMenuItem menuItem = new JMenuItem(item, mnemonic);
 		menuItem.setAccelerator(accelerator);
 		menuItem.getAccessibleContext().setAccessibleDescription(desc);

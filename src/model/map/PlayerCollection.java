@@ -32,13 +32,18 @@ import static util.NullStream.DEV_NULL;
  */
 public final class PlayerCollection implements IMutablePlayerCollection {
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger.getLogger(PlayerCollection
+																		  .class);
+	/**
 	 * The collection this class wraps.
 	 */
 	private final Map<Integer, Player> players = new HashMap<>();
 	/**
-	 * Logger.
+	 * The player for "independent" fixtures.
 	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(PlayerCollection.class);
+	private Player independent = new Player(-1, "Independent");
 
 	/**
 	 * @param player a player-id
@@ -71,8 +76,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	public boolean equals(@Nullable final Object obj) {
 		try {
 			return (this == obj) || ((obj instanceof IPlayerCollection) &&
-											isSubset((IPlayerCollection) obj, DEV_NULL,
-													"") && ((IPlayerCollection) obj)
+											 isSubset((IPlayerCollection) obj, DEV_NULL,
+													 "") && ((IPlayerCollection) obj)
 																	.isSubset(this,
 																			DEV_NULL,
 																			""));
@@ -101,7 +106,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	@Override
 	public Player getCurrentPlayer() {
 		return StreamSupport.stream(spliterator(), false).filter(Player::isCurrent)
-					.findFirst().orElse(new Player(-1, ""));
+					   .findFirst().orElse(new Player(-1, ""));
 	}
 
 	/**
@@ -179,11 +184,6 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 			return false;
 		}
 	}
-
-	/**
-	 * The player for "independent" fixtures.
-	 */
-	private Player independent = new Player(-1, "Independent");
 
 	/**
 	 * @return a player for "independent" fixtures.

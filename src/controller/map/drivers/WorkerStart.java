@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
@@ -29,9 +29,10 @@ public final class WorkerStart implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-w", "--worker", ParamCount.AtLeastOne,
-								"Manage a player's workers in units",
-								"Organize the members of a player's units."
+								   "Manage a player's workers in units",
+								   "Organize the members of a player's units."
 			);
+
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
 		USAGE.addSupportedOption("--print-empty");
@@ -51,7 +52,7 @@ public final class WorkerStart implements SimpleDriver {
 	 *
 	 * @param cli
 	 * @param options
-	 * @param model the driver-model that should be used by the app
+	 * @param model   the driver-model that should be used by the app
 	 */
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,

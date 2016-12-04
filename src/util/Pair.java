@@ -24,20 +24,6 @@ public class Pair<@NonNull L, @NonNull R> {
 	private final R second;
 
 	/**
-	 * @return the first item in the pair
-	 */
-	public L first() {
-		return first;
-	}
-
-	/**
-	 * @return the second item in the pair
-	 */
-	public R second() {
-		return second;
-	}
-
-	/**
 	 * Constructor.
 	 *
 	 * @param firstItem  The first item in the pair.
@@ -51,15 +37,29 @@ public class Pair<@NonNull L, @NonNull R> {
 	/**
 	 * Create a pair without having to specify the types.
 	 *
-	 * @param <T>    The type of the first element in the pair
-	 * @param <U>   The type of the second element in the pair
+	 * @param <T>        The type of the first element in the pair
+	 * @param <U>        The type of the second element in the pair
 	 * @param firstItem  The first element in the pair.
 	 * @param secondItem The second element in the pair.
 	 * @return a pair containing the two elements
 	 */
 	public static <@NonNull T, @NonNull U> Pair<T, U> of(final T firstItem,
-														final U secondItem) {
+														 final U secondItem) {
 		return new Pair<>(firstItem, secondItem);
+	}
+
+	/**
+	 * @return the first item in the pair
+	 */
+	public L first() {
+		return first;
+	}
+
+	/**
+	 * @return the second item in the pair
+	 */
+	public R second() {
+		return second;
 	}
 
 	/**
@@ -78,8 +78,8 @@ public class Pair<@NonNull L, @NonNull R> {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Pair)
-										&& Objects.equals(first, ((Pair) obj).first)
-										&& Objects.equals(second, ((Pair) obj).second));
+										 && Objects.equals(first, ((Pair) obj).first)
+										 && Objects.equals(second, ((Pair) obj).second));
 	}
 
 	/**

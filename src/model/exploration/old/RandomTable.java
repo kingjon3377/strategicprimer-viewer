@@ -36,9 +36,19 @@ public final class RandomTable implements EncounterTable {
 	private final List<ComparablePair<Integer, String>> table;
 
 	/**
-	 * @param point    ignored
-	 * @param terrain  ignored
-	 * @param fixtures ignored
+	 * Constructor.
+	 *
+	 * @param items the items in the table.
+	 */
+	public RandomTable(final List<ComparablePair<Integer, String>> items) {
+		table = new ArrayList<>(items);
+		Collections.sort(table, Collections.reverseOrder());
+	}
+
+	/**
+	 * @param point         ignored
+	 * @param terrain       ignored
+	 * @param fixtures      ignored
 	 * @param mapDimensions ignored
 	 * @return a random item from the table, or the last item in the table if the normal
 	 * procedure fails.
@@ -50,10 +60,11 @@ public final class RandomTable implements EncounterTable {
 		final int roll = SingletonRandom.RANDOM.nextInt(100);
 		return getLowestMatch(roll);
 	}
+
 	/**
-	 * @param point    ignored
-	 * @param terrain  ignored
-	 * @param fixtures any fixtures on the tile
+	 * @param point         ignored
+	 * @param terrain       ignored
+	 * @param fixtures      any fixtures on the tile
 	 * @param mapDimensions ignored
 	 * @return the event on that tile
 	 */
@@ -75,16 +86,6 @@ public final class RandomTable implements EncounterTable {
 			}
 		}
 		return table.get(table.size() - 1).second();
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param items the items in the table.
-	 */
-	public RandomTable(final List<ComparablePair<Integer, String>> items) {
-		table = new ArrayList<>(items);
-		Collections.sort(table, Collections.reverseOrder());
 	}
 
 	/**

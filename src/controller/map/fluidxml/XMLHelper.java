@@ -49,22 +49,30 @@ import util.Warning;
  */
 public final class XMLHelper {
 	/**
+	 * A parser for numeric data.
+	 */
+	private static final NumberFormat NUM_PARSER = NullCleaner
+														   .assertNotNull(NumberFormat
+																				  .getIntegerInstance());
+
+	/**
 	 * Do not instantiate.
 	 */
 	private XMLHelper() {
 		// do not instantiate
 	}
+
 	/**
 	 * Require that an element be one of the specified tags.
 	 *
 	 * @param element the element to check
-	 * @param parent the parent tag
+	 * @param parent  the parent tag
 	 * @param tags    the tags we accept here
 	 * @throws SPFormatException on a tag other than one we accept
 	 */
 	public static void requireTag(final StartElement element,
 								  final QName parent,
-									 final String... tags) throws SPFormatException {
+								  final String... tags) throws SPFormatException {
 		if (!EqualsAny.equalsAny(
 				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
@@ -75,6 +83,7 @@ public final class XMLHelper {
 			throw new UnwantedChildException(parent, element);
 		}
 	}
+
 	/**
 	 * Get a parameter from the XML.
 	 *
@@ -84,7 +93,7 @@ public final class XMLHelper {
 	 * @throws SPFormatException if the tag doesn't have that parameter.
 	 */
 	public static String getAttribute(final StartElement element,
-										 final String param) throws SPFormatException {
+									  final String param) throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
 			throw new MissingPropertyException(element, param);
@@ -107,7 +116,7 @@ public final class XMLHelper {
 	 * @return the value for that parameter
 	 */
 	public static String getAttribute(final StartElement element,
-										 final String param, final String defaultValue) {
+									  final String param, final String defaultValue) {
 		final Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
 			return defaultValue;
@@ -126,9 +135,9 @@ public final class XMLHelper {
 	 * @throws SPFormatException if mandatory and missing
 	 */
 	public static void requireNonEmptyAttribute(final StartElement element,
-												   final String param,
-												   final boolean mandatory,
-												   final Warning warner)
+												final String param,
+												final boolean mandatory,
+												final Warning warner)
 			throws SPFormatException {
 		if (getAttribute(element, param, "").isEmpty()) {
 			final SPFormatException except = new MissingPropertyException(element,
@@ -150,7 +159,7 @@ public final class XMLHelper {
 	 * @throws SPFormatException on unwanted child
 	 */
 	public static void spinUntilEnd(final QName tag,
-									   final Iterable<XMLEvent> reader)
+									final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
@@ -158,7 +167,8 @@ public final class XMLHelper {
 							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				throw new UnwantedChildException(tag,
-														NullCleaner.assertNotNull(event.asStartElement()));
+														NullCleaner.assertNotNull(
+																event.asStartElement()));
 			} else if (event.isEndElement()
 							   && tag.equals(event.asEndElement().getName())) {
 				break;
@@ -178,13 +188,15 @@ public final class XMLHelper {
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
 	public static int getOrGenerateID(final StartElement element,
-										 final Warning warner, final IDRegistrar idFactory)
+									  final Warning warner, final IDRegistrar
+																	idFactory)
 			throws SPFormatException {
 		if (hasAttribute(element, "id")) {
 			try {
 				return idFactory.register(warner, NumberFormat.getIntegerInstance()
-												  .parse(getAttribute(element, "id"))
-												  .intValue());
+														  .parse(getAttribute(element,
+																  "id"))
+														  .intValue());
 			} catch (final NumberFormatException | ParseException except) {
 				throw new MissingPropertyException(element, "id", except);
 			}
@@ -193,15 +205,16 @@ public final class XMLHelper {
 			return idFactory.createID();
 		}
 	}
+
 	/**
 	 * @param element the current tag
-	 * @param param the parameter we want
+	 * @param param   the parameter we want
 	 * @return it if it's present in either the default namespace or our namespace, or
 	 * null if not present
 	 */
 	@Nullable
 	public static Attribute getAttributeByName(final StartElement element,
-												  final String param) {
+											   final String param) {
 		final Attribute retval =
 				element.getAttributeByName(new QName(ISPReader.NAMESPACE, param));
 		if (retval == null) {
@@ -210,13 +223,14 @@ public final class XMLHelper {
 			return retval;
 		}
 	}
+
 	/**
 	 * @param element the current tag
 	 * @param param   the parameter we want
 	 * @return whether the tag has that parameter
 	 */
 	public static boolean hasAttribute(final StartElement element,
-										  final String param) {
+									   final String param) {
 		return getAttributeByName(element, param) != null;
 	}
 
@@ -230,9 +244,9 @@ public final class XMLHelper {
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	public static String getAttrWithDeprecatedForm(final StartElement element,
-													  final String preferred,
-													  final String deprecated,
-													  final Warning warner)
+												   final String preferred,
+												   final String deprecated,
+												   final Warning warner)
 			throws SPFormatException {
 		final Attribute prefProp = getAttributeByName(element, preferred);
 		final Attribute deprecatedProp = getAttributeByName(element, deprecated);
@@ -270,7 +284,7 @@ public final class XMLHelper {
 
 	/**
 	 * @param ostream the stream to write the tabs to
-	 * @param tabs a non-negative integer: how many tabs to add to the stream
+	 * @param tabs    a non-negative integer: how many tabs to add to the stream
 	 * @throws XMLStreamException on I/O error writing to ostream
 	 */
 	public static void indent(final XMLStreamWriter ostream, final int tabs)
@@ -283,8 +297,9 @@ public final class XMLHelper {
 
 	/**
 	 * If the object has a custom (non-default) image, write it to XML.
+	 *
 	 * @param ostream the stream to write to
-	 * @param obj an object being written out that might have a custom image
+	 * @param obj     an object being written out that might have a custom image
 	 * @throws XMLStreamException on I/O error when writing
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
@@ -298,8 +313,9 @@ public final class XMLHelper {
 
 	/**
 	 * If the object has a custom (non-default) image, write it to XML.
+	 *
 	 * @param element the tag to attach the attribute to
-	 * @param obj an object being written out that might have a custom image
+	 * @param obj     an object being written out that might have a custom image
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeImage(final Element element, final HasImage obj) {
@@ -308,18 +324,11 @@ public final class XMLHelper {
 			writeNonEmptyAttribute(element, "image", image);
 		}
 	}
-	/**
-	 * A parser for numeric data.
-	 */
-	private static final NumberFormat NUM_PARSER = NullCleaner
-														   .assertNotNull(NumberFormat
-																				  .getIntegerInstance());
-
 
 	/**
 	 * Parse an integer.
 	 *
-	 * @param str  the text to parse
+	 * @param str      the text to parse
 	 * @param location the current location in the document
 	 * @return the result of parsing the text
 	 * @throws SPFormatException if the string is non-numeric or otherwise malformed
@@ -332,6 +341,7 @@ public final class XMLHelper {
 			throw new SPMalformedInputException(location, e);
 		}
 	}
+
 	/**
 	 * Parse an integer parameter.
 	 *
@@ -339,10 +349,11 @@ public final class XMLHelper {
 	 * @param parameter the name of the parameter
 	 * @return the result of parsing the text
 	 * @throws SPFormatException if the tag doesn't have that parameter or if its
-	 * value is non-numeric or otherwise malformed
+	 * value is
+	 *                           non-numeric or otherwise malformed
 	 */
 	public static int getIntegerAttribute(final StartElement tag,
-											 final String parameter)
+										  final String parameter)
 			throws SPFormatException {
 		return parseInt(getAttribute(tag, parameter),
 				NullCleaner.assertNotNull(tag.getLocation()));
@@ -359,8 +370,8 @@ public final class XMLHelper {
 	 *                           malformed
 	 */
 	public static int getIntegerAttribute(final StartElement tag,
-											 final String parameter,
-											 final int defaultValue)
+										  final String parameter,
+										  final int defaultValue)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
@@ -373,14 +384,16 @@ public final class XMLHelper {
 			return parseInt(val, NullCleaner.assertNotNull(tag.getLocation()));
 		}
 	}
+
 	/**
 	 * Write the necessary number of tab characters and a tag. Does not write the right
 	 * bracket to close the tag.
+	 *
 	 * @param ostream the stream to write to
-	 * @param tag the tag to write
-	 * @param indent the indentation level. If positive, write a newline before
-	 *                  indenting.
-	 * @param leaf Whether to automatically close the tag (use writeEmptyElement()
+	 * @param tag     the tag to write
+	 * @param indent  the indentation level. If positive, write a newline before
+	 *                indenting.
+	 * @param leaf    Whether to automatically close the tag (use writeEmptyElement()
 	 * @throws XMLStreamException on I/O error writing to stream
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
@@ -399,11 +412,13 @@ public final class XMLHelper {
 			ostream.writeDefaultNamespace(ISPReader.NAMESPACE);
 		}
 	}
+
 	/**
 	 * Write an attribute. And a space before it.
+	 *
 	 * @param ostream the stream to write to
-	 * @param name the name of the attribute to write
-	 * @param value the value of the attribute
+	 * @param name    the name of the attribute to write
+	 * @param value   the value of the attribute
 	 * @throws XMLStreamException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
@@ -411,22 +426,26 @@ public final class XMLHelper {
 									  final String value) throws XMLStreamException {
 		ostream.writeAttribute(ISPReader.NAMESPACE, name, value);
 	}
+
 	/**
 	 * Write an attribute.
+	 *
 	 * @param element the element to add the attribute to
-	 * @param name the name of the attribute to write
-	 * @param value the value of the attribute
+	 * @param name    the name of the attribute to write
+	 * @param value   the value of the attribute
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeAttribute(final Element element, final String name,
 									  final String value) {
 		element.setAttribute(name, value);
 	}
+
 	/**
 	 * Write an attribute whose value is an integer. And the space before it.
+	 *
 	 * @param ostream the stream to write to
-	 * @param name the name of the attribute to write
-	 * @param value the value of the attribute
+	 * @param name    the name of the attribute to write
+	 * @param value   the value of the attribute
 	 * @throws XMLStreamException on I/O error
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
@@ -435,22 +454,26 @@ public final class XMLHelper {
 			throws XMLStreamException {
 		ostream.writeAttribute(ISPReader.NAMESPACE, name, Integer.toString(value));
 	}
+
 	/**
 	 * Write an attribute whose value is an integer.
+	 *
 	 * @param element the tag to attach the attribute to
-	 * @param name the name of the attribute to write
-	 * @param value the value of the attribute
+	 * @param name    the name of the attribute to write
+	 * @param value   the value of the attribute
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeIntegerAttribute(final Element element,
 											 final String name, final int value) {
 		element.setAttribute(name, Integer.toString(value));
 	}
+
 	/**
 	 * Write an attribute, and a space before it, if its value is nonempty.
+	 *
 	 * @param ostream the stream to write to
-	 * @param name the name of the attribute to write
-	 * @param value the value of the attribute
+	 * @param name    the name of the attribute to write
+	 * @param value   the value of the attribute
 	 * @throws XMLStreamException on error creating XML
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
@@ -461,11 +484,13 @@ public final class XMLHelper {
 			ostream.writeAttribute(ISPReader.NAMESPACE, name, value);
 		}
 	}
+
 	/**
 	 * Write an attribute if its value is nonempty.
+	 *
 	 * @param element the tag to attach the attribute to
-	 * @param name the name of the attribute to write
-	 * @param value the value of the attribute
+	 * @param name    the name of the attribute to write
+	 * @param value   the value of the attribute
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeNonEmptyAttribute(final Element element, final String name,
@@ -474,11 +499,13 @@ public final class XMLHelper {
 			element.setAttribute(name, value);
 		}
 	}
+
 	/**
 	 * Write an attribute whose value is a boolean value. And the space before it.
+	 *
 	 * @param ostream the stream to write to
-	 * @param name the name of the attribute to write
-	 * @param value the value of the attribute
+	 * @param name    the name of the attribute to write
+	 * @param value   the value of the attribute
 	 * @throws XMLStreamException on error creating XML
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
@@ -487,11 +514,13 @@ public final class XMLHelper {
 			throws XMLStreamException {
 		ostream.writeAttribute(ISPReader.NAMESPACE, name, Boolean.toString(value));
 	}
+
 	/**
 	 * Write an attribute whose value is a boolean value.
+	 *
 	 * @param element the element to attach the attribute to
-	 * @param name the name of the attribute to write
-	 * @param value the value of the attribute
+	 * @param name    the name of the attribute to write
+	 * @param value   the value of the attribute
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeBooleanAttribute(final Element element,
@@ -499,6 +528,7 @@ public final class XMLHelper {
 																		value) {
 		element.setAttribute(name, Boolean.toString(value));
 	}
+
 	/**
 	 * If the specified tag has an "owner" property, return the player it indicates;
 	 * otherwise warn about its absence and return the "independent" player from the
@@ -515,7 +545,8 @@ public final class XMLHelper {
 												final IPlayerCollection players)
 			throws SPFormatException {
 		final Player retval;
-		if (hasAttribute(element, "owner") && !getAttribute(element, "owner").isEmpty()) {
+		if (hasAttribute(element, "owner") && !getAttribute(element, "owner").isEmpty
+																					  ()) {
 			retval = players.getPlayer(getIntegerAttribute(element, "owner"));
 		} else {
 			warner.warn(new MissingPropertyException(element, "owner"));
@@ -523,14 +554,16 @@ public final class XMLHelper {
 		}
 		return retval;
 	}
+
 	/**
 	 * Set an object's image property if an image filename is specified in the XML.
-	 * @param obj the object in question
+	 *
+	 * @param obj     the object in question
 	 * @param element the current XML element
-	 * @param warner to use to warn if the object can't have an image but the XML
-	 *                  specifies one
+	 * @param warner  to use to warn if the object can't have an image but the XML
+	 *                specifies one
+	 * @param <T>     the type of the object
 	 * @return the object
-	 * @param <T> the type of the object
 	 */
 	public static <T> T setImage(final T obj, final StartElement element,
 								 final Warning warner) {
@@ -541,8 +574,9 @@ public final class XMLHelper {
 		}
 		return obj;
 	}
+
 	/**
-	 * @param tag a tag
+	 * @param tag      a tag
 	 * @param document the Document to use as an Element factory.
 	 * @return a properly namespaced Element for that tag
 	 */

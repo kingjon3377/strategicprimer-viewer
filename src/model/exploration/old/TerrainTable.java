@@ -45,9 +45,9 @@ public final class TerrainTable implements EncounterTable {
 	}
 
 	/**
-	 * @param point    the location of the tile
-	 * @param terrain  the terrain at the location
-	 * @param fixtures ignored
+	 * @param point         the location of the tile
+	 * @param terrain       the terrain at the location
+	 * @param fixtures      ignored
 	 * @param mapDimensions ignored
 	 * @return what the table has for that kind of tile.
 	 */
@@ -58,14 +58,16 @@ public final class TerrainTable implements EncounterTable {
 		if (mapping.containsKey(terrain)) {
 			return NullCleaner.assertNotNull(mapping.get(terrain));
 		} else {
-			throw new IllegalArgumentException("Table does not account for that terrain " +
-													"type");
+			throw new IllegalArgumentException("Table does not account for that terrain" +
+													   " " +
+													   "type");
 		}
 	}
+
 	/**
-	 * @param point    ignored
-	 * @param terrain  ignored
-	 * @param fixtures any fixtures on the tile
+	 * @param point         ignored
+	 * @param terrain       ignored
+	 * @param fixtures      any fixtures on the tile
 	 * @param mapDimensions ignored
 	 * @return the event on that tile
 	 */
@@ -76,8 +78,9 @@ public final class TerrainTable implements EncounterTable {
 		if (mapping.containsKey(terrain)) {
 			return NullCleaner.assertNotNull(mapping.get(terrain));
 		} else {
-			throw new IllegalArgumentException("Table does not account for that terrain " +
-													"type");
+			throw new IllegalArgumentException("Table does not account for that terrain" +
+													   " " +
+													   "type");
 		}
 	}
 

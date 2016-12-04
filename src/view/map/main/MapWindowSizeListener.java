@@ -2,7 +2,7 @@ package view.map.main;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JComponent;
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

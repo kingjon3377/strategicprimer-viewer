@@ -42,15 +42,17 @@ public final class QuadrantTable implements EncounterTable {
 	 * The collection of collections of results.
 	 */
 	private final Map<MapDimensions, Map<Point, String>> quadrants = new HashMap<>();
+
 	/**
 	 * Constructor.
+	 *
 	 * @param mapRows the size of the map in rows
 	 * @param mapCols the size of the map in columns
-	 * @param rows the number of rows of quadrants
-	 * @param items the items to allocate by quadrant
+	 * @param rows    the number of rows of quadrants
+	 * @param items   the items to allocate by quadrant
 	 */
 	public QuadrantTable(final int mapRows, final int mapCols, final int rows,
-						final List<String> items) {
+						 final List<String> items) {
 		possibleResults = new ArrayList<>(items);
 		quadrantRows = rows;
 		final MapDimensions dimensions = new MapDimensions(mapRows, mapCols, 2);
@@ -60,8 +62,20 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
+	 * Constructor.
+	 *
+	 * @param rows  the number of rows of quadrants
+	 * @param items the items to allocate by quadrant
+	 */
+	public QuadrantTable(final int rows, final List<String> items) {
+		possibleResults = new ArrayList<>(items);
+		quadrantRows = rows;
+	}
+
+	/**
 	 * Get the maximum-Point-to-event mapping for a given map size, possibly from the
 	 * cache.
+	 *
 	 * @param mapDimensions the dimensions of the map
 	 * @return the quadrant mapping
 	 */
@@ -91,19 +105,8 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
-	 * Constructor.
-	 *
-	 * @param rows  the number of rows of quadrants
-	 * @param items the items to allocate by quadrant
-	 */
-	public QuadrantTable(final int rows, final List<String> items) {
-		possibleResults = new ArrayList<>(items);
-		quadrantRows = rows;
-	}
-
-	/**
-	 * @param row the row of a tile
-	 * @param col the column of a tile
+	 * @param row           the row of a tile
+	 * @param col           the column of a tile
 	 * @param mapDimensions the dimensions of the map
 	 * @return the result from the quadrant containing that tile.
 	 */
@@ -121,9 +124,9 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
-	 * @param point    the location of the tile
-	 * @param terrain  ignored
-	 * @param fixtures ignored
+	 * @param point         the location of the tile
+	 * @param terrain       ignored
+	 * @param fixtures      ignored
 	 * @param mapDimensions the dimensions of the map
 	 * @return what the table has for that tile
 	 */
@@ -133,10 +136,11 @@ public final class QuadrantTable implements EncounterTable {
 								final MapDimensions mapDimensions) {
 		return getQuadrantValue(point.getRow(), point.getCol(), mapDimensions);
 	}
+
 	/**
-	 * @param point    ignored
-	 * @param terrain  ignored
-	 * @param fixtures any fixtures on the tile
+	 * @param point         ignored
+	 * @param terrain       ignored
+	 * @param fixtures      any fixtures on the tile
 	 * @param mapDimensions the dimensions of the map
 	 * @return the event on that tile
 	 */

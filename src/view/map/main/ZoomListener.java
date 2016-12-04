@@ -72,15 +72,15 @@ public final class ZoomListener implements ActionListener {
 				if ((selection.getCol() - (vDims.getWidth() / 2)) <= 0) {
 					leftColumn = 0;
 				} else if ((selection.getCol() + (vDims.getWidth() / 2)) >=
-								dims.getColumns()) {
+								   dims.getColumns()) {
 					leftColumn = dims.getColumns() - vDims.getWidth();
 				} else {
 					leftColumn = selection.getCol() - (vDims.getWidth() / 2);
 				}
 				model.setDimensions(
 						new VisibleDimensions(topRow, topRow + dims.getRows(),
-													leftColumn,
-													leftColumn + dims.getColumns()));
+													 leftColumn,
+													 leftColumn + dims.getColumns()));
 				break;
 			default:
 				TypesafeLogger.getLogger(ZoomListener.class)

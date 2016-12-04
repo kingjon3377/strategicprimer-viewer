@@ -29,9 +29,9 @@ public interface EncounterTable {
 	 * Generates an "encounter." For QuadrantTables this is always the same for each
 	 * tile for random event tables the result will be randomly selected from that table.
 	 *
-	 * @param point    the location of the tile
-	 * @param terrain  the terrain at the location
-	 * @param fixtures the fixtures on the tile, if any
+	 * @param point         the location of the tile
+	 * @param terrain       the terrain at the location
+	 * @param fixtures      the fixtures on the tile, if any
 	 * @param mapDimensions the dimensions of the map
 	 * @return an appropriate event for that tile
 	 */
@@ -42,9 +42,9 @@ public interface EncounterTable {
 	 * Generates an "encounter." For QuadrantTables this is always the same for each
 	 * tile for random event tables the result will be randomly selected from that table.
 	 *
-	 * @param point    the location of the tile
-	 * @param terrain  the terrain at the location
-	 * @param fixtures the fixtures on the tile, if any
+	 * @param point         the location of the tile
+	 * @param terrain       the terrain at the location
+	 * @param fixtures      the fixtures on the tile, if any
 	 * @param mapDimensions the dimensions of the map
 	 * @return an appropriate event for that tile
 	 */

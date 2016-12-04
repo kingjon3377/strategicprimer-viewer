@@ -91,7 +91,7 @@ public final class IDFactoryFiller {
 	 * @return an ID factory that won't generate an ID already used in the collection
 	 */
 	public static IDRegistrar createFactory(final Iterable<@NonNull ? extends IFixture>
-												iter) {
+													iter) {
 		final IDRegistrar retval = new IDFactory();
 		recursiveRegister(retval, iter);
 		return retval;
@@ -103,7 +103,8 @@ public final class IDFactoryFiller {
 	 *             IDs marked as used.
 	 */
 	private static void recursiveRegister(final IDRegistrar idf,
-										final Iterable<@NonNull ? extends IFixture> iter) {
+										  final Iterable<@NonNull ? extends IFixture>
+												  iter) {
 		for (final IFixture fix : iter) {
 			final int idNum = fix.getID();
 			if (idf.isIDUnused(idNum)) {

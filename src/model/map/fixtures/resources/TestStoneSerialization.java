@@ -43,23 +43,26 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 	private static final Pattern KIND_PATTERN =
 			NullCleaner.assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
 	/**
+	 * The stone kind to use for this test.
+	 */
+	private final StoneKind kind;
+
+	/**
 	 * @param stone the stone kind to use for this test
 	 */
 	public TestStoneSerialization(final StoneKind stone) {
 		kind = stone;
 	}
-	/**
-	 * The stone kind to use for this test.
-	 */
-	private final StoneKind kind;
+
 	/**
 	 * @return a collection of values to use for tests
 	 */
 	@Parameterized.Parameters
 	public static Collection<Object[]> generateData() {
 		return Stream.of(StoneKind.values()).map(stoneKind -> new Object[]{stoneKind})
-					.collect(Collectors.toList());
+					   .collect(Collectors.toList());
 	}
+
 	/**
 	 * Test serialization of StoneDeposits.
 	 *
@@ -78,6 +81,7 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 		assertImageSerialization("Stone image property is preserved",
 				new StoneDeposit(kind, 10, 3));
 	}
+
 	/**
 	 * Test that the old XML idiom ("stone" as the property for the kind of stone) is
 	 * deprecated.
@@ -104,6 +108,7 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
 				oldKindProperty);
 	}
+
 	/**
 	 * Test that the required properties are actually required.
 	 *

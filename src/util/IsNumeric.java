@@ -28,6 +28,11 @@ public final class IsNumeric {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(IsNumeric.class);
+	/**
+	 * The NumberFormat object we use for parsing.
+	 */
+	private static final NumberFormat PARSER =
+			assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
 	 * Do not instantiate.
@@ -35,12 +40,6 @@ public final class IsNumeric {
 	private IsNumeric() {
 		// Do nothing.
 	}
-
-	/**
-	 * The NumberFormat object we use for parsing.
-	 */
-	private static final NumberFormat PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
 	 * @param input a String

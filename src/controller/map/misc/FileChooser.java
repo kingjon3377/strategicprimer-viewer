@@ -1,6 +1,6 @@
 package controller.map.misc;
 
-import java.awt.Component;
+import java.awt.*;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
@@ -9,8 +9,7 @@ import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -35,37 +34,9 @@ import static javax.swing.JFileChooser.APPROVE_OPTION;
  */
 public final class FileChooser {
 	/**
-	 * Possible operations. TODO: We'd like to support CUSTOM.
-	 */
-	public enum FileChooserOperation {
-		/**
-		 * Specifies the Open dialog.
-		 */
-		Open(JFileChooser.OPEN_DIALOG),
-		/**
-		 * Specifies the Save (or Save As) dialog.
-		 */
-		Save(JFileChooser.SAVE_DIALOG);
-		/**
-		 * The equivalent JFileChooser-class constant.
-		 */
-		protected final int operationId;
-
-		/**
-		 * @param id the equivalent JFileChooser-class constant.
-		 */
-		FileChooserOperation(final int id) {
-			operationId = id;
-		}
-	}
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(FileChooser.class);
-	/**
-	 * The file we'll return, if valid.
-	 */
-	private Optional<Path> file;
 	/**
 	 * A file chooser.
 	 */
@@ -75,14 +46,18 @@ public final class FileChooser {
 	 */
 	private final ToIntFunction<@Nullable Component> chooserFunc;
 	/**
+	 * The file we'll return, if valid.
+	 */
+	private Optional<Path> file;
+	/**
 	 * Constructor allowing the caller to pass in a file-chooser to have the user choose
 	 * with.
 	 *
 	 * TODO: Provide constructor taking the operation but not a file-chooser
 	 *
-	 * @param loc the file to return
+	 * @param loc         the file to return
 	 * @param fileChooser the file-chooser to use
-	 * @param operation which operation to use.
+	 * @param operation   which operation to use.
 	 */
 	public FileChooser(final Optional<Path> loc, final JFileChooser fileChooser,
 					   final FileChooserOperation operation) {
@@ -98,9 +73,10 @@ public final class FileChooser {
 			break;
 		default:
 			throw new IllegalArgumentException("Only open and save " +
-													"operations are supported");
+													   "operations are supported");
 		}
 	}
+
 	/**
 	 * Constructor. When the filename is asked for, if the given value is valid, we'll
 	 * return it instead of showing a dialog.
@@ -117,6 +93,30 @@ public final class FileChooser {
 	 */
 	public FileChooser() {
 		this(Optional.empty());
+	}
+
+	/**
+	 * invokeAndWait(), and throw a ChoiceInterruptedException if interrupted or
+	 * otherwise
+	 * failing.
+	 *
+	 * @param runnable the runnable to run.
+	 * @throws ChoiceInterruptedException on error
+	 */
+	private static void invoke(final Runnable runnable)
+			throws ChoiceInterruptedException {
+		try {
+			SwingUtilities.invokeAndWait(runnable);
+		} catch (final InvocationTargetException except) {
+			final Throwable cause = except.getCause();
+			if (cause == null) {
+				throw new ChoiceInterruptedException(except);
+			} else {
+				throw new ChoiceInterruptedException(cause);
+			}
+		} catch (final InterruptedException except) {
+			throw new ChoiceInterruptedException(except);
+		}
 	}
 
 	/**
@@ -150,8 +150,9 @@ public final class FileChooser {
 				invoke(() -> {
 					final int status = chooserFunc.applyAsInt(null);
 					if (status == APPROVE_OPTION) {
-						file = Optional.of(NullCleaner.valueOrDefault(fileChooser.getSelectedFile(),
-												new File("")).toPath());
+						file = Optional.of(
+								NullCleaner.valueOrDefault(fileChooser.getSelectedFile(),
+										new File("")).toPath());
 						if (file.toString().isEmpty()) {
 							LOGGER.severe("Selection supposedly empty");
 						}
@@ -168,9 +169,20 @@ public final class FileChooser {
 			throw new ChoiceInterruptedException();
 		}
 	}
+
+	/**
+	 * (Re-)set the file to return.
+	 *
+	 * @param loc the file to return
+	 */
+	public void setFile(final Optional<Path> loc) {
+		file = loc;
+	}
+
 	/**
 	 * Allow the user to choose a file, if necessary, and pass that file to the given
 	 * consumer. If the operation is canceled, do nothing.
+	 *
 	 * @param consumer something that takes a File.
 	 */
 	public void call(final Consumer<Path> consumer) {
@@ -182,37 +194,39 @@ public final class FileChooser {
 					interruption);
 		}
 	}
+
 	/**
-	 * invokeAndWait(), and throw a ChoiceInterruptedException if interrupted or
-	 * otherwise
-	 * failing.
-	 *
-	 * @param runnable the runnable to run.
-	 * @throws ChoiceInterruptedException on error
+	 * @return a String representation of the object
 	 */
-	private static void invoke(final Runnable runnable)
-			throws ChoiceInterruptedException {
-		try {
-			SwingUtilities.invokeAndWait(runnable);
-		} catch (final InvocationTargetException except) {
-			final Throwable cause = except.getCause();
-			if (cause == null) {
-				throw new ChoiceInterruptedException(except);
-			} else {
-				throw new ChoiceInterruptedException(cause);
-			}
-		} catch (final InterruptedException except) {
-			throw new ChoiceInterruptedException(except);
-		}
+	@SuppressWarnings("MethodReturnAlwaysConstant")
+	@Override
+	public String toString() {
+		return "FileChooser";
 	}
 
 	/**
-	 * (Re-)set the file to return.
-	 *
-	 * @param loc the file to return
+	 * Possible operations. TODO: We'd like to support CUSTOM.
 	 */
-	public void setFile(final Optional<Path> loc) {
-		file = loc;
+	public enum FileChooserOperation {
+		/**
+		 * Specifies the Open dialog.
+		 */
+		Open(JFileChooser.OPEN_DIALOG),
+		/**
+		 * Specifies the Save (or Save As) dialog.
+		 */
+		Save(JFileChooser.SAVE_DIALOG);
+		/**
+		 * The equivalent JFileChooser-class constant.
+		 */
+		protected final int operationId;
+
+		/**
+		 * @param id the equivalent JFileChooser-class constant.
+		 */
+		FileChooserOperation(final int id) {
+			operationId = id;
+		}
 	}
 
 	/**
@@ -236,14 +250,5 @@ public final class FileChooser {
 		public ChoiceInterruptedException() {
 			super("No file was selected");
 		}
-	}
-
-	/**
-	 * @return a String representation of the object
-	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
-	@Override
-	public String toString() {
-		return "FileChooser";
 	}
 }

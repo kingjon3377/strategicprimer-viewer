@@ -25,10 +25,13 @@ import util.LineEnd;
  */
 public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
 	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
 	 * What kind of fairy (great, lesser, snow ...).
 	 */
 	private String kind;
-
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -66,6 +69,14 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
+	}
+
+	/**
 	 * @return a String representation of the fairy
 	 */
 	@Override
@@ -88,7 +99,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) ||
-					((obj instanceof Fairy) && kind.equals(((Fairy) obj).kind) &&
+					   ((obj instanceof Fairy) && kind.equals(((Fairy) obj).kind) &&
 								(id == ((Fairy) obj).id));
 	}
 
@@ -99,11 +110,6 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -158,11 +164,11 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
-	 * @param nKind the new kind
+	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
+	public String getImage() {
+		return image;
 	}
 
 	/**
@@ -171,14 +177,6 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**

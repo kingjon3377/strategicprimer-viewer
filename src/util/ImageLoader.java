@@ -1,7 +1,6 @@
 package util;
 
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +8,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import model.map.TileType;
 import view.map.main.TileUIHelper;
 
@@ -38,16 +36,14 @@ public final class ImageLoader {
 	 * Singleton instance.
 	 */
 	private static final ImageLoader LOADER = new ImageLoader();
-
-	/**
-	 * An icon cache.
-	 */
-	private final Map<String, Icon> iconCache = new HashMap<>();
-
 	/**
 	 * The size of fixture icons.
 	 */
 	private static final int ICON_SIZE = 20;
+	/**
+	 * An icon cache.
+	 */
+	private final Map<String, Icon> iconCache = new HashMap<>();
 	/**
 	 * The cache.
 	 */

@@ -57,15 +57,6 @@ public final class CompactExplorableReader
 	}
 
 	/**
-	 * @param tag a tag
-	 * @return whether we support it
-	 */
-	@Override
-	public boolean isSupportedTag(final String tag) {
-		return SUPP_TAGS.contains(tag);
-	}
-
-	/**
 	 * @param element a tag
 	 * @return the value of its 'dc' property.
 	 * @throws SPFormatException on SP format problem
@@ -76,12 +67,22 @@ public final class CompactExplorableReader
 	}
 
 	/**
-	 * @param element      the XML element to parse
-	 * @param parent       the parent tag
-	 *@param players   the collection of players
+	 * @param tag a tag
+	 * @return whether we support it
+	 */
+	@Override
+	public boolean isSupportedTag(final String tag) {
+		return SUPP_TAGS.contains(tag);
+	}
+
+	/**
+	 * @param element   the XML element to parse
+	 * @param parent    the parent tag
+	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @param stream    the stream to read more elements from     @return the parsed resource
+	 * @param stream    the stream to read more elements from     @return the parsed
+	 *                  resource
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
@@ -117,7 +118,7 @@ public final class CompactExplorableReader
 	 */
 	@Override
 	public void write(final Appendable ostream, final ExplorableFixture obj,
-					final int indent) throws IOException {
+					  final int indent) throws IOException {
 		if (obj instanceof Battlefield) {
 			writeTag(ostream, "battlefield", indent);
 		} else if (obj instanceof Cave) {

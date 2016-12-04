@@ -29,6 +29,10 @@ import static util.NullCleaner.assertNotNull;
 public class ResourcePile
 		implements UnitMember, FortressMember, HasMutableKind, HasMutableImage {
 	/**
+	 * A quantity of zero.
+	 */
+	private static final Number ZERO = Integer.valueOf(0);
+	/**
 	 * The ID # of the resource pile.
 	 */
 	private final int id;
@@ -44,10 +48,6 @@ public class ResourcePile
 	 * How much of that thing is in the pile.
 	 */
 	private Number quantity;
-	/**
-	 * A quantity of zero.
-	 */
-	private static final Number ZERO = Integer.valueOf(0);
 	/**
 	 * The units the quantity is measured in.
 	 */
@@ -69,7 +69,8 @@ public class ResourcePile
 	 * @param qtyUnit     what units the quantity is measured in
 	 */
 	public ResourcePile(final int idNum, final String resKind,
-						final String resContents, final Number qty, final String qtyUnit) {
+						final String resContents, final Number qty,
+						final String qtyUnit) {
 		id = idNum;
 		kind = resKind;
 		contents = resContents;
@@ -124,19 +125,19 @@ public class ResourcePile
 	}
 
 	/**
-	 * @param img the filename of an image to use for this implement
-	 */
-	@Override
-	public void setImage(final String img) {
-		image = img;
-	}
-
-	/**
 	 * @return the filename of an image to use for this implement
 	 */
 	@Override
 	public String getImage() {
 		return image;
+	}
+
+	/**
+	 * @param img the filename of an image to use for this implement
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
 	}
 
 	/**
@@ -147,9 +148,9 @@ public class ResourcePile
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof ResourcePile) && kind.equals(((ResourcePile) fix).kind) &&
-					contents.equals(((ResourcePile) fix).contents) &&
-					(quantity == ((ResourcePile) fix).quantity) &&
-					unit.equals(((ResourcePile) fix).unit);
+					   contents.equals(((ResourcePile) fix).contents) &&
+					   (quantity == ((ResourcePile) fix).quantity) &&
+					   unit.equals(((ResourcePile) fix).unit);
 	}
 
 	/**
@@ -230,6 +231,7 @@ public class ResourcePile
 	/**
 	 * Using Number implementations other than Integer or BigDecimal may lead to
 	 * unwanted behavior (such as either exceptions or data loss) down the line.
+	 *
 	 * @param qty the new quantity of resource in the pile.
 	 */
 	public void setQuantity(final Number qty) {
@@ -260,8 +262,8 @@ public class ResourcePile
 	public int hashCode() {
 		final int prime = 31;
 		return (prime * ((prime * ((prime * ((prime * (prime + contents.hashCode())) +
-													id)) + kind.hashCode())) +
-								quantity.intValue())) + unit.hashCode();
+													 id)) + kind.hashCode())) +
+								 quantity.intValue())) + unit.hashCode();
 	}
 
 	/**
@@ -271,13 +273,14 @@ public class ResourcePile
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof ResourcePile) &&
-										(id == ((ResourcePile) obj).id) &&
-										quantity.equals(((ResourcePile) obj).quantity) &&
-										contents.equals(((ResourcePile) obj)
-																.contents) &&
-										kind.equals(((ResourcePile) obj).kind) &&
-										unit.equals(((ResourcePile) obj).unit) &&
-										(created == ((ResourcePile) obj).created));
+										 (id == ((ResourcePile) obj).id) &&
+										 quantity.equals(((ResourcePile) obj)
+																 .quantity) &&
+										 contents.equals(((ResourcePile) obj)
+																 .contents) &&
+										 kind.equals(((ResourcePile) obj).kind) &&
+										 unit.equals(((ResourcePile) obj).unit) &&
+										 (created == ((ResourcePile) obj).created));
 	}
 
 	/**
@@ -302,6 +305,13 @@ public class ResourcePile
 	}
 
 	/**
+	 * @return the turn on which the resource was created
+	 */
+	public int getCreated() {
+		return created;
+	}
+
+	/**
 	 * @param createdTurn the turn on which the resource was created
 	 */
 	public void setCreated(final int createdTurn) {
@@ -310,12 +320,5 @@ public class ResourcePile
 		} else {
 			created = createdTurn;
 		}
-	}
-
-	/**
-	 * @return the turn on which the resource was created
-	 */
-	public int getCreated() {
-		return created;
 	}
 }

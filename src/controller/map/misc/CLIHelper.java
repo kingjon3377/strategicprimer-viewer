@@ -41,6 +41,11 @@ import view.util.SystemOut;
 @SuppressWarnings("resource")
 public final class CLIHelper implements ICLIHelper {
 	/**
+	 * A parser for numbers.
+	 */
+	private static final NumberFormat NUM_PARSER =
+			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+	/**
 	 * The input stream we'll read from.
 	 */
 	private final BufferedReader istream;
@@ -49,10 +54,10 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	private final PrintWriter ostream;
 	/**
-	 * A parser for numbers.
+	 * The current state of the yes-to-all or no-to-all possibility. Absent if not set,
+	 * present if set, and the boolean value is what to return.
 	 */
-	private static final NumberFormat NUM_PARSER =
-			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+	private final Map<String, Boolean> seriesState = new HashMap<>();
 
 	/**
 	 * No-arg constructor.
@@ -66,7 +71,7 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Constructor.
 	 *
-	 * @param in the stream to read from.
+	 * @param in  the stream to read from.
 	 * @param out the writer to write to
 	 */
 	public CLIHelper(final Reader in, final Writer out) {
@@ -75,9 +80,17 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	/**
+	 * @param str a string
+	 * @return its lower case equivalent
+	 */
+	private static String lower(final String str) {
+		return NullCleaner.assertNotNull(str.toLowerCase(Locale.US));
+	}
+
+	/**
 	 * Print a list of things by name and number.
 	 *
-	 * @param list    the list to print.
+	 * @param list the list to print.
 	 */
 	private void printList(final List<? extends HasName> list) {
 		for (int i = 0; i < list.size(); i++) {
@@ -102,8 +115,9 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public <T extends HasName> int chooseFromList(final List<@NonNull ? extends T> items,
-												final String desc, final String none,
-												final String prompt, final boolean auto)
+												  final String desc, final String none,
+												  final String prompt, final boolean
+																			   auto)
 			throws IOException {
 		if (items.isEmpty()) {
 			ostream.println(none);
@@ -146,7 +160,8 @@ public final class CLIHelper implements ICLIHelper {
 					// In practice we can't get here, as IsNumeric generally works
 					//noinspection ObjectAllocationInLoop
 					final NumberFormatException numFormatExcept =
-							new NumberFormatException("Failed to parse number from input");
+							new NumberFormatException("Failed to parse number from " +
+															  "input");
 					numFormatExcept.initCause(e);
 					throw numFormatExcept;
 				}
@@ -154,9 +169,11 @@ public final class CLIHelper implements ICLIHelper {
 		}
 		return retval;
 	}
+
 	/**
 	 * Read input from stdin repeatedly until a valid non-negative decimal number is
 	 * entered, and return it.
+	 *
 	 * @param prompt the prompt to prompt the user with
 	 * @return the number entered
 	 * @throws IOException on I/O error
@@ -200,13 +217,7 @@ public final class CLIHelper implements ICLIHelper {
 			return NullCleaner.assertNotNull(line.trim());
 		}
 	}
-	/**
-	 * @param str a string
-	 * @return its lower case equivalent
-	 */
-	private static String lower(final String str) {
-		return NullCleaner.assertNotNull(str.toLowerCase(Locale.US));
-	}
+
 	/**
 	 * Ask the user a yes-or-no question.
 	 *
@@ -229,19 +240,16 @@ public final class CLIHelper implements ICLIHelper {
 			}
 		}
 	}
-	/**
-	 * The current state of the yes-to-all or no-to-all possibility. Absent if not set,
-	 * present if set, and the boolean value is what to return.
-	 */
-	private final Map<String, Boolean> seriesState = new HashMap<>();
+
 	/**
 	 * Ask the user a yes-or-no question, allowing "yes to all" or "no to all" to skip
 	 * further questions.
 	 *
 	 * @param prompt the string to prompt the user with
-	 * @param key a string passed here for all questions that should be skipped if "X to all"
-	 * @throws IOException on I/O error
+	 * @param key    a string passed here for all questions that should be skipped if "X
+	 *               to all"
 	 * @return the user's answer (minus the "to all")
+	 * @throws IOException on I/O error
 	 */
 	@Override
 	public boolean inputBooleanInSeries(final String prompt, final String key)
@@ -275,7 +283,8 @@ public final class CLIHelper implements ICLIHelper {
 					ostream.println(
 							"character of any of those, or 'all', 'none', 'always'");
 					ostream.println(
-							"or 'never' to use the same answer for all further questions");
+							"or 'never' to use the same answer for all further " +
+									"questions");
 				}
 			}
 		}
@@ -293,7 +302,7 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Print a list of things by name and number.
 	 *
-	 * @param list    the list to print.
+	 * @param list the list to print.
 	 */
 	private void printStringList(final List<String> list) {
 		for (int i = 0; i < list.size(); i++) {
@@ -336,18 +345,22 @@ public final class CLIHelper implements ICLIHelper {
 			return inputNumber(prompt);
 		}
 	}
+
 	/**
 	 * Print a formatted string.
+	 *
 	 * @param format the format string
-	 * @param args the arguments to fill into the format string.
+	 * @param args   the arguments to fill into the format string.
 	 */
 	@Override
-	public void printf(final String format, final Object ... args) {
+	public void printf(final String format, final Object... args) {
 		ostream.printf(format, args);
 		ostream.flush();
 	}
+
 	/**
 	 * Print the specified string, then a newline.
+	 *
 	 * @param line the line to print
 	 */
 	@Override
@@ -355,8 +368,10 @@ public final class CLIHelper implements ICLIHelper {
 		ostream.println(line);
 		ostream.flush();
 	}
+
 	/**
 	 * Print the specified string.
+	 *
 	 * @param text the string to print
 	 */
 	@Override

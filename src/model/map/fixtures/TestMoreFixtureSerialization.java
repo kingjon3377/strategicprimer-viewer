@@ -87,7 +87,9 @@ public final class TestMoreFixtureSerialization extends
 	 * Pre-compiled pattern for matching "kind".
 	 */
 	private static final Pattern KIND_PATTERN = NullCleaner
-			.assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
+														.assertNotNull(Pattern.compile(
+																KIND_PROPERTY,
+																Pattern.LITERAL));
 
 	/**
 	 * Test serialization of Groves.
@@ -356,9 +358,10 @@ public final class TestMoreFixtureSerialization extends
 		firstUnit.addMember(new Worker("worker", DEFAULT_RACE, 3));
 		assertSerialization("Unit can have a worker as a member", firstUnit);
 		firstUnit.addMember(new Worker("second", "elf", 4, new Job("job", 0,
-																		new Skill("skill",
-																						1,
-																						2))));
+																		  new Skill
+																				  ("skill",
+																						   1,
+																						   2))));
 		assertSerialization("Worker can have jobs", firstUnit);
 		assertForwardDeserialization("Explicit specification of default race works",
 				new Worker("third", DEFAULT_RACE, 5),
@@ -366,19 +369,21 @@ public final class TestMoreFixtureSerialization extends
 		assertDeprecatedDeserialization(
 				"'miscellaneous' skill with level should be warned about",
 				new Worker("4th", DEFAULT_RACE, 6,
-								new Job("5th", 0, new Skill("miscellaneous", 1, 0))),
+								  new Job("5th", 0, new Skill("miscellaneous", 1, 0))),
 				"<worker name=\"4th\" id=\"6\"><job name=\"5th\" level=\"0\">"
 						+ "<skill name=\"miscellaneous\" level=\"1\" hours=\"0\"/>"
 						+ "</job></worker>", "miscellaneous");
-		assertSerialization("but 'miscellaneous' skill without levels causes no warnings",
+		assertSerialization("but 'miscellaneous' skill without levels causes no " +
+									"warnings",
 				new Worker("sixth", DEFAULT_RACE, 7, new Job("seventh", 0,
-																	new Skill("miscellaneous",
-																					0,
-																					20))),
+																	new Skill
+																			("miscellaneous",
+																					 0,
+																					 20))),
 				Warning.Die);
 		assertSerialization("and levels in another skill cause no warnings",
 				new Worker("fourth", DEFAULT_RACE, 8,
-								new Job("fifth", 0, new Skill("odd-skill", 1, 0))),
+								  new Job("fifth", 0, new Skill("odd-skill", 1, 0))),
 				Warning.Die);
 		final Worker secondWorker = new Worker("sixth", "dwarf", 9);
 		secondWorker.setStats(new WorkerStats(0, 0, 1, 2, 3, 4, 5, 6));
@@ -441,11 +446,13 @@ public final class TestMoreFixtureSerialization extends
 				containsString("some other results"));
 		// TODO: Test old non-tag-based orders deserialization
 	}
+
 	/**
 	 * Test serialization of portraits.
+	 *
 	 * @throws XMLStreamException never
-	 * @throws IOException never
-	 * @throws SPFormatException never
+	 * @throws IOException        never
+	 * @throws SPFormatException  never
 	 */
 	@Test
 	public void testUnitPortraitSerialization()
@@ -455,10 +462,12 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Portrait doesn't mess up serialization", unit, Warning.Die);
 		assertThat("Serialized form contains portrait", createSerializedForm(unit, true),
 				containsString("portraitFile"));
-		assertThat("Serialized form contains portrait", createSerializedForm(unit, false),
+		assertThat("Serialized form contains portrait", createSerializedForm(unit,
+				false),
 				containsString("portraitFile"));
 		assertPortraitSerialization("Unit portrait property is preserved", unit);
 	}
+
 	/**
 	 * Test serialization of adventure hooks and portals.
 	 *
@@ -534,11 +543,13 @@ public final class TestMoreFixtureSerialization extends
 				new ResourcePile(5, "resourceKind", "specificKind2",
 										new BigDecimal("1.5"), "cubic feet"));
 	}
+
 	/**
 	 * Test that desired warnings get fired when workers have "suspicious" skills.
-	 * @throws IOException on I/O error creating serialized form
+	 *
+	 * @throws IOException        on I/O error creating serialized form
 	 * @throws XMLStreamException on trying to read malformed XML
-	 * @throws SPFormatException on trying to read improper SP XML
+	 * @throws SPFormatException  on trying to read improper SP XML
 	 */
 	@Test
 	public void testSuspiciousSkills()

@@ -63,11 +63,12 @@ public final class FluidResourceHandler {
 	private FluidResourceHandler() {
 		// Do not instantiate
 	}
+
 	/**
 	 * Parse a resource pile.
 	 *
 	 * @param element   the element to read from
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -83,7 +84,8 @@ public final class FluidResourceHandler {
 											final Iterable<XMLEvent> stream,
 											final IMutablePlayerCollection players,
 											final Warning warner,
-											final IDRegistrar idFactory) throws SPFormatException {
+											final IDRegistrar idFactory)
+			throws SPFormatException {
 		requireTag(element, parent, "resource");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final String quantityStr = getAttribute(element, "quantity");
@@ -104,11 +106,12 @@ public final class FluidResourceHandler {
 		}
 		return setImage(retval, element, warner);
 	}
+
 	/**
 	 * Parse a cache.
 	 *
 	 * @param element   the element to read from
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -123,7 +126,8 @@ public final class FluidResourceHandler {
 										 final QName parent,
 										 final Iterable<XMLEvent> stream,
 										 final IMutablePlayerCollection players,
-										 final Warning warner, final IDRegistrar idFactory)
+										 final Warning warner,
+										 final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "cache");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -132,11 +136,12 @@ public final class FluidResourceHandler {
 												getOrGenerateID(element, warner,
 														idFactory)), element, warner);
 	}
+
 	/**
 	 * Parse a grove.
 	 *
 	 * @param element   the element to read from
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -170,11 +175,12 @@ public final class FluidResourceHandler {
 										 getOrGenerateID(element, warner, idFactory)),
 				element, warner);
 	}
+
 	/**
 	 * Parse an orchard.
 	 *
 	 * @param element   the element to read from
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -208,11 +214,12 @@ public final class FluidResourceHandler {
 										 getOrGenerateID(element, warner, idFactory)),
 				element, warner);
 	}
+
 	/**
 	 * Parse a meadow.
 	 *
 	 * @param element   the element to read from
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -237,13 +244,15 @@ public final class FluidResourceHandler {
 		}
 		return setImage(new Meadow(getAttribute(element, "kind"), false, parseBoolean(
 				getAttribute(element, "cultivated")), id, FieldStatus.parse(getAttribute(
-				element, "status", FieldStatus.random(id).toString()))), element, warner);
+				element, "status", FieldStatus.random(id).toString()))), element,
+				warner);
 	}
+
 	/**
 	 * Parse a field.
 	 *
 	 * @param element   the element to read from
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -268,13 +277,15 @@ public final class FluidResourceHandler {
 		}
 		return setImage(new Meadow(getAttribute(element, "kind"), true, parseBoolean(
 				getAttribute(element, "cultivated")), id, FieldStatus.parse(getAttribute(
-				element, "status", FieldStatus.random(id).toString()))), element, warner);
+				element, "status", FieldStatus.random(id).toString()))), element,
+				warner);
 	}
+
 	/**
 	 * Parse a mine.
 	 *
 	 * @param element   the element to read from
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -299,11 +310,12 @@ public final class FluidResourceHandler {
 								getOrGenerateID(element, warner, idFactory)), element,
 				warner);
 	}
+
 	/**
 	 * Parse a Mineral.
 	 *
 	 * @param element   the element to read from
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    a stream of more elements
 	 * @param players   the list of players
 	 * @param warner    the Warning instance to use for warnings
@@ -318,7 +330,8 @@ public final class FluidResourceHandler {
 										  final QName parent,
 										  final Iterable<XMLEvent> stream,
 										  final IMutablePlayerCollection players,
-										  final Warning warner, final IDRegistrar idFactory)
+										  final Warning warner,
+										  final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "mineral");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -329,11 +342,12 @@ public final class FluidResourceHandler {
 									   getOrGenerateID(element, warner, idFactory)),
 				element, warner);
 	}
+
 	/**
 	 * Parse a shrub.
 	 *
 	 * @param element   the element to read from
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -356,11 +370,12 @@ public final class FluidResourceHandler {
 				"kind", "shrub", warner), getOrGenerateID(element, warner,
 				idFactory)), element, warner);
 	}
+
 	/**
 	 * Parse a Stone.
 	 *
 	 * @param element   the element to read from
-	 * @param parent the parent tag
+	 * @param parent    the parent tag
 	 * @param stream    a stream of more elements
 	 * @param players   the list of players
 	 * @param warner    the Warning instance to use for warnings
@@ -375,25 +390,26 @@ public final class FluidResourceHandler {
 										 final QName parent,
 										 final Iterable<XMLEvent> stream,
 										 final IMutablePlayerCollection players,
-										 final Warning warner, final IDRegistrar idFactory)
+										 final Warning warner,
+										 final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "stone");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new StoneDeposit(parseStoneKind(
 				getAttrWithDeprecatedForm(element, "kind", "stone", warner)),
-														 getIntegerAttribute(element,
-																 "dc"),
-														 getOrGenerateID(element, warner,
-																 idFactory)), element, warner);
+												getIntegerAttribute(element,
+														"dc"),
+												getOrGenerateID(element, warner,
+														idFactory)), element, warner);
 	}
 
 	/**
 	 * Write a resource pile to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeResource(final XMLStreamWriter ostream, final Object obj,
@@ -426,13 +442,14 @@ public final class FluidResourceHandler {
 		}
 		writeImage(ostream, pile);
 	}
+
 	/**
 	 * Write a cache to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeCache(final XMLStreamWriter ostream, final Object obj,
@@ -447,13 +464,14 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 	}
+
 	/**
 	 * Write a field or meadow to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeMeadow(final XMLStreamWriter ostream, final Object obj,
@@ -473,13 +491,14 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 	}
+
 	/**
 	 * Write a grove or orchard to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeGrove(final XMLStreamWriter ostream, final Object obj,
@@ -498,13 +517,14 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 	}
+
 	/**
 	 * Write a mine to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeMine(final XMLStreamWriter ostream, final Object obj,
@@ -519,13 +539,14 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 	}
+
 	/**
 	 * Write a mineral vein to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeMineral(final XMLStreamWriter ostream, final Object obj,
@@ -541,13 +562,14 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 	}
+
 	/**
 	 * Write a stone deposit to XML.
 	 *
 	 * @param ostream the writer to write to
-	 * @param indent the indentation level
-	 * @param obj The object being written.
-	 * @throws XMLStreamException on error in the writer
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
 	public static void writeStone(final XMLStreamWriter ostream, final Object obj,

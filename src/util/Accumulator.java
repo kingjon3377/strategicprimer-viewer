@@ -20,10 +20,12 @@ package util;
 public interface Accumulator {
 	/**
 	 * Add to the accumulation.
+	 *
 	 * @param addend how much to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void add(int addend);
+
 	/**
 	 * @return the current value of the accumulation.
 	 */

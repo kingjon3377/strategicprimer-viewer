@@ -63,6 +63,14 @@ public class Skill implements ISkill {
 	}
 
 	/**
+	 * @param newName the skill's new name
+	 */
+	@Override
+	public final void setName(final String newName) {
+		name = newName;
+	}
+
+	/**
 	 * @return how many levels the worker has in the skill
 	 */
 	@Override
@@ -85,7 +93,7 @@ public class Skill implements ISkill {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) ||
-					((obj instanceof Skill) && name.equals(((Skill) obj).name) &&
+					   ((obj instanceof Skill) && name.equals(((Skill) obj).name) &&
 								(level == ((Skill) obj).level) &&
 								(hours == ((Skill) obj).hours));
 	}
@@ -120,14 +128,6 @@ public class Skill implements ISkill {
 	@Override
 	public String toString() {
 		return name + " (" + Integer.toString(level) + ')';
-	}
-
-	/**
-	 * @param newName the skill's new name
-	 */
-	@Override
-	public final void setName(final String newName) {
-		name = newName;
 	}
 
 	/**

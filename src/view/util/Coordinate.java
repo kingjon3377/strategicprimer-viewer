@@ -26,6 +26,7 @@ public final class Coordinate {
 	 * The Y coordinate or height.
 	 */
 	public final int y;
+
 	/**
 	 * Constructor.
 	 *
@@ -36,6 +37,7 @@ public final class Coordinate {
 		x = xCoordinate;
 		y = yCoordinate;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

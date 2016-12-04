@@ -34,6 +34,7 @@ public final class IDFactory implements IDRegistrar {
 	public boolean isIDUnused(final int idNum) {
 		return (idNum >= 0) && !usedIDs.get(idNum);
 	}
+
 	/**
 	 * Register an ID.
 	 *
@@ -44,12 +45,13 @@ public final class IDFactory implements IDRegistrar {
 	public int register(final int idNum) {
 		return register(Warning.DEFAULT, idNum);
 	}
+
 	/**
 	 * Register an ID.
 	 *
 	 * @param warning the Warning instance to use to report if the ID has already been
-	 *                   registered
-	 * @param idNum the ID to register.
+	 *                registered
+	 * @param idNum   the ID to register.
 	 * @return the id, so this can be used functionally.
 	 */
 	@Override

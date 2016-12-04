@@ -23,15 +23,15 @@ import util.Warning;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <T> the common supertype of all types this can return
+ * @author Jonathan Lovelace
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @Deprecated
 public interface CompactReader<@NonNull T> {
 	/**
 	 * @param element   the element being parsed
-	 * @param parent	the parent tag
+	 * @param parent    the parent tag
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use as needed
 	 * @param idFactory the ID factory to use as needed
@@ -64,6 +64,7 @@ public interface CompactReader<@NonNull T> {
 	 * @return whether we can write it
 	 */
 	boolean canWrite(Object obj);
+
 	/**
 	 * Write, when the caller knows the object is the right type but doesn't know what
 	 * type that is. Throws ClassCastException if it's not the right type.

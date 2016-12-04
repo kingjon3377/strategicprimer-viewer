@@ -36,24 +36,25 @@ public interface SimpleDriver extends ISPDriver {
 	 * (Try to) run the driver. If the driver does not need arguments, it should
 	 * override this default method to support that; otherwise, this will throw,
 	 * because nearly all drivers do need arguments.
+	 *
 	 * @throws DriverFailedException on any failure
 	 */
 	default void startDriver() throws DriverFailedException {
 		throw new DriverFailedException("Driver does not support no-arg operation",
-											new IllegalStateException("Driver does not " +
-															"support no-arg operation"));
+											   new IllegalStateException("Driver does " +
+																				 "not " +
+																				 "support no-arg operation"));
 	}
+
 	/**
 	 * Run the driver. If the driver is a GUIDriver, this should use
 	 * SwingUtilities.invokeLater(); if it's a CLIDriver, that's not necessary. This
 	 * default implementation does not write to file after running the driver on the
 	 * driver model.
 	 *
-	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param args any command-line arguments that should be passed to the driver.
+	 * @param args    any command-line arguments that should be passed to the driver.
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
@@ -68,26 +69,30 @@ public interface SimpleDriver extends ISPDriver {
 					Integer.parseInt(options.getArgument("--current-turn"));
 			turnFixer = map -> map.setCurrentTurn(currentTurn);
 		} else {
-			turnFixer = map -> {};
+			turnFixer = map -> {
+			};
 		}
 		if (args.length == 0) {
 			if (EqualsAny.equalsAny(desiderata, ParamCount.None,
 					ParamCount.AnyNumber)) {
 				startDriver(options);
-			} else if (EqualsAny.equalsAny(desiderata, ParamCount.Two, ParamCount.AtLeastTwo)) {
+			} else if (EqualsAny.equalsAny(desiderata, ParamCount.Two,
+					ParamCount.AtLeastTwo)) {
 				final Path masterPath = askUserForFile();
 				final Path subPath = askUserForFile();
 				final IMultiMapModel mapModel = new MapReaderAdapter()
-													 .readMultiMapModel(Warning.DEFAULT,
-															 masterPath,
-															 subPath);
+														.readMultiMapModel(
+																Warning.DEFAULT,
+																masterPath,
+																subPath);
 				StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
 						.map(Pair::first).forEach(turnFixer);
 				startDriver(new CLIHelper(), options, mapModel);
 			} else {
 				final IMultiMapModel mapModel = new MapReaderAdapter()
-													 .readMultiMapModel(Warning.DEFAULT,
-															 askUserForFile());
+														.readMultiMapModel(
+																Warning.DEFAULT,
+																askUserForFile());
 				StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
 						.map(Pair::first).forEach(turnFixer);
 				startDriver(new CLIHelper(), options, mapModel);
@@ -97,9 +102,9 @@ public interface SimpleDriver extends ISPDriver {
 		} else if ((args.length == 1) && EqualsAny.equalsAny(desiderata,
 				ParamCount.Two, ParamCount.AtLeastTwo)) {
 			final IMultiMapModel mapModel = new MapReaderAdapter()
-												 .readMultiMapModel(Warning.DEFAULT,
-														 Paths.get(args[0]),
-														 askUserForFile());
+													.readMultiMapModel(Warning.DEFAULT,
+															Paths.get(args[0]),
+															askUserForFile());
 			StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
 					.map(Pair::first).forEach(turnFixer);
 			startDriver(new CLIHelper(), options, mapModel);
@@ -115,8 +120,10 @@ public interface SimpleDriver extends ISPDriver {
 			startDriver(new CLIHelper(), options, mapModel);
 		}
 	}
+
 	/**
 	 * Ask the user to choose a file.
+	 *
 	 * @return the file chosen
 	 * @throws DriverFailedException if the user fails to choose
 	 */
@@ -125,7 +132,7 @@ public interface SimpleDriver extends ISPDriver {
 			return new FileChooser(Optional.empty()).getFile();
 		} catch (final FileChooser.ChoiceInterruptedException except) {
 			throw new DriverFailedException("Choice interrupted or user didn't choose",
-												except);
+												   except);
 		}
 	}
 }

@@ -23,15 +23,21 @@ import util.NullCleaner;
  */
 public final class MineralVein implements IEvent, HarvestableFixture, HasMutableKind {
 	/**
+	 * The DC to discover the vein. TODO: Should perhaps be mutable.
+	 */
+	private final int dc;
+	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
 	 * Whether the vein is exposed.
 	 */
 	private boolean exposed;
-
 	/**
 	 * What kind of mineral this is.
 	 */
 	private String mineral;
-
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -40,13 +46,13 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	/**
 	 * Constructor.
 	 *
-	 * @param minKind what kind of mineral this is
-	 * @param exp     whether the vein is exposed
-	 * @param discoverDC  the dc to discover the vein
-	 * @param idNum   the ID number.
+	 * @param minKind    what kind of mineral this is
+	 * @param exp        whether the vein is exposed
+	 * @param discoverDC the dc to discover the vein
+	 * @param idNum      the ID number.
 	 */
 	public MineralVein(final String minKind, final boolean exp,
-						final int discoverDC, final int idNum) {
+					   final int discoverDC, final int idNum) {
 		mineral = minKind;
 		exposed = exp;
 		dc = discoverDC;
@@ -85,9 +91,11 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	}
 
 	/**
-	 * The DC to discover the vein. TODO: Should perhaps be mutable.
+	 * @param exp whether the vein is exposed
 	 */
-	private final int dc;
+	public void setExposed(final boolean exp) {
+		exposed = exp;
+	}
 
 	/**
 	 * @return the DC to discover the event.
@@ -125,9 +133,9 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof MineralVein)
-										&& mineral.equals(((MineralVein) obj).mineral)
-										&& (exposed == ((MineralVein) obj).exposed)
-										&& (id == ((MineralVein) obj).id));
+										 && mineral.equals(((MineralVein) obj).mineral)
+										 && (exposed == ((MineralVein) obj).exposed)
+										 && (id == ((MineralVein) obj).id));
 	}
 
 	/**
@@ -159,17 +167,20 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	}
 
 	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public void setKind(final String nKind) {
+		mineral = nKind;
+	}
+
+	/**
 	 * @return the name of an image to represent the event
 	 */
 	@Override
 	public String getDefaultImage() {
 		return "mineral.png";
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -187,7 +198,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof MineralVein)
-										&& equalsContents((MineralVein) fix));
+										 && equalsContents((MineralVein) fix));
 	}
 
 	/**
@@ -199,11 +210,11 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	}
 
 	/**
-	 * @param nKind the new kind
+	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
-	public void setKind(final String nKind) {
-		mineral = nKind;
+	public String getImage() {
+		return image;
 	}
 
 	/**
@@ -212,20 +223,6 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-	/**
-	 * @param exp whether the vein is exposed
-	 */
-	public void setExposed(final boolean exp) {
-		exposed = exp;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**

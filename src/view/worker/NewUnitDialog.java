@@ -1,8 +1,7 @@
 package view.worker;
 
 import controller.map.misc.IDRegistrar;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -14,11 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import model.listeners.NewUnitListener;
 import model.listeners.NewUnitSource;
 import model.listeners.PlayerChangeListener;
@@ -53,14 +48,18 @@ import static util.NullCleaner.assertNotNull;
 public final class NewUnitDialog extends JFrame
 		implements NewUnitSource, PlayerChangeListener {
 	/**
+	 * Maximum and preferred height for the dialog.
+	 */
+	private static final int PREF_HEIGHT = 90;
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger.getLogger(
+			NewUnitDialog.class);
+	/**
 	 * The list of new-unit listeners listening to us.
 	 */
 	private final Collection<NewUnitListener> nuListeners = new ArrayList<>();
-
-	/**
-	 * The player to own created units.
-	 */
-	private Player owner;
 	/**
 	 * The factory to use to generate ID numbers.
 	 */
@@ -79,14 +78,9 @@ public final class NewUnitDialog extends JFrame
 	private final JFormattedTextField idField =
 			new JFormattedTextField(NumberFormat.getIntegerInstance());
 	/**
-	 * Maximum and preferred height for the dialog.
+	 * The player to own created units.
 	 */
-	private static final int PREF_HEIGHT = 90;
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(
-			NewUnitDialog.class);
+	private Player owner;
 
 	/**
 	 * Constructor.
@@ -171,10 +165,11 @@ public final class NewUnitDialog extends JFrame
 	 * Set up a field so that pressing Enter there will press the OK button.
 	 *
 	 * @param field the field to set up
-	 * @param list the listener to listen for Enter in the field.
+	 * @param list  the listener to listen for Enter in the field.
 	 * @return the field
 	 */
-	private static JTextField setupField(final JTextField field, final ActionListener list) {
+	private static JTextField setupField(final JTextField field,
+										 final ActionListener list) {
 		field.setActionCommand("OK");
 		field.addActionListener(list);
 		return field;
@@ -206,26 +201,31 @@ public final class NewUnitDialog extends JFrame
 	public void removeNewUnitListener(final NewUnitListener list) {
 		nuListeners.remove(list);
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * @return a quasi-diagnostic String
 	 */

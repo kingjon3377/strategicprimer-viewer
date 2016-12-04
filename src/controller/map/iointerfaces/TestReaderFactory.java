@@ -43,12 +43,14 @@ public final class TestReaderFactory {
 	public static ISPReader createNewReader() {
 		return new SPFluidReader();
 	}
+
 	/**
 	 * @return an instance of the old writer
 	 */
 	public static SPWriter createOldWriter() {
 		return new CompactXMLWriter();
 	}
+
 	/**
 	 * @return an instance of the new writer
 	 */

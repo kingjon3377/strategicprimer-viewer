@@ -43,8 +43,8 @@ public final class CompactAdventureReader extends
 	 * Read an adventure from XML.
 	 *
 	 * @param element   The XML element to parse
-	 * @param parent	the parent tag
-	 *@param players   the collection of players
+	 * @param parent    the parent tag
+	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from
@@ -56,7 +56,8 @@ public final class CompactAdventureReader extends
 								 final QName parent,
 								 final IMutablePlayerCollection players,
 								 final Warning warner, final IDRegistrar idFactory,
-								 final Iterable<XMLEvent> stream) throws SPFormatException {
+								 final Iterable<XMLEvent> stream)
+			throws SPFormatException {
 		requireTag(element, parent, "adventure");
 		Player player = players.getIndependent();
 		if (hasParameter(element, "owner")) {
@@ -84,7 +85,7 @@ public final class CompactAdventureReader extends
 	 */
 	@Override
 	public void write(final Appendable ostream, final AdventureFixture obj,
-					final int indent) throws IOException {
+					  final int indent) throws IOException {
 		writeTag(ostream, "adventure", indent);
 		ostream.append(" id=\"");
 		ostream.append(Integer.toString(obj.getID()));

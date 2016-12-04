@@ -39,14 +39,6 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 	 */
 	private static final String STATUS_PROPERTY = "status";
 	/**
-	 * @param sz the size of the town to use for the test
-	 * @param st the status of the town to use for the test
-	 */
-	public TestTownSerialization(final TownSize sz, final TownStatus st) {
-		size = sz;
-		status = st;
-	}
-	/**
 	 * The size of the town being used for the test.
 	 */
 	private final TownSize size;
@@ -54,6 +46,15 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 	 * The status of the town being used for the test.
 	 */
 	private final TownStatus status;
+	/**
+	 * @param sz the size of the town to use for the test
+	 * @param st the status of the town to use for the test
+	 */
+	public TestTownSerialization(final TownSize sz, final TownStatus st) {
+		size = sz;
+		status = st;
+	}
+
 	/**
 	 * @return a list of values to use for tests
 	 */
@@ -64,11 +65,12 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 				new ArrayList<>(TownSize.values().length * TownStatus.values().length);
 		for (final TownSize size : TownSize.values()) {
 			for (final TownStatus status : TownStatus.values()) {
-				retval.add(new Object[]{ size, status });
+				retval.add(new Object[]{size, status});
 			}
 		}
 		return retval;
 	}
+
 	/**
 	 * Test serialization of CityEvents.
 	 *
@@ -96,13 +98,14 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(createSerializedForm(thirdCity, false), City.class,
 				NAME_PROPERTY, true);
 		assertMissingProperty("<city status=\"" + status + "\" size=\"" + size +
-									"\" name=\"name\" dc=\"0\" />", City.class, "id",
+									  "\" name=\"name\" dc=\"0\" />", City.class, "id",
 				true);
 		assertUnwantedChild("<city status=\"" + status + "\" size=\"" + size +
 									"\" name=\"name\" dc=\"0\"><troll /></city>",
 				City.class, false);
 		assertMissingProperty("<city status=\"" + status + "\" size=\"" + size +
-									"\" name=\"name\" dc=\"0\" id=\"0\" />", City.class,
+									  "\" name=\"name\" dc=\"0\" id=\"0\" />", City
+																													 .class,
 				"owner", true);
 		assertImageSerialization("City image property is preserved", thirdCity);
 		assertPortraitSerialization("City portrait property is preserved", thirdCity);
@@ -137,13 +140,14 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(createSerializedForm(thirdFort, false),
 				Fortification.class, NAME_PROPERTY, true);
 		assertMissingProperty("<fortification status=\"" + status + "\" size=\"" + size +
-									"\" name=\"name\" dc=\"0\" />",
+									  "\" name=\"name\" dc=\"0\" />",
 				Fortification.class, "id", true);
 		assertUnwantedChild("<fortification status=\"" + status + "\" size=\"" + size +
-									"\" name=\"name\" dc=\"0\"><troll /></fortification>",
+									"\" name=\"name\" dc=\"0\"><troll " +
+									"/></fortification>",
 				Fortification.class, false);
 		assertMissingProperty("<fortification status=\"" + status + "\" size=\"" + size +
-									"\" name=\"name\"" + " dc=\"0\" id=\"0\"/>",
+									  "\" name=\"name\"" + " dc=\"0\" id=\"0\"/>",
 				Fortification.class, "owner", true);
 		assertImageSerialization("Fortification image property is preserved", thirdFort);
 		assertPortraitSerialization("Fortification portrait property is preserved",
@@ -183,12 +187,13 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty("<town dc=\"0\" size=\"" + size + "\" />", Town.class,
 				STATUS_PROPERTY, false);
 		assertMissingProperty("<town dc=\"0\" size=\"" + size + "\" status=\"" + status +
-									"\" name=\"name\" />", Town.class, "id", true);
+									  "\" name=\"name\" />", Town.class, "id", true);
 		assertUnwantedChild("<town status=\"" + status + "\" size=\"" + size +
 									"\" name=\"name\" dc=\"0\">" + "<troll /></town>",
 				Town.class, false);
 		assertMissingProperty("<town status=\"" + status + "\" size=\"" + size +
-									"\" name=\"name\" dc=\"0\" id=\"0\" />", Town.class,
+									  "\" name=\"name\" dc=\"0\" id=\"0\" />", Town
+																													 .class,
 				"owner", true);
 		assertImageSerialization("Town image property is preserved", thirdTown);
 		assertPortraitSerialization("Town portrait property is preserved", thirdTown);

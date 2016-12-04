@@ -26,10 +26,13 @@ import util.LineEnd;
 public class Dragon
 		implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
 	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
-
 	/**
 	 * What kind of dragon. (Usually blank, at least at first.)
 	 */
@@ -67,6 +70,14 @@ public class Dragon
 	}
 
 	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
+	}
+
+	/**
 	 * @return a String representation of the dragon
 	 */
 	@Override
@@ -96,8 +107,8 @@ public class Dragon
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Dragon)
-										&& kind.equals(((Dragon) obj).kind) &&
-										(id == ((Dragon) obj).id));
+										 && kind.equals(((Dragon) obj).kind) &&
+										 (id == ((Dragon) obj).id));
 	}
 
 	/**
@@ -107,11 +118,6 @@ public class Dragon
 	public int hashCode() {
 		return id;
 	}
-
-	/**
-	 * ID number.
-	 */
-	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -168,11 +174,11 @@ public class Dragon
 	}
 
 	/**
-	 * @param nKind the new kind
+	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
+	public String getImage() {
+		return image;
 	}
 
 	/**
@@ -181,14 +187,6 @@ public class Dragon
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**

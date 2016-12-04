@@ -28,21 +28,24 @@ public final class IntTransferable implements Transferable {
 	 * The payload.
 	 */
 	private final int payload;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param flavor the data flavor to report
-	 * @param data the payload
+	 * @param data   the payload
 	 */
 	public IntTransferable(final DataFlavor flavor, final int data) {
 		reportedFlavor = flavor;
 		payload = data;
 	}
+
 	/**
 	 * @return an array of data flavors in which this data can be transferred
 	 */
 	@Override
 	public DataFlavor[] getTransferDataFlavors() {
-		return new DataFlavor[]{ reportedFlavor };
+		return new DataFlavor[]{reportedFlavor};
 	}
 
 	/**

@@ -36,10 +36,12 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	 * His or her HQ location.
 	 */
 	private final Point base;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param currentPlayer the player for whom this report is being produced
-	 * @param hq his or her HQ location
+	 * @param hq            his or her HQ location
 	 */
 	public UnitTabularReportGenerator(final Player currentPlayer, final Point hq) {
 		player = currentPlayer;
@@ -47,18 +49,18 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	}
 
 	/**
-	 * @param ostream the stream to write the row to
+	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
-	 * @param item the fortress to base the line on
-	 * @param loc its location
+	 * @param item     the fortress to base the line on
+	 * @param loc      its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@SuppressWarnings("IfStatementWithIdenticalBranches")
 	@Override
 	public boolean produce(final Appendable ostream,
-						final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						final IUnit item,
-						final Point loc) throws IOException {
+						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						   final IUnit item,
+						   final Point loc) throws IOException {
 		writeField(ostream, distanceString(loc, base));
 		writeFieldDelimiter(ostream);
 		writeField(ostream, loc.toString());
@@ -73,10 +75,12 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 		ostream.append(getRowDelimiter());
 		for (final UnitMember member : item) {
 			if (member instanceof Animal) {
-				// We don't want animals inside a unit showing up in the wild-animal report
+				// We don't want animals inside a unit showing up in the wild-animal
+				// report
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (!player.equals(item.getOwner())) {
-				// A player shouldn't be able to see the details of another player's units
+				// A player shouldn't be able to see the details of another player's
+				// units
 				fixtures.remove(Integer.valueOf(item.getID()));
 			}
 		}

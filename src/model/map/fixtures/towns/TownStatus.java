@@ -45,6 +45,12 @@ public enum TownStatus {
 	 */
 	private final String str;
 
+	static {
+		for (final TownStatus status : values()) {
+			TST_MAP.put(status.str, status);
+		}
+	}
+
 	/**
 	 * Constructor.
 	 *
@@ -52,12 +58,6 @@ public enum TownStatus {
 	 */
 	TownStatus(final String description) {
 		str = description;
-	}
-
-	static {
-		for (final TownStatus status : values()) {
-			TST_MAP.put(status.str, status);
-		}
 	}
 
 	/**

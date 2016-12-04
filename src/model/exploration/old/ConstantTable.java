@@ -46,9 +46,9 @@ public final class ConstantTable implements EncounterTable {
 	}
 
 	/**
-	 * @param point    ignored
-	 * @param terrain  ignored
-	 * @param fixtures ignored
+	 * @param point         ignored
+	 * @param terrain       ignored
+	 * @param fixtures      ignored
 	 * @param mapDimensions ignored
 	 * @return our specified value.
 	 */
@@ -58,10 +58,11 @@ public final class ConstantTable implements EncounterTable {
 								final MapDimensions mapDimensions) {
 		return value;
 	}
+
 	/**
-	 * @param point    ignored
-	 * @param terrain  ignored
-	 * @param fixtures any fixtures on the tile
+	 * @param point         ignored
+	 * @param terrain       ignored
+	 * @param fixtures      any fixtures on the tile
 	 * @param mapDimensions ignored
 	 * @return the event on that tile
 	 */

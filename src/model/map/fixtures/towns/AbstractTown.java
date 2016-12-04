@@ -47,18 +47,23 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+	/**
+	 * The filename of an image to use as a portrait for the town.
+	 */
+	private String portraitName = "";
 
 	/**
 	 * Constructor.
 	 *
-	 * @param tSize   the size of the town, fortress, or city
-	 * @param tStatus the status of the town, fortress, or city
-	 * @param tName   the name of the town, fortress, or city
-	 * @param player  the owner of the town, fortress, or city
+	 * @param tSize      the size of the town, fortress, or city
+	 * @param tStatus    the status of the town, fortress, or city
+	 * @param tName      the name of the town, fortress, or city
+	 * @param player     the owner of the town, fortress, or city
 	 * @param discoverDC the DC to discover the town
 	 */
 	protected AbstractTown(final TownStatus tStatus, final TownSize tSize,
-						   final String tName, final Player player, final int discoverDC) {
+						   final String tName, final Player player,
+						   final int discoverDC) {
 		status = tStatus;
 		size = tSize;
 		name = tName;
@@ -72,6 +77,14 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	@Override
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * @param newName the town's new name
+	 */
+	@Override
+	public final void setName(final String newName) {
+		name = newName;
 	}
 
 	/**
@@ -123,8 +136,8 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof AbstractTown)
-										&& (getID() == ((TileFixture) obj).getID())
-										&& equalsContents((AbstractTown) obj));
+										 && (getID() == ((TileFixture) obj).getID())
+										 && equalsContents((AbstractTown) obj));
 	}
 
 	/**
@@ -135,8 +148,8 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix)
-					|| ((fix instanceof AbstractTown) &&
-								equalsContents((AbstractTown) fix));
+					   || ((fix instanceof AbstractTown) &&
+								   equalsContents((AbstractTown) fix));
 	}
 
 	/**
@@ -148,7 +161,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 */
 	protected final boolean equalsContents(final AbstractTown fix) {
 		return (fix.size() == size) && fix.name.equals(name)
-					&& (fix.status() == status) && fix.owner.equals(owner);
+					   && (fix.status() == status) && fix.owner.equals(owner);
 	}
 
 	/**
@@ -212,11 +225,11 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
-	 * @param newName the town's new name
+	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
-	public final void setName(final String newName) {
-		name = newName;
+	public String getImage() {
+		return image;
 	}
 
 	/**
@@ -225,14 +238,6 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**
@@ -257,10 +262,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 					status.toString(), kind(), nameString, owner.getName());
 		}
 	}
-	/**
-	 * The filename of an image to use as a portrait for the town.
-	 */
-	private String portraitName = "";
+
 	/**
 	 * @return The filename of an image to use as a portrait for the town.
 	 */

@@ -35,61 +35,68 @@ public final class UnwantedChildException extends SPFormatException {
 	 * The unwanted child.
 	 */
 	private final QName childTag;
+
 	/**
 	 * For when the unwanted child isn't an unwanted *tag* but an unwanted tag *with
 	 * some property* that we want to describe using a QName.
-	 * @param parent    the current tag
-	 * @param child     the unwanted child
-	 * @param location  the location where this occurred
-	 * @param cause		why this occurred
+	 *
+	 * @param parent   the current tag
+	 * @param child    the unwanted child
+	 * @param location the location where this occurred
+	 * @param cause    why this occurred
 	 */
 	public UnwantedChildException(final QName parent, final QName child,
-								final Location location, final Throwable cause) {
+								  final Location location, final Throwable cause) {
 		super("Unexpected child " + child.getLocalPart() + " in tag " +
-					parent.getLocalPart(), location, cause);
+					  parent.getLocalPart(), location, cause);
 		tag = parent;
 		childTag = child;
 	}
+
 	/**
-	 * @param parent    the current tag
-	 * @param child     the unwanted child
+	 * @param parent the current tag
+	 * @param child  the unwanted child
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child) {
 		super("Unexpected child " + child.getName().getLocalPart() + " in tag "
-				+ parent.getLocalPart(),
+					  + parent.getLocalPart(),
 				NullCleaner.assertNotNull(child.getLocation()));
 		tag = parent;
 		childTag = NullCleaner.assertNotNull(child.getName());
 	}
 
 	/**
-	 * @param parent    the current tag
-	 * @param child     the unwanted child
-	 * @param cause     another exception that caused this one
+	 * @param parent the current tag
+	 * @param child  the unwanted child
+	 * @param cause  another exception that caused this one
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child,
-								final Throwable cause) {
+								  final Throwable cause) {
 		super("Unexpected child " + child.getName().getLocalPart() + " in tag "
-				+ parent.getLocalPart(),
+					  + parent.getLocalPart(),
 				NullCleaner.assertNotNull(child.getLocation()), cause);
 		tag = parent;
 		childTag = NullCleaner.assertNotNull(child.getName());
 	}
+
 	/**
 	 * Copy-constructor-with-replacement, for cases where the original thrower didn't
 	 * know the parent tag.
+	 *
 	 * @param parent the parent tag
 	 * @param except the exception to copy
 	 */
-	public UnwantedChildException(final QName parent, final UnwantedChildException except) {
+	public UnwantedChildException(final QName parent,
+								  final UnwantedChildException except) {
 		super("Unexpected child " + except.childTag.getLocalPart() + " in tag " +
-					parent.getLocalPart(), except.getLocation());
+					  parent.getLocalPart(), except.getLocation());
 		tag = parent;
 		childTag = except.childTag;
 		if (except.getCause() != null) {
 			initCause(except.getCause());
 		}
 	}
+
 	/**
 	 * @return the current tag.
 	 */
@@ -103,22 +110,26 @@ public final class UnwantedChildException extends SPFormatException {
 	public QName getChild() {
 		return childTag;
 	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

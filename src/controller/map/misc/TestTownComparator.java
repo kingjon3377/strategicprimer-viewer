@@ -66,7 +66,8 @@ public class TestTownComparator {
 		Collections.shuffle(input);
 		final List<ITownFixture> expected = Arrays.asList(
 				new City(TownStatus.Active, TownSize.Large, -1, "inputCity", 7, owner),
-				new City(TownStatus.Active, TownSize.Large, -1, "inputCityTwo", 41, owner),
+				new City(TownStatus.Active, TownSize.Large, -1, "inputCityTwo", 41,
+								owner),
 				new Town(TownStatus.Active, TownSize.Large, -1, "inputTown", 6, owner),
 				new Fortification(TownStatus.Active, TownSize.Large, -1,
 										 "inputFortification", 8, owner),
@@ -109,7 +110,8 @@ public class TestTownComparator {
 										 "inputFortification", 38, owner),
 				new City(TownStatus.Ruined, TownSize.Medium, -1, "inputCity", 34, owner),
 				new Town(TownStatus.Ruined, TownSize.Medium, -1, "inputTown", 33, owner),
-				new Town(TownStatus.Ruined, TownSize.Medium, -1, "inputTownTwo", 43, owner),
+				new Town(TownStatus.Ruined, TownSize.Medium, -1, "inputTownTwo", 43,
+								owner),
 				new Fortification(TownStatus.Ruined, TownSize.Medium, -1,
 										 "inputFortification", 35, owner),
 				new City(TownStatus.Ruined, TownSize.Small, -1, "inputCity", 31, owner),

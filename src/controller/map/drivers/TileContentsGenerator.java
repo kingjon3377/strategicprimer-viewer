@@ -46,26 +46,33 @@ import static view.util.SystemOut.SYS_OUT;
  */
 public final class TileContentsGenerator {
 	/**
-	 * The singleton runner we'll be using.
-	 */
-	private final ExplorationRunner runner = new ExplorationRunner();
-
-	/**
-	 * The singleton map we'll be consulting.
-	 */
-	private final IMapNG map;
-
-	/**
 	 * The map reader to use.
 	 */
 	private static final MapReaderAdapter READER = new MapReaderAdapter();
-
 	/**
 	 * A mapping from filenames containing maps to instances handling those maps.
 	 */
 	private static final Map<String, TileContentsGenerator> INSTANCES =
 			NullCleaner.assertNotNull(Collections.synchronizedMap(
 					new HashMap<>()));
+	/**
+	 * The singleton runner we'll be using.
+	 */
+	private final ExplorationRunner runner = new ExplorationRunner();
+	/**
+	 * The singleton map we'll be consulting.
+	 */
+	private final IMapNG map;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param theMap the map we'll be consulting.
+	 */
+	private TileContentsGenerator(final IMapNG theMap) {
+		map = theMap;
+		TableLoader.loadAllTables("tables", runner);
+	}
 
 	/**
 	 * @param filename the name of a map
@@ -84,43 +91,6 @@ public final class TileContentsGenerator {
 							Warning.DEFAULT)));
 		}
 		return NullCleaner.assertNotNull(INSTANCES.get(filename));
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param theMap the map we'll be consulting.
-	 */
-	private TileContentsGenerator(final IMapNG theMap) {
-		map = theMap;
-		TableLoader.loadAllTables("tables", runner);
-	}
-
-	/**
-	 * Generate the contents of a tile.
-	 *
-	 * @param point the tile's location
-	 * @throws MissingTableException if a missing table is referenced
-	 */
-	public void generateTileContents(final Point point)
-			throws MissingTableException {
-		generateTileContents(point, map.getBaseTerrain(point));
-	}
-
-	/**
-	 * Generate the contents of a tile.
-	 *
-	 * @param terrain its tile type
-	 * @param point   the location of the tile
-	 * @throws MissingTableException if a missing table is referenced
-	 */
-	private void generateTileContents(final Point point, final TileType terrain)
-			throws MissingTableException {
-		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
-		for (int i = 0; i < reps; i++) {
-			println(runner.recursiveConsultTable("fisher", point, terrain,
-					NullCleaner.assertNotNull(Stream.empty()), map.dimensions()));
-		}
 	}
 
 	/**
@@ -168,6 +138,33 @@ public final class TileContentsGenerator {
 		for (final String line : text.split(LineEnd.LINE_SEP)) {
 			SYS_OUT.print("\t\t\t");
 			SYS_OUT.println(line);
+		}
+	}
+
+	/**
+	 * Generate the contents of a tile.
+	 *
+	 * @param point the tile's location
+	 * @throws MissingTableException if a missing table is referenced
+	 */
+	public void generateTileContents(final Point point)
+			throws MissingTableException {
+		generateTileContents(point, map.getBaseTerrain(point));
+	}
+
+	/**
+	 * Generate the contents of a tile.
+	 *
+	 * @param terrain its tile type
+	 * @param point   the location of the tile
+	 * @throws MissingTableException if a missing table is referenced
+	 */
+	private void generateTileContents(final Point point, final TileType terrain)
+			throws MissingTableException {
+		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
+		for (int i = 0; i < reps; i++) {
+			println(runner.recursiveConsultTable("fisher", point, terrain,
+					NullCleaner.assertNotNull(Stream.empty()), map.dimensions()));
 		}
 	}
 

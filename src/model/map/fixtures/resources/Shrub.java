@@ -21,10 +21,13 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Shrub implements HarvestableFixture, HasMutableKind {
 	/**
+	 * ID number.
+	 */
+	private final int id;
+	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
-
 	/**
 	 * A description of what kind of shrub this is.
 	 */
@@ -59,6 +62,14 @@ public class Shrub implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getKind() {
 		return description;
+	}
+
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		description = nKind;
 	}
 
 	/**
@@ -103,11 +114,6 @@ public class Shrub implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
-	 * ID number.
-	 */
-	private final int id;
-
-	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -126,11 +132,11 @@ public class Shrub implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
-	 * @param nKind the new kind
+	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
-	public final void setKind(final String nKind) {
-		description = nKind;
+	public String getImage() {
+		return image;
 	}
 
 	/**
@@ -139,14 +145,6 @@ public class Shrub implements HarvestableFixture, HasMutableKind {
 	@Override
 	public void setImage(final String img) {
 		image = img;
-	}
-
-	/**
-	 * @return the name of an image to use for this particular fixture.
-	 */
-	@Override
-	public String getImage() {
-		return image;
 	}
 
 	/**

@@ -39,8 +39,8 @@ public final class MapChecker implements UtilityDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-k", "--check", ParamCount.AtLeastOne,
-								"Check map for errors",
-								"Check a map file for errors, deprecated syntax, etc."
+								   "Check map for errors",
+								   "Check a map file for errors, deprecated syntax, etc."
 			);
 
 	/**
@@ -55,11 +55,9 @@ public final class MapChecker implements UtilityDriver {
 	/**
 	 * Run the driver.
 	 *
-	 *
-	 *
 	 * @param cli
 	 * @param options
-	 * @param args command-line arguments
+	 * @param args    command-line arguments
 	 * @throws DriverFailedException if not enough arguments
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
@@ -89,7 +87,7 @@ public final class MapChecker implements UtilityDriver {
 			LOGGER.log(Level.SEVERE,
 					"Map version in " + file + " not acceptable to reader", e);
 			retval = false;
-		} catch (final FileNotFoundException|NoSuchFileException e) {
+		} catch (final FileNotFoundException | NoSuchFileException e) {
 			LOGGER.log(Level.SEVERE, file + " not found", e);
 			retval = false;
 		} catch (final IOException e) {

@@ -28,55 +28,62 @@ public class SPFormatException extends Exception {
 	private final Location location;
 
 	/**
+	 * @param message  a message describing what's wrong with the XML
+	 * @param errorLoc the location of the text causing the error
+	 * @param cause    the "initial cause" of this
+	 */
+	protected SPFormatException(final String message, final Location errorLoc,
+								final Throwable cause) {
+		super("Incorrect SP XML at line " + errorLoc.getLineNumber() + ", column " +
+					  errorLoc.getColumnNumber() + ": " + message, cause);
+		location = errorLoc;
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @param message  a message describing what's wrong with the XML.
+	 * @param errorLoc the location containing the error.
+	 */
+	protected SPFormatException(final String message, final Location errorLoc) {
+		super("Incorrect SP XML at line " + errorLoc.getLineNumber() + ", column " +
+					  errorLoc.getColumnNumber() + ": " + message);
+		location = errorLoc;
+	}
+
+	/**
 	 * @return the line of the XML file containing the mistake
 	 */
 	public int getLine() {
 		return location.getLineNumber();
 	}
+
 	/**
 	 * @return the location in the XML file containing the mistake
 	 */
 	public Location getLocation() {
 		return location;
 	}
-	/**
-	 * @param message   a message describing what's wrong with the XML
-	 * @param errorLoc  the location of the text causing the error
-	 * @param cause     the "initial cause" of this
-	 */
-	protected SPFormatException(final String message, final Location errorLoc,
-								final Throwable cause) {
-		super("Incorrect SP XML at line " + errorLoc.getLineNumber() + ", column " +
-					errorLoc.getColumnNumber() + ": " + message, cause);
-		location = errorLoc;
-	}
-	/**
-	 * Constructor.
-	 *
-	 * @param message   a message describing what's wrong with the XML.
-	 * @param errorLoc  the location containing the error.
-	 */
-	protected SPFormatException(final String message, final Location errorLoc) {
-		super("Incorrect SP XML at line " + errorLoc.getLineNumber() + ", column " +
-					errorLoc.getColumnNumber() + ": " + message);
-		location = errorLoc;
-	}
+
 	/**
 	 * Prevent serialization.
+	 *
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+
 	/**
 	 * Prevent serialization
+	 *
 	 * @param in ignored
-	 * @throws IOException always
+	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({ "unused", "static-method" })
+	@SuppressWarnings({"unused", "static-method"})
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

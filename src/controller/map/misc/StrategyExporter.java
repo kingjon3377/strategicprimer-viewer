@@ -44,26 +44,118 @@ public final class StrategyExporter implements PlayerChangeListener {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(StrategyExporter.class);
-
-	/**
-	 * The current player.
-	 */
-	private Player currentPlayer;
+	private static final Logger LOGGER = TypesafeLogger.getLogger(StrategyExporter
+																		  .class);
 	/**
 	 * The worker model.
 	 */
 	private final IWorkerModel model;
+	/**
+	 * The current player.
+	 */
+	private Player currentPlayer;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param workerModel    the driver model to draw from
+	 * @param workerModel the driver model to draw from
 	 */
 	public StrategyExporter(final IWorkerModel workerModel) {
 		model = workerModel;
 		currentPlayer = workerModel.getMap().getCurrentPlayer();
 	}
+
+	/**
+	 * @param unit a unit
+	 * @return the size of string needed to represent its members
+	 */
+	private static int unitMemberSize(final Iterable<UnitMember> unit) {
+		if (unit.iterator().hasNext()) {
+			int size = 3;
+			for (final UnitMember member : unit) {
+				size += 2;
+				size += memberStringSize(NullCleaner.assertNotNull(member));
+			}
+			return size;
+		} else {
+			return 0;
+		}
+	}
+
+	/**
+	 * @param unit a unit
+	 * @return a String representing its members
+	 */
+	private static String unitMembers(final Iterable<UnitMember> unit) {
+		if (unit.iterator().hasNext()) {
+			// Assume at least two K.
+			final StringBuilder builder = new StringBuilder(2048).append(" [");
+			boolean first = true;
+			for (final UnitMember member : unit) {
+				if (first) {
+					first = false;
+				} else {
+					builder.append(", ");
+				}
+				builder.append(memberString(member));
+			}
+			builder.append(']');
+			return NullCleaner.assertNotNull(builder.toString());
+		} else {
+			return "";
+		}
+	}
+
+	/**
+	 * @param member a unit member
+	 * @return the size of a string for it
+	 */
+	private static int memberStringSize(final UnitMember member) {
+		if (member instanceof IWorker) {
+			int size = ((IWorker) member).getName().length();
+			size += 2;
+			for (final IJob job : (IWorker) member) {
+				size += 3;
+				size += job.getName().length();
+				size += Integer.toString(job.getLevel()).length();
+			}
+			return size;
+		} else {
+			return member.toString().length();
+		}
+	}
+
+	/**
+	 * @param member a unit member
+	 * @return a suitable string for it
+	 */
+	private static String memberString(final UnitMember member) {
+		if (member instanceof IWorker) {
+			final IWorker worker = (IWorker) member;
+			// To save calculations, assume a half-K every time.
+			final StringBuilder builder =
+					new StringBuilder(512).append(worker.getName());
+			if (worker.iterator().hasNext()) {
+				builder.append(" (");
+				boolean first = true;
+				for (final IJob job : worker) {
+					if (first) {
+						first = false;
+					} else {
+						builder.append(", ");
+					}
+					builder.append(job.getName());
+					builder.append(' ');
+					builder.append(job.getLevel());
+				}
+				builder.append(')');
+			}
+			return NullCleaner.assertNotNull(builder.toString());
+		} else {
+			return NullCleaner.assertNotNull(member.toString());
+		}
+	}
+
 	/**
 	 * @param dismissed the list of dismissed members
 	 * @return the proto-strategy as a String
@@ -175,11 +267,13 @@ public final class StrategyExporter implements PlayerChangeListener {
 		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}
+
 	/**
 	 * Write the strategy to file.
+	 *
 	 * @param dismissed the list of dismissed members
-	 * @param options options passed to the driver
-	 * @param file a file (name) to write to
+	 * @param options   options passed to the driver
+	 * @param file      a file (name) to write to
 	 */
 	public void writeStrategy(final Path file, final SPOptions options,
 							  final Iterable<UnitMember> dismissed) {
@@ -189,96 +283,6 @@ public final class StrategyExporter implements PlayerChangeListener {
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			LOGGER.log(SEVERE, "I/O error exporting strategy", except);
-		}
-	}
-	/**
-	 * @param unit a unit
-	 * @return the size of string needed to represent its members
-	 */
-	private static int unitMemberSize(final Iterable<UnitMember> unit) {
-		if (unit.iterator().hasNext()) {
-			int size = 3;
-			for (final UnitMember member : unit) {
-				size += 2;
-				size += memberStringSize(NullCleaner.assertNotNull(member));
-			}
-			return size;
-		} else {
-			return 0;
-		}
-	}
-
-	/**
-	 * @param unit a unit
-	 * @return a String representing its members
-	 */
-	private static String unitMembers(final Iterable<UnitMember> unit) {
-		if (unit.iterator().hasNext()) {
-			// Assume at least two K.
-			final StringBuilder builder = new StringBuilder(2048).append(" [");
-			boolean first = true;
-			for (final UnitMember member : unit) {
-				if (first) {
-					first = false;
-				} else {
-					builder.append(", ");
-				}
-				builder.append(memberString(member));
-			}
-			builder.append(']');
-			return NullCleaner.assertNotNull(builder.toString());
-		} else {
-			return "";
-		}
-	}
-
-	/**
-	 * @param member a unit member
-	 * @return the size of a string for it
-	 */
-	private static int memberStringSize(final UnitMember member) {
-		if (member instanceof IWorker) {
-			int size = ((IWorker) member).getName().length();
-			size += 2;
-			for (final IJob job : (IWorker) member) {
-				size += 3;
-				size += job.getName().length();
-				size += Integer.toString(job.getLevel()).length();
-			}
-			return size;
-		} else {
-			return member.toString().length();
-		}
-	}
-
-	/**
-	 * @param member a unit member
-	 * @return a suitable string for it
-	 */
-	private static String memberString(final UnitMember member) {
-		if (member instanceof IWorker) {
-			final IWorker worker = (IWorker) member;
-			// To save calculations, assume a half-K every time.
-			final StringBuilder builder =
-					new StringBuilder(512).append(worker.getName());
-			if (worker.iterator().hasNext()) {
-				builder.append(" (");
-				boolean first = true;
-				for (final IJob job : worker) {
-					if (first) {
-						first = false;
-					} else {
-						builder.append(", ");
-					}
-					builder.append(job.getName());
-					builder.append(' ');
-					builder.append(job.getLevel());
-				}
-				builder.append(')');
-			}
-			return NullCleaner.assertNotNull(builder.toString());
-		} else {
-			return NullCleaner.assertNotNull(member.toString());
 		}
 	}
 
