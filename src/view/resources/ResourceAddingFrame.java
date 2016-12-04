@@ -48,10 +48,6 @@ import view.worker.WorkerMenu;
  */
 public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	/**
-	 * The driver model.
-	 */
-	private final ResourceManagementDriver model;
-	/**
 	 * The "resource" label.
 	 */
 	private final JLabel resourceLabel;
@@ -120,8 +116,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	public ResourceAddingFrame(final ResourceManagementDriver driverModel,
 							   final IOHandler ioh) {
 		super("Resource Entry");
-		model = driverModel;
-		final IDRegistrar idf = IDFactoryFiller.createFactory(model);
+		final IDRegistrar idf = IDFactoryFiller.createFactory(driverModel);
 		current = StreamSupport.stream(driverModel.getPlayers().spliterator(), false)
 						  .filter(player -> player.isCurrent())
 						  .findAny().orElse(new Player(-1, ""));
@@ -182,7 +177,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 																	  .intValue(),
 															  units);
 			pile.setCreated(resCreatedModel.getNumber().intValue());
-			model.addResource(pile, current);
+			driverModel.addResource(pile, current);
 			logAddition(pile.toString());
 			resKindBox.checkAndClear();
 			resCreatedModel.setValue(Integer.valueOf(-1));
@@ -222,7 +217,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			}
 			final int qty = implQtyModel.getNumber().intValue();
 			for (int i = 0; i < qty; i++) {
-				model.addResource(new Implement(kind, idf.createID()), current);
+				driverModel.addResource(new Implement(kind, idf.createID()), current);
 			}
 			logAddition(Integer.toString(qty) + " x " + kind);
 			implQtyModel.setValue(Integer.valueOf(1));
@@ -241,7 +236,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		final JScrollPane scrolledLog = new JScrollPane(logLabel);
 		scrolledLog.setMinimumSize(logLabel.getMinimumSize());
 		add(SplitWithWeights.verticalSplit(0.2, 0.1, mainPanel, scrolledLog));
-		setJMenuBar(new WorkerMenu(ioh, this, model));
+		setJMenuBar(new WorkerMenu(ioh, this, driverModel));
 		pack();
 		// If we set these at model creation, the fields would (try to) be unnecessarily
 		// large. Not that this helps.
