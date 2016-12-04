@@ -256,10 +256,10 @@ public final class StrategyExporter implements PlayerChangeListener {
 				builder.append(LineEnd.LINE_SEP);
 				builder.append(LineEnd.LINE_SEP);
 				final String unitOrders = orders.get(unit);
-				if (orders.isEmpty()) {
+				if (unitOrders.isEmpty()) {
 					builder.append("TODO");
 				} else {
-					builder.append(orders);
+					builder.append(unitOrders);
 				}
 				builder.append(LineEnd.LINE_SEP);
 				builder.append(LineEnd.LINE_SEP);
