@@ -26,6 +26,7 @@ import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.ISPWindow;
 import view.util.ImprovedComboBox;
+import view.util.ListenedButton;
 import view.util.SplitWithWeights;
 import view.util.StreamingLabel;
 import view.worker.WorkerMenu;
@@ -123,15 +124,12 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 					} else {
 						current = newPlayer;
 					}
-					resourceLabel
-							.setText(String.format("Add resource for %s:",
+					resourceLabel.setText(String.format("Add resource for %s:",
 									current.getName()));
-					implementLabel
-							.setText(String.format("Add equipment for %s:",
+					implementLabel.setText(String.format("Add equipment for %s:",
 									current.getName()));
 				});
-		final JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+		final BoxPanel mainPanel = new BoxPanel(false);
 		mainPanel.add(resourceLabel);
 		final JPanel panel = new BoxPanel(true);
 		addPair(panel, new JLabel("General Category"), resKindBox);
@@ -139,8 +137,6 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		addPair(panel, new JLabel("Specific Resource"), resourceBox);
 		addPair(panel, new JLabel("Quantity"), new JSpinner(resQtyModel));
 		addPair(panel, new JLabel("Units"), resUnitsBox);
-		final JButton resourceButton = new JButton("Add Resource");
-		addPair(panel, new JLabel(""), resourceButton);
 		final Function<JComboBox<?>, String> selectedItem = box -> {
 			final Object sel = box.getSelectedItem();
 			if (sel == null) {
@@ -178,7 +174,8 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			resUnitsBox.checkAndClear();
 			resKindBox.requestFocusInWindow();
 		};
-		resourceButton.addActionListener(resListener);
+		addPair(panel, new JLabel(""), new ListenedButton("Add Resource", resListener));
+		// A listener on the combo box fires on every change to the selection
 		final BiConsumer<JComboBox<?>, ActionListener> addListener = (box, list) -> {
 			final Component inner = box.getEditor().getEditorComponent();
 			if (inner instanceof JTextField) {
@@ -191,16 +188,13 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 				}
 			}
 		};
-		// Unfortunately, this would fire every time the "selected item" changed!
-//		resUnitsBox.addActionListener(resListener);
 		addListener.accept(resUnitsBox, resListener);
 		mainPanel.add(panel);
-		mainPanel.add(Box.createVerticalGlue());
+		mainPanel.addGlue();
 		mainPanel.add(implementLabel);
 		final JPanel secondPanel = new BoxPanel(true);
 		secondPanel.add(implQtyField);
 		secondPanel.add(implKindBox);
-		final JButton implButton = new JButton("Add Equipment");
 		final ActionListener implListener = evt -> {
 			confirmPlayer(ioh);
 			final String kind = selectedItem.apply(implKindBox);
@@ -216,13 +210,10 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			implKindBox.checkAndClear();
 			implQtyField.requestFocusInWindow();
 		};
-		implButton.addActionListener(implListener);
-		// Unfortunately, this would fire every time the "selected item" changed!
-//		implKindBox.addActionListener(implListener);
 		addListener.accept(implKindBox, implListener);
-		secondPanel.add(implButton);
+		secondPanel.add(new ListenedButton("Add Equipment", implListener));
 		mainPanel.add(secondPanel);
-		mainPanel.add(Box.createVerticalGlue());
+		mainPanel.addGlue();
 		logLabel.setMinimumSize(new Dimension(getWidth() - 20, 50));
 		logLabel.setPreferredSize(new Dimension(getWidth(), 100));
 		final JScrollPane scrolledLog = new JScrollPane(logLabel);
