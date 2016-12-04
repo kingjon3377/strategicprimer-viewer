@@ -278,6 +278,17 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 											  Matcher.quoteReplacement
 															  (oldKindProperty))),
 				oldKindProperty);
+	}
+	/**
+	 * Further test Tile serialization.
+	 *
+	 * @throws SPFormatException  on SP format error
+	 * @throws XMLStreamException on XML reading error
+	 * @throws IOException        on I/O error creating serialized form
+	 */
+	@Test
+	public void testTileSerializationTwo()
+			throws XMLStreamException, SPFormatException, IOException {
 		final IMutableMapNG five =
 				createSimpleMap(point(3, 4), Pair.of(point(2, 3), Jungle));
 		five.addFixture(point(2, 3), new Unit(
@@ -347,6 +358,17 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 								"version=\"2\"/>%n</view>%n", ISPReader.NAMESPACE))));
 		assertImageSerialization("Unit image property is preserved",
 				new Unit(new Player(5, ""), "herder", "herderName", 9));
+	}
+	/**
+	 * Yet further test Tile serialization.
+	 *
+	 * @throws SPFormatException  on SP format error
+	 * @throws XMLStreamException on XML reading error
+	 * @throws IOException        on I/O error creating serialized form
+	 */
+	@Test
+	public void testTileSerializationThree()
+			throws XMLStreamException, SPFormatException, IOException {
 		final IMutableMapNG six =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 5);
 		six.setMountainous(point(0, 0), true);
