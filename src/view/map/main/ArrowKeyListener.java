@@ -7,7 +7,11 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.ObjIntConsumer;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import util.ActionWrapper;
 import util.OnMac;
 
@@ -31,6 +35,30 @@ import static javax.swing.KeyStroke.getKeyStroke;
  * @author Jonathan Lovelace
  */
 public final class ArrowKeyListener {
+	/**
+	 * A map from key-codes to Strings we'll use to represent them.
+	 */
+	private static final Map<Integer, String> INPUTS = new HashMap<>();
+	static {
+		final ObjIntConsumer<String> add =
+				(str, value) -> INPUTS.put(Integer.valueOf(value), str);
+		add.accept("up", KeyEvent.VK_UP);
+		add.accept("down", KeyEvent.VK_DOWN);
+		add.accept("right", KeyEvent.VK_RIGHT);
+		add.accept("left", KeyEvent.VK_LEFT);
+		add.accept("down", KeyEvent.VK_KP_DOWN);
+		add.accept("down", KeyEvent.VK_NUMPAD2);
+		add.accept("right", KeyEvent.VK_KP_RIGHT);
+		add.accept("right", KeyEvent.VK_NUMPAD6);
+		add.accept("up", KeyEvent.VK_KP_UP);
+		add.accept("up", KeyEvent.VK_NUMPAD8);
+		add.accept("left", KeyEvent.VK_KP_LEFT);
+		add.accept("left", KeyEvent.VK_NUMPAD4);
+		add.accept("up-right",KeyEvent.VK_NUMPAD9);
+		add.accept("up-left", KeyEvent.VK_NUMPAD7);
+		add.accept("down-right", KeyEvent.VK_NUMPAD3);
+		add.accept("down-left", KeyEvent.VK_NUMPAD1);
+	}
 	/**
 	 * @param consumer a reference to a DirectionSelectionChanger method
 	 * @return it wrapped in an ActionListener
@@ -60,22 +88,17 @@ public final class ArrowKeyListener {
 	public static void setUpListeners(final DirectionSelectionChanger selListener,
 									  final InputMap inputMap,
 									  final ActionMap actionMap) {
-		inputMap.put(getKeyStroke(KeyEvent.VK_UP, 0), "up");
-		inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
-		inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
-		inputMap.put(getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
-		inputMap.put(getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "down");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD2, 0), "down");
-		inputMap.put(getKeyStroke(KeyEvent.VK_KP_RIGHT, 0), "right");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD6, 0), "right");
-		inputMap.put(getKeyStroke(KeyEvent.VK_KP_UP, 0), "up");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD8, 0), "up");
-		inputMap.put(getKeyStroke(KeyEvent.VK_KP_LEFT, 0), "left");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD4, 0), "left");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD9, 0), "up-right");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD7, 0), "up-left");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD3, 0), "down-right");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD1, 0), "down-left");
+		final int fiveMask;
+		if (OnMac.SYSTEM_IS_MAC) {
+			fiveMask = InputEvent.ALT_DOWN_MASK;
+		} else {
+			fiveMask = CTRL_DOWN_MASK;
+		}
+		for (final Map.Entry<Integer, String> entry : INPUTS.entrySet()) {
+			inputMap.put(getKeyStroke(entry.getKey().intValue(), 0), entry.getValue());
+			inputMap.put(getKeyStroke(entry.getKey().intValue(), fiveMask),
+					"ctrl-" + entry.getValue());
+		}
 		actionMap.put("up", new DirectionListener(wrap(selListener::up)));
 		actionMap.put("down", new DirectionListener(wrap(selListener::down)));
 		actionMap.put("left", new DirectionListener(wrap(selListener::left)));
@@ -88,41 +111,10 @@ public final class ArrowKeyListener {
 				new DirectionListener(wrap(selListener::down, selListener::right)));
 		actionMap.put("down-left",
 				new DirectionListener(wrap(selListener::down, selListener::left)));
-		final int fiveMask;
-		if (OnMac.SYSTEM_IS_MAC) {
-			fiveMask = InputEvent.ALT_DOWN_MASK;
-		} else {
-			fiveMask = CTRL_DOWN_MASK;
-		}
-		inputMap.put(getKeyStroke(KeyEvent.VK_UP, fiveMask), "ctrlUp");
-		inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, fiveMask), "ctrlDown");
-		inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, fiveMask),
-				"ctrlRight");
-		inputMap.put(getKeyStroke(KeyEvent.VK_LEFT, fiveMask), "ctrlLeft");
-		inputMap.put(getKeyStroke(KeyEvent.VK_KP_DOWN, fiveMask), "ctrlDown");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD2, fiveMask),
-				"ctrlDown");
-		inputMap.put(getKeyStroke(KeyEvent.VK_KP_RIGHT, fiveMask), "ctrlRight");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD6, fiveMask),
-				"ctrlRight");
-		inputMap.put(getKeyStroke(KeyEvent.VK_KP_UP, fiveMask), "ctrlUp");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD8, fiveMask),
-				"ctrlUp");
-		inputMap.put(getKeyStroke(KeyEvent.VK_KP_LEFT, fiveMask), "ctrlLeft");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD4, fiveMask),
-				"ctrlLeft");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD9, fiveMask),
-				"ctrl-up-right");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD7, fiveMask),
-				"ctrl-up-left");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD3, fiveMask),
-				"ctrl-down-right");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD1, fiveMask),
-				"ctrl-down-left");
-		actionMap.put("ctrlUp", new DirectionListener(wrap(selListener::up), 5));
-		actionMap.put("ctrlDown", new DirectionListener(wrap(selListener::down), 5));
-		actionMap.put("ctrlLeft", new DirectionListener(wrap(selListener::left), 5));
-		actionMap.put("ctrlRight", new DirectionListener(wrap(selListener::right), 5));
+		actionMap.put("ctrl-up", new DirectionListener(wrap(selListener::up), 5));
+		actionMap.put("ctrl-down", new DirectionListener(wrap(selListener::down), 5));
+		actionMap.put("ctrl-left", new DirectionListener(wrap(selListener::left), 5));
+		actionMap.put("ctrl-right", new DirectionListener(wrap(selListener::right), 5));
 		actionMap.put("ctrl-up-right",
 				new DirectionListener(wrap(selListener::up, selListener::right), 5));
 		actionMap.put("ctrl-up-left",
