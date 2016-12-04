@@ -303,6 +303,10 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 */
 	private static class UpdatedComboBox extends ImprovedComboBox<String> {
 		/**
+		 * The values we've had in the past.
+		 */
+		private final Collection<String> values;
+		/**
 		 * Constructor. We need it to be neither private nor public for this to
 		 * work with as few warnings as possible as a private inner class, and
 		 * it needs to do something to not be an empty method, so we moved the
@@ -311,12 +315,6 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		protected UpdatedComboBox() {
 			values = new HashSet<>();
 		}
-
-		/**
-		 * The values we've had in the past.
-		 */
-		private final Collection<String> values;
-
 		/**
 		 * Clear the combo box, but if its value was one we haven't had previously, add
 		 * it to the drop-down list.

@@ -48,22 +48,6 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	protected final DistanceComparator distCalculator;
 
 	/**
-	 * @param comparator a comparator for pairs of Points and fixtures.
-	 */
-	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
-		pairComparator = comparator;
-		if ((comparator instanceof PairComparator) &&
-					(((PairComparator<Point, IFixture>) comparator)
-							.first() instanceof DistanceComparator)) {
-			distCalculator =
-					(DistanceComparator) ((PairComparator<Point, IFixture>) comparator)
-												.first();
-		} else {
-			distCalculator = new DistanceComparator(PointFactory.point(-1, -1));
-		}
-	}
-
-	/**
 	 * The HTML tag for the end of a bulleted list. Plus a newline.
 	 */
 	@SuppressWarnings("HardcodedLineSeparator")
@@ -83,7 +67,21 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * The HTML tag for the start of a list item.
 	 */
 	protected static final String OPEN_LIST_ITEM = "<li>";
-
+	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+		pairComparator = comparator;
+		if ((comparator instanceof PairComparator) &&
+					(((PairComparator<Point, IFixture>) comparator)
+							.first() instanceof DistanceComparator)) {
+			distCalculator =
+					(DistanceComparator) ((PairComparator<Point, IFixture>) comparator)
+												.first();
+		} else {
+			distCalculator = new DistanceComparator(PointFactory.point(-1, -1));
+		}
+	}
 	/**
 	 * A list that prints a header in its toString().
 	 *

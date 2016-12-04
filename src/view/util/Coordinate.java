@@ -19,6 +19,14 @@ import util.NullCleaner;
  */
 public final class Coordinate {
 	/**
+	 * The X coordinate or width.
+	 */
+	public final int x;
+	/**
+	 * The Y coordinate or height.
+	 */
+	public final int y;
+	/**
 	 * Constructor.
 	 *
 	 * @param xCoordinate the X coordinate or width
@@ -28,16 +36,6 @@ public final class Coordinate {
 		x = xCoordinate;
 		y = yCoordinate;
 	}
-
-	/**
-	 * The X coordinate or width.
-	 */
-	public final int x;
-	/**
-	 * The Y coordinate or height.
-	 */
-	public final int y;
-
 	/**
 	 * @return a String representation of the object
 	 */

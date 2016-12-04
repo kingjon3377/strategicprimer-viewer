@@ -21,15 +21,15 @@ import java.io.InputStream;
 @SuppressWarnings({"resource", "IOResourceOpenedButNotSafelyClosed"})
 public final class SystemIn extends FilterInputStream {
 	/**
+	 * Singleton.
+	 */
+	public static final InputStream SYS_IN = new SystemIn();
+	/**
 	 * Constructor.
 	 */
 	private SystemIn() {
 		super(System.in);
 	}
-	/**
-	 * Singleton.
-	 */
-	public static final InputStream SYS_IN = new SystemIn();
 	/**
 	 * Do *not* close.
 	 */

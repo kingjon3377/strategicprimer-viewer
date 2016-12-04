@@ -53,13 +53,13 @@ public enum DrawingNumericConstants {
 	 */
 	EventStart(3.0 / 4.0);
 	/**
+	 * The constant this instance encapsulates.
+	 */
+	public final double constant;
+	/**
 	 * @param numConst the constant this instance encapsulates.
 	 */
 	DrawingNumericConstants(final double numConst) {
 		constant = numConst;
 	}
-	/**
-	 * The constant this instance encapsulates.
-	 */
-	public final double constant;
 }

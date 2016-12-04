@@ -70,7 +70,15 @@ public final class SkillAdvancementPanel extends BoxPanel
 	 */
 	@Nullable
 	private ISkill skill = null;
-
+	/**
+	 * Text box.
+	 */
+	private final JTextField hours = new JTextField(3);
+	/**
+	 * Parser for hours field.
+	 */
+	private static final NumberFormat NUM_PARSER =
+			assertNotNull(NumberFormat.getIntegerInstance());
 	/**
 	 * @param selectedSkill the newly selected skill.
 	 */
@@ -82,12 +90,6 @@ public final class SkillAdvancementPanel extends BoxPanel
 			hours.requestFocusInWindow();
 		}
 	}
-
-	/**
-	 * Text box.
-	 */
-	private final JTextField hours = new JTextField(3);
-
 	/**
 	 * Constructor.
 	 */
@@ -151,13 +153,6 @@ public final class SkillAdvancementPanel extends BoxPanel
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));
 		setMaximumSize(new Dimension(240, MAX_PANEL_HEIGHT));
 	}
-
-	/**
-	 * Parser for hours field.
-	 */
-	private static final NumberFormat NUM_PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
-
 	/**
 	 * @param list the listener to add
 	 */

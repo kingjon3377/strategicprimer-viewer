@@ -55,32 +55,6 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 																		TreeSelectionListener,
 																		PlayerChangeListener {
 	/**
-	 * An interface for a function to give us the orders (or results) for a particular
-	 * unit for a particular turn.
-	 */
-	@FunctionalInterface
-	public interface OrdersSupplier {
-		/**
-		 * @param unit the unit whose orders (or results) are wanted
-		 * @param turn the turn for which the orders (or results) are wanted
-		 * @return the orders (or results) for that unit for that turn
-		 */
-		String getOrders(IUnit unit, int turn);
-	}
-	/**
-	 * An interface for a method to set the orders (or results) for a particular unit
-	 * for a particular turn.
-	 */
-	@FunctionalInterface
-	public interface OrdersConsumer {
-		/**
-		 * @param unit the unit whose orders (or results) are being set
-		 * @param turn the turn for which the orders (or results) are being set
-		 * @param orders the orders (or results) to set for that unit for that turn
-		 */
-		void setOrders(IUnit unit, int turn, String orders);
-	}
-	/**
 	 * The source of orders (or results).
 	 */
 	private final OrdersSupplier supplier;
@@ -343,5 +317,31 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 
 			}
 		}
+	}
+	/**
+	 * An interface for a function to give us the orders (or results) for a particular
+	 * unit for a particular turn.
+	 */
+	@FunctionalInterface
+	public interface OrdersSupplier {
+		/**
+		 * @param unit the unit whose orders (or results) are wanted
+		 * @param turn the turn for which the orders (or results) are wanted
+		 * @return the orders (or results) for that unit for that turn
+		 */
+		String getOrders(IUnit unit, int turn);
+	}
+	/**
+	 * An interface for a method to set the orders (or results) for a particular unit
+	 * for a particular turn.
+	 */
+	@FunctionalInterface
+	public interface OrdersConsumer {
+		/**
+		 * @param unit the unit whose orders (or results) are being set
+		 * @param turn the turn for which the orders (or results) are being set
+		 * @param orders the orders (or results) to set for that unit for that turn
+		 */
+		void setOrders(IUnit unit, int turn, String orders);
 	}
 }

@@ -37,6 +37,25 @@ import static view.util.SystemOut.SYS_OUT;
  */
 public final class ConverterDriver implements UtilityDriver {
 	/**
+	 * The stream to write progress information to.
+	 */
+	private final PrintStream ostream;
+	/**
+	 * The usage object. This is only an instance rather than static object so we can
+	 * have it be CLI by default and GUI when a stream was passed in.
+	 */
+	private final DriverUsage usageObject;
+
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+												 .getLogger(ConverterDriver.class);
+	/**
+	 * The map reader we'll use.
+	 */
+	private static final MapReaderAdapter READER = new MapReaderAdapter();
+	/**
 	 * Default constructor, for when this is run at a command line. Sets output to
 	 * stdout.
 	 */
@@ -63,25 +82,6 @@ public final class ConverterDriver implements UtilityDriver {
 		);
 		usageObject.addSupportedOption("--current-turn=NN");
 	}
-	/**
-	 * The stream to write progress information to.
-	 */
-	private final PrintStream ostream;
-	/**
-	 * The usage object. This is only an instance rather than static object so we can
-	 * have it be CLI by default and GUI when a stream was passed in.
-	 */
-	private final DriverUsage usageObject;
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-												.getLogger(ConverterDriver.class);
-	/**
-	 * The map reader we'll use.
-	 */
-	private static final MapReaderAdapter READER = new MapReaderAdapter();
 
 	/**
 	 * Run the driver.

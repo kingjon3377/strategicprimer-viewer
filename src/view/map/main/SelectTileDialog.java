@@ -61,6 +61,16 @@ public final class SelectTileDialog extends JDialog {
 	private final IViewerModel map;
 
 	/**
+	 * The parser to use for checking numbers.
+	 */
+	private static final NumberFormat NUM_PARSER =
+			assertNotNull(NumberFormat.getIntegerInstance());
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(SelectTileDialog.class);
+	/**
 	 * Constructor.
 	 *
 	 * @param parent the parent to attach this dialog to
@@ -147,13 +157,6 @@ public final class SelectTileDialog extends JDialog {
 		 */
 		Overflow
 	}
-
-	/**
-	 * The parser to use for checking numbers.
-	 */
-	private static final NumberFormat NUM_PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
-
 	/**
 	 * @param text  a String to test, representing a number
 	 * @param bound its maximum value
@@ -198,13 +201,6 @@ public final class SelectTileDialog extends JDialog {
 			throw new IllegalStateException("Default case of enum switch");
 		}
 	}
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER =
-			TypesafeLogger.getLogger(SelectTileDialog.class);
-
 	/**
 	 * Handle the OK button.
 	 *

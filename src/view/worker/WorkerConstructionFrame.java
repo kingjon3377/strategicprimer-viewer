@@ -110,7 +110,11 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 * The list of listeners to notify on worker creation.
 	 */
 	private final Collection<NewWorkerListener> nwListeners = new ArrayList<>();
-
+	/**
+	 * Number parser.
+	 */
+	private static final NumberFormat NUM_PARSER =
+			assertNotNull(NumberFormat.getIntegerInstance());
 	/**
 	 * Constructor.
 	 *
@@ -237,13 +241,6 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 		}
 		return assertNotNull(builder.toString());
 	}
-
-	/**
-	 * Number parser.
-	 */
-	private static final NumberFormat NUM_PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
-
 	/**
 	 * @param box a text field
 	 * @return the integer value of its text

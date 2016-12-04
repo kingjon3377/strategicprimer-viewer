@@ -51,6 +51,11 @@ import static util.NullCleaner.assertNotNull;
 public abstract class AbstractCompactReader<@NonNull T>
 		implements CompactReader<@NonNull T> {
 	/**
+	 * A parser for numeric data.
+	 */
+	private static final NumberFormat NUM_PARSER =
+			assertNotNull(NumberFormat.getIntegerInstance());
+	/**
 	 * Do not instantiate directly.
 	 */
 	protected AbstractCompactReader() {
@@ -320,13 +325,6 @@ public abstract class AbstractCompactReader<@NonNull T>
 			return " portrait=\"" + portrait + '"';
 		}
 	}
-	/**
-	 * A parser for numeric data.
-	 */
-	private static final NumberFormat NUM_PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
-
-
 	/**
 	 * Parse an integer.
 	 *
