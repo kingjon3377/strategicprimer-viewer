@@ -32,6 +32,25 @@ import static javax.swing.KeyStroke.getKeyStroke;
  */
 public final class ArrowKeyListener {
 	/**
+	 * @param consumer a reference to a DirectionSelectionChanger method
+	 * @return it wrapped in an ActionListener
+	 */
+	private static ActionListener wrap(final Runnable consumer) {
+		return evt -> consumer.run();
+	}
+	/**
+	 * @param first one reference to a DirectionSelectionChanger method
+	 * @param second a second such reference
+	 * @return an ActionListener that ignores its parameter and calls the first
+	 * reference, then the second.
+	 */
+	private static ActionListener wrap(final Runnable first, final Runnable second) {
+		return evt -> {
+			first.run();
+			second.run();
+		};
+	}
+	/**
 	 * Set up listeners.
 	 *
 	 * @param selListener The actual listener whose methods have to be attached.
@@ -57,26 +76,18 @@ public final class ArrowKeyListener {
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD7, 0), "up-left");
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD3, 0), "down-right");
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD1, 0), "down-left");
-		actionMap.put("up", new DirectionListener(evt -> selListener.up()));
-		actionMap.put("down", new DirectionListener(evt -> selListener.down()));
-		actionMap.put("left", new DirectionListener(evt -> selListener.left()));
-		actionMap.put("right", new DirectionListener(evt -> selListener.right()));
-		actionMap.put("up-right", new DirectionListener(evt -> {
-			selListener.up();
-			selListener.right();
-		}));
-		actionMap.put("up-left", new DirectionListener(evt -> {
-			selListener.up();
-			selListener.left();
-		}));
-		actionMap.put("down-right", new DirectionListener(evt -> {
-			selListener.down();
-			selListener.right();
-		}));
-		actionMap.put("down-left", new DirectionListener(evt -> {
-			selListener.down();
-			selListener.left();
-		}));
+		actionMap.put("up", new DirectionListener(wrap(selListener::up)));
+		actionMap.put("down", new DirectionListener(wrap(selListener::down)));
+		actionMap.put("left", new DirectionListener(wrap(selListener::left)));
+		actionMap.put("right", new DirectionListener(wrap(selListener::right)));
+		actionMap.put("up-right",
+				new DirectionListener(wrap(selListener::up, selListener::right)));
+		actionMap.put("up-left",
+				new DirectionListener(wrap(selListener::up, selListener::left)));
+		actionMap.put("down-right",
+				new DirectionListener(wrap(selListener::down, selListener::right)));
+		actionMap.put("down-left",
+				new DirectionListener(wrap(selListener::down, selListener::left)));
 		final int fiveMask;
 		if (OnMac.SYSTEM_IS_MAC) {
 			fiveMask = InputEvent.ALT_DOWN_MASK;
@@ -108,26 +119,18 @@ public final class ArrowKeyListener {
 				"ctrl-down-right");
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD1, fiveMask),
 				"ctrl-down-left");
-		actionMap.put("ctrlUp", new DirectionListener(evt -> selListener.up(), 5));
-		actionMap.put("ctrlDown", new DirectionListener(evt -> selListener.down(), 5));
-		actionMap.put("ctrlLeft", new DirectionListener(evt -> selListener.left(), 5));
-		actionMap.put("ctrlRight", new DirectionListener(evt -> selListener.right(), 5));
-		actionMap.put("ctrl-up-right", new DirectionListener(evt -> {
-			selListener.up();
-			selListener.right();
-		}, 5));
-		actionMap.put("ctrl-up-left", new DirectionListener(evt -> {
-			selListener.up();
-			selListener.left();
-		}, 5));
-		actionMap.put("ctrl-down-right", new DirectionListener(evt -> {
-			selListener.down();
-			selListener.right();
-		}, 5));
-		actionMap.put("ctrl-down-left", new DirectionListener(evt -> {
-			selListener.down();
-			selListener.left();
-		}, 5));
+		actionMap.put("ctrlUp", new DirectionListener(wrap(selListener::up), 5));
+		actionMap.put("ctrlDown", new DirectionListener(wrap(selListener::down), 5));
+		actionMap.put("ctrlLeft", new DirectionListener(wrap(selListener::left), 5));
+		actionMap.put("ctrlRight", new DirectionListener(wrap(selListener::right), 5));
+		actionMap.put("ctrl-up-right",
+				new DirectionListener(wrap(selListener::up, selListener::right), 5));
+		actionMap.put("ctrl-up-left",
+				new DirectionListener(wrap(selListener::up, selListener::right), 5));
+		actionMap.put("ctrl-down-right",
+				new DirectionListener(wrap(selListener::down, selListener::right), 5));
+		actionMap.put("ctrl-down-left",
+				new DirectionListener(wrap(selListener::down, selListener::left), 5));
 		if (OnMac.SYSTEM_IS_MAC) {
 			inputMap.put(getKeyStroke(KeyEvent.VK_HOME, InputEvent.META_DOWN_MASK),
 					"ctrl-home");
@@ -172,18 +175,14 @@ public final class ArrowKeyListener {
 		inputMap.put(getKeyStroke('^', 0), "caret");
 		inputMap.put(getKeyStroke(KeyEvent.VK_DOLLAR, 0), "dollar");
 		inputMap.put(getKeyStroke(KeyEvent.VK_4, SHIFT_DOWN_MASK), "dollar");
-		actionMap.put("ctrl-home", new DirectionListener(evt -> {
-			selListener.jumpUp();
-			selListener.jumpLeft();
-		}));
-		actionMap.put("home", new DirectionListener(evt -> selListener.jumpUp()));
-		actionMap.put("ctrl-end", new DirectionListener(evt -> {
-			selListener.jumpDown();
-			selListener.jumpRight();
-		}));
-		actionMap.put("end", new DirectionListener(evt -> selListener.jumpDown()));
-		actionMap.put("caret", new DirectionListener(evt -> selListener.jumpLeft()));
-		actionMap.put("dollar", new DirectionListener(evt -> selListener.jumpRight()));
+		actionMap.put("ctrl-home",
+				new DirectionListener(wrap(selListener::jumpUp, selListener::jumpLeft)));
+		actionMap.put("home", new DirectionListener(wrap(selListener::jumpUp)));
+		actionMap.put("ctrl-end", new DirectionListener(wrap(selListener::jumpDown,
+				selListener::jumpRight)));
+		actionMap.put("end", new DirectionListener(wrap(selListener::jumpDown)));
+		actionMap.put("caret", new DirectionListener(wrap(selListener::jumpLeft)));
+		actionMap.put("dollar", new DirectionListener(wrap(selListener::jumpRight)));
 	}
 
 	/**
