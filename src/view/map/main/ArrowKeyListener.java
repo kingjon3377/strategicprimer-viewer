@@ -9,13 +9,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.ObjIntConsumer;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import util.ActionWrapper;
 import util.OnMac;
 
-import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 import static javax.swing.KeyStroke.getKeyStroke;
 
@@ -36,28 +36,106 @@ import static javax.swing.KeyStroke.getKeyStroke;
  */
 public final class ArrowKeyListener {
 	/**
-	 * A map from key-codes to Strings we'll use to represent them.
+	 * A map from key-codes for arrow keys and the numeric keypad to Strings we'll use
+	 * to represent them.
+	 */
+	private static final Map<Integer, String> ARROW_INPUTS = new HashMap<>();
+	/**
+	 * A map from Strings representing arrow-key key codes to the actions that should
+	 * be mapped to them.
+	 */
+	private static final Map<String, Consumer<DirectionSelectionChanger>> ARROW_ACTIONS =
+			new HashMap<>();
+	/**
+	 * @param first one method reference
+	 * @param second a second such reference
+	 * @return a reference combining the two
+	 */
+	private static <T> Consumer<T> join(final Consumer<T> first,
+										final Consumer<T> second) {
+		return first.andThen(second);
+	}
+	/**
+	 * A map from key-codes that are used, when modified with a platform-specific
+	 * modifier, for "jumping," to the Strings we'll use to represent them.
+	 */
+	private static final Map<Integer, String> JUMP_INPUTS = new HashMap<>();
+	/**
+	 * A map from other key-codes to the Strings we'll use to represent them.
 	 */
 	private static final Map<Integer, String> INPUTS = new HashMap<>();
 	static {
-		final ObjIntConsumer<String> add =
+		final ObjIntConsumer<String> arrow =
+				(str, value) -> ARROW_INPUTS.put(Integer.valueOf(value), str);
+		arrow.accept("up", KeyEvent.VK_UP);
+		arrow.accept("down", KeyEvent.VK_DOWN);
+		arrow.accept("right", KeyEvent.VK_RIGHT);
+		arrow.accept("left", KeyEvent.VK_LEFT);
+		arrow.accept("down", KeyEvent.VK_KP_DOWN);
+		arrow.accept("down", KeyEvent.VK_NUMPAD2);
+		arrow.accept("right", KeyEvent.VK_KP_RIGHT);
+		arrow.accept("right", KeyEvent.VK_NUMPAD6);
+		arrow.accept("up", KeyEvent.VK_KP_UP);
+		arrow.accept("up", KeyEvent.VK_NUMPAD8);
+		arrow.accept("left", KeyEvent.VK_KP_LEFT);
+		arrow.accept("left", KeyEvent.VK_NUMPAD4);
+		arrow.accept("up-right",KeyEvent.VK_NUMPAD9);
+		arrow.accept("up-left", KeyEvent.VK_NUMPAD7);
+		arrow.accept("down-right", KeyEvent.VK_NUMPAD3);
+		arrow.accept("down-left", KeyEvent.VK_NUMPAD1);
+
+		ARROW_ACTIONS.put("up", DirectionSelectionChanger::up);
+		ARROW_ACTIONS.put("down", DirectionSelectionChanger::down);
+		ARROW_ACTIONS.put("left", DirectionSelectionChanger::left);
+		ARROW_ACTIONS.put("right", DirectionSelectionChanger::right);
+		ARROW_ACTIONS.put("up-right",
+				join(DirectionSelectionChanger::up, DirectionSelectionChanger::right));
+		ARROW_ACTIONS.put("up-left",
+				join(DirectionSelectionChanger::up, DirectionSelectionChanger::left));
+		ARROW_ACTIONS.put("down-right",
+				join(DirectionSelectionChanger::down, DirectionSelectionChanger::right));
+		ARROW_ACTIONS.put("down-left",
+				join(DirectionSelectionChanger::down, DirectionSelectionChanger::left));
+
+		final ObjIntConsumer<String> other =
 				(str, value) -> INPUTS.put(Integer.valueOf(value), str);
-		add.accept("up", KeyEvent.VK_UP);
-		add.accept("down", KeyEvent.VK_DOWN);
-		add.accept("right", KeyEvent.VK_RIGHT);
-		add.accept("left", KeyEvent.VK_LEFT);
-		add.accept("down", KeyEvent.VK_KP_DOWN);
-		add.accept("down", KeyEvent.VK_NUMPAD2);
-		add.accept("right", KeyEvent.VK_KP_RIGHT);
-		add.accept("right", KeyEvent.VK_NUMPAD6);
-		add.accept("up", KeyEvent.VK_KP_UP);
-		add.accept("up", KeyEvent.VK_NUMPAD8);
-		add.accept("left", KeyEvent.VK_KP_LEFT);
-		add.accept("left", KeyEvent.VK_NUMPAD4);
-		add.accept("up-right",KeyEvent.VK_NUMPAD9);
-		add.accept("up-left", KeyEvent.VK_NUMPAD7);
-		add.accept("down-right", KeyEvent.VK_NUMPAD3);
-		add.accept("down-left", KeyEvent.VK_NUMPAD1);
+		other.accept("home", KeyEvent.VK_HOME);
+		other.accept("home", KeyEvent.VK_0);
+		other.accept("home", KeyEvent.VK_NUMPAD0);
+		other.accept("end", KeyEvent.VK_END);
+		other.accept("end", KeyEvent.VK_NUMBER_SIGN);
+		other.accept("dollar", KeyEvent.VK_DOLLAR);
+		other.accept("caret", KeyEvent.VK_CIRCUMFLEX);
+		other.accept("end", Character.getNumericValue('#'));
+		other.accept("caret", Character.getNumericValue('^'));
+
+		final ObjIntConsumer<String> jumps =
+				(str, value) -> JUMP_INPUTS.put(Integer.valueOf(value), str);
+		jumps.accept("ctrl-home", KeyEvent.VK_HOME);
+		jumps.accept("ctrl-end", KeyEvent.VK_END);
+		if (OnMac.SYSTEM_IS_MAC) {
+			jumps.accept("home", KeyEvent.VK_UP);
+			jumps.accept("home", KeyEvent.VK_KP_UP);
+			jumps.accept("home", KeyEvent.VK_NUMPAD8);
+			jumps.accept("end", KeyEvent.VK_DOWN);
+			jumps.accept("end", KeyEvent.VK_KP_DOWN);
+			jumps.accept("end", KeyEvent.VK_NUMPAD2);
+			jumps.accept("caret", KeyEvent.VK_LEFT);
+			jumps.accept("caret", KeyEvent.VK_KP_LEFT);
+			jumps.accept("caret", KeyEvent.VK_NUMPAD4);
+			jumps.accept("dollar", KeyEvent.VK_RIGHT);
+			jumps.accept("dollar", KeyEvent.VK_KP_RIGHT);
+			jumps.accept("dollar", KeyEvent.VK_NUMPAD6);
+		}
+	}
+	/**
+	 * @param selListener the listener we're setting up
+	 * @param consumer a method reference to that class
+	 * @return an ActionListener that calls that method reference on that instance
+	 */
+	private static ActionListener wrap(final DirectionSelectionChanger selListener,
+								  final Consumer<DirectionSelectionChanger> consumer) {
+		return evt -> consumer.accept(selListener);
 	}
 	/**
 	 * @param consumer a reference to a DirectionSelectionChanger method
@@ -92,80 +170,34 @@ public final class ArrowKeyListener {
 		if (OnMac.SYSTEM_IS_MAC) {
 			fiveMask = InputEvent.ALT_DOWN_MASK;
 		} else {
-			fiveMask = CTRL_DOWN_MASK;
+			fiveMask = InputEvent.CTRL_DOWN_MASK;
 		}
-		for (final Map.Entry<Integer, String> entry : INPUTS.entrySet()) {
+		for (final Map.Entry<Integer, String> entry : ARROW_INPUTS.entrySet()) {
 			inputMap.put(getKeyStroke(entry.getKey().intValue(), 0), entry.getValue());
 			inputMap.put(getKeyStroke(entry.getKey().intValue(), fiveMask),
 					"ctrl-" + entry.getValue());
 		}
-		actionMap.put("up", new DirectionListener(wrap(selListener::up)));
-		actionMap.put("down", new DirectionListener(wrap(selListener::down)));
-		actionMap.put("left", new DirectionListener(wrap(selListener::left)));
-		actionMap.put("right", new DirectionListener(wrap(selListener::right)));
-		actionMap.put("up-right",
-				new DirectionListener(wrap(selListener::up, selListener::right)));
-		actionMap.put("up-left",
-				new DirectionListener(wrap(selListener::up, selListener::left)));
-		actionMap.put("down-right",
-				new DirectionListener(wrap(selListener::down, selListener::right)));
-		actionMap.put("down-left",
-				new DirectionListener(wrap(selListener::down, selListener::left)));
-		actionMap.put("ctrl-up", new DirectionListener(wrap(selListener::up), 5));
-		actionMap.put("ctrl-down", new DirectionListener(wrap(selListener::down), 5));
-		actionMap.put("ctrl-left", new DirectionListener(wrap(selListener::left), 5));
-		actionMap.put("ctrl-right", new DirectionListener(wrap(selListener::right), 5));
-		actionMap.put("ctrl-up-right",
-				new DirectionListener(wrap(selListener::up, selListener::right), 5));
-		actionMap.put("ctrl-up-left",
-				new DirectionListener(wrap(selListener::up, selListener::right), 5));
-		actionMap.put("ctrl-down-right",
-				new DirectionListener(wrap(selListener::down, selListener::right), 5));
-		actionMap.put("ctrl-down-left",
-				new DirectionListener(wrap(selListener::down, selListener::left), 5));
-		if (OnMac.SYSTEM_IS_MAC) {
-			inputMap.put(getKeyStroke(KeyEvent.VK_HOME, InputEvent.META_DOWN_MASK),
-					"ctrl-home");
-			inputMap.put(getKeyStroke(KeyEvent.VK_END, InputEvent.META_DOWN_MASK),
-					"ctrl-end");
-			inputMap.put(getKeyStroke(KeyEvent.VK_UP, InputEvent.META_DOWN_MASK),
-					"home");
-			inputMap.put(getKeyStroke(KeyEvent.VK_KP_UP, InputEvent.META_DOWN_MASK),
-					"home");
-			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD8, InputEvent.META_DOWN_MASK),
-					"home");
-			inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, InputEvent.META_DOWN_MASK),
-					"end");
-			inputMap.put(getKeyStroke(KeyEvent.VK_KP_DOWN, InputEvent.META_DOWN_MASK),
-					"end");
-			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD2, InputEvent.META_DOWN_MASK),
-					"end");
-			inputMap.put(getKeyStroke(KeyEvent.VK_LEFT, InputEvent.META_DOWN_MASK),
-					"caret");
-			inputMap.put(getKeyStroke(KeyEvent.VK_KP_LEFT, InputEvent.META_DOWN_MASK),
-					"caret");
-			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD4, InputEvent.META_DOWN_MASK),
-					"caret");
-			inputMap.put(getKeyStroke(KeyEvent.VK_KP_RIGHT, InputEvent.META_DOWN_MASK),
-					"dollar");
-			inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_DOWN_MASK),
-					"dollar");
-			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD6, InputEvent.META_DOWN_MASK),
-					"dollar");
-		} else {
-			inputMap.put(getKeyStroke(KeyEvent.VK_HOME, CTRL_DOWN_MASK), "ctrl-home");
-			inputMap.put(getKeyStroke(KeyEvent.VK_END, CTRL_DOWN_MASK), "ctrl-end");
+		for (final Map.Entry<String, Consumer<DirectionSelectionChanger>> entry :
+				ARROW_ACTIONS.entrySet()) {
+			actionMap.put(entry.getKey(),
+					new DirectionListener(wrap(selListener, entry.getValue())));
+			actionMap.put("ctrl-" + entry.getKey(),
+					new DirectionListener(wrap(selListener, entry.getValue()), 5));
 		}
-		inputMap.put(getKeyStroke(KeyEvent.VK_HOME, 0), "home");
-		inputMap.put(getKeyStroke(KeyEvent.VK_0, 0), "home");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD0, 0), "home");
-		inputMap.put(getKeyStroke(KeyEvent.VK_END, 0), "end");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMBER_SIGN, 0), "end");
+		final int jumpModifier;
+		if (OnMac.SYSTEM_IS_MAC) {
+			jumpModifier = InputEvent.META_DOWN_MASK;
+		} else {
+			jumpModifier = InputEvent.CTRL_DOWN_MASK;
+		}
+		for (final Map.Entry<Integer, String> entry : JUMP_INPUTS.entrySet()) {
+			inputMap.put(getKeyStroke(entry.getKey(), jumpModifier), entry.getValue());
+		}
+		for (final Map.Entry<Integer, String> entry : INPUTS.entrySet()) {
+			inputMap.put(getKeyStroke(entry.getKey().intValue(), 0), entry.getValue());
+		}
 		inputMap.put(getKeyStroke(KeyEvent.VK_3, SHIFT_DOWN_MASK), "end");
-		inputMap.put(getKeyStroke('#', 0), "end");
 		inputMap.put(getKeyStroke(KeyEvent.VK_6, SHIFT_DOWN_MASK), "caret");
-		inputMap.put(getKeyStroke('^', 0), "caret");
-		inputMap.put(getKeyStroke(KeyEvent.VK_DOLLAR, 0), "dollar");
 		inputMap.put(getKeyStroke(KeyEvent.VK_4, SHIFT_DOWN_MASK), "dollar");
 		actionMap.put("ctrl-home",
 				new DirectionListener(wrap(selListener::jumpUp, selListener::jumpLeft)));
