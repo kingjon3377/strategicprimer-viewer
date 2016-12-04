@@ -202,16 +202,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				encapsulateRivers(point, River.North, River.South));
 		assertInvalid(encapsulateTileString("<river direction=\"invalid\" />"));
 	}
-
 	/**
-	 * Test Tile serialization.
-	 *
+	 * Test simple tile serialization.
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testTileSerialization()
+	public void testSimpleTileSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("Simple Tile",
 				createSimpleMap(point(1, 1), Pair.of(point(0, 0), Desert)));
@@ -225,6 +223,33 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				new Unit(new Player(1, ""), "unitOne", "firstUnit", 1));
 		secondMap.setForest(point(2, 2), new Forest("forestKind", true, 8));
 		assertSerialization("Tile with two fixtures", secondMap);
+		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
+									  + "<tile column=\"0\" kind=\"plains\" /></map>",
+				IMapNG.class,
+				"row", false);
+		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
+									  + "<tile row=\"0\" kind=\"plains\" /></map>",
+				IMapNG.class,
+				"column", false);
+		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
+									  + "<tile row=\"0\" column=\"0\" /></map>",
+				IMapNG.class,
+				KIND_PROPERTY, true);
+		assertUnwantedChild(
+				encapsulateTileString("<tile row=\"2\" column=\"0\" "
+											  + "kind=\"plains\" />"), IMapNG.class,
+				false);
+	}
+	/**
+	 * Test Tile serialization.
+	 *
+	 * @throws SPFormatException  on SP format error
+	 * @throws XMLStreamException on XML reading error
+	 * @throws IOException        on I/O error creating serialized form
+	 */
+	@Test
+	public void testTileSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		final IMutableMapNG thirdMap =
 				createSimpleMap(point(4, 4), Pair.of(point(3, 3), Jungle));
 		final Fortress fort = new Fortress(new Player(2, ""), "fortOne", 1,
@@ -253,22 +278,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 											  Matcher.quoteReplacement
 															  (oldKindProperty))),
 				oldKindProperty);
-		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
-									  + "<tile column=\"0\" kind=\"plains\" /></map>",
-				IMapNG.class,
-				"row", false);
-		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
-									  + "<tile row=\"0\" kind=\"plains\" /></map>",
-				IMapNG.class,
-				"column", false);
-		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
-									  + "<tile row=\"0\" column=\"0\" /></map>",
-				IMapNG.class,
-				KIND_PROPERTY, true);
-		assertUnwantedChild(
-				encapsulateTileString("<tile row=\"2\" column=\"0\" "
-											  + "kind=\"plains\" />"), IMapNG.class,
-				false);
 		final IMutableMapNG five =
 				createSimpleMap(point(3, 4), Pair.of(point(2, 3), Jungle));
 		five.addFixture(point(2, 3), new Unit(
