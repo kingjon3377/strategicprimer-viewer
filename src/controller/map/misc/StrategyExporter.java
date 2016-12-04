@@ -185,15 +185,9 @@ public final class StrategyExporter implements PlayerChangeListener {
 			list.add(unit);
 		}
 
-		int size = 58 + playerName.length() + turnString.length();
 		final Map<IUnit, String> orders = new HashMap<>();
-		for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
-			size += 4;
-			size += entry.getKey().length();
-			for (final IUnit unit : entry.getValue()) {
-				size += 10;
-				size += unit.getName().length();
-				size += unitMemberSize(unit);
+		for (final List<IUnit> list : unitsByKind.values()) {
+			for (final IUnit unit : list) {
 				final String tempOrders = unit.getLatestOrders(turn);
 				final String unitOrders;
 				if (tempOrders.equals(unit.getOrders(turn))) {
@@ -203,18 +197,11 @@ public final class StrategyExporter implements PlayerChangeListener {
 										 tempOrders;
 				}
 				orders.put(unit, unitOrders);
-				size += unitOrders.length();
 			}
 		}
-		for (final UnitMember member : dismissed) {
-			size += 2;
-			if (member instanceof HasName) {
-				size += ((HasName) member).getName().length();
-			} else {
-				size += member.toString().length();
-			}
-		}
-		final StringBuilder builder = new StringBuilder(size);
+		final StringBuilder builder =
+				new StringBuilder(getBufferSize(dismissed, playerName, turnString,
+						unitsByKind, orders));
 		builder.append('[');
 		builder.append(playerName);
 		builder.append(LineEnd.LINE_SEP);
@@ -266,6 +253,40 @@ public final class StrategyExporter implements PlayerChangeListener {
 			}
 		}
 		return NullCleaner.assertNotNull(builder.toString());
+	}
+
+	/**
+	 * @param dismissed the list of dismissed workers
+	 * @param playerName the name of the current player
+	 * @param turnString the current turn, as a String
+	 * @param unitsByKind the collection of lists of units
+	 * @param orders the units' current orders
+	 * @return how big a buffer we need
+	 */
+	private int getBufferSize(final Iterable<UnitMember> dismissed,
+							  final String playerName, final String turnString,
+							  final Map<String, List<IUnit>> unitsByKind,
+							  final Map<IUnit, String> orders) {
+		int size = 58 + playerName.length() + turnString.length();
+		for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
+			size += 4;
+			size += entry.getKey().length();
+			for (final IUnit unit : entry.getValue()) {
+				size += 10;
+				size += unit.getName().length();
+				size += unitMemberSize(unit);
+				size += orders.get(unit).length();
+			}
+		}
+		for (final UnitMember member : dismissed) {
+			size += 2;
+			if (member instanceof HasName) {
+				size += ((HasName) member).getName().length();
+			} else {
+				size += member.toString().length();
+			}
+		}
+		return size;
 	}
 
 	/**
