@@ -69,7 +69,7 @@ public class FortressTabularReportGenerator implements ITableGenerator<Fortress>
 		// Players shouldn't be able to see the contents of others' fortresses.
 		if (!player.equals(item.getOwner())) {
 			for (final FortressMember member : item) {
-				fixtures.remove(Integer.valueOf(item.getID()));
+				fixtures.remove(Integer.valueOf(member.getID()));
 			}
 		}
 		return true;
