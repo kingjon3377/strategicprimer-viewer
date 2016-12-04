@@ -587,16 +587,14 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					ISPReader.NAMESPACE, NULL_NS_URI)) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
-				switch (type) {
-				case "row":
+				if ("row".equals(type)) {
 					tagStack.push(current.getName());
 					// Deliberately ignore
 					continue;
-				case "tile":
+				} else if ("tile".equals(type)) {
 					parseTile(retval, current, stream, players, warner, idFactory);
 					continue;
-				}
-				if (equalsAny(type, ISPReader.FUTURE)) {
+				} else if (equalsAny(type, ISPReader.FUTURE)) {
 					// noinspection ObjectAllocationInLoop
 					warner.warn(new UnsupportedTagException(current));
 					continue;
