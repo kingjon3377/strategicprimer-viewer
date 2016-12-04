@@ -61,10 +61,6 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	private static final NumberFormat NUM_PARSER =
 			assertNotNull(NumberFormat.getIntegerInstance());
 	/**
-	 * The ID factory to use to generate IDs.
-	 */
-	private final IDRegistrar idf;
-	/**
 	 * The 'name' field.
 	 */
 	private final JTextField name = new JTextField();
@@ -118,7 +114,6 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 		super("Create Worker");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		race.setText(RaceFactory.getRace());
-		idf = idFac;
 
 		final JPanel textPanel = new JPanel(new GridLayout(0, 2));
 		addLabeledField(textPanel, "Worker Name:", name);
@@ -146,7 +141,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 								wis.getText().trim(), cha.getText().trim())) {
 				ErrorShower.showErrorDialog(this, getErrorExplanation());
 			} else {
-				final Worker retval = new Worker(nameText, raceText, idf.createID());
+				final Worker retval = new Worker(nameText, raceText, idFac.createID());
 				try {
 					retval.setStats(new WorkerStats(parseInt(hpBox), parseInt(maxHP),
 														   parseInt(strength),
