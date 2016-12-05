@@ -3,7 +3,9 @@ package view.resources;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import controller.map.misc.IOHandler;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -24,6 +26,7 @@ import model.resources.ResourceManagementDriver;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.BoxPanel;
+import view.util.FormattedLabel;
 import view.util.ISPWindow;
 import view.util.ImprovedComboBox;
 import view.util.ListenedButton;
@@ -113,10 +116,10 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		current = StreamSupport.stream(driverModel.getPlayers().spliterator(), false)
 						  .filter(player -> player.isCurrent())
 						  .findAny().orElse(new Player(-1, ""));
-		final JLabel resourceLabel =
-				new JLabel(String.format("Add resource for %s:", current.getName()));
-		final JLabel implementLabel =
-				new JLabel(String.format("Add equipment for %s:", current.getName()));
+		final FormattedLabel resourceLabel =
+				new FormattedLabel("Add resource for %s:", current.getName());
+		final FormattedLabel implementLabel =
+				new FormattedLabel("Add equipment for %s:", current.getName());
 		ioh.addPlayerChangeListener(
 				(final Player old, @Nullable final Player newPlayer) -> {
 					if (newPlayer == null) {
@@ -124,10 +127,8 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 					} else {
 						current = newPlayer;
 					}
-					resourceLabel.setText(String.format("Add resource for %s:",
-									current.getName()));
-					implementLabel.setText(String.format("Add equipment for %s:",
-									current.getName()));
+					resourceLabel.setArgs(current.getName());
+					implementLabel.setArgs(current.getName());
 				});
 		final BoxPanel mainPanel = new BoxPanel(false);
 		mainPanel.add(resourceLabel);
