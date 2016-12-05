@@ -90,8 +90,6 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 		final SkillAdvancementPanel skillAdvancementPanel = new SkillAdvancementPanel();
 		jobsTree.addSkillSelectionListener(skillAdvancementPanel);
 		skillAdvancementPanel.addLevelGainListener(levelListener);
-		final JLabel newJobText = htmlWrapped("Add a job to the Worker:");
-		final JLabel newSkillText = htmlWrapped("Add a Skill to the selected Job:");
 		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
 				BorderedPanel.verticalPanel(playerLabel,
 						new JScrollPane(tree),
@@ -101,9 +99,11 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 						new JScrollPane(jobsTree),
 						null),
 						BorderedPanel.verticalPanel(null, BorderedPanel.verticalPanel(
-								BorderedPanel.verticalPanel(newJobText, null,
+								BorderedPanel.verticalPanel(
+										htmlWrapped("Add a job to the Worker:"), null,
 										jobAdditionPanel), null,
-								BorderedPanel.verticalPanel(newSkillText, null,
+								BorderedPanel.verticalPanel(
+										htmlWrapped("Add a Skill to the selected Job:"), null,
 										skillAdditionPanel)),
 								skillAdvancementPanel))));
 
