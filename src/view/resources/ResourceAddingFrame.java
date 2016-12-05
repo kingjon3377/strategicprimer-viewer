@@ -49,9 +49,13 @@ import view.worker.WorkerMenu;
  */
 public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	/**
+	 * The label that we use to display diagnostics.
+	 */
+	private final StreamingLabel logLabel = new StreamingLabel();
+	/**
 	 * The combo box for resource kinds.
 	 */
-	private final UpdatedComboBox resKindBox = new UpdatedComboBox();
+	private final UpdatedComboBox resKindBox = new UpdatedComboBox(logLabel);
 	/**
 	 * The model for the field giving the turn resources were created. See end of
 	 * constructor for why the low maximum.
@@ -61,7 +65,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	/**
 	 * The combo box for resource types.
 	 */
-	private final UpdatedComboBox resourceBox = new UpdatedComboBox();
+	private final UpdatedComboBox resourceBox = new UpdatedComboBox(logLabel);
 	/**
 	 * The model for the field for resource quantities. See end of constructor for why
 	 * the low maximum.
@@ -70,7 +74,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	/**
 	 * The combo box for resource units.
 	 */
-	private final UpdatedComboBox resUnitsBox = new UpdatedComboBox();
+	private final UpdatedComboBox resUnitsBox = new UpdatedComboBox(logLabel);
 	/**
 	 * The model for the spinner to add more than one identical implement. See end of
 	 * constructor for why the low maximum.
@@ -84,11 +88,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	/**
 	 * The combo box for implement kinds.
 	 */
-	private final UpdatedComboBox implKindBox = new UpdatedComboBox();
-	/**
-	 * The label that we use to display diagnostics.
-	 */
-	private final StreamingLabel logLabel = new StreamingLabel();
+	private final UpdatedComboBox implKindBox = new UpdatedComboBox(logLabel);
 	/**
 	 * The current player.
 	 */
@@ -137,6 +137,14 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		addPair(panel, new JLabel("Specific Resource"), resourceBox);
 		addPair(panel, new JLabel("Quantity"), new JSpinner(resQtyModel));
 		addPair(panel, new JLabel("Units"), resUnitsBox);
+		final Function<JComboBox<?>, String> selectedItem = box -> {
+			final Object sel = box.getSelectedItem();
+			if (sel == null) {
+				return "";
+			} else {
+				return NullCleaner.assertNotNull(sel.toString().trim());
+			}
+		};
 		final ActionListener resListener = evt -> {
 			confirmPlayer(ioh);
 			final String kind = resKindBox.getSelectedItem();
@@ -168,19 +176,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		};
 		addPair(panel, new JLabel(""), new ListenedButton("Add Resource", resListener));
 		// A listener on the combo box fires on every change to the selection
-		final BiConsumer<JComboBox<?>, ActionListener> addListener = (box, list) -> {
-			final Component inner = box.getEditor().getEditorComponent();
-			if (inner instanceof JTextField) {
-				((JTextField) inner).addActionListener(list);
-			} else {
-				// logLabel.getWriter() returns a PrintWriter whose close() is a no-op.
-				try (final PrintWriter logger = logLabel.getWriter()) {
-					logger.print("Editor wasn't a text field, but a ");
-					logger.println(inner.getClass().getCanonicalName());
-				}
-			}
-		};
-		addListener.accept(resUnitsBox, resListener);
+		resUnitsBox.addSubmitListener(resListener);
 		mainPanel.add(panel);
 		mainPanel.addGlue();
 		mainPanel.add(implementLabel);
@@ -202,7 +198,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			implKindBox.checkAndClear();
 			implQtyField.requestFocusInWindow();
 		};
-		addListener.accept(implKindBox, implListener);
+		implKindBox.addSubmitListener(implListener);
 		secondPanel.add(new ListenedButton("Add Equipment", implListener));
 		mainPanel.add(secondPanel);
 		mainPanel.addGlue();
@@ -316,16 +312,21 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		/**
 		 * The values we've had in the past.
 		 */
-		private final Collection<String> values;
+		private final Collection<String> values = new HashSet<>();
+		/**
+		 * The label that we can log to.
+		 */
+		private final StreamingLabel logLabel;
 
 		/**
 		 * Constructor. We need it to be neither private nor public for this to
 		 * work with as few warnings as possible as a private inner class, and
 		 * it needs to do something to not be an empty method, so we moved the
 		 * initialization of the collection here.
+		 * @param logger the label to log to
 		 */
-		protected UpdatedComboBox() {
-			values = new HashSet<>();
+		protected UpdatedComboBox(final StreamingLabel logger) {
+			logLabel = logger;
 		}
 
 		/**
@@ -391,6 +392,25 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 				return ((String) retval).trim();
 			} else {
 				return retval.toString().trim();
+			}
+		}
+		/**
+		 * {@link JComboBox#addActionListener(ActionListener)} is *not* what we usually
+		 * want; {@link JComboBox} will notify its ActionListeners every time the
+		 * selected value changes. This is a somewhat-hackish method to do what we
+		 * usually want.
+		 * @param listener a listener to add.
+		 */
+		public void addSubmitListener(final ActionListener listener) {
+			final Component inner = getEditor().getEditorComponent();
+			if (inner instanceof JTextField) {
+				((JTextField) inner).addActionListener(listener);
+			} else {
+				// logLabel.getWriter() returns a PrintWriter whose close() is a no-op.
+				try (final PrintWriter logger = logLabel.getWriter()) {
+					logger.print("Editor wasn't a text field, but a ");
+					logger.println(inner.getClass().getCanonicalName());
+				}
 			}
 		}
 	}
