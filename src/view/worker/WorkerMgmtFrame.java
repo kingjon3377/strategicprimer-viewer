@@ -167,6 +167,53 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 																  " ..."));
 		new Thread(new ReportGeneratorThread(reportModel, model,
 													mainMap.getCurrentPlayer())).start();
+		final ReportUpdater reportUpdater = new ReportUpdater(model, reportModel);
+		ioHandler.addPlayerChangeListener(reportUpdater);
+		model.addMapChangeListener(reportUpdater);
+		final OrdersPanel resultsPanel =
+				new OrdersPanel(mainMap.getCurrentTurn(), mainMap.getCurrentPlayer(),
+									   model::getUnits,
+									   (unit, turn) -> unit.getResults(turn), null);
+		ioHandler.addPlayerChangeListener(resultsPanel);
+		tree.addTreeSelectionListener(resultsPanel);
+		final MemberDetailPanel mdp = new MemberDetailPanel(resultsPanel);
+		tree.addUnitMemberListener(mdp);
+		final StrategyExporter strategyExporter = new StrategyExporter(model);
+		final ActionListener exporterLambda =
+				evt -> new FileChooser(Optional.empty(), new JFileChooser("" + "."),
+											  FileChooserOperation.Save)
+							   .call(file -> strategyExporter.writeStrategy(file, options,
+									   treeModel.dismissed()));
+		final BorderedPanel lowerLeft = verticalPanel(
+				new ListenedButton("Add New Unit", evt -> newUnitFrame.setVisible(true)),
+				ordersPanel,
+				new ListenedButton("Export a proto-strategy", exporterLambda));
+		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
+				verticalSplit(TWO_THIRDS, TWO_THIRDS,
+						verticalPanel(playerLabel, new JScrollPane(tree), null),
+						lowerLeft),
+				verticalSplit(0.6, 0.6, verticalPanel(new JLabel(RPT_HDR),
+						new JScrollPane(createReportTree(model, ioHandler, reportModel)),
+						null), mdp)));
+		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
+		setJMenuBar(new WorkerMenu(ioHandler, this, model));
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		for (int i = 0; i < tree.getRowCount(); i++) {
+			tree.expandRow(i);
+		}
+		addWindowListener(new CloseListener(newUnitFrame));
+		pack();
+	}
+
+	/**
+	 * @param model the driver model
+	 * @param ioHandler the menu-item/hotkey listener
+	 * @param reportModel the report-tree model
+	 * @return the report tree based on that model
+	 */
+	private static JTree createReportTree(final IWorkerModel model,
+										  final IOHandler ioHandler,
+										  final DefaultTreeModel reportModel) {
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
 		report.expandPath(new TreePath(
@@ -193,43 +240,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 					return retval;
 				});
 		report.addMouseListener(new ReportMouseHandler(report, model, ioHandler));
-		final ReportUpdater reportUpdater = new ReportUpdater(model, reportModel);
-		ioHandler.addPlayerChangeListener(reportUpdater);
-		model.addMapChangeListener(reportUpdater);
-		final OrdersPanel resultsPanel =
-				new OrdersPanel(mainMap.getCurrentTurn(), mainMap.getCurrentPlayer(),
-									   model::getUnits,
-									   (unit, turn) -> unit.getResults(turn), null);
-		ioHandler.addPlayerChangeListener(resultsPanel);
-		tree.addTreeSelectionListener(resultsPanel);
-		final MemberDetailPanel mdp = new MemberDetailPanel(resultsPanel);
-		tree.addUnitMemberListener(mdp);
-		final StrategyExporter strategyExporter = new StrategyExporter(model);
-		final ActionListener exporterLambda =
-				evt -> new FileChooser(Optional.empty(), new JFileChooser("" + "."),
-											  FileChooserOperation.Save)
-							   .call(file -> strategyExporter.writeStrategy(file, options,
-									   treeModel.dismissed()));
-		final BorderedPanel lowerLeft = verticalPanel(
-				new ListenedButton("Add New Unit", evt -> newUnitFrame.setVisible(true)),
-				ordersPanel,
-				new ListenedButton("Export a proto-strategy", exporterLambda));
-		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
-				verticalSplit(TWO_THIRDS, TWO_THIRDS,
-						verticalPanel(playerLabel, new JScrollPane(tree), null),
-						lowerLeft),
-				verticalSplit(0.6, 0.6,
-						verticalPanel(new JLabel(RPT_HDR), new JScrollPane(report),
-								null),
-						mdp)));
-		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
-		setJMenuBar(new WorkerMenu(ioHandler, this, model));
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		for (int i = 0; i < tree.getRowCount(); i++) {
-			tree.expandRow(i);
-		}
-		addWindowListener(new CloseListener(newUnitFrame));
-		pack();
+		return report;
 	}
 
 	/**
