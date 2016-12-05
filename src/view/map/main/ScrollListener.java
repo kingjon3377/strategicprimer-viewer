@@ -1,8 +1,11 @@
 package view.map.main;
 
-import java.awt.*;
+import java.awt.Adjustable;
+import java.awt.BorderLayout;
 import java.awt.event.AdjustmentListener;
-import javax.swing.*;
+import javax.swing.InputVerifier;
+import javax.swing.JComponent;
+import javax.swing.JScrollBar;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;

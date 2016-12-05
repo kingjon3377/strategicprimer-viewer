@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.JLabel;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;

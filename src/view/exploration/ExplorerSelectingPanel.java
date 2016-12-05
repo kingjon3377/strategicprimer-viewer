@@ -1,6 +1,6 @@
 package view.exploration;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -8,7 +8,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.*;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.text.Document;
 import model.exploration.ExplorationUnitListModel;
 import model.exploration.IExplorationModel;

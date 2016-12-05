@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.stream.Stream;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;

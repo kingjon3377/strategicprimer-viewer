@@ -1,11 +1,12 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.JPanel;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

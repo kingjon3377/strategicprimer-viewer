@@ -6,7 +6,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.stream.Stream;
-import javax.swing.*;
+import javax.swing.JButton;
 
 /**
  * A button that takes its listeners as constructor parameters.

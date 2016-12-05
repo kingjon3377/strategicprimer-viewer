@@ -3,7 +3,7 @@ package controller.map.drivers;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
 import java.util.stream.StreamSupport;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;

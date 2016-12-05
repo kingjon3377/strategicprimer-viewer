@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.JFrame;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 

@@ -1,13 +1,13 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.JComboBox;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

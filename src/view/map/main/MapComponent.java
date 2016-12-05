@@ -1,6 +1,8 @@
 package view.map.main;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -9,7 +11,10 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;

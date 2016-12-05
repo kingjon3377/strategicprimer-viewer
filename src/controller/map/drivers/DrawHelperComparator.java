@@ -1,7 +1,7 @@
 package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.Collections;

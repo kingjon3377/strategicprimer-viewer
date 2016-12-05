@@ -1,11 +1,15 @@
 package view.map.main;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.ListModel;
+import javax.swing.TransferHandler;
 import javax.swing.table.TableModel;
 import model.viewer.FixtureMatcher;
 import util.IntTransferable;

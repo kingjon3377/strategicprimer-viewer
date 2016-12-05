@@ -1,6 +1,6 @@
 package view.worker;
 
-import javax.swing.*;
+import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 import view.util.TreeExpansionOrderListener;
 

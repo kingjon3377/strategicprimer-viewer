@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.*;
+import java.awt.Color;
 import model.map.TileType;
 import util.NullCleaner;
 

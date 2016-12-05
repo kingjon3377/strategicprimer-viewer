@@ -1,6 +1,9 @@
 package view.worker;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -12,7 +15,11 @@ import java.util.Iterator;
 import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import model.listeners.UnitMemberListener;
 import model.map.HasPortrait;
 import model.map.fixtures.UnitMember;

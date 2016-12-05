@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.*;
+import java.awt.Graphics;
 import model.map.IEvent;
 import model.map.IMapNG;
 import model.map.Point;

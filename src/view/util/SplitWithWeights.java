@@ -1,11 +1,11 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.Component;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.JSplitPane;
 
 /**
  * A version of JSplitPane that takes the divider location and resize weight, as well as

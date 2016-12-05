@@ -5,7 +5,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.stream.Collectors;
-import javax.swing.*;
+import javax.swing.DefaultListModel;
 import model.listeners.SelectionChangeListener;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;

@@ -5,7 +5,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
-import javax.swing.*;
+import javax.swing.DefaultListModel;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;

@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.misc.IDriverModel;

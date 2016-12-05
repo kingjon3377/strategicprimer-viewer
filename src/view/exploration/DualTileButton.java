@@ -1,11 +1,12 @@
 package view.exploration;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Polygon;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.JButton;
 import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;

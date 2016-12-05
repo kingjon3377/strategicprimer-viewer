@@ -1,7 +1,7 @@
 package view.map.main;
 
 import controller.map.misc.IOHandler;
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -9,7 +9,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.util.Optional;
-import javax.swing.*;
+import javax.swing.DropMode;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumn;
 import model.viewer.FixtureFilterTableModel;
 import model.viewer.IViewerModel;

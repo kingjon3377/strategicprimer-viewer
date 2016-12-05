@@ -1,6 +1,6 @@
 package view.map.details;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -13,7 +13,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import model.map.HasKind;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;

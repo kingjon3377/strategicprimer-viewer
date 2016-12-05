@@ -1,6 +1,6 @@
 package controller.map.misc;
 
-import java.awt.*;
+import java.awt.Component;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
@@ -9,7 +9,8 @@ import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
