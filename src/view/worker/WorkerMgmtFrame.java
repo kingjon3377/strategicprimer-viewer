@@ -153,8 +153,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		ioHandler.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel =
 				new OrdersPanel(model.getMap().getCurrentTurn(),
-									   model.getMap().getCurrentPlayer(),
-									   model::getUnits,
+									   mainMap.getCurrentPlayer(), model::getUnits,
 									   (unit, turn) -> unit.getLatestOrders(turn),
 									   (unit, turn, orders) -> unit.setOrders(turn,
 											   orders));
