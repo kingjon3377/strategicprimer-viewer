@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -73,7 +74,13 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * The list of selection-change listeners.
 	 */
 	private final Collection<SelectionChangeListener> scListeners = new ArrayList<>();
-
+	/**
+	 * A list of things the explorer can do: pairs of explanations (in the form of
+	 * questions to ask the user to see if the explorer does them) and references to
+	 * methods for doing them (we say Runnable because it's a no-arg void
+	 * FunctionalInterface).
+	 */
+	private final List<Pair<String, Runnable>> explorerActions;
 	/**
 	 * The exploration model.
 	 */
@@ -100,6 +107,14 @@ public final class ExplorationClickListener extends AbstractAction implements
 		model = explorationModel;
 		direction = direct;
 		list = mainList;
+		explorerActions = Arrays.asList(Pair.of("Should the explorer swear any villages on this tile?", () -> {
+			model.swearVillages();
+			model.getMap().streamOtherFixtures(model.getSelectedUnitLocation())
+					.filter(Village.class::isInstance)
+					.forEach(getSelectedValuesList()::add);
+		}), Pair.of("Should the explorer dig to find what kind of ground is here?", () -> {
+			model.dig();
+		}));
 	}
 
 	/**
@@ -132,29 +147,17 @@ public final class ExplorationClickListener extends AbstractAction implements
 		try {
 			final List<TileFixture> fixtures = getSelectedValuesList();
 			if (IExplorationModel.Direction.Nowhere == direction) {
-				final int swearing = JOptionPane.showConfirmDialog(null,
-						"Should the explorer swear any villages on this tile?");
-				switch (swearing) {
-				case JOptionPane.CANCEL_OPTION:
-					return;
-				case JOptionPane.YES_OPTION:
-					model.swearVillages();
-					model.getMap().streamOtherFixtures(model.getSelectedUnitLocation())
-							.filter(Village.class::isInstance).forEach(fixtures::add);
-					break;
-				default: // NO_OPTION
-					break;
-				}
-				final int digging = JOptionPane.showConfirmDialog(null,
-						"Should the explorer dig to find what kind of ground is here?");
-				switch (digging) {
-				case JOptionPane.CANCEL_OPTION:
-					return;
-				case JOptionPane.YES_OPTION:
-					model.dig();
-					break;
-				default: // NO_OPTION
-					break;
+				for (final Pair<String, Runnable> pair : explorerActions) {
+					final int resp = JOptionPane.showConfirmDialog(null, pair.first());
+					switch (resp) {
+					case JOptionPane.CANCEL_OPTION:
+						return;
+					case JOptionPane.YES_OPTION:
+						pair.second().run();
+						break;
+					default: // NO_OPTION
+						break;
+					}
 				}
 			}
 			model.move(direction);
