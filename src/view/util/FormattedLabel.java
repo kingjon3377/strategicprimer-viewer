@@ -26,14 +26,14 @@ public class FormattedLabel extends JLabel {
 	 * @param format the format string to use
 	 * @param args initial parameters
 	 */
-	public FormattedLabel(final String format, final String... args) {
+	public FormattedLabel(final String format, final Object... args) {
 		super(String.format(format, args));
 		formatString = format;
 	}
 	/**
 	 * Set the text using the same format string but new parameters.
 	 */
-	public void setArgs(final String... args) {
+	public void setArgs(final Object... args) {
 		setText(String.format(formatString, args));
 	}
 }
