@@ -166,9 +166,8 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 													mainMap.getCurrentPlayer())).start();
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
-		report.expandPath(
-				new TreePath(((DefaultMutableTreeNode) reportModel.getRoot()).getPath
-																					  ()));
+		report.expandPath(new TreePath(
+				((DefaultMutableTreeNode) reportModel.getRoot()).getPath()));
 
 		final DistanceComparator distCalculator = new DistanceComparator(findHQ(model));
 		final TreeCellRenderer defRender = new DefaultTreeCellRenderer();
