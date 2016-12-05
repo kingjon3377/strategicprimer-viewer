@@ -106,9 +106,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 					  final int indent) throws IOException {
 		writeTag(ostream, "text", indent);
 		if (obj.getTurn() != -1) {
-			ostream.append(" turn=\"");
-			ostream.append(Integer.toString(obj.getTurn()));
-			ostream.append('"');
+			writeProperty(ostream, "turn", Integer.toString(obj.getTurn()));
 		}
 		ostream.append(imageXML(obj));
 		ostream.append('>');

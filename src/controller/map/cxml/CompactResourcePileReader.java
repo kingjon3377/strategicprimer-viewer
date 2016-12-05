@@ -104,21 +104,15 @@ public final class CompactResourcePileReader
 	public void write(final Appendable ostream, final ResourcePile obj,
 					  final int indent) throws IOException {
 		writeTag(ostream, "resource", indent);
-		ostream.append(" id=\"");
-		ostream.append(Integer.toString(obj.getID()));
-		ostream.append("\" kind=\"");
-		ostream.append(obj.getKind());
-		ostream.append("\" contents=\"");
-		ostream.append(obj.getContents());
-		ostream.append("\" quantity=\"");
-		ostream.append(obj.getQuantity().toString());
-		ostream.append("\" unit=\"");
-		ostream.append(obj.getUnits());
+		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		writeProperty(ostream, "kind", obj.getKind());
+		writeProperty(ostream, "contents", obj.getContents());
+		writeProperty(ostream, "quantity", obj.getQuantity().toString());
+		writeProperty(ostream, "unit", obj.getUnits());
 		if (obj.getCreated() >= 0) {
-			ostream.append("\" created=\"");
-			ostream.append(Integer.toString(obj.getCreated()));
+			writeProperty(ostream, "created", Integer.toString(obj.getCreated()));
 		}
-		ostream.append('"').append(imageXML(obj)).append(" />");
+		ostream.append(imageXML(obj)).append(" />");
 		ostream.append(LineEnd.LINE_SEP);
 	}
 

@@ -234,33 +234,26 @@ public final class CompactMobileReader extends
 		} else if (obj instanceof Animal) {
 			writeTag(ostream, "animal", indent);
 			final Animal animal = (Animal) obj;
-			ostream.append(" kind=\"");
-			ostream.append(animal.getKind());
+			writeProperty(ostream, "kind", animal.getKind());
 			if (animal.isTraces()) {
-				ostream.append("\" traces=\"");
+				writeProperty(ostream, "traces", "");
 			}
 			if (animal.isTalking()) {
-				ostream.append("\" talking=\"true");
+				writeProperty(ostream, "talking", "true");
 			}
 			if (!"wild".equals(animal.getStatus())) {
-				ostream.append("\" status=\"");
-				ostream.append(animal.getStatus());
+				writeProperty(ostream, "status", animal.getStatus());
 			}
-			ostream.append("\" id=\"");
-			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('"').append(imageXML(animal)).append(" />");
+			writeProperty(ostream, "id", Integer.toString(obj.getID()));
+			ostream.append(imageXML(animal)).append(" />");
 			ostream.append(LineEnd.LINE_SEP);
 		} else {
 			writeTag(ostream, NullCleaner.assertNotNull(TAG_MAP.get(obj.getClass())),
 					indent);
 			if (obj instanceof HasKind) {
-				ostream.append(" kind=\"");
-				ostream.append(((HasKind) obj).getKind());
-				ostream.append('"');
+				writeProperty(ostream, "kind", ((HasKind) obj).getKind());
 			}
-			ostream.append(" id=\"");
-			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('"');
+			writeProperty(ostream, "id", Integer.toString(obj.getID()));
 			if (obj instanceof HasImage) {
 				ostream.append(imageXML((HasImage) obj));
 			}

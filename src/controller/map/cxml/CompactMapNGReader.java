@@ -209,9 +209,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			writeTag(ostream, "lake", indent);
 		} else {
 			writeTag(ostream, "river", indent);
-			ostream.append(" direction=\"");
-			ostream.append(obj.getDescription());
-			ostream.append("\"");
+			writeProperty(ostream, "direction", obj.getDescription());
 		}
 		ostream.append(" />");
 		ostream.append(LineEnd.LINE_SEP);
@@ -425,21 +423,17 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	public void write(final Appendable ostream, final IMapNG obj, final int indent)
 			throws IOException {
 		writeTag(ostream, "view", indent);
-		ostream.append(" current_player=\"");
-		ostream.append(Integer.toString(obj.getCurrentPlayer().getPlayerId()));
-		ostream.append("\" current_turn=\"");
-		ostream.append(Integer.toString(obj.getCurrentTurn()));
-		ostream.append("\">");
+		writeProperty(ostream, "current_player",
+				Integer.toString(obj.getCurrentPlayer().getPlayerId()));
+		writeProperty(ostream, "current_turn", Integer.toString(obj.getCurrentTurn()));
+		ostream.append('>');
 		ostream.append(LineEnd.LINE_SEP);
 		writeTag(ostream, "map", indent + 1);
 		final MapDimensions dim = obj.dimensions();
-		ostream.append(" version=\"");
-		ostream.append(Integer.toString(dim.version));
-		ostream.append("\" rows=\"");
-		ostream.append(Integer.toString(dim.rows));
-		ostream.append("\" columns=\"");
-		ostream.append(Integer.toString(dim.cols));
-		ostream.append("\">");
+		writeProperty(ostream, "version", Integer.toString(dim.version));
+		writeProperty(ostream, "rows", Integer.toString(dim.rows));
+		writeProperty(ostream, "columns", Integer.toString(dim.cols));
+		ostream.append('>');
 		ostream.append(LineEnd.LINE_SEP);
 		for (final Player player : obj.players()) {
 			CompactPlayerReader.READER.write(ostream, player, indent + 2);
@@ -457,21 +451,17 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					if (rowEmpty) {
 						rowEmpty = false;
 						writeTag(ostream, "row", indent + 2);
-						ostream.append(" index=\"");
-						ostream.append(Integer.toString(i));
-						ostream.append("\">");
+						writeProperty(ostream, "index", Integer.toString(i));
+						ostream.append('>');
 						ostream.append(LineEnd.LINE_SEP);
 					}
 					writeTag(ostream, "tile", indent + 3);
-					ostream.append(" row=\"");
-					ostream.append(Integer.toString(i));
-					ostream.append("\" column=\"");
-					ostream.append(Integer.toString(j));
+					writeProperty(ostream, "row", Integer.toString(i));
+					writeProperty(ostream, "column", Integer.toString(j));
 					if (TileType.NotVisible != terrain) {
-						ostream.append("\" kind=\"");
-						ostream.append(terrain.toXML());
+						writeProperty(ostream, "kind", terrain.toXML());
 					}
-					ostream.append("\">");
+					ostream.append('>');
 					boolean needEOL = true;
 					if (obj.isMountainous(point)) {
 						eolIfNeeded(true, ostream);

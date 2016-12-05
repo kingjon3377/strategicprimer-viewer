@@ -133,13 +133,11 @@ public final class CompactTerrainReader extends
 			return; // Mountains don't yet have IDs.
 		} else if (obj instanceof Forest) {
 			writeTag(ostream, "forest", indent);
-			ostream.append(" kind=\"");
 			final Forest forest = (Forest) obj;
-			ostream.append(forest.getKind());
+			writeProperty(ostream, "kind", forest.getKind());
 			if (forest.isRows()) {
-				ostream.append("\" rows=\"true");
+				writeProperty(ostream, "rows", "true");
 			}
-			ostream.append('"');
 		} else if (obj instanceof Hill) {
 			writeTag(ostream, "hill", indent);
 		} else if (obj instanceof Oasis) {
@@ -150,9 +148,8 @@ public final class CompactTerrainReader extends
 			throw new IllegalStateException("Unexpected TerrainFixture type.");
 		}
 		ostream.append(imageXML((HasImage) obj));
-		ostream.append(" id=\"");
-		ostream.append(Integer.toString(obj.getID()));
-		ostream.append("\" />");
+		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		ostream.append(" />");
 		ostream.append(LineEnd.LINE_SEP);
 	}
 

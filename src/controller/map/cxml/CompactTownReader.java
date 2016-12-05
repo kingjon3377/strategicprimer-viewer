@@ -260,21 +260,15 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		} else {
 			throw new IllegalStateException("Unknown AbstractTownEvent type");
 		}
-		ostream.append(" status=\"");
-		ostream.append(obj.status().toString());
-		ostream.append("\" size=\"");
-		ostream.append(obj.size().toString());
-		ostream.append("\" dc=\"");
-		ostream.append(Integer.toString(obj.getDC()));
+		writeProperty(ostream, "status", obj.status().toString());
+		writeProperty(ostream, "size", obj.size().toString());
+		writeProperty(ostream, "dc", Integer.toString(obj.getDC()));
 		if (!obj.getName().isEmpty()) {
-			ostream.append("\" name=\"");
-			ostream.append(obj.getName());
+			writeProperty(ostream, "name", obj.getName());
 		}
-		ostream.append("\" id=\"");
-		ostream.append(Integer.toString(obj.getID()));
-		ostream.append("\" owner=\"");
-		ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
-		ostream.append('"').append(imageXML(obj));
+		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		writeProperty(ostream, "owner", Integer.toString(obj.getOwner().getPlayerId()));
+		ostream.append(imageXML(obj));
 		ostream.append(portraitXML(obj));
 		ostream.append(" />");
 		ostream.append(LineEnd.LINE_SEP);

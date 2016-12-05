@@ -126,11 +126,8 @@ public final class CompactExplorableReader
 		} else {
 			throw new IllegalStateException("Unhandled ExplorableFixture subtype");
 		}
-		ostream.append(" dc=\"");
-		ostream.append(Integer.toString(((IEvent) obj).getDC()));
-		ostream.append("\" id=\"");
-		ostream.append(Integer.toString(obj.getID()));
-		ostream.append('"');
+		writeProperty(ostream, "dc", Integer.toString(((IEvent) obj).getDC()));
+		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		ostream.append(imageXML(obj));
 		ostream.append(" />");
 		ostream.append(LineEnd.LINE_SEP);

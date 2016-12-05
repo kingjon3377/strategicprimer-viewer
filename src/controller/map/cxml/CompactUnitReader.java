@@ -273,19 +273,14 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	write(final Appendable ostream, final IUnit obj, final int indent)
 			throws IOException {
 		writeTag(ostream, "unit", indent);
-		ostream.append(" owner=\"");
-		ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
+		writeProperty(ostream, "owner", Integer.toString(obj.getOwner().getPlayerId()));
 		if (!obj.getKind().isEmpty()) {
-			ostream.append("\" kind=\"");
-			ostream.append(obj.getKind());
+			writeProperty(ostream, "kind", obj.getKind());
 		}
 		if (!obj.getName().isEmpty()) {
-			ostream.append("\" name=\"");
-			ostream.append(obj.getName());
+			writeProperty(ostream, "name", obj.getName());
 		}
-		ostream.append("\" id=\"");
-		ostream.append(Integer.toString(obj.getID()));
-		ostream.append('"');
+		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		ostream.append(imageXML(obj));
 		if (obj instanceof HasPortrait) {
 			ostream.append(portraitXML((HasPortrait) obj));
@@ -299,12 +294,10 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 				if (entry.getValue().trim().isEmpty()) {
 					continue;
 				}
-				indent(ostream, indent + 1);
-				ostream.append("<orders");
+				writeTag(ostream, "orders", indent + 1);
 				if (entry.getKey().intValue() >= 0) {
-					ostream.append(" turn=\"");
-					ostream.append(Integer.toString(entry.getKey().intValue()));
-					ostream.append('"');
+					writeProperty(ostream, "turn",
+							Integer.toString(entry.getKey().intValue()));
 				}
 				ostream.append('>');
 				// FIXME: Ensure, and test, that XML special characters are escaped
@@ -317,12 +310,10 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 				if (entry.getValue().trim().isEmpty()) {
 					continue;
 				}
-				indent(ostream, indent + 1);
-				ostream.append("<results");
+				writeTag(ostream, "results", indent + 1);
 				if (entry.getKey().intValue() >= 0) {
-					ostream.append(" turn=\"");
-					ostream.append(Integer.toString(entry.getKey().intValue()));
-					ostream.append('"');
+					writeProperty(ostream, "turn",
+							Integer.toString(entry.getKey().intValue()));
 				}
 				ostream.append('>');
 				// FIXME: Ensure, and test, that XML special characters are escaped

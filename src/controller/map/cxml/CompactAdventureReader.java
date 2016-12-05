@@ -87,23 +87,16 @@ public final class CompactAdventureReader extends
 	public void write(final Appendable ostream, final AdventureFixture obj,
 					  final int indent) throws IOException {
 		writeTag(ostream, "adventure", indent);
-		ostream.append(" id=\"");
-		ostream.append(Integer.toString(obj.getID()));
-		ostream.append("\" ");
+		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		if (!obj.getOwner().isIndependent()) {
-			ostream.append("owner=\"");
-			ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
-			ostream.append("\" ");
+			writeProperty(ostream, "owner",
+					Integer.toString(obj.getOwner().getPlayerId()));
 		}
 		if (!obj.getBriefDescription().isEmpty()) {
-			ostream.append("brief=\"");
-			ostream.append(obj.getBriefDescription());
-			ostream.append("\" ");
+			writeProperty(ostream, "brief", obj.getBriefDescription());
 		}
 		if (!obj.getFullDescription().isEmpty()) {
-			ostream.append("full=\"");
-			ostream.append(obj.getFullDescription());
-			ostream.append("\"");
+			writeProperty(ostream, "full", obj.getFullDescription());
 		}
 		ostream.append(imageXML(obj));
 		ostream.append(" />");

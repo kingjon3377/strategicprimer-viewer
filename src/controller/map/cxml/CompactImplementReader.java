@@ -89,11 +89,9 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 	public void write(final Appendable ostream, final Implement obj,
 					  final int indent) throws IOException {
 		writeTag(ostream, "implement", indent);
-		ostream.append(" kind=\"");
-		ostream.append(obj.getKind());
-		ostream.append("\" id=\"");
-		ostream.append(Integer.toString(obj.getID()));
-		ostream.append('"').append(imageXML(obj)).append(" />");
+		writeProperty(ostream, "kind", obj.getKind());
+		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		ostream.append(imageXML(obj)).append(" />");
 		ostream.append(LineEnd.LINE_SEP);
 	}
 

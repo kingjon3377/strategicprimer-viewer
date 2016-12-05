@@ -196,24 +196,16 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 								   @Nullable final WorkerStats stats, final int indent)
 			throws IOException {
 		if (stats != null) {
-			indent(ostream, indent);
-			ostream.append("<stats hp=\"");
-			ostream.append(Integer.toString(stats.getHitPoints()));
-			ostream.append("\" max=\"");
-			ostream.append(Integer.toString(stats.getMaxHitPoints()));
-			ostream.append("\" str=\"");
-			ostream.append(Integer.toString(stats.getStrength()));
-			ostream.append("\" dex=\"");
-			ostream.append(Integer.toString(stats.getDexterity()));
-			ostream.append("\" con=\"");
-			ostream.append(Integer.toString(stats.getConstitution()));
-			ostream.append("\" int=\"");
-			ostream.append(Integer.toString(stats.getIntelligence()));
-			ostream.append("\" wis=\"");
-			ostream.append(Integer.toString(stats.getWisdom()));
-			ostream.append("\" cha=\"");
-			ostream.append(Integer.toString(stats.getCharisma()));
-			ostream.append("\" />");
+			writeTag(ostream, "stats", indent);
+			writeProperty(ostream, "hp", Integer.toString(stats.getHitPoints()));
+			writeProperty(ostream, "max", Integer.toString(stats.getMaxHitPoints()));
+			writeProperty(ostream, "str", Integer.toString(stats.getStrength()));
+			writeProperty(ostream, "dex", Integer.toString(stats.getDexterity()));
+			writeProperty(ostream, "con", Integer.toString(stats.getConstitution()));
+			writeProperty(ostream, "int", Integer.toString(stats.getIntelligence()));
+			writeProperty(ostream, "wis", Integer.toString(stats.getWisdom()));
+			writeProperty(ostream, "cha", Integer.toString(stats.getCharisma()));
+			ostream.append(" />");
 			ostream.append(LineEnd.LINE_SEP);
 		}
 	}
@@ -231,12 +223,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 		if ((obj.getLevel() <= 0) && !obj.iterator().hasNext()) {
 			return;
 		}
-		indent(ostream, indent);
-		ostream.append("<job name=\"");
-		ostream.append(obj.getName());
-		ostream.append("\" level=\"");
-		ostream.append(Integer.toString(obj.getLevel()));
-		ostream.append('"');
+		writeTag(ostream, "job", indent);
+		writeProperty(ostream, "name", obj.getName());
+		writeProperty(ostream, "level", Integer.toString(obj.getLevel()));
 		if (obj.iterator().hasNext()) {
 			ostream.append('>');
 			ostream.append(LineEnd.LINE_SEP);
@@ -262,14 +251,11 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 	 */
 	public static void writeSkill(final Appendable ostream, final ISkill obj,
 								  final int indent) throws IOException {
-		indent(ostream, indent);
-		ostream.append("<skill name=\"");
-		ostream.append(obj.getName());
-		ostream.append("\" level=\"");
-		ostream.append(Integer.toString(obj.getLevel()));
-		ostream.append("\" hours=\"");
-		ostream.append(Integer.toString(obj.getHours()));
-		ostream.append("\" />");
+		writeTag(ostream, "skill", indent);
+		writeProperty(ostream, "name", obj.getName());
+		writeProperty(ostream, "level", Integer.toString(obj.getLevel()));
+		writeProperty(ostream, "hours", Integer.toString(obj.getHours()));
+		ostream.append(" />");
 		ostream.append(LineEnd.LINE_SEP);
 	}
 
@@ -346,15 +332,11 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 	public void write(final Appendable ostream, final IWorker obj,
 					  final int indent) throws IOException {
 		writeTag(ostream, "worker", indent);
-		ostream.append(" name=\"");
-		ostream.append(obj.getName());
+		writeProperty(ostream, "name", obj.getName());
 		if (!"human".equals(obj.getRace())) {
-			ostream.append("\" race=\"");
-			ostream.append(obj.getRace());
+			writeProperty(ostream, "race", obj.getRace());
 		}
-		ostream.append("\" id=\"");
-		ostream.append(Integer.toString(obj.getID()));
-		ostream.append('"');
+		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		ostream.append(imageXML(obj));
 		if (obj instanceof HasPortrait) {
 			ostream.append(portraitXML((HasPortrait) obj));

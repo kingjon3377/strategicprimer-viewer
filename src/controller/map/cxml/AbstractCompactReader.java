@@ -427,4 +427,20 @@ public abstract class AbstractCompactReader<@NonNull T>
 			ostream.append("\"");
 		}
 	}
+	/**
+	 * Write an XML property to the stream.
+	 *
+	 * @param ostream the stream to write to
+	 * @param name	  the name of the property to write
+	 * @param value	  the value to write
+	 * @throws IOException on I/O error writing to stream
+	 */
+	protected static void writeProperty(final Appendable ostream, final String name,
+										final String value) throws IOException {
+		ostream.append(' ');
+		ostream.append(name);
+		ostream.append("=\"");
+		ostream.append(value);
+		ostream.append('"');
+	}
 }

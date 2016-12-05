@@ -12,7 +12,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.IEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.FieldStatus;
@@ -284,59 +283,42 @@ public final class CompactResourceReader extends
 		if (obj instanceof CacheFixture) {
 			writeTag(ostream, "cache", indent);
 			final CacheFixture cache = (CacheFixture) obj;
-			ostream.append(" kind=\"");
-			ostream.append(cache.getKind());
-			ostream.append("\" contents=\"");
-			ostream.append(cache.getContents());
+			writeProperty(ostream, "kind", cache.getKind());
+			writeProperty(ostream, "contents", cache.getContents());
 		} else if (obj instanceof Meadow) {
 			writeTag(ostream, getMeadowTag((Meadow) obj), indent);
 			final Meadow meadow = (Meadow) obj;
-			ostream.append(" kind=\"");
-			ostream.append(meadow.getKind());
-			ostream.append("\" cultivated=\"");
-			ostream.append(Boolean.toString(meadow.isCultivated()));
-			ostream.append("\" status=\"");
-			ostream.append(meadow.getStatus().toString());
+			writeProperty(ostream, "kind", meadow.getKind());
+			writeProperty(ostream, "cultivated", Boolean.toString(meadow.isCultivated()));
+			writeProperty(ostream, "status", meadow.getStatus().toString());
 		} else if (obj instanceof Grove) {
 			writeTag(ostream, getGroveTag((Grove) obj), indent);
 			final Grove grove = (Grove) obj;
-			ostream.append(" cultivated=\"");
-			ostream.append(Boolean.toString(grove.isCultivated()));
-			ostream.append("\" kind=\"");
-			ostream.append(grove.getKind());
+			writeProperty(ostream, "cultivated", Boolean.toString(grove.isCultivated()));
+			writeProperty(ostream, "kind", grove.getKind());
 		} else if (obj instanceof Mine) {
 			writeTag(ostream, "mine", indent);
-			ostream.append(" kind=\"");
 			final Mine mine = (Mine) obj;
-			ostream.append(mine.getKind());
-			ostream.append("\" status=\"");
-			ostream.append(mine.getStatus().toString());
+			writeProperty(ostream, "kind", mine.getKind());
+			writeProperty(ostream, "status", mine.getStatus().toString());
 		} else if (obj instanceof MineralVein) {
 			writeTag(ostream, "mineral", indent);
-			ostream.append(" kind=\"");
 			final MineralVein mineral = (MineralVein) obj;
-			ostream.append(mineral.getKind());
-			ostream.append("\" exposed=\"");
-			ostream.append(Boolean.toString(mineral.isExposed()));
-			ostream.append("\" dc=\"");
-			ostream.append(Integer.toString(((IEvent) obj).getDC()));
+			writeProperty(ostream, "kind", mineral.getKind());
+			writeProperty(ostream, "exposed", Boolean.toString(mineral.isExposed()));
+			writeProperty(ostream, "dc", Integer.toString(mineral.getDC()));
 		} else if (obj instanceof Shrub) {
 			writeTag(ostream, "shrub", indent);
-			ostream.append(" kind=\"");
-			ostream.append(((Shrub) obj).getKind());
+			writeProperty(ostream, "kind", ((Shrub) obj).getKind());
 		} else if (obj instanceof StoneDeposit) {
 			writeTag(ostream, "stone", indent);
-			ostream.append(" kind=\"");
 			final StoneDeposit stone = (StoneDeposit) obj;
-			ostream.append(stone.stone().toString());
-			ostream.append("\" dc=\"");
-			ostream.append(Integer.toString(stone.getDC()));
+			writeProperty(ostream, "kind", stone.stone().toString());
+			writeProperty(ostream, "dc", Integer.toString(stone.getDC()));
 		} else {
 			throw new IllegalStateException("Unhandled HarvestableFixture subtype");
 		}
-		ostream.append("\" id=\"");
-		ostream.append(Integer.toString(obj.getID()));
-		ostream.append('"');
+		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		ostream.append(imageXML(obj));
 		ostream.append(" />");
 		ostream.append(LineEnd.LINE_SEP);
