@@ -138,14 +138,6 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		addPair(panel, new JLabel("Specific Resource"), resourceBox);
 		addPair(panel, new JLabel("Quantity"), new JSpinner(resQtyModel));
 		addPair(panel, new JLabel("Units"), resUnitsBox);
-		final Function<JComboBox<?>, String> selectedItem = box -> {
-			final Object sel = box.getSelectedItem();
-			if (sel == null) {
-				return "";
-			} else {
-				return NullCleaner.assertNotNull(sel.toString().trim());
-			}
-		};
 		final ActionListener resListener = evt -> {
 			confirmPlayer(ioh);
 			final String kind = resKindBox.getSelectedItem();
