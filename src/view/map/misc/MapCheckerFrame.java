@@ -3,7 +3,8 @@ package view.map.misc;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -12,14 +13,15 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.ISPWindow;
+import view.util.SPFrame;
 import view.util.StreamingLabel;
 
 /**
@@ -37,7 +39,7 @@ import view.util.StreamingLabel;
  *
  * @author Jonathan Lovelace
  */
-public final class MapCheckerFrame extends JFrame implements ISPWindow {
+public final class MapCheckerFrame extends SPFrame {
 	/**
 	 * The color to use for errors.
 	 */
@@ -60,13 +62,12 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	 * Constructor.
 	 */
 	public MapCheckerFrame() {
-		super("Strategic Primer Map Checker");
+		super("Strategic Primer Map Checker", Optional.empty());
 		Warning.Custom.setCustomPrinter(Warning.wrapHandler(str -> printParagraph(str,
 				NullCleaner.assertNotNull(StreamingLabel.LabelTextColor.yellow))));
 		setBackground(Color.black);
 		setMinimumSize(new Dimension(640, 320));
 		setContentPane(new JScrollPane(label));
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		getContentPane().setBackground(Color.black);
 	}
 

@@ -15,10 +15,15 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 import java.util.stream.StreamSupport;
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
@@ -27,9 +32,9 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.FormattedLabel;
-import view.util.ISPWindow;
 import view.util.ImprovedComboBox;
 import view.util.ListenedButton;
+import view.util.SPFrame;
 import view.util.SplitWithWeights;
 import view.util.StreamingLabel;
 import view.worker.WorkerMenu;
@@ -50,7 +55,7 @@ import view.worker.WorkerMenu;
  *
  * @author Jonathan Lovelace
  */
-public class ResourceAddingFrame extends JFrame implements ISPWindow {
+public class ResourceAddingFrame extends SPFrame {
 	/**
 	 * The label that we use to display diagnostics.
 	 */
@@ -111,7 +116,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	@SuppressWarnings("ObjectAllocationInLoop")
 	public ResourceAddingFrame(final ResourceManagementDriver driverModel,
 							   final IOHandler ioh) {
-		super("Resource Entry");
+		super("Resource Entry", driverModel.getMapFile());
 		final IDRegistrar idf = IDFactoryFiller.createFactory(driverModel);
 		current = StreamSupport.stream(driverModel.getPlayers().spliterator(), false)
 						  .filter(player -> player.isCurrent())

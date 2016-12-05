@@ -1,21 +1,21 @@
 package view.exploration;
 
 import controller.map.misc.IOHandler;
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Stream;
-import javax.swing.*;
 import model.exploration.IExplorationModel;
 import model.listeners.CompletionListener;
 import util.NullCleaner;
-import view.util.ISPWindow;
+import view.util.SPFrame;
 
 /**
  * The main window for the exploration GUI.
@@ -32,20 +32,14 @@ import view.util.ISPWindow;
  *
  * @author Jonathan Lovelace
  */
-public final class ExplorationFrame extends JFrame implements ISPWindow {
+public final class ExplorationFrame extends SPFrame {
 	/**
 	 * @param explorationModel the exploration model
 	 * @param ioHandler        Passed to menu constructor
 	 */
 	public ExplorationFrame(final IExplorationModel explorationModel,
 							final IOHandler ioHandler) {
-		super("Exploration");
-		final Optional<Path> file = explorationModel.getMapFile();
-		if (file.isPresent()) {
-			setTitle(file.get() + " | Exploration");
-			getRootPane().putClientProperty("Window.documentFile",
-					file.get().toFile());
-		}
+		super("Exploration", explorationModel.getMapFile());
 		setMinimumSize(new Dimension(768, 480));
 		setPreferredSize(new Dimension(1024, 640));
 		final CardLayout layout = new CardLayout();
@@ -67,7 +61,6 @@ public final class ExplorationFrame extends JFrame implements ISPWindow {
 
 		setJMenuBar(new ExplorationMenu(NullCleaner.assertNotNull(ioHandler),
 											   explorationModel, this));
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
 

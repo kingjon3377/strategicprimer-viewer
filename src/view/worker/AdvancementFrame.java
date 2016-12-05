@@ -20,6 +20,7 @@ import view.util.BorderedPanel;
 import view.util.ISPWindow;
 import view.util.ItemAdditionPanel;
 import view.util.ListenedButton;
+import view.util.SPFrame;
 
 import static view.util.SplitWithWeights.horizontalSplit;
 import static view.util.SplitWithWeights.verticalSplit;
@@ -39,7 +40,7 @@ import static view.util.SplitWithWeights.verticalSplit;
  *
  * @author Jonathan Lovelace
  */
-public final class AdvancementFrame extends JFrame implements ISPWindow {
+public final class AdvancementFrame extends SPFrame {
 	/**
 	 * Dividers start at half-way.
 	 */
@@ -56,13 +57,7 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 	 * @param ioHandler the I/O handler so the menu 'open' item, etc., will work
 	 */
 	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
-		super("Worker Advancement");
-		final Optional<Path> file = source.getMapFile();
-		if (file.isPresent()) {
-			setTitle(file.get() + " | Worker Advancement");
-			getRootPane().putClientProperty("Window.documentFile",
-					file.get().toFile());
-		}
+		super("Worker Advancement", source.getMapFile());
 		setMinimumSize(new Dimension(640, 480));
 		final IMapNG map = source.getMap();
 		final Player player = map.getCurrentPlayer();
@@ -114,7 +109,6 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 		}
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
 		setJMenuBar(new WorkerMenu(ioHandler, this, source));
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
 

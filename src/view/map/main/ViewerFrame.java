@@ -19,6 +19,7 @@ import view.map.details.DetailPanelNG;
 import view.util.BorderedPanel;
 import view.util.BoxPanel;
 import view.util.ISPWindow;
+import view.util.SPFrame;
 import view.util.SplitWithWeights;
 
 /**
@@ -36,7 +37,7 @@ import view.util.SplitWithWeights;
  *
  * @author Jonathan Lovelace
  */
-public final class ViewerFrame extends JFrame implements ISPWindow {
+public final class ViewerFrame extends SPFrame {
 	/**
 	 * Default width of the Frame.
 	 */
@@ -61,13 +62,7 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
 	 */
 	public ViewerFrame(final IViewerModel map, final IOHandler ioHandler) {
-		super("Map Viewer");
-		final Optional<Path> filename = map.getMapFile();
-		if (filename.isPresent()) {
-			setTitle(filename.get() + " | Map Viewer");
-			getRootPane().putClientProperty("Window.documentFile",
-					filename.get().toFile());
-		}
+		super("Map Viewer", map.getMapFile());
 		model = map;
 		final FixtureFilterTableModel tableModel = new FixtureFilterTableModel();
 		final MapComponent mapPanel = new MapComponent(map, tableModel, tableModel);
@@ -135,7 +130,6 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 
 		setJMenuBar(new ViewerMenu(NullCleaner.assertNotNull(ioHandler), this,
 										  map));
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
 	/**

@@ -30,6 +30,7 @@ import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.util.ISPWindow;
+import view.util.SPFrame;
 import view.util.StreamingLabel;
 
 /**
@@ -48,7 +49,7 @@ import view.util.StreamingLabel;
  * @author Jonathan Lovelace
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-public final class SubsetFrame extends JFrame implements ISPWindow {
+public final class SubsetFrame extends SPFrame {
 	/**
 	 * Logger.
 	 */
@@ -76,10 +77,9 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 	 * Constructor.
 	 */
 	public SubsetFrame() {
-		super("Subset Tester");
+		super("Subset Tester", Optional.empty());
 		setMinimumSize(new Dimension(640, 320));
 		setContentPane(new JScrollPane(label));
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
 	/**

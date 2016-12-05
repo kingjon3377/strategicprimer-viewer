@@ -23,21 +23,18 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Path;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
-import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -68,8 +65,8 @@ import util.OnMac;
 import util.TypesafeLogger;
 import view.map.main.ViewerFrame;
 import view.util.BorderedPanel;
-import view.util.ISPWindow;
 import view.util.ListenedButton;
+import view.util.SPFrame;
 import view.util.SystemOut;
 
 import static view.util.BorderedPanel.verticalPanel;
@@ -91,7 +88,7 @@ import static view.util.SplitWithWeights.verticalSplit;
  *
  * @author Jonathan Lovelace
  */
-public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
+public final class WorkerMgmtFrame extends SPFrame {
 	/**
 	 * The header to put above the report.
 	 */
@@ -115,13 +112,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	 */
 	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model,
 						   final IOHandler ioHandler) {
-		super("Worker Management");
-		final Optional<Path> filename = model.getMapFile();
-		if (filename.isPresent()) {
-			setTitle(filename.get() + " | Worker Management");
-			getRootPane().putClientProperty("Window.documentFile",
-					filename.get().toFile());
-		}
+		super("Worker Management", model.getMapFile());
 		final IMapNG mainMap = model.getMap();
 		setMinimumSize(new Dimension(640, 480));
 		final NewUnitDialog newUnitFrame =
@@ -197,7 +188,6 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 						null), mdp)));
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
 		setJMenuBar(new WorkerMenu(ioHandler, this, model));
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		for (int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);
 		}

@@ -8,7 +8,7 @@ import controller.map.drivers.SPOptions;
 import controller.map.drivers.ViewerStart;
 import controller.map.drivers.WorkerStart;
 import controller.map.misc.CLIHelper;
-import java.awt.*;
+import java.awt.GridLayout;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -16,9 +16,14 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
@@ -40,7 +45,7 @@ import util.TypesafeLogger;
  *
  * @author Jonathan Lovelace
  */
-public final class AppChooserFrame extends JFrame implements ISPWindow {
+public final class AppChooserFrame extends SPFrame {
 	/**
 	 * Logger.
 	 */
@@ -53,8 +58,7 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 	 * @param options options to pass to the driver
 	 */
 	public AppChooserFrame(final IDriverModel model, final SPOptions options) {
-		super("SP App Chooser");
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		super("SP App Chooser", model.getMapFile());
 
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		buttonPanel.add(button("Map Viewer", NullCleaner.assertNotNull(model),
@@ -79,7 +83,7 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 	 * @param options options to pass to the driver
 	 */
 	public AppChooserFrame(final SPOptions options, final List<@NonNull String> params) {
-		super("SP App Chooser");
+		super("SP App Chooser", Optional.empty());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		final List<@NonNull String> parameters =
