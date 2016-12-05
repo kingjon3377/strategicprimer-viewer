@@ -1,7 +1,6 @@
 package controller.map.fluidxml;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDRegistrar;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -22,7 +21,7 @@ import util.Warning;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
-import static controller.map.fluidxml.XMLHelper.isSPStartElement;
+import static controller.map.fluidxml.XMLHelper.getTextUntil;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
@@ -202,24 +201,7 @@ public final class FluidExplorableHandler {
 											  final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "text");
-		// Of all our uses of StringBuilder, here we can't know how much size
-		// we're going to need beforehand. But cases where we'll need more than
-		// 2K will be vanishingly rare in practice.
-		final StringBuilder builder = new StringBuilder(2048);
-		for (final XMLEvent event : stream) {
-			if (isSPStartElement(event)) {
-				throw new UnwantedChildException(assertNotNull(element.getName()),
-														assertNotNull(
-																event.asStartElement()));
-			} else if (event.isCharacters()) {
-				builder.append(event.asCharacters().getData());
-			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
-				break;
-			}
-		}
-		return setImage(new TextFixture(assertNotNull(builder.toString().trim()),
+		return setImage(new TextFixture(getTextUntil(element.getName(), stream),
 											   getIntegerAttribute(element, "turn", -1)),
 				element, warner);
 	}

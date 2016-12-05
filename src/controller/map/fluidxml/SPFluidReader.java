@@ -76,6 +76,7 @@ import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.getPlayerOrIndependent;
+import static controller.map.fluidxml.XMLHelper.getTextUntil;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
 import static controller.map.fluidxml.XMLHelper.isSPStartElement;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
@@ -436,20 +437,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 							 final Unit unit,
 							 final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerAttribute(element, "turn", -1);
-		final StringBuilder builder = new StringBuilder(512);
-		for (final XMLEvent event : stream) {
-			if (event.isCharacters()) {
-				builder.append(event.asCharacters().getData().trim());
-			} else if (isSPStartElement(event)) {
-				throw new UnwantedChildException(element.getName(),
-														event.asStartElement());
-			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
-				break;
-			}
-		}
-		unit.setOrders(turn, builder.toString().trim());
+		unit.setOrders(turn, getTextUntil(element.getName(), stream));
 	}
 
 	/**
@@ -464,20 +452,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 							  final Unit unit,
 							  final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerAttribute(element, "turn", -1);
-		final StringBuilder builder = new StringBuilder(512);
-		for (final XMLEvent event : stream) {
-			if (event.isCharacters()) {
-				builder.append(event.asCharacters().getData().trim());
-			} else if (isSPStartElement(event)) {
-				throw new UnwantedChildException(element.getName(),
-														event.asStartElement());
-			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
-				break;
-			}
-		}
-		unit.setResults(turn, builder.toString().trim());
+		unit.setResults(turn, getTextUntil(element.getName(), stream));
 	}
 
 	/**

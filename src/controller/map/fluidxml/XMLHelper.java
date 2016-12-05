@@ -589,4 +589,26 @@ public final class XMLHelper {
 				element.asStartElement().getName().getNamespaceURI(),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI);
 	}
+	/**
+	 * @param tag the name of the tag whose closing tag we're waiting for
+	 * @return the text between now and then (trimmed of whitespace)
+	 * @throws SPFormatException on unwanted intervening tags
+	 */
+	public static String getTextUntil(final QName tag, final Iterable<XMLEvent> stream)
+			throws SPFormatException {
+		// There's no way to know how much size we're going to need, but cases where we'll
+		// need more than half a K will be vanishingly rare in practice.
+		final StringBuilder builder = new StringBuilder(512);
+		for (final XMLEvent event : stream) {
+			if (isSPStartElement(event)) {
+				throw new UnwantedChildException(tag, event.asStartElement());
+			} else if (event.isCharacters()) {
+				builder.append(event.asCharacters().getData());
+			} else if (event.isEndElement() && tag.equals(event.asEndElement().getName())) {
+				break;
+			}
+		}
+		return builder.toString().trim();
+	}
+
 }
