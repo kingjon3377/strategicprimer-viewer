@@ -7,10 +7,7 @@ import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.misc.StrategyExporter;
 import controller.map.report.ReportGenerator;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -24,18 +21,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.logging.Logger;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -169,7 +155,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		report.expandPath(new TreePath(
 				((DefaultMutableTreeNode) reportModel.getRoot()).getPath()));
 
-		final DistanceComparator distCalculator = new DistanceComparator(findHQ(model));
+		final DistanceComparator calculator = new DistanceComparator(findHQ(model));
 		final TreeCellRenderer defRender = new DefaultTreeCellRenderer();
 		report.setCellRenderer(
 				(renderedTree, value, selected, expanded, leaf, row, hasFocus) -> {
@@ -181,8 +167,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 						// (-inf, -inf) replaces null
 						if (point.getRow() > Integer.MIN_VALUE) {
 							((JComponent) retval)
-									.setToolTipText(distCalculator.distanceString
-																		   (point));
+									.setToolTipText(calculator.distanceString(point));
 						} else {
 							((JComponent) retval).setToolTipText(null);
 						}
