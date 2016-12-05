@@ -57,8 +57,7 @@ public final class AdvancementFrame extends SPFrame {
 	 * @param ioHandler the I/O handler so the menu 'open' item, etc., will work
 	 */
 	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
-		super("Worker Advancement", source.getMapFile());
-		setMinimumSize(new Dimension(640, 480));
+		super("Worker Advancement", source.getMapFile(), new Dimension(640, 480));
 		final IMapNG map = source.getMap();
 		final Player player = map.getCurrentPlayer();
 		final PlayerLabel playerLabel = new PlayerLabel("", player, "'s Units:");

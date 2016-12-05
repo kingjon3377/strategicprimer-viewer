@@ -112,9 +112,8 @@ public final class WorkerMgmtFrame extends SPFrame {
 	 */
 	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model,
 						   final IOHandler ioHandler) {
-		super("Worker Management", model.getMapFile());
+		super("Worker Management", model.getMapFile(), new Dimension(640, 480));
 		final IMapNG mainMap = model.getMap();
-		setMinimumSize(new Dimension(640, 480));
 		final NewUnitDialog newUnitFrame =
 				new NewUnitDialog(mainMap.getCurrentPlayer(),
 										 IDFactoryFiller.createFactory(mainMap));

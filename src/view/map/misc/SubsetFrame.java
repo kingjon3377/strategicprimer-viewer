@@ -29,7 +29,6 @@ import util.LineEnd;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.ISPWindow;
 import view.util.SPFrame;
 import view.util.StreamingLabel;
 
@@ -77,8 +76,7 @@ public final class SubsetFrame extends SPFrame {
 	 * Constructor.
 	 */
 	public SubsetFrame() {
-		super("Subset Tester", Optional.empty());
-		setMinimumSize(new Dimension(640, 320));
+		super("Subset Tester", Optional.empty(), new Dimension(640, 320));
 		setContentPane(new JScrollPane(label));
 	}
 

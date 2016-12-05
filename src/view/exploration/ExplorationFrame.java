@@ -39,8 +39,7 @@ public final class ExplorationFrame extends SPFrame {
 	 */
 	public ExplorationFrame(final IExplorationModel explorationModel,
 							final IOHandler ioHandler) {
-		super("Exploration", explorationModel.getMapFile());
-		setMinimumSize(new Dimension(768, 480));
+		super("Exploration", explorationModel.getMapFile(), new Dimension(768, 480));
 		setPreferredSize(new Dimension(1024, 640));
 		final CardLayout layout = new CardLayout();
 		setLayout(layout);

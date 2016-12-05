@@ -1,5 +1,6 @@
 package view.util;
 
+import java.awt.Dimension;
 import java.nio.file.Path;
 import java.util.Optional;
 import javax.swing.JFrame;
@@ -34,5 +35,15 @@ public abstract class SPFrame extends JFrame implements ISPWindow {
 			getRootPane().putClientProperty("Window.documentFile", file.get().toFile());
 		}
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+	}
+	/**
+	 * @param title the window title
+	 * @param file the map file, if any, being shown or edited
+	 * @param minSize the minimum size of the window
+	 */
+	protected SPFrame(final String title, final Optional<Path> file,
+					  final Dimension minSize) {
+		this(title, file);
+		setMinimumSize(minSize);
 	}
 }

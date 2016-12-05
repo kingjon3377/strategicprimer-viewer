@@ -62,11 +62,10 @@ public final class MapCheckerFrame extends SPFrame {
 	 * Constructor.
 	 */
 	public MapCheckerFrame() {
-		super("Strategic Primer Map Checker", Optional.empty());
+		super("Strategic Primer Map Checker", Optional.empty(), new Dimension(640, 320));
 		Warning.Custom.setCustomPrinter(Warning.wrapHandler(str -> printParagraph(str,
 				NullCleaner.assertNotNull(StreamingLabel.LabelTextColor.yellow))));
 		setBackground(Color.black);
-		setMinimumSize(new Dimension(640, 320));
 		setContentPane(new JScrollPane(label));
 		getContentPane().setBackground(Color.black);
 	}
