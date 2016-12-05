@@ -29,6 +29,7 @@ import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
 import static controller.map.fluidxml.XMLHelper.indent;
+import static controller.map.fluidxml.XMLHelper.isSPStartElement;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
@@ -94,7 +95,7 @@ public final class FluidUnitMemberHandler {
 				warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
+			if (isSPStartElement(event)) {
 				final StartElement startElement = event.asStartElement();
 				switch (startElement.getName().getLocalPart()) {
 				case "job":
@@ -148,7 +149,7 @@ public final class FluidUnitMemberHandler {
 		boolean anySkills = false;
 		boolean onlyOneSkill = true;
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
+			if (isSPStartElement(event)) {
 				final StartElement startElement = event.asStartElement();
 				if ("skill".equals(startElement.getName().getLocalPart())) {
 					if (anySkills) {

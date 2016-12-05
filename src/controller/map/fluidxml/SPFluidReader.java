@@ -77,6 +77,7 @@ import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.getPlayerOrIndependent;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
+import static controller.map.fluidxml.XMLHelper.isSPStartElement;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
@@ -174,13 +175,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			throws SPFormatException {
 		final StartElement retval = StreamSupport
 											.stream(stream.spliterator(), false)
-											.filter(XMLEvent::isStartElement).map
-																					  (XMLEvent::asStartElement)
-											.filter(elem -> equalsAny(
-													assertNotNull(
-															elem.getName()
-																	.getNamespaceURI()),
-													ISPReader.NAMESPACE, NULL_NS_URI))
+											.filter(XMLHelper::isSPStartElement)
+											.map(XMLEvent::asStartElement)
 											.findFirst()
 											.orElseThrow(
 													() -> new MissingChildException
@@ -238,7 +234,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		final IMutablePlayerCollection players = new PlayerCollection();
 		final IDRegistrar idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
-			if (event.isStartElement()) {
+			if (isSPStartElement(event)) {
 				final Object retval = readSPObject(
 						assertNotNull(event.asStartElement()), new QName("root"),
 						eventReader, players, warner, idFactory);
@@ -392,7 +388,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
+			if (isSPStartElement(event)) {
 				if ("orders".equalsIgnoreCase(
 						event.asStartElement().getName().getLocalPart())) {
 					parseOrders(event.asStartElement(), retval,
@@ -444,7 +440,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		for (final XMLEvent event : stream) {
 			if (event.isCharacters()) {
 				builder.append(event.asCharacters().getData().trim());
-			} else if (event.isStartElement()) {
+			} else if (isSPStartElement(event)) {
 				throw new UnwantedChildException(element.getName(),
 														event.asStartElement());
 			} else if (event.isEndElement() &&
@@ -472,7 +468,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		for (final XMLEvent event : stream) {
 			if (event.isCharacters()) {
 				builder.append(event.asCharacters().getData().trim());
-			} else if (event.isStartElement()) {
+			} else if (isSPStartElement(event)) {
 				throw new UnwantedChildException(element.getName(),
 														event.asStartElement());
 			} else if (event.isEndElement() &&
@@ -513,7 +509,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 									TownSize.parseTownSize(
 											getAttribute(element, "size", "small")));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
+			if (isSPStartElement(event)) {
 				final Object child =
 						readSPObject(event.asStartElement(), element.getName(), stream,
 								players, warner, idFactory);
@@ -581,10 +577,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		tagStack.push(mapTag.getName());
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && equalsAny(
-					assertNotNull(
-							event.asStartElement().getName().getNamespaceURI()),
-					ISPReader.NAMESPACE, NULL_NS_URI)) {
+			if (isSPStartElement(event)) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
 				if ("row".equals(type)) {
@@ -672,9 +665,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			warner.warn(new MissingPropertyException(element, "kind"));
 		}
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() &&
-						equalsAny(event.asStartElement().getName().getNamespaceURI(),
-								ISPReader.NAMESPACE, NULL_NS_URI)) {
+			if (isSPStartElement(event)) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
 				if (equalsAny(type, ISPReader.FUTURE)) {

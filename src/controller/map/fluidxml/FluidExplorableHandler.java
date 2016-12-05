@@ -2,9 +2,7 @@ package controller.map.fluidxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -19,12 +17,12 @@ import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.explorable.Portal;
-import util.EqualsAny;
 import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
+import static controller.map.fluidxml.XMLHelper.isSPStartElement;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
@@ -209,9 +207,7 @@ public final class FluidExplorableHandler {
 		// 2K will be vanishingly rare in practice.
 		final StringBuilder builder = new StringBuilder(2048);
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && EqualsAny.equalsAny(
-					assertNotNull(event.asStartElement().getName().getNamespaceURI()),
-					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
+			if (isSPStartElement(event)) {
 				throw new UnwantedChildException(assertNotNull(element.getName()),
 														assertNotNull(
 																event.asStartElement()));

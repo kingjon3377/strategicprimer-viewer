@@ -162,10 +162,7 @@ public final class XMLHelper {
 									final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
-			if (event.isStartElement() && EqualsAny.equalsAny(
-					NullCleaner.assertNotNull(
-							event.asStartElement().getName().getNamespaceURI()),
-					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
+			if (isSPStartElement(event)) {
 				throw new UnwantedChildException(tag,
 														NullCleaner.assertNotNull(
 																event.asStartElement()));
@@ -582,5 +579,14 @@ public final class XMLHelper {
 	 */
 	public static Element createElement(final Document document, final String tag) {
 		return document.createElementNS(ISPReader.NAMESPACE, tag);
+	}
+	/**
+	 * @param element an XML element
+	 * @return true iff it is a start element and in a namespace we read
+	 */
+	public static boolean isSPStartElement(final XMLEvent element) {
+		return element.isStartElement() && EqualsAny.equalsAny(
+				element.asStartElement().getName().getNamespaceURI(),
+				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI);
 	}
 }
