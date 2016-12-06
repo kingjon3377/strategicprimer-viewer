@@ -2,7 +2,6 @@ package controller.map.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -165,7 +164,7 @@ public final class ImmortalsReportGenerator
 	 * @return its add() method as a BiConsumer of Strings and Points.
 	 */
 	private BiConsumer<String, Point> simplest(final List<Point> list) {
-		return (string, point) -> list.add(point);
+		return (kind, point) -> list.add(point);
 	}
 	/**
 	 * @param collection a collection of lists of points. Must be a SimpleMultiMap.
@@ -173,7 +172,7 @@ public final class ImmortalsReportGenerator
 	 */
 	private BiConsumer<String, Point> complex(final Map<String, Collection<Point>>
 													  collection) {
-		return (string, point) -> collection.get(string).add(point);
+		return (kind, point) -> collection.get(kind).add(point);
 	}
 	/**
 	 * Produce the sub-report dealing with "immortals".
