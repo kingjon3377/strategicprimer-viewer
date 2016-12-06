@@ -432,11 +432,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				final TileType terrain = obj.getBaseTerrain(point);
-				if ((TileType.NotVisible != terrain)
-							|| obj.isMountainous(point)
-							|| (obj.getGround(point) != null)
-							|| (obj.getForest(point) != null)
-							|| obj.streamOtherFixtures(point).anyMatch(x -> true)) {
+				if (!obj.isLocationEmpty(point)) {
 					if (rowEmpty) {
 						rowEmpty = false;
 						writeTag(ostream, "row", indent + 2);
