@@ -119,7 +119,7 @@ public class ResourceAddingFrame extends SPFrame {
 		super("Resource Entry", driverModel.getMapFile());
 		final IDRegistrar idf = IDFactoryFiller.createFactory(driverModel);
 		current = StreamSupport.stream(driverModel.getPlayers().spliterator(), false)
-						  .filter(player -> player.isCurrent())
+						  .filter(Player::isCurrent)
 						  .findAny().orElse(new Player(-1, ""));
 		final FormattedLabel resourceLabel =
 				new FormattedLabel("Add resource for %s:", current.getName());

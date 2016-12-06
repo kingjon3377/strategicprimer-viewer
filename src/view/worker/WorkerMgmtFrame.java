@@ -121,7 +121,7 @@ public final class WorkerMgmtFrame extends SPFrame {
 				new WorkerTreeModelAlt(mainMap.getCurrentPlayer(), model);
 		final WorkerTree tree =
 				WorkerTree.factory(treeModel, mainMap.players(),
-						() -> mainMap.getCurrentTurn(), true);
+						mainMap::getCurrentTurn, true);
 		ioHandler.addPlayerChangeListener(treeModel);
 		newUnitFrame.addNewUnitListener(treeModel);
 		final boolean onMac = OnMac.SYSTEM_IS_MAC;

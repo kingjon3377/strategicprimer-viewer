@@ -116,9 +116,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 			model.getMap().streamOtherFixtures(model.getSelectedUnitLocation())
 					.filter(Village.class::isInstance)
 					.forEach(getSelectedValuesList()::add);
-		}), Pair.of("Should the explorer dig to find what kind of ground is here?", () -> {
-			model.dig();
-		}));
+		}), Pair.of("Should the explorer dig to find what kind of ground is here?",
+				model::dig));
 	}
 
 	/**
