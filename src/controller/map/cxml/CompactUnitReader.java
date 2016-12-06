@@ -160,7 +160,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 * @param stream  the stream of further tags.
 	 * @throws SPFormatException on SP format problem
 	 */
-	private void parseOrders(final StartElement element,
+	private static void parseOrders(final StartElement element,
 							 final Unit unit,
 							 final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerParameter(element, "turn", -1);
@@ -188,7 +188,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 * @param stream  the stream of further tags.
 	 * @throws SPFormatException on SP format problem
 	 */
-	private void parseResults(final StartElement element,
+	private static void parseResults(final StartElement element,
 							  final Unit unit,
 							  final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerParameter(element, "turn", -1);

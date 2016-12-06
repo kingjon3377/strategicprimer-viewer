@@ -59,8 +59,8 @@ public final class WorkerReportDriver implements SimpleDriver {
 	 * @param map           the map to generate the report from
 	 * @throws DriverFailedException if writing to file fails for some reason
 	 */
-	private void writeReport(final Optional<Path> maybeFilename, final SPOptions options,
-							 final IMapNG map)
+	private static void writeReport(final Optional<Path> maybeFilename,
+									final SPOptions options, final IMapNG map)
 			throws DriverFailedException {
 		if (maybeFilename.isPresent()) {
 			final Path filename = maybeFilename.get();

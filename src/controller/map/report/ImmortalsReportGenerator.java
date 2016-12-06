@@ -163,14 +163,14 @@ public final class ImmortalsReportGenerator
 	 * @param list a list
 	 * @return its add() method as a BiConsumer of Strings and Points.
 	 */
-	private BiConsumer<String, Point> simplest(final List<Point> list) {
+	private static BiConsumer<String, Point> simplest(final List<Point> list) {
 		return (kind, point) -> list.add(point);
 	}
 	/**
 	 * @param collection a collection of lists of points. Must be a SimpleMultiMap.
 	 * @return a reference to a method that gets the right list and adds the point to it
 	 */
-	private BiConsumer<String, Point> complex(final Map<String, Collection<Point>>
+	private static BiConsumer<String, Point> complex(final Map<String, Collection<Point>>
 													  collection) {
 		return (kind, point) -> collection.get(kind).add(point);
 	}

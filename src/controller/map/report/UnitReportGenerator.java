@@ -215,7 +215,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 * @param generator		the report generator to use for members in the collection
 	 * @param builder 		the StringBuilder to append the report to
 	 */
-	private <T extends UnitMember> void produceInner(final StringBuilder builder,
+	private static <T extends UnitMember> void produceInner(final StringBuilder builder,
 													 final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 													 final Collection<T> collection,
 													 final String heading,
@@ -313,7 +313,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 * @param item the unit
 	 * @param builder the builder to write to
 	 */
-	private void produceOrders(final IUnit item, final StringBuilder builder) {
+	private static void produceOrders(final IUnit item, final StringBuilder builder) {
 		if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
 			builder.append("Orders and Results:").append(OPEN_LIST);
 			final Set<Integer> turns = new TreeSet<>(item.getAllOrders().keySet());

@@ -433,7 +433,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @param stream  the stream of further tags.
 	 * @throws SPFormatException on SP format problem
 	 */
-	private void parseOrders(final StartElement element,
+	private static void parseOrders(final StartElement element,
 							 final Unit unit,
 							 final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerAttribute(element, "turn", -1);
@@ -448,7 +448,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @param stream  the stream of further tags.
 	 * @throws SPFormatException on SP format problem
 	 */
-	private void parseResults(final StartElement element,
+	private static void parseResults(final StartElement element,
 							  final Unit unit,
 							  final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerAttribute(element, "turn", -1);

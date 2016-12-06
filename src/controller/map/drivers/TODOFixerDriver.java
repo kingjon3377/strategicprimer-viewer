@@ -159,7 +159,8 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	 * @param location a location
 	 * @return the appropriate terrain for it if it is plains
 	 */
-	private SimpleTerrain getPlainsTerrain(final IMapNG map, final Point location) {
+	private static SimpleTerrain getPlainsTerrain(final IMapNG map,
+												  final Point location) {
 		if (map.isMountainous(location) || (map.getForest(location) == null)) {
 			return SimpleTerrain.Unforested;
 		} else {

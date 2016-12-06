@@ -104,7 +104,7 @@ public final class MiningModel {
 	 * @param verticalGen the generator to use for vertically-adjacent points
 	 * @param point the point to consider now
 	 */
-	private void modelPoint(final Map<Point, LodeStatus> unnormalized,
+	private static void modelPoint(final Map<Point, LodeStatus> unnormalized,
 							final Queue<Point> queue,
 							final Function<LodeStatus, LodeStatus> horizontalGen,
 							final Function<LodeStatus, LodeStatus> verticalGen,
