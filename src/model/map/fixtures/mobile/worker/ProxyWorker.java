@@ -18,7 +18,6 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyFor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.TypesafeLogger;
 
 import static util.NullCleaner.assertNotNull;

@@ -24,7 +24,6 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.TownStatus;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
