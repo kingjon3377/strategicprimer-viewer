@@ -454,4 +454,21 @@ public abstract class AbstractCompactReader<@NonNull T>
 		ostream.append(" />");
 		ostream.append(LineEnd.LINE_SEP);
 	}
+	/**
+	 * Write a closing tag to the stream, followed by a newline.
+	 * @param ostream the stream to write to
+	 * @param indent how much, if any, to indent the closing tag
+	 * @param tag the tag to close
+	 * @throws IOException on I/O error while writing.
+	 */
+	protected static void closeTag(final Appendable ostream, final int indent,
+								   final String tag) throws IOException {
+		if (indent > 0) {
+			indent(ostream, indent);
+		}
+		ostream.append("</");
+		ostream.append(tag);
+		ostream.append('>');
+		ostream.append(LineEnd.LINE_SEP);
+	}
 }

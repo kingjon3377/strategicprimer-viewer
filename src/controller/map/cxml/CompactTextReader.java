@@ -9,7 +9,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.TextFixture;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -111,8 +110,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 		ostream.append(imageXML(obj));
 		ostream.append('>');
 		ostream.append(obj.getText().trim());
-		ostream.append("</text>");
-		ostream.append(LineEnd.LINE_SEP);
+		closeTag(ostream, 0, "text");
 	}
 
 	/**

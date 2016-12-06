@@ -475,22 +475,15 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					if (!needEOL) {
 						indent(ostream, indent + 3);
 					}
-					ostream.append("</tile>");
-					ostream.append(LineEnd.LINE_SEP);
+					closeTag(ostream,0,  "tile");
 				}
 			}
 			if (!rowEmpty) {
-				indent(ostream, indent + 2);
-				ostream.append("</row>");
-				ostream.append(LineEnd.LINE_SEP);
+				closeTag(ostream, indent + 2, "row");
 			}
 		}
-		indent(ostream, indent + 1);
-		ostream.append("</map>");
-		ostream.append(LineEnd.LINE_SEP);
-		indent(ostream, indent);
-		ostream.append("</view>");
-		ostream.append(LineEnd.LINE_SEP);
+		closeTag(ostream, indent + 1, "map");
+		closeTag(ostream, indent, "view");
 	}
 
 	/**

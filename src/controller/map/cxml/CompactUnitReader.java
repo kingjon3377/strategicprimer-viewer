@@ -18,7 +18,6 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -296,8 +295,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 				ostream.append('>');
 				// FIXME: Ensure, and test, that XML special characters are escaped
 				ostream.append(entry.getValue().trim());
-				ostream.append("</orders>");
-				ostream.append(LineEnd.LINE_SEP);
+				closeTag(ostream, 0, "orders");
 			}
 			for (final Map.Entry<Integer, String> entry : obj.getAllResults()
 																  .entrySet()) {
@@ -312,15 +310,12 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 				ostream.append('>');
 				// FIXME: Ensure, and test, that XML special characters are escaped
 				ostream.append(entry.getValue().trim());
-				ostream.append("</orders>");
-				ostream.append(LineEnd.LINE_SEP);
+				closeTag(ostream, 0, "results");
 			}
 			for (final UnitMember member : obj) {
 				CompactReaderAdapter.write(ostream, member, indent + 1);
 			}
-			indent(ostream, indent);
-			ostream.append("</unit>");
-			ostream.append(LineEnd.LINE_SEP);
+			closeTag(ostream, indent, "unit");
 		} else {
 			closeLeafTag(ostream);
 		}

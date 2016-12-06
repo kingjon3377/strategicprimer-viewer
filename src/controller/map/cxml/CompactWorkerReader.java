@@ -20,7 +20,6 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -228,9 +227,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 			for (final ISkill skill : obj) {
 				writeSkill(ostream, skill, indent + 1);
 			}
-			indent(ostream, indent);
-			ostream.append("</job>");
-			ostream.append(LineEnd.LINE_SEP);
+			closeTag(ostream, indent, "job");
 		} else {
 			closeLeafTag(ostream);
 		}
@@ -339,9 +336,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 			for (final IJob job : obj) {
 				writeJob(ostream, job, indent + 1);
 			}
-			indent(ostream, indent);
-			ostream.append("</worker>");
-			ostream.append(LineEnd.LINE_SEP);
+			closeTag(ostream, indent, "worker");
 		} else {
 			closeLeafTag(ostream);
 		}
