@@ -174,6 +174,7 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	 * @param options options passed to the driver
 	 * @param model   the driver model to operate on
 	 */
+	@Override
 	@SuppressWarnings("NestedTryStatement")
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
 							final IDriverModel model) {
