@@ -179,7 +179,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public BigDecimal inputDecimal(String prompt) throws IOException {
+	public BigDecimal inputDecimal(final String prompt) throws IOException {
 		BigDecimal retval = BigDecimal.ZERO.subtract(BigDecimal.ONE);
 		while (retval.compareTo(BigDecimal.ZERO) < 0) {
 			ostream.print(prompt);

@@ -235,7 +235,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			xsw.writeEndDocument();
 			xsw.flush();
 			xsw.close();
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new IOException("Failure in creating XML", except);
 		}
 		ostream.append(SNUG_END_TAG.matcher(writer.toString()).replaceAll("$1 />"));

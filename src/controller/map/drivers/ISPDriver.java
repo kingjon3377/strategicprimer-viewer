@@ -32,7 +32,7 @@ public interface ISPDriver extends HasName {
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
-	default void startDriver(final SPOptions options, String... args)
+	default void startDriver(final SPOptions options, final String... args)
 			throws DriverFailedException {
 		try (final CLIHelper cli = new CLIHelper()) {
 			startDriver(cli, options, args);

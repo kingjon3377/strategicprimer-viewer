@@ -49,7 +49,7 @@ public class FixtureMatcher {
 	 */
 	public static <T extends TileFixture> FixtureMatcher simpleMatcher(final Class<?
 																						   extends T> cls,
-																	   Predicate<T>
+																	   final Predicate<T>
 																			   method,
 																	   final String
 																			   desc) {
