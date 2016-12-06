@@ -26,7 +26,8 @@ public class TestStatModifiers {
 	 */
 	@Test
 	public void testModifiers() {
-		for (int stat = 0, modifier = -5; stat < 20; stat += 2, modifier++) {
+		for (int stat = 0,
+					 modifier = -5; stat < 20; stat += 2, modifier++) {
 			assertThat("Even stats have correct modifier", modifier,
 					equalTo(WorkerStats.getModifier(stat)));
 			assertThat("Odd stats have correct modifier", modifier,
