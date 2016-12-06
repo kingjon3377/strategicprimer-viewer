@@ -675,6 +675,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 			reader.write(oldMainPath.resolveSibling(
 					oldMainPath.getFileName() + ".converted.xml"), newMain);
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error writing to " +
 													oldMainPath.getFileName() +
 													".converted.xml", except);
@@ -698,6 +699,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 							path.resolveSibling(path.getFileName() + ".converted.xml"),
 							newMap);
 				} catch (final IOException except) {
+					//noinspection HardcodedFileSeparator
 					LOGGER.log(Level.SEVERE,
 							"I/O error writing to " + path.getFileName() +
 									".converted.xml", except);
