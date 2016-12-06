@@ -103,7 +103,8 @@ public class WorkerStats {
 	 * @return the modifier it conveys
 	 */
 	public static int getModifier(final int stat) {
-		return (stat - STAT_BASIS) / 2;
+		// Officially it's "( stat - STAT_BASIS) / 2", but "*always round down*"
+		return stat / 2 - STAT_BASIS / 2;
 	}
 
 	/**
