@@ -29,7 +29,6 @@ import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.resources.ResourceManagementDriver;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.FormattedLabel;
 import view.util.ImprovedComboBox;
@@ -333,12 +332,7 @@ public class ResourceAddingFrame extends SPFrame {
 		 */
 		@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 		public void checkAndClear() {
-			final Object raw = getSelectedItem();
-			if (raw == null) {
-				return;
-			}
-			final String item =
-					NullCleaner.assertNotNull(getSelectedItem().toString().trim());
+			final String item = getSelectedItem().trim();
 			if (!values.contains(item)) {
 				values.add(item);
 				addItem(item);
