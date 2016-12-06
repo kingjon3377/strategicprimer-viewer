@@ -4,9 +4,11 @@ import controller.map.misc.ICLIHelper;
 import controller.map.report.tabular.TableReportGenerator;
 import java.io.IOError;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.logging.Logger;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
@@ -44,6 +46,20 @@ public class TabularReportDriver implements SimpleDriver {
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(TabularReportDriver.class);
 
+	/**
+	 * @param base the base file
+	 * @return a function for producing a stream for writing to a sibling file
+	 */
+	private static Function<String, OutputStream> getFilenameFunction(final Path base) {
+		return s -> {
+			try {
+				return Files.newOutputStream(
+						base.resolveSibling(base.getFileName() + "." + s + ".csv"));
+			} catch (final IOException except) {
+				throw new IOError(except);
+			}
+		};
+	}
 	@SuppressWarnings("ErrorNotRethrown")
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
@@ -56,14 +72,8 @@ public class TabularReportDriver implements SimpleDriver {
 				if (mapFileOpt.isPresent()) {
 					final Path mapFile = mapFileOpt.get();
 					try {
-						TableReportGenerator.createReports(pair.first(), s -> {
-							try {
-								return Files.newOutputStream(mapFile.resolveSibling(
-										mapFile.getFileName() + "." + s + ".csv"));
-							} catch (final IOException e) {
-								throw new IOError(e);
-							}
-						});
+						TableReportGenerator.createReports(pair.first(),
+								getFilenameFunction(mapFile));
 					} catch (IOException | IOError e) {
 						throw new DriverFailedException(e);
 					}
@@ -76,14 +86,8 @@ public class TabularReportDriver implements SimpleDriver {
 			if (mapFileOpt.isPresent()) {
 				final Path mapFile = mapFileOpt.get();
 				try {
-					TableReportGenerator.createReports(model.getMap(), s -> {
-						try {
-							return Files.newOutputStream(mapFile.resolveSibling(
-									mapFile.getFileName() + "." + s + ".csv"));
-						} catch (final IOException e) {
-							throw new IOError(e);
-						}
-					});
+					TableReportGenerator
+							.createReports(model.getMap(), getFilenameFunction(mapFile));
 				} catch (IOException | IOError e) {
 					throw new DriverFailedException(e);
 				}
