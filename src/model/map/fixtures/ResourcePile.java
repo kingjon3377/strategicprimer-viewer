@@ -149,7 +149,7 @@ public class ResourcePile
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof ResourcePile) && kind.equals(((ResourcePile) fix).kind) &&
 					   contents.equals(((ResourcePile) fix).contents) &&
-					   (quantity == ((ResourcePile) fix).quantity) &&
+					   quantity.equals(((ResourcePile) fix).quantity) &&
 					   unit.equals(((ResourcePile) fix).unit);
 	}
 
