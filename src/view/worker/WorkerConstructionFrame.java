@@ -141,10 +141,10 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 			final String nameText = name.getText().trim();
 			final String raceText = race.getText().trim();
 			if (nameText.isEmpty() || raceText.isEmpty() ||
-						areAnyNonNumeric(hpBox.getText().trim(), maxHP.getText().trim(),
-								strength.getText().trim(), dex.getText().trim(),
-								con.getText().trim(), intel.getText().trim(),
-								wis.getText().trim(), cha.getText().trim())) {
+						areAnyNonNumeric(hpBox.getText(), maxHP.getText(),
+								strength.getText(), dex.getText(),
+								con.getText(), intel.getText(),
+								wis.getText(), cha.getText())) {
 				ErrorShower.showErrorDialog(this, getErrorExplanation());
 			} else {
 				final Worker retval = new Worker(nameText, raceText, idFac.createID());
@@ -230,7 +230,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 */
 	@SuppressWarnings("QuestionableName")
 	private static boolean areAnyNonNumeric(final String... strings) {
-		return Stream.of(strings)
+		return Stream.of(strings).map(String::trim)
 					   .anyMatch(string -> (string == null) || !isNumeric(string));
 	}
 
