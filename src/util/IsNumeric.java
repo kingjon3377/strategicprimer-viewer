@@ -49,11 +49,8 @@ public final class IsNumeric {
 		try {
 			PARSER.parse(input);
 			return true;
-		} catch (final NumberFormatException except) {
+		} catch (final NumberFormatException | ParseException except) {
 			LOGGER.log(Level.FINE, "Non-numeric input", except);
-			return false;
-		} catch (final ParseException e) {
-			LOGGER.log(Level.FINE, "Non-numeric input", e);
 			return false;
 		}
 	}
