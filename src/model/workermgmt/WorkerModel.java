@@ -176,11 +176,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	public @Nullable IUnit getUnitByID(final Player owner, final int id) {
 		final Optional<IUnit> retval =
 				getUnits(owner).stream().filter(unit -> id == unit.getID()).findAny();
-		if (retval.isPresent()) {
-			return retval.get();
-		} else {
-			return null;
-		}
+		return retval.orElse(null);
 	}
 
 	/**

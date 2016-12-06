@@ -220,11 +220,7 @@ public final class ExplorationPanel extends BorderedPanel
 		final Optional<IMutableMapNG> subordinateMap =
 				StreamSupport.stream(model.getSubordinateMaps().spliterator(), false)
 						.map(Pair::first).findFirst();
-		if (subordinateMap.isPresent()) {
-			secondMap = subordinateMap.get();
-		} else {
-			secondMap = model.getMap();
-		}
+		secondMap = subordinateMap.orElseGet(model::getMap);
 		for (final IExplorationModel.Direction direction : directions) {
 			if (direction != null) {
 				addTileGUI(panel, secondMap, direction);
@@ -277,11 +273,7 @@ public final class ExplorationPanel extends BorderedPanel
 				StreamSupport.stream(model.getSubordinateMaps().spliterator(), false)
 						.map(Pair::first).map(IMapNG::players).findFirst();
 		final Iterable<Player> players;
-		if (subMapPlayers.isPresent()) {
-			players = subMapPlayers.get();
-		} else {
-			players = model.getMap().players();
-		}
+		players = subMapPlayers.orElseGet(() -> model.getMap().players());
 		final FixtureList secList = new FixtureList(panel, model, players);
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
 		secPCS.addSelectionChangeListener(secList);

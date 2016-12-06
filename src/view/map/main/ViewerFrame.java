@@ -189,11 +189,8 @@ public final class ViewerFrame extends SPFrame {
 	@Override
 	public String toString() {
 		final Optional<Path> mapFile = model.getMapFile();
-		if (mapFile.isPresent()) {
-			return "ViewerFrame showing map in " + mapFile.get();
-		} else {
-			return "ViewerFrame showing unsaved map";
-		}
+		return mapFile.map(path -> "ViewerFrame showing map in " + path)
+					   .orElse("ViewerFrame showing unsaved map");
 	}
 
 	/**

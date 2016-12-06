@@ -122,9 +122,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 			fixes.add(forest);
 		}
 		final Optional<TileFixture> first = map.streamOtherFixtures(point).findAny();
-		if (first.isPresent()) {
-			fixes.add(first.get());
-		}
+		first.ifPresent(fixes::add);
 		map.streamOtherFixtures(point).filter(TerrainFixture.class::isInstance)
 				.forEach(fixes::add);
 		return fixes.stream().map(TileFixture::toString)
