@@ -4,7 +4,6 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.map.DistanceComparator;
 import model.map.IFixture;
@@ -139,11 +138,9 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 */
 	protected static String concat(final String... strings) {
 		// We don't use Collectors.joining() because it appears to use a StringBuilder
-		// that isn't initialized to
-		// at least the right size.
+		// that isn't initialized to at least the right size.
 		final StringBuilder buf =
-				new StringBuilder(5 + Stream.of(strings).collect(
-						Collectors.summingInt(String::length)).intValue());
+				new StringBuilder(5 + Stream.of(strings).mapToInt(String::length).sum());
 		Stream.of(strings).forEach(buf::append);
 		final String retval = buf.toString();
 		return NullCleaner.valueOrDefault(retval, "");
@@ -204,9 +201,8 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				return "";
 			} else {
 				final StringBuilder builder =
-						new StringBuilder(header.length() + 15 + stream().collect(
-								Collectors.summingInt(value -> value.length() + 15))
-																		 .intValue());
+						new StringBuilder(header.length() + 15 + stream().mapToInt(
+								value -> value.length() + 15).sum());
 				builder
 						.append(header).append(LineEnd.LINE_SEP).append(OPEN_LIST);
 				for (final String item : this) {

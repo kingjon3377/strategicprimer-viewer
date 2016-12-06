@@ -67,9 +67,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 */
 	private static String concat(final String... strings) {
 		final StringBuilder build =
-				new StringBuilder(Stream.of(strings)
-										  .collect(Collectors.summingInt(String::length))
-										  .intValue());
+				new StringBuilder(Stream.of(strings).mapToInt(String::length).sum());
 		Stream.of(strings).forEach(build::append);
 		return NullCleaner.assertNotNull(build.toString());
 	}

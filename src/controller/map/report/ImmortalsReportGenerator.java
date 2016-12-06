@@ -71,8 +71,7 @@ public final class ImmortalsReportGenerator
 	 * @return their total size
 	 */
 	private static int collSize(final Collection<?>... collections) {
-		return Stream.of(collections).collect(Collectors.summingInt(Collection::size))
-					   .intValue();
+		return Stream.of(collections).mapToInt(Collection::size).sum();
 	}
 
 	/**

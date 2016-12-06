@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -167,8 +166,7 @@ public final class ArraySet<U> implements Set<U> {
 	public boolean retainAll(@Nullable final Collection<?> coll) {
 		final boolean retval = impl.retainAll(coll);
 		if (retval) {
-			hash = impl.stream().collect(Collectors.summingInt(Object::hashCode))
-						   .intValue();
+			hash = impl.stream().mapToInt(Object::hashCode).sum();
 		}
 		return retval;
 	}
@@ -182,8 +180,7 @@ public final class ArraySet<U> implements Set<U> {
 	public boolean removeAll(@Nullable final Collection<?> coll) {
 		final boolean retval = impl.removeAll(coll);
 		if (retval) {
-			hash = impl.stream().collect(Collectors.summingInt(Object::hashCode))
-						   .intValue();
+			hash = impl.stream().mapToInt(Object::hashCode).sum();
 		}
 		return retval;
 	}

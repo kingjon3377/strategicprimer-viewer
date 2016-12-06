@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
@@ -78,9 +77,8 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 * @return them all concatenated together
 	 */
 	private static String concat(final String... strings) {
-		final StringBuilder builder =
-				new StringBuilder(2 + Stream.of(strings).collect(
-						Collectors.summingInt(String::length)).intValue());
+		final StringBuilder builder = new StringBuilder(2 + (Stream.of(strings).mapToInt(
+				String::length).sum()));
 		Stream.of(strings).forEach(builder::append);
 		return NullCleaner.assertNotNull(builder.toString());
 	}
