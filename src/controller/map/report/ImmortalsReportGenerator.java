@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.map.HasKind;
@@ -160,7 +161,21 @@ public final class ImmortalsReportGenerator
 			return retval;
 		}
 	}
-
+	/**
+	 * @param list a list
+	 * @return its add() method as a BiConsumer of Strings and Points.
+	 */
+	private BiConsumer<String, Point> simplest(final List<Point> list) {
+		return (string, point) -> list.add(point);
+	}
+	/**
+	 * @param collection a collection of lists of points. Must be a SimpleMultiMap.
+	 * @return a reference to a method that gets the right list and adds the point to it
+	 */
+	private BiConsumer<String, Point> complex(final Map<String, Collection<Point>>
+													  collection) {
+		return (string, point) -> collection.get(string).add(point);
+	}
 	/**
 	 * Produce the sub-report dealing with "immortals".
 	 *
@@ -186,44 +201,25 @@ public final class ImmortalsReportGenerator
 		final List<Point> trolls = new ArrayList<>();
 		final Map<String, Collection<Point>> fairies = new SimpleMultiMap<>();
 		final Map<String, Collection<Point>> dragons = new SimpleMultiMap<>();
+		final Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta =
+				new HashMap<>();
+		meta.put(Dragon.class, complex(dragons));
+		meta.put(Fairy.class, complex(fairies));
+		meta.put(Troll.class, simplest(trolls));
+		meta.put(Djinn.class, simplest(djinni));
+		meta.put(Sphinx.class, simplest(sphinxes));
+		meta.put(Giant.class, complex(giants));
+		meta.put(Minotaur.class, simplest(minotaurs));
+		meta.put(Ogre.class, simplest(ogres));
+		meta.put(Centaur.class, complex(centaurs));
+		meta.put(Phoenix.class, simplest(phoenixes));
+		meta.put(Simurgh.class, simplest(simurghs));
+		meta.put(Griffin.class, simplest(griffins));
 		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
-			if (immortal instanceof Dragon) {
-				dragons.get(immortal.toString()).add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-			} else if (immortal instanceof Fairy) {
-				fairies.get(immortal.toString()).add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-			} else if (immortal instanceof Troll) {
-				trolls.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-			} else if (immortal instanceof Djinn) {
-				djinni.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-			} else if (immortal instanceof Sphinx) {
-				sphinxes.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-			} else if (immortal instanceof Giant) {
-				giants.get(immortal.toString()).add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-			} else if (immortal instanceof Minotaur) {
-				minotaurs.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-			} else if (immortal instanceof Ogre) {
-				ogres.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-			} else if (immortal instanceof Centaur) {
-				centaurs.get(immortal.toString()).add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-			} else if (immortal instanceof Phoenix) {
-				phoenixes.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-			} else if (immortal instanceof Simurgh) {
-				simurghs.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-			} else if (immortal instanceof Griffin) {
-				griffins.add(point);
+			if (meta.containsKey(immortal.getClass())) {
+				meta.get(immortal.getClass()).accept(immortal.toString(), point);
 				fixtures.remove(Integer.valueOf(immortal.getID()));
 			}
 		}
