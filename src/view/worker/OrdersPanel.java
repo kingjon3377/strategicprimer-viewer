@@ -336,7 +336,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 		/**
 		 * On Control-Enter, or Command-Enter on a Mac, calls apply().
 		 *
-		 * @param evt
+		 * @param evt a key-press event to handle
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override

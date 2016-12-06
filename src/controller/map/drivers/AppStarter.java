@@ -196,7 +196,6 @@ public final class AppStarter implements ISPDriver {
 	 * @param driver  the driver to start
 	 * @param options option parameters
 	 * @param params  non-option parameters
-	 * @throws DriverFailedException on fatal error
 	 */
 	private static void startChosenGUIDriver(final ISPDriver driver,
 											 final SPOptions options,
@@ -305,7 +304,7 @@ public final class AppStarter implements ISPDriver {
 	 * Since there's no way of choosing which driver programmatically here, we present
 	 * our choice to the user.
 	 *
-	 * @param cli
+	 * @param cli the interface for user I/O
 	 * @param options options to pass to the driver
 	 * @param model   the driver model
 	 * @throws DriverFailedException on driver failure
@@ -338,7 +337,7 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * Start the driver, and then start the specified other driver.
 	 *
-	 * @param cli
+	 * @param cli the interface for user I/O
 	 * @param options options to pass to the driver.
 	 * @param args    command-line arguments
 	 * @throws DriverFailedException on fatal error.

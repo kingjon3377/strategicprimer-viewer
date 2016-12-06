@@ -207,6 +207,7 @@ public class SPMenu extends JMenuBar implements MenuItemCreator {
 	 * Create the "view" menu.
 	 *
 	 * @param handler the listener to handle item selections
+	 * @param model the driver model underlying this app
 	 * @return the "edit" menu
 	 */
 	protected JMenu createViewMenu(final ActionListener handler,

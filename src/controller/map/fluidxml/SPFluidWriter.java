@@ -220,7 +220,6 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	 * @param ostream the stream to write to
 	 * @param obj     the object to write
 	 * @throws IOException        on I/O error
-	 * @throws XMLStreamException on error in XML creation
 	 */
 	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj)

@@ -29,8 +29,8 @@ public interface UtilityDriver extends ISPDriver {
 	 * Try to start the driver. This default method always throws, because a utility
 	 * driver most often can't operate on a driver model.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param model   the driver-model that should be used by the app
 	 * @throws DriverFailedException always: a utility driver operates on files directly,
 	 *                               not a driver model.

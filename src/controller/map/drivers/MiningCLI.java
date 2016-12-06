@@ -53,7 +53,7 @@ public final class MiningCLI implements UtilityDriver {
 	}
 
 	/**
-	 * @param cli
+	 * @param cli the interface for user I/O
 	 * @param options any options passed to the driver
 	 * @param args    Arg 0 is the name of a file to write the CSV to; Arg 1 is the value
 	 *                of the top center (as an index into the LodeStatus values array)

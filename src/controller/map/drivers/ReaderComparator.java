@@ -180,8 +180,8 @@ public final class ReaderComparator implements UtilityDriver {
 	/**
 	 * Run the driver, comparing the readers' performance.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param args    The files to test on
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")

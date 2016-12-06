@@ -412,6 +412,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	 * @param oldMap the old map
 	 * @param newMap the new map
 	 * @param main   whether this is the main map or a player's map
+	 * @param idFac a generator of ID numbers
 	 * @return the equivalent higher-resolution points
 	 */
 	private List<Point> createInitialSubtiles(final Point point,
@@ -623,6 +624,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	 * @param point the location under consideration
 	 * @param main  whether we should actually add the fixtures (i.e. is this the main
 	 *              map)
+	 * @param idFac a generator of ID numbers
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addForest(final Point point, final IMutableMapNG map,
@@ -653,7 +655,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
-	 * @param cli
+	 * @param cli the interface for user I/O
 	 * @param options options passed to the driver
 	 * @param model   the driver model containing the maps to convert
 	 * @throws DriverFailedException on driver failure

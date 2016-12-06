@@ -170,7 +170,7 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param cli
+	 * @param cli the interface for user I/O
 	 * @param options options passed to the driver
 	 * @param model   the driver model to operate on
 	 */

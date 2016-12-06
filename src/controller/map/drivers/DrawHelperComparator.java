@@ -488,8 +488,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * Start the driver.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param model   the driver model to run on
 	 */
 	@Override

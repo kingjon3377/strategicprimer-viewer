@@ -112,6 +112,7 @@ public class BoxPanel extends JPanel {
 	 * @param lineAxis true for horizontal, false for vertical
 	 * @param separation how big a rigid area to put between each item
 	 * @param items the items to put in the panel
+	 * @return the constructed panel
 	 */
 	public static BoxPanel centeredBox(final boolean lineAxis, final int separation,
 									   final Component... items) {

@@ -325,8 +325,8 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
-	 * @param turn
-	 * @param newOrders the unit's new orders
+	 * @param turn the turn to set orders for
+	 * @param newOrders the unit's new orders for that turn
 	 */
 	@Override
 	public final void setOrders(final int turn, final String newOrders) {
@@ -334,8 +334,8 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
-	 * @param turn
-	 * @return the unit's orders
+	 * @param turn the turn to get orders for
+	 * @return the unit's orders for that turn
 	 */
 	@Override
 	public String getOrders(final int turn) {

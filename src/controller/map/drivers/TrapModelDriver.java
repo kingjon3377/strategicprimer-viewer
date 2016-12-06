@@ -187,8 +187,8 @@ public final class TrapModelDriver implements SimpleDriver {
 	/**
 	 * Start the driver.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param model   the driver model to operate on
 	 */
 	@Override
@@ -200,8 +200,8 @@ public final class TrapModelDriver implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param args    command-line arguments
 	 * @throws DriverFailedException if something goes wrong
 	 */

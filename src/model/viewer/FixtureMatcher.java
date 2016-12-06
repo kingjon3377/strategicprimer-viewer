@@ -46,6 +46,7 @@ public class FixtureMatcher {
 	 * @param cls    the class of fixtures we want to match
 	 * @param method a method on that class to use as a second predicate
 	 * @param desc   the description to use for the matcher
+	 * @return the constructed matcher
 	 */
 	public static <T extends TileFixture> FixtureMatcher simpleMatcher(final Class<?
 																						   extends T> cls,

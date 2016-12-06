@@ -120,8 +120,8 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but
 	 * that may change.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param model   the driver-model that should be used by the app
 	 */
 	@Override

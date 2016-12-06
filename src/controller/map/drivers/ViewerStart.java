@@ -43,8 +43,8 @@ public final class ViewerStart implements SimpleDriver {
 	/**
 	 * Run the driver. If the model is a multi-map model, we open one window per map.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param model   the driver model
 	 */
 	@Override

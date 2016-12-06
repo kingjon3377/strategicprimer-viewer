@@ -54,8 +54,8 @@ public final class SubsetDriver implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param model   the driver model
 	 */
 	@Override
@@ -85,8 +85,8 @@ public final class SubsetDriver implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param args    command-line arguments
 	 * @throws DriverFailedException if the main map fails to load
 	 */

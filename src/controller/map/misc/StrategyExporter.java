@@ -158,6 +158,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 
 	/**
 	 * @param dismissed the list of dismissed members
+	 * @param options command-line options that were passed to the app
 	 * @return the proto-strategy as a String
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")

@@ -752,8 +752,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param model   the driver model
 	 * @throws DriverFailedException on error
 	 */

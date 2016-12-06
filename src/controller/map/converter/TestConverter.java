@@ -205,6 +205,7 @@ public final class TestConverter {
 	 *
 	 * @throws IOException        on I/O error causing test failure
 	 * @throws XMLStreamException on error in creating XML
+	 * @throws SPFormatException on SP format error causing test failure
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
@@ -490,6 +491,7 @@ public final class TestConverter {
 	 *
 	 * @throws IOException        on I/O error causing test failure
 	 * @throws XMLStreamException on error creating XML
+	 * @throws SPFormatException on SP format error causing test failure
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
@@ -772,6 +774,7 @@ public final class TestConverter {
 	 *
 	 * @throws IOException        on I/O error causing test failure
 	 * @throws XMLStreamException on error creating XML
+	 * @throws SPFormatException on SP format error causing test failure
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test

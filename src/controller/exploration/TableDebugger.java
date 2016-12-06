@@ -165,8 +165,8 @@ public final class TableDebugger implements SimpleCLIDriver {
 	}
 
 	/**
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param model   ignored
 	 * @throws DriverFailedException on missing table or I/O error
 	 */

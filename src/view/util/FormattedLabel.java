@@ -32,6 +32,7 @@ public class FormattedLabel extends JLabel {
 	}
 	/**
 	 * Set the text using the same format string but new parameters.
+	 * @param args arguments to format using the original format string
 	 */
 	public void setArgs(final Object... args) {
 		setText(String.format(formatString, args));

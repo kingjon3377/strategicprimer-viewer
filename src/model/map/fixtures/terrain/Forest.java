@@ -144,6 +144,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 
 	/**
 	 * Set the ID for the object.
+	 * @param idNum the new ID number
 	 */
 	public void setID(final int idNum) {
 		id = idNum;

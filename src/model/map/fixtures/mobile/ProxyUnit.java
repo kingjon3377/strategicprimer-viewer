@@ -458,7 +458,7 @@ public final class ProxyUnit
 	}
 
 	/**
-	 * @param turn
+	 * @param turn the turn to get orders for
 	 * @return the orders shared by the units, or the empty string if their orders are
 	 * different.
 	 */
@@ -482,7 +482,7 @@ public final class ProxyUnit
 	}
 
 	/**
-	 * @param turn
+	 * @param turn the turn to get results for
 	 * @return the results shared by the units, or the empty string if their results are
 	 * different.
 	 */
@@ -506,8 +506,8 @@ public final class ProxyUnit
 	}
 
 	/**
-	 * @param turn
-	 * @param newOrders The units' new orders
+	 * @param turn the turn to set orders for
+	 * @param newOrders The units' new orders for that turn
 	 */
 	@Override
 	public void setOrders(final int turn, final String newOrders) {

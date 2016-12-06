@@ -90,8 +90,8 @@ public final class ConverterDriver implements UtilityDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param args    command-line argument
 	 * @throws DriverFailedException on fatal error
 	 */

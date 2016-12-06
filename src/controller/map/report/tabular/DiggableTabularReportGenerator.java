@@ -97,9 +97,9 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 	}
 
 	/**
-	 * @param condition
-	 * @param truth
-	 * @param falsehood
+	 * @param condition a boolean value
+	 * @param truth what to return if it is true
+	 * @param falsehood what to return if it is false
 	 * @return truth if condition is true, falsehood otherwise
 	 */
 	private <T> T ternary(final boolean condition, final T truth, final T falsehood) {

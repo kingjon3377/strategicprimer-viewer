@@ -174,6 +174,7 @@ public final class DuplicateFixtureRemover {
 	 * Convert a Number to a BigDecimal.
 	 *
 	 * @param num the number to convert
+	 * @return the BigDecimal equivalent
 	 */
 	private static BigDecimal toBigDecimal(final Number num) {
 		if (num instanceof BigDecimal) {

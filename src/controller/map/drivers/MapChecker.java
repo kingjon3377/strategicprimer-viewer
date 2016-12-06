@@ -55,8 +55,8 @@ public final class MapChecker implements UtilityDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param args    command-line arguments
 	 * @throws DriverFailedException if not enough arguments
 	 */

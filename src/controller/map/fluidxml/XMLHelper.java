@@ -567,6 +567,7 @@ public final class XMLHelper {
 	}
 	/**
 	 * @param tag the name of the tag whose closing tag we're waiting for
+	 * @param stream the stream of tags to sift through
 	 * @return the text between now and then (trimmed of whitespace)
 	 * @throws SPFormatException on unwanted intervening tags
 	 */

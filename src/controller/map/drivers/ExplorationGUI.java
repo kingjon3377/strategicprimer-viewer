@@ -41,8 +41,8 @@ public final class ExplorationGUI implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param cli
-	 * @param options
+	 * @param cli the interface for user I/O
+	 * @param options command-line options passed in
 	 * @param model   the driver model
 	 */
 	@Override
