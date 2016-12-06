@@ -171,12 +171,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 			setVisible(false);
 			dispose();
 		});
-		if (OnMac.SYSTEM_IS_MAC) {
-			addButton.putClientProperty("JButton.buttonType", "segmented");
-			addButton.putClientProperty("JButton.segmentPosition", "first");
-			cancelButton.putClientProperty("JButton.buttonType", "segmented");
-			cancelButton.putClientProperty("JButton.segmentPosition", "last");
-		}
+		OnMac.makeButtonsSegmented(addButton, cancelButton);
 		buttonPanel.add(cancelButton);
 		setContentPane(new BorderedPanel(statsPanel, textPanel, buttonPanel,
 												null, null));

@@ -147,11 +147,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 			final ListenedButton revertButton =
 					new ListenedButton("Revert", evt -> revert());
 			final JPanel buttonPanel;
+			OnMac.makeButtonsSegmented(applyButton, revertButton);
 			if (OnMac.SYSTEM_IS_MAC) {
-				applyButton.putClientProperty("JButton.buttonType", "segmented");
-				revertButton.putClientProperty("JButton.buttonType", "segmented");
-				applyButton.putClientProperty("JButton.segmentPosition", "first");
-				revertButton.putClientProperty("JButton.segmentPosition", "last");
 				buttonPanel = new BoxPanel(true);
 				final BoxPanel boxView = (BoxPanel) buttonPanel;
 				boxView.addGlue();

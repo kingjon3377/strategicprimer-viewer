@@ -145,11 +145,8 @@ public final class FindDialog extends JDialog {
 			parentFrame.requestFocus();
 			dispose();
 		});
+		OnMac.makeButtonsSegmented(okButton, cancelButton);
 		if (OnMac.SYSTEM_IS_MAC) {
-			okButton.putClientProperty("JButton.buttonType", "segmented");
-			cancelButton.putClientProperty("JButton.buttonType", "segmented");
-			okButton.putClientProperty("JButton.segmentPosition", "first");
-			cancelButton.putClientProperty("JButton.segmentPosition", "last");
 			buttonPanel.add(okButton);
 			buttonPanel.add(cancelButton);
 			search.putClientProperty("JTextField.variant", "search");

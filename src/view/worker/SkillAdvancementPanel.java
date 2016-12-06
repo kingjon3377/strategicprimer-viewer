@@ -119,11 +119,8 @@ public final class SkillAdvancementPanel extends BoxPanel
 		final ListenedButton cancelButton =
 				new ListenedButton("Cancel", evt -> hours.setText(""));
 		final JPanel secondPanel;
+		OnMac.makeButtonsSegmented(okButton, cancelButton);
 		if (OnMac.SYSTEM_IS_MAC) {
-			okButton.putClientProperty("JButton.buttonType", "segmented");
-			cancelButton.putClientProperty("JButton.buttonType", "segmented");
-			okButton.putClientProperty("JButton.segmentPosition", "first");
-			cancelButton.putClientProperty("JButton.segmentPosition", "last");
 			secondPanel = new BoxPanel(true);
 			final BoxPanel boxView = (BoxPanel) secondPanel;
 			boxView.addGlue();

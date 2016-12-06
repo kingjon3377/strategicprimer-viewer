@@ -117,18 +117,12 @@ public final class SelectTileDialog extends JDialog {
 			column.setText("-1");
 			dispose();
 		});
-		if (OnMac.SYSTEM_IS_MAC) {
-			okButton.putClientProperty("JButton.buttonType", "segmented");
-			cancelButton.putClientProperty("JButton.buttonType", "segmented");
-			okButton.putClientProperty("JButton.segmentPosition", "first");
-			cancelButton.putClientProperty("JButton.segmentPosition", "last");
-			buttonPanel.add(okButton);
-			buttonPanel.add(cancelButton);
-		} else {
-			buttonPanel.add(okButton);
+		OnMac.makeButtonsSegmented(okButton, cancelButton);
+		buttonPanel.add(okButton);
+		if (!OnMac.SYSTEM_IS_MAC) {
 			buttonPanel.addGlue();
-			buttonPanel.add(cancelButton);
 		}
+		buttonPanel.add(cancelButton);
 		buttonPanel.addGlue();
 		contentPane.add(buttonPanel);
 		setContentPane(contentPane);

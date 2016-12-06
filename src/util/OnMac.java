@@ -1,5 +1,7 @@
 package util;
 
+import javax.swing.JButton;
+
 /**
  * A utility class to detect, and cache, whether the system is a Mac or not.
  *
@@ -36,5 +38,22 @@ public final class OnMac {
 	 */
 	private OnMac() {
 		// Do not instantiate.
+	}
+	/**
+	 * Make buttons segmented on Mac. Does nothing if zero or one buttons.
+	 * @param buttons the buttons to style
+	 */
+	public static void makeButtonsSegmented(final JButton... buttons) {
+		if (SYSTEM_IS_MAC && buttons.length > 1) {
+			for (int i = 0; i < buttons.length; i++) {
+				final JButton button = buttons[i];
+				button.putClientProperty("JButton.buttonType", "segmented");
+				if (i == 0) {
+					button.putClientProperty("JButton.segmentPosition", "first");
+				} else if (i == (buttons.length - 1)) {
+					button.putClientProperty("JButton.segmentPosition", "last");
+				}
+			}
+		}
 	}
 }

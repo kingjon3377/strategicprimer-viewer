@@ -95,16 +95,8 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 			layout.first(retval);
 			field.setText("");
 		});
-		if (OnMac.SYSTEM_IS_MAC) {
-			addButton.putClientProperty("JButton.buttonType", "segmented");
-			removeButton.putClientProperty("JButton.buttonType", "segmented");
-			addButton.putClientProperty("JButton.segmentPosition", "first");
-			removeButton.putClientProperty("JButton.segmentPosition", "last");
-			okButton.putClientProperty("JButton.buttonType", "segmented");
-			cancelButton.putClientProperty("JButton.buttonType", "segmented");
-			okButton.putClientProperty("JButton.segmentPosition", "first");
-			cancelButton.putClientProperty("JButton.segmentPosition", "last");
-		}
+		OnMac.makeButtonsSegmented(addButton, removeButton);
+		OnMac.makeButtonsSegmented(okButton, cancelButton);
 		okPanel.add(cancelButton);
 		second.add(okPanel);
 		setPanelSizes(second);

@@ -129,11 +129,8 @@ public final class ViewerFrame extends SPFrame {
 					tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
 				});
 		final JPanel buttonPanel;
+		OnMac.makeButtonsSegmented(allButton, noneButton);
 		if (OnMac.SYSTEM_IS_MAC) {
-			allButton.putClientProperty("JButton.buttonType", "segmented");
-			noneButton.putClientProperty("JButton.buttonType", "segmented");
-			allButton.putClientProperty("JButton.segmentPosition", "first");
-			noneButton.putClientProperty("JButton.segmentPosition", "last");
 			buttonPanel = new BoxPanel(true);
 			final BoxPanel boxView = (BoxPanel) buttonPanel;
 			boxView.addGlue();

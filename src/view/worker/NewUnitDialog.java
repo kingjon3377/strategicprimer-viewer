@@ -146,12 +146,7 @@ public final class NewUnitDialog extends JFrame
 			setVisible(false);
 			dispose();
 		});
-		if (OnMac.SYSTEM_IS_MAC) {
-			okButton.putClientProperty("JButton.buttonType", "segmented");
-			cancelButton.putClientProperty("JButton.buttonType", "segmented");
-			okButton.putClientProperty("JButton.segmentPosition", "first");
-			cancelButton.putClientProperty("JButton.segmentPosition", "last");
-		}
+		OnMac.makeButtonsSegmented(okButton, cancelButton);
 		add(cancelButton);
 
 		setMinimumSize(new Dimension(150, 80));
