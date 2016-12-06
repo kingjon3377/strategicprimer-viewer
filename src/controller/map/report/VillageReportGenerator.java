@@ -61,7 +61,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		final Collection<String> own =
 				new HtmlList("<h4>Villages pledged to your service:</h4>");
 		final Collection<String> independents =
@@ -120,7 +120,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		final IReportNode own = new SectionListReportNode(5,
 																 "Villages " +
 																		 "pledged" +

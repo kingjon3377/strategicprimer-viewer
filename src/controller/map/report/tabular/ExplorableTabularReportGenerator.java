@@ -189,19 +189,18 @@ public class ExplorableTabularReportGenerator
 														entry.getValue()
 																.second())))
 										.collect(Collectors.toList()));
-		Collections
-				.sort(values, (one, two) -> {
-					final Pair<Point, IFixture> first = one.second();
-					final Pair<Point, IFixture> second = two.second();
-					final Comparator<Point> comparator = new DistanceComparator(base);
-					final int cmp = comparator.compare(first.first(), second.first());
-					if (cmp == 0) {
-						return first.second().toString()
-									   .compareTo(second.second().toString());
-					} else {
-						return cmp;
-					}
-				});
+		values.sort((one, two) -> {
+			final Pair<Point, IFixture> first = one.second();
+			final Pair<Point, IFixture> second = two.second();
+			final Comparator<Point> comparator = new DistanceComparator(base);
+			final int cmp = comparator.compare(first.first(), second.first());
+			if (cmp == 0) {
+				return first.second().toString()
+							   .compareTo(second.second().toString());
+			} else {
+				return cmp;
+			}
+		});
 		if (!headerRow().isEmpty()) {
 			ostream.append(headerRow());
 			ostream.append(getRowDelimiter());

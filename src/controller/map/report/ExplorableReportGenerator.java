@@ -93,7 +93,7 @@ public final class ExplorableReportGenerator
 																	   "Adventures</h4>")
 													   .append(OPEN_LIST);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		boolean anyAdventures = false;
 		boolean anyPortals = false;
 		boolean anyBattles = false;
@@ -166,7 +166,7 @@ public final class ExplorableReportGenerator
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		final IReportNode portals = new ListReportNode("Portals");
 		final IReportNode battles = new ListReportNode("Battlefields");
 		final IReportNode caves = new ListReportNode("Caves");

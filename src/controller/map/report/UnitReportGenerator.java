@@ -448,7 +448,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		foreign.append(LineEnd.LINE_SEP);
 		foreign.append(OPEN_LIST);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		boolean anyForeign = false;
 		boolean anyOurs = false;
 		for (final Pair<Point, IFixture> pair : values) {
@@ -503,7 +503,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		final IReportNode theirs = new SectionListReportNode(5, "Foreign units");
 		final IReportNode ours = new SectionListReportNode(5, "Your units");
 		values.stream().filter(pair -> pair.second() instanceof Unit).forEach(pair -> {

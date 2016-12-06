@@ -134,7 +134,7 @@ public class TestTownComparator {
 				new Fortification(TownStatus.Burned, TownSize.Small, -1,
 										 "inputFortificationTwo", 44, owner),
 				new Village(TownStatus.Burned, "inputVillage", 29, owner, "inputRace"));
-		Collections.sort(input, new TownComparator());
+		input.sort(new TownComparator());
 		assertThat("Sorted list of towns is the order we expect", input,
 				equalTo(expected));
 	}

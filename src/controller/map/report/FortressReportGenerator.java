@@ -182,7 +182,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				new StringBuilder(16384).append("<h4>Other fortresses in the map:</h4>")
 						.append(LineEnd.LINE_SEP);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		boolean anyForts = false;
 		boolean anyOurs = false;
 		for (final Pair<Point, IFixture> pair : values) {
@@ -224,7 +224,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		final IReportNode foreign =
 				new SectionReportNode(4, "Foreign fortresses in the map:");
 		final IReportNode ours = new SectionReportNode(4, "Your fortresses in the map:");

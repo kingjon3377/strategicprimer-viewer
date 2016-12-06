@@ -81,7 +81,7 @@ public final class FortressMemberReportGenerator
 				new StringBuilder(1024).append(OPEN_LIST_ITEM).append("Equipment:")
 						.append(OPEN_LIST);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		boolean anyResources = false;
 		boolean anyEquipment = false;
 		final Map<String, Collection<Pair<Point, ResourcePile>>> resources =
@@ -143,7 +143,7 @@ public final class FortressMemberReportGenerator
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		final IReportNode rsr = new ListReportNode("Resources:");
 		final Map<String, IReportNode> resourceKinds = new HashMap<>();
 		final IReportNode equip = new ListReportNode("Equipment:");

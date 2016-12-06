@@ -187,7 +187,7 @@ public final class ImmortalsReportGenerator
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		final List<Point> griffins = new ArrayList<>();
 		final List<Point> simurghs = new ArrayList<>();
 		final List<Point> phoenixes = new ArrayList<>();
@@ -261,7 +261,7 @@ public final class ImmortalsReportGenerator
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		final IReportNode griffins = new ListReportNode("Griffins");
 		final IReportNode simurghs = new ListReportNode("Simurghs");
 		final IReportNode phoenixes = new ListReportNode("Phoenixes");

@@ -101,7 +101,7 @@ public final class HarvestableReportGenerator
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 //		final HeadedList<String> stone = new HtmlList("<h5>Exposed stone deposits</h5>");
 		final Map<String, Collection<Point>> stone = new SimpleMultiMap<>();
 		final Map<String, Collection<Point>> shrubs = new SimpleMultiMap<>();
@@ -186,7 +186,7 @@ public final class HarvestableReportGenerator
 								  final IMapNG map, final Player currentPlayer) {
 		//  TODO: Use Guava MultiMaps to reduce cyclomatic complexity
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		final Map<String, IReportNode> stone = new HashMap<>();
 		final Map<String, IReportNode> shrubs = new HashMap<>();
 		final Map<String, IReportNode> minerals = new HashMap<>();

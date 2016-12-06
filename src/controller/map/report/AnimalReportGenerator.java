@@ -61,7 +61,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		final Map<String, Collection<Point>> items = new SimpleMultiMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
@@ -111,7 +111,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		Collections.sort(values, pairComparator);
+		values.sort(pairComparator);
 		final Map<String, IReportNode> items = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {

@@ -203,8 +203,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 														type.cast(entry.getValue()
 																		  .second()))))
 										.collect(Collectors.toList()));
-		Collections
-				.sort(values, (one, two) -> comparePairs(one.second(), two.second()));
+		values.sort((one, two) -> comparePairs(one.second(), two.second()));
 		ostream.append(headerRow());
 		ostream.append(LineEnd.LINE_SEP);
 		final Map<String, Integer> implementCounts = new HashMap<>();

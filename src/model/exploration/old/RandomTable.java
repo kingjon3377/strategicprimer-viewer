@@ -42,7 +42,7 @@ public final class RandomTable implements EncounterTable {
 	 */
 	public RandomTable(final List<ComparablePair<Integer, String>> items) {
 		table = new ArrayList<>(items);
-		Collections.sort(table, Collections.reverseOrder());
+		table.sort(Collections.reverseOrder());
 	}
 
 	/**

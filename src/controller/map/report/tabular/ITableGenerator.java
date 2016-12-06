@@ -2,7 +2,6 @@ package controller.map.report.tabular;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -63,8 +62,7 @@ public interface ITableGenerator<@NonNull T> {
 														type.cast(entry.getValue()
 																		  .second()))))
 										.collect(Collectors.toList()));
-		Collections
-				.sort(values, (one, two) -> comparePairs(one.second(), two.second()));
+		values.sort((one, two) -> comparePairs(one.second(), two.second()));
 		if (!headerRow().isEmpty()) {
 			ostream.append(headerRow());
 			ostream.append(getRowDelimiter());
