@@ -1,8 +1,7 @@
 package util;
 
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.util.Formatter;
 
 /**
  * The streams equivalent of /dev/null.
@@ -25,8 +24,8 @@ public final class NullStream extends OutputStream {
 	 * A bit-bucket to send subset output to.
 	 */
 	@SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
-	public static final Appendable DEV_NULL =
-			new PrintWriter(new OutputStreamWriter(new NullStream()));
+	public static final Formatter DEV_NULL =
+			new Formatter(new NullStream());
 
 	/**
 	 * Do nothing when anything is written.

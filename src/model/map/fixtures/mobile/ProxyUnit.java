@@ -3,6 +3,7 @@ package model.map.fixtures.mobile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Formatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -449,12 +450,10 @@ public final class ProxyUnit
 	 * @throws IOException never, required by interface
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context)
 			throws IOException {
-		ostream.append(context);
-		ostream.append("Called isSubset() in ProxyUnit");
-		ostream.append(LineEnd.LINE_SEP);
+		ostream.format("%sCalled isSubset() in ProxyUnit%n", context);
 		return IUnit.super.isSubset(obj, ostream, context + "\tIn proxy unit:");
 	}
 
@@ -721,10 +720,9 @@ public final class ProxyUnit
 		 * @throws IOException never, required by interface
 		 */
 		@Override
-		public boolean isSubset(final IFixture obj, final Appendable ostream,
+		public boolean isSubset(final IFixture obj, final Formatter ostream,
 								final String context) throws IOException {
-			ostream.append(context);
-			ostream.append("isSubset called on ProxyMember");
+			ostream.format("%sisSubset called on ProxyMember%n", context);
 			return false;
 		}
 

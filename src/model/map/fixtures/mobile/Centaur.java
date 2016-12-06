@@ -1,12 +1,12 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
+import java.util.Formatter;
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 
 /**
  * A centaur. TODO: Should probably be a kind of unit instead, or something ...
@@ -140,26 +140,21 @@ public class Centaur
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Centaur) {
-				return areObjectsEqual(ostream, kind, ((Centaur) obj).kind, context,
-						"\tDifferent kinds of centaur for ID #", Integer.toString(id),
-						LineEnd.LINE_SEP);
+				return areObjectsEqual(ostream, kind, ((Centaur) obj).kind,
+						"%s\tDifferent kinds of centaur for ID #%d%n", context,
+						Integer.valueOf(id));
 			} else {
-				ostream.append(context);
-				ostream.append("\tFor ID #");
-				ostream.append(Integer.toString(id));
-				ostream.append(", different kinds of members");
+				ostream.format("%s\tFor ID #%d, different kinds of members%n", context,
+						Integer.valueOf(id));
 				return false;
 			}
 		} else {
-			ostream.append("Called with different IDs, #");
-			ostream.append(Integer.toString(id));
-			ostream.append(" and #");
-			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.format("%s\tCalled with different IDs, #%d and #%d%n", context,
+					Integer.valueOf(id), Integer.valueOf(obj.getID()));
 			return false;
 		}
 	}

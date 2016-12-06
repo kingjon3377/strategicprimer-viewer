@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile.worker;
 
 import java.io.IOException;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -162,12 +163,12 @@ public class Job implements IJob {
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IJob obj, final Appendable ostream,
+	public boolean isSubset(final IJob obj, final Formatter ostream,
 							final String context) throws IOException {
-		if (!areObjectsEqual(ostream, name, obj.getName(), context,
-				"\tPassed Jobs with different names", LineEnd.LINE_SEP) ||
-					!isConditionTrue(ostream, level >= obj.getLevel(), context,
-							"\tSubmap has higher level for Job ", name,
+		if (!areObjectsEqual(ostream, name, obj.getName(),
+				"%s\tPassed Jobs with different names%n", context) ||
+					!isConditionTrue(ostream, level >= obj.getLevel(),
+							"%s\tSubmap has higher level for Job %s%n", context, name,
 							LineEnd.LINE_SEP)) {
 			return false;
 		} else {
@@ -175,12 +176,9 @@ public class Job implements IJob {
 			final Map<String, ISkill> ours = new HashMap<>();
 			for (final ISkill skill : this) {
 				if (ours.containsKey(skill.getName())) {
-					ostream.append(context);
-					ostream.append(" In Job ");
-					ostream.append(name);
-					ostream.append(":\tMaster map contains duplicate Skill ");
-					ostream.append(skill.getName());
-					ostream.append(LineEnd.LINE_SEP);
+					ostream.format(
+							"%s In Job %s:\tMaster map contains duplicate Skill %s%n",
+							context, name, skill.getName());
 					retval = false;
 				} else {
 					ours.put(skill.getName(), skill);
@@ -191,12 +189,8 @@ public class Job implements IJob {
 					retval &= ours.get(skill.getName()).isSubset(skill, ostream,
 							context + " In Job " + name + ':');
 				} else {
-					ostream.append(context);
-					ostream.append(" In Job ");
-					ostream.append(name);
-					ostream.append(":\tExtra skill ");
-					ostream.append(skill.getName());
-					ostream.append(LineEnd.LINE_SEP);
+					ostream.format("%s In Job %s:\tExtra skill %s%n", context, name,
+							skill.getName());
 					retval = false;
 				}
 			}

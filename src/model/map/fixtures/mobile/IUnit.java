@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -14,7 +15,6 @@ import model.map.fixtures.FortressMember;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
-import util.LineEnd;
 
 /**
  * An interface for units.
@@ -155,59 +155,54 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	default boolean isSubset(final IFixture obj, final Appendable ostream,
+	default boolean isSubset(final IFixture obj, final Formatter ostream,
 							 final String context) throws IOException {
 		if (obj.getID() != getID()) {
-			ostream.append(context);
-			ostream.append("\tFixtures have different IDs");
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.format("%s\tFixtures have different IDs%n", context);
 			return false;
 		} else if (!(obj instanceof IUnit)) {
-			ostream.append(context);
-			ostream.append("Different kinds of fixtures for ID #");
-			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.format("%s\tDifferent kinds of fixtures for ID #%d%n", context,
+					Integer.valueOf(getID()));
 			return false;
 		} else if (areIntItemsEqual(ostream, getOwner().getPlayerId(),
-				((IUnit) obj).getOwner().getPlayerId(), context, " Unit of ID #",
-				Integer.toString(getID()), ":\tOwners differ.", LineEnd.LINE_SEP) &&
+				((IUnit) obj).getOwner().getPlayerId(),
+				"%s Unit of ID #%d:\tOwners differ%n", context,
+				Integer.valueOf(getID())) &&
 						   areObjectsEqual(ostream, getName(), ((IUnit) obj).getName(),
-								   context,
-								   " Unit of ID #", Integer.toString(getID()),
-								   ":\tNames differ", LineEnd.LINE_SEP) &&
+								   "%s Unit of ID #%d\tNames differ%n", context,
+								   Integer.valueOf(getID())) &&
 						   areObjectsEqual(ostream, getKind(), ((IUnit) obj).getKind(),
-								   context,
-								   " Unit of ID #", Integer.toString(getID()),
-								   ":\tKinds differ", LineEnd.LINE_SEP)) {
+								   "%s Unit of ID #%d\tKinds differ%n", context,
+								   Integer.valueOf(getID()))) {
 			final Iterable<UnitMember> other = (IUnit) obj;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {
 				ours.put(Integer.valueOf(member.getID()), member);
 			}
-			final String localContext =
-					String.format("%s In unit of kind %s named %s (ID #%d):", context,
-							getKind(), getName(), Integer.valueOf(getID()));
 			boolean retval = true;
 			for (final UnitMember member : other) {
 				if (!ours.containsKey(Integer.valueOf(member.getID()))) {
-					ostream.append(localContext);
-					ostream.append(" Extra member:\t");
-					ostream.append(member.toString());
-					ostream.append(", ID #");
-					ostream.append(Integer.toString(member.getID()));
-					ostream.append(LineEnd.LINE_SEP);
+					ostream.format(
+							"%s In unit of kind %s named %s (ID #%d): Extra member:\t%s," +
+									" ID #%d%n",
+							context, getKind(), getName(), Integer.valueOf(getID()),
+							member.toString(), Integer.valueOf(member.getID()));
 					retval = false;
 				} else if (!ours.get(Integer.valueOf(member.getID()))
-									.isSubset(member, ostream, localContext)) {
+									.isSubset(member, ostream, String.format(
+											"%s In unit of kind %s named %s (ID #%d):",
+											context, getKind(), getName(),
+											Integer.valueOf(getID())))) {
 					retval = false;
 				}
 			}
 			if (retval) {
 				if (EqualsAny.equalsAny("unassigned", getName(), getKind()) &&
 							iterator().hasNext() && !other.iterator().hasNext()) {
-					ostream.append(localContext);
-					ostream.append(" Nonempty 'unassigned' when submap has it empty");
-					ostream.append(LineEnd.LINE_SEP);
+					ostream.format(
+							"%s In unit of kind %s named %s (ID #%d): Nonempty " +
+									"'unassigned' when submap has it empty%n",
+									context, getKind(), getName(), Integer.valueOf(getID()));
 				}
 				return true;
 			} else {

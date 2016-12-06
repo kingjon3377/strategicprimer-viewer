@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Formatter;
 import java.util.Random;
 import model.map.fixtures.mobile.ProxyFor;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -250,11 +250,9 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final ISkill obj, final Appendable ostream,
+	public boolean isSubset(final ISkill obj, final Formatter ostream,
 							final String context) throws IOException {
-		ostream.append(context);
-		ostream.append("\tisSubset called on ProxySkill");
-		ostream.append(LineEnd.LINE_SEP);
+		ostream.format("%s\tisSubset called on ProxySkill%n", context);
 		return false;
 	}
 }

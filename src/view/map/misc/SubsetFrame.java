@@ -3,7 +3,7 @@ package view.map.misc;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FilterWriter;
 import java.io.IOException;
@@ -14,11 +14,12 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.util.Formatter;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -194,7 +195,7 @@ public final class SubsetFrame extends SPFrame {
 		}
 		printParagraph("Testing " + filename + " ...");
 		try (final Writer out = new HTMLWriter(label.getWriter())) {
-			if (mainMap.isSubset(map, out, filename + ':')) {
+			if (mainMap.isSubset(map, new Formatter(out), filename + ':')) {
 				printParagraph("OK", StreamingLabel.LabelTextColor.green);
 			} else {
 				printParagraph("WARN", StreamingLabel.LabelTextColor.yellow);
@@ -258,7 +259,7 @@ public final class SubsetFrame extends SPFrame {
 			return;
 		}
 		try (final Writer out = new HTMLWriter(label.getWriter())) {
-			if (mainMap.isSubset(map, out, arg.toString() + ':')) {
+			if (mainMap.isSubset(map, new Formatter(out), arg.toString() + ':')) {
 				printParagraph("OK", StreamingLabel.LabelTextColor.green);
 			} else {
 				printParagraph("WARN", StreamingLabel.LabelTextColor.yellow);

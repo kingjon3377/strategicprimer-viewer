@@ -1,12 +1,12 @@
 package model.map.fixtures.towns;
 
 import java.io.IOException;
+import java.util.Formatter;
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -272,35 +272,24 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) throws IOException {
 		if (obj instanceof Village) {
 			final Village village = (Village) obj;
-			return !(!areIntItemsEqual(ostream, id, village.id, context,
-					"\tIDs differ", LineEnd.LINE_SEP) ||
-							 !areObjectsEqual(ostream, status, village.status, context,
-									 " In village (ID #", Integer.toString(id),
-									 "):\tVillage status differs", LineEnd.LINE_SEP) ||
-							 !areObjectsEqual(ostream, name, village.name, context,
-									 " In village (ID #", Integer.toString(id),
-									 "):\tVillage name differs", LineEnd.LINE_SEP) ||
-							 !areObjectsEqual(ostream, race, village.race, context,
-									 " In village ", name, " (ID #", Integer.toString
-																					 (id),
-									 "):\tDominant race differs", LineEnd.LINE_SEP) ||
-							 !isConditionTrue(ostream, (owner.getPlayerId() ==
-																village.owner
-																		.getPlayerId()
-									 ) ||
-															   village.owner
-																	   .isIndependent(),
-									 context, " In village ", name, " (ID #",
-									 Integer.toString(id), "):\tOwners differ",
-									 LineEnd.LINE_SEP));
+			return !(!areIntItemsEqual(ostream, id, village.id, "%s\tIDs differ%n",
+					context) || !areObjectsEqual(ostream, status, village.status,
+					"%s In village (ID #%d):\tVillage status differs%n", context,
+					Integer.valueOf(id)) || !areObjectsEqual(ostream, name, village.name,
+					"%s In village (ID #%d):\tVillage name differs%n", context,
+					Integer.valueOf(id)) || !areObjectsEqual(ostream, race, village.race,
+					"%s In village %s (ID #%d):\tDominant race differs%n", context, name,
+					Integer.valueOf(id)) || !isConditionTrue(ostream,
+					(owner.getPlayerId() == village.owner.getPlayerId()) ||
+							village.owner.isIndependent(),
+					"%s In village %s (ID #%d):\tOwners differ%n", context, name,
+					Integer.valueOf(id)));
 		} else {
-			ostream.append(context);
-			ostream.append("Incompatible type to Village");
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.format("%sIncompatible type to Village%n", context);
 			return false;
 		}
 	}

@@ -1,11 +1,11 @@
 package model.map.fixtures;
 
 import java.io.IOException;
+import java.util.Formatter;
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -154,55 +154,48 @@ public class ResourcePile
 	}
 
 	/**
+	 * @param obj     a fixture
 	 * @param ostream the stream to report errors to
 	 * @param context the context to report before errors
-	 * @param obj     a fixture
 	 * @return whether it's a subset of (i.e. equal to, except perhaps with different
 	 * quantity from) this one
 	 * @throws IOException on I/O error writing to ostream
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) throws IOException {
 		if (obj.getID() != id) {
-			ostream.append(context);
-			ostream.append("\tIDs differ");
+			ostream.format("%s\tIDs differ%n", context);
 			return false;
 		} else if (obj instanceof ResourcePile) {
 			boolean retval = true;
-			final String localContext = String.format("%s\tIn Resource Pile, ID #%d: ",
-					context, Integer.valueOf(id));
 			if (!kind.equals(((ResourcePile) obj).kind)) {
-				ostream.append(localContext);
-				ostream.append("Kinds differ");
-				ostream.append(LineEnd.LINE_SEP);
+				ostream.format("%s\tIn Resource Pile, ID #%d: Kinds differ%n", context,
+						Integer.valueOf(id));
 				retval = false;
 			}
 			if (!contents.equals(((ResourcePile) obj).contents)) {
-				ostream.append(localContext);
-				ostream.append("Contents differ");
-				ostream.append(LineEnd.LINE_SEP);
+				ostream.format("%s\tIn Resource Pile, ID #%d, Contents differ%n",
+						context,
+						Integer.valueOf(id));
 				retval = false;
 			}
 			if (!unit.equals(((ResourcePile) obj).unit)) {
-				ostream.append(localContext);
-				ostream.append("Units differ");
-				ostream.append(LineEnd.LINE_SEP);
+				ostream.format("%s\tIn Resource Pile, ID #%d, Units differ%n", context,
+						Integer.valueOf(id));
 				retval = false;
 			}
 			if (!quantity.equals(((ResourcePile) obj).quantity)
 						&& !ZERO.equals(((ResourcePile) obj).quantity)) {
-				ostream.append(localContext);
-				ostream.append("Quantities differ");
-				ostream.append(LineEnd.LINE_SEP);
+				ostream.format("%s\tIn Resource Pile, ID #%d, Quantities differ%n",
+						context, Integer.valueOf(id));
 				retval = false;
 			}
 			return retval;
 		} else {
-			ostream.append(context);
-			ostream.append("\tDifferent fixture types given for ID #");
-			ostream.append(Integer.toString(id));
+			ostream.format("%s\tDifferent fixture types given for ID #%d", context,
+					Integer.valueOf(id));
 			return false;
 		}
 	}

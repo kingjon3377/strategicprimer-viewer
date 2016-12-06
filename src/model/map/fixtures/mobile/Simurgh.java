@@ -1,12 +1,12 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
+import java.util.Formatter;
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 
 /**
  * A simurgh. TODO: should probably be a unit, or something.
@@ -113,18 +113,15 @@ public class Simurgh implements MobileFixture, HasMutableImage, UnitMember {
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) throws IOException {
 		if (obj.getID() == id) {
-			return isConditionTrue(ostream, obj instanceof Simurgh, context,
-					"\tFor ID #", Integer.toString(id), ", different kinds of members");
+			return isConditionTrue(ostream, obj instanceof Simurgh,
+					"%s\tFor ID #%d, different kinds of members%n", context,
+					Integer.valueOf(id));
 		} else {
-			ostream.append(context);
-			ostream.append("\tCalled with different IDs, #");
-			ostream.append(Integer.toString(id));
-			ostream.append(" and #");
-			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.format("%s\tCalled with different IDs, #%d and #%d%n", context,
+					Integer.valueOf(id), Integer.valueOf(obj.getID()));
 			return false;
 		}
 	}

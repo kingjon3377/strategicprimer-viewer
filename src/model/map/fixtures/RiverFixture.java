@@ -3,6 +3,7 @@ package model.map.fixtures;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Formatter;
 import java.util.Iterator;
 import java.util.Set;
 import model.map.IFixture;
@@ -11,7 +12,6 @@ import model.map.SubsettableFixture;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -140,16 +140,16 @@ public final class RiverFixture
 
 	/**
 	 * @param obj     another RiverFixture
+	 * @param ostream a stream to print any error messages on, or which rivers are extra
 	 * @param context a string to print before every line of output, describing the
 	 *                context
-	 * @param ostream a stream to print any error messages on, or which rivers are extra
 	 * @return whether it's a strict subset of this one, containing no rivers that this
 	 * doesn't
 	 * @throws IOException on I/O error writing error messages
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) throws IOException {
 		if (obj instanceof RiverFixture) {
 			final Set<River> temp = EnumSet.copyOf(((RiverFixture) obj).rivers);
@@ -157,18 +157,15 @@ public final class RiverFixture
 			if (temp.isEmpty()) {
 				return true;
 			} else {
-				ostream.append(context);
-				ostream.append(" Extra rivers:\t");
+				ostream.format("%s Extra rivers:\t", context);
 				for (final River river : temp) {
-					ostream.append(river.toString().toLowerCase());
+					ostream.format("%s", river.toString().toLowerCase());
 				}
-				ostream.append(LineEnd.LINE_SEP);
+				ostream.format("%n");
 				return false;
 			}
 		} else {
-			ostream.append(context);
-			ostream.append("Incompatible types to RiverFixture");
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.format("%sIncompatible types to RiverFixture%n", context);
 			return false;
 		}
 	}

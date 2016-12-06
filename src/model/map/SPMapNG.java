@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -188,17 +189,14 @@ public class SPMapNG implements IMutableMapNG {
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IMapNG obj, final Appendable ostream,
+	public boolean isSubset(final IMapNG obj, final Formatter ostream,
 							final String context) throws IOException {
 		if (dimensions().equals(obj.dimensions())) {
 			// TODO: We should probably delegate this to the PlayerCollection.
 			boolean retval = true;
 			for (final Player player : obj.players()) {
 				if (!playerCollection.contains(player)) {
-					ostream.append(context);
-					ostream.append("\tExtra player ");
-					ostream.append(player.toString());
-					ostream.append(LineEnd.LINE_SEP);
+					ostream.format("%s\tExtra player %s%n", context, player.toString());
 					retval = false;
 					// return false;
 				}
@@ -211,25 +209,22 @@ public class SPMapNG implements IMutableMapNG {
 			// with SubsettableFixture
 			final Map<Integer, IUnit> ourUnits = new HashMap<>();
 			for (final Point point : locations()) {
-				final String localContext =
-						context + " At " + Objects.toString(point) + ':';
 				if ((getBaseTerrain(point) != obj.getBaseTerrain(point))
 							&& (TileType.NotVisible != obj.getBaseTerrain(point))) {
-					ostream.append(localContext);
 					if (TileType.NotVisible == getBaseTerrain(point)) {
-						ostream.append("\tHas terrain information we don't");
+						ostream.format("%s At %s:\tHas terrain information we don't%n",
+								context, Objects.toString(point));
 					} else {
-						ostream.append("\tBase terrain differs");
+						ostream.format("%s At %s:\tBase terrain differs%n", context,
+								Objects.toString(point));
 					}
-					ostream.append(LineEnd.LINE_SEP);
 					retval = false;
 					continue;
 					// return false;
 				}
 				if (obj.isMountainous(point) && !isMountainous(point)) {
-					ostream.append(localContext);
-					ostream.append("\tHas mountains we don't");
-					ostream.append(LineEnd.LINE_SEP);
+					ostream.format("%s At %s:\tHas mountains we don't%n", context,
+							Objects.toString(point));
 					retval = false;
 					// return false;
 				}
@@ -244,10 +239,10 @@ public class SPMapNG implements IMutableMapNG {
 					// check.
 					if (!fixtures.containsKey(point) ||
 								!assertNotNull(fixtures.get(point)).contains(forest)) {
-						ostream.append(localContext);
-						ostream.append(
-								"\tHas forest we don't, or different primary forest");
-						ostream.append(LineEnd.LINE_SEP);
+						ostream.format(
+								"%s At %s:\tHas forest we don't, or different primary " +
+										"forest%n",
+								context, Objects.toString(point));
 						retval = false;
 					}
 					// return false;
@@ -270,10 +265,10 @@ public class SPMapNG implements IMutableMapNG {
 						// ...
 					} else if ((ourGround == null) || !assertNotNull(fixtures.get(point))
 															   .contains(theirGround)) {
-						ostream.append(localContext);
-						ostream.append(
-								"\tHas different primary ground, or ground we don't");
-						ostream.append(LineEnd.LINE_SEP);
+						ostream.format(
+								"%s At %s:\tHas different primary ground, or ground we " +
+										"don't%n",
+								context, Objects.toString(point));
 						retval = false;
 						// return false;
 					}
@@ -305,7 +300,8 @@ public class SPMapNG implements IMutableMapNG {
 							Integer.valueOf(fix.getID()))) {
 						retval &=
 								assertNotNull(ourUnits.get(Integer.valueOf(fix.getID())))
-										.isSubset(fix, ostream, localContext);
+										.isSubset(fix, ostream,
+												String.format("%s At %s:", context, Objects.toString(point)));
 					} else if ((fix instanceof SubsettableFixture) && ourSubsettables
 																			  .containsKey(
 																					  Integer.valueOf(
@@ -327,30 +323,26 @@ public class SPMapNG implements IMutableMapNG {
 							}
 						}
 						if (count == 0) {
-							ostream.append(localContext);
-							ostream.append(" Extra fixture:\t");
-							ostream.append(fix.toString());
-							ostream.append(LineEnd.LINE_SEP);
+							ostream.format("%s At %s:Extra fixture:\t%s%n",
+									context, Objects.toString(point), fix.toString());
 							retval = false;
 							break;
 						} else if (count == 1) {
-							retval &= match.isSubset(fix, ostream, localContext);
+							retval &= match.isSubset(fix, ostream,
+									String.format("%s At %s:", context, Objects.toString(point)));
 						} else if (unmatched) {
-							ostream.append(localContext);
-							ostream.append("Fixture with ID #");
-							ostream.append(Integer.toString(fix.getID()));
-							ostream.append(
-									" didn't match any of the subsettable fixtures here " +
-											"sharing that ID");
-							ostream.append(LineEnd.LINE_SEP);
+							ostream.format(
+									"%s At %s:Fixture with ID #%d didn't match any of " +
+											"the subsettable fixtures here sharing that " +
+											"ID%n",
+									context, Objects.toString(point),
+									Integer.valueOf(fix.getID()));
 							retval = false;
 							break;
 						}
 					} else {
-						ostream.append(localContext);
-						ostream.append(" Extra fixture:\t");
-						ostream.append(fix.toString());
-						ostream.append(LineEnd.LINE_SEP);
+						ostream.format("%s At %s Extra fixture:\t%s%n", context,
+								Objects.toString(point), fix.toString());
 						retval = false;
 						break;
 						// return false;
@@ -360,9 +352,8 @@ public class SPMapNG implements IMutableMapNG {
 				final Iterable<River> theirRivers = obj.getRivers(point);
 				for (final River river : theirRivers) {
 					if ((ourRivers == null) || !ourRivers.contains(river)) {
-						ostream.append(localContext);
-						ostream.append("\tExtra river");
-						ostream.append(LineEnd.LINE_SEP);
+						ostream.format("%s At %s:\tExtra river%n", context,
+								Objects.toString(point));
 						retval = false;
 						break;
 						// return false;
@@ -371,9 +362,7 @@ public class SPMapNG implements IMutableMapNG {
 			}
 			return retval;
 		} else {
-			ostream.append(context);
-			ostream.append("\tDimension mismatch");
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.format("%s\tDimension mismatch%n", context);
 			return false;
 		}
 	}

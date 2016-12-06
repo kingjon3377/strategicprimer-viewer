@@ -1,6 +1,7 @@
 package model.map;
 
 import java.io.IOException;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.TypesafeLogger;
 
 import static util.NullCleaner.assertNotNull;
@@ -126,13 +126,12 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public boolean isSubset(final IPlayerCollection obj,
-							final Appendable ostream, final String context) {
+							final Formatter ostream, final String context) {
 		return StreamSupport.stream(obj.spliterator(), false).allMatch(
 				player -> {
 					try {
 						return isConditionTrue(ostream, players.containsValue(player),
-								context, "\tExtra player ", player.getName(),
-								LineEnd.LINE_SEP);
+								"%s\tExtra player %s%n", context, player.getName());
 					} catch (final IOException ignored) {
 						return false;
 					}

@@ -1,6 +1,7 @@
 package model.map;
 
 import java.io.IOException;
+import java.util.Formatter;
 import java.util.Objects;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -34,29 +35,29 @@ public interface Subsettable<T> {
 	 * also in this.
 	 * @throws IOException on I/O error writing output to the stream
 	 */
-	boolean isSubset(T obj, Appendable ostream, String context) throws IOException;
+	boolean isSubset(T obj, Formatter ostream, String context) throws IOException;
 
 	/**
 	 * A helper method to compare two items and, if they're not equal, report this to
 	 * the stream.
 	 *
 	 * @param ostream  the stream to write to
-	 * @param messages messages to write if the two aren't equal
+	 * @param message  message (format string) to write if the two aren't equal
+	 * @param parameters	parameters to use with the format string
 	 * @param first    the first item
 	 * @param second   the second item
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean areObjectsEqual(final Appendable ostream,
+	default boolean areObjectsEqual(final Formatter ostream,
 									@Nullable final Object first,
 									@Nullable final Object second,
-									final String... messages) throws IOException {
+									final String message, final Object... parameters)
+			throws IOException {
 		if (Objects.equals(first, second)) {
 			return true;
 		} else {
-			for (final String message : messages) {
-				ostream.append(message);
-			}
+			ostream.format(message, parameters);
 			return false;
 		}
 	}
@@ -66,21 +67,20 @@ public interface Subsettable<T> {
 	 * the stream.
 	 *
 	 * @param ostream  the stream to write to
-	 * @param messages messages to write if the two aren't equal
+	 * @param message  message (format string) to write if the two aren't equal
+	 * @param parameters	parameters to use with the format string
 	 * @param first    the first item
 	 * @param second   the second item
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean areItemsEqual(final Appendable ostream, final boolean first,
-								  final boolean second, final String... messages)
-			throws IOException {
+	default boolean areItemsEqual(final Formatter ostream, final boolean first,
+								  final boolean second, final String message,
+								  final Object... parameters) throws IOException {
 		if (first == second) {
 			return true;
 		} else {
-			for (final String message : messages) {
-				ostream.append(message);
-			}
+			ostream.format(message, parameters);
 			return false;
 		}
 	}
@@ -90,21 +90,20 @@ public interface Subsettable<T> {
 	 * the stream.
 	 *
 	 * @param ostream  the stream to write to
-	 * @param messages messages to write if the two aren't equal
+	 * @param message  message (format string) to write if the two aren't equal
+	 * @param parameters	parameters to use with the format string
 	 * @param first    the first item
 	 * @param second   the second item
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean areIntItemsEqual(final Appendable ostream, final int first,
-									 final int second, final String... messages)
-			throws IOException {
+	default boolean areIntItemsEqual(final Formatter ostream, final int first,
+									 final int second, final String message,
+									 final Object... parameters) throws IOException {
 		if (first == second) {
 			return true;
 		} else {
-			for (final String message : messages) {
-				ostream.append(message);
-			}
+			ostream.format(message, parameters);
 			return false;
 		}
 	}
@@ -114,18 +113,17 @@ public interface Subsettable<T> {
 	 *
 	 * @param ostream   the stream to write to
 	 * @param condition the condition to check
-	 * @param messages  the messages to write if it isn't true
+	 * @param message  message (format string) to write if the two aren't equal
+	 * @param parameters	parameters to use with the format string
 	 * @return whether it's true
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean isConditionTrue(final Appendable ostream, final boolean condition,
-									final String... messages) throws IOException {
+	default boolean isConditionTrue(final Formatter ostream, final boolean condition,
+									final String message, final Object... parameters) throws IOException {
 		if (condition) {
 			return true;
 		} else {
-			for (final String message : messages) {
-				ostream.append(message);
-			}
+			ostream.format(message, parameters);
 			return false;
 		}
 	}

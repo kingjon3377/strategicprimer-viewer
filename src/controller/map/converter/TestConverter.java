@@ -8,6 +8,7 @@ import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Formatter;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
@@ -460,19 +461,19 @@ public final class TestConverter {
 					outTwo.toString().replaceAll("id=\"[0-9]*\"", "id=\"-1\""),
 					equalTo(outOne.toString()));
 		}
-		try (StringWriter outOne = new StringWriter();
-			 StringWriter outTwo = new StringWriter()) {
+		try (Formatter outOne = new Formatter();
+			 Formatter outTwo = new Formatter()) {
 			assertThat("Products of two runs are both or neither subsets of expected",
 					converted.isSubset(
 							new OneToTwoConverter().convert(original, true), outTwo, ""),
 					equalTo(converted.isSubset(
 							new OneToTwoConverter().convert(original, true), outOne,
 							"")));
-			assertThat("Two runs produce identical results", outTwo.toString(),
-					equalTo(outOne.toString()));
+			assertThat("Two runs produce identical results", outTwo.out().toString(),
+					equalTo(outOne.out().toString()));
 		}
 		try (StringWriter out = new StringWriter();
-			 StringWriter err = new StringWriter()) {
+			 Formatter err = new Formatter()) {
 			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.writeSPObject(out, new OneToTwoConverter().convert(original, true));
 			try (final StringReader in = new StringReader(out.toString().replaceAll(
@@ -742,19 +743,19 @@ public final class TestConverter {
 					outTwo.toString().replaceAll("id=\"[0-9]*\"", "id=\"-1\""),
 					equalTo(outOne.toString()));
 		}
-		try (StringWriter outOne = new StringWriter();
-			 StringWriter outTwo = new StringWriter()) {
+		try (Formatter outOne = new Formatter();
+			 Formatter outTwo = new Formatter()) {
 			assertThat("Products of two runs are both or neither subsets of expected",
 					converted.isSubset(
 							new OneToTwoConverter().convert(original, true), outTwo, ""),
 					equalTo(converted.isSubset(
 							new OneToTwoConverter().convert(original, true), outOne,
 							"")));
-			assertThat("Two runs produce identical results", outTwo.toString(),
-					equalTo(outOne.toString()));
+			assertThat("Two runs produce identical results", outTwo.out().toString(),
+					equalTo(outOne.out().toString()));
 		}
 		try (StringWriter out = new StringWriter();
-			 StringWriter err = new StringWriter()) {
+			 Formatter err = new Formatter()) {
 			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.writeSPObject(out, new OneToTwoConverter().convert(original, true));
 			try (final StringReader in = new StringReader(out.toString().replaceAll(
@@ -1094,26 +1095,27 @@ public final class TestConverter {
 					outTwo.toString().replaceAll("id=\"[0-9]*\"", "id=\"-1\""),
 					equalTo(outOne.toString()));
 		}
-		try (StringWriter outOne = new StringWriter();
-			 StringWriter outTwo = new StringWriter()) {
+		try (Formatter outOne = new Formatter();
+			 Formatter outTwo = new Formatter()) {
 			assertThat("Products of two runs are both or neither subsets of expected",
 					converted.isSubset(
 							new OneToTwoConverter().convert(original, true), outTwo, ""),
 					equalTo(converted.isSubset(
 							new OneToTwoConverter().convert(original, true), outOne,
 							"")));
-			assertThat("Two runs produce identical results", outTwo.toString(),
-					equalTo(outOne.toString()));
+			assertThat("Two runs produce identical results", outTwo.out().toString(),
+					equalTo(outOne.out().toString()));
 		}
 		try (StringWriter out = new StringWriter();
 			 StringWriter err = new StringWriter()) {
 			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.writeSPObject(out, new OneToTwoConverter().convert(original, true));
 			try (final StringReader in = new StringReader(out.toString().replaceAll(
-					"id=\"[0-9]*\"", "id=\"-1\""))) {
+					"id=\"[0-9]*\"", "id=\"-1\""));
+				 final Formatter stdout = new Formatter(SystemOut.SYS_OUT)) {
 				assertThat("Actual is at least subset of expected converted, modulo IDs",
 						converted.isSubset(new MapReaderAdapter().readMapFromStream(in,
-								Warning.Ignore), SystemOut.SYS_OUT, ""), equalTo(true));
+								Warning.Ignore), stdout, ""), equalTo(true));
 			}
 		}
 	}
@@ -1316,20 +1318,22 @@ public final class TestConverter {
 			assertThat("Produces expected result", outTwo.toString(),
 					equalTo(outOne.toString()));
 		}
-		try (StringWriter outOne = new StringWriter();
-			 StringWriter outTwo = new StringWriter()) {
+		try (Formatter outOne = new Formatter();
+			 Formatter outTwo = new Formatter()) {
 			assertThat("Products of two runs are both or neither subsets of expected",
 					converted.isSubset(
 							new OneToTwoConverter().convert(original, true), outTwo, ""),
 					equalTo(converted.isSubset(
 							new OneToTwoConverter().convert(original, true), outOne,
 							"")));
-			assertThat("Two runs produce identical results", outTwo.toString(),
-					equalTo(outOne.toString()));
+			assertThat("Two runs produce identical results", outTwo.out().toString(),
+					equalTo(outOne.out().toString()));
 		}
-		assertThat("Actual is at least subset of expected converted", converted.isSubset(
-				new OneToTwoConverter().convert(original, true), SystemOut.SYS_OUT,
-				""), equalTo(true));
+		try (final Formatter out = new Formatter(SystemOut.SYS_OUT)) {
+			assertThat("Actual is at least subset of expected converted",
+					converted.isSubset(new OneToTwoConverter().convert(original, true),
+							out, ""), equalTo(true));
+		}
 	}
 
 	/**

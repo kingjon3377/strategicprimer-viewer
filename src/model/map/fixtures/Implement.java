@@ -1,11 +1,11 @@
 package model.map.fixtures;
 
 import java.io.IOException;
+import java.util.Formatter;
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 
 /**
  * A piece of equipment.
@@ -67,28 +67,26 @@ public class Implement
 	}
 
 	/**
+	 * @param obj     a fixture
 	 * @param ostream the stream to report errors to
 	 * @param context the context to report before errors
-	 * @param obj     a fixture
 	 * @return whether it's a subset of (i.e. equal to) this one
 	 * @throws IOException on I/O error writing to ostream
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) throws IOException {
 		if (obj.getID() != id) {
-			ostream.append(context);
-			ostream.append("\tIDs differ");
+			ostream.format("%s\tIDs differ%n", context);
 			return false;
 		} else if (obj instanceof Implement) {
-			return areObjectsEqual(ostream, kind, ((Implement) obj).kind, context,
-					"\tIn Implement ID #", Integer.toString(id), ": Kinds differ",
-					LineEnd.LINE_SEP);
+			return areObjectsEqual(ostream, kind, ((Implement) obj).kind,
+					"%s\tIn Implement ID #%d%n: Kinds differ",
+					context, Integer.valueOf(id));
 		} else {
-			ostream.append(context);
-			ostream.append("\tDifferent fixture types given for ID #");
-			ostream.append(Integer.toString(id));
+			ostream.format("%s\tDifferent fixture types given for ID #%d%n", context,
+					Integer.valueOf(id));
 			return false;
 		}
 	}

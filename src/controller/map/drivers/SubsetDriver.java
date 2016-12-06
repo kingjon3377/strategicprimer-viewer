@@ -3,6 +3,7 @@ package controller.map.drivers;
 import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Formatter;
 import java.util.Optional;
 import java.util.logging.Logger;
 import model.map.IMapNG;
@@ -131,7 +132,7 @@ public final class SubsetDriver implements SimpleDriver {
 	private static Returns doSubsetTest(final Subsettable<IMapNG> mainMap,
 										final IMapNG map, final Path file) {
 		try {
-			if (mainMap.isSubset(map, SYS_OUT, "In " + file + ':')) {
+			if (mainMap.isSubset(map, new Formatter(SYS_OUT), "In " + file + ':')) {
 				return Returns.OK;
 			} else {
 				System.out.flush();

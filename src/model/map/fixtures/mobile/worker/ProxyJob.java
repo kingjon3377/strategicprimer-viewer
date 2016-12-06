@@ -3,6 +3,7 @@ package model.map.fixtures.mobile.worker;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +13,6 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyFor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -192,11 +192,9 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IJob obj, final Appendable ostream,
+	public boolean isSubset(final IJob obj, final Formatter ostream,
 							final String context) throws IOException {
-		ostream.append(context);
-		ostream.append("\tisSubset called on ProxyJob");
-		ostream.append(LineEnd.LINE_SEP);
+		ostream.format("%s\tisSubset called on ProxyJob%n", context);
 		return false;
 	}
 

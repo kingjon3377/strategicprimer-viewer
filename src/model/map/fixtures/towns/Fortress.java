@@ -2,6 +2,7 @@ package model.map.fixtures.towns;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -238,12 +239,10 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) throws IOException {
 		if (!(obj instanceof Fortress)) {
-			ostream.append(context);
-			ostream.append("Incompatible type to Fortress");
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.format("%sIncompatible type to Fortress%n", context);
 			return false;
 		}
 		final Fortress fort = (Fortress) obj;
@@ -254,16 +253,18 @@ public class Fortress implements HasMutableImage, ITownFixture,
 				ours.put(assertNotNull(Integer.valueOf(member.getID())),
 						member);
 			}
-			final String localContext =
-					context + " In fortress " + name + " (ID #" + id + "):";
 			boolean retval = true;
 			for (final FortressMember unit : fort) {
 				if (!isConditionTrue(ostream,
-						ours.containsKey(Integer.valueOf(unit.getID())), localContext,
-						"Extra unit:\t", unit.toString(), ", ID #",
-						Integer.toString(unit.getID()), LineEnd.LINE_SEP) ||
+						ours.containsKey(Integer.valueOf(unit.getID())),
+						"%s In fortress %n (ID #%d): Extra unit:\t%s, ID #%d%n", context,
+						Integer.valueOf(id), unit.toString(),
+						Integer.valueOf(unit.getID())) ||
 							!assertNotNull(ours.get(Integer.valueOf(unit.getID())))
-									 .isSubset(unit, ostream, localContext)) {
+									 .isSubset(unit, ostream,
+											 String.format("%s In fortress %s (ID #%d):",
+													 context, name,
+													 Integer.valueOf(id)))) {
 					retval = false;
 				}
 			}

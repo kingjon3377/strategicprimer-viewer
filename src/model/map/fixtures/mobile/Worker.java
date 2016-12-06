@@ -3,6 +3,7 @@ package model.map.fixtures.mobile;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -17,7 +18,6 @@ import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
-import util.LineEnd;
 import util.ListMaker;
 import util.NullCleaner;
 
@@ -209,21 +209,19 @@ public class Worker implements IWorker, HasPortrait {
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Worker) {
-				final String localContext =
-						context + " In worker " + ((Worker) obj).name
-								+ " (ID #" + Integer.toString(id) + "):";
-				if (areObjectsEqual(ostream, name, ((Worker) obj).name, localContext,
-						"\tNames differ", LineEnd.LINE_SEP) &&
+				if (areObjectsEqual(ostream, name, ((Worker) obj).name,
+						"%s In worker %s (ID #%d):\tNames differ%n", context, name,
+						Integer.valueOf(id)) &&
 							areObjectsEqual(ostream, race, ((Worker) obj).race,
-									localContext,
-									":\tRaces differ", LineEnd.LINE_SEP) &&
+									"%s In worker %s (ID #%d):\tRaces differ%n",
+									context, name, Integer.valueOf(id)) &&
 							areObjectsEqual(ostream, stats, ((Worker) obj).stats,
-									localContext,
-									":\tStats differ", LineEnd.LINE_SEP)) {
+									"%s In worker %s (ID #%d):\tStats differ%n",
+									context, name, Integer.valueOf(id))) {
 					final Map<String, IJob> ours = new HashMap<>();
 					for (final IJob job : jobSet) {
 						ours.put(job.getName(), job);
@@ -231,14 +229,13 @@ public class Worker implements IWorker, HasPortrait {
 					boolean retval = true;
 					for (final IJob job : ((Worker) obj).jobSet) {
 						if (!ours.containsKey(job.getName())) {
-							ostream.append(localContext);
-							ostream.append("\tExtra Job: ");
-							ostream.append(job.getName());
-							ostream.append(LineEnd.LINE_SEP);
+							ostream.format("%s In worker %s (ID #%d):\tExtra Job: %s%n",
+									context, name, Integer.valueOf(id), job.getName());
 							retval = false;
 						} else if (!NullCleaner.assertNotNull(ours.get(job.getName()))
-											.isSubset(job,
-													ostream, localContext)) {
+											.isSubset(job, ostream, String.format(
+													"%s In worker %s (ID #%d):", context,
+													name, Integer.valueOf(id)))) {
 							retval = false;
 						}
 					}
@@ -247,17 +244,13 @@ public class Worker implements IWorker, HasPortrait {
 					return false;
 				}
 			} else {
-				ostream.append("For ID #");
-				ostream.append(Integer.toString(id));
-				ostream.append(", different kinds of members");
+				ostream.format("%sFor ID #%d, different kinds of members%n", context,
+						Integer.valueOf(id));
 				return false;
 			}
 		} else {
-			ostream.append("Called with different IDs, #");
-			ostream.append(Integer.toString(id));
-			ostream.append(" and #");
-			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.format("%sCalled with different IDs, #%d and #%d%n", context,
+					Integer.valueOf(id), Integer.valueOf(obj.getID()));
 			return false;
 		}
 	}

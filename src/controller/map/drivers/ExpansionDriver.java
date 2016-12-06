@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -153,7 +154,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			}
 
 			@Override
-			public boolean isSubset(final IFixture obj, final Appendable ostream,
+			public boolean isSubset(final IFixture obj, final Formatter ostream,
 									final String context) {
 				throw ISE;
 			}

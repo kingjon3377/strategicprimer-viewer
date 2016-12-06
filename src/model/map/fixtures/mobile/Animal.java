@@ -1,12 +1,12 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
+import java.util.Formatter;
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -172,39 +172,32 @@ public class Animal
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Animal) {
-				return areObjectsEqual(ostream, kind, ((Animal) obj).kind, context,
-						"\tDifferent kinds of animal for ID #", Integer.toString(id),
-						LineEnd.LINE_SEP) && isConditionTrue(ostream,
-						talking || !((Animal) obj).talking, context, "\tIn animal ID #",
-						Integer.toString(id),
-						":\tSubmap's is talking and master's isn't", LineEnd.LINE_SEP) &&
+				return areObjectsEqual(ostream, kind, ((Animal) obj).kind,
+						"%s\tDifferent kinds of animal for ID #%d%n", context,
+						Integer.valueOf(id)) && isConditionTrue(ostream,
+						talking || !((Animal) obj).talking,
+						"%s\tIn animal ID #%d:\tSubmap's is talking and master's " +
+								"isn't%n",
+						context, Integer.valueOf(id)) &&
 							   isConditionTrue(ostream, !traces || ((Animal) obj).traces,
-									   context, "\tIn animal ID #", Integer.toString(id),
-									   ":\tSubmap has animal and master only tracks",
-									   LineEnd.LINE_SEP) &&
+									   "%s\tIn animal ID #%d:\tSubmap has animal and " +
+											   "master only tracks%n",
+									   context, Integer.valueOf(id)) &&
 							   areObjectsEqual(ostream, status, ((Animal) obj).status,
-									   context,
-									   "\tDomestication status of animal differs at ID" +
-											   " #",
-									   Integer.toString(id), LineEnd.LINE_SEP);
+									   "%s\tDomestication status of animal differs at ID #%d%n",
+									   context, Integer.valueOf(id));
 			} else {
-				ostream.append(context);
-				ostream.append("\tFor ID #");
-				ostream.append(Integer.toString(id));
-				ostream.append(", different kinds of members");
-				ostream.append(LineEnd.LINE_SEP);
+				ostream.format("%s\tFor ID #%d, different kinds of members%n", context,
+						Integer.valueOf(id));
 				return false;
 			}
 		} else {
-			ostream.append("Called with different IDs, #");
-			ostream.append(Integer.toString(id));
-			ostream.append(" and #");
-			ostream.append(Integer.toString(obj.getID()));
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.format("%s\tCalled with different IDs, #%d and #%d%n", context,
+					Integer.valueOf(id), Integer.valueOf(obj.getID()));
 			return false;
 		}
 	}
