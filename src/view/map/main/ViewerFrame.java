@@ -24,7 +24,6 @@ import util.OnMac;
 import view.map.details.DetailPanelNG;
 import view.util.BorderedPanel;
 import view.util.BoxPanel;
-import view.util.ISPWindow;
 import view.util.SPFrame;
 import view.util.SplitWithWeights;
 
