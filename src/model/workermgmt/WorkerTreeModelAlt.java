@@ -122,57 +122,8 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		oldNode.remove(node);
 		if ((member instanceof ProxyFor) && (old instanceof ProxyUnit)
 					&& (newOwner instanceof ProxyUnit)) {
-			//noinspection unchecked
-			if ((((Collection<IUnit>) ((ProxyUnit) old).getProxied()).size() ==
-						 ((Collection<IUnit>) ((ProxyUnit) newOwner).getProxied())
-								 .size()) &&
-						(((Collection<IUnit>) ((ProxyUnit) old).getProxied()).size() ==
-								 ((Collection<? extends UnitMember>) ((ProxyFor<?
-																						extends UnitMember>) member)
-																			 .getProxied())
-										 .size())) {
-				final Queue<UnitMember> members = new LinkedList<>();
-				final Queue<IUnit> newList = new LinkedList<>();
-				final Iterator<IUnit> oldIter = ((ProxyUnit) old).getProxied()
-														.iterator();
-				final Iterator<IUnit> newIter =
-						((ProxyUnit) newOwner).getProxied().iterator();
-				//noinspection unchecked
-				for (final UnitMember item : ((ProxyFor<? extends UnitMember>) member)
-													 .getProxied()) {
-					assert oldIter.hasNext() && newIter.hasNext();
-					final IUnit innerOld = oldIter.next();
-					final IUnit innerNew = newIter.next();
-					innerOld.removeMember(item);
-					members.add(item);
-					newList.add(innerNew);
-				}
-				newNode.add(node);
-				fireTreeNodesInserted(this,
-						new Object[]{playerNode, getNode(newOwner.getKind()), newNode},
-						new int[]{newNode.getIndex(node)}, new Object[]{node});
-				while (!members.isEmpty() && !newList.isEmpty()) {
-					newList.remove().addMember(members.remove());
-				}
-			} else {
-				old.removeMember(member);
-				newNode.add(node);
-				fireTreeNodesInserted(this,
-						new Object[]{playerNode, getNode(newOwner.getKind()), newNode},
-						new int[]{newNode.getIndex(node)}, new Object[]{node});
-				@SuppressWarnings("unchecked")
-				final Iterator<? extends UnitMember> iter =
-						((ProxyFor<? extends UnitMember>) member).getProxied()
-								.iterator();
-				if (iter.hasNext()) {
-					final UnitMember item = iter.next();
-					for (final IUnit unit : ((ProxyUnit) newOwner).getProxied()) {
-						unit.addMember(item.copy(false));
-					}
-				} else {
-					newOwner.addMember(member);
-				}
-			}
+			moveProxied(member, (ProxyUnit) old, (ProxyUnit) newOwner, newNode, node);
+
 		} else {
 			old.removeMember(member);
 			newNode.add(node);
@@ -180,6 +131,64 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 					new Object[]{playerNode, getNode(newOwner.getKind()), newNode},
 					new int[]{newNode.getIndex(node)}, new Object[]{node});
 			newOwner.addMember(member);
+		}
+	}
+
+	/**
+	 * Implementation of moveMember() when everything is proxied.
+	 * @param member the member to move. Must be a ProxyFor&lt;UnitMember&gt;
+	 * @param old its old parent
+	 * @param newOwner its new parent
+	 * @param newNode the node representing the new parent
+	 * @param node the node representing the member being moved
+	 */
+	private void moveProxied(final UnitMember member, final ProxyUnit old,
+							 final ProxyUnit newOwner,
+							 final UnitNode newNode, final MutableTreeNode node) {
+		final PlayerNode playerNode = assertNotNull((PlayerNode) root);
+		@SuppressWarnings("unchecked")
+		final ProxyFor<? extends UnitMember> asProxied =
+				(ProxyFor<? extends UnitMember>) member;
+		if ((((Collection<IUnit>) old.getProxied()).size() ==
+					 ((Collection<IUnit>) newOwner.getProxied()).size()) &&
+					(((Collection<IUnit>) old.getProxied()).size() ==
+							 ((Collection<? extends UnitMember>) asProxied.getProxied())
+									 .size())) {
+			final Queue<UnitMember> members = new LinkedList<>();
+			final Queue<IUnit> newList = new LinkedList<>();
+			final Iterator<IUnit> oldIter = old.getProxied().iterator();
+			final Iterator<IUnit> newIter = newOwner.getProxied().iterator();
+			for (final UnitMember item : asProxied.getProxied()) {
+				assert oldIter.hasNext() && newIter.hasNext();
+				final IUnit innerOld = oldIter.next();
+				final IUnit innerNew = newIter.next();
+				innerOld.removeMember(item);
+				members.add(item);
+				newList.add(innerNew);
+			}
+			newNode.add(node);
+			fireTreeNodesInserted(this,
+					new Object[]{playerNode, getNode(newOwner.getKind()), newNode},
+					new int[]{newNode.getIndex(node)}, new Object[]{node});
+			while (!members.isEmpty() && !newList.isEmpty()) {
+				newList.remove().addMember(members.remove());
+			}
+		} else {
+			old.removeMember(member);
+			newNode.add(node);
+			fireTreeNodesInserted(this,
+					new Object[]{playerNode, getNode(newOwner.getKind()), newNode},
+					new int[]{newNode.getIndex(node)}, new Object[]{node});
+			final Iterator<? extends UnitMember> iter = asProxied.getProxied()
+																			.iterator();
+			if (iter.hasNext()) {
+				final UnitMember item = iter.next();
+				for (final IUnit unit : newOwner.getProxied()) {
+					unit.addMember(item.copy(false));
+				}
+			} else {
+				newOwner.addMember(member);
+			}
 		}
 	}
 
