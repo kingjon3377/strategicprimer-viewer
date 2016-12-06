@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Formatter;
+import java.util.regex.Pattern;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
@@ -100,7 +101,11 @@ public final class TestConverter {
 	 * tables.
 	 */
 	public static final String TEMP_TREE = "ttree1";
-
+	/**
+	 * A pattern to match all positive IDs in XML.
+	 */
+	private static final Pattern POSITIVE_IDS =
+			Pattern.compile("id=\"[0-9]*\"");
 	/**
 	 * Test conversion.
 	 */
@@ -449,7 +454,7 @@ public final class TestConverter {
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			assertThat("Produces expected result",
-					outTwo.toString().replaceAll("id=\"[0-9]*\"", "id=\"-1\""),
+					POSITIVE_IDS.matcher(outTwo.toString()).replaceAll("id=\"-1\""),
 					equalTo(outOne.toString()));
 		}
 		try (StringWriter outOne = new StringWriter();
@@ -459,7 +464,7 @@ public final class TestConverter {
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			//noinspection HardcodedFileSeparator
 			assertThat("Deprecated I/O produces expected result",
-					outTwo.toString().replaceAll("id=\"[0-9]*\"", "id=\"-1\""),
+					POSITIVE_IDS.matcher(outTwo.toString()).replaceAll("id=\"-1\""),
 					equalTo(outOne.toString()));
 		}
 		try (Formatter outOne = new Formatter();
@@ -477,8 +482,10 @@ public final class TestConverter {
 			 Formatter err = new Formatter()) {
 			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.writeSPObject(out, new OneToTwoConverter().convert(original, true));
-			try (final StringReader in = new StringReader(out.toString().replaceAll(
-					"id=\"[0-9]*\"", "id=\"-1\""))) {
+			try (final StringReader in = new StringReader(POSITIVE_IDS
+																  .matcher(out.toString())
+																  .replaceAll(
+																		  "id=\"-1\""))) {
 				assertThat("Actual is at least subset of expected converted, modulo IDs",
 						converted.isSubset(new MapReaderAdapter().readMapFromStream(in,
 								Warning.Ignore), err, ""), equalTo(true));
@@ -732,7 +739,7 @@ public final class TestConverter {
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			assertThat("Produces expected result",
-					outTwo.toString().replaceAll("id=\"[0-9]*\"", "id=\"-1\""),
+					POSITIVE_IDS.matcher(outTwo.toString()).replaceAll("id=\"-1\""),
 					equalTo(outOne.toString()));
 		}
 		try (StringWriter outOne = new StringWriter();
@@ -742,7 +749,7 @@ public final class TestConverter {
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			//noinspection HardcodedFileSeparator
 			assertThat("Deprecated I/O produces expected result",
-					outTwo.toString().replaceAll("id=\"[0-9]*\"", "id=\"-1\""),
+					POSITIVE_IDS.matcher(outTwo.toString()).replaceAll("id=\"-1\""),
 					equalTo(outOne.toString()));
 		}
 		try (Formatter outOne = new Formatter();
@@ -760,8 +767,10 @@ public final class TestConverter {
 			 Formatter err = new Formatter()) {
 			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.writeSPObject(out, new OneToTwoConverter().convert(original, true));
-			try (final StringReader in = new StringReader(out.toString().replaceAll(
-					"id=\"[0-9]*\"", "id=\"-1\""))) {
+			try (final StringReader in = new StringReader(POSITIVE_IDS
+																  .matcher(out.toString())
+																  .replaceAll(
+																		  "id=\"-1\""))) {
 				assertThat("Actual is at least subset of expected converted, modulo IDs",
 						converted.isSubset(new MapReaderAdapter().readMapFromStream(in,
 								Warning.Ignore), err, ""), equalTo(true));
@@ -1085,7 +1094,7 @@ public final class TestConverter {
 			writer.write(outOne, converted);
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			assertThat("Produces expected result",
-					outTwo.toString().replaceAll("id=\"[0-9]*\"", "id=\"-1\""),
+					POSITIVE_IDS.matcher(outTwo.toString()).replaceAll("id=\"-1\""),
 					equalTo(outOne.toString()));
 		}
 		try (StringWriter outOne = new StringWriter();
@@ -1095,7 +1104,7 @@ public final class TestConverter {
 			writer.write(outTwo, new OneToTwoConverter().convert(original, true));
 			//noinspection HardcodedFileSeparator
 			assertThat("Deprecated I/O produces expected result",
-					outTwo.toString().replaceAll("id=\"[0-9]*\"", "id=\"-1\""),
+					POSITIVE_IDS.matcher(outTwo.toString()).replaceAll("id=\"-1\""),
 					equalTo(outOne.toString()));
 		}
 		try (Formatter outOne = new Formatter();
@@ -1113,8 +1122,10 @@ public final class TestConverter {
 			 StringWriter err = new StringWriter()) {
 			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.writeSPObject(out, new OneToTwoConverter().convert(original, true));
-			try (final StringReader in = new StringReader(out.toString().replaceAll(
-					"id=\"[0-9]*\"", "id=\"-1\""));
+			try (final StringReader in = new StringReader(POSITIVE_IDS
+																  .matcher(out.toString())
+																  .replaceAll(
+																		  "id=\"-1\""));
 				 final Formatter stdout = new Formatter(SystemOut.SYS_OUT)) {
 				assertThat("Actual is at least subset of expected converted, modulo IDs",
 						converted.isSubset(new MapReaderAdapter().readMapFromStream(in,
