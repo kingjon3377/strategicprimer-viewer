@@ -13,6 +13,7 @@ import model.map.IFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.NonNull;
+import util.EqualsAny;
 import util.LineEnd;
 
 /**
@@ -202,7 +203,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 				}
 			}
 			if (retval) {
-				if (("unassigned".equals(getName()) || "unassigned".equals(getKind())) &&
+				if (EqualsAny.equalsAny("unassigned", getName(), getKind()) &&
 							iterator().hasNext() && !other.iterator().hasNext()) {
 					ostream.append(localContext);
 					ostream.append(" Nonempty 'unassigned' when submap has it empty");
