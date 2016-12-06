@@ -245,37 +245,13 @@ public final class XMLHelper {
 												   final String deprecated,
 												   final Warning warner)
 			throws SPFormatException {
-		final Attribute prefProp = getAttributeByName(element, preferred);
-		final Attribute deprecatedProp = getAttributeByName(element, deprecated);
-		final MissingPropertyException exception =
-				new MissingPropertyException(element, preferred);
-		if ((prefProp == null) && (deprecatedProp == null)) {
-			throw exception;
-		} else if (prefProp == null) {
-			//noinspection ConstantConditions
-			assert deprecatedProp != null;
+		if (hasAttribute(element, preferred)) {
+			return getAttribute(element, preferred);
+		} else if (hasAttribute(element, deprecated)) {
 			warner.warn(new DeprecatedPropertyException(element, deprecated, preferred));
-			final String value = deprecatedProp.getValue();
-			if (value == null) {
-				throw exception;
-			}
-			return value;
+			return getAttribute(element, deprecated);
 		} else {
-			final String prefValue = prefProp.getValue();
-			if (prefValue == null) {
-				if (deprecatedProp == null) {
-					throw exception;
-				} else {
-					final String deprecatedValue = deprecatedProp.getValue();
-					if (deprecatedValue == null) {
-						throw exception;
-					} else {
-						return deprecatedValue;
-					}
-				}
-			} else {
-				return prefValue;
-			}
+			throw new MissingPropertyException(element, preferred);
 		}
 	}
 
