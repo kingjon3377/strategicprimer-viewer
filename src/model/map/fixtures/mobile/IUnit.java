@@ -14,7 +14,6 @@ import model.map.fixtures.FortressMember;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
-import util.NullCleaner;
 
 /**
  * An interface for units.
@@ -182,13 +181,11 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 			final Iterable<UnitMember> other = (IUnit) obj;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {
-				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())),
-						member);
+				ours.put(Integer.valueOf(member.getID()), member);
 			}
 			final String localContext =
-					NullCleaner.assertNotNull(String.format(
-							"%s In unit of kind %s named %s (ID #%d):",
-							context, getKind(), getName(), Integer.valueOf(getID())));
+					String.format("%s In unit of kind %s named %s (ID #%d):", context,
+							getKind(), getName(), Integer.valueOf(getID()));
 			boolean retval = true;
 			for (final UnitMember member : other) {
 				if (!ours.containsKey(Integer.valueOf(member.getID()))) {
@@ -199,8 +196,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 					ostream.append(Integer.toString(member.getID()));
 					ostream.append(LineEnd.LINE_SEP);
 					retval = false;
-				} else if (!NullCleaner.assertNotNull(
-						ours.get(Integer.valueOf(member.getID())))
+				} else if (!ours.get(Integer.valueOf(member.getID()))
 									.isSubset(member, ostream, localContext)) {
 					retval = false;
 				}
