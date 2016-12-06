@@ -1,5 +1,6 @@
 package view.util;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -106,5 +107,26 @@ public class BoxPanel extends JPanel {
 		} else {
 			return "Vertical BoxPanel";
 		}
+	}
+	/**
+	 * @param lineAxis true for horizontal, false for vertical
+	 * @param separation how big a rigid area to put between each item
+	 * @param items the items to put in the panel
+	 */
+	public static BoxPanel centeredBox(final boolean lineAxis, final int separation,
+									   final Component... items) {
+		final BoxPanel retval = new BoxPanel(lineAxis);
+		retval.addGlue();
+		boolean isFirst = true;
+		for (final Component component : items) {
+			if (isFirst) {
+				isFirst = false;
+			} else {
+				retval.addRigidArea(separation);
+			}
+			retval.add(component);
+		}
+		retval.addGlue();
+		return retval;
 	}
 }

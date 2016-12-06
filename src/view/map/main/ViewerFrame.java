@@ -131,13 +131,7 @@ public final class ViewerFrame extends SPFrame {
 		final JPanel buttonPanel;
 		OnMac.makeButtonsSegmented(allButton, noneButton);
 		if (OnMac.SYSTEM_IS_MAC) {
-			buttonPanel = new BoxPanel(true);
-			final BoxPanel boxView = (BoxPanel) buttonPanel;
-			boxView.addGlue();
-			buttonPanel.add(allButton);
-			boxView.addRigidArea(2);
-			buttonPanel.add(noneButton);
-			boxView.addGlue();
+			buttonPanel = BoxPanel.centeredBox(true, 2, allButton, noneButton);
 		} else {
 			buttonPanel = BorderedPanel.horizontalPanel(allButton, null, noneButton);
 		}
