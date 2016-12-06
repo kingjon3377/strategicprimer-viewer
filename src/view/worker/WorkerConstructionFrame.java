@@ -20,7 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 import model.listeners.NewWorkerListener;
 import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
@@ -182,7 +181,6 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 		setContentPane(new BorderedPanel(statsPanel, textPanel, buttonPanel,
 												null, null));
 		setMinimumSize(new Dimension(320, 240));
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
 
