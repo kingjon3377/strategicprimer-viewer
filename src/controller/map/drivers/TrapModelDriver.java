@@ -84,10 +84,8 @@ public final class TrapModelDriver implements SimpleDriver {
 			} else {
 				name = "trapper";
 			}
-			int minutes = cli.inputNumber("How many hours will the " + name + " work? " +
-												  "") *
-
-								  MIN_PER_HOUR;
+			int minutes = cli.inputNumber("How many hours will the " + name +
+												  " work? ") * MIN_PER_HOUR;
 			final Point point = cli.inputPoint("Where is the " + name + " working? ");
 			final List<String> fixtures;
 			final HuntingModel huntModel = new HuntingModel(map);
