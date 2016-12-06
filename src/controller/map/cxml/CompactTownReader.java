@@ -3,12 +3,10 @@ package controller.map.cxml;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Logger;
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -199,10 +197,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 									TownSize.parseTownSize(
 											getParameter(element, "size", "small")));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && EqualsAny.equalsAny(
-					NullCleaner.assertNotNull(
-							event.asStartElement().getName().getNamespaceURI()),
-					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
+			if (event.isStartElement() && isSupportedNamespace(
+							event.asStartElement().getName())) {
 				final String memberTag = event.asStartElement().getName()
 												 .getLocalPart().toLowerCase();
 				switch (memberTag) {

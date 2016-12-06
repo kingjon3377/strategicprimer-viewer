@@ -75,9 +75,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	protected static void requireTag(final StartElement element,
 									 final QName parent, final String... tags)
 			throws SPFormatException {
-		if (!EqualsAny.equalsAny(
-				assertNotNull(element.getName().getNamespaceURI()),
-				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
+		if (!isSupportedNamespace(element.getName())) {
 			throw new UnwantedChildException(parent, element,
 													new IllegalArgumentException
 															("Unrecognized namespace"));
@@ -162,7 +160,14 @@ public abstract class AbstractCompactReader<@NonNull T>
 			}
 		}
 	}
-
+	/**
+	 * @param tag a tag
+	 * @return whether it's in a namespace we support.
+	 */
+	protected static boolean isSupportedNamespace(final QName tag) {
+		return EqualsAny.equalsAny(tag.getNamespaceURI(), ISPReader.NAMESPACE,
+				XMLConstants.NULL_NS_URI);
+	}
 	/**
 	 * Move along the stream until we hit an end element matching the start-element we're
 	 * parsing, but object to any start elements.
@@ -175,10 +180,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 									   final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
-			if (event.isStartElement() && EqualsAny.equalsAny(
-					assertNotNull(
-							event.asStartElement().getName().getNamespaceURI()),
-					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
+			if (event.isStartElement() &&
+						isSupportedNamespace(event.asStartElement().getName())) {
 				throw new UnwantedChildException(tag,
 														assertNotNull(
 																event.asStartElement()));

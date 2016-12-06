@@ -15,7 +15,6 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.StreamSupport;
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -147,12 +146,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 											.stream(stream.spliterator(), false)
 											.filter(XMLEvent::isStartElement)
 											.map(XMLEvent::asStartElement)
-											.filter(elem -> EqualsAny.equalsAny(
-													assertNotNull(
-															elem.getName()
-																	.getNamespaceURI()),
-													ISPReader.NAMESPACE,
-													XMLConstants.NULL_NS_URI))
+											.filter(elem -> isSupportedNamespace(
+													elem.getName()))
 											.findFirst()
 											.orElseThrow(
 													() -> new MissingChildException
@@ -276,14 +271,11 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
+			if (event.isStartElement() &&
+						isSupportedNamespace(event.asStartElement().getName())) {
 				final StartElement current = event.asStartElement();
 				final String type = assertNotNull(current.getName().getLocalPart());
-				if (!EqualsAny.equalsAny(
-						assertNotNull(current.getName().getNamespaceURI()),
-						ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-					continue;
-				} else if ("player".equalsIgnoreCase(type)) {
+				if ("player".equalsIgnoreCase(type)) {
 					retval.addPlayer(CompactPlayerReader.READER.read(current,
 							tagStack.peek(), players, warner, idFactory, stream));
 				} else if ("row".equalsIgnoreCase(type)) {

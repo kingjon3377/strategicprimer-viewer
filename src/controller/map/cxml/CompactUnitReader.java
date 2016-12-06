@@ -3,13 +3,11 @@ package controller.map.cxml;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -20,7 +18,6 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.NonNull;
-import util.EqualsAny;
 import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
@@ -126,10 +123,8 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && EqualsAny.equalsAny(
-					NullCleaner.assertNotNull(
-							event.asStartElement().getName().getNamespaceURI()),
-					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
+			if (event.isStartElement() &&
+						isSupportedNamespace(event.asStartElement().getName())) {
 				if ("orders".equalsIgnoreCase(
 						event.asStartElement().getName().getLocalPart())) {
 					parseOrders(event.asStartElement(), retval,

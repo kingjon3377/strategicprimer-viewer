@@ -7,7 +7,6 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -110,9 +109,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 		boolean anySkills = false;
 		boolean onlyOneSkill = true;
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && equalsAny(NullCleaner.assertNotNull(
-					event.asStartElement().getName().getNamespaceURI()),
-					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
+			if (event.isStartElement() &&
+						isSupportedNamespace(event.asStartElement().getName())) {
 				if ("skill".equalsIgnoreCase(NullCleaner.assertNotNull(event
 																			   .asStartElement()
 																			   .getName()
@@ -282,9 +280,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && equalsAny(NullCleaner.assertNotNull(
-					event.asStartElement().getName().getNamespaceURI()),
-					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
+			if (event.isStartElement() && isSupportedNamespace(event.asStartElement().getName())) {
 				if ("job".equalsIgnoreCase(NullCleaner.assertNotNull(event
 																			 .asStartElement()
 																			 .getName()
