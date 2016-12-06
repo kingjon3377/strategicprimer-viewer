@@ -249,8 +249,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			currentTurn = getIntegerParameter(element, "current_turn");
 			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equalsIgnoreCase(mapTag.getName().getLocalPart())) {
-				throw new UnwantedChildException(
-														assertNotNull(element.getName()),
+				throw new UnwantedChildException(assertNotNull(element.getName()),
 														mapTag);
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
@@ -362,12 +361,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			}
 		}
 		if (hasParameter(mapTag, "current_player")) {
-			retval.setCurrentPlayer(players
-											.getPlayer(getIntegerParameter(mapTag,
+			retval.setCurrentPlayer(players.getPlayer(getIntegerParameter(mapTag,
 													"current_player")));
 		} else if (hasParameter(element, "current_player")) {
-			retval.setCurrentPlayer(players
-											.getPlayer(getIntegerParameter(element,
+			retval.setCurrentPlayer(players.getPlayer(getIntegerParameter(element,
 													"current_player")));
 		}
 		return retval;
