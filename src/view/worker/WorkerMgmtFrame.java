@@ -564,7 +564,7 @@ public final class WorkerMgmtFrame extends SPFrame {
 		 * @param subWindow The window that we are to eventually dispose.
 		 */
 		protected CloseListener(final NewUnitDialog subWindow) {
-			this.dialog = subWindow;
+			dialog = subWindow;
 		}
 
 		/**
