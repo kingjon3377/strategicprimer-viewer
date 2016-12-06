@@ -225,8 +225,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 		writeProperty(ostream, "name", obj.getName());
 		writeProperty(ostream, "level", Integer.toString(obj.getLevel()));
 		if (obj.iterator().hasNext()) {
-			ostream.append('>');
-			ostream.append(LineEnd.LINE_SEP);
+			finishParentTag(ostream);
 			for (final ISkill skill : obj) {
 				writeSkill(ostream, skill, indent + 1);
 			}
@@ -338,8 +337,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 			ostream.append(portraitXML((HasPortrait) obj));
 		}
 		if (obj.iterator().hasNext() || (obj.getStats() != null)) {
-			ostream.append(">");
-			ostream.append(LineEnd.LINE_SEP);
+			finishParentTag(ostream);
 			writeStats(ostream, obj.getStats(), indent + 1);
 			for (final IJob job : obj) {
 				writeJob(ostream, job, indent + 1);

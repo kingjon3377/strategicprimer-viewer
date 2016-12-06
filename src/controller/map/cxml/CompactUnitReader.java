@@ -282,8 +282,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 		}
 		if (obj.iterator().hasNext() || !obj.getAllOrders().isEmpty() ||
 					!obj.getAllResults().isEmpty()) {
-			ostream.append('>');
-			ostream.append(LineEnd.LINE_SEP);
+			finishParentTag(ostream);
 			for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet
 																					 ()) {
 				if (entry.getValue().trim().isEmpty()) {

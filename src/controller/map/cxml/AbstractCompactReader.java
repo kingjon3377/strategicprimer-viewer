@@ -23,6 +23,7 @@ import model.map.HasPortrait;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
+import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -434,5 +435,14 @@ public abstract class AbstractCompactReader<@NonNull T>
 		ostream.append("=\"");
 		ostream.append(value);
 		ostream.append('"');
+	}
+	/**
+	 * Write '>\n' to the stream.
+	 * @param ostream the stream to write to.
+	 * @throws IOException on I/O error while writing
+	 */
+	protected static void finishParentTag(final Appendable ostream) throws IOException {
+		ostream.append('>');
+		ostream.append(LineEnd.LINE_SEP);
 	}
 }
