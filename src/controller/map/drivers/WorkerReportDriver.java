@@ -3,6 +3,7 @@ package controller.map.drivers;
 import controller.map.misc.ICLIHelper;
 import controller.map.report.ReportGenerator;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,7 +49,15 @@ public final class WorkerReportDriver implements SimpleDriver {
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
-		USAGE.addSupportedOption("--out=/path/to/output.html");
+		if (File.separatorChar == '\\') {
+			USAGE.addSupportedOption(
+					String.format("--out=C:%spath%sto%soutput.html", File.separator,
+							File.separator, File.separator));
+		} else {
+			USAGE.addSupportedOption(
+					String.format("--out=%spath%sto%soutput.html", File.separator,
+							File.separator, File.separator));
+		}
 	}
 
 	/**
