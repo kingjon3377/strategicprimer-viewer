@@ -130,7 +130,7 @@ public interface IMapNG
 					   !isMountainous(location) && getGround(location) == null &&
 					   getForest(location) == null &&
 					   !getRivers(location).iterator().hasNext() &&
-					   streamOtherFixtures(location).anyMatch(x -> true);
+					   streamOtherFixtures(location).noneMatch(x -> true);
 	}
 
 	/**
