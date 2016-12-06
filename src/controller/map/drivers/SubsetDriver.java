@@ -97,7 +97,7 @@ public final class SubsetDriver implements SimpleDriver {
 		if (args.length < 2) {
 			throw new IncorrectUsageException(usage());
 		}
-		SimpleDriver.super.startDriver(options, args);
+		SimpleDriver.super.startDriver(cli, options, args);
 	}
 
 	/**
