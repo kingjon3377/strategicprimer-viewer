@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import javax.swing.DropMode;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -79,6 +80,31 @@ public final class ViewerFrame extends SPFrame {
 				new DetailPanelNG(map.getMapDimensions().version, map);
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
+		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
+				SplitWithWeights.horizontalSplit(0.95, 0.95,
+						ScrollListener.mapScrollPanel(map, mapPanel),
+						createFilterPanel(tableModel)),
+				detailPanel));
+		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		pack();
+		mapPanel.requestFocusInWindow();
+		final WindowAdapter windowSizeListener = new MapWindowSizeListener(mapPanel);
+		addWindowListener(windowSizeListener);
+		addWindowStateListener(windowSizeListener);
+
+		setJMenuBar(new ViewerMenu(NullCleaner.assertNotNull(ioHandler), this,
+										  map));
+	}
+
+	/**
+	 * Create the panel that allows the user to filter the display and dynamically
+	 * change the Z-order.
+	 * @param tableModel the data model underlying the table that is the central part of
+	 *                      this panel
+	 * @return the panel
+	 */
+	private static JComponent createFilterPanel(final FixtureFilterTableModel
+														   tableModel) {
 		final JTable table = new JTable(tableModel);
 		table.setDragEnabled(true);
 		table.setDropMode(DropMode.INSERT_ROWS);
@@ -118,23 +144,9 @@ public final class ViewerFrame extends SPFrame {
 		} else {
 			buttonPanel = BorderedPanel.horizontalPanel(allButton, null, noneButton);
 		}
-		final BorderedPanel tablePanel =
-				BorderedPanel.verticalPanel(new JLabel("Display ..."),
-						new JScrollPane(table),
-						buttonPanel);
-		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
-				SplitWithWeights.horizontalSplit(0.95, 0.95,
-						ScrollListener.mapScrollPanel(map, mapPanel), tablePanel),
-				detailPanel));
-		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		pack();
-		mapPanel.requestFocusInWindow();
-		final WindowAdapter windowSizeListener = new MapWindowSizeListener(mapPanel);
-		addWindowListener(windowSizeListener);
-		addWindowStateListener(windowSizeListener);
-
-		setJMenuBar(new ViewerMenu(NullCleaner.assertNotNull(ioHandler), this,
-										  map));
+		return BorderedPanel.verticalPanel(new JLabel("Display ..."),
+				new JScrollPane(table),
+				buttonPanel);
 	}
 
 	/**
