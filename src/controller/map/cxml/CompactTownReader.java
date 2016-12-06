@@ -321,39 +321,31 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			writeAbstractTown(ostream, (AbstractTown) obj, indent);
 		} else if (obj instanceof Village) {
 			writeTag(ostream, "village", indent);
-			// FIXME: Use writeProperty() here
-			ostream.append(" status=\"");
-			ostream.append(obj.status().toString());
+			writeProperty(ostream, "status", obj.status().toString());
 			if (!obj.getName().isEmpty()) {
-				ostream.append("\" name=\"");
-				ostream.append(obj.getName());
+				writeProperty(ostream, "name", obj.getName());
 			}
-			ostream.append("\" id=\"");
-			ostream.append(Integer.toString(obj.getID()));
-			ostream.append("\" owner=\"");
-			ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
-			ostream.append("\" race=\"");
+			writeProperty(ostream, "id", Integer.toString(obj.getID()));
+			writeProperty(ostream, "owner",
+					Integer.toString(obj.getOwner().getPlayerId()));
 			final Village village = (Village) obj;
-			ostream.append(village.getRace());
-			ostream.append("\" ").append(imageXML(village));
+			writeProperty(ostream, "race", village.getRace());
+			ostream.append(imageXML(village));
 			ostream.append(portraitXML(obj));
 			closeLeafTag(ostream);
 		} else if (obj instanceof Fortress) {
 			writeTag(ostream, "fortress", indent);
-			ostream.append(" owner=\"");
-			ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
+			writeProperty(ostream, "owner",
+					Integer.toString(obj.getOwner().getPlayerId()));
 			if (!obj.getName().isEmpty()) {
-				ostream.append("\" name=\"");
-				ostream.append(obj.getName());
+				writeProperty(ostream, "name", obj.getName());
 			}
 			if (TownSize.Small != obj.size()) {
-				ostream.append("\" size=\"");
-				ostream.append(obj.size().toString());
+				writeProperty(ostream, "size", obj.size().toString());
 			}
-			ostream.append("\" id=\"");
-			ostream.append(Integer.toString(obj.getID()));
+			writeProperty(ostream, "id", Integer.toString(obj.getID()));
 			final Fortress fortress = (Fortress) obj;
-			ostream.append('"').append(imageXML(fortress));
+			ostream.append(imageXML(fortress));
 			ostream.append(portraitXML(obj));
 			ostream.append('>');
 			if ((fortress).iterator().hasNext()) {
