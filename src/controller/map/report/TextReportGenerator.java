@@ -61,9 +61,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 				fixtures.remove(entry.getKey());
 			}
 		}
-		items.sort(
-				(firstPair, secondPair) -> Integer.compare(firstPair.second().getTurn(),
-						secondPair.second().getTurn()));
+		items.sort(Comparator.comparingInt(pair -> pair.second().getTurn()));
 		final HeadedList<String> list = new HtmlList("<h4>Miscellaneous Notes</h4>");
 		list.addAll(items.stream().map(item -> produce(fixtures, map, currentPlayer,
 				item.second(), item.first())).collect(Collectors.toList()));

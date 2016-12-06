@@ -61,7 +61,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 						two.second().size()),
 				(one, two) -> TownComparator.compareTownStatus(one.second().status(),
 						two.second().status()),
-				(one, two) -> one.second().getName().compareTo(two.second().getName()));
+				Comparator.comparing(one -> one.second().getName()));
 	}
 
 	/**

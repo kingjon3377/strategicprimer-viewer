@@ -3,6 +3,7 @@ package controller.map.misc;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import model.map.HasName;
 import model.map.fixtures.towns.City;
 import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Fortress;
@@ -39,7 +40,7 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 			Arrays.asList((one, two) -> compareTownStatus(one.status(), two.status()),
 					(one, two) -> compareTownSize(one.size(), two.size()),
 					TownComparator::compareTownKind,
-					(one, two) -> one.getName().compareTo(two.getName()));
+					Comparator.comparing(HasName::getName));
 
 	/**
 	 * @param one One town-size
