@@ -76,11 +76,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 			final Ground ground = (Ground) item;
 			writeField(ostream, ground.getKind());
 			writeFieldDelimiter(ostream);
-			if (ground.isExposed()) {
-				writeField(ostream, "exposed");
-			} else {
-				writeField(ostream, "not exposed");
-			}
+			writeField(ostream, ternary(ground.isExposed(), "exposed", "not exposed"));
 			ostream.append(getRowDelimiter());
 			return true;
 		} else if (item instanceof Mine) {
@@ -118,15 +114,25 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 			final MineralVein mineral = (MineralVein) item;
 			writeField(ostream, mineral.getKind());
 			writeFieldDelimiter(ostream);
-			if (mineral.isExposed()) {
-				writeField(ostream, "exposed");
-			} else {
-				writeField(ostream, "not exposed");
-			}
+			writeField(ostream, ternary(mineral.isExposed(), "exposed", "not exposed"));
 			ostream.append(getRowDelimiter());
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	/**
+	 * @param condition
+	 * @param truth
+	 * @param falsehood
+	 * @return truth if condition is true, falsehood otherwise
+	 */
+	private <T> T ternary(final boolean condition, final T truth, final T falsehood) {
+		if (condition) {
+			return truth;
+		} else {
+			return falsehood;
 		}
 	}
 
