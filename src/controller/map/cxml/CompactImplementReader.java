@@ -8,7 +8,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.Implement;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -91,8 +90,8 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 		writeTag(ostream, "implement", indent);
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
-		ostream.append(imageXML(obj)).append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		ostream.append(imageXML(obj));
+		closeLeafTag(ostream);
 	}
 
 	/**

@@ -19,7 +19,6 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -128,8 +127,8 @@ public final class CompactTerrainReader extends
 					  final int indent) throws IOException {
 		if (obj instanceof Mountain) {
 			writeTag(ostream, "mountain", indent);
-			ostream.append(imageXML((Mountain) obj)).append(" />");
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.append(imageXML((Mountain) obj));
+			closeLeafTag(ostream);
 			return; // Mountains don't yet have IDs.
 		} else if (obj instanceof Forest) {
 			writeTag(ostream, "forest", indent);
@@ -149,8 +148,7 @@ public final class CompactTerrainReader extends
 		}
 		ostream.append(imageXML((HasImage) obj));
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		closeLeafTag(ostream);
 	}
 
 	/**

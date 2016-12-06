@@ -8,7 +8,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.Ground;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -93,8 +92,8 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 		writeTag(ostream, "ground", indent);
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "exposed", Boolean.toString(obj.isExposed()));
-		ostream.append(imageXML(obj)).append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		ostream.append(imageXML(obj));
+		closeLeafTag(ostream);
 	}
 
 	/**

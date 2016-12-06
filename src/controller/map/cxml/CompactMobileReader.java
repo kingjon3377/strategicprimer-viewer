@@ -32,7 +32,6 @@ import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -245,8 +244,8 @@ public final class CompactMobileReader extends
 				writeProperty(ostream, "status", animal.getStatus());
 			}
 			writeProperty(ostream, "id", Integer.toString(obj.getID()));
-			ostream.append(imageXML(animal)).append(" />");
-			ostream.append(LineEnd.LINE_SEP);
+			ostream.append(imageXML(animal));
+			closeLeafTag(ostream);
 		} else {
 			writeTag(ostream, NullCleaner.assertNotNull(TAG_MAP.get(obj.getClass())),
 					indent);
@@ -257,8 +256,7 @@ public final class CompactMobileReader extends
 			if (obj instanceof HasImage) {
 				ostream.append(imageXML((HasImage) obj));
 			}
-			ostream.append(" />");
-			ostream.append(LineEnd.LINE_SEP);
+			closeLeafTag(ostream);
 		}
 	}
 

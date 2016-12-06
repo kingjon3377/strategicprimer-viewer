@@ -206,8 +206,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			writeTag(ostream, "river", indent);
 			writeProperty(ostream, "direction", obj.getDescription());
 		}
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		closeLeafTag(ostream);
 	}
 
 	/**
@@ -449,8 +448,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						eolIfNeeded(true, ostream);
 						needEOL = false;
 						writeTag(ostream, "mountain", indent + 4);
-						ostream.append(" />");
-						ostream.append(LineEnd.LINE_SEP);
+						closeLeafTag(ostream);
 					}
 					for (final River river : obj.getRivers(point)) {
 						eolIfNeeded(needEOL, ostream);

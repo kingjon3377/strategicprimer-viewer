@@ -15,7 +15,6 @@ import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.explorable.ExplorableFixture;
 import util.ArraySet;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Warning;
 
@@ -129,8 +128,7 @@ public final class CompactExplorableReader
 		writeProperty(ostream, "dc", Integer.toString(((IEvent) obj).getDC()));
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		ostream.append(imageXML(obj));
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		closeLeafTag(ostream);
 	}
 
 	/**

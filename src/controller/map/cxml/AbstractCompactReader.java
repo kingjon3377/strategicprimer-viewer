@@ -445,4 +445,13 @@ public abstract class AbstractCompactReader<@NonNull T>
 		ostream.append('>');
 		ostream.append(LineEnd.LINE_SEP);
 	}
+	/**
+	 * Write ' />\n' to the stream.
+	 * @param ostream the stream to write to.
+	 * @throws IOException on I/O error while writing
+	 */
+	protected static void closeLeafTag(final Appendable ostream) throws IOException {
+		ostream.append(" />");
+		ostream.append(LineEnd.LINE_SEP);
+	}
 }

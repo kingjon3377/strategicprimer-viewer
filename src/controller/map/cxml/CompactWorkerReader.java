@@ -203,8 +203,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 			writeProperty(ostream, "int", Integer.toString(stats.getIntelligence()));
 			writeProperty(ostream, "wis", Integer.toString(stats.getWisdom()));
 			writeProperty(ostream, "cha", Integer.toString(stats.getCharisma()));
-			ostream.append(" />");
-			ostream.append(LineEnd.LINE_SEP);
+			closeLeafTag(ostream);
 		}
 	}
 
@@ -233,8 +232,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 			ostream.append("</job>");
 			ostream.append(LineEnd.LINE_SEP);
 		} else {
-			ostream.append(" />");
-			ostream.append(LineEnd.LINE_SEP);
+			closeLeafTag(ostream);
 		}
 	}
 
@@ -252,8 +250,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 		writeProperty(ostream, "name", obj.getName());
 		writeProperty(ostream, "level", Integer.toString(obj.getLevel()));
 		writeProperty(ostream, "hours", Integer.toString(obj.getHours()));
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		closeLeafTag(ostream);
 	}
 
 	/**
@@ -346,8 +343,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 			ostream.append("</worker>");
 			ostream.append(LineEnd.LINE_SEP);
 		} else {
-			ostream.append(" />");
-			ostream.append(LineEnd.LINE_SEP);
+			closeLeafTag(ostream);
 		}
 	}
 

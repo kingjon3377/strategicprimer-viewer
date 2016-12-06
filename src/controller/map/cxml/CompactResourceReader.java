@@ -320,8 +320,7 @@ public final class CompactResourceReader extends
 		}
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		ostream.append(imageXML(obj));
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		closeLeafTag(ostream);
 	}
 
 	/**

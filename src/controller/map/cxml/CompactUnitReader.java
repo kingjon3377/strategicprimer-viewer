@@ -322,8 +322,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 			ostream.append("</unit>");
 			ostream.append(LineEnd.LINE_SEP);
 		} else {
-			ostream.append(" />");
-			ostream.append(LineEnd.LINE_SEP);
+			closeLeafTag(ostream);
 		}
 	}
 

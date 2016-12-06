@@ -266,8 +266,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		writeProperty(ostream, "owner", Integer.toString(obj.getOwner().getPlayerId()));
 		ostream.append(imageXML(obj));
 		ostream.append(portraitXML(obj));
-		ostream.append(" />");
-		ostream.append(LineEnd.LINE_SEP);
+		closeLeafTag(ostream);
 	}
 
 	/**
@@ -322,6 +321,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			writeAbstractTown(ostream, (AbstractTown) obj, indent);
 		} else if (obj instanceof Village) {
 			writeTag(ostream, "village", indent);
+			// FIXME: Use writeProperty() here
 			ostream.append(" status=\"");
 			ostream.append(obj.status().toString());
 			if (!obj.getName().isEmpty()) {
@@ -337,8 +337,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			ostream.append(village.getRace());
 			ostream.append("\" ").append(imageXML(village));
 			ostream.append(portraitXML(obj));
-			ostream.append("/>");
-			ostream.append(LineEnd.LINE_SEP);
+			closeLeafTag(ostream);
 		} else if (obj instanceof Fortress) {
 			writeTag(ostream, "fortress", indent);
 			ostream.append(" owner=\"");
