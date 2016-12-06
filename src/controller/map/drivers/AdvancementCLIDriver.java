@@ -52,10 +52,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 								   "View a player's workers and manage their " +
 										   "advancement",
 								   "View a player's units, the workers in those units," +
-										   " " +
-										   "each worker's Jobs, and his or her level in" +
-										   " " +
-										   "each Skill in each Job."
+										   " each worker's Jobs, and his or her level " +
+										   "in each Skill in each Job."
 			);
 
 	static {

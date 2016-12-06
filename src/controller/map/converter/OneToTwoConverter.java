@@ -317,8 +317,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 								 final List<Point> points, final IMutableMapNG map) {
 		if (RES_JUMP != optSubTilesPerTile()) {
 			throw new IllegalStateException("This function is tuned for 4 sub-tiles per" +
-													" " +
-													"tile per axis");
+													" tile per axis");
 		}
 		switch (river) {
 		case East:

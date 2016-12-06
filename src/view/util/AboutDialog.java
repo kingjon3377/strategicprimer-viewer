@@ -69,8 +69,7 @@ public final class AboutDialog extends JDialog {
 						"CC-BY");
 		builder.append(
 				"<p>Window menu managed by BSD-licensed code by Jeremy Wood, downloaded" +
-						" " +
-						"from ");
+						" from ");
 		link(builder, "http://javagraphics.java.net", "javagraphics.java.net");
 		builder.append("</p>");
 		builder.append("<p>Pair implementation by Peter Lawrey on ");
@@ -78,8 +77,7 @@ public final class AboutDialog extends JDialog {
 		builder.append("</p>");
 		builder.append(
 				"<p>Drag-and-drop implementation uses code adapted from 'helloworld922'" +
-						" " +
-						"on the ");
+						" on the ");
 		//noinspection HardcodedFileSeparator
 		link(builder,
 				"http://www.javaprogrammingforums" +

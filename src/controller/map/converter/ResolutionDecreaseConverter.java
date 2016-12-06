@@ -123,8 +123,7 @@ public final class ResolutionDecreaseConverter {
 		if (((map.dimensions().rows % 2) != 0)
 					|| ((map.dimensions().cols % 2) != 0)) {
 			throw new IllegalArgumentException("Can only convert maps with even numbers" +
-													   " " +
-													   "of rows and columns.");
+													   " of rows and columns.");
 		}
 	}
 

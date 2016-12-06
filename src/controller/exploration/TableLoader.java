@@ -100,8 +100,8 @@ public final class TableLoader {
 			throws IOException {
 		final String line = reader.readLine();
 		if (line == null) {
-			throw new IOException("File doesn't start by specifying which kind of table" +
-										  ".");
+			throw new IOException(
+					"File doesn't start by specifying which kind of table.");
 		} else {
 			final char cmd = Character.toLowerCase(line.charAt(0));
 			switch (cmd) {

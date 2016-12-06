@@ -320,8 +320,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	@Override
 	public final SectionListReportNode clone() {
 		throw new IllegalStateException("cloning prohibited",
-											   new CloneNotSupportedException("cloning" +
-																					  " " +
-																					  "prohibited"));
+											   new CloneNotSupportedException(
+											   		"cloning prohibited"));
 	}
 }

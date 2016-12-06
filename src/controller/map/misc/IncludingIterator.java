@@ -182,8 +182,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		} catch (final XMLStreamException e) {
 			// TODO: Tests should handle include-non-XML case
 			throw new NoSuchElementBecauseException("XML stream error parsing <include>" +
-															" " +
-															"tag or opening file",
+															" tag or opening file",
 														   e);
 		} catch (final SPFormatException e) {
 			throw new NoSuchElementBecauseException("SP format problem in <include>", e);

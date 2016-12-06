@@ -58,8 +58,7 @@ public final class QueryCLI implements SimpleDriver {
 			new DriverUsage(false, "-q", "--query", ParamCount.One,
 								   "Answer questions about a map.",
 								   "Look at tiles on a map. Or run hunting, gathering," +
-										   " " +
-										   "or fishing."
+										   " or fishing."
 			);
 
 	/**

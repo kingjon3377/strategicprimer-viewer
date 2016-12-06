@@ -70,9 +70,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 								   "Test drawing performance",
 								   String.format(
 										   "Test the performance of the TileDrawHelper" +
-												   " " +
-												   "classes---which do the heavy lifting" +
-												   " of " +
+												   " classes---which do the heavy " +
+												   "lifting of " +
 												   "rendering the map%nin the " +
 												   "viewer---using a " +
 												   "variety of automated tests.")

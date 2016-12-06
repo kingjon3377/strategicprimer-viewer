@@ -304,19 +304,16 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 									  "current_turn=\"-1\">%n\t<map version=\"2\" " +
 									  "rows=\"3\" columns=\"4\">%n\t\t<row " +
 									  "index=\"2\">%n\t\t\t<tile row=\"2\" column=\"3\"" +
-									  " " +
-									  "kind=\"jungle\">%n\t\t\t\t<unit owner=\"2\" " +
+									  " kind=\"jungle\">%n\t\t\t\t<unit owner=\"2\" " +
 									  "kind=\"explorer\" name=\"name one\" id=\"1\" " +
 									  "/>%n\t\t\t\t<unit owner=\"2\" kind=\"explorer\"" +
-									  " " +
-									  "name=\"name two\" id=\"2\" " +
+									  " name=\"name two\" id=\"2\" " +
 									  "/>%n\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view" +
 									  ">%n",
 						ISPReader.NAMESPACE);
 		final String xmlTwoAlphabetical = String.format(
 				"<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"%s\">%n\t<map" +
-						" " +
-						"columns=\"4\" rows=\"3\" version=\"2\">%n\t\t<row " +
+						" columns=\"4\" rows=\"3\" version=\"2\">%n\t\t<row " +
 						"index=\"2\">%n\t\t\t<tile column=\"3\" kind=\"jungle\" " +
 						"row=\"2\">%n\t\t\t\t<unit id=\"1\" kind=\"explorer\" " +
 						"name=\"name one\" owner=\"2\"/>%n\t\t\t\t<unit id=\"2\" " +
@@ -337,8 +334,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				equalTo(String.format(
 						"<view xmlns=\"%s\" current_player=\"-1\" " +
 								"current_turn=\"-1\">%n\t<map version=\"2\" rows=\"1\"" +
-								" " +
-								"columns=\"1\">%n\t</map>%n</view>%n",
+								" columns=\"1\">%n\t</map>%n</view>%n",
 						ISPReader.NAMESPACE)));
 		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
@@ -348,8 +344,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				anyOf(equalTo(String.format(
 						"<view xmlns=\"%s\" current_player=\"-1\" " +
 								"current_turn=\"-1\">%n\t<map version=\"2\" rows=\"1\"" +
-								" " +
-								"columns=\"1\">%n\t</map>%n</view>%n",
+								" columns=\"1\">%n\t</map>%n</view>%n",
 						ISPReader.NAMESPACE)), equalTo(String.format(
 						"<view current_player=\"-1\" current_turn=\"-1\" " +
 								"xmlns=\"%s\">%n\t<map columns=\"1\" rows=\"1\" " +

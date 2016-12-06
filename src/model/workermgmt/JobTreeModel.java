@@ -84,10 +84,8 @@ public final class JobTreeModel
 			}
 			return retval;
 		} else {
-			throw new ArrayIndexOutOfBoundsException(
-															"Parent does not have that" +
-																	" " +
-																	"many children");
+			throw new ArrayIndexOutOfBoundsException("Parent does not have that" +
+																	" many children");
 		}
 	}
 
@@ -140,10 +138,8 @@ public final class JobTreeModel
 		} else if ((index >= 0) && (parent instanceof IJob)) {
 			return getFromIter((IJob) parent, index);
 		} else {
-			throw new ArrayIndexOutOfBoundsException(
-															"Parent does not have that" +
-																	" " +
-																	"child.");
+			throw new ArrayIndexOutOfBoundsException("Parent does not have that" +
+																	" child.");
 		}
 	}
 

@@ -170,7 +170,8 @@ public final class WorkerMgmtFrame extends SPFrame {
 		tree.addUnitMemberListener(mdp);
 		final StrategyExporter strategyExporter = new StrategyExporter(model);
 		final ActionListener exporterLambda =
-				evt -> new FileChooser(Optional.empty(), new JFileChooser("" + "."),
+				evt -> new FileChooser(Optional.empty(),
+											  new JFileChooser("."),
 											  FileChooserOperation.Save)
 							   .call(file -> strategyExporter.writeStrategy(file, options,
 									   treeModel.dismissed()));

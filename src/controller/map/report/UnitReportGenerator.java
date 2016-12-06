@@ -2,7 +2,6 @@ package controller.map.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -320,7 +319,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			turns.addAll(item.getAllResults().keySet());
 			for (final Integer turn : turns) {
 				builder.append(OPEN_LIST_ITEM).append("Turn ")
-						.append(Integer.toString(turn)).append(":").append(OPEN_LIST);
+						.append(Integer.toString(turn)).append(':').append(OPEN_LIST);
 				final String orders = item.getOrders(turn);
 				if (!orders.isEmpty()) {
 					builder.append(OPEN_LIST_ITEM).append("Orders: ").append(orders)

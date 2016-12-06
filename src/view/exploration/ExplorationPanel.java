@@ -78,12 +78,10 @@ public final class ExplorationPanel extends BorderedPanel
 	 * The label showing the current location of the explorer.
 	 */
 	private final JLabel locLabel = new JLabel("<html><body>Currently exploring (-1, " +
-													   "-1); click a tile to explore it" +
-													   "." +
-													   " Selected fixtures in its " +
-													   "left-hand" +
-													   " list will be 'discovered'." +
-													   "</body></html>");
+													   "-1); click a tile to explore " +
+													   "it. Selected fixtures in its " +
+													   "left-hand list will be" +
+													   " 'discovered'.</body></html>");
 	/**
 	 * The list of completion listeners listening to us.
 	 */

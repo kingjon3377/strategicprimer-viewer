@@ -37,8 +37,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 			new DriverUsage(false, "-l", "--populate", ParamCount.One,
 								   "Add missing fixtures to a map",
 								   "Add specified kinds of fixtures to suitable points" +
-										   " " +
-										   "throughout a map"
+										   " throughout a map"
 			);
 	/**
 	 * How many tiles we've found suitable so far.

@@ -41,8 +41,7 @@ public final class SubsetDriver implements SimpleDriver {
 			new DriverUsage(false, "-s", "--subset", ParamCount.AtLeastTwo,
 								   "Check players' maps against master",
 								   "Check that subordinate maps are subsets of the main" +
-										   " " +
-										   "map, containing nothing that it does not " +
+										   " map, containing nothing that it does not " +
 										   "contain in the same place"
 			);
 	/**

@@ -1,7 +1,6 @@
 package controller.map.report;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -290,8 +289,8 @@ public final class ExplorableReportGenerator
 			if (adventure.getOwner().isIndependent()) {
 				return new SimpleReportNode(loc,
 												   adventure
-														   .getBriefDescription(), " " +
-																																			  "at ",
+														   .getBriefDescription(),
+												   " at ",
 												   loc.toString(),
 												   adventure
 														   .getFullDescription(),
@@ -300,8 +299,8 @@ public final class ExplorableReportGenerator
 			} else if (currentPlayer.equals(adventure.getOwner())) {
 				return new SimpleReportNode(loc,
 												   adventure
-														   .getBriefDescription(), " " +
-																																			  "at ",
+														   .getBriefDescription(),
+												   " at ",
 												   loc.toString(),
 												   adventure
 														   .getFullDescription(),
@@ -311,8 +310,8 @@ public final class ExplorableReportGenerator
 			} else {
 				return new SimpleReportNode(loc,
 												   adventure
-														   .getBriefDescription(), " " +
-																																			  "at ",
+														   .getBriefDescription(),
+												   " at ",
 												   loc.toString(),
 												   adventure
 														   .getFullDescription(),
