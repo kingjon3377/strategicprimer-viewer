@@ -302,13 +302,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					// then failed to load, be liberal in what we accept here
 					if (hasParameter(current, "kind")
 								|| hasParameter(current, "type")) {
-						retval.setBaseTerrain(point, TileType
-															 .getTileType(
-																	 getParamWithDeprecatedForm(
-																			 current,
-																			 "kind",
-																			 "type",
-																			 warner)));
+						retval.setBaseTerrain(point,
+								TileType.getTileType(
+										getParamWithDeprecatedForm(current, "kind",
+												"type", warner)));
 					} else {
 						//noinspection ObjectAllocationInLoop
 						warner.warn(new MissingPropertyException(current, "kind"));
