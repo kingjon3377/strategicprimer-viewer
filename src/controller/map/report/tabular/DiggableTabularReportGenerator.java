@@ -66,60 +66,34 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   final TileFixture item, final Point loc) throws IOException {
+		final String classField;
+		final String statusField;
 		if (item instanceof Ground) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "ground");
-			writeFieldDelimiter(ostream);
-			final Ground ground = (Ground) item;
-			writeField(ostream, ground.getKind());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, ternary(ground.isExposed(), "exposed", "not exposed"));
-			ostream.append(getRowDelimiter());
-			return true;
+			classField = "ground";
+			statusField = ternary(((Ground) item).isExposed(), "exposed", "not exposed");
 		} else if (item instanceof Mine) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "mine");
-			writeFieldDelimiter(ostream);
-			final Mine mine = (Mine) item;
-			writeField(ostream, mine.getKind());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, mine.getStatus().toString());
-			ostream.append(getRowDelimiter());
-			return true;
+			classField = "mine";
+			statusField = ((Mine) item).getStatus().toString();
 		} else if (item instanceof StoneDeposit) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "deposit");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, ((StoneDeposit) item).getKind());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "exposed");
-			ostream.append(getRowDelimiter());
-			return true;
+			classField = "deposit";
+			statusField = "exposed";
 		} else if (item instanceof MineralVein) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "vein");
-			writeFieldDelimiter(ostream);
-			final MineralVein mineral = (MineralVein) item;
-			writeField(ostream, mineral.getKind());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, ternary(mineral.isExposed(), "exposed", "not exposed"));
-			ostream.append(getRowDelimiter());
-			return true;
+			classField = "vein";
+			statusField = ternary(((MineralVein) item).isExposed(), "exposed", "not exposed");
 		} else {
 			return false;
 		}
+		writeField(ostream, distanceString(loc, base));
+		writeFieldDelimiter(ostream);
+		writeField(ostream, loc.toString());
+		writeFieldDelimiter(ostream);
+		writeField(ostream, classField);
+		writeFieldDelimiter(ostream);
+		writeField(ostream, ((HasKind) item).getKind());
+		writeFieldDelimiter(ostream);
+		writeField(ostream, statusField);
+		ostream.append(getRowDelimiter());
+		return true;
 	}
 
 	/**
