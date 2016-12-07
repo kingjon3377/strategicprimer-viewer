@@ -133,7 +133,7 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	 * @return the kind of terrain, with very coarse granularity, here
 	 */
 	@SuppressWarnings("deprecation")
-	private SimpleTerrain getTerrain(final IMapNG map, final Point location) {
+	private static SimpleTerrain getTerrain(final IMapNG map, final Point location) {
 		switch (map.getBaseTerrain(location)) {
 		case Jungle:
 		case BorealForest:
