@@ -6,11 +6,8 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -22,7 +19,6 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
-import util.Pair;
 import util.Warning;
 
 import static java.util.Collections.unmodifiableList;
@@ -286,33 +282,13 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 		if (obj.iterator().hasNext() || !obj.getAllOrders().isEmpty() ||
 					!obj.getAllResults().isEmpty()) {
 			finishParentTag(ostream);
-			for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet
-																					 ()) {
-				if (entry.getValue().trim().isEmpty()) {
-					continue;
-				}
-				writeTag(ostream, "orders", indent + 1);
-				if (entry.getKey().intValue() >= 0) {
-					writeProperty(ostream, "turn",
-							Integer.toString(entry.getKey().intValue()));
-				}
-				ostream.append('>');
-				ostream.append(simpleQuote(entry.getValue().trim()));
-				closeTag(ostream, 0, "orders");
+			for (final Map.Entry<Integer, String> pair : obj.getAllOrders().entrySet()) {
+				writeOrders(ostream, "orders", pair.getKey().intValue(),
+						pair.getValue(), indent + 1);
 			}
-			for (final Map.Entry<Integer, String> entry : obj.getAllResults()
-																  .entrySet()) {
-				if (entry.getValue().trim().isEmpty()) {
-					continue;
-				}
-				writeTag(ostream, "results", indent + 1);
-				if (entry.getKey().intValue() >= 0) {
-					writeProperty(ostream, "turn",
-							Integer.toString(entry.getKey().intValue()));
-				}
-				ostream.append('>');
-				ostream.append(simpleQuote(entry.getValue().trim()));
-				closeTag(ostream, 0, "results");
+			for (final Map.Entry<Integer, String> pair : obj.getAllResults().entrySet()) {
+				writeOrders(ostream, "results", pair.getKey().intValue(),
+						pair.getValue(), indent + 1);
 			}
 			for (final UnitMember member : obj) {
 				CompactReaderAdapter.write(ostream, member, indent + 1);
@@ -331,5 +307,27 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	public boolean canWrite(final Object obj) {
 		return obj instanceof Unit;
 	}
-
+	/**
+	 * Write orders or results.
+	 * @param ostream the stream to write to
+	 * @param tag the tag to use
+	 * @param turn which turn these are for
+	 * @param value the text to write
+	 * @param indent the current indentation level
+	 * @throws IOException on I/O error
+	 */
+	private static void writeOrders(final Appendable ostream, final String tag,
+									final int turn, final String value,
+									final int indent) throws IOException {
+		if (value.isEmpty()) {
+			return;
+		}
+		writeTag(ostream, tag, indent);
+		if (turn >= 0) {
+			writeProperty(ostream, "turn", Integer.toString(turn));
+		}
+		ostream.append('>');
+		ostream.append(simpleQuote(value));
+		closeTag(ostream, 0, tag);
+	}
 }
