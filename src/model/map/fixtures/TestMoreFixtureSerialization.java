@@ -460,7 +460,6 @@ public final class TestMoreFixtureSerialization extends
 		final Unit unit = new Unit(player, "kind of unit", "name of unit", 2);
 		unit.setOrders(4, "I <3 & :( \"meta'");
 		unit.setResults(5, "2 --> 1");
-		System.err.println(createSerializedForm(unit, true));
 		assertSerialization("Serialization preserves XML meta-characters in orders",
 				unit);
 		unit.setOrders(3, "1 << 2");
