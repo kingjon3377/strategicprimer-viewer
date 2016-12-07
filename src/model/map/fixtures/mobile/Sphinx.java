@@ -118,7 +118,8 @@ public class Sphinx implements MobileFixture, HasMutableImage, UnitMember {
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) throws IOException {
 		if (obj.getID() == id) {
-			return isConditionTrue(ostream, obj instanceof Sphinx, "%s\tFor ID #%d, different kinds of members%n", context,
+			return isConditionTrue(ostream, obj instanceof Sphinx,
+					"%s\tFor ID #%d, different kinds of members%n", context,
 					Integer.valueOf(id));
 		} else {
 			ostream.format("%sCalled with different IDs, #%d and #%d%n", context,

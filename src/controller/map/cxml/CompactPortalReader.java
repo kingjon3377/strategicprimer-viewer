@@ -79,8 +79,10 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 					  final int indent) throws IOException {
 		writeTag(ostream, "portal", indent);
 		writeProperty(ostream, "world", obj.getDestinationWorld());
-		writeProperty(ostream, "row", Integer.toString(obj.getDestinationCoordinates().getRow()));
-		writeProperty(ostream, "column", Integer.toString(obj.getDestinationCoordinates().getCol()));
+		writeProperty(ostream, "row",
+				Integer.toString(obj.getDestinationCoordinates().getRow()));
+		writeProperty(ostream, "column",
+				Integer.toString(obj.getDestinationCoordinates().getCol()));
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		ostream.append(imageXML(obj));
 		closeLeafTag(ostream);

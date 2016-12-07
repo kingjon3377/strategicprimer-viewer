@@ -111,7 +111,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 		model = explorationModel;
 		direction = direct;
 		list = mainList;
-		explorerActions = Arrays.asList(Pair.of("Should the explorer swear any villages on this tile?", () -> {
+		explorerActions = Arrays.asList(
+				Pair.of("Should the explorer swear any villages on this tile?", () -> {
 			model.swearVillages();
 			model.getMap().streamOtherFixtures(model.getSelectedUnitLocation())
 					.filter(Village.class::isInstance)

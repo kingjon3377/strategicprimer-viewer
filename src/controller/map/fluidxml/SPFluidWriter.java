@@ -274,9 +274,9 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	 * @param text the text of the orders or results
 	 * @throws XMLStreamException       on error in the writer
 	 */
-	private static void writeUnitOrders(final XMLStreamWriter ostream, final int indent, final int turn, final String tag, final String text)
-
-			throws XMLStreamException {
+	private static void writeUnitOrders(final XMLStreamWriter ostream, final int indent,
+										final int turn, final String tag,
+										final String text) throws XMLStreamException {
 		if (text.isEmpty()) {
 			return;
 		}
