@@ -228,15 +228,11 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {
-					throw new UnwantedChildException(new QName(element.getName()
-																	   .getNamespaceURI(),
-																	  UNIT_TAG),
-															element);
+					throw new UnwantedChildException(parent, element);
 				}
 			}
 		}
-		throw new UnwantedChildException(new QName(element.getName().getNamespaceURI(),
-														  UNIT_TAG), element);
+		throw new UnwantedChildException(parent, element);
 	}
 
 	/**
