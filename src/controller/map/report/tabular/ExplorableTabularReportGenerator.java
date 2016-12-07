@@ -2,7 +2,6 @@ package controller.map.report.tabular;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,68 +69,52 @@ public class ExplorableTabularReportGenerator
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   final ExplorableFixture item, final Point loc)
 			throws IOException {
+		final String brief;
+		final String owner;
+		final String longDesc;
 		if (item instanceof Battlefield) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "ancient battlefield");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "---");
-			writeFieldDelimiter(ostream);
-			ostream.append(getRowDelimiter());
-			return true;
+			brief = "ancient battlefield";
+			owner = "---";
+			longDesc = "";
 		} else if (item instanceof Cave) {
-			writeField(ostream, distanceString(loc, base));
+			brief = "caves nearby";
 			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "caves nearby");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "---");
-			writeFieldDelimiter(ostream);
-			ostream.append(getRowDelimiter());
-			return true;
+			owner = "---";
+			longDesc = "";
 		} else if (item instanceof Portal) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
 			final Portal portal = (Portal) item;
 			if (portal.getDestinationCoordinates().getRow() < 0) {
-				writeField(ostream, "portal to another world");
+				brief = "portal to another world";
 			} else {
-				writeField(ostream,
-						"portal to world " + portal.getDestinationWorld());
+				brief = "portal to world " + portal.getDestinationWorld();
 			}
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "---");
-			writeFieldDelimiter(ostream);
-			ostream.append(getRowDelimiter());
-			return true;
+			owner = "---";
+			longDesc = "";
 		} else if (item instanceof AdventureFixture) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
 			final AdventureFixture adventure = (AdventureFixture) item;
-			writeField(ostream, adventure.getBriefDescription());
-			writeFieldDelimiter(ostream);
+			brief = adventure.getBriefDescription();
 			if (player.equals(adventure.getOwner())) {
-				writeField(ostream, "You");
+				owner = "You";
 			} else if (adventure.getOwner().isIndependent()) {
-				writeField(ostream, "No-one");
+				owner = "No-one";
 			} else {
-				writeField(ostream,
-						getOwnerString(player, adventure.getOwner()));
+				owner = getOwnerString(player, adventure.getOwner());
 			}
-			writeFieldDelimiter(ostream);
-			writeField(ostream, adventure.getFullDescription());
-			ostream.append(getRowDelimiter());
-			return true;
+			longDesc = adventure.getFullDescription();
 		} else {
 			return false;
 		}
+		writeField(ostream, distanceString(loc, base));
+		writeFieldDelimiter(ostream);
+		writeField(ostream, loc.toString());
+		writeFieldDelimiter(ostream);
+		writeField(ostream, brief);
+		writeFieldDelimiter(ostream);
+		writeField(ostream, owner);
+		writeFieldDelimiter(ostream);
+		writeField(ostream, longDesc);
+		ostream.append(getRowDelimiter());
+		return true;
 	}
 
 	@Override
