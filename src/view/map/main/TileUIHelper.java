@@ -53,25 +53,8 @@ public final class TileUIHelper {
 	@SuppressWarnings("deprecation")
 	public TileUIHelper() {
 		colors = new HashMap<>(SPMapNG.MAX_VERSION + 1);
-		final Map<TileType, Color> verOneColors = new EnumMap<>(TileType.class);
-		verOneColors.put(TileType.BorealForest, new Color(72, 218, 164));
-		verOneColors.put(TileType.Desert, new Color(249, 233, 28));
-		verOneColors.put(TileType.Jungle, new Color(229, 46, 46));
-		verOneColors.put(TileType.Mountain, new Color(249, 137, 28));
-		verOneColors.put(TileType.NotVisible, NullCleaner.assertNotNull(Color.white));
-		verOneColors.put(TileType.Ocean, NullCleaner.assertNotNull(Color.blue));
-		verOneColors.put(TileType.Plains, new Color(0, 117, 0));
-		verOneColors.put(TileType.TemperateForest, new Color(72, 250, 72));
-		verOneColors.put(TileType.Tundra, new Color(153, 153, 153));
-		colors.put(NullCleaner.assertNotNull(Integer.valueOf(1)), verOneColors);
-		final Map<TileType, Color> verTwoColors = new EnumMap<>(TileType.class);
-		verTwoColors.put(TileType.Desert, new Color(249, 233, 28));
-		verTwoColors.put(TileType.Jungle, new Color(229, 46, 46));
-		verTwoColors.put(TileType.NotVisible, NullCleaner.assertNotNull(Color.white));
-		verTwoColors.put(TileType.Ocean, NullCleaner.assertNotNull(Color.blue));
-		verTwoColors.put(TileType.Plains, new Color(72, 218, 164));
-		verTwoColors.put(TileType.Tundra, new Color(153, 153, 153));
-		verTwoColors.put(TileType.Steppe, new Color(72, 100, 72));
+		colors.put(NullCleaner.assertNotNull(Integer.valueOf(1)), verOneColors());
+		final Map<TileType, Color> verTwoColors = verTwoColors();
 		colors.put(NullCleaner.assertNotNull(Integer.valueOf(2)), verTwoColors);
 		descriptions.put(TileType.BorealForest,
 				"<html><p>Boreal Forest</p></html>");
@@ -91,6 +74,38 @@ public final class TileUIHelper {
 		featureColors.put(Oasis.class, new Color(72, 218, 164));
 		featureColors.put(Sandbar.class, new Color(249, 233, 28));
 		featureColors.put(Hill.class, new Color(141, 182, 0));
+	}
+
+	/**
+	 * @return a mapping from tile types to the colors used for a version-2 map.
+	 */
+	private static Map<TileType, Color> verTwoColors() {
+		final Map<TileType, Color> verTwoColors = new EnumMap<>(TileType.class);
+		verTwoColors.put(TileType.Desert, new Color(249, 233, 28));
+		verTwoColors.put(TileType.Jungle, new Color(229, 46, 46));
+		verTwoColors.put(TileType.NotVisible, NullCleaner.assertNotNull(Color.white));
+		verTwoColors.put(TileType.Ocean, NullCleaner.assertNotNull(Color.blue));
+		verTwoColors.put(TileType.Plains, new Color(72, 218, 164));
+		verTwoColors.put(TileType.Tundra, new Color(153, 153, 153));
+		verTwoColors.put(TileType.Steppe, new Color(72, 100, 72));
+		return verTwoColors;
+	}
+
+	/**
+	 * @return a mapping from tile types to the colors used for a version-1 map
+	 */
+	private static Map<TileType, Color> verOneColors() {
+		final Map<TileType, Color> verOneColors = new EnumMap<>(TileType.class);
+		verOneColors.put(TileType.BorealForest, new Color(72, 218, 164));
+		verOneColors.put(TileType.Desert, new Color(249, 233, 28));
+		verOneColors.put(TileType.Jungle, new Color(229, 46, 46));
+		verOneColors.put(TileType.Mountain, new Color(249, 137, 28));
+		verOneColors.put(TileType.NotVisible, NullCleaner.assertNotNull(Color.white));
+		verOneColors.put(TileType.Ocean, NullCleaner.assertNotNull(Color.blue));
+		verOneColors.put(TileType.Plains, new Color(0, 117, 0));
+		verOneColors.put(TileType.TemperateForest, new Color(72, 250, 72));
+		verOneColors.put(TileType.Tundra, new Color(153, 153, 153));
+		return verOneColors;
 	}
 
 	/**
