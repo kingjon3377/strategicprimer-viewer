@@ -10,6 +10,10 @@ import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.XMLConstants;
@@ -25,6 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.LineEnd;
 import util.NullCleaner;
+import util.Pair;
 import util.Warning;
 
 import static java.lang.String.format;
@@ -413,7 +418,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 								   final int indent) throws IOException {
 		indent(ostream, indent);
 		ostream.append('<');
-		ostream.append(tag);
+		ostream.append(simpleQuote(tag));
 		if (indent == 0) {
 			ostream.append(" xmlns=\"");
 			ostream.append(ISPReader.NAMESPACE);
@@ -431,9 +436,9 @@ public abstract class AbstractCompactReader<@NonNull T>
 	protected static void writeProperty(final Appendable ostream, final String name,
 										final String value) throws IOException {
 		ostream.append(' ');
-		ostream.append(name);
+		ostream.append(simpleQuote(name));
 		ostream.append("=\"");
-		ostream.append(value);
+		ostream.append(simpleQuote(value));
 		ostream.append('"');
 	}
 	/**
@@ -467,8 +472,29 @@ public abstract class AbstractCompactReader<@NonNull T>
 			indent(ostream, indent);
 		}
 		ostream.append("</");
-		ostream.append(tag);
+		ostream.append(simpleQuote(tag));
 		ostream.append('>');
 		ostream.append(LineEnd.LINE_SEP);
+	}
+	/**
+	 * Patterns to match XML metacharacters, and their quoted forms.
+	 */
+	private static final List<Pair<Pattern, String>> QUOTING =
+			Arrays.asList(Pair.of(Pattern.compile("&"), "&amp;"),
+					Pair.of(Pattern.compile("<"), "&lt;"),
+					Pair.of(Pattern.compile(">"), "&gt;"),
+					Pair.of(Pattern.compile("\""), "&quot;"),
+					Pair.of(Pattern.compile("'"), "&apos;"));
+	/**
+	 * @param text some text
+	 * @return it, with all XML meta-characters replaced with their equivalents
+	 */
+	protected static String simpleQuote(final String text) {
+		String retval = text;
+		for (Pair<Pattern, String> pair : QUOTING) {
+			final Matcher matcher = pair.first().matcher(retval);
+			retval = matcher.replaceAll(pair.second());
+		}
+		return retval;
 	}
 }

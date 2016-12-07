@@ -454,10 +454,10 @@ public final class TestMoreFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testOrdersQuoting()
+	public void testQuoting()
 			throws XMLStreamException, IOException, SPFormatException {
 		final Player player = new Player(0, "");
-		final IUnit unit = new Unit(player, "kind of unit", "name of unit", 2);
+		final Unit unit = new Unit(player, "kind of unit", "name of unit", 2);
 		unit.setOrders(4, "I <3 & :( \"meta'");
 		unit.setResults(5, "2 --> 1");
 		System.err.println(createSerializedForm(unit, true));
@@ -467,6 +467,8 @@ public final class TestMoreFixtureSerialization extends
 		unit.setResults(-1, "\"quote this\"");
 		assertSerialization("This works even if such characters occur more than once",
 				unit);
+		unit.setName("\"Can't quote this ><>&\"");
+		assertSerialization("Data stored in XML attributes is quoted", unit);
 	}
 	/**
 	 * Test serialization of portraits.

@@ -323,24 +323,6 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 		}
 	}
 
-	private static final List<Pair<Pattern, String>> QUOTING =
-			Arrays.asList(Pair.of(Pattern.compile("&"), "&amp;"),
-					Pair.of(Pattern.compile("<"), "&lt;"),
-					Pair.of(Pattern.compile(">"), "&gt;"),
-					Pair.of(Pattern.compile("\""), "&quot;"),
-					Pair.of(Pattern.compile("'"), "&apos;"));
-	/**
-	 * @param text some text
-	 * @return it, with all XML meta-characters replaced with their equivalents
-	 */
-	private static String simpleQuote(final String text) {
-		String retval = text;
-		for (Pair<Pattern, String> pair : QUOTING) {
-			final Matcher matcher = pair.first().matcher(retval);
-			retval = matcher.replaceAll(pair.second());
-		}
-		return retval;
-	}
 	/**
 	 * @param obj an object
 	 * @return whether we can write it
