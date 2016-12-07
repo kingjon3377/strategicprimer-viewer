@@ -547,6 +547,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 		 * @param map the map to draw
 		 * @param repetitions how many times to repeat the test
 		 * @param tileSize how big to draw each tile
+		 * @return how long it took to run the test
 		 */
 		long runTest(final TileDrawHelper helper, final IMapNG map,
 					 final int repetitions, final int tileSize);
@@ -581,15 +582,41 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 * @param <V> the third type
 	 */
 	private static class Triple<T, U, V> {
+		/**
+		 * The first item in the triple.
+		 */
 		protected final T first;
+		/**
+		 * The second item in the triple.
+		 */
 		protected final U second;
+		/**
+		 * The third item in the triple.
+		 */
 		protected final V third;
+
+		/**
+		 * @param one the first item in the triple.
+		 * @param two the second item in the triple.
+		 * @param three the third item in the triple.
+		 */
 		private Triple(final T one, final U two, final V three) {
 			first = one;
 			second = two;
 			third = three;
 		}
 
+		/**
+		 * Factory method, so you don't have to put type parameters on the constructor
+		 * call.
+		 * @param one the first item in the triple
+		 * @param two the second item in the triple.
+		 * @param three the third item in the triple.
+		 * @param <T> the type of the first item
+		 * @param <U> the type of the second item
+		 * @param <V> the type of the third item.
+		 * @return
+		 */
 		public static <T, U, V> Triple<T, U, V> of(final T one, final U two,
 												   final V three) {
 			return new Triple(one, two, three);
