@@ -274,19 +274,19 @@ public final class QueryCLI implements SimpleDriver {
 				cli.println("Can't herd with no herders.");
 				return;
 			}
-			final int animalsPerHerder = ((count + herders) - 1) / herders;
+			final int flockPerHerder = ((count + herders) - 1) / herders;
 			final DoubleToIntFunction round = dbl -> (int) (Math.ceil(dbl) + 0.1);
 			final int hours;
 			if (herdModel.isPoultry()) {
 				cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",
 						Integer.valueOf(
-								animalsPerHerder * herdModel.getDailyTimePerHead()));
+								flockPerHerder * herdModel.getDailyTimePerHead()));
 				cli.printf(
 						"which should be done every %d turns at least, takes %.1f " +
 								"hours.%n",
 						Integer.valueOf(herdModel.getExtraChoresInterval() + 1),
 						Double.valueOf(
-								(animalsPerHerder * herdModel.getExtraTimePerHead()) /
+								(flockPerHerder * herdModel.getExtraTimePerHead()) /
 										60.0));
 				cli.printf("This produces %.0f %s, totaling %.1f oz.%n",
 						Double.valueOf(herdModel.getProductionPerHead() * count),
@@ -296,20 +296,20 @@ public final class QueryCLI implements SimpleDriver {
 											   count));
 				if (cli.inputBooleanInSeries("Do they do the cleaning this turn? ")) {
 					hours = round.applyAsInt(
-							(animalsPerHerder * (herdModel.getDailyTimePerHead() +
+							(flockPerHerder * (herdModel.getDailyTimePerHead() +
 														 herdModel
 																 .getExtraTimePerHead()
 							)) / 60.0);
 				} else {
 					hours = round.applyAsInt(
-							(animalsPerHerder * herdModel.getDailyTimePerHead()) / 60.0);
+							(flockPerHerder * herdModel.getDailyTimePerHead()) / 60.0);
 				}
 			} else {
 				cli.printf("Tending the animals takes %d minutes, or %d minutes with ",
 						Integer.valueOf(
-								(animalsPerHerder * herdModel.getDailyTimePerHead()) /
+								(flockPerHerder * herdModel.getDailyTimePerHead()) /
 										2),
-						Integer.valueOf(animalsPerHerder *
+						Integer.valueOf(flockPerHerder *
 												((herdModel.getDailyTimePerHead() / 2) -
 														 5)));
 				cli.println("expert herders, twice daily.");
@@ -323,11 +323,11 @@ public final class QueryCLI implements SimpleDriver {
 											   count));
 				if (cli.inputBooleanInSeries("Are the herders experts? ")) {
 					hours = round.applyAsInt(
-							((animalsPerHerder * (herdModel.getDailyTimePerHead() - 5)) +
+							((flockPerHerder * (herdModel.getDailyTimePerHead() - 5)) +
 									 herdModel.getDailyTimeFloor()) / 60.0);
 				} else {
 					hours = round.applyAsInt(
-							((animalsPerHerder * herdModel.getDailyTimePerHead()) +
+							((flockPerHerder * herdModel.getDailyTimePerHead()) +
 									 herdModel.getDailyTimeFloor()) / 60.0);
 				}
 			}
