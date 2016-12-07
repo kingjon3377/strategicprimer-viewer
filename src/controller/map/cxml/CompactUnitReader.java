@@ -6,8 +6,11 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -19,6 +22,7 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
+import util.Pair;
 import util.Warning;
 
 import static java.util.Collections.unmodifiableList;
@@ -188,7 +192,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 * @param stream  the stream of further tags.
 	 * @throws SPFormatException on SP format problem
 	 */
-	private static void parseResults(final StartElement element,
+	private void parseResults(final StartElement element,
 							  final Unit unit,
 							  final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerParameter(element, "turn", -1);
@@ -293,8 +297,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 							Integer.toString(entry.getKey().intValue()));
 				}
 				ostream.append('>');
-				// FIXME: Ensure, and test, that XML special characters are escaped
-				ostream.append(entry.getValue().trim());
+				ostream.append(simpleQuote(entry.getValue().trim()));
 				closeTag(ostream, 0, "orders");
 			}
 			for (final Map.Entry<Integer, String> entry : obj.getAllResults()
@@ -308,8 +311,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 							Integer.toString(entry.getKey().intValue()));
 				}
 				ostream.append('>');
-				// FIXME: Ensure, and test, that XML special characters are escaped
-				ostream.append(entry.getValue().trim());
+				ostream.append(simpleQuote(entry.getValue().trim()));
 				closeTag(ostream, 0, "results");
 			}
 			for (final UnitMember member : obj) {
@@ -321,6 +323,24 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 		}
 	}
 
+	private static final List<Pair<Pattern, String>> QUOTING =
+			Arrays.asList(Pair.of(Pattern.compile("&"), "&amp;"),
+					Pair.of(Pattern.compile("<"), "&lt;"),
+					Pair.of(Pattern.compile(">"), "&gt;"),
+					Pair.of(Pattern.compile("\""), "&quot;"),
+					Pair.of(Pattern.compile("'"), "&apos;"));
+	/**
+	 * @param text some text
+	 * @return it, with all XML meta-characters replaced with their equivalents
+	 */
+	private static String simpleQuote(final String text) {
+		String retval = text;
+		for (Pair<Pattern, String> pair : QUOTING) {
+			final Matcher matcher = pair.first().matcher(retval);
+			retval = matcher.replaceAll(pair.second());
+		}
+		return retval;
+	}
 	/**
 	 * @param obj an object
 	 * @return whether we can write it

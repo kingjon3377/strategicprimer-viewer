@@ -446,7 +446,28 @@ public final class TestMoreFixtureSerialization extends
 				containsString("some other results"));
 		// TODO: Test old non-tag-based orders deserialization
 	}
-
+	/**
+	 * Test that in orders and results quoting XML metacharacters are quoted properly.
+	 *
+	 * @throws SPFormatException  on XML format error
+	 * @throws XMLStreamException on XML reader error
+	 * @throws IOException        on I/O error creating serialized form
+	 */
+	@Test
+	public void testOrdersQuoting()
+			throws XMLStreamException, IOException, SPFormatException {
+		final Player player = new Player(0, "");
+		final IUnit unit = new Unit(player, "kind of unit", "name of unit", 2);
+		unit.setOrders(4, "I <3 & :( \"meta'");
+		unit.setResults(5, "2 --> 1");
+		System.err.println(createSerializedForm(unit, true));
+		assertSerialization("Serialization preserves XML meta-characters in orders",
+				unit);
+		unit.setOrders(3, "1 << 2");
+		unit.setResults(-1, "\"quote this\"");
+		assertSerialization("This works even if such characters occur more than once",
+				unit);
+	}
 	/**
 	 * Test serialization of portraits.
 	 *
