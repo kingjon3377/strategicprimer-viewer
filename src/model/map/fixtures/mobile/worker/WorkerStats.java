@@ -83,7 +83,21 @@ public class WorkerStats {
 		wis = wisdom;
 		cha = charisma;
 	}
-
+	/**
+	 * @param hitPoints the number to use for HP and maxHP
+	 * @param base a set of base stats
+	 * @param adjustment a set of adjustments to those stats
+	 */
+	public WorkerStats(final int hitPoints, final WorkerStats base, final WorkerStats adjustment) {
+		hp = hitPoints;
+		maxHP = hitPoints;
+		strength = base.strength + adjustment.strength;
+		dex = base.dex + adjustment.dex;
+		con = base.con + adjustment.con;
+		intel = base.intel + adjustment.intel;
+		wis = base.wis + adjustment.wis;
+		cha = base.cha + adjustment.cha;
+	}
 	/**
 	 * @param stat a stat
 	 * @return a String representing the modifier it conveys.
@@ -211,5 +225,21 @@ public class WorkerStats {
 		formatter.format("HP: %d / %d%nStr: %d%nDex: %d%n", hp, maxHP, strength, dex);
 		formatter.format("Con: %d%nInt: %d%nWis: %d%nCha: %d%n", con, intel, wis, cha);
 		return NullCleaner.assertNotNull(builder.toString());
+	}
+	/**
+	 * A factory method to produce a set of stats for use as bonuses to be applied to yet
+	 * another set. This is so that you don't have to specify HP if it's not applicable.
+	 * @param strengthStat the worker's strength
+	 * @param dexterity    the worker's dexterity
+	 * @param constitution the worker's constitution
+	 * @param intelligence the worker's intelligence
+	 * @param wisdom       the worker's wisdom
+	 * @param charisma     th worker's charisma
+	 */
+	public static WorkerStats factory(final int strengthStat, final int dexterity,
+									  final int constitution, final int intelligence,
+									  final int wisdom, final int charisma) {
+		return new WorkerStats(0, 0, strengthStat, dexterity, constitution, intelligence,
+									  wisdom, charisma);
 	}
 }

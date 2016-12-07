@@ -516,6 +516,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final int baseInt = threeDeeSix();
 		final int baseWis = threeDeeSix();
 		final int baseCha = threeDeeSix();
+		final WorkerStats base =
+				new WorkerStats(0, 0, baseStr, baseDex, baseCon, baseInt, baseWis,
+									   baseCha);
 		final int lowestScore;
 		if (baseStr <= baseDex && baseStr <= baseCon && baseStr <= baseInt &&
 					baseStr <= baseWis && baseStr <= baseCha) {
@@ -532,52 +535,22 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		} else {
 			lowestScore = 5;
 		}
-		final int racialStrBonus;
-		final int racialDexBonus;
-		final int racialConBonus;
-		final int racialIntBonus;
-		final int racialWisBonus;
-		final int racialChaBonus;
+		final WorkerStats racialBonus;
 		switch (race) {
 		case "dwarf":
-			racialDexBonus = 0;
-			racialStrBonus = 2;
-			racialChaBonus = -2;
-			racialConBonus = 2;
-			racialIntBonus = 0;
-			racialWisBonus = 0;
+			racialBonus = WorkerStats.factory(2, 0, 2, 0, 0, -2);
 			break;
 		case "elf":
-			racialDexBonus = 2;
-			racialStrBonus = -1;
-			racialIntBonus = 1;
-			racialConBonus = 0;
-			racialWisBonus = 0;
-			racialChaBonus = 0;
+			racialBonus = WorkerStats.factory(-1, 2, 0, 1, 0, 0);
 			break;
 		case "gnome":
-			racialIntBonus = 2;
-			racialStrBonus = -2;
-			racialConBonus = -1;
-			racialDexBonus = 1;
-			racialWisBonus = 0;
-			racialChaBonus = 0;
+			racialBonus = WorkerStats.factory(-2, 1, -1, 2, 0, 0);
 			break;
 		case "half-elf":
-			racialDexBonus = 1;
-			racialIntBonus = 1;
-			racialStrBonus = 0;
-			racialConBonus = 0;
-			racialWisBonus = 0;
-			racialChaBonus = 0;
+			racialBonus = WorkerStats.factory(0, 1, 0, 1, 0, 0);
 			break;
 		case "Danan":
-			racialStrBonus = -2;
-			racialDexBonus = 1;
-			racialWisBonus = -2;
-			racialConBonus = 1;
-			racialIntBonus = 1;
-			racialChaBonus = 1;
+			racialBonus = WorkerStats.factory(-2, 1, 1, 1, -2, 1);
 			break;
 		case "human": // fall through; treat undefined as human
 		default:
@@ -595,65 +568,31 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			}
 			switch (bonusStat) {
 			case 0:
-				racialStrBonus = 2;
-				racialDexBonus = 0;
-				racialConBonus = 0;
-				racialIntBonus = 0;
-				racialWisBonus = 0;
-				racialChaBonus = 0;
+				racialBonus = WorkerStats.factory(2, 0, 0, 0, 0, 0);
 				break;
 			case 1:
-				racialStrBonus = 0;
-				racialDexBonus = 2;
-				racialConBonus = 0;
-				racialIntBonus = 0;
-				racialWisBonus = 0;
-				racialChaBonus = 0;
+				racialBonus = WorkerStats.factory(0, 2, 0, 0, 0, 0);
 				break;
 			case 2:
-				racialStrBonus = 0;
-				racialDexBonus = 0;
-				racialConBonus = 2;
-				racialIntBonus = 0;
-				racialWisBonus = 0;
-				racialChaBonus = 0;
+				racialBonus = WorkerStats.factory(0, 0, 2, 0, 0, 0);
 				break;
 			case 3:
-				racialStrBonus = 0;
-				racialDexBonus = 0;
-				racialConBonus = 0;
-				racialIntBonus = 2;
-				racialWisBonus = 0;
-				racialChaBonus = 0;
+				racialBonus = WorkerStats.factory(0, 0, 0, 2, 0, 0);
 				break;
 			case 4:
-				racialStrBonus = 0;
-				racialDexBonus = 0;
-				racialConBonus = 0;
-				racialIntBonus = 0;
-				racialWisBonus = 2;
-				racialChaBonus = 0;
+				racialBonus = WorkerStats.factory(0, 0, 0, 0, 2, 0);
 				break;
 			case 5: // handle default to appease compiler
 			default:
-				racialStrBonus = 0;
-				racialDexBonus = 0;
-				racialConBonus = 0;
-				racialIntBonus = 0;
-				racialWisBonus = 0;
-				racialChaBonus = 2;
+				racialBonus = WorkerStats.factory(0, 0, 0, 0, 0, 2);
 				break;
 			}
 			break;
 		}
-		final int constitution = baseCon + racialConBonus;
-		final int conBonus = (constitution - STAT_BASIS) / 2;
+		final int constitution = baseCon + racialBonus.getConstitution();
+		final int conBonus = constitution / 2 - STAT_BASIS / 2;
 		final int hitP = 8 + conBonus + rollDeeEight(levels, conBonus);
-		return new WorkerStats(hitP, hitP, baseStr + racialStrBonus,
-									  baseDex + racialDexBonus, constitution,
-									  baseInt + racialIntBonus,
-									  baseWis + racialWisBonus,
-									  baseCha + racialChaBonus);
+		return new WorkerStats(hitP, base, racialBonus);
 	}
 
 	/**
