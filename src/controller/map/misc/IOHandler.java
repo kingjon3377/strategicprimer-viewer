@@ -53,6 +53,11 @@ import view.util.TreeExpansionOrderListener;
 /**
  * An ActionListener to dispatch file I/O.
  *
+ * TODO: Split this up, with a central class having just a Map from action commands to
+ * handlers, then one class handling just file I/O, one handling just zooming, one
+ * handling just tree expanding and collapsing, etc, and each menu constructor passing in
+ * whatever it needs.
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
