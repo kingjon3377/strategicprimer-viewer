@@ -23,6 +23,7 @@ import model.map.HasPortrait;
 import model.map.Point;
 import model.map.TileFixture;
 import model.misc.IDriverModel;
+import model.viewer.FixtureListModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
 import util.TypesafeLogger;
@@ -82,7 +83,8 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 	public DetailPanelNG(final int version, final IDriverModel model) {
 		super(HORIZONTAL_SPLIT, true);
 
-		fixList = new FixtureList(this, model, model.getMap().players());
+		fixList = new FixtureList(this, new FixtureListModel(model),
+										 model.getMap().players());
 		final PortraitPanel portrait = new PortraitPanel(fixList);
 		fixList.addListSelectionListener(portrait);
 		final JPanel listPanel =

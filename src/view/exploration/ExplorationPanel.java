@@ -36,6 +36,7 @@ import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.viewer.FixtureFilterTableModel;
+import model.viewer.FixtureListModel;
 import model.viewer.FixtureMatcher;
 import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
@@ -218,7 +219,8 @@ public final class ExplorationPanel extends BorderedPanel
 							final IExplorationModel.Direction direction) {
 		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
 		final FixtureList mainList =
-				new FixtureList(panel, model, model.getMap().players());
+				new FixtureList(panel, new FixtureListModel(model),
+									   model.getMap().players());
 		mainPCS.addSelectionChangeListener(mainList);
 		panel.add(new JScrollPane(mainList));
 		final DualTileButton dtb =
@@ -247,7 +249,8 @@ public final class ExplorationPanel extends BorderedPanel
 						.map(Pair::first).map(IMapNG::players).findFirst();
 		final Iterable<Player> players;
 		players = subMapPlayers.orElseGet(() -> model.getMap().players());
-		final FixtureList secList = new FixtureList(panel, model, players);
+		final FixtureList secList =
+				new FixtureList(panel, new FixtureListModel(model), players);
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
 		secPCS.addSelectionChangeListener(secList);
 		panel.add(new JScrollPane(secList));

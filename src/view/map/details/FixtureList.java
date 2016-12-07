@@ -22,7 +22,6 @@ import model.listeners.SelectionChangeListener;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
-import model.misc.IDriverModel;
 import model.viewer.CurriedFixtureTransferable;
 import model.viewer.FixtureListDropListener;
 import model.viewer.FixtureListModel;
@@ -58,12 +57,12 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	 * Constructor.
 	 *
 	 * @param parent      a parent of this list
-	 * @param driverModel the driver model (needed to get at the map for the list model)
+	 * @param listModel the list model underlying the list
 	 * @param players     the players in the map
 	 */
-	public FixtureList(final JComponent parent, final IDriverModel driverModel,
+	public FixtureList(final JComponent parent, final FixtureListModel listModel,
 					   final Iterable<Player> players) {
-		flm = new FixtureListModel(driverModel);
+		flm = listModel;
 		setModel(flm);
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
