@@ -49,6 +49,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
+		//noinspection HardcodedFileSeparator
 		if (File.separatorChar == '\\') {
 			USAGE.addSupportedOption(
 					String.format("--out=C:%spath%sto%soutput.html", File.separator,
