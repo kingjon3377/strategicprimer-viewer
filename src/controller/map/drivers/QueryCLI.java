@@ -299,8 +299,7 @@ public final class QueryCLI implements SimpleDriver {
 							(animalsPerHerder * (herdModel.getDailyTimePerHead() +
 														 herdModel
 																 .getExtraTimePerHead()
-							)) /
-									60.0);
+							)) / 60.0);
 				} else {
 					hours = round.applyAsInt(
 							(animalsPerHerder * herdModel.getDailyTimePerHead()) / 60.0);
