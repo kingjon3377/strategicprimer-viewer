@@ -587,12 +587,14 @@ public final class DrawHelperComparator implements SimpleDriver {
 		protected final T first;
 		protected final U second;
 		protected final V third;
-		private Triple(T one, U two, V three) {
+		private Triple(final T one, final U two, final V three) {
 			first = one;
 			second = two;
 			third = three;
 		}
-		public static <T, U, V> Triple<T, U, V> of(T one, U two, V three) {
+
+		public static <T, U, V> Triple<T, U, V> of(final T one, final U two,
+												   final V three) {
 			return new Triple(one, two, three);
 		}
 	}

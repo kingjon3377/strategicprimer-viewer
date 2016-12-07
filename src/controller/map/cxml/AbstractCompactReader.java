@@ -498,7 +498,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 */
 	protected static String simpleQuote(final String text) {
 		String retval = text;
-		for (Pair<Pattern, String> pair : QUOTING) {
+		for (final Pair<Pattern, String> pair : QUOTING) {
 			final Matcher matcher = pair.first().matcher(retval);
 			retval = matcher.replaceAll(pair.second());
 		}
