@@ -202,11 +202,20 @@ public abstract class AbstractCompactReader<@NonNull T>
 				throw new UnwantedChildException(tag,
 														assertNotNull(
 																event.asStartElement()));
-			} else if (event.isEndElement()
-							   && tag.equals(event.asEndElement().getName())) {
+			} else if (isMatchingEnd(tag, event)) {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * @param tag the tag we're looking for
+	 * @param event an XML event
+	 * @return true iff event is an EndElement whose name matches tag.
+	 */
+	protected static boolean isMatchingEnd(final QName tag, final XMLEvent event) {
+		return event.isEndElement()
+					   && tag.equals(event.asEndElement().getName());
 	}
 
 	/**

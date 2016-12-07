@@ -132,10 +132,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 																	event.asStartElement
 																				  ()));
 				}
-			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
 			}
 		}
@@ -299,10 +296,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 																	event.asStartElement
 																				  ()));
 				}
-			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
 			}
 		}

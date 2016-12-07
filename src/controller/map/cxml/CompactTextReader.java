@@ -79,10 +79,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 																event.asStartElement()));
 			} else if (event.isCharacters()) {
 				builder.append(event.asCharacters().getData());
-			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
 			}
 		}

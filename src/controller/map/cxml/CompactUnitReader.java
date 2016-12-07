@@ -139,9 +139,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
-			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
 			}
 		}
@@ -171,9 +169,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 			} else if (event.isStartElement()) {
 				throw new UnwantedChildException(element.getName(),
 														event.asStartElement());
-			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
 			}
 		}
@@ -199,9 +195,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 			} else if (event.isStartElement()) {
 				throw new UnwantedChildException(element.getName(),
 														event.asStartElement());
-			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
 			}
 		}
