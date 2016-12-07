@@ -286,17 +286,16 @@ public final class HarvestableReportGenerator
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer,
 						  final HarvestableFixture item, final Point loc) {
+		final String retval;
 		if (item instanceof CacheFixture) {
-			fixtures.remove(Integer.valueOf(item.getID()));
 			final CacheFixture cache = (CacheFixture) item;
-			return concat(atPoint(loc), " ", distCalculator.distanceString(loc),
+			retval = concat(atPoint(loc), " ", distCalculator.distanceString(loc),
 					"A cache of ",
 					cache.getKind(), ", containing ",
 					cache.getContents());
 		} else if (item instanceof Grove) {
-			fixtures.remove(Integer.valueOf(item.getID()));
 			final Grove grove = (Grove) item;
-			return concat(
+			retval = concat(
 					atPoint(loc),
 					"A ",
 					ternary(grove.isCultivated(), "cultivated ",
@@ -304,9 +303,8 @@ public final class HarvestableReportGenerator
 					ternary(grove.isOrchard(), " orchard", " grove"), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
-			fixtures.remove(Integer.valueOf(item.getID()));
 			final Meadow meadow = (Meadow) item;
-			return concat(
+			retval = concat(
 					atPoint(loc),
 					"A ",
 					meadow.getStatus().toString(),
@@ -315,13 +313,11 @@ public final class HarvestableReportGenerator
 					ternary(meadow.isField(), " field", " meadow"), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Mine) {
-			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), item.toString(), " ",
+			retval = concat(atPoint(loc), item.toString(), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof MineralVein) {
-			fixtures.remove(Integer.valueOf(item.getID()));
 			final MineralVein mineral = (MineralVein) item;
-			return concat(
+			retval = concat(
 					atPoint(loc),
 					"An ",
 					ternary(mineral.isExposed(), "exposed ",
@@ -329,17 +325,17 @@ public final class HarvestableReportGenerator
 					mineral.getKind(), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
-			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), ((Shrub) item).getKind(), " ",
+			retval = concat(atPoint(loc), ((Shrub) item).getKind(), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof StoneDeposit) {
-			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), "An exposed ",
+			retval = concat(atPoint(loc), "An exposed ",
 					((StoneDeposit) item).getKind(), " deposit",
 					distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected HarvestableFixture type");
 		}
+		fixtures.remove(Integer.valueOf(item.getID()));
+		return retval;
 	}
 
 	/**
