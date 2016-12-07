@@ -126,11 +126,9 @@ public final class ExplorationPanel extends BorderedPanel
 							final Document mpDoc) {
 		model = explorationModel;
 		final JPanel headerPanel = new BoxPanel(true);
-		headerPanel.add(new ListenedButton("Select a different explorer", evt -> {
-			for (final CompletionListener list : cListeners) {
-				list.finished();
-			}
-		}));
+		headerPanel.add(new ListenedButton("Select a different explorer",
+												  evt -> cListeners.forEach(
+														  CompletionListener::finished)));
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		mpDocument = mpDoc;
