@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Formatter;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Optional;
@@ -328,49 +327,48 @@ public final class ProxyUnit
 	 */
 	@Override
 	public Iterator<UnitMember> iterator() {
-		if (parallel) {
-			final Map<Integer, UnitMember> map = new TreeMap<>();
-			for (final IUnit unit : proxied) {
-				for (final UnitMember member : unit) {
-					// Warning suppressed because the type in the map is really
-					// a UnitMember&ProxyFor<IWorker|UnitMember>
-					@SuppressWarnings("unchecked")
-					final ProxyFor<? extends UnitMember> proxy;
-					final Integer memberID =
-							assertNotNull(Integer.valueOf(member.getID()));
-					if (map.containsKey(memberID)) {
-						//noinspection unchecked
-						proxy = (ProxyFor<? extends UnitMember>) assertNotNull(
-								map.get(memberID));
-						if (proxy instanceof ProxyWorker) {
-							if (member instanceof IWorker) {
-								((ProxyWorker) proxy).addProxied((IWorker) member);
-							} else {
-								LOGGER.warning(
-										"Proxy is a ProxyWorker but member isn't a " +
-												"worker");
-
-							}
+		if (!parallel) {
+			return new EmptyIterator<>();
+		} // else
+		final Map<Integer, UnitMember> map = new TreeMap<>();
+		for (final IUnit unit : proxied) {
+			for (final UnitMember member : unit) {
+				// Warning suppressed because the type in the map is really
+				// a UnitMember&ProxyFor<IWorker|UnitMember>
+				@SuppressWarnings("unchecked")
+				final ProxyFor<? extends UnitMember> proxy;
+				final Integer memberID =
+						assertNotNull(Integer.valueOf(member.getID()));
+				if (map.containsKey(memberID)) {
+					//noinspection unchecked
+					proxy = (ProxyFor<? extends UnitMember>) assertNotNull(
+							map.get(memberID));
+					if (proxy instanceof ProxyWorker) {
+						if (member instanceof IWorker) {
+							((ProxyWorker) proxy).addProxied((IWorker) member);
 						} else {
-							//noinspection unchecked
-							((ProxyFor<UnitMember>) proxy).addProxied(member);
+							LOGGER.warning(
+									"Proxy is a ProxyWorker but member isn't a " +
+											"worker");
+
 						}
 					} else {
-						if (member instanceof IWorker) {
-							//noinspection ObjectAllocationInLoop
-							proxy = new ProxyWorker((IWorker) member);
-						} else {
-							//noinspection ObjectAllocationInLoop
-							proxy = new ProxyMember(member);
-						}
-						map.put(memberID, (UnitMember) proxy);
+						//noinspection unchecked
+						((ProxyFor<UnitMember>) proxy).addProxied(member);
 					}
+				} else {
+					if (member instanceof IWorker) {
+						//noinspection ObjectAllocationInLoop
+						proxy = new ProxyWorker((IWorker) member);
+					} else {
+						//noinspection ObjectAllocationInLoop
+						proxy = new ProxyMember(member);
+					}
+					map.put(memberID, (UnitMember) proxy);
 				}
 			}
-			return assertNotNull(map.values().iterator());
-		} else {
-			return new EmptyIterator<>();
 		}
+		return assertNotNull(map.values().iterator());
 	}
 
 	/**
