@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.ObjIntConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +32,7 @@ import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
 import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.viewer.FixtureFilterTableModel;
@@ -219,7 +219,7 @@ public final class ExplorationPanel extends BorderedPanel
 							final IExplorationModel.Direction direction) {
 		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
 		final FixtureList mainList =
-				new FixtureList(panel, new FixtureListModel(model),
+				new FixtureList(panel, new FixtureListModel(model.getMap()),
 									   model.getMap().players());
 		mainPCS.addSelectionChangeListener(mainList);
 		panel.add(new JScrollPane(mainList));
@@ -244,13 +244,13 @@ public final class ExplorationPanel extends BorderedPanel
 //		mainList.getModel().addListDataListener(ell);
 		model.addSelectionChangeListener(ell);
 		ecl.addSelectionChangeListener(ell);
-		final Optional<Iterable<Player>> subMapPlayers =
+		final IMutableMapNG subMap =
 				StreamSupport.stream(model.getSubordinateMaps().spliterator(), false)
-						.map(Pair::first).map(IMapNG::players).findFirst();
+						.map(Pair::first).findFirst().orElseGet(model::getMap);
 		final Iterable<Player> players;
-		players = subMapPlayers.orElseGet(() -> model.getMap().players());
+		players = subMap.players();
 		final FixtureList secList =
-				new FixtureList(panel, new FixtureListModel(model), players);
+				new FixtureList(panel, new FixtureListModel(subMap), players);
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
 		secPCS.addSelectionChangeListener(secList);
 		panel.add(new JScrollPane(secList));

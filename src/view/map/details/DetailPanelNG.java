@@ -83,7 +83,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 	public DetailPanelNG(final int version, final IDriverModel model) {
 		super(HORIZONTAL_SPLIT, true);
 
-		fixList = new FixtureList(this, new FixtureListModel(model),
+		fixList = new FixtureList(this, new FixtureListModel(model.getMap()),
 										 model.getMap().players());
 		final PortraitPanel portrait = new PortraitPanel(fixList);
 		fixList.addListSelectionListener(portrait);

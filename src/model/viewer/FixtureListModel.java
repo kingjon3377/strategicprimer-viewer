@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.util.stream.Collectors;
 import javax.swing.DefaultListModel;
 import model.listeners.SelectionChangeListener;
-import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.PointFactory;
@@ -17,7 +16,6 @@ import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
-import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -41,19 +39,19 @@ import org.eclipse.jdt.annotation.Nullable;
 public final class FixtureListModel extends DefaultListModel<@NonNull TileFixture>
 		implements SelectionChangeListener {
 	/**
-	 * The driver model, which we use to get the population at a location.
+	 * The map, from which we get the population at a location.
 	 */
-	private final IDriverModel model;
+	private IMutableMapNG map;
 	/**
 	 * The current point.
 	 */
 	private Point point = PointFactory.point(-1, -1);
 
 	/**
-	 * @param driverModel the driver model to use
+	 * @param theMap the map to refer to
 	 */
-	public FixtureListModel(final IDriverModel driverModel) {
-		model = driverModel;
+	public FixtureListModel(final IMutableMapNG theMap) {
+		map = theMap;
 	}
 
 	/**
@@ -64,7 +62,6 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	public void selectedPointChanged(@Nullable final Point old,
 									 final Point newPoint) {
 		clear();
-		final IMapNG map = model.getMap();
 		final TileType base = map.getBaseTerrain(newPoint);
 		if (TileType.NotVisible != base) {
 			addElement(new TileTypeFixture(base));
@@ -99,7 +96,6 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addFixture(final TileFixture fix) {
-		final IMutableMapNG map = model.getMap();
 		if ((fix instanceof Ground) && (map.getGround(point) == null)) {
 			map.setGround(point, (Ground) fix);
 			selectedPointChanged(null, point);
@@ -129,7 +125,6 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void removeAll(@Nullable final Iterable<TileFixture> list) {
 		if (list != null) {
-			final IMutableMapNG map = model.getMap();
 			for (final TileFixture fix : list) {
 				if (fix instanceof TileTypeFixture) {
 					map.setBaseTerrain(point, TileType.NotVisible);
@@ -164,8 +159,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof FixtureListModel) &&
-										 ((FixtureListModel) obj).model.equals
-																				(model) &&
+										 ((FixtureListModel) obj).map.equals(map) &&
 										 ((FixtureListModel) obj).point.equals(point));
 	}
 
@@ -174,7 +168,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 */
 	@Override
 	public int hashCode() {
-		return model.hashCode() | point.hashCode();
+		return map.hashCode() | point.hashCode();
 	}
 
 	/**
