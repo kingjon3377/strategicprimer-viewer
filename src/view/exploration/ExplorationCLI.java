@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.exploration.HuntingModel;
@@ -178,28 +179,21 @@ public final class ExplorationCLI implements MovementCostSource {
 		}
 		final Ground ground = map.getGround(dPoint);
 		final List<TileFixture> allFixtures = new ArrayList<>();
-		if (ground != null) {
-			if (SimpleMovement.shouldAlwaysNotice(mover, ground)) {
-				constants.add(ground);
-			} else if (SimpleMovement.shouldSometimesNotice(mover, ground)) {
-				allFixtures.add(ground);
-			}
-		}
-		final Forest forest = map.getForest(dPoint);
-		if (forest != null) {
-			if (SimpleMovement.shouldAlwaysNotice(mover, forest)) {
-				constants.add(forest);
-			} else if (SimpleMovement.shouldSometimesNotice(mover, forest)) {
-				allFixtures.add(forest);
-			}
-		}
-		for (final TileFixture fix : map.getOtherFixtures(dPoint)) {
+		final Consumer<TileFixture> consider = fix -> {
 			if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
 				constants.add(fix);
 			} else if (SimpleMovement.shouldSometimesNotice(mover, fix)) {
 				allFixtures.add(fix);
 			}
+		};
+		if (ground != null) {
+			consider.accept(ground);
 		}
+		final Forest forest = map.getForest(dPoint);
+		if (forest != null) {
+			consider.accept(forest);
+		}
+		map.streamOtherFixtures(dPoint).forEach(consider);
 		final String possibleTracks;
 		if (Ocean == model.getMap().getBaseTerrain(model.getSelectedUnitLocation())) {
 			possibleTracks = huntingModel.fish(model.getSelectedUnitLocation(), 1).get
