@@ -1,7 +1,7 @@
 package model.map.fixtures.mobile.worker;
 
+import java.util.Formatter;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.NullCleaner;
 
 /**
@@ -207,30 +207,9 @@ public class WorkerStats {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder(70);
-		builder.append("HP: ");
-		builder.append(hp);
-		//noinspection HardcodedFileSeparator
-		builder.append(" / ");
-		builder.append(maxHP);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Str: ");
-		builder.append(strength);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Dex: ");
-		builder.append(dex);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Con: ");
-		builder.append(con);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Int: ");
-		builder.append(intel);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Wis: ");
-		builder.append(wis);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Cha: ");
-		builder.append(cha);
-		builder.append(LineEnd.LINE_SEP);
+		final Formatter formatter = new Formatter(builder);
+		formatter.format("HP: %d / %d%nStr: %d%nDex: %d%n", hp, maxHP, strength, dex);
+		formatter.format("Con: %d%nInt: %d%nWis: %d%nCha: %d%n", con, intel, wis, cha);
 		return NullCleaner.assertNotNull(builder.toString());
 	}
 }
