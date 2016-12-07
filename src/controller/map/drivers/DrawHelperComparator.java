@@ -4,7 +4,9 @@ import controller.map.misc.ICLIHelper;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import model.map.IMapNG;
@@ -369,7 +371,76 @@ public final class DrawHelperComparator implements SimpleDriver {
 			}
 		}
 	}
-
+	/**
+	 * Interface for the tests.
+	 */
+	@FunctionalInterface
+	private static interface DrawingTest {
+		/**
+		 * Run the test.
+		 * @param helper the drawing helper being tested
+		 * @param map the map to draw
+		 * @param repetitions how many times to repeat the test
+		 * @param tileSize how big to draw each tile
+		 */
+		long runTest(final TileDrawHelper helper, final IMapNG map,
+					 final int repetitions, final int tileSize);
+	}
+	/**
+	 * List of pairs of tests with descriptions of them.
+	 */
+	private static final List<Pair<String, DrawingTest>>
+			TESTS =
+			Arrays.asList(Pair.of("1. All in one place", DrawHelperComparator::first),
+					Pair.of("2. Translating", DrawHelperComparator::second),
+					Pair.of("3. In-place, reusing Graphics",
+							DrawHelperComparator::third),
+					Pair.of("4. Translating, reusing Graphics",
+							DrawHelperComparator::fourth),
+					Pair.of("5a. Ordered iteration vs filtering: Iteration",
+							DrawHelperComparator::fifthOne),
+					Pair.of("5b. Ordered iteration vs filtering: Filtering",
+							DrawHelperComparator::fifthTwo));
+	/**
+	 * A Long accumulator.
+	 */
+	private static final class LongAccumulator {
+		/**
+		 * The value.
+		 */
+		private long value = 0;
+		/**
+		 * @return the value
+		 */
+		public long getValue() {
+			return value;
+		}
+		/**
+		 * @param addend how much to add
+		 */
+		public void add(final long addend) {
+			value += addend;
+		}
+	}
+	/**
+	 * A simple triple.
+	 * @param <T> the first type
+	 * @param <U> the second type
+	 * @param <V> the third type
+	 */
+	private static class Triple<T, U, V> {
+		protected final T first;
+		protected final U second;
+		protected final V third;
+		private Triple(T one, U two, V three) {
+			first = one;
+			second = two;
+			third = three;
+		}
+		public static <T, U, V> Triple<T, U, V> of(T one, U two, V three) {
+			return new Triple(one, two, three);
+		}
+	}
 	/**
 	 * Run all the tests on the specified file.
 	 *
@@ -386,73 +457,33 @@ public final class DrawHelperComparator implements SimpleDriver {
 										height) -> false,
 											  fix -> true, Collections.singleton(
 						new FixtureMatcher(fix -> true, "test")));
-		SYS_OUT.println("1. All in one place:");
+		final Triple<TileDrawHelper, String, LongAccumulator> one =
+				Triple.of((TileDrawHelper) new CachingTileDrawHelper(), CACHING,
+						new LongAccumulator());
+		final Triple<TileDrawHelper, String, LongAccumulator> two =
+				Triple.of((TileDrawHelper) new DirectTileDrawHelper(), DIRECT,
+						new LongAccumulator());
+		final Triple<TileDrawHelper, String, LongAccumulator> three =
+				Triple.of(hThree, VER_TWO, new LongAccumulator());
+		final List<Triple<TileDrawHelper, String, LongAccumulator>> testees =
+				Arrays.asList(one, two, three);
 		final TileDrawHelper hOne = new CachingTileDrawHelper();
-		long oneTotal =
-				printStats(CACHING, first(hOne, map, repetitions, tileSize),
-						repetitions);
 		final TileDrawHelper hTwo = new DirectTileDrawHelper();
-		long twoTotal =
-				printStats(DIRECT, first(hTwo, map, repetitions, tileSize), repetitions);
-		long threeTot = printStats(VER_TWO, first(hThree, map, repetitions, tileSize),
-				repetitions);
-		SYS_OUT.println("2. Translating:");
-		oneTotal +=
-				printStats(CACHING, second(hOne, map, repetitions, tileSize),
-						repetitions);
-		twoTotal +=
-				printStats(DIRECT, second(hTwo, map, repetitions, tileSize),
-						repetitions);
-		threeTot +=
-				printStats(VER_TWO, second(hThree, map, repetitions, tileSize),
-						repetitions);
-		SYS_OUT.println("3. In-place, reusing Graphics:");
-		oneTotal +=
-				printStats(CACHING, third(hOne, map, repetitions, tileSize),
-						repetitions);
-		twoTotal += printStats(DIRECT, third(hTwo, map, repetitions, tileSize),
-				repetitions);
-		threeTot +=
-				printStats(VER_TWO, third(hThree, map, repetitions, tileSize),
-						repetitions);
-		SYS_OUT.println("4. Translating, reusing Graphics:");
-		oneTotal +=
-				printStats(CACHING, fourth(hOne, map, repetitions, tileSize),
-						repetitions);
-		twoTotal +=
-				printStats(DIRECT, fourth(hTwo, map, repetitions, tileSize),
-						repetitions);
-		threeTot +=
-				printStats(VER_TWO, fourth(hThree, map, repetitions, tileSize),
-						repetitions);
-		SYS_OUT.println("5. Ordered iteration vs filtering:");
-		SYS_OUT.print("Iteration, ");
-		oneTotal +=
-				printStats(CACHING, fifthOne(hOne, map, repetitions, tileSize),
-						repetitions);
-		SYS_OUT.print("Iteration, ");
-		twoTotal +=
-				printStats(DIRECT, fifthOne(hTwo, map, repetitions, tileSize),
-						repetitions);
-		SYS_OUT.print("Iteration, ");
-		threeTot += printStats(VER_TWO, fifthOne(hThree, map, repetitions, tileSize),
-				repetitions);
-		SYS_OUT.print("Filtering, ");
-		oneTotal +=
-				printStats(CACHING, fifthTwo(hOne, map, repetitions, tileSize),
-						repetitions);
-		SYS_OUT.print("Filtering, ");
-		twoTotal +=
-				printStats(DIRECT, fifthTwo(hTwo, map, repetitions, tileSize),
-						repetitions);
-		SYS_OUT.print("Filtering, ");
-		threeTot += printStats(VER_TWO, fifthTwo(hThree, map, repetitions, tileSize),
-				repetitions);
+		for (final Pair<String, DrawingTest> pair : TESTS) {
+			SYS_OUT.print(pair.first());
+			SYS_OUT.println(':');
+			for (final Triple<TileDrawHelper, String, LongAccumulator> testee :
+					testees) {
+				testee.third.add(printStats(testee.second,
+						pair.second().runTest(testee.first, map, repetitions, tileSize),
+						repetitions));
+			}
+		}
 		SYS_OUT.println("--------------------------------------");
 		SYS_OUT.print("Total:");
-		printStats(CACHING, oneTotal, repetitions);
-		printStats(DIRECT, twoTotal, repetitions);
-		printStats(VER_TWO, threeTot, repetitions);
+		for (final Triple<TileDrawHelper, String, LongAccumulator> testee : testees) {
+			printStats(testee.second, testee.third.getValue(), repetitions);
+		}
 		SYS_OUT.println();
 	}
 
