@@ -43,6 +43,7 @@ import util.Pair;
 import view.map.details.FixtureList;
 import view.util.BorderedPanel;
 import view.util.BoxPanel;
+import view.util.FormattedLabel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
 
@@ -77,11 +78,12 @@ public final class ExplorationPanel extends BorderedPanel
 	/**
 	 * The label showing the current location of the explorer.
 	 */
-	private final JLabel locLabel = new JLabel("<html><body>Currently exploring (-1, " +
-													   "-1); click a tile to explore " +
-													   "it. Selected fixtures in its " +
-													   "left-hand list will be" +
-													   " 'discovered'.</body></html>");
+	private final FormattedLabel locLabel =
+			new FormattedLabel("<html><body>Currently exploring (%d, %d); click a tile " +
+									   "to explore it. Selected fixtures in its " +
+									   "left-hand list will be 'discovered'" +
+									   ".</body></html>",
+									  Integer.valueOf(-1), Integer.valueOf(-1));
 	/**
 	 * The list of completion listeners listening to us.
 	 */
@@ -333,10 +335,8 @@ public final class ExplorationPanel extends BorderedPanel
 			NullCleaner.assertNotNull(buttons.get(dir)).setPoint(point);
 			NullCleaner.assertNotNull(buttons.get(dir)).repaint();
 		}
-		locLabel.setText(
-				"<html><body>Currently exploring " + model.getSelectedUnitLocation() +
-						"; click a tile to explore it. Selected fixtures in its " +
-						"left-hand list will be 'discovered'.</body></html>");
+		locLabel.setArgs(Integer.valueOf(selPoint.getRow()),
+				Integer.valueOf(selPoint.getCol()));
 	}
 
 	/**
