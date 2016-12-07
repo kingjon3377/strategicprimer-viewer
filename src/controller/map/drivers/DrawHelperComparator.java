@@ -540,7 +540,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 * Interface for the tests.
 	 */
 	@FunctionalInterface
-	private static interface DrawingTest {
+	private interface DrawingTest {
 		/**
 		 * Run the test.
 		 * @param helper the drawing helper being tested
