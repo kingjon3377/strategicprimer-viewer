@@ -33,7 +33,6 @@ import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
 import model.map.IMapNG;
-import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.viewer.FixtureFilterTableModel;
@@ -194,11 +193,9 @@ public final class ExplorationPanel extends BorderedPanel
 	 */
 	private JPanel setupTilesGUIImpl(final JPanel panel,
 									 final IExplorationModel.Direction... directions) {
-		final IMapNG secondMap;
-		final Optional<IMutableMapNG> subordinateMap =
+		final IMapNG secondMap =
 				StreamSupport.stream(model.getSubordinateMaps().spliterator(), false)
-						.map(Pair::first).findFirst();
-		secondMap = subordinateMap.orElseGet(model::getMap);
+						.map(Pair::first).findFirst().orElseGet(model::getMap);
 		for (final IExplorationModel.Direction direction : directions) {
 			if (direction != null) {
 				addTileGUI(panel, secondMap, direction);
