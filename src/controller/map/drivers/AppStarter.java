@@ -5,6 +5,7 @@ import controller.map.misc.ICLIHelper;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -17,7 +18,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.misc.IDriverModel;
 import util.EqualsAny;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
@@ -212,7 +212,22 @@ public final class AppStarter implements ISPDriver {
 			}
 		});
 	}
-
+	/**
+	 * Ternary.
+	 * @param condition a boolean variable
+	 * @param truth what to return if true
+	 * @param falsehood what to return if false
+	 * @param <T> the type of truth and falsehood
+	 * @return truth if condition is true, falsehood otherwise
+	 */
+	private static <T> T ternary(final boolean condition, final T truth,
+								 final T falsehood) {
+		if (condition) {
+			return truth;
+		} else {
+			return falsehood;
+		}
+	}
 	/**
 	 * Entry point: start the driver.
 	 *
@@ -236,61 +251,38 @@ public final class AppStarter implements ISPDriver {
 			new AppStarter().startDriver(new SPOptions(), args);
 		} catch (final IncorrectUsageException except) {
 			final StringBuilder buff = new StringBuilder();
-			buff.append("Usage: java ");
-			buff.append(AppStarter.class.getCanonicalName());
+			final Formatter formatter = new Formatter(buff);
 			final DriverUsage usage = except.getCorrectUsage();
-			if (usage.isGraphical()) {
-				buff.append(" [-g|--gui] ");
-			} else {
-				buff.append(" -c|--cli ");
-			}
-			buff.append(usage.getShortOption());
-			buff.append('|');
-			buff.append(usage.getLongOption());
+			formatter.format("Usage: java %s %s %s|%s",
+					AppStarter.class.getCanonicalName(),
+					ternary(usage.isGraphical(), "[-g|--gui]", "-c|--cli"),
+					usage.getShortOption(), usage.getLongOption());
 			for (final String option : usage.getSupportedOptions()) {
-				buff.append(" [");
-				buff.append(option);
-				buff.append(']');
+				formatter.format(" [%s]", option);
 			}
 			switch (usage.getParamsWanted()) {
 			case None:
 				break;
 			case One:
-				buff.append(' ');
-				buff.append(usage.getFirstParamDesc());
+				formatter.format(" %s", usage.getFirstParamDesc());
 				break;
 			case AtLeastOne:
-				buff.append(' ');
-				buff.append(usage.getFirstParamDesc());
-				buff.append(" [");
-				buff.append(usage.getSubsequentParamDesc());
-				buff.append(" ...]");
+				formatter.format(" %s [%s ...]", usage.getFirstParamDesc(),
+						usage.getSubsequentParamDesc());
 				break;
 			case Two:
-				buff.append(' ');
-				buff.append(usage.getFirstParamDesc());
-				buff.append(' ');
-				buff.append(usage.getSubsequentParamDesc());
+				formatter.format(" %s %s", usage.getFirstParamDesc(),
+						usage.getSubsequentParamDesc());
 				break;
 			case AtLeastTwo:
-				buff.append(' ');
-				buff.append(usage.getFirstParamDesc());
-				buff.append(' ');
-				buff.append(usage.getSubsequentParamDesc());
-				buff.append(" [");
-				buff.append(usage.getSubsequentParamDesc());
-				buff.append(" ...]");
+				formatter.format(" %s %s [%s ...]", usage.getFirstParamDesc(),
+						usage.getSubsequentParamDesc(), usage.getSubsequentParamDesc());
 				break;
 			case AnyNumber:
-				buff.append(' ');
-				buff.append(usage.getSubsequentParamDesc());
-				buff.append(" [");
-				buff.append(usage.getSubsequentParamDesc());
-				buff.append(" ...]");
+				formatter.format(" [%s ...]", usage.getSubsequentParamDesc());
 				break;
 			}
-			buff.append(LineEnd.LINE_SEP);
-			buff.append(usage.getShortDescription());
+			formatter.format("%n%s", usage.getShortDescription());
 			System.err.println(buff);
 			DriverQuit.quit(1);
 		} catch (final DriverFailedException except) {
