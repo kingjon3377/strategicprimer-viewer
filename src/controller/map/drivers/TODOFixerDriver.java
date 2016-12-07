@@ -15,7 +15,6 @@ import model.map.Point;
 import model.map.fixtures.mobile.Unit;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
-import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 
@@ -69,8 +68,7 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 			final SimpleTerrain terrain = getTerrain(map, point);
 			map.streamOtherFixtures(point).filter(Unit.class::isInstance)
 					.map(Unit.class::cast).filter(unit -> "TODO".equals(unit.getKind()))
-					.forEach(unit -> fixUnit(NullCleaner.assertNotNull(unit), terrain,
-							cli));
+					.forEach(unit -> fixUnit(unit, terrain, cli));
 		}
 	}
 
