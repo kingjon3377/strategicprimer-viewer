@@ -404,10 +404,10 @@ public final class DrawHelperComparator implements SimpleDriver {
 											  fix -> true, Collections.singleton(
 						new FixtureMatcher(fix -> true, "test")));
 		final Triple<TileDrawHelper, String, LongAccumulator> one =
-				Triple.of((TileDrawHelper) new CachingTileDrawHelper(), CACHING,
+				Triple.of(new CachingTileDrawHelper(), CACHING,
 						new LongAccumulator());
 		final Triple<TileDrawHelper, String, LongAccumulator> two =
-				Triple.of((TileDrawHelper) new DirectTileDrawHelper(), DIRECT,
+				Triple.of(new DirectTileDrawHelper(), DIRECT,
 						new LongAccumulator());
 		final Triple<TileDrawHelper, String, LongAccumulator> three =
 				Triple.of(hThree, VER_TWO, new LongAccumulator());
