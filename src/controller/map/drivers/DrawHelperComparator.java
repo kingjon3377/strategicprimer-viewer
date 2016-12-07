@@ -413,8 +413,6 @@ public final class DrawHelperComparator implements SimpleDriver {
 				Triple.of(hThree, VER_TWO, new LongAccumulator());
 		final List<Triple<TileDrawHelper, String, LongAccumulator>> testees =
 				Arrays.asList(one, two, three);
-		final TileDrawHelper hOne = new CachingTileDrawHelper();
-		final TileDrawHelper hTwo = new DirectTileDrawHelper();
 		for (final Pair<String, DrawingTest> pair : TESTS) {
 			SYS_OUT.print(pair.first());
 			SYS_OUT.println(':');
