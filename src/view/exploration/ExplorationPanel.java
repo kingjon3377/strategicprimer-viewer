@@ -78,6 +78,16 @@ public final class ExplorationPanel extends BorderedPanel
 			NullCleaner.assertNotNull(Logger.getLogger(ExplorationPanel.class.getName
 																					  ()));
 	/**
+	 * The mapping from directions to arrow keys.
+	 */
+	private static final Map<IExplorationModel.Direction, KeyStroke> ARROW_KEYS =
+			new EnumMap<>(IExplorationModel.Direction.class);
+	/**
+	 * The mapping from directions to numeric-keypad keys.
+	 */
+	private static final Map<IExplorationModel.Direction, KeyStroke> NUM_KEYS =
+			new EnumMap<>(IExplorationModel.Direction.class);
+	/**
 	 * The label showing the current location of the explorer.
 	 */
 	private final FormattedLabel locLabel =
@@ -118,6 +128,25 @@ public final class ExplorationPanel extends BorderedPanel
 	 */
 	private final IExplorationModel model;
 
+	static {
+		ObjIntConsumer<IExplorationModel.Direction> arrow =
+				(dir, num) -> ARROW_KEYS.put(dir, KeyStroke.getKeyStroke(num, 0));
+		arrow.accept(Direction.North, KeyEvent.VK_UP);
+		arrow.accept(Direction.South, KeyEvent.VK_DOWN);
+		arrow.accept(Direction.West, KeyEvent.VK_LEFT);
+		arrow.accept(Direction.East, KeyEvent.VK_RIGHT);
+		ObjIntConsumer<IExplorationModel.Direction> numPad =
+				(dir, num) -> NUM_KEYS.put(dir, KeyStroke.getKeyStroke(num, 0));
+		numPad.accept(Direction.North, KeyEvent.VK_NUMPAD8);
+		numPad.accept(Direction.South, KeyEvent.VK_NUMPAD2);
+		numPad.accept(Direction.West, KeyEvent.VK_NUMPAD4);
+		numPad.accept(Direction.East, KeyEvent.VK_NUMPAD6);
+		numPad.accept(Direction.Northeast, KeyEvent.VK_NUMPAD9);
+		numPad.accept(Direction.Northwest, KeyEvent.VK_NUMPAD7);
+		numPad.accept(Direction.Southeast, KeyEvent.VK_NUMPAD3);
+		numPad.accept(Direction.Southwest, KeyEvent.VK_NUMPAD1);
+		numPad.accept(Direction.Nowhere, KeyEvent.VK_NUMPAD5);
+	}
 	/**
 	 * Constructor.
 	 *
@@ -139,35 +168,6 @@ public final class ExplorationPanel extends BorderedPanel
 		headerPanel.add(mpPanel);
 		setCenter(SplitWithWeights.verticalSplit(0.5, 0.5, headerPanel,
 				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
-	}
-	/**
-	 * The mapping from directions to arrow keys.
-	 */
-	private static final Map<IExplorationModel.Direction, KeyStroke> ARROW_KEYS =
-			new EnumMap<>(IExplorationModel.Direction.class);
-	/**
-	 * The mapping from directions to numeric-keypad keys.
-	 */
-	private static final Map<IExplorationModel.Direction, KeyStroke> NUM_KEYS =
-			new EnumMap<>(IExplorationModel.Direction.class);
-	static {
-		ObjIntConsumer<IExplorationModel.Direction> arrow =
-				(dir, num) -> ARROW_KEYS.put(dir, KeyStroke.getKeyStroke(num, 0));
-		arrow.accept(Direction.North, KeyEvent.VK_UP);
-		arrow.accept(Direction.South, KeyEvent.VK_DOWN);
-		arrow.accept(Direction.West, KeyEvent.VK_LEFT);
-		arrow.accept(Direction.East, KeyEvent.VK_RIGHT);
-		ObjIntConsumer<IExplorationModel.Direction> numPad =
-				(dir, num) -> NUM_KEYS.put(dir, KeyStroke.getKeyStroke(num, 0));
-		numPad.accept(Direction.North, KeyEvent.VK_NUMPAD8);
-		numPad.accept(Direction.South, KeyEvent.VK_NUMPAD2);
-		numPad.accept(Direction.West, KeyEvent.VK_NUMPAD4);
-		numPad.accept(Direction.East, KeyEvent.VK_NUMPAD6);
-		numPad.accept(Direction.Northeast, KeyEvent.VK_NUMPAD9);
-		numPad.accept(Direction.Northwest, KeyEvent.VK_NUMPAD7);
-		numPad.accept(Direction.Southeast, KeyEvent.VK_NUMPAD3);
-		numPad.accept(Direction.Southwest, KeyEvent.VK_NUMPAD1);
-		numPad.accept(Direction.Nowhere, KeyEvent.VK_NUMPAD5);
 	}
 
 	/**
