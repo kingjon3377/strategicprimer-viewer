@@ -250,22 +250,16 @@ public final class QueryCLI implements SimpleDriver {
 	private static void herd(final ICLIHelper cli, final HuntingModel huntModel)
 			throws IOException {
 		final HerdModel herdModel;
-		final boolean poultry;
 		if (cli.inputBooleanInSeries("Are these small animals, like sheep?\t")) {
 			herdModel = HerdModel.SmallMammals;
-			poultry = false;
 		} else if (cli.inputBooleanInSeries("Are these dairy cattle?\t")) {
 			herdModel = HerdModel.DairyCattle;
-			poultry = false;
 		} else if (cli.inputBooleanInSeries("Are these chickens?\t")) {
 			herdModel = HerdModel.Chickens;
-			poultry = true;
 		} else if (cli.inputBooleanInSeries("Are these turkeys?\t")) {
 			herdModel = HerdModel.Turkeys;
-			poultry = true;
 		} else {
 			herdModel = HerdModel.LargeMammals;
-			poultry = false;
 		}
 		final int count = cli.inputNumber("How many animals?\t");
 		if (count == 0) {
@@ -283,7 +277,7 @@ public final class QueryCLI implements SimpleDriver {
 			final int animalsPerHerder = ((count + herders) - 1) / herders;
 			final DoubleToIntFunction round = dbl -> (int) (Math.ceil(dbl) + 0.1);
 			final int hours;
-			if (poultry) {
+			if (herdModel.isPoultry()) {
 				cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",
 						Integer.valueOf(
 								animalsPerHerder * herdModel.getDailyTimePerHead()));

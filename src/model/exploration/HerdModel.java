@@ -101,7 +101,12 @@ public enum HerdModel {
 		extraTimePerHead = extraCost;
 		extraChoresInterval = extraInterval;
 	}
-
+	/**
+	 * @return true if this is poultry, false otherwise
+	 */
+	public boolean isPoultry() {
+		return this == Chickens || this == Turkeys;
+	}
 	/**
 	 * @return The amount, in some model-specified unit, produced per head per turn.
 	 */
