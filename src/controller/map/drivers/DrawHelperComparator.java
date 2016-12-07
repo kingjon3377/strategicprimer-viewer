@@ -91,6 +91,21 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 * Label to put before every version-2 helper test result.
 	 */
 	private static final String VER_TWO = "Ver. 2: ";
+	/**
+	 * List of pairs of tests with descriptions of them.
+	 */
+	private static final List<Pair<String, DrawingTest>>
+			TESTS =
+			Arrays.asList(Pair.of("1. All in one place", DrawHelperComparator::first),
+					Pair.of("2. Translating", DrawHelperComparator::second),
+					Pair.of("3. In-place, reusing Graphics",
+							DrawHelperComparator::third),
+					Pair.of("4. Translating, reusing Graphics",
+							DrawHelperComparator::fourth),
+					Pair.of("5a. Ordered iteration vs filtering: Iteration",
+							DrawHelperComparator::fifthOne),
+					Pair.of("5b. Ordered iteration vs filtering: Filtering",
+							DrawHelperComparator::fifthTwo));
 
 	/**
 	 * The first test: all in one place.
@@ -371,76 +386,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 			}
 		}
 	}
-	/**
-	 * Interface for the tests.
-	 */
-	@FunctionalInterface
-	private static interface DrawingTest {
-		/**
-		 * Run the test.
-		 * @param helper the drawing helper being tested
-		 * @param map the map to draw
-		 * @param repetitions how many times to repeat the test
-		 * @param tileSize how big to draw each tile
-		 */
-		long runTest(final TileDrawHelper helper, final IMapNG map,
-					 final int repetitions, final int tileSize);
-	}
-	/**
-	 * List of pairs of tests with descriptions of them.
-	 */
-	private static final List<Pair<String, DrawingTest>>
-			TESTS =
-			Arrays.asList(Pair.of("1. All in one place", DrawHelperComparator::first),
-					Pair.of("2. Translating", DrawHelperComparator::second),
-					Pair.of("3. In-place, reusing Graphics",
-							DrawHelperComparator::third),
-					Pair.of("4. Translating, reusing Graphics",
-							DrawHelperComparator::fourth),
-					Pair.of("5a. Ordered iteration vs filtering: Iteration",
-							DrawHelperComparator::fifthOne),
-					Pair.of("5b. Ordered iteration vs filtering: Filtering",
-							DrawHelperComparator::fifthTwo));
-	/**
-	 * A Long accumulator.
-	 */
-	private static final class LongAccumulator {
-		/**
-		 * The value.
-		 */
-		private long value = 0;
-		/**
-		 * @return the value
-		 */
-		public long getValue() {
-			return value;
-		}
-		/**
-		 * @param addend how much to add
-		 */
-		public void add(final long addend) {
-			value += addend;
-		}
-	}
-	/**
-	 * A simple triple.
-	 * @param <T> the first type
-	 * @param <U> the second type
-	 * @param <V> the third type
-	 */
-	private static class Triple<T, U, V> {
-		protected final T first;
-		protected final U second;
-		protected final V third;
-		private Triple(T one, U two, V three) {
-			first = one;
-			second = two;
-			third = three;
-		}
-		public static <T, U, V> Triple<T, U, V> of(T one, U two, V three) {
-			return new Triple(one, two, three);
-		}
-	}
+
 	/**
 	 * Run all the tests on the specified file.
 	 *
@@ -591,5 +537,63 @@ public final class DrawHelperComparator implements SimpleDriver {
 	@Override
 	public DriverUsage usage() {
 		return USAGE;
+	}
+
+	/**
+	 * Interface for the tests.
+	 */
+	@FunctionalInterface
+	private static interface DrawingTest {
+		/**
+		 * Run the test.
+		 * @param helper the drawing helper being tested
+		 * @param map the map to draw
+		 * @param repetitions how many times to repeat the test
+		 * @param tileSize how big to draw each tile
+		 */
+		long runTest(final TileDrawHelper helper, final IMapNG map,
+					 final int repetitions, final int tileSize);
+	}
+
+	/**
+	 * A Long accumulator.
+	 */
+	private static final class LongAccumulator {
+		/**
+		 * The value.
+		 */
+		private long value = 0;
+		/**
+		 * @return the value
+		 */
+		public long getValue() {
+			return value;
+		}
+		/**
+		 * @param addend how much to add
+		 */
+		public void add(final long addend) {
+			value += addend;
+		}
+	}
+
+	/**
+	 * A simple triple.
+	 * @param <T> the first type
+	 * @param <U> the second type
+	 * @param <V> the third type
+	 */
+	private static class Triple<T, U, V> {
+		protected final T first;
+		protected final U second;
+		protected final V third;
+		private Triple(T one, U two, V three) {
+			first = one;
+			second = two;
+			third = three;
+		}
+		public static <T, U, V> Triple<T, U, V> of(T one, U two, V three) {
+			return new Triple(one, two, three);
+		}
 	}
 }

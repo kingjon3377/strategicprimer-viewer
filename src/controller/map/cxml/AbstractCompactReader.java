@@ -61,6 +61,15 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 */
 	private static final NumberFormat NUM_PARSER =
 			assertNotNull(NumberFormat.getIntegerInstance());
+	/**
+	 * Patterns to match XML metacharacters, and their quoted forms.
+	 */
+	private static final List<Pair<Pattern, String>> QUOTING =
+			Arrays.asList(Pair.of(Pattern.compile("&"), "&amp;"),
+					Pair.of(Pattern.compile("<"), "&lt;"),
+					Pair.of(Pattern.compile(">"), "&gt;"),
+					Pair.of(Pattern.compile("\""), "&quot;"),
+					Pair.of(Pattern.compile("'"), "&apos;"));
 
 	/**
 	 * Do not instantiate directly.
@@ -166,6 +175,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 			}
 		}
 	}
+
 	/**
 	 * @param tag a tag
 	 * @return whether it's in a namespace we support.
@@ -174,6 +184,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		return EqualsAny.equalsAny(tag.getNamespaceURI(), ISPReader.NAMESPACE,
 				XMLConstants.NULL_NS_URI);
 	}
+
 	/**
 	 * Move along the stream until we hit an end element matching the start-element we're
 	 * parsing, but object to any start elements.
@@ -425,6 +436,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 			ostream.append("\"");
 		}
 	}
+
 	/**
 	 * Write an XML property to the stream.
 	 *
@@ -441,6 +453,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		ostream.append(simpleQuote(value));
 		ostream.append('"');
 	}
+
 	/**
 	 * Write '>\n' to the stream.
 	 * @param ostream the stream to write to.
@@ -450,6 +463,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		ostream.append('>');
 		ostream.append(LineEnd.LINE_SEP);
 	}
+
 	/**
 	 * Write ' />\n' to the stream.
 	 * @param ostream the stream to write to.
@@ -459,6 +473,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		ostream.append(" />");
 		ostream.append(LineEnd.LINE_SEP);
 	}
+
 	/**
 	 * Write a closing tag to the stream, followed by a newline.
 	 * @param ostream the stream to write to
@@ -476,15 +491,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		ostream.append('>');
 		ostream.append(LineEnd.LINE_SEP);
 	}
-	/**
-	 * Patterns to match XML metacharacters, and their quoted forms.
-	 */
-	private static final List<Pair<Pattern, String>> QUOTING =
-			Arrays.asList(Pair.of(Pattern.compile("&"), "&amp;"),
-					Pair.of(Pattern.compile("<"), "&lt;"),
-					Pair.of(Pattern.compile(">"), "&gt;"),
-					Pair.of(Pattern.compile("\""), "&quot;"),
-					Pair.of(Pattern.compile("'"), "&apos;"));
+
 	/**
 	 * @param text some text
 	 * @return it, with all XML meta-characters replaced with their equivalents
