@@ -348,7 +348,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			ostream.append(imageXML(fortress));
 			ostream.append(portraitXML(obj));
 			ostream.append('>');
-			if ((fortress).iterator().hasNext()) {
+			if (fortress.iterator().hasNext()) {
 				ostream.append(LineEnd.LINE_SEP);
 				for (final FortressMember unit : fortress) {
 					if (unit instanceof Unit) {

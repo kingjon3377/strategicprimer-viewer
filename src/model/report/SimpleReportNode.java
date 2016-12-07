@@ -77,8 +77,8 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 * @return them all concatenated together
 	 */
 	private static String concat(final String... strings) {
-		final StringBuilder builder = new StringBuilder(2 + (Stream.of(strings).mapToInt(
-				String::length).sum()));
+		final StringBuilder builder = new StringBuilder(2 + Stream.of(strings).mapToInt(
+				String::length).sum());
 		Stream.of(strings).forEach(builder::append);
 		return NullCleaner.assertNotNull(builder.toString());
 	}
