@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import util.Pair;
+import util.SetPairConverter;
 
 /**
  * The command-line options passed by the user. At this point we assume that if any
@@ -27,6 +28,10 @@ public class SPOptions implements Iterable<Pair<String, String>> {
 	 * Options taking arguments.
 	 */
 	private final Map<String, String> options = new LinkedHashMap<>();
+	/**
+	 * Adapter to it.
+	 */
+	private final Iterable<Pair<String, String>> adapter = new SetPairConverter<>(options);
 
 	/**
 	 * @param opt an option without argument
@@ -69,24 +74,7 @@ public class SPOptions implements Iterable<Pair<String, String>> {
 	 */
 	@Override
 	public Iterator<Pair<String, String>> iterator() {
-		final Iterator<Map.Entry<String, String>> retval = options.entrySet().iterator();
-		return new Iterator<Pair<String, String>>() {
-			@Override
-			public boolean hasNext() {
-				return retval.hasNext();
-			}
-
-			@Override
-			public Pair<String, String> next() {
-				final Map.Entry<String, String> nextVal = retval.next();
-				return Pair.of(nextVal.getKey(), nextVal.getValue());
-			}
-
-			@Override
-			public void remove() {
-				retval.remove();
-			}
-		};
+		return adapter.iterator();
 	}
 
 	/**
