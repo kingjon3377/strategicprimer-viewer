@@ -496,6 +496,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @param text some text
 	 * @return it, with all XML meta-characters replaced with their equivalents
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	protected static String simpleQuote(final String text) {
 		String retval = text;
 		for (final Pair<Pattern, String> pair : QUOTING) {
