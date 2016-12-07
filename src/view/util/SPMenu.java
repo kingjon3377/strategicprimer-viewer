@@ -11,6 +11,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.InputMap;
 import javax.swing.JMenu;
@@ -217,7 +218,7 @@ public class SPMenu extends JMenuBar implements MenuItemCreator {
 
 		// We *create* these items here (early) so that we can enable or disable them
 		// without an extra branch.
-		final List<JMenuItem> treeItems = new ArrayList<>();
+		final Collection<JMenuItem> treeItems = new ArrayList<>();
 		treeItems.add(createMenuItem("Reload tree",
 				KeyEvent.VK_R, createHotKey(KeyEvent.VK_R),
 				"Refresh the view of the workers", handler));

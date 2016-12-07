@@ -98,7 +98,7 @@ public final class ProxyUnit
 	@Override
 	public NavigableMap<Integer, String> getAllOrders() {
 		final NavigableMap<Integer, String> retval = new TreeMap<>();
-		final List<Integer> toRemove = new ArrayList<>();
+		final Collection<Integer> toRemove = new ArrayList<>();
 		for (final IUnit unit : proxied) {
 			for (final Map.Entry<Integer, String> entry : unit.getAllOrders()
 																  .entrySet()) {
@@ -124,7 +124,7 @@ public final class ProxyUnit
 	@Override
 	public NavigableMap<Integer, String> getAllResults() {
 		final NavigableMap<Integer, String> retval = new TreeMap<>();
-		final List<Integer> toRemove = new ArrayList<>();
+		final Collection<Integer> toRemove = new ArrayList<>();
 		for (final IUnit unit : proxied) {
 			for (final Map.Entry<Integer, String> entry : unit.getAllResults()
 																  .entrySet()) {

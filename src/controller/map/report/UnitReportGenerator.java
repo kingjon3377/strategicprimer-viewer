@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 import javax.swing.tree.MutableTreeNode;
@@ -315,7 +314,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	private static void produceOrders(final IUnit item, final StringBuilder builder) {
 		if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
 			builder.append("Orders and Results:").append(OPEN_LIST);
-			final Set<Integer> turns = new TreeSet<>(item.getAllOrders().keySet());
+			final Collection<Integer> turns = new TreeSet<>(item.getAllOrders().keySet());
 			turns.addAll(item.getAllResults().keySet());
 			for (final Integer turn : turns) {
 				builder.append(OPEN_LIST_ITEM).append("Turn ")
@@ -399,7 +398,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			}
 			retval.addIfNonEmpty(workers, animals, equipment, resources, others);
 			final ListReportNode ordersNode = new ListReportNode("Orders and Results:");
-			final Set<Integer> turns = new TreeSet<>();
+			final Collection<Integer> turns = new TreeSet<>();
 			turns.addAll(item.getAllOrders().keySet());
 			turns.addAll(item.getAllResults().keySet());
 			for (final Integer turn : turns) {
@@ -518,7 +517,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			}
 		});
 		final IReportNode retval;
-		final SimpleReportNode textNode =
+		final MutableTreeNode textNode =
 				new SimpleReportNode("(Any units reported above are not described again" +
 											 ".)");
 		if (ours.getChildCount() == 0) {

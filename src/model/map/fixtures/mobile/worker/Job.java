@@ -242,7 +242,7 @@ public class Job implements IJob {
 				return skill;
 			}
 		}
-		final Skill retval = new Skill(skillName, 0, 0);
+		final ISkill retval = new Skill(skillName, 0, 0);
 		skillSet.put(skillName, retval);
 		return retval;
 	}

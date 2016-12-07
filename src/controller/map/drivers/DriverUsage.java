@@ -168,7 +168,7 @@ public class DriverUsage {
 	/**
 	 * @return a list of the options this driver supports, to show the user.
 	 */
-	public List<String> getSupportedOptions() {
+	public Iterable<String> getSupportedOptions() {
 		return Collections.unmodifiableList(supportedOptions);
 	}
 }

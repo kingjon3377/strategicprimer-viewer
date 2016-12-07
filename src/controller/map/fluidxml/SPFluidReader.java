@@ -51,6 +51,7 @@ import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
 import model.map.fixtures.mobile.Griffin;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Minotaur;
 import model.map.fixtures.mobile.Ogre;
 import model.map.fixtures.mobile.Phoenix;
@@ -434,7 +435,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @throws SPFormatException on SP format problem
 	 */
 	private static void parseOrders(final StartElement element,
-							 final Unit unit,
+							 final IUnit unit,
 							 final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerAttribute(element, "turn", -1);
 		unit.setOrders(turn, getTextUntil(element.getName(), stream));
@@ -449,7 +450,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @throws SPFormatException on SP format problem
 	 */
 	private static void parseResults(final StartElement element,
-							  final Unit unit,
+							  final IUnit unit,
 							  final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerAttribute(element, "turn", -1);
 		unit.setResults(turn, getTextUntil(element.getName(), stream));

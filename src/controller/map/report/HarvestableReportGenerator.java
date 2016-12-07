@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import model.map.HasKind;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -227,7 +228,7 @@ public final class HarvestableReportGenerator
 							loc));
 				} else if (item instanceof Shrub) {
 					final IReportNode collection;
-					final Shrub shrub = (Shrub) item;
+					final HasKind shrub = (Shrub) item;
 					if (shrubs.containsKey(shrub.getKind())) {
 						collection =
 								NullCleaner.assertNotNull(shrubs.get(shrub.getKind()));
@@ -240,7 +241,7 @@ public final class HarvestableReportGenerator
 					fixtures.remove(Integer.valueOf(item.getID()));
 				} else if (item instanceof StoneDeposit) {
 					final IReportNode collection;
-					final StoneDeposit deposit = (StoneDeposit) item;
+					final HasKind deposit = (StoneDeposit) item;
 					if (stone.containsKey(deposit.getKind())) {
 						collection = NullCleaner.assertNotNull(stone.get(
 								deposit.getKind()));

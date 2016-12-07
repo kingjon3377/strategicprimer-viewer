@@ -161,7 +161,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private static void parseOrders(final StartElement element,
-							 final Unit unit,
+							 final IUnit unit,
 							 final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerParameter(element, "turn", -1);
 		final StringBuilder builder = new StringBuilder(512);
@@ -189,7 +189,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private static void parseResults(final StartElement element,
-							  final Unit unit,
+							  final IUnit unit,
 							  final Iterable<XMLEvent> stream) throws SPFormatException {
 		final int turn = getIntegerParameter(element, "turn", -1);
 		final StringBuilder builder = new StringBuilder(512);

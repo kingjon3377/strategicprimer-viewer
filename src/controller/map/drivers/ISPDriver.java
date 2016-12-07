@@ -34,7 +34,7 @@ public interface ISPDriver extends HasName {
 	@SuppressWarnings("OverloadedVarargsMethod")
 	default void startDriver(final SPOptions options, final String... args)
 			throws DriverFailedException {
-		try (final CLIHelper cli = new CLIHelper()) {
+		try (final ICLIHelper cli = new CLIHelper()) {
 			startDriver(cli, options, args);
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator

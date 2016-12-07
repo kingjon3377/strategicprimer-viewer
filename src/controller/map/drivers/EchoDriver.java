@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.xml.stream.XMLStreamException;
+import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.TileFixture;
@@ -99,7 +100,7 @@ public final class EchoDriver implements UtilityDriver {
 	 * @param idFactory the ID factory
 	 * @param location the point we're handling now
 	 */
-	private static void fixForestIDs(final IMutableMapNG map,
+	private static void fixForestIDs(final IMapNG map,
 									 final IDRegistrar idFactory,
 									 final Point location) {
 		final Forest mainForest = map.getForest(location);

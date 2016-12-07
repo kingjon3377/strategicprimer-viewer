@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -157,7 +158,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * @param cli     the interface to the user
 	 * @throws IOException on I/O error getting input from user
 	 */
-	private static void advanceWorkersInJob(final List<IWorker> workers,
+	private static void advanceWorkersInJob(final Collection<IWorker> workers,
 											final String jobName, final ICLIHelper cli)
 			throws IOException {
 		final Map<String, IJob> jobs = new HashMap<>();

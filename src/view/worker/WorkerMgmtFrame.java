@@ -237,7 +237,7 @@ public final class WorkerMgmtFrame extends SPFrame {
 	 * @param model a driver model
 	 * @return the location of the current player's headquarters
 	 */
-	private static Point findHQ(final IWorkerModel model) {
+	private static Point findHQ(final IDriverModel model) {
 		@NonNull
 		Point retval = PointFactory.point(-1, -1);
 		for (final Point location : model.getMap().locations()) {

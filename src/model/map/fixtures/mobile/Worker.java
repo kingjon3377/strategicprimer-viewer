@@ -354,7 +354,7 @@ public class Worker implements IWorker, HasPortrait {
 				return job;
 			}
 		}
-		final Job retval = new Job(jobName, 0);
+		final IJob retval = new Job(jobName, 0);
 		jobSet.add(retval);
 		return retval;
 	}

@@ -64,7 +64,7 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	 * @param map the map we're operating on
 	 * @param cli the interface to the user
 	 */
-	public void fixAllUnits(final IMutableMapNG map, final ICLIHelper cli) {
+	public void fixAllUnits(final IMapNG map, final ICLIHelper cli) {
 		for (final Point point : map.locations()) {
 			final SimpleTerrain terrain = getTerrain(map, point);
 			map.streamOtherFixtures(point).filter(Unit.class::isInstance)

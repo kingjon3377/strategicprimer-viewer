@@ -255,7 +255,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 				return skill;
 			}
 		}
-		final ProxySkill retval =
+		final ISkill retval =
 				new ProxySkill(skillName, parallel, NullCleaner.assertNotNull(
 						proxiedJobs.toArray(new IJob[proxiedJobs.size()])));
 		proxied.add(retval);
