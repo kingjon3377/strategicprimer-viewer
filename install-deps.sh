@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ex
 mkdir -p "${HOME}/.ant/lib"
-wget http://sf.net/projects/launch4j/files/launch4j-3/3.9/launch4j-3.9-linux.tgz/download \
+wget http://download.sourceforge.net/launch4j/launch4j-3/3.9/launch4j-3.9-linux.tgz \
         -O launch4j-3.9-linux.tgz
 tar xzf launch4j-3.9-linux.tgz
 wget https://github.com/UltraMixer/JarBundler/releases/download/3.3.0/jarbundler-core-3.3.0.jar \
