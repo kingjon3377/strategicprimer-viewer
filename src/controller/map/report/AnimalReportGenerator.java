@@ -60,7 +60,6 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final Map<String, Collection<Point>> itemsOld = new SimpleMultiMap<>();
 		final Map<String, Collection<Point>> items = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
@@ -84,7 +83,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				fixtures.remove(Integer.valueOf(animal.getID()));
 			}
 		}
-		if (itemsOld.isEmpty()) {
+		if (items.isEmpty()) {
 			return "";
 		} else {
 			// We doubt this list will ever be over 16K.
@@ -92,7 +91,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 					"<h4>Animal sightings or encounters</h4>").append(LineEnd.LINE_SEP)
 												  .append(
 														  OPEN_LIST);
-			for (final Map.Entry<String, Collection<Point>> entry : itemsOld.entrySet()) {
+			for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry).append(CLOSE_LIST_ITEM);
 			}
 			return NullCleaner.assertNotNull(builder.append(CLOSE_LIST)
