@@ -66,88 +66,69 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   final TileFixture item, final Point loc) throws IOException {
+		final String kind;
+		final String cultivation;
+		final String status;
+		final String crop;
 		if (item instanceof Forest) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
 			final Forest forest = (Forest) item;
 			if (forest.isRows()) {
-				writeField(ostream, "rows");
+				kind = "rows";
 			} else {
-				writeField(ostream, "forest");
+				kind = "forest";
 			}
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "---");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "---");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, forest.getKind());
-			ostream.append(getRowDelimiter());
-			return true;
+			cultivation = "---";
+			status = "---";
+			crop = forest.getKind();
 		} else if (item instanceof Shrub) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "shrub");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "---");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "---");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, ((Shrub) item).getKind());
-			ostream.append(getRowDelimiter());
-			return true;
+			kind = "shrub";
+			cultivation = "---";
+			status = "---";
+			crop = ((Shrub) item).getKind();
 		} else if (item instanceof Meadow) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
 			final Meadow meadow = (Meadow) item;
 			if (meadow.isField()) {
-				writeField(ostream, "field");
+				kind = "field";
 			} else {
-				writeField(ostream, "meadow");
+				kind = "meadow";
 			}
-			writeFieldDelimiter(ostream);
 			if (meadow.isCultivated()) {
-				writeField(ostream, "cultivated");
+				cultivation = "cultivated";
 			} else {
-				writeField(ostream, "wild");
+				cultivation = "wild";
 			}
-			writeFieldDelimiter(ostream);
-			writeField(ostream, meadow.getStatus().toString());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, meadow.getKind());
-			ostream.append(getRowDelimiter());
-			return true;
+			status = meadow.getStatus().toString();
+			crop = meadow.getKind();
 		} else if (item instanceof Grove) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
 			final Grove grove = (Grove) item;
 			if (grove.isOrchard()) {
-				writeField(ostream, "orchard");
+				kind = "orchard";
 			} else {
-				writeField(ostream, "grove");
+				kind = "grove";
 			}
-			writeFieldDelimiter(ostream);
 			if (grove.isCultivated()) {
-				writeField(ostream, "cultivated");
+				cultivation = "cultivated";
 			} else {
-				writeField(ostream, "wild");
+				cultivation = "wild";
 			}
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "---");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, grove.getKind());
-			ostream.append(getRowDelimiter());
-			return true;
+			status = "---";
+			crop = grove.getKind();
 		} else {
 			return false;
 		}
+		writeField(ostream, distanceString(loc, base));
+		writeFieldDelimiter(ostream);
+		writeField(ostream, loc.toString());
+		writeFieldDelimiter(ostream);
+		writeField(ostream, kind);
+		writeFieldDelimiter(ostream);
+		writeField(ostream, cultivation);
+		writeFieldDelimiter(ostream);
+		writeField(ostream, status);
+		writeFieldDelimiter(ostream);
+		writeField(ostream, crop);
+		ostream.append(getRowDelimiter());
+		return true;
 	}
 
 	@Override
