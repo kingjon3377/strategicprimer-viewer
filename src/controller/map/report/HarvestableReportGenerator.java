@@ -187,9 +187,8 @@ public final class HarvestableReportGenerator
 				new SortedSectionListReportNode(5, "Meadows and fields");
 		final IReportNode groves =
 				new SortedSectionListReportNode(5, "Groves and orchards");
-		final IReportNode caches = new SortedSectionListReportNode(5,
-																		  "Caches " +
-																				  "collected by your explorers and workers:");
+		final IReportNode caches = new SortedSectionListReportNode(
+				5, "Caches collected by your explorers and workers:");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof HarvestableFixture) {
 				final HarvestableFixture item = (HarvestableFixture) pair.second();
