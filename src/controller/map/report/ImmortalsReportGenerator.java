@@ -243,7 +243,7 @@ public final class ImmortalsReportGenerator
 		if (totalSize == 0) {
 			return "";
 		} else {
-			return NullCleaner.assertNotNull(builder.toString());
+			return builder.toString();
 		}
 	}
 
