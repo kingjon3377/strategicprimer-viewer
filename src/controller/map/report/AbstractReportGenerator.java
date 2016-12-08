@@ -228,26 +228,25 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		public String toString() {
 			if (isEmpty()) {
 				return "";
+			} // else
+			final StringBuilder builder =
+					new StringBuilder(size() * 10 + header.length() + 5);
+			builder.append(header);
+			builder.append(get(0));
+			if (size() == 2) {
+				builder.append(" and ");
+				builder.append(get(1));
 			} else {
-				final StringBuilder builder =
-						new StringBuilder(size() * 10 + header.length() + 5);
-				builder.append(header);
-				builder.append(get(0));
-				if (size() == 2) {
-					builder.append(" and ");
-					builder.append(get(1));
-				} else {
-					for (int i = 1; i < size(); i++) {
-						if (i == (size() - 1)) {
-							builder.append(", and ");
-						} else {
-							builder.append(", ");
-						}
-						builder.append(get(i));
+				for (int i = 1; i < size(); i++) {
+					if (i == (size() - 1)) {
+						builder.append(", and ");
+					} else {
+						builder.append(", ");
 					}
+					builder.append(get(i));
 				}
-				return builder.toString();
 			}
+			return builder.toString();
 		}
 	}
 	/**
