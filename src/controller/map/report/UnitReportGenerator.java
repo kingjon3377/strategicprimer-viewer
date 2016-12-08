@@ -437,54 +437,30 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		builder.append(LineEnd.LINE_SEP);
 		builder.append("<p>(Any units listed above are not described again.)</p>");
 		builder.append(LineEnd.LINE_SEP);
-		final StringBuilder ours =
-				new StringBuilder(8192).append("<h5>Your units</h5>");
-		ours.append(LineEnd.LINE_SEP);
-		ours.append(OPEN_LIST);
-		final StringBuilder foreign =
-				new StringBuilder(8192).append("<h5>Foreign units</h5>");
-		foreign.append(LineEnd.LINE_SEP);
-		foreign.append(OPEN_LIST);
+		final HeadedList<String> ours = new HtmlList("<h5>Your units</h5>");
+		final HeadedList<String> foreign = new HtmlList("<h5>Foreign units</h5>");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		boolean anyForeign = false;
-		boolean anyOurs = false;
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof IUnit) {
 				final IUnit unit = (IUnit) pair.second();
 				if (currentPlayer.equals(unit.getOwner())) {
-					anyOurs = true;
-					ours.append(OPEN_LIST_ITEM)
-							.append(atPoint(pair.first()))
-							.append(' ')
-							.append(distCalculator.distanceString(pair.first()))
-							.append(produce(fixtures, map, currentPlayer,
-									unit, pair.first()))
-							.append(CLOSE_LIST_ITEM);
+					ours.add(String.format("At %s: %s%s", pair.first().toString(),
+							distCalculator.distanceString(pair.first()),
+							produce(fixtures, map, currentPlayer, unit, pair.first())));
 				} else {
-					anyForeign = true;
-					foreign.append(OPEN_LIST_ITEM)
-							.append(atPoint(pair.first()))
-							.append(' ')
-							.append(distCalculator.distanceString(pair.first()))
-							.append(produce(fixtures, map, currentPlayer,
-									unit, pair.first()))
-							.append(CLOSE_LIST_ITEM);
+					foreign.add(String.format("At %s: %s%s", pair.first().toString(),
+							distCalculator.distanceString(pair.first()),
+							produce(fixtures, map, currentPlayer, unit, pair.first())));
 				}
 			}
 		}
-		foreign.append(CLOSE_LIST);
-		ours.append(CLOSE_LIST);
-		if (anyOurs) {
-			builder.append(ours);
-		}
-		if (anyForeign) {
-			builder.append(foreign);
-		}
-		if (anyOurs || anyForeign) {
-			return NullCleaner.assertNotNull(builder.toString());
-		} else {
+		builder.append(ours);
+		builder.append(foreign);
+		if (ours.isEmpty() && foreign.isEmpty()) {
 			return "";
+		} else {
+			return builder.toString();
 		}
 	}
 
