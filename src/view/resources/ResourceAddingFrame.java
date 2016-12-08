@@ -97,6 +97,10 @@ public class ResourceAddingFrame extends SPFrame {
 	 */
 	private final UpdatedComboBox implKindBox = new UpdatedComboBox(logLabel);
 	/**
+	 * The Player to use when the selected Player is null
+	 */
+	private final static Player NULL_PLAYER = new Player(-1, "");
+	/**
 	 * The current player.
 	 */
 	@SuppressWarnings({"FieldMayBeFinal", "CanBeFinal"})
@@ -119,7 +123,7 @@ public class ResourceAddingFrame extends SPFrame {
 		final IDRegistrar idf = IDFactoryFiller.createFactory(driverModel);
 		current = StreamSupport.stream(driverModel.getPlayers().spliterator(), false)
 						  .filter(Player::isCurrent)
-						  .findAny().orElse(new Player(-1, ""));
+						  .findAny().orElse(NULL_PLAYER);
 		final FormattedLabel resourceLabel =
 				new FormattedLabel("Add resource for %s:", current.getName());
 		final FormattedLabel implementLabel =
@@ -127,7 +131,7 @@ public class ResourceAddingFrame extends SPFrame {
 		ioh.addPlayerChangeListener(
 				(final Player old, @Nullable final Player newPlayer) -> {
 					if (newPlayer == null) {
-						current = new Player(-1, "");
+						current = NULL_PLAYER;
 					} else {
 						current = newPlayer;
 					}
