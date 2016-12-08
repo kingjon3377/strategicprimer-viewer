@@ -253,7 +253,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * @param desc a description of something
 	 * @return a list for points matching that description
 	 */
-	protected HeadedList<Point> pointsListAt(final String desc) {
+	protected static HeadedList<Point> pointsListAt(final String desc) {
 		return new PointList(desc + ": at ");
 	}
 }
