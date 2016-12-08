@@ -194,16 +194,14 @@ public final class ExplorationCLI implements MovementCostSource {
 			consider.accept(forest);
 		}
 		map.streamOtherFixtures(dPoint).forEach(consider);
-		final String possibleTracks;
+		final String tracks;
 		if (Ocean == model.getMap().getBaseTerrain(dPoint)) {
-			possibleTracks = huntingModel.fish(dPoint, 1).get(0);
+			tracks = huntingModel.fish(dPoint, 1).get(0);
 		} else {
-			possibleTracks = huntingModel.hunt(dPoint, 1).get(0);
+			tracks = huntingModel.hunt(dPoint, 1).get(0);
 		}
-		if (!HuntingModel.NOTHING.equals(possibleTracks)) {
-			allFixtures
-					.add(new Animal(possibleTracks, true, false, "wild", idf.createID
-																					 ()));
+		if (!HuntingModel.NOTHING.equals(tracks)) {
+			allFixtures.add(new Animal(tracks, true, false, "wild", idf.createID()));
 		}
 		if ((IExplorationModel.Direction.Nowhere == direction) &&
 					helper.inputBooleanInSeries(FEALTY_PROMPT)) {
