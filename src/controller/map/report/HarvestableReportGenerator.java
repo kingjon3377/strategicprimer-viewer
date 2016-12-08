@@ -32,7 +32,6 @@ import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
-import util.SimpleMultiMap;
 
 /**
  * A report generator for harvestable fixtures (other than caves and battlefields, which
