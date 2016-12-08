@@ -1,8 +1,6 @@
 package view.worker;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,10 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
@@ -223,15 +218,9 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 			final String orders =
 					unit.getLatestOrders(turnSupplier.getAsInt()).toLowerCase();
 			if (warn && orders.contains("fixme") && unit.iterator().hasNext()) {
-				((DefaultTreeCellRenderer) component)
-						.setBackgroundSelectionColor(Color.PINK);
-				((DefaultTreeCellRenderer) component)
-						.setBackgroundNonSelectionColor(Color.PINK);
+				setComponentColor(component, Color.PINK);
 			} else if (warn && orders.contains("todo") && unit.iterator().hasNext()) {
-				((DefaultTreeCellRenderer) component)
-						.setBackgroundSelectionColor(Color.YELLOW);
-				((DefaultTreeCellRenderer) component)
-						.setBackgroundNonSelectionColor(Color.YELLOW);
+				setComponentColor(component, Color.YELLOW);
 			}
 		} else if (warn && (value instanceof WorkerTreeModelAlt.KindNode)) {
 			boolean shouldWarn = false;
@@ -249,22 +238,26 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 					}
 				}
 			}
-
 			if (shouldErr) {
-				((DefaultTreeCellRenderer) component)
-						.setBackgroundSelectionColor(Color.PINK);
-				((DefaultTreeCellRenderer) component)
-						.setBackgroundNonSelectionColor(Color.PINK);
+				setComponentColor(component, Color.PINK);
 			} else if (shouldWarn) {
-				((DefaultTreeCellRenderer) component)
-						.setBackgroundSelectionColor(Color.YELLOW);
-				((DefaultTreeCellRenderer) component)
-						.setBackgroundNonSelectionColor(Color.YELLOW);
+				setComponentColor(component, Color.YELLOW);
 			}
 		}
 		return component;
 	}
-
+	/**
+	 * If the component is a DefaultTreeCellRenderer, set both of its background colors
+	 * (if and if not selected) to the given color. Otherwise, do nothing.
+	 * @param component a component
+	 * @param color a color
+	 */
+	private static void setComponentColor(final Component component, final Color color) {
+		if (component instanceof DefaultTreeCellRenderer) {
+			((DefaultTreeCellRenderer) component).setBackgroundSelectionColor(color);
+			((DefaultTreeCellRenderer) component).setBackgroundNonSelectionColor(color);
+		}
+	}
 	/**
 	 * @param obj a HasImage object
 	 * @return an icon representing it
