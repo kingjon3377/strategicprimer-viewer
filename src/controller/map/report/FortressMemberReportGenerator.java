@@ -20,7 +20,6 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.MultiMapHelper;
 import util.NullCleaner;
 import util.Pair;
@@ -66,65 +65,33 @@ public final class FortressMemberReportGenerator
 	@Override
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer) {
-		// At only two (albeit who-knows-how-long) list items, I doubt this will ever be
-		// over one K, but we'll give it two just in case.
-		final StringBuilder builder =
-				new StringBuilder(2048).append("<h4>Resources and Equipment</h4>")
-						.append(LineEnd.LINE_SEP).append(OPEN_LIST);
-		// Similarly, I doubt either of these will ever be over half a K, but
-		// we'll give each a whole K just in case.
-		final StringBuilder rsrBuilder =
-				new StringBuilder(1024).append(OPEN_LIST_ITEM).append("Resources:")
-						.append(OPEN_LIST);
-		final StringBuilder eqBuilder =
-				new StringBuilder(1024).append(OPEN_LIST_ITEM).append("Equipment:")
-						.append(OPEN_LIST);
+		final HeadedList<String> retval =
+				new HtmlList("<h4>Resources and Equipment</h4>");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		boolean anyResources = false;
-		boolean anyEquipment = false;
-		final Map<String, Collection<Pair<Point, ResourcePile>>> resources =
+		final HeadedList<String> equipment = new HtmlList("Equipment:");
+		final Map<String, HeadedList<String>> resources =
 				new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof ResourcePile) {
-				anyResources = true;
 				final ResourcePile resource = (ResourcePile) pair.second();
 				MultiMapHelper.getMapValue(resources, resource.getKind(),
-						key -> new ArrayList<>()).add(Pair.of(pair.first(), resource));
-				fixtures.remove(Integer.valueOf(pair.second().getID()));
+						key -> new HtmlList(key + ':'))
+						.add(produce(fixtures, map, currentPlayer, resource,
+								pair.first()));
+				fixtures.remove(Integer.valueOf(resource.getID()));
 			} else if (pair.second() instanceof Implement) {
-				anyEquipment = true;
-				eqBuilder.append(OPEN_LIST_ITEM)
-						.append(produce(fixtures, map, currentPlayer,
-								(FortressMember) pair.second(), pair.first()))
-						.append(CLOSE_LIST_ITEM);
+				equipment.add(produce(fixtures, map, currentPlayer,
+						(FortressMember) pair.second(), pair.first()));
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			}
 		}
-		for (final Map.Entry<String, Collection<Pair<Point, ResourcePile>>> entry :
-				resources.entrySet()) {
-			rsrBuilder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(':')
-					.append(OPEN_LIST);
-			for (final Pair<Point, ResourcePile> pair : entry.getValue()) {
-				rsrBuilder.append(OPEN_LIST_ITEM)
-						.append(produce(fixtures, map, currentPlayer, pair.second(),
-								pair.first())).append(CLOSE_LIST_ITEM);
-			}
-			rsrBuilder.append(CLOSE_LIST);
-		}
-		eqBuilder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
-		rsrBuilder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
-		if (anyEquipment) {
-			builder.append(eqBuilder);
-		}
-		if (anyResources) {
-			builder.append(rsrBuilder);
-		}
-		if (anyEquipment || anyResources) {
-			return NullCleaner.assertNotNull(builder.toString());
-		} else {
-			return "";
-		}
+		final HeadedList<String> resourcesText = new HtmlList("Resources:");
+		resources.values().stream().map(Collection::toString)
+				.forEach(resourcesText::add);
+		retval.add(equipment.toString());
+		retval.add(resourcesText.toString());
+		return retval.toString();
 	}
 
 	/**
