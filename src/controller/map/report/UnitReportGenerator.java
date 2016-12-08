@@ -367,56 +367,52 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		final ListReportNode equipment = new ListReportNode("Equipment:");
 		final ListReportNode resources = new ListReportNode("Resources:");
 		final ListReportNode others = new ListReportNode("Others:");
-		if (item.iterator().hasNext() || !item.getAllOrders().isEmpty() ||
-					!item.getAllResults().isEmpty()) {
-			final IReportNode retval = new ListReportNode(loc,
-																 concat(simple,
-																		 ". Members of " +
-																				 "the " +
-																				 "unit:"));
-			for (final UnitMember member : item) {
-				if (member instanceof IWorker) {
-					workers.add(produceWorkerRIR(loc, (IWorker) member,
-							currentPlayer.equals(item.getOwner())));
-				} else if (member instanceof Animal) {
-					animals.add(animalReportGenerator
-										.produceRIR(fixtures, map, currentPlayer,
-												(Animal) member, loc));
-				} else if (member instanceof Implement) {
-					equipment.add(memberReportGenerator
-										  .produceRIR(fixtures, map, currentPlayer,
-												  (Implement) member, loc));
-				} else if (member instanceof ResourcePile) {
-					resources.add(memberReportGenerator
-										  .produceRIR(fixtures, map, currentPlayer,
-												  (ResourcePile) member, loc));
-				} else {
-					//noinspection ObjectAllocationInLoop
-					others.add(new SimpleReportNode(loc, member.toString()));
-				}
-				fixtures.remove(Integer.valueOf(member.getID()));
+		final IReportNode retval =
+				new ListReportNode(loc, concat(simple, ". Members of the unit:"));
+		for (final UnitMember member : item) {
+			if (member instanceof IWorker) {
+				workers.add(produceWorkerRIR(loc, (IWorker) member,
+						currentPlayer.equals(item.getOwner())));
+			} else if (member instanceof Animal) {
+				animals.add(animalReportGenerator
+									.produceRIR(fixtures, map, currentPlayer,
+											(Animal) member, loc));
+			} else if (member instanceof Implement) {
+				equipment.add(memberReportGenerator
+									  .produceRIR(fixtures, map, currentPlayer,
+											  (Implement) member, loc));
+			} else if (member instanceof ResourcePile) {
+				resources.add(memberReportGenerator
+									  .produceRIR(fixtures, map, currentPlayer,
+											  (ResourcePile) member, loc));
+			} else {
+				//noinspection ObjectAllocationInLoop
+				others.add(new SimpleReportNode(loc, member.toString()));
 			}
-			retval.addIfNonEmpty(workers, animals, equipment, resources, others);
-			final ListReportNode ordersNode = new ListReportNode("Orders and Results:");
-			final Collection<Integer> turns = new TreeSet<>();
-			turns.addAll(item.getAllOrders().keySet());
-			turns.addAll(item.getAllResults().keySet());
-			for (final Integer turn : turns) {
-				final ListReportNode current = new ListReportNode("Turn " + turn + ':');
-				final String orders = item.getOrders(turn);
-				if (!orders.isEmpty()) {
-					current.add(new SimpleReportNode("Orders: ", orders));
-				}
-				final String results = item.getResults(turn);
-				if (!results.isEmpty()) {
-					current.add(new SimpleReportNode("Results: ", results));
-				}
-				ordersNode.addIfNonEmpty(current);
+			fixtures.remove(Integer.valueOf(member.getID()));
+		}
+		retval.addIfNonEmpty(workers, animals, equipment, resources, others);
+		final ListReportNode ordersNode = new ListReportNode("Orders and Results:");
+		final Collection<Integer> turns = new TreeSet<>();
+		turns.addAll(item.getAllOrders().keySet());
+		turns.addAll(item.getAllResults().keySet());
+		for (final Integer turn : turns) {
+			final ListReportNode current = new ListReportNode("Turn " + turn + ':');
+			final String orders = item.getOrders(turn);
+			if (!orders.isEmpty()) {
+				current.add(new SimpleReportNode("Orders: ", orders));
 			}
-			retval.addIfNonEmpty(ordersNode);
-			return retval;
-		} else {
+			final String results = item.getResults(turn);
+			if (!results.isEmpty()) {
+				current.add(new SimpleReportNode("Results: ", results));
+			}
+			ordersNode.addIfNonEmpty(current);
+		}
+		retval.addIfNonEmpty(ordersNode);
+		if (retval.getChildCount() == 0) {
 			return new SimpleReportNode(loc, simple);
+		} else {
+			return retval;
 		}
 	}
 
