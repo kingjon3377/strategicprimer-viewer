@@ -141,10 +141,10 @@ public final class ExplorableReportGenerator
 			if (anyAdventures) {
 				builder.append(adventureBuilder);
 			}
-			return NullCleaner.assertNotNull(builder.toString());
+			return builder.toString();
 		} else {
 			if (anyAdventures) {
-				return NullCleaner.assertNotNull(adventureBuilder.toString());
+				return adventureBuilder.toString();
 			} else {
 				return "";
 			}
