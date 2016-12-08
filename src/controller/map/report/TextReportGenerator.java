@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -63,8 +62,8 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 		}
 		items.sort(Comparator.comparingInt(pair -> pair.second().getTurn()));
 		final HeadedList<String> list = new HtmlList("<h4>Miscellaneous Notes</h4>");
-		list.addAll(items.stream().map(item -> produce(fixtures, map, currentPlayer,
-				item.second(), item.first())).collect(Collectors.toList()));
+		items.stream().map(item -> produce(fixtures, map, currentPlayer,
+				item.second(), item.first())).forEach(list::add);
 		return list.toString();
 	}
 
