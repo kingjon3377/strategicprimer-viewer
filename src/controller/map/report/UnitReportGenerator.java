@@ -393,8 +393,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		}
 		retval.addIfNonEmpty(workers, animals, equipment, resources, others);
 		final ListReportNode ordersNode = new ListReportNode("Orders and Results:");
-		final Collection<Integer> turns = new TreeSet<>();
-		turns.addAll(item.getAllOrders().keySet());
+		final Collection<Integer> turns = new TreeSet<>(item.getAllOrders().keySet());
 		turns.addAll(item.getAllResults().keySet());
 		for (final Integer turn : turns) {
 			final ListReportNode current = new ListReportNode("Turn " + turn + ':');
