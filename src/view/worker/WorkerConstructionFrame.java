@@ -124,17 +124,6 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 		addLabeledField(textPanel, "Worker Name:", name);
 		addLabeledField(textPanel, "Worker Race:", race);
 
-		createStats();
-		final JPanel statsPanel = new JPanel(new GridLayout(0, 4));
-		addLabeledField(statsPanel, "HP:", hpBox);
-		addLabeledField(statsPanel, "Max HP:", maxHP);
-		addLabeledField(statsPanel, "Strength:", strength);
-		addLabeledField(statsPanel, "Intelligence:", intel);
-		addLabeledField(statsPanel, "Dexterity:", dex);
-		addLabeledField(statsPanel, "Wisdom:", wis);
-		addLabeledField(statsPanel, "Constitution:", con);
-		addLabeledField(statsPanel, "Charisma:", cha);
-
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
 		final ListenedButton addButton = new ListenedButton("Add Worker", evt -> {
 			final String nameText = name.getText().trim();
@@ -171,10 +160,28 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 		});
 		OnMac.makeButtonsSegmented(addButton, cancelButton);
 		buttonPanel.add(cancelButton);
-		setContentPane(new BorderedPanel(statsPanel, textPanel, buttonPanel,
+		setContentPane(new BorderedPanel(createStatsPanel(), textPanel, buttonPanel,
 												null, null));
 		setMinimumSize(new Dimension(320, 240));
 		pack();
+	}
+
+	/**
+	 * @return the initialized stats panel
+	 */
+	private JPanel createStatsPanel() {
+		createStats();
+
+		final JPanel statsPanel = new JPanel(new GridLayout(0, 4));
+		addLabeledField(statsPanel, "HP:", hpBox);
+		addLabeledField(statsPanel, "Max HP:", maxHP);
+		addLabeledField(statsPanel, "Strength:", strength);
+		addLabeledField(statsPanel, "Intelligence:", intel);
+		addLabeledField(statsPanel, "Dexterity:", dex);
+		addLabeledField(statsPanel, "Wisdom:", wis);
+		addLabeledField(statsPanel, "Constitution:", con);
+		addLabeledField(statsPanel, "Charisma:", cha);
+		return statsPanel;
 	}
 
 	/**
