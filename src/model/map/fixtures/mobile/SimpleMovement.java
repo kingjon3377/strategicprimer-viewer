@@ -134,6 +134,8 @@ public final class SimpleMovement {
 			return false;
 		} else if (fix instanceof IEvent) {
 			return (getHighestPerception(unit) + 15) >= ((IEvent) fix).getDC();
+		} else if (fix == null) {
+			return false;
 		} else {
 			return true;
 		}
