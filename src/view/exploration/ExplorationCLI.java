@@ -177,7 +177,6 @@ public final class ExplorationCLI implements MovementCostSource {
 		if (map.isMountainous(dPoint)) {
 			constants.add(new Mountain());
 		}
-		final Ground ground = map.getGround(dPoint);
 		final List<TileFixture> allFixtures = new ArrayList<>();
 		final Consumer<TileFixture> consider = fix -> {
 			if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
@@ -186,13 +185,8 @@ public final class ExplorationCLI implements MovementCostSource {
 				allFixtures.add(fix);
 			}
 		};
-		if (ground != null) {
-			consider.accept(ground);
-		}
-		final Forest forest = map.getForest(dPoint);
-		if (forest != null) {
-			consider.accept(forest);
-		}
+		consider.accept(map.getGround(dPoint));
+		consider.accept(map.getForest(dPoint));
 		map.streamOtherFixtures(dPoint).forEach(consider);
 		final String tracks;
 		if (Ocean == model.getMap().getBaseTerrain(dPoint)) {
