@@ -203,15 +203,15 @@ public final class ExplorationCLI implements MovementCostSource {
 		if (!HuntingModel.NOTHING.equals(tracks)) {
 			allFixtures.add(new Animal(tracks, true, false, "wild", idf.createID()));
 		}
-		if ((IExplorationModel.Direction.Nowhere == direction) &&
-					helper.inputBooleanInSeries(FEALTY_PROMPT)) {
-			model.swearVillages();
-			fireMovementCost(5);
-		} else if ((IExplorationModel.Direction.Nowhere == direction) &&
-						   helper.inputBooleanInSeries(
-								   "Dig to expose some ground here?")) {
-			model.dig();
-			fireMovementCost(4);
+		if (IExplorationModel.Direction.Nowhere == direction) {
+			if (helper.inputBooleanInSeries(FEALTY_PROMPT)) {
+				model.swearVillages();
+				fireMovementCost(5);
+			}
+			if (helper.inputBooleanInSeries("Dig to expose some ground here?")) {
+				model.dig();
+				fireMovementCost(4);
+			}
 		}
 		helper.printf("The explorer comes to %s, a tile with terrain %s%n",
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
