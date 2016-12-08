@@ -177,18 +177,10 @@ public final class ImmortalsReportGenerator
 			}
 		}
 		final HeadedList<String> retval = new HtmlList("<h4>Immortals</h4>");
-		dragons.values().stream().map(Collection::toString).forEach(retval::add);
-		fairies.values().stream().map(Collection::toString).forEach(retval::add);
-		retval.add(trolls.toString());
-		retval.add(djinni.toString());
-		retval.add(sphinxes.toString());
-		giants.values().stream().map(Collection::toString).forEach(retval::add);
-		retval.add(minotaurs.toString());
-		retval.add(ogres.toString());
-		centaurs.values().stream().map(Collection::toString).forEach(retval::add);
-		retval.add(phoenixes.toString());
-		retval.add(simurghs.toString());
-		retval.add(griffins.toString());
+		Stream.of(dragons, fairies, giants, centaurs).flatMap(m -> m.values().stream())
+				.map(Collection::toString).forEach(retval::add);
+		Stream.of(trolls, djinni, sphinxes, minotaurs, ogres, phoenixes, simurghs,
+				griffins).map(Collection::toString).forEach(retval::add);
 		return retval.toString();
 	}
 
