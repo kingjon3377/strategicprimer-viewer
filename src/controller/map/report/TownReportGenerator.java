@@ -20,7 +20,6 @@ import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
@@ -87,24 +86,14 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 						separated.get(((ITownFixture) pair.second()).status()))
 								.add(produce(fixtures, map, currentPlayer,
 										(ITownFixture) pair.second(), pair.first())));
-		final StringBuilder builder =
-				new StringBuilder((separated.values().stream().mapToInt(Collection::size)
-										   .sum() * 512) + 80);
-		builder.append("<h4>Cities, towns, and/or fortifications you know about:</h4>");
-		builder.append(LineEnd.LINE_SEP);
-		builder.append(OPEN_LIST);
+		final HeadedList<String> retval =
+				new HtmlList("<h4>Cities, towns, and/or fortifications you know " +
+									 "about:</h4>");
 		Stream.of(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
 				TownStatus.Burned).map(separated::get).filter(Objects::nonNull)
-				.filter(coll -> !NullCleaner.assertNotNull(coll).isEmpty()).forEach(
-				coll -> builder.append(OPEN_LIST_ITEM)
-								.append(NullCleaner.assertNotNull(coll))
-								.append(CLOSE_LIST_ITEM));
-		builder.append(CLOSE_LIST);
-		if (separated.values().stream().allMatch(Collection::isEmpty)) {
-			return "";
-		} else {
-			return NullCleaner.assertNotNull(builder.toString());
-		}
+				.filter(coll -> !NullCleaner.assertNotNull(coll).isEmpty())
+				.map(Collection::toString).forEach(retval::add);
+		return retval.toString();
 	}
 
 	/**
