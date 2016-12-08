@@ -344,35 +344,31 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 					StreamSupport.stream(map.getRivers(loc).spliterator(), false)
 							.collect(Collectors.toSet()));
 		}
-		if (item.iterator().hasNext()) {
-			final IReportNode units = new ListReportNode(loc,
-																"Units on the tile:");
-			final IReportNode resources = new ListReportNode(loc, "Resources");
-			final Map<String, IReportNode> resourceKinds = new HashMap<>();
-			final IReportNode equipment = new ListReportNode(loc, "Equipment:");
-			final IReportNode contents =
-					new ListReportNode(loc, "Other Contents of Fortress:");
-			for (final FortressMember unit : item) {
-				if (unit instanceof IUnit) {
-					units.add(urg.produceRIR(fixtures, map, currentPlayer,
-							(IUnit) unit, loc));
-				} else if (unit instanceof Implement) {
-					equipment.add(memberReportGenerator
-										  .produceRIR(fixtures, map, currentPlayer, unit,
-												  loc));
-				} else if (unit instanceof ResourcePile) {
-					MultiMapHelper.getMapValue(resourceKinds,
-							((ResourcePile) unit).getKind(),
-							key -> new ListReportNode(key + ':'))
-							.add(memberReportGenerator
-										 .produceRIR(fixtures, map, currentPlayer, unit,
-												 loc));
-				} else {
-					contents.add(
-							memberReportGenerator
-									.produceRIR(fixtures, map, currentPlayer, unit,
-											loc));
-				}
+		final IReportNode units = new ListReportNode(loc, "Units on the tile:");
+		final IReportNode resources = new ListReportNode(loc, "Resources");
+		final Map<String, IReportNode> resourceKinds = new HashMap<>();
+		final IReportNode equipment = new ListReportNode(loc, "Equipment:");
+		final IReportNode contents =
+				new ListReportNode(loc, "Other Contents of Fortress:");
+		for (final FortressMember unit : item) {
+			if (unit instanceof IUnit) {
+				units.add(
+						urg.produceRIR(fixtures, map, currentPlayer, (IUnit) unit, loc));
+			} else if (unit instanceof Implement) {
+				equipment.add(memberReportGenerator
+									  .produceRIR(fixtures, map, currentPlayer, unit,
+											  loc));
+			} else if (unit instanceof ResourcePile) {
+				MultiMapHelper.getMapValue(resourceKinds,
+						((ResourcePile) unit).getKind(),
+						key -> new ListReportNode(key + ':'))
+						.add(memberReportGenerator
+									 .produceRIR(fixtures, map, currentPlayer, unit,
+											 loc));
+			} else {
+				contents.add(memberReportGenerator
+									 .produceRIR(fixtures, map, currentPlayer, unit,
+											 loc));
 			}
 			resourceKinds.values().forEach(resources::addIfNonEmpty);
 			retval.addIfNonEmpty(units, resources, equipment, contents);
