@@ -224,26 +224,24 @@ public final class ImmortalsReportGenerator
 		final int totalSize = collSize(dragons.keySet(), griffins,
 				fairies.keySet(), giants.keySet(), centaurs.keySet(), trolls,
 				djinni, sphinxes, minotaurs, ogres, phoenixes, simurghs);
-		final int len = 36 + (512 * totalSize);
-		final StringBuilder builder = new StringBuilder(len);
-		builder.append("<h4>Immortals</h4>").append(LineEnd.LINE_SEP).append(OPEN_LIST);
-		optionallyPrintMap(dragons, "(s) at ", builder);
-		optionallyPrintMap(fairies, " at ", builder);
-		optionallyPrintList(trolls, "Troll(s) at ", builder);
-		optionallyPrintList(djinni, "Djinn(i) at ", builder);
-		optionallyPrintList(sphinxes, "Sphinx(es) at ", builder);
-		optionallyPrintMap(giants, "(s) at ", builder);
-		optionallyPrintList(minotaurs, "Minotaur(s) at ", builder);
-		optionallyPrintList(ogres, "Ogre(s) at ", builder);
-		optionallyPrintMap(centaurs, "(s) at ", builder);
-		optionallyPrintList(phoenixes, "Phoenix(es) at ", builder);
-		optionallyPrintList(simurghs, "Simurgh(s) at ", builder);
-		optionallyPrintList(griffins, "Griffin(s) at ", builder);
-		builder.append(CLOSE_LIST);
 		if (totalSize == 0) {
 			return "";
 		} else {
-			return builder.toString();
+			final StringBuilder builder = new StringBuilder(36 + (512 * totalSize));
+			builder.append("<h4>Immortals</h4>").append(LineEnd.LINE_SEP).append(OPEN_LIST);
+			optionallyPrintMap(dragons, "(s) at ", builder);
+			optionallyPrintMap(fairies, " at ", builder);
+			optionallyPrintList(trolls, "Troll(s) at ", builder);
+			optionallyPrintList(djinni, "Djinn(i) at ", builder);
+			optionallyPrintList(sphinxes, "Sphinx(es) at ", builder);
+			optionallyPrintMap(giants, "(s) at ", builder);
+			optionallyPrintList(minotaurs, "Minotaur(s) at ", builder);
+			optionallyPrintList(ogres, "Ogre(s) at ", builder);
+			optionallyPrintMap(centaurs, "(s) at ", builder);
+			optionallyPrintList(phoenixes, "Phoenix(es) at ", builder);
+			optionallyPrintList(simurghs, "Simurgh(s) at ", builder);
+			optionallyPrintList(griffins, "Griffin(s) at ", builder);
+			return builder.append(CLOSE_LIST).toString();
 		}
 	}
 
