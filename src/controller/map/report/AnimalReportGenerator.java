@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -61,7 +60,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final Map<String, Collection<Point>> items = new SimpleMultiMap<>();
+		final Map<String, Collection<Point>> itemsOld = new SimpleMultiMap<>();
+		final Map<String, Collection<Point>> items = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
@@ -73,11 +73,18 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				} else {
 					desc = animal.getKind();
 				}
-				items.get(desc).add(pair.first());
+				final Collection<Point> list;
+				if (items.containsKey(desc)) {
+					list = items.get(desc);
+				} else {
+					list = pointsListAt(desc);
+					items.put(desc, list);
+				}
+				list.add(pair.first());
 				fixtures.remove(Integer.valueOf(animal.getID()));
 			}
 		}
-		if (items.isEmpty()) {
+		if (itemsOld.isEmpty()) {
 			return "";
 		} else {
 			// We doubt this list will ever be over 16K.
@@ -85,12 +92,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 					"<h4>Animal sightings or encounters</h4>").append(LineEnd.LINE_SEP)
 												  .append(
 														  OPEN_LIST);
-			for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
-				builder.append(OPEN_LIST_ITEM).append(entry.getKey())
-						.append(": at ");
-				pointCSL(builder, entry.getValue().stream().collect(Collectors.toList
-																					   ()));
-				builder.append(CLOSE_LIST_ITEM);
+			for (final Map.Entry<String, Collection<Point>> entry : itemsOld.entrySet()) {
+				builder.append(OPEN_LIST_ITEM).append(entry).append(CLOSE_LIST_ITEM);
 			}
 			return NullCleaner.assertNotNull(builder.append(CLOSE_LIST)
 													 .toString());

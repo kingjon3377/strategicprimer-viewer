@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.map.HasKind;
 import model.map.IFixture;
@@ -33,11 +32,9 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
-import util.SimpleMultiMap;
 
 /**
  * A report generator for "immortals"---dragons, fairies, centaurs, and such.
@@ -101,44 +98,6 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
-	 * Prints (to the builder) nothing if the map is empty, or for each entry in the
-	 * entry
-	 * set a list item beginning with the key, followed by the infix, followed by a
-	 * comma-separated list of the points.
-	 *
-	 * @param mapping the mapping from kinds (or whatever) to lists of points
-	 * @param infix   what to print in the middle of each item
-	 * @param builder the builder to print to
-	 */
-	private static void optionallyPrintMap(final Map<String, Collection<Point>> mapping,
-										   final String infix,
-										   final StringBuilder builder) {
-		for (final Map.Entry<String, Collection<Point>> entry : mapping.entrySet()) {
-			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix);
-			pointCSL(builder, entry.getValue().stream().collect(Collectors.toList()));
-			builder.append(CLOSE_LIST_ITEM);
-		}
-	}
-
-	/**
-	 * Prints (to the builder) nothing if the list is empty, or the prefix followed by a
-	 * comma-separated list of the points, all enclosed in a list item.
-	 *
-	 * @param points  a list of points
-	 * @param prefix  what to prepend to it if non-empty
-	 * @param builder the builder to print to
-	 */
-	private static void optionallyPrintList(final List<Point> points,
-											final String prefix,
-											final StringBuilder builder) {
-		if (!points.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM).append(prefix);
-			pointCSL(builder, points);
-			builder.append(CLOSE_LIST_ITEM);
-		}
-	}
-
-	/**
 	 * If there's an entry in the map for the thing's kind already, return that entry; if
 	 * not, create one, add it to the map, and return it..
 	 *
@@ -167,12 +126,22 @@ public final class ImmortalsReportGenerator
 		return (kind, point) -> list.add(point);
 	}
 	/**
-	 * @param collection a collection of lists of points. Must be a SimpleMultiMap.
+	 * @param collection a collection of lists of points.
+	 * @param suffix what to put after the kind in the header of each list
 	 * @return a reference to a method that gets the right list and adds the point to it
 	 */
 	private static BiConsumer<String, Point> complex(final Map<String, Collection<Point>>
-													  collection) {
-		return (kind, point) -> collection.get(kind).add(point);
+													  collection, final String suffix) {
+		return (kind, point) -> {
+			final Collection<Point> list;
+			if (collection.containsKey(kind)) {
+				list = collection.get(kind);
+			} else {
+				list = new PointList(kind + suffix);
+				collection.put(kind, list);
+			}
+			list.add(point);
+		};
 	}
 	/**
 	 * Produce the sub-report dealing with "immortals".
@@ -187,29 +156,29 @@ public final class ImmortalsReportGenerator
 						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final List<Point> griffins = new ArrayList<>();
-		final List<Point> simurghs = new ArrayList<>();
-		final List<Point> phoenixes = new ArrayList<>();
-		final Map<String, Collection<Point>> centaurs = new SimpleMultiMap<>();
-		final List<Point> ogres = new ArrayList<>();
-		final List<Point> minotaurs = new ArrayList<>();
-		final Map<String, Collection<Point>> giants = new SimpleMultiMap<>();
-		final List<Point> sphinxes = new ArrayList<>();
-		final List<Point> djinni = new ArrayList<>();
-		final List<Point> trolls = new ArrayList<>();
-		final Map<String, Collection<Point>> fairies = new SimpleMultiMap<>();
-		final Map<String, Collection<Point>> dragons = new SimpleMultiMap<>();
+		final HeadedList<Point> griffins = new PointList("Griffin(s) at ");
+		final HeadedList<Point> simurghs = new PointList("Simurgh(s) at ");
+		final HeadedList<Point> phoenixes = new PointList("Phoenix(es) at ");
+		final Map<String, Collection<Point>> centaurs = new HashMap<>();
+		final HeadedList<Point> ogres = new PointList("Ogre(s) at ");
+		final HeadedList<Point> minotaurs = new PointList("Minotaur(s) at ");
+		final Map<String, Collection<Point>> giants = new HashMap<>();
+		final HeadedList<Point> sphinxes = new PointList("Sphinx(es) at ");
+		final HeadedList<Point> djinni = new PointList("Djinn(i) at ");
+		final HeadedList<Point> trolls = new PointList("Troll(s) at ");
+		final Map<String, Collection<Point>> fairies = new HashMap<>();
+		final Map<String, Collection<Point>> dragons = new HashMap<>();
 		final Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta =
 				new HashMap<>();
-		meta.put(Dragon.class, complex(dragons));
-		meta.put(Fairy.class, complex(fairies));
+		meta.put(Dragon.class, complex(dragons, "(s) at "));
+		meta.put(Fairy.class, complex(fairies, " at "));
 		meta.put(Troll.class, simplest(trolls));
 		meta.put(Djinn.class, simplest(djinni));
 		meta.put(Sphinx.class, simplest(sphinxes));
-		meta.put(Giant.class, complex(giants));
+		meta.put(Giant.class, complex(giants, "(s) at "));
 		meta.put(Minotaur.class, simplest(minotaurs));
 		meta.put(Ogre.class, simplest(ogres));
-		meta.put(Centaur.class, complex(centaurs));
+		meta.put(Centaur.class, complex(centaurs, "(s) at "));
 		meta.put(Phoenix.class, simplest(phoenixes));
 		meta.put(Simurgh.class, simplest(simurghs));
 		meta.put(Griffin.class, simplest(griffins));
@@ -221,28 +190,20 @@ public final class ImmortalsReportGenerator
 				fixtures.remove(Integer.valueOf(immortal.getID()));
 			}
 		}
-		final int totalSize = collSize(dragons.keySet(), griffins,
-				fairies.keySet(), giants.keySet(), centaurs.keySet(), trolls,
-				djinni, sphinxes, minotaurs, ogres, phoenixes, simurghs);
-		if (totalSize == 0) {
-			return "";
-		} else {
-			final StringBuilder builder = new StringBuilder(36 + (512 * totalSize));
-			builder.append("<h4>Immortals</h4>").append(LineEnd.LINE_SEP).append(OPEN_LIST);
-			optionallyPrintMap(dragons, "(s) at ", builder);
-			optionallyPrintMap(fairies, " at ", builder);
-			optionallyPrintList(trolls, "Troll(s) at ", builder);
-			optionallyPrintList(djinni, "Djinn(i) at ", builder);
-			optionallyPrintList(sphinxes, "Sphinx(es) at ", builder);
-			optionallyPrintMap(giants, "(s) at ", builder);
-			optionallyPrintList(minotaurs, "Minotaur(s) at ", builder);
-			optionallyPrintList(ogres, "Ogre(s) at ", builder);
-			optionallyPrintMap(centaurs, "(s) at ", builder);
-			optionallyPrintList(phoenixes, "Phoenix(es) at ", builder);
-			optionallyPrintList(simurghs, "Simurgh(s) at ", builder);
-			optionallyPrintList(griffins, "Griffin(s) at ", builder);
-			return builder.append(CLOSE_LIST).toString();
-		}
+		final HeadedList<String> retval = new HtmlList("<h4>Immortals</h4>");
+		dragons.values().stream().map(Collection::toString).forEach(retval::add);
+		fairies.values().stream().map(Collection::toString).forEach(retval::add);
+		retval.add(trolls.toString());
+		retval.add(djinni.toString());
+		retval.add(sphinxes.toString());
+		giants.values().stream().map(Collection::toString).forEach(retval::add);
+		retval.add(minotaurs.toString());
+		retval.add(ogres.toString());
+		centaurs.values().stream().map(Collection::toString).forEach(retval::add);
+		retval.add(phoenixes.toString());
+		retval.add(simurghs.toString());
+		retval.add(griffins.toString());
+		return retval.toString();
 	}
 
 	/**

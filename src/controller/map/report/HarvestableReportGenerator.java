@@ -7,8 +7,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.map.HasKind;
 import model.map.IFixture;
@@ -103,10 +101,10 @@ public final class HarvestableReportGenerator
 						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-//		final HeadedList<String> stone = new HtmlList("<h5>Exposed stone deposits</h5>");
-		final Map<String, Collection<Point>> stone = new SimpleMultiMap<>();
-		final Map<String, Collection<Point>> shrubs = new SimpleMultiMap<>();
-		final Map<String, Collection<Point>> minerals = new SimpleMultiMap<>();
+		final Map<String, Collection<Point>> stone = new HashMap<>();
+		final Map<String, Collection<Point>> shrubs = new HashMap<>();
+		final Map<String, Collection<Point>> oldMinerals = new SimpleMultiMap<>();
+		final Map<String, Collection<Point>> minerals = new HashMap<>();
 		final HeadedList<String> mines = new HtmlList("<h5>Mines</h5>");
 		final HeadedList<String> meadows = new HtmlList("<h5>Meadows and fields</h5>");
 		final HeadedList<String> groves = new HtmlList("<h5>Groves and orchards</h5>");
@@ -127,47 +125,61 @@ public final class HarvestableReportGenerator
 				mines.add(produce(fixtures, map, currentPlayer, (Mine) item, point));
 			} else if (item instanceof MineralVein) {
 				final MineralVein mineral = (MineralVein) item;
-				minerals.get(ternary(mineral.isExposed(), "exposed ", "unexposed ") +
-									 mineral.getKind()).add(point);
+				final String kind =
+						ternary(mineral.isExposed(), "exposed ", "unexposed ") +
+								mineral.getKind();
+				final Collection<Point> list;
+				if (minerals.containsKey(kind)) {
+					list = minerals.get(kind);
+				} else {
+					list = pointsListAt(kind);
+					minerals.put(kind, list);
+				}
+				list.add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (item instanceof Shrub) {
-				shrubs.get(((Shrub) item).getKind()).add(point);
+				final String kind = ((Shrub) item).getKind();
+				final Collection<Point> list;
+				if (shrubs.containsKey(kind)) {
+					list = shrubs.get(kind);
+				} else {
+					list = pointsListAt(kind);
+					shrubs.put(kind, list);
+				}
+				list.add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (item instanceof StoneDeposit) {
-				stone.get(((StoneDeposit) item).getKind()).add(point);
+				final String kind = ((StoneDeposit) item).getKind();
+				final Collection<Point> list;
+				if (stone.containsKey(kind)) {
+					list = stone.get(kind);
+				} else {
+					list = pointsListAt(kind);
+					stone.put(kind, list);
+				}
+				list.add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
 			}
 		}
 		final HeadedList<String> shrubsText =
 				new HtmlList("<h5>Shrubs, small trees, and such</h5>");
-		final Function<Map.Entry<String, Collection<Point>>, String> listPrinter =
-				entry -> {
-					final List<Point> lst =
-							entry.getValue().stream().collect(Collectors.toList());
-					final StringBuilder builder = new StringBuilder(lst.size() * 10);
-					pointCSL(builder, lst);
-					return concat(entry.getKey(), ": at ", builder.toString());
-				};
-		shrubsText.addAll(shrubs.entrySet().stream().map(listPrinter)
-								  .collect(Collectors.toList()));
+		shrubs.values().stream().map(Collection::toString).forEach(shrubsText::add);
 		final HeadedList<String> mineralsText = new HtmlList("<h5>Mineral " +
 																	 "deposits</h5>");
-		mineralsText.addAll(minerals.entrySet().stream().map(listPrinter)
-									.collect(Collectors.toList()));
+		minerals.values().stream().map(Collection::toString).forEach(mineralsText::add);
 		final HeadedList<String> stoneText =
 				new HtmlList("<h5>Exposed stone deposits</h5>");
-		stoneText.addAll(stone.entrySet().stream().map(listPrinter)
-								 .collect(Collectors.toList()));
+		stone.values().stream().map(Collection::toString).forEach(stoneText::add);
 		sortAll(caches, groves, meadows, mines, mineralsText, stoneText, shrubsText);
-		if (caches.isEmpty() && groves.isEmpty() && meadows.isEmpty()
-					&& mines.isEmpty() && minerals.isEmpty() && stone.isEmpty()
-					&& shrubs.isEmpty()) {
+		if (caches.isEmpty() && groves.isEmpty() && meadows.isEmpty() &&
+					mines.isEmpty() && mineralsText.isEmpty() && stoneText.isEmpty() &&
+					shrubsText.isEmpty()) {
 			return "";
 		} else {
 			return concat("<h4>Resource Sources</h4>", LineEnd.LINE_SEP,
 					caches.toString(),
 					groves.toString(), meadows.toString(), mines.toString(),
-					minerals.toString(), stone.toString(),
+					mineralsText.toString(), stoneText.toString(),
 					shrubsText.toString());
 		}
 	}

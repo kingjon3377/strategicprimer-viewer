@@ -3,7 +3,6 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -76,17 +75,12 @@ public final class ExplorableReportGenerator
 		final StringBuilder builder = new StringBuilder(2048).append(
 				"<h4>Caves, Battlefields, and Portals</h4>").append(LineEnd.LINE_SEP)
 											  .append(OPEN_LIST);
-		// Similarly, I doubt either of these will ever be over half a K, but
-		// we'll give each a whole K just in case.
-		final StringBuilder caveBuilder = new StringBuilder(1024).append(
-				OPEN_LIST_ITEM).append("Caves beneath the following tiles: ");
-		final StringBuilder battleBuilder = new StringBuilder(1024).append(
-				OPEN_LIST_ITEM).append(
-				"Signs of long-ago battles on the following tiles: ");
-		final StringBuilder portalBuilder = new StringBuilder(1024)
-													.append(OPEN_LIST_ITEM)
-													.append("Portals to other worlds: ");
-		// I doubt this will ever be over a K either
+		final HeadedList<Point> caves = new PointList("Caves beneath the following tiles: ");
+		final HeadedList<Point> battles =
+				new PointList("Signs of long-ago battles on the following tiles: ");
+		final HeadedList<Point> portals = new PointList("Portals to other worlds: ");
+		// Similarly, I doubt either this will ever be over half a K, but
+		// we'll give it a whole K just in case.
 		final StringBuilder adventureBuilder = new StringBuilder(1024)
 													   .append("<h4>Possible " +
 																	   "Adventures</h4>")
@@ -94,17 +88,11 @@ public final class ExplorableReportGenerator
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
 		boolean anyAdventures = false;
-		boolean anyPortals = false;
-		boolean anyBattles = false;
-		boolean anyCaves = false;
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
-				anyCaves = true;
-				caveBuilder.append(", ").append(pair.first());
-				fixtures.remove(Integer.valueOf(pair.second().getID()));
+				caves.add(pair.first());
 			} else if (pair.second() instanceof Battlefield) {
-				anyBattles = true;
-				battleBuilder.append(", ").append(pair.first());
+				battles.add(pair.first());
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof AdventureFixture) {
 				anyAdventures = true;
@@ -115,39 +103,26 @@ public final class ExplorableReportGenerator
 						.append(CLOSE_LIST_ITEM);
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof Portal) {
-				anyPortals = true;
-				portalBuilder.append(", ").append(pair.first());
+				portals.add(pair.first());
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			}
 		}
-		if (anyCaves) {
-			builder.append(COLON_COMMA_PATTERN.matcher(
-					caveBuilder.append(CLOSE_LIST_ITEM).toString())
-								   .replaceAll(Matcher.quoteReplacement(": ")));
-		}
-		if (anyBattles) {
-			builder.append(COLON_COMMA_PATTERN.matcher(
-					battleBuilder.append(CLOSE_LIST_ITEM).toString())
-								   .replaceAll(Matcher.quoteReplacement(": ")));
-		}
-		if (anyPortals) {
-			builder.append(COLON_COMMA_PATTERN.matcher(
-					portalBuilder.append(CLOSE_LIST_ITEM).toString())
-								   .replaceAll(Matcher.quoteReplacement(": ")));
-		}
+		builder.append(caves);
+		builder.append(battles);
+		builder.append(portals);
 		adventureBuilder.append(CLOSE_LIST);
 		builder.append(CLOSE_LIST);
-		if (anyCaves || anyBattles || anyPortals) {
-			if (anyAdventures) {
-				builder.append(adventureBuilder);
-			}
-			return builder.toString();
-		} else {
+		if (caves.isEmpty() && battles.isEmpty() && portals.isEmpty()) {
 			if (anyAdventures) {
 				return adventureBuilder.toString();
 			} else {
 				return "";
 			}
+		} else {
+			if (anyAdventures) {
+				builder.append(adventureBuilder);
+			}
+			return builder.toString();
 		}
 	}
 

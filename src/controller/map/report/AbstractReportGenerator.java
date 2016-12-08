@@ -4,6 +4,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.map.DistanceComparator;
 import model.map.IFixture;
@@ -89,35 +90,6 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 */
 	protected static String atPoint(final Point point) {
 		return "At " + point + ": ";
-	}
-
-	/**
-	 * We specify StringBuilder, rather than just Appendable, so we don't have to say we
-	 * throw IOException.
-	 *
-	 * @param points  a list of points
-	 * @param ostream a stream to which to write a comma-separated string representing
-	 *                them.
-	 */
-	protected static void pointCSL(final StringBuilder ostream, final List<?> points) {
-		if (!points.isEmpty()) {
-			if (points.size() == 1) {
-				ostream.append(points.get(0));
-			} else if (points.size() == 2) {
-				ostream.append(points.get(0));
-				ostream.append(" and ");
-				ostream.append(points.get(1));
-			} else {
-				for (int i = 0; i < points.size(); i++) {
-					if (i == (points.size() - 1)) {
-						ostream.append(", and ");
-					} else if (i != 0) {
-						ostream.append(", ");
-					}
-					ostream.append(points.get(i));
-				}
-			}
-		}
 	}
 
 	/**
@@ -239,7 +211,106 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		 */
 		@Override
 		public void add(final int index, final String element) {
+			if (!element.isEmpty()) {
+				wrapped.add(index, element);
+			}
+		}
+	}
+	/**
+	 * A list of Points that produces a comma-separated list in its toString() and has a
+	 * "header."
+	 */
+	protected static class PointList extends AbstractList<Point> implements HeadedList<Point> {
+		/**
+		 * Actually stores list items.
+		 */
+		private final List<@NonNull Point> wrapped = new ArrayList<>();
+		/**
+		 * The header: what to print before printing the list.
+		 */
+		private final String header;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param head what to print before opening the list
+		 */
+		protected PointList(final String head) {
+			header = head;
+		}
+
+		/**
+		 * @return the header
+		 */
+		@Override
+		public String getHeader() {
+			return header;
+		}
+
+		/**
+		 * @return a String representation of the list if there's anything in it, or the
+		 * empty string otherwise.
+		 */
+		@Override
+		public String toString() {
+			if (isEmpty()) {
+				return "";
+			} else {
+				final StringBuilder builder =
+						new StringBuilder(wrapped.size() * 10 + header.length() + 5);
+				builder.append(header);
+				builder.append(wrapped.get(0));
+				if (wrapped.size() == 2) {
+					builder.append(" and ");
+					builder.append(wrapped.get(1));
+				} else {
+					for (int i = 1; i < wrapped.size(); i++) {
+						if (i == (wrapped.size() - 1)) {
+							builder.append(", and ");
+						} else {
+							builder.append(", ");
+						}
+						builder.append(wrapped.get(i));
+					}
+				}
+				stream().map(Point::toString).collect(Collectors.joining(", "));
+				return builder.toString();
+			}
+		}
+
+		/**
+		 * @param index an index
+		 * @return the item at that index
+		 */
+		@Override
+		public Point get(final int index) {
+			return wrapped.get(index);
+		}
+
+		/**
+		 * @return the number of items in the list
+		 */
+		@Override
+		public int size() {
+			return wrapped.size();
+		}
+
+		/**
+		 * Add an item to the list.
+		 *
+		 * @param element the item to add
+		 * @param index   where to add it
+		 */
+		@Override
+		public void add(final int index, final Point element) {
 			wrapped.add(index, element);
 		}
+	}
+	/**
+	 * @param desc a description of something
+	 * @return a list for points matching that description
+	 */
+	protected HeadedList<Point> pointsListAt(final String desc) {
+		return new PointList(desc + ": at ");
 	}
 }
