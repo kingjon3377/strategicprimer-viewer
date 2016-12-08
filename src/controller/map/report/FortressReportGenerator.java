@@ -281,12 +281,10 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 											  .append(CLOSE_LIST_ITEM)
 											  .append(OPEN_LIST_ITEM);
 		builder.append(getTerrain(map, loc, fixtures)).append(CLOSE_LIST_ITEM);
-		if (map.getRivers(loc).iterator().hasNext()) {
-			builder.append(riversToString(
-					StreamSupport.stream(map.getRivers(loc).spliterator(), false)
-							.collect(
-									Collectors.toSet())));
-		}
+		builder.append(riversToString(
+				StreamSupport.stream(map.getRivers(loc).spliterator(), false)
+						.collect(
+								Collectors.toSet())));
 		if (item.iterator().hasNext()) {
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:")
 					.append(LineEnd.LINE_SEP).append(OPEN_LIST);
