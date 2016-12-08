@@ -3,6 +3,7 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -269,22 +270,16 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 						  final IMapNG map, final Player currentPlayer,
 						  final Fortress item, final Point loc) {
 		// This can get long. we'll give it 16K.
-		final StringBuilder builder = new StringBuilder(16384).append("<h5>Fortress ")
-											  .append(item.getName())
-											  .append(" belonging to ")
-											  .append(playerNameOrYou(item.getOwner()))
-											  .append("</h5>").append(LineEnd.LINE_SEP)
-											  .append(OPEN_LIST).append(OPEN_LIST_ITEM)
-											  .append("Located at ")
-											  .append(loc).append(' ')
-											  .append(distCalculator.distanceString(loc))
-											  .append(CLOSE_LIST_ITEM)
-											  .append(OPEN_LIST_ITEM);
-		builder.append(getTerrain(map, loc, fixtures)).append(CLOSE_LIST_ITEM);
+		final StringBuilder builder = new StringBuilder(16384);
+		final Formatter formatter = new Formatter(builder);
+		formatter.format("<h5>Fortress %s belonging to %s</h5>%n", item.getName(),
+				playerNameOrYou(item.getOwner()));
+		formatter.format("<ul>%n<li>Located at %s %s</li>%n", loc.toString(),
+				distCalculator.distanceString(loc));
+		formatter.format("<li>%s</li>%n", getTerrain(map, loc, fixtures));
 		builder.append(riversToString(
 				StreamSupport.stream(map.getRivers(loc).spliterator(), false)
-						.collect(
-								Collectors.toSet())));
+						.collect(Collectors.toSet())));
 		final HeadedList<String> units = new HtmlList("Units on the tile:");
 		final HeadedList<String> resourcesText = new HtmlList("Resources:");
 		final HeadedList<String> equipment = new HtmlList("Equipment:");
