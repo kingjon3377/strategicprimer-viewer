@@ -103,7 +103,6 @@ public final class HarvestableReportGenerator
 		values.sort(pairComparator);
 		final Map<String, Collection<Point>> stone = new HashMap<>();
 		final Map<String, Collection<Point>> shrubs = new HashMap<>();
-		final Map<String, Collection<Point>> oldMinerals = new SimpleMultiMap<>();
 		final Map<String, Collection<Point>> minerals = new HashMap<>();
 		final HeadedList<String> mines = new HtmlList("<h5>Mines</h5>");
 		final HeadedList<String> meadows = new HtmlList("<h5>Meadows and fields</h5>");
