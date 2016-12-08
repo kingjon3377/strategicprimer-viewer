@@ -1,6 +1,5 @@
 package controller.map.report;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -135,12 +134,8 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	protected static final class HtmlList extends AbstractList<@NonNull String>
+	protected static final class HtmlList extends ArrayList<@NonNull String>
 			implements HeadedList<@NonNull String> {
-		/**
-		 * Actually stores list items.
-		 */
-		private final List<@NonNull String> wrapped = new ArrayList<>();
 		/**
 		 * The header: what to print before opening the list.
 		 */
@@ -187,23 +182,6 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		}
 
 		/**
-		 * @param index an index
-		 * @return the item at that index
-		 */
-		@Override
-		public String get(final int index) {
-			return wrapped.get(index);
-		}
-
-		/**
-		 * @return the number of items in the list
-		 */
-		@Override
-		public int size() {
-			return wrapped.size();
-		}
-
-		/**
 		 * Add an item to the list.
 		 *
 		 * @param element the item to add
@@ -212,7 +190,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		@Override
 		public void add(final int index, final String element) {
 			if (!element.isEmpty()) {
-				wrapped.add(index, element);
+				super.add(index, element);
 			}
 		}
 	}
@@ -220,11 +198,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * A list of Points that produces a comma-separated list in its toString() and has a
 	 * "header."
 	 */
-	protected static class PointList extends AbstractList<Point> implements HeadedList<Point> {
-		/**
-		 * Actually stores list items.
-		 */
-		private final List<@NonNull Point> wrapped = new ArrayList<>();
+	protected static class PointList extends ArrayList<Point> implements HeadedList<Point> {
 		/**
 		 * The header: what to print before printing the list.
 		 */
@@ -257,53 +231,25 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				return "";
 			} else {
 				final StringBuilder builder =
-						new StringBuilder(wrapped.size() * 10 + header.length() + 5);
+						new StringBuilder(size() * 10 + header.length() + 5);
 				builder.append(header);
-				builder.append(wrapped.get(0));
-				if (wrapped.size() == 2) {
+				builder.append(get(0));
+				if (size() == 2) {
 					builder.append(" and ");
-					builder.append(wrapped.get(1));
+					builder.append(get(1));
 				} else {
-					for (int i = 1; i < wrapped.size(); i++) {
-						if (i == (wrapped.size() - 1)) {
+					for (int i = 1; i < size(); i++) {
+						if (i == (size() - 1)) {
 							builder.append(", and ");
 						} else {
 							builder.append(", ");
 						}
-						builder.append(wrapped.get(i));
+						builder.append(get(i));
 					}
 				}
 				stream().map(Point::toString).collect(Collectors.joining(", "));
 				return builder.toString();
 			}
-		}
-
-		/**
-		 * @param index an index
-		 * @return the item at that index
-		 */
-		@Override
-		public Point get(final int index) {
-			return wrapped.get(index);
-		}
-
-		/**
-		 * @return the number of items in the list
-		 */
-		@Override
-		public int size() {
-			return wrapped.size();
-		}
-
-		/**
-		 * Add an item to the list.
-		 *
-		 * @param element the item to add
-		 * @param index   where to add it
-		 */
-		@Override
-		public void add(final int index, final Point element) {
-			wrapped.add(index, element);
 		}
 	}
 	/**
