@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,6 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.IWorkerModel;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.MultiMapHelper;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -198,17 +198,9 @@ public final class StrategyExporter implements PlayerChangeListener {
 		final StringBuilder builder =
 				new StringBuilder(getBufferSize(dismissed, playerName, turnString,
 						unitsByKind, orders));
-		builder.append('[');
-		builder.append(playerName);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Turn ");
-		builder.append(turnString);
-		builder.append(']');
-		builder.append(LineEnd.LINE_SEP);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Inventions: TODO: any?");
-		builder.append(LineEnd.LINE_SEP);
-		builder.append(LineEnd.LINE_SEP);
+		final Formatter formatter = new Formatter(builder);
+		formatter.format("[%s%nTurn %s]%n%nInventions: TODO: any?%n%n", playerName,
+				turnString);
 		if (dismissed.iterator().hasNext()) {
 			builder.append("Dismissed workers etc.: ");
 			String separator = "";
@@ -221,31 +213,19 @@ public final class StrategyExporter implements PlayerChangeListener {
 					builder.append(member);
 				}
 			}
-			builder.append(LineEnd.LINE_SEP);
-			builder.append(LineEnd.LINE_SEP);
+			formatter.format("%n%n");
 		}
-		builder.append("Workers:");
-		builder.append(LineEnd.LINE_SEP);
+		formatter.format("Workers:%n");
 		for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
-			builder.append("* ");
-			builder.append(entry.getKey());
-			builder.append(':');
-			builder.append(LineEnd.LINE_SEP);
+			formatter.format("* %s:%n", entry.getKey());
 			for (final IUnit unit : entry.getValue()) {
-				builder.append("  - ");
-				builder.append(unit.getName());
-				builder.append(unitMembers(unit));
-				builder.append(':');
-				builder.append(LineEnd.LINE_SEP);
-				builder.append(LineEnd.LINE_SEP);
+				formatter.format("  - %s%s:%n%n", unit.getName(), unitMembers(unit));
 				final String unitOrders = orders.get(unit);
 				if (unitOrders.isEmpty()) {
-					builder.append("TODO");
+					formatter.format("TODO%n%n");
 				} else {
-					builder.append(unitOrders);
+					formatter.format("%s%n%n", unitOrders);
 				}
-				builder.append(LineEnd.LINE_SEP);
-				builder.append(LineEnd.LINE_SEP);
 			}
 		}
 		return NullCleaner.assertNotNull(builder.toString());
