@@ -65,11 +65,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 		final HeadedList<String> list = new HtmlList("<h4>Miscellaneous Notes</h4>");
 		list.addAll(items.stream().map(item -> produce(fixtures, map, currentPlayer,
 				item.second(), item.first())).collect(Collectors.toList()));
-		if (list.isEmpty()) {
-			return "";
-		} else {
-			return list.toString();
-		}
+		return list.toString();
 	}
 
 	/**
