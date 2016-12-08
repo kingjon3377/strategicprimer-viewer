@@ -92,118 +92,95 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			public NavigableMap<Integer, String> getAllOrders() {
 				throw ISE;
 			}
-
 			@Override
 			public NavigableMap<Integer, String> getAllResults() {
 				throw ISE;
 			}
-
 			@Override
 			public String plural() {
 				throw ISE;
 			}
-
 			@Override
 			public String shortDesc() {
 				throw ISE;
 			}
-
 			@Override
 			public int getID() {
 				throw ISE;
 			}
-
 			@Override
 			public boolean equalsIgnoringID(final IFixture fix) {
 				throw ISE;
 			}
-
 			@Override
 			public int compareTo(final TileFixture fix) {
 				throw ISE;
 			}
-
 			@Override
 			public String getDefaultImage() {
 				throw ISE;
 			}
-
 			@Override
 			public String getImage() {
 				throw ISE;
 			}
-
 			@Override
 			public String getKind() {
 				throw ISE;
 			}
-
 			@Override
 			public Iterator<UnitMember> iterator() {
 				throw ISE;
 			}
-
 			@Override
 			public String getName() {
 				throw ISE;
 			}
-
 			@Override
 			public Player getOwner() {
 				return player;
 			}
-
 			@Override
 			public boolean isSubset(final IFixture obj, final Formatter ostream,
 									final String context) {
 				throw ISE;
 			}
-
 			@Override
 			public String getOrders(final int turn) {
 				throw ISE;
 			}
-
 			@Override
 			public void setOrders(final int turn, final String newOrders) {
 				throw ISE;
 			}
-
 			@Override
 			public String getResults(final int turn) {
 				throw ISE;
 			}
-
 			@Override
 			public void setResults(final int turn, final String newOrders) {
 				throw ISE;
 			}
-
 			@Override
 			public String verbose() {
 				throw ISE;
 			}
-
 			@Override
 			public void addMember(final UnitMember member) {
 				throw ISE;
 			}
-
 			@Override
 			public void removeMember(final UnitMember member) {
 				throw ISE;
 			}
-
 			@Override
 			public IUnit copy(final boolean zero) {
 				throw ISE;
 			}
-
 			@Override
 			public boolean equals(@Nullable final Object obj) {
 				throw ISE;
 			}
-
 			@Override
 			public int hashCode() {
 				throw ISE;
