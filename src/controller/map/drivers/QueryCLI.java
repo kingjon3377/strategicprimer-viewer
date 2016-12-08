@@ -283,56 +283,9 @@ public final class QueryCLI implements SimpleDriver {
 			final int flockPerHerder = ((count + herders) - 1) / herders;
 			final int hours;
 			if (herdModel.isPoultry()) {
-				cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",
-						Integer.valueOf(
-								flockPerHerder * herdModel.getDailyTimePerHead()));
-				cli.printf(
-						"which should be done every %d turns at least, takes %.1f " +
-								"hours.%n",
-						Integer.valueOf(herdModel.getExtraChoresInterval() + 1),
-						Double.valueOf(
-								(flockPerHerder * herdModel.getExtraTimePerHead()) /
-										60.0));
-				cli.printf("This produces %.0f %s, totaling %.1f oz.%n",
-						Double.valueOf(herdModel.getProductionPerHead() * count),
-						herdModel.getProductionUnit(),
-						Double.valueOf(herdModel.getProductionPerHead() *
-											   herdModel.getPoundsCoefficient() *
-											   count));
-				if (cli.inputBooleanInSeries("Do they do the cleaning this turn? ")) {
-					hours = round((flockPerHerder * (herdModel.getDailyTimePerHead() +
-															 herdModel
-																	 .getExtraTimePerHead())) /
-										  60.0);
-				} else {
-					hours = round((flockPerHerder * herdModel.getDailyTimePerHead()) /
-										  60.0);
-				}
+				hours = herdPoultry(cli, herdModel, count, flockPerHerder);
 			} else {
-				cli.printf("Tending the animals takes %d minutes, or %d minutes with ",
-						Integer.valueOf(
-								(flockPerHerder * herdModel.getDailyTimePerHead()) /
-										2),
-						Integer.valueOf(flockPerHerder *
-												((herdModel.getDailyTimePerHead() / 2) -
-														 5)));
-				cli.println("expert herders, twice daily.");
-				cli.printf("Gathering them for each milking takes %d min more.%n",
-						Integer.valueOf(herdModel.getDailyTimeFloor() / 2));
-				cli.printf("This produces %,.1f %s, %,.1f lbs, of milk per day.%n",
-						Double.valueOf(herdModel.getProductionPerHead() * count),
-						herdModel.getProductionUnit(),
-						Double.valueOf(herdModel.getProductionPerHead() *
-											   herdModel.getPoundsCoefficient() *
-											   count));
-				if (cli.inputBooleanInSeries("Are the herders experts? ")) {
-					hours = round(((flockPerHerder *
-											(herdModel.getDailyTimePerHead() - 5)) +
-										   herdModel.getDailyTimeFloor()) / 60.0);
-				} else {
-					hours = round(((flockPerHerder * herdModel.getDailyTimePerHead()) +
-										   herdModel.getDailyTimeFloor()) / 60.0);
-				}
+				hours = herdMammals(cli, herdModel, count, flockPerHerder);
 			}
 			if ((hours < HUNTER_HOURS) &&
 						cli.inputBooleanInSeries(
@@ -341,6 +294,71 @@ public final class QueryCLI implements SimpleDriver {
 						HUNTER_HOURS - hours);
 			}
 		}
+	}
+
+	/**
+	 * Handle herding mammals.
+	 * @param cli the interface for user I/O
+	 * @param animal the model of the particular kind of animal being herded
+	 * @param count how many animals there are
+	 * @param flockPerHerder how many animals there are per herder
+	 * @return how many hours each herder spends "herding"
+	 * @throws IOException on I/O error
+	 */
+	private static int herdMammals(final ICLIHelper cli, final HerdModel animal,
+								   final int count, final int flockPerHerder)
+			throws IOException {
+		cli.printf("Tending the animals takes %d minutes, or %d minutes with ",
+				Integer.valueOf((flockPerHerder * animal.getDailyTimePerHead()) / 2),
+				Integer.valueOf(
+						flockPerHerder * ((animal.getDailyTimePerHead() / 2) - 5)));
+		cli.println("expert herders, twice daily.");
+		cli.printf("Gathering them for each milking takes %d min more.%n",
+				Integer.valueOf(animal.getDailyTimeFloor() / 2));
+		cli.printf("This produces %,.1f %s, %,.1f lbs, of milk per day.%n",
+				Double.valueOf(animal.getProductionPerHead() * count),
+				animal.getProductionUnit(), Double.valueOf(
+						animal.getProductionPerHead() * animal.getPoundsCoefficient() *
+								count));
+		final int costPerHerder;
+		if (cli.inputBooleanInSeries("Are the herders experts? ")) {
+			costPerHerder = animal.getDailyTimePerHead() - 5;
+		} else {
+			costPerHerder = animal.getDailyTimePerHead();
+		}
+		return round(((flockPerHerder * costPerHerder) + animal.getDailyTimeFloor()) /
+							  60.0);
+	}
+
+	/**
+	 * Run herding of poultry.
+	 * @param cli The interface for user I/O
+	 * @param bird the model of the specific kind of bird being "herded"
+	 * @param count how many there are in the flock
+	 * @param flockPerHerder how many there are per herder
+	 * @return how long each herder spends "herding"
+	 * @throws IOException on I/O error
+	 */
+	private static int herdPoultry(final ICLIHelper cli, final HerdModel bird,
+								   final int count, final int flockPerHerder)
+			throws IOException {
+		cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",
+				Integer.valueOf(flockPerHerder * bird.getDailyTimePerHead()));
+		cli.printf("which should be done every %d turns at least, takes %.1f hours.%n",
+				Integer.valueOf(bird.getExtraChoresInterval() + 1),
+				Double.valueOf((flockPerHerder * bird.getExtraTimePerHead()) / 60.0));
+		cli.printf("This produces %.0f %s, totaling %.1f oz.%n",
+				Double.valueOf(bird.getProductionPerHead() * count),
+				bird.getProductionUnit(), Double.valueOf(
+						bird.getProductionPerHead() * bird.getPoundsCoefficient() *
+								count));
+		final int cost;
+		if (cli.inputBooleanInSeries("Do they do the cleaning this turn? ")) {
+			cost = bird.getDailyTimePerHead() + bird.getExtraTimePerHead();
+		} else {
+			cost = bird.getDailyTimePerHead();
+		}
+		return round((flockPerHerder * cost) / 60.0);
 	}
 
 	/**
