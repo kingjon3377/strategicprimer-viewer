@@ -141,17 +141,7 @@ public final class DuplicateFixtureRemover {
 			cli.println("The following resources could be combined:");
 			list.stream().map(Object::toString).forEach(cli::println);
 			if (cli.inputBooleanInSeries("Combine them? ")) {
-				final ResourcePile top = list.get(0);
-				final ResourcePile combined =
-						new ResourcePile(top.getID(), top.getKind(), top.getContents(),
-												list.stream()
-														.map(ResourcePile::getQuantity)
-														.map
-																 (DuplicateFixtureRemover::toBigDecimal)
-														.reduce(BigDecimal.ZERO,
-																BigDecimal::add),
-												top.getUnits());
-				combined.setCreated(top.getCreated());
+				final ResourcePile combined = combineResources(list);
 				if (iter instanceof Unit) {
 					final Unit unit = (Unit) iter;
 					list.forEach(unit::removeMember);
@@ -163,6 +153,25 @@ public final class DuplicateFixtureRemover {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Combine like resources into a single list. We assume that all resources have the
+	 * same kind, contents, units, and created date.
+	 * @param list the list of resources
+	 * @return the resource containing the combined sum as its quantity
+	 */
+	private static ResourcePile combineResources(final List<ResourcePile> list) {
+		final ResourcePile top = list.get(0);
+		final ResourcePile combined =
+				new ResourcePile(top.getID(), top.getKind(), top.getContents(),
+										list.stream().map(ResourcePile::getQuantity)
+												.map(DuplicateFixtureRemover
+															 ::toBigDecimal)
+												.reduce(BigDecimal.ZERO, BigDecimal::add),
+										top.getUnits());
+		combined.setCreated(top.getCreated());
+		return combined;
 	}
 
 	/**
