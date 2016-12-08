@@ -19,7 +19,13 @@ import java.util.function.Function;
  *
  * @author Jonathan Lovelace
  */
-public class MultiMapHelper {
+public final class MultiMapHelper {
+	/**
+	 * Do not instantiate.
+	 */
+	private MultiMapHelper() {
+		// Static-only utility class.
+	}
 	/**
 	 * @param map a map
 	 * @param key a key
