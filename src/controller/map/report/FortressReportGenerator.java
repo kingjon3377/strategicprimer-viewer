@@ -36,7 +36,6 @@ import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
-import util.SimpleMultiMap;
 
 /**
  * A report generator for fortresses.
@@ -285,76 +284,40 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				StreamSupport.stream(map.getRivers(loc).spliterator(), false)
 						.collect(
 								Collectors.toSet())));
-		if (item.iterator().hasNext()) {
-			builder.append(OPEN_LIST_ITEM).append("Units on the tile:")
-					.append(LineEnd.LINE_SEP).append(OPEN_LIST);
-			final Collection<Implement> equipment = new ArrayList<>();
-			final Map<String, Collection<ResourcePile>> resources =
-					new SimpleMultiMap<>();
-			final Collection<FortressMember> contents = new ArrayList<>();
-			for (final FortressMember member : item) {
-				if (member instanceof IUnit) {
-					builder.append(OPEN_LIST_ITEM)
-							.append(urg.produce(fixtures, map, currentPlayer,
-									(IUnit) member, loc)).append(CLOSE_LIST_ITEM);
-				} else if (member instanceof Implement) {
-					equipment.add((Implement) member);
-				} else if (member instanceof ResourcePile) {
-					final ResourcePile pile = (ResourcePile) member;
-					resources.get(pile.getKind()).add(pile);
+		final HeadedList<String> units = new HtmlList("Units on the tile:");
+		final HeadedList<String> resourcesText = new HtmlList("Resources:");
+		final HeadedList<String> equipment = new HtmlList("Equipment:");
+		final Map<String, Collection<String>> resources = new HashMap<>();
+		final HeadedList<String> contents = new HtmlList("Other fortress contents:");
+		for (final FortressMember member : item) {
+			if (member instanceof IUnit) {
+				units.add(urg.produce(fixtures, map, currentPlayer, (IUnit) member, loc));
+			} else if (member instanceof Implement) {
+				equipment.add(memberReportGenerator
+									  .produce(fixtures, map, currentPlayer, member,
+											  loc));
+			} else if (member instanceof ResourcePile) {
+				final ResourcePile pile = (ResourcePile) member;
+				final String kind = pile.getKind();
+				final Collection<String> list;
+				if (resources.containsKey(kind)) {
+					list = resources.get(kind);
 				} else {
-					contents.add(member);
+					list = new HtmlList(kind + ':');
+					resources.put(kind, list);
 				}
-			}
-			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
-			if (!resources.isEmpty()) {
-				builder.append(OPEN_LIST_ITEM).append("Resources:")
-						.append(LineEnd.LINE_SEP).append(OPEN_LIST);
-				for (final Map.Entry<String, Collection<ResourcePile>> entry :
-						resources.entrySet()) {
-					builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(':')
-							.append(OPEN_LIST);
-					for (final ResourcePile resource : entry.getValue()) {
-						builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
-																	  .produce(fixtures,
-																			  map,
-																			  currentPlayer,
-																			  resource,
-																			  loc))
-								.append(CLOSE_LIST_ITEM);
-					}
-					builder.append(CLOSE_LIST);
-				}
-				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
-			}
-			if (!equipment.isEmpty()) {
-				builder.append(OPEN_LIST_ITEM).append("Equipment:")
-						.append(LineEnd.LINE_SEP).append(OPEN_LIST);
-				for (final Implement implement : equipment) {
-					builder.append(OPEN_LIST_ITEM).append(memberReportGenerator
-																  .produce(fixtures, map,
-																		  currentPlayer,
-																		  implement,
-																		  loc))
-							.append(CLOSE_LIST_ITEM);
-				}
-				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
-			}
-			if (!contents.isEmpty()) {
-				builder.append(OPEN_LIST_ITEM)
-						.append("Other fortress contents:").append(LineEnd.LINE_SEP)
-						.append(OPEN_LIST);
-				for (final FortressMember member : contents) {
-					builder.append(OPEN_LIST_ITEM)
-							.append(memberReportGenerator
-											.produce(fixtures, map, currentPlayer,
-													member,
-													loc)).append(CLOSE_LIST_ITEM);
-				}
-				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+				list.add(memberReportGenerator
+								 .produce(fixtures, map, currentPlayer, pile, loc));
+			} else {
+				contents.add(memberReportGenerator
+									 .produce(fixtures, map, currentPlayer, member, loc));
 			}
 		}
-		builder.append(CLOSE_LIST);
+		builder.append(units);
+		resources.values().stream().map(Collection::toString)
+				.forEach(resourcesText::add);
+		builder.append(resources);
+		builder.append(equipment);
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return NullCleaner.assertNotNull(builder.toString());
 	}
