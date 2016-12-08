@@ -354,19 +354,18 @@ public final class HarvestableReportGenerator
 											   fixtures,
 									   final IMapNG map, final Player currentPlayer,
 									   final HarvestableFixture item, final Point loc) {
+		final SimpleReportNode retval;
 		if (item instanceof CacheFixture) {
-			fixtures.remove(Integer.valueOf(item.getID()));
 			final CacheFixture cache = (CacheFixture) item;
-			return new SimpleReportNode(loc, atPoint(loc), " ",
+			retval = new SimpleReportNode(loc, atPoint(loc), " ",
 											   distCalculator.distanceString(loc),
 											   " A cache of ",
 											   cache.getKind(),
 											   ", containing ",
 											   cache.getContents());
 		} else if (item instanceof Grove) {
-			fixtures.remove(Integer.valueOf(item.getID()));
 			final Grove grove = (Grove) item;
-			return new SimpleReportNode(loc, atPoint(loc), "A ",
+			retval = new SimpleReportNode(loc, atPoint(loc), "A ",
 											   ternary(grove.isCultivated(),
 													   "cultivated ", "wild "),
 											   grove.getKind(),
@@ -374,9 +373,8 @@ public final class HarvestableReportGenerator
 													   " orchard", " grove"), " ",
 											   distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
-			fixtures.remove(Integer.valueOf(item.getID()));
 			final Meadow meadow = (Meadow) item;
-			return new SimpleReportNode(loc, atPoint(loc), "A ",
+			retval = new SimpleReportNode(loc, atPoint(loc), "A ",
 											   meadow.getStatus().toString(),
 											   ternary(meadow.isCultivated(),
 													   " cultivated ",
@@ -386,34 +384,32 @@ public final class HarvestableReportGenerator
 													   " field", " meadow"), " ",
 											   distCalculator.distanceString(loc));
 		} else if (item instanceof Mine) {
-			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, atPoint(loc), item.toString(), " ",
+			retval = new SimpleReportNode(loc, atPoint(loc), item.toString(), " ",
 											   distCalculator
 													   .distanceString(loc));
 		} else if (item instanceof MineralVein) {
-			fixtures.remove(Integer.valueOf(item.getID()));
 			final MineralVein mineral = (MineralVein) item;
-			return new SimpleReportNode(loc, atPoint(loc), "An ",
+			retval = new SimpleReportNode(loc, atPoint(loc), "An ",
 											   ternary(mineral.isExposed(),
 													   "exposed ",
 													   "unexposed "), "vein of ",
 											   mineral.getKind(), " ",
 											   distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
-			fixtures.remove(Integer.valueOf(item.getID()));
 			final String kind = ((Shrub) item).getKind();
-			return new SimpleReportNode(loc, atPoint(loc), kind, " ",
+			retval = new SimpleReportNode(loc, atPoint(loc), kind, " ",
 											   distCalculator
 													   .distanceString(loc));
 		} else if (item instanceof StoneDeposit) {
-			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, atPoint(loc), "An exposed ",
+			retval = new SimpleReportNode(loc, atPoint(loc), "An exposed ",
 											   ((StoneDeposit) item).getKind(),
 											   " deposit", " ",
 											   distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected HarvestableFixture type");
 		}
+		fixtures.remove(Integer.valueOf(item.getID()));
+		return retval;
 	}
 
 	/**
