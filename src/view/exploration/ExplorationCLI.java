@@ -215,18 +215,17 @@ public final class ExplorationCLI implements MovementCostSource {
 		}
 		helper.printf("The explorer comes to %s, a tile with terrain %s%n",
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
+		Collections.shuffle(allFixtures);
 		if (allFixtures.isEmpty()) {
 			helper.println("The following were automatically noticed:");
 		} else if ((allFixtures.size() > 1) &&
 						   (SingletonRandom.RANDOM.nextDouble() < 0.1)) {
 			helper.println(
 					"The following were noticed, all but the last two automatically:");
-			Collections.shuffle(allFixtures);
 			constants.add(allFixtures.get(0));
 			constants.add(allFixtures.get(1));
 		} else {
 			helper.print("The following were noticed, all but the last automatically");
-			Collections.shuffle(allFixtures);
 			constants.add(allFixtures.get(0));
 		}
 		for (final TileFixture fix : constants) {
