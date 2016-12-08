@@ -21,7 +21,6 @@ import util.LineEnd;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
-import util.SimpleMultiMap;
 
 /**
  * A report generator for sightings of animals.

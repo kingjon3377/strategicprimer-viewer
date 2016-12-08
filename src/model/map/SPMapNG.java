@@ -31,8 +31,8 @@ import util.ArraySet;
 import util.EmptyIterator;
 import util.IteratorWrapper;
 import util.LineEnd;
+import util.MultiMapHelper;
 import util.NullStream;
-import util.SimpleMultiMap;
 import util.TypesafeLogger;
 
 import static util.NullCleaner.assertNotNull;
@@ -204,7 +204,7 @@ public class SPMapNG implements IMutableMapNG {
 			// Declared here to avoid object allocations in the loop.
 			final Collection<TileFixture> ourFixtures = new ArrayList<>();
 			final Map<Integer, Collection<SubsettableFixture>> ourSubsettables =
-					new SimpleMultiMap<>();
+					new HashMap<>();
 			// Because IUnit is Subsettable<IUnit> and thus incompatible
 			// with SubsettableFixture
 			final Map<Integer, IUnit> ourUnits = new HashMap<>();
@@ -282,7 +282,8 @@ public class SPMapNG implements IMutableMapNG {
 					if (fix instanceof IUnit) {
 						ourUnits.put(idNum, (IUnit) fix);
 					} else if (fix instanceof SubsettableFixture) {
-						ourSubsettables.get(idNum).add((SubsettableFixture) fix);
+						MultiMapHelper.getMapValue(ourSubsettables, idNum,
+								key -> new ArrayList<>()).add((SubsettableFixture) fix);
 					} else {
 						ourFixtures.add(fix);
 					}

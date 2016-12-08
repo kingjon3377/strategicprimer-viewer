@@ -21,10 +21,10 @@ import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
+import util.MultiMapHelper;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
-import util.SimpleMultiMap;
 
 /**
  * A report generator for equipment and resources.
@@ -84,12 +84,13 @@ public final class FortressMemberReportGenerator
 		boolean anyResources = false;
 		boolean anyEquipment = false;
 		final Map<String, Collection<Pair<Point, ResourcePile>>> resources =
-				new SimpleMultiMap<>();
+				new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof ResourcePile) {
 				anyResources = true;
 				final ResourcePile resource = (ResourcePile) pair.second();
-				resources.get(resource.getKind()).add(Pair.of(pair.first(), resource));
+				MultiMapHelper.getMapValue(resources, resource.getKind(),
+						key -> new ArrayList<>()).add(Pair.of(pair.first(), resource));
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof Implement) {
 				anyEquipment = true;

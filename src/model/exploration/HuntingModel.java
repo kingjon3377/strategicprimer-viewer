@@ -3,6 +3,7 @@ package model.exploration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,8 +18,8 @@ import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Shrub;
+import util.MultiMapHelper;
 import util.NullCleaner;
-import util.SimpleMultiMap;
 
 import static model.map.TileType.Desert;
 import static model.map.TileType.Jungle;
@@ -48,15 +49,15 @@ public final class HuntingModel {
 	/**
 	 * The non-aquatic animals in the map.
 	 */
-	private final Map<Point, Collection<String>> animals = new SimpleMultiMap<>();
+	private final Map<Point, Collection<String>> animals = new HashMap<>();
 	/**
 	 * The aquatic animals in the map.
 	 */
-	private final Map<Point, Collection<String>> waterAnimals = new SimpleMultiMap<>();
+	private final Map<Point, Collection<String>> waterAnimals = new HashMap<>();
 	/**
 	 * The plants in the map.
 	 */
-	private final Map<Point, Collection<String>> plants = new SimpleMultiMap<>();
+	private final Map<Point, Collection<String>> plants = new HashMap<>();
 	/**
 	 * The size of the map.
 	 */
@@ -81,17 +82,20 @@ public final class HuntingModel {
 							&& !((Animal) fix).isTraces()) {
 					final String kind = ((Animal) fix).getKind();
 					if (fishKinds.contains(kind)) {
-						waterAnimals.get(point).add(kind);
+						MultiMapHelper.getMapValue(waterAnimals, point, key -> new ArrayList<>())
+								.add(kind);
 					} else {
-						animals.get(point).add(kind);
+						MultiMapHelper.getMapValue(animals, point, key -> new ArrayList<>())
+								.add(kind);
 					}
 				} else if ((fix instanceof Grove) || (fix instanceof Meadow) ||
 								   (fix instanceof Shrub)) {
-					plants.get(point).add(fix.toString());
+					MultiMapHelper.getMapValue(plants, point, key -> new ArrayList<>())
+							.add(fix.toString());
 				}
 			}
 			final Collection<String> plantList =
-					NullCleaner.assertNotNull(plants.get(point));
+					MultiMapHelper.getMapValue(plants, point, key -> new ArrayList<>());
 			final int len = plantList.size() - 1;
 			final TileType tileType = map.getBaseTerrain(point);
 			final int nothings;
