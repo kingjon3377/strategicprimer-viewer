@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
-import java.util.function.DoubleToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -238,7 +237,14 @@ public final class QueryCLI implements SimpleDriver {
 		return Math.round(Math.sqrt((xDiff * xDiff) + (yDiff * yDiff)));
 
 	}
-
+	/**
+	 * Round a double up.
+	 * @param dbl the number to round
+	 * @return the next integer above it if it's not already integral.
+	 */
+	private static int round(final double dbl) {
+		return (int) (Math.ceil(dbl) + 0.1);
+	}
 	/**
 	 * Run herding.
 	 *
@@ -275,7 +281,6 @@ public final class QueryCLI implements SimpleDriver {
 				return;
 			}
 			final int flockPerHerder = ((count + herders) - 1) / herders;
-			final DoubleToIntFunction round = dbl -> (int) (Math.ceil(dbl) + 0.1);
 			final int hours;
 			if (herdModel.isPoultry()) {
 				cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",
@@ -295,14 +300,13 @@ public final class QueryCLI implements SimpleDriver {
 											   herdModel.getPoundsCoefficient() *
 											   count));
 				if (cli.inputBooleanInSeries("Do they do the cleaning this turn? ")) {
-					hours = round.applyAsInt(
-							(flockPerHerder * (herdModel.getDailyTimePerHead() +
-														 herdModel
-																 .getExtraTimePerHead()
-							)) / 60.0);
+					hours = round((flockPerHerder * (herdModel.getDailyTimePerHead() +
+															 herdModel
+																	 .getExtraTimePerHead())) /
+										  60.0);
 				} else {
-					hours = round.applyAsInt(
-							(flockPerHerder * herdModel.getDailyTimePerHead()) / 60.0);
+					hours = round((flockPerHerder * herdModel.getDailyTimePerHead()) /
+										  60.0);
 				}
 			} else {
 				cli.printf("Tending the animals takes %d minutes, or %d minutes with ",
@@ -322,13 +326,12 @@ public final class QueryCLI implements SimpleDriver {
 											   herdModel.getPoundsCoefficient() *
 											   count));
 				if (cli.inputBooleanInSeries("Are the herders experts? ")) {
-					hours = round.applyAsInt(
-							((flockPerHerder * (herdModel.getDailyTimePerHead() - 5)) +
-									 herdModel.getDailyTimeFloor()) / 60.0);
+					hours = round(((flockPerHerder *
+											(herdModel.getDailyTimePerHead() - 5)) +
+										   herdModel.getDailyTimeFloor()) / 60.0);
 				} else {
-					hours = round.applyAsInt(
-							((flockPerHerder * herdModel.getDailyTimePerHead()) +
-									 herdModel.getDailyTimeFloor()) / 60.0);
+					hours = round(((flockPerHerder * herdModel.getDailyTimePerHead()) +
+										   herdModel.getDailyTimeFloor()) / 60.0);
 				}
 			}
 			if ((hours < HUNTER_HOURS) &&
