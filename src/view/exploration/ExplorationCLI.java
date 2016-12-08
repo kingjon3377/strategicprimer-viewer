@@ -195,12 +195,10 @@ public final class ExplorationCLI implements MovementCostSource {
 		}
 		map.streamOtherFixtures(dPoint).forEach(consider);
 		final String possibleTracks;
-		if (Ocean == model.getMap().getBaseTerrain(model.getSelectedUnitLocation())) {
-			possibleTracks = huntingModel.fish(model.getSelectedUnitLocation(), 1).get
-																						   (0);
+		if (Ocean == model.getMap().getBaseTerrain(dPoint)) {
+			possibleTracks = huntingModel.fish(dPoint, 1).get(0);
 		} else {
-			possibleTracks = huntingModel.hunt(model.getSelectedUnitLocation(), 1).get
-																						   (0);
+			possibleTracks = huntingModel.hunt(dPoint, 1).get(0);
 		}
 		if (!HuntingModel.NOTHING.equals(possibleTracks)) {
 			allFixtures
