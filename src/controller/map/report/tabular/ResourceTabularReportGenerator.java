@@ -13,6 +13,7 @@ import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.map.fixtures.resources.CacheFixture;
 import util.LineEnd;
+import util.MultiMapHelper;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
@@ -205,6 +206,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 		values.sort((one, two) -> comparePairs(one.second(), two.second()));
 		ostream.append(headerRow());
 		ostream.append(LineEnd.LINE_SEP);
+		// TODO: Use a Map<String, Accumulator>, so we can use MultiMapHelper
 		final Map<String, Integer> implementCounts = new HashMap<>();
 		for (final Pair<Integer, Pair<Point, IFixture>> pair : values) {
 			final Pair<Point, IFixture> inner = pair.second();

@@ -3,6 +3,7 @@ package model.map;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.eclipse.jdt.annotation.Nullable;
+import util.MultiMapHelper;
 import view.util.Coordinate;
 
 import static util.NullCleaner.assertNotNull;
@@ -77,15 +78,8 @@ public final class PointFactory {
 		if (useCache) {
 			final Integer boxedRow = assertNotNull(Integer.valueOf(row));
 			final Integer boxedCol = assertNotNull(Integer.valueOf(col));
-			if (!POINT_CACHE.containsKey(boxedRow)) {
-				POINT_CACHE.put(boxedRow,
-						new ConcurrentHashMap<>());
-			}
-			if (!assertNotNull(POINT_CACHE.get(boxedRow)).containsKey(boxedCol)) {
-				assertNotNull(POINT_CACHE.get(boxedRow))
-						.put(boxedCol, new PointImpl(row, col));
-			}
-			return assertNotNull(assertNotNull(POINT_CACHE.get(boxedRow)).get(boxedCol));
+			return MultiMapHelper.getMapValue(MultiMapHelper.getMapValue(POINT_CACHE, boxedRow,
+					key -> new ConcurrentHashMap<>()), boxedCol, key -> new PointImpl(row, col));
 		} else {
 			return new PointImpl(row, col);
 		}
@@ -100,15 +94,9 @@ public final class PointFactory {
 		if (useCache) {
 			final Integer boxedX = assertNotNull(Integer.valueOf(xCoordinate));
 			final Integer boxedY = assertNotNull(Integer.valueOf(yCoordinate));
-			if (!C_CACHE.containsKey(boxedX)) {
-				C_CACHE.put(boxedX,
-						new ConcurrentHashMap<>());
-			}
-			if (!assertNotNull(C_CACHE.get(boxedX)).containsKey(boxedY)) {
-				assertNotNull(C_CACHE.get(boxedX)).put(boxedY,
-						new Coordinate(xCoordinate, yCoordinate));
-			}
-			return assertNotNull(assertNotNull(C_CACHE.get(boxedX)).get(boxedY));
+			return MultiMapHelper.getMapValue(MultiMapHelper.getMapValue(C_CACHE, boxedX,
+					key -> new ConcurrentHashMap<>()), boxedY,
+					key -> new Coordinate(xCoordinate, yCoordinate));
 		} else {
 			return new Coordinate(xCoordinate, yCoordinate);
 		}

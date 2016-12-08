@@ -32,7 +32,7 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
+import util.MultiMapHelper;
 import util.Pair;
 import util.PatientMap;
 
@@ -109,14 +109,8 @@ public final class ImmortalsReportGenerator
 												 final HasKind item) {
 		// For the three classes we deal with here, we don't want just the kind,
 		// we want the full toString, so we use that instead of getKind.
-		if (mapping.containsKey(item.toString())) {
-			return NullCleaner.assertNotNull(mapping.get(item.toString()));
-		} else {
-			final IReportNode retval =
-					new ListReportNode(NullCleaner.assertNotNull(item.toString()));
-			mapping.put(NullCleaner.assertNotNull(item.toString()), retval);
-			return retval;
-		}
+		return MultiMapHelper.getMapValue(mapping, item.toString(),
+				key -> new ListReportNode(key));
 	}
 	/**
 	 * @param list a list
@@ -132,16 +126,8 @@ public final class ImmortalsReportGenerator
 	 */
 	private static BiConsumer<String, Point> complex(final Map<String, Collection<Point>>
 													  collection, final String suffix) {
-		return (kind, point) -> {
-			final Collection<Point> list;
-			if (collection.containsKey(kind)) {
-				list = collection.get(kind);
-			} else {
-				list = new PointList(kind + suffix);
-				collection.put(kind, list);
-			}
-			list.add(point);
-		};
+		return (kind, point) -> MultiMapHelper.getMapValue(collection, kind,
+				key -> new PointList(key + suffix)).add(point);
 	}
 	/**
 	 * Produce the sub-report dealing with "immortals".

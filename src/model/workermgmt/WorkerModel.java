@@ -22,6 +22,7 @@ import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import util.MultiMapHelper;
 import util.NullCleaner;
 import util.Pair;
 import view.util.SystemOut;
@@ -103,20 +104,9 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 							point -> getUnits(map.streamOtherFixtures(point),
 									player))).collect(
 					(Supplier<TreeMap<Integer, IUnit>>) TreeMap::new,
-					(retval, unit) -> {
-						final IUnit proxy;
-						if (retval.containsKey(Integer.valueOf(unit.getID()))) {
-							proxy = retval.get(Integer.valueOf(unit.getID()));
-							//noinspection unchecked
-							((ProxyFor<IUnit>) proxy).addProxied(unit);
-						} else {
-							proxy = new ProxyUnit(unit.getID());
-							//noinspection unchecked
-							((ProxyFor<IUnit>) proxy).addProxied(unit);
-							retval.put(NullCleaner.assertNotNull(
-									Integer.valueOf(unit.getID())), proxy);
-						}
-					}, Map::putAll).values());
+					(retval, unit) -> ((ProxyFor<IUnit>) MultiMapHelper.getMapValue(retval,
+							Integer.valueOf(unit.getID()), ProxyUnit::new))
+							.addProxied(unit), Map::putAll).values());
 		} else {
 			// Just in case I missed something in the proxy implementation, make
 			// sure things work correctly when there's only one map.

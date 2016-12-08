@@ -36,6 +36,7 @@ import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
+import util.MultiMapHelper;
 import util.NullCleaner;
 import util.Pair;
 
@@ -286,13 +287,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 * value there yet.
 	 */
 	private static <K, V> Set<V> getSetFromMap(final Map<K, Set<V>> map, final K key) {
-		if (map.containsKey(key)) {
-			return NullCleaner.assertNotNull(map.get(key));
-		} else {
-			final Set<V> retval = new ArraySet<>();
-			map.put(key, retval);
-			return retval;
-		}
+		return MultiMapHelper.getMapValue(map, key, ignored -> new ArraySet<>());
 	}
 
 	/**

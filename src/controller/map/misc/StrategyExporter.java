@@ -20,6 +20,7 @@ import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.IWorkerModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
+import util.MultiMapHelper;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
@@ -175,15 +176,9 @@ public final class StrategyExporter implements PlayerChangeListener {
 						"false".equals(options.getArgument("--print-empty"))) {
 				continue;
 			}
-			final List<IUnit> list;
-			if (unitsByKind.containsKey(unit.getKind())) {
-				list = NullCleaner.assertNotNull(unitsByKind.get(unit.getKind()));
-			} else {
-				//noinspection ObjectAllocationInLoop
-				list = new ArrayList<>();
-				unitsByKind.put(unit.getKind(), list);
-			}
-			list.add(unit);
+			MultiMapHelper
+					.getMapValue(unitsByKind, unit.getKind(), key -> new ArrayList<>())
+					.add(unit);
 		}
 
 		final Map<IUnit, String> orders = new HashMap<>();

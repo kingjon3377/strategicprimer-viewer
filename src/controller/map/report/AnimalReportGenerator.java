@@ -18,6 +18,7 @@ import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
+import util.MultiMapHelper;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
@@ -71,14 +72,9 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				} else {
 					desc = animal.getKind();
 				}
-				final Collection<Point> list;
-				if (items.containsKey(desc)) {
-					list = items.get(desc);
-				} else {
-					list = pointsListAt(desc);
-					items.put(desc, list);
-				}
-				list.add(pair.first());
+				MultiMapHelper
+						.getMapValue(items, desc, AbstractReportGenerator::pointsListAt)
+						.add(pair.first());
 				fixtures.remove(Integer.valueOf(animal.getID()));
 			}
 		}
@@ -117,15 +113,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
 				final String animalKind = animal.getKind();
-				final IReportNode collection;
-				if (items.containsKey(animalKind)) {
-					collection = NullCleaner.assertNotNull(items.get(animalKind));
-				} else {
-					//noinspection ObjectAllocationInLoop
-					collection = new ListReportNode(animalKind);
-					items.put(animalKind, collection);
-				}
-				collection.add(produceRIR(fixtures, map, currentPlayer, animal,
+				MultiMapHelper.getMapValue(items, animalKind, ListReportNode::new)
+						.add(produceRIR(fixtures, map, currentPlayer, animal,
 						pair.first()));
 				fixtures.remove(Integer.valueOf(animal.getID()));
 			}

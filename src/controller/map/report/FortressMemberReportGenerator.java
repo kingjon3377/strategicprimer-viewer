@@ -151,22 +151,16 @@ public final class FortressMemberReportGenerator
 			if (pair.second() instanceof ResourcePile) {
 				final ResourcePile resource = (ResourcePile) pair.second();
 				final String kind = resource.getKind();
-				final IReportNode list;
-				if (resourceKinds.containsKey(kind)) {
-					list = resourceKinds.get(kind);
-				} else {
-					list = new ListReportNode(kind + ':');
-					resourceKinds.put(kind, list);
-					rsr.add(list);
-				}
-				list.add(
-						produceRIR(fixtures, map, currentPlayer, resource, pair.first
-																						()));
+				MultiMapHelper.getMapValue(resourceKinds, kind,
+						key -> new ListReportNode(key + ':'))
+						.add(produceRIR(fixtures, map, currentPlayer, resource,
+								pair.first()));
 			} else if (pair.second() instanceof Implement) {
 				equip.add(produceRIR(fixtures, map, currentPlayer,
 						(FortressMember) pair.second(), pair.first()));
 			}
 		}
+		resourceKinds.values().forEach(rsr::addIfNonEmpty);
 		final IReportNode retval =
 				new SectionListReportNode(4, "Resources and Equipment");
 		retval.addIfNonEmpty(rsr, equip);

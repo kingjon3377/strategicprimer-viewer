@@ -19,6 +19,7 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.towns.Fortress;
+import util.MultiMapHelper;
 import util.Pair;
 
 /**
@@ -125,14 +126,8 @@ public final class DuplicateFixtureRemover {
 						Pair.of(res.getKind(),
 								Pair.of(res.getContents(), Pair.of(res.getUnits(),
 										Integer.valueOf(res.getCreated()))));
-				final List<ResourcePile> piles;
-				if (resources.containsKey(key)) {
-					piles = resources.get(key);
-				} else {
-					piles = new ArrayList<>();
-					resources.put(key, piles);
-				}
-				piles.add(res);
+				MultiMapHelper.getMapValue(resources, key, ignored -> new ArrayList<>())
+						.add(res);
 			}
 		}
 		if (!(iter instanceof Unit) && !(iter instanceof Fortress)) {

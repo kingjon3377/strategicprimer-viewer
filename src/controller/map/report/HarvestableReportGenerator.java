@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-import model.map.HasKind;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -29,7 +28,7 @@ import model.report.SimpleReportNode;
 import model.report.SortedSectionListReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
-import util.NullCleaner;
+import util.MultiMapHelper;
 import util.Pair;
 import util.PatientMap;
 
@@ -126,36 +125,18 @@ public final class HarvestableReportGenerator
 				final String kind =
 						ternary(mineral.isExposed(), "exposed ", "unexposed ") +
 								mineral.getKind();
-				final Collection<Point> list;
-				if (minerals.containsKey(kind)) {
-					list = minerals.get(kind);
-				} else {
-					list = pointsListAt(kind);
-					minerals.put(kind, list);
-				}
-				list.add(point);
+				MultiMapHelper.getMapValue(minerals, kind,
+						AbstractReportGenerator::pointsListAt).add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (item instanceof Shrub) {
-				final String kind = ((Shrub) item).getKind();
-				final Collection<Point> list;
-				if (shrubs.containsKey(kind)) {
-					list = shrubs.get(kind);
-				} else {
-					list = pointsListAt(kind);
-					shrubs.put(kind, list);
-				}
-				list.add(point);
+				MultiMapHelper
+						.getMapValue(shrubs, ((Shrub) item).getKind(), AbstractReportGenerator::pointsListAt)
+						.add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (item instanceof StoneDeposit) {
-				final String kind = ((StoneDeposit) item).getKind();
-				final Collection<Point> list;
-				if (stone.containsKey(kind)) {
-					list = stone.get(kind);
-				} else {
-					list = pointsListAt(kind);
-					stone.put(kind, list);
-				}
-				list.add(point);
+				MultiMapHelper
+						.getMapValue(stone, ((StoneDeposit) item).getKind(), AbstractReportGenerator::pointsListAt)
+						.add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
 			}
 		}
@@ -226,41 +207,18 @@ public final class HarvestableReportGenerator
 					final String kind =
 							ternary(mineral.isExposed(), "exposed ", "unexposed ") +
 									mineral.getKind();
-					final IReportNode collection;
-					if (minerals.containsKey(kind)) {
-						collection = NullCleaner.assertNotNull(minerals.get(kind));
-					} else {
-						//noinspection ObjectAllocationInLoop
-						collection = new ListReportNode(kind);
-						minerals.put(kind, collection);
-					}
-					collection.add(produceRIR(fixtures, map, currentPlayer, item,
-							loc));
+					MultiMapHelper
+							.getMapValue(minerals, kind, key -> new ListReportNode(key))
+							.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof Shrub) {
-					final IReportNode collection;
-					final HasKind shrub = (Shrub) item;
-					if (shrubs.containsKey(shrub.getKind())) {
-						collection =
-								NullCleaner.assertNotNull(shrubs.get(shrub.getKind()));
-					} else {
-						//noinspection ObjectAllocationInLoop
-						collection = new ListReportNode(shrub.getKind());
-						shrubs.put(shrub.getKind(), collection);
-					}
-					collection.add(produceRIR(fixtures, map, currentPlayer, item, loc));
+					MultiMapHelper
+							.getMapValue(shrubs, ((Shrub) item).getKind(), key -> new ListReportNode(key))
+							.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 					fixtures.remove(Integer.valueOf(item.getID()));
 				} else if (item instanceof StoneDeposit) {
-					final IReportNode collection;
-					final HasKind deposit = (StoneDeposit) item;
-					if (stone.containsKey(deposit.getKind())) {
-						collection = NullCleaner.assertNotNull(stone.get(
-								deposit.getKind()));
-					} else {
-						//noinspection ObjectAllocationInLoop
-						collection = new ListReportNode(deposit.getKind());
-						stone.put(deposit.getKind(), collection);
-					}
-					collection.add(produceRIR(fixtures, map, currentPlayer, item, loc));
+					MultiMapHelper
+							.getMapValue(stone, ((StoneDeposit) item).getKind(), key -> new ListReportNode(key))
+							.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				}
 			}
 		}

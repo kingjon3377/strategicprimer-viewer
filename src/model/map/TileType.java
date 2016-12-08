@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.eclipse.jdt.annotation.NonNull;
+import util.MultiMapHelper;
 import util.NullCleaner;
 
 import static java.util.Collections.unmodifiableSet;
@@ -133,18 +133,13 @@ public enum TileType {
 	public static Iterable<TileType> valuesForVersion(final int ver) {
 		final Integer boxedVer = NullCleaner.assertNotNull(Integer.valueOf(ver));
 		synchronized (VALS_BY_VER) {
-			if (!VALS_BY_VER.containsKey(boxedVer)) {
-				final Set<@NonNull TileType> set =
-						NullCleaner.assertNotNull(
-								EnumSet.copyOf(Stream.of(values())
-													   .filter(type -> type
-																			   .isSupportedByVersion(
-																					   ver))
-													   .collect(Collectors.toSet())));
-				VALS_BY_VER.put(boxedVer, set);
-			}
+			return unmodifiableSet(MultiMapHelper.getMapValue(VALS_BY_VER, boxedVer,
+					key -> EnumSet.copyOf(Stream.of(values())
+												  .filter(type -> type
+																		  .isSupportedByVersion(
+														  key))
+												  .collect(Collectors.toSet()))));
 		}
-		return NullCleaner.assertNotNull(unmodifiableSet(VALS_BY_VER.get(boxedVer)));
 	}
 
 	/**

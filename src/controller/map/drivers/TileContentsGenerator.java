@@ -84,6 +84,8 @@ public final class TileContentsGenerator {
 	 */
 	public static TileContentsGenerator getInstance(final String filename)
 			throws IOException, XMLStreamException, SPFormatException {
+		// We can't use MultiMapHelper here because what would be the constructor
+		// lambda would have to declare a thrown exception
 		if (!INSTANCES.containsKey(filename)) {
 			INSTANCES.put(
 					filename,

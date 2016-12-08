@@ -17,6 +17,7 @@ import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
+import util.MultiMapHelper;
 import util.NullCleaner;
 
 /**
@@ -186,13 +187,8 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	 */
 	private String getResourceContents(final String kind, final ICLIHelper cli)
 			throws IOException {
-		final Set<String> set;
-		if (resourceContents.containsKey(kind)) {
-			set = NullCleaner.assertNotNull(resourceContents.get(kind));
-		} else {
-			set = new HashSet<>();
-			resourceContents.put(kind, set);
-		}
+		final Set<String> set = MultiMapHelper.getMapValue(resourceContents, kind,
+				key -> new HashSet<>());
 		final List<String> list = new ArrayList<>(set);
 		final int num = cli.chooseStringFromList(list,
 				NullCleaner.assertNotNull(String.format(

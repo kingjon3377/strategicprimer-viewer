@@ -33,6 +33,7 @@ import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
+import util.MultiMapHelper;
 import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
@@ -299,15 +300,10 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			} else if (member instanceof ResourcePile) {
 				final ResourcePile pile = (ResourcePile) member;
 				final String kind = pile.getKind();
-				final Collection<String> list;
-				if (resources.containsKey(kind)) {
-					list = resources.get(kind);
-				} else {
-					list = new HtmlList(kind + ':');
-					resources.put(kind, list);
-				}
-				list.add(memberReportGenerator
-								 .produce(fixtures, map, currentPlayer, pile, loc));
+				MultiMapHelper
+						.getMapValue(resources, kind, key -> new HtmlList(key + ':'))
+						.add(memberReportGenerator
+									 .produce(fixtures, map, currentPlayer, pile, loc));
 			} else {
 				contents.add(memberReportGenerator
 									 .produce(fixtures, map, currentPlayer, member, loc));
@@ -365,18 +361,12 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 										  .produceRIR(fixtures, map, currentPlayer, unit,
 												  loc));
 				} else if (unit instanceof ResourcePile) {
-					final String kind = ((ResourcePile) unit).getKind();
-					final IReportNode list;
-					if (resourceKinds.containsKey(kind)) {
-						list = resourceKinds.get(kind);
-					} else {
-						list = new ListReportNode(kind + ':');
-						resourceKinds.put(kind, list);
-						resources.add(list);
-					}
-					list.add(memberReportGenerator
-									 .produceRIR(fixtures, map, currentPlayer, unit,
-											 loc));
+					MultiMapHelper.getMapValue(resourceKinds,
+							((ResourcePile) unit).getKind(),
+							key -> new ListReportNode(key + ':'))
+							.add(memberReportGenerator
+										 .produceRIR(fixtures, map, currentPlayer, unit,
+												 loc));
 				} else {
 					contents.add(
 							memberReportGenerator
@@ -384,6 +374,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 											loc));
 				}
 			}
+			resourceKinds.values().forEach(resources::addIfNonEmpty);
 			retval.addIfNonEmpty(units, resources, equipment, contents);
 		}
 		fixtures.remove(Integer.valueOf(item.getID()));
