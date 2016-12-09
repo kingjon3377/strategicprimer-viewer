@@ -193,7 +193,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 */
 	@Override
 	public boolean isSubset(final IJob obj, final Formatter ostream,
-							final String context) throws IOException {
+							final String context) {
 		ostream.format("%s\tisSubset called on ProxyJob%n", context);
 		return false;
 	}

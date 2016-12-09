@@ -251,7 +251,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 */
 	@Override
 	public boolean isSubset(final ISkill obj, final Formatter ostream,
-							final String context) throws IOException {
+							final String context) {
 		ostream.format("%s\tisSubset called on ProxySkill%n", context);
 		return false;
 	}

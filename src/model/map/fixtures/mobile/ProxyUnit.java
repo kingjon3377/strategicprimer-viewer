@@ -719,7 +719,7 @@ public final class ProxyUnit
 		 */
 		@Override
 		public boolean isSubset(final IFixture obj, final Formatter ostream,
-								final String context) throws IOException {
+								final String context) {
 			ostream.format("%sisSubset called on ProxyMember%n", context);
 			return false;
 		}

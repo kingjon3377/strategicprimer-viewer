@@ -200,7 +200,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
-							final String context) throws IOException {
+							final String context)  {
 		ostream.format("%s\tisSubset called on ProxyWorker%n", context);
 		return false;
 	}

@@ -150,7 +150,7 @@ public final class RiverFixture
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
-							final String context) throws IOException {
+							final String context) {
 		if (obj instanceof RiverFixture) {
 			final Set<River> temp = EnumSet.copyOf(((RiverFixture) obj).rivers);
 			temp.removeAll(rivers);
