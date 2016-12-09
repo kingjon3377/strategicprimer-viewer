@@ -20,7 +20,6 @@ import model.misc.IDriverModel;
 import util.EqualsAny;
 import util.NullCleaner;
 import util.Pair;
-import util.Ternary;
 import util.TypesafeLogger;
 import view.util.AppChooserFrame;
 import view.util.DriverQuit;
