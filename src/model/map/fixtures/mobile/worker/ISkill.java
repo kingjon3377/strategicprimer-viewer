@@ -1,6 +1,5 @@
 package model.map.fixtures.mobile.worker;
 
-import java.io.IOException;
 import java.util.Formatter;
 import java.util.Objects;
 import model.map.HasMutableName;
@@ -63,11 +62,10 @@ public interface ISkill extends HasMutableName, Subsettable<@NonNull ISkill> {
 	 *                context
 	 * @return whether the Skill is a "subset" of this---same name, equal or lower level,
 	 * equal or lower number of hours if equal level.
-	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	default boolean isSubset(final ISkill obj, final Formatter ostream,
-							 final String context) throws IOException {
+							 final String context) {
 		final int lvl = getLevel();
 		final int hours = getHours();
 		if (Objects.equals(obj.getName(), getName())) {

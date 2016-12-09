@@ -235,12 +235,11 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	 * @param context a string to print before every line of output, describing the
 	 *                context
 	 * @return whether it's a strict subset of this one
-	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
-							final String context) throws IOException {
+							final String context) {
 		if (!(obj instanceof Fortress)) {
 			ostream.format("%sIncompatible type to Fortress%n", context);
 			return false;

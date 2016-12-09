@@ -305,24 +305,13 @@ public final class TestSubsets {
 		final Forest forest = new Forest("elm", false, 1);
 		final TileFixture animal = new Animal("skunk", false, false, "wild", 1);
 		final Consumer<IMutableMapNG> testTrue =
-				map -> {
-					try {
-						assertThat("Subset holds when fixture(s) placed correctly",
-								Boolean.valueOf(baseMap.isSubset(map, DEV_NULL, "")),
-								equalTo(Boolean.TRUE));
-					} catch (final IOException ignored) {
-
-					}
-				};
-		final Consumer<IMutableMapNG> testFalse = map -> {
-			try {
-				assertThat("Subset fails when fixture(s) off by one",
+				map -> assertThat("Subset holds when fixture(s) placed correctly",
+						Boolean.valueOf(baseMap.isSubset(map, DEV_NULL, "")),
+						equalTo(Boolean.TRUE));
+		final Consumer<IMutableMapNG> testFalse =
+				map -> assertThat("Subset fails when fixture(s) off by one",
 						Boolean.valueOf(baseMap.isSubset(map, DEV_NULL, "")),
 						equalTo(Boolean.FALSE));
-			} catch (final IOException ignored) {
-
-			}
-		};
 		for (final Point point : testMap.locations()) {
 			assertThat("Subset invariant before attempt using " + point,
 					Boolean.valueOf(baseMap.isSubset(testMap, DEV_NULL, "")),

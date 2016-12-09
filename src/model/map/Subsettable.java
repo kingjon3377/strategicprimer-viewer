@@ -1,6 +1,5 @@
 package model.map;
 
-import java.io.IOException;
 import java.util.Formatter;
 import java.util.Objects;
 import org.eclipse.jdt.annotation.Nullable;
@@ -33,9 +32,8 @@ public interface Subsettable<T> {
 	 *                put onto ostream, it should probably be followed by a tab.
 	 * @return whether it is a strict subset of this object---with no members that aren't
 	 * also in this.
-	 * @throws IOException on I/O error writing output to the stream
 	 */
-	boolean isSubset(T obj, Formatter ostream, String context) throws IOException;
+	boolean isSubset(T obj, Formatter ostream, String context);
 
 	/**
 	 * A helper method to compare two items and, if they're not equal, report this to

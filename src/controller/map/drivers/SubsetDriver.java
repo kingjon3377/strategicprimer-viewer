@@ -1,7 +1,6 @@
 package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Formatter;
 import java.util.Optional;
@@ -14,7 +13,6 @@ import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
 import util.NullCleaner;
 import util.Pair;
-import util.Warning;
 
 import static view.util.SystemOut.SYS_OUT;
 
@@ -130,16 +128,11 @@ public final class SubsetDriver implements SimpleDriver {
 	@SuppressWarnings("UseOfSystemOutOrSystemErr")
 	private static Returns doSubsetTest(final Subsettable<IMapNG> mainMap,
 										final IMapNG map, final Path file) {
-		try {
-			if (mainMap.isSubset(map, new Formatter(SYS_OUT), "In " + file + ':')) {
-				return Returns.OK;
-			} else {
-				System.out.flush();
-				return Returns.Warn;
-			}
-		} catch (final IOException e) {
-			Warning.DEFAULT.warn(e);
-			return Returns.Fail;
+		if (mainMap.isSubset(map, new Formatter(SYS_OUT), "In " + file + ':')) {
+			return Returns.OK;
+		} else {
+			System.out.flush();
+			return Returns.Warn;
 		}
 	}
 

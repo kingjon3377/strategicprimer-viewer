@@ -145,7 +145,6 @@ public final class RiverFixture
 	 *                context
 	 * @return whether it's a strict subset of this one, containing no rivers that this
 	 * doesn't
-	 * @throws IOException on I/O error writing error messages
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override

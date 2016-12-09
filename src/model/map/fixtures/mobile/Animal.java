@@ -1,6 +1,5 @@
 package model.map.fixtures.mobile;
 
-import java.io.IOException;
 import java.util.Formatter;
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
@@ -168,12 +167,11 @@ public class Animal
 	 * @param context a string to print before every line of output, describing the
 	 *                context
 	 * @return whether that member is a subset of this one
-	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
-							final String context) throws IOException {
+							final String context) {
 		if (obj.getID() == id) {
 			if (obj instanceof Animal) {
 				return areObjectsEqual(ostream, kind, ((Animal) obj).kind,

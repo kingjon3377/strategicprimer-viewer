@@ -1,11 +1,9 @@
 package model.map;
 
-import java.io.IOException;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import org.eclipse.jdt.annotation.Nullable;
@@ -74,18 +72,11 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		try {
-			return (this == obj) || ((obj instanceof IPlayerCollection) &&
-											 isSubset((IPlayerCollection) obj, DEV_NULL,
-													 "") && ((IPlayerCollection) obj)
-																	.isSubset(this,
-																			DEV_NULL,
-																			""));
-		} catch (final IOException e) {
-			//noinspection HardcodedFileSeparator
-			LOGGER.log(Level.SEVERE, "I/O error from NullStream", e);
-			return false;
-		}
+		return (this == obj) || ((obj instanceof IPlayerCollection) &&
+										 isSubset((IPlayerCollection) obj, DEV_NULL,
+												 "") && ((IPlayerCollection) obj)
+																.isSubset(this, DEV_NULL,
+																		""));
 	}
 
 	/**

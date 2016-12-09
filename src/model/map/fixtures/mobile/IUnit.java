@@ -1,6 +1,5 @@
 package model.map.fixtures.mobile;
 
-import java.io.IOException;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -152,11 +151,10 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	 * @param context a string to print before every line of output, describing the
 	 *                context
 	 * @return whether the unit is a strict subset of this one.
-	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	default boolean isSubset(final IFixture obj, final Formatter ostream,
-							 final String context) throws IOException {
+							 final String context) {
 		if (obj.getID() != getID()) {
 			ostream.format("%s\tFixtures have different IDs%n", context);
 			return false;

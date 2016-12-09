@@ -445,12 +445,10 @@ public final class ProxyUnit
 	 * @param ostream the stream to write to
 	 * @param context the context to write before writing our results
 	 * @return false
-	 * @throws IOException never, required by interface
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
-							final String context)
-			throws IOException {
+							final String context) {
 		ostream.format("%sCalled isSubset() in ProxyUnit%n", context);
 		return IUnit.super.isSubset(obj, ostream, context + "\tIn proxy unit:");
 	}

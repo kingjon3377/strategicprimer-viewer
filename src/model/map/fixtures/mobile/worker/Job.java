@@ -1,6 +1,5 @@
 package model.map.fixtures.mobile.worker;
 
-import java.io.IOException;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -160,11 +159,10 @@ public class Job implements IJob {
 	 *                context
 	 * @return whether the Job is a "subset" of this---same name, equal or lower level,
 	 * with no extra or higher-level or extra-experienced Skills.
-	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IJob obj, final Formatter ostream,
-							final String context) throws IOException {
+							final String context) {
 		if (!areObjectsEqual(ostream, name, obj.getName(),
 				"%s\tPassed Jobs with different names%n", context) ||
 					!isConditionTrue(ostream, level >= obj.getLevel(),

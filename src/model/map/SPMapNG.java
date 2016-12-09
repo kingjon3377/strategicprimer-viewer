@@ -1,6 +1,5 @@
 package model.map;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -186,11 +185,10 @@ public class SPMapNG implements IMutableMapNG {
 	 * @param context a string to print before every line of output, describing the
 	 *                context
 	 * @return whether the other map is a subset of this one
-	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IMapNG obj, final Formatter ostream,
-							final String context) throws IOException {
+							final String context) {
 		if (dimensions().equals(obj.dimensions())) {
 			// TODO: We should probably delegate this to the PlayerCollection.
 			boolean retval = true;
@@ -780,30 +778,26 @@ public class SPMapNG implements IMutableMapNG {
 													 .orElseThrow(
 															 () -> new
 																		   IllegalStateException("Fixture vanished"));
-				try {
-					if (existing.equals(fix) ||
-								((existing instanceof SubsettableFixture) &&
-										 ((SubsettableFixture) existing)
-												 .isSubset(fix, NullStream.DEV_NULL,
-														 "")) ||
-								((fix instanceof SubsettableFixture) &&
-										 ((SubsettableFixture) fix)
-												 .isSubset(existing, NullStream.DEV_NULL,
-														 ""))) {
-						local.remove(existing);
-						local.add(fix);
-					} else {
-						local.add(fix);
-						LOGGER.log(Level.WARNING,
-								"Inserted duplicate-ID fixture at " + location);
-						LOGGER.log(Level.FINE, "Stack trace of this location: ",
-								new Throwable());
-						LOGGER.fine("Existing fixture was: " + existing.shortDesc());
-						LOGGER.fine("Added: " + fix.shortDesc());
-					}
-				} catch (final IOException except) {
-					//noinspection HardcodedFileSeparator
-					LOGGER.log(Level.SEVERE, "I/O error on bit bucket", except);
+
+				if (existing.equals(fix) ||
+							((existing instanceof SubsettableFixture) &&
+									 ((SubsettableFixture) existing)
+											 .isSubset(fix, NullStream.DEV_NULL,
+													 "")) ||
+							((fix instanceof SubsettableFixture) &&
+									 ((SubsettableFixture) fix)
+											 .isSubset(existing, NullStream.DEV_NULL,
+													 ""))) {
+					local.remove(existing);
+					local.add(fix);
+				} else {
+					local.add(fix);
+					LOGGER.log(Level.WARNING,
+							"Inserted duplicate-ID fixture at " + location);
+					LOGGER.log(Level.FINE, "Stack trace of this location: ",
+							new Throwable());
+					LOGGER.fine("Existing fixture was: " + existing.shortDesc());
+					LOGGER.fine("Added: " + fix.shortDesc());
 				}
 			} else {
 				local.add(fix);

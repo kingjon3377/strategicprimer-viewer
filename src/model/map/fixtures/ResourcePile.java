@@ -1,6 +1,5 @@
 package model.map.fixtures;
 
-import java.io.IOException;
 import java.util.Formatter;
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
@@ -159,12 +158,11 @@ public class ResourcePile
 	 * @param context the context to report before errors
 	 * @return whether it's a subset of (i.e. equal to, except perhaps with different
 	 * quantity from) this one
-	 * @throws IOException on I/O error writing to ostream
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
-							final String context) throws IOException {
+							final String context) {
 		if (obj.getID() != id) {
 			ostream.format("%s\tIDs differ%n", context);
 			return false;

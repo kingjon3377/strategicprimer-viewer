@@ -247,7 +247,6 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 * @param context a string to print before every line of output, describing the
 	 *                context
 	 * @return false
-	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final ISkill obj, final Formatter ostream,

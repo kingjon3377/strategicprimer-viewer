@@ -1,6 +1,5 @@
 package model.map.fixtures.towns;
 
-import java.io.IOException;
 import java.util.Formatter;
 import model.map.HasMutableImage;
 import model.map.IFixture;
@@ -268,12 +267,11 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 * @param context a string to print before every line of output, describing the
 	 *                context
 	 * @return whether the fixture is a "subset" of this
-	 * @throws IOException on I/O error writing to stream
 	 */
 	@SuppressWarnings("CastToConcreteClass")
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
-							final String context) throws IOException {
+							final String context) {
 		if (obj instanceof Village) {
 			final Village village = (Village) obj;
 			return !(!areIntItemsEqual(ostream, id, village.id, "%s\tIDs differ%n",

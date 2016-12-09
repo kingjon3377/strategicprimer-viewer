@@ -1,6 +1,5 @@
 package model.map.fixtures.mobile;
 
-import java.io.IOException;
 import java.util.Formatter;
 import model.map.HasMutableImage;
 import model.map.IFixture;
@@ -144,11 +143,10 @@ public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 	 * @param context a string to print before every line of output, describing the
 	 *                context
 	 * @return whether that member equals this one
-	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
-							final String context) throws IOException {
+							final String context) {
 		if (obj.getID() == id) {
 			return isConditionTrue(ostream, obj instanceof Minotaur,
 					"%s\tFor ID #%d, different kinds of members%n", context,
