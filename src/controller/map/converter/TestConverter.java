@@ -802,7 +802,7 @@ public final class TestConverter {
 	 */
 	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
-	public void testFourthOneToTwoConversion() throws IOException, XMLStreamException {
+	public void testFourthOneToTwoConversion() throws IOException {
 		final IMutableMapNG original =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
 		initialize(original, PointFactory.point(0, 0), TileType.Ocean);
