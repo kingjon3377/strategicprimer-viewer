@@ -92,6 +92,7 @@ public final class ExplorableReportGenerator
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
 				caves.add(pair.first());
+				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof Battlefield) {
 				battles.add(pair.first());
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
