@@ -109,21 +109,20 @@ public class BoxPanel extends JPanel {
 		}
 	}
 	/**
-	 * @param lineAxis true for horizontal, false for vertical
-	 * @param separation how big a rigid area to put between each item
+	 * Create a BoxPanel on the line (horizontal) axis, with glue at each end and a
+	 * small rigid area between each component.
 	 * @param items the items to put in the panel
 	 * @return the constructed panel
 	 */
-	public static BoxPanel centeredBox(final boolean lineAxis, final int separation,
-									   final Component... items) {
-		final BoxPanel retval = new BoxPanel(lineAxis);
+	public static BoxPanel centeredHorizBox(final Component... items) {
+		final BoxPanel retval = new BoxPanel(true);
 		retval.addGlue();
 		boolean isFirst = true;
 		for (final Component component : items) {
 			if (isFirst) {
 				isFirst = false;
 			} else {
-				retval.addRigidArea(separation);
+				retval.addRigidArea(2);
 			}
 			retval.add(component);
 		}

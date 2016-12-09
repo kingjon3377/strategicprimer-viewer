@@ -121,7 +121,7 @@ public final class SkillAdvancementPanel extends BoxPanel
 		final JPanel secondPanel;
 		OnMac.makeButtonsSegmented(okButton, cancelButton);
 		if (OnMac.SYSTEM_IS_MAC) {
-			secondPanel = BoxPanel.centeredBox(true, 2, okButton, cancelButton);
+			secondPanel = BoxPanel.centeredHorizBox(okButton, cancelButton);
 		} else {
 			secondPanel = new JPanel();
 			secondPanel.setLayout(new FlowLayout());

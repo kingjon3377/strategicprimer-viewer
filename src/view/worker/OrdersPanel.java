@@ -149,7 +149,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 			final JPanel buttonPanel;
 			OnMac.makeButtonsSegmented(applyButton, revertButton);
 			if (OnMac.SYSTEM_IS_MAC) {
-				buttonPanel = BoxPanel.centeredBox(true, 2, applyButton, revertButton);
+				buttonPanel = BoxPanel.centeredHorizBox(applyButton, revertButton);
 			} else {
 				buttonPanel = horizontalPanel(applyButton, null, revertButton);
 			}
