@@ -47,13 +47,11 @@ public interface Subsettable<T> {
 	 * @param first    the first item
 	 * @param second   the second item
 	 * @return whether the two items are equal
-	 * @throws IOException on error writing to the stream
 	 */
 	default boolean areObjectsEqual(final Formatter ostream,
 									@Nullable final Object first,
 									@Nullable final Object second,
-									final String message, final Object... parameters)
-			throws IOException {
+									final String message, final Object... parameters) {
 		if (Objects.equals(first, second)) {
 			return true;
 		} else {
@@ -72,11 +70,10 @@ public interface Subsettable<T> {
 	 * @param first    the first item
 	 * @param second   the second item
 	 * @return whether the two items are equal
-	 * @throws IOException on error writing to the stream
 	 */
 	default boolean areItemsEqual(final Formatter ostream, final boolean first,
 								  final boolean second, final String message,
-								  final Object... parameters) throws IOException {
+								  final Object... parameters) {
 		if (first == second) {
 			return true;
 		} else {
@@ -95,11 +92,10 @@ public interface Subsettable<T> {
 	 * @param first    the first item
 	 * @param second   the second item
 	 * @return whether the two items are equal
-	 * @throws IOException on error writing to the stream
 	 */
 	default boolean areIntItemsEqual(final Formatter ostream, final int first,
 									 final int second, final String message,
-									 final Object... parameters) throws IOException {
+									 final Object... parameters) {
 		if (first == second) {
 			return true;
 		} else {
@@ -116,10 +112,9 @@ public interface Subsettable<T> {
 	 * @param message  message (format string) to write if the two aren't equal
 	 * @param parameters	parameters to use with the format string
 	 * @return whether it's true
-	 * @throws IOException on error writing to the stream
 	 */
 	default boolean isConditionTrue(final Formatter ostream, final boolean condition,
-									final String message, final Object... parameters) throws IOException {
+									final String message, final Object... parameters) {
 		if (condition) {
 			return true;
 		} else {

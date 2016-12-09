@@ -88,7 +88,7 @@ public final class QueryCLI implements SimpleDriver {
 				handleCommand(options, model, huntModel, cli, input.charAt(0));
 				input = cli.inputString("Command: ");
 			}
-		} catch (final IOException | DriverFailedException except) {
+		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
 		}
@@ -101,12 +101,10 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param cli       the interface to the user
 	 * @param input     the command
 	 * @throws IOException           on I/O error
-	 * @throws DriverFailedException on I/O error in trap-model driver
 	 */
 	public static void handleCommand(final SPOptions options, final IDriverModel model,
 									 final HuntingModel huntModel, final ICLIHelper cli,
-									 final char input)
-			throws IOException, DriverFailedException {
+									 final char input) throws IOException {
 		switch (input) {
 		case '?':
 			usage(cli);

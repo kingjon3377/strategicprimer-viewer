@@ -128,14 +128,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	public boolean isSubset(final IPlayerCollection obj,
 							final Formatter ostream, final String context) {
 		return StreamSupport.stream(obj.spliterator(), false).allMatch(
-				player -> {
-					try {
-						return isConditionTrue(ostream, players.containsValue(player),
-								"%s\tExtra player %s%n", context, player.getName());
-					} catch (final IOException ignored) {
-						return false;
-					}
-				});
+				player -> isConditionTrue(ostream, players.containsValue(player),
+						"%s\tExtra player %s%n", context, player.getName()));
 	}
 
 	/**
