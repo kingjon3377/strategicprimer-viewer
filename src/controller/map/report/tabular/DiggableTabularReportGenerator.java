@@ -13,6 +13,8 @@ import model.map.fixtures.resources.StoneDeposit;
 import util.Pair;
 import util.PatientMap;
 
+import static util.Ternary.ternary;
+
 /**
  * A tabular report generator for resources that can be mined---mines, mineral veins,
  * stone deposits, and Ground.
@@ -70,7 +72,8 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 		final String statusField;
 		if (item instanceof Ground) {
 			classField = "ground";
-			statusField = ternary(((Ground) item).isExposed(), "exposed", "not exposed");
+			statusField = ternary(((Ground) item).isExposed(), "exposed",
+					"not exposed");
 		} else if (item instanceof Mine) {
 			classField = "mine";
 			statusField = ((Mine) item).getStatus().toString();
@@ -79,7 +82,8 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 			statusField = "exposed";
 		} else if (item instanceof MineralVein) {
 			classField = "vein";
-			statusField = ternary(((MineralVein) item).isExposed(), "exposed", "not exposed");
+			statusField = ternary(((MineralVein) item).isExposed(), "exposed",
+					"not exposed");
 		} else {
 			return false;
 		}
@@ -94,21 +98,6 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 		writeField(ostream, statusField);
 		ostream.append(getRowDelimiter());
 		return true;
-	}
-
-	/**
-	 * @param condition a boolean value
-	 * @param truth what to return if it is true
-	 * @param falsehood what to return if it is false
-	 * @return truth if condition is true, falsehood otherwise
-	 */
-	private static <T> T ternary(final boolean condition, final T truth,
-								 final T falsehood) {
-		if (condition) {
-			return truth;
-		} else {
-			return falsehood;
-		}
 	}
 
 	@Override

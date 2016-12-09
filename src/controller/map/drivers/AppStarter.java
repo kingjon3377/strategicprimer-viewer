@@ -20,10 +20,13 @@ import model.misc.IDriverModel;
 import util.EqualsAny;
 import util.NullCleaner;
 import util.Pair;
+import util.Ternary;
 import util.TypesafeLogger;
 import view.util.AppChooserFrame;
 import view.util.DriverQuit;
 import view.util.ErrorShower;
+
+import static util.Ternary.ternary;
 
 /**
  * A driver to start other drivers.
@@ -212,22 +215,7 @@ public final class AppStarter implements ISPDriver {
 			}
 		});
 	}
-	/**
-	 * Ternary.
-	 * @param condition a boolean variable
-	 * @param truth what to return if true
-	 * @param falsehood what to return if false
-	 * @param <T> the type of truth and falsehood
-	 * @return truth if condition is true, falsehood otherwise
-	 */
-	private static <T> T ternary(final boolean condition, final T truth,
-								 final T falsehood) {
-		if (condition) {
-			return truth;
-		} else {
-			return falsehood;
-		}
-	}
+
 	/**
 	 * Entry point: start the driver.
 	 *

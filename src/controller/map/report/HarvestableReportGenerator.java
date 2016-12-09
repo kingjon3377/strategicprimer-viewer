@@ -32,6 +32,8 @@ import util.MultiMapHelper;
 import util.Pair;
 import util.PatientMap;
 
+import static util.Ternary.ternary;
+
 /**
  * A report generator for harvestable fixtures (other than caves and battlefields, which
  * aren't really).
@@ -65,23 +67,6 @@ public final class HarvestableReportGenerator
 	@SafeVarargs
 	private static void sortAll(final List<String>... collections) {
 		Stream.of(collections).map(ArrayList::new).forEach(Collections::sort);
-	}
-
-	/**
-	 * We need this to reduce the calculated complexity.
-	 *
-	 * @param condition a Boolean
-	 * @param first     what to return if true
-	 * @param second    what to return if false
-	 * @return the result of the ternary operator.
-	 */
-	private static String ternary(final boolean condition, final String first,
-								  final String second) {
-		if (condition) {
-			return first;
-		} else {
-			return second;
-		}
 	}
 
 	/**
@@ -204,7 +189,8 @@ public final class HarvestableReportGenerator
 				} else if (item instanceof MineralVein) {
 					final MineralVein mineral = (MineralVein) item;
 					final String kind =
-							ternary(mineral.isExposed(), "exposed ", "unexposed ") +
+							ternary(mineral.isExposed(), "exposed ",
+									"unexposed ") +
 									mineral.getKind();
 					MultiMapHelper
 							.getMapValue(minerals, kind, key -> new ListReportNode(key))
@@ -266,8 +252,7 @@ public final class HarvestableReportGenerator
 			retval = concat(
 					atPoint(loc),
 					"A ",
-					ternary(grove.isCultivated(), "cultivated ",
-							"wild "), grove.getKind(),
+					ternary(grove.isCultivated(), "cultivated ", "wild "), grove.getKind(),
 					ternary(grove.isOrchard(), " orchard", " grove"), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
@@ -288,8 +273,7 @@ public final class HarvestableReportGenerator
 			retval = concat(
 					atPoint(loc),
 					"An ",
-					ternary(mineral.isExposed(), "exposed ",
-							"unexposed "), "vein of ",
+					ternary(mineral.isExposed(), "exposed ", "unexposed "), "vein of ",
 					mineral.getKind(), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
@@ -333,22 +317,22 @@ public final class HarvestableReportGenerator
 		} else if (item instanceof Grove) {
 			final Grove grove = (Grove) item;
 			retval = new SimpleReportNode(loc, atPoint(loc), "A ",
-											   ternary(grove.isCultivated(),
-													   "cultivated ", "wild "),
+												 ternary(grove.isCultivated(),
+														 "cultivated ", "wild "),
 											   grove.getKind(),
-											   ternary(grove.isOrchard(),
-													   " orchard", " grove"), " ",
+												 ternary(grove.isOrchard(),
+														 " orchard", " grove"), " ",
 											   distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
 			final Meadow meadow = (Meadow) item;
 			retval = new SimpleReportNode(loc, atPoint(loc), "A ",
 											   meadow.getStatus().toString(),
-											   ternary(meadow.isCultivated(),
-													   " cultivated ",
-													   " wild or abandoned "),
+												 ternary(meadow.isCultivated(),
+														 " cultivated ",
+														 " wild or abandoned "),
 											   meadow.getKind(),
-											   ternary(meadow.isField(),
-													   " field", " meadow"), " ",
+												 ternary(meadow.isField(),
+														 " field", " meadow"), " ",
 											   distCalculator.distanceString(loc));
 		} else if (item instanceof Mine) {
 			retval = new SimpleReportNode(loc, atPoint(loc), item.toString(), " ",
@@ -357,9 +341,8 @@ public final class HarvestableReportGenerator
 		} else if (item instanceof MineralVein) {
 			final MineralVein mineral = (MineralVein) item;
 			retval = new SimpleReportNode(loc, atPoint(loc), "An ",
-											   ternary(mineral.isExposed(),
-													   "exposed ",
-													   "unexposed "), "vein of ",
+												 ternary(mineral.isExposed(),
+														 "exposed ", "unexposed "), "vein of ",
 											   mineral.getKind(), " ",
 											   distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
