@@ -324,7 +324,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return the part of the report dealing with the fortress
 	 */
 	@Override
-	public SectionListReportNode produceRIR(final PatientMap<Integer, Pair<Point,
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point,
 																				  IFixture>> fixtures,
 											final IMapNG map, final Player currentPlayer,
 											final Fortress item, final Point loc) {

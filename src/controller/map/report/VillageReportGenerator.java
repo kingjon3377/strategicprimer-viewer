@@ -205,7 +205,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 * @return the report on the village (its location and name, nothing more)
 	 */
 	@Override
-	public SimpleReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
 											   fixtures,
 									   final IMapNG map, final Player currentPlayer,
 									   final Village item, final Point loc) {

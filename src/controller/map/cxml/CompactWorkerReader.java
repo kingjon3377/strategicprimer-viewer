@@ -258,7 +258,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public Worker read(final StartElement element,
+	public IWorker read(final StartElement element,
 					   final QName parent, final IMutablePlayerCollection players,
 					   final Warning warner, final IDRegistrar idFactory,
 					   final Iterable<XMLEvent> stream) throws SPFormatException {

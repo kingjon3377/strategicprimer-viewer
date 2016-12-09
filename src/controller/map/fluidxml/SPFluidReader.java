@@ -365,7 +365,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @return the parsed unit
 	 * @throws SPFormatException on SP format problem
 	 */
-	private Unit readUnit(final StartElement element, final QName parent,
+	private IUnit readUnit(final StartElement element, final QName parent,
 						  final Iterable<XMLEvent> stream,
 						  final IMutablePlayerCollection players, final Warning warner,
 						  final IDRegistrar idFactory) throws SPFormatException {

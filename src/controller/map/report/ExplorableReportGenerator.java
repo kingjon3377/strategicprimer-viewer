@@ -246,7 +246,7 @@ public final class ExplorableReportGenerator
 	 * item
 	 */
 	@Override
-	public SimpleReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
 											   fixtures,
 									   final IMapNG map, final Player currentPlayer,
 									   final ExplorableFixture item, final Point loc) {

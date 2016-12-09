@@ -105,7 +105,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
-	public Unit read(final StartElement element,
+	public IUnit read(final StartElement element,
 					 final QName parent, final IMutablePlayerCollection players,
 					 final Warning warner, final IDRegistrar idFactory,
 					 final Iterable<XMLEvent> stream) throws SPFormatException {

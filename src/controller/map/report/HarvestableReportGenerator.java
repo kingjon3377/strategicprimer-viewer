@@ -303,7 +303,7 @@ public final class HarvestableReportGenerator
 	 * @return a sub-report dealing with the fixture
 	 */
 	@Override
-	public SimpleReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
 											   fixtures,
 									   final IMapNG map, final Player currentPlayer,
 									   final HarvestableFixture item, final Point loc) {

@@ -164,7 +164,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 * @return a sub-report on the animal
 	 */
 	@Override
-	public SimpleReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
 											   fixtures,
 									   final IMapNG map, final Player currentPlayer,
 									   final Animal item, final Point loc) {
