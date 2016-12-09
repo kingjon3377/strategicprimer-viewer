@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -75,10 +76,10 @@ public final class ExplorableReportGenerator
 		final StringBuilder builder = new StringBuilder(2048).append(
 				"<h4>Caves, Battlefields, and Portals</h4>").append(LineEnd.LINE_SEP)
 											  .append(OPEN_LIST);
-		final HeadedList<Point> caves = new PointList("Caves beneath the following tiles: ");
-		final HeadedList<Point> battles =
+		final Collection<Point> caves = new PointList("Caves beneath the following tiles: ");
+		final Collection<Point> battles =
 				new PointList("Signs of long-ago battles on the following tiles: ");
-		final HeadedList<Point> portals = new PointList("Portals to other worlds: ");
+		final Collection<Point> portals = new PointList("Portals to other worlds: ");
 		// Similarly, I doubt either this will ever be over half a K, but
 		// we'll give it a whole K just in case.
 		final StringBuilder adventureBuilder = new StringBuilder(1024)

@@ -65,11 +65,11 @@ public final class FortressMemberReportGenerator
 	@Override
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer) {
-		final HeadedList<String> retval =
+		final Collection<String> retval =
 				new HtmlList("<h4>Resources and Equipment</h4>");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final HeadedList<String> equipment = new HtmlList("Equipment:");
+		final Collection<String> equipment = new HtmlList("Equipment:");
 		final Map<String, HeadedList<String>> resources =
 				new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {

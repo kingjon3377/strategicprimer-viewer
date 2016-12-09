@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
@@ -253,7 +254,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * @param desc a description of something
 	 * @return a list for points matching that description
 	 */
-	protected static HeadedList<Point> pointsListAt(final String desc) {
+	protected static Collection<Point> pointsListAt(final String desc) {
 		return new PointList(desc + ": at ");
 	}
 }

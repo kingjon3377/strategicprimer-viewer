@@ -432,8 +432,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		builder.append(LineEnd.LINE_SEP);
 		builder.append("<p>(Any units listed above are not described again.)</p>");
 		builder.append(LineEnd.LINE_SEP);
-		final HeadedList<String> ours = new HtmlList("<h5>Your units</h5>");
-		final HeadedList<String> foreign = new HtmlList("<h5>Foreign units</h5>");
+		final Collection<String> ours = new HtmlList("<h5>Your units</h5>");
+		final Collection<String> foreign = new HtmlList("<h5>Foreign units</h5>");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {

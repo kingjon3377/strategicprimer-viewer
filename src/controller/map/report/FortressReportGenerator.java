@@ -280,11 +280,11 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		builder.append(riversToString(
 				StreamSupport.stream(map.getRivers(loc).spliterator(), false)
 						.collect(Collectors.toSet())));
-		final HeadedList<String> units = new HtmlList("Units on the tile:");
+		final Collection<String> units = new HtmlList("Units on the tile:");
 		final HeadedList<String> resourcesText = new HtmlList("Resources:");
-		final HeadedList<String> equipment = new HtmlList("Equipment:");
+		final Collection<String> equipment = new HtmlList("Equipment:");
 		final Map<String, Collection<String>> resources = new HashMap<>();
-		final HeadedList<String> contents = new HtmlList("Other fortress contents:");
+		final Collection<String> contents = new HtmlList("Other fortress contents:");
 		for (final FortressMember member : item) {
 			if (member instanceof IUnit) {
 				units.add(urg.produce(fixtures, map, currentPlayer, (IUnit) member, loc));
