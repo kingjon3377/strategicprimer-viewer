@@ -59,12 +59,11 @@ import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.ActionWrapper;
-import util.NullCleaner;
 import util.OnMac;
 import util.TypesafeLogger;
 import view.map.main.ViewerFrame;
 import view.util.BorderedPanel;
+import view.util.FocusRequester;
 import view.util.ListenedButton;
 import view.util.SPFrame;
 import view.util.SystemOut;
@@ -432,59 +431,6 @@ public final class WorkerMgmtFrame extends SPFrame {
 		@Override
 		public String toString() {
 			return "Generating report for " + player;
-		}
-	}
-
-	/**
-	 * An action to request focus in a component.
-	 */
-	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
-	private static class FocusRequester extends ActionWrapper {
-		/**
-		 * The type of component we're handling.
-		 */
-		private final String type;
-
-		/**
-		 * Constructor.
-		 *
-		 * @param comp The component to request focus in.
-		 */
-		protected FocusRequester(final JComponent comp) {
-			super(evt -> comp.requestFocusInWindow());
-			type = NullCleaner.assertNotNull(comp.getClass().getSimpleName());
-		}
-
-		/**
-		 * Prevent serialization.
-		 *
-		 * @param out ignored
-		 * @throws IOException always
-		 */
-		@SuppressWarnings({"unused", "static-method"})
-		private void writeObject(final ObjectOutputStream out) throws IOException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-
-		/**
-		 * Prevent serialization
-		 *
-		 * @param in ignored
-		 * @throws IOException            always
-		 * @throws ClassNotFoundException never
-		 */
-		@SuppressWarnings({"unused", "static-method"})
-		private void readObject(final ObjectInputStream in)
-				throws IOException, ClassNotFoundException {
-			throw new NotSerializableException("Serialization is not allowed");
-		}
-
-		/**
-		 * @return a String representation of the action
-		 */
-		@Override
-		public String toString() {
-			return "Requesting focus in a " + type;
 		}
 	}
 
