@@ -586,16 +586,9 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 						assertNotNull(event.asCharacters().getData().trim());
 				if (!data.isEmpty()) {
 					//noinspection ObjectAllocationInLoop
-					warner.warn(
-							new UnwantedChildException(tagStack.peek(),
-															  new QName(NULL_NS_URI,
-																			   "text"),
-															  event.getLocation(),
-															  new IllegalStateException
-																	  ("Random text " +
-																			   "outside " +
-																			   "any " +
-																			   "tile")));
+					warner.warn(new UnwantedChildException(tagStack.peek(),
+							new QName(NULL_NS_URI, "text"), event.getLocation(),
+							new IllegalStateException("Random text outside any tile")));
 				}
 			}
 		}
