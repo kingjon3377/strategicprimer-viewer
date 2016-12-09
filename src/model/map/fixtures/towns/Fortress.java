@@ -1,6 +1,5 @@
 package model.map.fixtures.towns;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -256,8 +255,8 @@ public class Fortress implements HasMutableImage, ITownFixture,
 			for (final FortressMember unit : fort) {
 				if (!isConditionTrue(ostream,
 						ours.containsKey(Integer.valueOf(unit.getID())),
-						"%s In fortress %n (ID #%d): Extra unit:\t%s, ID #%d%n", context,
-						Integer.valueOf(id), unit.toString(),
+						"%s In fortress %s (ID #%d): Extra unit:\t%s, ID #%d%n", context,
+						name, Integer.valueOf(id), unit.toString(),
 						Integer.valueOf(unit.getID())) ||
 							!assertNotNull(ours.get(Integer.valueOf(unit.getID())))
 									 .isSubset(unit, ostream,
