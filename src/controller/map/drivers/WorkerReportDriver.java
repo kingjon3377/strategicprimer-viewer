@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
+import model.map.Player;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import util.Pair;
@@ -57,6 +58,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 					String.format("--out=%spath%sto%soutput.html", File.separator,
 							File.separator, File.separator));
 		}
+		USAGE.addSupportedOption("--player=NN");
 	}
 
 	/**
@@ -72,6 +74,12 @@ public final class WorkerReportDriver implements SimpleDriver {
 			throws DriverFailedException {
 		if (maybeFilename.isPresent()) {
 			final Path filename = maybeFilename.get();
+			if (options.hasOption("--player")) {
+				final int playerNum = Integer.parseInt(options.getArgument("--player"));
+				for (final Player player : map.players()) {
+					player.setCurrent(player.getPlayerId() == playerNum);
+				}
+			}
 			final String report = ReportGenerator.createReport(map);
 			final String outString;
 			final Path out;
