@@ -1,5 +1,6 @@
 package util;
 
+import java.awt.event.InputEvent;
 import javax.swing.JButton;
 
 /**
@@ -23,13 +24,30 @@ public final class OnMac {
 	 */
 	@SuppressWarnings("AccessOfSystemProperties")
 	public static final boolean SYSTEM_IS_MAC;
-
+	/**
+	 * The usual shortcut-key modifier.
+	 */
+	public static final int SHORTCUT_MASK;
+	/**
+	 * A String describing that modifier.
+	 */
+	public static final String SHORTCUT_DESC;
+	/**
+	 * Set up system-dependent properties.
+	 */
 	static {
 		final String temp = System.getProperty("os.name");
 		if (temp == null) {
 			SYSTEM_IS_MAC = false;
 		} else {
 			SYSTEM_IS_MAC = temp.toLowerCase().startsWith("mac os x");
+		}
+		if (SYSTEM_IS_MAC) {
+			SHORTCUT_MASK = InputEvent.META_DOWN_MASK;
+			SHORTCUT_DESC = "\u2318";
+		} else {
+			SHORTCUT_MASK = InputEvent.CTRL_DOWN_MASK;
+			SHORTCUT_DESC = "Ctrl+";
 		}
 	}
 

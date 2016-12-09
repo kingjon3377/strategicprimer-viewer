@@ -1,6 +1,5 @@
 package view.worker;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -109,15 +108,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
 		final boolean onMac = OnMac.SYSTEM_IS_MAC;
-		final String prefix;
-		final int keyMask;
-		if (onMac) {
-			prefix = "\u2318";
-			keyMask = InputEvent.META_DOWN_MASK;
-		} else {
-			prefix = "Ctrl+";
-			keyMask = InputEvent.CTRL_DOWN_MASK;
-		}
+		final String prefix = OnMac.SHORTCUT_DESC;
+		final int keyMask = OnMac.SHORTCUT_MASK;
 		final int initialTurn = currentTurn;
 		final int minTurn;
 		if (initialTurn < 0) {

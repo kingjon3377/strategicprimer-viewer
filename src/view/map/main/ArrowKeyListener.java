@@ -187,12 +187,7 @@ public final class ArrowKeyListener {
 			actionMap.put("ctrl-" + entry.getKey(),
 					new DirectionListener(wrap(selListener, entry.getValue()), 5));
 		}
-		final int jumpModifier;
-		if (OnMac.SYSTEM_IS_MAC) {
-			jumpModifier = InputEvent.META_DOWN_MASK;
-		} else {
-			jumpModifier = InputEvent.CTRL_DOWN_MASK;
-		}
+		final int jumpModifier = OnMac.SHORTCUT_MASK;
 		for (final Map.Entry<Integer, String> entry : JUMP_INPUTS.entrySet()) {
 			inputMap.put(getKeyStroke(entry.getKey(), jumpModifier), entry.getValue());
 		}

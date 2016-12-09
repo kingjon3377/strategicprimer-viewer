@@ -13,7 +13,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -124,15 +123,8 @@ public final class WorkerMgmtFrame extends SPFrame {
 		ioHandler.addPlayerChangeListener(treeModel);
 		newUnitFrame.addNewUnitListener(treeModel);
 		final boolean onMac = OnMac.SYSTEM_IS_MAC;
-		final int keyMask;
-		final String keyDesc;
-		if (onMac) {
-			keyMask = InputEvent.META_DOWN_MASK;
-			keyDesc = ": (\u2318U)";
-		} else {
-			keyMask = InputEvent.CTRL_DOWN_MASK;
-			keyDesc = ": (Ctrl+U)";
-		}
+		final int keyMask = OnMac.SHORTCUT_MASK;
+		final String keyDesc = String.format(": (%sU)", OnMac.SHORTCUT_DESC);
 		final InputMap inputMap = tree.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		final ActionMap actionMap = tree.getActionMap();
 		assert (inputMap != null) && (actionMap != null);
