@@ -196,7 +196,6 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 * @param context a string to print before every line of output, describing the
 	 *                context
 	 * @return false
-	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,

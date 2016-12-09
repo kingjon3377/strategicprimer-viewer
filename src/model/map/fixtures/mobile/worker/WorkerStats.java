@@ -229,12 +229,13 @@ public class WorkerStats {
 	/**
 	 * A factory method to produce a set of stats for use as bonuses to be applied to yet
 	 * another set. This is so that you don't have to specify HP if it's not applicable.
-	 * @param strengthStat the worker's strength
-	 * @param dexterity    the worker's dexterity
-	 * @param constitution the worker's constitution
-	 * @param intelligence the worker's intelligence
-	 * @param wisdom       the worker's wisdom
-	 * @param charisma     th worker's charisma
+	 * @param strengthStat the worker's strength (bonus)
+	 * @param dexterity    the worker's dexterity (bonus)
+	 * @param constitution the worker's constitution (bonus)
+	 * @param intelligence the worker's intelligence (bonus)
+	 * @param wisdom       the worker's wisdom (bonus)
+	 * @param charisma     th worker's charisma (bonus)
+	 * @return the constructed object
 	 */
 	public static WorkerStats factory(final int strengthStat, final int dexterity,
 									  final int constitution, final int intelligence,

@@ -615,7 +615,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 		 * @param <T> the type of the first item
 		 * @param <U> the type of the second item
 		 * @param <V> the type of the third item.
-		 * @return
+		 * @return the triple
 		 */
 		public static <T, U, V> Triple<T, U, V> of(final T one, final U two,
 												   final V three) {

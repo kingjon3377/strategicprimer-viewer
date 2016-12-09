@@ -713,7 +713,6 @@ public final class ProxyUnit
 		 * @param ostream the stream to write to
 		 * @param context the context to write before we write our error
 		 * @return false
-		 * @throws IOException never, required by interface
 		 */
 		@Override
 		public boolean isSubset(final IFixture obj, final Formatter ostream,
