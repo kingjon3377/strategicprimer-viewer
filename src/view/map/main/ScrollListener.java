@@ -113,6 +113,7 @@ public final class ScrollListener
 	 * @param component   the map component
 	 * @return the panel encapsulating the component with scrollbars.
 	 */
+	@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
 	public static BorderedPanel mapScrollPanel(final IViewerModel viewerModel,
 											   final JComponent component) {
 		final BorderedPanel retval = new BorderedPanel(component, null, null, null,
