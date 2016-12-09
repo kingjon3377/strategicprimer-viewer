@@ -83,7 +83,7 @@ public class SPOptionsImpl implements SPOptions {
 	/**
 	 * @param existing another instance to copy from
 	 */
-	public SPOptionsImpl(final SPOptions existing) {
+	public SPOptionsImpl(final Iterable<Pair<String, String>> existing) {
 		options = new LinkedHashMap<>(StreamSupport.stream(existing.spliterator(), false)
 				.collect(Collectors.toMap(Pair::first, Pair::second)));
 		adapter = new SetPairConverter<>(options);
