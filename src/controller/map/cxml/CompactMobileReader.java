@@ -110,15 +110,21 @@ public final class CompactMobileReader extends
 	 * Create an animal.
 	 *
 	 * @param element the tag we're reading
-	 * @param idNum   the ID number to give it
+	 * @param warner the Warning instance to use
+	 * @param idFactory the factory to generate a new ID # if needed
 	 * @return the parsed animal
 	 * @throws SPFormatException on SP format error
 	 */
 	private static MobileFixture createAnimal(final StartElement element,
-											  final int idNum) throws SPFormatException {
-		return new Animal(
-								 getKind(element),
-								 hasParameter(element, "traces"),
+											  final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
+		final boolean tracks = hasParameter(element, "traces");
+		final int idNum;
+		if (tracks && !hasParameter(element, "id")) {
+			idNum = -1;
+		} else {
+			idNum = getOrGenerateID(element, warner, idFactory);
+		}
+		return new Animal(getKind(element), tracks,
 								 Boolean.parseBoolean(
 										 getParameter(element, "talking", "false")),
 								 getParameter(element, "status", "wild"), idNum);
@@ -185,8 +191,7 @@ public final class CompactMobileReader extends
 			return CompactUnitReader.READER.read(element, parent, players,
 					warner, idFactory, stream);
 		case "animal":
-			retval = createAnimal(element,
-					getOrGenerateID(element, warner, idFactory));
+			retval = createAnimal(element, warner, idFactory);
 			break;
 		case "centaur":
 			retval = new Centaur(getKind(element), getOrGenerateID(element,
@@ -243,7 +248,9 @@ public final class CompactMobileReader extends
 			if (!"wild".equals(animal.getStatus())) {
 				writeProperty(ostream, "status", animal.getStatus());
 			}
-			writeProperty(ostream, "id", Integer.toString(obj.getID()));
+			if (!animal.isTraces()) {
+				writeProperty(ostream, "id", Integer.toString(obj.getID()));
+			}
 			ostream.append(imageXML(animal));
 			closeLeafTag(ostream);
 		} else {

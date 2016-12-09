@@ -158,7 +158,7 @@ public class Animal
 										 && (((Animal) obj).traces == traces)
 										 && (((Animal) obj).talking == talking)
 										 && status.equals(((Animal) obj).status)
-										 && (((Animal) obj).id == id));
+										 && (((Animal) obj).id == id || traces));
 	}
 
 	/**

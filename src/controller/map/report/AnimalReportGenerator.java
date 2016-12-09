@@ -75,7 +75,13 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				MultiMapHelper
 						.getMapValue(items, desc, AbstractReportGenerator::pointsListAt)
 						.add(pair.first());
-				fixtures.remove(Integer.valueOf(animal.getID()));
+				if (animal.getID() > 0) {
+					fixtures.remove(Integer.valueOf(animal.getID()));
+				} else {
+					fixtures.remove(fixtures.entrySet().stream()
+											.filter(entry -> entry.getValue().equals(pair))
+											.map(Map.Entry::getKey));
+				}
 			}
 		}
 		if (items.isEmpty()) {

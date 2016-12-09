@@ -401,13 +401,18 @@ public final class FluidUnitMemberHandler {
 			throws SPFormatException {
 		requireTag(element, parent, "animal");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		return setImage(new Animal(getAttribute(element, "kind"), hasAttribute(element,
-				"traces"),
+		final boolean traces = hasAttribute(element, "traces");
+		final int id;
+		if (traces && !hasAttribute(element, "id")) {
+			id = -1;
+		} else {
+			id = getOrGenerateID(element, warner, idFactory);
+		}
+		return setImage(new Animal(getAttribute(element, "kind"), traces,
 										  parseBoolean(getAttribute(element, "talking",
 												  "false")),
 										  getAttribute(element, "status", "wild"),
-										  getOrGenerateID(element, warner, idFactory)),
-				element, warner);
+										  id), element, warner);
 	}
 
 	/**
@@ -436,7 +441,9 @@ public final class FluidUnitMemberHandler {
 		if (!"wild".equals(fix.getStatus())) {
 			writeAttribute(ostream, "status", fix.getStatus());
 		}
-		writeIntegerAttribute(ostream, "id", fix.getID());
+		if (!fix.isTraces()) {
+			writeIntegerAttribute(ostream, "id", fix.getID());
+		}
 		writeImage(ostream, fix);
 	}
 }
