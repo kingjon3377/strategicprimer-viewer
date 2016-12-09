@@ -109,8 +109,7 @@ public final class ImmortalsReportGenerator
 												 final HasKind item) {
 		// For the three classes we deal with here, we don't want just the kind,
 		// we want the full toString, so we use that instead of getKind.
-		return MultiMapHelper.getMapValue(mapping, item.toString(),
-				key -> new ListReportNode(key));
+		return MultiMapHelper.getMapValue(mapping, item.toString(), ListReportNode::new);
 	}
 	/**
 	 * @param list a list

@@ -193,16 +193,18 @@ public final class HarvestableReportGenerator
 									"unexposed ") +
 									mineral.getKind();
 					MultiMapHelper
-							.getMapValue(minerals, kind, key -> new ListReportNode(key))
+							.getMapValue(minerals, kind, ListReportNode::new)
 							.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof Shrub) {
 					MultiMapHelper
-							.getMapValue(shrubs, ((Shrub) item).getKind(), key -> new ListReportNode(key))
+							.getMapValue(shrubs, ((Shrub) item).getKind(),
+									ListReportNode::new)
 							.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 					fixtures.remove(Integer.valueOf(item.getID()));
 				} else if (item instanceof StoneDeposit) {
 					MultiMapHelper
-							.getMapValue(stone, ((StoneDeposit) item).getKind(), key -> new ListReportNode(key))
+							.getMapValue(stone, ((StoneDeposit) item).getKind(),
+									ListReportNode::new)
 							.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				}
 			}
