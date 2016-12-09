@@ -107,7 +107,7 @@ public final class CompactReaderAdapter {
 		if (obj instanceof River) {
 			CompactMapNGReader.writeRiver(ostream, (River) obj, indent);
 		} else if (obj instanceof RiverFixture) {
-			CompactMapNGReader.writeAllRivers(ostream, (RiverFixture) obj, indent);
+			writeAllRivers(ostream, (RiverFixture) obj, indent);
 		} else if (obj instanceof ProxyFor) {
 			final Iterator<?> iter = ((ProxyFor<?>) obj).getProxied().iterator();
 			if (iter.hasNext()) {
@@ -138,6 +138,22 @@ public final class CompactReaderAdapter {
 													   " readers, don't know how to " +
 													   "write a " +
 													   obj.getClass().getSimpleName());
+		}
+	}
+
+	/**
+	 * Write a series of rivers. TODO: test this
+	 *
+	 * @param ostream the stream to write to
+	 * @param iter    a series of rivers to write
+	 * @param indent  the indentation level
+	 * @throws IOException on I/O error
+	 */
+	private static void writeAllRivers(final Appendable ostream,
+									   final Iterable<River> iter, final int indent)
+			throws IOException {
+		for (final River river : iter) {
+			CompactMapNGReader.writeRiver(ostream, river, indent);
 		}
 	}
 }

@@ -210,22 +210,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	}
 
 	/**
-	 * Write a series of rivers. TODO: test this
-	 *
-	 * @param ostream the stream to write to
-	 * @param iter    a series of rivers to write
-	 * @param indent  the indentation level
-	 * @throws IOException on I/O error
-	 */
-	public static void writeAllRivers(final Appendable ostream,
-									  final Iterable<River> iter, final int indent)
-			throws IOException {
-		for (final River river : iter) {
-			writeRiver(ostream, river, indent);
-		}
-	}
-
-	/**
 	 * Read a map from XML.
 	 *
 	 * @param element   the element we're parsing
