@@ -47,7 +47,6 @@ public final class WorkerReportDriver implements SimpleDriver {
 			TypesafeLogger.getLogger(WorkerReportDriver.class);
 
 	static {
-		USAGE.addSupportedOption("--current-turn=NN");
 		//noinspection HardcodedFileSeparator
 		if (File.separatorChar == '\\') {
 			USAGE.addSupportedOption(
