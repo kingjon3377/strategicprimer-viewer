@@ -255,7 +255,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 			for (final FortressMember unit : fort) {
 				if (!isConditionTrue(ostream,
 						ours.containsKey(Integer.valueOf(unit.getID())),
-						"%s In fortress %s (ID #%d): Extra unit:\t%s, ID #%d%n", context,
+						"%s In fortress %s (ID #%d): Extra member:\t%s, ID #%d%n", context,
 						name, Integer.valueOf(id), unit.toString(),
 						Integer.valueOf(unit.getID())) ||
 							!assertNotNull(ours.get(Integer.valueOf(unit.getID())))
