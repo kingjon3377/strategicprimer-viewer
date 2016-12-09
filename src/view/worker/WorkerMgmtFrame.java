@@ -450,7 +450,7 @@ public final class WorkerMgmtFrame extends SPFrame {
 		 *
 		 * @param comp The component to request focus in.
 		 */
-		protected FocusRequester(final WorkerTree comp) {
+		protected FocusRequester(final JComponent comp) {
 			super(evt -> comp.requestFocusInWindow());
 			type = NullCleaner.assertNotNull(comp.getClass().getSimpleName());
 		}
