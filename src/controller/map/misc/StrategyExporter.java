@@ -239,10 +239,11 @@ public final class StrategyExporter implements PlayerChangeListener {
 	 * @param orders the units' current orders
 	 * @return how big a buffer we need
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static int getBufferSize(final Iterable<UnitMember> dismissed,
-							  final String playerName, final String turnString,
-							  final Map<String, List<IUnit>> unitsByKind,
-							  final Map<IUnit, String> orders) {
+									 final String playerName, final String turnString,
+									 final Map<String, List<IUnit>> unitsByKind,
+									 final Map<IUnit, String> orders) {
 		int size = 58 + playerName.length() + turnString.length();
 		for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 			size += 4;
