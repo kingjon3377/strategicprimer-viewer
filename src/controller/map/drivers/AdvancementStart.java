@@ -32,11 +32,8 @@ public final class AdvancementStart implements SimpleDriver {
 								   "View a player's workers and manage their " +
 										   "advancement",
 								   "View a player's units, the workers in those units, " +
-										   "each "
-										   +
-										   "worker's Jobs, and his or her level in each "
-										   + "Skill in each Job."
-			);
+										   "each worker's Jobs, and his or her level in" +
+										   " each Skill in each Job.");
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
@@ -67,7 +64,7 @@ public final class AdvancementStart implements SimpleDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

@@ -86,8 +86,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			new DriverUsage(false, "-t", "--stats", ParamCount.AtLeastOne,
 								   "Enter worker stats or generate new workers.",
 								   "Enter stats for existing workers or generate new " +
-										   "workers randomly."
-			);
+										   "workers randomly.");
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
@@ -675,7 +674,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

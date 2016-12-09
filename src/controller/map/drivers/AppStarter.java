@@ -46,12 +46,11 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE =
+	private static final IDriverUsage USAGE =
 			new DriverUsage(true, "-p", "--app-starter", ParamCount.AnyNumber,
 								   "App Chooser",
 								   "Let the user choose an app to start, or handle " +
-										   "options."
-			);
+										   "options.");
 
 	/**
 	 * A map from options to the drivers they represent.
@@ -99,7 +98,7 @@ public final class AppStarter implements ISPDriver {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addChoice(final ISPDriver driver) {
-		final DriverUsage usage = driver.usage();
+		final IDriverUsage usage = driver.usage();
 		final Pair<ISPDriver, ISPDriver> pair = Pair.of(driver, driver);
 		CACHE.put(usage.getShortOption(), pair);
 		CACHE.put(usage.getLongOption(), pair);
@@ -114,8 +113,8 @@ public final class AppStarter implements ISPDriver {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addChoice(final ISPDriver cliDriver, final ISPDriver guiDriver) {
-		final DriverUsage cliUsage = cliDriver.usage();
-		final DriverUsage guiUsage = guiDriver.usage();
+		final IDriverUsage cliUsage = cliDriver.usage();
+		final IDriverUsage guiUsage = guiDriver.usage();
 		if (cliUsage.isGraphical() || !guiUsage.isGraphical()) {
 			//noinspection HardcodedFileSeparator
 			LOGGER.warning("Two-arg addChoice expects non-GUI / GUI pair");
@@ -239,7 +238,7 @@ public final class AppStarter implements ISPDriver {
 		} catch (final IncorrectUsageException except) {
 			final StringBuilder buff = new StringBuilder();
 			final Formatter formatter = new Formatter(buff);
-			final DriverUsage usage = except.getCorrectUsage();
+			final IDriverUsage usage = except.getCorrectUsage();
 			formatter.format("Usage: java %s %s %s|%s",
 					AppStarter.class.getCanonicalName(),
 					ternary(usage.isGraphical(), "[-g|--gui]", "-c|--cli"),
@@ -394,7 +393,7 @@ public final class AppStarter implements ISPDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

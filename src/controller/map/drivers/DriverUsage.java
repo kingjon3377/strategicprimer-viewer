@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Jonathan Lovelace
  */
-public class DriverUsage {
+public class DriverUsage implements IDriverUsage {
 	/**
 	 * Whether the driver is graphical or not.
 	 */
@@ -76,6 +76,7 @@ public class DriverUsage {
 	/**
 	 * @return whether the driver is graphical or not.
 	 */
+	@Override
 	public boolean isGraphical() {
 		return graphical;
 	}
@@ -83,6 +84,7 @@ public class DriverUsage {
 	/**
 	 * @return the short option to give to AppStarter to get this driver
 	 */
+	@Override
 	public String getShortOption() {
 		return shortOption;
 	}
@@ -90,6 +92,7 @@ public class DriverUsage {
 	/**
 	 * @return the long option to give to AppStarter to get this driver
 	 */
+	@Override
 	public String getLongOption() {
 		return longOption;
 	}
@@ -97,6 +100,7 @@ public class DriverUsage {
 	/**
 	 * @return how many parameters this driver wants
 	 */
+	@Override
 	public ParamCount getParamsWanted() {
 		return paramsWanted;
 	}
@@ -104,6 +108,7 @@ public class DriverUsage {
 	/**
 	 * @return a short (one-line) description of the driver.
 	 */
+	@Override
 	public String getShortDescription() {
 		return shortDescription;
 	}
@@ -111,6 +116,7 @@ public class DriverUsage {
 	/**
 	 * @return a long(er) description of the driver.
 	 */
+	@Override
 	public String getLongDescription() {
 		return longDescription;
 	}
@@ -128,6 +134,7 @@ public class DriverUsage {
 	 * defaults
 	 * to "filename.xml"
 	 */
+	@Override
 	public String getFirstParamDesc() {
 		return firstParamDesc;
 	}
@@ -145,6 +152,7 @@ public class DriverUsage {
 	 * @return a description of each parameter after the first for use in a usage
 	 * statement; defaults to "filename.xml"
 	 */
+	@Override
 	public String getSubsequentParamDesc() {
 		return subsequentParamDesc;
 	}
@@ -168,6 +176,7 @@ public class DriverUsage {
 	/**
 	 * @return a list of the options this driver supports, to show the user.
 	 */
+	@Override
 	public Iterable<String> getSupportedOptions() {
 		return Collections.unmodifiableList(supportedOptions);
 	}

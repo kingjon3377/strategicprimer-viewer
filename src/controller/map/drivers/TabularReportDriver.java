@@ -35,11 +35,10 @@ public class TabularReportDriver implements SimpleDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE =
+	private static final IDriverUsage USAGE =
 			new DriverUsage(false, "-b", "--tabular", ParamCount.AtLeastOne,
 								   "Tabular Report Generator",
-								   "Produce CSV reports of contents of a map."
-			);
+								   "Produce CSV reports of contents of a map.");
 	/**
 	 * Logger.
 	 */
@@ -101,7 +100,7 @@ public class TabularReportDriver implements SimpleDriver {
 	 * @return an object indicating how to use and invoke this driver
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

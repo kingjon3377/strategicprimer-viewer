@@ -3,6 +3,7 @@ package controller.map.converter;
 import controller.exploration.TableLoader;
 import controller.map.drivers.DriverFailedException;
 import controller.map.drivers.DriverUsage;
+import controller.map.drivers.IDriverUsage;
 import controller.map.drivers.ParamCount;
 import controller.map.drivers.SPOptions;
 import controller.map.drivers.SimpleDriver;
@@ -364,7 +365,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

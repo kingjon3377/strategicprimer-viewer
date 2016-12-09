@@ -48,7 +48,7 @@ public final class MiningCLI implements UtilityDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

@@ -37,11 +37,10 @@ public final class MapChecker implements UtilityDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE =
+	private static final IDriverUsage USAGE =
 			new DriverUsage(false, "-k", "--check", ParamCount.AtLeastOne,
 								   "Check map for errors",
-								   "Check a map file for errors, deprecated syntax, etc."
-			);
+								   "Check a map file for errors, deprecated syntax, etc.");
 
 	/**
 	 * Logger.
@@ -113,7 +112,7 @@ public final class MapChecker implements UtilityDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

@@ -2,6 +2,7 @@ package controller.exploration;
 
 import controller.map.drivers.DriverFailedException;
 import controller.map.drivers.DriverUsage;
+import controller.map.drivers.IDriverUsage;
 import controller.map.drivers.ParamCount;
 import controller.map.drivers.SPOptions;
 import controller.map.drivers.SimpleCLIDriver;
@@ -38,12 +39,11 @@ public final class TableDebugger implements SimpleCLIDriver {
 	/**
 	 * Usage object.
 	 */
-	private static final DriverUsage USAGE =
+	private static final IDriverUsage USAGE =
 			new DriverUsage(false, "-T", "--table-debug", ParamCount.None,
 								   "Debug old-model encounter tables",
 								   "See whether old-model encounter tables refer to a " +
-										   "nonexistent table"
-			);
+										   "nonexistent table");
 	/**
 	 * Logger.
 	 */
@@ -65,7 +65,7 @@ public final class TableDebugger implements SimpleCLIDriver {
 	 * @return the usage object
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

@@ -67,17 +67,15 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 * graphical, even though it's not, so we can share an option with the
 	 * ReaderComparator.
 	 */
-	private static final DriverUsage USAGE =
+	private static final IDriverUsage USAGE =
 			new DriverUsage(true, "-t", "--test", ParamCount.AtLeastOne,
 								   "Test drawing performance",
 								   String.format(
 										   "Test the performance of the TileDrawHelper" +
 												   " classes---which do the heavy " +
-												   "lifting of " +
-												   "rendering the map%nin the " +
-												   "viewer---using a " +
-												   "variety of automated tests.")
-			);
+												   "lifting of rendering the map%n" +
+												   "%nin the viewer---using a " +
+												   "variety of automated tests."));
 
 	/**
 	 * Label to put before every direct-helper test result.
@@ -532,7 +530,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

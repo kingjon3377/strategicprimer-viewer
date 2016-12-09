@@ -39,13 +39,12 @@ public final class SubsetGUIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE =
+	private static final IDriverUsage USAGE =
 			new DriverUsage(true, "-s", "--subset", ParamCount.AtLeastTwo,
 								   "Check players' maps against master",
 								   "Check that subordinate maps are subsets of the main" +
 										   " map, containing nothing that it does not " +
-										   "contain in the same place"
-			);
+										   "contain in the same place");
 
 	/**
 	 * Run the driver.
@@ -112,7 +111,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

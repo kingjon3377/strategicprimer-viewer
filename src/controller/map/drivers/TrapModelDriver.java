@@ -36,11 +36,10 @@ public final class TrapModelDriver implements SimpleDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE =
+	private static final IDriverUsage USAGE =
 			new DriverUsage(false, "-r", "--trap", ParamCount.One,
 								   "Run a player's trapping",
-								   "Determine the results a player's trapper finds."
-			);
+								   "Determine the results a player's trapper finds.");
 	/**
 	 * A somewhat lengthy prompt.
 	 */
@@ -218,7 +217,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

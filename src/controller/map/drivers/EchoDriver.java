@@ -41,8 +41,7 @@ public final class EchoDriver implements UtilityDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-e", "--echo", ParamCount.Two,
 								   "Read, then write a map.",
-								   "Read and write a map, correcting deprecated syntax."
-			);
+								   "Read and write a map, correcting deprecated syntax.");
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
@@ -139,7 +138,7 @@ public final class EchoDriver implements UtilityDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

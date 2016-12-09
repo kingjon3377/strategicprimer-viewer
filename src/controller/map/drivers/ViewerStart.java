@@ -32,9 +32,7 @@ public final class ViewerStart implements SimpleDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-m", "--map", ParamCount.One, "Map viewer",
 								   "Look at the map visually. This is probably the app " +
-										   "you" +
-										   " want."
-			);
+										   "you want.");
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
@@ -71,7 +69,7 @@ public final class ViewerStart implements SimpleDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

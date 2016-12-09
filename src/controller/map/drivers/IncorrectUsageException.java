@@ -24,14 +24,14 @@ public class IncorrectUsageException extends DriverFailedException {
 	/**
 	 * An object describing the correct usage.
 	 */
-	private final DriverUsage usage;
+	private final IDriverUsage usage;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param correctUsage the object describing the correct usage of the driver
 	 */
-	public IncorrectUsageException(final DriverUsage correctUsage) {
+	public IncorrectUsageException(final IDriverUsage correctUsage) {
 		super("Incorrect usage", new IllegalArgumentException("Incorrect usage"));
 		usage = correctUsage;
 	}
@@ -39,7 +39,7 @@ public class IncorrectUsageException extends DriverFailedException {
 	/**
 	 * @return an object describing the correct usage of the driver
 	 */
-	public final DriverUsage getCorrectUsage() {
+	public final IDriverUsage getCorrectUsage() {
 		return usage;
 	}
 

@@ -64,9 +64,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			new DriverUsage(false, "-n", "--expand", ParamCount.AtLeastTwo,
 								   "Expand a player's map.",
 								   "Ensure a player's map covers all terrain allied " +
-										   "villages can see."
-
-			);
+										   "villages can see.");
 	/**
 	 * Logger.
 	 */
@@ -331,7 +329,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

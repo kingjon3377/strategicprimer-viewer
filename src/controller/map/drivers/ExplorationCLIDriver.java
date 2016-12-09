@@ -32,8 +32,7 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 			new DriverUsage(false, "-x", "--explore", ParamCount.AtLeastOne,
 								   "Run exploration.",
 								   "Move a unit around the map, updating the player's " +
-										   "map with what it sees."
-			);
+										   "map with what it sees.");
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
@@ -80,7 +79,7 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

@@ -90,7 +90,7 @@ public interface ISPDriver extends HasName {
 	/**
 	 * @return an object indicating how to use and invoke the driver.
 	 */
-	default DriverUsage usage() {
+	default IDriverUsage usage() {
 		throw new IllegalStateException("This driver has not implemented usage()");
 	}
 

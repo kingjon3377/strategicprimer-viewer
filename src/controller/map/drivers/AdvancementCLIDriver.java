@@ -54,8 +54,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 										   "advancement",
 								   "View a player's units, the workers in those units," +
 										   " each worker's Jobs, and his or her level " +
-										   "in each Skill in each Job."
-			);
+										   "in each Skill in each Job.");
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
@@ -347,7 +346,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

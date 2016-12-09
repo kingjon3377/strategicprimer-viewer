@@ -34,9 +34,7 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 			new DriverUsage(false, "-u", "--duplicates", ParamCount.One,
 								   "Remove duplicate fixtures",
 								   "Remove duplicate fixtures---identical except ID# " +
-										   "and" +
-										   " on the same tile---from a map."
-			);
+										   "and on the same tile---from a map.");
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
@@ -74,7 +72,7 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

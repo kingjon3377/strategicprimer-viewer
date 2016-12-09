@@ -30,8 +30,7 @@ public final class WorkerStart implements SimpleDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-w", "--worker", ParamCount.AtLeastOne,
 								   "Manage a player's workers in units",
-								   "Organize the members of a player's units."
-			);
+								   "Organize the members of a player's units.");
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
@@ -42,7 +41,7 @@ public final class WorkerStart implements SimpleDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

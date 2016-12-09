@@ -39,8 +39,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-m", "--map", ParamCount.One,
 								   "Report Generator",
-								   "Produce HTML report of the contents of a map"
-			);
+								   "Produce HTML report of the contents of a map");
 	/**
 	 * Logger.
 	 */
@@ -123,7 +122,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 	 * @return an object indicating how to use and invoke this driver
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 

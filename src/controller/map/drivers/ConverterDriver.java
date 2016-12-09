@@ -81,9 +81,7 @@ public final class ConverterDriver implements UtilityDriver {
 		usageObject = new DriverUsage(gui, "-v", "--convert", ParamCount.One,
 											 "Convert a map's format",
 											 "Convert a map. At present, this means " +
-													 "reducing its resolution."
-
-		);
+													 "reducing its resolution.");
 		usageObject.addSupportedOption("--current-turn=NN");
 	}
 
@@ -146,7 +144,7 @@ public final class ConverterDriver implements UtilityDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return usageObject;
 	}
 

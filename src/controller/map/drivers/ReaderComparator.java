@@ -43,12 +43,11 @@ public final class ReaderComparator implements UtilityDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE =
+	private static final IDriverUsage USAGE =
 			new DriverUsage(false, "-t", "--test", ParamCount.AtLeastOne,
 								   "Test map readers",
 								   "Test the two map-reading implementations by " +
-										   "comparing their results on the same file."
-			);
+										   "comparing their results on the same file.");
 
 	/**
 	 * Logger.
@@ -195,7 +194,7 @@ public final class ReaderComparator implements UtilityDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 }

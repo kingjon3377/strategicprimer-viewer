@@ -53,12 +53,11 @@ public final class QueryCLI implements SimpleDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE =
+	private static final IDriverUsage USAGE =
 			new DriverUsage(false, "-q", "--query", ParamCount.One,
 								   "Answer questions about a map.",
 								   "Look at tiles on a map. Or run hunting, gathering," +
-										   " or fishing."
-			);
+										   " or fishing.");
 
 	/**
 	 * Logger.
@@ -540,7 +539,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 }

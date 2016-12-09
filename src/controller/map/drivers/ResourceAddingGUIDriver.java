@@ -29,8 +29,7 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-d", "--add-resource", ParamCount.AtLeastOne,
 								   "Add resources to maps",
-								   "Add resources for players to maps"
-			);
+								   "Add resources for players to maps");
 
 	static {
 		USAGE.addSupportedOption("--current-turn=NN");
@@ -40,7 +39,7 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
-	public DriverUsage usage() {
+	public IDriverUsage usage() {
 		return USAGE;
 	}
 
