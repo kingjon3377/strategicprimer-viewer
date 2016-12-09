@@ -41,7 +41,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	/**
 	 * The map, from which we get the population at a location.
 	 */
-	private IMutableMapNG map;
+	private final IMutableMapNG map;
 	/**
 	 * The current point.
 	 */
