@@ -135,9 +135,8 @@ public final class HarvestableReportGenerator
 				new HtmlList("<h5>Exposed stone deposits</h5>");
 		stone.values().stream().map(Collection::toString).forEach(stoneText::add);
 		sortAll(caches, groves, meadows, mines, mineralsText, stoneText, shrubsText);
-		if (caches.isEmpty() && groves.isEmpty() && meadows.isEmpty() &&
-					mines.isEmpty() && mineralsText.isEmpty() && stoneText.isEmpty() &&
-					shrubsText.isEmpty()) {
+		if (Stream.of(caches, groves, meadows, mines, mineralsText, stoneText,
+				shrubsText).allMatch(Collection::isEmpty)) {
 			return "";
 		} else {
 			return concat("<h4>Resource Sources</h4>", LineEnd.LINE_SEP,
@@ -147,7 +146,6 @@ public final class HarvestableReportGenerator
 					shrubsText.toString());
 		}
 	}
-
 	/**
 	 * Produce the sub-reports dealing with "harvestable" fixtures. All fixtures referred
 	 * to in this report are to be removed from the collection.
