@@ -234,7 +234,7 @@ public final class AppStarter implements ISPDriver {
 		}
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		try {
-			new AppStarter().startDriver(new SPOptions(), args);
+			new AppStarter().startDriver(new SPOptionsImpl(), args);
 		} catch (final IncorrectUsageException except) {
 			final StringBuilder buff = new StringBuilder();
 			final Formatter formatter = new Formatter(buff);
@@ -326,7 +326,7 @@ public final class AppStarter implements ISPDriver {
 							final String... args)
 			throws DriverFailedException {
 		boolean gui = !GraphicsEnvironment.isHeadless();
-		SPOptions currentOptions = options.copy();
+		SPOptionsImpl currentOptions = new SPOptionsImpl(options);
 		if (!currentOptions.hasOption("--gui")) {
 			currentOptions.setOption("--gui", Boolean.toString(gui));
 		}
@@ -358,7 +358,7 @@ public final class AppStarter implements ISPDriver {
 						startChosenDriver(drivers.first(), currentOptions,
 								new ArrayList<>(others));
 					}
-					currentOptions = options.copy();
+					currentOptions = new SPOptionsImpl(options);
 					currentOptions.setOption("--gui", Boolean.toString(gui));
 					others.clear();
 				}
