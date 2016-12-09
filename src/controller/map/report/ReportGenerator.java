@@ -3,6 +3,7 @@ package controller.map.report;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -320,10 +321,13 @@ public final class ReportGenerator {
 		final PatientMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
 		final IDRegistrar idf = IDFactoryFiller.createFactory(map);
 		for (final Point point : map.locations()) {
-			// Because neither Forests, Mountains, nor Ground have positive IDs,
-			// we can ignore everything but the "other" fixtures.
+			// Because neither Mountains nor Ground have positive IDs,
+			// we can ignore everything but Forests and the "other" fixtures.
 			retval.putAll(
-					assertNotNull(getFixtures(map.streamOtherFixtures(point))
+					assertNotNull(getFixtures(
+							Stream.concat(map.streamOtherFixtures(point),
+									Stream.of(map.getForest(point))))
+										  .filter(Objects::nonNull)
 										  .filter(fix -> (fix instanceof TileFixture)
 																 || (fix.getID() > 0))
 										  .collect(Collectors.toMap(fix -> {
