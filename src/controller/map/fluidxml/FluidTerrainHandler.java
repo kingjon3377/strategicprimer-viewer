@@ -47,6 +47,7 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
 public final class FluidTerrainHandler {
 	/**
 	 * Do not instantiate.

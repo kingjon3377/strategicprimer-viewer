@@ -49,6 +49,7 @@ import static model.map.fixtures.towns.TownStatus.parseTownStatus;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
 public final class FluidTownHandler {
 	/**
 	 * Do not instantiate.

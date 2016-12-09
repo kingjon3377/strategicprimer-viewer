@@ -47,6 +47,7 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
 public final class FluidExplorableHandler {
 	/**
 	 * Do not instantiate.
