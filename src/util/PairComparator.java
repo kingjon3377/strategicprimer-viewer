@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.NonNull;
  * @author Jonathan Lovelace
  */
 public final class PairComparator<@NonNull T, @NonNull U>
-		extends Pair<@NonNull Comparator<@NonNull T>, @NonNull Comparator<@NonNull U>>
+		extends Pair.PairImpl<@NonNull Comparator<@NonNull T>, @NonNull Comparator<@NonNull U>>
 		implements Comparator<@NonNull Pair<@NonNull T, @NonNull U>> {
 	/**
 	 * Constructor.

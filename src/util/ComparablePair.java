@@ -23,7 +23,7 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 @SuppressWarnings("EqualsAndHashcode")
 public final class ComparablePair<K extends Comparable<K>, V extends Comparable<V>>
-		extends Pair<K, V> implements Comparable<@NonNull ComparablePair<K, V>> {
+		extends Pair.PairImpl<K, V> implements Comparable<@NonNull ComparablePair<K, V>> {
 	/**
 	 * Constructor.
 	 *
