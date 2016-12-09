@@ -56,19 +56,7 @@ public final class ReportGenerator {
 	 * A simple comparator for fixtures.
 	 */
 	private static final Comparator<@NonNull IFixture> SIMPLE_COMPARATOR =
-			(firstFixture, secondFixture) -> {
-				if (firstFixture.equals(secondFixture)) {
-					return 0;
-				} else {
-					if (firstFixture.hashCode() > secondFixture.hashCode()) {
-						return 1;
-					} else if (firstFixture.hashCode() == secondFixture.hashCode()) {
-						return 0;
-					} else {
-						return -1;
-					}
-				}
-			};
+			Comparator.comparingInt(IFixture::hashCode);
 
 	/**
 	 * No non-static members anymore.
@@ -140,6 +128,7 @@ public final class ReportGenerator {
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Player player = map.getCurrentPlayer();
+
 		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
 				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
