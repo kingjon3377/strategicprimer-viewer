@@ -47,10 +47,10 @@ public class TestCLIHelper {
 					Integer.valueOf(cli.chooseFromList(NullCleaner.assertNotNull(
 							Arrays.asList(new Player(1, "one"),
 									new Player(2, "two"))),
-							"test desc", "none present", "prompt", false)),
+							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat("chooseFromList prompted the user", out.toString(),
-					equalTo(String.format("test desc%n0: one%n1: two%nprompt")));
+					equalTo(String.format("test desc%n0: one%n1: two%n prompt")));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("1%n")),
@@ -60,10 +60,10 @@ public class TestCLIHelper {
 							cli.chooseFromList(NullCleaner.assertNotNull(
 									Arrays.asList(new Player(1, "one"),
 											new Player(2, "two"))),
-									"test desc", "none present", "prompt", false)),
+									"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(1)));
 			assertThat("chooseFromList prompted the user", out.toString(),
-					equalTo(String.format("test desc%n0: one%n1: two%nprompt")));
+					equalTo(String.format("test desc%n0: one%n1: two%n prompt")));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
@@ -91,12 +91,12 @@ public class TestCLIHelper {
 															  .singletonList(new
 																					 Player(1,
 																								   "one"))),
-							"test desc", "none present", "prompt", false)),
+							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat(
 					"chooseFromList didn't automatically chose only choice",
 					out.toString(),
-					equalTo(String.format("test desc%n0: one%nprompt")));
+					equalTo(String.format("test desc%n0: one%n prompt")));
 		}
 	}
 	/**
@@ -117,12 +117,12 @@ public class TestCLIHelper {
 							NullCleaner.assertNotNull(
 									Arrays.asList(new Player(1, "one"),
 											new Player(2, "two"))),
-							"test desc", "none present", "prompt", false)),
+							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat(
 					"chooseFromList prompts again when negative index given",
 					out.toString(),
-					equalTo(String.format("test desc%n0: one%n1: two%npromptprompt")));
+					equalTo(String.format("test desc%n0: one%n1: two%n prompt prompt")));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("3%n")),
@@ -132,11 +132,11 @@ public class TestCLIHelper {
 							NullCleaner.assertNotNull(
 									Arrays.asList(new Player(1, "one"),
 											new Player(2, "two"))),
-							"test desc", "none present", "prompt", false)),
+							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(3)));
 			assertThat("chooseFromList allows too-large choice",
 					out.toString(),
-					equalTo(String.format("test desc%n0: one%n1: two%nprompt")));
+					equalTo(String.format("test desc%n0: one%n1: two%n prompt")));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("0%n")),
@@ -146,10 +146,10 @@ public class TestCLIHelper {
 							cli.chooseFromList(NullCleaner.assertNotNull(
 									Arrays.asList(new Player(1, "one"),
 											new Player(2, "two"))),
-									"test desc", "none present", "prompt", true)),
+									"test desc", "none present", " prompt", true)),
 					equalTo(Integer.valueOf(0)));
 			assertThat("chooseFromList prompted the user", out.toString(),
-					equalTo(String.format("test desc%n0: one%n1: two%nprompt")));
+					equalTo(String.format("test desc%n0: one%n1: two%n prompt")));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
@@ -193,10 +193,10 @@ public class TestCLIHelper {
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("-1%n0%n")),
 												   out)) {
 			assertThat("inputNumber asks again on negative input",
-					Integer.valueOf(cli.inputNumber("test prompt three")),
+					Integer.valueOf(cli.inputNumber("test prompt three ")),
 					equalTo(Integer.valueOf(0)));
 			assertThat("inputNumber asks again on negative input",
-					out.toString(), equalTo("test prompt threetest prompt three"));
+					out.toString(), equalTo("test prompt three test prompt three "));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
@@ -238,10 +238,10 @@ public class TestCLIHelper {
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
 					 "-2.5%n0.5%n")), out)) {
 			assertThat("inputDecimal asks again on negative input",
-					cli.inputDecimal("test prompt three"),
+					cli.inputDecimal("test prompt three "),
 					equalTo(BigDecimal.ONE.divide(new BigDecimal(2))));
 			assertThat("inputDecimal asks again on negative input", out.toString(),
-					equalTo("test prompt threetest prompt three"));
+					equalTo("test prompt three test prompt three "));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
@@ -378,12 +378,12 @@ public class TestCLIHelper {
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
 					 "xyzzy%nyes%n")), out)) {
 			assertThat("inputBoolean rejects other input",
-					cli.inputBoolean("prompt nine"), equalTo(true));
+					cli.inputBoolean(" prompt nine"), equalTo(true));
 			assertThat("inputBoolean gives message on invalid input", out.toString(),
 					equalTo(String.format(
-							"prompt ninePlease enter 'yes', 'no', 'true', or 'false'," +
+							" prompt ninePlease enter 'yes', 'no', 'true', or 'false'," +
 									"%n" +
-									"or the first character of any of those.%nprompt" +
+									"or the first character of any of those.%n prompt" +
 									" nine")));
 		}
 	}
@@ -471,79 +471,79 @@ public class TestCLIHelper {
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
 					 "xyzzy%nyes%n")), out)) {
 			assertThat("inputBooleanInSeries rejects other input",
-					cli.inputBooleanInSeries("prompt nine"), equalTo(true));
+					cli.inputBooleanInSeries(" prompt nine"), equalTo(true));
 			assertThat("inputBooleanInSeries gives message on invalid input",
 					out.toString(),
 					equalTo(String.format(
-							"prompt ninePlease enter 'yes', 'no', 'true', or 'false', " +
+							" prompt ninePlease enter 'yes', 'no', 'true', or 'false', " +
 									"the first%ncharacter of any of those, or 'all', " +
 									"'none', 'always'%nor 'never' to use the same " +
 									"answer" +
-									" for all further questions%nprompt nine")));
+									" for all further questions%n prompt nine")));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("all%n")),
 												   out)) {
 			assertThat("inputBooleanInSeries allows yes-to-all",
-					cli.inputBooleanInSeries("prompt ten"), equalTo(true));
+					cli.inputBooleanInSeries("prompt ten "), equalTo(true));
 			assertThat("inputBooleanInSeries honors yes-to-all when prompt is the same",
-					cli.inputBooleanInSeries("prompt ten"), equalTo(true));
+					cli.inputBooleanInSeries("prompt ten "), equalTo(true));
 			assertThat("inputBooleanInSeries shows automatic yes", out.toString(),
-					equalTo(String.format("prompt tenprompt tenyes%n")));
+					equalTo(String.format("prompt ten prompt ten yes%n")));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("none%n")),
 												   out)) {
 			assertThat("inputBooleanInSeries allows no-to-all",
-					cli.inputBooleanInSeries("prompt eleven"), equalTo(false));
+					cli.inputBooleanInSeries("prompt eleven "), equalTo(false));
 			assertThat("inputBooleanInSeries honors no-to-all when prompt is the same",
-					cli.inputBooleanInSeries("prompt eleven"), equalTo(false));
+					cli.inputBooleanInSeries("prompt eleven "), equalTo(false));
 			assertThat("inputBooleanInSeries shows automatic no", out.toString(),
-					equalTo(String.format("prompt elevenprompt elevenno%n")));
+					equalTo(String.format("prompt eleven prompt eleven no%n")));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("all%n")),
 												   out)) {
 			assertThat("inputBooleanInSeries allows yes-to-all",
-					cli.inputBooleanInSeries("prompt twelve", "key"), equalTo(true));
+					cli.inputBooleanInSeries("prompt twelve ", "key"), equalTo(true));
 			assertThat(
 					"inputBooleanInSeries honors yes-to-all if prompt differs, same key",
-					cli.inputBooleanInSeries("prompt thirteen", "key"), equalTo(true));
+					cli.inputBooleanInSeries("prompt thirteen ", "key"), equalTo(true));
 			assertThat("inputBooleanInSeries shows automatic yes", out.toString(),
-					equalTo(String.format("prompt twelveprompt thirteenyes%n")));
+					equalTo(String.format("prompt twelve prompt thirteen yes%n")));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("none%n")),
 												   out)) {
 			assertThat("inputBooleanInSeries allows no-to-all",
-					cli.inputBooleanInSeries("prompt fourteen", "secondKey"),
+					cli.inputBooleanInSeries("prompt fourteen ", "secondKey"),
 					equalTo(false));
 			assertThat(
 					"inputBooleanInSeries honors no-to-all if prompt differs, same key",
-					cli.inputBooleanInSeries("prompt fifteen", "secondKey"),
+					cli.inputBooleanInSeries("prompt fifteen ", "secondKey"),
 					equalTo(false));
 			assertThat("inputBooleanInSeries shows automatic no", out.toString(),
-					equalTo(String.format("prompt fourteenprompt fifteenno%n")));
+					equalTo(String.format("prompt fourteen prompt fifteen no%n")));
 		}
 		try (StringWriter out = new StringWriter();
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format(
 					 "all%nnone%n")), out)) {
 			assertThat("inputBooleanInSeries allows yes-to-all with one key",
-					cli.inputBooleanInSeries("prompt sixteen", "thirdKey"),
+					cli.inputBooleanInSeries("prompt sixteen ", "thirdKey"),
 					equalTo(true));
 			assertThat("inputBooleanInSeries allows no-to-all with second key",
-					cli.inputBooleanInSeries("prompt seventeen", "fourthKey"),
+					cli.inputBooleanInSeries("prompt seventeen ", "fourthKey"),
 					equalTo(false));
 			assertThat("inputBooleanInSeries then honors yes-to-all",
-					cli.inputBooleanInSeries("prompt eighteen", "thirdKey"),
+					cli.inputBooleanInSeries("prompt eighteen ", "thirdKey"),
 					equalTo(true));
 			assertThat("inputBooleanInSeries then honors no-to-all",
-					cli.inputBooleanInSeries("prompt nineteen", "fourthKey"),
+					cli.inputBooleanInSeries(" prompt nineteen ", "fourthKey"),
 					equalTo(false));
 			assertThat("inputBooleanInSeries shows prompts", out.toString(),
 					equalTo(String.format(
-							"prompt sixteenprompt seventeenprompt eighteenyes%nprompt " +
-									"nineteenno%n")));
+							"prompt sixteen prompt seventeen prompt eighteen yes%n prompt " +
+									"nineteen no%n")));
 		}
 	}
 

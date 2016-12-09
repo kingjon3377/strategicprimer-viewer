@@ -57,7 +57,7 @@ public final class ViewerStart implements SimpleDriver {
 			StreamSupport
 					.stream(((IMultiMapModel) model).getAllMaps().spliterator(), false)
 					.map(ViewerModel::new)
-					.forEach(indiv -> startDriver(cli, options.copy(), indiv));
+					.forEach(mapModel -> startDriver(cli, options.copy(), mapModel));
 			return;
 		} else {
 			viewerModel = new ViewerModel(model);

@@ -78,7 +78,7 @@ public interface ISkill extends HasMutableName, Subsettable<@NonNull ISkill> {
 			}
 			return true;
 		} else {
-			ostream.format("%s\tCalled withnon-corresponding skill, %s (this is %s)%n",
+			ostream.format("%s\tCalled with non-corresponding skill, %s (this is %s)%n",
 					context, obj.getName(), getName());
 			return false;
 		}

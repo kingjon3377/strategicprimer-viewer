@@ -67,7 +67,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 		} else if (component instanceof JTable) {
 			return new IntTransferable(FLAVOR, ((JTable) component).getSelectedRow());
 		} else {
-			throw new IllegalStateException("Tried to create transferrable from " +
+			throw new IllegalStateException("Tried to create transferable from " +
 													"non-list");
 		}
 	}

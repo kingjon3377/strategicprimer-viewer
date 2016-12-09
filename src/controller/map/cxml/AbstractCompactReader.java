@@ -62,7 +62,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	private static final NumberFormat NUM_PARSER =
 			assertNotNull(NumberFormat.getIntegerInstance());
 	/**
-	 * Patterns to match XML metacharacters, and their quoted forms.
+	 * Patterns to match XML meta-characters, and their quoted forms.
 	 */
 	private static final List<Pair<Pattern, String>> QUOTING =
 			Arrays.asList(Pair.of(Pattern.compile("&"), "&amp;"),

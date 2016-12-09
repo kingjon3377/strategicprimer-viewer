@@ -197,7 +197,7 @@ public final class WorkerMgmtFrame extends SPFrame {
 
 	/**
 	 * @param model the driver model
-	 * @param ioHandler the menu-item/hotkey listener
+	 * @param ioHandler the menu-item/hot-key listener
 	 * @param reportModel the report-tree model
 	 * @return the report tree based on that model
 	 */

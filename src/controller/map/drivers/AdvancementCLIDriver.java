@@ -153,7 +153,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	/**
 	 * Let the user add experience in a given Job to all of a list of workers.
 	 *
-	 * @param workers the workers in quesiton
+	 * @param workers the workers in question
 	 * @param jobName the name of the Job to consider
 	 * @param cli     the interface to the user
 	 * @throws IOException on I/O error getting input from user

@@ -447,7 +447,7 @@ public final class TestMoreFixtureSerialization extends
 		// TODO: Test old non-tag-based orders deserialization
 	}
 	/**
-	 * Test that in orders and results quoting XML metacharacters are quoted properly.
+	 * Test that in orders and results quoting XML meta-characters are quoted properly.
 	 *
 	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error

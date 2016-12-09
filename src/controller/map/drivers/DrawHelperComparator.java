@@ -410,22 +410,22 @@ public final class DrawHelperComparator implements SimpleDriver {
 											  fix -> true, Collections.singleton(
 						new FixtureMatcher(fix -> true, "test"))), VER_TWO,
 				new LongAccumulator());
-		final List<Triple<TileDrawHelper, String, LongAccumulator>> testees =
+		final List<Triple<TileDrawHelper, String, LongAccumulator>> cases =
 				Arrays.asList(one, two, three);
 		for (final Pair<String, DrawingTest> pair : TESTS) {
 			SYS_OUT.print(pair.first());
 			SYS_OUT.println(':');
-			for (final Triple<TileDrawHelper, String, LongAccumulator> testee :
-					testees) {
-				testee.third.add(printStats(testee.second,
-						pair.second().runTest(testee.first, map, repetitions, tileSize),
+			for (final Triple<TileDrawHelper, String, LongAccumulator> testCase :
+					cases) {
+				testCase.third.add(printStats(testCase.second,
+						pair.second().runTest(testCase.first, map, repetitions, tileSize),
 						repetitions));
 			}
 		}
 		SYS_OUT.println("--------------------------------------");
 		SYS_OUT.print("Total:");
-		for (final Triple<TileDrawHelper, String, LongAccumulator> testee : testees) {
-			printStats(testee.second, testee.third.getValue(), repetitions);
+		for (final Triple<TileDrawHelper, String, LongAccumulator> testCase : cases) {
+			printStats(testCase.second, testCase.third.getValue(), repetitions);
 		}
 		SYS_OUT.println();
 	}
