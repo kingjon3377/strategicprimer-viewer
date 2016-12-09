@@ -1,5 +1,6 @@
 package model.mining;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -105,7 +106,7 @@ public final class MiningModel {
 	 * @param point the point to consider now
 	 */
 	private static void modelPoint(final Map<Point, LodeStatus> unnormalized,
-							final Queue<Point> queue,
+							final Collection<Point> queue,
 							final Function<LodeStatus, LodeStatus> horizontalGen,
 							final Function<LodeStatus, LodeStatus> verticalGen,
 							final Point point) {
