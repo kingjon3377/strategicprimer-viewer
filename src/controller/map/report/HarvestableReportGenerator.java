@@ -126,14 +126,11 @@ public final class HarvestableReportGenerator
 			}
 		}
 		final HeadedList<String> shrubsText =
-				new HtmlList("<h5>Shrubs, small trees, and such</h5>");
-		shrubs.values().stream().map(Collection::toString).forEach(shrubsText::add);
-		final HeadedList<String> mineralsText = new HtmlList("<h5>Mineral " +
-																	 "deposits</h5>");
-		minerals.values().stream().map(Collection::toString).forEach(mineralsText::add);
+				mapToList(shrubs, "<h5>Shrubs, small trees, and such</h4>");
+		final HeadedList<String> mineralsText =
+				mapToList(minerals, "<h5>Mineral deposits</h5>");
 		final HeadedList<String> stoneText =
-				new HtmlList("<h5>Exposed stone deposits</h5>");
-		stone.values().stream().map(Collection::toString).forEach(stoneText::add);
+				mapToList(stone, "<h5>Exposed stone deposits</h5>");
 		sortAll(caches, groves, meadows, mines, mineralsText, stoneText, shrubsText);
 		if (Stream.of(caches, groves, meadows, mines, mineralsText, stoneText,
 				shrubsText).allMatch(Collection::isEmpty)) {
@@ -145,6 +142,16 @@ public final class HarvestableReportGenerator
 					mineralsText.toString(), stoneText.toString(),
 					shrubsText.toString());
 		}
+	}
+	/**
+	 * @param map a map from kinds to HeadedLists of locations of those kinds
+	 * @param heading what to title the returned list
+	 * @return a HeadedList of those kinds and locations
+	 */
+	private static HeadedList<String> mapToList(final Map<String, Collection<Point>> map, final String heading) {
+		return map.values().stream().map(Collection::toString)
+					   .collect(() -> new HtmlList(heading), HtmlList::add,
+							   HtmlList::addAll);
 	}
 	/**
 	 * Produce the sub-reports dealing with "harvestable" fixtures. All fixtures referred
