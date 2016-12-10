@@ -314,13 +314,13 @@ public final class ReportGenerator {
 		for (final Point point : map.locations()) {
 			// Because neither Mountains nor Ground have positive IDs,
 			// we can ignore everything but Forests and the "other" fixtures.
-			retval.putAll(assertNotNull(getFixtures(
+			retval.putAll(getFixtures(
 					Stream.concat(map.streamOtherFixtures(point),
 							Stream.of(map.getForest(point)))).filter(Objects::nonNull)
 												.filter
 														 (ReportGenerator::isReportableFixture)
 												.collect(Collectors.toMap(checkID,
-														fix -> Pair.of(point, fix)))));
+														fix -> Pair.of(point, fix))));
 		}
 		return retval;
 	}
