@@ -581,13 +581,12 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				if (element.getName().equals(event.asEndElement().getName())) {
 					break;
 				}
-			} else if (event.isCharacters()) {
-				if (!event.asCharacters().getData().trim().isEmpty()) {
-					//noinspection ObjectAllocationInLoop
-					warner.warn(new UnwantedChildException(tagStack.peek(),
-							new QName(NULL_NS_URI, "text"), event.getLocation(),
-							new IllegalStateException("Random text outside any tile")));
-				}
+            } else if (event.isCharacters() &&
+					(!event.asCharacters().getData().trim().isEmpty())) {
+				//noinspection ObjectAllocationInLoop
+				warner.warn(new UnwantedChildException(tagStack.peek(),
+						new QName(NULL_NS_URI, "text"), event.getLocation(),
+						new IllegalStateException("Random text outside any tile")));
 			}
 		}
 		if (hasAttribute(mapTag, "current_player")) {
