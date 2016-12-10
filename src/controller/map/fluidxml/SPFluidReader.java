@@ -582,9 +582,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					break;
 				}
 			} else if (event.isCharacters()) {
-				final String data =
-						assertNotNull(event.asCharacters().getData().trim());
-				if (!data.isEmpty()) {
+				if (!event.asCharacters().getData().trim().isEmpty()) {
 					//noinspection ObjectAllocationInLoop
 					warner.warn(new UnwantedChildException(tagStack.peek(),
 							new QName(NULL_NS_URI, "text"), event.getLocation(),
