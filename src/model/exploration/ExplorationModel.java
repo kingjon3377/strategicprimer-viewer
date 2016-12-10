@@ -310,13 +310,11 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			if (dest.equals(point)) {
 				retval = 1;
 			} else {
-				retval =
-						SimpleMovement.getMovementCost(
-								map.getBaseTerrain(dest),
-								map.getForest(dest) != null,
-								map.isMountainous(dest), map.getRivers(dest)
-																 .iterator().hasNext(),
-								() -> map.streamOtherFixtures(dest));
+				retval = SimpleMovement.getMovementCost(map.getBaseTerrain(dest),
+						map.getForest(dest) != null, map.isMountainous(dest),
+						SimpleMovement.doRiversApply(direction, map.getRivers(point),
+								map.getRivers(dest)),
+						() -> map.streamOtherFixtures(dest));
 			}
 			removeImpl(map, point, unit);
 			map.addFixture(dest, unit);

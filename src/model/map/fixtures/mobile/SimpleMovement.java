@@ -1,10 +1,14 @@
 package model.map.fixtures.mobile;
 
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import model.exploration.IExplorationModel.Direction;
 import model.map.HasOwner;
 import model.map.IEvent;
+import model.map.River;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
@@ -55,6 +59,42 @@ public final class SimpleMovement {
 	 */
 	public static boolean isLandMovementPossible(final TileType terrain) {
 		return TileType.Ocean != terrain;
+	}
+	/**
+	 * @param direction the direction of travel
+	 * @param sourceRivers the rivers in the location the mover is traveling from
+	 * @param destRivers the rivers in the location the mover is traveling to
+	 * @return whether any of those rivers are in the direction of travel
+	 */
+	public static boolean doRiversApply(final Direction direction,
+										final Iterable<River> sourceRivers,
+										final Iterable<River> destRivers) {
+		final BiPredicate<Iterable<River>, River> matches =
+				(iter, river) -> StreamSupport.stream(iter.spliterator(), false)
+										 .anyMatch(river::equals);
+		final Predicate<Direction> recurse =
+				dir -> doRiversApply(dir, sourceRivers, destRivers);
+		switch (direction) {
+		case North:
+			return matches.test(sourceRivers, River.North) || matches.test(destRivers, River.South);
+		case Northeast:
+			return recurse.test(Direction.North) || recurse.test(Direction.East);
+		case East:
+			return matches.test(sourceRivers, River.East) || matches.test(destRivers, River.West);
+		case Southeast:
+			return recurse.test(Direction.South) || recurse.test(Direction.East);
+		case South:
+			return matches.test(sourceRivers, River.South) || matches.test(destRivers, River.North);
+		case Southwest:
+			return recurse.test(Direction.South) || recurse.test(Direction.West);
+		case West:
+			return matches.test(sourceRivers, River.West) || matches.test(destRivers, River.East);
+		case Northwest:
+			return recurse.test(Direction.North) || recurse.test(Direction.West);
+		case Nowhere:
+			break;
+		}
+		return false;
 	}
 
 	/**
