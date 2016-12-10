@@ -115,9 +115,10 @@ public final class ReportGenerator {
 
 	/**
 	 * @param map the map to base the report on
+	 * @param player the player to create the report for
 	 * @return the report, in HTML, as a String
 	 */
-	public static String createReport(final IMapNG map) {
+	public static String createReport(final IMapNG map, final Player player) {
 		// The full report for the world map, as of turn 11, is 8 megs. So we
 		// make a 10 meg buffer.
 		final StringBuilder builder = new StringBuilder(10485760).append("<html>");
@@ -128,8 +129,6 @@ public final class ReportGenerator {
 		builder.append("<body>");
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		final Player player = map.getCurrentPlayer();
-
 		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
 				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
