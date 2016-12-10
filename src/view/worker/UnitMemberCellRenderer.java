@@ -26,6 +26,7 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.WorkerTreeModelAlt;
+import model.workermgmt.WorkerTreeModelAlt.KindNode;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
 
@@ -216,28 +217,41 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 				setComponentColor(component, Color.YELLOW);
 			}
 		} else if (warn && (value instanceof WorkerTreeModelAlt.KindNode)) {
-			boolean shouldWarn = false;
-			boolean shouldErr = false;
-			for (final TreeNode node : (WorkerTreeModelAlt.KindNode) value) {
-				if (node instanceof WorkerTreeModelAlt.UnitNode) {
-					final IUnit unit = (IUnit) assertNotNull(getNodeValue(node));
-					final String orders =
-							unit.getLatestOrders(turnSupplier.getAsInt()).toLowerCase();
-					if (orders.contains("fixme") && unit.iterator().hasNext()) {
-						shouldErr = true;
-						break;
-					} else if (orders.contains("todo") && unit.iterator().hasNext()) {
-						shouldWarn = true;
-					}
-				}
-			}
-			if (shouldErr) {
-				setComponentColor(component, Color.PINK);
-			} else if (shouldWarn) {
-				setComponentColor(component, Color.YELLOW);
-			}
+			final int turn = turnSupplier.getAsInt();
+			setKindColor((KindNode) value, component, turn);
 		}
 		return component;
+	}
+
+	/**
+	 * If a "unit kind" node includes units that merit "visual warnings," apply the most
+	 * severe such to it as well.
+	 * @param node the node being represented
+	 * @param component the component that represents it
+	 * @param turn the current turn
+	 */
+	private static void setKindColor(final WorkerTreeModelAlt.KindNode node,
+									 final Component component, final int turn) {
+		boolean shouldWarn = false;
+		for (final TreeNode child : node) {
+			if (child instanceof WorkerTreeModelAlt.UnitNode) {
+				final IUnit unit = (IUnit) assertNotNull(getNodeValue(child));
+				if (!unit.iterator().hasNext()) {
+					continue;
+				}
+				final String orders =
+						unit.getLatestOrders(turn).toLowerCase();
+				if (orders.contains("fixme")) {
+					setComponentColor(component, Color.PINK);
+					return;
+				} else if (orders.contains("todo")) {
+					shouldWarn = true;
+				}
+			}
+		}
+		if (shouldWarn) {
+			setComponentColor(component, Color.YELLOW);
+		}
 	}
 
 	/**
