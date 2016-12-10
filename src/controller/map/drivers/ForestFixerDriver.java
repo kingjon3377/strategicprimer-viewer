@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
+import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.fixtures.terrain.Forest;
@@ -71,18 +72,8 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 			}
 			final IMutableMapNG map = pair.first();
 			for (final Point location : map.locations()) {
-				mainForests.clear();
-				subForests.clear();
-				Stream.concat(Stream.of(mainMap.getForest(location)),
-						mainMap.streamOtherFixtures(location)
-								.filter(Forest.class::isInstance)
-								.map(Forest.class::cast))
-						.filter(Objects::nonNull).forEach(mainForests::add);
-				Stream.concat(Stream.of(map.getForest(location)),
-						map.streamOtherFixtures(location)
-								.filter(Forest.class::isInstance)
-								.map(Forest.class::cast))
-						.filter(Objects::nonNull).forEach(subForests::add);
+				extractForests(mainMap, location, mainForests);
+				extractForests(map, location, subForests);
 				for (final Forest forest : subForests) {
 					if (mainForests.contains(forest)) {
 						continue;
@@ -100,5 +91,19 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 				}
 			}
 		}
+	}
+	/**
+	 * We clear the list, then add all forests at the given point in the given map to
+	 * the list.
+	 * @param map a map
+	 * @param point a location
+	 * @param list a list to add forests to
+	 */
+	private static void extractForests(final IMapNG map, final Point point, final List<Forest> list) {
+		list.clear();
+		Stream.concat(Stream.of(map.getForest(point)),
+				map.streamOtherFixtures(point).filter(Forest.class::isInstance)
+						.map(Forest.class::cast)).filter(Objects::nonNull)
+				.forEach(list::add);
 	}
 }
