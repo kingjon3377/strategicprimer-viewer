@@ -80,7 +80,6 @@ public final class WorkerReportDriver implements SimpleDriver {
 					player.setCurrent(player.getPlayerId() == playerNum);
 				}
 			}
-			final String report = ReportGenerator.createReport(map);
 			final String outString;
 			final Path out;
 			if (options.hasOption("--out")) {
@@ -91,7 +90,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 				out = filename.resolveSibling(outString);
 			}
 			try (final BufferedWriter writer = Files.newBufferedWriter(out)) {
-				writer.write(report);
+				writer.write(ReportGenerator.createReport(map));
 			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException("I/O error writing report to " +
