@@ -204,16 +204,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 			((JLabel) component).setIcon(getIcon((HasImage) internal));
 		}
 		if (internal instanceof IWorker) {
-			final IWorker worker = (IWorker) internal;
-			// Assume at least a K in size.
-			final StringBuilder builder = new StringBuilder(1024).append("<html><p>");
-			builder.append(worker.getName());
-			if (!"human".equals(worker.getRace())) {
-				builder.append(", a ").append(worker.getRace());
-			}
-			builder.append(jobCSL(worker));
-			builder.append("</p></html>");
-			((JLabel) component).setText(builder.toString());
+			((JLabel) component).setText(getWorkerText((IWorker) internal));
 		} else if (internal instanceof IUnit) {
 			final IUnit unit = (IUnit) internal;
 			((JLabel) component).setText(unit.getName());
@@ -248,6 +239,21 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		}
 		return component;
 	}
+
+	/**
+	 * @param worker a worker
+	 * @return a String representing that worker.
+	 */
+	private static String getWorkerText(final IWorker worker) {
+		if (!"human".equals(worker.getRace())) {
+			return String.format("<html><p>%s, a %s%s</p></html>", worker.getName(),
+					worker.getRace(), jobCSL(worker));
+		} else {
+			return String.format("<html><p>%s%s</p></html>", worker.getName(),
+					jobCSL(worker));
+		}
+	}
+
 	/**
 	 * If the component is a DefaultTreeCellRenderer, set both of its background colors
 	 * (if and if not selected) to the given color. Otherwise, do nothing.
