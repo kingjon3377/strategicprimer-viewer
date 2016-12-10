@@ -4,6 +4,7 @@ import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -308,28 +309,42 @@ public final class ReportGenerator {
 	private static PatientMap<Integer, Pair<Point, IFixture>> getFixtures(final IMapNG
 																				  map) {
 		final PatientMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
-		final IDRegistrar idf = IDFactoryFiller.createFactory(map);
+		final Function<IFixture, Integer> checkID = createIDChecker(
+				IDFactoryFiller.createFactory(map));
 		for (final Point point : map.locations()) {
 			// Because neither Mountains nor Ground have positive IDs,
 			// we can ignore everything but Forests and the "other" fixtures.
-			retval.putAll(
-					assertNotNull(getFixtures(
-							Stream.concat(map.streamOtherFixtures(point),
-									Stream.of(map.getForest(point))))
-										  .filter(Objects::nonNull)
-										  .filter(fix -> (fix instanceof TileFixture)
-																 || (fix.getID() > 0))
-										  .collect(Collectors.toMap(fix -> {
-											  if (fix.getID() < 0) {
-												  return Integer.valueOf(idf.createID());
-											  } else {
-												  return Integer.valueOf(fix.getID());
-											  }
-										  }, fix -> Pair.of(point, fix)))));
+			retval.putAll(assertNotNull(getFixtures(
+					Stream.concat(map.streamOtherFixtures(point),
+							Stream.of(map.getForest(point)))).filter(Objects::nonNull)
+												.filter
+														 (ReportGenerator::isReportableFixture)
+												.collect(Collectors.toMap(checkID,
+														fix -> Pair.of(point, fix)))));
 		}
 		return retval;
 	}
-
+	/**
+	 * @param fix a fixture
+	 * @return whether we are able to report on it
+	 */
+	private static boolean isReportableFixture(final IFixture fix) {
+		return fix instanceof TileFixture || fix.getID() >= 0;
+	}
+	/**
+	 * @param idf an ID number factory
+	 * @return a Function from fixtures to ints that returns the fixture's ID if
+	 * nonnegative and a newly generated, using the given factory, ID if negative
+	 */
+	private static Function<IFixture, Integer> createIDChecker(final IDRegistrar idf) {
+		return fix -> {
+			if (fix.getID() < 0) {
+				return Integer.valueOf(idf.createID());
+			} else {
+				return Integer.valueOf(fix.getID());
+			}
+		};
+	}
 	/**
 	 * @param stream a source of tile-fixtures
 	 * @return all the tile-fixtures in it, recursively.
