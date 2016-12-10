@@ -198,10 +198,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		final Component component = assertNotNull(
 				DEFAULT.getTreeCellRendererComponent(tree, value, selected, expanded,
 						leaf, row, hasFocus));
-		((DefaultTreeCellRenderer) component)
-				.setBackgroundSelectionColor(DEF_BKGD_SELECTED);
-		((DefaultTreeCellRenderer) component)
-				.setBackgroundNonSelectionColor(DEF_BKGD_NON_SEL);
+		setComponentColor(component, null);
 		final Object internal = getNodeValue(value);
 		if (internal instanceof HasImage) {
 			((JLabel) component).setIcon(getIcon((HasImage) internal));
@@ -255,12 +252,20 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * If the component is a DefaultTreeCellRenderer, set both of its background colors
 	 * (if and if not selected) to the given color. Otherwise, do nothing.
 	 * @param component a component
-	 * @param color a color
+	 * @param color a color. If null, use defaults.
 	 */
-	private static void setComponentColor(final Component component, final Color color) {
+	private static void setComponentColor(final Component component, @Nullable final Color color) {
 		if (component instanceof DefaultTreeCellRenderer) {
-			((DefaultTreeCellRenderer) component).setBackgroundSelectionColor(color);
-			((DefaultTreeCellRenderer) component).setBackgroundNonSelectionColor(color);
+			if (color == null) {
+				((DefaultTreeCellRenderer) component)
+						.setBackgroundSelectionColor(DEF_BKGD_SELECTED);
+				((DefaultTreeCellRenderer) component)
+						.setBackgroundNonSelectionColor(DEF_BKGD_NON_SEL);
+			} else {
+				((DefaultTreeCellRenderer) component).setBackgroundSelectionColor(color);
+				((DefaultTreeCellRenderer) component)
+						.setBackgroundNonSelectionColor(color);
+			}
 		}
 	}
 	/**
