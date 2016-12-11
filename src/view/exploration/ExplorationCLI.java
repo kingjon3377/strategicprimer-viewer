@@ -6,6 +6,7 @@ import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.exploration.HuntingModel;
 import model.exploration.IExplorationModel;
+import model.exploration.IExplorationModel.Speed;
 import model.listeners.MovementCostListener;
 import model.listeners.MovementCostSource;
 import model.map.HasOwner;
@@ -65,7 +67,7 @@ public final class ExplorationCLI implements MovementCostSource {
 	 */
 	private static final String PROMPT =
 			"0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, 6 = W, 7 = NW, 8 = Stay Here," +
-					" 9 = Quit.";
+					" 9 = Change Speed, 10 = Quit.";
 	/**
 	 * The prompt to use when the user tells the unit to go nowhere.
 	 */
@@ -91,7 +93,10 @@ public final class ExplorationCLI implements MovementCostSource {
 	 * The list of movement-cost listeners.
 	 */
 	private final Collection<MovementCostListener> mcListeners = new ArrayList<>();
-
+	/**
+	 * The explorer's current movement speed.
+	 */
+	private Speed speed = Speed.Normal;
 	/**
 	 * @param explorationModel the exploration model to use
 	 * @param cli              the helper to handle user I/O
@@ -155,7 +160,10 @@ public final class ExplorationCLI implements MovementCostSource {
 	public void move() throws IOException {
 		final IUnit mover = model.getSelectedUnit();
 		final int directionNum = helper.inputNumber("Direction to move: ");
-		if (directionNum > 8) {
+		if (directionNum == 9) {
+			changeSpeed();
+			return;
+		} else if (directionNum > 9) {
 			fireMovementCost(Integer.MAX_VALUE);
 			return;
 		}
@@ -164,7 +172,7 @@ public final class ExplorationCLI implements MovementCostSource {
 		final Point point = model.getSelectedUnitLocation();
 		final Point dPoint = model.getDestination(point, direction);
 		try {
-			model.move(direction);
+			model.move(direction, speed);
 		} catch (final SimpleMovement.TraversalImpossibleException except) {
 			LOGGER.log(Level.FINEST, "Attempted movement to impassable destination",
 					except);
@@ -181,7 +189,7 @@ public final class ExplorationCLI implements MovementCostSource {
 		final Consumer<TileFixture> consider = fix -> {
 			if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
 				constants.add(fix);
-			} else if (SimpleMovement.shouldSometimesNotice(mover, fix)) {
+			} else if (SimpleMovement.shouldSometimesNotice(mover, speed, fix)) {
 				allFixtures.add(fix);
 			}
 		};
@@ -210,6 +218,7 @@ public final class ExplorationCLI implements MovementCostSource {
 		helper.printf("The explorer comes to %s, a tile with terrain %s%n",
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
 		Collections.shuffle(allFixtures);
+		// TODO: Perception should affect how many non-automatics.
 		if (allFixtures.isEmpty()) {
 			helper.println("The following were automatically noticed:");
 		} else if ((allFixtures.size() > 1) &&
@@ -226,7 +235,18 @@ public final class ExplorationCLI implements MovementCostSource {
 			printAndTransferFixture(dPoint, fix, mover);
 		}
 	}
-
+	/**
+	 * Let the user change the explorer's speed.
+	 * @throws IOException on I/O error
+	 */
+	private void changeSpeed() throws IOException {
+		final int newSpeed =
+				helper.chooseFromList(Arrays.asList(Speed.values()), "Possible Speeds:",
+						"No speeds available", "Chosen Speed: ", true);
+		if (newSpeed >= 0 && newSpeed < Speed.values().length) {
+			speed = Speed.values()[newSpeed];
+		}
+	}
 	/**
 	 * @param dPoint the current location
 	 * @param fix    the fixture to copy to subordinate maps. May be null, to simplify
@@ -279,9 +299,9 @@ public final class ExplorationCLI implements MovementCostSource {
 			model.addMovementCostListener(cost -> movement.add(0 - cost));
 			addMovementCostListener(cost -> movement.add(0 - cost));
 			while (movement.getValue() > 0) {
-				helper.printf("%d MP of %d remaining.%n%s%n",
+				helper.printf("%d MP of %d remaining.%nCurrent speed: %s%n%s%n",
 						Integer.valueOf(movement.getValue()), Integer.valueOf(totalMP),
-						PROMPT);
+						speed.getName(), PROMPT);
 				move();
 			}
 		}

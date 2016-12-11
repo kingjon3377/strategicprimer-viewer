@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import model.exploration.IExplorationModel;
+import model.exploration.IExplorationModel.Speed;
 import model.listeners.MovementCostListener;
 import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeListener;
@@ -164,7 +165,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 					}
 				}
 			}
-			model.move(direction);
+			// FIXME: Allow user to specify speed.
+			model.move(direction, Speed.Normal);
 			final Point dPoint = model.getSelectedUnitLocation();
 			final Player player =
 					NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();

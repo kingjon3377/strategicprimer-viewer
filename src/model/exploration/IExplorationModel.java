@@ -3,6 +3,7 @@ package model.exploration;
 import java.util.List;
 import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeSource;
+import model.map.HasName;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
@@ -48,11 +49,13 @@ public interface IExplorationModel
 	 * should deduct a minimal MP cost.
 	 *
 	 * @param direction the direction to move
+	 * @param speed how quickly or slowly the explorer is taking things
 	 * @return the movement cost
 	 * @throws SimpleMovement.TraversalImpossibleException if movement in that direction
 	 *                                                     is impossible
 	 */
-	int move(Direction direction) throws SimpleMovement.TraversalImpossibleException;
+	int move(Direction direction, Speed speed)
+			throws SimpleMovement.TraversalImpossibleException;
 
 	/**
 	 * @param point     a point
@@ -140,5 +143,83 @@ public interface IExplorationModel
 		 * Stay still.
 		 */
 		Nowhere
+	}
+	/**
+	 * An enumeration of possible movement speeds, joining their effects on MP costs and
+	 * Perception. Traveling to "Nowhere" should give an additional bonus (+2?) to
+	 * Perception.
+	 */
+	enum Speed implements HasName {
+		/**
+		 * Traveling as quickly as possible.
+		 */
+		Hurried(0.66, -6),
+		/**
+		 * Normal speed.
+		 */
+		Normal(1.0, -4),
+		/**
+		 * Moving slowly enough to notice one's surroundings.
+		 */
+		Observant(1.5, -2),
+		/**
+		 * Looking carefully at one's surroundings to try not to miss anything important.
+		 */
+		Careful(2.0, 0),
+		/**
+		 * Painstaking searches.
+		 */
+		Meticulous(2.5, 2);
+		/**
+		 * This is applied to the normal MP cost of a movement by multiplication, and
+		 * the cost is then rounded up to the nearest integer.
+		 */
+		private final double mpMultiplier;
+		/**
+		 * This is a bonus or penalty applied to the explorer's Perception, as usual by
+		 * adding it.
+		 */
+		private final int perceptionModifier;
+		/**
+		 * A String description.
+		 */
+		private final String desc;
+		/**
+		 * @return the multiplicative modifier to apply to movement costs
+		 */
+		public double getMpMultiplier() {
+			return mpMultiplier;
+		}
+		/**
+		 * @return the additive modifier to apply to Perception checks
+		 */
+		public int getPerceptionModifier() {
+			return perceptionModifier;
+		}
+		/**
+		 * @return a String description for use in CLI menus.
+		 */
+		@Override
+		public String getName() {
+			return desc;
+		}
+		/**
+		 * @param mpMod the multiplicative modifier to movement costs
+		 * @param perceptionMod the additive modifier to Perception checks
+		 */
+		private Speed(final double mpMod, final int perceptionMod) {
+			mpMultiplier = mpMod;
+			perceptionModifier = perceptionMod;
+			String perceptionString;
+			if (perceptionModifier >= 0) {
+				perceptionString =
+						String.format("+%d", Integer.valueOf(perceptionModifier));
+			} else {
+				perceptionString = Integer.toString(perceptionModifier);
+			}
+			desc = String.format("%s: x%,.1f MP costs, %s Perception", name(),
+					Double.valueOf(mpMultiplier), perceptionString);
+
+		}
 	}
 }

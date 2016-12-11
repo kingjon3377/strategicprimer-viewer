@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import model.exploration.IExplorationModel.Speed;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -264,8 +265,9 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 					continue;
 				} else if (SimpleMovement.shouldAlwaysNotice(owned, fix)) {
 					neighborFixtures.add(fix);
-				} else if (SimpleMovement.shouldSometimesNotice(owned, fix)
-								   && !(fix instanceof CacheFixture)) {
+				} else if (SimpleMovement
+								   .shouldSometimesNotice(owned, Speed.Careful, fix) &&
+								   !(fix instanceof CacheFixture)) {
 					possibilities.add(fix);
 				}
 			}

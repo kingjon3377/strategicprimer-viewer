@@ -11,6 +11,7 @@ import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import model.exploration.HuntingModel;
 import model.exploration.IExplorationModel;
+import model.exploration.IExplorationModel.Speed;
 import model.listeners.SelectionChangeListener;
 import model.map.Point;
 import model.map.TileFixture;
@@ -110,9 +111,11 @@ public final class ExplorationListListener implements SelectionChangeListener {
 																	   NullCleaner
 																			   .assertNotNull(
 																					   list.getModel()))) {
+				// FIXME: Take speed into account
 				if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
 					constants.add(IntPair.of(i, fix));
-				} else if (SimpleMovement.shouldSometimesNotice(selUnit, fix)) {
+				} else if (SimpleMovement
+								   .shouldSometimesNotice(selUnit, Speed.Normal, fix)) {
 					possibles.add(IntPair.of(i, fix));
 				}
 				i++;

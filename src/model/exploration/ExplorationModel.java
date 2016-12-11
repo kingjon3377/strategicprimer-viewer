@@ -292,12 +292,13 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * exception; callers should deduct a minimal MP cost.
 	 *
 	 * @param direction the direction to move
+	 * @param speed the speed the explorer is moving
 	 * @return the movement cost
 	 * @throws SimpleMovement.TraversalImpossibleException if movement in that direction
 	 *                                                     is impossible
 	 */
 	@Override
-	public int move(final Direction direction)
+	public int move(final Direction direction, final Speed speed)
 			throws SimpleMovement.TraversalImpossibleException {
 		final Pair<Point, Optional<IUnit>> local = selection;
 		final IUnit unit = local.second().orElseThrow(
@@ -306,16 +307,17 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final Point point = local.first();
 		final Point dest = getDestination(point, direction);
 		if (SimpleMovement.isLandMovementPossible(map.getBaseTerrain(dest))) {
-			final int retval;
+			final int base;
 			if (dest.equals(point)) {
-				retval = 1;
+				base = 1;
 			} else {
-				retval = SimpleMovement.getMovementCost(map.getBaseTerrain(dest),
+				base = SimpleMovement.getMovementCost(map.getBaseTerrain(dest),
 						map.getForest(dest) != null, map.isMountainous(dest),
 						SimpleMovement.doRiversApply(direction, map.getRivers(point),
 								map.getRivers(dest)),
 						() -> map.streamOtherFixtures(dest));
 			}
+			final int retval = (int) (Math.ceil(base * speed.getMpMultiplier()) + 0.1);
 			removeImpl(map, point, unit);
 			map.addFixture(dest, unit);
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : getSubordinateMaps()) {

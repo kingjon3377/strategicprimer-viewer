@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.exploration.IExplorationModel.Direction;
+import model.exploration.IExplorationModel.Speed;
 import model.map.HasOwner;
 import model.map.IEvent;
 import model.map.River;
@@ -162,18 +163,20 @@ public final class SimpleMovement {
 	 * TODO: We now check DCs on Events, but ignore relevant skills other than Perception
 	 *
 	 * @param unit a unit
+	 * @param speed how fast the unit is moving
 	 * @param fix  a fixture
 	 * @return whether the unit might notice it. Units do not notice themselves, and do
 	 * not notice unexposed ground, and do not notice null fixtures.
 	 */
-	public static boolean shouldSometimesNotice(final IUnit unit,
+	public static boolean shouldSometimesNotice(final IUnit unit, final Speed speed,
 												@Nullable final TileFixture fix) {
 		if (fix instanceof Ground) {
 			return ((Ground) fix).isExposed();
 		} else if (unit.equals(fix)) {
 			return false;
 		} else if (fix instanceof IEvent) {
-			return (getHighestPerception(unit) + 15) >= ((IEvent) fix).getDC();
+			return (getHighestPerception(unit) + speed.getPerceptionModifier() + 15) >=
+						   ((IEvent) fix).getDC();
 		} else return fix != null;
 	}
 
@@ -224,6 +227,7 @@ public final class SimpleMovement {
 	}
 
 	/**
+	 * TODO: Very-observant units should "always" notice some things that others might "sometimes" notice.
 	 * @param unit a unit
 	 * @param fix  a fixture
 	 * @return whether the unit should always notice it. A null fixture is never noticed
