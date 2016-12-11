@@ -15,7 +15,6 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.stream.StreamSupport;
 import javax.swing.Box;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -29,6 +28,7 @@ import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.resources.ResourceManagementDriver;
 import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.FormattedLabel;
 import view.util.ImprovedComboBox;
@@ -121,9 +121,8 @@ public class ResourceAddingFrame extends SPFrame {
 							   final IOHandler ioh) {
 		super("Resource Entry", driverModel.getMapFile());
 		final IDRegistrar idf = IDFactoryFiller.createFactory(driverModel);
-		current = StreamSupport.stream(driverModel.getPlayers().spliterator(), false)
-						  .filter(Player::isCurrent)
-						  .findAny().orElse(NULL_PLAYER);
+		current = NullCleaner.valueOrDefault(driverModel.getCurrentPlayer(),
+				NULL_PLAYER);
 		final FormattedLabel resourceLabel =
 				new FormattedLabel("Add resource for %s:", current.getName());
 		final FormattedLabel implementLabel =

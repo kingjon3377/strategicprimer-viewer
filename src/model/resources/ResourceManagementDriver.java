@@ -12,6 +12,7 @@ import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
 
 /**
@@ -90,5 +91,14 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 																		fort.getOwner()
 																				.getPlayerId()))
 				.forEach(fort -> fort.addMember(resource));
+	}
+	/**
+	 * @return the current player, or null if there is none
+	 */
+	@Nullable
+	public Player getCurrentPlayer() {
+		return StreamSupport.stream(getPlayers().spliterator(), false)
+				.filter(Player::isCurrent)
+				.findAny().orElse(null);
 	}
 }
