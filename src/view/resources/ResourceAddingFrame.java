@@ -129,11 +129,7 @@ public class ResourceAddingFrame extends SPFrame {
 				new FormattedLabel("Add equipment for %s:", current.getName());
 		ioh.addPlayerChangeListener(
 				(final Player old, @Nullable final Player newPlayer) -> {
-					if (newPlayer == null) {
-						current = NULL_PLAYER;
-					} else {
-						current = newPlayer;
-					}
+					current = NullCleaner.valueOrDefault(newPlayer, NULL_PLAYER);
 					resourceLabel.setArgs(current.getName());
 					implementLabel.setArgs(current.getName());
 				});
