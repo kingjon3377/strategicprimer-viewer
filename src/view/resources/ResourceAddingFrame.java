@@ -15,7 +15,6 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashSet;
-import javax.swing.Box;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -225,12 +224,12 @@ public class ResourceAddingFrame extends SPFrame {
 	private static void addPair(final Container container,
 								final Component firstComponent,
 								final Component secondComponent) {
-		final JPanel panel = new BoxPanel(false);
-		panel.add(Box.createVerticalGlue());
+		final BoxPanel panel = new BoxPanel(false);
+		panel.addGlue();
 		panel.add(firstComponent);
-		panel.add(Box.createVerticalGlue());
+		panel.addGlue();
 		panel.add(secondComponent);
-		panel.add(Box.createVerticalGlue());
+		panel.addGlue();
 		container.add(panel);
 	}
 
