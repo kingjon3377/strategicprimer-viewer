@@ -42,7 +42,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
-import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
 import model.map.DistanceComparator;
 import model.map.IMapNG;
@@ -150,8 +149,6 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 																  " ..."));
 		new Thread(new ReportGeneratorThread(reportModel, model,
 													mainMap.getCurrentPlayer())).start();
-		final ReportUpdater reportUpdater = new ReportUpdater(model, reportModel);
-		model.addMapChangeListener(reportUpdater);
 		final OrdersPanel resultsPanel = new OrdersPanel(mainMap.getCurrentTurn(), mainMap.getCurrentPlayer(),
 							   model::getUnits,
 							   (unit, turn) -> unit.getResults(turn), null);
@@ -183,7 +180,8 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 		setJMenuBar(new WorkerMenu(menuHandler, this, model));
 		expander.expandAll();
 		addWindowListener(new CloseListener(newUnitFrame));
-		pcListeners = new ArrayList<>(Arrays.asList(newUnitFrame, treeModel, ordersPanel, reportUpdater, resultsPanel));
+		pcListeners = new ArrayList<>(Arrays.asList(newUnitFrame, treeModel, ordersPanel,
+				new ReportUpdater(model, reportModel), resultsPanel));
 		pack();
 	}
 
@@ -326,8 +324,7 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	private static final class ReportUpdater implements PlayerChangeListener,
-																MapChangeListener {
+	private static final class ReportUpdater implements PlayerChangeListener {
 		/**
 		 * The driver model, to get the map from.
 		 */
@@ -347,16 +344,10 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 								final DefaultTreeModel treeModel) {
 			model = workerModel;
 			reportModel = treeModel;
-		}
-
-		/**
-		 * Handle notification that a new map was loaded.
-		 */
-		@Override
-		public void mapChanged() {
-			new Thread(new ReportGeneratorThread(reportModel, model, model.getMap()
-																			 .getCurrentPlayer()))
-					.start();
+			model.addMapChangeListener(
+					() -> new Thread(new ReportGeneratorThread(
+							treeModel, model, model.getMap().getCurrentPlayer()))
+								  .start());
 		}
 
 		/**
