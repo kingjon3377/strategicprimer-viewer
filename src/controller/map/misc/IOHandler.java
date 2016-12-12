@@ -11,18 +11,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.swing.JFileChooser;
 import javax.swing.JPopupMenu;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
-import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import model.misc.IDriverModel;
@@ -150,20 +147,6 @@ public final class IOHandler implements ActionListener {
 	private static IMutableMapNG readMap(final Path file)
 			throws IOException, XMLStreamException, SPFormatException {
 		return new MapReaderAdapter().readMap(file, Warning.DEFAULT);
-	}
-
-	/**
-	 * @param players a collection of players
-	 * @return the players as an array
-	 */
-	private static Player[] playersAsArray(final Iterable<Player> players) {
-		if (players instanceof PlayerCollection) {
-			return ((PlayerCollection) players).asArray();
-		} else {
-			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
-											  .collect(Collectors.toList());
-			return NullCleaner.assertNotNull(list.toArray(new Player[list.size()]));
-		}
 	}
 
 	/**
