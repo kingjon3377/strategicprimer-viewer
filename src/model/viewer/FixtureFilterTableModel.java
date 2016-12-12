@@ -75,14 +75,15 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	public FixtureFilterTableModel() {
 		// TODO: Maybe units should be broken up by owner?
 		addTrivialMatchers(Unit.class);
-		addTrivialEMatchers(Fortress.class);
+		addTrivialMatcher(Fortress.class, "Fortresses");
 		// TODO: Towns should be broken up by kind or size, and maybe by status or owner
 		addTrivialMatcher(AbstractTown.class, "Cities, Towns, and Fortifications");
 		// TODO: Village through Centaur were all 45, so their ordering happened by
 		// chance
 		addTrivialMatchers(Village.class, Troll.class, Simurgh.class, Ogre.class,
 				Minotaur.class, Mine.class, Griffin.class);
-		addTrivialEMatchers(Sphinx.class, Phoenix.class);
+		addTrivialMatcher(Sphinx.class, "Sphinxes");
+		addTrivialMatcher(Phoenix.class, "Phoenixes");
 		addTrivialMatcher(Djinn.class, "Djinni");
 		addTrivialMatchers(Centaur.class);
 		// TODO: StoneDeposit through Animal were all 40; they too should be reviewed
@@ -131,16 +132,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 			list.add(new FixtureMatcher(cls::isInstance, cls.getSimpleName() + 's'));
 		}
 	}
-	/**
-	 * Add matchers that match all instances of given classes, for which we can use the
-	 * class names plus "es".
-	 * @param classes the classes to match
-	 */
-	private final void addTrivialEMatchers(final Class<? extends TileFixture>... classes) {
-		for (final Class<? extends TileFixture> cls : classes) {
-			list.add(new FixtureMatcher(cls::isInstance, cls.getSimpleName() + "es"));
-		}
-	}
+
 	/**
 	 * Add a matcher that matches all instances of a class.
 	 * @param cls the class to match
