@@ -265,9 +265,7 @@ public final class SimpleMovement {
 			} else {
 				dc = 10;
 			}
-			if (SingletonRandom.RANDOM.nextInt(20) + 1 < dc) {
-				return retval;
-			} else {
+			if (SingletonRandom.RANDOM.nextInt(20) + 1 >= dc) {
 				retval.add(item);
 				perception -= 5;
 			}
