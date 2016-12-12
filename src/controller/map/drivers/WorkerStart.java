@@ -4,6 +4,7 @@ import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MenuBroker;
 import controller.map.misc.PlayerChangeMenuListener;
+import controller.map.misc.WindowCloser;
 import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
@@ -68,7 +69,7 @@ public final class WorkerStart implements SimpleDriver {
 		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
 				"load secondary", "save all", "open in map viewer",
-				"open secondary map in map viewer", "go to tile", "close",
+				"open secondary map in map viewer", "go to tile",
 				"find a fixture", "find next", "change current player", "reload tree",
 				"zoom in", "zoom out", "center", "quit");
 		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(driverModel);
@@ -80,6 +81,7 @@ public final class WorkerStart implements SimpleDriver {
 			menuHandler.register(
 					evt -> frame.playerChanged(model.getMap().getCurrentPlayer(),
 							model.getMap().getCurrentPlayer()), "reload tree");
+			menuHandler.register(new WindowCloser(frame), "close");
 			frame.setVisible(true);
 		});
 	}

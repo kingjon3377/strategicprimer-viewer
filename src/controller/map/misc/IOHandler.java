@@ -301,12 +301,6 @@ public final class IOHandler implements ActionListener {
 										  .setVisible(true));
 				}
 				break;
-			case "close":
-				if (parent != null) {
-					parent.setVisible(false);
-					parent.dispose();
-				}
-				break;
 			case "find a fixture":
 				if (model instanceof IViewerModel) {
 					SwingUtilities

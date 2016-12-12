@@ -3,6 +3,7 @@ package controller.map.drivers;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MenuBroker;
+import controller.map.misc.WindowCloser;
 import java.util.stream.StreamSupport;
 import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
@@ -65,11 +66,15 @@ public final class ViewerStart implements SimpleDriver {
 		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
 				"load secondary", "save all", "open in map viewer",
-				"open secondary map in map viewer", "go to tile", "close",
+				"open secondary map in map viewer", "go to tile",
 				"find a fixture", "find next", "change current player", "reload tree",
 				"zoom in", "zoom out", "center", "quit");
 		SwingUtilities.invokeLater(
-				() -> new ViewerFrame(viewerModel, menuHandler).setVisible(true));
+				() -> {
+					final ViewerFrame frame = new ViewerFrame(viewerModel, menuHandler);
+					menuHandler.register(new WindowCloser(frame), "close");
+					frame.setVisible(true);
+				});
 	}
 
 	/**
