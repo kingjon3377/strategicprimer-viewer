@@ -103,22 +103,38 @@ public final class ImmortalsReportGenerator
 		// we want the full toString, so we use that instead of getKind.
 		return MultiMapHelper.getMapValue(mapping, item.toString(), ListReportNode::new);
 	}
+
 	/**
-	 * @param list a list
-	 * @return its add() method as a BiConsumer of Strings and Points.
+	 * @param meta the mapping from types to Consumers
+	 * @param cls a type of fixture
+	 * @param heading the heading to put at the top of the list
+	 * @return the list for that kind of fixture, with a reference to its add() method added to meta.
 	 */
-	private static BiConsumer<String, Point> simplest(final List<Point> list) {
-		return (kind, point) -> list.add(point);
+	private static HeadedList<Point> handleSimple(final Map<Class<? extends IFixture>,
+																   BiConsumer<String,
+																					 Point>> meta,
+												  final Class<? extends IFixture> cls,
+												  final String heading) {
+		final HeadedList<Point> retval = new PointList(heading);
+		meta.put(cls, (kind, point) -> retval.add(point));
+		return retval;
 	}
 	/**
-	 * @param collection a collection of lists of points.
-	 * @param suffix what to put after the kind in the header of each list
-	 * @return a reference to a method that gets the right list and adds the point to it
+	 * @param meta the mapping from types to Consumers
+	 * @param cls a type of fixture
+	 * @param plural the pluralization to add after each list
+	 * @return the collection of lists for that kind of fixture, with a Consumer
+	 * handling them added to meta
 	 */
-	private static BiConsumer<String, Point> complex(final Map<String, Collection<Point>>
-													  collection, final String suffix) {
-		return (kind, point) -> MultiMapHelper.getMapValue(collection, kind,
-				key -> new PointList(key + suffix)).add(point);
+	private static  Map<String, Collection<Point>> handleComplex(final Map<Class<? extends IFixture>,
+																   BiConsumer<String,
+																					 Point>> meta,
+												  final Class<? extends IFixture> cls,
+												  final String plural) {
+		final  Map<String, Collection<Point>> retval = new HashMap<>();
+		meta.put(cls, (kind, point) -> MultiMapHelper.getMapValue(retval, kind,
+				key -> new PointList(key + plural)).add(point));
+		return retval;
 	}
 	/**
 	 * Produce the sub-report dealing with "immortals".
@@ -133,32 +149,29 @@ public final class ImmortalsReportGenerator
 						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final HeadedList<Point> griffins = new PointList("Griffin(s) at ");
-		final HeadedList<Point> simurghs = new PointList("Simurgh(s) at ");
-		final HeadedList<Point> phoenixes = new PointList("Phoenix(es) at ");
-		final Map<String, Collection<Point>> centaurs = new HashMap<>();
-		final HeadedList<Point> ogres = new PointList("Ogre(s) at ");
-		final HeadedList<Point> minotaurs = new PointList("Minotaur(s) at ");
-		final Map<String, Collection<Point>> giants = new HashMap<>();
-		final HeadedList<Point> sphinxes = new PointList("Sphinx(es) at ");
-		final HeadedList<Point> djinni = new PointList("Djinn(i) at ");
-		final HeadedList<Point> trolls = new PointList("Troll(s) at ");
-		final Map<String, Collection<Point>> fairies = new HashMap<>();
-		final Map<String, Collection<Point>> dragons = new HashMap<>();
 		final Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta =
 				new HashMap<>();
-		meta.put(Dragon.class, complex(dragons, "(s) at "));
-		meta.put(Fairy.class, complex(fairies, " at "));
-		meta.put(Troll.class, simplest(trolls));
-		meta.put(Djinn.class, simplest(djinni));
-		meta.put(Sphinx.class, simplest(sphinxes));
-		meta.put(Giant.class, complex(giants, "(s) at "));
-		meta.put(Minotaur.class, simplest(minotaurs));
-		meta.put(Ogre.class, simplest(ogres));
-		meta.put(Centaur.class, complex(centaurs, "(s) at "));
-		meta.put(Phoenix.class, simplest(phoenixes));
-		meta.put(Simurgh.class, simplest(simurghs));
-		meta.put(Griffin.class, simplest(griffins));
+		final HeadedList<Point> griffins =
+				handleSimple(meta, Griffin.class, "Griffin(s) at ");
+		final HeadedList<Point> simurghs =
+				handleSimple(meta, Simurgh.class, "Simurgh(s) at ");
+		final HeadedList<Point> phoenixes =
+				handleSimple(meta, Phoenix.class, "Phoenix(es) at ");
+		final Map<String, Collection<Point>> centaurs =
+				handleComplex(meta, Centaur.class, "(s) at ");
+		final HeadedList<Point> ogres = handleSimple(meta, Ogre.class, "Ogre(s) at ");
+		final HeadedList<Point> minotaurs =
+				handleSimple(meta, Minotaur.class, "Minotaur(s) at ");
+		final Map<String, Collection<Point>> giants =
+				handleComplex(meta, Giant.class, "(s) at ");
+		final HeadedList<Point> sphinxes =
+				handleSimple(meta, Sphinx.class, "Sphinx(es) at ");
+		final HeadedList<Point> djinni = handleSimple(meta, Djinn.class, "Djinn(i) at ");
+		final HeadedList<Point> trolls = handleSimple(meta, Troll.class,"Troll(s) at ");
+		final Map<String, Collection<Point>> fairies =
+				handleComplex(meta, Fairy.class, " at ");
+		final Map<String, Collection<Point>> dragons =
+				handleComplex(meta, Dragon.class, "(s) at ");
 		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
