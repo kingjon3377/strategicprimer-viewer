@@ -194,12 +194,7 @@ public final class ExplorationCLI implements MovementCostSource {
 		consider.accept(map.getGround(dPoint));
 		consider.accept(map.getForest(dPoint));
 		map.streamOtherFixtures(dPoint).forEach(consider);
-		final String tracks;
-		if (Ocean == model.getMap().getBaseTerrain(dPoint)) {
-			tracks = huntingModel.fish(dPoint, 1).get(0);
-		} else {
-			tracks = huntingModel.hunt(dPoint, 1).get(0);
-		}
+		final String tracks = getAnimalTraces(dPoint);
 		if (!HuntingModel.NOTHING.equals(tracks)) {
 			allFixtures.add(new Animal(tracks, true, false, "wild", idf.createID()));
 		}
@@ -227,6 +222,17 @@ public final class ExplorationCLI implements MovementCostSource {
 		constants.addAll(noticed);
 		for (final TileFixture fix : constants) {
 			printAndTransferFixture(dPoint, fix, mover);
+		}
+	}
+	/**
+	 * @param point a location
+	 * @return a randomly-selected animal for that location to possibly have traces of
+	 */
+	private String getAnimalTraces(final Point point) {
+		if (Ocean == model.getMap().getBaseTerrain(point)) {
+			return huntingModel.fish(point, 1).get(0);
+		} else {
+			return huntingModel.hunt(point, 1).get(0);
 		}
 	}
 	/**
