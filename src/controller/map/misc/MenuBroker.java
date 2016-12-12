@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 import util.TypesafeLogger;
 
 /**
@@ -52,7 +53,8 @@ public class MenuBroker implements ActionListener {
 	public void actionPerformed(final ActionEvent evt) {
 		final String action = evt.getActionCommand().toLowerCase();
 		if (mapping.containsKey(action)) {
-			mapping.get(action).actionPerformed(evt);
+			final ActionListener listener = mapping.get(action);
+			SwingUtilities.invokeLater(() -> listener.actionPerformed(evt));
 		} else {
 			LOGGER.log(Level.WARNING, "Unhandled action: %s", evt.getActionCommand());
 		}
