@@ -107,7 +107,6 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 		supplier = ordersSupplier;
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
-		final boolean onMac = OnMac.SYSTEM_IS_MAC;
 		final String prefix = OnMac.SHORTCUT_DESC;
 		final int keyMask = OnMac.SHORTCUT_MASK;
 		final int initialTurn = currentTurn;

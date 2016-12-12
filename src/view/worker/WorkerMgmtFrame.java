@@ -132,7 +132,6 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 						mainMap::getCurrentTurn, true);
 		newUnitFrame.addNewUnitListener(treeModel);
 		final int keyMask = OnMac.SHORTCUT_MASK;
-		final String keyDesc = String.format(": (%sU)", OnMac.SHORTCUT_DESC);
 		final InputMap inputMap = tree.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		final ActionMap actionMap = tree.getActionMap();
 		assert (inputMap != null) && (actionMap != null);
