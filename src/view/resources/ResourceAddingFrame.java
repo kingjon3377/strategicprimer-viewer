@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
@@ -55,7 +56,7 @@ import view.worker.WorkerMenu;
  *
  * @author Jonathan Lovelace
  */
-public class ResourceAddingFrame extends SPFrame {
+public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener {
 	/**
 	 * The label that we use to display diagnostics.
 	 */
@@ -110,7 +111,14 @@ public class ResourceAddingFrame extends SPFrame {
 	 * Whether we have yet to ask the user to choose a player.
 	 */
 	private boolean playerIsDefault = true;
-
+	/**
+	 * The label to say to whom resources will belong.
+	 */
+	final FormattedLabel resourceLabel;
+	/**
+	 * The label to say to whom implements will belong.
+	 */
+	final FormattedLabel implementLabel;
 	/**
 	 * Constructor.
 	 *
@@ -124,16 +132,8 @@ public class ResourceAddingFrame extends SPFrame {
 		final IDRegistrar idf = IDFactoryFiller.createFactory(driverModel);
 		current = NullCleaner.valueOrDefault(driverModel.getCurrentPlayer(),
 				NULL_PLAYER);
-		final FormattedLabel resourceLabel =
-				new FormattedLabel("Add resource for %s:", current.getName());
-		final FormattedLabel implementLabel =
-				new FormattedLabel("Add equipment for %s:", current.getName());
-		ioh.addPlayerChangeListener(
-				(final Player old, @Nullable final Player newPlayer) -> {
-					current = NullCleaner.valueOrDefault(newPlayer, NULL_PLAYER);
-					resourceLabel.setArgs(current.getName());
-					implementLabel.setArgs(current.getName());
-				});
+		resourceLabel = new FormattedLabel("Add resource for %s:", current.getName());
+		implementLabel = new FormattedLabel("Add equipment for %s:", current.getName());
 		final BoxPanel mainPanel = new BoxPanel(false);
 		mainPanel.add(resourceLabel);
 		final JPanel panel = new BoxPanel(true);
@@ -241,7 +241,7 @@ public class ResourceAddingFrame extends SPFrame {
 	 *
 	 * @param ioh the menu handler to use to show the dialog
 	 */
-	private void confirmPlayer(final IOHandler ioh) {
+	private void confirmPlayer(final ActionListener ioh) {
 		if (playerIsDefault && current.getName().trim().isEmpty()) {
 			ioh.actionPerformed(new ActionEvent(this, 1, "change current player"));
 		}
@@ -300,6 +300,19 @@ public class ResourceAddingFrame extends SPFrame {
 	@Override
 	public String getWindowName() {
 		return "Resource Entry";
+	}
+
+	/**
+	 * Called when the current player changes.
+	 *
+	 * @param old       the previous current player
+	 * @param newPlayer the new current player
+	 */
+	@Override
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		current = newPlayer;
+		resourceLabel.setArgs(current.getName());
+		implementLabel.setArgs(current.getName());
 	}
 
 	/**

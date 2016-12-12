@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import view.resources.ResourceAddingFrame;
@@ -62,9 +62,14 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 		} else {
 			driverModel = new ResourceManagementDriver(model);
 		}
+		final IOHandler ioh = new IOHandler(driverModel);
 		SwingUtilities.invokeLater(
-				() -> new ResourceAddingFrame(driverModel, new IOHandler(driverModel))
-							  .setVisible(true));
+				() -> {
+					final ResourceAddingFrame frame =
+							new ResourceAddingFrame(driverModel, ioh);
+					ioh.addPlayerChangeListener(frame);
+					frame.setVisible(true);
+				});
 	}
 
 	/**
