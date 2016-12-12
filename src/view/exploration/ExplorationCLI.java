@@ -228,7 +228,7 @@ public final class ExplorationCLI implements MovementCostSource {
 					Integer.valueOf(noticed.size()));
 			constants.addAll(noticed);
 		} else {
-			helper.println("The following were noticed, all but the last automatically");
+			helper.println("The following were noticed, all but the last automatically:");
 			constants.addAll(noticed);
 		}
 		for (final TileFixture fix : constants) {
