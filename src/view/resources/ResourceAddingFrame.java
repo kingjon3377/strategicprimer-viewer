@@ -29,6 +29,7 @@ import model.map.fixtures.ResourcePile;
 import model.resources.ResourceManagementDriver;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
+import util.Quantity;
 import view.util.BoxPanel;
 import view.util.FormattedLabel;
 import view.util.ImprovedComboBox;
@@ -158,9 +159,10 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 				return;
 			}
 			final ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
-															  resQtyModel.getNumber()
-																	  .intValue(),
-															  units);
+															  new Quantity(resQtyModel
+																				   .getNumber()
+																				   .intValue(),
+																				  units));
 			pile.setCreated(resCreatedModel.getNumber().intValue());
 			driverModel.addResource(pile, current);
 			logAddition(pile.toString());

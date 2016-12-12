@@ -20,6 +20,7 @@ import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
+import util.Quantity;
 import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
@@ -100,8 +101,9 @@ public final class FluidResourceHandler {
 				new ResourcePile(getOrGenerateID(element, warner, idFactory),
 										getAttribute(element, "kind"),
 										getAttribute(element, "contents"),
-										quantity,
-										getAttribute(element, "unit", ""));
+										new Quantity(quantity,
+															getAttribute(element, "unit",
+																	"")));
 		if (hasAttribute(element, "created")) {
 			retval.setCreated(getIntegerAttribute(element, "created"));
 		}
@@ -423,7 +425,7 @@ public final class FluidResourceHandler {
 		writeIntegerAttribute(ostream, "id", pile.getID());
 		writeAttribute(ostream, "kind", pile.getKind());
 		writeAttribute(ostream, "contents", pile.getContents());
-		final Number quantity = pile.getQuantity();
+		final Number quantity = pile.getQuantity().getNumber();
 		if (quantity instanceof Integer) {
 			writeIntegerAttribute(ostream, "quantity", quantity.intValue());
 		} else if (quantity instanceof BigDecimal) {
@@ -437,7 +439,7 @@ public final class FluidResourceHandler {
 			throw new IllegalArgumentException("ResourcePile with non-Integer, " +
 													   "non-BigDecimal quantity");
 		}
-		writeAttribute(ostream, "unit", pile.getUnits());
+		writeAttribute(ostream, "unit", pile.getQuantity().getUnits());
 		if (pile.getCreated() >= 0) {
 			writeIntegerAttribute(ostream, "created", pile.getCreated());
 		}

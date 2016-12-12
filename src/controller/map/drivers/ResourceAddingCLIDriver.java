@@ -19,6 +19,7 @@ import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import util.MultiMapHelper;
 import util.NullCleaner;
+import util.Quantity;
 
 /**
  * A driver to let the user enter resources etc.
@@ -147,13 +148,12 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			contents = cli.inputString("Prefix to use: ").trim() + ' ' + contents;
 		}
 		model.addResource(new ResourcePile(idf.createID(), kind, contents,
-												  cli.inputDecimal(
+												  new Quantity(cli.inputDecimal(
 														  NullCleaner.assertNotNull(
 																  String.format(
-																		  "Quantity in " +
-																				  "%s? ",
+																		  "Quantity in %s? ",
 																		  units))),
-												  units), player);
+																	  units)), player);
 	}
 
 	/**

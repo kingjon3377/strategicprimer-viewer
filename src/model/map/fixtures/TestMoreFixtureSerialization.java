@@ -38,6 +38,7 @@ import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import org.junit.Test;
 import util.NullCleaner;
+import util.Quantity;
 import util.Warning;
 
 import static model.map.PointFactory.point;
@@ -554,16 +555,18 @@ public final class TestMoreFixtureSerialization extends
 		firstFort.addMember(new Implement("implKind", 2));
 		assertSerialization("Fortress can have an Implement as a member", firstFort);
 		firstFort.addMember(
-				new ResourcePile(3, "generalKind", "specificKind", 10, "each"));
+				new ResourcePile(3, "generalKind", "specificKind",
+										new Quantity(10, "each")));
 		assertSerialization("Fortress can have a Resource Pile as a member",
 				firstFort);
 		final ResourcePile resource =
-				new ResourcePile(4, "generalKind", "specificKind", 15, "pounds");
+				new ResourcePile(4, "generalKind", "specificKind",
+										new Quantity(15, "pounds"));
 		resource.setCreated(5);
 		assertSerialization("Resource pile can know what turn it was created", resource);
 		assertSerialization("Resource pile can have non-integer quantity",
 				new ResourcePile(5, "resourceKind", "specificKind2",
-										new BigDecimal("1.5"), "cubic feet"));
+										new Quantity(new BigDecimal("1.5"), "cubic feet")));
 	}
 
 	/**

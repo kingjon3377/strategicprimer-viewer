@@ -10,6 +10,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.ResourcePile;
 import util.NullCleaner;
+import util.Quantity;
 import util.Warning;
 
 /**
@@ -72,8 +73,9 @@ public final class CompactResourcePileReader
 				new ResourcePile(getOrGenerateID(element, warner, idFactory),
 										getParameter(element, "kind"),
 										getParameter(element, "contents"),
-										quantity,
-										getParameter(element, "unit", ""));
+										new Quantity(quantity,
+															getParameter(element, "unit",
+																	"")));
 		if (hasParameter(element, "created")) {
 			retval.setCreated(getIntegerParameter(element, "created"));
 		}
@@ -106,8 +108,8 @@ public final class CompactResourcePileReader
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "contents", obj.getContents());
-		writeProperty(ostream, "quantity", obj.getQuantity().toString());
-		writeProperty(ostream, "unit", obj.getUnits());
+		writeProperty(ostream, "quantity", obj.getQuantity().getNumber().toString());
+		writeProperty(ostream, "unit", obj.getQuantity().getUnits());
 		if (obj.getCreated() >= 0) {
 			writeProperty(ostream, "created", Integer.toString(obj.getCreated()));
 		}

@@ -80,9 +80,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			final ResourcePile pile = (ResourcePile) item;
 			writeField(ostream, pile.getKind());
 			writeFieldDelimiter(ostream);
-			writeField(ostream,
-					String.format("%s %s", pile.getQuantity().toString(),
-							pile.getUnits()));
+			writeField(ostream, pile.getQuantity().toString());
 			writeFieldDelimiter(ostream);
 			writeField(ostream, pile.getContents());
 			ostream.append(getRowDelimiter());
@@ -134,14 +132,8 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 													.compareTo(secondPile
 																	   .getContents());
 					if (contentsCmp == 0) {
-						final int unitsCmp = firstPile.getUnits().compareTo(
-								secondPile.getUnits());
-						if (unitsCmp == 0) {
-							return compareNumbers(firstPile.getQuantity(),
-									secondPile.getQuantity());
-						} else {
-							return unitsCmp;
-						}
+						return firstPile.getQuantity()
+									   .compareTo(secondPile.getQuantity());
 					} else {
 						return contentsCmp;
 					}

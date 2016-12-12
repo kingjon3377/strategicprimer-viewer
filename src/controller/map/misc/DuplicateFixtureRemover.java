@@ -21,6 +21,7 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.towns.Fortress;
 import util.MultiMapHelper;
 import util.Pair;
+import util.Quantity;
 
 /**
  * A utility class to remove duplicate hills, forests, etc. from the map (to reduce the
@@ -124,7 +125,7 @@ public final class DuplicateFixtureRemover {
 				final ResourcePile res = (ResourcePile) fix;
 				final Pair<String, Pair<String, Pair<String, Integer>>> key =
 						Pair.of(res.getKind(),
-								Pair.of(res.getContents(), Pair.of(res.getUnits(),
+								Pair.of(res.getContents(), Pair.of(res.getQuantity().getUnits(),
 										Integer.valueOf(res.getCreated()))));
 				MultiMapHelper.getMapValue(resources, key, ignored -> new ArrayList<>())
 						.add(res);
@@ -165,11 +166,15 @@ public final class DuplicateFixtureRemover {
 		final ResourcePile top = list.get(0);
 		final ResourcePile combined =
 				new ResourcePile(top.getID(), top.getKind(), top.getContents(),
-										list.stream().map(ResourcePile::getQuantity)
-												.map(DuplicateFixtureRemover
-															 ::toBigDecimal)
-												.reduce(BigDecimal.ZERO, BigDecimal::add),
-										top.getUnits());
+										new Quantity(list.stream()
+															 .map
+																	  (ResourcePile::getQuantity)
+															 .map(Quantity::getNumber)
+															 .map
+																	  (DuplicateFixtureRemover::toBigDecimal)
+															 .reduce(BigDecimal.ZERO,
+																	 BigDecimal::add),
+															top.getQuantity().getUnits()));
 		combined.setCreated(top.getCreated());
 		return combined;
 	}

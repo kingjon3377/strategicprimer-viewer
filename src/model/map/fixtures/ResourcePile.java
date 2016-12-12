@@ -5,6 +5,7 @@ import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
+import util.Quantity;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -28,10 +29,6 @@ import static util.NullCleaner.assertNotNull;
 public class ResourcePile
 		implements UnitMember, FortressMember, HasMutableKind, HasMutableImage {
 	/**
-	 * A quantity of zero.
-	 */
-	private static final Number ZERO = Integer.valueOf(0);
-	/**
 	 * The ID # of the resource pile.
 	 */
 	private final int id;
@@ -44,13 +41,9 @@ public class ResourcePile
 	 */
 	private String contents;
 	/**
-	 * How much of that thing is in the pile.
+	 * How much of that thing is in the pile, including units.
 	 */
-	private Number quantity;
-	/**
-	 * The units the quantity is measured in.
-	 */
-	private String unit;
+	private Quantity quantity;
 	/**
 	 * The image to use for the resource.
 	 */
@@ -65,16 +58,13 @@ public class ResourcePile
 	 * @param resKind     the general kind of resource
 	 * @param resContents the specific kind of resource
 	 * @param qty         how much of the resource is in the pile
-	 * @param qtyUnit     what units the quantity is measured in
 	 */
 	public ResourcePile(final int idNum, final String resKind,
-						final String resContents, final Number qty,
-						final String qtyUnit) {
+						final String resContents, final Quantity qty) {
 		id = idNum;
 		kind = resKind;
 		contents = resContents;
 		quantity = qty;
-		unit = qtyUnit;
 	}
 
 	/**
@@ -148,8 +138,7 @@ public class ResourcePile
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof ResourcePile) && kind.equals(((ResourcePile) fix).kind) &&
 					   contents.equals(((ResourcePile) fix).contents) &&
-					   quantity.equals(((ResourcePile) fix).quantity) &&
-					   unit.equals(((ResourcePile) fix).unit);
+					   quantity.equals(((ResourcePile) fix).quantity);
 	}
 
 	/**
@@ -179,17 +168,9 @@ public class ResourcePile
 						Integer.valueOf(id));
 				retval = false;
 			}
-			if (!unit.equals(((ResourcePile) obj).unit)) {
-				ostream.format("%s\tIn Resource Pile, ID #%d, Units differ%n", context,
-						Integer.valueOf(id));
-				retval = false;
-			}
-			if (!quantity.equals(((ResourcePile) obj).quantity)
-						&& !ZERO.equals(((ResourcePile) obj).quantity)) {
-				ostream.format("%s\tIn Resource Pile, ID #%d, Quantities differ%n",
-						context, Integer.valueOf(id));
-				retval = false;
-			}
+			retval &= quantity.isSubset(((ResourcePile) obj).quantity, ostream,
+					String.format("%s\tIn Resource Pile, ID #%d", context,
+							Integer.valueOf(id)));
 			return retval;
 		} else {
 			ostream.format("%s\tDifferent fixture types given for ID #%d", context,
@@ -205,7 +186,7 @@ public class ResourcePile
 	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public ResourcePile copy(final boolean zero) {
-		final ResourcePile retval = new ResourcePile(id, kind, contents, quantity, unit);
+		final ResourcePile retval = new ResourcePile(id, kind, contents, quantity);
 		if (!zero) {
 			retval.setCreated(created);
 		}
@@ -215,7 +196,7 @@ public class ResourcePile
 	/**
 	 * @return the quantity of resource in the pile
 	 */
-	public Number getQuantity() {
+	public Quantity getQuantity() {
 		return quantity;
 	}
 
@@ -225,36 +206,19 @@ public class ResourcePile
 	 *
 	 * @param qty the new quantity of resource in the pile.
 	 */
-	public void setQuantity(final Number qty) {
+	public void setQuantity(final Quantity qty) {
 		quantity = qty;
 	}
 
 	/**
-	 * @return the unit in which the quantity is measured
-	 */
-	public String getUnits() {
-		return unit;
-	}
-
-	/**
-	 * @param newUnit the unit in which the quantity is measured
-	 */
-	public void setUnits(final String newUnit) {
-		unit = newUnit;
-	}
-
-	/**
-	 * This hash code function is modified, I think without changing the algorithm, from
-	 * the auto-generated one.
-	 *
 	 * @return a hash code for the object.
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		return (prime * ((prime * ((prime * ((prime * (prime + contents.hashCode())) +
+		return (prime * ((prime * ((prime * (prime + contents.hashCode())) +
 													 id)) + kind.hashCode())) +
-								 quantity.intValue())) + unit.hashCode();
+								 quantity.hashCode();
 	}
 
 	/**
@@ -270,7 +234,6 @@ public class ResourcePile
 										 contents.equals(((ResourcePile) obj)
 																 .contents) &&
 										 kind.equals(((ResourcePile) obj).kind) &&
-										 unit.equals(((ResourcePile) obj).unit) &&
 										 (created == ((ResourcePile) obj).created));
 	}
 
@@ -285,13 +248,13 @@ public class ResourcePile
 		} else {
 			age = " from turn " + created;
 		}
-		if (unit.isEmpty()) {
+		if (quantity.getUnits().isEmpty()) {
 			return assertNotNull(
 					String.format("A pile of %s %s (%s)%s", quantity.toString(),
 							contents, kind, age));
 		} else {
-			return assertNotNull(String.format("A pile of %s %s of %s (%s)%s",
-					quantity.toString(), unit, contents, kind, age));
+			return assertNotNull(String.format("A pile of %s of %s (%s)%s",
+					quantity.toString(), contents, kind, age));
 		}
 	}
 
