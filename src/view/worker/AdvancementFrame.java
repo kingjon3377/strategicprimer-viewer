@@ -1,7 +1,7 @@
 package view.worker;
 
 import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.IOHandler;
+import controller.map.misc.MenuBroker;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -64,7 +64,7 @@ public final class AdvancementFrame extends SPFrame implements PlayerChangeListe
 	 * @param source    the model containing the data to work from
 	 * @param ioHandler the I/O handler so the menu 'open' item, etc., will work
 	 */
-	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
+	public AdvancementFrame(final IWorkerModel source, final MenuBroker menuHandler) {
 		super("Worker Advancement", source.getMapFile(), new Dimension(640, 480));
 		final IMapNG map = source.getMap();
 		treeModel = new WorkerTreeModelAlt(map.getCurrentPlayer(), source);
@@ -109,8 +109,11 @@ public final class AdvancementFrame extends SPFrame implements PlayerChangeListe
 		for (int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);
 		}
-		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
-		setJMenuBar(new WorkerMenu(ioHandler, this, source));
+		final TreeExpansionHandler expander = new TreeExpansionHandler(tree);
+		menuHandler.register(evt -> expander.expandAll(), "expand all");
+		menuHandler.register(evt -> expander.collapseAll(), "collapse all");
+		menuHandler.register(evt -> expander.expandSome(2), "expand unit kinds");
+		setJMenuBar(new WorkerMenu(menuHandler, this, source));
 		pack();
 	}
 
