@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -214,7 +213,6 @@ public final class ExplorationCLI implements MovementCostSource {
 		}
 		helper.printf("The explorer comes to %s, a tile with terrain %s%n",
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
-		Collections.shuffle(allFixtures);
 		final List<TileFixture> noticed =
 				SimpleMovement.selectNoticed(allFixtures, mover, speed);
 		// TODO: Perception should affect how many non-automatics.
