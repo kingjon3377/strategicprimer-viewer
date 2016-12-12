@@ -101,8 +101,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		addTrivialMatcher(Battlefield.class, "Battlefields");
 		addTrivialMatcher(Animal.class, "Animals");
 
-		addSimpleMatcher(Grove.class, Grove::isOrchard, "Orchards");
-		addSimpleMatcher(Grove.class, fix -> !fix.isOrchard(), "Groves");
+		addComplements(Grove.class, Grove::isOrchard, "Orchards", "Groves");
 
 		// TODO: Rivers are usually handled specially, so should this really be included?
 		addTrivialMatcher(RiverFixture.class, "Rivers");
@@ -120,8 +119,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 
 		// TODO: Shrub and Meadow were both 15; consider
 		addTrivialMatcher(Shrub.class, "Shrubs");
-		addSimpleMatcher(Meadow.class, Meadow::isField, "Fields");
-		addSimpleMatcher(Meadow.class, fix -> !fix.isField(), "Meadows");
+		addComplements(Meadow.class, Meadow::isField, "Fields", "Meadows");
 
 		// TODO: Mountains are now a separate aspect of a tile; should this be omitted?
 		addTrivialMatcher(Mountain.class, "Mountains");
@@ -130,8 +128,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		addTrivialMatcher(Sandbar.class, "Sandbars");
 		addTrivialMatcher(Hill.class, "Hills");
 
-		addSimpleMatcher(Ground.class, Ground::isExposed, "Ground (exposed)");
-		addSimpleMatcher(Ground.class, fix -> !fix.isExposed(), "Ground");
+		addComplements(Ground.class, Ground::isExposed, "Ground (exposed)", "Ground");
 	}
 	/**
 	 * Add a matcher.
@@ -150,18 +147,21 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		addMatcher(new FixtureMatcher(cls::isInstance, desc));
 	}
 	/**
-	 * Add a not-quite-trivial matcher.
-	 *
-	 * @param <T> the type of fixtures we want to match
-	 * @param cls    the class of fixtures we want to match
-	 * @param method a method on that class to use as a second predicate
-	 * @param desc   the description to use for the matcher
+	 * Add matchers for a class when a predicate is true and false.
+	 * @param <T> the type to match
+	 * @param cls the class to match
+	 * @param method the method to use as a second predicate
+	 * @param firstDesc the description to use for the matcher using the predicate as-s
+	 * @param secondDesc the description to use for the matcher using the predicate
+	 *                      reversed
 	 */
-	private final <T extends TileFixture> void addSimpleMatcher(
+	private final <T extends TileFixture> void addComplements(
 			final Class<? extends T> cls, final Predicate<T> method,
-			final String desc) {
-		addMatcher(simpleMatcher(cls, method, desc));
+			final String firstDesc, final String secondDesc) {
+		addMatcher(simpleMatcher(cls, method, firstDesc));
+		addMatcher(simpleMatcher(cls, method.negate(), secondDesc));
 	}
+
 	/**
 	 * @return the number of rows in the model
 	 */
