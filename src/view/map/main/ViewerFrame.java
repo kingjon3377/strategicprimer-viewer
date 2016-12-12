@@ -20,7 +20,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumn;
 import model.viewer.FixtureFilterTableModel;
 import model.viewer.IViewerModel;
-import util.NullCleaner;
 import util.OnMac;
 import view.map.details.DetailPanelNG;
 import view.util.BorderedPanel;
@@ -92,8 +91,7 @@ public final class ViewerFrame extends SPFrame {
 		addWindowListener(windowSizeListener);
 		addWindowStateListener(windowSizeListener);
 
-		setJMenuBar(new ViewerMenu(NullCleaner.assertNotNull(ioHandler), this,
-										  map));
+		setJMenuBar(new ViewerMenu(ioHandler, this, map));
 	}
 
 	/**
