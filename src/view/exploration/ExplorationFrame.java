@@ -1,10 +1,10 @@
 package view.exploration;
 
-import controller.map.misc.IOHandler;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -35,10 +35,10 @@ import view.util.SPFrame;
 public final class ExplorationFrame extends SPFrame {
 	/**
 	 * @param explorationModel the exploration model
-	 * @param ioHandler        Passed to menu constructor
+	 * @param menuHandler        Passed to menu constructor
 	 */
 	public ExplorationFrame(final IExplorationModel explorationModel,
-							final IOHandler ioHandler) {
+							final ActionListener menuHandler) {
 		super("Exploration", explorationModel.getMapFile(), new Dimension(768, 480));
 		setPreferredSize(new Dimension(1024, 640));
 		final CardLayout layout = new CardLayout();
@@ -58,7 +58,7 @@ public final class ExplorationFrame extends SPFrame {
 		add(esp);
 		add(explorationPanel);
 
-		setJMenuBar(new ExplorationMenu(ioHandler, explorationModel, this));
+		setJMenuBar(new ExplorationMenu(menuHandler, explorationModel, this));
 		pack();
 	}
 

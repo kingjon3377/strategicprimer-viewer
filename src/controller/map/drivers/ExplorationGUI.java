@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
+import controller.map.misc.MenuBroker;
 import javax.swing.SwingUtilities;
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
@@ -53,10 +54,16 @@ public final class ExplorationGUI implements SimpleDriver {
 		} else {
 			explorationModel = new ExplorationModel(model);
 		}
-		SwingUtilities.invokeLater(() -> new ExplorationFrame(explorationModel,
-																	 new IOHandler
-																			 (explorationModel))
-												 .setVisible(true));
+		final IOHandler ioh = new IOHandler
+									  (explorationModel);
+		final MenuBroker menuHandler = new MenuBroker();
+		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
+				"load secondary", "save all", "open in map viewer",
+				"open secondary map in map viewer", "go to tile", "close",
+				"find a fixture", "find next", "zoom in", "zoom out", "center", "quit");
+		SwingUtilities.invokeLater(
+				() -> new ExplorationFrame(explorationModel, menuHandler)
+							  .setVisible(true));
 	}
 
 	/**
