@@ -63,14 +63,6 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
-	 * @param collections a list of collections
-	 * @return their total size
-	 */
-	private static int collSize(final Collection<?>... collections) {
-		return Stream.of(collections).mapToInt(Collection::size).sum();
-	}
-
-	/**
 	 * @param header  the heading to put above the children
 	 * @param mapping a mapping from kinds to nodes
 	 * @return a node with all of the nodes as children
