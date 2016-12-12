@@ -207,11 +207,9 @@ public final class ExplorationCLI implements MovementCostSource {
 		if (IExplorationModel.Direction.Nowhere == direction) {
 			if (helper.inputBooleanInSeries(FEALTY_PROMPT)) {
 				model.swearVillages();
-				fireMovementCost(5);
 			}
 			if (helper.inputBooleanInSeries("Dig to expose some ground here?")) {
 				model.dig();
-				fireMovementCost(4);
 			}
 		}
 		helper.printf("The explorer comes to %s, a tile with terrain %s%n",
