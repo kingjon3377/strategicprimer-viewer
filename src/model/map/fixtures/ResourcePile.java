@@ -155,27 +155,24 @@ public class ResourcePile
 		if (obj.getID() != id) {
 			ostream.format("%s\tIDs differ%n", context);
 			return false;
-		} else if (obj instanceof ResourcePile) {
-			boolean retval = true;
-			if (!kind.equals(((ResourcePile) obj).kind)) {
-				ostream.format("%s\tIn Resource Pile, ID #%d: Kinds differ%n", context,
-						Integer.valueOf(id));
-				retval = false;
-			}
-			if (!contents.equals(((ResourcePile) obj).contents)) {
-				ostream.format("%s\tIn Resource Pile, ID #%d, Contents differ%n",
-						context,
-						Integer.valueOf(id));
-				retval = false;
-			}
-			retval &= quantity.isSubset(((ResourcePile) obj).quantity, ostream,
-					String.format("%s\tIn Resource Pile, ID #%d", context,
-							Integer.valueOf(id)));
-			return retval;
 		} else {
-			ostream.format("%s\tDifferent fixture types given for ID #%d", context,
-					Integer.valueOf(id));
-			return false;
+			final Integer idNum = Integer.valueOf(id);
+			if (obj instanceof ResourcePile) {
+				boolean retval = areObjectsEqual(ostream, kind, ((ResourcePile) obj).kind,
+						"%s\tIn Resource Pile, ID #%d: Kinds differ%n", context,
+						idNum);
+				retval &= areObjectsEqual(ostream, contents, ((ResourcePile) obj).contents,
+						"%s\tIn Resource Pile, ID #%d, Contents differ%n", context,
+						idNum);
+				retval &= quantity.isSubset(((ResourcePile) obj).quantity, ostream,
+						String.format("%s\tIn Resource Pile, ID #%d", context,
+								idNum));
+				return retval;
+			} else {
+				ostream.format("%s\tDifferent fixture types given for ID #%d", context,
+						idNum);
+				return false;
+			}
 		}
 	}
 
