@@ -116,6 +116,7 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	}
 
 	/**
+	 * Add a listener.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -124,6 +125,7 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	}
 
 	/**
+	 * Remove a listener.
 	 * @param list a list to remove
 	 */
 	@Override
@@ -143,7 +145,7 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

@@ -89,6 +89,7 @@ public class ActionWrapper extends AbstractAction {
 	}
 
 	/**
+	 * Prepends "ActionWrapper around " to the wrapped object's toString().
 	 * @return a String representation of the object
 	 */
 	@Override

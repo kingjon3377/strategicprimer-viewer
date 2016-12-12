@@ -62,7 +62,7 @@ public final class AdvancementFrame extends SPFrame implements PlayerChangeListe
 	 * Constructor.
 	 *
 	 * @param source    the model containing the data to work from
-	 * @param ioHandler the I/O handler so the menu 'open' item, etc., will work
+	 * @param menuHandler the handler of menu items
 	 */
 	public AdvancementFrame(final IWorkerModel source, final MenuBroker menuHandler) {
 		super("Worker Advancement", source.getMapFile(), new Dimension(640, 480));
@@ -139,7 +139,7 @@ public final class AdvancementFrame extends SPFrame implements PlayerChangeListe
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always
@@ -152,6 +152,7 @@ public final class AdvancementFrame extends SPFrame implements PlayerChangeListe
 	}
 
 	/**
+	 * Get the name of this app.
 	 * @return the title of this app
 	 */
 	@Override

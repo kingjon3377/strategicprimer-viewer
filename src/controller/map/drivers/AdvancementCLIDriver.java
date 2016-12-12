@@ -343,6 +343,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -351,6 +352,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Returns the class's simple name.
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

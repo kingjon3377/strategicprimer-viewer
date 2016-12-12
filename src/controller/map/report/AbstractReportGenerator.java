@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.map.DistanceComparator;
 import model.map.IFixture;
@@ -67,6 +68,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	protected final DistanceComparator distCalculator;
 
 	/**
+	 * Constructor, to initialize the pair-comparator.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>>
@@ -84,6 +86,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	}
 
 	/**
+	 * "At (NN, NN): ".
 	 * @param point a point
 	 * @return the string "At " followed by the point's location
 	 */
@@ -92,6 +95,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	}
 
 	/**
+	 * If the player is current, "you"; otherwise the player's name.
 	 * @param player a player
 	 * @return the player's name, or "you" if the player is the current player
 	 */
@@ -104,6 +108,9 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	}
 
 	/**
+	 * Concatenate strings. We'd use {@link Collectors#joining()}}, but it appears to
+	 * use a {@link StringBuilder} that isn't passed a size parameter to its
+	 * constructor, so this should be more efficient.
 	 * @param strings a series of strings
 	 * @return them concatenated
 	 */
@@ -124,6 +131,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 */
 	protected interface HeadedList<@NonNull T> extends List<@NonNull T> {
 		/**
+		 * The header text. This method exists so we can have the interface.
 		 * @return the header text
 		 */
 		String getHeader();
@@ -151,6 +159,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		}
 
 		/**
+		 * The header text.
 		 * @return the header
 		 */
 		@Override
@@ -159,6 +168,8 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		}
 
 		/**
+		 * If there's nothing in the list, returns the empty string, but otherwise it
+		 * produces an HTML list of our contents.
 		 * @return a HTML representation of the list if there's anything in it, or the
 		 * empty string otherwise.
 		 */
@@ -214,6 +225,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		}
 
 		/**
+		 * The list header.
 		 * @return the header
 		 */
 		@Override
@@ -222,6 +234,8 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		}
 
 		/**
+		 * If the list is empty, returns the empty string; otherwise returns a
+		 * comma-separated (except in the size-1 and size-2 cases) list of the points.
 		 * @return a String representation of the list if there's anything in it, or the
 		 * empty string otherwise.
 		 */
@@ -251,6 +265,8 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		}
 	}
 	/**
+	 * A factory for a {@link PointList} with the common case of a header ending in ":
+	 * at ".
 	 * @param desc a description of something
 	 * @return a list for points matching that description
 	 */

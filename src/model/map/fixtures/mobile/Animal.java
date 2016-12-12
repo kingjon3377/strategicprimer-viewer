@@ -73,6 +73,7 @@ public class Animal
 	}
 
 	/**
+	 * The ID number of the animal.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -81,6 +82,7 @@ public class Animal
 	}
 
 	/**
+	 * Whether this instance is just tracks or traces instead of an actual animal.
 	 * @return true if this is only traces or tracks, false if this is really the animal
 	 */
 	public boolean isTraces() {
@@ -88,6 +90,7 @@ public class Animal
 	}
 
 	/**
+	 * Whether the animal is a talking animal.
 	 * @return whether the animal is a talking animal
 	 */
 	public boolean isTalking() {
@@ -95,6 +98,7 @@ public class Animal
 	}
 
 	/**
+	 * What kind of animal this is.
 	 * @return what kind of animal this is
 	 */
 	@Override
@@ -103,6 +107,7 @@ public class Animal
 	}
 
 	/**
+	 * Set the kind of animal.
 	 * @param nKind the new kind
 	 */
 	@Override
@@ -111,6 +116,7 @@ public class Animal
 	}
 
 	/**
+	 * The domestication status of the animal.
 	 * @return the domestication status of the animal
 	 */
 	public String getStatus() {
@@ -118,6 +124,7 @@ public class Animal
 	}
 
 	/**
+	 * A simple String representation of the animal.
 	 * @return a String representation of the animal
 	 */
 	@Override
@@ -148,6 +155,7 @@ public class Animal
 	}
 
 	/**
+	 * Test equality.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -162,6 +170,7 @@ public class Animal
 	}
 
 	/**
+	 * Test whether another fixture is an Animal that is a strict subset of this one.
 	 * @param obj     another UnitMember
 	 * @param ostream a stream to report an explanation on
 	 * @param context a string to print before every line of output, describing the
@@ -201,6 +210,7 @@ public class Animal
 	}
 
 	/**
+	 * Use ID number for hash value.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -209,6 +219,7 @@ public class Animal
 	}
 
 	/**
+	 * Test equality ignoring ID number.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -222,6 +233,7 @@ public class Animal
 	}
 
 	/**
+	 * The icon to use for this instance.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -230,6 +242,7 @@ public class Animal
 	}
 
 	/**
+	 * Set the icon to use for this instance.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -238,6 +251,7 @@ public class Animal
 	}
 
 	/**
+	 * The plural of "animal" is "animals".
 	 * @return a string describing all animals as a class
 	 */
 	@Override
@@ -246,6 +260,7 @@ public class Animal
 	}
 
 	/**
+	 * The "short description" is the same as {@link #toString}.
 	 * @return a short description of the fixture
 	 */
 	@Override
@@ -254,6 +269,7 @@ public class Animal
 	}
 
 	/**
+	 * Clone the animal.
 	 * @param zero whether to "zero out" sensitive information
 	 * @return a copy of this
 	 */

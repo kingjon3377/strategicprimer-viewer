@@ -27,6 +27,7 @@ public interface Accumulator {
 	void add(int addend);
 
 	/**
+	 * Get the current value of the accumulation.
 	 * @return the current value of the accumulation.
 	 */
 	int getValue();

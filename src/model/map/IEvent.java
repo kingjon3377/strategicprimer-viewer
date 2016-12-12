@@ -4,6 +4,8 @@ package model.map;
  * An "event" --- something, other than a fortress, unit, or river, that can be on a tile.
  * Intended to replace legacy/numeric "events."
  *
+ * TODO: Most TileFixtures should be IEvents, to make Perception more meaningful
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *

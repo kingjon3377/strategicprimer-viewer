@@ -22,6 +22,8 @@ public interface HasImage {
 	 * This is the image to use if the individual fixture doesn't specify a different
 	 * image. It should be a "constant function."
 	 *
+	 * TODO: replace this with a centralized registry
+	 *
 	 * @return the name of an image to represent this kind of fixture.
 	 */
 	String getDefaultImage();

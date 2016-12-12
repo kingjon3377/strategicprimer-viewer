@@ -60,6 +60,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * Clone the fixture.
 	 * @param zero ignored, as there is no sensitive information that is not essential
 	 * @return a copy of this fixture
 	 */
@@ -73,6 +74,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * A brief description of the adventure.
 	 * @return a brief description of the adventure
 	 */
 	public String getBriefDescription() {
@@ -80,6 +82,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * A longer description of the adventure.
 	 * @return a fuller description of the adventure
 	 */
 	public String getFullDescription() {
@@ -87,6 +90,8 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * If there is a full description, returns it; if not, but there is a brief
+	 * description, returns it; otherwise, returns "Adventure hook".
 	 * @return a String representation of the fixture
 	 */
 	@Override
@@ -103,6 +108,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * The default icon to use.
 	 * @return the name of an image to represent the fixture
 	 */
 	@Override
@@ -111,6 +117,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * Test equality.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -122,6 +129,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * Test for equality, once we know that the object is the right class.
 	 * @param obj an adventure fixture
 	 * @return whether it's equal to this one
 	 */
@@ -131,6 +139,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * Test Players for equality-in-essentials.
 	 * @param player a player
 	 * @return whether it's the same as the adventure's owner
 	 */
@@ -143,6 +152,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * Hash value.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -151,6 +161,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * The player that has taken on this adventure.
 	 * @return the player that has taken on this adventure
 	 */
 	@Override
@@ -159,6 +170,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * Set a new "owner" for the adventure.
 	 * @param player the player who has now taken on the adventure
 	 */
 	@Override
@@ -167,6 +179,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * The icon to use for this instance.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -175,6 +188,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * Set a new icon for this instance.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -183,6 +197,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * The plural of "adventure" is "adventures".
 	 * @return a string describing all text fixtures as a class
 	 */
 	@Override
@@ -191,6 +206,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * A brief description of the fixture.
 	 * @return a short description of the fixture
 	 */
 	@Override
@@ -199,6 +215,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * The adventure's ID number.
 	 * @return the ID number of the adventure.
 	 */
 	@Override
@@ -207,6 +224,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	}
 
 	/**
+	 * Test equality ignoring ID number.
 	 * @param fix a fixture
 	 * @return whether it's equal to this one except for its ID number
 	 */

@@ -42,6 +42,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	private static final TileUIHelper COLORS = new TileUIHelper();
 
 	/**
+	 * Get the color to use to draw a tile.
 	 * @param ver  the map version
 	 * @param type a tile type
 	 * @return the color associated with that tile-type.
@@ -51,6 +52,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	}
 
 	/**
+	 * Get the type-to-color mapping object.
 	 * @return the UI helper.
 	 */
 	protected static TileUIHelper getHelper() {

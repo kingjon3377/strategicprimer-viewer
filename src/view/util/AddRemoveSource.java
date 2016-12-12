@@ -19,12 +19,14 @@ import model.listeners.AddRemoveListener;
  */
 public interface AddRemoveSource {
 	/**
+	 * Add a listener.
 	 * @param list a listener to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addAddRemoveListener(final AddRemoveListener list);
 
 	/**
+	 * Remove a listener.
 	 * @param list a listener to remove
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")

@@ -177,6 +177,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	}
 
 	/**
+	 * Whether the given tag is in a namespace we support.
 	 * @param tag a tag
 	 * @return whether it's in a namespace we support.
 	 */
@@ -209,6 +210,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	}
 
 	/**
+	 * Whether the given XML event is an end element matching the given tag.
 	 * @param tag the tag we're looking for
 	 * @param event an XML event
 	 * @return true iff event is an EndElement whose name matches tag.
@@ -249,6 +251,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	}
 
 	/**
+	 * Get an attribute by name from the given element.
 	 * @param element the current tag
 	 * @param param   the parameter we want
 	 * @return it if it's present in either the default namespace or our namespace, or
@@ -267,6 +270,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	}
 
 	/**
+	 * Whether the given element has the given parameter.
 	 * @param element the current tag
 	 * @param param   the parameter we want
 	 * @return whether the tag has that parameter
@@ -277,6 +281,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	}
 
 	/**
+	 * Get a parameter from an element in its preferred form, if present, or in its
+	 * deprecated form, in which case fire a warning.
 	 * @param element    the current tag
 	 * @param preferred  the preferred name of the parameter
 	 * @param deprecated the deprecated name of the parameter
@@ -325,6 +331,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	}
 
 	/**
+	 * Append the given number of tabs to the stream.
 	 * @param ostream the stream to write the tabs to
 	 * @param tabs    a non-negative integer: how many tabs to add to the stream
 	 * @throws IOException on I/O error writing to ostream
@@ -337,6 +344,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	}
 
 	/**
+	 * Return the image property in a form suitable for XML if the object's image is
+	 * nonempty and not the default.
 	 * @param obj an object being written out that might have a custom image
 	 * @return the XML for the image if it does, or the empty string if not
 	 */
@@ -351,6 +360,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	}
 
 	/**
+	 * Return the portrait property in a form suitable for XML if the object's portrait
+	 * is nonempty.
 	 * @param obj an object being written out that might have a custom portrait
 	 * @return the XML for the portrait if it does, or the empty string if not
 	 */
@@ -502,6 +513,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	}
 
 	/**
+	 * Replace XML meta-characters in a string with their equivalents.
 	 * @param text some text
 	 * @return it, with all XML meta-characters replaced with their equivalents
 	 */

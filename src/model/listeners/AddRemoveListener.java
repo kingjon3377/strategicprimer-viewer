@@ -19,6 +19,7 @@ import java.util.EventListener;
  */
 public interface AddRemoveListener extends EventListener {
 	/**
+	 * Add something.
 	 * @param category what kind of thing is being added
 	 * @param addendum A String description of the thing to be added
 	 */
@@ -26,7 +27,7 @@ public interface AddRemoveListener extends EventListener {
 	void add(String category, String addendum);
 
 	/**
-	 * This method need not actually be implemented.
+	 * This method need not actually be implemented. TODO: replace with no-op default
 	 *
 	 * @param category what kind of thing is being removed
 	 */

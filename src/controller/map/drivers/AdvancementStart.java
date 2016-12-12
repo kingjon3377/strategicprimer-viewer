@@ -45,7 +45,7 @@ public final class AdvancementStart implements SimpleDriver {
 	}
 
 	/**
-	 * Run the driver
+	 * Run the driver.
 	 *
 	 * @param cli the interface for user I/O
 	 * @param options command-line options passed in
@@ -83,6 +83,7 @@ public final class AdvancementStart implements SimpleDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -91,6 +92,7 @@ public final class AdvancementStart implements SimpleDriver {
 	}
 
 	/**
+	 * Returns the simple name of this class.
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

@@ -30,6 +30,7 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class AboutDialog extends JDialog {
 	/**
+	 * Constructor.
 	 * @param parent the parent window
 	 * @param app    a string describing what the application is
 	 */
@@ -143,7 +144,7 @@ public final class AboutDialog extends JDialog {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

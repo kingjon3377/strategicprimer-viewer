@@ -72,6 +72,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * Get the town's name.
 	 * @return the name of the town, fortress, or city.
 	 */
 	@Override
@@ -80,6 +81,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * Set the town's name.
 	 * @param newName the town's new name
 	 */
 	@Override
@@ -88,6 +90,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * Get the town's status.
 	 * @return the status of the town, fortress, or city
 	 */
 	@Override
@@ -96,6 +99,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * Get the town's size.
 	 * @return the size of the town, fortress, or city
 	 */
 	@Override
@@ -104,6 +108,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * Get exploration-result text for the town.
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -130,6 +135,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * Test equality.
 	 * @param obj an object
 	 * @return whether it's an identical event
 	 */
@@ -141,6 +147,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * Test equality ignoring ID number.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -165,6 +172,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * Uses ID number as hash value.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -173,6 +181,8 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * The format of the String representation varies slightly depending on its owner
+	 * and whether it has a name.
 	 * @return a string representation of the event
 	 */
 	@Override
@@ -199,6 +209,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * The default icon for towns.
 	 * TODO: Should be more granular.
 	 *
 	 * @return the name of an image to represent the event.
@@ -209,6 +220,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * The owner of the town.
 	 * @return the player that owns the town
 	 */
 	@Override
@@ -217,6 +229,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * Set the owner of the town.
 	 * @param player the town's new owner
 	 */
 	@Override
@@ -225,6 +238,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * The icon to use for this instance.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -233,6 +247,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * Set an icon to use for this instance.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -241,6 +256,8 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * A short description of the town, which differs from {@link #toString()} in that
+	 * it doesn't include DC.
 	 * @return a short description of the fixture
 	 */
 	@Override
@@ -264,6 +281,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * The filename of a portrait image to use.
 	 * @return The filename of an image to use as a portrait for the town.
 	 */
 	@Override
@@ -272,6 +290,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * Set the portrait image filename.
 	 * @param portrait The filename of an image to use as a portrait for the town.
 	 */
 	@Override
@@ -280,6 +299,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
+	 * The DC to discover the town.
 	 * @return the DC to discover the event.
 	 */
 	@Override
