@@ -550,16 +550,6 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	}
 
 	/**
-	 * Should only be called once per object lifetime. Notify all listeners, as if the
-	 * current player had changed from null to its current value.
-	 */
-	public void notifyListeners() {
-		for (final PlayerChangeListener list : playerChangeListeners) {
-			list.playerChanged(null, currentPlayer);
-		}
-	}
-
-	/**
 	 * @param list the listener to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
