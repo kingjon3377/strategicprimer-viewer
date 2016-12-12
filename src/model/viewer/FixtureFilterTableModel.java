@@ -3,6 +3,7 @@ package model.viewer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 import javax.swing.table.AbstractTableModel;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
@@ -72,70 +73,95 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 * properly.
 	 */
 	public FixtureFilterTableModel() {
-		list.add(new FixtureMatcher(Unit.class::isInstance, "Units"));
-		list.add(new FixtureMatcher(Fortress.class::isInstance, "Fortresses"));
+		// TODO: Maybe units should be broken up by owner?
+		addTrivialMatcher(Unit.class, "Units");
+		addTrivialMatcher(Fortress.class, "Fortresses");
 		// TODO: Towns should be broken up by kind or size, and maybe by status or owner
-		list.add(new FixtureMatcher(AbstractTown.class::isInstance,
-										   "Cities, Towns, and Fortifications"));
+		addTrivialMatcher(AbstractTown.class, "Cities, Towns, and Fortifications");
 		// TODO: Village through Centaur were all 45, so their ordering happened by
 		// chance
-		list.add(new FixtureMatcher(Village.class::isInstance, "Villages"));
-		list.add(new FixtureMatcher(Troll.class::isInstance, "Trolls"));
-		list.add(new FixtureMatcher(Sphinx.class::isInstance, "Sphinxes"));
-		list.add(new FixtureMatcher(Simurgh.class::isInstance, "Simurghs"));
-		list.add(new FixtureMatcher(Phoenix.class::isInstance, "Phoenixes"));
-		list.add(new FixtureMatcher(Ogre.class::isInstance, "Ogres"));
-		list.add(new FixtureMatcher(Minotaur.class::isInstance, "Minotaurs"));
-		list.add(new FixtureMatcher(Mine.class::isInstance, "Mine"));
-		list.add(new FixtureMatcher(Griffin.class::isInstance, "Griffins"));
-		list.add(new FixtureMatcher(Djinn.class::isInstance, "Djinni"));
-		list.add(new FixtureMatcher(Centaur.class::isInstance, "Centaurs"));
+		addTrivialMatcher(Village.class, "Villages");
+		addTrivialMatcher(Troll.class, "Trolls");
+		addTrivialMatcher(Sphinx.class, "Sphinxes");
+		addTrivialMatcher(Simurgh.class, "Simurghs");
+		addTrivialMatcher(Phoenix.class, "Phoenixes");
+		addTrivialMatcher(Ogre.class, "Ogres");
+		addTrivialMatcher(Minotaur.class, "Minotaurs");
+		addTrivialMatcher(Mine.class, "Mines");
+		addTrivialMatcher(Griffin.class, "Griffins");
+		addTrivialMatcher(Djinn.class, "Djinni");
+		addTrivialMatcher(Centaur.class, "Centaurs");
 		// TODO: StoneDeposit through Animal were all 40; they too should be reviewed
-		list.add(new FixtureMatcher(StoneDeposit.class::isInstance, "Stone Deposits"));
-		list.add(new FixtureMatcher(MineralVein.class::isInstance, "Mineral Veins"));
-		list.add(new FixtureMatcher(Giant.class::isInstance, "Giants"));
-		list.add(new FixtureMatcher(Fairy.class::isInstance, "Fairies"));
-		list.add(new FixtureMatcher(Dragon.class::isInstance, "Dragons"));
-		list.add(new FixtureMatcher(Cave.class::isInstance, "Caves"));
-		list.add(new FixtureMatcher(Battlefield.class::isInstance, "Battlefields"));
-		list.add(new FixtureMatcher(Animal.class::isInstance, "Animals"));
+		addTrivialMatcher(StoneDeposit.class, "Stone Deposits");
+		addTrivialMatcher(MineralVein.class, "Mineral Veins");
+		addTrivialMatcher(Giant.class, "Giants");
+		addTrivialMatcher(Fairy.class, "Fairies");
+		addTrivialMatcher(Dragon.class, "Dragons");
+		addTrivialMatcher(Cave.class, "Caves");
+		addTrivialMatcher(Battlefield.class, "Battlefields");
+		addTrivialMatcher(Animal.class, "Animals");
 
-		list.add(simpleMatcher(Grove.class, Grove::isOrchard, "Orchards"));
-		list.add(simpleMatcher(Grove.class, fix -> !fix.isOrchard(), "Groves"));
+		addSimpleMatcher(Grove.class, Grove::isOrchard, "Orchards");
+		addSimpleMatcher(Grove.class, fix -> !fix.isOrchard(), "Groves");
 
-		// TODO: Since rivers are usually handled specially, should this really be
-		// included?
-		list.add(new FixtureMatcher(RiverFixture.class::isInstance, "Rivers"));
+		// TODO: Rivers are usually handled specially, so should this really be included?
+		addTrivialMatcher(RiverFixture.class, "Rivers");
 
 		// TODO: TextFixture through AdventureFixture were all 25, and should be
 		// considered
-		list.add(new FixtureMatcher(TextFixture.class::isInstance,
-										   "Arbitrary-Text Notes"));
-		list.add(new FixtureMatcher(Portal.class::isInstance, "Portals"));
-		list.add(new FixtureMatcher(Oasis.class::isInstance, "Oases"));
-		list.add(new FixtureMatcher(AdventureFixture.class::isInstance, "Adventures"));
+		addTrivialMatcher(TextFixture.class, "Arbitrary-Text Notes");
+		addTrivialMatcher(Portal.class, "Portals");
+		addTrivialMatcher(Oasis.class, "Oases");
+		addTrivialMatcher(AdventureFixture.class, "Adventures");
 
-		list.add(new FixtureMatcher(CacheFixture.class::isInstance, "Caches"));
+		addTrivialMatcher(CacheFixture.class, "Caches");
 
-		list.add(new FixtureMatcher(Forest.class::isInstance, "Forests"));
+		addTrivialMatcher(Forest.class, "Forests");
 
 		// TODO: Shrub and Meadow were both 15; consider
-		list.add(new FixtureMatcher(Shrub.class::isInstance, "Shrubs"));
-		list.add(simpleMatcher(Meadow.class, Meadow::isField, "Fields"));
-		list.add(simpleMatcher(Meadow.class, fix -> !fix.isField(), "Meadows"));
+		addTrivialMatcher(Shrub.class, "Shrubs");
+		addSimpleMatcher(Meadow.class, Meadow::isField, "Fields");
+		addSimpleMatcher(Meadow.class, fix -> !fix.isField(), "Meadows");
 
-		// TODO: Since mountains are now a separate aspect of a tile, should this be
-		// omitted?
-		list.add(new FixtureMatcher(Mountain.class::isInstance, "Mountains"));
+		// TODO: Mountains are now a separate aspect of a tile; should this be omitted?
+		addTrivialMatcher(Mountain.class, "Mountains");
 
 		// TODO: Sandbar and Hill were both 5; consider.
-		list.add(new FixtureMatcher(Sandbar.class::isInstance, "Sandbars"));
-		list.add(new FixtureMatcher(Hill.class::isInstance, "Hills"));
+		addTrivialMatcher(Sandbar.class, "Sandbars");
+		addTrivialMatcher(Hill.class, "Hills");
 
-		list.add(simpleMatcher(Ground.class, Ground::isExposed, "Ground (exposed)"));
-		list.add(simpleMatcher(Ground.class, fix -> !fix.isExposed(), "Ground"));
+		addSimpleMatcher(Ground.class, Ground::isExposed, "Ground (exposed)");
+		addSimpleMatcher(Ground.class, fix -> !fix.isExposed(), "Ground");
 	}
-
+	/**
+	 * Add a matcher.
+	 * @param matcher the matcher to add.
+	 */
+	private final void addMatcher(final FixtureMatcher matcher) {
+		list.add(matcher);
+	}
+	/**
+	 * Add a matcher that matches all instances of a class.
+	 * @param cls the class to match
+	 * @param desc the description to use in the matcher
+	 */
+	private final void addTrivialMatcher(final Class<? extends TileFixture> cls,
+										 final String desc) {
+		addMatcher(new FixtureMatcher(cls::isInstance, desc));
+	}
+	/**
+	 * Add a not-quite-trivial matcher.
+	 *
+	 * @param <T> the type of fixtures we want to match
+	 * @param cls    the class of fixtures we want to match
+	 * @param method a method on that class to use as a second predicate
+	 * @param desc   the description to use for the matcher
+	 */
+	private final <T extends TileFixture> void addSimpleMatcher(
+			final Class<? extends T> cls, final Predicate<T> method,
+			final String desc) {
+		addMatcher(simpleMatcher(cls, method, desc));
+	}
 	/**
 	 * @return the number of rows in the model
 	 */
