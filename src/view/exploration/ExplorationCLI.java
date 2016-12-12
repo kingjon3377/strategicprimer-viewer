@@ -215,7 +215,6 @@ public final class ExplorationCLI implements MovementCostSource {
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
 		final List<TileFixture> noticed =
 				SimpleMovement.selectNoticed(allFixtures, mover, speed);
-		// TODO: Perception should affect how many non-automatics.
 		if (noticed.isEmpty()) {
 			helper.println("The following were automatically noticed:");
 		} else if (noticed.size() > 1) {
