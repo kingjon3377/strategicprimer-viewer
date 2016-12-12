@@ -120,13 +120,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 
 		addComplements(Ground.class, Ground::isExposed, "Ground (exposed)", "Ground");
 	}
-	/**
-	 * Add a matcher.
-	 * @param matcher the matcher to add.
-	 */
-	private final void addMatcher(final FixtureMatcher matcher) {
-		list.add(matcher);
-	}
+
 	/**
 	 * Add matchers that match all instances of given classes, for which we can use
 	 * the class names plus "s".
@@ -134,7 +128,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 */
 	private final void addTrivialMatchers(final Class<? extends TileFixture>... classes) {
 		for (final Class<? extends TileFixture> cls : classes) {
-			addMatcher(new FixtureMatcher(cls::isInstance, cls.getSimpleName() + 's'));
+			list.add(new FixtureMatcher(cls::isInstance, cls.getSimpleName() + 's'));
 		}
 	}
 	/**
@@ -144,7 +138,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 */
 	private final void addTrivialEMatchers(final Class<? extends TileFixture>... classes) {
 		for (final Class<? extends TileFixture> cls : classes) {
-			addMatcher(new FixtureMatcher(cls::isInstance, cls.getSimpleName() + "es"));
+			list.add(new FixtureMatcher(cls::isInstance, cls.getSimpleName() + "es"));
 		}
 	}
 	/**
@@ -154,7 +148,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 */
 	private final void addTrivialMatcher(final Class<? extends TileFixture> cls,
 										 final String desc) {
-		addMatcher(new FixtureMatcher(cls::isInstance, desc));
+		list.add(new FixtureMatcher(cls::isInstance, desc));
 	}
 	/**
 	 * Add matchers for a class when a predicate is true and false.
@@ -168,8 +162,8 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	private final <T extends TileFixture> void addComplements(
 			final Class<? extends T> cls, final Predicate<T> method,
 			final String firstDesc, final String secondDesc) {
-		addMatcher(simpleMatcher(cls, method, firstDesc));
-		addMatcher(simpleMatcher(cls, method.negate(), secondDesc));
+		list.add(simpleMatcher(cls, method, firstDesc));
+		list.add(simpleMatcher(cls, method.negate(), secondDesc));
 	}
 
 	/**
