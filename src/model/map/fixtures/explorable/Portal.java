@@ -1,6 +1,5 @@
 package model.map.fixtures.explorable;
 
-import java.io.IOException;
 import java.util.Formatter;
 import model.map.IFixture;
 import model.map.Point;

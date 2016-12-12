@@ -1,6 +1,5 @@
 package model.map.fixtures.mobile;
 
-import java.io.IOException;
 import java.util.Formatter;
 import model.map.HasMutableImage;
 import model.map.IFixture;

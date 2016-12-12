@@ -1,6 +1,5 @@
 package model.map.fixtures;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Formatter;
