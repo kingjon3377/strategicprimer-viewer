@@ -1,6 +1,6 @@
 package view.map.main;
 
-import controller.map.misc.IOHandler;
+import controller.map.misc.MenuBroker;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.io.IOException;
@@ -64,9 +64,9 @@ public final class ViewerFrame extends SPFrame {
 	 * Constructor.
 	 *
 	 * @param map       The map model.
-	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
+	 * @param menuHandler the menu-item handler
 	 */
-	public ViewerFrame(final IViewerModel map, final IOHandler ioHandler) {
+	public ViewerFrame(final IViewerModel map, final MenuBroker menuHandler) {
 		super("Map Viewer", map.getMapFile());
 		model = map;
 		final FixtureFilterTableModel tableModel = new FixtureFilterTableModel();
@@ -91,7 +91,7 @@ public final class ViewerFrame extends SPFrame {
 		addWindowListener(windowSizeListener);
 		addWindowStateListener(windowSizeListener);
 
-		setJMenuBar(new ViewerMenu(ioHandler, this, map));
+		setJMenuBar(new ViewerMenu(menuHandler, this, map));
 	}
 
 	/**

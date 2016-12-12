@@ -2,7 +2,8 @@ package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
-import javax.swing.*;
+import controller.map.misc.MenuBroker;
+import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
@@ -63,8 +64,15 @@ public final class WorkerStart implements SimpleDriver {
 			driverModel = new WorkerModel(model);
 		}
 		final IOHandler ioh = new IOHandler(driverModel);
+		final MenuBroker menuHandler = new MenuBroker();
+		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
+				"load secondary", "save all", "open in map viewer",
+				"open secondary map in map viewer", "go to tile", "close",
+				"find a fixture", "find next", "change current player", "reload tree",
+				"zoom in", "zoom out", "center", "quit");
 		SwingUtilities.invokeLater(() -> {
-			final WorkerMgmtFrame frame = new WorkerMgmtFrame(options, driverModel, ioh);
+			final WorkerMgmtFrame frame =
+					new WorkerMgmtFrame(options, driverModel, menuHandler);
 			ioh.addPlayerChangeListener(frame);
 			frame.setVisible(true);
 		});

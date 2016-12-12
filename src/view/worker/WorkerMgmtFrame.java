@@ -5,7 +5,7 @@ import controller.map.drivers.SPOptions;
 import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.FileChooserOperation;
 import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.IOHandler;
+import controller.map.misc.MenuBroker;
 import controller.map.misc.StrategyExporter;
 import controller.map.report.ReportGenerator;
 import java.awt.Component;
@@ -121,7 +121,7 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
 	 */
 	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model,
-						   final IOHandler ioHandler) {
+						   final MenuBroker menuHandler) {
 		super("Worker Management", model.getMapFile(), new Dimension(640, 480));
 		final IMapNG mainMap = model.getMap();
 		final NewUnitDialog newUnitFrame =
@@ -175,10 +175,13 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 						verticalPanel(playerLabel, new JScrollPane(tree), null),
 						lowerLeft),
 				verticalSplit(0.6, 0.6, verticalPanel(new JLabel(RPT_HDR),
-						new JScrollPane(createReportTree(model, ioHandler, reportModel)),
+						new JScrollPane(createReportTree(model, menuHandler, reportModel)),
 						null), mdp)));
-		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
-		setJMenuBar(new WorkerMenu(ioHandler, this, model));
+		final TreeExpansionHandler expander = new TreeExpansionHandler(tree);
+		menuHandler.register(evt -> expander.expandAll(), "expand all");
+		menuHandler.register(evt -> expander.collapseAll(), "collapse all");
+		menuHandler.register(evt -> expander.expandSome(2), "expand unit kinds");
+		setJMenuBar(new WorkerMenu(menuHandler, this, model));
 		for (int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);
 		}
@@ -194,7 +197,7 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 	 * @return the report tree based on that model
 	 */
 	private static JTree createReportTree(final IWorkerModel model,
-										  final IOHandler ioHandler,
+										  final MenuBroker menuHandler,
 										  final DefaultTreeModel reportModel) {
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
@@ -221,7 +224,7 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 					assert retval != null;
 					return retval;
 				});
-		report.addMouseListener(new ReportMouseHandler(report, model, ioHandler));
+		report.addMouseListener(new ReportMouseHandler(report, model, menuHandler));
 		return report;
 	}
 
@@ -256,7 +259,7 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 	 * driver-model
 	 */
 	protected static IViewerModel getViewerModelFor(final IDriverModel model,
-													final IOHandler ioh) {
+													final MenuBroker menuHandler) {
 		for (final Frame frame : WindowList.getFrames(false, true, true)) {
 			if ((frame instanceof ViewerFrame) &&
 						((ViewerFrame) frame).getModel().getMapFile()
@@ -268,11 +271,9 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 				return ((ViewerFrame) frame).getModel();
 			}
 		}
-		final ViewerFrame frame = new ViewerFrame(
-														 new ViewerModel(model.getMap(),
-																				model
-																						.getMapFile()),
-														 ioh);
+		final ViewerFrame frame =
+				new ViewerFrame(new ViewerModel(model.getMap(), model.getMapFile()),
+									   menuHandler);
 		frame.setVisible(true);
 		return frame.getModel();
 	}
@@ -457,21 +458,21 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 		/**
 		 * The menu-item handler.
 		 */
-		private final IOHandler ioh;
+		private final MenuBroker menuBroker;
 
 		/**
 		 * Constructor.
 		 *
 		 * @param reportTree  The report tree.
 		 * @param workerModel the driver model
-		 * @param ioHandler   the menu-item handler
+		 * @param menuHandler   the menu-item handler
 		 */
 		protected ReportMouseHandler(final JTree reportTree,
 									 final IWorkerModel workerModel,
-									 final IOHandler ioHandler) {
+									 final MenuBroker menuHandler) {
 			report = reportTree;
 			model = workerModel;
-			ioh = ioHandler;
+			menuBroker = menuHandler;
 			ToolTipManager.sharedInstance().registerComponent(report);
 		}
 
@@ -498,7 +499,7 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 				// (-inf, -inf) replaces null
 				if (point.getRow() > Integer.MIN_VALUE) {
 					final IViewerModel vModel =
-							getViewerModelFor(model, ioh);
+							getViewerModelFor(model, menuBroker);
 					SwingUtilities.invokeLater(() -> vModel.setSelection(point));
 				}
 			}

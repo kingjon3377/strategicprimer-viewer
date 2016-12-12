@@ -1,5 +1,7 @@
 package controller.map.misc;
 
+import controller.map.drivers.SPOptionsImpl;
+import controller.map.drivers.ViewerStart;
 import controller.map.formatexceptions.SPFormatException;
 import java.awt.Component;
 import java.awt.Dialog;
@@ -41,7 +43,6 @@ import util.TypesafeLogger;
 import util.Warning;
 import view.map.main.FindDialog;
 import view.map.main.SelectTileDialog;
-import view.map.main.ViewerFrame;
 import view.map.main.ZoomListener;
 import view.util.AboutDialog;
 import view.util.DriverQuit;
@@ -289,10 +290,8 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				break;
 			case "open in map viewer":
 				final IViewerModel viewModel = new ViewerModel(model);
-				SwingUtilities.invokeLater(
-						() -> new ViewerFrame(viewModel,
-													 new IOHandler(viewModel, chooser))
-									  .setVisible(true));
+				// FIXME: Somehow get the CLI interface and options from previous ...
+				new ViewerStart().startDriver(new CLIHelper(), new SPOptionsImpl(), viewModel);
 				break;
 			case "open secondary map in map viewer":
 				if (model instanceof IMultiMapModel) {
@@ -304,10 +303,10 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 						final IViewerModel newModel =
 								new ViewerModel(mapPair.get().first(),
 													   mapPair.get().second());
-						SwingUtilities.invokeLater(
-								() -> new ViewerFrame(newModel, new IOHandler(newModel,
-																					 chooser))
-											  .setVisible(true));
+						// FIXME: Somehow get the CLI interface and options from previous ...
+						new ViewerStart()
+								.startDriver(new CLIHelper(), new SPOptionsImpl(),
+										newModel);
 					}
 				}
 				break;
@@ -401,9 +400,8 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 												   model.getMap()
 														   .getCurrentTurn()),
 									   Optional.empty());
-		SwingUtilities.invokeLater(
-				() -> new ViewerFrame(newModel, new IOHandler(newModel))
-							  .setVisible(true));
+		// FIXME: Somehow get the CLI interface and options from previous ...
+		new ViewerStart().startDriver(new CLIHelper(), new SPOptionsImpl(), newModel);
 	}
 
 	/**
