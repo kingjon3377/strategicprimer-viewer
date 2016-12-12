@@ -9,6 +9,7 @@ import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
+import view.util.DriverQuit;
 import view.worker.AdvancementFrame;
 
 /**
@@ -63,9 +64,10 @@ public final class AdvancementStart implements SimpleDriver {
 		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
 				"load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer", "go to tile",
-				"find a fixture", "find next", "zoom in", "zoom out", "center", "quit");
+				"find a fixture", "find next", "zoom in", "zoom out", "center");
 		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(workerModel);
 		menuHandler.register(pcml, "change current player");
+		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
 		SwingUtilities.invokeLater(
 				() -> {
 					final AdvancementFrame frame =

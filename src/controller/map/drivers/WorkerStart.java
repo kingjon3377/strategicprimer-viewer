@@ -9,6 +9,7 @@ import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
+import view.util.DriverQuit;
 import view.worker.WorkerMgmtFrame;
 
 /**
@@ -71,9 +72,10 @@ public final class WorkerStart implements SimpleDriver {
 				"load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer", "go to tile",
 				"find a fixture", "find next", "change current player", "reload tree",
-				"zoom in", "zoom out", "center", "quit");
+				"zoom in", "zoom out", "center");
 		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(driverModel);
 		menuHandler.register(pcml, "change current player");
+		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
 		SwingUtilities.invokeLater(() -> {
 			final WorkerMgmtFrame frame =
 					new WorkerMgmtFrame(options, driverModel, menuHandler);

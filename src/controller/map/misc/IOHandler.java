@@ -40,7 +40,6 @@ import view.map.main.FindDialog;
 import view.map.main.SelectTileDialog;
 import view.map.main.ZoomListener;
 import view.util.AboutDialog;
-import view.util.DriverQuit;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
 import view.util.ISPWindow;
@@ -328,9 +327,6 @@ public final class IOHandler implements ActionListener {
 				if (zoomer != null) {
 					zoomer.actionPerformed(event);
 				}
-				break;
-			case "quit":
-				DriverQuit.quit(0); // Does not return, but no way of telling javac
 				break;
 			default:
 				LOGGER.log(Level.INFO, "Unhandled command in IOHandler");

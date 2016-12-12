@@ -9,6 +9,7 @@ import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.misc.IDriverModel;
 import view.exploration.ExplorationFrame;
+import view.util.DriverQuit;
 
 /**
  * A class to start the exploration GUI.
@@ -61,7 +62,8 @@ public final class ExplorationGUI implements SimpleDriver {
 		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
 				"load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer", "go to tile",
-				"find a fixture", "find next", "zoom in", "zoom out", "center", "quit");
+				"find a fixture", "find next", "zoom in", "zoom out", "center");
+		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
 		SwingUtilities.invokeLater(
 				() -> {
 					final ExplorationFrame frame =

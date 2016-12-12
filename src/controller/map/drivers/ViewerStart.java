@@ -11,6 +11,7 @@ import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import view.map.main.ViewerFrame;
+import view.util.DriverQuit;
 
 /**
  * A class to start the viewer, to reduce circular dependencies between packages.
@@ -68,7 +69,8 @@ public final class ViewerStart implements SimpleDriver {
 				"load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer", "go to tile",
 				"find a fixture", "find next", "change current player", "reload tree",
-				"zoom in", "zoom out", "center", "quit");
+				"zoom in", "zoom out", "center");
+		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
 		SwingUtilities.invokeLater(
 				() -> {
 					final ViewerFrame frame = new ViewerFrame(viewerModel, menuHandler);
