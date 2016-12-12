@@ -58,8 +58,7 @@ public final class ExplorationFrame extends SPFrame {
 		add(esp);
 		add(explorationPanel);
 
-		setJMenuBar(new ExplorationMenu(NullCleaner.assertNotNull(ioHandler),
-											   explorationModel, this));
+		setJMenuBar(new ExplorationMenu(ioHandler, explorationModel, this));
 		pack();
 	}
 
