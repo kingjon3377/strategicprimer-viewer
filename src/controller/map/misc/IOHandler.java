@@ -12,8 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -46,7 +44,6 @@ import view.util.DriverQuit;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
 import view.util.ISPWindow;
-import view.util.TreeExpansionOrderListener;
 
 /**
  * An ActionListener to dispatch file I/O.
@@ -78,11 +75,6 @@ public final class IOHandler implements ActionListener {
 	 */
 	private final JFileChooser chooser;
 
-	/**
-	 * The list of tree-expansion-order listeners.
-	 */
-	private final Collection<TreeExpansionOrderListener> treeExpansionListeners =
-			new ArrayList<>();
 	/**
 	 * The map model, which needs to be told about newly loaded maps and holds maps to be
 	 * saved.
@@ -343,15 +335,6 @@ public final class IOHandler implements ActionListener {
 					zoomer.actionPerformed(event);
 				}
 				break;
-			case "expand all":
-				treeExpansionListeners.forEach(TreeExpansionOrderListener::expandAll);
-				break;
-			case "collapse all":
-				treeExpansionListeners.forEach(TreeExpansionOrderListener::collapseAll);
-				break;
-			case "expand unit kinds":
-				treeExpansionListeners.forEach(listener -> listener.expandSome(2));
-				break;
 			case "quit":
 				DriverQuit.quit(0); // Does not return, but no way of telling javac
 				break;
@@ -503,21 +486,5 @@ public final class IOHandler implements ActionListener {
 	@Override
 	public String toString() {
 		return "IOHandler";
-	}
-
-	/**
-	 * @param list the listener to add
-	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	public void addTreeExpansionListener(final TreeExpansionOrderListener list) {
-		treeExpansionListeners.add(list);
-	}
-
-	/**
-	 * @param list the listener to remove
-	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	public void removeTreeExpansionListener(final TreeExpansionOrderListener list) {
-		treeExpansionListeners.remove(list);
 	}
 }
