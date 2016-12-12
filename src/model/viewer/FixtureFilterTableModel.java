@@ -74,32 +74,24 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 */
 	public FixtureFilterTableModel() {
 		// TODO: Maybe units should be broken up by owner?
-		addTrivialMatcher(Unit.class, "Units");
-		addTrivialMatcher(Fortress.class, "Fortresses");
+		addTrivialMatchers(Unit.class);
+		addTrivialEMatchers(Fortress.class);
 		// TODO: Towns should be broken up by kind or size, and maybe by status or owner
 		addTrivialMatcher(AbstractTown.class, "Cities, Towns, and Fortifications");
 		// TODO: Village through Centaur were all 45, so their ordering happened by
 		// chance
-		addTrivialMatcher(Village.class, "Villages");
-		addTrivialMatcher(Troll.class, "Trolls");
-		addTrivialMatcher(Sphinx.class, "Sphinxes");
-		addTrivialMatcher(Simurgh.class, "Simurghs");
-		addTrivialMatcher(Phoenix.class, "Phoenixes");
-		addTrivialMatcher(Ogre.class, "Ogres");
-		addTrivialMatcher(Minotaur.class, "Minotaurs");
-		addTrivialMatcher(Mine.class, "Mines");
-		addTrivialMatcher(Griffin.class, "Griffins");
+		addTrivialMatchers(Village.class, Troll.class, Simurgh.class, Ogre.class,
+				Minotaur.class, Mine.class, Griffin.class);
+		addTrivialEMatchers(Sphinx.class, Phoenix.class);
 		addTrivialMatcher(Djinn.class, "Djinni");
-		addTrivialMatcher(Centaur.class, "Centaurs");
+		addTrivialMatchers(Centaur.class);
 		// TODO: StoneDeposit through Animal were all 40; they too should be reviewed
 		addTrivialMatcher(StoneDeposit.class, "Stone Deposits");
 		addTrivialMatcher(MineralVein.class, "Mineral Veins");
-		addTrivialMatcher(Giant.class, "Giants");
 		addTrivialMatcher(Fairy.class, "Fairies");
-		addTrivialMatcher(Dragon.class, "Dragons");
-		addTrivialMatcher(Cave.class, "Caves");
-		addTrivialMatcher(Battlefield.class, "Battlefields");
-		addTrivialMatcher(Animal.class, "Animals");
+		addTrivialMatchers(Giant.class, Dragon.class, Cave.class, Battlefield.class,
+				Animal.class);
+		// TODO: Animal tracks should probably be matched separately
 
 		addComplements(Grove.class, Grove::isOrchard, "Orchards", "Groves");
 
@@ -109,24 +101,22 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		// TODO: TextFixture through AdventureFixture were all 25, and should be
 		// considered
 		addTrivialMatcher(TextFixture.class, "Arbitrary-Text Notes");
-		addTrivialMatcher(Portal.class, "Portals");
+		addTrivialMatchers(Portal.class);
 		addTrivialMatcher(Oasis.class, "Oases");
 		addTrivialMatcher(AdventureFixture.class, "Adventures");
 
 		addTrivialMatcher(CacheFixture.class, "Caches");
 
-		addTrivialMatcher(Forest.class, "Forests");
-
+		addTrivialMatchers(Forest.class, Shrub.class);
 		// TODO: Shrub and Meadow were both 15; consider
-		addTrivialMatcher(Shrub.class, "Shrubs");
+
 		addComplements(Meadow.class, Meadow::isField, "Fields", "Meadows");
 
 		// TODO: Mountains are now a separate aspect of a tile; should this be omitted?
-		addTrivialMatcher(Mountain.class, "Mountains");
+		addTrivialMatchers(Mountain.class);
 
 		// TODO: Sandbar and Hill were both 5; consider.
-		addTrivialMatcher(Sandbar.class, "Sandbars");
-		addTrivialMatcher(Hill.class, "Hills");
+		addTrivialMatchers(Sandbar.class, Hill.class);
 
 		addComplements(Ground.class, Ground::isExposed, "Ground (exposed)", "Ground");
 	}
@@ -136,6 +126,26 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 */
 	private final void addMatcher(final FixtureMatcher matcher) {
 		list.add(matcher);
+	}
+	/**
+	 * Add matchers that match all instances of given classes, for which we can use
+	 * the class names plus "s".
+	 * @param classes the classes to match
+	 */
+	private final void addTrivialMatchers(final Class<? extends TileFixture>... classes) {
+		for (final Class<? extends TileFixture> cls : classes) {
+			addMatcher(new FixtureMatcher(cls::isInstance, cls.getSimpleName() + 's'));
+		}
+	}
+	/**
+	 * Add matchers that match all instances of given classes, for which we can use the
+	 * class names plus "es".
+	 * @param classes the classes to match
+	 */
+	private final void addTrivialEMatchers(final Class<? extends TileFixture>... classes) {
+		for (final Class<? extends TileFixture> cls : classes) {
+			addMatcher(new FixtureMatcher(cls::isInstance, cls.getSimpleName() + "es"));
+		}
 	}
 	/**
 	 * Add a matcher that matches all instances of a class.
