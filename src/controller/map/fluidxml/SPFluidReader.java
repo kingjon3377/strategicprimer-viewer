@@ -629,63 +629,9 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		}
 		for (final XMLEvent event : stream) {
 			if (isSPStartElement(event)) {
-				final StartElement current = event.asStartElement();
-				final String type = current.getName().getLocalPart();
-				if (equalsAny(type, ISPReader.FUTURE)) {
-					//noinspection ObjectAllocationInLoop
-					warner.warn(new UnsupportedTagException(current));
-					continue;
-				} else if ("tile".equals(type)) {
-					throw new UnwantedChildException(element.getName(), current);
-				}
-				final Object child =
-						readSPObject(current, element.getName(), stream, players, warner,
-								idFactory);
-				if (child instanceof River) {
-					map.addRivers(point, (River) child);
-				} else if (child instanceof Mountain) {
-					map.setMountainous(point, true);
-				} else if (child instanceof Ground) {
-					final Ground ground = (Ground) child;
-					final Ground oldGround = map.getGround(point);
-					if (oldGround == null) {
-						map.setGround(point, ground);
-					} else if (ground.isExposed() && !oldGround.isExposed()) {
-						map.setGround(point, ground);
-						map.addFixture(point, oldGround);
-					} else if (!oldGround.equals(ground)) {
-						// TODO: Should we do additional ordering of Ground?
-						map.addFixture(point, ground);
-					}
-				} else if (child instanceof Forest) {
-					final Forest forest = (Forest) child;
-					final Forest oldForest = map.getForest(point);
-					if (oldForest == null) {
-						map.setForest(point, forest);
-					} else if (!oldForest.equals(forest)) {
-						// TODO: Should we do additional ordering of Forests?
-						map.addFixture(point, forest);
-					}
-				} else if (child instanceof RiverFixture) {
-					for (final River river : (RiverFixture) child) {
-						map.addRivers(point, river);
-					}
-				} else if ((child instanceof StoneDeposit) &&
-								   (StoneKind.Laterite ==
-											((StoneDeposit) child)
-													.stone()) &&
-								   (TileType.Jungle !=
-											map.getBaseTerrain(
-													point))) {
-					//noinspection ObjectAllocationInLoop
-					warner.warn(new UnsupportedPropertyException(current,
-																		"laterite"));
-					map.addFixture(point, (TileFixture) child);
-				} else if (child instanceof TileFixture) {
-					map.addFixture(point, (TileFixture) child);
-				} else {
-					throw new UnwantedChildException(element.getName(), current);
-				}
+				parseTileChild(map, element, stream, players, warner, idFactory, point,
+						event.asStartElement());
+				continue;
 			} else if (event.isEndElement() &&
 							   element.getName().equals(event.asEndElement().getName()
 							   )) {
@@ -698,6 +644,82 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					map.addFixture(point, new TextFixture(data, -1));
 				}
 			}
+		}
+	}
+
+	/**
+	 * Parse a child tag of a tile tag.
+	 * @param map The map we're building
+	 * @param parent The tile tag
+	 * @param stream The stream of XML events
+	 * @param players The player collection.
+	 * @param warner The Warning instance to use as needed
+	 * @param idFactory The factory for ID numbers
+	 * @param currentTile The current row and column.
+	 * @param element The tag to parse
+	 * @throws SPFormatException
+	 */
+	private void parseTileChild(final IMutableMapNG map, final StartElement parent,
+								final Iterable<XMLEvent> stream,
+								final IMutablePlayerCollection players,
+								final Warning warner, final IDRegistrar idFactory,
+								final Point currentTile, final StartElement element)
+			throws SPFormatException {
+		final String type = element.getName().getLocalPart();
+		if (equalsAny(type, ISPReader.FUTURE)) {
+			//noinspection ObjectAllocationInLoop
+			warner.warn(new UnsupportedTagException(element));
+			return;
+		} else if ("tile".equals(type)) {
+			throw new UnwantedChildException(parent.getName(), element);
+		}
+		final Object child =
+				readSPObject(element, parent.getName(), stream, players, warner,
+						idFactory);
+		if (child instanceof River) {
+			map.addRivers(currentTile, (River) child);
+		} else if (child instanceof Mountain) {
+			map.setMountainous(currentTile, true);
+		} else if (child instanceof Ground) {
+			final Ground ground = (Ground) child;
+			final Ground oldGround = map.getGround(currentTile);
+			if (oldGround == null) {
+				map.setGround(currentTile, ground);
+			} else if (ground.isExposed() && !oldGround.isExposed()) {
+				map.setGround(currentTile, ground);
+				map.addFixture(currentTile, oldGround);
+			} else if (!oldGround.equals(ground)) {
+				// TODO: Should we do additional ordering of Ground?
+				map.addFixture(currentTile, ground);
+			}
+		} else if (child instanceof Forest) {
+			final Forest forest = (Forest) child;
+			final Forest oldForest = map.getForest(currentTile);
+			if (oldForest == null) {
+				map.setForest(currentTile, forest);
+			} else if (!oldForest.equals(forest)) {
+				// TODO: Should we do additional ordering of Forests?
+				map.addFixture(currentTile, forest);
+			}
+		} else if (child instanceof RiverFixture) {
+			for (final River river : (RiverFixture) child) {
+				map.addRivers(currentTile, river);
+			}
+		} else if ((child instanceof StoneDeposit) &&
+						   (StoneKind.Laterite ==
+									((StoneDeposit) child)
+											.stone()) &&
+						   (TileType.Jungle !=
+									map.getBaseTerrain(
+											currentTile))) {
+			//noinspection ObjectAllocationInLoop
+			warner.warn(new UnsupportedPropertyException(element,
+																"laterite"));
+			map.addFixture(currentTile, (TileFixture) child);
+		} else if (child instanceof TileFixture) {
+			map.addFixture(currentTile, (TileFixture) child);
+		} else {
+			throw new UnwantedChildException(parent.getName(), element);
 		}
 	}
 
