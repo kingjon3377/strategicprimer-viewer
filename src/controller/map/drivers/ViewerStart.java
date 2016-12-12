@@ -68,8 +68,7 @@ public final class ViewerStart implements SimpleDriver {
 		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
 				"load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer", "go to tile",
-				"find a fixture", "find next", "change current player", "reload tree",
-				"zoom in", "zoom out", "center");
+				"find a fixture", "find next", "zoom in", "zoom out", "center");
 		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
 		SwingUtilities.invokeLater(
 				() -> {
