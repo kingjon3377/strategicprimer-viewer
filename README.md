@@ -34,7 +34,12 @@ https://shinecycle.wordpress.com/tag/assistive/) or examining the commits in
 this repository.  Interested developers or users can help by reporting issues,
 requesting features, or contributing patches.
 
-Changes to the project are automatically tested using Travis Continuous Integration:
-[![Build 
+Changes to the project are automatically tested using Travis Continuous
+Integration and checked using Codebeat and Codacy static analysis: [![Build
 Status](https://travis-ci.org/kingjon3377/strategicprimer-viewer.svg?branch=master)
-](https://travis-ci.org/kingjon3377/strategicprimer-viewer)
+](https://travis-ci.org/kingjon3377/strategicprimer-viewer) [![codebeat
+badge](https://codebeat.co/badges/ab6b17f0-cc69-44ab-9d94-a8d5fb40e613)
+](https://codebeat.co/projects/github-com-kingjon3377-strategicprimer-viewer)
+[![Codacy
+Badge](https://api.codacy.com/project/badge/Grade/f8855a279a494e4eb532ee94e37f1ac8)
+](https://www.codacy.com/app/kingjon3377/strategicprimer-viewer)
