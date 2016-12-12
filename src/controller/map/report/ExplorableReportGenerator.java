@@ -45,12 +45,6 @@ public final class ExplorableReportGenerator
 		extends AbstractReportGenerator<ExplorableFixture> {
 
 	/**
-	 * A common string in this class.
-	 */
-	private static final Pattern COLON_COMMA_PATTERN =
-			NullCleaner.assertNotNull(Pattern.compile(": , ", Pattern.LITERAL));
-
-	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public ExplorableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,

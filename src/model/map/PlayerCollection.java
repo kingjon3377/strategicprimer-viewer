@@ -4,10 +4,8 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import org.eclipse.jdt.annotation.Nullable;
-import util.TypesafeLogger;
 
 import static util.NullCleaner.assertNotNull;
 import static util.NullStream.DEV_NULL;
@@ -29,11 +27,6 @@ import static util.NullStream.DEV_NULL;
  * @author Jonathan Lovelace
  */
 public final class PlayerCollection implements IMutablePlayerCollection {
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(PlayerCollection
-																		  .class);
 	/**
 	 * The collection this class wraps.
 	 */
