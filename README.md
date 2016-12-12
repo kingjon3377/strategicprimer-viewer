@@ -21,7 +21,7 @@ many others.
 Old pre-compiled binaries are available from the
 [BitBucket downloads
 page](https://bitbucket.org/kingjon/strategicprimer-viewer/downloads), and more
-up-to-date ones will be available from the [GitHub releases
+up-to-date ones are available from the [GitHub releases
 page](https://github.com/kingjon/strategicprimer-viewer/releases). These
 include Windows executables, (archives containing) Mac "application"
 bundles, and cross-platform "Java archive" (JAR) files.
