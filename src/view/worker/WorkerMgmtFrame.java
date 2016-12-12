@@ -181,9 +181,7 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 		menuHandler.register(evt -> expander.collapseAll(), "collapse all");
 		menuHandler.register(evt -> expander.expandSome(2), "expand unit kinds");
 		setJMenuBar(new WorkerMenu(menuHandler, this, model));
-		for (int i = 0; i < tree.getRowCount(); i++) {
-			tree.expandRow(i);
-		}
+		expander.expandAll();
 		addWindowListener(new CloseListener(newUnitFrame));
 		pcListeners = new ArrayList<>(Arrays.asList(newUnitFrame, treeModel, ordersPanel, reportUpdater, resultsPanel));
 		pack();

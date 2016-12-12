@@ -106,13 +106,11 @@ public final class AdvancementFrame extends SPFrame implements PlayerChangeListe
 								skillAdvancementPanel))));
 		playerChanged(null, map.getCurrentPlayer());
 
-		for (int i = 0; i < tree.getRowCount(); i++) {
-			tree.expandRow(i);
-		}
 		final TreeExpansionHandler expander = new TreeExpansionHandler(tree);
 		menuHandler.register(evt -> expander.expandAll(), "expand all");
 		menuHandler.register(evt -> expander.collapseAll(), "collapse all");
 		menuHandler.register(evt -> expander.expandSome(2), "expand unit kinds");
+		expander.expandAll();
 		setJMenuBar(new WorkerMenu(menuHandler, this, source));
 		pack();
 	}
