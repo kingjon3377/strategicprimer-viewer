@@ -3,6 +3,7 @@ package controller.map.drivers;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MenuBroker;
+import controller.map.misc.PlayerChangeMenuListener;
 import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
@@ -61,13 +62,17 @@ public final class AdvancementStart implements SimpleDriver {
 		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
 				"load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer", "go to tile", "close",
-				"find a fixture", "find next", "change current player", "reload tree",
-				"zoom in", "zoom out", "center", "quit");
+				"find a fixture", "find next", "zoom in", "zoom out", "center", "quit");
+		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(workerModel);
+		menuHandler.register(pcml, "change current player");
 		SwingUtilities.invokeLater(
 				() -> {
 					final AdvancementFrame frame =
 							new AdvancementFrame(workerModel, menuHandler);
-					ioh.addPlayerChangeListener(frame);
+					pcml.addPlayerChangeListener(frame);
+					menuHandler.register(
+							evt -> frame.playerChanged(model.getMap().getCurrentPlayer(),
+									model.getMap().getCurrentPlayer()), "reload tree");
 					frame.setVisible(true);
 				});
 	}

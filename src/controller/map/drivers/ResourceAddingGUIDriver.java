@@ -1,8 +1,9 @@
 package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
-import controller.map.misc.IOHandler;
-import javax.swing.*;
+import controller.map.misc.MenuBroker;
+import controller.map.misc.PlayerChangeMenuListener;
+import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import view.resources.ResourceAddingFrame;
@@ -62,12 +63,14 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 		} else {
 			driverModel = new ResourceManagementDriver(model);
 		}
-		final IOHandler ioh = new IOHandler(driverModel);
+		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(driverModel);
+		final MenuBroker menuHandler = new MenuBroker();
+		menuHandler.register(pcml, "change current player");
 		SwingUtilities.invokeLater(
 				() -> {
 					final ResourceAddingFrame frame =
-							new ResourceAddingFrame(driverModel, ioh);
-					ioh.addPlayerChangeListener(frame);
+							new ResourceAddingFrame(driverModel, menuHandler);
+					pcml.addPlayerChangeListener(frame);
 					frame.setVisible(true);
 				});
 	}

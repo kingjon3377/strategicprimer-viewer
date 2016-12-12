@@ -21,12 +21,9 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
-import model.listeners.PlayerChangeListener;
-import model.listeners.PlayerChangeSource;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -71,7 +68,7 @@ import view.util.TreeExpansionOrderListener;
  *
  * @author Jonathan Lovelace
  */
-public final class IOHandler implements ActionListener, PlayerChangeSource {
+public final class IOHandler implements ActionListener {
 	/**
 	 * Logger.
 	 */
@@ -81,11 +78,6 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 */
 	private final JFileChooser chooser;
 
-	/**
-	 * The list of player-change listeners.
-	 */
-	private final Collection<PlayerChangeListener> playerChangeListeners =
-			new ArrayList<>();
 	/**
 	 * The list of tree-expansion-order listeners.
 	 */
@@ -344,24 +336,6 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 					});
 				}
 				break;
-			case "change current player":
-				final Player retval = (Player) JOptionPane.showInputDialog(parent,
-						"Player to view:", "Choose New Player",
-						JOptionPane.PLAIN_MESSAGE, null,
-						playersAsArray(model.getMap().players()),
-						currentPlayer);
-				if (retval != null) {
-					for (final PlayerChangeListener list : playerChangeListeners) {
-						list.playerChanged(currentPlayer, retval);
-					}
-					currentPlayer = retval;
-				}
-				break;
-			case "reload tree":
-				for (final PlayerChangeListener listener : playerChangeListeners) {
-					listener.playerChanged(currentPlayer, currentPlayer);
-				}
-				break;
 			case "zoom in":
 			case "zoom out":
 			case "center":
@@ -529,22 +503,6 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	@Override
 	public String toString() {
 		return "IOHandler";
-	}
-
-	/**
-	 * @param list a listener to add
-	 */
-	@Override
-	public void addPlayerChangeListener(final PlayerChangeListener list) {
-		playerChangeListeners.add(list);
-	}
-
-	/**
-	 * @param list a listener to remove
-	 */
-	@Override
-	public void removePlayerChangeListener(final PlayerChangeListener list) {
-		playerChangeListeners.remove(list);
 	}
 
 	/**

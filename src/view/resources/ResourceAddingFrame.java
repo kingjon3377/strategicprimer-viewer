@@ -2,7 +2,7 @@ package view.resources;
 
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
-import controller.map.misc.IOHandler;
+import controller.map.misc.MenuBroker;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -123,11 +123,11 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	 * Constructor.
 	 *
 	 * @param driverModel the driver model
-	 * @param ioh         the I/O handler for menu items
+	 * @param menuHandler the handler for menu items
 	 */
 	@SuppressWarnings("ObjectAllocationInLoop")
 	public ResourceAddingFrame(final ResourceManagementDriver driverModel,
-							   final IOHandler ioh) {
+							   final MenuBroker menuHandler) {
 		super("Resource Entry", driverModel.getMapFile());
 		final IDRegistrar idf = IDFactoryFiller.createFactory(driverModel);
 		current = NullCleaner.valueOrDefault(driverModel.getCurrentPlayer(),
@@ -143,7 +143,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		addPair(panel, new JLabel("Quantity"), new JSpinner(resQtyModel));
 		addPair(panel, new JLabel("Units"), resUnitsBox);
 		final ActionListener resListener = evt -> {
-			confirmPlayer(ioh);
+			confirmPlayer(menuHandler);
 			final String kind = resKindBox.getSelectedItem();
 			final String resource = resourceBox.getSelectedItem();
 			final String units = resUnitsBox.getSelectedItem();
@@ -181,7 +181,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		secondPanel.add(implQtyField);
 		secondPanel.add(implKindBox);
 		final ActionListener implListener = evt -> {
-			confirmPlayer(ioh);
+			confirmPlayer(menuHandler);
 			final String kind = implKindBox.getSelectedItem();
 			if (kind.isEmpty()) {
 				return;
@@ -204,7 +204,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		final JScrollPane scrolledLog = new JScrollPane(logLabel);
 		scrolledLog.setMinimumSize(logLabel.getMinimumSize());
 		add(SplitWithWeights.verticalSplit(0.2, 0.1, mainPanel, scrolledLog));
-		setJMenuBar(new WorkerMenu(ioh, this, driverModel));
+		setJMenuBar(new WorkerMenu(menuHandler, this, driverModel));
 		pack();
 		// If we set these at model creation, the fields would (try to) be unnecessarily
 		// large. Not that this helps.
