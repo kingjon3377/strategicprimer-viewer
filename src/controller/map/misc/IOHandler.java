@@ -87,10 +87,6 @@ public final class IOHandler implements ActionListener {
 	@Nullable
 	private final ZoomListener zoomer;
 	/**
-	 * The current player.
-	 */
-	private Player currentPlayer;
-	/**
 	 * The "find" dialog, if this is for a map viewer.
 	 */
 	@Nullable
@@ -111,7 +107,6 @@ public final class IOHandler implements ActionListener {
 		} else {
 			zoomer = null;
 		}
-		currentPlayer = model.getMap().getCurrentPlayer();
 	}
 
 	/**
