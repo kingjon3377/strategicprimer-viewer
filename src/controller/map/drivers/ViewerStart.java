@@ -10,6 +10,7 @@ import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
+import view.map.main.SelectTileDialog;
 import view.map.main.ViewerFrame;
 import view.map.main.ZoomListener;
 import view.util.DriverQuit;
@@ -68,8 +69,7 @@ public final class ViewerStart implements SimpleDriver {
 		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
 				"load secondary", "save all", "open in map viewer",
-				"open secondary map in map viewer", "go to tile",
-				"find a fixture", "find next");
+				"open secondary map in map viewer", "find a fixture", "find next");
 		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
 		menuHandler.register(evt -> viewerModel.zoomIn(), "zoom in");
 		menuHandler.register(evt -> viewerModel.zoomOut(), "zoom out");
@@ -78,6 +78,8 @@ public final class ViewerStart implements SimpleDriver {
 				() -> {
 					final ViewerFrame frame = new ViewerFrame(viewerModel, menuHandler);
 					menuHandler.register(new WindowCloser(frame), "close");
+					menuHandler.register(evt -> new SelectTileDialog(frame, viewerModel)
+														.setVisible(true), "go to tile");
 					frame.setVisible(true);
 				});
 	}

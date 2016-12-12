@@ -37,7 +37,6 @@ import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
 import view.map.main.FindDialog;
-import view.map.main.SelectTileDialog;
 import view.util.AboutDialog;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
@@ -276,13 +275,6 @@ public final class IOHandler implements ActionListener {
 								.startDriver(new CLIHelper(), new SPOptionsImpl(),
 										newModel);
 					}
-				}
-				break;
-			case "go to tile":
-				if (model instanceof IViewerModel) {
-					SwingUtilities.invokeLater(
-							() -> new SelectTileDialog(parent, (IViewerModel) model)
-										  .setVisible(true));
 				}
 				break;
 			case "find a fixture":

@@ -61,8 +61,7 @@ public final class ExplorationGUI implements SimpleDriver {
 		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
 				"load secondary", "save all", "open in map viewer",
-				"open secondary map in map viewer", "go to tile",
-				"find a fixture", "find next");
+				"open secondary map in map viewer", "find a fixture", "find next");
 		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
 		SwingUtilities.invokeLater(
 				() -> {
