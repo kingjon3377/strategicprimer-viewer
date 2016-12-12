@@ -32,7 +32,7 @@ public final class OnMac {
 	 * A String describing that modifier.
 	 */
 	public static final String SHORTCUT_DESC;
-	/**
+	/*
 	 * Set up system-dependent properties.
 	 */
 	static {
