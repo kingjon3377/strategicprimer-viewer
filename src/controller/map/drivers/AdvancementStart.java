@@ -55,9 +55,13 @@ public final class AdvancementStart implements SimpleDriver {
 		} else {
 			workerModel = new WorkerModel(model);
 		}
+		final IOHandler ioh = new IOHandler(workerModel);
 		SwingUtilities.invokeLater(
-				() -> new AdvancementFrame(workerModel, new IOHandler(workerModel))
-							  .setVisible(true));
+				() -> {
+					final AdvancementFrame frame = new AdvancementFrame(workerModel, ioh);
+					ioh.addPlayerChangeListener(frame);
+					frame.setVisible(true);
+				});
 	}
 
 	/**

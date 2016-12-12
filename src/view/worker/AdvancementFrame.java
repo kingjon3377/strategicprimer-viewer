@@ -9,13 +9,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import model.listeners.PlayerChangeListener;
 import model.map.IMapNG;
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.JobTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
+import org.eclipse.jdt.annotation.Nullable;
 import view.util.BorderedPanel;
+import view.util.FormattedLabel;
 import view.util.ItemAdditionPanel;
 import view.util.ListenedButton;
 import view.util.SPFrame;
@@ -38,7 +41,7 @@ import static view.util.SplitWithWeights.verticalSplit;
  *
  * @author Jonathan Lovelace
  */
-public final class AdvancementFrame extends SPFrame {
+public final class AdvancementFrame extends SPFrame implements PlayerChangeListener {
 	/**
 	 * Dividers start at half-way.
 	 */
@@ -47,7 +50,14 @@ public final class AdvancementFrame extends SPFrame {
 	 * The resize weight for the main division.
 	 */
 	private static final double RES_WEIGHT = 0.3;
-
+	/**
+	 * The label telling whose units are being listed.
+	 */
+	private final FormattedLabel playerLabel = new FormattedLabel("%s's Units:", "");
+	/**
+	 * The model underlying the worker tree.
+	 */
+	private final IWorkerTreeModel treeModel;
 	/**
 	 * Constructor.
 	 *
@@ -57,14 +67,10 @@ public final class AdvancementFrame extends SPFrame {
 	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
 		super("Worker Advancement", source.getMapFile(), new Dimension(640, 480));
 		final IMapNG map = source.getMap();
-		final Player player = map.getCurrentPlayer();
-		final PlayerLabel playerLabel = new PlayerLabel("", player, "'s Units:");
-		ioHandler.addPlayerChangeListener(playerLabel);
-		final IWorkerTreeModel treeModel = new WorkerTreeModelAlt(player, source);
+		treeModel = new WorkerTreeModelAlt(map.getCurrentPlayer(), source);
 		final WorkerTree tree =
 				WorkerTree.factory(treeModel, map.players(),
 						() -> source.getMap().getCurrentTurn(), false);
-		ioHandler.addPlayerChangeListener(treeModel);
 		final WorkerCreationListener nwl = new WorkerCreationListener(treeModel,
 																			 IDFactoryFiller
 																					 .createFactory(
@@ -98,8 +104,7 @@ public final class AdvancementFrame extends SPFrame {
 										htmlWrapped("Add a Skill to the selected Job:"), null,
 										skillAdditionPanel)),
 								skillAdvancementPanel))));
-
-		ioHandler.notifyListeners();
+		playerChanged(null, map.getCurrentPlayer());
 
 		for (int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);
@@ -151,5 +156,17 @@ public final class AdvancementFrame extends SPFrame {
 	@Override
 	public String getWindowName() {
 		return "Worker Advancement";
+	}
+
+	/**
+	 * Called when the current player changes.
+	 *
+	 * @param old       the previous current player
+	 * @param newPlayer the new current player
+	 */
+	@Override
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		playerLabel.setArgs(newPlayer.getName());
+		treeModel.playerChanged(old, newPlayer);
 	}
 }
