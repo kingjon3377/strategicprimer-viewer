@@ -138,6 +138,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 				}
 			}
 			Collections.shuffle(possibles);
+			// TODO: Use Perception to decide how many to see, as in SimpleMovement.selectNoticed
 			if ((possibles.size() > 1) && (SingletonRandom.RANDOM.nextDouble() < 0.1)) {
 				constants.add(possibles.get(0));
 				constants.add(possibles.get(1));

@@ -1,5 +1,8 @@
 package model.map.fixtures.mobile;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -24,6 +27,7 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.ITownFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
+import util.SingletonRandom;
 
 /**
  * A class encapsulating knowledge about movement costs associated with various tile
@@ -239,7 +243,37 @@ public final class SimpleMovement {
 					   ((fix instanceof ITownFixture) &&
 								((ITownFixture) fix).getOwner().equals(unit.getOwner()));
 	}
-
+	/**
+	 * @param possibilities a list of things the mover might find
+	 * @param mover the explorer
+	 * @param speed how fast the explorer is moving
+	 * @return a list of things from the list of possibilities that the mover should in
+	 * fact find
+	 */
+	public static List<TileFixture> selectNoticed(final List<TileFixture> possibilities, final IUnit mover,
+											   final Speed speed) {
+		final List<TileFixture> local = new ArrayList<>(possibilities);
+		Collections.shuffle(local);
+		// Perception gets an extra +1 because our RNG generates 0-19, not 1-20.
+		int perception = getHighestPerception(mover) + speed.getPerceptionModifier() + 1;
+		final List<TileFixture> retval = new ArrayList<>();
+		for (final TileFixture item : local) {
+			final int dc;
+			// TODO: More kinds of fixtures ought to have DCs---perhaps not per-instance
+			if (item instanceof IEvent) {
+				dc = ((IEvent) item).getDC();
+			} else {
+				dc = 10;
+			}
+			if (SingletonRandom.RANDOM.nextInt(20) + 1 < dc) {
+				return retval;
+			} else {
+				retval.add(item);
+				perception -= 5;
+			}
+		}
+		return retval;
+	}
 	/**
 	 * An exception thrown to signal traversal is impossible.
 	 *

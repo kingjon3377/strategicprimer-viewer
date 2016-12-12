@@ -35,7 +35,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.Accumulator;
 import util.IntHolder;
 import util.Pair;
-import util.SingletonRandom;
 
 import static model.map.TileType.Ocean;
 import static util.NullCleaner.assertNotNull;
@@ -218,18 +217,19 @@ public final class ExplorationCLI implements MovementCostSource {
 		helper.printf("The explorer comes to %s, a tile with terrain %s%n",
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
 		Collections.shuffle(allFixtures);
+		final List<TileFixture> noticed =
+				SimpleMovement.selectNoticed(allFixtures, mover, speed);
 		// TODO: Perception should affect how many non-automatics.
-		if (allFixtures.isEmpty()) {
+		if (noticed.isEmpty()) {
 			helper.println("The following were automatically noticed:");
-		} else if ((allFixtures.size() > 1) &&
-						   (SingletonRandom.RANDOM.nextDouble() < 0.1)) {
-			helper.println(
-					"The following were noticed, all but the last two automatically:");
-			constants.add(allFixtures.get(0));
-			constants.add(allFixtures.get(1));
+		} else if (noticed.size() > 1) {
+			helper.printf(
+					"The following were noticed, all but the last %d automatically:%n",
+					Integer.valueOf(noticed.size()));
+			constants.addAll(noticed);
 		} else {
 			helper.println("The following were noticed, all but the last automatically");
-			constants.add(allFixtures.get(0));
+			constants.addAll(noticed);
 		}
 		for (final TileFixture fix : constants) {
 			printAndTransferFixture(dPoint, fix, mover);
