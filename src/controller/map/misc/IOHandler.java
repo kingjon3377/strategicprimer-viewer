@@ -84,9 +84,6 @@ public final class IOHandler implements ActionListener {
 	public IOHandler(final IDriverModel map, final JFileChooser fileChooser) {
 		model = NullCleaner.assertNotNull(map);
 		chooser = fileChooser;
-		if (model instanceof IViewerModel) {
-		} else {
-		}
 	}
 
 	/**
