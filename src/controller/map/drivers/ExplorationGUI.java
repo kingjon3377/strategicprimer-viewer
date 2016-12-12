@@ -9,6 +9,7 @@ import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.misc.IDriverModel;
 import view.exploration.ExplorationFrame;
+import view.util.AboutDialog;
 import view.util.DriverQuit;
 
 /**
@@ -59,15 +60,16 @@ public final class ExplorationGUI implements SimpleDriver {
 		final IOHandler ioh = new IOHandler
 									  (explorationModel);
 		final MenuBroker menuHandler = new MenuBroker();
-		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
-				"load secondary", "save all", "open in map viewer",
-				"open secondary map in map viewer");
+		menuHandler.register(ioh, "load", "save", "save as", "new", "load secondary",
+				"save all", "open in map viewer", "open secondary map in map viewer");
 		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
 		SwingUtilities.invokeLater(
 				() -> {
 					final ExplorationFrame frame =
 							new ExplorationFrame(explorationModel, menuHandler);
 					menuHandler.register(new WindowCloser(frame), "close");
+					menuHandler.register(evt -> new AboutDialog(frame, frame.getTitle())
+														.setVisible(true), "about");
 					frame.setVisible(true);
 				});
 	}

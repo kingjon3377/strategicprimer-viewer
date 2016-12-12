@@ -9,6 +9,7 @@ import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
+import view.util.AboutDialog;
 import view.util.DriverQuit;
 import view.worker.AdvancementFrame;
 
@@ -61,9 +62,8 @@ public final class AdvancementStart implements SimpleDriver {
 		}
 		final IOHandler ioh = new IOHandler(workerModel);
 		final MenuBroker menuHandler = new MenuBroker();
-		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
-				"load secondary", "save all", "open in map viewer",
-				"open secondary map in map viewer");
+		menuHandler.register(ioh, "load", "save", "save as", "new", "load secondary",
+				"save all", "open in map viewer", "open secondary map in map viewer");
 		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(workerModel);
 		menuHandler.register(pcml, "change current player");
 		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
@@ -76,6 +76,8 @@ public final class AdvancementStart implements SimpleDriver {
 							evt -> frame.playerChanged(model.getMap().getCurrentPlayer(),
 									model.getMap().getCurrentPlayer()), "reload tree");
 					menuHandler.register(new WindowCloser(frame), "close");
+					menuHandler.register(evt -> new AboutDialog(frame, frame.getTitle())
+														.setVisible(true), "about");
 					frame.setVisible(true);
 				});
 	}

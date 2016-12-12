@@ -4,7 +4,6 @@ import controller.map.drivers.SPOptionsImpl;
 import controller.map.drivers.ViewerStart;
 import controller.map.formatexceptions.SPFormatException;
 import java.awt.Component;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -16,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import javax.swing.JFileChooser;
-import javax.swing.JPopupMenu;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -31,10 +29,8 @@ import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.AboutDialog;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
-import view.util.ISPWindow;
 
 /**
  * An ActionListener to dispatch file I/O.
@@ -150,25 +146,6 @@ public final class IOHandler implements ActionListener {
 	}
 
 	/**
-	 * @param component a component
-	 * @return the frame containing it, if any
-	 */
-	@Nullable
-	private static Frame getContainingFrame(@Nullable final Component component) {
-		Component temp = component;
-		while (temp != null) {
-			if (temp instanceof Frame) {
-				return (Frame) temp;
-			} else if (temp instanceof JPopupMenu) {
-				temp = ((JPopupMenu) temp).getInvoker();
-			} else {
-				temp = temp.getParent();
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * Handle the "load" menu item.
 	 *
 	 * @param source the source of the event. May be null, since JFileChooser doesn't
@@ -196,8 +173,6 @@ public final class IOHandler implements ActionListener {
 		if (event != null) { // it wouldn't be @Nullable except that the JDK
 			// isn't annotated
 			final Component source = eventSource(event.getSource());
-			@Nullable
-			final Frame parent = getContainingFrame(source);
 			switch (event.getActionCommand().toLowerCase()) {
 			case "load":
 				handleLoadMenu(source);
@@ -210,15 +185,6 @@ public final class IOHandler implements ActionListener {
 				break;
 			case "new":
 				startNewViewerWindow();
-				break;
-			case "about":
-				final String title;
-				if (parent instanceof ISPWindow) {
-					title = ((ISPWindow) parent).getWindowName();
-				} else {
-					title = "Exploration";
-				}
-				new AboutDialog(source, title).setVisible(true);
 				break;
 			case "load secondary":
 				handleSecondaryLoadMenu(source);
