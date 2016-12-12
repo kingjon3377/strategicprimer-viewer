@@ -4,7 +4,6 @@ import controller.map.drivers.SPOptionsImpl;
 import controller.map.drivers.ViewerStart;
 import controller.map.formatexceptions.SPFormatException;
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.swing.JFileChooser;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -36,7 +34,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
-import view.map.main.FindDialog;
 import view.util.AboutDialog;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
@@ -77,12 +74,6 @@ public final class IOHandler implements ActionListener {
 	 * saved.
 	 */
 	private final IDriverModel model;
-	/**
-	 * The "find" dialog, if this is for a map viewer.
-	 */
-	@Nullable
-	private FindDialog finder = null;
-
 
 	/**
 	 * Constructor.
@@ -277,27 +268,6 @@ public final class IOHandler implements ActionListener {
 					}
 				}
 				break;
-			case "find a fixture":
-				if (model instanceof IViewerModel) {
-					SwingUtilities
-							.invokeLater(() -> {
-								final Dialog findDialog = getFindDialog(source);
-								if (findDialog != null) {
-									findDialog.setVisible(true);
-								}
-							});
-				}
-				break;
-			case "find next":
-				if (model instanceof IViewerModel) {
-					SwingUtilities.invokeLater(() -> {
-						final FindDialog findDialog = getFindDialog(source);
-						if (findDialog != null) {
-							findDialog.search();
-						}
-					});
-				}
-				break;
 			default:
 				LOGGER.log(Level.INFO, "Unhandled command in IOHandler");
 				break;
@@ -414,28 +384,6 @@ public final class IOHandler implements ActionListener {
 					handleError(e, path.toString(), source);
 				}
 			});
-		}
-	}
-
-	/**
-	 * @param component a component
-	 * @return a FindDialog if the driver model is for a map viewer, or null otherwise
-	 */
-	@SuppressWarnings("SynchronizedMethod")
-	@Nullable
-	private synchronized FindDialog getFindDialog(@Nullable final Component component) {
-		final Frame window = getContainingFrame(component);
-		if ((model instanceof IViewerModel) && (window != null)) {
-			if (finder == null) {
-				final FindDialog local =
-						new FindDialog(window, (IViewerModel) model);
-				finder = local;
-				return local;
-			} else {
-				return NullCleaner.assertNotNull(finder);
-			}
-		} else {
-			return null;
 		}
 	}
 

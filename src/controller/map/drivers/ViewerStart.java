@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import controller.map.misc.FindHandler;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MenuBroker;
@@ -69,7 +70,7 @@ public final class ViewerStart implements SimpleDriver {
 		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
 				"load secondary", "save all", "open in map viewer",
-				"open secondary map in map viewer", "find a fixture", "find next");
+				"open secondary map in map viewer");
 		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
 		menuHandler.register(evt -> viewerModel.zoomIn(), "zoom in");
 		menuHandler.register(evt -> viewerModel.zoomOut(), "zoom out");
@@ -80,6 +81,8 @@ public final class ViewerStart implements SimpleDriver {
 					menuHandler.register(new WindowCloser(frame), "close");
 					menuHandler.register(evt -> new SelectTileDialog(frame, viewerModel)
 														.setVisible(true), "go to tile");
+					menuHandler.register(new FindHandler(frame, viewerModel),
+							"find a fixture", "find next");
 					frame.setVisible(true);
 				});
 	}
