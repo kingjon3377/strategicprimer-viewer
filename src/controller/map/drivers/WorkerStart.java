@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
@@ -62,10 +62,12 @@ public final class WorkerStart implements SimpleDriver {
 		} else {
 			driverModel = new WorkerModel(model);
 		}
-		SwingUtilities.invokeLater(() -> new WorkerMgmtFrame(options, driverModel,
-																	new IOHandler
-																			(driverModel))
-												 .setVisible(true));
+		final IOHandler ioh = new IOHandler(driverModel);
+		SwingUtilities.invokeLater(() -> {
+			final WorkerMgmtFrame frame = new WorkerMgmtFrame(options, driverModel, ioh);
+			ioh.addPlayerChangeListener(frame);
+			frame.setVisible(true);
+		});
 	}
 
 	/**

@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.ActionMap;
@@ -63,6 +66,7 @@ import util.TypesafeLogger;
 import view.map.main.ViewerFrame;
 import view.util.BorderedPanel;
 import view.util.FocusRequester;
+import view.util.FormattedLabel;
 import view.util.ListenedButton;
 import view.util.SPFrame;
 import view.util.SystemOut;
@@ -86,7 +90,7 @@ import static view.util.SplitWithWeights.verticalSplit;
  *
  * @author Jonathan Lovelace
  */
-public final class WorkerMgmtFrame extends SPFrame {
+public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListener {
 	/**
 	 * The header to put above the report.
 	 */
@@ -100,6 +104,14 @@ public final class WorkerMgmtFrame extends SPFrame {
 	 * A constant for when a split panel should be divided not quite evenly.
 	 */
 	private static final double TWO_THIRDS = 2.0 / 3.0;
+	/**
+	 * The label saying to whom the units belong.
+	 */
+	private final FormattedLabel playerLabel;
+	/**
+	 * A list of things to notify when the current player changes.
+	 */
+	private final List<PlayerChangeListener> pcListeners;
 
 	/**
 	 * At this point (proof-of-concept) we default to the first player of the choices.
@@ -113,14 +125,11 @@ public final class WorkerMgmtFrame extends SPFrame {
 		super("Worker Management", model.getMapFile(), new Dimension(640, 480));
 		final IMapNG mainMap = model.getMap();
 		final NewUnitDialog newUnitFrame =
-				new NewUnitDialog(mainMap.getCurrentPlayer(),
-										 IDFactoryFiller.createFactory(mainMap));
-		final IWorkerTreeModel treeModel =
-				new WorkerTreeModelAlt(mainMap.getCurrentPlayer(), model);
+				new NewUnitDialog(mainMap.getCurrentPlayer(), IDFactoryFiller.createFactory(mainMap));
+		final IWorkerTreeModel treeModel = new WorkerTreeModelAlt(mainMap.getCurrentPlayer(), model);
 		final WorkerTree tree =
 				WorkerTree.factory(treeModel, mainMap.players(),
 						mainMap::getCurrentTurn, true);
-		ioHandler.addPlayerChangeListener(treeModel);
 		newUnitFrame.addNewUnitListener(treeModel);
 		final int keyMask = OnMac.SHORTCUT_MASK;
 		final String keyDesc = String.format(": (%sU)", OnMac.SHORTCUT_DESC);
@@ -129,18 +138,13 @@ public final class WorkerMgmtFrame extends SPFrame {
 		assert (inputMap != null) && (actionMap != null);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
 		actionMap.put("openUnits", new FocusRequester(tree));
-		final PlayerLabel playerLabel =
-				new PlayerLabel("Units belonging to ", mainMap.getCurrentPlayer(),
-									   keyDesc);
-		ioHandler.addPlayerChangeListener(playerLabel);
-		ioHandler.addPlayerChangeListener(newUnitFrame);
-		final OrdersPanel ordersPanel =
-				new OrdersPanel(model.getMap().getCurrentTurn(),
-									   mainMap.getCurrentPlayer(), model::getUnits,
-									   (unit, turn) -> unit.getLatestOrders(turn),
-									   (unit, turn, orders) -> unit.setOrders(turn,
-											   orders));
-		ioHandler.addPlayerChangeListener(ordersPanel);
+		playerLabel = new FormattedLabel("Units belonging to %s: (%sU)", mainMap.getCurrentPlayer().getName(),
+									   OnMac.SHORTCUT_DESC);
+		final OrdersPanel ordersPanel = new OrdersPanel(model.getMap().getCurrentTurn(),
+							   mainMap.getCurrentPlayer(), model::getUnits,
+							   (unit, turn) -> unit.getLatestOrders(turn),
+							   (unit, turn, orders) -> unit.setOrders(turn,
+									   orders));
 		tree.addTreeSelectionListener(ordersPanel);
 		final DefaultTreeModel reportModel =
 				new DefaultTreeModel(new SimpleReportNode("Please wait, loading report" +
@@ -148,13 +152,10 @@ public final class WorkerMgmtFrame extends SPFrame {
 		new Thread(new ReportGeneratorThread(reportModel, model,
 													mainMap.getCurrentPlayer())).start();
 		final ReportUpdater reportUpdater = new ReportUpdater(model, reportModel);
-		ioHandler.addPlayerChangeListener(reportUpdater);
 		model.addMapChangeListener(reportUpdater);
-		final OrdersPanel resultsPanel =
-				new OrdersPanel(mainMap.getCurrentTurn(), mainMap.getCurrentPlayer(),
-									   model::getUnits,
-									   (unit, turn) -> unit.getResults(turn), null);
-		ioHandler.addPlayerChangeListener(resultsPanel);
+		final OrdersPanel resultsPanel = new OrdersPanel(mainMap.getCurrentTurn(), mainMap.getCurrentPlayer(),
+							   model::getUnits,
+							   (unit, turn) -> unit.getResults(turn), null);
 		tree.addTreeSelectionListener(resultsPanel);
 		final MemberDetailPanel mdp = new MemberDetailPanel(resultsPanel);
 		tree.addUnitMemberListener(mdp);
@@ -182,6 +183,7 @@ public final class WorkerMgmtFrame extends SPFrame {
 			tree.expandRow(i);
 		}
 		addWindowListener(new CloseListener(newUnitFrame));
+		pcListeners = new ArrayList<>(Arrays.asList(newUnitFrame, treeModel, ordersPanel, reportUpdater, resultsPanel));
 		pack();
 	}
 
@@ -305,6 +307,20 @@ public final class WorkerMgmtFrame extends SPFrame {
 	@Override
 	public String getWindowName() {
 		return "Worker Management";
+	}
+
+	/**
+	 * Called when the current player changes.
+	 *
+	 * @param old       the previous current player
+	 * @param newPlayer the new current player
+	 */
+	@Override
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		for (final PlayerChangeListener listener : pcListeners) {
+			listener.playerChanged(old, newPlayer);
+		}
+		playerLabel.setArgs(newPlayer.getName(), OnMac.SHORTCUT_DESC);
 	}
 
 	/**
