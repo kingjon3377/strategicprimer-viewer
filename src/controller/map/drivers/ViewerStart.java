@@ -11,6 +11,7 @@ import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import view.map.main.ViewerFrame;
+import view.map.main.ZoomListener;
 import view.util.DriverQuit;
 
 /**
@@ -68,8 +69,11 @@ public final class ViewerStart implements SimpleDriver {
 		menuHandler.register(ioh, "load", "save", "save as", "new", "about",
 				"load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer", "go to tile",
-				"find a fixture", "find next", "zoom in", "zoom out", "center");
+				"find a fixture", "find next");
 		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
+		menuHandler.register(evt -> viewerModel.zoomIn(), "zoom in");
+		menuHandler.register(evt -> viewerModel.zoomOut(), "zoom out");
+		menuHandler.register(new ZoomListener(viewerModel), "center");
 		SwingUtilities.invokeLater(
 				() -> {
 					final ViewerFrame frame = new ViewerFrame(viewerModel, menuHandler);

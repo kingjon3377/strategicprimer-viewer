@@ -38,7 +38,6 @@ import util.TypesafeLogger;
 import util.Warning;
 import view.map.main.FindDialog;
 import view.map.main.SelectTileDialog;
-import view.map.main.ZoomListener;
 import view.util.AboutDialog;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
@@ -80,13 +79,6 @@ public final class IOHandler implements ActionListener {
 	 */
 	private final IDriverModel model;
 	/**
-	 * The handler for zoom-related items.
-	 *
-	 * TODO: Consider combining with this class.
-	 */
-	@Nullable
-	private final ZoomListener zoomer;
-	/**
 	 * The "find" dialog, if this is for a map viewer.
 	 */
 	@Nullable
@@ -103,9 +95,7 @@ public final class IOHandler implements ActionListener {
 		model = NullCleaner.assertNotNull(map);
 		chooser = fileChooser;
 		if (model instanceof IViewerModel) {
-			zoomer = new ZoomListener((IViewerModel) model);
 		} else {
-			zoomer = null;
 		}
 	}
 
@@ -314,13 +304,6 @@ public final class IOHandler implements ActionListener {
 							findDialog.search();
 						}
 					});
-				}
-				break;
-			case "zoom in":
-			case "zoom out":
-			case "center":
-				if (zoomer != null) {
-					zoomer.actionPerformed(event);
 				}
 				break;
 			default:
