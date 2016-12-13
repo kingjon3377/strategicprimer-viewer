@@ -385,14 +385,25 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
 			final IWorker worker = createSingleWorker(idf, cli);
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
-				final IFixture fix = find(pair.first(), unit.getID());
-				if (fix instanceof IUnit) {
-					((IUnit) fix).addMember(worker);
-					final int turn = pair.first().getCurrentTurn();
-					if (((IUnit) fix).getOrders(turn).isEmpty()) {
-						((IUnit) fix).setOrders(turn, "TODO: assign");
-					}
+			addWorkerToUnit(model, unit, worker);
+		}
+	}
+
+	/**
+	 * Add a worker to a unit in all maps.
+	 * @param model the map model
+	 * @param unit the unit to use as our base for finding corresponding units
+	 * @param worker the worker to add to them.
+	 */
+	private static void addWorkerToUnit(final IMultiMapModel model, final IFixture unit,
+										final IWorker worker) {
+		for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
+			final IFixture fix = find(pair.first(), unit.getID());
+			if (fix instanceof IUnit) {
+				((IUnit) fix).addMember(worker);
+				final int turn = pair.first().getCurrentTurn();
+				if (((IUnit) fix).getOrders(turn).isEmpty()) {
+					((IUnit) fix).setOrders(turn, "TODO: assign");
 				}
 			}
 		}
@@ -427,16 +438,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			final IWorker worker =
 					createWorkerFromNameFile(
 							NullCleaner.assertNotNull(names.get(i).trim()), idf, cli);
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
-				final IFixture fix = find(pair.first(), unit.getID());
-				if (fix instanceof IUnit) {
-					((IUnit) fix).addMember(worker);
-					final int turn = pair.first().getCurrentTurn();
-					if (((IUnit) fix).getOrders(turn).isEmpty()) {
-						((IUnit) fix).setOrders(turn, "TODO: assign");
-					}
-				}
-			}
+			addWorkerToUnit(model, unit, worker);
 		}
 	}
 
