@@ -571,10 +571,10 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			}
 			break;
 		}
-		final int constitution = base.getConstitution() + racialBonus.getConstitution();
-		final int conBonus = WorkerStats.getModifier(constitution);
-		final int hitP = 8 + conBonus + rollDeeEight(levels, conBonus);
-		return new WorkerStats(hitP, base, racialBonus);
+		final int conBonus = WorkerStats.getModifier(
+				base.getConstitution() + racialBonus.getConstitution());
+		return new WorkerStats(8 + conBonus + rollDeeEight(levels, conBonus), base,
+									  racialBonus);
 	}
 	/**
 	 * @param array an array of ints
