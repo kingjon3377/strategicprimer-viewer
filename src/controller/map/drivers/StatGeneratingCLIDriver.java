@@ -74,12 +74,6 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	private static final String PREGEN_PROMPT =
 			"Enter pre-generated stats for existing workers? ";
 	/**
-	 * The basis on which stat modifiers are calculated. Every two points above this
-	 * gives
-	 * +1, and every two points below this gives -1.
-	 */
-	private static final int STAT_BASIS = 10;
-	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
@@ -578,7 +572,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			break;
 		}
 		final int constitution = base.getConstitution() + racialBonus.getConstitution();
-		final int conBonus = constitution / 2 - STAT_BASIS / 2;
+		final int conBonus = WorkerStats.getModifier(constitution);
 		final int hitP = 8 + conBonus + rollDeeEight(levels, conBonus);
 		return new WorkerStats(hitP, base, racialBonus);
 	}
