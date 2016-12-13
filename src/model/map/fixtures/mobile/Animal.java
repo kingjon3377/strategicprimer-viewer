@@ -44,7 +44,7 @@ public class Animal
 	 *
 	 * TODO: Should this be an enumerated type?
 	 */
-	private final String status;
+	private String status;
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -121,6 +121,13 @@ public class Animal
 	 */
 	public String getStatus() {
 		return status;
+	}
+	/**
+	 * Set the domestication status of the animal.
+	 * @param nStatus the new status
+	 */
+	public final void setStatus(final String nStatus) {
+		status = nStatus;
 	}
 
 	/**
