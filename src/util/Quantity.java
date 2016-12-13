@@ -61,7 +61,7 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	 */
 	@Override
 	public String toString() {
-		return String.format("%s %s", number.toString(), units.toString());
+		return String.format("%s %s", number.toString(), units);
 	}
 
 	/**
