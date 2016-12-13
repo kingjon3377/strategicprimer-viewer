@@ -1,7 +1,6 @@
 package controller.map.report.tabular;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,26 +33,6 @@ import util.PatientMap;
  * @author Jonathan Lovelace
  */
 public class ResourceTabularReportGenerator implements ITableGenerator<IFixture> {
-	/**
-	 * Compare two Numbers. If they're both Integers or BigDecimals, use the native
-	 * conversion. If their integer parts are equal, compare using doubleValue(); if
-	 * not, compare using those integer parts.
-	 *
-	 * @param first  the first number
-	 * @param second the second number
-	 * @return the result of the comparison
-	 */
-	private static int compareNumbers(final Number first, final Number second) {
-		if (first instanceof Integer && second instanceof Integer) {
-			return ((Integer) first).compareTo((Integer) second);
-		} else if (first instanceof BigDecimal && second instanceof BigDecimal) {
-			return ((BigDecimal) first).compareTo((BigDecimal) second);
-		} else if (first.intValue() == second.intValue()) {
-			return Double.compare(first.doubleValue(), second.doubleValue());
-		} else {
-			return Integer.compare(first.intValue(), second.intValue());
-		}
-	}
 
 	/**
 	 * @param obj an object
