@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile.worker;
 
 import java.util.Formatter;
+import java.util.function.IntSupplier;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
@@ -242,5 +243,20 @@ public class WorkerStats {
 									  final int wisdom, final int charisma) {
 		return new WorkerStats(0, 0, strengthStat, dexterity, constitution, intelligence,
 									  wisdom, charisma);
+	}
+	/**
+	 * A factory method taking a RNG.
+	 * @param rng a method of "rolling 3d6"
+	 * @return a WorkerStats with 0 HP and a random number for each stat.
+	 */
+	public static WorkerStats factory(final IntSupplier rng) {
+		return factory(rng.getAsInt(), rng.getAsInt(), rng.getAsInt(), rng.getAsInt(),
+				rng.getAsInt(), rng.getAsInt());
+	}
+	/**
+	 * @return the stats as an array
+	 */
+	public int[] toArray() {
+		return new int[] { strength, dex, con, intel, wis, cha };
 	}
 }

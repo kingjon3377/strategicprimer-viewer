@@ -509,31 +509,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	private static WorkerStats createWorkerStats(final String race, final int levels,
 												 final ICLIHelper cli)
 			throws IOException {
-		final int baseCon = threeDeeSix();
-		final int baseStr = threeDeeSix();
-		final int baseDex = threeDeeSix();
-		final int baseInt = threeDeeSix();
-		final int baseWis = threeDeeSix();
-		final int baseCha = threeDeeSix();
 		final WorkerStats base =
-				new WorkerStats(0, 0, baseStr, baseDex, baseCon, baseInt, baseWis,
-									   baseCha);
-		final int lowestScore;
-		if (baseStr <= baseDex && baseStr <= baseCon && baseStr <= baseInt &&
-					baseStr <= baseWis && baseStr <= baseCha) {
-			lowestScore = 0;
-		} else if (baseDex <= baseCon && baseDex <= baseInt && baseDex <= baseWis &&
-						   baseDex <= baseCha) {
-			lowestScore = 1;
-		} else if (baseCon <= baseInt && baseCon <= baseWis && baseCon <= baseCha) {
-			lowestScore = 2;
-		} else if (baseInt <= baseWis && baseInt <= baseCha) {
-			lowestScore = 3;
-		} else if (baseWis <= baseCha) {
-			lowestScore = 4;
-		} else {
-			lowestScore = 5;
-		}
+				WorkerStats.factory(StatGeneratingCLIDriver::threeDeeSix);
+		final int lowestScore = getMinIndex(base.toArray());
 		final WorkerStats racialBonus;
 		switch (race) {
 		case "dwarf":
@@ -588,10 +566,24 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			}
 			break;
 		}
-		final int constitution = baseCon + racialBonus.getConstitution();
+		final int constitution = base.getConstitution() + racialBonus.getConstitution();
 		final int conBonus = constitution / 2 - STAT_BASIS / 2;
 		final int hitP = 8 + conBonus + rollDeeEight(levels, conBonus);
 		return new WorkerStats(hitP, base, racialBonus);
+	}
+	/**
+	 * @param array an array of ints
+	 * @return the index of the lowest value
+	 */
+	private static final int getMinIndex(final int[] array) {
+		int retval = 0;
+		for (int i = 0; i < array.length; i++) {
+			final int value = array[i];
+			if (value > array[retval]) {
+				retval = i;
+			}
+		}
+		return retval;
 	}
 
 	/**
