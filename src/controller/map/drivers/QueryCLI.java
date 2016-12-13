@@ -17,6 +17,9 @@ import model.exploration.HerdModel;
 import model.exploration.HuntingModel;
 import model.exploration.SurroundingPointIterable;
 import model.map.DistanceComparator;
+import model.map.FixtureIterable;
+import model.map.HasOwner;
+import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
@@ -24,10 +27,8 @@ import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
-import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.terrain.Forest;
-import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ListMaker;
@@ -173,25 +174,28 @@ public final class QueryCLI implements SimpleDriver {
 		final Player player = players.get(playerNum);
 		int count = 0;
 		for (final Point loc : map.locations()) {
-			for (final TileFixture fix : map.getOtherFixtures(loc)) {
-				if ((fix instanceof IUnit) && player.equals(((IUnit) fix).getOwner())) {
-					count += StreamSupport.stream(((IUnit) fix).spliterator(), false)
-									 .filter(IWorker.class::isInstance).count();
-				} else if (fix instanceof Fortress) {
-					count += StreamSupport.stream(((Fortress) fix).spliterator(), false)
-									 .filter(IUnit.class::isInstance)
-									 .map(IUnit.class::cast)
-									 .filter(unit -> player.equals(unit.getOwner()))
-									 .flatMap(unit -> StreamSupport
-															  .stream(unit.spliterator(),
-																	  false))
-									 .filter(IWorker.class::isInstance).count();
-				}
-			}
+			count += countWorkers(map.getOtherFixtures(loc), player);
 		}
 		cli.printf("%s has %d workers.%n", player.getName(), Integer.valueOf(count));
 	}
-
+	/**
+	 * @param iter an iterable over fixtures
+	 * @param owner a player
+	 * @return how many Workers it recursively contains owned by that player
+	 */
+	private static int countWorkers(final Iterable<? extends IFixture> iter,
+									final Player owner) {
+		int retval = 0;
+		for (final IFixture fix : iter) {
+			if (fix instanceof IWorker && iter instanceof HasOwner &&
+						owner.equals(((HasOwner) iter).getOwner())) {
+				retval++;
+			} else if (fix instanceof FixtureIterable) {
+				retval += countWorkers((FixtureIterable<?>) fix, owner);
+			}
+		}
+		return retval;
+	}
 	/**
 	 * Report the distance between two points.
 	 *
