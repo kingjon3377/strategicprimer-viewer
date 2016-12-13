@@ -25,7 +25,6 @@ import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
@@ -329,6 +328,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			throws IOException {
 		boolean again = true;
 		while (again) {
+			final IUnit unit;
 			if (cli.inputBooleanInSeries("Add worker(s) to an existing unit? ")) {
 				final List<IUnit> units = model.getUnits(player);
 				final int unitNum = cli.chooseFromList(units,
@@ -336,28 +336,24 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 						"There are no units owned by that player",
 						"Unit selection: ", false);
 				if ((unitNum >= 0) && (unitNum < units.size())) {
-					final IUnit unit = units.get(unitNum);
-					if (cli.inputBooleanInSeries(LOAD_NAMES)) {
-						createWorkersFromFile(model, idf, unit, cli);
-					} else {
-						createWorkersForUnit(model, idf, unit, cli);
-					}
+					unit = units.get(unitNum);
+				} else {
+					break;
 				}
 			} else {
 				final Point point = cli.inputPoint("Where to put new unit? ");
 				//noinspection ObjectAllocationInLoop
-				final TileFixture unit =
-						new Unit(player, cli.inputString("Kind of unit: "),
-										cli.inputString("Unit name: "), idf.createID());
+				unit = new Unit(player, cli.inputString("Kind of unit: "),
+									   cli.inputString("Unit name: "), idf.createID());
 				for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps
 																					()) {
 					pair.first().addFixture(point, unit);
 				}
-				if (cli.inputBooleanInSeries(LOAD_NAMES)) {
-					createWorkersFromFile(model, idf, unit, cli);
-				} else {
-					createWorkersForUnit(model, idf, unit, cli);
-				}
+			}
+			if (cli.inputBooleanInSeries(LOAD_NAMES)) {
+				createWorkersFromFile(model, idf, unit, cli);
+			} else {
+				createWorkersForUnit(model, idf, unit, cli);
 			}
 			again = cli.inputBoolean("Add more workers to another unit? ");
 		}
