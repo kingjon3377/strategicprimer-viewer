@@ -482,19 +482,31 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				cli.print(stats.toString());
 			}
 		}
+		enterWorkerJobs(cli, retval, levels);
+		return retval;
+	}
+
+	/**
+	 * Enter which Jobs a worker's levels are in.
+	 * @param cli the interface for user I/O
+	 * @param worker the worker in question
+	 * @param levels how many Job levels he or she has
+	 * @throws IOException on I/O error
+	 */
+	private static void enterWorkerJobs(final ICLIHelper cli, final Worker worker,
+										final int levels) throws IOException {
 		for (int i = 0; i < levels; i++) {
 			final String jobName =
 					cli.inputString("Which Job does worker have a level in? ");
-			final Optional<IJob> existing = Optional.ofNullable(retval.getJob(jobName));
+			final Optional<IJob> existing = Optional.ofNullable(worker.getJob(jobName));
 			if (existing.isPresent()) {
 				final IJob job = existing.get();
 				job.setLevel(job.getLevel() + 1);
 			} else {
 				//noinspection ObjectAllocationInLoop
-				retval.addJob(new Job(jobName, 1));
+				worker.addJob(new Job(jobName, 1));
 			}
 		}
-		return retval;
 	}
 
 	/**
@@ -626,18 +638,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			cli.println("Worker stats:");
 			cli.print(stats.toString());
 		}
-		for (int i = 0; i < levels; i++) {
-			final String jobName =
-					cli.inputString("Which Job does worker have a level in? ");
-			final Optional<IJob> existing = Optional.ofNullable(retval.getJob(jobName));
-			if (existing.isPresent()) {
-				final IJob job = existing.get();
-				job.setLevel(job.getLevel() + 1);
-			} else {
-				//noinspection ObjectAllocationInLoop
-				retval.addJob(new Job(jobName, 1));
-			}
-		}
+		enterWorkerJobs(cli, retval, levels);
 		return retval;
 	}
 
