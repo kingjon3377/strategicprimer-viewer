@@ -400,7 +400,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
 			final IFixture fix = find(pair.first(), unit.getID());
 			if (fix instanceof IUnit) {
-				((IUnit) fix).addMember(worker);
+				((IUnit) fix).addMember(worker.copy(false));
 				final int turn = pair.first().getCurrentTurn();
 				if (((IUnit) fix).getOrders(turn).isEmpty()) {
 					((IUnit) fix).setOrders(turn, "TODO: assign");
