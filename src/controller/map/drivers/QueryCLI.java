@@ -7,11 +7,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.exploration.HerdModel;
 import model.exploration.HuntingModel;
@@ -30,7 +32,6 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.terrain.Forest;
 import model.misc.IDriverModel;
-import org.eclipse.jdt.annotation.Nullable;
 import util.ListMaker;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -407,19 +408,12 @@ public final class QueryCLI implements SimpleDriver {
 		cli.print("Terrain is ");
 		cli.println(NullCleaner.assertNotNull(map.getBaseTerrain(location).toString()));
 		final List<TileFixture> fixtures =
-				map.streamOtherFixtures(location).collect(Collectors.toList());
+				Stream.concat(Stream.of(map.getGround(location), map.getForest
+																			 (location)),
+						map.streamOtherFixtures(location)).filter(Objects::nonNull)
+						.collect(Collectors.toList());
 		final Collection<Ground> ground = new ArrayList<>();
-		@Nullable
-		final Ground locGround = map.getGround(location);
-		if (locGround != null) {
-			ground.add(locGround);
-		}
-		@Nullable
-		final Forest forest = map.getForest(location);
 		final Collection<Forest> forests = new ArrayList<>();
-		if (forest != null) {
-			forests.add(forest);
-		}
 		for (final TileFixture fix : fixtures) {
 			if (fix instanceof Ground) {
 				ground.add((Ground) fix);
