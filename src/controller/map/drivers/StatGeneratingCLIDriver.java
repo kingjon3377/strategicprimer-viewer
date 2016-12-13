@@ -467,11 +467,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				levels++;
 			}
 		}
-		if (levels > 1) {
-			cli.printf("Worker has %d job levels%n", Integer.valueOf(levels));
-		} else if (levels == 1) {
-			cli.println("Worker has 1 job level");
-		}
+		printLevelCount(cli, levels);
+
 		final boolean pregenStats =
 				cli.inputBooleanInSeries("Enter pre-generated stats? ");
 		if (pregenStats) {
@@ -631,15 +628,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		}
 		final WorkerStats stats = createWorkerStats(race, levels, cli);
 		retval.setStats(stats);
-		if (levels > 1) {
-			cli.printf("Worker has %d Job levels.%n", Integer.valueOf(levels));
-			cli.println("Worker stats:");
-			cli.print(stats.toString());
-		} else if (levels == 1) {
-			cli.println("Worker has 1 Job level.");
-			cli.println("Worker stats:");
-			cli.print(stats.toString());
-		}
+		printLevelCount(cli, levels);
+		cli.println("Worker stats:");
 		enterWorkerJobs(cli, retval, levels);
 		return retval;
 	}
@@ -701,6 +691,20 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error interacting with user", except);
+		}
+	}
+	/**
+	 * Print a message saying how many levels the worker has, pluralizing or not as
+	 * appropriate. If no levels, do nothing.
+	 * @param cli the interface for user I/O
+	 * @param levels how many levels the worker has
+	 * @throws IOException on I/O error
+	 */
+	private static void printLevelCount(final ICLIHelper cli, final int levels) {
+		if (levels == 1) {
+			cli.println("Worker has 1 Job level.");
+		} else if (levels > 1) {
+			cli.printf("Worker has %d Job levels%n", Integer.valueOf(levels));
 		}
 	}
 
