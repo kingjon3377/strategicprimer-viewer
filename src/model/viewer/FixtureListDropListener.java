@@ -69,19 +69,25 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	@Override
 	public void dragEnter(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
-			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) &&
-						(dtde.getCurrentDataFlavorsAsList()
-								 .contains(FixtureTransferable.FLAVOR) ||
-								 dtde.getCurrentDataFlavorsAsList()
-										 .contains(CurriedFixtureTransferable.FLAVOR)) &&
-						!isIntraComponentXfr(dtde)) {
-				dtde.acceptDrag(dtde.getDropAction());
-			} else {
-				dtde.rejectDrag();
-			}
+			handleDrag(dtde);
 		}
 	}
-
+	/**
+	 * Handle a drag event.
+	 * @param dtde the event to handle
+	 */
+	private void handleDrag(final DropTargetDragEvent dtde) {
+		if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) &&
+					(dtde.getCurrentDataFlavorsAsList()
+							 .contains(FixtureTransferable.FLAVOR) ||
+							 dtde.getCurrentDataFlavorsAsList()
+									 .contains(CurriedFixtureTransferable.FLAVOR)) &&
+					!isIntraComponentXfr(dtde)) {
+			dtde.acceptDrag(dtde.getDropAction());
+		} else {
+			dtde.rejectDrag();
+		}
+	}
 	/**
 	 * TODO: Figure out how to skip all this (return false) on non-local drags.
 	 *
@@ -103,16 +109,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	@Override
 	public void dragOver(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
-			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) &&
-						(dtde.getCurrentDataFlavorsAsList()
-								 .contains(FixtureTransferable.FLAVOR) ||
-								 dtde.getCurrentDataFlavorsAsList()
-										 .contains(CurriedFixtureTransferable.FLAVOR)) &&
-						!isIntraComponentXfr(dtde)) {
-				dtde.acceptDrag(dtde.getDropAction());
-			} else {
-				dtde.rejectDrag();
-			}
+			handleDrag(dtde);
 		}
 	}
 
@@ -124,16 +121,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	@Override
 	public void dropActionChanged(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
-			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) &&
-						(dtde.getCurrentDataFlavorsAsList()
-								 .contains(FixtureTransferable.FLAVOR) ||
-								 dtde.getCurrentDataFlavorsAsList()
-										 .contains(CurriedFixtureTransferable.FLAVOR)) &&
-						!isIntraComponentXfr(dtde)) {
-				dtde.acceptDrag(dtde.getDropAction());
-			} else {
-				dtde.rejectDrag();
-			}
+			handleDrag(dtde);
 		}
 	}
 
