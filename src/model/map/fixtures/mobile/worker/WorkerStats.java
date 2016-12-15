@@ -222,9 +222,10 @@ public class WorkerStats {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder(70);
-		final Formatter formatter = new Formatter(builder);
-		formatter.format("HP: %d / %d%nStr: %d%nDex: %d%n", hp, maxHP, strength, dex);
-		formatter.format("Con: %d%nInt: %d%nWis: %d%nCha: %d%n", con, intel, wis, cha);
+        try (final Formatter formatter = new Formatter(builder)) {
+			formatter.format("HP: %d / %d%nStr: %d%nDex: %d%n", hp, maxHP, strength, dex);
+			formatter.format("Con: %d%nInt: %d%nWis: %d%nCha: %d%n", con, intel, wis, cha);
+        }
 		return NullCleaner.assertNotNull(builder.toString());
 	}
 	/**
