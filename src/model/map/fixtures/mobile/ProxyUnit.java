@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.logging.Logger;
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
@@ -232,15 +233,7 @@ public final class ProxyUnit
 	 */
 	@Override
 	public String getDefaultImage() {
-		String retval = "";
-		for (final IUnit unit : proxied) {
-			if (retval.isEmpty()) {
-				retval = unit.getDefaultImage();
-			} else if (!retval.equals(unit.getDefaultImage())) {
-				return "unit.png";
-			}
-		}
-		return retval;
+		return getCommonValue(IUnit::getDefaultImage, "", "unit.png");
 	}
 
 	/**
@@ -248,19 +241,7 @@ public final class ProxyUnit
 	 */
 	@Override
 	public String getImage() {
-		@Nullable String image = null;
-		for (final IUnit unit : proxied) {
-			if (image == null) {
-				image = unit.getImage();
-			} else if (!image.equals(unit.getImage())) {
-				return "";
-			}
-		}
-		if (image == null) {
-			return "";
-		} else {
-			return image;
-		}
+		return getCommonValue(IUnit::getImage, "", "");
 	}
 
 	/**
@@ -284,19 +265,7 @@ public final class ProxyUnit
 	@Override
 	public String getKind() {
 		if (parallel) {
-			@Nullable String localKind = null;
-			for (final IUnit unit : proxied) {
-				if (localKind == null) {
-					localKind = unit.getKind();
-				} else if (!localKind.equals(unit.getKind())) {
-					return "proxied";
-				}
-			}
-			if (localKind == null) {
-				return "proxied";
-			} else {
-				return localKind;
-			}
+			return getCommonValue(IUnit::getKind, "proxied", "proxied");
 		} else {
 			return kind;
 		}
@@ -375,19 +344,7 @@ public final class ProxyUnit
 	 */
 	@Override
 	public String getName() {
-		@Nullable String name = null;
-		for (final IUnit unit : proxied) {
-			if (name == null) {
-				name = unit.getName();
-			} else if (!name.equals(unit.getName())) {
-				return "proxied";
-			}
-		}
-		if (name == null) {
-			return "proxied";
-		} else {
-			return name;
-		}
+		return getCommonValue(IUnit::getName, "proxied", "proxied");
 	}
 
 	/**
@@ -410,19 +367,8 @@ public final class ProxyUnit
 	 */
 	@Override
 	public Player getOwner() {
-		@Nullable Player retval = null;
-		for (final IUnit unit : proxied) {
-			if (retval == null) {
-				retval = unit.getOwner();
-			} else if (!retval.equals(unit.getOwner())) {
-				return new Player(-1, "proxied");
-			}
-		}
-		if (retval == null) {
-			return new Player(-1, "proxied");
-		} else {
-			return retval;
-		}
+		final Player defaultValue = new Player(-1, "proxied");
+		return getCommonValue(IUnit::getOwner, defaultValue, defaultValue);
 	}
 
 	/**
@@ -459,21 +405,7 @@ public final class ProxyUnit
 	 */
 	@Override
 	public String getOrders(final int turn) {
-		@Nullable String orders = null;
-		for (final IUnit unit : proxied) {
-			if (orders == null) {
-				orders = unit.getOrders(turn);
-			} else if (orders.isEmpty()) {
-				continue;
-			} else if (!orders.equals(unit.getOrders(turn))) {
-				return "";
-			}
-		}
-		if (orders == null) {
-			return "";
-		} else {
-			return orders;
-		}
+		return getCommonValue(unit -> unit.getOrders(turn), "", "");
 	}
 
 	/**
@@ -483,21 +415,7 @@ public final class ProxyUnit
 	 */
 	@Override
 	public String getResults(final int turn) {
-		@Nullable String results = null;
-		for (final IUnit unit : proxied) {
-			if (results == null) {
-				results = unit.getResults(turn);
-			} else if (results.isEmpty()) {
-				continue;
-			} else if (!results.equals(unit.getResults(turn))) {
-				return "";
-			}
-		}
-		if (results == null) {
-			return "";
-		} else {
-			return results;
-		}
+		return getCommonValue(unit -> unit.getResults(turn), "", "");
 	}
 
 	/**
@@ -645,7 +563,30 @@ public final class ProxyUnit
 	public boolean isParallel() {
 		return parallel;
 	}
-
+	/**
+	 * @param method a method to call on each proxied member
+	 * @param <T> the type it returns
+	 * @param empty what to return if there are no proxied members
+	 * @param differ what to return if their return values differ
+	 * @return the value returned by all the members if they were the same, or differ if
+	 * they differed, or empty if there were none
+	 */
+	private <T> T getCommonValue(final Function<IUnit, T> method, final T empty, final T differ) {
+		@Nullable T value = null;
+		for (final IUnit unit : proxied) {
+			final T current = method.apply(unit);
+			if (value == null) {
+				value = current;
+			} else if (!value.equals(current)) {
+				return differ;
+			}
+		}
+		if (value == null) {
+			return empty;
+		} else {
+			return value;
+		}
+	}
 	/**
 	 * A proxy for non-worker unit members.
 	 */
