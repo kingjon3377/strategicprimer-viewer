@@ -27,8 +27,6 @@ import view.map.main.TileDrawHelper;
 import view.map.main.Ver2TileDrawHelper;
 import view.util.Coordinate;
 
-import static view.util.SystemOut.SYS_OUT;
-
 /**
  * A driver to compare the performance of TileDrawHelpers.
  *
@@ -393,7 +391,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 *                       gives
 	 *                    more precise result)
 	 */
-	private static void runAllTests(final IMapNG map, final int repetitions) {
+	private static void runAllTests(final ICLIHelper cli, final IMapNG map,
+									final int repetitions) {
 		final int tileSize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL,
 				map.dimensions().version);
 		final Triple<TileDrawHelper, String, LongAccumulator> one =
@@ -411,21 +410,21 @@ public final class DrawHelperComparator implements SimpleDriver {
 		final List<Triple<TileDrawHelper, String, LongAccumulator>> cases =
 				Arrays.asList(one, two, three);
 		for (final Pair<String, DrawingTest> pair : TESTS) {
-			SYS_OUT.print(pair.first());
-			SYS_OUT.println(':');
+			cli.print(pair.first());
+			cli.println(":");
 			for (final Triple<TileDrawHelper, String, LongAccumulator> testCase :
 					cases) {
-				testCase.third.add(printStats(testCase.second,
+				testCase.third.add(printStats(cli, testCase.second,
 						pair.second().runTest(testCase.first, map, repetitions, tileSize),
 						repetitions));
 			}
 		}
-		SYS_OUT.println("--------------------------------------");
-		SYS_OUT.print("Total:");
+		cli.println("--------------------------------------");
+		cli.print("Total:");
 		for (final Triple<TileDrawHelper, String, LongAccumulator> testCase : cases) {
-			printStats(testCase.second, testCase.third.getValue(), repetitions);
+			printStats(cli, testCase.second, testCase.third.getValue(), repetitions);
 		}
-		SYS_OUT.println();
+		cli.printf("%n");
 	}
 
 	/**
@@ -436,14 +435,10 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 * @param reps   how many times the test ran
 	 * @return that total
 	 */
-	private static long printStats(final String prefix, final long total,
-								   final int reps) {
-		SYS_OUT.print(prefix);
-		SYS_OUT.print('\t');
-		SYS_OUT.print(total);
-		SYS_OUT.print(", average of\t");
-		SYS_OUT.print(Long.toString(total / reps));
-		SYS_OUT.println(" ns.");
+	private static long printStats(final ICLIHelper cli, final String prefix,
+								   final long total, final int reps) {
+		cli.printf("%s\t%d, average of %d ns.%n", prefix, Long.valueOf(total),
+				Long.valueOf(total / reps));
 		return total;
 	}
 
@@ -483,34 +478,34 @@ public final class DrawHelperComparator implements SimpleDriver {
 																		   model)
 																		  .getAllMaps
 																				   ()) {
-				SYS_OUT.print("Testing using ");
+				cli.print("Testing using ");
 				final Optional<Path> file = pair.second();
-				SYS_OUT.println(
+				cli.println(
 						file.map(Path::toString).orElse("a map not loaded from file"));
 				final IMapNG map = pair.first();
 				PointFactory.clearCache();
 				final boolean startCaching = random.nextBoolean();
 				PointFactory.shouldUseCache(startCaching);
-				SYS_OUT.println(getCachingMessage(startCaching));
-				runAllTests(map, reps);
+				cli.println(getCachingMessage(startCaching));
+				runAllTests(cli, map, reps);
 				PointFactory.shouldUseCache(!startCaching);
-				SYS_OUT.println(getCachingMessage(!startCaching));
-				runAllTests(map, reps);
+				cli.println(getCachingMessage(!startCaching));
+				runAllTests(cli, map, reps);
 			}
 		} else {
-			SYS_OUT.print("Testing using ");
+			cli.print("Testing using ");
 			final Optional<Path> mapFile = model.getMapFile();
-			SYS_OUT.println(
+			cli.println(
 					mapFile.map(Path::toString).orElse("an unsaved map"));
 			final IMapNG map = model.getMap();
 			PointFactory.clearCache();
 			final boolean startCaching = random.nextBoolean();
 			PointFactory.shouldUseCache(startCaching);
-			SYS_OUT.println(getCachingMessage(startCaching));
-			runAllTests(map, reps);
+			cli.println(getCachingMessage(startCaching));
+			runAllTests(cli, map, reps);
 			PointFactory.shouldUseCache(!startCaching);
-			SYS_OUT.println(getCachingMessage(!startCaching));
-			runAllTests(map, reps);
+			cli.println(getCachingMessage(!startCaching));
+			runAllTests(cli, map, reps);
 		}
 	}
 
