@@ -485,11 +485,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 																				   ()) {
 				SYS_OUT.print("Testing using ");
 				final Optional<Path> file = pair.second();
-				if (file.isPresent()) {
-					SYS_OUT.println(file.get());
-				} else {
-					SYS_OUT.println("a map not loaded from file");
-				}
+				SYS_OUT.println(
+						file.map(Path::toString).orElse("a map not loaded from file"));
 				final IMapNG map = pair.first();
 				PointFactory.clearCache();
 				final boolean startCaching = random.nextBoolean();
@@ -503,11 +500,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 		} else {
 			SYS_OUT.print("Testing using ");
 			final Optional<Path> mapFile = model.getMapFile();
-			if (mapFile.isPresent()) {
-				SYS_OUT.println(mapFile.get());
-			} else {
-				SYS_OUT.println("an unsaved map");
-			}
+			SYS_OUT.println(
+					mapFile.map(Path::toString).orElse("an unsaved map"));
 			final IMapNG map = model.getMap();
 			PointFactory.clearCache();
 			final boolean startCaching = random.nextBoolean();
