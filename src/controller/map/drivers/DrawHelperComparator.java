@@ -455,7 +455,17 @@ public final class DrawHelperComparator implements SimpleDriver {
 	public String toString() {
 		return "DrawHelperComparator";
 	}
-
+	/**
+	 * @param caching whether we're caching Points
+	 * @return a String saying so
+	 */
+	private static String getCachingMessage(final boolean caching) {
+		if (caching) {
+			return "Using cache:";
+		} else {
+			return "Not using cache:";
+		}
+	}
 	/**
 	 * Start the driver.
 	 *
@@ -482,21 +492,13 @@ public final class DrawHelperComparator implements SimpleDriver {
 				}
 				final IMapNG map = pair.first();
 				PointFactory.clearCache();
-				if (random.nextBoolean()) {
-					PointFactory.shouldUseCache(true);
-					SYS_OUT.println("Using cache:");
-					runAllTests(map, reps);
-					PointFactory.shouldUseCache(false);
-					SYS_OUT.println("Not using cache:");
-					runAllTests(map, reps);
-				} else {
-					PointFactory.shouldUseCache(false);
-					SYS_OUT.println("Not using cache:");
-					runAllTests(map, reps);
-					PointFactory.shouldUseCache(true);
-					SYS_OUT.println("Using cache:");
-					runAllTests(map, reps);
-				}
+				final boolean startCaching = random.nextBoolean();
+				PointFactory.shouldUseCache(startCaching);
+				SYS_OUT.println(getCachingMessage(startCaching));
+				runAllTests(map, reps);
+				PointFactory.shouldUseCache(!startCaching);
+				SYS_OUT.println(getCachingMessage(!startCaching));
+				runAllTests(map, reps);
 			}
 		} else {
 			SYS_OUT.print("Testing using ");
@@ -508,21 +510,13 @@ public final class DrawHelperComparator implements SimpleDriver {
 			}
 			final IMapNG map = model.getMap();
 			PointFactory.clearCache();
-			if (random.nextBoolean()) {
-				PointFactory.shouldUseCache(true);
-				SYS_OUT.println("Using cache:");
-				runAllTests(map, reps);
-				PointFactory.shouldUseCache(false);
-				SYS_OUT.println("Not using cache:");
-				runAllTests(map, reps);
-			} else {
-				PointFactory.shouldUseCache(false);
-				SYS_OUT.println("Not using cache:");
-				runAllTests(map, reps);
-				PointFactory.shouldUseCache(true);
-				SYS_OUT.println("Using cache:");
-				runAllTests(map, reps);
-			}
+			final boolean startCaching = random.nextBoolean();
+			PointFactory.shouldUseCache(startCaching);
+			SYS_OUT.println(getCachingMessage(startCaching));
+			runAllTests(map, reps);
+			PointFactory.shouldUseCache(!startCaching);
+			SYS_OUT.println(getCachingMessage(!startCaching));
+			runAllTests(map, reps);
 		}
 	}
 
