@@ -26,8 +26,6 @@ import util.ListMaker;
 import util.NullCleaner;
 import util.SingletonRandom;
 
-import static view.util.SystemOut.SYS_OUT;
-
 /**
  * A driver to let the user add hours of experience to a player's workers from the command
  * line.
@@ -135,7 +133,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 					if (temp.isPresent()) {
 						job = temp.get();
 					} else {
-						SYS_OUT.println("Select the new job at the next prompt.");
+						cli.println("Select the new job at the next prompt.");
 						continue;
 					}
 				} else {
@@ -193,7 +191,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 				if (temp.isPresent()) {
 					skill = temp.get();
 				} else {
-					SYS_OUT.println("Select the new skill at the next prompt.");
+					cli.println("Select the new skill at the next prompt.");
 					continue;
 				}
 			} else {
@@ -282,7 +280,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 				if (temp.isPresent()) {
 					job = temp.get();
 				} else {
-					SYS_OUT.println("Select the new job at the next prompt.");
+					cli.println("Select the new job at the next prompt.");
 					continue;
 				}
 			} else {
@@ -324,7 +322,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 				if (temp.isPresent()) {
 					skill = temp.get();
 				} else {
-					SYS_OUT.println("Select the new skill at the next prompt.");
+					cli.println("Select the new skill at the next prompt.");
 					continue;
 				}
 			} else {
