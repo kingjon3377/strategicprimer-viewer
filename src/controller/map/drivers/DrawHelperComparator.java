@@ -393,29 +393,23 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 */
 	private static void runAllTests(final ICLIHelper cli, final IMapNG map,
 									final int repetitions) {
-		final int tileSize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL,
-				map.dimensions().version);
-		final Triple<TileDrawHelper, String, LongAccumulator> one =
-				Triple.of(new CachingTileDrawHelper(), CACHING,
-						new LongAccumulator());
-		final Triple<TileDrawHelper, String, LongAccumulator> two =
-				Triple.of(new DirectTileDrawHelper(), DIRECT,
-						new LongAccumulator());
-		final Triple<TileDrawHelper, String, LongAccumulator> three = Triple.of(
-				new Ver2TileDrawHelper((img, infoFlags, xCoordinate, yCoordinate, width,
-										height) -> false,
-											  fix -> true, Collections.singleton(
-						new FixtureMatcher(fix -> true, "test"))), VER_TWO,
-				new LongAccumulator());
-		final List<Triple<TileDrawHelper, String, LongAccumulator>> cases =
-				Arrays.asList(one, two, three);
+		final List<Triple<TileDrawHelper, String, LongAccumulator>> cases = Arrays.asList(
+				Triple.of(new CachingTileDrawHelper(), CACHING, new LongAccumulator()),
+				Triple.of(new DirectTileDrawHelper(), DIRECT, new LongAccumulator()),
+				Triple.of(new Ver2TileDrawHelper((img, infoFlags, xCoordinate,
+												yCoordinate, width, height) -> false,
+													  fix -> true, Collections.singleton(
+								new FixtureMatcher(fix -> true, "test"))), VER_TWO,
+						new LongAccumulator()));
 		for (final Pair<String, DrawingTest> pair : TESTS) {
 			cli.print(pair.first());
 			cli.println(":");
 			for (final Triple<TileDrawHelper, String, LongAccumulator> testCase :
 					cases) {
 				testCase.third.add(printStats(cli, testCase.second,
-						pair.second().runTest(testCase.first, map, repetitions, tileSize),
+						pair.second().runTest(testCase.first, map, repetitions,
+								TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL,
+										map.dimensions().version)),
 						repetitions));
 			}
 		}
