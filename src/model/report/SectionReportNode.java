@@ -151,25 +151,6 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * Add a node at the beginning of our list of children. Do nothing if null, rather
-	 * than crashing.
-	 *
-	 * @param node the node to add
-	 */
-	@Override
-	public void addAsFirst(final @Nullable MutableTreeNode node) {
-		if (node != null) {
-			if (node instanceof IReportNode) {
-				if (!((IReportNode) node).isEmptyNode()) {
-					insert(node, 0);
-				}
-			} else {
-				insert(node, 0);
-			}
-		}
-	}
-
-	/**
 	 * @return an iterator over the children
 	 */
 	@Override
