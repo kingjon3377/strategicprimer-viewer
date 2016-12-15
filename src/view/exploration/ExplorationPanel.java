@@ -1,5 +1,6 @@
 package view.exploration;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -13,10 +14,13 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.ObjIntConsumer;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
+import javax.swing.ComboBoxModel;
 import javax.swing.InputMap;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -26,6 +30,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
+import model.exploration.IExplorationModel.Speed;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
 import model.listeners.MovementCostListener;
@@ -124,6 +129,10 @@ public final class ExplorationPanel extends BorderedPanel
 	 */
 	private final Iterable<FixtureMatcher> matchers = new FixtureFilterTableModel();
 	/**
+	 * The model underlying the current-speed combo box.
+	 */
+	private final Supplier<Speed> speedSource;
+	/**
 	 * The exploration model.
 	 */
 	private final IExplorationModel model;
@@ -152,9 +161,10 @@ public final class ExplorationPanel extends BorderedPanel
 	 *
 	 * @param explorationModel the exploration model.
 	 * @param mpDoc            the model underlying the remaining-MP text boxes.
+	 * @param speedModel 	   the model underlying the current-speed combo boxes.
 	 */
 	public ExplorationPanel(final IExplorationModel explorationModel,
-							final Document mpDoc) {
+							final Document mpDoc, final ComboBoxModel<Speed> speedModel) {
 		model = explorationModel;
 		final JPanel headerPanel = new BoxPanel(true);
 		headerPanel.add(new ListenedButton("Select a different explorer",
@@ -163,9 +173,13 @@ public final class ExplorationPanel extends BorderedPanel
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		mpDocument = mpDoc;
-		final JPanel mpPanel = new JPanel();
-		mpPanel.add(new JTextField(mpDocument, null, 5));
-		headerPanel.add(mpPanel);
+		final JTextField mpField = new JTextField(mpDocument, null, 5);
+		mpField.setMaximumSize(
+				new Dimension(Integer.MAX_VALUE, mpField.getPreferredSize().height));
+		headerPanel.add(mpField);
+		headerPanel.add(new JLabel("Current relative speed:"));
+		speedSource = () -> (Speed) speedModel.getSelectedItem();
+		headerPanel.add(new JComboBox<>(speedModel));
 		setCenter(SplitWithWeights.verticalSplit(0.5, 0.5, headerPanel,
 				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
 	}
@@ -228,7 +242,7 @@ public final class ExplorationPanel extends BorderedPanel
 		// At some point we tried wrapping the button in a JScrollPane.
 		panel.add(dtb);
 		final ExplorationClickListener ecl =
-				new ExplorationClickListener(model, direction, mainList);
+				new ExplorationClickListener(model, direction, mainList, speedSource);
 		dtb.addActionListener(ecl);
 		final InputMap dtbIMap = dtb.getInputMap(WHEN_IN_FOCUSED_WINDOW);
 		if (ARROW_KEYS.containsKey(direction)) {

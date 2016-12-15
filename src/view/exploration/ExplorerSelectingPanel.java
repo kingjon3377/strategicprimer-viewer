@@ -8,7 +8,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -17,6 +20,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.text.Document;
 import model.exploration.ExplorationUnitListModel;
 import model.exploration.IExplorationModel;
+import model.exploration.IExplorationModel.Speed;
 import model.exploration.PlayerListModel;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
@@ -81,6 +85,10 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 * The text-field containing the running MP total.
 	 */
 	private final JTextField mpField = new JTextField(5);
+	/**
+	 * The model behind the combo-box to let the user select the explorer's speed.
+	 */
+	private final ComboBoxModel<Speed> speedModel;
 
 	/**
 	 * Constructor.
@@ -133,14 +141,17 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 			}
 		};
 		mpField.addActionListener(buttonListener);
+		speedModel = new DefaultComboBoxModel<>(Speed.values());
+		speedModel.setSelectedItem(Speed.Normal);
 		setCenter(SplitWithWeights.horizontalSplit(PROPORTION, PROPORTION,
 				verticalPanel(label("Players in all maps:"), playerList, null),
-				verticalPanel(
-						label(html("Units belonging to that player:",
-								"(Selected unit will be used for exploration.)")),
-						new JScrollPane(unitList), verticalPanel(null,
+				verticalPanel(label(html("Units belonging to that player:",
+						"(Selected unit will be used for exploration.)")),
+						new JScrollPane(unitList), verticalPanel(
 								horizontalPanel(label("Unit's Movement Points"), null,
 										mpField),
+								horizontalPanel(label("Unit's Relative Speed"), null,
+										new JComboBox<>(speedModel)),
 								new ListenedButton(BUTTON_TEXT, buttonListener)))));
 	}
 
@@ -174,7 +185,12 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	public Document getMPDocument() {
 		return NullCleaner.assertNotNull(mpField.getDocument());
 	}
-
+	/**
+	 * @return the model underlying the speed-selecting combo box.
+	 */
+	public ComboBoxModel<Speed> getSpeedModel() {
+		return speedModel;
+	}
 	/**
 	 * @param list the listener to add
 	 */

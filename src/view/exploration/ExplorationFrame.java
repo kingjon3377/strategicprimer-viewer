@@ -45,7 +45,8 @@ public final class ExplorationFrame extends SPFrame {
 		setLayout(layout);
 		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(explorationModel);
 		final ExplorationPanel explorationPanel =
-				new ExplorationPanel(explorationModel, esp.getMPDocument());
+				new ExplorationPanel(explorationModel, esp.getMPDocument(),
+											esp.getSpeedModel());
 		explorationModel.addMovementCostListener(explorationPanel);
 		explorationModel.addSelectionChangeListener(explorationPanel);
 		final CompletionListener swapper =

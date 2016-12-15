@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -98,17 +99,22 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * The list of fixtures on this tile in the main map.
 	 */
 	private final FixtureList list;
-
+	/**
+	 * The source of the currently selected speed.
+	 */
+	private final Supplier<Speed> speedSource;
 	/**
 	 * Constructor.
 	 *
 	 * @param explorationModel the exploration model
 	 * @param direct           what direction this button is from the center.
 	 * @param mainList         the list of fixtures on this tile in the main map.
+	 * @param speedProvider	   the source of the currently selected speed
 	 */
 	public ExplorationClickListener(final IExplorationModel explorationModel,
 									final IExplorationModel.Direction direct,
-									final FixtureList mainList) {
+									final FixtureList mainList,
+									final Supplier<Speed> speedProvider) {
 		model = explorationModel;
 		direction = direct;
 		list = mainList;
@@ -120,6 +126,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 					.forEach(getSelectedValuesList()::add);
 		}), Pair.of("Should the explorer dig to find what kind of ground is here?",
 				model::dig));
+		speedSource = speedProvider;
 	}
 
 	/**
@@ -165,8 +172,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 					}
 				}
 			}
-			// FIXME: Allow user to specify speed.
-			model.move(direction, Speed.Normal);
+			model.move(direction, speedSource.get());
 			final Point dPoint = model.getSelectedUnitLocation();
 			final Player player =
 					NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
