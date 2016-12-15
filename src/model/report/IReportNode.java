@@ -1,5 +1,7 @@
 package model.report;
 
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
 import model.map.PointFactory;
@@ -131,5 +133,11 @@ public interface IReportNode
 				add(child);
 			}
 		}
+	}
+	/**
+	 * @return a stream over the children of this node
+	 */
+	default Stream<IReportNode> stream() {
+		return StreamSupport.stream(spliterator(), false);
 	}
 }
