@@ -107,14 +107,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int size() {
-		int retval = text.length();
-		for (int i = 0; i < getChildCount(); i++) {
-			final TreeNode child = getChildAt(i);
-			if (child instanceof IReportNode) {
-				retval += ((IReportNode) child).size();
-			}
-		}
-		return retval;
+		return text.length() + stream().mapToInt(IReportNode::size).sum();
 	}
 
 	/**

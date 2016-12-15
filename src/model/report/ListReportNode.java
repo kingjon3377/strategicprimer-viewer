@@ -133,14 +133,9 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int size() {
-		int retval = BOILERPLATE_LEN + text.length();
-		for (int i = 0; i < getChildCount(); i++) {
-			final TreeNode child = getChildAt(i);
-			if (child instanceof IReportNode) {
-				retval += ((IReportNode) child).size() + PER_CHILD_BOILERPLATE;
-			}
-		}
-		return retval;
+		return BOILERPLATE_LEN + text.length() +
+					   stream().mapToInt(child -> child.size() + PER_CHILD_BOILERPLATE)
+							   .sum();
 	}
 
 	/**

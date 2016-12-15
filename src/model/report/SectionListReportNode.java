@@ -139,14 +139,8 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int size() {
-		int retval = MIN_BOILERPLATE + text.length() + subHeader.length();
-		for (int i = 0; i < getChildCount(); i++) {
-			final TreeNode child = getChildAt(i);
-			if (child instanceof IReportNode) {
-				retval += ((IReportNode) child).size() + PER_CHILD_BPLATE;
-			}
-		}
-		return retval;
+		return MIN_BOILERPLATE + text.length() + subHeader.length() +
+					   stream().mapToInt(node -> node.size() + PER_CHILD_BPLATE).sum();
 	}
 
 	/**

@@ -89,14 +89,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int size() {
-		int retval = 72 + text.length();
-		for (int i = 0; i < getChildCount(); i++) {
-			final TreeNode child = getChildAt(i);
-			if (child instanceof IReportNode) {
-				retval += ((IReportNode) child).size();
-			}
-		}
-		return retval;
+		return 72 + text.length() + stream().mapToInt(IReportNode::size).sum();
 	}
 
 	/**
