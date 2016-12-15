@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Pattern;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -22,7 +21,6 @@ import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
-import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
 
