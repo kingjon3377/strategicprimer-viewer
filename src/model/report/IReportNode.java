@@ -68,14 +68,8 @@ public interface IReportNode
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	default void addAsFirst(@Nullable final MutableTreeNode node) {
-		if (node != null) {
-			if (node instanceof IReportNode) {
-				if (!((IReportNode) node).isEmptyNode()) {
-					insert(node, 0);
-				}
-			} else {
-				insert(node, 0);
-			}
+		if (isNonEmptyNode(node)) {
+			insert(node, 0);
 		}
 	}
 
@@ -149,5 +143,16 @@ public interface IReportNode
 	 */
 	default Stream<IReportNode> stream() {
 		return StreamSupport.stream(spliterator(), false);
+	}
+	/**
+	 * @param node a node
+	 * @return whether it is either a non-empty IReportNode or not an IReportNode at all, but not null.
+	 */
+	static boolean isNonEmptyNode(@Nullable final MutableTreeNode node) {
+		if (node instanceof IReportNode) {
+			return !((IReportNode) node).isEmptyNode();
+		} else {
+			return node != null;
+		}
 	}
 }

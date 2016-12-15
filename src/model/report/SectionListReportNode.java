@@ -187,14 +187,8 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public void add(final @Nullable MutableTreeNode newChild) {
-		if (newChild != null) {
-			if (newChild instanceof IReportNode) {
-				if (!((IReportNode) newChild).isEmptyNode()) {
-					super.add(newChild);
-				}
-			} else {
-				super.add(newChild);
-			}
+		if (IReportNode.isNonEmptyNode(newChild)) {
+			super.add(newChild);
 		}
 	}
 
