@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Level;
@@ -53,7 +54,6 @@ import model.map.fixtures.towns.Village;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.workermgmt.RaceFactory;
-import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
 import util.TypesafeLogger;
 
@@ -460,17 +460,9 @@ public final class OneToTwoConverter implements SimpleDriver {
 										   RaceFactory.getRace(new Random(idNum))));
 			}
 			final List<TileFixture> fixtures = new LinkedList<>();
-			@Nullable
-			final Ground ground = oldMap.getGround(point);
-			if (ground != null) {
-				fixtures.add(ground);
-			}
-			@Nullable
-			final Forest forest = oldMap.getForest(point);
-			if (forest != null) {
-				fixtures.add(forest);
-			}
-			oldMap.streamOtherFixtures(point).forEach(fixtures::add);
+			Stream.concat(Stream.of(oldMap.getGround(point), oldMap.getForest(point)),
+					oldMap.streamOtherFixtures(point)).filter(Objects::nonNull)
+					.forEach(fixtures::add);
 			separateRivers(point, initial, oldMap, newMap);
 			final Random random = new Random(getSeed(point));
 			Collections.shuffle(initial, random);
