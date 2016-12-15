@@ -504,7 +504,19 @@ public final class OneToTwoConverter implements SimpleDriver {
 		}
 		return initial;
 	}
-
+	/**
+	 * @param original the base terrain in the version-1 map
+	 * @return the base terrain in the version-2 map
+	 */
+	private static TileType equivalentTerrain(final TileType original) {
+		if (TileType.Mountain == original || TileType.TemperateForest == original) {
+			return TileType.Plains;
+		} else if (TileType.BorealForest == original) {
+			return TileType.Steppe;
+		} else {
+			return original;
+		}
+	}
 	/**
 	 * Convert a tile. That is, change it from a forest or mountain type to the proper
 	 * replacement type plus the proper fixture. Also, in any case, add the proper
@@ -519,24 +531,18 @@ public final class OneToTwoConverter implements SimpleDriver {
 	private void convertSubTile(final Point point, final IMutableMapNG map,
 								final boolean main, final IDRegistrar idFac) {
 		try {
-			if (TileType.Mountain == map.getBaseTerrain(point)) {
-				map.setBaseTerrain(point, TileType.Plains);
+			final TileType origTerrain = map.getBaseTerrain(point);
+			if (TileType.Mountain == origTerrain) {
 				map.setMountainous(point, true);
-			} else if (TileType.TemperateForest == map.getBaseTerrain(point)) {
+			} else if (TileType.TemperateForest == origTerrain ||
+							   TileType.BorealForest == origTerrain) {
 				if (isPointUnforested(map, point)) {
 					map.setForest(point, new Forest(runner.getPrimaryTree(point,
-							map.getBaseTerrain(point), map.streamOtherFixtures(point),
+							origTerrain, map.streamOtherFixtures(point),
 							map.dimensions()), false, idFac.createID()));
 				}
-				map.setBaseTerrain(point, TileType.Plains);
-			} else if (TileType.BorealForest == map.getBaseTerrain(point)) {
-				if (isPointUnforested(map, point)) {
-					map.setForest(point, new Forest(runner.getPrimaryTree(point,
-							map.getBaseTerrain(point), map.streamOtherFixtures(point),
-							map.dimensions()), false, idFac.createID()));
-				}
-				map.setBaseTerrain(point, TileType.Steppe);
 			}
+			map.setBaseTerrain(point, equivalentTerrain(origTerrain));
 			addFixture(map, point,
 					new Ground(runner.getPrimaryRock(point, map.getBaseTerrain(point),
 							map.streamOtherFixtures(point), map.dimensions()), false),
