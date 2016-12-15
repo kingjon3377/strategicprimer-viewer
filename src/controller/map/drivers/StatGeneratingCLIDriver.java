@@ -306,8 +306,12 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		for (int playerNum = choice.choose();
 				(playerNum >= 0) && (playerNum < players.size());
 				playerNum = choice.choose()) {
-			createWorkersForPlayer(model, idf,
-					NullCleaner.assertNotNull(players.get(playerNum)), cli);
+			boolean again = true;
+			while (again) {
+				createWorkersForPlayer(model, idf,
+						NullCleaner.assertNotNull(players.get(playerNum)), cli);
+				again = cli.inputBoolean("Add more workers to another unit? ");
+			}
 		}
 	}
 
@@ -326,36 +330,32 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 																			  player,
 											   final ICLIHelper cli)
 			throws IOException {
-		boolean again = true;
-		while (again) {
-			final IUnit unit;
-			if (cli.inputBooleanInSeries("Add worker(s) to an existing unit? ")) {
-				final List<IUnit> units = model.getUnits(player);
-				final int unitNum = cli.chooseFromList(units,
-						"Which unit contains the worker in question?",
-						"There are no units owned by that player",
-						"Unit selection: ", false);
-				if ((unitNum >= 0) && (unitNum < units.size())) {
-					unit = units.get(unitNum);
-				} else {
-					break;
-				}
+		final IUnit unit;
+		if (cli.inputBooleanInSeries("Add worker(s) to an existing unit? ")) {
+			final List<IUnit> units = model.getUnits(player);
+			final int unitNum = cli.chooseFromList(units,
+					"Which unit contains the worker in question?",
+					"There are no units owned by that player",
+					"Unit selection: ", false);
+			if ((unitNum >= 0) && (unitNum < units.size())) {
+				unit = units.get(unitNum);
 			} else {
-				final Point point = cli.inputPoint("Where to put new unit? ");
-				//noinspection ObjectAllocationInLoop
-				unit = new Unit(player, cli.inputString("Kind of unit: "),
-									   cli.inputString("Unit name: "), idf.createID());
-				for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps
-																					()) {
-					pair.first().addFixture(point, unit);
-				}
+				return;
 			}
-			if (cli.inputBooleanInSeries(LOAD_NAMES)) {
-				createWorkersFromFile(model, idf, unit, cli);
-			} else {
-				createWorkersForUnit(model, idf, unit, cli);
+		} else {
+			final Point point = cli.inputPoint("Where to put new unit? ");
+			//noinspection ObjectAllocationInLoop
+			unit = new Unit(player, cli.inputString("Kind of unit: "),
+								   cli.inputString("Unit name: "), idf.createID());
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps
+																				()) {
+				pair.first().addFixture(point, unit);
 			}
-			again = cli.inputBoolean("Add more workers to another unit? ");
+		}
+		if (cli.inputBooleanInSeries(LOAD_NAMES)) {
+			createWorkersFromFile(model, idf, unit, cli);
+		} else {
+			createWorkersForUnit(model, idf, unit, cli);
 		}
 	}
 
