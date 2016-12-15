@@ -261,14 +261,20 @@ public abstract class AbstractCompactReader<@NonNull T>
 	protected static Attribute getAttributeByName(final StartElement element,
 												  final String param) {
 		final Attribute retval =
-				element.getAttributeByName(new QName(ISPReader.NAMESPACE, param));
+				element.getAttributeByName(qname(param));
 		if (retval == null) {
 			return element.getAttributeByName(new QName(param));
 		} else {
 			return retval;
 		}
 	}
-
+	/**
+	 * @param tag a tag
+	 * @return a QName combining it with our namespace
+	 */
+	protected static QName qname(final String tag) {
+		return new QName(ISPReader.NAMESPACE, tag);
+	}
 	/**
 	 * Whether the given element has the given parameter.
 	 * @param element the current tag
