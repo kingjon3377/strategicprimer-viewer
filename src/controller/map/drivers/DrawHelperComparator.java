@@ -402,8 +402,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 								new FixtureMatcher(fix -> true, "test"))), VER_TWO,
 						new LongAccumulator()));
 		for (final Pair<String, DrawingTest> pair : TESTS) {
-			cli.print(pair.first());
-			cli.println(":");
+			cli.printf("%s:%n", pair.first());
 			for (final Triple<TileDrawHelper, String, LongAccumulator> testCase :
 					cases) {
 				testCase.third.add(printStats(cli, testCase.second,
@@ -413,8 +412,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 						repetitions));
 			}
 		}
-		cli.println("--------------------------------------");
-		cli.print("Total:");
+		cli.printf("--------------------------------------%nTotal:");
 		for (final Triple<TileDrawHelper, String, LongAccumulator> testCase : cases) {
 			printStats(cli, testCase.second, testCase.third.getValue(), repetitions);
 		}
