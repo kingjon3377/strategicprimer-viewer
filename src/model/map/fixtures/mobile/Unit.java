@@ -257,15 +257,10 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	@Override
 	public String toString() {
 		if (owner.isIndependent()) {
-			return new StringBuilder(30 + kind.length() + name.length())
-						   .append("Independent unit of type ").append(kind)
-						   .append(", named ").append(name).toString();
+			return String.format("Independent unit of type %s, named %s", kind, name);
 		} else {
-			return new StringBuilder(37 + kind.length() + name.length() +
-											 owner.getName().length())
-						   .append("Unit of type ").append(kind)
-						   .append(", belonging to ").append(owner).append(", named ")
-						   .append(name).toString();
+			return String.format("Unit of type %s, belonging to %s, named %s", kind,
+					owner.toString(), name);
 		}
 	}
 
