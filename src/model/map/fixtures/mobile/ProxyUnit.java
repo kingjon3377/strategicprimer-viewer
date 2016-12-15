@@ -6,10 +6,13 @@ import java.util.Formatter;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
@@ -87,58 +90,49 @@ public final class ProxyUnit
 		parallel = false;
 		kind = uKind;
 	}
-
 	/**
-	 * TODO: This is probably highly inefficient, and is likely to get called often, I
-	 * think
+	 * @param first one String
+	 * @param second another String
+	 * @return them if they are equal, or the empty string otherwise
+	 */
+	private static String mergeFunction(final String first, final String second) {
+		if (Objects.equals(first, second)) {
+			return first;
+		} else {
+			return "";
+		}
+	}
+	/**
+	 * TODO: This is probably highly inefficient, and likely to get called often, I think
 	 *
+	 * @param method an IUnit function returning a Map from Integers to Strings
+	 *                  (getAllOrders or getAllResults)
+	 * @return the results of that called on all proxied units, merged together
+	 */
+	private NavigableMap<Integer, String> mergeMaps(final Function<IUnit, NavigableMap<Integer, String>> method) {
+		final NavigableMap<Integer, String> retval = new TreeMap<>(proxied.stream().map(
+				method).map(Map::entrySet).flatMap(Set::stream).collect(
+				Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+						ProxyUnit::mergeFunction)));
+		retval.entrySet().stream().filter(entry -> entry.getValue().isEmpty())
+				.map(Map.Entry::getKey).distinct().collect(Collectors.toList())
+				.forEach(retval::remove);
+		return retval;
+	}
+	/**
 	 * @return the units' orders for all turns
 	 */
 	@Override
 	public NavigableMap<Integer, String> getAllOrders() {
-		final NavigableMap<Integer, String> retval = new TreeMap<>();
-		final Collection<Integer> toRemove = new ArrayList<>();
-		for (final IUnit unit : proxied) {
-			for (final Map.Entry<Integer, String> entry : unit.getAllOrders()
-																  .entrySet()) {
-				if (retval.containsKey(entry.getKey())) {
-					if (!retval.get(entry.getKey()).equals(entry.getValue())) {
-						retval.put(entry.getKey(), "");
-						toRemove.add(entry.getKey());
-					}
-				} else {
-					retval.put(entry.getKey(), entry.getValue());
-				}
-			}
-		}
-		toRemove.forEach(retval::remove);
-		return retval;
+		return mergeMaps(IUnit::getAllOrders);
 	}
 
 	/**
-	 * TODO: This is probably highly inefficient
-	 *
 	 * @return the units' orders for all turns
 	 */
 	@Override
 	public NavigableMap<Integer, String> getAllResults() {
-		final NavigableMap<Integer, String> retval = new TreeMap<>();
-		final Collection<Integer> toRemove = new ArrayList<>();
-		for (final IUnit unit : proxied) {
-			for (final Map.Entry<Integer, String> entry : unit.getAllResults()
-																  .entrySet()) {
-				if (retval.containsKey(entry.getKey())) {
-					if (!retval.get(entry.getKey()).equals(entry.getValue())) {
-						retval.put(entry.getKey(), "");
-						toRemove.add(entry.getKey());
-					}
-				} else {
-					retval.put(entry.getKey(), entry.getValue());
-				}
-			}
-		}
-		toRemove.forEach(retval::remove);
-		return retval;
+		return mergeMaps(IUnit::getAllResults);
 	}
 
 	/**
