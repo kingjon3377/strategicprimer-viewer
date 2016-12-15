@@ -5,13 +5,11 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
-import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
-import util.EnumerationWrapper;
 import util.LineEnd;
 import util.NullCleaner;
 
@@ -190,14 +188,6 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 		if (IReportNode.isNonEmptyNode(newChild)) {
 			super.add(newChild);
 		}
-	}
-
-	/**
-	 * @return an iterator over the children
-	 */
-	@Override
-	public Iterator<IReportNode> iterator() {
-		return new EnumerationWrapper<>(children());
 	}
 
 	/**

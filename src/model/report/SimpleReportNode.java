@@ -5,13 +5,11 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.stream.Stream;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
-import util.EnumerationWrapper;
 import util.NullCleaner;
 
 /**
@@ -142,14 +140,6 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	@Override
 	public void addAsFirst(final @Nullable MutableTreeNode node) {
 		// Do nothing
-	}
-
-	/**
-	 * @return an iterator over the children
-	 */
-	@Override
-	public Iterator<IReportNode> iterator() {
-		return new EnumerationWrapper<>(children());
 	}
 
 	/**

@@ -126,14 +126,6 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @return an iterator over the children
-	 */
-	@Override
-	public Iterator<IReportNode> iterator() {
-		return new EnumerationWrapper<>(children());
-	}
-
-	/**
 	 * Add generic-type information for the compiler.
 	 */
 	@SuppressWarnings("EmptyMethod")

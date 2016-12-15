@@ -1,5 +1,6 @@
 package model.report;
 
+import java.util.Iterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.swing.tree.MutableTreeNode;
@@ -7,6 +8,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import util.EnumerationWrapper;
 
 /**
  * An interface for report nodes.
@@ -154,5 +156,12 @@ public interface IReportNode
 		} else {
 			return node != null;
 		}
+	}
+	/**
+	 * @return an iterator over the node's children
+	 */
+	@Override
+	default Iterator<IReportNode> iterator() {
+		return new EnumerationWrapper<>(children());
 	}
 }
