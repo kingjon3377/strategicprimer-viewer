@@ -379,10 +379,8 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			}
 			if (nodeTwo == null) {
 				final MutableTreeNode kindNode =
-						new KindNode(item.getKind(), new ArrayList<>(
-																			Collections
-																					.singletonList(
-																							(IUnit) item)));
+						new KindNode(item.getKind(),
+											Collections.singletonList((IUnit) item));
 				((DefaultMutableTreeNode) root).add(kindNode);
 				fireTreeNodesInserted(this, new TreeNode[]{root},
 						new int[]{getIndexOfChild(root, kindNode)},
