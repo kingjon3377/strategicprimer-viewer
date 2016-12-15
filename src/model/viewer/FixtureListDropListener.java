@@ -134,10 +134,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	public void drop(@Nullable final DropTargetDropEvent dtde) {
 		if (dtde == null) {
 			return;
-		} else if (isIntraComponentXfr(dtde)) {
-			dtde.rejectDrop();
-			return;
-		} else {
+		} else if (!isIntraComponentXfr(dtde)) {
 			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
 				if ((flavor != null) && EqualsAny.equalsAny(flavor,
 						FixtureTransferable.FLAVOR, CurriedFixtureTransferable.FLAVOR)) {
@@ -161,8 +158,8 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 					return;
 				}
 			}
-			dtde.rejectDrop();
 		}
+		dtde.rejectDrop();
 	}
 
 	/**
