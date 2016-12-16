@@ -576,9 +576,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					final Ground locGround = map.getGround(currPoint);
 					if ((locGround == null) || locGround.equals(ground)) {
 						map.setGround(currPoint, newGround.copy(false));
-					} else if (StreamSupport.stream(map.getOtherFixtures(currPoint)
-															.spliterator(),
-							false).anyMatch(fix -> fix.equals(ground))) {
+					} else if (map.streamOtherFixtures(currPoint)
+									   .anyMatch(fix -> fix.equals(ground))) {
 						map.removeFixture(currPoint, ground);
 						map.addFixture(currPoint, newGround.copy(false));
 					} else {
@@ -600,17 +599,12 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					if ((locGround == null) || locGround.equals(oldFix)) {
 						map.setGround(currPoint, (Ground) newFix.copy(subsequent));
 						// In StoneDeposit and MineralVein, equals() is false if DCs !=
-					} else if (StreamSupport.stream(map.getOtherFixtures(currPoint)
-															.spliterator(), false)
-									   .anyMatch(fix -> fix.equals(oldFix) ||
-																(((fix instanceof
-																		   StoneDeposit) ||
-																		  (fix
-																				   instanceof MineralVein)) &&
-																		 fix.copy(true)
-																				 .equals
-																						  (oldFix.copy(
-																						 true))))) {
+					} else if (map.streamOtherFixtures(currPoint).anyMatch(
+							fix -> fix.equals(oldFix) ||
+										   (((fix instanceof StoneDeposit) ||
+													 (fix instanceof MineralVein)) &&
+													fix.copy(true).equals(oldFix.copy(
+															true))))) {
 						map.removeFixture(currPoint, oldFix);
 						map.addFixture(currPoint, newFix.copy(subsequent));
 					} else {
