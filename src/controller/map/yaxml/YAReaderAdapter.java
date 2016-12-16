@@ -43,18 +43,6 @@ public final class YAReaderAdapter {
 	 */
 	private final Collection<YAReader<?>> readers;
 	/**
-	 * The Warning instance to use.
-	 */
-	private final Warning warner;
-	/**
-	 * The factory for ID numbers.
-	 */
-	private final IDRegistrar idf;
-	/**
-	 * The map's growing collection of players.
-	 */
-	private final IMutablePlayerCollection players;
-	/**
 	 * The map reader.
 	 */
 	private final YAMapReader mapReader;
@@ -69,15 +57,14 @@ public final class YAReaderAdapter {
 	 * @param idFactory the factory for ID numbers
 	 */
 	public YAReaderAdapter(final Warning warning, final IDRegistrar idFactory) {
-		idf = idFactory;
-		warner = warning;
-		players = new PlayerCollection();
-		mapReader = new YAMapReader(warner, idf, players);
-		readers = new HashSet<>(Arrays.asList(new YAAdventureReader(warning, idf, players),
+		final IMutablePlayerCollection players = new PlayerCollection();
+		mapReader = new YAMapReader(warning, idFactory, players);
+		readers = new HashSet<>(Arrays.asList(new YAAdventureReader(warning, idFactory,
+																		   players),
 				new YAExplorableReader(warning, idFactory),
 				new YAGroundReader(warning, idFactory),
 				new YAImplementReader(warning, idFactory),
-				new YAMapReader(warning, idf, players),
+				new YAMapReader(warning, idFactory, players),
 				new YAMobileReader(warning, idFactory),
 				new YAPlayerReader(warning, idFactory),
 				new YAPortalReader(warning, idFactory),
@@ -85,8 +72,8 @@ public final class YAReaderAdapter {
 				new YAResourceReader(warning, idFactory),
 				new YATerrainReader(warning, idFactory),
 				new YATextReader(warning, idFactory),
-				new YATownReader(warning, idf, players),
-				new YAUnitReader(warning, idf, players),
+				new YATownReader(warning, idFactory, players),
+				new YAUnitReader(warning, idFactory, players),
 				new YAWorkerReader(warning, idFactory)));
 	}
 
