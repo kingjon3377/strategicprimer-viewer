@@ -293,14 +293,6 @@ public final class JobTreeModel
 	}
 
 	/**
-	 * @param category ignored
-	 */
-	@Override
-	public void remove(final String category) {
-		// Not implemented
-	}
-
-	/**
 	 * @return a String representation of the object
 	 */
 	@Override

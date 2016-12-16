@@ -17,6 +17,7 @@ import java.util.EventListener;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface AddRemoveListener extends EventListener {
 	/**
 	 * Add something.
@@ -27,11 +28,13 @@ public interface AddRemoveListener extends EventListener {
 	void add(String category, String addendum);
 
 	/**
-	 * This method need not actually be implemented. TODO: replace with no-op default
+	 * This method need not actually be implemented.
 	 *
 	 * @param category what kind of thing is being removed
 	 */
 	@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion",
 							  "UnusedParameters"})
-	void remove(String category);
+	default void remove(String category) {
+		// Default is a no-op
+	}
 }
