@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -151,9 +152,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @return whether it contains any workers without stats
 	 */
 	private static boolean hasUnstattedWorker(final IUnit unit) {
-		// TODO: Filter, then map, to simplify predicate
-		return unit.stream().anyMatch(member -> (member instanceof IWorker) &&
-								  (((IWorker) member).getStats() == null));
+		return unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+					   .map(IWorker::getStats).anyMatch(Objects::isNull);
 	}
 
 	/**
