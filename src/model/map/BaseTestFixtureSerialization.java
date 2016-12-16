@@ -29,7 +29,6 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -266,11 +265,9 @@ public abstract class BaseTestFixtureSerialization {
 			throws XMLStreamException, SPFormatException, IOException {
 		try (StringReader stringReader = new StringReader(createSerializedForm(obj,
 				true))) {
-			assertEquals(message, obj,
-					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(), warner));
-//			assertThat(message,
-//					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(), warner),
-//					equalTo(obj));
+			assertThat(message,
+					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(), warner),
+					equalTo(obj));
 		}
 		final String str = createSerializedForm(obj, false);
 		try (StringReader stringReader = new StringReader(createSerializedForm(obj,
