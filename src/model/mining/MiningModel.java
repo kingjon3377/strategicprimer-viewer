@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
+import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.StreamSupport;
 import model.map.Point;
 import model.map.PointFactory;
 import util.NullCleaner;
@@ -140,9 +140,8 @@ public final class MiningModel {
 	 * @param set a set of Points
 	 * @return the lowest column in the set
 	 */
-	private static int getMinCol(final Iterable<Point> set) {
-		return StreamSupport.stream(set.spliterator(), false).mapToInt(Point::getCol)
-					   .min().orElse(0);
+	private static int getMinCol(final Set<Point> set) {
+		return set.stream().mapToInt(Point::getCol).min().orElse(0);
 	}
 
 	/**
