@@ -19,12 +19,12 @@ import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
+import org.hamcrest.CoreMatchers;
 import util.FatalWarningException;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 
-import static jdk.internal.dynalink.support.Guards.isNull;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -149,7 +149,7 @@ public abstract class BaseTestFixtureSerialization {
 						Warning.Ignore);
 				fail("We were expecting an UnwantedChildException");
 			} catch (final UnwantedChildException except) {
-				assertThat("Dummy check", except, not(isNull()));
+				assertThat("Dummy check", except, CoreMatchers.anything());
 			}
 		}
 	}
