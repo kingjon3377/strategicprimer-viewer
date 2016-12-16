@@ -286,7 +286,6 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		if (turn >= 0) {
 			writeIntegerAttribute(ostream, "turn", turn);
 		}
-		// FIXME: Ensure, and test, that XML special characters are escaped
 		ostream.writeCharacters(text);
 		ostream.writeEndElement();
 	}
