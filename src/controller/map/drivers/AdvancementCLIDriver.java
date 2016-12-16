@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import model.map.Player;
-import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.worker.IJob;
@@ -91,10 +89,9 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * @param cli  the interface to the user
 	 * @throws IOException on I/O error getting input from user
 	 */
-	private static void advanceWorkersInUnit(final Iterable<UnitMember> unit,
+	private static void advanceWorkersInUnit(final IUnit unit,
 											 final ICLIHelper cli) throws IOException {
-		final List<IWorker> workers = StreamSupport.stream(unit.spliterator(), false)
-											  .filter(IWorker.class::isInstance)
+		final List<IWorker> workers = unit.stream().filter(IWorker.class::isInstance)
 											  .map(IWorker.class::cast)
 											  .collect(Collectors.toList());
 		if (cli.inputBoolean("Add experience to workers individually? ")) {

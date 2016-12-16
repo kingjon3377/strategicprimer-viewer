@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
@@ -142,6 +141,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * FIXME: This is missing "unit kinds"!
 	 * @param parent an object in the tree
 	 * @return how many children it has
 	 */
@@ -150,8 +150,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		if (parent instanceof Player) {
 			return model.getUnits((Player) parent).size();
 		} else if (parent instanceof IUnit) {
-			return (int) StreamSupport.stream(((IUnit) parent).spliterator(), false)
-								 .count();
+			return (int) ((IUnit) parent).stream().count();
 		} else {
 			throw new IllegalArgumentException("Not a possible member of the tree");
 		}
@@ -402,13 +401,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			children = singletonObj(item);
 		} else if (item instanceof UnitMember) {
 			final Optional<IUnit> parent = model.getUnits(root).stream()
-												   .filter(unit -> StreamSupport
-																		   .stream(unit
-																						   .spliterator(),
-																				   false)
+												   .filter(unit -> unit.stream()
 																		   .anyMatch(
-																				   item::equals))
-												   .findAny();
+														   item::equals)).findAny();
 			if (parent.isPresent()) {
 				path = new TreePath(asArray(root, parent.get()));
 				indices = singletonInt(getIndexOfChild(parent.get(), item));
@@ -435,8 +430,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	public void dismissUnitMember(final UnitMember member) {
 		for (final IUnit unit : model.getUnits(root)) {
 			final Optional<UnitMember> item =
-					StreamSupport.stream(unit.spliterator(), false)
-							.filter(member::equals).findAny();
+					unit.stream().filter(member::equals).findAny();
 			if (item.isPresent()) {
 				final int index = getIndexOfChild(unit, item.get());
 				dismissedMembers.add(member);

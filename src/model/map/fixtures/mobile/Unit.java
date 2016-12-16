@@ -6,7 +6,6 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
@@ -236,10 +235,9 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	 * @param obj another unit
 	 * @return whether its "members" are the same as ours
 	 */
-	private boolean areMembersEqual(final Iterable<UnitMember> obj) {
+	private boolean areMembersEqual(final IUnit obj) {
 		final Collection<UnitMember> theirs =
-				StreamSupport.stream(obj.spliterator(), false)
-						.collect(Collectors.toSet());
+				obj.stream().collect(Collectors.toSet());
 		return members.containsAll(theirs) && theirs.containsAll(members);
 	}
 

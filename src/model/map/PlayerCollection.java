@@ -89,7 +89,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public Player getCurrentPlayer() {
-		return StreamSupport.stream(spliterator(), false).filter(Player::isCurrent)
+		return players.values().stream().filter(Player::isCurrent)
 					   .findFirst().orElse(new Player(-1, ""));
 	}
 

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.map.FixtureIterable;
@@ -25,7 +24,6 @@ import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
-import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Unit;
@@ -152,9 +150,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @param unit a unit
 	 * @return whether it contains any workers without stats
 	 */
-	private static boolean hasUnstattedWorker(final Iterable<UnitMember> unit) {
-		return StreamSupport.stream(unit.spliterator(), false).anyMatch(
-				member -> (member instanceof IWorker) &&
+	private static boolean hasUnstattedWorker(final IUnit unit) {
+		// TODO: Filter, then map, to simplify predicate
+		return unit.stream().anyMatch(member -> (member instanceof IWorker) &&
 								  (((IWorker) member).getStats() == null));
 	}
 
@@ -178,13 +176,12 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void enterStats(final IMultiMapModel model,
-								   final Iterable<UnitMember> unit, final ICLIHelper cli)
+								   final IUnit unit, final ICLIHelper cli)
 			throws IOException {
-		final List<Worker> workers = StreamSupport.stream(unit.spliterator(), false)
-											 .filter(Worker.class::isInstance)
-											 .map(Worker.class::cast)
-											 .filter(wkr -> wkr.getStats() == null)
-											 .collect(Collectors.toList());
+		final List<Worker> workers =
+				unit.stream().filter(Worker.class::isInstance).map(Worker.class::cast)
+						.filter(wkr -> wkr.getStats() == null)
+						.collect(Collectors.toList());
 		final String hdr = "Which worker do you want to enter stats for?";
 		final String none = "There are no workers without stats in that unit.";
 		final String prompt = "Worker to modify: ";
