@@ -4,7 +4,6 @@ import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
 import java.nio.file.Paths;
-import java.util.stream.StreamSupport;
 import model.misc.IMultiMapModel;
 import util.Pair;
 import util.Warning;
@@ -88,8 +87,7 @@ public interface SimpleCLIDriver extends SimpleDriver {
 		if (options.hasOption("--current-turn")) {
 			final int currentTurn =
 					Integer.parseInt(options.getArgument("--current-turn"));
-			StreamSupport.stream(model.getAllMaps().spliterator(), false)
-					.map(Pair::first).forEach(map -> map.setCurrentTurn(currentTurn));
+			model.streamAllMaps().map(Pair::first).forEach(map -> map.setCurrentTurn(currentTurn));
 		}
 		startDriver(new CLIHelper(), options, model);
 		reader.writeModel(model);

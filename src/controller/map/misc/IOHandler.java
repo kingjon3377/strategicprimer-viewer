@@ -13,7 +13,6 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
@@ -200,9 +199,7 @@ public final class IOHandler implements ActionListener {
 			case "open secondary map in map viewer":
 				if (model instanceof IMultiMapModel) {
 					final Optional<Pair<IMutableMapNG, Optional<Path>>> mapPair =
-							StreamSupport
-									.stream(((IMultiMapModel) model).getSubordinateMaps()
-													.spliterator(), false).findFirst();
+							((IMultiMapModel) model).streamSubordinateMaps().findFirst();
 					if (mapPair.isPresent()) {
 						final IViewerModel newModel =
 								new ViewerModel(mapPair.get().first(),

@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.StreamSupport;
 import model.map.IMutableMapNG;
 import model.misc.IMultiMapModel;
 import util.EqualsAny;
@@ -85,16 +84,14 @@ public interface SimpleDriver extends ISPDriver {
 																Warning.DEFAULT,
 																masterPath,
 																subPath);
-				StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
-						.map(Pair::first).forEach(turnFixer);
+				mapModel.streamAllMaps().map(Pair::first).forEach(turnFixer);
 				startDriver(new CLIHelper(), options, mapModel);
 			} else {
 				final IMultiMapModel mapModel = new MapReaderAdapter()
 														.readMultiMapModel(
 																Warning.DEFAULT,
 																askUserForFile());
-				StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
-						.map(Pair::first).forEach(turnFixer);
+				mapModel.streamAllMaps().map(Pair::first).forEach(turnFixer);
 				startDriver(new CLIHelper(), options, mapModel);
 			}
 		} else if (ParamCount.None == desiderata) {
@@ -105,8 +102,7 @@ public interface SimpleDriver extends ISPDriver {
 													.readMultiMapModel(Warning.DEFAULT,
 															Paths.get(args[0]),
 															askUserForFile());
-			StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
-					.map(Pair::first).forEach(turnFixer);
+			mapModel.streamAllMaps().map(Pair::first).forEach(turnFixer);
 			startDriver(new CLIHelper(), options, mapModel);
 		} else {
 			final IMultiMapModel mapModel = new MapReaderAdapter()
@@ -115,8 +111,7 @@ public interface SimpleDriver extends ISPDriver {
 															MapReaderAdapter
 																	.namesToFiles(true,
 																			args));
-			StreamSupport.stream(mapModel.getAllMaps().spliterator(), false)
-					.map(Pair::first).forEach(turnFixer);
+			mapModel.streamAllMaps().map(Pair::first).forEach(turnFixer);
 			startDriver(new CLIHelper(), options, mapModel);
 		}
 	}

@@ -2,6 +2,8 @@ package model.misc;
 
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import util.Pair;
@@ -50,4 +52,16 @@ public interface IMultiMapModel extends IDriverModel {
 	 * maps
 	 */
 	Iterable<Pair<IMutableMapNG, Optional<Path>>> getAllMaps();
+	/**
+	 * @return a stream over the subordinate maps and their files
+	 */
+	default Stream<Pair<IMutableMapNG, Optional<Path>>> streamSubordinateMaps() {
+		return StreamSupport.stream(getSubordinateMaps().spliterator(), false);
+	}
+	/**
+	 * @return a stream over all the maps, not including their filenames
+	 */
+	default Stream<Pair<IMutableMapNG, Optional<Path>>> streamAllMaps() {
+		return StreamSupport.stream(getAllMaps().spliterator(), false);
+	}
 }

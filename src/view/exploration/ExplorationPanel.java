@@ -17,7 +17,6 @@ import java.util.function.ObjIntConsumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 import javax.swing.ComboBoxModel;
 import javax.swing.InputMap;
 import javax.swing.JComboBox;
@@ -209,8 +208,8 @@ public final class ExplorationPanel extends BorderedPanel
 	private JPanel setupTilesGUIImpl(final JPanel panel,
 									 final IExplorationModel.Direction... directions) {
 		final IMapNG secondMap =
-				StreamSupport.stream(model.getSubordinateMaps().spliterator(), false)
-						.map(Pair::first).findFirst().orElseGet(model::getMap);
+				model.streamSubordinateMaps().map(Pair::first).findFirst()
+						.orElseGet(model::getMap);
 		for (final IExplorationModel.Direction direction : directions) {
 			if (direction != null) {
 				addTileGUI(panel, secondMap, direction);
@@ -259,8 +258,8 @@ public final class ExplorationPanel extends BorderedPanel
 		model.addSelectionChangeListener(ell);
 		ecl.addSelectionChangeListener(ell);
 		final IMutableMapNG subMap =
-				StreamSupport.stream(model.getSubordinateMaps().spliterator(), false)
-						.map(Pair::first).findFirst().orElseGet(model::getMap);
+				model.streamSubordinateMaps().map(Pair::first).findFirst()
+						.orElseGet(model::getMap);
 		final Iterable<Player> players;
 		players = subMap.players();
 		final FixtureList secList =

@@ -86,9 +86,9 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public List<Player> getPlayers() {
-		return StreamSupport.stream(getAllMaps().spliterator(), false).flatMap(
-				pair -> StreamSupport.stream(pair.first().players().spliterator(),
-						false)).distinct().collect(Collectors.toList());
+		return streamAllMaps().map(Pair::first).flatMap(
+				map -> StreamSupport.stream(map.players().spliterator(), false))
+					   .distinct().collect(Collectors.toList());
 	}
 
 	/**
@@ -98,8 +98,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	@Override
 	public List<IUnit> getUnits(final Player player) {
 		if (getSubordinateMaps().iterator().hasNext()) {
-			return new ArrayList<>(StreamSupport.stream(getAllMaps().spliterator(),
-					false).map(Pair::first).flatMap(
+			return new ArrayList<>(streamAllMaps().map(Pair::first).flatMap(
 					map -> map.locationStream().flatMap(
 							point -> getUnits(map.streamOtherFixtures(point),
 									player))).collect(

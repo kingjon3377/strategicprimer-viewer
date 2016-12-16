@@ -5,7 +5,6 @@ import controller.map.misc.ICLIHelper;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MenuBroker;
 import controller.map.misc.WindowCloser;
-import java.util.stream.StreamSupport;
 import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
@@ -59,9 +58,7 @@ public final class ViewerStart implements SimpleDriver {
 		if (model instanceof IViewerModel) {
 			viewerModel = (IViewerModel) model;
 		} else if (model instanceof IMultiMapModel) {
-			StreamSupport
-					.stream(((IMultiMapModel) model).getAllMaps().spliterator(), false)
-					.map(ViewerModel::new)
+			((IMultiMapModel) model).streamAllMaps().map(ViewerModel::new)
 					.forEach(mapModel -> startDriver(cli, options.copy(), mapModel));
 			return;
 		} else {
