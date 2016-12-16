@@ -1,5 +1,8 @@
 package model.map;
 
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 /**
  * Interface to give us knowledge at run-time that an iterable is an iterable of some sort
  * of fixture.
@@ -19,5 +22,10 @@ package model.map;
  */
 @FunctionalInterface
 public interface FixtureIterable<T extends IFixture> extends Iterable<T> {
-	// Nothing new.
+	/**
+	 * @return a Stream of the unit's members
+	 */
+	default Stream<T> stream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
 }

@@ -213,10 +213,4 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 			return false;
 		}
 	}
-	/**
-	 * @return a Stream of the unit's members
-	 */
-	default Stream<UnitMember> stream() {
-		return StreamSupport.stream(spliterator(), false);
-	}
 }
