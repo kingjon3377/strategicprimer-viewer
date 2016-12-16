@@ -3,6 +3,7 @@ package view.util;
 import com.sun.glass.events.KeyEvent;
 import controller.map.misc.WindowCloser;
 import java.awt.Frame;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.KeyStroke;
@@ -34,8 +35,10 @@ public class SPDialog extends JDialog {
 	protected SPDialog(final @Nullable Frame parent, final String title) {
 		super(parent, title);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, OnMac.SHORTCUT_MASK), "close");
+		final InputMap inputMap =
+				getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, OnMac.SHORTCUT_MASK), "close");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
 		getRootPane().getActionMap()
 				.put("close", new ActionWrapper(new WindowCloser(this)));
 	}
