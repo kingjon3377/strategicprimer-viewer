@@ -71,7 +71,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 										  final Player player) {
 		return NullCleaner.assertNotNull(iter.flatMap(item -> {
 			if (item instanceof Fortress) {
-				return StreamSupport.stream(((Fortress) item).spliterator(), false);
+				return ((Fortress) item).stream();
 			} else {
 				return Stream.of(item);
 			}

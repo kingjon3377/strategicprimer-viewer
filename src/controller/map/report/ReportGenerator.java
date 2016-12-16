@@ -7,7 +7,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import model.map.DistanceComparator;
 import model.map.FixtureIterable;
 import model.map.HasOwner;
@@ -352,11 +351,8 @@ public final class ReportGenerator {
 														stream) {
 		return assertNotNull(stream.flatMap(fix -> {
 			if (fix instanceof FixtureIterable) {
-				return Stream.concat(Stream.of(fix), getFixtures(assertNotNull(
-						StreamSupport
-								.stream(((FixtureIterable<@NonNull ?>) fix)
-												.spliterator(),
-										false))));
+				return Stream.concat(Stream.of(fix),
+						getFixtures(assertNotNull(((FixtureIterable<?>) fix).stream())));
 			} else {
 				return Stream.of(fix);
 			}

@@ -101,7 +101,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 										  final Player player) {
 		return NullCleaner.assertNotNull(stream.flatMap(obj -> {
 			if (obj instanceof Fortress) {
-				return StreamSupport.stream(((Fortress) obj).spliterator(), false);
+				return ((Fortress) obj).stream();
 			} else {
 				return Stream.of(obj);
 			}
@@ -218,8 +218,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		return map.streamOtherFixtures(point).flatMap(fixture -> {
 			if (fixture instanceof FixtureIterable) {
 				return Stream.concat(Stream.of(fixture),
-						StreamSupport.stream(((FixtureIterable<@NonNull ?>) fixture)
-													 .spliterator(), false));
+						((FixtureIterable<@NonNull ?>) fixture).stream());
 			} else {
 				return Stream.of(fixture);
 			}
@@ -427,12 +426,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			}
 			if (source.streamOtherFixtures(point).flatMap(item -> {
 				if (item instanceof FixtureIterable) {
-					return NullCleaner.assertNotNull(
-							Stream.concat(Stream.of(item), StreamSupport
-																   .stream((
-																   		(FixtureIterable<@NonNull ?>) item)
-																				   .spliterator(),
-																		   false)));
+					return NullCleaner.assertNotNull(Stream.concat(Stream.of(item),
+							((FixtureIterable<@NonNull ?>) item).stream()));
 				} else {
 					return Stream.of(item);
 				}

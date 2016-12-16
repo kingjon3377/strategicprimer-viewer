@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -11,13 +11,7 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
@@ -33,7 +27,6 @@ import model.misc.IDriverModel;
 import model.viewer.IViewerModel;
 import model.viewer.PointIterator;
 import model.viewer.ZOrderFilter;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
 import util.IteratorWrapper;
@@ -310,11 +303,9 @@ public final class FindDialog extends SPDialog {
 		if (matchesSimple(pattern, idNum, fix, caseSensitivity)) {
 			return true;
 		} else if (fix instanceof FixtureIterable) {
-			return StreamSupport
-						   .stream(((FixtureIterable<@NonNull ?>) fix).spliterator(),
-								   false)
-						   .anyMatch((final IFixture member) -> matches(pattern, idNum,
-								   NullCleaner.assertNotNull(member), caseSensitivity));
+			return ((FixtureIterable<?>) fix).stream().anyMatch(
+					(final IFixture member) -> matches(pattern, idNum,
+							NullCleaner.assertNotNull(member), caseSensitivity));
 		} else {
 			return false;
 		}

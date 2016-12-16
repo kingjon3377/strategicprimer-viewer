@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -29,7 +28,6 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
-import org.eclipse.jdt.annotation.NonNull;
 import util.IntMap;
 import util.Pair;
 import util.PatientMap;
@@ -195,11 +193,8 @@ public final class TableReportGenerator {
 														stream) {
 		return assertNotNull(stream.flatMap(fix -> {
 			if (fix instanceof FixtureIterable) {
-				return Stream.concat(Stream.of(fix), getFixtures(assertNotNull(
-						StreamSupport
-								.stream(((FixtureIterable<@NonNull ?>) fix)
-												.spliterator(),
-										false))));
+				return Stream.concat(Stream.of(fix),
+						getFixtures(assertNotNull(((FixtureIterable<?>) fix).stream())));
 			} else {
 				return Stream.of(fix);
 			}
