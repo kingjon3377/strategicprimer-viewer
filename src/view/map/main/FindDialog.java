@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -42,6 +41,7 @@ import util.NullCleaner;
 import util.OnMac;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
+import view.util.SPDialog;
 
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
@@ -64,7 +64,7 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class FindDialog extends JDialog {
+public final class FindDialog extends SPDialog {
 	/**
 	 * The proportion between the bulk of the dialog and the filter list.
 	 */
@@ -105,18 +105,14 @@ public final class FindDialog extends JDialog {
 	 */
 	private final FixtureFilterList ffl;
 	/**
-	 * The frame that is this frame's parent.
-	 */
-	private final Frame parentFrame;
-	/**
 	 * Constructor.
 	 *
 	 * @param parent the parent to attach this dialog to
 	 * @param model  the map model to change the selection in
 	 */
 	public FindDialog(final Frame parent, final IViewerModel model) {
-		super(parent);
-		parentFrame = parent;
+		super(parent, "Find");
+		final Frame parentFrame = parent;
 
 		final ActionListener okListener = evt -> {
 			search();

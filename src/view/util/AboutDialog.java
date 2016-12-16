@@ -10,7 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -29,7 +28,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class AboutDialog extends JDialog {
+public final class AboutDialog extends SPDialog {
 	/**
 	 * Constructor.
 	 * @param parent the parent window
@@ -38,7 +37,6 @@ public final class AboutDialog extends JDialog {
 	@SuppressWarnings("ConditionalExpression")
 	public AboutDialog(@Nullable final Component parent, final String app) {
 		super((parent instanceof Frame) ? (Frame) parent : null, "About");
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setPreferredSize(new Dimension(300, 390));
 		setMinimumSize(new Dimension(300, 390));
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));

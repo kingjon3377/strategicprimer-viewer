@@ -1,7 +1,6 @@
 package view.map.main;
 
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -11,10 +10,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
@@ -23,6 +19,7 @@ import util.OnMac;
 import util.TypesafeLogger;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
+import view.util.SPDialog;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -41,7 +38,7 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
-public final class SelectTileDialog extends JDialog {
+public final class SelectTileDialog extends SPDialog {
 	/**
 	 * The parser to use for checking numbers.
 	 */
@@ -77,8 +74,7 @@ public final class SelectTileDialog extends JDialog {
 	 * @param model  the map model to change the selection in
 	 */
 	public SelectTileDialog(@Nullable final Frame parent, final IViewerModel model) {
-		super(parent);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		super(parent, "Go To ...");
 		final JLabel mainLabel = new JLabel("Coordinates of tile to select:");
 		mainLabel.setAlignmentX(CENTER_ALIGNMENT);
 		mainLabel.setAlignmentY(TOP_ALIGNMENT);

@@ -1,8 +1,7 @@
 package view.worker;
 
 import controller.map.misc.IDRegistrar;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -14,11 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import model.listeners.NewUnitListener;
 import model.listeners.NewUnitSource;
 import model.listeners.PlayerChangeListener;
@@ -30,6 +25,7 @@ import util.IsNumeric;
 import util.OnMac;
 import util.TypesafeLogger;
 import view.util.ListenedButton;
+import view.util.SPDialog;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -50,7 +46,7 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
-public final class NewUnitDialog extends JFrame
+public final class NewUnitDialog extends SPDialog
 		implements NewUnitSource, PlayerChangeListener {
 	/**
 	 * Maximum and preferred height for the dialog.
@@ -90,7 +86,7 @@ public final class NewUnitDialog extends JFrame
 	 * @param idFactory a factory to generate ID numbers
 	 */
 	public NewUnitDialog(final Player player, final IDRegistrar idFactory) {
-		super("Add a new unit");
+		super(null, "Add a new unit");
 		setLayout(new GridLayout(0, 2));
 
 		owner = player;
@@ -152,7 +148,6 @@ public final class NewUnitDialog extends JFrame
 		setMinimumSize(new Dimension(150, 80));
 		setPreferredSize(new Dimension(200, PREF_HEIGHT));
 		setMaximumSize(new Dimension(300, PREF_HEIGHT));
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
 
