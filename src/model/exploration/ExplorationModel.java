@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.map.FixtureIterable;
@@ -261,11 +260,9 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	public List<Player> getPlayerChoices() {
 		final List<Player> retval =
-				StreamSupport.stream(getMap().players().spliterator(), false)
-						.collect(Collectors.toList());
+				getMap().streamPlayers().collect(Collectors.toList());
 		streamSubordinateMaps().map(Pair::first)
-				.map(map -> StreamSupport.stream(map.players().spliterator(), false)
-									.collect(Collectors.toList()))
+				.map(map -> map.streamPlayers().collect(Collectors.toList()))
 				.forEach(retval::retainAll);
 		return NullCleaner.assertNotNull(retval);
 	}

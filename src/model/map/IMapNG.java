@@ -1,6 +1,7 @@
 package model.map;
 
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
 import org.eclipse.jdt.annotation.NonNull;
@@ -141,5 +142,11 @@ public interface IMapNG
 	 */
 	default boolean isEmpty() {
 		return locationStream().allMatch(this::isLocationEmpty);
+	}
+	/**
+	 * @return a stream of the players in the map
+	 */
+	default Stream<Player> streamPlayers() {
+		return StreamSupport.stream(players().spliterator(), false);
 	}
 }

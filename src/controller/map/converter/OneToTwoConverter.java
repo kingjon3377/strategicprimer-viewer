@@ -24,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import model.map.IMapNG;
@@ -383,8 +382,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 													 oldDim.cols * RES_JUMP, 2),
 								   new PlayerCollection(), -1);
 		final Player independent =
-				StreamSupport.stream(old.players().spliterator(), false)
-						.filter(Player::isIndependent).findAny()
+				old.streamPlayers().filter(Player::isIndependent).findAny()
 						.orElse(new Player(-1, "independent"));
 		old.players().forEach(retval::addPlayer);
 		final List<Point> converted = new LinkedList<>();

@@ -10,7 +10,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -78,7 +77,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 			final Player player;
 			if (options.hasOption("--player")) {
 				final int playerNum = Integer.parseInt(options.getArgument("--player"));
-				player = StreamSupport.stream(map.players().spliterator(), false)
+				player = map.streamPlayers()
 								 .filter(item -> item.getPlayerId() == playerNum)
 								 .findAny().orElseGet(map::getCurrentPlayer);
 			} else {
