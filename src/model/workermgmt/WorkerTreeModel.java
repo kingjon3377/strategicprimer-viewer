@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import javax.swing.event.TreeModelEvent;
@@ -436,19 +437,19 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	@Override
 	public void dismissUnitMember(final UnitMember member) {
 		for (final IUnit unit : model.getUnits(root)) {
-			for (final UnitMember item : unit) {
-				if (item.equals(member)) {
-					final int index = getIndexOfChild(unit, item);
-					dismissedMembers.add(member);
-					unit.removeMember(member);
-					final TreeModelEvent evt =
-							new TreeModelEvent(this, new TreePath(asArray(root, unit)),
-													  singletonInt(index),
-													  singletonObj(member));
-					for (final TreeModelListener listener : listeners) {
-						listener.treeNodesRemoved(evt);
-					}
-					break;
+			final Optional<UnitMember> item =
+					StreamSupport.stream(unit.spliterator(), false)
+							.filter(member::equals).findAny();
+			if (item.isPresent()) {
+				final int index = getIndexOfChild(unit, item.get());
+				dismissedMembers.add(member);
+				unit.removeMember(member);
+				final TreeModelEvent evt =
+						new TreeModelEvent(this, new TreePath(asArray(root, unit)),
+												  singletonInt(index),
+												  singletonObj(member));
+				for (final TreeModelListener listener : listeners) {
+					listener.treeNodesRemoved(evt);
 				}
 			}
 		}
