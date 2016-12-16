@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
@@ -6,9 +6,7 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.IMutablePlayerCollection;
 import model.map.fixtures.Ground;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -25,46 +23,34 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
-@Deprecated
 @SuppressWarnings("ClassHasNoToStringMethod")
-public final class CompactGroundReader extends AbstractCompactReader<Ground> {
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactReader<Ground> READER = new CompactGroundReader();
+public final class YAGroundReader extends YAAbstractReader<Ground> {
 
 	/**
-	 * Singleton.
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory to use for ID numbers
 	 */
-	private CompactGroundReader() {
-		// Singleton.
+	public YAGroundReader(final Warning warning, final IDRegistrar idRegistrar) {
+		super(warning, idRegistrar);
 	}
-
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public Ground read(final StartElement element,
-					   final QName parent, final IMutablePlayerCollection players,
-					   final Warning warner, final IDRegistrar idFactory,
+					   final QName parent,
 					   final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, "ground");
 		final String kind = getParamWithDeprecatedForm(element, "kind",
-				"ground", warner);
-		requireNonEmptyParameter(element, "exposed", true, warner);
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Ground retval = new Ground(kind,
-												Boolean.parseBoolean(
-														getParameter(element,
-																"exposed")));
+				"ground");
+		requireNonEmptyParameter(element, "exposed", true);
+		spinUntilEnd(element.getName(), stream);
+		final Ground retval = new Ground(kind, Boolean.parseBoolean(
+				getParameter(element, "exposed")));
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
@@ -92,7 +78,7 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 		writeTag(ostream, "ground", indent);
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "exposed", Boolean.toString(obj.isExposed()));
-		ostream.append(imageXML(obj));
+		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);
 	}
 

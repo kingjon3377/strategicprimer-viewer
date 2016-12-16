@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -12,6 +12,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -23,17 +24,14 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
-import model.map.HasPortrait;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.LineEnd;
-import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 
 import static java.lang.String.format;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A superclass to provide helper methods.
@@ -49,18 +47,22 @@ import static util.NullCleaner.assertNotNull;
  * Foundation; see COPYING or
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @param <T> a type parameter, since we now "implement" the interface
+ * @param <T> the type of things the subclass of this can read and write
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
-@Deprecated
-public abstract class AbstractCompactReader<@NonNull T>
-		implements CompactReader<@NonNull T> {
+public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull T> {
+	/**
+	 * The Warning instance to use.
+	 */
+	private final Warning warner;
+	/**
+	 * The factory for ID numbers.
+	 */
+	private final IDRegistrar idf;
 	/**
 	 * A parser for numeric data.
 	 */
-	private static final NumberFormat NUM_PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
+	private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
 	/**
 	 * Patterns to match XML meta-characters, and their quoted forms.
 	 */
@@ -72,10 +74,12 @@ public abstract class AbstractCompactReader<@NonNull T>
 					Pair.of(Pattern.compile("'"), "&apos;"));
 
 	/**
-	 * Do not instantiate directly.
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
 	 */
-	protected AbstractCompactReader() {
-		// Nothing to do
+	protected YAAbstractReader(final Warning warning, final IDRegistrar idRegistrar) {
+		warner = warning;
+		idf = idRegistrar;
 	}
 
 	/**
@@ -95,14 +99,13 @@ public abstract class AbstractCompactReader<@NonNull T>
 													new IllegalArgumentException
 															("Unrecognized namespace"));
 		}
-		final String localName = assertNotNull(element.getName().getLocalPart());
+		final String localName = element.getName().getLocalPart();
 		final int line = element.getLocation().getLineNumber();
 		if (!EqualsAny.equalsAny(localName, tags)) {
 			// While we'd like tests to exercise this, we're always careful
 			// to only call readers when we know they support the tag ...
 			final String message = Stream.concat(Stream.of(
-					format("Unexpected tag %s on line %d, expected one of the " +
-								   "following: ",
+					format("Unexpected tag %s on line %d, expected one of these: ",
 							localName, Integer.valueOf(line))), Stream.of(tags))
 										   .collect(Collectors.joining(", "));
 			throw new UnwantedChildException(parent, element,
@@ -120,17 +123,9 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 */
 	protected static String getParameter(final StartElement element,
 										 final String param) throws SPFormatException {
-		final Attribute attr = getAttributeByName(element, param);
-		if (attr == null) {
-			throw new MissingPropertyException(element, param);
-		} else {
-			final String value = attr.getValue();
-			if (value == null) {
-				throw new MissingPropertyException(element, param);
-			} else {
-				return value;
-			}
-		}
+		return Optional.ofNullable(getAttributeByName(element, param))
+					   .map(Attribute::getValue)
+					   .orElseThrow(() -> new MissingPropertyException(element, param));
 	}
 
 	/**
@@ -143,12 +138,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 */
 	protected static String getParameter(final StartElement element,
 										 final String param, final String defaultValue) {
-		final Attribute attr = getAttributeByName(element, param);
-		if (attr == null) {
-			return defaultValue;
-		} else {
-			return NullCleaner.valueOrDefault(attr.getValue(), defaultValue);
-		}
+		return Optional.ofNullable(getAttributeByName(element, param))
+					   .map(Attribute::getValue).orElse(defaultValue);
 	}
 
 	/**
@@ -157,13 +148,11 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @param element   the current tag
 	 * @param param     the parameter to require
 	 * @param mandatory whether this is a requirement, or merely a recommendation.
-	 * @param warner    the Warning instance to use for the warning.
 	 * @throws SPFormatException if mandatory and missing
 	 */
-	protected static void requireNonEmptyParameter(final StartElement element,
+	protected void requireNonEmptyParameter(final StartElement element,
 												   final String param,
-												   final boolean mandatory,
-												   final Warning warner)
+												   final boolean mandatory)
 			throws SPFormatException {
 		if (getParameter(element, param, "").isEmpty()) {
 			final SPFormatException except = new MissingPropertyException(element,
@@ -200,9 +189,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement() &&
 						isSupportedNamespace(event.asStartElement().getName())) {
-				throw new UnwantedChildException(tag,
-														assertNotNull(
-																event.asStartElement()));
+				throw new UnwantedChildException(tag, event.asStartElement());
 			} else if (isMatchingEnd(tag, event)) {
 				break;
 			}
@@ -225,19 +212,14 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * absence and generate one.
 	 *
 	 * @param element   the tag we're working with
-	 * @param warner    the Warning instance to send the warning on if the tag doesn't
-	 *                  specify an ID
-	 * @param idFactory the factory to register an existing ID with or get a new one from
 	 * @return the ID the tag has if it has one, or otherwise a generated one.
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
-	protected static int getOrGenerateID(final StartElement element,
-										 final Warning warner, final IDRegistrar
-																	   idFactory)
+	protected int getOrGenerateID(final StartElement element)
 			throws SPFormatException {
 		if (hasParameter(element, "id")) {
 			try {
-				return idFactory.register(warner, NumberFormat.getIntegerInstance()
+				return idf.register(warner, NumberFormat.getIntegerInstance()
 														  .parse(getParameter(element,
 																  "id"))
 														  .intValue());
@@ -246,7 +228,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 			}
 		} else {
 			warner.warn(new MissingPropertyException(element, "id"));
-			return idFactory.createID();
+			return idf.createID();
 		}
 	}
 
@@ -292,47 +274,29 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @param element    the current tag
 	 * @param preferred  the preferred name of the parameter
 	 * @param deprecated the deprecated name of the parameter
-	 * @param warner     the warning instance to use
 	 * @return the value of the parameter, gotten from the preferred form if it has it,
 	 * and from the deprecated form if the preferred form isn't there but it is.
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
-	protected static String getParamWithDeprecatedForm(final StartElement element,
+	protected String getParamWithDeprecatedForm(final StartElement element,
 													   final String preferred,
-													   final String deprecated,
-													   final Warning warner)
+													   final String deprecated)
 			throws SPFormatException {
-		final Attribute prefProp = getAttributeByName(element, preferred);
-		final Attribute deprecatedProp = getAttributeByName(element, deprecated);
+		final Optional<String> prefProp =
+				Optional.ofNullable(getAttributeByName(element, preferred))
+						.map(Attribute::getValue);
+		Optional<String> deprecatedProp =
+				Optional.ofNullable(getAttributeByName(element, deprecated))
+						.map(Attribute::getValue);
 		final MissingPropertyException exception =
 				new MissingPropertyException(element, preferred);
-		if ((prefProp == null) && (deprecatedProp == null)) {
-			throw exception;
-		} else if (prefProp == null) {
-			//noinspection ConstantConditions
-			assert deprecatedProp != null;
+		if (prefProp.isPresent()) {
+			return prefProp.get();
+		} else if (deprecatedProp.isPresent()) {
 			warner.warn(new DeprecatedPropertyException(element, deprecated, preferred));
-			final String value = deprecatedProp.getValue();
-			if (value == null) {
-				throw exception;
-			}
-			return value;
+			return deprecatedProp.get();
 		} else {
-			final String prefValue = prefProp.getValue();
-			if (prefValue == null) {
-				if (deprecatedProp == null) {
-					throw exception;
-				} else {
-					final String deprecatedValue = deprecatedProp.getValue();
-					if (deprecatedValue == null) {
-						throw exception;
-					} else {
-						return deprecatedValue;
-					}
-				}
-			} else {
-				return prefValue;
-			}
+			throw exception;
 		}
 	}
 
@@ -350,34 +314,32 @@ public abstract class AbstractCompactReader<@NonNull T>
 	}
 
 	/**
-	 * Return the image property in a form suitable for XML if the object's image is
-	 * nonempty and not the default.
+	 * Write the image property to XML if the object's image is nonempty and not the
+	 * default.
 	 * @param obj an object being written out that might have a custom image
-	 * @return the XML for the image if it does, or the empty string if not
+	 * @param ostream the stream to write to
+	 * @throws IOException on I/O error while writing
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	protected static String imageXML(final HasImage obj) {
+	protected static void writeImageXML(final Appendable ostream, final HasImage obj)
+			throws IOException {
 		final String image = obj.getImage();
-		if (image.isEmpty() || image.equals(obj.getDefaultImage())) {
-			return "";
-		} else {
-			return " image=\"" + image + '"';
+		if (!image.equals(obj.getDefaultImage())) {
+			writeNonemptyProperty(ostream, "image", image);
 		}
 	}
-
 	/**
-	 * Return the portrait property in a form suitable for XML if the object's portrait
-	 * is nonempty.
-	 * @param obj an object being written out that might have a custom portrait
-	 * @return the XML for the portrait if it does, or the empty string if not
+	 * Write a property to XML only if its value is nonempty.
+	 * @param ostream the stream to write to
+	 * @param name the name of the property to write if its value is nonempty
+	 * @param value the value to write if nonempty
+	 * @throws IOException on I/O error
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
-	protected static String portraitXML(final HasPortrait obj) {
-		final String portrait = obj.getPortrait();
-		if (portrait.isEmpty()) {
-			return "";
-		} else {
-			return " portrait=\"" + portrait + '"';
+	protected static void writeNonemptyProperty(final Appendable ostream,
+												final String name, final String value)
+			throws IOException {
+		if (!value.isEmpty()) {
+			writeProperty(ostream, name, value);
 		}
 	}
 
@@ -411,8 +373,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	protected static int getIntegerParameter(final StartElement tag,
 											 final String parameter)
 			throws SPFormatException {
-		return parseInt(getParameter(tag, parameter),
-				assertNotNull(tag.getLocation()));
+		return parseInt(getParameter(tag, parameter), tag.getLocation());
 	}
 
 	/**
@@ -429,15 +390,13 @@ public abstract class AbstractCompactReader<@NonNull T>
 											 final String parameter,
 											 final int defaultValue)
 			throws SPFormatException {
-		final Attribute attr = getAttributeByName(tag, parameter);
-		if (attr == null) {
-			return defaultValue;
-		}
-		final String val = attr.getValue();
-		if ((val == null) || val.isEmpty()) {
-			return defaultValue;
+		final Optional<String> attr = Optional.ofNullable(getAttributeByName(tag, parameter))
+											  .map(Attribute::getValue)
+											  .filter(str -> !str.isEmpty());
+		if (attr.isPresent()) {
+			return parseInt(attr.get(), tag.getLocation());
 		} else {
-			return parseInt(val, assertNotNull(tag.getLocation()));
+			return defaultValue;
 		}
 	}
 

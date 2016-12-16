@@ -1,25 +1,25 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.misc.IDFactory;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
+import model.map.PlayerCollection;
 import model.map.River;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
-import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -35,29 +35,59 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactReaderAdapter {
+public final class YAReaderAdapter {
 	/**
 	 * The set of readers.
 	 */
-	private static final Set<CompactReader<@NonNull ?>> READERS =
-			new HashSet<>(Arrays.asList(CompactAdventureReader.READER,
-					CompactExplorableReader.READER, CompactGroundReader.READER,
-					CompactImplementReader.READER, CompactMapNGReader.READER,
-					CompactMobileReader.READER, CompactPlayerReader.READER,
-					CompactPortalReader.READER, CompactResourcePileReader.READER,
-					CompactResourceReader.READER, CompactTerrainReader.READER,
-					CompactTextReader.READER, CompactTownReader.READER,
-					CompactUnitReader.READER, CompactWorkerReader.READER));
-
+	private final Collection<YAReader<?>> readers;
 	/**
-	 * Singleton constructor.
+	 * The Warning instance to use.
 	 */
-	private CompactReaderAdapter() {
-		// Singleton.
+	private final Warning warner;
+	/**
+	 * The factory for ID numbers.
+	 */
+	private final IDRegistrar idf;
+	/**
+	 * The map's growing collection of players.
+	 */
+	private final IMutablePlayerCollection players;
+	/**
+	 * The map reader.
+	 */
+	private final YAMapReader mapReader;
+	/**
+	 * No-arg constructor.
+	 */
+	public YAReaderAdapter() {
+		this(Warning.DEFAULT, new IDFactory());
+	}
+	/**
+	 * @param warning the Warning instance to use
+	 * @param idFactory the factory for ID numbers
+	 */
+	public YAReaderAdapter(final Warning warning, final IDRegistrar idFactory) {
+		idf = idFactory;
+		warner = warning;
+		players = new PlayerCollection();
+		mapReader = new YAMapReader(warner, idf, players);
+		readers = new HashSet<>(Arrays.asList(new YAAdventureReader(warning, idf, players),
+				new YAExplorableReader(warning, idFactory),
+				new YAGroundReader(warning, idFactory),
+				new YAImplementReader(warning, idFactory),
+				new YAMapReader(warning, idf, players),
+				new YAMobileReader(warning, idFactory),
+				new YAPlayerReader(warning, idFactory),
+				new YAPortalReader(warning, idFactory),
+				new YAResourcePileReader(warning, idFactory),
+				new YAResourceReader(warning, idFactory),
+				new YATerrainReader(warning, idFactory),
+				new YATextReader(warning, idFactory),
+				new YATownReader(warning, idf, players),
+				new YAUnitReader(warning, idf, players),
+				new YAWorkerReader(warning, idFactory)));
 	}
 
 	/**
@@ -66,31 +96,23 @@ public final class CompactReaderAdapter {
 	 * @param element   the element we're immediately dealing with
 	 * @param parent    the parent tag
 	 * @param stream    the stream from which to read more elements
-	 * @param players   the PlayerCollection to use when needed
-	 * @param warner    the Warning instance if warnings need to be issued
-	 * @param idFactory the ID factory to get IDs from
 	 * @return the object encoded by the XML
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static Object parse(final StartElement element,
+	public Object parse(final StartElement element,
 							   final QName parent,
-							   final Iterable<XMLEvent> stream,
-							   final IMutablePlayerCollection players,
-							   final Warning warner, final IDRegistrar idFactory)
+							   final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		// Since all implementations of necessity check tag's namespace, we leave that
 		// to them.
-		final String tag = NullCleaner.assertNotNull(element.getName().getLocalPart());
+		final String tag = element.getName().getLocalPart();
 		// Handle rivers specially.
 		if ("river".equals(tag) || "lake".equals(tag)) {
-			return CompactMapNGReader.parseRiver(element, parent, warner);
+			return mapReader.parseRiver(element, parent);
 		}
-		for (final CompactReader<@NonNull ?> reader : READERS) {
-			if (reader.isSupportedTag(tag)) {
-				return reader.read(element, parent, players, warner, idFactory, stream);
-			}
-		}
-		throw new UnwantedChildException(parent, element);
+		return readers.stream().filter(yar -> yar.isSupportedTag(tag)).findFirst()
+				.orElseThrow(() -> new UnwantedChildException(parent, element))
+				.read(element, parent, stream);
 	}
 
 	/**
@@ -102,42 +124,39 @@ public final class CompactReaderAdapter {
 	 * @throws IOException on I/O problems
 	 */
 	@SuppressWarnings("unchecked")
-	public static void write(final Appendable ostream, final Object obj,
+	public void write(final Appendable ostream, final Object obj,
 							 final int indent) throws IOException {
 		if (obj instanceof River) {
-			CompactMapNGReader.writeRiver(ostream, (River) obj, indent);
+			YAMapReader.writeRiver(ostream, (River) obj, indent);
 		} else if (obj instanceof RiverFixture) {
 			writeAllRivers(ostream, (RiverFixture) obj, indent);
 		} else if (obj instanceof ProxyFor) {
+			// TODO: Handle proxies in their respective types
 			final Iterator<?> iter = ((ProxyFor<?>) obj).getProxied().iterator();
 			if (iter.hasNext()) {
 				final Object proxied = iter.next();
 				assert proxied != null;
-				TypesafeLogger.getLogger(CompactReaderAdapter.class).log(Level.SEVERE,
+				TypesafeLogger.getLogger(YAReaderAdapter.class).log(Level.SEVERE,
 						"Wanted to write a proxy",
 						new IllegalArgumentException("Wanted to write a proxy object"));
 				write(ostream, proxied, indent);
 				return;
 			} else if (obj instanceof IJob) {
-				CompactWorkerReader.writeJob(ostream, (IJob) obj, indent);
+				YAWorkerReader.writeJob(ostream, (IJob) obj, indent);
 			} else if (obj instanceof ISkill) {
-				CompactWorkerReader.writeSkill(ostream, (ISkill) obj, indent);
+				YAWorkerReader.writeSkill(ostream, (ISkill) obj, indent);
 			} else {
 				throw new IllegalStateException("Don't know how to write this type (a " +
 														"proxy not proxying any " +
 														"objects)");
 			}
 		} else {
-			for (final CompactReader<@NonNull ?> reader : READERS) {
-				if (reader.canWrite(obj)) {
-					reader.writeRaw(ostream, obj, indent);
-					return;
-				}
-			}
-			throw new IllegalArgumentException("After checking " + READERS.size() +
-													   " readers, don't know how to " +
-													   "write a " +
-													   obj.getClass().getSimpleName());
+			final String msg = String.format(
+					"After checking %d readers, don't know how to write a %s",
+					Integer.valueOf(readers.size()), obj.getClass().getSimpleName());
+			readers.stream().filter(yar -> yar.canWrite(obj)).findFirst()
+					.orElseThrow(() -> new IllegalArgumentException(msg))
+					.writeRaw(ostream, obj, indent);
 		}
 	}
 
@@ -153,7 +172,7 @@ public final class CompactReaderAdapter {
 									   final Iterable<River> iter, final int indent)
 			throws IOException {
 		for (final River river : iter) {
-			CompactMapNGReader.writeRiver(ostream, river, indent);
+			YAMapReader.writeRiver(ostream, river, indent);
 		}
 	}
 }

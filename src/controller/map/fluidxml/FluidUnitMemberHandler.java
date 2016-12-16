@@ -59,8 +59,10 @@ import static util.NullCleaner.assertNotNull;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @deprecated FluidXML is deprecated in favor of YAXML
  */
 @SuppressWarnings("StaticMethodOnlyUsedInOneClass")
+@Deprecated
 public final class FluidUnitMemberHandler {
 	/**
 	 * Do not instantiate.

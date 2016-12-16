@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
@@ -6,9 +6,7 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.IMutablePlayerCollection;
 import model.map.Player;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -25,41 +23,31 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactPlayerReader extends AbstractCompactReader<Player> {
+public final class YAPlayerReader extends YAAbstractReader<Player> {
 	/**
-	 * Singleton object.
+	 * Constructor.
+	 * @param warning the Warning instance to use.
+	 * @param idRegistrar the factory for ID numbers.
 	 */
-	public static final CompactReader<Player> READER = new CompactPlayerReader();
-
-	/**
-	 * Singleton.
-	 */
-	private CompactPlayerReader() {
-		// Singleton.
+	public YAPlayerReader(final Warning warning, final IDRegistrar idRegistrar) {
+		super(warning, idRegistrar);
 	}
-
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public Player read(final StartElement element,
-					   final QName parent, final IMutablePlayerCollection players,
-					   final Warning warner, final IDRegistrar idFactory,
+					   final QName parent,
 					   final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, "player");
-		requireNonEmptyParameter(element, "number", true, warner);
-		requireNonEmptyParameter(element, "code_name", true, warner);
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		requireNonEmptyParameter(element, "number", true);
+		requireNonEmptyParameter(element, "code_name", true);
+		spinUntilEnd(element.getName(), stream);
 		return new Player(getIntegerParameter(element, "number"),
 								 getParameter(element, "code_name"));
 	}

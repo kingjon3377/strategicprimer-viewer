@@ -23,13 +23,13 @@ import util.FatalWarningException;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.SystemOut;
 
 import static jdk.internal.dynalink.support.Guards.isNull;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -266,9 +266,11 @@ public abstract class BaseTestFixtureSerialization {
 			throws XMLStreamException, SPFormatException, IOException {
 		try (StringReader stringReader = new StringReader(createSerializedForm(obj,
 				true))) {
-			assertThat(message,
-					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(), warner),
-					equalTo(obj));
+			assertEquals(message, obj,
+					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(), warner));
+//			assertThat(message,
+//					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(), warner),
+//					equalTo(obj));
 		}
 		final String str = createSerializedForm(obj, false);
 		try (StringReader stringReader = new StringReader(createSerializedForm(obj,
@@ -276,9 +278,6 @@ public abstract class BaseTestFixtureSerialization {
 			assertThat(message,
 					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(), warner),
 					equalTo(obj));
-		} catch (final NoSuchElementException except) {
-			SystemOut.SYS_OUT.println(str);
-			throw except;
 		}
 	}
 

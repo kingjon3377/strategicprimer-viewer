@@ -23,7 +23,9 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @deprecated FluidXML is deprecated in favor of YAXML
  */
+@Deprecated
 @FunctionalInterface
 public interface FluidXMLReader {
 	/**

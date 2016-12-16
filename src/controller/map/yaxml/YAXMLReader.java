@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
@@ -12,20 +12,19 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
+import java.util.stream.StreamSupport;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutableMapNG;
-import model.map.IMutablePlayerCollection;
-import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
-import util.NullCleaner;
 import util.Warning;
 
 /**
- * Fourth-generation SP XML reader.
+ * Sixth-generation SP XML reader.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -38,11 +37,9 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactXMLReader implements IMapReader, ISPReader {
+public final class YAXMLReader implements IMapReader, ISPReader {
 	/**
 	 * @param <T>     A supertype of the object the XML represents
 	 * @param file    the file we're reading from
@@ -60,23 +57,20 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 		final Iterator<XMLEvent> reader = new TypesafeXMLEventReader(istream);
 		final Iterable<XMLEvent> eventReader =
 				new IteratorWrapper<>(new IncludingIterator(file, reader));
-		final IMutablePlayerCollection players = new PlayerCollection();
 		final IDRegistrar idFactory = new IDFactory();
-		for (final XMLEvent event : eventReader) {
-			if (event.isStartElement()) {
-				final Object retval = CompactReaderAdapter.parse(
-						NullCleaner.assertNotNull(event.asStartElement()),
-						new QName("root"), eventReader, players, warner, idFactory);
-				if (type.isAssignableFrom(retval.getClass())) {
-					//noinspection unchecked
-					return (T) retval;
-				} else {
-					throw new IllegalStateException("Reader produced different type than" +
-															" we expected");
-				}
-			}
+		final StartElement event = StreamSupport.stream(eventReader.spliterator(), false)
+										   .filter(XMLEvent::isStartElement).findFirst()
+										   .map(XMLEvent::asStartElement).orElseThrow(
+						() -> new XMLStreamException("XML stream didn't contain a start element"));
+		final Object retval = new YAReaderAdapter(warner, idFactory).parse(
+				event.asStartElement(), new QName("root"), eventReader);
+		if (type.isAssignableFrom(retval.getClass())) {
+			//noinspection unchecked
+			return (T) retval;
+		} else {
+			throw new IllegalStateException("Reader produced different type than" +
+													" we expected");
 		}
-		throw new XMLStreamException("XML stream didn't contain a start element");
 	}
 
 	/**

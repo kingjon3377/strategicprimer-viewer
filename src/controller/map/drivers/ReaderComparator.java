@@ -1,11 +1,11 @@
 package controller.map.drivers;
 
-import controller.map.cxml.CompactXMLReader;
 import controller.map.fluidxml.SPFluidReader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.misc.ICLIHelper;
+import controller.map.yaxml.YAXMLReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
@@ -57,11 +57,11 @@ public final class ReaderComparator implements UtilityDriver {
 	/**
 	 * The first reader.
 	 */
-	private final IMapReader oldReader = new CompactXMLReader();
+	private final IMapReader oldReader = new SPFluidReader();
 	/**
 	 * The second reader.
 	 */
-	private final IMapReader newReader = new SPFluidReader();
+	private final IMapReader newReader = new YAXMLReader();
 
 	/**
 	 * Handle (log appropriately) an exception.

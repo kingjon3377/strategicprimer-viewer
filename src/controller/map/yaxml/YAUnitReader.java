@@ -1,11 +1,11 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
@@ -13,12 +13,10 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasPortrait;
 import model.map.IFixture;
-import model.map.IMutablePlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
-import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 import util.Warning;
 
 import static java.util.Collections.unmodifiableList;
@@ -37,15 +35,17 @@ import static java.util.Collections.unmodifiableList;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
+public final class YAUnitReader extends YAAbstractReader<IUnit> {
 	/**
-	 * Singleton object.
+	 * The Warning instance to use.
 	 */
-	public static final CompactReader<IUnit> READER = new CompactUnitReader();
+	private final Warning warner;
+	/**
+	 * The map's growing collection of players.
+	 */
+	private final IPlayerCollection players;
 	/**
 	 * The tag used for a unit.
 	 */
@@ -53,21 +53,26 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	/**
 	 * List of readers we'll try sub-tags on.
 	 */
-	private final List<CompactReader<? extends IFixture>> readers;
+	private final List<YAReader<? extends IFixture>> readers;
 
 	/**
-	 * Singleton.
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
+	 * @param playerCollection the map's collection of players
 	 */
-	private CompactUnitReader() {
-		final List<@NonNull CompactReader<@NonNull ? extends IFixture>> temp =
-				new ArrayList<>();
-		temp.add(CompactMobileReader.READER);
-		temp.add(CompactResourceReader.READER);
-		temp.add(CompactTerrainReader.READER);
-		temp.add(CompactTextReader.READER);
-		temp.add(CompactTownReader.READER);
-		temp.add(CompactWorkerReader.READER);
-		readers = NullCleaner.assertNotNull(unmodifiableList(temp));
+	public YAUnitReader(final Warning warning, final IDRegistrar idRegistrar,
+						final IPlayerCollection playerCollection) {
+		super(warning, idRegistrar);
+		warner = warning;
+		players = playerCollection;
+		readers = unmodifiableList(
+				Arrays.asList(new YAMobileReader(warning, idRegistrar),
+						new YAResourceReader(warning, idRegistrar),
+						new YATerrainReader(warning, idRegistrar),
+						new YATextReader(warning, idRegistrar),
+						new YAWorkerReader(warning, idRegistrar),
+						new YAResourcePileReader(warning, idRegistrar),
+						new YAImplementReader(warning, idRegistrar)));
 	}
 
 	/**
@@ -75,15 +80,13 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 * string.
 	 *
 	 * @param element the current element
-	 * @param warner  the Warning instance to use
 	 * @return the kind of unit
 	 * @throws SPFormatException on SP format error.
 	 */
-	private static String parseKind(final StartElement element,
-									final Warning warner) throws SPFormatException {
+	private String parseKind(final StartElement element) throws SPFormatException {
 		try {
 			final String retval =
-					getParamWithDeprecatedForm(element, "kind", "type", warner);
+					getParamWithDeprecatedForm(element, "kind", "type");
 			if (retval.isEmpty()) {
 				warner.warn(new MissingPropertyException(element, "kind"));
 			}
@@ -97,27 +100,20 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from
 	 * @return the parsed unit
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
-	public IUnit read(final StartElement element,
-					 final QName parent, final IMutablePlayerCollection players,
-					 final Warning warner, final IDRegistrar idFactory,
-					 final Iterable<XMLEvent> stream) throws SPFormatException {
+	public IUnit read(final StartElement element, final QName parent,
+					  final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, UNIT_TAG);
-		requireNonEmptyParameter(element, "name", false, warner);
-		requireNonEmptyParameter(element, "owner", false, warner);
-		final Unit retval = new Unit(
-											players.getPlayer(
-													getIntegerParameter(element, "owner",
-															-1)), parseKind(element,
-				warner), getParameter(element, "name", ""),
-											getOrGenerateID(element, warner, idFactory));
+		requireNonEmptyParameter(element, "name", false);
+		requireNonEmptyParameter(element, "owner", false);
+		final Unit retval =
+				new Unit(players.getPlayer(getIntegerParameter(element, "owner", -1)),
+								parseKind(element), getParameter(element, "name", ""),
+								getOrGenerateID(element));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		final StringBuilder orders = new StringBuilder(512);
@@ -133,9 +129,8 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 					parseResults(event.asStartElement(), retval,
 							stream);
 				} else {
-					retval.addMember(parseChild(
-							NullCleaner.assertNotNull(event.asStartElement()),
-							element.getName(), stream, players, idFactory, warner));
+					retval.addMember(parseChild(event.asStartElement(),
+							element.getName(), stream));
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
@@ -145,7 +140,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 		}
 		final String tempOrders = orders.toString().trim();
 		if (!tempOrders.isEmpty()) {
-			retval.setOrders(-1, NullCleaner.assertNotNull(tempOrders));
+			retval.setOrders(-1, tempOrders);
 		}
 		return retval;
 	}
@@ -208,23 +203,17 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
-	 * @param idFactory the ID factory to generate IDs with
-	 * @param warner    the Warning instance to use for warnings
 	 * @return the parsed fixture.
 	 * @throws SPFormatException on SP format problem
 	 */
-	private UnitMember parseChild(final StartElement element,
-								  final QName parent,
-								  final Iterable<XMLEvent> stream,
-								  final IMutablePlayerCollection players,
-								  final IDRegistrar idFactory,
-								  final Warning warner) throws SPFormatException {
-		final String name = NullCleaner.assertNotNull(element.getName().getLocalPart());
-		for (final CompactReader<? extends IFixture> item : readers) {
+	private UnitMember parseChild(final StartElement element, final QName parent,
+								  final Iterable<XMLEvent> stream)
+			throws SPFormatException {
+		final String name = element.getName().getLocalPart();
+		for (final YAReader<? extends IFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
-				final IFixture retval = item.read(element, parent, players,
-						warner, idFactory, stream);
+				final IFixture retval = item.read(element, parent,
+						stream);
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {
@@ -253,21 +242,17 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void
-	write(final Appendable ostream, final IUnit obj, final int indent)
+	public void write(final Appendable ostream, final IUnit obj, final int indent)
 			throws IOException {
 		writeTag(ostream, "unit", indent);
 		writeProperty(ostream, "owner", Integer.toString(obj.getOwner().getPlayerId()));
-		if (!obj.getKind().isEmpty()) {
-			writeProperty(ostream, "kind", obj.getKind());
-		}
-		if (!obj.getName().isEmpty()) {
-			writeProperty(ostream, "name", obj.getName());
-		}
+		writeNonemptyProperty(ostream, "kind", obj.getKind());
+		writeNonemptyProperty(ostream, "name", obj.getName());
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
-		ostream.append(imageXML(obj));
+		writeImageXML(ostream, obj);
 		if (obj instanceof HasPortrait) {
-			ostream.append(portraitXML((HasPortrait) obj));
+			writeNonemptyProperty(ostream, "portrait", ((HasPortrait) obj).getPortrait());
+
 		}
 		if (obj.iterator().hasNext() || !obj.getAllOrders().isEmpty() ||
 					!obj.getAllResults().isEmpty()) {
@@ -281,7 +266,7 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 						pair.getValue(), indent + 1);
 			}
 			for (final UnitMember member : obj) {
-				CompactReaderAdapter.write(ostream, member, indent + 1);
+				writeChild(ostream, member, indent + 1);
 			}
 			closeTag(ostream, indent, "unit");
 		} else {
@@ -319,5 +304,20 @@ public final class CompactUnitReader extends AbstractCompactReader<IUnit> {
 		ostream.append('>');
 		ostream.append(simpleQuote(value));
 		closeTag(ostream, 0, tag);
+	}
+	/**
+	 * @param child a child object to write
+	 * @param ostream the stream to write it to
+	 * @param indent  how far indented we are already
+	 * @throws IOException on I/O error in writing
+	 */
+	private void writeChild(final Appendable ostream, final UnitMember child,
+							final int indent) throws IOException {
+		final String msg = String.format(
+				"After checking %d readers, don't know how to write a %s",
+				Integer.valueOf(readers.size()), child.getClass().getSimpleName());
+		readers.stream().filter(reader -> reader.canWrite(child)).findFirst()
+				.orElseThrow(() -> new IllegalArgumentException(msg))
+				.writeRaw(ostream, child, indent);
 	}
 }

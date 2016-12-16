@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
@@ -12,14 +12,12 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
 import model.map.HasMutableImage;
-import model.map.IMutablePlayerCollection;
 import model.map.TerrainFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -36,29 +34,22 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactTerrainReader extends
-		AbstractCompactReader<TerrainFixture> {
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactReader<TerrainFixture> READER = new
-																	   CompactTerrainReader();
+public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 	/**
 	 * List of supported tags.
 	 */
-	private static final Set<String> SUPP_TAGS = NullCleaner.assertNotNull(
-			Collections.unmodifiableSet(new HashSet<>(Arrays.asList("forest",
-					"hill", "mountain", "oasis", "sandbar"))));
+	private static final Set<String> SUPP_TAGS = Collections.unmodifiableSet(
+			new HashSet<>(Arrays.asList("forest", "hill", "mountain", "oasis",
+					"sandbar")));
 
 	/**
-	 * Singleton.
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
 	 */
-	private CompactTerrainReader() {
-		// Singleton.
+	public YATerrainReader(final Warning warning, final IDRegistrar idRegistrar) {
+		super(warning, idRegistrar);
 	}
 
 	/**
@@ -73,17 +64,11 @@ public final class CompactTerrainReader extends
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
-	public TerrainFixture read(final StartElement element,
-							   final QName parent, final IMutablePlayerCollection
-														   players,
-							   final Warning warner, final IDRegistrar idFactory,
+	public TerrainFixture read(final StartElement element, final QName parent,
 							   final Iterable<XMLEvent> stream) throws
 			SPFormatException {
 		requireTag(element, parent, "forest", "hill", "mountain", "oasis", "sandbar");
@@ -94,22 +79,22 @@ public final class CompactTerrainReader extends
 					element, "rows"), getIntegerParameter(element, "id", -1));
 			break;
 		case "hill":
-			retval = new Hill(getOrGenerateID(element, warner, idFactory));
+			retval = new Hill(getOrGenerateID(element));
 			break;
 		case "mountain":
 			retval = new Mountain();
 			break;
 		case "oasis":
-			retval = new Oasis(getOrGenerateID(element, warner, idFactory));
+			retval = new Oasis(getOrGenerateID(element));
 			break;
 		case "sandbar":
-			retval = new Sandbar(getOrGenerateID(element, warner, idFactory));
+			retval = new Sandbar(getOrGenerateID(element));
 			break;
 		default:
 			throw new IllegalArgumentException("Unhandled terrain fixture tag " +
 													   element.getName().getLocalPart());
 		}
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		((HasMutableImage) retval).setImage(getParameter(element, "image", ""));
 		return retval;
 	}
@@ -127,7 +112,7 @@ public final class CompactTerrainReader extends
 					  final int indent) throws IOException {
 		if (obj instanceof Mountain) {
 			writeTag(ostream, "mountain", indent);
-			ostream.append(imageXML((Mountain) obj));
+			writeImageXML(ostream, (Mountain) obj);
 			closeLeafTag(ostream);
 			return; // Mountains don't yet have IDs.
 		} else if (obj instanceof Forest) {
@@ -146,7 +131,7 @@ public final class CompactTerrainReader extends
 		} else {
 			throw new IllegalStateException("Unexpected TerrainFixture type.");
 		}
-		ostream.append(imageXML((HasImage) obj));
+		writeImageXML(ostream, (HasImage) obj);
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		closeLeafTag(ostream);
 	}

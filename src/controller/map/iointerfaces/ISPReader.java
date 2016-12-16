@@ -31,7 +31,8 @@ public interface ISPReader {
 	 */
 	Iterable<String> FUTURE = NullCleaner.assertNotNull(Collections.unmodifiableList(
 			Arrays.asList("future", "explorer", "building", "resource", "changeset",
-					"change", "move", "work", "discover", "submap", "futureTag")));
+					"change", "move", "work", "discover", "submap", "futuretag",
+					"futureTag")));
 	/**
 	 * The namespace that SP XML will use.
 	 */

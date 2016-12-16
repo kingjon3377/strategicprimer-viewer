@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
@@ -7,9 +7,7 @@ import java.math.BigDecimal;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.IMutablePlayerCollection;
 import model.map.fixtures.ResourcePile;
-import util.NullCleaner;
 import util.Quantity;
 import util.Warning;
 
@@ -27,39 +25,26 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactResourcePileReader
-		extends AbstractCompactReader<ResourcePile> {
+public final class YAResourcePileReader extends YAAbstractReader<ResourcePile> {
 	/**
-	 * Singleton object.
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
 	 */
-	public static final CompactReader<ResourcePile> READER =
-			new CompactResourcePileReader();
-
-	/**
-	 * Singleton.
-	 */
-	private CompactResourcePileReader() {
-		// Singleton.
+	public YAResourcePileReader(final Warning warning, final IDRegistrar idRegistrar) {
+		super(warning, idRegistrar);
 	}
 
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from
 	 * @return the parsed implement
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public ResourcePile read(final StartElement element,
-							 final QName parent, final IMutablePlayerCollection players,
-							 final Warning warner, final IDRegistrar idFactory,
+	public ResourcePile read(final StartElement element, final QName parent,
 							 final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, "resource");
 		final String quantityStr = getParameter(element, "quantity");
@@ -67,10 +52,10 @@ public final class CompactResourcePileReader
 		if (quantityStr.contains(".")) {
 			quantity = new BigDecimal(quantityStr);
 		} else {
-			quantity = Integer.parseInt(quantityStr);
+			quantity = Integer.valueOf(Integer.parseInt(quantityStr));
 		}
 		final ResourcePile retval =
-				new ResourcePile(getOrGenerateID(element, warner, idFactory),
+				new ResourcePile(getOrGenerateID(element),
 										getParameter(element, "kind"),
 										getParameter(element, "contents"),
 										new Quantity(quantity,
@@ -79,7 +64,7 @@ public final class CompactResourcePileReader
 		if (hasParameter(element, "created")) {
 			retval.setCreated(getIntegerParameter(element, "created"));
 		}
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
@@ -113,7 +98,7 @@ public final class CompactResourcePileReader
 		if (obj.getCreated() >= 0) {
 			writeProperty(ostream, "created", Integer.toString(obj.getCreated()));
 		}
-		ostream.append(imageXML(obj));
+		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);
 	}
 

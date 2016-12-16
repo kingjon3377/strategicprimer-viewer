@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -9,11 +9,11 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
@@ -41,10 +41,9 @@ import util.LineEnd;
 import util.Warning;
 
 import static java.util.Collections.unmodifiableList;
-import static util.NullCleaner.assertNotNull;
 
 /**
- * A reader for new-API maps.
+ * A reader for Strategic Primer maps.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -57,33 +56,48 @@ import static util.NullCleaner.assertNotNull;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
+public final class YAMapReader extends YAAbstractReader<IMapNG> {
 	/**
-	 * Singleton instance.
+	 * The Warning instance to use.
 	 */
-	public static final CompactReader<IMapNG> READER = new CompactMapNGReader();
+	private final Warning warner;
+	/**
+	 * The map's growing collection of players.
+	 */
+	private final IMutablePlayerCollection players;
 	/**
 	 * List of readers we'll try sub-tags on.
 	 */
-	private final List<CompactReader<? extends TileFixture>> readers;
+	private final List<YAReader<? extends TileFixture>> readers;
+	/**
+	 * The reader for players.
+	 */
+	private final YAReader<Player> playerReader;
 
 	/**
-	 * Singleton.
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
+	 * @param playerCollection the map's collection of players
 	 */
-	private CompactMapNGReader() {
-		final List<CompactReader<? extends TileFixture>> list =
-				new ArrayList<>(Arrays.asList(CompactMobileReader.READER,
-						CompactResourceReader.READER,
-						CompactTerrainReader.READER, CompactTextReader.READER,
-						CompactTownReader.READER, CompactGroundReader.READER,
-						CompactAdventureReader.READER,
-						CompactPortalReader.READER,
-						CompactExplorableReader.READER));
-		readers = assertNotNull(unmodifiableList(list));
+	public YAMapReader(final Warning warning, final IDRegistrar idRegistrar,
+					   final IMutablePlayerCollection playerCollection) {
+		super(warning, idRegistrar);
+		warner = warning;
+		players = playerCollection;
+		readers = unmodifiableList(Arrays.asList(new YAMobileReader(warning,
+																		   idRegistrar),
+				new YAResourceReader(warning, idRegistrar),
+				new YATerrainReader(warning, idRegistrar),
+				new YATextReader(warning, idRegistrar),
+				new YATownReader(warning, idRegistrar, playerCollection),
+				new YAGroundReader(warning, idRegistrar),
+				new YAAdventureReader(warning, idRegistrar, playerCollection),
+				new YAPortalReader(warning, idRegistrar),
+				new YAExplorableReader(warning, idRegistrar),
+				new YAUnitReader(warning, idRegistrar, players)));
+		playerReader = new YAPlayerReader(warning, idRegistrar);
 	}
 
 	/**
@@ -104,7 +118,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			} else if (ground.isExposed() && !oldGround.isExposed()) {
 				map.setGround(point, ground);
 				map.addFixture(point, oldGround);
-			} else if (!oldGround.equals(ground)) {
+			} else if (!Objects.equals(oldGround, ground)) {
 				map.addFixture(point, ground);
 			}
 		} else if (fix instanceof Forest) {
@@ -112,7 +126,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			final Forest oldForest = map.getForest(point);
 			if (oldForest == null) {
 				map.setForest(point, forest);
-			} else if (!oldForest.equals(forest)) {
+			} else if (!Objects.equals(oldForest, forest)) {
 				map.addFixture(point, forest);
 			}
 		} else if (fix instanceof Mountain) {
@@ -126,9 +140,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				map.addRivers(point, river);
 			}
 		} else {
-			// We shouldn't get here either, since the parser above handles
-			// other fixtures directly, but again we don't want to lose data if
-			// I forget.
 			map.addFixture(point, fix);
 		}
 	}
@@ -142,17 +153,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream,
 													 final StartElement parent)
 			throws SPFormatException {
-		final StartElement retval = StreamSupport
-											.stream(stream.spliterator(), false)
-											.filter(XMLEvent::isStartElement)
-											.map(XMLEvent::asStartElement)
-											.filter(elem -> isSupportedNamespace(
-													elem.getName()))
-											.findFirst()
-											.orElseThrow(
-													() -> new MissingChildException
-																  (parent));
-		return assertNotNull(retval);
+		return StreamSupport.stream(stream.spliterator(), false)
+					   .filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
+					   .filter(elem -> isSupportedNamespace(elem.getName())).findFirst()
+					   .orElseThrow(() -> new MissingChildException(parent));
 	}
 
 	/**
@@ -175,17 +179,16 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 *
 	 * @param element the element to parse
 	 * @param parent  the parent tag
-	 * @param warner  the Warning instance to use as needed
 	 * @return the parsed river
 	 * @throws SPFormatException on SP format problem
 	 */
-	public static River parseRiver(final StartElement element, final QName parent,
-								   final Warning warner) throws SPFormatException {
+	public River parseRiver(final StartElement element, final QName parent)
+			throws SPFormatException {
 		requireTag(element, parent, "river", "lake");
 		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
 			return River.Lake;
 		} else {
-			requireNonEmptyParameter(element, "direction", true, warner);
+			requireNonEmptyParameter(element, "direction", true);
 			return River.getRiver(getParameter(element, "direction"));
 		}
 	}
@@ -214,21 +217,17 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 *
 	 * @param element   the element we're parsing
 	 * @param parent    the parent tag
-	 * @param players   The collection to put players in
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs.
 	 * @param stream    the source to read more elements from     @return the parsed map
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
 	public IMutableMapNG read(final StartElement element,
-							  final QName parent, final IMutablePlayerCollection players,
-							  final Warning warner, final IDRegistrar idFactory,
+							  final QName parent,
 							  final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, "map", "view");
 		final int currentTurn;
 		final StartElement mapTag;
-		final String outerTag = assertNotNull(element.getName().getLocalPart());
+		final String outerTag = element.getName().getLocalPart();
 		if ("view".equalsIgnoreCase(outerTag)) {
 			currentTurn = getIntegerParameter(element, "current_turn");
 			mapTag = getFirstStartElement(stream, element);
@@ -253,15 +252,15 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			if (event.isStartElement() &&
 						isSupportedNamespace(event.asStartElement().getName())) {
 				final StartElement current = event.asStartElement();
-				final String type = assertNotNull(current.getName().getLocalPart());
-				if ("player".equalsIgnoreCase(type)) {
-					retval.addPlayer(CompactPlayerReader.READER.read(current,
-							tagStack.peek(), players, warner, idFactory, stream));
-				} else if ("row".equalsIgnoreCase(type)) {
+				final String type = current.getName().getLocalPart().toLowerCase();
+				if ("player".equals(type)) {
+					retval.addPlayer(playerReader.read(current, tagStack.peek(),
+							stream));
+				} else if ("row".equals(type)) {
 					tagStack.push(current.getName());
 					// Deliberately ignore "row"s.
 					continue;
-				} else if ("tile".equalsIgnoreCase(type)) {
+				} else if ("tile".equals(type)) {
 					if (!nullPoint.equals(point)) {
 						throw new UnwantedChildException(tagStack.peek(), current);
 					}
@@ -276,7 +275,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						retval.setBaseTerrain(point,
 								TileType.getTileType(
 										getParamWithDeprecatedForm(current, "kind",
-												"type", warner)));
+												"type")));
 					} else {
 						//noinspection ObjectAllocationInLoop
 						warner.warn(new MissingPropertyException(current, "kind"));
@@ -290,27 +289,14 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					throw new UnwantedChildException(tagStack.peek(), current);
 				} else if ("lake".equalsIgnoreCase(type)
 								   || "river".equalsIgnoreCase(type)) {
-					retval.addRivers(point,
-							parseRiver(current, tagStack.peek(), warner));
-					spinUntilEnd(assertNotNull(current.getName()),
-							stream);
-				} else if ("ground".equalsIgnoreCase(type)) {
-					addFixture(retval, point,
-							CompactGroundReader.READER
-									.read(current, tagStack.peek(), players, warner,
-											idFactory, stream));
-				} else if ("forest".equalsIgnoreCase(type)) {
-					addFixture(retval, point, CompactTerrainReader.READER
-													  .read(current, tagStack.peek(),
-															  players, warner, idFactory,
-															  stream));
+					retval.addRivers(point, parseRiver(current, tagStack.peek()));
+					spinUntilEnd(current.getName(), stream);
 				} else if ("mountain".equalsIgnoreCase(type)) {
 					tagStack.push(current.getName());
 					retval.setMountainous(point, true);
 				} else {
 					final TileFixture fix =
-							parseFixture(current, tagStack.peek(), stream, players,
-									idFactory, warner);
+							parseFixture(current, tagStack.peek(), stream);
 					if ((fix instanceof StoneDeposit) &&
 								(StoneKind.Laterite ==
 										 ((StoneDeposit) fix).stone()) &&
@@ -319,22 +305,21 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						warner.warn(new UnsupportedPropertyException(current,
 																			"laterite"));
 					}
-					retval.addFixture(point, fix);
+					addFixture(retval, point, fix);
 				}
 			} else if (event.isEndElement()) {
-				if (!tagStack.isEmpty() &&
-							tagStack.peek().equals(event.asEndElement().getName())) {
+				if (!tagStack.isEmpty() && Objects.equals(tagStack.peek(),
+						event.asEndElement().getName())) {
 					tagStack.pop();
 				}
-				if (element.getName().equals(event.asEndElement().getName())) {
+				if (Objects.equals(element.getName(), event.asEndElement().getName())) {
 					break;
-				} else if ("tile".equalsIgnoreCase(event.asEndElement()
-														   .getName().getLocalPart())) {
+				} else if (Objects.equals("tile",
+						event.asEndElement().getName().getLocalPart())) {
 					point = PointFactory.point(-1, -1);
 				}
 			} else if (event.isCharacters()) {
-				final String data =
-						assertNotNull(event.asCharacters().getData().trim());
+				final String data = event.asCharacters().getData().trim();
 				if (!data.isEmpty()) {
 					//noinspection ObjectAllocationInLoop
 					retval.addFixture(point, new TextFixture(data, -1));
@@ -357,22 +342,17 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
-	 * @param idFactory the ID factory to generate IDs with
-	 * @param warner    the Warning instance to use for warnings
 	 * @return the parsed fixture.
 	 * @throws SPFormatException on SP format problem
 	 */
 	private TileFixture parseFixture(final StartElement element,
 									 final QName parent,
-									 final Iterable<XMLEvent> stream,
-									 final IMutablePlayerCollection players,
-									 final IDRegistrar idFactory,
-									 final Warning warner) throws SPFormatException {
-		final String name = assertNotNull(element.getName().getLocalPart());
-		for (final CompactReader<? extends TileFixture> item : readers) {
+									 final Iterable<XMLEvent> stream)
+			throws SPFormatException {
+		final String name = element.getName().getLocalPart();
+		for (final YAReader<? extends TileFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
-				return item.read(element, parent, players, warner, idFactory, stream);
+				return item.read(element, parent, stream);
 			}
 		}
 		throw new UnwantedChildException(new QName(element.getName().getNamespaceURI(),
@@ -400,7 +380,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		writeProperty(ostream, "columns", Integer.toString(dim.cols));
 		finishParentTag(ostream);
 		for (final Player player : obj.players()) {
-			CompactPlayerReader.READER.write(ostream, player, indent + 2);
+			playerReader.write(ostream, player, indent + 2);
 		}
 		for (int i = 0; i < dim.rows; i++) {
 			boolean rowEmpty = true;
@@ -437,18 +417,18 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					if (ground != null) {
 						eolIfNeeded(needEOL, ostream);
 						needEOL = false;
-						CompactReaderAdapter.write(ostream, ground, indent + 4);
+						writeChild(ostream, ground, indent + 4);
 					}
 					final Forest forest = obj.getForest(point);
 					if (forest != null) {
 						eolIfNeeded(needEOL, ostream);
 						needEOL = false;
-						CompactReaderAdapter.write(ostream, forest, indent + 4);
+						writeChild(ostream, forest, indent + 4);
 					}
 					for (final TileFixture fixture : obj.getOtherFixtures(point)) {
 						eolIfNeeded(needEOL, ostream);
 						needEOL = false;
-						CompactReaderAdapter.write(ostream, fixture, indent + 4);
+						writeChild(ostream, fixture, indent + 4);
 					}
 					if (!needEOL) {
 						indent(ostream, indent + 3);
@@ -463,7 +443,21 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		closeTag(ostream, indent + 1, "map");
 		closeTag(ostream, indent, "view");
 	}
-
+	/**
+	 * @param child a child object to write
+	 * @param ostream the stream to write it to
+	 * @param indent  how far indented we are already
+	 * @throws IOException on I/O error in writing
+	 */
+	private void writeChild(final Appendable ostream, final TileFixture child,
+							final int indent) throws IOException {
+		final String msg = String.format(
+				"After checking %d readers, don't know how to write a %s",
+				Integer.valueOf(readers.size()), child.getClass().getSimpleName());
+		readers.stream().filter(reader -> reader.canWrite(child)).findFirst()
+				.orElseThrow(() -> new IllegalArgumentException(msg))
+				.writeRaw(ostream, child, indent);
+	}
 	/**
 	 * @param tag a tag
 	 * @return whether this class supports it

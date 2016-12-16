@@ -1,17 +1,15 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.IMutablePlayerCollection;
 import org.eclipse.jdt.annotation.NonNull;
-import util.Warning;
 
 /**
- * An interface for XML readers that can read multiple related types.
+ * An interface for XML readers that can read multiple related types, in the sixth
+ * generation of SP XML I/O ("yet another SP XML reader").
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -25,22 +23,16 @@ import util.Warning;
  *
  * @param <T> the common supertype of all types this can return
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
-@Deprecated
-public interface CompactReader<@NonNull T> {
+public interface YAReader<@NonNull T> {
 	/**
 	 * @param element   the element being parsed
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use as needed
-	 * @param idFactory the ID factory to use as needed
 	 * @param stream    to read more elements from
 	 * @return the object parsed from XML
 	 * @throws SPFormatException on SP format errors
 	 */
-	T read(StartElement element, final QName parent, IMutablePlayerCollection players,
-		   Warning warner, IDRegistrar idFactory, Iterable<XMLEvent> stream)
+	T read(StartElement element, final QName parent, Iterable<XMLEvent> stream)
 			throws SPFormatException;
 
 	/**

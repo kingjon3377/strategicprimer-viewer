@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.iointerfaces.SPWriter;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import model.map.IMapNG;
 
 /**
- * CompactXML's Writer implementation.
+ * Sixth generation SP XML writer.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -19,11 +19,9 @@ import model.map.IMapNG;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactXMLWriter implements SPWriter {
+public final class YAXMLWriter implements SPWriter {
 	/**
 	 * Write a map to file.
 	 *
@@ -59,6 +57,6 @@ public final class CompactXMLWriter implements SPWriter {
 	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj)
 			throws IOException {
-		CompactReaderAdapter.write(ostream, obj, 0);
+		new YAReaderAdapter().write(ostream, obj, 0);
 	}
 }

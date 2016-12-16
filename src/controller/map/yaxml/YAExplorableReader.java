@@ -1,21 +1,20 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IEvent;
-import model.map.IMutablePlayerCollection;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.explorable.ExplorableFixture;
-import util.ArraySet;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -32,28 +31,22 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactExplorableReader
-		extends AbstractCompactReader<ExplorableFixture> {
+public final class YAExplorableReader extends YAAbstractReader<ExplorableFixture> {
 	/**
-	 * Singleton object.
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
 	 */
-	public static final CompactReader<ExplorableFixture> READER =
-			new CompactExplorableReader();
+	public YAExplorableReader(final Warning warning, final IDRegistrar idRegistrar) {
+		super(warning, idRegistrar);
+	}
 	/**
 	 * List of supported tags.
 	 */
-	private static final Set<String> SUPP_TAGS;
-
-	static {
-		final Set<String> suppTagsTemp = new ArraySet<>();
-		suppTagsTemp.add("cave");
-		suppTagsTemp.add("battlefield");
-		SUPP_TAGS = NullCleaner.assertNotNull(Collections.unmodifiableSet(suppTagsTemp));
-	}
+	private static final Set<String> SUPP_TAGS =
+			Collections.unmodifiableSet(
+					new HashSet<>(Arrays.asList("cave", "battlefield")));
 
 	/**
 	 * @param element a tag
@@ -77,9 +70,6 @@ public final class CompactExplorableReader
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed
 	 *                  resource
 	 * @throws SPFormatException on SP format problems
@@ -87,12 +77,10 @@ public final class CompactExplorableReader
 	@Override
 	public ExplorableFixture read(final StartElement element,
 								  final QName parent,
-								  final IMutablePlayerCollection players,
-								  final Warning warner, final IDRegistrar idFactory,
 								  final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "battlefield", "cave");
-		final int idNum = getOrGenerateID(element, warner, idFactory);
+		final int idNum = getOrGenerateID(element);
 		final ExplorableFixture retval;
 		final String tag = element.getName().getLocalPart();
 		if ("battlefield".equalsIgnoreCase(tag)) {
@@ -102,7 +90,7 @@ public final class CompactExplorableReader
 		} else {
 			throw new UnsupportedTagException(element);
 		}
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
@@ -127,7 +115,7 @@ public final class CompactExplorableReader
 		}
 		writeProperty(ostream, "dc", Integer.toString(((IEvent) obj).getDC()));
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
-		ostream.append(imageXML(obj));
+		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);
 	}
 

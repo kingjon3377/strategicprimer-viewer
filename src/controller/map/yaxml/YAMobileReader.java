@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
@@ -14,7 +14,6 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasMutableImage;
-import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Centaur;
 import model.map.fixtures.mobile.Djinn;
@@ -30,9 +29,7 @@ import model.map.fixtures.mobile.Phoenix;
 import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
-import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -49,17 +46,10 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactMobileReader extends
-		AbstractCompactReader<@NonNull MobileFixture> {
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactReader<@NonNull MobileFixture> READER =
-			new CompactMobileReader();
+public final class YAMobileReader extends
+		YAAbstractReader<@NonNull MobileFixture> {
 	/**
 	 * List of supported tags.
 	 */
@@ -69,6 +59,13 @@ public final class CompactMobileReader extends
 	 */
 	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP;
 
+	/**
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
+	 */
+	public YAMobileReader(final Warning warning, final IDRegistrar idRegistrar) {
+		super(warning, idRegistrar);
+	}
 	static {
 		TAG_MAP = new HashMap<>();
 		TAG_MAP.put(Animal.class, "animal");
@@ -84,18 +81,8 @@ public final class CompactMobileReader extends
 		TAG_MAP.put(Simurgh.class, "simurgh");
 		TAG_MAP.put(Sphinx.class, "sphinx");
 		TAG_MAP.put(Troll.class, "troll");
-		TAG_MAP.put(Unit.class, "unit");
-		SUPP_TAGS = NullCleaner.assertNotNull(
-				Collections.unmodifiableSet(new HashSet<>(TAG_MAP.values())));
+		SUPP_TAGS = Collections.unmodifiableSet(new HashSet<>(TAG_MAP.values()));
 	}
-
-	/**
-	 * Singleton.
-	 */
-	private CompactMobileReader() {
-		// Singleton.
-	}
-
 	/**
 	 * @param element the current tag
 	 * @return the value of its 'kind' parameter
@@ -110,19 +97,17 @@ public final class CompactMobileReader extends
 	 * Create an animal.
 	 *
 	 * @param element the tag we're reading
-	 * @param warner the Warning instance to use
-	 * @param idFactory the factory to generate a new ID # if needed
 	 * @return the parsed animal
 	 * @throws SPFormatException on SP format error
 	 */
-	private static MobileFixture createAnimal(final StartElement element,
-											  final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
+	private MobileFixture createAnimal(final StartElement element)
+			throws SPFormatException {
 		final boolean tracks = hasParameter(element, "traces");
 		final int idNum;
 		if (tracks && !hasParameter(element, "id")) {
 			idNum = -1;
 		} else {
-			idNum = getOrGenerateID(element, warner, idFactory);
+			idNum = getOrGenerateID(element);
 		}
 		return new Animal(getKind(element), tracks,
 								 Boolean.parseBoolean(
@@ -170,52 +155,40 @@ public final class CompactMobileReader extends
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public MobileFixture read(final StartElement element,
-							  final QName parent, final IMutablePlayerCollection players,
-							  final Warning warner, final IDRegistrar idFactory,
+							  final QName parent,
 							  final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, "animal", "centaur", "djinn", "dragon", "fairy",
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",
-				"sphinx", "troll", "unit");
+				"sphinx", "troll");
 		final MobileFixture retval;
 		final String type = element.getName().getLocalPart().toLowerCase();
 		switch (type) {
-		case "unit":
-			return CompactUnitReader.READER.read(element, parent, players,
-					warner, idFactory, stream);
 		case "animal":
-			retval = createAnimal(element, warner, idFactory);
+			retval = createAnimal(element);
 			break;
 		case "centaur":
-			retval = new Centaur(getKind(element), getOrGenerateID(element,
-					warner, idFactory));
+			retval = new Centaur(getKind(element), getOrGenerateID(element));
 			break;
 		case "dragon":
-			retval = new Dragon(getKind(element), getOrGenerateID(element,
-					warner, idFactory));
+			retval = new Dragon(getKind(element), getOrGenerateID(element));
 			break;
 		case "fairy":
-			retval = new Fairy(getKind(element), getOrGenerateID(element,
-					warner, idFactory));
+			retval = new Fairy(getKind(element), getOrGenerateID(element));
 			break;
 		case "giant":
-			retval = new Giant(getKind(element), getOrGenerateID(element,
-					warner, idFactory));
+			retval = new Giant(getKind(element), getOrGenerateID(element));
 			break;
 		default:
-			retval = readSimple(
-					NullCleaner.assertNotNull(element.getName().getLocalPart()),
-					getOrGenerateID(element, warner, idFactory));
+			retval = readSimple(element.getName().getLocalPart(),
+					getOrGenerateID(element));
 			break;
 		}
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		if (retval instanceof HasMutableImage) {
 			((HasMutableImage) retval).setImage(getParameter(element, "image", ""));
 		}
@@ -234,7 +207,7 @@ public final class CompactMobileReader extends
 	public void write(final Appendable ostream, final MobileFixture obj,
 					  final int indent) throws IOException {
 		if (obj instanceof IUnit) {
-			CompactUnitReader.READER.write(ostream, (IUnit) obj, indent);
+			throw new IllegalArgumentException("Unit handled elsewhere");
 		} else if (obj instanceof Animal) {
 			writeTag(ostream, "animal", indent);
 			final Animal animal = (Animal) obj;
@@ -251,17 +224,16 @@ public final class CompactMobileReader extends
 			if (!animal.isTraces()) {
 				writeProperty(ostream, "id", Integer.toString(obj.getID()));
 			}
-			ostream.append(imageXML(animal));
+			writeImageXML(ostream, (Animal) obj);
 			closeLeafTag(ostream);
 		} else {
-			writeTag(ostream, NullCleaner.assertNotNull(TAG_MAP.get(obj.getClass())),
-					indent);
+			writeTag(ostream, TAG_MAP.get(obj.getClass()), indent);
 			if (obj instanceof HasKind) {
 				writeProperty(ostream, "kind", ((HasKind) obj).getKind());
 			}
 			writeProperty(ostream, "id", Integer.toString(obj.getID()));
 			if (obj instanceof HasImage) {
-				ostream.append(imageXML((HasImage) obj));
+				writeImageXML(ostream, (HasImage) obj);
 			}
 			closeLeafTag(ostream);
 		}
@@ -273,6 +245,6 @@ public final class CompactMobileReader extends
 	 */
 	@Override
 	public boolean canWrite(final Object obj) {
-		return (obj instanceof MobileFixture) && !(obj instanceof Unit);
+		return (obj instanceof MobileFixture) && !(obj instanceof IUnit);
 	}
 }

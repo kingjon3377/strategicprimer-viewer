@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -6,11 +6,11 @@ import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
+import java.util.Objects;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasPortrait;
-import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
@@ -19,7 +19,6 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import util.Warning;
 
 import static util.EqualsAny.equalsAny;
@@ -38,21 +37,21 @@ import static util.EqualsAny.equalsAny;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
+public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 	/**
-	 * Singleton object.
+	 * The Warning instance to use.
 	 */
-	public static final CompactReader<IWorker> READER = new CompactWorkerReader();
+	private final Warning warner;
 
 	/**
-	 * Singleton.
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
 	 */
-	private CompactWorkerReader() {
-		// Singleton.
+	public YAWorkerReader(final Warning warning, final IDRegistrar idRegistrar) {
+		super(warning, idRegistrar);
+		warner = warning;
 	}
 
 	/**
@@ -78,7 +77,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 									   getIntegerParameter(element, "int"),
 									   getIntegerParameter(element, "wis"),
 									   getIntegerParameter(element, "cha"));
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
 
@@ -88,13 +87,11 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 	 * @param element the element to parse
 	 * @param parent  the parent tag
 	 * @param stream  the stream to read further elements from
-	 * @param warner  the Warning instance to use for warnings
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format problem
 	 */
-	public static IJob parseJob(final StartElement element,
-								final QName parent,
-								final Iterable<XMLEvent> stream, final Warning warner)
+	private IJob parseJob(final StartElement element, final QName parent,
+						 final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "job");
 		final IJob retval =
@@ -109,27 +106,20 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() &&
 						isSupportedNamespace(event.asStartElement().getName())) {
-				if ("skill".equalsIgnoreCase(NullCleaner.assertNotNull(event
-																			   .asStartElement()
-																			   .getName()
-																			   .getLocalPart()))) {
-					retval.addSkill(parseSkill(
-							NullCleaner.assertNotNull(event.asStartElement()),
-							element.getName(), warner));
+				if ("skill".equalsIgnoreCase(
+						event.asStartElement().getName().getLocalPart())) {
+					retval.addSkill(
+							parseSkill(event.asStartElement(), element.getName()));
 					if (anySkills) {
 						onlyOneSkill = false;
 					} else {
 						anySkills = true;
 					}
 					lastSkill = event.asStartElement();
-					spinUntilEnd(NullCleaner.assertNotNull(event.asStartElement()
-																   .getName()), stream);
+					spinUntilEnd(event.asStartElement().getName(), stream);
 				} else {
-					throw new UnwantedChildException(NullCleaner.assertNotNull(
-							element.getName()),
-															NullCleaner.assertNotNull(
-																	event.asStartElement
-																				  ()));
+					throw new UnwantedChildException(element.getName(),
+															event.asStartElement());
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -155,19 +145,17 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 	 *
 	 * @param element the element to parse
 	 * @param parent  the parent tag
-	 * @param warner  the Warning instance to use
 	 * @return the parsed skill
 	 * @throws SPFormatException on SP format problem
 	 */
-	public static ISkill parseSkill(final StartElement element,
-									final QName parent,
-									final Warning warner) throws SPFormatException {
+	private ISkill parseSkill(final StartElement element,
+							 final QName parent) throws SPFormatException {
 		requireTag(element, parent, "skill");
 		final ISkill retval =
 				new Skill(getParameter(element, "name"),
 								 getIntegerParameter(element, "level"),
 								 getIntegerParameter(element, "hours"));
-		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
+		if (Objects.equals("miscellaneous", retval.getName()) && (retval.getLevel() > 0)) {
 			warner.warn(
 					new DeprecatedPropertyException(element, "miscellaneous", "other"));
 		}
@@ -229,6 +217,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 	/**
 	 * Write a Skill to a stream.
 	 *
+	 * TODO: This should probably skip any no-level no-hours Skills.
+	 *
 	 * @param ostream The stream to write to.
 	 * @param obj     The object to write.
 	 * @param indent  The current indentation level.
@@ -246,51 +236,33 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed
 	 *                  worker
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public IWorker read(final StartElement element,
-					   final QName parent, final IMutablePlayerCollection players,
-					   final Warning warner, final IDRegistrar idFactory,
-					   final Iterable<XMLEvent> stream) throws SPFormatException {
+						final QName parent,
+						final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, "worker");
 		final Worker retval = new Worker(getParameter(element, "name"),
 												getParameter(element, "race", "human"),
-												getOrGenerateID(
-														element, warner, idFactory));
+												getOrGenerateID(element));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && isSupportedNamespace(event.asStartElement().getName())) {
-				if ("job".equalsIgnoreCase(NullCleaner.assertNotNull(event
-																			 .asStartElement()
-																			 .getName()
-																			 .getLocalPart()))) {
-					retval.addJob(parseJob(
-							NullCleaner.assertNotNull(event.asStartElement()),
-							element.getName(), stream, warner));
-				} else if ("stats".equalsIgnoreCase(NullCleaner
-															.assertNotNull(
-																	event
-																			.asStartElement()
-																			.getName()
-																			.getLocalPart()))) {
-					retval.setStats(parseStats(
-							NullCleaner.assertNotNull(event.asStartElement()),
-							element.getName(),
+				if ("job".equalsIgnoreCase(
+						event.asStartElement().getName().getLocalPart())) {
+					retval.addJob(
+							parseJob(event.asStartElement(), element.getName(), stream));
+				} else if ("stats".equalsIgnoreCase(
+						event.asStartElement().getName().getLocalPart())) {
+					retval.setStats(parseStats(event.asStartElement(), element.getName(),
 							stream));
 				} else {
-					throw new UnwantedChildException(
-															NullCleaner.assertNotNull(
-																	element.getName()),
-															NullCleaner.assertNotNull(
-																	event.asStartElement
-																				  ()));
+					throw new UnwantedChildException(element.getName(),
+															event.asStartElement());
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -316,9 +288,10 @@ public final class CompactWorkerReader extends AbstractCompactReader<IWorker> {
 			writeProperty(ostream, "race", obj.getRace());
 		}
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
-		ostream.append(imageXML(obj));
+		writeImageXML(ostream, obj);
 		if (obj instanceof HasPortrait) {
-			ostream.append(portraitXML((HasPortrait) obj));
+			writeNonemptyProperty(ostream, "portrait", ((HasPortrait) obj).getPortrait());
+
 		}
 		if (obj.iterator().hasNext() || (obj.getStats() != null)) {
 			finishParentTag(ostream);

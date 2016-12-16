@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
@@ -6,9 +6,7 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.IMutablePlayerCollection;
 import model.map.fixtures.Implement;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -25,44 +23,31 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactImplementReader extends AbstractCompactReader<Implement> {
+public final class YAImplementReader extends YAAbstractReader<Implement> {
 	/**
-	 * Singleton object.
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
 	 */
-	public static final CompactReader<Implement> READER = new CompactImplementReader();
-
-	/**
-	 * Singleton.
-	 */
-	private CompactImplementReader() {
-		// Singleton.
+	public YAImplementReader(final Warning warning, final IDRegistrar idRegistrar) {
+		super(warning, idRegistrar);
 	}
-
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from
 	 * @return the parsed implement
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public Implement read(final StartElement element,
-						  final QName parent, final IMutablePlayerCollection players,
-						  final Warning warner, final IDRegistrar idFactory,
+						  final QName parent,
 						  final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, "implement");
 		final Implement retval =
-				new Implement(getParameter(element, "kind"),
-									 getOrGenerateID(element, warner, idFactory)
-				);
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+				new Implement(getParameter(element, "kind"), getOrGenerateID(element));
+		spinUntilEnd(element.getName(), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
@@ -90,7 +75,7 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 		writeTag(ostream, "implement", indent);
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
-		ostream.append(imageXML(obj));
+		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);
 	}
 

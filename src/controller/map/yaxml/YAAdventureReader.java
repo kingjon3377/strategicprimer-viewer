@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
@@ -6,10 +6,9 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.IMutablePlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.fixtures.explorable.AdventureFixture;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -26,26 +25,28 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactAdventureReader extends
-		AbstractCompactReader<AdventureFixture> {
+public final class YAAdventureReader extends YAAbstractReader<AdventureFixture> {
 	/**
-	 * Singleton object.
+	 * The map's growing collection of players.
 	 */
-	public static final CompactReader<AdventureFixture> READER =
-			new CompactAdventureReader();
-
+	private final IPlayerCollection players;
+	/**
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
+	 * @param playerCollection the map's growing collection of players
+	 */
+	public YAAdventureReader(final Warning warning, final IDRegistrar idRegistrar,
+							 final IPlayerCollection playerCollection) {
+		super(warning, idRegistrar);
+		players = playerCollection;
+	}
 	/**
 	 * Read an adventure from XML.
 	 *
 	 * @param element   The XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from
 	 * @return the parsed adventure
 	 * @throws SPFormatException on SP format problems
@@ -53,8 +54,6 @@ public final class CompactAdventureReader extends
 	@Override
 	public AdventureFixture read(final StartElement element,
 								 final QName parent,
-								 final IMutablePlayerCollection players,
-								 final Warning warner, final IDRegistrar idFactory,
 								 final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "adventure");
@@ -63,14 +62,11 @@ public final class CompactAdventureReader extends
 			player = players.getPlayer(getIntegerParameter(element, "owner"));
 		}
 		final AdventureFixture retval =
-				new AdventureFixture(player,
-											getParameter(element, "brief", ""),
-											getParameter(
-													element, "full", ""),
-											getOrGenerateID(element,
-													warner, idFactory));
+				new AdventureFixture(player, getParameter(element, "brief", ""),
+											getParameter(element, "full", ""),
+											getOrGenerateID(element));
 		retval.setImage(getParameter(element, "image", ""));
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
 
@@ -91,13 +87,9 @@ public final class CompactAdventureReader extends
 			writeProperty(ostream, "owner",
 					Integer.toString(obj.getOwner().getPlayerId()));
 		}
-		if (!obj.getBriefDescription().isEmpty()) {
-			writeProperty(ostream, "brief", obj.getBriefDescription());
-		}
-		if (!obj.getFullDescription().isEmpty()) {
-			writeProperty(ostream, "full", obj.getFullDescription());
-		}
-		ostream.append(imageXML(obj));
+		writeNonemptyProperty(ostream, "brief", obj.getBriefDescription());
+		writeNonemptyProperty(ostream, "full", obj.getFullDescription());
+		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);
 	}
 

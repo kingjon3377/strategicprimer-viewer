@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -7,9 +7,7 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.IMutablePlayerCollection;
 import model.map.fixtures.TextFixture;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -26,21 +24,15 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactTextReader extends AbstractCompactReader<TextFixture> {
+public final class YATextReader extends YAAbstractReader<TextFixture> {
 	/**
-	 * Singleton object.
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
 	 */
-	public static final CompactReader<TextFixture> READER = new CompactTextReader();
-
-	/**
-	 * Singleton.
-	 */
-	private CompactTextReader() {
-		// Singleton.
+	public YATextReader(final Warning warning, final IDRegistrar idRegistrar) {
+		super(warning, idRegistrar);
 	}
 
 	/**
@@ -55,16 +47,11 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format errors
 	 */
 	@Override
-	public TextFixture read(final StartElement element,
-							final QName parent, final IMutablePlayerCollection players,
-							final Warning warner, final IDRegistrar idFactory,
+	public TextFixture read(final StartElement element, final QName parent,
 							final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, "text");
 		// Of all the uses of a StringBuilder, this one can't know what size we
@@ -72,19 +59,17 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 		final StringBuilder builder = new StringBuilder(2048);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new UnwantedChildException(
-														NullCleaner.assertNotNull(
-																element.getName()),
-														NullCleaner.assertNotNull(
-																event.asStartElement()));
+				throw new UnwantedChildException(element.getName(),
+														event.asStartElement());
 			} else if (event.isCharacters()) {
 				builder.append(event.asCharacters().getData());
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
 			}
 		}
-		final TextFixture fix = new TextFixture(NullCleaner.assertNotNull(
-				builder.toString().trim()), getIntegerParameter(element, "turn", -1));
+		final TextFixture fix = new TextFixture(builder.toString().trim(),
+													   getIntegerParameter(element,
+															   "turn", -1));
 		fix.setImage(getParameter(element, "image", ""));
 		return fix;
 	}
@@ -104,7 +89,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 		if (obj.getTurn() != -1) {
 			writeProperty(ostream, "turn", Integer.toString(obj.getTurn()));
 		}
-		ostream.append(imageXML(obj));
+		writeImageXML(ostream, obj);
 		ostream.append('>');
 		ostream.append(obj.getText().trim());
 		closeTag(ostream, 0, "text");

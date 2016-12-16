@@ -562,6 +562,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 					except.getTag().getLocalPart(), equalTo("root"));
 			assertThat("Unwanted child was the one we expected",
 					except.getChild(), equalTo(new QName("xyzzy", "map")));
+		} catch (final XMLStreamException except) {
+			assertThat("Reason for stream exception was as expected", except
+																			  .getMessage(),
+					equalTo("XML stream didn't contain a start element"));
 		}
 		try {
 			assertUnwantedChild(

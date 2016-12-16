@@ -1,4 +1,4 @@
-package controller.map.cxml;
+package controller.map.yaxml;
 
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -10,12 +10,12 @@ import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.City;
@@ -34,7 +34,7 @@ import util.TypesafeLogger;
 import util.Warning;
 
 /**
- * A reader for tiles, including rivers.
+ * A reader for fortresses, villages, and other towns.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -47,20 +47,22 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-@Deprecated
-public final class CompactTownReader extends AbstractCompactReader<ITownFixture> {
+public final class YATownReader extends YAAbstractReader<ITownFixture> {
 	/**
-	 * Singleton object.
+	 * The Warning instance to use.
 	 */
-	public static final CompactReader<ITownFixture> READER = new CompactTownReader();
+	private final Warning warner;
+	/**
+	 * The map's growing collection of players.
+	 */
+	private final IPlayerCollection players;
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(CompactTownReader.class);
+												 .getLogger(YATownReader.class);
 	/**
 	 * The "owner" parameter.
 	 */
@@ -69,12 +71,31 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * The 'name' parameter.
 	 */
 	private static final String NAME_PARAM = "name";
-
 	/**
-	 * Singleton.
+	 * The unit reader. TODO: Use a Collection of readers instead of individual fields.
 	 */
-	private CompactTownReader() {
-		// Singleton.
+	private final YAReader<IUnit> unitReader;
+	/**
+	 * The reader for resource piles.
+	 */
+	private final YAReader<ResourcePile> rpReader;
+	/**
+	 * The reader for Implements.
+	 */
+	private final YAReader<Implement> implReader;
+	/**
+	 * @param warning the Warning instance to use
+	 * @param idRegistrar the factory for ID numbers.
+	 * @param playerCollection the map's collection of players
+	 */
+	public YATownReader(final Warning warning, final IDRegistrar idRegistrar,
+						 final IPlayerCollection playerCollection) {
+		super(warning, idRegistrar);
+		warner = warning;
+		players = playerCollection;
+		unitReader = new YAUnitReader(warning, idRegistrar, playerCollection);
+		rpReader = new YAResourcePileReader(warning, idRegistrar);
+		implReader = new YAImplementReader(warning, idRegistrar);
 	}
 
 	/**
@@ -82,25 +103,18 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 *
 	 * @param element   the XML element to parse
 	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players in the map
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed village
 	 * @throws SPFormatException on SP format problems
 	 */
-	private static ITownFixture parseVillage(final StartElement element,
-											 final Iterable<XMLEvent> stream,
-											 final IPlayerCollection players,
-											 final Warning warner,
-											 final IDRegistrar idFactory)
+	private ITownFixture parseVillage(final StartElement element,
+											 final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final int idNum = getOrGenerateID(element, warner, idFactory);
+		requireNonEmptyParameter(element, NAME_PARAM, false);
+		spinUntilEnd(element.getName(), stream);
+		final int idNum = getOrGenerateID(element);
 		final Village retval = new Village(TownStatus.parseTownStatus(
 				getParameter(element, "status")), getParameter(element, NAME_PARAM, ""),
-												  idNum, getOwnerOrIndependent(element,
-				warner, players), getParameter(element, "race",
+												  idNum, getOwnerOrIndependent(element), getParameter(element, "race",
 				RaceFactory.getRace(new Random(idNum))));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
@@ -112,27 +126,21 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 *
 	 * @param element   the XML element to parse
 	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players in the map
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
-	private static ITownFixture parseTown(final StartElement element,
-										  final Iterable<XMLEvent> stream,
-										  final IPlayerCollection players,
-										  final Warning warner,
-										  final IDRegistrar idFactory)
+	private ITownFixture parseTown(final StartElement element,
+										  final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
+		requireNonEmptyParameter(element, NAME_PARAM, false);
 		final String name = getParameter(element, NAME_PARAM, "");
 		final TownStatus status = TownStatus.parseTownStatus(getParameter(
 				element, "status"));
 		final TownSize size = TownSize.parseTownSize(getParameter(element,
 				"size"));
 		final int dc = getIntegerParameter(element, "dc");
-		final int id = getOrGenerateID(element, warner, idFactory);
-		final Player owner = getOwnerOrIndependent(element, warner, players);
+		final int id = getOrGenerateID(element);
+		final Player owner = getOwnerOrIndependent(element);
 		final AbstractTown retval;
 		if ("town".equals(element.getName().getLocalPart())) {
 			retval = new Town(status, size, dc, name, id, owner);
@@ -141,7 +149,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		} else {
 			retval = new Fortification(status, size, dc, name, id, owner);
 		}
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		return retval;
@@ -152,14 +160,10 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * trigger a warning and return the "independent" player.
 	 *
 	 * @param element the tag being parsed
-	 * @param warner  the Warning instance to send the warning on
-	 * @param players the collection of players to refer to
 	 * @return the indicated player, or the independent player if none
 	 * @throws SPFormatException on SP format error reading the parameter.
 	 */
-	private static Player getOwnerOrIndependent(final StartElement element,
-												final Warning warner,
-												final IPlayerCollection players)
+	private Player getOwnerOrIndependent(final StartElement element)
 			throws SPFormatException {
 		final Player retval;
 		if (hasParameter(element, OWNER_PARAM)) {
@@ -176,24 +180,18 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 *
 	 * @param element   the XML element to parse
 	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
-	private static ITownFixture parseFortress(final StartElement element,
-											  final Iterable<XMLEvent> stream,
-											  final IMutablePlayerCollection players,
-											  final Warning warner,
-											  final IDRegistrar idFactory)
+	private ITownFixture parseFortress(final StartElement element,
+											  final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireNonEmptyParameter(element, OWNER_PARAM, false, warner);
-		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
+		requireNonEmptyParameter(element, OWNER_PARAM, false);
+		requireNonEmptyParameter(element, NAME_PARAM, false);
 		final Fortress retval =
-				new Fortress(getOwnerOrIndependent(element, warner, players),
+				new Fortress(getOwnerOrIndependent(element),
 									getParameter(element, NAME_PARAM, ""),
-									getOrGenerateID(element, warner, idFactory),
+									getOrGenerateID(element),
 									TownSize.parseTownSize(
 											getParameter(element, "size", "small")));
 		for (final XMLEvent event : stream) {
@@ -203,27 +201,21 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 												 .getLocalPart().toLowerCase();
 				switch (memberTag) {
 				case "unit":
-					retval.addMember(CompactUnitReader.READER.read(
-							NullCleaner.assertNotNull(event.asStartElement()),
-							element.getName(), players, warner, idFactory, stream));
+					retval.addMember(unitReader.read(event.asStartElement(),
+							element.getName(), stream));
 					break;
 				case "implement":
-					retval.addMember(CompactImplementReader.READER.read(
-							NullCleaner.assertNotNull(event.asStartElement()),
-							element.getName(), players, warner, idFactory, stream));
+					retval.addMember(implReader.read(event.asStartElement(),
+							element.getName(), stream));
 					break;
 				case "resource":
-					retval.addMember(CompactResourcePileReader.READER.read(
-							NullCleaner.assertNotNull(event.asStartElement()),
-							element.getName(), players, warner, idFactory, stream));
+					retval.addMember(
+							rpReader.read(event.asStartElement(), element.getName(),
+									stream));
 					break;
 				default:
-					throw new UnwantedChildException(
-															NullCleaner.assertNotNull(
-																	element.getName()),
-															NullCleaner.assertNotNull(
-																	event.asStartElement
-																				  ()));
+					throw new UnwantedChildException(element.getName(),
+															event.asStartElement());
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -261,8 +253,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		}
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		writeProperty(ostream, "owner", Integer.toString(obj.getOwner().getPlayerId()));
-		ostream.append(imageXML(obj));
-		ostream.append(portraitXML(obj));
+		writeImageXML(ostream, obj);
+		writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
 		closeLeafTag(ostream);
 	}
 
@@ -279,26 +271,22 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	/**
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
 	 * @param stream    the stream to read more elements from     @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public ITownFixture read(final StartElement element,
-							 final QName parent, final IMutablePlayerCollection players,
-							 final Warning warner, final IDRegistrar idFactory,
+							 final QName parent,
 							 final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, "village", "fortress", "town", "city",
 				"fortification");
 		final ITownFixture retval;
 		if ("village".equals(element.getName().getLocalPart())) {
-			retval = parseVillage(element, stream, players, warner, idFactory);
+			retval = parseVillage(element, stream);
 		} else if ("fortress".equals(element.getName().getLocalPart())) {
-			retval = parseFortress(element, stream, players, warner, idFactory);
+			retval = parseFortress(element, stream);
 		} else {
-			retval = parseTown(element, stream, players, warner, idFactory);
+			retval = parseTown(element, stream);
 		}
 		return retval;
 	}
@@ -327,35 +315,32 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 					Integer.toString(obj.getOwner().getPlayerId()));
 			final Village village = (Village) obj;
 			writeProperty(ostream, "race", village.getRace());
-			ostream.append(imageXML(village));
-			ostream.append(portraitXML(obj));
+			writeImageXML(ostream, (Village) obj);
+			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
 			closeLeafTag(ostream);
 		} else if (obj instanceof Fortress) {
 			writeTag(ostream, "fortress", indent);
 			writeProperty(ostream, "owner",
 					Integer.toString(obj.getOwner().getPlayerId()));
-			if (!obj.getName().isEmpty()) {
-				writeProperty(ostream, "name", obj.getName());
-			}
+			writeNonemptyProperty(ostream, "name", obj.getName());
 			if (TownSize.Small != obj.size()) {
 				writeProperty(ostream, "size", obj.size().toString());
 			}
 			writeProperty(ostream, "id", Integer.toString(obj.getID()));
 			final Fortress fortress = (Fortress) obj;
-			ostream.append(imageXML(fortress));
-			ostream.append(portraitXML(obj));
+			writeImageXML(ostream, (Fortress) obj);
+			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
 			ostream.append('>');
 			if (fortress.iterator().hasNext()) {
 				ostream.append(LineEnd.LINE_SEP);
 				for (final FortressMember unit : fortress) {
 					if (unit instanceof Unit) {
-						CompactUnitReader.READER.write(ostream, (Unit) unit,
+						unitReader.write(ostream, (Unit) unit,
 								indent + 1);
 					} else if (unit instanceof Implement) {
-						CompactImplementReader.READER.write(ostream,
-								(Implement) unit, indent + 1);
+						implReader.write(ostream, (Implement) unit, indent + 1);
 					} else if (unit instanceof ResourcePile) {
-						CompactResourcePileReader.READER.write(ostream,
+						rpReader.write(ostream,
 								(ResourcePile) unit, indent + 1);
 					} else {
 						LOGGER.severe("Unhandled FortressMember class "

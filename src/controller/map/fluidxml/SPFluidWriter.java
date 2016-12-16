@@ -93,7 +93,9 @@ import static controller.map.fluidxml.XMLHelper.writeTag;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @deprecated FluidXML is deprecated in favor of YAXML
  */
+@Deprecated
 public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	/**
 	 * An extracted compiled Pattern for a close-tag without a space.
