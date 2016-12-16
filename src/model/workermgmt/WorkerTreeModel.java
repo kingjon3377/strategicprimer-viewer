@@ -401,24 +401,21 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			indices = singletonInt(getIndexOfChild(root, item));
 			children = singletonObj(item);
 		} else if (item instanceof UnitMember) {
-			IUnit parent = null;
-			for (final IUnit unit : model.getUnits(root)) {
-				for (final UnitMember member : unit) {
-					if (item.equals(member)) {
-						parent = unit;
-					}
-				}
-				//noinspection VariableNotUsedInsideIf
-				if (parent != null) {
-					break;
-				}
-			}
-			if (parent == null) {
+			final Optional<IUnit> parent = model.getUnits(root).stream()
+												   .filter(unit -> StreamSupport
+																		   .stream(unit
+																						   .spliterator(),
+																				   false)
+																		   .anyMatch(
+																				   item::equals))
+												   .findAny();
+			if (parent.isPresent()) {
+				path = new TreePath(asArray(root, parent.get()));
+				indices = singletonInt(getIndexOfChild(parent.get(), item));
+				children = singletonObj(item);
+			} else {
 				return;
 			}
-			path = new TreePath(asArray(root, parent));
-			indices = singletonInt(getIndexOfChild(parent, item));
-			children = singletonObj(item);
 		} else {
 			// Impossible at present, so ignore
 			return;
