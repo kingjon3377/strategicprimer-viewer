@@ -263,11 +263,10 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final List<Player> retval =
 				StreamSupport.stream(getMap().players().spliterator(), false)
 						.collect(Collectors.toList());
-		for (final Pair<IMutableMapNG, Optional<Path>> pair : getSubordinateMaps()) {
-			retval.retainAll(
-					StreamSupport.stream(pair.first().players().spliterator(), false)
-							.collect(Collectors.toList()));
-		}
+		streamSubordinateMaps().map(Pair::first)
+				.map(map -> StreamSupport.stream(map.players().spliterator(), false)
+									.collect(Collectors.toList()))
+				.forEach(retval::retainAll);
 		return NullCleaner.assertNotNull(retval);
 	}
 
