@@ -53,8 +53,8 @@ public final class TestWorkerModel {
 	 * @return the contents of that list, with any proxies replaced by the items they
 	 * proxy
 	 */
-	private static <T> List<T> filterProxies(final Iterable<T> list) {
-		return StreamSupport.stream(list.spliterator(), false).flatMap(item -> {
+	private static <T> List<T> filterProxies(final List<T> list) {
+		return list.stream().flatMap(item -> {
 			if (item instanceof ProxyFor<?>) {
 				// this wouldn't work for Skills, but ...
 				//noinspection unchecked
