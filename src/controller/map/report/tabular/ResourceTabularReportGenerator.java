@@ -11,8 +11,10 @@ import model.map.Point;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.map.fixtures.resources.CacheFixture;
+import util.Accumulator;
+import util.IntHolder;
 import util.LineEnd;
-import util.NullCleaner;
+import util.MultiMapHelper;
 import util.Pair;
 import util.PatientMap;
 
@@ -176,29 +178,22 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 		values.sort((one, two) -> comparePairs(one.second(), two.second()));
 		ostream.append(headerRow());
 		ostream.append(LineEnd.LINE_SEP);
-		// TODO: Use a Map<String, Accumulator>, so we can use MultiMapHelper
-		final Map<String, Integer> implementCounts = new HashMap<>();
+		final Map<String, Accumulator> implementCounts = new HashMap<>();
 		for (final Pair<Integer, Pair<Point, IFixture>> pair : values) {
 			final Pair<Point, IFixture> inner = pair.second();
 			final IFixture fix = inner.second();
 			if (fix instanceof Implement) {
-				final String kind = ((Implement) fix).getKind();
-				if (implementCounts.containsKey(kind)) {
-					implementCounts.put(kind, Integer.valueOf(
-							NullCleaner.assertNotNull(implementCounts.get(kind))
-									.intValue() + 1));
-				} else {
-					implementCounts.put(kind, Integer.valueOf(1));
-				}
+				MultiMapHelper.getMapValue(implementCounts, ((Implement) fix).getKind(),
+						key -> new IntHolder(0)).add(1);
 				fixtures.remove(pair.first());
 			} else if (produce(ostream, fixtures, fix, inner.first())) {
 				fixtures.remove(pair.first());
 			}
 		}
-		for (final Map.Entry<String, Integer> entry : implementCounts.entrySet()) {
+		for (final Map.Entry<String, Accumulator> entry : implementCounts.entrySet()) {
 			writeField(ostream, "equipment");
 			writeFieldDelimiter(ostream);
-			writeField(ostream, Integer.toString(entry.getValue().intValue()));
+			writeField(ostream, Integer.toString(entry.getValue().getValue()));
 			writeFieldDelimiter(ostream);
 			writeField(ostream, entry.getKey());
 			ostream.append(getRowDelimiter());
