@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import model.exploration.HerdModel;
 import model.exploration.HuntingModel;
 import model.exploration.SurroundingPointIterable;
@@ -450,8 +449,7 @@ public final class QueryCLI implements SimpleDriver {
 				retval.add(current);
 			} else if (currentTerrain != TileType.Ocean) {
 				final double baseDistance = distance(base, current, dimensions);
-				StreamSupport.stream(new SurroundingPointIterable(current, dimensions, 1)
-											 .spliterator(), false)
+				new SurroundingPointIterable(current, dimensions, 1).stream()
 						.filter(neighbor -> distance(base, neighbor, dimensions) >=
 													baseDistance).forEach(queue::add);
 			}

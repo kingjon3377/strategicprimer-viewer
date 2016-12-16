@@ -3,6 +3,8 @@ package model.exploration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import model.map.MapDimensions;
 import model.map.Point;
 import org.eclipse.jdt.annotation.NonNull;
@@ -111,5 +113,11 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	@Override
 	public String toString() {
 		return "Points surrounding " + startingPoint;
+	}
+	/**
+	 * @return a Stream view of the points.
+	 */
+	public Stream<Point> stream() {
+		return StreamSupport.stream(spliterator(), false);
 	}
 }

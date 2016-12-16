@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import model.map.HasKind;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -139,13 +138,10 @@ public final class HuntingModel {
 	 * "nothing," especially from desert and tundra tiles and less from jungle tiles.
 	 */
 	public Iterable<String> gather(final Point point, final int items) {
-		final List<String> choices =
-				StreamSupport
-						.stream(new SurroundingPointIterable(point, dims).spliterator(),
-								false).filter(plants::containsKey)
-						.flatMap(local -> NullCleaner.assertNotNull(plants.get(local))
-												  .stream())
-						.collect(Collectors.toList());
+		final List<String> choices = new SurroundingPointIterable(point, dims).stream()
+											 .filter(plants::containsKey).flatMap(
+						local -> NullCleaner.assertNotNull(plants.get(local)).stream())
+											 .collect(Collectors.toList());
 		final Collection<String> retval = new ArrayList<>();
 		for (int i = 0; i < items; i++) {
 			Collections.shuffle(choices);
@@ -164,10 +160,7 @@ public final class HuntingModel {
 	 */
 	private List<String> chooseFromMap(final Point point, final int items,
 									   final Map<Point, Collection<String>> chosenMap) {
-		final List<String> choices = StreamSupport
-											 .stream(new SurroundingPointIterable(point,
-																						 dims)
-															 .spliterator(), false)
+		final List<String> choices = new SurroundingPointIterable(point, dims).stream()
 											 .filter(chosenMap::containsKey).flatMap(
 						local -> NullCleaner.assertNotNull(chosenMap.get(local))
 										 .stream())
