@@ -759,12 +759,12 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public void addFixture(final Point location, final TileFixture fix) {
-		final Collection<TileFixture> local =
-				MultiMapHelper.getMapValue(fixtures, location, key -> new ArraySet<>());
 		if (Objects.equals(fix, getForest(location)) ||
 					Objects.equals(fix, getGround(location))) {
 			return;
 		}
+		final Collection<TileFixture> local =
+				MultiMapHelper.getMapValue(fixtures, location, key -> new ArraySet<>());
 		if (fix.getID() >= 0) {
 			final Predicate<TileFixture> matcher = item -> item.getID() == fix.getID();
 			final boolean found =
