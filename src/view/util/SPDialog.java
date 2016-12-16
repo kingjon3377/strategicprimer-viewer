@@ -1,8 +1,8 @@
 package view.util;
 
-import com.sun.glass.events.KeyEvent;
 import controller.map.misc.WindowCloser;
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
