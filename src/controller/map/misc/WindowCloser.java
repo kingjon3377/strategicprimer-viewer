@@ -1,6 +1,6 @@
 package controller.map.misc;
 
-import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,11 +23,11 @@ public class WindowCloser implements ActionListener {
 	/**
 	 * The window to close.
 	 */
-	private final Frame frame;
+	private final Window frame;
 	/**
 	 * @param window the window to close
 	 */
-	public WindowCloser(final Frame window) {
+	public WindowCloser(final Window window) {
 		frame = window;
 	}
 	/**
