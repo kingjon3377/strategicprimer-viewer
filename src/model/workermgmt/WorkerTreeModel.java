@@ -141,7 +141,6 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
-	 * FIXME: This is missing "unit kinds"!
 	 * @param parent an object in the tree
 	 * @return how many children it has
 	 */
@@ -149,6 +148,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	public int getChildCount(@Nullable final Object parent) {
 		if (parent instanceof Player) {
 			return model.getUnits((Player) parent).size();
+		} else if (parent instanceof String &&
+						   model.getUnitKinds(root).contains((String) parent)) {
+			return model.getUnits(root, (String) parent).size();
 		} else if (parent instanceof IUnit) {
 			return (int) ((IUnit) parent).stream().count();
 		} else {
