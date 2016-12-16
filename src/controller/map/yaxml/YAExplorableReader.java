@@ -35,18 +35,18 @@ import util.Warning;
 @SuppressWarnings("ClassHasNoToStringMethod")
 public final class YAExplorableReader extends YAAbstractReader<ExplorableFixture> {
 	/**
+	 * List of supported tags.
+	 */
+	private static final Set<String> SUPP_TAGS =
+			Collections.unmodifiableSet(
+					new HashSet<>(Arrays.asList("cave", "battlefield")));
+	/**
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 */
 	public YAExplorableReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}
-	/**
-	 * List of supported tags.
-	 */
-	private static final Set<String> SUPP_TAGS =
-			Collections.unmodifiableSet(
-					new HashSet<>(Arrays.asList("cave", "battlefield")));
 
 	/**
 	 * @param element a tag
