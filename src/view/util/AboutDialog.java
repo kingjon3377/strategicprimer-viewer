@@ -1,5 +1,6 @@
 package view.util;
 
+import controller.map.misc.WindowCloser;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -97,10 +98,7 @@ public final class AboutDialog extends JDialog {
 		add(new JLabel(builder.toString()));
 		final JButton close = new JButton("Close");
 		add(close);
-		close.addActionListener(e -> {
-			setVisible(false);
-			dispose();
-		});
+		close.addActionListener(new WindowCloser(this));
 		pack();
 	}
 
