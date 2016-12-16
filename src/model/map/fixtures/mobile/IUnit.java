@@ -4,6 +4,8 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.HasKind;
@@ -210,5 +212,11 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 		} else {
 			return false;
 		}
+	}
+	/**
+	 * @return a Stream of the unit's members
+	 */
+	default Stream<UnitMember> stream() {
+		return StreamSupport.stream(spliterator(), false);
 	}
 }
