@@ -202,8 +202,7 @@ public final class IOHandler implements ActionListener {
 							((IMultiMapModel) model).streamSubordinateMaps().findFirst();
 					if (mapPair.isPresent()) {
 						final IViewerModel newModel =
-								new ViewerModel(mapPair.get().first(),
-													   mapPair.get().second());
+								new ViewerModel(mapPair.get());
 						// FIXME: Somehow get the CLI interface and options from previous ...
 						new ViewerStart()
 								.startDriver(new CLIHelper(), new SPOptionsImpl(),
