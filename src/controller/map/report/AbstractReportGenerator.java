@@ -204,6 +204,18 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				super.add(index, element);
 			}
 		}
+		/**
+		 * Prevent cloning.
+		 *
+		 * @return nothing
+		 * @throws CloneNotSupportedException always
+		 */
+		@SuppressWarnings("MethodReturnOfConcreteClass")
+		@Override
+		public final HtmlList clone() {
+			throw new IllegalStateException("cloning prohibited",
+												   new CloneNotSupportedException("cloning prohibited "));
+		}
 	}
 	/**
 	 * A list of Points that produces a comma-separated list in its toString() and has a
@@ -262,6 +274,18 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				}
 			}
 			return builder.toString();
+		}
+		/**
+		 * Prevent cloning.
+		 *
+		 * @return nothing
+		 * @throws CloneNotSupportedException always
+		 */
+		@SuppressWarnings("MethodReturnOfConcreteClass")
+		@Override
+		public final PointList clone() {
+			throw new IllegalStateException("cloning prohibited",
+												   new CloneNotSupportedException("cloning prohibited "));
 		}
 	}
 	/**
