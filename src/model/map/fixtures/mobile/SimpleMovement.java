@@ -17,7 +17,6 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
-import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.WorkerStats;
@@ -190,17 +189,9 @@ public final class SimpleMovement {
 	 * @param unit a unit
 	 * @return the highest Perception score of any member, or 0 if no members
 	 */
-	private static int getHighestPerception(final Iterable<UnitMember> unit) {
-		int retval = 0;
-		for (final UnitMember member : unit) {
-			if (member instanceof IWorker) {
-				final int perception = getPerception((IWorker) member);
-				if (perception > retval) {
-					retval = perception;
-				}
-			}
-		}
-		return retval;
+	private static int getHighestPerception(final IUnit unit) {
+		return unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+					   .mapToInt(SimpleMovement::getPerception).max().orElse(0);
 	}
 
 	/**
