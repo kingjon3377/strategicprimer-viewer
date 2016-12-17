@@ -198,15 +198,14 @@ public final class IOHandler implements ActionListener {
 				break;
 			case "open secondary map in map viewer":
 				if (model instanceof IMultiMapModel) {
-					final Optional<Pair<IMutableMapNG, Optional<Path>>> mapPair =
-							((IMultiMapModel) model).streamSubordinateMaps().findFirst();
-					if (mapPair.isPresent()) {
-						final IViewerModel newModel =
-								new ViewerModel(mapPair.get());
+					final Optional<IViewerModel> newModel =
+							((IMultiMapModel) model).streamSubordinateMaps().findFirst()
+									.map(ViewerModel::new);
+					if (newModel.isPresent()) {
 						// FIXME: Somehow get the CLI interface and options from previous ...
 						new ViewerStart()
 								.startDriver(new CLIHelper(), new SPOptionsImpl(),
-										newModel);
+										newModel.get());
 					}
 				}
 				break;
