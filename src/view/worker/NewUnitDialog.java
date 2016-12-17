@@ -1,7 +1,8 @@
 package view.worker;
 
 import controller.map.misc.IDRegistrar;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -13,7 +14,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 import model.listeners.NewUnitListener;
 import model.listeners.NewUnitSource;
 import model.listeners.PlayerChangeListener;
