@@ -214,10 +214,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 				return new SimpleReportNode(loc, atPoint(loc), item.getName(), ", a ",
 												   item.size().toString(), " ",
 												   item.status().toString(), " ",
-												   item.kind(), " allied with " +
-																		playerNameOrYou(
-																				item
-																						.getOwner()),
+												   item.kind(),
+												   " allied with " + playerNameOrYou(
+														   item.getOwner()),
 												   " ",
 												   distCalculator.distanceString(loc));
 			}

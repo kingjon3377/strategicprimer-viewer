@@ -5,6 +5,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
+import java.util.Objects;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -114,13 +115,12 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof SectionReportNode) && (level ==
-																				((SectionReportNode) obj)
-																						.getLevel()) &&
+		return (this == obj) || ((obj instanceof SectionReportNode) &&
+										 (level ==
+												  ((SectionReportNode) obj).getLevel()) &&
 										 text.equals(((IReportNode) obj).getText()) &&
-										 children()
-												 .equals(((IReportNode) obj).children
-																					 ()));
+										 Objects.equals(children(),
+												 ((IReportNode) obj).children()));
 	}
 
 	/**

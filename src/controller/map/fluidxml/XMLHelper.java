@@ -53,9 +53,7 @@ public final class XMLHelper {
 	/**
 	 * A parser for numeric data.
 	 */
-	private static final NumberFormat NUM_PARSER = NullCleaner
-														   .assertNotNull(NumberFormat
-																				  .getIntegerInstance());
+	private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
 
 	/**
 	 * Do not instantiate.
@@ -451,8 +449,8 @@ public final class XMLHelper {
 												final IPlayerCollection players)
 			throws SPFormatException {
 		final Player retval;
-		if (hasAttribute(element, "owner") && !getAttribute(element, "owner").isEmpty
-																					  ()) {
+		if (hasAttribute(element, "owner") &&
+					!getAttribute(element, "owner").isEmpty()) {
 			retval = players.getPlayer(getIntegerAttribute(element, "owner"));
 		} else {
 			warner.warn(new MissingPropertyException(element, "owner"));
@@ -514,7 +512,8 @@ public final class XMLHelper {
 				throw new UnwantedChildException(tag, event.asStartElement());
 			} else if (event.isCharacters()) {
 				builder.append(event.asCharacters().getData());
-			} else if (event.isEndElement() && tag.equals(event.asEndElement().getName())) {
+			} else if (event.isEndElement() &&
+							   tag.equals(event.asEndElement().getName())) {
 				break;
 			}
 		}

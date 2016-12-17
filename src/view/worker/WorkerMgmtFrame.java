@@ -25,6 +25,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.ActionMap;
@@ -125,8 +126,10 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 		super("Worker Management", model.getMapFile(), new Dimension(640, 480));
 		final IMapNG mainMap = model.getMap();
 		final NewUnitDialog newUnitFrame =
-				new NewUnitDialog(mainMap.getCurrentPlayer(), IDFactoryFiller.createFactory(mainMap));
-		final IWorkerTreeModel treeModel = new WorkerTreeModelAlt(mainMap.getCurrentPlayer(), model);
+				new NewUnitDialog(mainMap.getCurrentPlayer(),
+										 IDFactoryFiller.createFactory(mainMap));
+		final IWorkerTreeModel treeModel =
+				new WorkerTreeModelAlt(mainMap.getCurrentPlayer(), model);
 		final WorkerTree tree =
 				WorkerTree.factory(treeModel, mainMap.players(),
 						mainMap::getCurrentTurn, true);
@@ -137,7 +140,8 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 		assert (inputMap != null) && (actionMap != null);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
 		actionMap.put("openUnits", new FocusRequester(tree));
-		playerLabel = new FormattedLabel("Units belonging to %s: (%sU)", mainMap.getCurrentPlayer().getName(),
+		playerLabel = new FormattedLabel("Units belonging to %s: (%sU)",
+												mainMap.getCurrentPlayer().getName(),
 									   OnMac.SHORTCUT_DESC);
 		final OrdersPanel ordersPanel = new OrdersPanel(model.getMap().getCurrentTurn(),
 							   mainMap.getCurrentPlayer(), model::getUnits,
@@ -150,7 +154,8 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 																  " ..."));
 		new Thread(new ReportGeneratorThread(reportModel, model,
 													mainMap.getCurrentPlayer())).start();
-		final OrdersPanel resultsPanel = new OrdersPanel(mainMap.getCurrentTurn(), mainMap.getCurrentPlayer(),
+		final OrdersPanel resultsPanel =
+				new OrdersPanel(mainMap.getCurrentTurn(), mainMap.getCurrentPlayer(),
 							   model::getUnits,
 							   (unit, turn) -> unit.getResults(turn), null);
 		tree.addTreeSelectionListener(resultsPanel);
@@ -172,8 +177,8 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 						verticalPanel(playerLabel, new JScrollPane(tree), null),
 						lowerLeft),
 				verticalSplit(0.6, 0.6, verticalPanel(new JLabel(RPT_HDR),
-						new JScrollPane(createReportTree(model, menuHandler, reportModel)),
-						null), mdp)));
+						new JScrollPane(createReportTree(model, menuHandler,
+								reportModel)), null), mdp)));
 		final TreeExpansionOrderListener expander = new TreeExpansionHandler(tree);
 		menuHandler.register(evt -> expander.expandAll(), "expand all");
 		menuHandler.register(evt -> expander.collapseAll(), "collapse all");
@@ -233,9 +238,9 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 		Point retval = PointFactory.point(-1, -1);
 		for (final Point location : model.getMap().locations()) {
 			for (final TileFixture fix : model.getMap().getOtherFixtures(location)) {
-				if ((fix instanceof Fortress) && ((Fortress) fix).getOwner()
-														 .equals(model.getMap()
-																		 .getCurrentPlayer())) {
+				if ((fix instanceof Fortress) &&
+							Objects.equals(((Fortress) fix).getOwner(),
+									model.getMap().getCurrentPlayer())) {
 					if ("HQ".equals(((Fortress) fix).getName())) {
 						return location;
 					} else if ((retval.getRow() < 0) && (location.getRow() >= 0)) {

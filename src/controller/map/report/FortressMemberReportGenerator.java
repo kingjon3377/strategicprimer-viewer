@@ -212,10 +212,10 @@ public final class FortressMemberReportGenerator
 			}
 			if (rsr.getQuantity().getUnits().isEmpty()) {
 				return new SimpleReportNode("A pile of ",
-												   rsr.getQuantity().getNumber().toString(),
-												   rsr.getContents(), " (", rsr
-																					.getKind(),
-												   ")", age);
+												   rsr.getQuantity().getNumber()
+														   .toString(),
+												   rsr.getContents(), " (",
+												   rsr.getKind(), ")", age);
 			} else {
 				return new SimpleReportNode("A pile of ", rsr.getQuantity().toString(),
 												   " of ", rsr.getContents(), " (",

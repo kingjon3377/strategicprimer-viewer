@@ -177,8 +177,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 			final Player player =
 					NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
 			final Collection<CacheFixture> caches = new HashSet<>();
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : model
-																		  .getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair :
+					model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap().getBaseTerrain(dPoint));
 				for (final TileFixture fix : fixtures) {

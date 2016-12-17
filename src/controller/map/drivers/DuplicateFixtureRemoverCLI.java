@@ -54,9 +54,8 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 			throws DriverFailedException {
 		try {
 			if (model instanceof IMultiMapModel) {
-				for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
-																			   model)
-																			  .getAllMaps()) {
+				for (final Pair<IMutableMapNG, Optional<Path>> pair :
+						((IMultiMapModel) model).getAllMaps()) {
 					DuplicateFixtureRemover.filter(pair.first(), cli);
 				}
 			} else {

@@ -246,8 +246,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					//noinspection unchecked
 					return (T) retval;
 				} else {
-					throw new IllegalStateException("Reader produced different type than" +
-															" we expected");
+					throw new IllegalStateException(
+							"Reader produced different type than we expected");
 				}
 			}
 		}

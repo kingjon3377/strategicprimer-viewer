@@ -1,6 +1,5 @@
 package view.map.main;
 
-import controller.map.misc.IDFactoryFiller;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -18,6 +17,8 @@ import model.misc.IDriverModel;
 import model.viewer.IViewerModel;
 import org.eclipse.jdt.annotation.Nullable;
 import view.worker.NewUnitDialog;
+
+import static controller.map.misc.IDFactoryFiller.createFactory;
 
 /**
  * A popup menu to let the user change a tile's terrain type, or add a unit.
@@ -64,10 +65,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 		model = driverModel;
 		final NewUnitDialog nuDialog =
 				new NewUnitDialog(driverModel.getMap().getCurrentPlayer(),
-										 IDFactoryFiller
-																				   .createFactory(
-																						   driverModel
-																								   .getMap()));
+										 createFactory(driverModel.getMap()));
 		nuDialog.addNewUnitListener(unit -> {
 			driverModel.getMap().addFixture(point, unit);
 			driverModel.setSelection(point);

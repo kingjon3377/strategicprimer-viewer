@@ -358,11 +358,9 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Unit can have an animal as a member", firstUnit);
 		firstUnit.addMember(new Worker("worker", DEFAULT_RACE, 3));
 		assertSerialization("Unit can have a worker as a member", firstUnit);
-		firstUnit.addMember(new Worker("second", "elf", 4, new Job("job", 0,
-																		  new Skill
-																				  ("skill",
-																						   1,
-																						   2))));
+		firstUnit.addMember(new Worker("second", "elf", 4,
+											  new Job("job", 0,
+															 new Skill("skill", 1, 2))));
 		assertSerialization("Worker can have jobs", firstUnit);
 		assertForwardDeserialization("Explicit specification of default race works",
 				new Worker("third", DEFAULT_RACE, 5),
@@ -376,11 +374,9 @@ public final class TestMoreFixtureSerialization extends
 						+ "</job></worker>", "miscellaneous");
 		assertSerialization("but 'miscellaneous' skill without levels causes no " +
 									"warnings",
-				new Worker("sixth", DEFAULT_RACE, 7, new Job("seventh", 0,
-																	new Skill
-																			("miscellaneous",
-																					 0,
-																					 20))),
+				new Worker("sixth", DEFAULT_RACE, 7,
+								  new Job("seventh", 0,
+												 new Skill("miscellaneous", 0, 20))),
 				Warning.Die);
 		assertSerialization("and levels in another skill cause no warnings",
 				new Worker("fourth", DEFAULT_RACE, 8,
@@ -566,7 +562,8 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Resource pile can know what turn it was created", resource);
 		assertSerialization("Resource pile can have non-integer quantity",
 				new ResourcePile(5, "resourceKind", "specificKind2",
-										new Quantity(new BigDecimal("1.5"), "cubic feet")));
+										new Quantity(new BigDecimal("1.5"),
+															"cubic feet")));
 	}
 
 	/**

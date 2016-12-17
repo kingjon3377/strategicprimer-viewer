@@ -55,9 +55,8 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadQuadrantTable() throws IOException {
 		// TODO: Test using different dimensions!
-		try (final BufferedReader reader = new BufferedReader(new StringReader
-																	  (String.format(
-																			  "quadrant%n2%none%ntwo%nthree%nfour%nfive%nsix")))) {
+		try (final BufferedReader reader = new BufferedReader(new StringReader(
+				String.format("quadrant%n2%none%ntwo%nthree%nfour%nfive%nsix")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(0, 0);
 			final MapDimensions dimensions = new MapDimensions(69, 88, 2);
@@ -84,9 +83,8 @@ public final class TestTableLoader {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testLoadRandomTable() throws IOException {
-		try (final BufferedReader reader = new BufferedReader(new StringReader(
-																					  String.format(
-																							  "random%n0 one%n99 two")))) {
+		try (final BufferedReader reader = new BufferedReader(
+				new StringReader(String.format("random%n0 one%n99 two")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(30, 30);
 			assertThat("loading random table",
@@ -103,10 +101,9 @@ public final class TestTableLoader {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testLoadTerrainTable() throws IOException {
-		try (final BufferedReader reader = new BufferedReader(new StringReader(
-																					  String.format(
-																							  "terrain%ntundra " +
-																									  "one%nplains two%nocean three")))) {
+		try (final BufferedReader reader = new BufferedReader(
+				new StringReader(String.format(
+						"terrain%ntundra one%nplains two%nocean three")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point firstPoint = PointFactory.point(30, 30);
 			// TODO: Make MapDimensions an interface and use a mock object here
@@ -161,9 +158,8 @@ public final class TestTableLoader {
 					except.getMessage(),
 					equalTo("File doesn't start by specifying which kind of table."));
 		}
-		try (BufferedReader reader = new BufferedReader(new StringReader
-																(String.format(
-																		"2%ninvalidData%ninvalidData")))) {
+		try (BufferedReader reader = new BufferedReader(
+				new StringReader(String.format("2%ninvalidData%ninvalidData")))) {
 			TableLoader.loadTableFromStream(reader);
 			fail("Accepted table without header");
 		} catch (final IllegalArgumentException except) {

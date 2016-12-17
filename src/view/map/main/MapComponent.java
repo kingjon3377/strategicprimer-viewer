@@ -199,17 +199,13 @@ public final class MapComponent extends JComponent
 		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
 				model.getMapDimensions().getVersion());
 		final VisibleDimensions dim = model.getDimensions();
-		return NullCleaner.valueOrDefault(rect, new Rectangle(0, 0,
-																	 (dim.getMaximumCol
-																				  () -
-																			  dim
-																					  .getMinimumCol()) *
-																			 tileSize,
-																	 (dim.getMaximumRow
-																				  () -
-																			  dim
-																					  .getMinimumRow()) *
-																			 tileSize));
+		final Rectangle defDims = new Rectangle(0, 0, (dim.getMaximumCol() -
+															   dim.getMinimumCol()) *
+															  tileSize,
+													   (dim.getMaximumRow() -
+																dim.getMinimumRow()) *
+															   tileSize);
+		return NullCleaner.valueOrDefault(rect, defDims);
 	}
 
 	/**

@@ -5,6 +5,7 @@ import controller.map.misc.IDRegistrar;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.map.DistanceComparator;
@@ -183,13 +184,11 @@ public final class ReportGenerator {
 				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
 
-		fixtures.values().stream().filter(pair -> ((pair.second() instanceof Unit) ||
-														   (pair.second() instanceof
-																	Fortress)) &&
-														  player.equals(
-																  ((HasOwner) pair
-																					  .second())
-																		  .getOwner()))
+		final Predicate<Pair<Point, IFixture>> filter =
+				pair -> ((pair.second() instanceof Unit) ||
+								 (pair.second() instanceof Fortress)) &&
+								player.equals(((HasOwner) pair.second()).getOwner());
+		fixtures.values().stream().filter(filter)
 				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID()
 				)));
 		fixtures.coalesce();
@@ -273,13 +272,11 @@ public final class ReportGenerator {
 				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
 
-		fixtures.values().stream().filter(pair -> ((pair.second() instanceof Unit) ||
-														   (pair.second() instanceof
-																	Fortress)) &&
-														  player.equals(
-																  ((HasOwner) pair
-																					  .second())
-																		  .getOwner()))
+		final Predicate<Pair<Point, IFixture>> filter =
+				pair -> ((pair.second() instanceof Unit) ||
+								 (pair.second() instanceof Fortress)) &&
+								player.equals(((HasOwner) pair.second()).getOwner());
+		fixtures.values().stream().filter(filter)
 				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID()
 				)));
 		fixtures.coalesce();
@@ -314,11 +311,11 @@ public final class ReportGenerator {
 			// we can ignore everything but Forests and the "other" fixtures.
 			retval.putAll(getFixtures(
 					Stream.concat(map.streamOtherFixtures(point),
-							Stream.of(map.getForest(point)))).filter(Objects::nonNull)
-												.filter
-														 (ReportGenerator::isReportableFixture)
-												.collect(Collectors.toMap(checkID,
-														fix -> Pair.of(point, fix))));
+							Stream.of(map.getForest(point))))
+								  .filter(Objects::nonNull)
+								  .filter(ReportGenerator::isReportableFixture)
+								  .collect(Collectors.toMap(checkID,
+										  fix -> Pair.of(point, fix))));
 		}
 		return retval;
 	}

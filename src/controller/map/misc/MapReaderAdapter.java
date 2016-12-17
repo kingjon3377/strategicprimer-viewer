@@ -173,8 +173,8 @@ public final class MapReaderAdapter {
 		String current = master.toString();
 		try {
 			final IMultiMapModel retval =
-					new SimpleMultiMapModel(readMap(master, warner), Optional.of
-																					  (master));
+					new SimpleMultiMapModel(readMap(master, warner),
+												   Optional.of(master));
 			for (final Path file : files) {
 				current = file.toString();
 				retval.addSubordinateMap(readMap(file, warner), Optional.of(file));
@@ -227,9 +227,8 @@ public final class MapReaderAdapter {
 					"Model didn't contain filename for main map, so didn't write it");
 		}
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
-																		   model)
-																		  .getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair :
+					((IMultiMapModel) model).getSubordinateMaps()) {
 				final Optional<Path> filename = pair.second();
 				if (filename.isPresent()) {
 					try {

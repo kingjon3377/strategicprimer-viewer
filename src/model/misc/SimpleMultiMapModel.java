@@ -50,9 +50,8 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	public SimpleMultiMapModel(final IDriverModel model) {
 		super.setMap(model.getMap(), model.getMapFile());
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
-																		   model)
-																		  .getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair :
+					((IMultiMapModel) model).getSubordinateMaps()) {
 				addSubordinateMap(pair.first(), pair.second());
 			}
 		}

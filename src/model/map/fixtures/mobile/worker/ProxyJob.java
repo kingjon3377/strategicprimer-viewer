@@ -97,10 +97,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 		final IJob @NonNull [] jobsArray = NullCleaner.assertNotNull(
 				proxiedJobs.toArray(new IJob[proxiedJobs.size()]));
 		proxied.addAll(skillNames.stream()
-							   .map(skill -> new ProxySkill(skill, parallel,
-																   NullCleaner
-																		   .assertNotNull(
-																				   jobsArray)))
+							   .map(skill -> new ProxySkill(skill, parallel, jobsArray))
 							   .collect(Collectors.toList()));
 	}
 

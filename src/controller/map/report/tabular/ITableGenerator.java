@@ -55,8 +55,7 @@ public interface ITableGenerator<@NonNull T> {
 																		 .second()) &&
 																 type.isInstance(
 																		 entry.getValue()
-																				 .second
-																						  ()))
+																				 .second()))
 										.map(entry -> Pair.of(entry.getKey(),
 												Pair.of(entry.getValue().first(),
 														type.cast(entry.getValue()

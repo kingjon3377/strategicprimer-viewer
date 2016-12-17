@@ -86,9 +86,9 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 								 final Player player) {
 		map.locationStream().flatMap(map::streamOtherFixtures)
 				.filter(Fortress.class::isInstance).map(Fortress.class::cast)
-				.filter(fort -> "HQ".equals(fort.getName()) && (player.getPlayerId() ==
-																		fort.getOwner()
-																				.getPlayerId()))
+				.filter(fort -> "HQ".equals(fort.getName()) &&
+										(player.getPlayerId() ==
+												 fort.getOwner().getPlayerId()))
 				.forEach(fort -> fort.addMember(resource));
 	}
 	/**

@@ -22,7 +22,6 @@ import model.viewer.FixtureListModel;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
-import util.NullCleaner;
 import util.Pair;
 import util.SingletonRandom;
 import view.map.details.FixtureList;
@@ -107,10 +106,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 			final List<IntPair<TileFixture>> constants = new ArrayList<>();
 			final List<IntPair<TileFixture>> possibles = new ArrayList<>();
 			int i = 0;
-			for (final TileFixture fix : new ListModelWrapper<>(
-																	   NullCleaner
-																			   .assertNotNull(
-																					   list.getModel()))) {
+			for (final TileFixture fix : new ListModelWrapper<>(list.getModel())) {
 				// FIXME: Take speed into account
 				if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
 					constants.add(IntPair.of(i, fix));
@@ -138,7 +134,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 				}
 			}
 			Collections.shuffle(possibles);
-			// TODO: Use Perception to decide how many to see, as in SimpleMovement.selectNoticed
+			// TODO: Use Perception to decide how many, as in SimpleMovement.selectNoticed
 			if ((possibles.size() > 1) && (SingletonRandom.RANDOM.nextDouble() < 0.1)) {
 				constants.add(possibles.get(0));
 				constants.add(possibles.get(1));

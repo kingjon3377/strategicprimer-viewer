@@ -89,7 +89,8 @@ public class WorkerStats {
 	 * @param base a set of base stats
 	 * @param adjustment a set of adjustments to those stats
 	 */
-	public WorkerStats(final int hitPoints, final WorkerStats base, final WorkerStats adjustment) {
+	public WorkerStats(final int hitPoints, final WorkerStats base,
+					   final WorkerStats adjustment) {
 		hp = hitPoints;
 		maxHP = hitPoints;
 		strength = base.strength + adjustment.strength;
@@ -222,10 +223,10 @@ public class WorkerStats {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder(70);
-        try (final Formatter formatter = new Formatter(builder)) {
-			formatter.format("HP: %d / %d%nStr: %d%nDex: %d%n", hp, maxHP, strength, dex);
-			formatter.format("Con: %d%nInt: %d%nWis: %d%nCha: %d%n", con, intel, wis, cha);
-        }
+        try (final Formatter fmt = new Formatter(builder)) {
+			fmt.format("HP: %d / %d%nStr: %d%nDex: %d%n", hp, maxHP, strength, dex);
+			fmt.format("Con: %d%nInt: %d%nWis: %d%nCha: %d%n", con, intel, wis, cha);
+		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}
 	/**

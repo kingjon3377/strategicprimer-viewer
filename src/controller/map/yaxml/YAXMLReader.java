@@ -61,7 +61,8 @@ public final class YAXMLReader implements IMapReader, ISPReader {
 		final StartElement event = StreamSupport.stream(eventReader.spliterator(), false)
 										   .filter(XMLEvent::isStartElement).findFirst()
 										   .map(XMLEvent::asStartElement).orElseThrow(
-						() -> new XMLStreamException("XML stream didn't contain a start element"));
+						() -> new XMLStreamException(
+								"XML stream didn't contain a start element"));
 		final Object retval = new YAReaderAdapter(warner, idFactory).parse(
 				event.asStartElement(), new QName("root"), eventReader);
 		if (type.isAssignableFrom(retval.getClass())) {

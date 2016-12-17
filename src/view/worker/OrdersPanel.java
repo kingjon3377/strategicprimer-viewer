@@ -50,9 +50,8 @@ import view.util.Revertible;
  *
  * @author Jonathan Lovelace
  */
-public final class OrdersPanel extends BorderedPanel implements Applyable, Revertible,
-																		TreeSelectionListener,
-																		PlayerChangeListener {
+public final class OrdersPanel extends BorderedPanel
+		implements Applyable, Revertible, TreeSelectionListener, PlayerChangeListener {
 	/**
 	 * The source of orders (or results).
 	 */
@@ -148,9 +147,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 					new JLabel("Orders for current selection, if a unit: (" + prefix +
 									   "D)"), null,
 					horizontalPanel(null, new JLabel("Turn "),
-							new JSpinner(spinnerModel)))).setCenter(new JScrollPane
-																						(area))
-					.setPageEnd(buttonPanel);
+							new JSpinner(spinnerModel))))
+					.setCenter(new JScrollPane(area)).setPageEnd(buttonPanel);
 		}
 		area.addKeyListener(new ModifiedEnterListener());
 		area.setLineWrap(true);

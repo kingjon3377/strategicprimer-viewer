@@ -148,7 +148,8 @@ public interface IReportNode
 	}
 	/**
 	 * @param node a node
-	 * @return whether it is either a non-empty IReportNode or not an IReportNode at all, but not null.
+	 * @return whether it is either a non-empty IReportNode or not an IReportNode at
+	 * all, but not null.
 	 */
 	static boolean isNonEmptyNode(@Nullable final MutableTreeNode node) {
 		if (node instanceof IReportNode) {

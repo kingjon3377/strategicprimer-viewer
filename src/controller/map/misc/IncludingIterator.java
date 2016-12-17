@@ -173,8 +173,8 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 			final String file = getFileAttribute(tag);
 			// FIXME: The MagicReader here (and thus the file it opens!) get leaked!
 			stack.addFirst(Pair.of(file,
-					new ComparableIterator<>(new TypesafeXMLEventReader(new MagicReader(
-																							   file)))));
+					new ComparableIterator<>(new TypesafeXMLEventReader(
+							new MagicReader(file)))));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException("File referenced by <include> not " +
 															"found",

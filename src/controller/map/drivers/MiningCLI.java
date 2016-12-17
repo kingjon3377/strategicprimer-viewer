@@ -35,8 +35,7 @@ public final class MiningCLI implements UtilityDriver {
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-i", "--mining", ParamCount.Two,
 								   "Create a model of a mine",
-								   "Create a CSV spreadsheet representing the area of a " +
-										   "mine");
+								   "Create a CSV spreadsheet representing a mine's area");
 
 	static {
 		USAGE.addSupportedOption("--seed=NN");

@@ -149,11 +149,10 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 		}
 		model.addResource(new ResourcePile(idf.createID(), kind, contents,
 												  new Quantity(cli.inputDecimal(
-														  NullCleaner.assertNotNull(
-																  String.format(
-																		  "Quantity in %s? ",
-																		  units))),
-																	  units)), player);
+														  String.format(
+																  "Quantity in %s? ",
+																  units)), units)),
+				player);
 	}
 
 	/**

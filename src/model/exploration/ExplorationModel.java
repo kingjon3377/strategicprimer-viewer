@@ -105,9 +105,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				return Stream.of(obj);
 			}
 		}).filter(IUnit.class::isInstance).map(IUnit.class::cast)
-												 .filter(unit -> unit.getOwner()
-																		 .equals
-																				  (player)));
+												 .filter(unit -> player.equals(
+														 unit.getOwner())));
 	}
 
 	/**
@@ -525,7 +524,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		if (temp.isPresent()) {
 			final IUnit mover = temp.get();
 			final Player owner = mover.getOwner();
-			streamAllMaps().map(Pair::first).flatMap(map -> map.streamOtherFixtures(currPoint))
+			streamAllMaps().map(Pair::first)
+					.flatMap(map -> map.streamOtherFixtures(currPoint))
 					.filter(Village.class::isInstance).map(HasMutableOwner.class::cast)
 					.forEach(fix -> fix.setOwner(owner));
 			fireMovementCost(5);

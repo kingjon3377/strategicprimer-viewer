@@ -1,6 +1,5 @@
 package view.worker;
 
-import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.MenuBroker;
 import java.awt.Dimension;
 import java.io.IOException;
@@ -24,6 +23,7 @@ import view.util.ListenedButton;
 import view.util.SPFrame;
 import view.util.TreeExpansionOrderListener;
 
+import static controller.map.misc.IDFactoryFiller.createFactory;
 import static view.util.SplitWithWeights.horizontalSplit;
 import static view.util.SplitWithWeights.verticalSplit;
 
@@ -72,10 +72,8 @@ public final class AdvancementFrame extends SPFrame implements PlayerChangeListe
 		final WorkerTree tree =
 				WorkerTree.factory(treeModel, map.players(),
 						() -> source.getMap().getCurrentTurn(), false);
-		final WorkerCreationListener nwl = new WorkerCreationListener(treeModel,
-																			 IDFactoryFiller
-																					 .createFactory(
-																							 source.getMap()));
+		final WorkerCreationListener nwl =
+				new WorkerCreationListener(treeModel, createFactory(source.getMap()));
 		tree.addUnitSelectionListener(nwl);
 		final JobTreeModel jobsTreeModel = new JobTreeModel();
 		tree.addUnitMemberListener(jobsTreeModel);
@@ -102,8 +100,8 @@ public final class AdvancementFrame extends SPFrame implements PlayerChangeListe
 										htmlWrapped("Add a job to the Worker:"), null,
 										jobAdditionPanel), null,
 								BorderedPanel.verticalPanel(
-										htmlWrapped("Add a Skill to the selected Job:"), null,
-										skillAdditionPanel)),
+										htmlWrapped("Add a Skill to the selected Job:"),
+										null, skillAdditionPanel)),
 								skillAdvancementPanel))));
 		playerChanged(null, map.getCurrentPlayer());
 

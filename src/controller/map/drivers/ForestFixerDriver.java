@@ -37,7 +37,7 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 	private static final IDriverUsage USAGE =
 			new DriverUsage(false, "-f", "--fix-forest", ParamCount.AtLeastTwo,
 								   "Fix forest IDs",
-								   "Make sure that IDs for forests in submaps match those in the main map");
+								   "Make sure that forest IDs in submaps match the main map");
 
 
 	@Override
@@ -62,8 +62,8 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 		final IMutableMapNG mainMap = model.getMap();
 		final List<Forest> mainForests = new ArrayList<>();
 		final List<Forest> subForests = new ArrayList<>();
-		for (final Pair<IMutableMapNG, Optional<Path>> pair : mmodel.getSubordinateMaps
-																			 ()) {
+		for (final Pair<IMutableMapNG, Optional<Path>> pair :
+				mmodel.getSubordinateMaps()) {
 			final Optional<Path> maybePath = pair.second();
 			if (maybePath.isPresent()) {
 				System.out.printf("Starting %s%n", maybePath.get().toString());
@@ -99,7 +99,8 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 	 * @param point a location
 	 * @param list a list to add forests to
 	 */
-	private static void extractForests(final IMapNG map, final Point point, final List<Forest> list) {
+	private static void extractForests(final IMapNG map, final Point point,
+									   final List<Forest> list) {
 		list.clear();
 		Stream.concat(Stream.of(map.getForest(point)),
 				map.streamOtherFixtures(point).filter(Forest.class::isInstance)

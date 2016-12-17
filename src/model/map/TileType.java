@@ -134,11 +134,10 @@ public enum TileType {
 		final Integer boxedVer = NullCleaner.assertNotNull(Integer.valueOf(ver));
 		synchronized (VALS_BY_VER) {
 			return unmodifiableSet(MultiMapHelper.getMapValue(VALS_BY_VER, boxedVer,
-					key -> EnumSet.copyOf(Stream.of(values())
-												  .filter(type -> type
-																		  .isSupportedByVersion(
-														  key))
-												  .collect(Collectors.toSet()))));
+					key -> EnumSet.copyOf(
+							Stream.of(values())
+									.filter(type -> type.isSupportedByVersion(key))
+									.collect(Collectors.toSet()))));
 		}
 	}
 

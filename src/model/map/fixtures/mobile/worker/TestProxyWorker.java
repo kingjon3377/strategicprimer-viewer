@@ -67,24 +67,22 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyWorker() {
-		final IWorker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
-																				 new
-																						 Skill("skillOne",
-																									  0,
-																									  5),
-																				 new
-																						 Skill("skillTwo",
-																									  2,
-																									  6)));
-		final IWorker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
-																				new
-																						Skill("skillThree",
-																								 1,
-																								 19),
-																				new
-																						Skill("skillFour",
-																								 0,
-																								 99)));
+		final IWorker firstWorker = new Worker("one", "human", 1,
+													  new Job("jobOne", 1,
+																	 new Skill("skillOne",
+																					  0,
+																					  5),
+																	 new Skill("skillTwo",
+																					  2,
+																					  6)));
+		final IWorker secondWorker = new Worker("two", "elf", 2,
+													   new Job("jobTwo", 1,
+																	  new Skill("skillThree",
+																						   1,
+																						   19),
+																	  new Skill("skillFour",
+																					   0,
+																					   99)));
 		final IWorker thirdWorker = new Worker("three", "dwarf", 5);
 		final Iterable<IJob> proxy =
 				new ProxyWorker(firstWorker, secondWorker, thirdWorker);
@@ -151,24 +149,22 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyUnit() throws IOException {
-		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
-																				new
-																						Skill("skillOne",
-																									 0,
-																									 5),
-																				new
-																						Skill("skillTwo",
-																								 2,
-																								 6)));
-		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
-																			   new Skill
-																					   ("skillThree",
-																							   1,
-																							   19),
-																			   new Skill
-																					   ("skillFour",
-																								0,
-																								99)));
+		final Worker firstWorker = new Worker("one", "human", 1,
+													 new Job("jobOne", 1,
+																	new Skill("skillOne",
+																					 0,
+																					 5),
+																	new Skill("skillTwo",
+																					 2,
+																					 6)));
+		final Worker secondWorker = new Worker("two", "elf", 2,
+													  new Job("jobTwo", 1,
+																	 new Skill("skillThree",
+																					  1,
+																					  19),
+																	 new Skill("skillFour",
+																					  0,
+																					  99)));
 		final IWorker oneCopy = firstWorker.copy(false);
 		final IWorker twoCopy = secondWorker.copy(false);
 		final IWorker oneOrig = firstWorker.copy(false);
@@ -218,24 +214,22 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyUnitProxy() throws IOException {
-		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
-																				new
-																						Skill("skillOne",
-																									 0,
-																									 5),
-																				new
-																						Skill("skillTwo",
-																								 2,
-																								 6)));
-		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
-																			   new Skill
-																					   ("skillThree",
-																							   1,
-																							   19),
-																			   new Skill
-																					   ("skillFour",
-																								0,
-																								99)));
+		final Worker firstWorker = new Worker("one", "human", 1,
+													 new Job("jobOne", 1,
+																	new Skill("skillOne",
+																					 0,
+																					 5),
+																	new Skill("skillTwo",
+																					 2,
+																					 6)));
+		final Worker secondWorker = new Worker("two", "elf", 2,
+													  new Job("jobTwo", 1,
+																	 new Skill("skillThree",
+																					  1,
+																					  19),
+																	 new Skill("skillFour",
+																					 0,
+																					 99)));
 		final IWorker oneCopy = firstWorker.copy(false);
 		final IWorker twoCopy = secondWorker.copy(false);
 		final IWorker oneOrig = firstWorker.copy(false);
@@ -281,15 +275,14 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testWorkerCopy() {
-		final IFixture worker = new Worker("one", "human", 1, new Job("jobOne", 1,
-																			 new Skill
-																					 ("skillOne",
-																							 0,
-																							 5),
-																			 new Skill
-																					 ("skillTwo",
-																							  2,
-																							  6)));
+		final IFixture worker = new Worker("one", "human", 1,
+												  new Job("jobOne", 1,
+																 new Skill("skillOne",
+																				  0,
+																				  5),
+																 new Skill("skillTwo",
+																				  2,
+																				  6)));
 		assertThat("Worker copy should still be equal", worker.copy(false),
 				equalTo(worker));
 	}

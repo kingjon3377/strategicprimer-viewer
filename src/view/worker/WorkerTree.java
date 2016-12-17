@@ -29,7 +29,6 @@ import model.map.fixtures.mobile.worker.ProxyWorker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.IWorkerTreeModel;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import view.map.details.FixtureEditMenu;
 
 import static java.lang.String.format;
@@ -75,12 +74,7 @@ public final class WorkerTree extends JTree
 		setRootVisible(false);
 		setDragEnabled(true);
 		setShowsRootHandles(true);
-		setTransferHandler(new WorkerTreeTransferHandler(
-																NullCleaner
-																		.assertNotNull(
-																				getSelectionModel()),
-
-																wtModel));
+		setTransferHandler(new WorkerTreeTransferHandler(getSelectionModel(), wtModel));
 		setCellRenderer(new UnitMemberCellRenderer(turnSource, orderCheck));
 		tsl = new WorkerTreeSelectionListener(wtModel);
 		addTreeSelectionListener(tsl);
@@ -283,8 +277,8 @@ public final class WorkerTree extends JTree
 		 * @param listenedTree    the tree we're watching
 		 */
 		protected TreeMouseListener(final Iterable<Player> playerColl,
-									final IWorkerTreeModel workerTreeModel, final JTree
-																					listenedTree) {
+									final IWorkerTreeModel workerTreeModel,
+									final JTree listenedTree) {
 			players = playerColl;
 			model = workerTreeModel;
 			tree = listenedTree;

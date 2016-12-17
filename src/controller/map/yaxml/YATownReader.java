@@ -29,7 +29,6 @@ import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
 import util.EqualsAny;
 import util.LineEnd;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -114,7 +113,8 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 		final int idNum = getOrGenerateID(element);
 		final Village retval = new Village(TownStatus.parseTownStatus(
 				getParameter(element, "status")), getParameter(element, NAME_PARAM, ""),
-												  idNum, getOwnerOrIndependent(element), getParameter(element, "race",
+												  idNum, getOwnerOrIndependent(element),
+												  getParameter(element, "race",
 				RaceFactory.getRace(new Random(idNum))));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));

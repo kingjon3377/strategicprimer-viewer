@@ -48,12 +48,9 @@ public class FixtureMatcher {
 	 * @param desc   the description to use for the matcher
 	 * @return the constructed matcher
 	 */
-	public static <T extends TileFixture> FixtureMatcher simpleMatcher(final Class<?
-																						   extends T> cls,
-																	   final Predicate<T>
-																			   method,
-																	   final String
-																			   desc) {
+	public static <T extends TileFixture> FixtureMatcher simpleMatcher(
+			final Class<? extends T> cls, final Predicate<T> method,
+			final String desc) {
 		return new FixtureMatcher(fix -> cls.isInstance(fix) && method.test((T) fix),
 										 desc);
 	}

@@ -70,10 +70,7 @@ public class TestCLIHelper {
 			assertThat(
 					"chooseFromList chooses only choice when this is specified",
 					Integer.valueOf(cli.chooseFromList(
-							NullCleaner.assertNotNull(Collections
-															  .singletonList(new
-																					 Player(1,
-																								   "one"))),
+							Collections.singletonList(new Player(1, "one")),
 							"test desc", "none present", "prompt", true)),
 					equalTo(Integer.valueOf(0)));
 			assertThat("chooseFromList automatically chose only choice",
@@ -87,10 +84,7 @@ public class TestCLIHelper {
 			assertThat(
 					"chooseFromList doesn't always auto-choose only choice",
 					Integer.valueOf(cli.chooseFromList(
-							NullCleaner.assertNotNull(Collections
-															  .singletonList(new
-																					 Player(1,
-																								   "one"))),
+							Collections.singletonList(new Player(1, "one")),
 							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat(
@@ -107,10 +101,9 @@ public class TestCLIHelper {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testChooseFromListMore() throws IOException {
-		try (StringWriter out = new StringWriter(); ICLIHelper cli =
-															new CLIHelper(new
-																				  StringReader(String.format(
-																	"-1%n0%n")), out)) {
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("-1%n0%n")),
+												   out)) {
 			assertThat(
 					"chooseFromList prompts again when negative index given",
 					Integer.valueOf(cli.chooseFromList(
@@ -542,8 +535,8 @@ public class TestCLIHelper {
 					equalTo(false));
 			assertThat("inputBooleanInSeries shows prompts", out.toString(),
 					equalTo(String.format(
-							"prompt sixteen prompt seventeen prompt eighteen yes%n prompt " +
-									"nineteen no%n")));
+							"prompt sixteen prompt seventeen prompt eighteen yes%n " +
+									"prompt nineteen no%n")));
 		}
 	}
 
@@ -628,10 +621,9 @@ public class TestCLIHelper {
 					equalTo(String.format("test desc%n0: zero%n1: one%n2: " +
 												  "two%nprompt")));
 		}
-		try (StringWriter out = new StringWriter(); ICLIHelper cli =
-															new CLIHelper(new
-																				  StringReader(String.format(
-																	"-1%n0%n")), out)) {
+		try (StringWriter out = new StringWriter();
+			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("-1%n0%n")),
+												   out)) {
 			assertThat(
 					"chooseStringFromList prompts again when negative index given",
 					Integer.valueOf(cli.chooseStringFromList(

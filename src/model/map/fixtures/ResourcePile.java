@@ -161,7 +161,8 @@ public class ResourcePile
 				boolean retval = areObjectsEqual(ostream, kind, ((ResourcePile) obj).kind,
 						"%s\tIn Resource Pile, ID #%d: Kinds differ%n", context,
 						idNum);
-				retval &= areObjectsEqual(ostream, contents, ((ResourcePile) obj).contents,
+				retval &= areObjectsEqual(ostream, contents,
+						((ResourcePile) obj).contents,
 						"%s\tIn Resource Pile, ID #%d, Contents differ%n", context,
 						idNum);
 				retval &= quantity.isSubset(((ResourcePile) obj).quantity, ostream,

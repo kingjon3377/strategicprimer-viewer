@@ -4,8 +4,6 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.HasKind;
@@ -183,8 +181,8 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 			for (final UnitMember member : other) {
 				if (!ours.containsKey(Integer.valueOf(member.getID()))) {
 					ostream.format(
-							"%s In unit of kind %s named %s (ID #%d): Extra member:\t%s," +
-									" ID #%d%n",
+							"%s In unit of kind %s named %s (ID #%d): " +
+									"Extra member:\t%s, ID #%d%n",
 							context, getKind(), getName(), Integer.valueOf(getID()),
 							member.toString(), Integer.valueOf(member.getID()));
 					retval = false;
@@ -202,7 +200,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 					ostream.format(
 							"%s In unit of kind %s named %s (ID #%d): Nonempty " +
 									"'unassigned' when submap has it empty%n",
-									context, getKind(), getName(), Integer.valueOf(getID()));
+							context, getKind(), getName(), Integer.valueOf(getID()));
 				}
 				return true;
 			} else {

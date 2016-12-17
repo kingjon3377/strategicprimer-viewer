@@ -99,9 +99,11 @@ public interface Pair<@NonNull L, @NonNull R> {
 		@SuppressWarnings("rawtypes")
 		@Override
 		public boolean equals(@Nullable final Object obj) {
-			return (this == obj) || ((obj instanceof Pair.PairImpl)
-											 && Objects.equals(first, ((PairImpl) obj).first)
-											 && Objects.equals(second, ((PairImpl) obj).second));
+			return (this == obj) || ((obj instanceof Pair.PairImpl) &&
+											 Objects.equals(first,
+													 ((PairImpl) obj).first) &&
+											 Objects.equals(second,
+													 ((PairImpl) obj).second));
 		}
 
 		/**

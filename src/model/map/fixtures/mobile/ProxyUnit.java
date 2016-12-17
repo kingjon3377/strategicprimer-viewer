@@ -109,7 +109,8 @@ public final class ProxyUnit
 	 *                  (getAllOrders or getAllResults)
 	 * @return the results of that called on all proxied units, merged together
 	 */
-	private NavigableMap<Integer, String> mergeMaps(final Function<IUnit, NavigableMap<Integer, String>> method) {
+	private NavigableMap<Integer, String> mergeMaps(
+			final Function<IUnit, NavigableMap<Integer, String>> method) {
 		final NavigableMap<Integer, String> retval = new TreeMap<>(proxied.stream().map(
 				method).map(Map::entrySet).flatMap(Set::stream).collect(
 				Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
@@ -565,7 +566,8 @@ public final class ProxyUnit
 	 * @return the value returned by all the members if they were the same, or differ if
 	 * they differed, or empty if there were none
 	 */
-	private <T> T getCommonValue(final Function<IUnit, T> method, final T empty, final T differ) {
+	private <T> T getCommonValue(final Function<IUnit, T> method, final T empty,
+								 final T differ) {
 		@Nullable T value = null;
 		for (final IUnit unit : proxied) {
 			final T current = method.apply(unit);

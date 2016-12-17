@@ -80,19 +80,23 @@ public final class SimpleMovement {
 				dir -> doRiversApply(dir, sourceRivers, destRivers);
 		switch (direction) {
 		case North:
-			return matches.test(sourceRivers, River.North) || matches.test(destRivers, River.South);
+			return matches.test(sourceRivers, River.North) ||
+						   matches.test(destRivers, River.South);
 		case Northeast:
 			return recurse.test(Direction.North) || recurse.test(Direction.East);
 		case East:
-			return matches.test(sourceRivers, River.East) || matches.test(destRivers, River.West);
+			return matches.test(sourceRivers, River.East) ||
+						   matches.test(destRivers, River.West);
 		case Southeast:
 			return recurse.test(Direction.South) || recurse.test(Direction.East);
 		case South:
-			return matches.test(sourceRivers, River.South) || matches.test(destRivers, River.North);
+			return matches.test(sourceRivers, River.South) ||
+						   matches.test(destRivers, River.North);
 		case Southwest:
 			return recurse.test(Direction.South) || recurse.test(Direction.West);
 		case West:
-			return matches.test(sourceRivers, River.West) || matches.test(destRivers, River.East);
+			return matches.test(sourceRivers, River.West) ||
+						   matches.test(destRivers, River.East);
 		case Northwest:
 			return recurse.test(Direction.North) || recurse.test(Direction.West);
 		case Nowhere:
@@ -222,7 +226,8 @@ public final class SimpleMovement {
 	}
 
 	/**
-	 * TODO: Very-observant units should "always" notice some things that others might "sometimes" notice.
+	 * TODO: Very-observant units should "always" notice some things that others might
+	 * "sometimes" notice.
 	 * @param unit a unit
 	 * @param fix  a fixture
 	 * @return whether the unit should always notice it. A null fixture is never noticed
@@ -241,8 +246,8 @@ public final class SimpleMovement {
 	 * @return a list of things from the list of possibilities that the mover should in
 	 * fact find
 	 */
-	public static List<TileFixture> selectNoticed(final List<TileFixture> possibilities, final IUnit mover,
-											   final Speed speed) {
+	public static List<TileFixture> selectNoticed(final List<TileFixture> possibilities,
+												  final IUnit mover, final Speed speed) {
 		final List<TileFixture> local = new ArrayList<>(possibilities);
 		Collections.shuffle(local);
 		// Perception gets an extra +1 because our RNG generates 0-19, not 1-20.

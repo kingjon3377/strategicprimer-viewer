@@ -78,8 +78,9 @@ public final class PointFactory {
 		if (useCache) {
 			final Integer boxedRow = assertNotNull(Integer.valueOf(row));
 			final Integer boxedCol = assertNotNull(Integer.valueOf(col));
-			return MultiMapHelper.getMapValue(MultiMapHelper.getMapValue(POINT_CACHE, boxedRow,
-					key -> new ConcurrentHashMap<>()), boxedCol, key -> new PointImpl(row, col));
+			return MultiMapHelper.getMapValue(MultiMapHelper.getMapValue(POINT_CACHE,
+					boxedRow, key -> new ConcurrentHashMap<>()), boxedCol,
+					key -> new PointImpl(row, col));
 		} else {
 			return new PointImpl(row, col);
 		}

@@ -81,10 +81,11 @@ public final class HuntingModel {
 							&& !((Animal) fix).isTraces()) {
 					final String kind = ((Animal) fix).getKind();
 					if (fishKinds.contains(kind)) {
-						MultiMapHelper.getMapValue(waterAnimals, point, key -> new ArrayList<>())
-								.add(kind);
+						MultiMapHelper.getMapValue(waterAnimals, point,
+								key -> new ArrayList<>()).add(kind);
 					} else {
-						MultiMapHelper.getMapValue(animals, point, key -> new ArrayList<>())
+						MultiMapHelper
+								.getMapValue(animals, point, key -> new ArrayList<>())
 								.add(kind);
 					}
 				} else if ((fix instanceof Grove) || (fix instanceof Meadow) ||

@@ -187,8 +187,8 @@ public abstract class BaseTestFixtureSerialization {
 				assertThat("Missing property", cause,
 						instanceOf(MissingPropertyException.class));
 				assertThat("Missing property should be the one we're expecting",
-						((MissingPropertyException) cause).getParam(), equalTo
-																			   (property));
+						((MissingPropertyException) cause).getParam(),
+						equalTo(property));
 			}
 		} else {
 			try (StringReader stringReader = new StringReader(xml)) {

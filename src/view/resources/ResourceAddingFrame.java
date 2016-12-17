@@ -43,7 +43,7 @@ import view.worker.WorkerMenu;
  * A window to let the user enter resources etc. Note that this is not a dialog to enter
  * one resource and close.
  *
- * TODO: Make a ResourceAddedListener interface, and use it to split up some of the lambdas
+ * TODO: Make a ResourceAddedListener interface, & use it to split up some of the lambdas
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -159,9 +159,10 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 				return;
 			}
 			final ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
-															  new Quantity(resQtyModel
-																				   .getNumber()
-																				   .intValue(),
+															  new Quantity(
+															  		resQtyModel
+																			.getNumber()
+																			.intValue(),
 																				  units));
 			pile.setCreated(resCreatedModel.getNumber().intValue());
 			driverModel.addResource(pile, current);

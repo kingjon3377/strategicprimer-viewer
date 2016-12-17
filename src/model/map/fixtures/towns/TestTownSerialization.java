@@ -104,9 +104,8 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 									"\" name=\"name\" dc=\"0\"><troll /></city>",
 				City.class, false);
 		assertMissingProperty("<city status=\"" + status + "\" size=\"" + size +
-									  "\" name=\"name\" dc=\"0\" id=\"0\" />", City
-																													 .class,
-				"owner", true);
+									  "\" name=\"name\" dc=\"0\" id=\"0\" />",
+				City.class, "owner", true);
 		assertImageSerialization("City image property is preserved", thirdCity);
 		assertPortraitSerialization("City portrait property is preserved", thirdCity);
 	}
@@ -192,9 +191,8 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 									"\" name=\"name\" dc=\"0\">" + "<troll /></town>",
 				Town.class, false);
 		assertMissingProperty("<town status=\"" + status + "\" size=\"" + size +
-									  "\" name=\"name\" dc=\"0\" id=\"0\" />", Town
-																													 .class,
-				"owner", true);
+									  "\" name=\"name\" dc=\"0\" id=\"0\" />",
+				Town.class, "owner", true);
 		assertImageSerialization("Town image property is preserved", thirdTown);
 		assertPortraitSerialization("Town portrait property is preserved", thirdTown);
 	}

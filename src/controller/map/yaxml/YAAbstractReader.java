@@ -390,7 +390,8 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 											 final String parameter,
 											 final int defaultValue)
 			throws SPFormatException {
-		final Optional<String> attr = Optional.ofNullable(getAttributeByName(tag, parameter))
+		final Optional<String> attr =
+				Optional.ofNullable(getAttributeByName(tag, parameter))
 											  .map(Attribute::getValue)
 											  .filter(str -> !str.isEmpty());
 		if (attr.isPresent()) {

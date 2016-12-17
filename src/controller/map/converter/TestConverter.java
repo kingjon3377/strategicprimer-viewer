@@ -949,11 +949,9 @@ public final class TestConverter {
 									"event='219'></tile></row></map>";
 		final StringWriter out = new StringWriter();
 		//noinspection unchecked
-		ZeroToOneConverter.convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
-																 .createXMLEventReader(
-																		 new
-																				 StringReader(orig))),
-				out);
+		ZeroToOneConverter.convert(new IteratorWrapper<>(
+				XMLInputFactory.newInstance().createXMLEventReader(
+						new StringReader(orig))), out);
 		final StringWriter actualXML = new StringWriter();
 		final SPWriter writer = TestReaderFactory.createOldWriter();
 		writer.writeSPObject(actualXML, new MapReaderAdapter()

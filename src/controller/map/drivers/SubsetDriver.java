@@ -64,8 +64,8 @@ public final class SubsetDriver implements SimpleDriver {
 			mapModel = new SimpleMultiMapModel(model);
 			LOGGER.warning("Subset checking does nothing with no subordinate maps");
 		}
-		for (final Pair<IMutableMapNG, Optional<Path>> pair : mapModel
-																	  .getSubordinateMaps()) {
+		for (final Pair<IMutableMapNG, Optional<Path>> pair :
+				mapModel.getSubordinateMaps()) {
 			final Optional<Path> filename = pair.second();
 			if (filename.isPresent()) {
 				SYS_OUT.print(filename.get());

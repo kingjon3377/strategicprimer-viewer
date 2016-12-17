@@ -87,7 +87,8 @@ public interface SimpleCLIDriver extends SimpleDriver {
 		if (options.hasOption("--current-turn")) {
 			final int currentTurn =
 					Integer.parseInt(options.getArgument("--current-turn"));
-			model.streamAllMaps().map(Pair::first).forEach(map -> map.setCurrentTurn(currentTurn));
+			model.streamAllMaps().map(Pair::first)
+					.forEach(map -> map.setCurrentTurn(currentTurn));
 		}
 		startDriver(new CLIHelper(), options, model);
 		reader.writeModel(model);

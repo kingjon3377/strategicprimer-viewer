@@ -274,7 +274,8 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * @param component a component
 	 * @param color a color. If null, use defaults.
 	 */
-	private static void setComponentColor(final Component component, @Nullable final Color color) {
+	private static void setComponentColor(final Component component,
+										  @Nullable final Color color) {
 		if (component instanceof DefaultTreeCellRenderer) {
 			if (color == null) {
 				((DefaultTreeCellRenderer) component)

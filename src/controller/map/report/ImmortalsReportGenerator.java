@@ -108,7 +108,8 @@ public final class ImmortalsReportGenerator
 	 * @param meta the mapping from types to Consumers
 	 * @param cls a type of fixture
 	 * @param heading the heading to put at the top of the list
-	 * @return the list for that kind of fixture, with a reference to its add() method added to meta.
+	 * @return the list for that kind of fixture, with a reference to its add() method
+	 * added to meta.
 	 */
 	private static HeadedList<Point> handleSimple(final Map<Class<? extends IFixture>,
 																   BiConsumer<String,
@@ -167,7 +168,7 @@ public final class ImmortalsReportGenerator
 		final HeadedList<Point> sphinxes =
 				handleSimple(meta, Sphinx.class, "Sphinx(es) at ");
 		final HeadedList<Point> djinni = handleSimple(meta, Djinn.class, "Djinn(i) at ");
-		final HeadedList<Point> trolls = handleSimple(meta, Troll.class,"Troll(s) at ");
+		final HeadedList<Point> trolls = handleSimple(meta, Troll.class, "Troll(s) at ");
 		final Map<String, Collection<Point>> fairies =
 				handleComplex(meta, Fairy.class, " at ");
 		final Map<String, Collection<Point>> dragons =

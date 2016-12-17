@@ -47,8 +47,8 @@ import view.util.SplitWithWeights;
  *
  * @author Jonathan Lovelace
  */
-public final class DetailPanelNG extends JSplitPane implements VersionChangeListener,
-																	   SelectionChangeListener {
+public final class DetailPanelNG extends JSplitPane
+		implements VersionChangeListener, SelectionChangeListener {
 	/**
 	 * The "weight" to give the divider. We want the 'key' to get very little of any
 	 * extra

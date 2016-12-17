@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.TreeSet;
 import java.util.function.Function;
 import javax.swing.tree.MutableTreeNode;
@@ -161,12 +162,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	private static MutableTreeNode produceWorkerRIR(final Point loc,
 													final IWorker worker,
 													final boolean details) {
-		final IReportNode retval = new ComplexReportNode(loc,
-																worker.getName() +
-																		", a " +
-																		worker.getRace
-																					   () +
-																		". ");
+		final IReportNode retval = new ComplexReportNode(loc, String.format("%s, a %s.",
+				worker.getName(), worker.getRace()));
 		final WorkerStats stats = worker.getStats();
 		if ((stats != null) && details) {
 			//noinspection HardcodedFileSeparator
@@ -246,8 +243,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 						  final IMapNG map, final Player currentPlayer, final IUnit item,
 						  final Point loc) {
 		final StringBuilder builder =
-				new StringBuilder(52 + item.getKind().length() + item.getName().length
-																						() +
+				new StringBuilder(52 + item.getKind().length() +
+										  item.getName().length() +
 										  item.getOwner().getName().length());
 		builder.append("Unit of type ");
 		builder.append(item.getKind());
@@ -285,9 +282,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		}
 		produceInner(builder, fixtures, workers, "Workers:",
 				worker -> workerReport(worker, worker instanceof HasOwner &&
-													   currentPlayer
-																					 .equals(((HasOwner) worker)
-																									 .getOwner())));
+													   Objects.equals(currentPlayer,
+															   ((HasOwner) worker)
+																	   .getOwner())));
 		produceInner(builder, fixtures, animals, "Animals:",
 				animal -> animalReportGenerator
 								  .produce(fixtures, map, currentPlayer, animal, loc));

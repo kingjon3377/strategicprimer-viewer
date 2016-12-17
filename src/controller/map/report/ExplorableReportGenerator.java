@@ -68,7 +68,8 @@ public final class ExplorableReportGenerator
 		final StringBuilder builder = new StringBuilder(2048).append(
 				"<h4>Caves, Battlefields, and Portals</h4>").append(LineEnd.LINE_SEP)
 											  .append(OPEN_LIST);
-		final Collection<Point> caves = new PointList("Caves beneath the following tiles: ");
+		final Collection<Point> caves =
+				new PointList("Caves beneath the following tiles: ");
 		final Collection<Point> battles =
 				new PointList("Signs of long-ago battles on the following tiles: ");
 		final Collection<Point> portals = new PointList("Portals to other worlds: ");

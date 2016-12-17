@@ -79,8 +79,7 @@ public final class ExplorationPanel extends BorderedPanel
 	 * Logger.
 	 */
 	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(ExplorationPanel.class.getName
-																					  ()));
+			Logger.getLogger(ExplorationPanel.class.getName());
 	/**
 	 * The mapping from directions to arrow keys.
 	 */

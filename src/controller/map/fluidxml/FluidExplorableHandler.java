@@ -10,6 +10,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
+import model.map.Point;
 import model.map.PointFactory;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.explorable.AdventureFixture;
@@ -115,14 +116,10 @@ public final class FluidExplorableHandler {
 									final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "portal");
+		final Point location = PointFactory.point(getIntegerAttribute(element, "row"),
+				getIntegerAttribute(element, "column"));
 		final Portal retval = setImage(new Portal(getAttribute(element, "world"),
-														 PointFactory
-																 .point
-																		  (getIntegerAttribute(
-																		 element, "row"),
-																		 getIntegerAttribute(
-																				 element,
-																				 "column")),
+														 location,
 														 getOrGenerateID(element, warner,
 																 idFactory)), element,
 				warner);

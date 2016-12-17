@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMutableMapNG;
@@ -125,8 +126,9 @@ public final class DuplicateFixtureRemover {
 				final ResourcePile res = (ResourcePile) fix;
 				final Pair<String, Pair<String, Pair<String, Integer>>> key =
 						Pair.of(res.getKind(),
-								Pair.of(res.getContents(), Pair.of(res.getQuantity().getUnits(),
-										Integer.valueOf(res.getCreated()))));
+								Pair.of(res.getContents(),
+										Pair.of(res.getQuantity().getUnits(),
+												Integer.valueOf(res.getCreated()))));
 				MultiMapHelper.getMapValue(resources, key, ignored -> new ArrayList<>())
 						.add(res);
 			}
@@ -164,17 +166,18 @@ public final class DuplicateFixtureRemover {
 	 */
 	private static ResourcePile combineResources(final List<ResourcePile> list) {
 		final ResourcePile top = list.get(0);
+		final Function<Number, BigDecimal> toBigDecimal =
+				DuplicateFixtureRemover::toBigDecimal;
 		final ResourcePile combined =
 				new ResourcePile(top.getID(), top.getKind(), top.getContents(),
-										new Quantity(list.stream()
-															 .map
-																	  (ResourcePile::getQuantity)
+										new Quantity(list.stream().map(
+												ResourcePile::getQuantity)
 															 .map(Quantity::getNumber)
-															 .map
-																	  (DuplicateFixtureRemover::toBigDecimal)
+															 .map(toBigDecimal)
 															 .reduce(BigDecimal.ZERO,
 																	 BigDecimal::add),
-															top.getQuantity().getUnits()));
+															top.getQuantity()
+																	.getUnits()));
 		combined.setCreated(top.getCreated());
 		return combined;
 	}

@@ -11,8 +11,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import model.exploration.IExplorationModel.Speed;
@@ -194,12 +196,10 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	private static void expand(final IMapNG master, final IMutableMapNG map) {
 		final Player currentPlayer = map.getCurrentPlayer();
+		final Predicate<Point> initialFilter =
+				point -> containsSwornVillage(master, point, currentPlayer);
 		final Collection<Point> villagePoints = map.locationStream()
-														.filter(point ->
-																		containsSwornVillage(
-																				master,
-																				point,
-																				currentPlayer))
+														.filter(initialFilter)
 														.collect(Collectors.toSet());
 		final Map<Point, Set<TileFixture>> fixAdditions = new HashMap<>();
 		final Map<Point, TileType> terrainAdditions = new HashMap<>();
@@ -223,8 +223,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			for (final TileFixture fix : entry.getValue()) {
 				if (fix instanceof HasOwner) {
 					map.addFixture(point,
-							fix.copy(!((HasOwner) fix).getOwner().equals
-																		  (currentPlayer)));
+							fix.copy(!Objects.equals(((HasOwner) fix).getOwner(),
+									currentPlayer)));
 				} else {
 					map.addFixture(point, fix.copy(true));
 				}
@@ -246,9 +246,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 													   additions,
 											   final IUnit owned) {
 		final List<TileFixture> possibilities = new ArrayList<>();
-		for (final Point neighbor : new SurroundingPointIterable(point,
-																		master
-																				.dimensions())) {
+		for (final Point neighbor :
+				new SurroundingPointIterable(point, master.dimensions())) {
 			final Set<TileFixture> neighborFixtures =
 					getSetFromMap(additions, neighbor);
 			possibilities.clear();
@@ -362,8 +361,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 					"Expansion on a master map with no subordinate maps does nothing");
 			mapModel = new SimpleMultiMapModel(model);
 		}
-		for (final Pair<IMutableMapNG, Optional<Path>> pair : mapModel
-																	  .getSubordinateMaps()) {
+		for (final Pair<IMutableMapNG, Optional<Path>> pair :
+				mapModel.getSubordinateMaps()) {
 			expand(mapModel.getMap(), pair.first());
 		}
 	}

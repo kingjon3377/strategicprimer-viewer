@@ -262,8 +262,8 @@ public final class ExplorationCLI implements MovementCostSource {
 			final boolean zero = (fix instanceof HasOwner) &&
 										 !((HasOwner) fix).getOwner()
 												  .equals(mover.getOwner());
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : model
-																		  .getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair :
+					model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				if ((fix instanceof Ground) && (map.getGround(dPoint) == null)) {
 					map.setGround(dPoint, ((Ground) fix).copy(false));

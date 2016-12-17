@@ -324,10 +324,10 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return the part of the report dealing with the fortress
 	 */
 	@Override
-	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point,
-																				  IFixture>> fixtures,
-											final IMapNG map, final Player currentPlayer,
-											final Fortress item, final Point loc) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures, final IMapNG map,
+								  final Player currentPlayer, final Fortress item,
+								  final Point loc) {
 		final IReportNode retval = new SectionListReportNode(loc, 5, concat(
 				"Fortress ", item.getName(), " belonging to ",
 				playerNameOrYou(item.getOwner())));

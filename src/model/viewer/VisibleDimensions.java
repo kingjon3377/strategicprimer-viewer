@@ -85,9 +85,8 @@ public final class VisibleDimensions {
 	@Override
 	public String toString() {
 		return String.format("VisibleDimensions: (%d, %d) to (%d, %d)",
-				Integer.valueOf(minRow), Integer.valueOf(minCol), Integer.valueOf
-																				  (maxRow),
-				Integer.valueOf(maxCol));
+				Integer.valueOf(minRow), Integer.valueOf(minCol),
+				Integer.valueOf(maxRow), Integer.valueOf(maxCol));
 	}
 
 	/**

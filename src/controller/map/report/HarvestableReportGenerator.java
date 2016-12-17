@@ -115,13 +115,13 @@ public final class HarvestableReportGenerator
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (item instanceof Shrub) {
 				MultiMapHelper
-						.getMapValue(shrubs, ((Shrub) item).getKind(), AbstractReportGenerator::pointsListAt)
-						.add(point);
+						.getMapValue(shrubs, ((Shrub) item).getKind(),
+								AbstractReportGenerator::pointsListAt).add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (item instanceof StoneDeposit) {
 				MultiMapHelper
-						.getMapValue(stone, ((StoneDeposit) item).getKind(), AbstractReportGenerator::pointsListAt)
-						.add(point);
+						.getMapValue(stone, ((StoneDeposit) item).getKind(),
+								AbstractReportGenerator::pointsListAt).add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
 			}
 		}
@@ -148,7 +148,8 @@ public final class HarvestableReportGenerator
 	 * @param heading what to title the returned list
 	 * @return a HeadedList of those kinds and locations
 	 */
-	private static HeadedList<String> mapToList(final Map<String, Collection<Point>> map, final String heading) {
+	private static HeadedList<String> mapToList(final Map<String, Collection<Point>> map,
+												final String heading) {
 		return map.values().stream().map(Collection::toString)
 					   .collect(() -> new HtmlList(heading), HtmlList::add,
 							   HtmlList::addAll);
@@ -259,7 +260,8 @@ public final class HarvestableReportGenerator
 			retval = concat(
 					atPoint(loc),
 					"A ",
-					ternary(grove.isCultivated(), "cultivated ", "wild "), grove.getKind(),
+					ternary(grove.isCultivated(), "cultivated ", "wild "),
+					grove.getKind(),
 					ternary(grove.isOrchard(), " orchard", " grove"), " ",
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
@@ -348,8 +350,8 @@ public final class HarvestableReportGenerator
 		} else if (item instanceof MineralVein) {
 			final MineralVein mineral = (MineralVein) item;
 			retval = new SimpleReportNode(loc, atPoint(loc), "An ",
-												 ternary(mineral.isExposed(),
-														 "exposed ", "unexposed "), "vein of ",
+												 ternary(mineral.isExposed(), "exposed ",
+														 "unexposed "), "vein of ",
 											   mineral.getKind(), " ",
 											   distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {

@@ -118,8 +118,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 		return (this == obj) || ((obj instanceof ComplexReportNode) &&
 										 text.equals(((IReportNode) obj).getText()) &&
 										 children()
-												 .equals(((IReportNode) obj).children
-																					 ()));
+												 .equals(((IReportNode) obj).children()));
 	}
 
 	/**

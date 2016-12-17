@@ -66,8 +66,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		final Collection<String> independents =
 				new HtmlList("<h4>Villages you think are independent:</h4>");
 		final Map<Player, Collection<String>> others = new HashMap<>();
-		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
-																						 -> {
+		values.stream().filter(pair -> pair.second() instanceof Village)
+				.forEach(pair -> {
 			final Village village = (Village) pair.second();
 			final String product =
 					produce(fixtures, map, currentPlayer, village,
@@ -132,8 +132,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				new SectionListReportNode(5, "Other villages you know about:");
 		@SuppressWarnings("TooBroadScope") final Map<Player, IReportNode> othersMap =
 				new HashMap<>();
-		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
-																						 -> {
+		values.stream().filter(pair -> pair.second() instanceof Village)
+				.forEach(pair -> {
 			final Village village = (Village) pair.second();
 			final Player owner = village.getOwner();
 			final IReportNode product =

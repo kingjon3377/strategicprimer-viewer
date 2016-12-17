@@ -81,10 +81,8 @@ public final class TableLoader {
 			return loadTableFromStream(reader);
 		} catch (final IllegalArgumentException except) {
 			if ("unknown table type".equals(except.getMessage())) {
-				throw new IllegalArgumentException("File " + filename +
-														   " specifies an unknown table " +
-														   "type",
-														  except);
+				throw new IllegalArgumentException(String.format(
+						"File %s specifies an unknown table type", filename), except);
 			} else {
 				throw except;
 			}

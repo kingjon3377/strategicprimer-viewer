@@ -129,12 +129,14 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 			final String skill = retval.iterator().next().getName();
 			if (equalsAny(skill, IJob.SUSPICIOUS_SKILLS) ||
 						skill.equals(retval.getName())) {
-				warner.warn(new UnwantedChildException(element.getName(), qname(skill),
-															  lastSkill.getLocation(),
-															  new
-																	  DeprecatedPropertyException(lastSkill,
-																									 skill,
-																									 "miscellaneous")));
+				final UnwantedChildException except =
+						new UnwantedChildException(element.getName(), qname(skill),
+														  lastSkill.getLocation(),
+														  new
+																  DeprecatedPropertyException(lastSkill,
+																								 skill,
+																								 "miscellaneous"));
+				warner.warn(except);
 			}
 		}
 		return retval;
@@ -155,7 +157,8 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 				new Skill(getParameter(element, "name"),
 								 getIntegerParameter(element, "level"),
 								 getIntegerParameter(element, "hours"));
-		if (Objects.equals("miscellaneous", retval.getName()) && (retval.getLevel() > 0)) {
+		if (Objects.equals("miscellaneous", retval.getName()) &&
+					(retval.getLevel() > 0)) {
 			warner.warn(
 					new DeprecatedPropertyException(element, "miscellaneous", "other"));
 		}
@@ -251,7 +254,8 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && isSupportedNamespace(event.asStartElement().getName())) {
+			if (event.isStartElement() &&
+						isSupportedNamespace(event.asStartElement().getName())) {
 				if ("job".equalsIgnoreCase(
 						event.asStartElement().getName().getLocalPart())) {
 					retval.addJob(

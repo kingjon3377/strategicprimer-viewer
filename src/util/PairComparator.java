@@ -21,8 +21,8 @@ import org.eclipse.jdt.annotation.NonNull;
  * @param <U> the second type in the pair
  * @author Jonathan Lovelace
  */
-public final class PairComparator<@NonNull T, @NonNull U>
-		extends Pair.PairImpl<@NonNull Comparator<@NonNull T>, @NonNull Comparator<@NonNull U>>
+public final class PairComparator<@NonNull T, @NonNull U> extends
+		Pair.PairImpl<@NonNull Comparator<@NonNull T>, @NonNull Comparator<@NonNull U>>
 		implements Comparator<@NonNull Pair<@NonNull T, @NonNull U>> {
 	/**
 	 * Constructor.

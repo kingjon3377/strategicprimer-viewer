@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Supplier;
@@ -76,9 +77,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				return Stream.of(item);
 			}
 		}).filter(IUnit.class::isInstance).map(IUnit.class::cast)
-												 .filter(unit -> unit.getOwner()
-																		 .equals
-																				  (player)));
+												 .filter(unit -> Objects.equals(
+														 unit.getOwner(), player)));
 	}
 
 	/**
@@ -103,18 +103,16 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 							point -> getUnits(map.streamOtherFixtures(point),
 									player))).collect(
 					(Supplier<TreeMap<Integer, IUnit>>) TreeMap::new,
-					(retval, unit) -> ((ProxyFor<IUnit>) MultiMapHelper.getMapValue(retval,
+					(retval, unit) -> ((ProxyFor<IUnit>) MultiMapHelper
+																 .getMapValue(retval,
 							Integer.valueOf(unit.getID()), ProxyUnit::new))
 							.addProxied(unit), Map::putAll).values());
 		} else {
 			// Just in case I missed something in the proxy implementation, make
 			// sure things work correctly when there's only one map.
-			return getUnits(
-					NullCleaner.assertNotNull(getMap().locationStream()
-													  .flatMap(point -> getMap()
-																				.streamOtherFixtures(
-																						point))),
-					player).collect(Collectors.toList());
+			return getUnits(getMap().locationStream().flatMap(
+					point -> getMap().streamOtherFixtures(point)), player)
+						   .collect(Collectors.toList());
 		}
 	}
 
@@ -181,10 +179,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				final Optional<Fortress> fort = NullCleaner.assertNotNull(
 						pair.first().streamOtherFixtures(location)
 								.filter(Fortress.class::isInstance)
-								.map(Fortress.class::cast).filter(fix -> unit
-																				 .getOwner()
-																				 .equals
-																						  (fix.getOwner()))
+								.map(Fortress.class::cast)
+								.filter(fix -> unit.getOwner().equals(fix.getOwner()))
 								.findAny());
 				if (fort.isPresent()) {
 					fort.get().addMember(unit.copy(false));
@@ -193,18 +189,11 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				}
 			}
 		} else {
-			final Optional<Fortress> fort = NullCleaner
-													.assertNotNull(
-															getMap().streamOtherFixtures(
-																	location)
-																	.filter(Fortress
-																					.class::isInstance)
-																	.map(Fortress
-																				 .class::cast)
-																	.filter(fix -> unit
-																						   .getOwner()
-																						   .equals(fix.getOwner()))
-																	.findAny());
+			final Optional<Fortress> fort = getMap().streamOtherFixtures(location)
+					.filter(Fortress.class::isInstance)
+					.map(Fortress.class::cast)
+					.filter(fix -> unit.getOwner().equals(fix.getOwner()))
+					.findAny();
 			if (fort.isPresent()) {
 				fort.get().addMember(unit.copy(false));
 			} else {

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A class to transfer a list of TileFixtures.
@@ -32,7 +31,7 @@ public final class CurriedFixtureTransferable implements Transferable {
 	 * The data flavor we handle.
 	 */
 	public static final DataFlavor FLAVOR = new DataFlavor(FixtureTransferable.class,
-																  "CurriedFixtureTransferable");
+																  "CurriedTransferable");
 	/**
 	 * Our payload.
 	 */
@@ -44,13 +43,8 @@ public final class CurriedFixtureTransferable implements Transferable {
 	 * @param list a list of TileFixtures to be transferred
 	 */
 	public CurriedFixtureTransferable(final Collection<TileFixture> list) {
-		payload = NullCleaner.assertNotNull(Collections
-													.unmodifiableList(list.stream()
-																			  .map
-																					   (FixtureTransferable::new)
-																			  .collect(
-																					  Collectors
-																							  .toList())));
+		payload = Collections.unmodifiableList(list.stream().map(FixtureTransferable::new)
+													   .collect(Collectors.toList()));
 	}
 
 	/**

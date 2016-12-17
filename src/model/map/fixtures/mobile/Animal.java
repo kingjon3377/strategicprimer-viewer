@@ -202,7 +202,7 @@ public class Animal
 											   "master only tracks%n",
 									   context, Integer.valueOf(id)) &&
 							   areObjectsEqual(ostream, status, ((Animal) obj).status,
-									   "%s\tDomestication status of animal differs at ID #%d%n",
+									   "%s\tAnimal domestication status differs at ID #%d%n",
 									   context, Integer.valueOf(id));
 			} else {
 				ostream.format("%s\tFor ID #%d, different kinds of members%n", context,

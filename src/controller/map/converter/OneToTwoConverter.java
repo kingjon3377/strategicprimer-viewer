@@ -296,8 +296,8 @@ public final class OneToTwoConverter implements SimpleDriver {
 	 */
 	private static boolean isPointUnforested(final IMapNG map, final Point point) {
 		return (map.getForest(point) == null) &&
-					   map.streamOtherFixtures(point).noneMatch(Forest
-																		.class::isInstance);
+					   map.streamOtherFixtures(point)
+							   .noneMatch(Forest.class::isInstance);
 	}
 
 	/**
@@ -593,18 +593,14 @@ public final class OneToTwoConverter implements SimpleDriver {
 								map.dimensions()), true, true, id,
 										  FieldStatus.random(id)), main);
 			} else {
-				addFixture(map, point, new Grove(true, true, runner
-																	 .recursiveConsultTable(
-																			 "fruit_trees",
-																			 point,
-																			 map
-																					 .getBaseTerrain(
-																					 point),
-																			 map
-																					 .streamOtherFixtures(
-																					 point),
-																			 map
-																					 .dimensions()),
+				addFixture(map, point, new Grove(true, true,
+														runner.recursiveConsultTable(
+																"fruit_trees",
+																point,
+																map.getBaseTerrain(point),
+																map.streamOtherFixtures(
+																		point),
+																map.dimensions()),
 														id), main);
 			}
 		} catch (final MissingTableException e) {
@@ -677,9 +673,8 @@ public final class OneToTwoConverter implements SimpleDriver {
 													".converted.xml", except);
 		}
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
-																		   model)
-																		  .getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, Optional<Path>> pair :
+					((IMultiMapModel) model).getSubordinateMaps()) {
 				final IMapNG map = pair.first();
 				final Optional<Path> temp = pair.second();
 				final Path path;
