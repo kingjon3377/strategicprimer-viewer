@@ -219,7 +219,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	}
 	/**
 	 * A list of Points that produces a comma-separated list in its toString() and has a
-	 * "header."
+	 * "header".
 	 */
 	protected static class PointList extends ArrayList<Point> implements HeadedList<Point> {
 		/**
