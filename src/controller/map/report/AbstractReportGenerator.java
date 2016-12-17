@@ -213,7 +213,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		 */
 		@SuppressWarnings("MethodReturnOfConcreteClass")
 		@Override
-		public final HtmlList clone() {
+		public HtmlList clone() {
 			throw new NoCloneException("cloning prohibited");
 		}
 	}
