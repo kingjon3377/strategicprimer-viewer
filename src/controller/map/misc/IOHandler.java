@@ -192,9 +192,9 @@ public final class IOHandler implements ActionListener {
 				saveAll(source);
 				break;
 			case "open in map viewer":
-				final IViewerModel viewModel = new ViewerModel(model);
 				// FIXME: Somehow get the CLI interface and options from previous ...
-				new ViewerStart().startDriver(new CLIHelper(), new SPOptionsImpl(), viewModel);
+				new ViewerStart().startDriver(new CLIHelper(), new SPOptionsImpl(),
+						new ViewerModel(model));
 				break;
 			case "open secondary map in map viewer":
 				if (model instanceof IMultiMapModel) {
@@ -223,15 +223,12 @@ public final class IOHandler implements ActionListener {
 	 * map.
 	 */
 	private void startNewViewerWindow() {
-		final IViewerModel newModel =
-				new ViewerModel(new SPMapNG(model.getMapDimensions(),
-												   new
-														   PlayerCollection(),
-												   model.getMap()
-														   .getCurrentTurn()),
-									   Optional.empty());
 		// FIXME: Somehow get the CLI interface and options from previous ...
-		new ViewerStart().startDriver(new CLIHelper(), new SPOptionsImpl(), newModel);
+		new ViewerStart().startDriver(new CLIHelper(), new SPOptionsImpl(),
+				new ViewerModel(new SPMapNG(model.getMapDimensions(),
+												   new PlayerCollection(),
+												   model.getMap().getCurrentTurn()),
+									   Optional.empty()));
 	}
 
 	/**
