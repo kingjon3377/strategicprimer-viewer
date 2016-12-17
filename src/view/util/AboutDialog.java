@@ -64,26 +64,22 @@ public final class AboutDialog extends SPDialog {
 		builder.append("<p>Cave image by MrBeast from ");
 		link(builder, "http://opengameart.org/content/cave-tileset-0", "OpenGameArt");
 		builder.append("</p>");
-		paragraph(builder,
-				"Minotaur, troll, and ogre images by 'www.36peas.com', licensed under " +
-						"CC-BY");
-		builder.append(
-				"<p>Window menu managed by BSD-licensed code by Jeremy Wood, downloaded" +
-						" from ");
+		builder.append("<p>Minotaur, troll, and ogre images by 'www.36peas.com',");
+		builder.append(" licensed under CC-BY</p>");
+		builder.append("<p>Window menu managed by BSD-licensed code by Jeremy Wood,");
+		builder.append("downloaded from ");
 		link(builder, "http://javagraphics.java.net", "javagraphics.java.net");
 		builder.append("</p>");
 		builder.append("<p>Pair implementation by Peter Lawrey on ");
 		link(builder, "https://stackoverflow.com/a/3646398", "StackOverflow");
 		builder.append("</p>");
-		builder.append(
-				"<p>Drag-and-drop implementation uses code adapted from 'helloworld922'" +
-						" on the ");
+		builder.append("<p>Drag-and-drop implementation uses code adapted from ");
 		//noinspection HardcodedFileSeparator
-		link(builder,
-				"http://www.javaprogrammingforums" +
-						".com/java-swing-tutorials/3141-drag-drop-jtrees.html",
-				"Java Programming Forums");
-		builder.append("</p>");
+		builder.append(
+				"'helloworld922' on the <a href=\"http://www.javaprogrammingforums.com");
+		//noinspection HardcodedFileSeparator
+		builder.append("/java-swing-tutorials/3141-drag-drop-jtrees.html\">");
+		builder.append("Java Programming Forums</a></p>");
 		builder.append("<p>WrapLayout taken from ");
 		link(builder, "http://tips4java.wordpress.com/2008/11/06/wrap-layout/",
 				"tips4java.wordpress.com");
