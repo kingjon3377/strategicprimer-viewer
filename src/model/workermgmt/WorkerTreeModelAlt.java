@@ -26,6 +26,7 @@ import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.ProxyUnit;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
+import util.NoCloneException;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -518,9 +519,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		@SuppressWarnings("MethodReturnOfConcreteClass")
 		@Override
 		public final WorkerTreeNode<T> clone() {
-			throw new IllegalStateException("cloning prohibited",
-												   new CloneNotSupportedException
-														   ("cloning prohibited"));
+			throw new NoCloneException("cloning prohibited");
 		}
 	}
 

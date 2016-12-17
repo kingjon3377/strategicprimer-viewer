@@ -13,6 +13,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
+import util.NoCloneException;
 import util.NullCleaner;
 import util.Pair;
 import util.PairComparator;
@@ -213,8 +214,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		@SuppressWarnings("MethodReturnOfConcreteClass")
 		@Override
 		public final HtmlList clone() {
-			throw new IllegalStateException("cloning prohibited",
-												   new CloneNotSupportedException("cloning prohibited "));
+			throw new NoCloneException("cloning prohibited");
 		}
 	}
 	/**
@@ -284,8 +284,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		@SuppressWarnings("MethodReturnOfConcreteClass")
 		@Override
 		public final PointList clone() {
-			throw new IllegalStateException("cloning prohibited",
-												   new CloneNotSupportedException("cloning prohibited "));
+			throw new NoCloneException("cloning prohibited");
 		}
 	}
 	/**

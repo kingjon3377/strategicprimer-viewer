@@ -11,6 +11,7 @@ import javax.swing.tree.TreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
+import util.NoCloneException;
 import util.NullCleaner;
 
 /**
@@ -278,8 +279,6 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public final SectionListReportNode clone() {
-		throw new IllegalStateException("cloning prohibited",
-											   new CloneNotSupportedException(
-											   		"cloning prohibited"));
+		throw new NoCloneException("cloning prohibited");
 	}
 }

@@ -10,6 +10,7 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
+import util.NoCloneException;
 import util.NullCleaner;
 
 /**
@@ -226,7 +227,6 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public ComplexReportNode clone() {
-		throw new IllegalStateException("cloning prohibited",
-											   new CloneNotSupportedException("cloning prohibited"));
+		throw new NoCloneException("cloning prohibited");
 	}
 }
