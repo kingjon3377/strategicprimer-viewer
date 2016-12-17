@@ -60,7 +60,7 @@ public final class PlayerListModel extends DefaultListModel<@NonNull Player> imp
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

@@ -127,7 +127,7 @@ public final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

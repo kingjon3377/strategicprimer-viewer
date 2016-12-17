@@ -26,7 +26,7 @@ import util.PatientMap;
  */
 public class AnimalTabularReportGenerator implements ITableGenerator<Animal> {
 	/**
-	 * The base point to use for distance calculations
+	 * The base point to use for distance calculations.
 	 */
 	private final Point base;
 

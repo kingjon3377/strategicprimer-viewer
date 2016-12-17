@@ -19,7 +19,7 @@ import view.util.TreeExpansionOrderListener;
  */
 public final class TreeExpansionHandler implements TreeExpansionOrderListener {
 	/**
-	 * The tree we're handling
+	 * The tree we're handling.
 	 */
 	private final JTree tree;
 

@@ -183,7 +183,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

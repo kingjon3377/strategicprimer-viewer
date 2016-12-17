@@ -223,7 +223,7 @@ public final class SelectTileDialog extends SPDialog {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

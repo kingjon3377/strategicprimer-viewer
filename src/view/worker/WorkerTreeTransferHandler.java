@@ -231,7 +231,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

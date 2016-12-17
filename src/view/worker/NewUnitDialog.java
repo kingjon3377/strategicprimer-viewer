@@ -204,7 +204,7 @@ public final class NewUnitDialog extends SPDialog
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

@@ -235,7 +235,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

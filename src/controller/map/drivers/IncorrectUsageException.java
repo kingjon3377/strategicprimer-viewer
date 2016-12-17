@@ -55,7 +55,7 @@ public class IncorrectUsageException extends DriverFailedException {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

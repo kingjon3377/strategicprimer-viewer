@@ -440,7 +440,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always
@@ -498,7 +498,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
-		 * Prevent serialization
+		 * Prevent serialization.
 		 *
 		 * @param in ignored
 		 * @throws IOException            always
@@ -512,7 +512,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 
 		/**
 		 * Superclass removes CloneNotSupportedException from method signature, but we
-		 * still want to throw it, so we wrap it in a RuntimeException
+		 * still want to throw it, so we wrap it in a RuntimeException.
 		 *
 		 * @return never
 		 */
@@ -584,7 +584,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
-		 * Prevent serialization
+		 * Prevent serialization.
 		 *
 		 * @param in ignored
 		 * @throws IOException            always
@@ -655,7 +655,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
-		 * Prevent serialization
+		 * Prevent serialization.
 		 *
 		 * @param in ignored
 		 * @throws IOException            always
@@ -725,7 +725,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
-		 * Prevent serialization
+		 * Prevent serialization.
 		 *
 		 * @param in ignored
 		 * @throws IOException            always
@@ -790,7 +790,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
-		 * Prevent serialization
+		 * Prevent serialization.
 		 *
 		 * @param in ignored
 		 * @throws IOException            always

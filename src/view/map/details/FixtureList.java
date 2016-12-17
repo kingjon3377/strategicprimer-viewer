@@ -144,7 +144,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

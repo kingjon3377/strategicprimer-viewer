@@ -82,7 +82,7 @@ public final class SplitWithWeights extends JSplitPane {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

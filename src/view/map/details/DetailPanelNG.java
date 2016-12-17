@@ -130,7 +130,7 @@ public final class DetailPanelNG extends JSplitPane
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always
@@ -193,7 +193,7 @@ public final class DetailPanelNG extends JSplitPane
 		}
 
 		/**
-		 * Handle a selection change
+		 * Handle a selection change.
 		 *
 		 * @param event ignored (we go straight to the list)
 		 */
@@ -233,7 +233,7 @@ public final class DetailPanelNG extends JSplitPane
 		}
 
 		/**
-		 * Prevent serialization
+		 * Prevent serialization.
 		 *
 		 * @param in ignored
 		 * @throws IOException            always

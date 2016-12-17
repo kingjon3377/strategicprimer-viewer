@@ -6,7 +6,7 @@ import util.NullCleaner;
 
 /**
  * A class to compare Points based on their distance to a specified point (such as a
- * player's HQ)
+ * player's HQ).
  *
  * @author Jonathan Lovelace
  */

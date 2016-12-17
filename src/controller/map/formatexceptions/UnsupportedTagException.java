@@ -58,7 +58,7 @@ public final class UnsupportedTagException extends SPFormatException {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

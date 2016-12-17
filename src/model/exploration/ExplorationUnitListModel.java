@@ -69,7 +69,7 @@ public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IU
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

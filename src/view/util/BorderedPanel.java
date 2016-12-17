@@ -153,7 +153,7 @@ public class BorderedPanel extends JPanel {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

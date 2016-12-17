@@ -303,7 +303,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

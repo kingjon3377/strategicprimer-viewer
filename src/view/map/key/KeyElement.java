@@ -91,7 +91,7 @@ public final class KeyElement extends BoxPanel {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always
@@ -160,7 +160,7 @@ public final class KeyElement extends BoxPanel {
 		}
 
 		/**
-		 * Prevent serialization
+		 * Prevent serialization.
 		 *
 		 * @param in ignored
 		 * @throws IOException            always

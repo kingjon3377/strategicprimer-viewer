@@ -284,7 +284,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always
@@ -348,7 +348,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		}
 
 		/**
-		 * Prevent serialization
+		 * Prevent serialization.
 		 *
 		 * @param in ignored
 		 * @throws IOException            always
@@ -413,7 +413,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		}
 
 		/**
-		 * Prevent serialization
+		 * Prevent serialization.
 		 *
 		 * @param in ignored
 		 * @throws IOException            always

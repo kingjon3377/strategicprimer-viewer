@@ -356,7 +356,7 @@ public final class MapComponent extends JComponent
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

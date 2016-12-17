@@ -73,7 +73,7 @@ public final class KeyPanel extends JPanel implements VersionChangeListener {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

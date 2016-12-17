@@ -59,7 +59,7 @@ public final class SortedSectionListReportNode extends SectionListReportNode {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

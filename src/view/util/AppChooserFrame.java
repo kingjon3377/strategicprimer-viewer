@@ -182,7 +182,7 @@ public final class AppChooserFrame extends SPFrame {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

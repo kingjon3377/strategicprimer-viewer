@@ -53,7 +53,7 @@ public final class ExplorationMenu extends SPMenu {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

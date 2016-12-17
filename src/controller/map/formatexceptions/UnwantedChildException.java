@@ -123,7 +123,7 @@ public final class UnwantedChildException extends SPFormatException {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

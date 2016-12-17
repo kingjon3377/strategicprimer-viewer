@@ -77,7 +77,7 @@ public class SPFormatException extends Exception {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

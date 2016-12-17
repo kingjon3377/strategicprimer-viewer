@@ -38,6 +38,8 @@ public class ImprovedComboBox<T> extends JComboBox<T> {
 	}
 
 	/**
+	 * Handle a key-press.
+	 *
 	 * From http://stackoverflow.com/a/24336768
 	 *
 	 * @param evt the event to process
@@ -83,7 +85,7 @@ public class ImprovedComboBox<T> extends JComboBox<T> {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

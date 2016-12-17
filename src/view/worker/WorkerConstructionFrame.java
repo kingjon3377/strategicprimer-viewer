@@ -323,7 +323,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

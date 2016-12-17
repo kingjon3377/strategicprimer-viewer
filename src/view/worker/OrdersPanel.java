@@ -246,7 +246,7 @@ public final class OrdersPanel extends BorderedPanel
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

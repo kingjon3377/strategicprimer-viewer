@@ -209,7 +209,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always
@@ -223,7 +223,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 
 	/**
 	 * Superclass removes CloneNotSupportedException from method signature, but we still
-	 * want to throw it, so we wrap it in a RuntimeException
+	 * want to throw it, so we wrap it in a RuntimeException.
 	 *
 	 * @return never
 	 */

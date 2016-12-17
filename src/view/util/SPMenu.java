@@ -271,7 +271,7 @@ public class SPMenu extends JMenuBar implements MenuItemCreator {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

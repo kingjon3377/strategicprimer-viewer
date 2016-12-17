@@ -42,7 +42,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	}
 
 	/**
-	 * Copy constructor.]
+	 * Copy constructor.
 	 *
 	 * @param model a driver model
 	 */

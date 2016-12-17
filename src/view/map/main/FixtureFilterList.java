@@ -145,7 +145,7 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

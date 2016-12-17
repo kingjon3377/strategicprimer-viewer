@@ -49,7 +49,7 @@ public final class DualTileButton extends JButton {
 	 */
 	private final IMapNG mapTwo;
 	/**
-	 * The matchers to determine which fixture to draw on top
+	 * The matchers to determine which fixture to draw on top.
 	 */
 	private final Iterable<FixtureMatcher> fixMatchers;
 	/**
@@ -117,7 +117,7 @@ public final class DualTileButton extends JButton {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

@@ -103,6 +103,8 @@ public final class ProxyUnit
 		}
 	}
 	/**
+	 * Merge proxies' orders or results.
+	 *
 	 * TODO: This is probably highly inefficient, and likely to get called often, I think
 	 *
 	 * @param method an IUnit function returning a Map from Integers to Strings

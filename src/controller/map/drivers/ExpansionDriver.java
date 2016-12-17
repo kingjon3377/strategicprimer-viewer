@@ -74,7 +74,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	private static final Logger LOGGER =
 			NullCleaner.assertNotNull(Logger.getLogger(ExpansionDriver.class.getName()));
 	/**
-	 * The exception to throw if our mock-object's expectations are violated
+	 * The exception to throw if our mock-object's expectations are violated.
 	 */
 	private static final IllegalStateException ISE =
 			new IllegalStateException("Unsupported method called on mock object");

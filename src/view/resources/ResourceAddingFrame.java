@@ -100,7 +100,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	 */
 	private final UpdatedComboBox implKindBox = new UpdatedComboBox(logLabel);
 	/**
-	 * The Player to use when the selected Player is null
+	 * The Player to use when the selected Player is null.
 	 */
 	private final static Player NULL_PLAYER = new Player(-1, "");
 	/**
@@ -277,7 +277,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always
@@ -368,7 +368,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		}
 
 		/**
-		 * Prevent serialization
+		 * Prevent serialization.
 		 *
 		 * @param in ignored
 		 * @throws IOException            always

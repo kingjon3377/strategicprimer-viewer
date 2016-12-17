@@ -35,7 +35,7 @@ public final class QuadrantTable implements EncounterTable {
 	 */
 	private final List<String> possibleResults;
 	/**
-	 * How many rows of quadrants there should be
+	 * How many rows of quadrants there should be.
 	 */
 	private final int quadrantRows;
 	/**

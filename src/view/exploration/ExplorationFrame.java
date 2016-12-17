@@ -75,7 +75,7 @@ public final class ExplorationFrame extends SPFrame {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

@@ -47,7 +47,7 @@ public final class ListenedButton extends JButton {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

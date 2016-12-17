@@ -291,7 +291,7 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

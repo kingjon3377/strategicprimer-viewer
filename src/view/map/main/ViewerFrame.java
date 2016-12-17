@@ -169,7 +169,7 @@ public final class ViewerFrame extends SPFrame {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

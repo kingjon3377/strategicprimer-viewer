@@ -252,7 +252,7 @@ public final class ArrowKeyListener {
 		}
 
 		/**
-		 * Prevent serialization
+		 * Prevent serialization.
 		 *
 		 * @param in ignored
 		 * @throws IOException            always

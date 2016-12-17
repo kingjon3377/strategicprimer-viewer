@@ -62,7 +62,7 @@ public final class ViewerMenu extends SPMenu {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

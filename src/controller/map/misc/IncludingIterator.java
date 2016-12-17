@@ -206,6 +206,8 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
+	 * Get the file we're currently reading from.
+	 *
 	 * TODO: Tests
 	 *
 	 * @return the file we're *currently* reading from.

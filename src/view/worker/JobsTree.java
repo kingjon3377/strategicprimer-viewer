@@ -136,7 +136,7 @@ public final class JobsTree extends JTree implements SkillSelectionSource {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

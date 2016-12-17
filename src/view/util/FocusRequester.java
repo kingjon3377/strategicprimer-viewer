@@ -52,7 +52,7 @@ public class FocusRequester extends ActionWrapper {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

@@ -139,7 +139,7 @@ public final class FortressMemberReportGenerator
 	}
 
 	/**
-	 * Produces a sub-report on a resource or piece of equipment
+	 * Produces a sub-report on a resource or piece of equipment.
 	 *
 	 * @param fixtures      the set of fixtures.
 	 * @param map           ignored
@@ -183,7 +183,7 @@ public final class FortressMemberReportGenerator
 	}
 
 	/**
-	 * Produces a sub-report on a resource or piece of equipment
+	 * Produces a sub-report on a resource or piece of equipment.
 	 *
 	 * @param fixtures      the set of fixtures.
 	 * @param map           ignored

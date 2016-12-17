@@ -174,7 +174,7 @@ public final class SkillAdvancementPanel extends BoxPanel
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

@@ -38,7 +38,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 			new DataFlavor(FixtureMatcher.class, "FixtureMatcher");
 
 	/**
-	 * Whether a given drag/drop operation is supported
+	 * Whether a given drag/drop operation is supported.
 	 *
 	 * @param support the information about the current operation
 	 * @return whether it's supported

@@ -355,7 +355,7 @@ public final class ExplorationPanel extends BorderedPanel
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

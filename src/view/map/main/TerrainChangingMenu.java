@@ -147,7 +147,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

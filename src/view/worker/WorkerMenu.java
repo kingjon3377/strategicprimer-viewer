@@ -54,7 +54,7 @@ public final class WorkerMenu extends SPMenu {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

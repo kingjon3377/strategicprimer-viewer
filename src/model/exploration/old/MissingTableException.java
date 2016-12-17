@@ -56,7 +56,7 @@ public final class MissingTableException extends Exception {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

@@ -85,7 +85,7 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always

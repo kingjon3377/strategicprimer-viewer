@@ -186,6 +186,8 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * Test whether an object is a subset of this one.
+	 *
 	 * TODO: test this
 	 *
 	 * @param obj     an object
