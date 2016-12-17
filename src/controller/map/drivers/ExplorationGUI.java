@@ -57,11 +57,10 @@ public final class ExplorationGUI implements SimpleDriver {
 		} else {
 			explorationModel = new ExplorationModel(model);
 		}
-		final IOHandler ioh = new IOHandler
-									  (explorationModel);
 		final MenuBroker menuHandler = new MenuBroker();
-		menuHandler.register(ioh, "load", "save", "save as", "new", "load secondary",
-				"save all", "open in map viewer", "open secondary map in map viewer");
+		menuHandler.register(new IOHandler(explorationModel), "load", "save", "save as",
+				"new", "load secondary", "save all", "open in map viewer",
+				"open secondary map in map viewer");
 		menuHandler.register(evt -> DriverQuit.quit(0), "quit");
 		SwingUtilities.invokeLater(
 				() -> {
