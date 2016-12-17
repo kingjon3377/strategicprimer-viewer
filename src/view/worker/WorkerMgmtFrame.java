@@ -69,6 +69,7 @@ import view.util.FormattedLabel;
 import view.util.ListenedButton;
 import view.util.SPFrame;
 import view.util.SystemOut;
+import view.util.TreeExpansionOrderListener;
 
 import static view.util.BorderedPanel.verticalPanel;
 import static view.util.SplitWithWeights.horizontalSplit;
@@ -173,7 +174,7 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 				verticalSplit(0.6, 0.6, verticalPanel(new JLabel(RPT_HDR),
 						new JScrollPane(createReportTree(model, menuHandler, reportModel)),
 						null), mdp)));
-		final TreeExpansionHandler expander = new TreeExpansionHandler(tree);
+		final TreeExpansionOrderListener expander = new TreeExpansionHandler(tree);
 		menuHandler.register(evt -> expander.expandAll(), "expand all");
 		menuHandler.register(evt -> expander.collapseAll(), "collapse all");
 		menuHandler.register(evt -> expander.expandSome(2), "expand unit kinds");

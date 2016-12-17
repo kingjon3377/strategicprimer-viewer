@@ -140,7 +140,7 @@ public final class MiningModel {
 	 * @param set a set of Points
 	 * @return the lowest column in the set
 	 */
-	private static int getMinCol(final Set<Point> set) {
+	private static int getMinCol(final Collection<Point> set) {
 		return set.stream().mapToInt(Point::getCol).min().orElse(0);
 	}
 

@@ -53,7 +53,7 @@ public final class TestWorkerModel {
 	 * @return the contents of that list, with any proxies replaced by the items they
 	 * proxy
 	 */
-	private static <T> List<T> filterProxies(final List<T> list) {
+	private static <T> List<T> filterProxies(final Collection<T> list) {
 		return list.stream().flatMap(item -> {
 			if (item instanceof ProxyFor<?>) {
 				// this wouldn't work for Skills, but ...

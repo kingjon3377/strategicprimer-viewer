@@ -151,7 +151,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @param unit a unit
 	 * @return whether it contains any workers without stats
 	 */
-	private static boolean hasUnstattedWorker(final IUnit unit) {
+	private static boolean hasUnstattedWorker(final FixtureIterable<?> unit) {
 		return unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
 					   .map(IWorker::getStats).anyMatch(Objects::isNull);
 	}
@@ -479,7 +479,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @param levels how many Job levels he or she has
 	 * @throws IOException on I/O error
 	 */
-	private static void enterWorkerJobs(final ICLIHelper cli, final Worker worker,
+	private static void enterWorkerJobs(final ICLIHelper cli, final IWorker worker,
 										final int levels) throws IOException {
 		for (int i = 0; i < levels; i++) {
 			final String jobName =

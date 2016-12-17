@@ -22,6 +22,7 @@ import view.util.FormattedLabel;
 import view.util.ItemAdditionPanel;
 import view.util.ListenedButton;
 import view.util.SPFrame;
+import view.util.TreeExpansionOrderListener;
 
 import static view.util.SplitWithWeights.horizontalSplit;
 import static view.util.SplitWithWeights.verticalSplit;
@@ -106,7 +107,7 @@ public final class AdvancementFrame extends SPFrame implements PlayerChangeListe
 								skillAdvancementPanel))));
 		playerChanged(null, map.getCurrentPlayer());
 
-		final TreeExpansionHandler expander = new TreeExpansionHandler(tree);
+		final TreeExpansionOrderListener expander = new TreeExpansionHandler(tree);
 		menuHandler.register(evt -> expander.expandAll(), "expand all");
 		menuHandler.register(evt -> expander.collapseAll(), "collapse all");
 		menuHandler.register(evt -> expander.expandSome(2), "expand unit kinds");
