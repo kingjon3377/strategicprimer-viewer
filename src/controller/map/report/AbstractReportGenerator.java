@@ -208,8 +208,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		/**
 		 * Prevent cloning.
 		 *
-		 * @return nothing
-		 * @throws CloneNotSupportedException always
+		 * @return nothing; always throws NoCloneException (a wrapped CloneNotSupportedException)
 		 */
 		@SuppressWarnings("MethodReturnOfConcreteClass")
 		@Override
@@ -279,8 +278,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		/**
 		 * Prevent cloning.
 		 *
-		 * @return nothing
-		 * @throws CloneNotSupportedException always
+		 * @return nothing; always throws NoCloneException (a wrapped CloneNotSupportedException)
 		 */
 		@SuppressWarnings("MethodReturnOfConcreteClass")
 		@Override
