@@ -52,6 +52,7 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	 * @param item     the village to base the line on
 	 * @param loc      its location
 	 * @throws IOException on I/O error writing to the stream
+	 * @return true: remove this item from the Map
 	 */
 	@Override
 	public boolean produce(final Appendable ostream,

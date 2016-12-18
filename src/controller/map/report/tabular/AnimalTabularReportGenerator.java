@@ -47,6 +47,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<Animal> {
 	 * @param fixtures the set of fixtures
 	 * @param item     the item to base the line on
 	 * @param loc      the location of this item
+	 * @return true: remove this item from the Map
 	 */
 	@Override
 	public boolean produce(final Appendable ostream,

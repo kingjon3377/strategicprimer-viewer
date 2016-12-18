@@ -52,6 +52,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 	 * @param item     the fixture to base the line on
 	 * @param loc      its location
 	 * @throws IOException on I/O error writing to the stream
+	 * @return whether to remove this item from the Map
 	 */
 	@Override
 	public boolean produce(final Appendable ostream,

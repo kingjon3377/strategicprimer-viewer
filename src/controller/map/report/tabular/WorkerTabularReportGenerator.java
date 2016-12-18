@@ -50,6 +50,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	 * @param item     the worker to base the line on
 	 * @param loc      its location
 	 * @throws IOException on I/O error writing to the stream
+	 * @return true: remove this item from the Map
 	 */
 	@Override
 	public boolean produce(final Appendable ostream,
