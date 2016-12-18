@@ -17,7 +17,7 @@ package util;
  *
  * @author Jonathan Lovelace
  */
-public class IntHolder implements Accumulator {
+public final class IntHolder implements Accumulator {
 	/**
 	 * The accumulation.
 	 */

@@ -15,7 +15,7 @@ package util;
  *
  * @author Jonathan Lovelace
  */
-public class Ternary {
+public final class Ternary {
 	/**
 	 * Do not instantiate.
 	 */
