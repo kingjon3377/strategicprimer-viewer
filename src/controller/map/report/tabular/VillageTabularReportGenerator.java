@@ -25,7 +25,7 @@ import util.PatientMap;
  *
  * @author Jonathan Lovelace
  */
-public class VillageTabularReportGenerator implements ITableGenerator<Village> {
+public final class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	/**
 	 * The player for whom this report is being produced.
 	 */

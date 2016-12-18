@@ -24,7 +24,7 @@ import util.PatientMap;
  *
  * @author Jonathan Lovelace
  */
-public class AnimalTabularReportGenerator implements ITableGenerator<Animal> {
+public final class AnimalTabularReportGenerator implements ITableGenerator<Animal> {
 	/**
 	 * The base point to use for distance calculations.
 	 */

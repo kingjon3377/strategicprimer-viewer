@@ -29,7 +29,7 @@ import util.PatientMap;
  *
  * @author Jonathan Lovelace
  */
-public class CropTabularReportGenerator implements ITableGenerator<TileFixture> {
+public final class CropTabularReportGenerator implements ITableGenerator<TileFixture> {
 	/**
 	 * The base point to use for distance calculations.
 	 */

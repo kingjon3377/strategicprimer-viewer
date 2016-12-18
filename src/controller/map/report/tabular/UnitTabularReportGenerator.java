@@ -27,7 +27,7 @@ import util.PatientMap;
  *
  * @author Jonathan Lovelace
  */
-public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
+public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	/**
 	 * The player for whom this report is being produced.
 	 */

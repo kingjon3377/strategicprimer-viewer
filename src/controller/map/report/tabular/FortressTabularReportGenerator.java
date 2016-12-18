@@ -26,7 +26,7 @@ import util.PatientMap;
  *
  * @author Jonathan Lovelace
  */
-public class FortressTabularReportGenerator implements ITableGenerator<Fortress> {
+public final class FortressTabularReportGenerator implements ITableGenerator<Fortress> {
 	/**
 	 * The player for whom this report is being produced.
 	 */

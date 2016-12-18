@@ -34,7 +34,7 @@ import util.PatientMap;
  *
  * @author Jonathan Lovelace
  */
-public class ResourceTabularReportGenerator implements ITableGenerator<IFixture> {
+public final class ResourceTabularReportGenerator implements ITableGenerator<IFixture> {
 
 	/**
 	 * @param obj an object

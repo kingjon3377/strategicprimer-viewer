@@ -28,7 +28,7 @@ import util.PatientMap;
  *
  * @author Jonathan Lovelace
  */
-public class TownTabularReportGenerator implements ITableGenerator<AbstractTown> {
+public final class TownTabularReportGenerator implements ITableGenerator<AbstractTown> {
 	/**
 	 * The player for whom this report is being produced.
 	 */

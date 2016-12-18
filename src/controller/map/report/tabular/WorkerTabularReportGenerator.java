@@ -29,7 +29,7 @@ import util.PatientMap;
  *
  * @author Jonathan Lovelace
  */
-public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
+public final class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	/**
 	 * His or her HQ location.
 	 */
