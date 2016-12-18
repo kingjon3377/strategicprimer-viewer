@@ -269,7 +269,6 @@ public abstract class BaseTestFixtureSerialization {
 					reader.readXML(FAKE_FILENAME, stringReader, obj.getClass(), warner),
 					equalTo(obj));
 		}
-		final String str = createSerializedForm(obj, false);
 		try (StringReader stringReader = new StringReader(createSerializedForm(obj,
 				false))) {
 			assertThat(message,
