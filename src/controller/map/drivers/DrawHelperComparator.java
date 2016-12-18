@@ -384,6 +384,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * Run all the tests on the specified file.
 	 *
+	 * @param cli the interface for user I/O
 	 * @param map         the map to use for the tests.
 	 * @param repetitions how many times to repeat each test (more takes longer, but
 	 *                       gives
@@ -420,6 +421,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * A helper method to reduce repeated strings.
 	 *
+	 * @param cli the interface for user I/O
 	 * @param prefix what to print before the total
 	 * @param total  the total time
 	 * @param reps   how many times the test ran
