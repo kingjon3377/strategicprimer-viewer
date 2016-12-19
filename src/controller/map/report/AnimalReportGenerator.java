@@ -40,6 +40,7 @@ import util.PatientMap;
  */
 public final class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	/**
+	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public AnimalReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
@@ -139,6 +140,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	}
 
 	/**
+	 * Produce the sub-report about an individual Animal.
 	 * @param fixtures      the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @param map           ignored
@@ -163,6 +165,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	}
 
 	/**
+	 * Produce the sub-report about an individual Animal.
 	 * @param fixtures      the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @param map           ignored
@@ -189,6 +192,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

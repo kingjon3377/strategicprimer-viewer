@@ -58,6 +58,7 @@ public final class ApplyButtonHandler implements ActionListener {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

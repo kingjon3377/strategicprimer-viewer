@@ -122,6 +122,7 @@ public final class ArrowKeyListener {
 	}
 
 	/**
+	 * Combine two Consumers.
 	 * @param first one method reference
 	 * @param second a second such reference
 	 * @return a reference combining the two
@@ -132,6 +133,7 @@ public final class ArrowKeyListener {
 	}
 
 	/**
+	 * Produces an ActionListener that calls a method on a DirectionSelectionChanger.
 	 * @param selListener the listener we're setting up
 	 * @param consumer a method reference to that class
 	 * @return an ActionListener that calls that method reference on that instance
@@ -141,13 +143,15 @@ public final class ArrowKeyListener {
 		return evt -> consumer.accept(selListener);
 	}
 	/**
-	 * @param consumer a reference to a DirectionSelectionChanger method
+	 * Produces an ActionListener that calls any no-arg void method.
+	 * @param consumer a reference to any no-arg void method.
 	 * @return it wrapped in an ActionListener
 	 */
 	private static ActionListener wrap(final Runnable consumer) {
 		return evt -> consumer.run();
 	}
 	/**
+	 * Combines two no-arg void method references into an ActionListener.
 	 * @param first one reference to a DirectionSelectionChanger method
 	 * @param second a second such reference
 	 * @return an ActionListener that ignores its parameter and calls the first
@@ -208,6 +212,7 @@ public final class ArrowKeyListener {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -222,6 +227,7 @@ public final class ArrowKeyListener {
 	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
 	private static class DirectionListener extends ActionWrapper {
 		/**
+		 * Constructor.
 		 * @param action the wrapped action
 		 * @param num    how many times to repeat it on each user action
 		 */
@@ -234,6 +240,8 @@ public final class ArrowKeyListener {
 		}
 
 		/**
+		 * Constructor for the most common case of an action that should be taken only
+		 * once each time.
 		 * @param action the wrapped action
 		 */
 		protected DirectionListener(final ActionListener action) {

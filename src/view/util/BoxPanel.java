@@ -98,6 +98,7 @@ public class BoxPanel extends JPanel {
 	}
 
 	/**
+	 * Either "Horizontal BoxPanel" or "Vertical BoxPanel" is the String representation.
 	 * @return a String representation of the object
 	 */
 	@Override

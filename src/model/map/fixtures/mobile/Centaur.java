@@ -49,6 +49,7 @@ public class Centaur
 	}
 
 	/**
+	 * Clone the Centaur object.
 	 * @param zero ignored, as a centaur has no sensitive information
 	 * @return a copy of this centaur
 	 */
@@ -61,6 +62,7 @@ public class Centaur
 	}
 
 	/**
+	 * The kind of centaur.
 	 * @return the kind of centaur
 	 */
 	@Override
@@ -69,6 +71,7 @@ public class Centaur
 	}
 
 	/**
+	 * Set the kind of centaur.
 	 * @param nKind the new kind
 	 */
 	@Override
@@ -77,6 +80,7 @@ public class Centaur
 	}
 
 	/**
+	 * "such-and-such-kind-of centaur" is the pattern.
 	 * @return a String representation of the centaur
 	 */
 	@Override
@@ -85,6 +89,7 @@ public class Centaur
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the centaur
 	 */
 	@Override
@@ -93,6 +98,7 @@ public class Centaur
 	}
 
 	/**
+	 * Test for equality with us.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -104,6 +110,7 @@ public class Centaur
 	}
 
 	/**
+	 * We use our ID number as our hash value.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -112,6 +119,7 @@ public class Centaur
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -120,6 +128,7 @@ public class Centaur
 	}
 
 	/**
+	 * Test for equality ignoring ID, which means any Centaur of the same kind counts.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -130,6 +139,7 @@ public class Centaur
 	}
 
 	/**
+	 * An object is a "strict subset" of this one if it equal to us.
 	 * @param obj     another UnitMember
 	 * @param ostream a stream to report an explanation on
 	 * @param context a string to print before every line of output, describing the
@@ -158,6 +168,7 @@ public class Centaur
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -166,6 +177,7 @@ public class Centaur
 	}
 
 	/**
+	 * Set a per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -174,6 +186,7 @@ public class Centaur
 	}
 
 	/**
+	 * The plural of Centaur is Centaurs.
 	 * @return a string describing all centaurs as a class
 	 */
 	@Override
@@ -182,6 +195,7 @@ public class Centaur
 	}
 
 	/**
+	 * "such-and-such-kind-of centaur" is the pattern.
 	 * @return a short description of the fixture
 	 */
 	@Override

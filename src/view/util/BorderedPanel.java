@@ -97,6 +97,7 @@ public class BorderedPanel extends JPanel {
 	}
 
 	/**
+	 * Set the Component at the "page start" position of the layout.
 	 * @param component a component to place to the north
 	 * @return this
 	 */
@@ -106,6 +107,7 @@ public class BorderedPanel extends JPanel {
 	}
 
 	/**
+	 * Set the Component at the "page end" position of the layout.
 	 * @param component a component to place to the south
 	 * @return this
 	 */
@@ -115,6 +117,7 @@ public class BorderedPanel extends JPanel {
 	}
 
 	/**
+	 * Set the Component at the center position of the layout.
 	 * @param component a component to place in the center
 	 * @return this
 	 */
@@ -124,6 +127,7 @@ public class BorderedPanel extends JPanel {
 	}
 
 	/**
+	 * Set the Component at the "line start" position of the layout.
 	 * @param component a component to place at line-start.
 	 * @return this
 	 */
@@ -133,6 +137,7 @@ public class BorderedPanel extends JPanel {
 	}
 
 	/**
+	 * Set the Component at the "line end" position of the layout.
 	 * @param component a component to place at line-end.
 	 * @return this
 	 */

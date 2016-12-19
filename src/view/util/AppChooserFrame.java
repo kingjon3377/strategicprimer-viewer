@@ -195,6 +195,7 @@ public final class AppChooserFrame extends SPFrame {
 	}
 
 	/**
+	 * Returns the title of this app.
 	 * @return the title of this app
 	 */
 	@Override

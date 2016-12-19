@@ -228,6 +228,7 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

@@ -46,6 +46,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * Clone a Battlefield.
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this battlefield
 	 */
@@ -63,6 +64,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * The Perception check result required to find the Battlefield.
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -71,6 +73,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * "There are the signs of a long-ago battle here.".
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -79,6 +82,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * Test an object for equality with us.
 	 * @param obj an object
 	 * @return whether it's an identical BattlefieldEvent.
 	 */
@@ -89,6 +93,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * Our ID number is our hash value.
 	 * @return a hash value for the event.
 	 */
 	@Override
@@ -97,6 +102,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * The DC is the only state represented in toString().
 	 * @return a string representation of the event
 	 */
 	@Override
@@ -105,6 +111,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * The ID number for the battlefield.
 	 * @return the ID number for the event.
 	 */
 	@Override
@@ -113,6 +120,8 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * Test for equality with us ignoring ID and DC, which is all of our per-instance
+	 * state.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -122,6 +131,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of the image to represent the event
 	 */
 	@Override
@@ -130,6 +140,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -138,6 +149,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -146,6 +158,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * The plural of Battlefield is Battlefields.
 	 * @return a string describing all battlefields as a class
 	 */
 	@Override
@@ -154,6 +167,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * "signs of a long-ago battle" is the short description of all Battlefields.
 	 * @return a short description of the fixture
 	 */
 	@Override

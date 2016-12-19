@@ -46,6 +46,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * Clone the Cave.
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this cave
 	 */
@@ -63,6 +64,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * The required Perception check result to discover the caves.
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -71,6 +73,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * "There are extensive caves beneath this tile.".
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -79,6 +82,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * Test for equality.
 	 * @param obj an object
 	 * @return whether it's an identical CaveEvent.
 	 */
@@ -89,6 +93,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * We use the ID number for the hash value.
 	 * @return a hash value for the event. Constant, as our only state is DC, and that's
 	 * zeroed in players' maps.
 	 */
@@ -98,6 +103,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * DC is the only state represented in toString().
 	 * @return a string representation of the event
 	 */
 	@Override
@@ -106,6 +112,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * The Cave's ID number.
 	 * @return the event's ID number.
 	 */
 	@Override
@@ -114,6 +121,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * Test for equality ignoring ID and DC, which are our only mutable state.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -135,6 +143,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -143,6 +152,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -151,6 +161,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * The plural of Cave is Caves.
 	 * @return a string describing all caves as a class
 	 */
 	@Override
@@ -159,6 +170,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * "caves underground" is the short description.
 	 * @return a short description of the fixture
 	 */
 	@Override

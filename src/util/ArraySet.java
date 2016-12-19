@@ -35,6 +35,7 @@ public final class ArraySet<U> implements Set<U> {
 	private int hash = 0;
 
 	/**
+	 * Tests whether two sets are equal according to the Set interface's documentation.
 	 * @param firstSet  one set
 	 * @param secondSet another set
 	 * @return whether they are equal according to the Set contract.
@@ -45,6 +46,7 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * The size of the set is the size of its implementing list.
 	 * @return the size of the set
 	 */
 	@Override
@@ -53,6 +55,7 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * The set is empty iff its implementing array is empty.
 	 * @return whether the set is empty
 	 */
 	@Override
@@ -61,6 +64,7 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * The set contains an object iff the implementing list contains it.
 	 * @param obj an object
 	 * @return whether we contain it
 	 */
@@ -71,6 +75,7 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * The iterator over the set is the iterator over the implementing list.
 	 * @return an iterator over the set
 	 */
 	@Override
@@ -79,6 +84,7 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * The implementing list's array-view is used.
 	 * @return an array view of the set
 	 */
 	@Override
@@ -87,6 +93,7 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * The implementing list's array-view is used.
 	 * @param <T>   the type
 	 * @param array an array of that type
 	 * @return the contents of the set in that array
@@ -99,6 +106,8 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * An element is added iff it was not already in the set; in that case, we also make
+	 * sure its presence is reflected in the hash-code.
 	 * @param elem an element
 	 * @return the result of adding it to the set.
 	 */
@@ -115,6 +124,8 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * Removal is delegated to the implementing list, but we update the hash-code if the
+	 * set changed.
 	 * @param obj an object
 	 * @return the result of removing it from the set
 	 */
@@ -129,6 +140,7 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * Elements are in the set iff they are in the implementing list.
 	 * @param coll a collection
 	 * @return whether the set contains all its elements
 	 */
@@ -139,6 +151,7 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * Element addition is delegated to the implementing list.
 	 * @param coll a collection
 	 * @return the result of adding all of them
 	 */
@@ -158,6 +171,8 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * This operation is delegated to the implementing list, but we recalculate the
+	 * hash-code if the set changed.
 	 * @param coll a collection
 	 * @return the result of removing everything not in it
 	 */
@@ -172,6 +187,8 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * This operation is delegated to the implementing list, but we recalculate the
+	 * hash-code if the set changed.
 	 * @param coll a collection
 	 * @return the result of removing everything in it
 	 */
@@ -223,6 +240,7 @@ public final class ArraySet<U> implements Set<U> {
 	}
 
 	/**
+	 * A not-quite-trivial delegation to the implementing list.
 	 * @return a String representation of the object
 	 */
 	@Override

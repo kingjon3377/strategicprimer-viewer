@@ -55,6 +55,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * Clone the CacheFixture.
 	 * @param zero ignored, as there's no sensitive data
 	 * @return a copy of this cache
 	 */
@@ -67,6 +68,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * The kind of things in the cache.
 	 * @return what kind of things this is a cache of
 	 */
 	@Override
@@ -75,6 +77,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * Set the kind of things in the cache.
 	 * @param nKind the new kind
 	 */
 	@Override
@@ -83,6 +86,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * The specific contents of the cache.
 	 * @return the contents of this cache
 	 */
 	public String getContents() {
@@ -100,6 +104,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * "a cache of such-and-such containing such-and-such" is the general pattern.
 	 * @return a string representation of the cache
 	 */
 	@Override
@@ -108,6 +113,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * Test an object for equality with us.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -118,6 +124,8 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * The implementation of the test for equality once we know the object is a
+	 * CacheFixture.
 	 * @param obj a cache-fixture
 	 * @return whether it's equal to this one
 	 */
@@ -127,6 +135,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * We use our ID number for our hash value.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -135,6 +144,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * The ID number for the cache.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -143,6 +153,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * Test for equality ignoring ID number.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -155,6 +166,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -163,6 +175,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -171,6 +184,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * The plural of Cache is Caches.
 	 * @return a string describing all caches as a class
 	 */
 	@Override
@@ -179,6 +193,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
+	 * "a cache of such-and-such" is the pattern here.
 	 * @return a short description of the fixture
 	 */
 	@Override

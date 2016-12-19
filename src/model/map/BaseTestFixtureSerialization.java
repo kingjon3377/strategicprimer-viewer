@@ -278,6 +278,7 @@ public abstract class BaseTestFixtureSerialization {
 	}
 
 	/**
+	 * Create the XML-serialized representation of an object.
 	 * @param obj        an object
 	 * @param deprecated whether to use the deprecated XML-serialization idiom
 	 * @return its serialized form

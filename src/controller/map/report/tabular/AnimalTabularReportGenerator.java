@@ -71,6 +71,8 @@ public final class AnimalTabularReportGenerator implements ITableGenerator<Anima
 	}
 
 	/**
+	 * The three fields in the Animals tabular report are the distance, location, and
+	 * kind of animal.
 	 * @return the header row for the tabular report
 	 */
 	@Override
@@ -79,6 +81,7 @@ public final class AnimalTabularReportGenerator implements ITableGenerator<Anima
 	}
 
 	/**
+	 * Compare two pairs of Animals and locations.
 	 * @param one a Pair of one animal and its location (in the other order)
 	 * @param two a Pair of another animal and its location (in the other order)
 	 * @return the result of a comparison between the pairs.

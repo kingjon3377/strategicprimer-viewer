@@ -94,6 +94,7 @@ public final class AppStarter implements ISPDriver {
 	}
 
 	/**
+	 * Add a driver to our collection that the user is allowed to choose from.
 	 * @param driver a driver to add twice.
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
@@ -390,6 +391,7 @@ public final class AppStarter implements ISPDriver {
 	}
 
 	/**
+	 * Returns the usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -398,6 +400,7 @@ public final class AppStarter implements ISPDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
