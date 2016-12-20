@@ -3,7 +3,6 @@ package view.util;
 import controller.map.misc.WindowCloser;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.KeyStroke;
@@ -26,7 +25,7 @@ import util.OnMac;
  *
  * @author Jonathan Lovelace
  */
-public class SPDialog extends JDialog {
+public class SPDialog extends JDialog implements HotKeyCreator {
 	/**
 	 * Constructor.
 	 * @param parent the parent component
@@ -35,11 +34,9 @@ public class SPDialog extends JDialog {
 	protected SPDialog(final @Nullable Frame parent, final String title) {
 		super(parent, title);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		final InputMap inputMap =
-				getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, OnMac.SHORTCUT_MASK), "close");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
-		getRootPane().getActionMap()
-				.put("close", new ActionWrapper(new WindowCloser(this)));
+		createHotKey(getRootPane(), "close", new ActionWrapper(new WindowCloser(this)),
+				JComponent.WHEN_IN_FOCUSED_WINDOW,
+				KeyStroke.getKeyStroke(KeyEvent.VK_W, OnMac.SHORTCUT_MASK),
+				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
 	}
 }

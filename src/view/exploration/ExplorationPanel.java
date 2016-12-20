@@ -18,7 +18,6 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
-import javax.swing.InputMap;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -50,6 +49,7 @@ import view.map.details.FixtureList;
 import view.util.BorderedPanel;
 import view.util.BoxPanel;
 import view.util.FormattedLabel;
+import view.util.HotKeyCreator;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
 
@@ -69,7 +69,8 @@ import view.util.SplitWithWeights;
  * @author Jonathan Lovelace
  */
 public final class ExplorationPanel extends BorderedPanel
-		implements SelectionChangeListener, CompletionSource, MovementCostListener {
+		implements SelectionChangeListener, CompletionSource, MovementCostListener,
+						   HotKeyCreator {
 	/**
 	 * A parser for numeric input.
 	 */
@@ -241,15 +242,9 @@ public final class ExplorationPanel extends BorderedPanel
 		panel.add(dtb);
 		final ExplorationClickListener ecl =
 				new ExplorationClickListener(model, direction, mainList, speedSource);
+		createHotKey(dtb, direction.toString(), ecl, WHEN_IN_FOCUSED_WINDOW,
+				ARROW_KEYS.get(direction), NUM_KEYS.get(direction));
 		dtb.addActionListener(ecl);
-		final InputMap dtbIMap = dtb.getInputMap(WHEN_IN_FOCUSED_WINDOW);
-		if (ARROW_KEYS.containsKey(direction)) {
-			dtbIMap.put(ARROW_KEYS.get(direction), direction.toString());
-		}
-		if (NUM_KEYS.containsKey(direction)) {
-			dtbIMap.put(NUM_KEYS.get(direction), direction.toString());
-		}
-		dtb.getActionMap().put(direction.toString(), ecl);
 		ecl.addSelectionChangeListener(this);
 		ecl.addMovementCostListener(this);
 		final SelectionChangeListener ell = new ExplorationListListener(model, mainList);

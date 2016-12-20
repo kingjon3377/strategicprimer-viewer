@@ -8,8 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.function.BiFunction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -32,6 +30,7 @@ import util.OnMac;
 import view.util.Applyable;
 import view.util.BorderedPanel;
 import view.util.BoxPanel;
+import view.util.HotKeyCreator;
 import view.util.ListenedButton;
 import view.util.Revertible;
 
@@ -51,7 +50,8 @@ import view.util.Revertible;
  * @author Jonathan Lovelace
  */
 public final class OrdersPanel extends BorderedPanel
-		implements Applyable, Revertible, TreeSelectionListener, PlayerChangeListener {
+		implements Applyable, Revertible, TreeSelectionListener, PlayerChangeListener,
+						   HotKeyCreator {
 	/**
 	 * The source of orders (or results).
 	 */
@@ -153,19 +153,15 @@ public final class OrdersPanel extends BorderedPanel
 		area.addKeyListener(new ModifiedEnterListener());
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);
-		final InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
-		final ActionMap actionMap = getActionMap();
-		assert (inputMap != null) && (actionMap != null);
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, keyMask), "openOrders");
 		// Prevent synthetic access warning
 		final JTextArea localArea = area;
-		actionMap.put("openOrders", new ActionWrapper(evt -> {
+		createHotKey(this, "openOrders", new ActionWrapper(evt -> {
 			final boolean newlyGainingFocus = !localArea.isFocusOwner();
 			localArea.requestFocusInWindow();
 			if (newlyGainingFocus) {
 				localArea.selectAll();
 			}
-		}));
+		}), WHEN_IN_FOCUSED_WINDOW, KeyStroke.getKeyStroke(KeyEvent.VK_D, keyMask));
 		// TODO: We really ought to support writing the orders *then* setting the turn
 		spinnerModel.addChangeListener(event -> revert());
 		player = currentPlayer;

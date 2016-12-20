@@ -13,7 +13,6 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.KeyStroke;
@@ -30,6 +29,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ActionWrapper;
 import util.NullCleaner;
+import view.util.HotKeyCreator;
 
 /**
  * A visual list-based representation of the contents of a tile.
@@ -47,7 +47,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public final class FixtureList extends JList<@NonNull TileFixture> implements
-		DragGestureListener, SelectionChangeListener {
+		DragGestureListener, SelectionChangeListener, HotKeyCreator {
 	/**
 	 * The list model.
 	 */
@@ -70,13 +70,12 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
 				this, DnDConstants.ACTION_COPY, this::dragGestureRecognized);
 		setDropTarget(new DropTarget(this, new FixtureListDropListener(parent, flm)));
-		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
-				"delete");
-		getActionMap().put("delete",
+		createHotKey(this, "delete",
 				new ActionWrapper(event -> ((FixtureListModel) getModel())
-												   .removeAll(getSelectedValuesList())));
+												   .removeAll(getSelectedValuesList())),
+				WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+				KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+				KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
 		addMouseListener(new FixtureMouseListener(players, this));
 	}
 

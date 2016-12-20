@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -67,11 +65,13 @@ import view.map.main.ViewerFrame;
 import view.util.BorderedPanel;
 import view.util.FocusRequester;
 import view.util.FormattedLabel;
+import view.util.HotKeyCreator;
 import view.util.ListenedButton;
 import view.util.SPFrame;
 import view.util.SystemOut;
 import view.util.TreeExpansionOrderListener;
 
+import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import static view.util.BorderedPanel.verticalPanel;
 import static view.util.SplitWithWeights.horizontalSplit;
 import static view.util.SplitWithWeights.verticalSplit;
@@ -91,7 +91,8 @@ import static view.util.SplitWithWeights.verticalSplit;
  *
  * @author Jonathan Lovelace
  */
-public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListener {
+public final class WorkerMgmtFrame extends SPFrame
+		implements PlayerChangeListener, HotKeyCreator {
 	/**
 	 * The header to put above the report.
 	 */
@@ -135,11 +136,8 @@ public final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListen
 						mainMap::getCurrentTurn, true);
 		newUnitFrame.addNewUnitListener(treeModel);
 		final int keyMask = OnMac.SHORTCUT_MASK;
-		final InputMap inputMap = tree.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		final ActionMap actionMap = tree.getActionMap();
-		assert (inputMap != null) && (actionMap != null);
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
-		actionMap.put("openUnits", new FocusRequester(tree));
+		createHotKey(tree, "openUnits", new FocusRequester(tree), WHEN_IN_FOCUSED_WINDOW,
+				KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask));
 		playerLabel = new FormattedLabel("Units belonging to %s: (%sU)",
 												mainMap.getCurrentPlayer().getName(),
 									   OnMac.SHORTCUT_DESC);
