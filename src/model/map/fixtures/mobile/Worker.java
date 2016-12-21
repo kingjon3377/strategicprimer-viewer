@@ -18,7 +18,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.ListMaker;
-import util.NullCleaner;
 
 /**
  * A worker (or soldier) in a unit. This is deliberately not a TileFixture: these should
@@ -114,7 +113,7 @@ public class Worker implements IWorker, HasPortrait {
 	 */
 	@Override
 	public final Iterator<IJob> iterator() {
-		return NullCleaner.assertNotNull(jobSet.iterator());
+		return jobSet.iterator();
 	}
 
 	/**
@@ -230,10 +229,9 @@ public class Worker implements IWorker, HasPortrait {
 							ostream.format("%s In worker %s (ID #%d):\tExtra Job: %s%n",
 									context, name, Integer.valueOf(id), job.getName());
 							retval = false;
-						} else if (!NullCleaner.assertNotNull(ours.get(job.getName()))
-											.isSubset(job, ostream, String.format(
-													"%s In worker %s (ID #%d):", context,
-													name, Integer.valueOf(id)))) {
+						} else if (!ours.get(job.getName()).isSubset(job, ostream,
+								String.format("%s In worker %s (ID #%d):", context, name,
+										Integer.valueOf(id)))) {
 							retval = false;
 						}
 					}

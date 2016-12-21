@@ -35,7 +35,6 @@ import view.util.ErrorShower;
 import view.util.ListenedButton;
 
 import static util.IsNumeric.isNumeric;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A window to let the user add a new worker. As this is a dialog, we do *not* extend
@@ -63,8 +62,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	/**
 	 * Number parser.
 	 */
-	private static final NumberFormat NUM_PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
+	private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
 	/**
 	 * The 'name' field.
 	 */
@@ -185,12 +183,12 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
+	 * TODO: Change to getBoxPair(box, title) to further simplify caller
 	 * @param box a text box
 	 * @return its contents, asserted to not be null
 	 */
 	private static String getBoxText(final JTextField box) {
-		final String text = box.getText();
-		return assertNotNull(text);
+		return box.getText();
 	}
 
 	/**
@@ -203,14 +201,14 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	private static String numericExplanation(final Pair<String, String>... numbers) {
 		final StringBuilder builder = new StringBuilder(40);
 		for (final Pair<String, String> number : numbers) {
-			final String num = assertNotNull(number.first().trim());
+			final String num = number.first().trim();
 			if (!isNumeric(num)) {
 				builder.append(number.second());
 				builder.append(" must be a number.");
 				builder.append(LineEnd.LINE_SEP);
 			}
 		}
-		return assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -278,7 +276,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 				Pair.of(getBoxText(intel), "Intelligence"),
 				Pair.of(getBoxText(wis), "Wisdom"),
 				Pair.of(getBoxText(cha), "Charisma")));
-		return assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**

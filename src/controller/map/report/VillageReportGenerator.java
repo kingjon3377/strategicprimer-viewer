@@ -18,7 +18,6 @@ import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
-import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
 
@@ -77,7 +76,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 			} else if (village.getOwner().isIndependent()) {
 				independents.add(product);
 			} else if (others.containsKey(village.getOwner())) {
-				NullCleaner.assertNotNull(others.get(village.getOwner())).add(product);
+				others.get(village.getOwner()).add(product);
 			} else {
 				final Collection<String> coll = new HtmlList("<h5>Villages sworn to " +
 																	 village.getOwner()
@@ -102,7 +101,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 			retval.append(LineEnd.LINE_SEP);
 			others.values().stream().map(Object::toString).forEach(retval::append);
 		}
-		return NullCleaner.assertNotNull(retval.toString());
+		return retval.toString();
 	}
 
 	/**
@@ -144,7 +143,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 			} else if (owner.isIndependent()) {
 				independents.add(product);
 			} else if (othersMap.containsKey(owner)) {
-				NullCleaner.assertNotNull(othersMap.get(owner)).add(product);
+				// TODO: Use MultiMapHelper
+				othersMap.get(owner).add(product);
 			} else {
 				final IReportNode node =
 						new SectionListReportNode(6, "Villages sworn to " +
