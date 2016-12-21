@@ -106,12 +106,9 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			final String desc = "Players in the maps:";
 			final String none = "No players found.";
 			final String prompt = "Player to add resources for: ";
-			final ICLIHelper.ChoiceOperation choice =
-					() -> cli.chooseFromList(players, desc, none, prompt, false);
-			for (int playerNum = choice.choose();
-					(playerNum >= 0) && (playerNum < players.size());
-					playerNum = choice.choose()) {
-				final Player player = players.get(playerNum);
+			cli.loopOnList(players,
+					() -> cli.chooseFromList(players, desc, none, prompt, false),
+					"Choose another player? ", player -> {
 				while (cli.inputBoolean("Keep going? ")) {
 					if (cli.inputBooleanInSeries("Enter a (quantified) resource? ")) {
 						enterResource(idf, driverModel, cli, player);
@@ -119,7 +116,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 						enterImplement(idf, driverModel, cli, player);
 					}
 				}
-			}
+			});
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error interacting with user", except);
