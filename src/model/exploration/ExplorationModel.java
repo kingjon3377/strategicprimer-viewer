@@ -258,12 +258,9 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@Override
 	public List<Player> getPlayerChoices() {
-		final List<Player> retval =
-				getMap().streamPlayers().collect(Collectors.toList());
-		streamSubordinateMaps().map(Pair::first)
-				.map(map -> map.streamPlayers().collect(Collectors.toList()))
-				.forEach(retval::retainAll);
-		return retval;
+		return streamAllMaps().map(Pair::first)
+					   .map(map -> map.streamPlayers().collect(Collectors.toList()))
+					   .collect(ArrayList::new, ArrayList::addAll, ArrayList::retainAll);
 	}
 
 	/**
