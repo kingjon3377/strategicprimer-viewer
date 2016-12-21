@@ -1,5 +1,6 @@
 package model.viewer;
 
+import java.util.Formatter;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import model.map.MapDimensions;
@@ -111,32 +112,24 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	 */
 	@Override
 	public String toString() {
-		// TODO: Use Formatter
 		final StringBuilder builder = new StringBuilder(150);
-		builder.append("PointIterator: Started at (");
-		builder.append(startRow);
-		builder.append(", ");
-		builder.append(startCol);
-		builder.append("), currently at (");
-		builder.append(row);
-		builder.append(", ");
-		builder.append(col);
-		builder.append("), searching ");
-		if (horizontal) {
-			builder.append("horizontally ");
-		} else {
-			builder.append("vertically ");
+		try (final Formatter formatter = new Formatter(builder)) {
+			formatter.format("PointIterator: Started at (%d, %d), currently at (%d, %d)",
+					Integer.valueOf(startRow), Integer.valueOf(startCol),
+					Integer.valueOf(row), Integer.valueOf(col));
+			if (horizontal) {
+				formatter.format(", searching horizontally ");
+			} else {
+				formatter.format(", searching vertically ");
+			}
+			if (forwards) {
+				formatter.format("forwards");
+			} else {
+				formatter.format("backwards");
+			}
+			formatter.format(" and no farther than (%d, %d).", Integer.valueOf(maxRow),
+					Integer.valueOf(maxCol));
 		}
-		if (forwards) {
-			builder.append("forwards ");
-		} else {
-			builder.append("backwards ");
-		}
-		builder.append("and no farther than (");
-		builder.append(maxRow);
-		builder.append(", ");
-		builder.append(maxCol);
-		builder.append(").");
 		return builder.toString();
 	}
 
