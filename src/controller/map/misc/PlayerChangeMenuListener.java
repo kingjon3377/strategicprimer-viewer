@@ -17,7 +17,6 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A class to respond to "change current player" menu items.
@@ -110,7 +109,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 		} else {
 			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
 											  .collect(Collectors.toList());
-			return NullCleaner.assertNotNull(list.toArray(new Player[list.size()]));
+			return list.toArray(new Player[list.size()]);
 		}
 	}
 	/**

@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.stream.StreamSupport;
 import org.eclipse.jdt.annotation.Nullable;
 
-import static util.NullCleaner.assertNotNull;
 import static util.NullStream.DEV_NULL;
 
 /**
@@ -45,7 +44,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	public Player getPlayer(final int player) {
 		final Integer pValue = Integer.valueOf(player);
 		if (players.containsKey(pValue)) {
-			return assertNotNull(players.get(pValue));
+			return players.get(pValue);
 		} else {
 			return new Player(player, "");
 		}
@@ -56,7 +55,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public Iterator<Player> iterator() {
-		return assertNotNull(players.values().iterator());
+		return players.values().iterator();
 	}
 
 	/**
@@ -137,7 +136,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 			independent = player;
 		}
 		final boolean retval = !players.containsValue(player);
-		players.put(assertNotNull(Integer.valueOf(player.getPlayerId())), player);
+		players.put(Integer.valueOf(player.getPlayerId()), player);
 		return retval;
 	}
 
@@ -174,7 +173,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 * @return an array of the players
 	 */
 	public Player[] asArray() {
-		return assertNotNull(players.values().toArray(new Player[players.size()]));
+		return players.values().toArray(new Player[players.size()]);
 	}
 
 	/**

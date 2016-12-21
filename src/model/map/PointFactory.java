@@ -6,8 +6,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.MultiMapHelper;
 import view.util.Coordinate;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A cache for Points.
  *
@@ -76,8 +74,8 @@ public final class PointFactory {
 	 */
 	public static Point point(final int row, final int col) {
 		if (useCache) {
-			final Integer boxedRow = assertNotNull(Integer.valueOf(row));
-			final Integer boxedCol = assertNotNull(Integer.valueOf(col));
+			final Integer boxedRow = Integer.valueOf(row);
+			final Integer boxedCol = Integer.valueOf(col);
 			return MultiMapHelper.getMapValue(MultiMapHelper.getMapValue(POINT_CACHE,
 					boxedRow, key -> new ConcurrentHashMap<>()), boxedCol,
 					key -> new PointImpl(row, col));
@@ -93,8 +91,8 @@ public final class PointFactory {
 	 */
 	public static Coordinate coordinate(final int xCoordinate, final int yCoordinate) {
 		if (useCache) {
-			final Integer boxedX = assertNotNull(Integer.valueOf(xCoordinate));
-			final Integer boxedY = assertNotNull(Integer.valueOf(yCoordinate));
+			final Integer boxedX = Integer.valueOf(xCoordinate);
+			final Integer boxedY = Integer.valueOf(yCoordinate);
 			return MultiMapHelper.getMapValue(MultiMapHelper.getMapValue(C_CACHE, boxedX,
 					key -> new ConcurrentHashMap<>()), boxedY,
 					key -> new Coordinate(xCoordinate, yCoordinate));
