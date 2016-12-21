@@ -27,7 +27,6 @@ import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
 import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A component to display the map, even a large one, without the performance problems the
@@ -196,16 +195,17 @@ public final class MapComponent extends JComponent
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(@Nullable final Rectangle rect) {
-		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
-				model.getMapDimensions().getVersion());
-		final VisibleDimensions dim = model.getDimensions();
-		final Rectangle defDims = new Rectangle(0, 0, (dim.getMaximumCol() -
-															   dim.getMinimumCol()) *
-															  tileSize,
-													   (dim.getMaximumRow() -
-																dim.getMinimumRow()) *
-															   tileSize);
-		return NullCleaner.valueOrDefault(rect, defDims);
+		if (rect == null) {
+			final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
+					model.getMapDimensions().getVersion());
+			final VisibleDimensions dim = model.getDimensions();
+			return new Rectangle(0, 0, (dim.getMaximumCol() - dim.getMinimumCol()) *
+											   tileSize,
+										(dim.getMaximumRow() - dim.getMinimumRow()) *
+												tileSize);
+		} else {
+			return rect;
+		}
 	}
 
 	/**
