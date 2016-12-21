@@ -34,7 +34,6 @@ import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
-import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
 
@@ -125,7 +124,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			}
 			builder.append(CLOSE_LIST);
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -149,7 +148,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			}
 			builder.append(')');
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -300,7 +299,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		}
 		produceOrders(item, builder);
 		fixtures.remove(Integer.valueOf(item.getID()));
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**

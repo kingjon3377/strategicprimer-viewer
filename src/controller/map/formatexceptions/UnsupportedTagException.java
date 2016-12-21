@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
-import util.NullCleaner;
 
 /**
  * A custom exception for not-yet-supported tags.
@@ -35,8 +34,8 @@ public final class UnsupportedTagException extends SPFormatException {
 	public UnsupportedTagException(final StartElement uTag) {
 		super("Unexpected tag " + uTag.getName().getLocalPart()
 					  + "; probably a more recent map format than viewer",
-				NullCleaner.assertNotNull(uTag.getLocation()));
-		tag = NullCleaner.assertNotNull(uTag.getName());
+				uTag.getLocation());
+		tag = uTag.getName();
 	}
 
 	/**

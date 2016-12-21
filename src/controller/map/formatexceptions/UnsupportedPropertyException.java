@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
-import util.NullCleaner;
 
 /**
  * A custom exception for cases where a tag has a property it doesn't support.
@@ -40,9 +39,8 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	 */
 	public UnsupportedPropertyException(final StartElement tag, final String parameter) {
 		super("Unsupported property " + parameter + " in tag "
-					  + tag.getName().getLocalPart(),
-				NullCleaner.assertNotNull(tag.getLocation()));
-		context = NullCleaner.assertNotNull(tag.getName());
+					  + tag.getName().getLocalPart(), tag.getLocation());
+		context = tag.getName();
 		param = parameter;
 	}
 
