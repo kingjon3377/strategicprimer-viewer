@@ -232,15 +232,7 @@ public final class FluidTownHandler {
 			throw new IllegalArgumentException("Can only write AbstractTown");
 		}
 		final AbstractTown fix = (AbstractTown) obj;
-		if (fix instanceof Fortification) {
-			writeTag(ostream, "fortification", indent, true);
-		} else if (fix instanceof Town) {
-			writeTag(ostream, "town", indent, true);
-		} else if (fix instanceof City) {
-			writeTag(ostream, "city", indent, true);
-		} else {
-			throw new IllegalStateException("Unknown AbstractTownEvent type");
-		}
+		writeTag(ostream, fix.kind(), indent, true);
 		writeAttribute(ostream, "status", fix.status().toString());
 		writeAttribute(ostream, "size", fix.size().toString());
 		writeIntegerAttribute(ostream, "dc", fix.getDC());

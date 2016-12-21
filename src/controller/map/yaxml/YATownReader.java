@@ -236,15 +236,7 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 										  final AbstractTown obj, final int indent)
 			throws
 			IOException {
-		if (obj instanceof Fortification) {
-			writeTag(ostream, "fortification", indent);
-		} else if (obj instanceof Town) {
-			writeTag(ostream, "town", indent);
-		} else if (obj instanceof City) {
-			writeTag(ostream, "city", indent);
-		} else {
-			throw new IllegalStateException("Unknown AbstractTownEvent type");
-		}
+		writeTag(ostream, obj.kind(), indent);
 		writeProperty(ostream, "status", obj.status().toString());
 		writeProperty(ostream, "size", obj.size().toString());
 		writeProperty(ostream, "dc", Integer.toString(obj.getDC()));
