@@ -25,7 +25,6 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.ProxyUnit;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ActionWrapper;
-import util.NullCleaner;
 import util.OnMac;
 import view.util.Applyable;
 import view.util.BorderedPanel;
@@ -175,7 +174,7 @@ public final class OrdersPanel extends BorderedPanel
 	public void apply() {
 		if (sel instanceof IUnit) {
 			consumer.setOrders((IUnit) sel, spinnerModel.getNumber().intValue(),
-					NullCleaner.assertNotNull(area.getText()));
+					area.getText());
 			getParent().getParent().repaint();
 		}
 	}

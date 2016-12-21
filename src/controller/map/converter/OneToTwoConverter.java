@@ -56,8 +56,6 @@ import model.workermgmt.RaceFactory;
 import util.Pair;
 import util.TypesafeLogger;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A class to convert a version-1 map to a version-2 map with greater resolution.
  *
@@ -257,15 +255,14 @@ public final class OneToTwoConverter implements SimpleDriver {
 	private static Stream<Point> getNeighbors(final Point point) {
 		final int row = point.getRow();
 		final int col = point.getCol();
-		return
-				assertNotNull(Stream.of(PointFactory.point(row - 1, col - 1),
+		return Stream.of(PointFactory.point(row - 1, col - 1),
 						PointFactory.point(row - 1, col),
 						PointFactory.point(row - 1, col + 1),
 						PointFactory.point(row, col - 1),
 						PointFactory.point(row, col + 1),
 						PointFactory.point(row + 1, col - 1),
 						PointFactory.point(row + 1, col),
-						PointFactory.point(row + 1, col + 1)));
+						PointFactory.point(row + 1, col + 1));
 	}
 
 	/**
@@ -322,31 +319,31 @@ public final class OneToTwoConverter implements SimpleDriver {
 		}
 		switch (river) {
 		case East:
-			map.addRivers(assertNotNull(points.get(10)), River.East);
-			map.addRivers(assertNotNull(points.get(11)), River.East);
-			map.addRivers(assertNotNull(points.get(11)), River.West);
+			map.addRivers(points.get(10), River.East);
+			map.addRivers(points.get(11), River.East);
+			map.addRivers(points.get(11), River.West);
 			break;
 		case Lake:
-			map.addRivers(assertNotNull(points.get(10)), River.Lake);
+			map.addRivers(points.get(10), River.Lake);
 			break;
 		case North:
-			map.addRivers(assertNotNull(points.get(2)), River.North);
-			map.addRivers(assertNotNull(points.get(2)), River.South);
-			map.addRivers(assertNotNull(points.get(6)), River.North);
-			map.addRivers(assertNotNull(points.get(6)), River.South);
-			map.addRivers(assertNotNull(points.get(10)), River.North);
+			map.addRivers(points.get(2), River.North);
+			map.addRivers(points.get(2), River.South);
+			map.addRivers(points.get(6), River.North);
+			map.addRivers(points.get(6), River.South);
+			map.addRivers(points.get(10), River.North);
 			break;
 		case South:
-			map.addRivers(assertNotNull(points.get(10)), River.South);
-			map.addRivers(assertNotNull(points.get(14)), River.South);
-			map.addRivers(assertNotNull(points.get(14)), River.North);
+			map.addRivers(points.get(10), River.South);
+			map.addRivers(points.get(14), River.South);
+			map.addRivers(points.get(14), River.North);
 			break;
 		case West:
-			map.addRivers(assertNotNull(points.get(8)), River.West);
-			map.addRivers(assertNotNull(points.get(8)), River.East);
-			map.addRivers(assertNotNull(points.get(9)), River.West);
-			map.addRivers(assertNotNull(points.get(9)), River.East);
-			map.addRivers(assertNotNull(points.get(10)), River.West);
+			map.addRivers(points.get(8), River.West);
+			map.addRivers(points.get(8), River.East);
+			map.addRivers(points.get(9), River.West);
+			map.addRivers(points.get(9), River.East);
+			map.addRivers(points.get(10), River.West);
 			break;
 		default:
 			throw new IllegalStateException("Unknown River");
@@ -468,10 +465,10 @@ public final class OneToTwoConverter implements SimpleDriver {
 			int iterations;
 			for (iterations = 0; (iterations < MAX_ITERATIONS)
 										 && !fixtures.isEmpty(); iterations++) {
-				if (isSubTileSuitable(newMap, assertNotNull(initial.get(0)))) {
-					final TileFixture fix = assertNotNull(fixtures.remove(0));
-					changeFor(newMap, assertNotNull(initial.get(0)), fix);
-					addFixture(newMap, assertNotNull(initial.get(0)), fix, main);
+				if (isSubTileSuitable(newMap, initial.get(0))) {
+					final TileFixture fix = fixtures.remove(0);
+					changeFor(newMap, initial.get(0), fix);
+					addFixture(newMap, initial.get(0), fix, main);
 				}
 				initial.add(initial.remove(0));
 			}
@@ -481,9 +478,8 @@ public final class OneToTwoConverter implements SimpleDriver {
 								point.getRow() + ", " + point.getCol() +
 								"); forcing ...");
 				while (!fixtures.isEmpty()) {
-					final Point subTile = assertNotNull(initial.get(0));
-					newMap.addFixture(subTile,
-							assertNotNull(fixtures.remove(0)));
+					final Point subTile = initial.get(0);
+					newMap.addFixture(subTile, fixtures.remove(0));
 					//noinspection ObjectAllocationInLoop
 					newMap.addFixture(subTile, new TextFixture(MAX_ITER_WARN,
 																	  NEXT_TURN));

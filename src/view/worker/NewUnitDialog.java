@@ -30,8 +30,6 @@ import util.TypesafeLogger;
 import view.util.ListenedButton;
 import view.util.SPDialog;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A panel to let the user add a new unit. We fire the "add" property with the value of
  * the unit if OK is pressed and both fields are nonempty, then clear them. As this is a
@@ -102,7 +100,7 @@ public final class NewUnitDialog extends SPDialog
 			} else if (kind.isEmpty()) {
 				kindField.requestFocusInWindow();
 			} else {
-				final String reqId = assertNotNull(idField.getText().trim());
+				final String reqId = idField.getText().trim();
 				int idNum;
 				if (IsNumeric.isNumeric(reqId)) {
 					try {
