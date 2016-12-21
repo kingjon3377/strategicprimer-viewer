@@ -23,7 +23,6 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import org.eclipse.jdt.annotation.NonNull;
 import util.EnumCounter;
-import util.NullCleaner;
 
 /**
  * A class to convert a map to an equivalent half-resolution one.
@@ -71,11 +70,10 @@ public final class ResolutionDecreaseConverter {
 								old.getBaseTerrain(fourthSub)));
 				for (final Point oldPoint : Arrays.asList(firstSub, secondSub, thirdSub,
 						fourthSub)) {
-					if (old.isMountainous(NullCleaner.assertNotNull(oldPoint))) {
+					if (old.isMountainous(oldPoint)) {
 						retval.setMountainous(point, true);
 					}
-					final Ground ground =
-							old.getGround(NullCleaner.assertNotNull(oldPoint));
+					final Ground ground = old.getGround(oldPoint);
 					if (ground != null) {
 						if (retval.getGround(point) == null) {
 							retval.setGround(point, ground);
@@ -83,8 +81,7 @@ public final class ResolutionDecreaseConverter {
 							retval.addFixture(point, ground);
 						}
 					}
-					final Forest forest =
-							old.getForest(NullCleaner.assertNotNull(oldPoint));
+					final Forest forest = old.getForest(oldPoint);
 					if (forest != null) {
 						if (retval.getForest(point) == null) {
 							retval.setForest(point, forest);
@@ -92,7 +89,7 @@ public final class ResolutionDecreaseConverter {
 							retval.addFixture(point, forest);
 						}
 					}
-					old.streamOtherFixtures(NullCleaner.assertNotNull(oldPoint))
+					old.streamOtherFixtures(oldPoint)
 							.forEach(fixture -> retval.addFixture(point, fixture));
 					final Set<River> upperLeftRivers = getRivers(old, firstSub);
 					final Set<River> upperRightRivers = getRivers(old, secondSub);
@@ -204,12 +201,12 @@ public final class ResolutionDecreaseConverter {
 			}
 		}
 		if (twos.size() == 1) {
-			return NullCleaner.assertNotNull(twos.iterator().next());
+			return twos.iterator().next();
 		} else {
 			final List<TileType> list =
 					Arrays.asList(firstType, secondType, thirdType, fourthType);
 			Collections.shuffle(list);
-			return NullCleaner.assertNotNull(list.get(0));
+			return list.get(0);
 		}
 	}
 

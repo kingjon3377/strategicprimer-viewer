@@ -77,8 +77,7 @@ public final class ReportGenerator {
 	private static Point findHQ(final IMapNG map, final Player player) {
 		Point retval = PointFactory.point(-1, -1);
 		for (final Point location : map.locations()) {
-			for (final TileFixture fixture : map.getOtherFixtures(
-					assertNotNull(location))) {
+			for (final TileFixture fixture : map.getOtherFixtures(location)) {
 				if ((fixture instanceof Fortress) &&
 							((Fortress) fixture).getOwner().equals(player)) {
 					if ("HQ".equals(((Fortress) fixture).getName())) {
@@ -157,7 +156,7 @@ public final class ReportGenerator {
 			SystemOut.SYS_OUT.print("Unhandled fixture:\t");
 			SystemOut.SYS_OUT.println(fix);
 		}
-		return assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -205,7 +204,7 @@ public final class ReportGenerator {
 				new ImmortalsReportGenerator(comparator));
 		builder.append("</body>").append(LineEnd.LINE_SEP);
 		builder.append("</html>").append(LineEnd.LINE_SEP);
-		return assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -346,13 +345,13 @@ public final class ReportGenerator {
 	 */
 	private static Stream<IFixture> getFixtures(final Stream<? extends IFixture>
 														stream) {
-		return assertNotNull(stream.flatMap(fix -> {
+		return stream.flatMap(fix -> {
 			if (fix instanceof FixtureIterable) {
 				return Stream.concat(Stream.of(fix),
 						getFixtures(assertNotNull(((FixtureIterable<?>) fix).stream())));
 			} else {
 				return Stream.of(fix);
 			}
-		}));
+		});
 	}
 }

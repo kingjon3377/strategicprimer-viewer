@@ -18,7 +18,6 @@ import model.map.fixtures.ResourcePile;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import util.MultiMapHelper;
-import util.NullCleaner;
 import util.Quantity;
 
 /**
@@ -189,8 +188,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 				key -> new HashSet<>());
 		final List<String> list = new ArrayList<>(set);
 		final int num = cli.chooseStringFromList(list,
-				NullCleaner.assertNotNull(String.format(
-						"Possible resources in the %s category:", kind)),
+				String.format("Possible resources in the %s category:", kind),
 				"No resources entered yet", "Choose resource: ", false);
 		if ((num >= 0) && (num < list.size())) {
 			return list.get(num);
@@ -213,14 +211,14 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			throws IOException {
 		if (resourceUnits.containsKey(resource)) {
 			final String unit = resourceUnits.get(resource);
-			if ((unit != null) && cli.inputBooleanInSeries(NullCleaner.assertNotNull(
-					String.format("Is %s the correct units for %s? ", unit, resource)),
+			if ((unit != null) && cli.inputBooleanInSeries(
+					String.format("Is %s the correct units for %s? ", unit, resource),
 					"correct;" + unit + ';' + resource)) {
 				return unit;
 			}
 		}
-		final String retval = cli.inputString(NullCleaner.assertNotNull(
-				String.format("Unit to use for %s: ", resource)));
+		final String retval =
+				cli.inputString(String.format("Unit to use for %s: ", resource));
 		resourceUnits.put(resource, retval);
 		return retval;
 	}
