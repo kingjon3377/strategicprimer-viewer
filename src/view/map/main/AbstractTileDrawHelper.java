@@ -2,7 +2,6 @@ package view.map.main;
 
 import java.awt.Color;
 import model.map.TileType;
-import util.NullCleaner;
 
 /**
  * An abstract superclass containing helper methods for TileDrawHelpers.
@@ -35,7 +34,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	/**
 	 * The color of the icon used to show that a tile has an event or associated text.
 	 */
-	protected static final Color EVENT_COLOR = NullCleaner.assertNotNull(Color.pink);
+	protected static final Color EVENT_COLOR = Color.pink;
 	/**
 	 * Mapping from tile types to colors.
 	 */
