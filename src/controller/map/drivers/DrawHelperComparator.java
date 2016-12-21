@@ -19,7 +19,6 @@ import model.misc.IMultiMapModel;
 import model.viewer.FixtureMatcher;
 import model.viewer.TileViewSize;
 import model.viewer.ViewerModel;
-import util.NullCleaner;
 import util.Pair;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
@@ -140,9 +139,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : map.locations()) {
-				helper.drawTileTranslated(
-						NullCleaner.assertNotNull(image.createGraphics()),
-						map, point, tileSize, tileSize);
+				helper.drawTileTranslated(image.createGraphics(), map, point, tileSize,
+						tileSize);
 			}
 		}
 	}
@@ -187,12 +185,9 @@ public final class DrawHelperComparator implements SimpleDriver {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : map.locations()) {
-				helper.drawTile(
-						NullCleaner.assertNotNull(image.createGraphics()),
-						map, point,
+				helper.drawTile(image.createGraphics(), map, point,
 						PointFactory.coordinate(point.getRow() * tileSize,
-								point.getCol() * tileSize),
-						dimensions);
+								point.getCol() * tileSize), dimensions);
 			}
 		}
 	}
@@ -214,9 +209,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			thirdBody(helper,
-					NullCleaner.assertNotNull(image.createGraphics()), map,
-					tileSize);
+			thirdBody(helper, image.createGraphics(), map, tileSize);
 		}
 		final long end = System.nanoTime();
 		return end - start;
@@ -257,9 +250,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			fourthBody(helper,
-					NullCleaner.assertNotNull(image.createGraphics()), map,
-					tileSize);
+			fourthBody(helper, image.createGraphics(), map, tileSize);
 		}
 		final long end = System.nanoTime();
 		return end - start;
@@ -302,8 +293,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			fifthOneBody(map, helper,
-					NullCleaner.assertNotNull(image.createGraphics()), tileSize);
+			fifthOneBody(map, helper, image.createGraphics(), tileSize);
 		}
 		final long end = System.nanoTime();
 		return end - start;
@@ -350,9 +340,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			fifthTwoBody(helper,
-					NullCleaner.assertNotNull(image.createGraphics()), map,
-					tileSize);
+			fifthTwoBody(helper, image.createGraphics(), map, tileSize);
 		}
 		final long end = System.nanoTime();
 		return end - start;
