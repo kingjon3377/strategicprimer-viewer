@@ -68,16 +68,9 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			throws IOException {
 		final List<IUnit> units = model.getUnits(player);
 		units.removeIf(unit -> !unit.iterator().hasNext());
-		while (!units.isEmpty()) {
-			final int unitNum = cli.chooseFromList(units,
-					player.getName() + "'s units:",
-					"No unadvanced units remain.", "Chosen unit: ", false);
-			if ((unitNum >= 0) && (unitNum < units.size())) {
-				advanceWorkersInUnit(units.remove(unitNum), cli);
-			} else {
-				break;
-			}
-		}
+		loopOnList(units, () -> cli.chooseFromList(units, player.getName() + "'s units:",
+				"No unadvanced units remain.", "Chosen unit: ", false),
+				"Choose another unit? ", unit -> advanceWorkersInUnit(unit, cli), cli);
 	}
 
 	/**
@@ -93,15 +86,10 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 											  .map(IWorker.class::cast)
 											  .collect(Collectors.toList());
 		if (cli.inputBoolean("Add experience to workers individually? ")) {
-			while (!workers.isEmpty()) {
-				final int workerNum = cli.chooseFromList(workers, "Workers in unit:",
-						"No unadvanced workers remain.", "Chosen worker: ", false);
-				if ((workerNum >= 0) && (workerNum < workers.size())) {
-					advanceSingleWorker(workers.remove(workerNum), cli);
-				} else {
-					break;
-				}
-			}
+			loopOnList(workers, () -> cli.chooseFromList(workers, "Workers in unit:",
+					"No unadvanced workers remain.", "Chosen worker: ", false),
+					"Choose another worker? ", worker -> advanceSingleWorker(worker, cli),
+					cli);
 		} else {
 			if (workers.isEmpty()) {
 				cli.println("No workers in unit.");
@@ -111,33 +99,16 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			final String hdr = "Jobs in workers:";
 			final String none = "No existing jobs.";
 			final String prompt = "Job to advance: ";
-			final ICLIHelper.ChoiceOperation choice =
-					() -> cli.chooseFromList(jobs, hdr, none, prompt, false);
-			for (int jobNum = choice.choose(); jobNum <= jobs.size();
-					jobNum = choice.choose()) {
-				final IJob job;
-				if ((jobNum < 0) || (jobNum == jobs.size())) {
-					final String jobName = cli.inputString("Name of new Job: ");
-					workers.forEach(worker -> worker.addJob(new Job(jobName, 0)));
-					jobs.clear();
-					new ProxyWorker(unit).forEach(jobs::add);
-					final Optional<IJob> temp =
-							jobs.stream().filter(item -> jobName.equals(item.getName()))
-									.findAny();
-					if (temp.isPresent()) {
-						job = temp.get();
-					} else {
-						cli.println("Select the new job at the next prompt.");
-						continue;
-					}
-				} else {
-					job = jobs.get(jobNum);
-				}
-				advanceWorkersInJob(workers, job.getName(), cli);
-				if (!cli.inputBoolean("Select another Job in these workers? ")) {
-					break;
-				}
-			}
+			loopOnMutableList(jobs, () -> cli.chooseFromList(jobs, hdr, none, prompt, false),
+					"Select another Job in these workers? ", list -> {
+						final String jobName = cli.inputString("Name of new Job: ");
+						workers.forEach(worker -> worker.addJob(new Job(jobName, 0)));
+						list.clear();
+						new ProxyWorker(unit).forEach(list::add);
+						return list.stream()
+									   .filter(item -> jobName.equals(item.getName()))
+									   .findAny();
+					}, job -> advanceWorkersInJob(workers, job.getName(), cli), cli);
 		}
 	}
 
@@ -158,31 +129,72 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Skills in Jobs:";
 		final String none = "No existing skills.";
 		final String prompt = "Skill to advance: ";
-		final ICLIHelper.ChoiceOperation choice =
-				() -> cli.chooseFromList(skills, hdr, none, prompt, false);
-		for (int skillNum = choice.choose(); skillNum <= skills.size();
-				skillNum = choice.choose()) {
-			final ISkill skill;
-			if ((skillNum < 0) || (skillNum == skills.size())) {
-				final String skillName = cli.inputString("Name of new Skill: ");
-				jobs.forEach(job -> job.addSkill(new Skill(skillName, 0, 0)));
-				skills.clear();
-				new ProxyJob(jobName, false, workers.stream().toArray(IWorker[]::new))
-						.forEach(skills::add);
-				final Optional<ISkill> temp =
-						skills.stream().filter(item -> skillName.equals(item.getName()))
-								.findAny();
+		loopOnMutableList(skills, () -> cli.chooseFromList(skills, hdr, none, prompt, false),
+				"Select another Skill in this Job? ", list -> {
+			final String skillName = cli.inputString("Name of new Skill: ");
+			jobs.forEach(job -> job.addSkill(new Skill(skillName, 0, 0)));
+			skills.clear();
+			new ProxyJob(jobName, false, workers.stream().toArray(IWorker[]::new))
+					.forEach(skills::add);
+			return skills.stream().filter(item -> skillName.equals(item.getName()))
+							.findAny();
+		}, skill -> advanceWorkersInSkill(workers, jobName, skill.getName(), cli), cli);
+	}
+	/**
+	 * Ask the user to choose an item from the list, and if he does carry out an
+	 * operation on it and then ask if he wants to do another.
+	 * @param <T> the type of things in the list
+	 * @param choice how to ask the user to choose an item from the list
+	 * @param prompt the prompt to use to ask if the user wants to continue
+	 * @param operation what to do with the chosen item in the list
+	 * @param cli the nterface to talk to the user
+	 * @throws IOException on I/O error getting the user's choice
+	 */
+	private static <T> void loopOnList(final List<T> list,
+											  final ICLIHelper.ChoiceOperation choice,
+											  final String prompt,
+											  final ThrowingConsumer<T> operation,
+											  final ICLIHelper cli) throws IOException {
+		for (int num = choice.choose(); num >= 0 && num < list.size(); num = choice.choose()) {
+			operation.accept(list.remove(num));
+			if (list.isEmpty() || !cli.inputBoolean(prompt)) {
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Ask the user to choose an item from the list, and if he does carry out an
+	 * operation on it and then ask if he wants to do another.
+	 * @param <T> the type of things in the list
+	 * @param choice how to ask the user to choose an item from the list
+	 * @param prompt the prompt to use to ask if the user wants to continue
+	 * @param addition what to do if the user chooses "add a new one"
+	 * @param operation what to do with the chosen item in the list
+	 * @param cli the nterface to talk to the user
+	 * @throws IOException on I/O error getting the user's choice
+	 */
+	private static <T> void loopOnMutableList(final List<T> list,
+											  final ICLIHelper.ChoiceOperation choice,
+											  final String prompt,
+											  final ListAmendment<T> addition,
+											  final ThrowingConsumer<T> operation,
+											  final ICLIHelper cli) throws IOException {
+		for (int num = choice.choose(); num <= list.size(); num = choice.choose()) {
+			final T item;
+			if (num < 0 || num == list.size()) {
+				final Optional<T> temp = addition.amendList(list);
 				if (temp.isPresent()) {
-					skill = temp.get();
+					item = temp.get();
 				} else {
-					cli.println("Select the new skill at the next prompt.");
+					cli.println("Select the new item at the next prompt.");
 					continue;
 				}
 			} else {
-				skill = skills.get(skillNum);
+				item = list.get(num);
 			}
-			advanceWorkersInSkill(workers, jobName, skill.getName(), cli);
-			if (!cli.inputBoolean("Select another Skill in this Job? ")) {
+			operation.accept(item);
+			if (!cli.inputBoolean(prompt)) {
 				break;
 			}
 		}
@@ -271,33 +283,15 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Jobs in worker:";
 		final String none = "No existing jobs.";
 		final String prompt = "Job to advance: ";
-		final ICLIHelper.ChoiceOperation choice =
-				() -> cli.chooseFromList(jobs, hdr, none, prompt, false);
-		for (int jobNum = choice.choose(); jobNum <= jobs.size();
-				jobNum = choice.choose()) {
-			final IJob job;
-			if ((jobNum < 0) || (jobNum == jobs.size())) {
-				final String jobName = cli.inputString("Name of new Job: ");
-				worker.addJob(new Job(jobName, 0));
-				jobs.clear();
-				worker.forEach(jobs::add);
-				final Optional<IJob> temp =
-						jobs.stream().filter(item -> jobName.equals(item.getName()))
-								.findAny();
-				if (temp.isPresent()) {
-					job = temp.get();
-				} else {
-					cli.println("Select the new job at the next prompt.");
-					continue;
-				}
-			} else {
-				job = jobs.get(jobNum);
-			}
-			advanceJob(job, cli);
-			if (!cli.inputBoolean("Select another Job in this worker? ")) {
-				break;
-			}
-		}
+		loopOnMutableList(jobs, () -> cli.chooseFromList(jobs, hdr, none, prompt, false),
+				"Select another Job in this worker? ", list -> {
+					final String jobName = cli.inputString("Name of new Job: ");
+					worker.addJob(new Job(jobName, 0));
+					list.clear();
+					worker.forEach(list::add);
+					return list.stream().filter(item -> jobName.equals(item.getName()))
+								   .findAny();
+				}, job -> advanceJob(job, cli), cli);
 	}
 
 	/**
@@ -313,38 +307,22 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Skills in Job:";
 		final String none = "No existing skills.";
 		final String prompt = "Skill to advance: ";
-		final ICLIHelper.ChoiceOperation choice =
-				() -> cli.chooseFromList(skills, hdr, none, prompt, false);
-		for (int skillNum = choice.choose(); skillNum <= skills.size();
-				skillNum = choice.choose()) {
-			final ISkill skill;
-			if ((skillNum < 0) || (skillNum == skills.size())) {
-				final String skillName = cli.inputString("Name of new Skill: ");
-				job.addSkill(new Skill(skillName, 0, 0));
-				skills.clear();
-				job.forEach(skills::add);
-				final Optional<ISkill> temp =
-						skills.stream().filter(item -> skillName.equals(item.getName()))
-								.findAny();
-				if (temp.isPresent()) {
-					skill = temp.get();
-				} else {
-					cli.println("Select the new skill at the next prompt.");
-					continue;
-				}
-			} else {
-				skill = skills.get(skillNum);
-			}
+		loopOnMutableList(skills, () -> cli.chooseFromList(skills, hdr, none, prompt, false),
+				"Select another Skill in this Job? ", list -> {
+			final String skillName = cli.inputString("Name of new Skill: ");
+			job.addSkill(new Skill(skillName, 0, 0));
+			list.clear();
+			job.forEach(list::add);
+			return list.stream().filter(item -> skillName.equals(item.getName()))
+						   .findAny();
+		}, skill -> {
 			final int oldLevel = skill.getLevel();
 			skill.addHours(cli.inputNumber("Hours of experience to add: "),
 					SingletonRandom.RANDOM.nextInt(100));
 			if (skill.getLevel() != oldLevel) {
 				cli.printf("Worker(s) gained a level in %s%n", skill.getName());
 			}
-			if (!cli.inputBoolean("Select another Skill in this Job? ")) {
-				break;
-			}
-		}
+		}, cli);
 	}
 
 	/**
@@ -390,17 +368,41 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			final String hdr = "Available players:";
 			final String none = "No players found.";
 			final String prompt = "Chosen player: ";
-			final ICLIHelper.ChoiceOperation choice =
-					() -> cli.chooseFromList(playerList, hdr, none, prompt, false);
-			for (int playerNum = choice.choose();
-					(playerNum >= 0) && (playerNum < playerList.size());
-					playerNum = choice.choose()) {
-				advanceWorkers(workerModel, playerList.remove(playerNum), cli);
-			}
+			loopOnList(playerList,
+					() -> cli.chooseFromList(playerList, hdr, none, prompt, false), "Select another player? ",
+					player -> advanceWorkers(workerModel, player, cli),
+					cli);
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error interacting with user",
 												   except);
 		}
+	}
+
+	/**
+	 * An interface for when the user wants to add a new item to a list.
+	 * @param <T> the type of things in the list
+	 */
+	@FunctionalInterface
+	private interface ListAmendment<T> {
+		/**
+		 * @param list the list to amend
+		 * @return the added item, or nothing if we couldn't get it.
+		 * @throws IOException on I/O error talking to the user
+		 */
+		Optional<T> amendList(final List<T> list) throws IOException;
+	}
+
+	/**
+	 * An interface like Consumer except declaring a thrown exception.
+	 * @param <T> the type of thing accepted
+	 */
+	@FunctionalInterface
+	private interface ThrowingConsumer<T> {
+		/**
+		 * @param item the item to accept
+		 * @throws IOException on I/O error
+		 */
+		void accept(final T item) throws IOException;
 	}
 }
