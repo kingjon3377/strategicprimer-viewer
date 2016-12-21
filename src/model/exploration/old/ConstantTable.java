@@ -1,6 +1,6 @@
 package model.exploration.old;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Stream;
 import model.map.MapDimensions;
@@ -81,10 +81,7 @@ public final class ConstantTable implements EncounterTable {
 	 */
 	@Override
 	public Set<String> allEvents() {
-		// FIXME: Use Collections.singleton()
-		final Set<String> retval = new HashSet<>();
-		retval.add(value);
-		return retval;
+		return Collections.singleton(value);
 	}
 
 	/**
