@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NoCloneException;
@@ -98,12 +97,8 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
 		builder.append(text);
-		// TODO: Use either for-each loop or Stream operations
-		for (int i = 0; i < getChildCount(); i++) {
-			final TreeNode node = getChildAt(i);
-			if (node instanceof IReportNode) {
-				((IReportNode) node).produce(builder);
-			}
+		for (final IReportNode node : this) {
+			node.produce(builder);
 		}
 		return builder;
 	}

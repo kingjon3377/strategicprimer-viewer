@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
@@ -72,11 +71,8 @@ public final class RootReportNode extends DefaultMutableTreeNode
 		builder.append("<html>").append(LineEnd.LINE_SEP).append("<head><title>")
 				.append(text)
 				.append("</title></head>").append(LineEnd.LINE_SEP).append("<body>");
-		for (int i = 0; i < getChildCount(); i++) {
-			final TreeNode child = getChildAt(i);
-			if (child instanceof IReportNode) {
-				((IReportNode) child).produce(builder);
-			}
+		for (final IReportNode child : this) {
+			child.produce(builder);
 		}
 		builder.append("</body>").append(LineEnd.LINE_SEP).append("</html>").append(
 				LineEnd.LINE_SEP);

@@ -113,14 +113,11 @@ public final class ListReportNode extends DefaultMutableTreeNode
 		builder.append(LineEnd.LINE_SEP);
 		builder.append("<ul>");
 		builder.append(LineEnd.LINE_SEP);
-		for (int i = 0; i < getChildCount(); i++) {
-			final TreeNode child = getChildAt(i);
-			if (child instanceof IReportNode) {
-				builder.append("<li>");
-				((IReportNode) child).produce(builder);
-				builder.append("</li>");
-				builder.append(LineEnd.LINE_SEP);
-			}
+		for (final IReportNode node : this) {
+			builder.append("<li>");
+			node.produce(builder);
+			builder.append("</li>");
+			builder.append(LineEnd.LINE_SEP);
 		}
 		builder.append("</ul>");
 		builder.append(LineEnd.LINE_SEP);

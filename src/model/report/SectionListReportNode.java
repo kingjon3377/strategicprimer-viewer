@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
@@ -118,14 +117,11 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 		}
 		if (getChildCount() != 0) {
 			builder.append("<ul>").append(LineEnd.LINE_SEP);
-			for (int i = 0; i < getChildCount(); i++) {
-				final TreeNode child = getChildAt(i);
-				if (child instanceof IReportNode) {
-					builder.append("<li>");
-					builder.append(((IReportNode) child).produce());
-					builder.append("</li>");
-					builder.append(LineEnd.LINE_SEP);
-				}
+			for (final IReportNode child : this) {
+				builder.append("<li>");
+				builder.append(((IReportNode) child).produce());
+				builder.append("</li>");
+				builder.append(LineEnd.LINE_SEP);
 			}
 			builder.append("</ul>");
 			builder.append(LineEnd.LINE_SEP);
