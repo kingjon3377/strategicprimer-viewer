@@ -7,7 +7,6 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * An interface to hold methods that allow menu items to be created in a more
@@ -56,8 +55,8 @@ public interface MenuItemCreator {
 	 * @return the hot-key
 	 */
 	default KeyStroke createHotKey(final int key) {
-		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key,
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		return KeyStroke.getKeyStroke(key,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 	}
 
 	/**
@@ -67,8 +66,8 @@ public interface MenuItemCreator {
 	 * @return the hot-key
 	 */
 	default KeyStroke createShiftHotKey(final int key) {
-		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key,
+		return KeyStroke.getKeyStroke(key,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() |
-						InputEvent.SHIFT_DOWN_MASK));
+						InputEvent.SHIFT_DOWN_MASK);
 	}
 }

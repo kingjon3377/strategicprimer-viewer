@@ -22,7 +22,6 @@ import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
-import util.NullCleaner;
 
 /**
  * A table for legacy "events".
@@ -83,7 +82,7 @@ public final class LegacyTable implements EncounterTable {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addData(final IEvent event) {
-		data.add(NullCleaner.assertNotNull(event.toString()));
+		data.add(event.toString());
 	}
 
 	/**

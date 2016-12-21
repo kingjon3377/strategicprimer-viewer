@@ -3,7 +3,6 @@ package model.map.fixtures.resources;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A field or meadow. If in forest, should increase a unit's vision slightly when the unit
@@ -144,7 +143,7 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 			builder.append(kind);
 			builder.append(" meadow");
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**

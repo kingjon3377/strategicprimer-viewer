@@ -22,7 +22,6 @@ import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
 import model.viewer.ViewerModel;
-import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
@@ -77,7 +76,7 @@ public final class MapReaderAdapter {
 		if (dropFirst) {
 			retval.remove(0);
 		}
-		return NullCleaner.assertNotNull(retval.toArray(new Path[retval.size()]));
+		return retval.toArray(new Path[retval.size()]);
 	}
 
 	/**

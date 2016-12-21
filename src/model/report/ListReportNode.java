@@ -12,7 +12,6 @@ import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
 import util.NoCloneException;
-import util.NullCleaner;
 
 /**
  * A node representing a list.
@@ -83,6 +82,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String produce() {
+		// TODO: Use a Formatter
 		// Assume each child is half a K.
 		final StringBuilder builder = new StringBuilder(text.length() + BOILERPLATE_LEN +
 																(getChildCount() *
@@ -100,7 +100,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 		}
 		builder.append("</ul>");
 		builder.append(LineEnd.LINE_SEP);
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
