@@ -26,11 +26,9 @@ import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
-import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.resources.CacheFixture;
-import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.ITownFixture;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
@@ -164,14 +162,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			final Set<TileFixture> neighborFixtures =
 					getSetFromMap(additions, neighbor);
 			possibilities.clear();
-			final Ground ground = master.getGround(neighbor);
-			final Forest forest = master.getForest(neighbor);
-			if (ground != null) {
-				possibilities.add(ground);
-			}
-			if (forest != null) {
-				possibilities.add(forest);
-			}
+			possibilities.add(master.getGround(neighbor));
+			possibilities.add(master.getForest(neighbor));
 			for (final TileFixture fix : master.getOtherFixtures(neighbor)) {
 				if (neighborFixtures.contains(fix)) {
 					continue;
@@ -183,10 +175,9 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 					possibilities.add(fix);
 				}
 			}
-			if (!possibilities.isEmpty()) {
-				Collections.shuffle(possibilities);
-				neighborFixtures.add(possibilities.get(0));
-			}
+			Collections.shuffle(possibilities);
+			possibilities.stream().filter(Objects::nonNull).findAny()
+					.map(neighborFixtures::add);
 		}
 	}
 
