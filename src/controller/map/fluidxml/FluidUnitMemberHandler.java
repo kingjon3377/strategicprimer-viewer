@@ -174,16 +174,11 @@ public final class FluidUnitMemberHandler {
 			final String skill = retval.iterator().next().getName();
 			if (equalsAny(skill, IJob.SUSPICIOUS_SKILLS) ||
 						skill.equals(retval.getName())) {
-				final UnwantedChildException except =
-						new UnwantedChildException(element.getName(),
-														  new QName(ISPReader.NAMESPACE,
-																		   skill),
-														  lastSkill.getLocation(),
-														  new DeprecatedPropertyException(lastSkill,
-																								 skill,
-																								 "miscellaneous"));
 
-				warner.warn(except);
+				warner.warn(new UnwantedChildException(
+						element.getName(), new QName(ISPReader.NAMESPACE, skill),
+						lastSkill.getLocation(),
+						new DeprecatedPropertyException(lastSkill, skill, "miscellaneous")));
 			}
 		}
 		return retval;
