@@ -164,7 +164,24 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				getUnits(owner).stream().filter(unit -> id == unit.getID()).findAny();
 		return retval.orElse(null);
 	}
-
+	/**
+	 * Add a unit at the given location in the given map.
+	 * @param map the unit to work in
+	 * @param unit the unit to add
+	 * @param location where to add it
+	 */
+	private static void addUnitAtLocation(final IMutableMapNG map, final IUnit unit,
+										  final Point location) {
+		final Optional<Fortress> fort =
+				map.streamOtherFixtures(location).filter(Fortress.class::isInstance)
+						.map(Fortress.class::cast)
+						.filter(fix -> unit.getOwner().equals(fix.getOwner())).findAny();
+		if (fort.isPresent()) {
+			fort.get().addMember(unit.copy(false));
+		} else {
+			map.addFixture(location, unit.copy(false));
+		}
+	}
 	/**
 	 * Add a unit at the given location in all maps.
 	 *
@@ -173,32 +190,12 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addUnitAtLocation(final IUnit unit, final Point location) {
-		// TODO: Extract Stream->Fortress pipeline into a lambda
 		if (getSubordinateMaps().iterator().hasNext()) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : getAllMaps()) {
-				final Optional<Fortress> fort = pair.first().streamOtherFixtures(location)
-														.filter(Fortress.class::isInstance)
-														.map(Fortress.class::cast)
-														.filter(fix -> unit.getOwner()
-																			   .equals(fix.getOwner()))
-														.findAny();
-				if (fort.isPresent()) {
-					fort.get().addMember(unit.copy(false));
-				} else {
-					pair.first().addFixture(location, unit.copy(false));
-				}
+				addUnitAtLocation(pair.first(), unit, location);
 			}
 		} else {
-			final Optional<Fortress> fort = getMap().streamOtherFixtures(location)
-					.filter(Fortress.class::isInstance)
-					.map(Fortress.class::cast)
-					.filter(fix -> unit.getOwner().equals(fix.getOwner()))
-					.findAny();
-			if (fort.isPresent()) {
-				fort.get().addMember(unit.copy(false));
-			} else {
-				getMap().addFixture(location, unit.copy(false));
-			}
+			addUnitAtLocation(getMap(), unit, location);
 		}
 	}
 
