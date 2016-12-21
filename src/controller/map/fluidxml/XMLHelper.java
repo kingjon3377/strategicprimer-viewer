@@ -10,6 +10,7 @@ import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Optional;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
@@ -117,12 +118,8 @@ public final class XMLHelper {
 	 */
 	public static String getAttribute(final StartElement element,
 									  final String param, final String defaultValue) {
-		final Attribute attr = getAttributeByName(element, param);
-		if (attr == null) {
-			return defaultValue;
-		} else {
-			return NullCleaner.valueOrDefault(attr.getValue(), defaultValue);
-		}
+		return Optional.ofNullable(getAttributeByName(element, param))
+					   .map(Attribute::getValue).orElse(defaultValue);
 	}
 
 	/**
