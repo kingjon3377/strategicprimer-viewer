@@ -91,9 +91,8 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separateByStatus(separated, Collection::add, fixtures.values(),
 				pair -> produce(fixtures, map, currentPlayer,
 						(ITownFixture) pair.second(), pair.first()));
-		final HeadedList<String> retval =
-				new HtmlList("<h4>Cities, towns, and/or fortifications you know " +
-									 "about:</h4>");
+		final HeadedList<String> retval = new HtmlList(
+				"<h4>Cities, towns, and/or fortifications you know about:</h4>");
 		STATUSES.stream().map(separated::get).filter(Objects::nonNull)
 				.map(Collection::toString).forEach(retval::add);
 		return retval.toString();
