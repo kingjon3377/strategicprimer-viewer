@@ -5,6 +5,10 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -13,10 +17,6 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.fixtures.FortressMember;
-import model.map.fixtures.Implement;
-import model.map.fixtures.ResourcePile;
-import model.map.fixtures.mobile.IUnit;
-import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.City;
 import model.map.fixtures.towns.Fortification;
@@ -71,17 +71,9 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 	 */
 	private static final String NAME_PARAM = "name";
 	/**
-	 * The unit reader. TODO: Use a Collection of readers instead of individual fields.
+	 * The collection of member-readers.
 	 */
-	private final YAReader<IUnit> unitReader;
-	/**
-	 * The reader for resource piles.
-	 */
-	private final YAReader<ResourcePile> rpReader;
-	/**
-	 * The reader for Implements.
-	 */
-	private final YAReader<Implement> implReader;
+	private final Collection<YAReader<? extends FortressMember>> memberReaders;
 	/**
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
@@ -92,9 +84,10 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 		super(warning, idRegistrar);
 		warner = warning;
 		players = playerCollection;
-		unitReader = new YAUnitReader(warning, idRegistrar, playerCollection);
-		rpReader = new YAResourcePileReader(warning, idRegistrar);
-		implReader = new YAImplementReader(warning, idRegistrar);
+		memberReaders = Collections.unmodifiableList(
+				Arrays.asList(new YAUnitReader(warning, idRegistrar, playerCollection),
+						new YAResourcePileReader(warning, idRegistrar),
+						new YAImplementReader(warning, idRegistrar)));
 	}
 
 	/**
@@ -199,24 +192,15 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 							event.asStartElement().getName())) {
 				final String memberTag = event.asStartElement().getName()
 												 .getLocalPart().toLowerCase();
-				switch (memberTag) {
-				case "unit":
-					retval.addMember(unitReader.read(event.asStartElement(),
-							element.getName(), stream));
-					break;
-				case "implement":
-					retval.addMember(implReader.read(event.asStartElement(),
-							element.getName(), stream));
-					break;
-				case "resource":
-					retval.addMember(
-							rpReader.read(event.asStartElement(), element.getName(),
-									stream));
-					break;
-				default:
-					throw new UnwantedChildException(element.getName(),
-															event.asStartElement());
-				}
+				final YAReader<? extends FortressMember> reader =
+						memberReaders.stream()
+								.filter(yar -> yar.isSupportedTag(memberTag)).findAny()
+								.orElseThrow(
+										() -> new UnwantedChildException(
+												element.getName(), event.asStartElement()));
+				retval.addMember(
+						reader.read(event.asStartElement(), element.getName(),
+								stream));
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
 			}
@@ -326,14 +310,11 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 			if (fortress.iterator().hasNext()) {
 				ostream.append(LineEnd.LINE_SEP);
 				for (final FortressMember unit : fortress) {
-					if (unit instanceof Unit) {
-						unitReader.write(ostream, (Unit) unit,
-								indent + 1);
-					} else if (unit instanceof Implement) {
-						implReader.write(ostream, (Implement) unit, indent + 1);
-					} else if (unit instanceof ResourcePile) {
-						rpReader.write(ostream,
-								(ResourcePile) unit, indent + 1);
+					final Optional<YAReader<? extends FortressMember>> reader =
+							memberReaders.stream().filter(yar -> yar.canWrite(unit))
+									.findAny();
+					if (reader.isPresent()) {
+						reader.get().writeRaw(ostream, unit, indent + 1);
 					} else {
 						LOGGER.severe("Unhandled FortressMember class "
 											  + unit.getClass().getName());
