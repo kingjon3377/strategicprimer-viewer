@@ -19,7 +19,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.LineEnd;
-import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -214,7 +213,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	@Override
 	@NonNull
 	public final Iterator<@NonNull UnitMember> iterator() {
-		return NullCleaner.assertNotNull(members.iterator());
+		return members.iterator();
 	}
 
 	/**

@@ -30,7 +30,6 @@ import model.workermgmt.WorkerTreeModelAlt.KindNode;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
 
-import static util.NullCleaner.assertNotNull;
 import static util.TypesafeLogger.getLogger;
 
 /**
@@ -61,13 +60,12 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
 	 * The default background color when selected.
 	 */
-	private static final Color DEF_BKGD_SELECTED =
-			assertNotNull(DEFAULT.getBackgroundSelectionColor());
+	private static final Color DEF_BKGD_SELECTED = DEFAULT.getBackgroundSelectionColor();
 	/**
 	 * The default background when not selected.
 	 */
 	private static final Color DEF_BKGD_NON_SEL =
-			assertNotNull(DEFAULT.getBackgroundNonSelectionColor());
+			DEFAULT.getBackgroundNonSelectionColor();
 	/**
 	 * the default fixture icon.
 	 */
@@ -196,9 +194,9 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 												  final boolean hasFocus) {
 		assert (tree != null) && (value != null) :
 				"UnitMemberCellRenderer passed a null tree or value";
-		final Component component = assertNotNull(
+		final Component component =
 				DEFAULT.getTreeCellRendererComponent(tree, value, selected, expanded,
-						leaf, row, hasFocus));
+						leaf, row, hasFocus);
 		setComponentColor(component, null);
 		final Object internal = getNodeValue(value);
 		if (internal instanceof HasImage) {
@@ -235,7 +233,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		boolean shouldWarn = false;
 		for (final TreeNode child : node) {
 			if (child instanceof WorkerTreeModelAlt.UnitNode) {
-				final IUnit unit = (IUnit) assertNotNull(getNodeValue(child));
+				final IUnit unit = (IUnit) getNodeValue(child);
 				if (!unit.iterator().hasNext()) {
 					continue;
 				}

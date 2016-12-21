@@ -12,7 +12,6 @@ import model.map.HasName;
 import model.map.IMapNG;
 import model.map.Point;
 import model.misc.IDriverModel;
-import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -67,8 +66,8 @@ public final class TrapModelDriver implements SimpleDriver {
 	/**
 	 * List of commands.
 	 */
-	private static final List<TrapperCommand> COMMANDS = NullCleaner.assertNotNull(
-			Collections.unmodifiableList(Arrays.asList(TrapperCommand.values())));
+	private static final List<TrapperCommand> COMMANDS =
+			Collections.unmodifiableList(Arrays.asList(TrapperCommand.values()));
 
 	/**
 	 * @param map the map to explore
@@ -96,9 +95,7 @@ public final class TrapModelDriver implements SimpleDriver {
 			int input = -1;
 			while ((minutes > 0) && (input < TrapperCommand.values().length)) {
 				if (input >= 0) {
-					final TrapperCommand command =
-							NullCleaner
-									.assertNotNull(TrapperCommand.values()[input]);
+					final TrapperCommand command = TrapperCommand.values()[input];
 					minutes -= handleCommand(fixtures, cli,
 							command, fishing);
 					cli.print(inHours(minutes));
