@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -88,9 +87,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separated.put(TownStatus.Burned, new HtmlList("<h5>Burned-Out " +
 															  "Communities</h5>"));
 		separated.put(TownStatus.Ruined, new HtmlList("<h5>Ruined Communities</h5>"));
-		separateByStatus(separated, Collection::add, fixtures.values(),
-				pair -> produce(fixtures, map, currentPlayer,
-						(ITownFixture) pair.second(), pair.first()));
+		separateByStatus(separated, fixtures.values(), (list, pair) -> list.add(
+				produce(fixtures, map, currentPlayer, (ITownFixture) pair.second(),
+						pair.first())));
 		final HeadedList<String> retval = new HtmlList(
 				"<h4>Cities, towns, and/or fortifications you know about:</h4>");
 		STATUSES.stream().map(separated::get).filter(Objects::nonNull)
@@ -101,19 +100,16 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * Separate towns by status.
 	 * @param <T> the type of things stored in the given mapping
 	 * @param <U> the type of things our caller wants to return
-	 * @param getter the method reference to get the collections or nodes out of the
-	 *                  given mapping
 	 * @param mapping the collection of collections to put the products into
-	 * @param function the function to produce the products.
+	 * @param function the function to produce the products and put them into the
 	 */
 	private <T, U> void separateByStatus(final Map<TownStatus, T> mapping,
-										 final BiConsumer<T, U> getter,
-									  final Collection<Pair<Point, IFixture>> coll,
-									  final Function<Pair<Point, IFixture>, U> function) {
+										 final Collection<Pair<Point, IFixture>> coll,
+										 final BiConsumer<T, Pair<Point, IFixture>> function) {
 		coll.stream().filter(pair -> pair.second() instanceof AbstractTown)
-				.sorted(pairComparator).forEach(pair -> getter.accept(
+				.sorted(pairComparator).forEach(pair -> function.accept(
 				mapping.get(((ITownFixture) pair.second()).status()),
-				function.apply(pair)));
+				pair));
 
 	}
 	/**
@@ -141,9 +137,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 				new SectionListReportNode(5, "Burned-Out Communities"));
 		separated.put(TownStatus.Ruined,
 				new SectionListReportNode(5, "Ruined Communities"));
-		separateByStatus(separated, IReportNode::add, fixtures.values(),
-				pair -> produceRIR(fixtures, map, currentPlayer,
-						(ITownFixture) pair.second(), pair.first()));
+		separateByStatus(separated, fixtures.values(), (node, pair) -> node.add(
+				produceRIR(fixtures, map, currentPlayer, (ITownFixture) pair.second(),
+						pair.first())));
 		final IReportNode retval = new SectionListReportNode(4, TOWN_HDR);
 		STATUSES.stream().map(separated::get).filter(Objects::nonNull)
 				.forEach(retval::addIfNonEmpty);
