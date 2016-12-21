@@ -220,8 +220,6 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 	/**
 	 * Write a Skill to a stream.
 	 *
-	 * TODO: This should probably skip any no-level no-hours Skills.
-	 *
 	 * @param ostream The stream to write to.
 	 * @param obj     The object to write.
 	 * @param indent  The current indentation level.
@@ -229,11 +227,13 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 	 */
 	public static void writeSkill(final Appendable ostream, final ISkill obj,
 								  final int indent) throws IOException {
-		writeTag(ostream, "skill", indent);
-		writeProperty(ostream, "name", obj.getName());
-		writeProperty(ostream, "level", Integer.toString(obj.getLevel()));
-		writeProperty(ostream, "hours", Integer.toString(obj.getHours()));
-		closeLeafTag(ostream);
+		if (!obj.isEmpty()) {
+			writeTag(ostream, "skill", indent);
+			writeProperty(ostream, "name", obj.getName());
+			writeProperty(ostream, "level", Integer.toString(obj.getLevel()));
+			writeProperty(ostream, "hours", Integer.toString(obj.getHours()));
+			closeLeafTag(ostream);
+		}
 	}
 
 	/**

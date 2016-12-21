@@ -377,10 +377,12 @@ public final class FluidUnitMemberHandler {
 			throw new IllegalArgumentException("Can only write ISkill");
 		}
 		final ISkill skl = (ISkill) obj;
-		writeTag(ostream, "skill", indent, true);
-		writeAttribute(ostream, "name", skl.getName());
-		writeIntegerAttribute(ostream, "level", skl.getLevel());
-		writeIntegerAttribute(ostream, "hours", skl.getHours());
+		if (!skl.isEmpty()) {
+			writeTag(ostream, "skill", indent, true);
+			writeAttribute(ostream, "name", skl.getName());
+			writeIntegerAttribute(ostream, "level", skl.getLevel());
+			writeIntegerAttribute(ostream, "hours", skl.getHours());
+		}
 	}
 
 	/**
