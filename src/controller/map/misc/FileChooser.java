@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import view.util.FilteredFileChooser;
 
@@ -151,9 +150,8 @@ public final class FileChooser {
 				invoke(() -> {
 					final int status = chooserFunc.applyAsInt(null);
 					if (status == APPROVE_OPTION) {
-						file = Optional.of(
-								NullCleaner.valueOrDefault(fileChooser.getSelectedFile(),
-										new File("")).toPath());
+						file = Optional.ofNullable(fileChooser.getSelectedFile())
+									   .map(File::toPath);
 						if (file.toString().isEmpty()) {
 							LOGGER.severe("Selection supposedly empty");
 						}
