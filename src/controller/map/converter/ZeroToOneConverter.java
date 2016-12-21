@@ -26,7 +26,6 @@ import javax.xml.stream.events.XMLEvent;
 import org.eclipse.jdt.annotation.Nullable;
 import util.IteratorWrapper;
 import util.LineEnd;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import view.util.SystemOut;
 
@@ -116,16 +115,12 @@ public final class ZeroToOneConverter {
 			throws IOException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement startElement =
-						NullCleaner.assertNotNull(event.asStartElement());
-				if (isSpecifiedTag(
-						NullCleaner.assertNotNull(startElement.getName()),
-						"tile")) {
+				final StartElement startElement = event.asStartElement();
+				if (isSpecifiedTag(startElement.getName(), "tile")) {
 					//noinspection unchecked
 					convertTile(ostream, startElement,
 							iFactory(startElement.getAttributes()));
-				} else if (isSpecifiedTag(
-						NullCleaner.assertNotNull(startElement.getName()), "map")) {
+				} else if (isSpecifiedTag(startElement.getName(), "map")) {
 					//noinspection unchecked
 					convertMap(ostream, startElement,
 							iFactory(startElement.getAttributes()));
@@ -136,9 +131,7 @@ public final class ZeroToOneConverter {
 			} else if (event.isCharacters()) {
 				ostream.append(event.asCharacters().getData().trim());
 			} else if (event.isEndElement()) {
-				ostream.append(
-						printEndElement(NullCleaner.assertNotNull(event.asEndElement()
-						)));
+				ostream.append(printEndElement(event.asEndElement()));
 			} else if (event.isStartDocument()) {
 				ostream.append("<?xml version=\"1.0\"?>").append(LineEnd.LINE_SEP);
 			} else if (event.isEndDocument()) {
@@ -208,9 +201,9 @@ public final class ZeroToOneConverter {
 		for (final Attribute attr : attrs) {
 			if ("event".equalsIgnoreCase(attr.getName().getLocalPart())) {
 				try {
-					events.push(NullCleaner.assertNotNull(Integer.valueOf(
+					events.push(Integer.valueOf(
 							NumberFormat.getIntegerInstance().parse(attr.getValue())
-									.intValue())));
+									.intValue()));
 				} catch (final ParseException e) {
 					LOGGER.log(Level.SEVERE, "Non-numeric 'event'", e);
 				}
@@ -221,7 +214,7 @@ public final class ZeroToOneConverter {
 		ostream.append('>');
 		while (!events.isEmpty()) {
 			ostream.append(LineEnd.LINE_SEP);
-			ostream.append(getEventXML(NullCleaner.assertNotNull(events.pop())));
+			ostream.append(getEventXML(events.pop()));
 		}
 	}
 
@@ -241,7 +234,7 @@ public final class ZeroToOneConverter {
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getEventXML(final Integer num) {
 		if (EQUIVALENTS.containsKey(num)) {
-			return NullCleaner.assertNotNull(EQUIVALENTS.get(num));
+			return EQUIVALENTS.get(num);
 		} else {
 			return "";
 		}
@@ -257,11 +250,10 @@ public final class ZeroToOneConverter {
 	private static String printEndElement(final EndElement element) {
 		if (XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
 			return printEndElementImpl(
-					NullCleaner.assertNotNull(element.getName().getLocalPart()));
+					element.getName().getLocalPart());
 		} else {
-			return printEndElementImpl(
-					NullCleaner.assertNotNull(element.getName().getPrefix()) + ':' +
-							NullCleaner.assertNotNull(element.getName().getLocalPart()));
+			return printEndElementImpl(element.getName().getPrefix() + ':' +
+											   element.getName().getLocalPart());
 		}
 
 	}
@@ -273,7 +265,7 @@ public final class ZeroToOneConverter {
 	 * @return its XML representation.
 	 */
 	private static String printEndElementImpl(final String elemStr) {
-		return NullCleaner.assertNotNull(String.format("</%s>", elemStr));
+		return String.format("</%s>", elemStr);
 	}
 
 	/**
@@ -308,8 +300,8 @@ public final class ZeroToOneConverter {
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static String printAttribute(final Attribute attr) {
-		return NullCleaner.assertNotNull(String.format(" %s=\"%s\"",
-				attr.getName().getLocalPart(), attr.getValue()));
+		return String.format(" %s=\"%s\"",
+				attr.getName().getLocalPart(), attr.getValue());
 	}
 
 	/**
@@ -321,7 +313,7 @@ public final class ZeroToOneConverter {
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addXML(final String xml, final int... numbers) {
 		for (final int num : numbers) {
-			EQUIVALENTS.put(NullCleaner.assertNotNull(Integer.valueOf(num)), xml);
+			EQUIVALENTS.put(Integer.valueOf(num), xml);
 		}
 	}
 

@@ -28,7 +28,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.EqualsAny;
 import util.LineEnd;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -74,8 +73,7 @@ public final class XMLHelper {
 	public static void requireTag(final StartElement element,
 								  final QName parent,
 								  final String... tags) throws SPFormatException {
-		if (!EqualsAny.equalsAny(
-				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
+		if (!EqualsAny.equalsAny(element.getName().getNamespaceURI(),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 			throw new UnwantedChildException(parent, element);
 		}
@@ -160,9 +158,7 @@ public final class XMLHelper {
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (isSPStartElement(event)) {
-				throw new UnwantedChildException(tag,
-														NullCleaner.assertNotNull(
-																event.asStartElement()));
+				throw new UnwantedChildException(tag, event.asStartElement());
 			} else if (event.isEndElement()
 							   && tag.equals(event.asEndElement().getName())) {
 				break;
@@ -311,8 +307,7 @@ public final class XMLHelper {
 	public static int getIntegerAttribute(final StartElement tag,
 										  final String parameter)
 			throws SPFormatException {
-		return parseInt(getAttribute(tag, parameter),
-				NullCleaner.assertNotNull(tag.getLocation()));
+		return parseInt(getAttribute(tag, parameter), tag.getLocation());
 	}
 
 	/**
@@ -337,7 +332,7 @@ public final class XMLHelper {
 		if ((val == null) || val.isEmpty()) {
 			return defaultValue;
 		} else {
-			return parseInt(val, NullCleaner.assertNotNull(tag.getLocation()));
+			return parseInt(val, tag.getLocation());
 		}
 	}
 

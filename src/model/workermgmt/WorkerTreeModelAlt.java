@@ -28,8 +28,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NoCloneException;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * An alternative implementation of the worker tree model.
  *
@@ -113,9 +111,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old,
 						   final IUnit newOwner) {
-		final PlayerNode playerNode = assertNotNull((PlayerNode) root);
-		final UnitNode oldNode = assertNotNull((UnitNode) getNode(playerNode, old));
-		final UnitNode newNode = assertNotNull((UnitNode) getNode(playerNode, newOwner));
+		final PlayerNode playerNode = (PlayerNode) root;
+		final UnitNode oldNode = (UnitNode) getNode(playerNode, old);
+		final UnitNode newNode = (UnitNode) getNode(playerNode, newOwner);
 		final MutableTreeNode node = getNode(playerNode, member);
 		fireTreeNodesRemoved(this,
 				new Object[]{playerNode, getNode(old.getKind()), oldNode},
@@ -146,7 +144,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	private void moveProxied(final UnitMember member, final ProxyUnit old,
 							 final ProxyUnit newOwner,
 							 final UnitNode newNode, final MutableTreeNode node) {
-		final PlayerNode playerNode = assertNotNull((PlayerNode) root);
+		final PlayerNode playerNode = (PlayerNode) root;
 		@SuppressWarnings("unchecked")
 		final ProxyFor<? extends UnitMember> asProxied =
 				(ProxyFor<? extends UnitMember>) member;
@@ -257,7 +255,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public Object getModelObject(final Object obj) {
 		if (obj instanceof DefaultMutableTreeNode) {
-			return assertNotNull(((DefaultMutableTreeNode) obj).getUserObject());
+			return ((DefaultMutableTreeNode) obj).getUserObject();
 		} else {
 			return obj;
 		}
