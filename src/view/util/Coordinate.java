@@ -1,7 +1,5 @@
 package view.util;
 
-import util.NullCleaner;
-
 /**
  * A wrapper to reduce the number of arguments a TileDrawHelper has to take.
  *
@@ -43,7 +41,6 @@ public final class Coordinate {
 	 */
 	@Override
 	public String toString() {
-		return NullCleaner.assertNotNull(String.format("[%d, %d]",
-				Integer.valueOf(x), Integer.valueOf(y)));
+		return String.format("[%d, %d]", Integer.valueOf(x), Integer.valueOf(y));
 	}
 }

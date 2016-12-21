@@ -19,7 +19,6 @@ import model.map.HasName;
 import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
 import util.IsNumeric;
-import util.NullCleaner;
 import view.util.SystemIn;
 import view.util.SystemOut;
 
@@ -43,8 +42,7 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * A parser for numbers.
 	 */
-	private static final NumberFormat NUM_PARSER =
-			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+	private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
 	/**
 	 * The input stream we'll read from.
 	 */
@@ -85,7 +83,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * @return its lower case equivalent
 	 */
 	private static String lower(final String str) {
-		return NullCleaner.assertNotNull(str.toLowerCase(Locale.US));
+		return str.toLowerCase(Locale.US);
 	}
 
 	/**
@@ -215,7 +213,7 @@ public final class CLIHelper implements ICLIHelper {
 		if (line == null) {
 			return "";
 		} else {
-			return NullCleaner.assertNotNull(line.trim());
+			return line.trim();
 		}
 	}
 

@@ -10,7 +10,6 @@ import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NoCloneException;
-import util.NullCleaner;
 
 /**
  * A node for cases slightly more complex than a {@link SimpleReportNode} covers: the text
@@ -84,8 +83,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String produce() {
-		return NullCleaner.assertNotNull(produce(new StringBuilder(size()))
-												 .toString());
+		return produce(new StringBuilder(size())).toString();
 	}
 
 	/**
