@@ -37,7 +37,6 @@ import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import util.Pair;
 import view.util.SystemOut;
 
@@ -98,7 +97,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	private static Stream<IUnit> getUnits(final Stream<@NonNull ? super Unit> stream,
 										  final Player player) {
-		return NullCleaner.assertNotNull(stream.flatMap(obj -> {
+		return stream.flatMap(obj -> {
 			if (obj instanceof Fortress) {
 				return ((Fortress) obj).stream();
 			} else {
@@ -106,7 +105,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			}
 		}).filter(IUnit.class::isInstance).map(IUnit.class::cast)
 												 .filter(unit -> player.equals(
-														 unit.getOwner())));
+														 unit.getOwner()));
 	}
 
 	/**
@@ -263,7 +262,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		streamSubordinateMaps().map(Pair::first)
 				.map(map -> map.streamPlayers().collect(Collectors.toList()))
 				.forEach(retval::retainAll);
-		return NullCleaner.assertNotNull(retval);
+		return retval;
 	}
 
 	/**
@@ -421,8 +420,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			}
 			if (source.streamOtherFixtures(point).flatMap(item -> {
 				if (item instanceof FixtureIterable) {
-					return NullCleaner.assertNotNull(Stream.concat(Stream.of(item),
-							((FixtureIterable<@NonNull ?>) item).stream()));
+					return Stream.concat(Stream.of(item),
+							((FixtureIterable<@NonNull ?>) item).stream());
 				} else {
 					return Stream.of(item);
 				}

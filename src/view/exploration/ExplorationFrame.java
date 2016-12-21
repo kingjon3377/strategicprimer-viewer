@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.stream.Stream;
 import model.exploration.IExplorationModel;
 import model.listeners.CompletionListener;
-import util.NullCleaner;
 import view.util.SPFrame;
 
 /**
@@ -50,10 +49,8 @@ public final class ExplorationFrame extends SPFrame {
 		explorationModel.addMovementCostListener(explorationPanel);
 		explorationModel.addSelectionChangeListener(explorationPanel);
 		final CompletionListener swapper =
-				new SwapCompletionListener(layout,
-												  NullCleaner.assertNotNull(
-														  getContentPane()),
-												  explorationPanel, esp);
+				new SwapCompletionListener(layout, getContentPane(), explorationPanel,
+												  esp);
 		esp.addCompletionListener(swapper);
 		explorationPanel.addCompletionListener(swapper);
 		add(esp);

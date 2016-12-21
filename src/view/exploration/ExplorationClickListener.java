@@ -40,7 +40,6 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
 import model.viewer.TileTypeFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import view.map.details.FixtureList;
@@ -174,8 +173,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 			}
 			model.move(direction, speedSource.get());
 			final Point dPoint = model.getSelectedUnitLocation();
-			final Player player =
-					NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
+			final Player player = model.getSelectedUnit().getOwner();
 			final Collection<CacheFixture> caches = new HashSet<>();
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :
 					model.getSubordinateMaps()) {
