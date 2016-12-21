@@ -10,7 +10,6 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.mining.LodeStatus;
 import model.mining.MiningModel;
-import util.NullCleaner;
 
 /**
  * A driver to create a spreadsheet model of a mine.
@@ -90,8 +89,7 @@ public final class MiningCLI implements UtilityDriver {
 			actualIndex = -index;
 			mineKind = MiningModel.MineKind.Banded;
 		}
-		final LodeStatus initial =
-				NullCleaner.assertNotNull(LodeStatus.values()[actualIndex]);
+		final LodeStatus initial = LodeStatus.values()[actualIndex];
 		final MiningModel model = new MiningModel(initial, seed, mineKind);
 		final Point lowerRight = model.getMaxPoint();
 		final int maxCol = lowerRight.getCol() + 1;

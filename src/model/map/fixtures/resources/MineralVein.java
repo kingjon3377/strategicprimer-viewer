@@ -4,7 +4,6 @@ import model.map.HasMutableKind;
 import model.map.IEvent;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A vein of a mineral.
@@ -123,7 +122,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 		} else {
 			build.append(", but it's not exposed.");
 		}
-		return NullCleaner.assertNotNull(build.toString());
+		return build.toString();
 	}
 
 	/**

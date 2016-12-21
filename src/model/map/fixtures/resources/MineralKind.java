@@ -2,7 +2,6 @@ package model.map.fixtures.resources;
 
 import java.util.HashMap;
 import java.util.Map;
-import util.NullCleaner;
 
 /**
  * Kinds of minerals whose events the program knows about.
@@ -73,7 +72,7 @@ public enum MineralKind {
 	 */
 	public static MineralKind parseMineralKind(final String desc) {
 		if (M_MAP.containsKey(desc)) {
-			return NullCleaner.assertNotNull(M_MAP.get(desc));
+			return M_MAP.get(desc);
 		} else {
 			throw new IllegalArgumentException("Not a kind of mineral we recognize");
 		}
