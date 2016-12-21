@@ -607,9 +607,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			// TODO: When Ground gets unique IDs, check it instead of using ==
 			//noinspection ObjectEquality
 			if (ground == oldFix) {
-				for (final Pair<IMutableMapNG, Optional<Path>> pair : getAllMaps()) {
-					addToMap.accept(pair.first(), Boolean.FALSE);
-				}
+				streamAllMaps().map(Pair::first)
+						.forEach(map -> addToMap.accept(map, Boolean.FALSE));
 			} else {
 				boolean subsequent = false;
 				for (final Pair<IMutableMapNG, Optional<Path>> pair : getAllMaps()) {
