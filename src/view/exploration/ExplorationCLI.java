@@ -36,7 +36,6 @@ import util.IntHolder;
 import util.Pair;
 
 import static model.map.TileType.Ocean;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A CLI to help running exploration. Now separated from the "driver" bits, to simplify
@@ -59,7 +58,7 @@ public final class ExplorationCLI implements MovementCostSource {
 	 * Logger.
 	 */
 	private static final Logger LOGGER =
-			assertNotNull(Logger.getLogger(ExplorationCLI.class.getName()));
+			Logger.getLogger(ExplorationCLI.class.getName());
 	/**
 	 * The direction prompt.
 	 */
@@ -166,7 +165,7 @@ public final class ExplorationCLI implements MovementCostSource {
 			return;
 		}
 		final IExplorationModel.Direction direction =
-				assertNotNull(IExplorationModel.Direction.values()[directionNum]);
+				IExplorationModel.Direction.values()[directionNum];
 		final Point point = model.getSelectedUnitLocation();
 		final Point dPoint = model.getDestination(point, direction);
 		try {
@@ -258,7 +257,7 @@ public final class ExplorationCLI implements MovementCostSource {
 										 @Nullable final TileFixture fix,
 										 final HasOwner mover) {
 		if (fix != null) {
-			helper.println(assertNotNull(fix.toString()));
+			helper.println(fix.toString());
 			final boolean zero = (fix instanceof HasOwner) &&
 										 !((HasOwner) fix).getOwner()
 												  .equals(mover.getOwner());
