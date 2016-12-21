@@ -18,7 +18,6 @@ import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Shrub;
 import util.MultiMapHelper;
-import util.NullCleaner;
 
 import static model.map.TileType.Desert;
 import static model.map.TileType.Jungle;
@@ -140,8 +139,9 @@ public final class HuntingModel {
 	 */
 	public Iterable<String> gather(final Point point, final int items) {
 		final List<String> choices = new SurroundingPointIterable(point, dims).stream()
-											 .filter(plants::containsKey).flatMap(
-						local -> NullCleaner.assertNotNull(plants.get(local)).stream())
+											 .filter(plants::containsKey)
+											 .flatMap(local -> plants.get(local)
+																	   .stream())
 											 .collect(Collectors.toList());
 		final Collection<String> retval = new ArrayList<>();
 		for (int i = 0; i < items; i++) {
@@ -163,8 +163,7 @@ public final class HuntingModel {
 									   final Map<Point, Collection<String>> chosenMap) {
 		final List<String> choices = new SurroundingPointIterable(point, dims).stream()
 											 .filter(chosenMap::containsKey).flatMap(
-						local -> NullCleaner.assertNotNull(chosenMap.get(local))
-										 .stream())
+						local -> chosenMap.get(local).stream())
 											 .collect(Collectors.toList());
 		final int nothings = choices.size();
 		for (int i = 0; i < nothings; i++) {

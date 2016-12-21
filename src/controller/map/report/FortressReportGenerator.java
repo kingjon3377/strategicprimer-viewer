@@ -35,7 +35,6 @@ import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
 import util.MultiMapHelper;
-import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
 
@@ -114,7 +113,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				fixtures.remove(Integer.valueOf(fix.getID()));
 			}
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -136,7 +135,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 								   .collect(Collectors.joining(", ")));
 			builder.append(CLOSE_LIST_ITEM);
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -203,9 +202,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			if (anyForts) {
 				ours.append(builder);
 			}
-			return NullCleaner.assertNotNull(ours.toString());
+			return ours.toString();
 		} else if (anyForts) {
-			return NullCleaner.assertNotNull(builder.toString());
+			return builder.toString();
 		} else {
 			return "";
 		}
@@ -310,7 +309,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		builder.append(resources);
 		builder.append(equipment);
 		fixtures.remove(Integer.valueOf(item.getID()));
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**

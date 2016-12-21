@@ -3,7 +3,6 @@ package model.map.fixtures.resources;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * An orchard (fruit trees) or grove (other trees) on the map.
@@ -129,7 +128,7 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 		} else {
 			builder.append(" grove");
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
