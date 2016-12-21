@@ -120,12 +120,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final IReportNode own = new SectionListReportNode(5,
-																 "Villages " +
-																		 "pledged" +
-																		 " to " +
-																		 "your " +
-																		 "service:");
+		final IReportNode own = new SectionListReportNode(
+				5, "Villages pledged to your service:");
 		final IReportNode independents =
 				new SectionListReportNode(5, "Villages you think are independent:");
 		final IReportNode others =
@@ -136,9 +132,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				.forEach(pair -> {
 			final Village village = (Village) pair.second();
 			final Player owner = village.getOwner();
-			final IReportNode product =
-					produceRIR(fixtures, map, currentPlayer, village,
-							pair.first());
+			final IReportNode product = produceRIR(fixtures, map, currentPlayer, village,
+					pair.first());
 			if (owner.isCurrent()) {
 				own.add(product);
 			} else if (owner.isIndependent()) {
