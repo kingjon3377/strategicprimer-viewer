@@ -14,7 +14,6 @@ import model.map.PointFactory;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
 import util.NoCloneException;
-import util.NullCleaner;
 import util.Pair;
 import util.PairComparator;
 
@@ -121,8 +120,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		final StringBuilder buf =
 				new StringBuilder(5 + Stream.of(strings).mapToInt(String::length).sum());
 		Stream.of(strings).forEach(buf::append);
-		final String retval = buf.toString();
-		return NullCleaner.valueOrDefault(retval, "");
+		return buf.toString();
 	}
 
 	/**
@@ -188,8 +186,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 					builder.append(OPEN_LIST_ITEM).append(item)
 							.append(CLOSE_LIST_ITEM);
 				}
-				final String retval = builder.append(CLOSE_LIST).toString();
-				return NullCleaner.valueOrDefault(retval, "");
+				return builder.append(CLOSE_LIST).toString();
 			}
 		}
 
