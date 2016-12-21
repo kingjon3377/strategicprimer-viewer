@@ -15,6 +15,7 @@ import java.io.Writer;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Formatter;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +28,6 @@ import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.util.SPFrame;
@@ -139,9 +139,7 @@ public final class SubsetFrame extends SPFrame {
 			printParagraph("ERROR: Malformed XML in file " + arg +
 								   "; see following error message for details",
 					ERROR_COLOR);
-			printParagraph(
-					NullCleaner.assertNotNull(except.getLocalizedMessage()),
-					ERROR_COLOR);
+			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
 			throw except;
 		} catch (final SPFormatException except) {
 			printParagraph(
@@ -149,9 +147,7 @@ public final class SubsetFrame extends SPFrame {
 							+ " in file " + arg
 							+ "; see following error message for details",
 					ERROR_COLOR);
-			printParagraph(
-					NullCleaner.assertNotNull(except.getLocalizedMessage()),
-					ERROR_COLOR);
+			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
 			throw except;
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
@@ -242,9 +238,7 @@ public final class SubsetFrame extends SPFrame {
 			printParagraph("FAIL: Malformed XML in the file; " +
 								   "see following error message for details",
 					ERROR_COLOR);
-			printParagraph(
-					NullCleaner.assertNotNull(except.getLocalizedMessage()),
-					ERROR_COLOR);
+			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
 			return;
 		} catch (final SPFormatException except) {
 			LOGGER.log(Level.SEVERE,
@@ -253,9 +247,7 @@ public final class SubsetFrame extends SPFrame {
 					"FAIL: SP map format error at line " + except.getLine()
 							+ "; see following error message for details",
 					ERROR_COLOR);
-			printParagraph(
-					NullCleaner.assertNotNull(except.getLocalizedMessage()),
-					ERROR_COLOR);
+			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
 			return;
 		}
 		try (final Writer out = new HTMLWriter(label.getWriter())) {
@@ -314,8 +306,7 @@ public final class SubsetFrame extends SPFrame {
 		/**
 		 * Pre-compiled pattern for matching newlines.
 		 */
-		private static final Pattern NEWLINE =
-				NullCleaner.assertNotNull(Pattern.compile(LineEnd.LINE_SEP));
+		private static final Pattern NEWLINE = Pattern.compile(LineEnd.LINE_SEP);
 		/**
 		 * Whether we're at the start of a line.
 		 */
@@ -340,8 +331,7 @@ public final class SubsetFrame extends SPFrame {
 		@SuppressWarnings({"ReturnOfThis", "StandardVariableNames"})
 		@Override
 		public Writer append(@Nullable final CharSequence csq) throws IOException {
-			final String local =
-					NullCleaner.valueOrDefault(csq, "null").toString();
+			final String local = Objects.toString(csq);
 			if (lineStart) {
 				super.append("<p style=\"color:white\">");
 			}
