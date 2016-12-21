@@ -102,7 +102,7 @@ public final class ArraySet<U> implements Set<U> {
 			{"SuspiciousToArrayCall", "ParameterNameDiffersFromOverriddenParameter"})
 	@Override
 	public <T> T[] toArray(final T @Nullable [] array) {
-		return NullCleaner.assertNotNullArray(impl.toArray(array));
+		return impl.toArray(array);
 	}
 
 	/**
