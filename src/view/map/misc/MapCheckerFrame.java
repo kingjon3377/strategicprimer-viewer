@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.util.SPFrame;
@@ -63,8 +62,8 @@ public final class MapCheckerFrame extends SPFrame {
 	 */
 	public MapCheckerFrame() {
 		super("Strategic Primer Map Checker", Optional.empty(), new Dimension(640, 320));
-		Warning.Custom.setCustomPrinter(Warning.wrapHandler(str -> printParagraph(str,
-				NullCleaner.assertNotNull(StreamingLabel.LabelTextColor.yellow))));
+		Warning.Custom.setCustomPrinter(Warning.wrapHandler(
+				str -> printParagraph(str, StreamingLabel.LabelTextColor.yellow)));
 		setBackground(Color.black);
 		setContentPane(new JScrollPane(label));
 		getContentPane().setBackground(Color.black);
@@ -147,8 +146,7 @@ public final class MapCheckerFrame extends SPFrame {
 			printParagraph("ERROR: Malformed XML in the file" +
 								   "; see following error message for details",
 					ERROR_COLOR);
-			final String message = NullCleaner.valueOrDefault(
-					except.getLocalizedMessage(), "(message was null)");
+			final String message = except.getLocalizedMessage();
 			printParagraph(message, ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, "Malformed XML in file " + filename,
 					except);
@@ -157,8 +155,7 @@ public final class MapCheckerFrame extends SPFrame {
 								   ((SPFormatException) except).getLine() +
 								   "; see following error message for details",
 					ERROR_COLOR);
-			final String message = NullCleaner.valueOrDefault(
-					except.getLocalizedMessage(), "(message was null)");
+			final String message = except.getLocalizedMessage();
 			printParagraph(message, ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, "SP map format error reading " + filename,
 					except);
