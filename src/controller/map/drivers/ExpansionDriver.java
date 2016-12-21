@@ -1,26 +1,25 @@
 package controller.map.drivers;
 
 import controller.map.misc.ICLIHelper;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Formatter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.NavigableMap;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import model.exploration.IExplorationModel.Speed;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;
-import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -28,7 +27,6 @@ import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
-import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.resources.CacheFixture;
@@ -37,7 +35,6 @@ import model.map.fixtures.towns.ITownFixture;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
-import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.MultiMapHelper;
 import util.NullCleaner;
@@ -89,105 +86,20 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 * any other method call
 	 */
 	private static IUnit mock(final Player player) {
-		return new IUnit() {
-			@Override
-			public NavigableMap<Integer, String> getAllOrders() {
-				throw ISE;
-			}
-			@Override
-			public NavigableMap<Integer, String> getAllResults() {
-				throw ISE;
-			}
-			@Override
-			public String plural() {
-				throw ISE;
-			}
-			@Override
-			public String shortDesc() {
-				throw ISE;
-			}
-			@Override
-			public int getID() {
-				throw ISE;
-			}
-			@Override
-			public boolean equalsIgnoringID(final IFixture fix) {
-				throw ISE;
-			}
-			@Override
-			public int compareTo(final TileFixture fix) {
-				throw ISE;
-			}
-			@Override
-			public String getDefaultImage() {
-				throw ISE;
-			}
-			@Override
-			public String getImage() {
-				throw ISE;
-			}
-			@Override
-			public String getKind() {
-				throw ISE;
-			}
-			@Override
-			public Iterator<UnitMember> iterator() {
-				throw ISE;
-			}
-			@Override
-			public String getName() {
-				throw ISE;
-			}
-			@Override
-			public Player getOwner() {
+		final InvocationHandler lambda = (proxy, method, args) -> {
+			if ("getOwner".equals(method.getName())) {
 				return player;
-			}
-			@Override
-			public boolean isSubset(final IFixture obj, final Formatter ostream,
-									final String context) {
-				throw ISE;
-			}
-			@Override
-			public String getOrders(final int turn) {
-				throw ISE;
-			}
-			@Override
-			public void setOrders(final int turn, final String newOrders) {
-				throw ISE;
-			}
-			@Override
-			public String getResults(final int turn) {
-				throw ISE;
-			}
-			@Override
-			public void setResults(final int turn, final String newOrders) {
-				throw ISE;
-			}
-			@Override
-			public String verbose() {
-				throw ISE;
-			}
-			@Override
-			public void addMember(final UnitMember member) {
-				throw ISE;
-			}
-			@Override
-			public void removeMember(final UnitMember member) {
-				throw ISE;
-			}
-			@Override
-			public IUnit copy(final boolean zero) {
-				throw ISE;
-			}
-			@Override
-			public boolean equals(@Nullable final Object obj) {
-				throw ISE;
-			}
-			@Override
-			public int hashCode() {
-				throw ISE;
+			} else if ("equals".equals(method.getName())) {
+				return proxy == args[0];
+			} else if ("stream".equals(method.getName())) {
+				return Stream.empty();
+			} else {
+				throw new IllegalStateException(String.format(
+						"Unsupported method %s called on mock object", method.getName()));
 			}
 		};
+		return (IUnit) Proxy.newProxyInstance(ExpansionDriver.class.getClassLoader(),
+				new Class[]{IUnit.class}, lambda);
 	}
 
 	/**
