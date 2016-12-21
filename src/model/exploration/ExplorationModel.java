@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.listeners.MovementCostListener;
@@ -584,44 +585,35 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				first = false;
 				i++;
 			}
+			final TileFixture oldFix = diggables.get(0);
+			final TileFixture newFix = oldFix.copy(false);
+			if (newFix instanceof Ground) {
+				((Ground) newFix).setExposed(true);
+			} else if (newFix instanceof MineralVein) {
+				((MineralVein) newFix).setExposed(true);
+			}
+			final BiConsumer<IMutableMapNG, Boolean> addToMap = (map, condition) -> {
+				final Ground locGround = map.getGround(currPoint);
+				if ((locGround == null) || locGround.equals(ground)) {
+					map.setGround(currPoint,
+							(Ground) newFix.copy(condition.booleanValue()));
+					return;
+				} else if (map.streamOtherFixtures(currPoint)
+								   .anyMatch(fix -> areDiggablesEqual(fix, oldFix))) {
+					map.removeFixture(currPoint, oldFix);
+				}
+				map.addFixture(currPoint, newFix.copy(condition.booleanValue()));
+			};
 			// TODO: When Ground gets unique IDs, check it instead of using ==
 			//noinspection ObjectEquality
-			if (ground == diggables.get(0)) {
-				assert ground != null;
-				final Ground newGround = ground.copy(false);
-				newGround.setExposed(true);
+			if (ground == oldFix) {
 				for (final Pair<IMutableMapNG, Optional<Path>> pair : getAllMaps()) {
-					final IMutableMapNG map = pair.first();
-					final Ground locGround = map.getGround(currPoint);
-					if ((locGround == null) || locGround.equals(ground)) {
-						map.setGround(currPoint, newGround.copy(false));
-						continue;
-					} else if (map.streamOtherFixtures(currPoint)
-									   .anyMatch(fix -> fix.equals(ground))) {
-						map.removeFixture(currPoint, ground);
-					}
-					map.addFixture(currPoint, newGround.copy(false));
+					addToMap.accept(pair.first(), Boolean.FALSE);
 				}
 			} else {
-				final TileFixture oldFix = diggables.get(0);
-				final TileFixture newFix = oldFix.copy(false);
-				if (newFix instanceof Ground) {
-					((Ground) newFix).setExposed(true);
-				} else if (newFix instanceof MineralVein) {
-					((MineralVein) newFix).setExposed(true);
-				}
 				boolean subsequent = false;
 				for (final Pair<IMutableMapNG, Optional<Path>> pair : getAllMaps()) {
-					final IMutableMapNG map = pair.first();
-					final Ground locGround = map.getGround(currPoint);
-					if ((locGround == null) || locGround.equals(oldFix)) {
-						map.setGround(currPoint, (Ground) newFix.copy(subsequent));
-						continue;
-					} else if (map.streamOtherFixtures(currPoint).anyMatch(
-							fix -> areDiggablesEqual(fix, oldFix))) {
-						map.removeFixture(currPoint, oldFix);
-					}
-					map.addFixture(currPoint, newFix.copy(subsequent));
+					addToMap.accept(pair.first(), Boolean.valueOf(subsequent));
 					subsequent = true;
 				}
 			}
