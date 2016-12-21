@@ -5,11 +5,11 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
+import java.util.Formatter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.NoCloneException;
 
 /**
@@ -82,19 +82,15 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		// TODO: Use a Formatter
-		builder.append(text);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("<ul>");
-		builder.append(LineEnd.LINE_SEP);
-		for (final IReportNode node : this) {
-			builder.append("<li>");
-			node.produce(builder);
-			builder.append("</li>");
-			builder.append(LineEnd.LINE_SEP);
+		try (final Formatter out = new Formatter(builder)) {
+			out.format("%s%n<ul>%n", text);
+			for (final IReportNode node : this) {
+				out.format("<li>");
+				node.produce(builder);
+				out.format("</li>%n");
+			}
+			out.format("</ul>%n");
 		}
-		builder.append("</ul>");
-		builder.append(LineEnd.LINE_SEP);
 		return builder;
 	}
 
