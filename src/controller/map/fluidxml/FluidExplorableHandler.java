@@ -31,7 +31,6 @@ import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A class to hold XML I/O for explorable fixtures.
@@ -91,7 +90,7 @@ public final class FluidExplorableHandler {
 													 getOrGenerateID(element, warner,
 															 idFactory)), element,
 						warner);
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
 
@@ -123,7 +122,7 @@ public final class FluidExplorableHandler {
 														 getOrGenerateID(element, warner,
 																 idFactory)), element,
 				warner);
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
 

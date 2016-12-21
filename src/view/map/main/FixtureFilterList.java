@@ -19,7 +19,6 @@ import model.map.fixtures.resources.Meadow;
 import model.viewer.FixtureMatcher;
 import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import util.ReorderableListModel;
 
 import static model.viewer.FixtureMatcher.simpleMatcher;
@@ -61,7 +60,7 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 	public FixtureFilterList() {
 		model = new ReorderableListModel<>();
 		setModel(model);
-		lsm = NullCleaner.assertNotNull(getSelectionModel());
+		lsm = getSelectionModel();
 		lsm.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		lsm.addListSelectionListener(e -> {
 			for (int i = 0; i < model.getSize(); i++) {

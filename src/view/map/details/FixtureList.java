@@ -28,7 +28,6 @@ import model.viewer.FixtureTransferable;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ActionWrapper;
-import util.NullCleaner;
 import view.util.HotKeyCreator;
 
 /**
@@ -91,7 +90,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 			if (selection.isEmpty()) {
 				return;
 			}
-			final TileFixture firstElement = NullCleaner.assertNotNull(selection.get(0));
+			final TileFixture firstElement = selection.get(0);
 			if (selection.size() == 1) {
 				dge.startDrag(null, new FixtureTransferable(firstElement));
 			} else {

@@ -28,7 +28,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.workermgmt.IWorkerTreeModel;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 
 import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
@@ -157,7 +156,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 		} else {
 			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
 											  .collect(Collectors.toList());
-			return NullCleaner.assertNotNull(list.toArray(new Player[list.size()]));
+			return list.toArray(new Player[list.size()]);
 		}
 	}
 
