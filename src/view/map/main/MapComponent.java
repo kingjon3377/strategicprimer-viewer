@@ -86,7 +86,7 @@ public final class MapComponent extends JComponent
 		//noinspection TrivialMethodReference
 		helper = TileDrawHelperFactory.INSTANCE.factory(
 				model.getMapDimensions().version, this::imageUpdate, zof, matchers);
-		cml = new ComponentMouseListener(model);
+		cml = new ComponentMouseListener(model, zof);
 		//noinspection TrivialMethodReference
 		cml.addSelectionChangeListener(this::selectedPointChanged);
 		addMouseListener(cml);
