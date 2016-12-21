@@ -75,6 +75,10 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 	 * The reader for players.
 	 */
 	private final YAReader<Player> playerReader;
+	/**
+	 * The Point equivalent of null.
+	 */
+	private static final Point NULL_POINT = PointFactory.point(-1, -1);
 
 	/**
 	 * @param warning the Warning instance to use
@@ -246,8 +250,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 		tagStack.push(element.getName());
 		tagStack.push(mapTag.getName());
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
-		final Point nullPoint = PointFactory.point(-1, -1);
-		Point point = nullPoint;
+		Point point = NULL_POINT;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() &&
 						isSupportedNamespace(event.asStartElement().getName())) {
@@ -261,7 +264,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 					// Deliberately ignore "row"s.
 					continue;
 				} else if ("tile".equals(type)) {
-					if (!nullPoint.equals(point)) {
+					if (!NULL_POINT.equals(point)) {
 						throw new UnwantedChildException(tagStack.peek(), current);
 					}
 					tagStack.push(current.getName());
@@ -284,7 +287,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 					tagStack.push(current.getName());
 					//noinspection ObjectAllocationInLoop
 					warner.warn(new UnsupportedTagException(current));
-				} else if (nullPoint.equals(point)) {
+				} else if (NULL_POINT.equals(point)) {
 					// fixture outside tile
 					throw new UnwantedChildException(tagStack.peek(), current);
 				} else if ("lake".equalsIgnoreCase(type)
