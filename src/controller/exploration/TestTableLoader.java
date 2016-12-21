@@ -12,7 +12,6 @@ import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.TileType;
 import org.junit.Test;
-import util.NullCleaner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -35,8 +34,7 @@ public final class TestTableLoader {
 	/**
 	 * The empty list.
 	 */
-	private static final List<TileFixture> EMPTY =
-			NullCleaner.assertNotNull(Collections.emptyList());
+	private static final List<TileFixture> EMPTY = Collections.emptyList();
 	/**
 	 * "one".
 	 */

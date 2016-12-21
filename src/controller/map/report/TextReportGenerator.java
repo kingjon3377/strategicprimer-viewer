@@ -14,7 +14,6 @@ import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
 
@@ -95,7 +94,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 		}
 		builder.append(": ");
 		builder.append(item.getText());
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**

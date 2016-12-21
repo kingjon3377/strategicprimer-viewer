@@ -26,7 +26,6 @@ import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownSize;
 import org.junit.Test;
-import util.NullCleaner;
 
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertThat;
@@ -116,8 +115,7 @@ public final class TestWorkerModel {
 		final IMutableMapNG map =
 				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(), -1);
 		for (final Point point : map.locations()) {
-			map.addFixture(NullCleaner.assertNotNull(point),
-					NullCleaner.assertNotNull(fixtures.remove(0)));
+			map.addFixture(point, fixtures.remove(0));
 		}
 		final IWorkerModel model = new WorkerModel(map, Optional.empty());
 		final List<IUnit> listOneA = filterProxies(model.getUnits(playerOne));
