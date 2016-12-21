@@ -12,7 +12,6 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
-import util.NullCleaner;
 
 /**
  * A class encapsulating the mapping from tile-types to colors.
@@ -53,9 +52,9 @@ public final class TileUIHelper {
 	@SuppressWarnings("deprecation")
 	public TileUIHelper() {
 		colors = new HashMap<>(SPMapNG.MAX_VERSION + 1);
-		colors.put(NullCleaner.assertNotNull(Integer.valueOf(1)), verOneColors());
+		colors.put(Integer.valueOf(1), verOneColors());
 		final Map<TileType, Color> verTwoColors = verTwoColors();
-		colors.put(NullCleaner.assertNotNull(Integer.valueOf(2)), verTwoColors);
+		colors.put(Integer.valueOf(2), verTwoColors);
 		descriptions.put(TileType.BorealForest,
 				"<html><p>Boreal Forest</p></html>");
 		descriptions.put(TileType.Desert, "<html><p>Desert</p></html>");
@@ -83,8 +82,8 @@ public final class TileUIHelper {
 		final Map<TileType, Color> verTwoColors = new EnumMap<>(TileType.class);
 		verTwoColors.put(TileType.Desert, new Color(249, 233, 28));
 		verTwoColors.put(TileType.Jungle, new Color(229, 46, 46));
-		verTwoColors.put(TileType.NotVisible, NullCleaner.assertNotNull(Color.white));
-		verTwoColors.put(TileType.Ocean, NullCleaner.assertNotNull(Color.blue));
+		verTwoColors.put(TileType.NotVisible, Color.white);
+		verTwoColors.put(TileType.Ocean, Color.blue);
 		verTwoColors.put(TileType.Plains, new Color(72, 218, 164));
 		verTwoColors.put(TileType.Tundra, new Color(153, 153, 153));
 		verTwoColors.put(TileType.Steppe, new Color(72, 100, 72));
@@ -100,8 +99,8 @@ public final class TileUIHelper {
 		verOneColors.put(TileType.Desert, new Color(249, 233, 28));
 		verOneColors.put(TileType.Jungle, new Color(229, 46, 46));
 		verOneColors.put(TileType.Mountain, new Color(249, 137, 28));
-		verOneColors.put(TileType.NotVisible, NullCleaner.assertNotNull(Color.white));
-		verOneColors.put(TileType.Ocean, NullCleaner.assertNotNull(Color.blue));
+		verOneColors.put(TileType.NotVisible, Color.white);
+		verOneColors.put(TileType.Ocean, Color.blue);
 		verOneColors.put(TileType.Plains, new Color(0, 117, 0));
 		verOneColors.put(TileType.TemperateForest, new Color(72, 250, 72));
 		verOneColors.put(TileType.Tundra, new Color(153, 153, 153));
@@ -115,8 +114,7 @@ public final class TileUIHelper {
 	 */
 	public boolean supportsType(final int version, final TileType type) {
 		final Integer ver = Integer.valueOf(version);
-		return colors.containsKey(ver) &&
-					   NullCleaner.assertNotNull(colors.get(ver)).containsKey(type);
+		return colors.containsKey(ver) && colors.get(ver).containsKey(type);
 	}
 
 	/**
@@ -127,10 +125,9 @@ public final class TileUIHelper {
 	public Color get(final int version, final TileType type) {
 		final Integer ver = Integer.valueOf(version);
 		if (colors.containsKey(ver)) {
-			final Map<TileType, Color> colorMap =
-					NullCleaner.assertNotNull(colors.get(ver));
+			final Map<TileType, Color> colorMap = colors.get(ver);
 			if (colorMap.containsKey(type)) {
-				return NullCleaner.assertNotNull(colorMap.get(type));
+				return colorMap.get(type);
 			} else {
 				throw new IllegalArgumentException(type +
 														   " is not a terrain type " +
@@ -157,7 +154,7 @@ public final class TileUIHelper {
 	 */
 	public String getDescription(final TileType type) {
 		if (descriptions.containsKey(type)) {
-			return NullCleaner.assertNotNull(descriptions.get(type));
+			return descriptions.get(type);
 		} else {
 			throw new IllegalArgumentException("Not a type we know how to handle");
 		}
@@ -170,7 +167,7 @@ public final class TileUIHelper {
 	public Color getFeatureColor(final TileFixture fix) {
 		final Class<? extends TileFixture> cls = fix.getClass();
 		if (featureColors.containsKey(cls)) {
-			return NullCleaner.assertNotNull(featureColors.get(cls));
+			return featureColors.get(cls);
 		} else {
 			throw new IllegalArgumentException("Not a kind of fixture we can handle");
 		}

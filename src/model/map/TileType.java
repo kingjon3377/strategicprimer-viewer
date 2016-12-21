@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import util.MultiMapHelper;
-import util.NullCleaner;
 
 import static java.util.Collections.unmodifiableSet;
 
@@ -118,7 +117,7 @@ public enum TileType {
 	TileType(final String description, final int... supportingVersions) {
 		versions = new ArrayList<>();
 		for (final int ver : supportingVersions) {
-			versions.add(NullCleaner.assertNotNull(Integer.valueOf(ver)));
+			versions.add(Integer.valueOf(ver));
 		}
 		desc = description;
 	}
@@ -131,7 +130,7 @@ public enum TileType {
 	 */
 	@SuppressWarnings("SynchronizationOnStaticField")
 	public static Iterable<TileType> valuesForVersion(final int ver) {
-		final Integer boxedVer = NullCleaner.assertNotNull(Integer.valueOf(ver));
+		final Integer boxedVer = Integer.valueOf(ver);
 		synchronized (VALS_BY_VER) {
 			return unmodifiableSet(MultiMapHelper.getMapValue(VALS_BY_VER, boxedVer,
 					key -> EnumSet.copyOf(
@@ -149,7 +148,7 @@ public enum TileType {
 	 */
 	public static TileType getTileType(final String description) {
 		if (CACHE.containsKey(description)) {
-			return NullCleaner.assertNotNull(CACHE.get(description));
+			return CACHE.get(description);
 		} // else
 		throw new IllegalArgumentException("Unrecognized terrain type string " +
 												   description);

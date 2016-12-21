@@ -22,7 +22,6 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileType;
 import util.LineEnd;
-import util.NullCleaner;
 import util.SingletonRandom;
 import util.TypesafeLogger;
 import util.Warning;
@@ -53,8 +52,7 @@ public final class TileContentsGenerator {
 	 * A mapping from filenames containing maps to instances handling those maps.
 	 */
 	private static final Map<String, TileContentsGenerator> INSTANCES =
-			NullCleaner.assertNotNull(Collections.synchronizedMap(
-					new HashMap<>()));
+			Collections.synchronizedMap(new HashMap<>());
 	/**
 	 * The singleton runner we'll be using.
 	 */
@@ -92,7 +90,7 @@ public final class TileContentsGenerator {
 					new TileContentsGenerator(READER.readMap(Paths.get(filename),
 							Warning.DEFAULT)));
 		}
-		return NullCleaner.assertNotNull(INSTANCES.get(filename));
+		return INSTANCES.get(filename);
 	}
 
 	/**
@@ -105,7 +103,7 @@ public final class TileContentsGenerator {
 		} else {
 			final NumberFormat numParser = NumberFormat.getIntegerInstance();
 			try {
-				getInstance(NullCleaner.assertNotNull(args[0])).generateTileContents(
+				getInstance(args[0]).generateTileContents(
 						PointFactory.point(numParser.parse(args[1]).intValue(),
 								numParser.parse(args[2]).intValue()));
 			} catch (final NumberFormatException | ParseException e) {
@@ -166,7 +164,7 @@ public final class TileContentsGenerator {
 		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
 		for (int i = 0; i < reps; i++) {
 			println(runner.recursiveConsultTable("fisher", point, terrain,
-					NullCleaner.assertNotNull(Stream.empty()), map.dimensions()));
+					Stream.empty(), map.dimensions()));
 		}
 	}
 
