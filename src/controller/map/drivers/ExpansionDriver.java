@@ -35,7 +35,6 @@ import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
 import util.ArraySet;
 import util.MultiMapHelper;
-import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -67,7 +66,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 * Logger.
 	 */
 	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(ExpansionDriver.class.getName()));
+			Logger.getLogger(ExpansionDriver.class.getName());
 	/**
 	 * The exception to throw if our mock-object's expectations are violated.
 	 */
@@ -120,11 +119,10 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			addSurroundingFixtures(point, master, fixAdditions, mock);
 		}
 		for (final Map.Entry<Point, TileType> entry : terrainAdditions.entrySet()) {
-			map.setBaseTerrain(NullCleaner.assertNotNull(entry.getKey()),
-					NullCleaner.assertNotNull(entry.getValue()));
+			map.setBaseTerrain(entry.getKey(), entry.getValue());
 		}
 		for (final Map.Entry<Point, Set<TileFixture>> entry : fixAdditions.entrySet()) {
-			final Point point = NullCleaner.assertNotNull(entry.getKey());
+			final Point point = entry.getKey();
 			for (final TileFixture fix : entry.getValue()) {
 				if (fix instanceof HasOwner) {
 					map.addFixture(point,
