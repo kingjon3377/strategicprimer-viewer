@@ -20,8 +20,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.Pair;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * An extension to the IteratorWrapper we previously used in MapReaderNG that
  * automatically handles "include" tags.
@@ -56,7 +54,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 * @param iter the iterator we'll start with.
 	 */
 	public IncludingIterator(final Path file, final Iterator<XMLEvent> iter) {
-		this(assertNotNull(file.toString()), iter);
+		this(file.toString(), iter);
 	}
 
 	/**
@@ -101,7 +99,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		if (attr == null) {
 			throw new MissingPropertyException(startElement, FILE_ATTR_NAME);
 		} else {
-			return assertNotNull(attr.getValue());
+			return attr.getValue();
 		}
 	}
 
@@ -147,12 +145,11 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		XMLEvent retval = stack.getFirst().second().next();
 		while (retval.isStartElement()
 					   && EqualsAny.equalsAny(
-				assertNotNull(retval.asStartElement()
-									  .getName().getNamespaceURI()),
+				retval.asStartElement().getName().getNamespaceURI(),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)
 					   && "include".equals(
 				retval.asStartElement().getName().getLocalPart())) {
-			handleInclude(assertNotNull(retval.asStartElement()));
+			handleInclude(retval.asStartElement());
 			removeEmptyIterators();
 			if (stack.isEmpty()) {
 				throw new NoSuchElementException();

@@ -100,7 +100,7 @@ public final class ImageLoader {
 				}
 			}
 		}
-		return NullCleaner.assertNotNull(cache.get(file));
+		return cache.get(file);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public final class ImageLoader {
 			pen.dispose();
 			iconCache.put(file, new ImageIcon(temp));
 		}
-		return NullCleaner.assertNotNull(iconCache.get(file));
+		return iconCache.get(file);
 	}
 
 	/**

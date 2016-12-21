@@ -6,7 +6,6 @@ import model.map.HasMutableName;
 import model.map.Subsettable;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * An interface for Jobs.
@@ -29,12 +28,11 @@ public interface IJob
 	 * Skill names that are suspicious when they are the only Skill a Job has. In many
 	 * cases they should be 'miscellaneous' instead.
 	 */
-	Iterable<String> SUSPICIOUS_SKILLS = NullCleaner.assertNotNull(
-			Collections.unmodifiableList(
-					Arrays.asList("hunter", "hunting", "explorer", "exploration",
-							"research", "carpentry", "woodcutting", "farming",
-							"food gathering", "scientist", "woodcutter", "farmer",
-							"brickmaker", "brickmaking", "administration")));
+	Iterable<String> SUSPICIOUS_SKILLS = Collections.unmodifiableList(
+			Arrays.asList("hunter", "hunting", "explorer", "exploration",
+					"research", "carpentry", "woodcutting", "farming",
+					"food gathering", "scientist", "woodcutter", "farmer",
+					"brickmaker", "brickmaking", "administration"));
 
 	/**
 	 * Add a skill.
