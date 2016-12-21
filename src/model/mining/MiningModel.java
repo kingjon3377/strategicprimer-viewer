@@ -6,11 +6,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
-import java.util.Set;
 import java.util.function.Function;
 import model.map.Point;
 import model.map.PointFactory;
-import util.NullCleaner;
 import view.util.SystemOut;
 
 /**
@@ -86,14 +84,13 @@ public final class MiningModel {
 		}
 		SystemOut.SYS_OUT.printf("%nPruned %d branches beyond our boundaries%n",
 				Long.valueOf(pruneCounter));
-		final int minCol =
-				getMinCol(NullCleaner.assertNotNull(unnormalized.keySet()));
+		final int minCol = getMinCol(unnormalized.keySet());
 		for (final Map.Entry<Point, LodeStatus> entry : unnormalized.entrySet()) {
 			final Point key = entry.getKey();
 			data.put(PointFactory.point(key.getRow(), key.getCol() - minCol),
 					entry.getValue());
 		}
-		maxPoint = createMaxPoint(NullCleaner.assertNotNull(data.keySet()));
+		maxPoint = createMaxPoint(data.keySet());
 	}
 
 	/**
@@ -177,7 +174,7 @@ public final class MiningModel {
 	 */
 	public LodeStatus statusAt(final Point point) {
 		if (data.containsKey(point)) {
-			return NullCleaner.assertNotNull(data.get(point));
+			return data.get(point);
 		} else {
 			return LodeStatus.None;
 		}
