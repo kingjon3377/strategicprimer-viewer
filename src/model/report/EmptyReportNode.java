@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Formatter;
 import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
@@ -61,12 +62,12 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @param builder the string-builder used to build the report
-	 * @return it, unmodified
+	 * This is a no-op, since the HTML representation is the empty string.
+	 * @param formatter ignored
 	 */
 	@Override
-	public StringBuilder produce(final StringBuilder builder) {
-		return builder;
+	public void produce(final Formatter formatter) {
+		// do nothing
 	}
 
 	/**

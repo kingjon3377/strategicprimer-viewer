@@ -5,12 +5,12 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
+import java.util.Formatter;
 import java.util.Objects;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.NoCloneException;
 
 /**
@@ -61,17 +61,15 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @param builder a StringBuilder
-	 * @return it, with this node's HTML representation appended.
+	 * @param formatter a Formatter to write the HTML representation to
 	 */
 	@Override
-	public StringBuilder produce(final StringBuilder builder) {
-		builder.append("<h").append(level).append('>').append(text)
-				.append("</h").append(level).append('>').append(LineEnd.LINE_SEP);
+	public void produce(final Formatter formatter) {
+		formatter.format("<h%d>%s</h%d>%n", Integer.valueOf(level), text,
+				Integer.valueOf(level));
 		for (final IReportNode child : this) {
-			child.produce(builder);
+			child.produce(formatter);
 		}
-		return builder;
 	}
 
 	/**

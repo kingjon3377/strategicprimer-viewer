@@ -5,11 +5,11 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
+import java.util.Formatter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
-import util.LineEnd;
 import util.NoCloneException;
 
 /**
@@ -95,29 +95,24 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @param builder a StringBuilder
-	 * @return it, with this node's HTML representation appended.
+	 * @param formatter a Formatter to write the HTML representation to
 	 */
 	@Override
-	public StringBuilder produce(final StringBuilder builder) {
-		builder.append("<h").append(level).append('>').append(text)
-				.append("</h").append(level).append('>').append(LineEnd.LINE_SEP);
+	public void produce(final Formatter formatter) {
+		formatter.format("<h%d>%s</h%d>%n", Integer.valueOf(level), text,
+				Integer.valueOf(level));
 		if (!subHeader.isEmpty()) {
-			builder.append("<p>").append(subHeader).append("</p>").append(
-					LineEnd.LINE_SEP);
+			formatter.format("<p>%s</p>%n", subHeader);
 		}
 		if (getChildCount() != 0) {
-			builder.append("<ul>").append(LineEnd.LINE_SEP);
+			formatter.format("<ul>%n");
 			for (final IReportNode child : this) {
-				builder.append("<li>");
-				builder.append(((IReportNode) child).produce());
-				builder.append("</li>");
-				builder.append(LineEnd.LINE_SEP);
+				formatter.format("<li>");
+				child.produce(formatter);
+				formatter.format("</li>%n");
 			}
-			builder.append("</ul>");
-			builder.append(LineEnd.LINE_SEP);
+			formatter.format("</ul>%n");
 		}
-		return builder;
 	}
 
 	/**

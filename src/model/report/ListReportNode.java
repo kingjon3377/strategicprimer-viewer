@@ -77,21 +77,17 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @param builder a StringBuilder
-	 * @return it, with this node's HTML representation appended.
+	 * @param formatter a Formatter to write the HTML representation to
 	 */
 	@Override
-	public StringBuilder produce(final StringBuilder builder) {
-		try (final Formatter out = new Formatter(builder)) {
-			out.format("%s%n<ul>%n", text);
-			for (final IReportNode node : this) {
-				out.format("<li>");
-				node.produce(builder);
-				out.format("</li>%n");
-			}
-			out.format("</ul>%n");
+	public void produce(final Formatter formatter) {
+		formatter.format("%s%n<ul>%n", text);
+		for (final IReportNode node : this) {
+			formatter.format("<li>");
+			node.produce(formatter);
+			formatter.format("</li>%n");
 		}
-		return builder;
+		formatter.format("</ul>%n");
 	}
 
 	/**

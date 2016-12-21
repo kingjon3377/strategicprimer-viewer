@@ -5,6 +5,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
+import java.util.Formatter;
 import java.util.stream.Stream;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
@@ -90,12 +91,11 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @param builder a StringBuilder
-	 * @return it, with this node's HTML representation appended.
+	 * @param formatter a Formatter to write the HTML representation to
 	 */
 	@Override
-	public StringBuilder produce(final StringBuilder builder) {
-		return builder.append(text);
+	public void produce(final Formatter formatter) {
+		formatter.format("%s", text);
 	}
 
 	/**

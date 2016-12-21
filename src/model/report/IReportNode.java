@@ -1,5 +1,6 @@
 package model.report;
 
+import java.util.Formatter;
 import java.util.Iterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -30,19 +31,22 @@ public interface IReportNode
 		extends Comparable<@NonNull IReportNode>, MutableTreeNode,
 						Iterable<IReportNode> {
 	/**
-	 * By default delegates to {@link #produce(StringBuilder)} after calculating the
+	 * By default delegates to {@link #produce(Formatter)} after calculating the
 	 * appropriate size for the StringBuilder.
 	 * @return the HTML representation of the node.
 	 */
 	default String produce() {
-		return produce(new StringBuilder(size())).toString();
+		final StringBuilder builder = new StringBuilder(size());
+		try (final Formatter formatter = new Formatter(builder)) {
+			produce(formatter);
+		}
+		return builder.toString();
 	}
 
 	/**
-	 * @param builder a string builder
-	 * @return that builder, with an HTML representation of the node added.
+	 * @param formatter a Formatter to write the HTML representation to
 	 */
-	StringBuilder produce(StringBuilder builder);
+	void produce(Formatter formatter);
 
 	/**
 	 * @return an approximation of how large the HTML produced by this node will be.

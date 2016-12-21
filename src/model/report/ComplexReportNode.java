@@ -5,6 +5,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
+import java.util.Formatter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
@@ -79,16 +80,14 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	/**
 	 * Writes the header text, followed by the HTML representation of each child in
 	 * order, to the StringBuilder.
-	 * @param builder a StringBuilder
-	 * @return it, with this node's HTML representation appended.
+	 * @param formatter a Formatter to write the HTML representation to
 	 */
 	@Override
-	public StringBuilder produce(final StringBuilder builder) {
-		builder.append(text);
+	public void produce(final Formatter formatter) {
+		formatter.format("%s", text);
 		for (final IReportNode node : this) {
-			node.produce(builder);
+			node.produce(formatter);
 		}
-		return builder;
 	}
 
 	/**
