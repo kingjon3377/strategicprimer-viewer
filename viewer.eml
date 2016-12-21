@@ -13,8 +13,6 @@
 		<excludeFolder url="file://$MODULE_DIR$/release"/>
 		<excludeFolder url="file://$MODULE_DIR$/src/tables"/>
 	</contentEntry>
-	<lib name="junit4" scope="TEST"/>
-	<lib name="Hamcrest" scope="TEST"/>
 	<levels>
 		<level name="WindowMenu" value="project"/>
 		<level name="AntContrib" value="project"/>
