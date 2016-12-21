@@ -87,13 +87,14 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	private static IUnit mock(final Player player) {
 		final InvocationHandler lambda = (proxy, method, args) -> {
-			if ("getOwner".equals(method.getName())) {
+			switch (method.getName()) {
+			case "getOwner":
 				return player;
-			} else if ("equals".equals(method.getName())) {
+			case "equals":
 				return proxy == args[0];
-			} else if ("stream".equals(method.getName())) {
+			case "stream":
 				return Stream.empty();
-			} else {
+			default:
 				throw new IllegalStateException(String.format(
 						"Unsupported method %s called on mock object", method.getName()));
 			}
