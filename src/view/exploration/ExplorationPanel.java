@@ -43,7 +43,6 @@ import model.viewer.FixtureListModel;
 import model.viewer.FixtureMatcher;
 import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
-import util.NullCleaner;
 import util.Pair;
 import view.map.details.FixtureList;
 import view.util.BorderedPanel;
@@ -74,8 +73,7 @@ public final class ExplorationPanel extends BorderedPanel
 	/**
 	 * A parser for numeric input.
 	 */
-	private static final NumberFormat NUM_PARSER =
-			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+	private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
 	/**
 	 * Logger.
 	 */
@@ -276,8 +274,7 @@ public final class ExplorationPanel extends BorderedPanel
 	public void deduct(final int cost) {
 		final String mpText;
 		try {
-			mpText = NullCleaner.assertNotNull(
-					mpDocument.getText(0, mpDocument.getLength()).trim());
+			mpText = mpDocument.getText(0, mpDocument.getLength()).trim();
 		} catch (final BadLocationException except) {
 			LOGGER.log(Level.SEVERE, "Exception trying to update MP counter", except);
 			return;
@@ -313,10 +310,10 @@ public final class ExplorationPanel extends BorderedPanel
 															 .values()) {
 			assert dir != null;
 			final Point point = model.getDestination(selPoint, dir);
-			NullCleaner.assertNotNull(mains.get(dir)).fireChanges(selPoint, point);
-			NullCleaner.assertNotNull(seconds.get(dir)).fireChanges(selPoint, point);
-			NullCleaner.assertNotNull(buttons.get(dir)).setPoint(point);
-			NullCleaner.assertNotNull(buttons.get(dir)).repaint();
+			mains.get(dir).fireChanges(selPoint, point);
+			seconds.get(dir).fireChanges(selPoint, point);
+			buttons.get(dir).setPoint(point);
+			buttons.get(dir).repaint();
 		}
 		locLabel.setArgs(Integer.valueOf(selPoint.getRow()),
 				Integer.valueOf(selPoint.getCol()));

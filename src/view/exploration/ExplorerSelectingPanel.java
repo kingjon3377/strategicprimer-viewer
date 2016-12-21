@@ -30,7 +30,6 @@ import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
@@ -120,17 +119,15 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 										 -> {
 			final ListCellRenderer<@Nullable Object> defRenderer =
 					new DefaultListCellRenderer();
-			final Component retval =
-					defRenderer.getListCellRendererComponent(
-							NullCleaner.assertNotNull(list), value, index,
-							isSelected, cellHasFocus);
+			final Component retval = defRenderer.getListCellRendererComponent(list,
+					value, index, isSelected, cellHasFocus);
 			if ((value != null) && (retval instanceof JLabel)) {
 				((JLabel) retval).setText(String.format(
 						"Unit of type %s, named %s",
 						value.getKind(),
 						value.getName()));
 			}
-			return NullCleaner.assertNotNull(retval);
+			return retval;
 		});
 		final ActionListener buttonListener = evt -> {
 			final IUnit selectedValue =
@@ -176,14 +173,14 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		for (final String para : paras) {
 			builder.append("<p>").append(para).append("</p>");
 		}
-		return NullCleaner.assertNotNull(builder.append("</body></html>").toString());
+		return builder.append("</body></html>").toString();
 	}
 
 	/**
 	 * @return the model underlying the field containing the running MP total.
 	 */
 	public Document getMPDocument() {
-		return NullCleaner.assertNotNull(mpField.getDocument());
+		return mpField.getDocument();
 	}
 	/**
 	 * @return the model underlying the speed-selecting combo box.

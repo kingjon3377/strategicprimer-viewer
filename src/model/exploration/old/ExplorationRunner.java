@@ -13,7 +13,6 @@ import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
 import util.LineEnd;
-import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -56,6 +55,7 @@ public final class ExplorationRunner {
 								 final Stream<TileFixture> fixtures,
 								 final MapDimensions mapDimensions)
 			throws MissingTableException {
+		// TODO: Use a Formatter
 		final StringBuilder builder =
 				new StringBuilder(80).append("The primary rock type here is ");
 		builder.append(getPrimaryRock(point, terrain, fixtures, mapDimensions));
@@ -68,7 +68,7 @@ public final class ExplorationRunner {
 			builder.append('.');
 			builder.append(LineEnd.LINE_SEP);
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -154,7 +154,7 @@ public final class ExplorationRunner {
 	public EncounterTable getTable(final String name)
 			throws MissingTableException {
 		if (tables.containsKey(name)) {
-			return NullCleaner.assertNotNull(tables.get(name));
+			return tables.get(name);
 		} else {
 			throw new MissingTableException(name);
 		}
@@ -185,8 +185,8 @@ public final class ExplorationRunner {
 				consultTable(table, point, terrain, fixtures, mapDimensions);
 		if (result.contains("#")) {
 			final String[] split = result.split("#", 3);
-			final String before = NullCleaner.assertNotNull(split[0]);
-			final String middle = NullCleaner.assertNotNull(split[1]);
+			final String before = split[0];
+			final String middle = split[1];
 			final StringBuilder builder = new StringBuilder(100);
 			builder.append(before);
 			builder.append(recursiveConsultTable(middle, point, terrain, fixtures,
@@ -194,7 +194,7 @@ public final class ExplorationRunner {
 			if (split.length > 2) {
 				builder.append(split[2]);
 			}
-			return NullCleaner.assertNotNull(builder.toString());
+			return builder.toString();
 		}
 		return result;
 	}
@@ -228,9 +228,7 @@ public final class ExplorationRunner {
 			try {
 				for (final String value : getTable(table).allEvents()) {
 					if (value.contains("#")) {
-						final String splitVal =
-								NullCleaner.assertNotNull(value.split("#", 3)[1]);
-						if (recursiveCheck(splitVal, state)) {
+						if (recursiveCheck(value.split("#", 3)[1], state)) {
 							return true;
 						}
 					}
@@ -290,9 +288,8 @@ public final class ExplorationRunner {
 				try {
 					for (final String value : getTable(table).allEvents()) {
 						if (value.contains("#")) {
-							final String splitVal =
-									NullCleaner.assertNotNull(value.split("#", 3)[1]);
-							verboseRecursiveCheck(splitVal, ostream, state);
+							verboseRecursiveCheck(value.split("#", 3)[1], ostream,
+									state);
 						}
 					}
 				} catch (final MissingTableException e) {
