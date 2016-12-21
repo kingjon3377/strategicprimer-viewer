@@ -530,7 +530,33 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			fireMovementCost(5);
 		}
 	}
+	/**
+	 * @param fix a TileFixture
+	 * @return whether it is "diggable"
+	 */
+	private static boolean isDiggable(final TileFixture fix) {
+		return (fix instanceof Ground) || (fix instanceof StoneDeposit) ||
+					   (fix instanceof MineralVein);
+	}
+	/**
+	 * In StoneDeposit and MineralVein, equals() is false if DCs are not equal, so this
+	 * method uses copy() to get a clone with that zeroed out.
+	 * @param firstFix one fixture
+	 * @param secondFix another fixture
+	 * @return whether they're "equal enough" for the purposes of updating a map after
+	 * digging
+	 */
+	private static boolean areDiggablesEqual(final TileFixture firstFix, final TileFixture secondFix) {
 
+		if (firstFix.equals(secondFix)) {
+			return true;
+		} else if ((firstFix instanceof StoneDeposit) ||
+						   (firstFix instanceof MineralVein)) {
+			return firstFix.copy(true).equals(secondFix.copy(true));
+		} else {
+			return false;
+		}
+	}
 	/**
 	 * If there is a currently selected unit, change one Ground, StoneDeposit, or
 	 * MineralVein at the location of that unit from unexposed to exposed (and discover
@@ -540,17 +566,14 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	public void dig() {
 		final Point currPoint = selection.first();
 		if (currPoint.getRow() >= 0) {
-			final List<TileFixture> diggables = new ArrayList<>();
 			final IMutableMapNG mainMap = getMap();
-			final Ground ground = mainMap.getGround(currPoint);
-			if (ground != null) {
-				diggables.add(ground);
-			}
-			mainMap.streamOtherFixtures(currPoint)
-					.filter(fix -> (fix instanceof Ground) || (fix instanceof
-																	   StoneDeposit) ||
-										   (fix instanceof MineralVein))
-					.forEach(diggables::add);
+			@Nullable final Ground ground = mainMap.getGround(currPoint);
+			final List<TileFixture> diggables =
+					new ArrayList<>(Stream.concat(
+							Stream.of(ground),
+							mainMap.streamOtherFixtures(currPoint))
+											.filter(ExplorationModel::isDiggable)
+											.collect(Collectors.toList()));
 			if (diggables.isEmpty()) {
 				return;
 			}
@@ -572,13 +595,12 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					final Ground locGround = map.getGround(currPoint);
 					if ((locGround == null) || locGround.equals(ground)) {
 						map.setGround(currPoint, newGround.copy(false));
+						continue;
 					} else if (map.streamOtherFixtures(currPoint)
 									   .anyMatch(fix -> fix.equals(ground))) {
 						map.removeFixture(currPoint, ground);
-						map.addFixture(currPoint, newGround.copy(false));
-					} else {
-						map.addFixture(currPoint, newGround.copy(false));
 					}
+					map.addFixture(currPoint, newGround.copy(false));
 				}
 			} else {
 				final TileFixture oldFix = diggables.get(0);
@@ -594,18 +616,12 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					final Ground locGround = map.getGround(currPoint);
 					if ((locGround == null) || locGround.equals(oldFix)) {
 						map.setGround(currPoint, (Ground) newFix.copy(subsequent));
-						// In StoneDeposit and MineralVein, equals() is false if DCs !=
+						continue;
 					} else if (map.streamOtherFixtures(currPoint).anyMatch(
-							fix -> fix.equals(oldFix) ||
-										   (((fix instanceof StoneDeposit) ||
-													 (fix instanceof MineralVein)) &&
-													fix.copy(true).equals(oldFix.copy(
-															true))))) {
+							fix -> areDiggablesEqual(fix, oldFix))) {
 						map.removeFixture(currPoint, oldFix);
-						map.addFixture(currPoint, newFix.copy(subsequent));
-					} else {
-						map.addFixture(currPoint, newFix.copy(subsequent));
 					}
+					map.addFixture(currPoint, newFix.copy(subsequent));
 					subsequent = true;
 				}
 			}
