@@ -458,14 +458,7 @@ public final class ProxyUnit
 	public void addMember(final UnitMember member) {
 		if (parallel) {
 			for (final IUnit unit : proxied) {
-				boolean shouldAdd = true;
-				for (final UnitMember item : unit) {
-					if (member.equals(item)) {
-						shouldAdd = false;
-						break;
-					}
-				}
-				if (shouldAdd) {
+				if (unit.stream().noneMatch(member::equals)) {
 					unit.addMember(member.copy(false));
 				}
 			}
