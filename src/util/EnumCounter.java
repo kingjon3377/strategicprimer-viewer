@@ -21,9 +21,9 @@ import java.util.Map;
  */
 public final class EnumCounter<T extends Enum<T>> {
 	/**
-	 * The map we use as a backend. TODO: Use Accumulator, not Integer
+	 * The map we use as a backend.
 	 */
-	private final Map<T, Integer> map;
+	private final Map<T, Accumulator> map;
 
 	/**
 	 * Constructor.
@@ -38,11 +38,7 @@ public final class EnumCounter<T extends Enum<T>> {
 	 * @param value a value to increase the counter for
 	 */
 	private void count(final T value) {
-		if (map.containsKey(value)) {
-			map.put(value, Integer.valueOf(map.get(value).intValue() + 1));
-		} else {
-			map.put(value, Integer.valueOf(1));
-		}
+		MultiMapHelper.getMapValue(map, value, key -> new IntHolder(0)).add(1);
 	}
 
 	/**
@@ -63,7 +59,7 @@ public final class EnumCounter<T extends Enum<T>> {
 	 */
 	public int getCount(final T value) {
 		if (map.containsKey(value)) {
-			return map.get(value).intValue();
+			return map.get(value).getValue();
 		} else {
 			return 0;
 		}
