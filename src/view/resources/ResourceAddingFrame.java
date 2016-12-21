@@ -121,6 +121,18 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	 */
 	final FormattedLabel implementLabel;
 	/**
+	 * The listener for menu items.
+	 */
+	private final ActionListener menuListener;
+	/**
+	 * The driver model.
+	 */
+	private final ResourceManagementDriver model;
+	/**
+	 * The factory for ID numbers.
+	 */
+	private final IDRegistrar idf;
+	/**
 	 * Constructor.
 	 *
 	 * @param driverModel the driver model
@@ -130,7 +142,9 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	public ResourceAddingFrame(final ResourceManagementDriver driverModel,
 							   final MenuBroker menuHandler) {
 		super("Resource Entry", driverModel.getMapFile());
-		final IDRegistrar idf = IDFactoryFiller.createFactory(driverModel);
+		menuListener = menuHandler;
+		model = driverModel;
+		idf = IDFactoryFiller.createFactory(driverModel);
 		current = NullCleaner.valueOrDefault(driverModel.getCurrentPlayer(),
 				NULL_PLAYER);
 		resourceLabel = new FormattedLabel("Add resource for %s:", current.getName());
@@ -143,37 +157,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		addPair(panel, new JLabel("Specific Resource"), resourceBox);
 		addPair(panel, new JLabel("Quantity"), new JSpinner(resQtyModel));
 		addPair(panel, new JLabel("Units"), resUnitsBox);
-		final ActionListener resListener = evt -> {
-			confirmPlayer(menuHandler);
-			final String kind = resKindBox.getSelectedItem();
-			final String resource = resourceBox.getSelectedItem();
-			final String units = resUnitsBox.getSelectedItem();
-			if (kind.isEmpty()) {
-				resKindBox.requestFocusInWindow();
-				return;
-			} else if (resource.isEmpty()) {
-				resourceBox.requestFocusInWindow();
-				return;
-			} else if (units.isEmpty()) {
-				resUnitsBox.requestFocusInWindow();
-				return;
-			}
-			final ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
-															  new Quantity(
-															  		resQtyModel
-																			.getNumber()
-																			.intValue(),
-																				  units));
-			pile.setCreated(resCreatedModel.getNumber().intValue());
-			driverModel.addResource(pile, current);
-			logAddition(pile.toString());
-			resKindBox.checkAndClear();
-			resCreatedModel.setValue(Integer.valueOf(-1));
-			resourceBox.checkAndClear();
-			resQtyModel.setValue(Integer.valueOf(0));
-			resUnitsBox.checkAndClear();
-			resKindBox.requestFocusInWindow();
-		};
+		final ActionListener resListener = evt -> createResourcePile();
 		addPair(panel, new JLabel(""), new ListenedButton("Add Resource", resListener));
 		// A listener on the combo box fires on every change to the selection
 		resUnitsBox.addSubmitListener(resListener);
@@ -183,21 +167,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		final JPanel secondPanel = new BoxPanel(true);
 		secondPanel.add(implQtyField);
 		secondPanel.add(implKindBox);
-		final ActionListener implListener = evt -> {
-			confirmPlayer(menuHandler);
-			final String kind = implKindBox.getSelectedItem();
-			if (kind.isEmpty()) {
-				return;
-			}
-			final int qty = implQtyModel.getNumber().intValue();
-			for (int i = 0; i < qty; i++) {
-				driverModel.addResource(new Implement(kind, idf.createID()), current);
-			}
-			logAddition(Integer.toString(qty) + " x " + kind);
-			implQtyModel.setValue(Integer.valueOf(1));
-			implKindBox.checkAndClear();
-			implQtyField.requestFocusInWindow();
-		};
+		final ActionListener implListener = evt -> createImplement();
 		implKindBox.addSubmitListener(implListener);
 		secondPanel.add(new ListenedButton("Add Equipment", implListener));
 		mainPanel.add(secondPanel);
@@ -215,7 +185,58 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		resQtyModel.setMaximum(Integer.valueOf(Integer.MAX_VALUE));
 		implQtyModel.setMaximum(Integer.valueOf(Integer.MAX_VALUE));
 	}
-
+	/**
+	 * Create a new resource pile if the user has filled in all the necessary fields.
+	 */
+	private void createResourcePile() {
+		confirmPlayer(menuListener);
+		final String kind = resKindBox.getSelectedItem();
+		final String resource = resourceBox.getSelectedItem();
+		final String units = resUnitsBox.getSelectedItem();
+		if (kind.isEmpty()) {
+			resKindBox.requestFocusInWindow();
+			return;
+		} else if (resource.isEmpty()) {
+			resourceBox.requestFocusInWindow();
+			return;
+		} else if (units.isEmpty()) {
+			resUnitsBox.requestFocusInWindow();
+			return;
+		}
+		final ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
+														  new Quantity(resQtyModel
+																			   .getNumber()
+																			   .intValue(),
+																			  units));
+		pile.setCreated(resCreatedModel.getNumber().intValue());
+		model.addResource(pile, current);
+		logAddition(pile.toString());
+		resKindBox.checkAndClear();
+		resCreatedModel.setValue(Integer.valueOf(-1));
+		resourceBox.checkAndClear();
+		resQtyModel.setValue(Integer.valueOf(0));
+		resUnitsBox.checkAndClear();
+		resKindBox.requestFocusInWindow();
+	}
+	/**
+	 * Create a new piece of equipment if the user has filled in all the necessary
+	 * fields.
+	 */
+	private void createImplement() {
+		confirmPlayer(menuListener);
+		final String kind = implKindBox.getSelectedItem();
+		if (kind.isEmpty()) {
+			return;
+		}
+		final int qty = implQtyModel.getNumber().intValue();
+		for (int i = 0; i < qty; i++) {
+			model.addResource(new Implement(kind, idf.createID()), current);
+		}
+		logAddition(Integer.toString(qty) + " x " + kind);
+		implQtyModel.setValue(Integer.valueOf(1));
+		implKindBox.checkAndClear();
+		implQtyField.requestFocusInWindow();
+	}
 	/**
 	 * Add two components in a panel joining them vertically.
 	 *
