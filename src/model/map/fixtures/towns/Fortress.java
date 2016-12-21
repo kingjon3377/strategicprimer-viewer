@@ -18,8 +18,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.LineEnd;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A fortress on the map. A player can only have one fortress per tile, but multiple
  * players may have fortresses on the same tile.
@@ -112,7 +110,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	 */
 	@Override
 	public final Iterator<FortressMember> iterator() {
-		return assertNotNull(units.iterator());
+		return units.iterator();
 	}
 
 	/**
@@ -215,7 +213,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 				builder.append(';');
 			}
 		}
-		return assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -248,7 +246,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 					&& (fort.owner.getPlayerId() == owner.getPlayerId())) {
 			final Map<Integer, FortressMember> ours = new HashMap<>();
 			for (final FortressMember member : this) {
-				ours.put(assertNotNull(Integer.valueOf(member.getID())),
+				ours.put(Integer.valueOf(member.getID()),
 						member);
 			}
 			boolean retval = true;
@@ -258,7 +256,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 						"%s In fortress %s (ID #%d): Extra member:\t%s, ID #%d%n",
 						context, name, Integer.valueOf(id), unit.toString(),
 						Integer.valueOf(unit.getID())) ||
-							!assertNotNull(ours.get(Integer.valueOf(unit.getID())))
+							!ours.get(Integer.valueOf(unit.getID()))
 									 .isSubset(unit, ostream,
 											 String.format("%s In fortress %s (ID #%d):",
 													 context, name,

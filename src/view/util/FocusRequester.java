@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.JComponent;
 import util.ActionWrapper;
-import util.NullCleaner;
 
 /**
  * An action to request focus in a component.
@@ -37,7 +36,7 @@ public class FocusRequester extends ActionWrapper {
 	 */
 	public FocusRequester(final JComponent component) {
 		super(evt -> component.requestFocusInWindow());
-		type = NullCleaner.assertNotNull(component.getClass().getSimpleName());
+		type = component.getClass().getSimpleName();
 	}
 
 	/**

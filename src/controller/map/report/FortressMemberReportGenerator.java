@@ -21,7 +21,6 @@ import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.MultiMapHelper;
-import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
 
@@ -165,14 +164,13 @@ public final class FortressMemberReportGenerator
 				age = " from turn " + rsr.getCreated();
 			}
 			if (rsr.getQuantity().getUnits().isEmpty()) {
-				return NullCleaner.assertNotNull(String.format("A pile of %s %s (%s)%s",
+				return String.format("A pile of %s %s (%s)%s",
 						rsr.getQuantity().toString(), rsr.getContents(),
-						rsr.getKind(), age));
+						rsr.getKind(), age);
 			} else {
-				return NullCleaner.assertNotNull(
-						String.format("A pile of %s of %s (%s)%s",
-								rsr.getQuantity().toString(),
-								rsr.getContents(), rsr.getKind(), age));
+				return String.format("A pile of %s of %s (%s)%s",
+						rsr.getQuantity().toString(),
+						rsr.getContents(), rsr.getKind(), age);
 			}
 		} else if (item instanceof Implement) {
 			fixtures.remove(Integer.valueOf(item.getID()));
