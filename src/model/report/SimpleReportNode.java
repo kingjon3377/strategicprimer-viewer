@@ -11,7 +11,6 @@ import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NoCloneException;
-import util.NullCleaner;
 
 /**
  * A simple node representing plain text. Any children are ignored!
@@ -79,7 +78,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 		final StringBuilder builder = new StringBuilder(2 + Stream.of(strings).mapToInt(
 				String::length).sum());
 		Stream.of(strings).forEach(builder::append);
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -96,7 +95,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		return NullCleaner.assertNotNull(builder.append(text));
+		return builder.append(text);
 	}
 
 	/**

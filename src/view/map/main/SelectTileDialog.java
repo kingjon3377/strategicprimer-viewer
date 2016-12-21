@@ -24,8 +24,6 @@ import view.util.BoxPanel;
 import view.util.ListenedButton;
 import view.util.SPDialog;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A dialog to let the user select a tile by coordinates.
  *
@@ -45,8 +43,7 @@ public final class SelectTileDialog extends SPDialog {
 	/**
 	 * The parser to use for checking numbers.
 	 */
-	private static final NumberFormat NUM_PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
+	private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
 	/**
 	 * Logger.
 	 */
@@ -83,9 +80,7 @@ public final class SelectTileDialog extends SPDialog {
 		mainLabel.setAlignmentY(TOP_ALIGNMENT);
 
 		final ActionListener okListener =
-				evt -> handleOK(assertNotNull(row.getText()),
-						assertNotNull(column.getText()));
-
+				evt -> handleOK(row.getText(), column.getText());
 
 		final JPanel contentPane = new BoxPanel(false);
 		contentPane.add(mainLabel);
@@ -125,7 +120,7 @@ public final class SelectTileDialog extends SPDialog {
 		buttonPanel.addGlue();
 		contentPane.add(buttonPanel);
 		setContentPane(contentPane);
-		map = assertNotNull(model);
+		map = model;
 		pack();
 	}
 

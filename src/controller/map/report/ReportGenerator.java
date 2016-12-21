@@ -34,8 +34,6 @@ import util.PairComparator;
 import util.PatientMap;
 import view.util.SystemOut;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A class to produce a report based on a map for a player.
  *
@@ -348,7 +346,7 @@ public final class ReportGenerator {
 		return stream.flatMap(fix -> {
 			if (fix instanceof FixtureIterable) {
 				return Stream.concat(Stream.of(fix),
-						getFixtures(assertNotNull(((FixtureIterable<?>) fix).stream())));
+						getFixtures(((FixtureIterable<?>) fix).stream()));
 			} else {
 				return Stream.of(fix);
 			}
