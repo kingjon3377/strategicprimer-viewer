@@ -115,11 +115,11 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	/**
 	 * The label to say to whom resources will belong.
 	 */
-	final FormattedLabel resourceLabel;
+	private final FormattedLabel resourceLabel;
 	/**
 	 * The label to say to whom implements will belong.
 	 */
-	final FormattedLabel implementLabel;
+	private final FormattedLabel implementLabel;
 	/**
 	 * The listener for menu items.
 	 */
