@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
@@ -78,37 +77,12 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @return the HTML representation of the node.
-	 */
-	@Override
-	public String produce() {
-		// TODO: Use a Formatter
-		// Assume each child is half a K.
-		final StringBuilder builder = new StringBuilder(text.length() + BOILERPLATE_LEN +
-																(getChildCount() *
-																		 CHILD_BUF_SIZE))
-											  .append(text).append(LineEnd.LINE_SEP);
-		builder.append("<ul>").append(LineEnd.LINE_SEP);
-		for (int i = 0; i < getChildCount(); i++) {
-			final TreeNode child = getChildAt(i);
-			if (child instanceof IReportNode) {
-				builder.append("<li>");
-				builder.append(((IReportNode) child).produce());
-				builder.append("</li>");
-				builder.append(LineEnd.LINE_SEP);
-			}
-		}
-		builder.append("</ul>");
-		builder.append(LineEnd.LINE_SEP);
-		return builder.toString();
-	}
-
-	/**
 	 * @param builder a StringBuilder
 	 * @return it, with this node's HTML representation appended.
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
+		// TODO: Use a Formatter
 		builder.append(text);
 		builder.append(LineEnd.LINE_SEP);
 		builder.append("<ul>");

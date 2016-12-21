@@ -12,7 +12,6 @@ import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
 import util.NoCloneException;
-import util.NullCleaner;
 
 /**
  * A node representing a section, with a header.
@@ -59,14 +58,6 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 		setText(header);
 		point = null;
 		level = lvl;
-	}
-
-	/**
-	 * @return the HTML representation of the node
-	 */
-	@Override
-	public String produce() {
-		return NullCleaner.assertNotNull(produce(new StringBuilder(size())).toString());
 	}
 
 	/**

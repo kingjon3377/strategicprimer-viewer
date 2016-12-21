@@ -77,16 +77,6 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * Delegates to {@link #produce(StringBuilder)} after calculating the appropriate
-	 * size for the StringBuilder.
-	 * @return an HTML representation of the node.
-	 */
-	@Override
-	public String produce() {
-		return produce(new StringBuilder(size())).toString();
-	}
-
-	/**
 	 * Writes the header text, followed by the HTML representation of each child in
 	 * order, to the StringBuilder.
 	 * @param builder a StringBuilder

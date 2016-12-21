@@ -30,9 +30,13 @@ public interface IReportNode
 		extends Comparable<@NonNull IReportNode>, MutableTreeNode,
 						Iterable<IReportNode> {
 	/**
+	 * By default delegates to {@link #produce(StringBuilder)} after calculating the
+	 * appropriate size for the StringBuilder.
 	 * @return the HTML representation of the node.
 	 */
-	String produce();
+	default String produce() {
+		return produce(new StringBuilder(size())).toString();
+	}
 
 	/**
 	 * @param builder a string builder

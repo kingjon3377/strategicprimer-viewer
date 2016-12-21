@@ -11,7 +11,6 @@ import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
 import util.NoCloneException;
-import util.NullCleaner;
 
 /**
  * A node for a section consisting only of a list. This is a common case, and we'd
@@ -93,14 +92,6 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 		point = null;
 		level = lvl;
 		subHeader = "";
-	}
-
-	/**
-	 * @return the HTML representation of the node
-	 */
-	@Override
-	public String produce() {
-		return NullCleaner.assertNotNull(produce(new StringBuilder(size())).toString());
 	}
 
 	/**

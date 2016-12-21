@@ -54,14 +54,6 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @return the HTML representation of the tree of nodes.
-	 */
-	@Override
-	public String produce() {
-		return produce(new StringBuilder(size())).toString();
-	}
-
-	/**
 	 * @param builder a StringBuilder
 	 * @return it, with this node's HTML representation appended.
 	 */
