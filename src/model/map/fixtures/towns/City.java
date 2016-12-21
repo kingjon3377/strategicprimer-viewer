@@ -42,6 +42,7 @@ public final class City extends AbstractTown {
 	}
 
 	/**
+	 * Clone a City.
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this city
 	 */
@@ -59,6 +60,7 @@ public final class City extends AbstractTown {
 	}
 
 	/**
+	 * The fixture's ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -67,6 +69,7 @@ public final class City extends AbstractTown {
 	}
 
 	/**
+	 * The plural of City is Cities.
 	 * @return a string describing all cities as a class
 	 */
 	@Override
@@ -75,6 +78,7 @@ public final class City extends AbstractTown {
 	}
 
 	/**
+	 * "city" is the kind of town.
 	 * @return that this is a city
 	 */
 	@Override

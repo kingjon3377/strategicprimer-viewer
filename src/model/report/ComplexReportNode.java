@@ -46,6 +46,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	private String text;
 
 	/**
+	 * Constructor.
 	 * @param txt the main text of the node
 	 * @param pt  the point, if any, in the map that this represents something on
 	 */
@@ -57,6 +58,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Constructor for the point-is-null case.
 	 * @param txt the main text of the node
 	 */
 	public ComplexReportNode(final String txt) {
@@ -77,6 +79,8 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Delegates to {@link #produce(StringBuilder)} after calculating the appropriate
+	 * size for the StringBuilder.
 	 * @return an HTML representation of the node.
 	 */
 	@Override
@@ -86,12 +90,15 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Writes the header text, followed by the HTML representation of each child in
+	 * order, to the StringBuilder.
 	 * @param builder a StringBuilder
 	 * @return it, with this node's HTML representation appended.
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
 		builder.append(text);
+		// TODO: Use either for-each loop or Stream operations
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode node = getChildAt(i);
 			if (node instanceof IReportNode) {
@@ -102,6 +109,8 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Calculate the size in characters of the HTML representation of this node and its
+	 * children.
 	 * @return approximately how long the HTML representation of this node will be.
 	 */
 	@Override
@@ -110,6 +119,8 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * We are equal only to other ComplexReportNodes with the same header text and equal
+	 * children.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -122,6 +133,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Our hash code only reflects our header text, to ensure its stability.
 	 * @return a hash code for the object
 	 */
 	@Override
@@ -151,6 +163,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The header text for the node.
 	 * @return the text of the node, usually the header.
 	 */
 	@Override
@@ -159,6 +172,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set new header text for the node.
 	 * @param txt the new text for the node
 	 */
 	@Override
@@ -168,6 +182,10 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * We just return the header text.
+	 *
+	 * TODO: should this reflect children?
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -176,6 +194,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the associated map location.
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	@Override
@@ -184,6 +203,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Get the associated map location.
 	 * @return the point, if any, in the map that this node in particular represents
 	 * something on
 	 */

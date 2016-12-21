@@ -46,6 +46,7 @@ public final class ConstantTable implements EncounterTable {
 	}
 
 	/**
+	 * "Generate" an event.
 	 * @param point         ignored
 	 * @param terrain       ignored
 	 * @param fixtures      ignored
@@ -60,6 +61,7 @@ public final class ConstantTable implements EncounterTable {
 	}
 
 	/**
+	 * "Generate" an event.
 	 * @param point         ignored
 	 * @param terrain       ignored
 	 * @param fixtures      any fixtures on the tile
@@ -74,16 +76,19 @@ public final class ConstantTable implements EncounterTable {
 	}
 
 	/**
+	 * The set of the sole String we can produce.
 	 * @return all events that this table can produce.
 	 */
 	@Override
 	public Set<String> allEvents() {
+		// FIXME: Use Collections.singleton()
 		final Set<String> retval = new HashSet<>();
 		retval.add(value);
 		return retval;
 	}
 
 	/**
+	 * A simple String representation of the table.
 	 * @return a String representation of the object
 	 */
 	@Override

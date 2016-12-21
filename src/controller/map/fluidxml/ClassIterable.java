@@ -58,6 +58,7 @@ public class ClassIterable implements Iterable<Class<?>> {
 	}
 
 	/**
+	 * An iterator over the object's superclasses.
 	 * @return an iterator over the object's superclasses.
 	 */
 	@Override
@@ -66,6 +67,7 @@ public class ClassIterable implements Iterable<Class<?>> {
 	}
 
 	/**
+	 * We basically just delegate to the implementing list.
 	 * @return a String representation of the object.
 	 */
 	@Override

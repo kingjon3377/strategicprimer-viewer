@@ -17,12 +17,14 @@ package model.listeners;
  */
 public interface CompletionSource {
 	/**
+	 * Add a listener to the list of listeners we notify.
 	 * @param list a listener to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addCompletionListener(CompletionListener list);
 
 	/**
+	 * Remove a listener from the list of listeners we notify.
 	 * @param list a listener to remove
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")

@@ -66,6 +66,8 @@ public final class ComparablePair<K extends Comparable<K>, V extends Comparable<
 	}
 
 	/**
+	 * A ComparablePair is only equal to other ComparablePairs whose corresponding items
+	 * are equal.
 	 * @param obj an object
 	 * @return whether it is equal to this one
 	 */

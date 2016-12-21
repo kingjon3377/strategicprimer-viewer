@@ -40,6 +40,7 @@ public final class ComparableIterator<@NonNull T>
 	}
 
 	/**
+	 * Compare to another ComparableIterator.
 	 * @param obj another iterator
 	 * @return the result of a comparison between them.
 	 */
@@ -59,6 +60,7 @@ public final class ComparableIterator<@NonNull T>
 	}
 
 	/**
+	 * We have a next element iff the wrapped iterator has a next element.
 	 * @return whether there's a next element.
 	 */
 	@Override
@@ -67,6 +69,7 @@ public final class ComparableIterator<@NonNull T>
 	}
 
 	/**
+	 * Get the next element from the wrapped iterator.
 	 * @return the next element
 	 */
 	@Override
@@ -83,6 +86,7 @@ public final class ComparableIterator<@NonNull T>
 	}
 
 	/**
+	 * We delegate the hash code calculation to the wrapped iterator.
 	 * @return the hash code of the wrapped iterator.
 	 */
 	@Override
@@ -91,6 +95,8 @@ public final class ComparableIterator<@NonNull T>
 	}
 
 	/**
+	 * A ComparableIterator is equal to an object iff that object is a
+	 * ComparableIterator and that object's wrapped iterator is equal to its own.
 	 * @param obj an object
 	 * @return whether it equals this one
 	 */
@@ -103,6 +109,7 @@ public final class ComparableIterator<@NonNull T>
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

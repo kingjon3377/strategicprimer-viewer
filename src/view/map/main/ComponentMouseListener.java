@@ -52,6 +52,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	private final IViewerModel model;
 
 	/**
+	 * Constructor.
 	 * @param mapModel the map model we'll refer to
 	 */
 	public ComponentMouseListener(final IViewerModel mapModel) {
@@ -62,6 +63,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
+	 * Concatenate Strings. We don't use the standard Stream joining because it doesn't
+	 * calculate an appropriate size for the StringBuilder.
 	 * @param strings strings
 	 * @return them concatenated together
 	 */
@@ -73,6 +76,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
+	 * Create the tool-tip message for the location the mouse cursor is near.
 	 * @param event an event representing the current mouse position
 	 * @return a tool-tip message for the tile the mouse is currently over
 	 */
@@ -89,6 +93,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 						+ dimensions.getMinimumCol());
 		if ((point.getRow() < mapDim.getRows()) &&
 					(point.getCol() < mapDim.getColumns())) {
+			// TODO: replace with String.format
 			return concat("<html><body>", point.toString(), ": ", model
 																		  .getMap()
 																		  .getBaseTerrain(
@@ -102,6 +107,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
+	 * Create a description of the terrain and "top" fixture on the tile.
+	 * TODO: filter out "hidden" fixtures and sort by dynamic Z-value
 	 * @param point a point
 	 * @return a HTML-wrapped String (including final newline entity) representing the
 	 * TerrainFixtures at that point, and the fixture the user can see as its top
@@ -185,6 +192,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -194,6 +202,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
+	 * Add a listener to notify when a tile's type changes.
 	 * @param list Something to listen for changes to the tile type of the selected tile
 	 */
 	@Override
@@ -202,6 +211,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
+	 * Remove a listener from the list that we notify.
 	 * @param list something that no longer wants to listen for changes to the tile type
 	 *             of the selected tile
 	 */

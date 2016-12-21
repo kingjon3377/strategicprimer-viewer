@@ -80,6 +80,7 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	/**
+	 * Convert a string to lowercase.
 	 * @param str a string
 	 * @return its lower case equivalent
 	 */
@@ -291,6 +292,7 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
