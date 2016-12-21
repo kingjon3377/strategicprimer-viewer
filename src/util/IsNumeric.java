@@ -5,8 +5,6 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A helper class to determine whether a String is numeric or not.
  *
@@ -31,8 +29,7 @@ public final class IsNumeric {
 	/**
 	 * The NumberFormat object we use for parsing.
 	 */
-	private static final NumberFormat PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
+	private static final NumberFormat PARSER = NumberFormat.getIntegerInstance();
 
 	/**
 	 * Do not instantiate.

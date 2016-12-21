@@ -24,7 +24,6 @@ import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
@@ -74,7 +73,7 @@ public final class IOHandler implements ActionListener {
 	 * @param fileChooser the file chooser
 	 */
 	public IOHandler(final IDriverModel map, final JFileChooser fileChooser) {
-		model = NullCleaner.assertNotNull(map);
+		model = map;
 		chooser = fileChooser;
 	}
 

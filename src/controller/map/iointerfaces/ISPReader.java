@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.xml.stream.XMLStreamException;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -29,10 +28,10 @@ public interface ISPReader {
 	 * Tags we expect to use in the future; they are skipped for now and we'll warn if
 	 * they're used.
 	 */
-	Iterable<String> FUTURE = NullCleaner.assertNotNull(Collections.unmodifiableList(
+	Iterable<String> FUTURE = Collections.unmodifiableList(
 			Arrays.asList("future", "explorer", "building", "resource", "changeset",
 					"change", "move", "work", "discover", "submap", "futuretag",
-					"futureTag")));
+					"futureTag"));
 	/**
 	 * The namespace that SP XML will use.
 	 */

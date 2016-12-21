@@ -142,7 +142,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	 */
 	@Override
 	public Set<Integer> keySet() {
-		return NullCleaner.assertNotNull(backing.keySet());
+		return backing.keySet();
 	}
 
 	/**
@@ -150,7 +150,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	 */
 	@Override
 	public Collection<V> values() {
-		return NullCleaner.assertNotNull(backing.values());
+		return backing.values();
 	}
 
 	/**
@@ -166,6 +166,6 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	 */
 	@Override
 	public String toString() {
-		return NullCleaner.assertNotNull(backing.toString());
+		return backing.toString();
 	}
 }
