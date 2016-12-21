@@ -150,8 +150,8 @@ public final class WorkerMgmtFrame extends SPFrame
 		final DefaultTreeModel reportModel =
 				new DefaultTreeModel(new SimpleReportNode("Please wait, loading report" +
 																  " ..."));
-		new Thread(new ReportGeneratorThread(reportModel, model,
-													mainMap.getCurrentPlayer())).start();
+		createReportGeneratorThread(reportModel, model, mainMap.getCurrentPlayer())
+				.start();
 		final OrdersPanel resultsPanel =
 				new OrdersPanel(mainMap.getCurrentTurn(), mainMap.getCurrentPlayer(),
 							   model::getUnits,
@@ -322,7 +322,17 @@ public final class WorkerMgmtFrame extends SPFrame
 		}
 		playerLabel.setArgs(newPlayer.getName(), OnMac.SHORTCUT_DESC);
 	}
-
+	/**
+	 * @param treeModel     The tree-model to put the report into.
+	 * @param workerModel   the driver model to generate the report from
+	 * @param currentPlayer the player to generate the report for
+	 */
+	protected static Thread createReportGeneratorThread(final DefaultTreeModel treeModel,
+														final IWorkerModel workerModel,
+														final Player currentPlayer) {
+		return new Thread(new ReportGeneratorThread(treeModel, workerModel,
+														   currentPlayer));
+	}
 	/**
 	 * A class to update the report when a new map is loaded.
 	 *
@@ -349,8 +359,8 @@ public final class WorkerMgmtFrame extends SPFrame
 			model = workerModel;
 			reportModel = treeModel;
 			model.addMapChangeListener(
-					() -> new Thread(new ReportGeneratorThread(
-							treeModel, model, model.getMap().getCurrentPlayer()))
+					() -> createReportGeneratorThread(
+							treeModel, model, model.getMap().getCurrentPlayer())
 								  .start());
 		}
 
@@ -362,7 +372,7 @@ public final class WorkerMgmtFrame extends SPFrame
 		 */
 		@Override
 		public void playerChanged(@Nullable final Player old, final Player newPlayer) {
-			new Thread(new ReportGeneratorThread(reportModel, model, newPlayer)).start();
+			createReportGeneratorThread(reportModel, model, newPlayer).start();
 		}
 
 		/**
