@@ -80,7 +80,7 @@ public final class ArraySet<U> implements Set<U> {
 	 */
 	@Override
 	public Iterator<U> iterator() {
-		return NullCleaner.assertNotNull(impl.iterator());
+		return impl.iterator();
 	}
 
 	/**
@@ -89,7 +89,7 @@ public final class ArraySet<U> implements Set<U> {
 	 */
 	@Override
 	public Object[] toArray() {
-		return NullCleaner.assertNotNull(impl.toArray());
+		return impl.toArray();
 	}
 
 	/**
@@ -147,7 +147,7 @@ public final class ArraySet<U> implements Set<U> {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public boolean containsAll(@Nullable final Collection<?> coll) {
-		return impl.containsAll(NullCleaner.assertNotNull(coll));
+		return impl.containsAll(coll);
 	}
 
 	/**
