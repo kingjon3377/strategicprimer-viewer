@@ -95,8 +95,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 				new HtmlList("<h4>Cities, towns, and/or fortifications you know " +
 									 "about:</h4>");
 		STATUSES.stream().map(separated::get).filter(Objects::nonNull)
-				.filter(coll -> !coll.isEmpty()).map(Collection::toString)
-				.forEach(retval::add);
+				.map(Collection::toString).forEach(retval::add);
 		return retval.toString();
 	}
 	/**
