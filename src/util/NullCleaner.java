@@ -28,20 +28,6 @@ public final class NullCleaner {
 	}
 
 	/**
-	 * @param <T> the type of thing we're dealing with
-	 * @param val a value
-	 * @param def a default value
-	 * @return val if it isn't null, def if val is null
-	 */
-	public static <@NonNull T> T valueOrDefault(@Nullable final T val, final T def) {
-		if (val == null) {
-			return def;
-		} else {
-			return val;
-		}
-	}
-
-	/**
 	 * Assert that a value isn't null.
 	 *
 	 * @param <T> the type of the value
