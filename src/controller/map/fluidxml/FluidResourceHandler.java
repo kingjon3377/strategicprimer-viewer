@@ -39,7 +39,6 @@ import static controller.map.fluidxml.XMLHelper.writeTag;
 import static java.lang.Boolean.parseBoolean;
 import static model.map.fixtures.resources.StoneKind.parseStoneKind;
 import static model.map.fixtures.towns.TownStatus.parseTownStatus;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A class to hold XML I/O for "resource" fixtures, including "harvestable" fixtures
@@ -91,7 +90,7 @@ public final class FluidResourceHandler {
 											final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "resource");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		final String quantityStr = getAttribute(element, "quantity");
 		final Number quantity;
 		if (quantityStr.contains(".")) {
@@ -135,7 +134,7 @@ public final class FluidResourceHandler {
 										 final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "cache");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return setImage(new CacheFixture(getAttribute(element, "kind"),
 												getAttribute(element, "contents"),
 												getOrGenerateID(element, warner,
@@ -164,7 +163,7 @@ public final class FluidResourceHandler {
 								  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "grove");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		final boolean cultivated;
 		if (hasAttribute(element, "cultivated")) {
 			cultivated = parseBoolean(getAttribute(element, "cultivated"));
@@ -203,7 +202,7 @@ public final class FluidResourceHandler {
 									final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "orchard");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		final boolean cultivated;
 		if (hasAttribute(element, "cultivated")) {
 			cultivated = parseBoolean(getAttribute(element, "cultivated"));
@@ -242,7 +241,7 @@ public final class FluidResourceHandler {
 									final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "meadow");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		final int id = getOrGenerateID(element, warner, idFactory);
 		if (!hasAttribute(element, "status")) {
 			warner.warn(new MissingPropertyException(element, "status"));
@@ -275,7 +274,7 @@ public final class FluidResourceHandler {
 								   final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "field");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		final int id = getOrGenerateID(element, warner, idFactory);
 		if (!hasAttribute(element, "status")) {
 			warner.warn(new MissingPropertyException(element, "status"));
@@ -308,7 +307,7 @@ public final class FluidResourceHandler {
 								final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "mine");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return setImage(
 				new Mine(getAttrWithDeprecatedForm(element, "kind", "product", warner),
 								parseTownStatus(getAttribute(element, "status")),
@@ -339,7 +338,7 @@ public final class FluidResourceHandler {
 										  final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "mineral");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return setImage(
 				new MineralVein(getAttrWithDeprecatedForm(element, "kind", "mineral",
 						warner), parseBoolean(getAttribute(element, "exposed")),
@@ -370,7 +369,7 @@ public final class FluidResourceHandler {
 								  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "shrub");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return setImage(new Shrub(getAttrWithDeprecatedForm(element,
 				"kind", "shrub", warner), getOrGenerateID(element, warner,
 				idFactory)), element, warner);
@@ -399,7 +398,7 @@ public final class FluidResourceHandler {
 										 final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "stone");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return setImage(new StoneDeposit(parseStoneKind(
 				getAttrWithDeprecatedForm(element, "kind", "stone", warner)),
 												getIntegerAttribute(element,

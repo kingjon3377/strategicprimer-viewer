@@ -42,7 +42,6 @@ import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
 import static java.lang.Boolean.parseBoolean;
 import static util.EqualsAny.equalsAny;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A class to hold XML I/O for workers and animals, the only not-trivially-simple unit
@@ -112,8 +111,7 @@ public final class FluidUnitMemberHandler {
 									warner, idFactory));
 					break;
 				default:
-					throw new UnwantedChildException(assertNotNull(element.getName()),
-															startElement);
+					throw new UnwantedChildException(element.getName(), startElement);
 				}
 			} else if (event.isEndElement() &&
 							   element.getName().equals(event.asEndElement().getName()
@@ -165,8 +163,7 @@ public final class FluidUnitMemberHandler {
 									warner, idFactory));
 					lastSkill = startElement;
 				} else {
-					throw new UnwantedChildException(assertNotNull(element.getName()),
-															startElement);
+					throw new UnwantedChildException(element.getName(), startElement);
 				}
 			} else if (event.isEndElement() &&
 							   element.getName().equals(event.asEndElement().getName()
@@ -216,7 +213,7 @@ public final class FluidUnitMemberHandler {
 		requireNonEmptyAttribute(element, "name", true, warner);
 		requireNonEmptyAttribute(element, "level", true, warner);
 		requireNonEmptyAttribute(element, "hours", true, warner);
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		final ISkill retval = new Skill(getAttribute(element, "name"),
 											   getIntegerAttribute(element, "level"),
 											   getIntegerAttribute(element, "hours"));
@@ -257,7 +254,7 @@ public final class FluidUnitMemberHandler {
 									   getIntegerAttribute(element, "int"),
 									   getIntegerAttribute(element, "wis"),
 									   getIntegerAttribute(element, "cha"));
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
 
@@ -405,7 +402,7 @@ public final class FluidUnitMemberHandler {
 									final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "animal");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		final boolean traces = hasAttribute(element, "traces");
 		final int id;
 		if (traces && !hasAttribute(element, "id")) {

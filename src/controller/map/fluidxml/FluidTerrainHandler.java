@@ -30,7 +30,6 @@ import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
 import static java.lang.Boolean.parseBoolean;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A class to hold XML I/O for terrain fixtures.
@@ -82,7 +81,7 @@ public final class FluidTerrainHandler {
 		final String kind = getAttrWithDeprecatedForm(element, "kind",
 				"ground", warner);
 		requireNonEmptyAttribute(element, "exposed", true, warner);
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return setImage(new Ground(kind, parseBoolean(getAttribute(element, "exposed"))),
 				element, warner);
 	}
@@ -111,7 +110,7 @@ public final class FluidTerrainHandler {
 		final Forest retval =
 				new Forest(getAttribute(element, "kind"), hasAttribute(element, "rows"),
 								  getIntegerAttribute(element, "id", -1));
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return setImage(retval, element, warner);
 	}
 
@@ -136,7 +135,7 @@ public final class FluidTerrainHandler {
 										final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "mountain");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return setImage(new Mountain(), element, warner);
 	}
 
@@ -225,7 +224,7 @@ public final class FluidTerrainHandler {
 								 final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "lake");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return River.Lake;
 	}
 
@@ -251,7 +250,7 @@ public final class FluidTerrainHandler {
 								  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "river");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return River.getRiver(getAttribute(element, "direction"));
 	}
 

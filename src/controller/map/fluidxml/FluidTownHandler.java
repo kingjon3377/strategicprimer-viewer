@@ -16,7 +16,6 @@ import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
-import util.NullCleaner;
 import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttribute;
@@ -80,7 +79,7 @@ public final class FluidTownHandler {
 								final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "town");
 		requireNonEmptyAttribute(element, "name", false, warner);
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		final Town fix =
 				new Town(parseTownStatus(getAttribute(element, "status")),
 								TownSize.parseTownSize(getAttribute(element, "size")),
@@ -113,7 +112,7 @@ public final class FluidTownHandler {
 			throws SPFormatException {
 		requireTag(element, parent, "fortification");
 		requireNonEmptyAttribute(element, "name", false, warner);
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		final Fortification fix =
 				new Fortification(parseTownStatus(getAttribute(element, "status")),
 										 TownSize.parseTownSize(
@@ -147,7 +146,7 @@ public final class FluidTownHandler {
 								final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "city");
 		requireNonEmptyAttribute(element, "name", false, warner);
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		final City fix =
 				new City(parseTownStatus(getAttribute(element, "status")),
 								TownSize.parseTownSize(getAttribute(element, "size")),
@@ -180,7 +179,7 @@ public final class FluidTownHandler {
 			throws SPFormatException {
 		requireTag(element, parent, "village");
 		requireNonEmptyAttribute(element, "name", false, warner);
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Village retval =
 				new Village(parseTownStatus(getAttribute(element, "status")),
