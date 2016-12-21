@@ -6,7 +6,6 @@ import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * An animal or group of animals.
@@ -144,7 +143,7 @@ public class Animal
 			builder.append("talking ");
 		}
 		builder.append(kind);
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
