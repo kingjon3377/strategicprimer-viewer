@@ -165,13 +165,12 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			possibilities.add(master.getGround(neighbor));
 			possibilities.add(master.getForest(neighbor));
 			for (final TileFixture fix : master.getOtherFixtures(neighbor)) {
-				if (neighborFixtures.contains(fix)) {
+				if (fix instanceof CacheFixture || neighborFixtures.contains(fix)) {
 					continue;
 				} else if (SimpleMovement.shouldAlwaysNotice(owned, fix)) {
 					neighborFixtures.add(fix);
 				} else if (SimpleMovement
-								   .shouldSometimesNotice(owned, Speed.Careful, fix) &&
-								   !(fix instanceof CacheFixture)) {
+								   .shouldSometimesNotice(owned, Speed.Careful, fix)) {
 					possibilities.add(fix);
 				}
 			}
