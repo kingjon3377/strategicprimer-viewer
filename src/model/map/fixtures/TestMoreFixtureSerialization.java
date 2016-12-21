@@ -37,7 +37,6 @@ import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import org.junit.Test;
-import util.NullCleaner;
 import util.Quantity;
 import util.Warning;
 
@@ -87,10 +86,8 @@ public final class TestMoreFixtureSerialization extends
 	/**
 	 * Pre-compiled pattern for matching "kind".
 	 */
-	private static final Pattern KIND_PATTERN = NullCleaner
-														.assertNotNull(Pattern.compile(
-																KIND_PROPERTY,
-																Pattern.LITERAL));
+	private static final Pattern KIND_PATTERN = Pattern.compile(
+			KIND_PROPERTY, Pattern.LITERAL);
 
 	/**
 	 * Test serialization of Groves.
@@ -188,15 +185,12 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Fourth test of Mine serialization", fourthMine);
 		final String oldKindProperty = "product";
 		assertDeprecatedDeserialization("Deprecated Mine idiom", fourthMine,
-				NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(fourthMine, true))
-								.replaceAll(
-										Matcher.quoteReplacement(oldKindProperty))),
+				KIND_PATTERN.matcher(createSerializedForm(fourthMine, true))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 		assertDeprecatedDeserialization("Deprecated Mine idiom", fourthMine,
-				NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(fourthMine, false))
-								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
+				KIND_PATTERN.matcher(createSerializedForm(fourthMine, false))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 		assertUnwantedChild(
 				"<mine kind=\"gold\" status=\"active\"><troll /></mine>",
@@ -225,14 +219,12 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Second test of Shrub serialization", secondShrub);
 		final String oldKindProperty = "shrub";
 		assertDeprecatedDeserialization("Deserialization of mangled shrub",
-				secondShrub, NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(secondShrub, true))
-								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
+				secondShrub, KIND_PATTERN.matcher(createSerializedForm(secondShrub, true))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 		assertDeprecatedDeserialization("Deserialization of mangled shrub",
-				secondShrub, NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(secondShrub, false))
-								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
+				secondShrub, KIND_PATTERN.matcher(createSerializedForm(secondShrub, false))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 		assertUnwantedChild("<shrub kind=\"shrub\"><troll /></shrub>",
 				Shrub.class, false);
@@ -309,15 +301,13 @@ public final class TestMoreFixtureSerialization extends
 		final String oldKindProperty = "type";
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
-				firstUnit, NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(firstUnit, true))
-								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
+				firstUnit, KIND_PATTERN.matcher(createSerializedForm(firstUnit, true))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
-				firstUnit, NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(firstUnit, false))
-								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
+				firstUnit, KIND_PATTERN.matcher(createSerializedForm(firstUnit, false))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 		assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", Unit.class,
 				NAME_PROPERTY, true);

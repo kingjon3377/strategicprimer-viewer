@@ -13,7 +13,6 @@ import model.map.HasMutableImage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import util.NullCleaner;
 
 /**
  * A class to test the serialization of StoneFixtures.
@@ -41,7 +40,7 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 	 * Compiled pattern of it.
 	 */
 	private static final Pattern KIND_PATTERN =
-			NullCleaner.assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
+			Pattern.compile(KIND_PROPERTY, Pattern.LITERAL);
 	/**
 	 * The stone kind to use for this test.
 	 */
@@ -97,15 +96,13 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 		final String oldKindProperty = "stone";
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", thirdDeposit,
-				NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, true))
-								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
+				KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, true))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", thirdDeposit,
-				NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, false))
-								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
+				KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, false))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 	}
 

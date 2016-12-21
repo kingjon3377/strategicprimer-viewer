@@ -36,7 +36,6 @@ import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A class to test the serialization of XMLWritable objects other than Fixtures.
@@ -62,7 +61,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * Pre-compiled pattern for matching "kind".
 	 */
 	private static final Pattern KIND_PATTERN =
-			assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
+			Pattern.compile(KIND_PROPERTY, Pattern.LITERAL);
 	/**
 	 * An extracted compiled Pattern to match the ends of tags that do have spaces.
 	 */
@@ -81,7 +80,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				new SPMapNG(new MapDimensions(point.getRow() + 1, point.getCol() + 1, 2),
 								   new PlayerCollection(), -1);
 		retval.setBaseTerrain(point, Plains);
-		retval.addRivers(point, assertNotNull(rivers));
+		retval.addRivers(point, rivers);
 		return retval;
 	}
 
@@ -98,7 +97,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		builder.append("<tile row=\"1\" column=\"1\" kind=\"plains\">");
 		builder.append(str);
 		builder.append("</tile></map>");
-		return assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -263,18 +262,13 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom",
 				fourthMap,
-				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(fourthMap, true))
-									  .replaceAll(
-											  Matcher.quoteReplacement
-															  (oldKindProperty))),
+				KIND_PATTERN.matcher(createSerializedForm(fourthMap, true))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom", fourthMap,
-				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(fourthMap,
-						false))
-									  .replaceAll(
-											  Matcher.quoteReplacement
-															  (oldKindProperty))),
+				KIND_PATTERN.matcher(createSerializedForm(fourthMap, false))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 	}
 	/**
