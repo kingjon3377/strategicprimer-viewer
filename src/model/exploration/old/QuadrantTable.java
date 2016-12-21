@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import model.map.MapDimensions;
@@ -12,7 +13,6 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.TileType;
-import util.NullCleaner;
 
 /**
  * A class for things where results are by quadrant rather than randomly.
@@ -120,7 +120,7 @@ public final class QuadrantTable implements EncounterTable {
 				bestKey = iter;
 			}
 		}
-		return NullCleaner.valueOrDefault(resultsMap.get(bestKey), "");
+		return Optional.ofNullable(resultsMap.get(bestKey)).orElse("");
 	}
 
 	/**
