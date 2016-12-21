@@ -152,17 +152,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	private static void advanceWorkersInJob(final Collection<IWorker> workers,
 											final String jobName, final ICLIHelper cli)
 			throws IOException {
-		final Map<String, IJob> jobs = new HashMap<>();
-		for (final IWorker worker : workers) {
-			final IJob job = worker.getJob(jobName);
-			if (job == null) {
-				final IJob temp = new Job(jobName, 0);
-				worker.addJob(temp);
-				jobs.put(worker.getName(), temp);
-			} else {
-				jobs.put(worker.getName(), job);
-			}
-		}
+		final Collection<IJob> jobs = getWorkerJobs(workers, jobName);
 		final List<ISkill> skills = ListMaker.toList(
 				new ProxyJob(jobName, false, workers.stream().toArray(IWorker[]::new)));
 		final String hdr = "Skills in Jobs:";
@@ -175,7 +165,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			final ISkill skill;
 			if ((skillNum < 0) || (skillNum == skills.size())) {
 				final String skillName = cli.inputString("Name of new Skill: ");
-				jobs.values().forEach(job -> job.addSkill(new Skill(skillName, 0, 0)));
+				jobs.forEach(job -> job.addSkill(new Skill(skillName, 0, 0)));
 				skills.clear();
 				new ProxyJob(jobName, false, workers.stream().toArray(IWorker[]::new))
 						.forEach(skills::add);
@@ -196,6 +186,29 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Ensure there is a Job by the given name in each worker, and return a collection
+	 * of those Jobs.
+	 * @param workers the workers to go through
+	 * @param jobName the name of the Job to check or add.
+	 * @return the collection of Jobs in all the workers.
+	 */
+	private static Collection<IJob> getWorkerJobs(final Collection<IWorker> workers,
+												  final String jobName) {
+		final Map<String, IJob> jobs = new HashMap<>();
+		for (final IWorker worker : workers) {
+			final IJob job = worker.getJob(jobName);
+			if (job == null) {
+				final IJob temp = new Job(jobName, 0);
+				worker.addJob(temp);
+				jobs.put(worker.getName(), temp);
+			} else {
+				jobs.put(worker.getName(), job);
+			}
+		}
+		return jobs.values();
 	}
 
 	/**
