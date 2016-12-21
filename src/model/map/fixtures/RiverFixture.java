@@ -11,7 +11,6 @@ import model.map.SubsettableFixture;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A Fixture to encapsulate the rivers on a tile, so we can show a chit for rivers.
@@ -49,7 +48,7 @@ public final class RiverFixture
 	 * @param initial the initial state of the fixture
 	 */
 	public RiverFixture(final @NonNull River @NonNull ... initial) {
-		rivers = NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
+		rivers = EnumSet.noneOf(River.class);
 		Collections.addAll(rivers, initial);
 	}
 
@@ -89,7 +88,7 @@ public final class RiverFixture
 	 * @return the river directions
 	 */
 	public Set<River> getRivers() {
-		return NullCleaner.assertNotNull(EnumSet.copyOf(rivers));
+		return EnumSet.copyOf(rivers);
 	}
 
 	/**
@@ -97,7 +96,7 @@ public final class RiverFixture
 	 */
 	@Override
 	public Iterator<River> iterator() {
-		return NullCleaner.assertNotNull(rivers.iterator());
+		return rivers.iterator();
 	}
 
 	/**
@@ -134,7 +133,7 @@ public final class RiverFixture
 			builder.append(river);
 			builder.append(' ');
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**

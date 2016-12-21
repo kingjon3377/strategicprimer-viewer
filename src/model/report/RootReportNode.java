@@ -11,7 +11,6 @@ import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
 import util.NoCloneException;
-import util.NullCleaner;
 
 /**
  * The root of a node hierarchy.
@@ -59,7 +58,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String produce() {
-		return NullCleaner.assertNotNull(produce(new StringBuilder(size())).toString());
+		return produce(new StringBuilder(size())).toString();
 	}
 
 	/**

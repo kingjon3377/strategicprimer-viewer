@@ -7,8 +7,6 @@ import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.Quantity;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A quantity of some kind of resource.
  *
@@ -247,12 +245,11 @@ public class ResourcePile
 			age = " from turn " + created;
 		}
 		if (quantity.getUnits().isEmpty()) {
-			return assertNotNull(
-					String.format("A pile of %s %s (%s)%s", quantity.toString(),
-							contents, kind, age));
+			return String.format("A pile of %s %s (%s)%s", quantity.toString(),
+					contents, kind, age);
 		} else {
-			return assertNotNull(String.format("A pile of %s of %s (%s)%s",
-					quantity.toString(), contents, kind, age));
+			return String.format("A pile of %s of %s (%s)%s", quantity.toString(),
+					contents, kind, age);
 		}
 	}
 
