@@ -1,6 +1,7 @@
 package model.exploration.old;
 
 import java.io.IOException;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -12,7 +13,6 @@ import model.map.MapDimensions;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
-import util.LineEnd;
 import util.TypesafeLogger;
 
 /**
@@ -55,18 +55,15 @@ public final class ExplorationRunner {
 								 final Stream<TileFixture> fixtures,
 								 final MapDimensions mapDimensions)
 			throws MissingTableException {
-		// TODO: Use a Formatter
-		final StringBuilder builder =
-				new StringBuilder(80).append("The primary rock type here is ");
-		builder.append(getPrimaryRock(point, terrain, fixtures, mapDimensions));
-		builder.append('.');
-		builder.append(LineEnd.LINE_SEP);
-		if ((TileType.BorealForest == terrain) || (TileType.TemperateForest ==
-														   terrain)) {
-			builder.append("The main kind of tree is ");
-			builder.append(getPrimaryTree(point, terrain, fixtures, mapDimensions));
-			builder.append('.');
-			builder.append(LineEnd.LINE_SEP);
+		final StringBuilder builder = new StringBuilder(80);
+		try (final Formatter formatter = new Formatter(builder)) {
+			formatter.format("The primary rock type here is %s.%n",
+					getPrimaryRock(point, terrain, fixtures, mapDimensions));
+			if ((TileType.BorealForest == terrain) ||
+						(TileType.TemperateForest == terrain)) {
+				formatter.format("The main kind of tree is %s.%n",
+						getPrimaryTree(point, terrain, fixtures, mapDimensions));
+			}
 		}
 		return builder.toString();
 	}
