@@ -7,7 +7,6 @@ import model.map.HasName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ISkill;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 import static view.util.SystemOut.SYS_OUT;
 
@@ -48,7 +47,7 @@ public final class LevelListener
 		if (named instanceof HasName) {
 			return ((HasName) named).getName();
 		} else {
-			return NullCleaner.valueOrDefault(named.toString(), "");
+			return named.toString();
 		}
 	}
 
