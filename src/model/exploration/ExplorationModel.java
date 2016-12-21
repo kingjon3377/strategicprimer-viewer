@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -208,12 +209,12 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point,
 												   final TileFixture fix) {
-		if (((fix instanceof Forest) && fix.equals(map.getForest(point)))
-					|| ((fix instanceof Ground) && fix.equals(map.getGround(point)))
-					|| ((fix instanceof Mountain) && map.isMountainous(point))) {
+		if ((fix instanceof Mountain) && map.isMountainous(point)) {
 			return true;
 		}
-		return map.streamOtherFixtures(point).flatMap(fixture -> {
+		return Stream.concat(Stream.of(map.getForest(point), map.getGround(point)),
+				map.streamOtherFixtures(point)).filter(Objects::nonNull)
+					   .flatMap(fixture -> {
 			if (fixture instanceof FixtureIterable) {
 				return Stream.concat(Stream.of(fixture),
 						((FixtureIterable<@NonNull ?>) fixture).stream());
