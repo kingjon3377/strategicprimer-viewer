@@ -485,12 +485,8 @@ public final class ProxyUnit
 	public void removeMember(final UnitMember member) {
 		if (parallel) {
 			for (final IUnit unit : proxied) {
-				for (final UnitMember item : unit) {
-					if (member.equals(item)) {
-						unit.removeMember(item);
-						break;
-					}
-				}
+				unit.stream().filter(member::equals).findAny()
+						.ifPresent(unit::removeMember);
 			}
 		} else {
 			LOGGER.severe("removeMember() called on proxy for all units of one kind");
