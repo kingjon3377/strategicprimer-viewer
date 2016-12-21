@@ -19,7 +19,6 @@ import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
 import util.MultiMapHelper;
-import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
 
@@ -97,8 +96,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry).append(CLOSE_LIST_ITEM);
 			}
-			return NullCleaner.assertNotNull(builder.append(CLOSE_LIST)
-													 .toString());
+			return builder.append(CLOSE_LIST).toString();
 		}
 	}
 
