@@ -96,13 +96,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which player owns the worker in question?";
 		final String none = "There are no players shared by all the maps.";
 		final String prompt = "Player selection: ";
-		final ICLIHelper.ChoiceOperation choice =
-				() -> cli.chooseFromList(players, hdr, none, prompt, true);
-		for (int playerNum = choice.choose();
-				(playerNum >= 0) && (playerNum < players.size());
-				playerNum = choice.choose()) {
-			enterStats(model, players.get(playerNum), cli);
-		}
+		cli.loopOnList(players,
+				() -> cli.chooseFromList(players, hdr, none, prompt, true),
+				"Choose another player? ", player -> enterStats(model, player, cli));
 	}
 
 	/**
@@ -121,16 +117,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which unit contains the worker in question?";
 		final String none = "All that player's units already have stats.";
 		final String prompt = "Unit selection: ";
-		final ICLIHelper.ChoiceOperation choice =
-				() -> cli.chooseFromList(units, hdr, none, prompt, false);
-		for (int unitNum = choice.choose(); (unitNum >= 0) && (unitNum < units.size());
-				unitNum = choice.choose()) {
-			final IUnit unit = units.get(unitNum);
-			enterStats(model, unit, cli);
-			if (!hasUnstattedWorker(model, unit.getID())) {
-				units.remove(unit);
-			}
-		}
+		cli.loopOnList(units, () -> cli.chooseFromList(units, hdr, none, prompt, false),
+				"Choose another unit? ", unit -> enterStats(model, unit, cli));
 	}
 
 	/**
@@ -184,14 +172,10 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which worker do you want to enter stats for?";
 		final String none = "There are no workers without stats in that unit.";
 		final String prompt = "Worker to modify: ";
-		final ICLIHelper.ChoiceOperation choice =
-				() -> cli.chooseFromList(workers, hdr, none, prompt, false);
-		for (int workerNum = choice.choose();
-				(workerNum >= 0) && (workerNum < workers.size()) && !workers.isEmpty();
-				workerNum = choice.choose()) {
-			enterStats(model, workers.get(workerNum).getID(), cli);
-			workers.remove(workerNum);
-		}
+		cli.loopOnList(workers,
+				() -> cli.chooseFromList(workers, hdr, none, prompt, false),
+				"Choose another worker? ",
+				worker -> enterStats(model, worker.getID(), cli));
 	}
 
 	/**
@@ -297,17 +281,16 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which player owns the new worker(s)?";
 		final String none = "There are no players shared by all the maps.";
 		final String prompt = "Player selection: ";
-		final ICLIHelper.ChoiceOperation choice =
-				() -> cli.chooseFromList(players, hdr, none, prompt, false);
-		for (int playerNum = choice.choose();
-				(playerNum >= 0) && (playerNum < players.size());
-				playerNum = choice.choose()) {
-			boolean again = true;
-			while (again) {
-				createWorkersForPlayer(model, idf, players.get(playerNum), cli);
-				again = cli.inputBoolean("Add more workers to another unit? ");
-			}
-		}
+		cli.loopOnList(players,
+				() -> cli.chooseFromList(players, hdr, none, prompt, false),
+				"Choose another player? ",
+				player -> {
+					boolean again = true;
+					while (again) {
+						createWorkersForPlayer(model, idf, player, cli);
+						again = cli.inputBoolean("Add more workers to another unit? ");
+					}
+				});
 	}
 
 	/**
@@ -325,33 +308,27 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 																			  player,
 											   final ICLIHelper cli)
 			throws IOException {
-		final IUnit unit;
-		if (cli.inputBooleanInSeries("Add worker(s) to an existing unit? ")) {
-			final List<IUnit> units = model.getUnits(player);
-			final int unitNum = cli.chooseFromList(units,
-					"Which unit contains the worker in question?",
-					"There are no units owned by that player",
-					"Unit selection: ", false);
-			if ((unitNum >= 0) && (unitNum < units.size())) {
-				unit = units.get(unitNum);
-			} else {
-				return;
-			}
-		} else {
+		final List<IUnit> units = model.getUnits(player);
+		cli.loopOnMutableList(units, () -> cli.chooseFromList(units,
+				"Which unit contains the worker in question? (Select -1 to create new.)",
+				"There are no units owned by that player.", "Unit selection: ",
+				false), "Choose another unit? ", list -> {
 			final Point point = cli.inputPoint("Where to put new unit? ");
-			//noinspection ObjectAllocationInLoop
-			unit = new Unit(player, cli.inputString("Kind of unit: "),
-								   cli.inputString("Unit name: "), idf.createID());
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps
-																				()) {
-				pair.first().addFixture(point, unit);
+			final IUnit temp = new Unit(player, cli.inputString("Kind of unit: "),
+											   cli.inputString("Unit name: "),
+											   idf.createID());
+			for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
+				pair.first().addFixture(point, temp);
 			}
-		}
-		if (cli.inputBooleanInSeries(LOAD_NAMES)) {
-			createWorkersFromFile(model, idf, unit, cli);
-		} else {
-			createWorkersForUnit(model, idf, unit, cli);
-		}
+			units.add(temp);
+			return Optional.of(temp);
+		}, unit -> {
+			if (cli.inputBooleanInSeries(LOAD_NAMES)) {
+				createWorkersFromFile(model, idf, unit, cli);
+			} else {
+				createWorkersForUnit(model, idf, unit, cli);
+			}
+		});
 	}
 
 	/**
