@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
-import util.NullCleaner;
 
 /**
  * A custom exception for when a tag has a child tag it can't handle.
@@ -60,9 +59,9 @@ public final class UnwantedChildException extends SPFormatException {
 	public UnwantedChildException(final QName parent, final StartElement child) {
 		super("Unexpected child " + child.getName().getLocalPart() + " in tag "
 					  + parent.getLocalPart(),
-				NullCleaner.assertNotNull(child.getLocation()));
+				child.getLocation());
 		tag = parent;
-		childTag = NullCleaner.assertNotNull(child.getName());
+		childTag = child.getName();
 	}
 
 	/**
@@ -74,9 +73,9 @@ public final class UnwantedChildException extends SPFormatException {
 								  final Throwable cause) {
 		super("Unexpected child " + child.getName().getLocalPart() + " in tag "
 					  + parent.getLocalPart(),
-				NullCleaner.assertNotNull(child.getLocation()), cause);
+				child.getLocation(), cause);
 		tag = parent;
-		childTag = NullCleaner.assertNotNull(child.getName());
+		childTag = child.getName();
 	}
 
 	/**

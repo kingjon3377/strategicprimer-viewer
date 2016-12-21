@@ -45,8 +45,6 @@ import util.ImageLoader;
 import util.TypesafeLogger;
 import view.util.Coordinate;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A TileDrawHelper for the new map version.
  *
@@ -182,7 +180,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private static Set<River> createRiverSet(final @NonNull River @NonNull ... rivers) {
 		final Set<@NonNull River> set =
-				assertNotNull(EnumSet.noneOf(assertNotNull(River.class)));
+				EnumSet.noneOf(River.class);
 		Collections.addAll(set, rivers);
 		return set;
 	}
@@ -279,9 +277,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			temp.add(new Mountain());
 		}
 		map.streamOtherFixtures(location).forEach(temp::add);
-		return assertNotNull(
-				temp.stream().filter(fix -> !(fix instanceof TileTypeFixture))
-						.filter(zof::shouldDisplay).sorted(fixComp));
+		return temp.stream().filter(fix -> !(fix instanceof TileTypeFixture))
+				.filter(zof::shouldDisplay).sorted(fixComp);
 	}
 
 	/**
@@ -299,11 +296,11 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private Image getRiverImage(final Iterable<River> rivers) {
 		if (rivers instanceof Set<?>) {
-			return getImage(assertNotNull(riverFiles.get(rivers)));
+			return getImage(riverFiles.get(rivers));
 		} else {
-			return getImage(assertNotNull(riverFiles.get(
+			return getImage(riverFiles.get(
 					StreamSupport.stream(rivers.spliterator(), false)
-							.collect(Collectors.toSet()))));
+							.collect(Collectors.toSet())));
 		}
 	}
 
@@ -373,8 +370,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return getImage(image);
 			}
 		} else if (fix instanceof RiverFixture) {
-			return getImage(
-					assertNotNull(riverFiles.get(((RiverFixture) fix).getRivers())));
+			return getImage(riverFiles.get(((RiverFixture) fix).getRivers()));
 		} else {
 			LOGGER.warning("Using fallback image for unexpected kind of Fixture.");
 			return fallbackImage;
@@ -411,7 +407,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * Create the mapping from river-sets to filenames.
 	 */
 	private void createRiverFiles() {
-		riverFiles.put(assertNotNull(EnumSet.noneOf(River.class)), "riv00.png");
+		riverFiles.put(EnumSet.noneOf(River.class), "riv00.png");
 		riverFiles.put(createRiverSet(River.North), "riv01.png");
 		riverFiles.put(createRiverSet(River.East), "riv02.png");
 		riverFiles.put(createRiverSet(River.South), "riv03.png");
@@ -457,7 +453,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				River.Lake), "riv29.png");
 		riverFiles.put(createRiverSet(River.East, River.South, River.West,
 				River.Lake), "riv30.png");
-		riverFiles.put(assertNotNull(EnumSet.allOf(River.class)), "riv31.png");
+		riverFiles.put(EnumSet.allOf(River.class), "riv31.png");
 	}
 
 	/**

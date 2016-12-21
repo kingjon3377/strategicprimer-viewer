@@ -6,7 +6,6 @@ import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A village on the map.
@@ -106,7 +105,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 			builder.append(", owned by ");
 			builder.append(owner.getName());
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
