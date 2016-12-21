@@ -15,6 +15,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,7 +29,6 @@ import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.resources.ResourceManagementDriver;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import util.Quantity;
 import view.util.BoxPanel;
 import view.util.FormattedLabel;
@@ -145,8 +145,8 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		menuListener = menuHandler;
 		model = driverModel;
 		idf = IDFactoryFiller.createFactory(driverModel);
-		current = NullCleaner.valueOrDefault(driverModel.getCurrentPlayer(),
-				NULL_PLAYER);
+		current = Optional.ofNullable(driverModel.getCurrentPlayer())
+						  .orElse(NULL_PLAYER);
 		resourceLabel = new FormattedLabel("Add resource for %s:", current.getName());
 		implementLabel = new FormattedLabel("Add equipment for %s:", current.getName());
 		final BoxPanel mainPanel = new BoxPanel(false);
