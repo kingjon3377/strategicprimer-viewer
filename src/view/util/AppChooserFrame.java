@@ -26,7 +26,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -61,8 +60,7 @@ public final class AppChooserFrame extends SPFrame {
 		super("SP App Chooser", model.getMapFile());
 
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
-		buttonPanel.add(button("Map Viewer", NullCleaner.assertNotNull(model),
-				options, ViewerStart.class));
+		buttonPanel.add(button("Map Viewer", model, options, ViewerStart.class));
 		buttonPanel.add(button("Worker Skill Advancement", model, options,
 				AdvancementStart.class));
 		buttonPanel.add(button("Unit Orders and Worker Management", model, options,
@@ -86,8 +84,7 @@ public final class AppChooserFrame extends SPFrame {
 		super("SP App Chooser", Optional.empty());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-		final List<@NonNull String> parameters =
-				NullCleaner.assertNotNull(Collections.unmodifiableList(params));
+		final List<@NonNull String> parameters = Collections.unmodifiableList(params);
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		buttonPanel.add(button("Map Viewer", parameters, options, ViewerStart.class));
 		buttonPanel.add(button("Worker Skill Advancement", parameters, options,
@@ -123,9 +120,7 @@ public final class AppChooserFrame extends SPFrame {
 			} catch (final InstantiationException | IllegalAccessException
 								   | NoSuchMethodException | InvocationTargetException
 								   | DriverFailedException except) {
-				final String msg = except.getMessage();
-				final String message = NullCleaner.valueOrDefault(msg,
-						"Exception with null message");
+				final String message = except.getMessage();
 				LOGGER.log(Level.SEVERE, message, except.getCause());
 				ErrorShower.showErrorDialog(this, message);
 				return;
@@ -156,9 +151,7 @@ public final class AppChooserFrame extends SPFrame {
 			} catch (final InstantiationException | IllegalAccessException
 								   | NoSuchMethodException | InvocationTargetException
 								   | DriverFailedException except) {
-				final String msg = except.getMessage();
-				final String message = NullCleaner.valueOrDefault(msg,
-						"Exception with null message");
+				final String message = except.getMessage();
 				LOGGER.log(Level.SEVERE, message, except.getCause());
 				ErrorShower.showErrorDialog(this, message);
 				return;
