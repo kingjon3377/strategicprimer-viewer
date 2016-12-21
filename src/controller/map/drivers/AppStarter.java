@@ -18,7 +18,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.misc.IDriverModel;
 import util.EqualsAny;
-import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import view.util.AppChooserFrame;
@@ -149,9 +148,9 @@ public final class AppStarter implements ISPDriver {
 					CACHE.values().stream().map(Pair::first).distinct()
 							.collect(Collectors.toList());
 			try (final ICLIHelper cli = new CLIHelper()) {
-				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
+				startChosenDriver(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
-								"No applications available", "App to start: ", true))),
+								"No applications available", "App to start: ", true)),
 						options, others);
 			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator
@@ -173,8 +172,7 @@ public final class AppStarter implements ISPDriver {
 																		  options,
 										  final List<String> params)
 			throws DriverFailedException {
-		driver.startDriver(options, NullCleaner.assertNotNull(params.toArray(
-				new String[params.size()])));
+		driver.startDriver(options, params.toArray(new String[params.size()]));
 	}
 
 	/**
@@ -207,8 +205,7 @@ public final class AppStarter implements ISPDriver {
 			try {
 				startChosenDriver(driver, options, params);
 			} catch (final DriverFailedException e) {
-				final String message =
-						NullCleaner.assertNotNull(e.getMessage());
+				final String message = e.getMessage();
 				lgr.log(Level.SEVERE, message, e.getCause());
 				ErrorShower.showErrorDialog(null, message);
 			}
@@ -297,9 +294,9 @@ public final class AppStarter implements ISPDriver {
 					CACHE.values().stream().map(Pair::first).distinct()
 							.collect(Collectors.toList());
 			try {
-				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
+				startChosenDriver(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
-								"No applications available", "App to start: ", true))),
+								"No applications available", "App to start: ", true)),
 						options, model);
 			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator
@@ -377,8 +374,7 @@ public final class AppStarter implements ISPDriver {
 			try {
 				startChooser(localGui, currentOptions, others);
 			} catch (final DriverFailedException e) {
-				final String message =
-						NullCleaner.assertNotNull(e.getMessage());
+				final String message = e.getMessage();
 				LOGGER.log(Level.SEVERE, message, e.getCause());
 				SwingUtilities
 						.invokeLater(() -> ErrorShower.showErrorDialog(null, message));
