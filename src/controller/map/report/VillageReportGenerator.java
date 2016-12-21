@@ -18,6 +18,7 @@ import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.LineEnd;
+import util.MultiMapHelper;
 import util.Pair;
 import util.PatientMap;
 
@@ -142,18 +143,13 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				own.add(product);
 			} else if (owner.isIndependent()) {
 				independents.add(product);
-			} else if (othersMap.containsKey(owner)) {
-				// TODO: Use MultiMapHelper
-				othersMap.get(owner).add(product);
 			} else {
-				final IReportNode node =
-						new SectionListReportNode(6, "Villages sworn to " +
-															 owner.getName());
-				node.add(product);
-				others.add(node);
-				othersMap.put(owner, node);
+				MultiMapHelper.getMapValue(othersMap, owner,
+						player -> new SectionListReportNode(6, "Villages sworn to " +
+																	   player.getName())).add(product);
 			}
 		});
+		othersMap.values().forEach(others::addIfNonEmpty);
 		final IReportNode retval = new SectionReportNode(4, "Villages:");
 		retval.addIfNonEmpty(own, independents, others);
 		if (retval.getChildCount() == 0) {
