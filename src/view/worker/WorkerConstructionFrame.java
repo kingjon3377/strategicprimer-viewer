@@ -183,12 +183,12 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
-	 * TODO: Change to getBoxPair(box, title) to further simplify caller
 	 * @param box a text box
+	 * @param expl an explanation or tile of it
 	 * @return its contents, asserted to not be null
 	 */
-	private static String getBoxText(final JTextField box) {
-		return box.getText();
+	private static Pair<String, String> getBoxText(final JTextField box, final String expl) {
+		return Pair.of(box.getText(), expl);
 	}
 
 	/**
@@ -268,14 +268,14 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 		if (race.getText().trim().isEmpty()) {
 			builder.append("Worker needs a race.").append(LineEnd.LINE_SEP);
 		}
-		builder.append(numericExplanation(Pair.of(getBoxText(hpBox), "HP"),
-				Pair.of(getBoxText(maxHP), "Max HP"),
-				Pair.of(getBoxText(strength), "Strength"),
-				Pair.of(getBoxText(dex), "Dexterity"),
-				Pair.of(getBoxText(con), "Constitution"),
-				Pair.of(getBoxText(intel), "Intelligence"),
-				Pair.of(getBoxText(wis), "Wisdom"),
-				Pair.of(getBoxText(cha), "Charisma")));
+		builder.append(numericExplanation(getBoxText(hpBox, "HP"),
+				getBoxText(maxHP, "Max HP"),
+				getBoxText(strength, "Strength"),
+				getBoxText(dex, "Dexterity"),
+				getBoxText(con, "Constitution"),
+				getBoxText(intel, "Intelligence"),
+				getBoxText(wis, "Wisdom"),
+				getBoxText(cha, "Charisma")));
 		return builder.toString();
 	}
 
