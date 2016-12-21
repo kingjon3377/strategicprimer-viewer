@@ -21,7 +21,6 @@ import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.IWorkerModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.MultiMapHelper;
-import util.NullCleaner;
 import util.TypesafeLogger;
 
 import static java.util.logging.Level.SEVERE;
@@ -75,7 +74,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 			int size = 3;
 			for (final UnitMember member : unit) {
 				size += 2;
-				size += memberStringSize(NullCleaner.assertNotNull(member));
+				size += memberStringSize(member);
 			}
 			return size;
 		} else {
@@ -101,7 +100,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 				builder.append(memberString(member));
 			}
 			builder.append(']');
-			return NullCleaner.assertNotNull(builder.toString());
+			return builder.toString();
 		} else {
 			return "";
 		}
@@ -151,9 +150,9 @@ public final class StrategyExporter implements PlayerChangeListener {
 				}
 				builder.append(')');
 			}
-			return NullCleaner.assertNotNull(builder.toString());
+			return builder.toString();
 		} else {
-			return NullCleaner.assertNotNull(member.toString());
+			return member.toString();
 		}
 	}
 
@@ -228,7 +227,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 				}
 			}
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**

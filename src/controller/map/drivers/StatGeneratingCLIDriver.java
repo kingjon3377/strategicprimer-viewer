@@ -37,7 +37,6 @@ import model.misc.IMultiMapModel;
 import model.workermgmt.RaceFactory;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import util.Pair;
 
 import static util.SingletonRandom.RANDOM;
@@ -102,7 +101,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		for (int playerNum = choice.choose();
 				(playerNum >= 0) && (playerNum < players.size());
 				playerNum = choice.choose()) {
-			enterStats(model, NullCleaner.assertNotNull(players.get(playerNum)), cli);
+			enterStats(model, players.get(playerNum), cli);
 		}
 	}
 
@@ -305,8 +304,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				playerNum = choice.choose()) {
 			boolean again = true;
 			while (again) {
-				createWorkersForPlayer(model, idf,
-						NullCleaner.assertNotNull(players.get(playerNum)), cli);
+				createWorkersForPlayer(model, idf, players.get(playerNum), cli);
 				again = cli.inputBoolean("Add more workers to another unit? ");
 			}
 		}
@@ -423,8 +421,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		}
 		for (int i = 0; i < count; i++) {
 			final IWorker worker =
-					createWorkerFromNameFile(
-							NullCleaner.assertNotNull(names.get(i).trim()), idf, cli);
+					createWorkerFromNameFile(names.get(i).trim(), idf, cli);
 			addWorkerToUnit(model, unit, worker);
 		}
 	}

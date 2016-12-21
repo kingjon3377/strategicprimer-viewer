@@ -2,7 +2,6 @@ package model.map.fixtures.resources;
 
 import java.util.HashMap;
 import java.util.Map;
-import util.NullCleaner;
 
 /**
  * The kinds of stone we know about (for purposes of this event).
@@ -82,7 +81,7 @@ public enum StoneKind {
 	 */
 	public static StoneKind parseStoneKind(final String kind) {
 		if (SK_MAP.containsKey(kind)) {
-			return NullCleaner.assertNotNull(SK_MAP.get(kind));
+			return SK_MAP.get(kind);
 		} else {
 			throw new IllegalArgumentException("Unrecognized kind of stone");
 		}
