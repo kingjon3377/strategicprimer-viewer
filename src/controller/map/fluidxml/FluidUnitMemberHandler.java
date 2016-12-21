@@ -6,6 +6,7 @@ import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
+import java.util.Objects;
 import java.util.Optional;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -113,9 +114,8 @@ public final class FluidUnitMemberHandler {
 				default:
 					throw new UnwantedChildException(element.getName(), startElement);
 				}
-			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (event.isEndElement() && Objects.equals(element.getName(),
+					event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -165,9 +165,8 @@ public final class FluidUnitMemberHandler {
 				} else {
 					throw new UnwantedChildException(element.getName(), startElement);
 				}
-			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (event.isEndElement() && Objects.equals(element.getName(),
+					event.asEndElement().getName())) {
 				break;
 			}
 		}
