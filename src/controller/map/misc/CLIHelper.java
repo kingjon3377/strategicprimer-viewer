@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import model.map.HasName;
 import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
@@ -84,6 +85,65 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	private static String lower(final String str) {
 		return str.toLowerCase(Locale.US);
+	}
+
+	/**
+	 * Ask the user to choose an item from the list, and if he does carry out an
+	 * operation on it and then ask if he wants to do another.
+	 * @param <T> the type of things in the list
+	 * @param choice how to ask the user to choose an item from the list
+	 * @param prompt the prompt to use to ask if the user wants to continue
+	 * @param operation what to do with the chosen item in the list
+	 * @throws IOException on I/O error getting the user's choice
+	 */
+	@Override
+	public <T> void loopOnList(final List<T> list,
+							   final ChoiceOperation choice,
+							   final String prompt,
+							   final ThrowingConsumer<T> operation) throws IOException {
+		for (int num = choice.choose(); num >= 0 && num < list.size(); num = choice.choose()) {
+			operation.accept(list.remove(num));
+			if (list.isEmpty() || !inputBoolean(prompt)) {
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Ask the user to choose an item from the list, and if he does carry out an
+	 * operation on it and then ask if he wants to do another.
+	 * @param <T> the type of things in the list
+	 * @param choice how to ask the user to choose an item from the list
+	 * @param prompt the prompt to use to ask if the user wants to continue
+	 * @param addition what to do if the user chooses "add a new one"
+	 * @param operation what to do with the chosen item in the list
+	 * @throws IOException on I/O error getting the user's choice
+	 */
+	@Override
+	public <T> void loopOnMutableList(final List<T> list,
+									  final ChoiceOperation choice,
+									  final String prompt,
+									  final ListAmendment<T> addition,
+									  final ThrowingConsumer<T> operation)
+			throws IOException {
+		for (int num = choice.choose(); num <= list.size(); num = choice.choose()) {
+			final T item;
+			if (num < 0 || num == list.size()) {
+				final Optional<T> temp = addition.amendList(list);
+				if (temp.isPresent()) {
+					item = temp.get();
+				} else {
+					println("Select the new item at the next prompt.");
+					continue;
+				}
+			} else {
+				item = list.get(num);
+			}
+			operation.accept(item);
+			if (!inputBoolean(prompt)) {
+				break;
+			}
+		}
 	}
 
 	/**
@@ -388,4 +448,5 @@ public final class CLIHelper implements ICLIHelper {
 		istream.close();
 		ostream.close();
 	}
+
 }

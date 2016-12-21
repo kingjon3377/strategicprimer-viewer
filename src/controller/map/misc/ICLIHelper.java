@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import model.map.HasName;
 import model.map.Point;
 import model.map.PointFactory;
@@ -24,6 +25,37 @@ import model.map.PointFactory;
  * @author Jonathan Lovelace
  */
 public interface ICLIHelper extends Closeable {
+
+	/**
+	 * Ask the user to choose an item from the list, and if he does carry out an
+	 * operation on it and then ask if he wants to do another.
+	 * @param <T> the type of things in the list
+	 * @param choice how to ask the user to choose an item from the list
+	 * @param prompt the prompt to use to ask if the user wants to continue
+	 * @param operation what to do with the chosen item in the list
+	 * @throws IOException on I/O error getting the user's choice
+	 */
+	<T> void loopOnList(List<T> list,
+						ChoiceOperation choice,
+						String prompt,
+						ThrowingConsumer<T> operation) throws IOException;
+
+	/**
+	 * Ask the user to choose an item from the list, and if he does carry out an
+	 * operation on it and then ask if he wants to do another.
+	 * @param <T> the type of things in the list
+	 * @param choice how to ask the user to choose an item from the list
+	 * @param prompt the prompt to use to ask if the user wants to continue
+	 * @param addition what to do if the user chooses "add a new one"
+	 * @param operation what to do with the chosen item in the list
+	 * @throws IOException on I/O error getting the user's choice
+	 */
+	<T> void loopOnMutableList(List<T> list,
+							   ChoiceOperation choice,
+							   String prompt,
+							   ListAmendment<T> addition,
+							   ThrowingConsumer<T> operation)
+			throws IOException;
 
 	/**
 	 * Have the user choose an item from a list.
@@ -167,5 +199,32 @@ public interface ICLIHelper extends Closeable {
 		 * @throws IOException on I/O error interacting with the user
 		 */
 		int choose() throws IOException;
+	}
+
+	/**
+	 * An interface for when the user wants to add a new item to a list.
+	 * @param <T> the type of things in the list
+	 */
+	@FunctionalInterface
+	public interface ListAmendment<T> {
+		/**
+		 * @param list the list to amend
+		 * @return the added item, or nothing if we couldn't get it.
+		 * @throws IOException on I/O error talking to the user
+		 */
+		Optional<T> amendList(final List<T> list) throws IOException;
+	}
+
+	/**
+	 * An interface like Consumer except declaring a thrown exception.
+	 * @param <T> the type of thing accepted
+	 */
+	@FunctionalInterface
+	public interface ThrowingConsumer<T> {
+		/**
+		 * @param item the item to accept
+		 * @throws IOException on I/O error
+		 */
+		void accept(final T item) throws IOException;
 	}
 }
