@@ -21,7 +21,6 @@ import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
 import util.ListMaker;
-import util.NullCleaner;
 import util.SingletonRandom;
 
 /**
@@ -74,8 +73,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 					player.getName() + "'s units:",
 					"No unadvanced units remain.", "Chosen unit: ", false);
 			if ((unitNum >= 0) && (unitNum < units.size())) {
-				advanceWorkersInUnit(NullCleaner.assertNotNull(units.remove(unitNum)),
-						cli);
+				advanceWorkersInUnit(units.remove(unitNum), cli);
 			} else {
 				break;
 			}
@@ -99,8 +97,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 				final int workerNum = cli.chooseFromList(workers, "Workers in unit:",
 						"No unadvanced workers remain.", "Chosen worker: ", false);
 				if ((workerNum >= 0) && (workerNum < workers.size())) {
-					advanceSingleWorker(
-							NullCleaner.assertNotNull(workers.remove(workerNum)), cli);
+					advanceSingleWorker(workers.remove(workerNum), cli);
 				} else {
 					break;
 				}
@@ -283,7 +280,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			} else {
 				job = jobs.get(jobNum);
 			}
-			advanceJob(NullCleaner.assertNotNull(job), cli);
+			advanceJob(job, cli);
 			if (!cli.inputBoolean("Select another Job in this worker? ")) {
 				break;
 			}
@@ -385,8 +382,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			for (int playerNum = choice.choose();
 					(playerNum >= 0) && (playerNum < playerList.size());
 					playerNum = choice.choose()) {
-				advanceWorkers(workerModel,
-						NullCleaner.assertNotNull(playerList.remove(playerNum)), cli);
+				advanceWorkers(workerModel, playerList.remove(playerNum), cli);
 			}
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
