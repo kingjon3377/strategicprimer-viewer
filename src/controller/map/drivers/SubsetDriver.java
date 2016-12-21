@@ -11,7 +11,6 @@ import model.map.Subsettable;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
-import util.NullCleaner;
 import util.Pair;
 
 import static view.util.SystemOut.SYS_OUT;
@@ -44,8 +43,7 @@ public final class SubsetDriver implements SimpleDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(SubsetDriver.class.getName()));
+	private static final Logger LOGGER = Logger.getLogger(SubsetDriver.class.getName());
 
 	/**
 	 * Run the driver.

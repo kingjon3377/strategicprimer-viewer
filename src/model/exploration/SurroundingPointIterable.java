@@ -8,7 +8,6 @@ import java.util.stream.StreamSupport;
 import model.map.MapDimensions;
 import model.map.Point;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 
 import static model.map.PointFactory.point;
 
@@ -104,7 +103,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	 */
 	@Override
 	public Iterator<Point> iterator() {
-		return NullCleaner.assertNotNull(points.iterator());
+		return points.iterator();
 	}
 
 	/**

@@ -16,7 +16,6 @@ import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import model.misc.IDriverModel;
 import util.LineEnd;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import view.util.SystemOut;
 
@@ -122,7 +121,7 @@ public final class TableDebugger implements SimpleCLIDriver {
 		for (final String value : table.allEvents()) {
 			if (value.contains("#")) {
 				final String[] parsed = value.split("#", 3);
-				final String callee = NullCleaner.assertNotNull(parsed[1]);
+				final String callee = parsed[1];
 				debugSingleTable(before + parsed[0], parsed[2] + after,
 						runner.getTable(callee), callee, ostream, set);
 			} else {
