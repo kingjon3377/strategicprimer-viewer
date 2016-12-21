@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.map.IMapNG;
@@ -22,7 +21,6 @@ import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
-import util.NullCleaner;
 
 /**
  * A mouse listener for the MapComponent, to show the terrain-changing menu as needed.
@@ -63,19 +61,6 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
-	 * Concatenate Strings. We don't use the standard Stream joining because it doesn't
-	 * calculate an appropriate size for the StringBuilder.
-	 * @param strings strings
-	 * @return them concatenated together
-	 */
-	private static String concat(final String... strings) {
-		final StringBuilder build =
-				new StringBuilder(Stream.of(strings).mapToInt(String::length).sum());
-		Stream.of(strings).forEach(build::append);
-		return NullCleaner.assertNotNull(build.toString());
-	}
-
-	/**
 	 * Create the tool-tip message for the location the mouse cursor is near.
 	 * @param event an event representing the current mouse position
 	 * @return a tool-tip message for the tile the mouse is currently over
@@ -93,14 +78,9 @@ public final class ComponentMouseListener extends MouseAdapter implements
 						+ dimensions.getMinimumCol());
 		if ((point.getRow() < mapDim.getRows()) &&
 					(point.getCol() < mapDim.getColumns())) {
-			// TODO: replace with String.format
-			return concat("<html><body>", point.toString(), ": ", model
-																		  .getMap()
-																		  .getBaseTerrain(
-																				  point)
-																		  .toString(),
-					"<br />",
-					getTerrainFixturesAndTop(point), "<br/></body></html>");
+			return String.format("<html><body>%s: %s<br />%s</br></body></html>",
+					point.toString(), model.getMap().getBaseTerrain(point).toString(),
+					getTerrainFixturesAndTop(point));
 		} else {
 			return null;
 		}
