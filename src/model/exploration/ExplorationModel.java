@@ -31,7 +31,6 @@ import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
-import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
@@ -412,26 +411,9 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	public Point find(final TileFixture fix) {
 		final IMapNG source = getMap();
-		for (final Point point : source.locations()) {
-			if (((fix instanceof Mountain) && source.isMountainous(point)) ||
-						((fix instanceof Forest) &&
-								 fix.equals(source.getForest(point))) ||
-						((fix instanceof Ground) &&
-								 fix.equals(source.getGround(point)))) {
-				return point;
-			}
-			if (source.streamOtherFixtures(point).flatMap(item -> {
-				if (item instanceof FixtureIterable) {
-					return Stream.concat(Stream.of(item),
-							((FixtureIterable<@NonNull ?>) item).stream());
-				} else {
-					return Stream.of(item);
-				}
-			}).anyMatch(fix::equals)) {
-				return point;
-			}
-		}
-		return PointFactory.point(-1, -1);
+		return source.locationStream()
+					   .filter(point -> doesLocationHaveFixture(source, point, fix))
+					   .findAny().orElse(PointFactory.point(-1, -1));
 	}
 
 
