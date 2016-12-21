@@ -12,7 +12,6 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyFor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * An IJob implementation to let the Job tree operate on a whole unit at once.
@@ -94,8 +93,8 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 				}
 			}
 		}
-		final IJob @NonNull [] jobsArray = NullCleaner.assertNotNull(
-				proxiedJobs.toArray(new IJob[proxiedJobs.size()]));
+		final IJob @NonNull [] jobsArray =
+				proxiedJobs.toArray(new IJob[proxiedJobs.size()]);
 		proxied.addAll(skillNames.stream()
 							   .map(skill -> new ProxySkill(skill, parallel, jobsArray))
 							   .collect(Collectors.toList()));
@@ -135,7 +134,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 */
 	@Override
 	public Iterator<@NonNull ISkill> iterator() {
-		return NullCleaner.assertNotNull(proxied.iterator());
+		return proxied.iterator();
 	}
 
 	/**
@@ -149,8 +148,8 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 				return false;
 			}
 		}
-		proxied.add(new ProxySkill(skill.getName(), parallel, NullCleaner.assertNotNull(
-				proxiedJobs.toArray(new IJob[proxiedJobs.size()]))));
+		proxied.add(new ProxySkill(skill.getName(), parallel, proxiedJobs.toArray(
+				new IJob[proxiedJobs.size()])));
 		return true;
 	}
 
@@ -209,8 +208,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 			//noinspection unchecked
 			((ProxyFor<IJob>) skill).addProxied(item);
 		}
-		final IJob[] jobsArray = NullCleaner.assertNotNull(
-				proxiedJobs.toArray(new IJob[proxiedJobs.size()]));
+		final IJob[] jobsArray = proxiedJobs.toArray(new IJob[proxiedJobs.size()]);
 		for (final ISkill skill : item) {
 			if (!skillNames.contains(skill.getName())) {
 				//noinspection ObjectAllocationInLoop
@@ -250,9 +248,8 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 				return skill;
 			}
 		}
-		final ISkill retval =
-				new ProxySkill(skillName, parallel, NullCleaner.assertNotNull(
-						proxiedJobs.toArray(new IJob[proxiedJobs.size()])));
+		final ISkill retval = new ProxySkill(skillName, parallel, proxiedJobs.toArray(
+				new IJob[proxiedJobs.size()]));
 		proxied.add(retval);
 		return retval;
 	}

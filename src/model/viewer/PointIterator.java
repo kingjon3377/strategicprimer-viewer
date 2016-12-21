@@ -7,7 +7,6 @@ import model.map.Point;
 import model.map.PointFactory;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * An view of locations on the map in order, starting at a given point.
@@ -112,6 +111,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	 */
 	@Override
 	public String toString() {
+		// TODO: Use Formatter
 		final StringBuilder builder = new StringBuilder(150);
 		builder.append("PointIterator: Started at (");
 		builder.append(startRow);
@@ -137,7 +137,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 		builder.append(", ");
 		builder.append(maxCol);
 		builder.append(").");
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
