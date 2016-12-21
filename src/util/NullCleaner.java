@@ -53,19 +53,4 @@ public final class NullCleaner {
 		return val;
 	}
 
-	/**
-	 * Assert that an array is not a nullable array.
-	 *
-	 * @param <T> the type of the array
-	 * @param arr the array
-	 * @return it, if it's not nullable
-	 */
-	@SafeVarargs
-	public static <T> T[] assertNotNullArray(final T @Nullable ... arr) {
-		assert arr != null;
-		for (final T item : arr) {
-			assert item != null;
-		}
-		return arr;
-	}
 }
