@@ -13,7 +13,6 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A test case for TestExplorationRunner.
@@ -34,7 +33,7 @@ public final class TestExplorationRunner {
 	/**
 	 * The empty list.
 	 */
-	private static final Stream<TileFixture> EMPTY = assertNotNull(Stream.empty());
+	private static final Stream<TileFixture> EMPTY = Stream.empty();
 	/**
 	 * Extracted constant, to fix a warning because it occurred three or more times.
 	 */
@@ -221,8 +220,8 @@ public final class TestExplorationRunner {
 				equalTo(Boolean.FALSE));
 		runner.loadTable("referent_one", new ConstantTable("#existent_table#"));
 		runner.loadTable("referent_two", new ConstantTable("( #existent_table# )"));
-		runner.loadTable("referent_three", new QuadrantTable(1, assertNotNull(
-				Arrays.asList("#referent_one#", "#referent_two#"))));
+		runner.loadTable("referent_three",
+				new QuadrantTable(1, Arrays.asList("#referent_one#", "#referent_two#")));
 		assertThat("recursive case to exercise cache-hits",
 				Boolean.valueOf(runner.recursiveCheck("referent_three")),
 				equalTo(Boolean.FALSE));

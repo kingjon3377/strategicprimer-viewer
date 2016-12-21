@@ -9,7 +9,6 @@ import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.resources.MineralVein;
 import org.junit.Test;
-import util.NullCleaner;
 
 /**
  * A class to test the serialization of Events.
@@ -34,10 +33,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * Compiled pattern of it.
 	 */
-	private static final Pattern KIND_PATTERN = NullCleaner
-														.assertNotNull(Pattern.compile(
-																KIND_PROPERTY,
-																Pattern.LITERAL));
+	private static final Pattern KIND_PATTERN = Pattern.compile(
+			KIND_PROPERTY, Pattern.LITERAL);
 
 	/**
 	 * Test serialization of CaveEvents.
@@ -79,16 +76,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		final String oldKindProperty = "mineral";
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", secondVein,
-				NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(secondVein, true))
-								.replaceAll(
-										Matcher.quoteReplacement(oldKindProperty))),
+				KIND_PATTERN.matcher(createSerializedForm(secondVein, true))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", secondVein,
-				NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(secondVein, false))
-								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
+				KIND_PATTERN.matcher(createSerializedForm(secondVein, false))
+						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
 				oldKindProperty);
 		assertUnwantedChild(
 				"<mineral kind=\"gold\" exposed=\"false\" dc=\"0\">"

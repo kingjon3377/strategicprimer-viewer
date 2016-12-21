@@ -10,7 +10,6 @@ import java.util.Collections;
 import model.map.Player;
 import model.map.PointFactory;
 import org.junit.Test;
-import util.NullCleaner;
 import util.NullStream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -44,9 +43,8 @@ public class TestCLIHelper {
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("0%n")),
 												   out)) {
 			assertThat("chooseFromList chooses the one specified by user",
-					Integer.valueOf(cli.chooseFromList(NullCleaner.assertNotNull(
-							Arrays.asList(new Player(1, "one"),
-									new Player(2, "two"))),
+					Integer.valueOf(cli.chooseFromList(Arrays.asList(new Player(1, "one"),
+							new Player(2, "two")),
 							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat("chooseFromList prompted the user", out.toString(),
@@ -57,9 +55,8 @@ public class TestCLIHelper {
 												   out)) {
 			assertThat("chooseFromList chooses the one specified by user",
 					Integer.valueOf(
-							cli.chooseFromList(NullCleaner.assertNotNull(
-									Arrays.asList(new Player(1, "one"),
-											new Player(2, "two"))),
+							cli.chooseFromList(Arrays.asList(new Player(1, "one"),
+									new Player(2, "two")),
 									"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(1)));
 			assertThat("chooseFromList prompted the user", out.toString(),
@@ -107,9 +104,8 @@ public class TestCLIHelper {
 			assertThat(
 					"chooseFromList prompts again when negative index given",
 					Integer.valueOf(cli.chooseFromList(
-							NullCleaner.assertNotNull(
-									Arrays.asList(new Player(1, "one"),
-											new Player(2, "two"))),
+							Arrays.asList(new Player(1, "one"),
+									new Player(2, "two")),
 							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat(
@@ -122,9 +118,8 @@ public class TestCLIHelper {
 												   out)) {
 			assertThat("chooseFromList allows too-large choice",
 					Integer.valueOf(cli.chooseFromList(
-							NullCleaner.assertNotNull(
-									Arrays.asList(new Player(1, "one"),
-											new Player(2, "two"))),
+							Arrays.asList(new Player(1, "one"),
+									new Player(2, "two")),
 							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(3)));
 			assertThat("chooseFromList allows too-large choice",
@@ -136,9 +131,8 @@ public class TestCLIHelper {
 												   out)) {
 			assertThat("chooseFromList asks even if 'auto' when multiple items",
 					Integer.valueOf(
-							cli.chooseFromList(NullCleaner.assertNotNull(
-									Arrays.asList(new Player(1, "one"),
-											new Player(2, "two"))),
+							cli.chooseFromList(Arrays.asList(new Player(1, "one"),
+									new Player(2, "two")),
 									"test desc", "none present", " prompt", true)),
 					equalTo(Integer.valueOf(0)));
 			assertThat("chooseFromList prompted the user", out.toString(),
@@ -553,7 +547,7 @@ public class TestCLIHelper {
 												   out)) {
 			assertThat("chooseStringFromList chooses the one specified by user",
 					Integer.valueOf(cli.chooseStringFromList(
-							NullCleaner.assertNotNull(Arrays.asList("one", "two")),
+							Arrays.asList("one", "two"),
 							"test desc", "none present", "prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat("chooseStringFromList prompted the user",
@@ -565,7 +559,7 @@ public class TestCLIHelper {
 												   out)) {
 			assertThat("chooseStringFromList chooses the one specified by user",
 					Integer.valueOf(cli.chooseStringFromList(
-							NullCleaner.assertNotNull(Arrays.asList("one", "two")),
+							Arrays.asList("one", "two"),
 							"test desc", "none present", "prompt", false)),
 					equalTo(Integer.valueOf(1)));
 			assertThat("chooseStringFromList prompted the user",
@@ -576,7 +570,7 @@ public class TestCLIHelper {
 			 ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
 			assertThat("chooseStringFromList chooses only choice when told to",
 					Integer.valueOf(cli.chooseStringFromList(
-							NullCleaner.assertNotNull(Collections.singletonList("one")),
+							Collections.singletonList("one"),
 							"test desc", "none present", "prompt", true)),
 					equalTo(Integer.valueOf(0)));
 			assertThat("chooseStringFromList automatically chose only choice",
@@ -589,7 +583,7 @@ public class TestCLIHelper {
 												   out)) {
 			assertThat("chooseStringFromList doesn't always auto-choose",
 					Integer.valueOf(cli.chooseStringFromList(
-							NullCleaner.assertNotNull(Collections.singletonList("one")),
+							Collections.singletonList("one"),
 							"test desc", "none present", "prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat(
@@ -611,8 +605,7 @@ public class TestCLIHelper {
 												   out)) {
 			assertThat("chooseStringFromList doesn't always auto-choose",
 					Integer.valueOf(cli.chooseStringFromList(
-							NullCleaner
-									.assertNotNull(Arrays.asList("zero", "one", "two")),
+							Arrays.asList("zero", "one", "two"),
 							"test desc", "none present", "prompt", true)),
 					equalTo(Integer.valueOf(1)));
 			assertThat(
@@ -627,8 +620,7 @@ public class TestCLIHelper {
 			assertThat(
 					"chooseStringFromList prompts again when negative index given",
 					Integer.valueOf(cli.chooseStringFromList(
-							NullCleaner
-									.assertNotNull(Arrays.asList("one", "two")),
+							Arrays.asList("one", "two"),
 							"test desc", "none present", "prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat(
@@ -641,7 +633,7 @@ public class TestCLIHelper {
 												   out)) {
 			assertThat("chooseStringFromList allows too-large choice",
 					Integer.valueOf(cli.chooseStringFromList(
-							NullCleaner.assertNotNull(Arrays.asList("one", "two")),
+							Arrays.asList("one", "two"),
 							"test desc", "none present", "prompt", false)),
 					equalTo(Integer.valueOf(3)));
 			assertThat("chooseStringFromList allows too-large choice",
