@@ -16,7 +16,6 @@ import model.listeners.SkillSelectionSource;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.workermgmt.JobTreeModel;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A tree representing a worker's Jobs and Skills.
@@ -45,7 +44,7 @@ public final class JobsTree extends JTree implements SkillSelectionSource {
 	 * @param model the tree model underlying this tree
 	 */
 	public JobsTree(final JobTreeModel model) {
-		model.setSelectionModel(NullCleaner.assertNotNull(getSelectionModel()));
+		model.setSelectionModel(getSelectionModel());
 		setModel(model);
 		final JTree tree = this;
 		model.addTreeModelListener(new TreeModelListener() {

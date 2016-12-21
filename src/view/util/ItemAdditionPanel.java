@@ -12,7 +12,6 @@ import java.util.Collection;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import model.listeners.AddRemoveListener;
-import util.NullCleaner;
 import util.OnMac;
 
 /**
@@ -65,7 +64,7 @@ public final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 		final JPanel second = new BoxPanel(false);
 		second.add(field);
 		final ActionListener okListener = evt -> {
-			final String text = NullCleaner.assertNotNull(field.getText());
+			final String text = field.getText();
 			for (final AddRemoveListener listener : arListeners) {
 				listener.add(category, text);
 			}

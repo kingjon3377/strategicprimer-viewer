@@ -10,8 +10,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A Job a worker can work at.
  *
@@ -135,7 +133,7 @@ public class Job implements IJob {
 	 */
 	@Override
 	public final Iterator<ISkill> iterator() {
-		return assertNotNull(skillSet.values().iterator());
+		return skillSet.values().iterator();
 	}
 
 	/**
