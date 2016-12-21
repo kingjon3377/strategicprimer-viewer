@@ -308,9 +308,7 @@ public final class ProxyUnit
 						if (member instanceof IWorker) {
 							((ProxyWorker) proxy).addProxied((IWorker) member);
 						} else {
-							LOGGER.warning(
-									"Proxy is a ProxyWorker but member isn't a " +
-											"worker");
+							LOGGER.warning("ProxyWorker containing non-worker");
 
 						}
 					} else {
