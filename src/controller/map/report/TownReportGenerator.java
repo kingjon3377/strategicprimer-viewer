@@ -1,11 +1,15 @@
 package controller.map.report;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Stream;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -47,7 +51,12 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	@SuppressWarnings("HardcodedFileSeparator")
 	public static final String TOWN_HDR =
 			"Cities, towns, and/or fortifications you know about:";
-
+	/**
+	 * The order of statuses we want to use.
+	 */
+	private static final List<TownStatus> STATUSES = Collections.unmodifiableList(
+			Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
+					TownStatus.Burned));
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
@@ -79,21 +88,36 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separated.put(TownStatus.Burned, new HtmlList("<h5>Burned-Out " +
 															  "Communities</h5>"));
 		separated.put(TownStatus.Ruined, new HtmlList("<h5>Ruined Communities</h5>"));
-		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
-				.sorted(pairComparator).forEach(
-				pair -> separated.get(((ITownFixture) pair.second()).status())
-								.add(produce(fixtures, map, currentPlayer,
-										(ITownFixture) pair.second(), pair.first())));
+		separateByStatus(separated, Collection::add, fixtures.values(),
+				pair -> produce(fixtures, map, currentPlayer,
+						(ITownFixture) pair.second(), pair.first()));
 		final HeadedList<String> retval =
 				new HtmlList("<h4>Cities, towns, and/or fortifications you know " +
 									 "about:</h4>");
-		Stream.of(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
-				TownStatus.Burned).map(separated::get).filter(Objects::nonNull)
+		STATUSES.stream().map(separated::get).filter(Objects::nonNull)
 				.filter(coll -> !coll.isEmpty()).map(Collection::toString)
 				.forEach(retval::add);
 		return retval.toString();
 	}
+	/**
+	 * Separate towns by status.
+	 * @param <T> the type of things stored in the given mapping
+	 * @param <U> the type of things our caller wants to return
+	 * @param getter the method reference to get the collections or nodes out of the
+	 *                  given mapping
+	 * @param mapping the collection of collections to put the products into
+	 * @param function the function to produce the products.
+	 */
+	private <T, U> void separateByStatus(final Map<TownStatus, T> mapping,
+										 final BiConsumer<T, U> getter,
+									  final Collection<Pair<Point, IFixture>> coll,
+									  final Function<Pair<Point, IFixture>, U> function) {
+		coll.stream().filter(pair -> pair.second() instanceof AbstractTown)
+				.sorted(pairComparator).forEach(pair -> getter.accept(
+				mapping.get(((ITownFixture) pair.second()).status()),
+				function.apply(pair)));
 
+	}
 	/**
 	 * Produce the part of the report dealing with towns. Note that while this class
 	 * specifies {@link ITownFixture}, this method ignores {@link Fortress}es and {@link
@@ -119,16 +143,12 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 				new SectionListReportNode(5, "Burned-Out Communities"));
 		separated.put(TownStatus.Ruined,
 				new SectionListReportNode(5, "Ruined Communities"));
-		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
-				.sorted(pairComparator).forEach(
-				pair -> separated.get(((ITownFixture) pair.second()).status())
-								.add(produceRIR(fixtures, map, currentPlayer,
-										(ITownFixture) pair.second(), pair.first())));
-
+		separateByStatus(separated, IReportNode::add, fixtures.values(),
+				pair -> produceRIR(fixtures, map, currentPlayer,
+						(ITownFixture) pair.second(), pair.first()));
 		final IReportNode retval = new SectionListReportNode(4, TOWN_HDR);
-		Stream.of(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
-				TownStatus.Burned).map(separated::get)
-				.filter(Objects::nonNull).forEach(retval::addIfNonEmpty);
+		STATUSES.stream().map(separated::get).filter(Objects::nonNull)
+				.forEach(retval::addIfNonEmpty);
 		if (retval.getChildCount() == 0) {
 			return EmptyReportNode.NULL_NODE;
 		} else {
