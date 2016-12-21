@@ -3,7 +3,6 @@ package model.map.fixtures.resources;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import util.NullCleaner;
 
 /**
  * Possible status of fields (and meadows, and orchards ...) Fields should rotate between
@@ -68,7 +67,7 @@ public enum FieldStatus {
 	 */
 	public static FieldStatus parse(final String desc) {
 		if (FST_MAP.containsKey(desc)) {
-			return NullCleaner.assertNotNull(FST_MAP.get(desc));
+			return FST_MAP.get(desc);
 		} else {
 			throw new IllegalArgumentException("Not a FieldStatus we recognize");
 		}
@@ -79,8 +78,7 @@ public enum FieldStatus {
 	 * @return a random status
 	 */
 	public static FieldStatus random(final int seed) {
-		return NullCleaner.assertNotNull(
-				values()[new Random(seed).nextInt(values().length)]);
+		return values()[new Random(seed).nextInt(values().length)];
 	}
 
 	/**

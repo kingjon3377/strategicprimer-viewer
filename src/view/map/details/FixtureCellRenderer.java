@@ -28,7 +28,6 @@ import model.map.TileFixture;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
-import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -61,7 +60,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	 * A cache of icon filenames that aren't available.
 	 */
 	private static final Set<String> MISSING =
-			NullCleaner.assertNotNull(Collections.synchronizedSet(new HashSet<>()));
+			Collections.synchronizedSet(new HashSet<>());
 	/**
 	 * the default fixture icon.
 	 */

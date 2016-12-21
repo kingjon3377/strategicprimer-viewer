@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import model.viewer.IViewerModel;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import view.map.main.FindDialog;
 
 /**
@@ -70,7 +69,7 @@ public class FindHandler implements ActionListener {
 			finder = local;
 			return local;
 		} else {
-			return NullCleaner.assertNotNull(finder);
+			return finder;
 		}
 	}
 }

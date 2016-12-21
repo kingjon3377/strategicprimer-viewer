@@ -35,7 +35,6 @@ import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
 import util.IteratorWrapper;
-import util.NullCleaner;
 import util.OnMac;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
@@ -70,13 +69,11 @@ public final class FindDialog extends SPDialog {
 	/**
 	 * A parser to convert from strings to integers.
 	 */
-	private static final NumberFormat NUM_PARSER =
-			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+	private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(FindDialog.class.getName()));
+	private static final Logger LOGGER = Logger.getLogger(FindDialog.class.getName());
 	/**
 	 * The text field holding the search string.
 	 */
@@ -309,8 +306,8 @@ public final class FindDialog extends SPDialog {
 			return true;
 		} else if (fix instanceof FixtureIterable) {
 			return ((FixtureIterable<?>) fix).stream().anyMatch(
-					(final IFixture member) -> matches(pattern, idNum,
-							NullCleaner.assertNotNull(member), caseSensitivity));
+					(final IFixture member) -> matches(pattern, idNum, member,
+							caseSensitivity));
 		} else {
 			return false;
 		}
