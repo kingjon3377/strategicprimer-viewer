@@ -15,7 +15,6 @@ import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -114,13 +113,12 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			throw new ArrayIndexOutOfBoundsException(index);
 		} else if ((parent instanceof Player) && parent.equals(root) &&
 						   (index < model.getUnitKinds(root).size())) {
-			return NullCleaner.assertNotNull(model.getUnitKinds(root).get(index));
+			return model.getUnitKinds(root).get(index);
 		} else if ((parent instanceof String) &&
 						   model.getUnitKinds(root).contains(parent) &&
 						   (index < model.getUnits(root, (String) parent).size())) {
 			// A String here is a unit's kind.
-			return NullCleaner.assertNotNull(model.getUnits(root,
-					(String) parent).get(index));
+			return model.getUnits(root, (String) parent).get(index);
 		} else if (parent instanceof IUnit) {
 			final Iterator<UnitMember> iter = ((IUnit) parent).iterator();
 			for (int i = 0; i < index; i++) {
@@ -131,7 +129,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 				}
 			}
 			if (iter.hasNext()) {
-				return NullCleaner.assertNotNull(iter.next());
+				return iter.next();
 			} else {
 				throw new ArrayIndexOutOfBoundsException(index);
 			}

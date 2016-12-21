@@ -24,7 +24,6 @@ import model.misc.SimpleMultiMapModel;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.MultiMapHelper;
-import util.NullCleaner;
 import util.Pair;
 import view.util.SystemOut;
 
@@ -70,7 +69,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	private static Stream<IUnit> getUnits(final Stream<@NonNull ? super Unit> iter,
 										  final Player player) {
-		return NullCleaner.assertNotNull(iter.flatMap(item -> {
+		return iter.flatMap(item -> {
 			if (item instanceof Fortress) {
 				return ((Fortress) item).stream();
 			} else {
@@ -78,7 +77,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			}
 		}).filter(IUnit.class::isInstance).map(IUnit.class::cast)
 												 .filter(unit -> Objects.equals(
-														 unit.getOwner(), player)));
+														 unit.getOwner(), player));
 	}
 
 	/**
@@ -174,14 +173,15 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addUnitAtLocation(final IUnit unit, final Point location) {
+		// TODO: Extract Stream->Fortress pipeline into a lambda
 		if (getSubordinateMaps().iterator().hasNext()) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : getAllMaps()) {
-				final Optional<Fortress> fort = NullCleaner.assertNotNull(
-						pair.first().streamOtherFixtures(location)
-								.filter(Fortress.class::isInstance)
-								.map(Fortress.class::cast)
-								.filter(fix -> unit.getOwner().equals(fix.getOwner()))
-								.findAny());
+				final Optional<Fortress> fort = pair.first().streamOtherFixtures(location)
+														.filter(Fortress.class::isInstance)
+														.map(Fortress.class::cast)
+														.filter(fix -> unit.getOwner()
+																			   .equals(fix.getOwner()))
+														.findAny();
 				if (fort.isPresent()) {
 					fort.get().addMember(unit.copy(false));
 				} else {

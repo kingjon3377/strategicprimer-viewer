@@ -3,7 +3,6 @@ package model.map.fixtures.mobile.worker;
 import java.util.Formatter;
 import java.util.function.IntSupplier;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A class representing a worker's core statistical attributes.
@@ -106,7 +105,7 @@ public class WorkerStats {
 	 */
 	public static String getModifierString(final int stat) {
 		final int modifier = getModifier(stat);
-		final String modStr = NullCleaner.assertNotNull(Integer.toString(modifier));
+		final String modStr = Integer.toString(modifier);
 		if (modifier >= 0) {
 			return '+' + modStr;
 		} else {
@@ -227,7 +226,7 @@ public class WorkerStats {
 			fmt.format("HP: %d / %d%nStr: %d%nDex: %d%n", hp, maxHP, strength, dex);
 			fmt.format("Con: %d%nInt: %d%nWis: %d%nCha: %d%n", con, intel, wis, cha);
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return builder.toString();
 	}
 	/**
 	 * A factory method to produce a set of stats for use as bonuses to be applied to yet
