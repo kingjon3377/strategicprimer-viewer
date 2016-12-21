@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import util.NullCleaner;
 import util.SingletonRandom;
 
 /**
@@ -53,7 +52,7 @@ public final class RaceFactory {
 	 * @return a race selected using that instance.
 	 */
 	public static String getRace(final Random random) {
-		return NullCleaner.assertNotNull(RACES.get(random.nextInt(RACES.size())));
+		return RACES.get(random.nextInt(RACES.size()));
 	}
 
 	/**

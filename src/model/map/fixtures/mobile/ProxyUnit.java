@@ -27,8 +27,6 @@ import util.EmptyIterator;
 import util.LineEnd;
 import util.TypesafeLogger;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A proxy for units in multiple maps.
  *
@@ -302,12 +300,10 @@ public final class ProxyUnit
 				// a UnitMember&ProxyFor<IWorker|UnitMember>
 				@SuppressWarnings("unchecked")
 				final ProxyFor<? extends UnitMember> proxy;
-				final Integer memberID =
-						assertNotNull(Integer.valueOf(member.getID()));
+				final Integer memberID = Integer.valueOf(member.getID());
 				if (map.containsKey(memberID)) {
 					//noinspection unchecked
-					proxy = (ProxyFor<? extends UnitMember>) assertNotNull(
-							map.get(memberID));
+					proxy = (ProxyFor<? extends UnitMember>) map.get(memberID);
 					if (proxy instanceof ProxyWorker) {
 						if (member instanceof IWorker) {
 							((ProxyWorker) proxy).addProxied((IWorker) member);
@@ -333,7 +329,7 @@ public final class ProxyUnit
 				}
 			}
 		}
-		return assertNotNull(map.values().iterator());
+		return map.values().iterator();
 	}
 
 	/**
@@ -517,8 +513,7 @@ public final class ProxyUnit
 	@Override
 	public String toString() {
 		if (parallel) {
-			return assertNotNull(
-					String.format("ProxyUnit for ID #%d", Integer.valueOf(id)));
+			return String.format("ProxyUnit for ID #%d", Integer.valueOf(id));
 		} else {
 			return "ProxyUnit for units of kind " + kind;
 		}
@@ -684,7 +679,7 @@ public final class ProxyUnit
 		public String toString() {
 			final Iterator<UnitMember> iter = proxiedMembers.iterator();
 			if (iter.hasNext()) {
-				return assertNotNull(iter.next().toString());
+				return iter.next().toString();
 			} else {
 				return "a proxy for no unit members";
 			}

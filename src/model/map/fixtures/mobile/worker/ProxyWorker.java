@@ -19,8 +19,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * An IWorker implementation to make the UI able to operate on all of a unit's workers at
  * once.
@@ -98,7 +96,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			}
 		}
 		final IWorker @NonNull [] workerArray =
-				assertNotNull(workers.toArray(new IWorker[workers.size()]));
+				workers.toArray(new IWorker[workers.size()]);
 		proxyJobs.addAll(jobNames.stream()
 								 .map(job -> new ProxyJob(job, false, workerArray))
 								 .collect(Collectors.toList()));
@@ -169,7 +167,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	@Override
 	@NonNull
 	public Iterator<@NonNull IJob> iterator() {
-		return assertNotNull(proxyJobs.iterator());
+		return proxyJobs.iterator();
 	}
 
 	/**
@@ -181,8 +179,8 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		if (jobNames.contains(job.getName())) {
 			return false;
 		} else {
-			final IJob proxy = new ProxyJob(job.getName(), parallel, assertNotNull(
-					workers.toArray(new IWorker[workers.size()])));
+			final IJob proxy = new ProxyJob(job.getName(), parallel, workers.toArray(
+					new IWorker[workers.size()]));
 			jobNames.add(proxy.getName());
 			proxyJobs.add(proxy);
 			return true;
@@ -222,8 +220,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			stats = null;
 		}
 		workers.add(item);
-		final IWorker[] workerArray =
-				assertNotNull(workers.toArray(new IWorker[workers.size()]));
+		final IWorker[] workerArray = workers.toArray(new IWorker[workers.size()]);
 		final Collection<IJob> proxyJobsTemp = new ArrayList<>(proxyJobs);
 		for (final IJob job : item) {
 			final String name = job.getName();
@@ -391,8 +388,8 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 				return job;
 			}
 		}
-		final IJob retval = new ProxyJob(jobName, parallel, assertNotNull(
-				workers.toArray(new IWorker[workers.size()])));
+		final IJob retval = new ProxyJob(jobName, parallel, workers.toArray(
+				new IWorker[workers.size()]));
 		jobNames.add(jobName);
 		proxyJobs.add(retval);
 		return retval;
