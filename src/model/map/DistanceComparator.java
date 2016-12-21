@@ -2,7 +2,6 @@ package model.map;
 
 import java.util.Comparator;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 
 /**
  * A class to compare Points based on their distance to a specified point (such as a
@@ -65,9 +64,8 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 		if (dist == 0) {
 			return "(at HQ)";
 		} else {
-			return NullCleaner.assertNotNull(
-					String.format("(%.0f tiles from HQ) ",
-							Double.valueOf(Math.sqrt(dist))));
+			return String.format("(%.0f tiles from HQ) ",
+					Double.valueOf(Math.sqrt(dist)));
 		}
 	}
 

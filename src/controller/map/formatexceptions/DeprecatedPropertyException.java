@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
-import util.NullCleaner;
 
 /**
  * A custom exception for cases where one property is deprecated in favor of another.
@@ -48,9 +47,8 @@ public final class DeprecatedPropertyException extends SPFormatException {
 									   final String deprecated, final String newForm) {
 		super("Use of the property '" + deprecated + "' in tag '"
 					  + tag.getName().getLocalPart() + "' is deprecated; use '"
-					  + newForm + "' instead",
-				NullCleaner.assertNotNull(tag.getLocation()));
-		context = NullCleaner.assertNotNull(tag.getName());
+					  + newForm + "' instead", tag.getLocation());
+		context = tag.getName();
 		old = deprecated;
 		preferred = newForm;
 	}
