@@ -28,8 +28,6 @@ import view.util.BoxPanel;
 import view.util.ErrorShower;
 import view.util.ListenedButton;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A panel to let a user add hours to a skill.
  *
@@ -63,8 +61,7 @@ public final class SkillAdvancementPanel extends BoxPanel
 	/**
 	 * Parser for hours field.
 	 */
-	private static final NumberFormat NUM_PARSER =
-			assertNotNull(NumberFormat.getIntegerInstance());
+	private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
 	/**
 	 * The list of listeners.
 	 */

@@ -71,7 +71,6 @@ import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.Village;
 import util.LineEnd;
-import util.NullCleaner;
 
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeImage;
@@ -194,8 +193,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		final Iterable<Class<?>> types = new ClassIterable(obj);
 		for (final Class<?> cls : types) {
 			if (writers.containsKey(cls)) {
-				NullCleaner.assertNotNull(writers.get(cls))
-						.writeSPObject(ostream, obj, indent);
+				writers.get(cls).writeSPObject(ostream, obj, indent);
 				return;
 			}
 		}

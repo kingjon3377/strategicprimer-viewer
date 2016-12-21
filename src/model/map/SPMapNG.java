@@ -34,8 +34,6 @@ import util.MultiMapHelper;
 import util.NullStream;
 import util.TypesafeLogger;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A proper implementation of IMapNG.
  *
@@ -236,7 +234,7 @@ public class SPMapNG implements IMutableMapNG {
 					// database---we should remove this
 					// check.
 					if (!fixtures.containsKey(point) ||
-								!assertNotNull(fixtures.get(point)).contains(forest)) {
+								!fixtures.get(point).contains(forest)) {
 						ostream.format(
 								"%s At %s:\tHas forest we don't, or different primary " +
 										"forest%n",
@@ -261,9 +259,9 @@ public class SPMapNG implements IMutableMapNG {
 								&& ourGround.isExposed()) {
 						// They just don't have the exposed bit set; carry on
 						// ...
-					} else if ((ourGround == null) ||
-									   !assertNotNull(streamOtherFixtures(point))
-												.anyMatch(theirGround::equals)) {
+					} else if ((ourGround == null) || !streamOtherFixtures(point)
+															   .anyMatch(
+																	   theirGround::equals)) {
 						ostream.format(
 								"%s At %s:\tHas different primary ground, or ground we " +
 										"don't%n",
@@ -276,8 +274,7 @@ public class SPMapNG implements IMutableMapNG {
 				ourSubsettables.clear();
 				ourUnits.clear();
 				for (final TileFixture fix : getOtherFixtures(point)) {
-					final Integer idNum =
-							assertNotNull(Integer.valueOf(fix.getID()));
+					final Integer idNum = Integer.valueOf(fix.getID());
 					if (fix instanceof IUnit) {
 						ourUnits.put(idNum, (IUnit) fix);
 					} else if (fix instanceof SubsettableFixture) {
@@ -298,10 +295,10 @@ public class SPMapNG implements IMutableMapNG {
 						continue;
 					} else if ((fix instanceof IUnit) && ourUnits.containsKey(
 							Integer.valueOf(fix.getID()))) {
-						retval &=
-								assertNotNull(ourUnits.get(Integer.valueOf(fix.getID())))
-										.isSubset(fix, ostream,
-												String.format("%s At %s:", context, Objects.toString(point)));
+						retval &= ourUnits.get(Integer.valueOf(fix.getID()))
+										  .isSubset(fix, ostream,
+												  String.format("%s At %s:", context,
+														  Objects.toString(point)));
 					} else if ((fix instanceof SubsettableFixture) && ourSubsettables
 																			  .containsKey(
 																					  Integer.valueOf(
@@ -418,10 +415,8 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public Stream<@NonNull Point> locationStream() {
-		return assertNotNull(StreamSupport.stream(
-				Spliterators.spliteratorUnknownSize(
-						new PointIterator(dimensions(), null, true, true), 0),
-				false));
+		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
+				new PointIterator(dimensions(), null, true, true), 0), false);
 	}
 
 	/**
@@ -431,7 +426,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public TileType getBaseTerrain(final Point location) {
 		if (terrain.containsKey(location)) {
-			return assertNotNull(terrain.get(location));
+			return terrain.get(location);
 		} else {
 			return TileType.NotVisible;
 		}
@@ -453,9 +448,9 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public Iterable<River> getRivers(final Point location) {
 		if (rivers.containsKey(location)) {
-			return assertNotNull(rivers.get(location));
+			return rivers.get(location);
 		} else {
-			return assertNotNull(EnumSet.noneOf(River.class));
+			return EnumSet.noneOf(River.class);
 		}
 	}
 
@@ -486,7 +481,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public Iterable<TileFixture> getOtherFixtures(final Point location) {
 		if (fixtures.containsKey(location)) {
-			return assertNotNull(fixtures.get(location));
+			return fixtures.get(location);
 		} else {
 			return new IteratorWrapper<>(new EmptyIterator<>());
 		}
@@ -499,9 +494,9 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public Stream<TileFixture> streamOtherFixtures(final Point location) {
 		if (fixtures.containsKey(location)) {
-			return assertNotNull(assertNotNull(fixtures.get(location)).stream());
+			return fixtures.get(location).stream();
 		} else {
-			return assertNotNull(Stream.empty());
+			return Stream.empty();
 		}
 	}
 
@@ -665,7 +660,7 @@ public class SPMapNG implements IMutableMapNG {
 			}
 			builder.append(LineEnd.LINE_SEP);
 		}
-		return assertNotNull(builder.toString());
+		return builder.toString();
 	}
 
 	/**
@@ -709,7 +704,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (rivers.containsKey(location)) {
 			localRivers = rivers.get(location);
 		} else {
-			localRivers = assertNotNull(EnumSet.noneOf(River.class));
+			localRivers = EnumSet.noneOf(River.class);
 			rivers.put(location, localRivers);
 		}
 		Collections.addAll(localRivers, addedRivers);
@@ -722,7 +717,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void removeRivers(final Point location, final River... removedRivers) {
 		if (rivers.containsKey(location)) {
-			final Set<River> localRivers = assertNotNull(rivers.get(location));
+			final Set<River> localRivers = rivers.get(location);
 			Stream.of(removedRivers).forEach(localRivers::remove);
 		}
 	}
@@ -810,7 +805,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void removeFixture(final Point location, final TileFixture fix) {
 		if (fixtures.containsKey(location)) {
-			assertNotNull(fixtures.get(location)).remove(fix);
+			fixtures.get(location).remove(fix);
 		}
 	}
 

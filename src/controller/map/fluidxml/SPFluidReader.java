@@ -87,7 +87,6 @@ import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static javax.xml.XMLConstants.NULL_NS_URI;
 import static model.map.TileType.getTileType;
 import static util.EqualsAny.equalsAny;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * The main reader-from-XML class in the 'fluid XML' implementation.
@@ -213,7 +212,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		requireTag(element, parent, "player");
 		requireNonEmptyAttribute(element, "number", true, warner);
 		requireNonEmptyAttribute(element, "code_name", true, warner);
-		spinUntilEnd(assertNotNull(element.getName()), stream);
+		spinUntilEnd(element.getName(), stream);
 		return new Player(getIntegerAttribute(element, "number"),
 								 getAttribute(element, "code_name"));
 	}
@@ -239,9 +238,9 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		final IDRegistrar idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (isSPStartElement(event)) {
-				final Object retval = readSPObject(
-						assertNotNull(event.asStartElement()), new QName("root"),
-						eventReader, players, warner, idFactory);
+				final Object retval =
+						readSPObject(event.asStartElement(), new QName("root"),
+								eventReader, players, warner, idFactory);
 				if (type.isAssignableFrom(retval.getClass())) {
 					//noinspection unchecked
 					return (T) retval;
@@ -306,7 +305,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		final String tag = element.getName().getLocalPart().toLowerCase();
 		if (namespace.isEmpty() || NAMESPACE.equals(namespace)) {
 			if (readers.containsKey(tag)) {
-				return assertNotNull(readers.get(tag))
+				return readers.get(tag)
 							   .readSPObject(element, parent, stream, players, warner,
 									   idFactory);
 			} else {
@@ -329,7 +328,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 																	 factory) {
 		readers.put(tag, (element, parent, stream, players, warner, idFactory) -> {
 			requireTag(element, parent, tag);
-			spinUntilEnd(assertNotNull(element.getName()), stream);
+			spinUntilEnd(element.getName(), stream);
 			return setImage(factory.apply(getOrGenerateID(element, warner, idFactory)),
 					element, warner);
 		});
@@ -348,7 +347,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 																	 factory) {
 		readers.put(tag, (element, parent, stream, players, warner, idFactory) -> {
 			requireTag(element, parent, tag);
-			spinUntilEnd(assertNotNull(element.getName()), stream);
+			spinUntilEnd(element.getName(), stream);
 			return setImage(factory.create(getAttribute(element, "kind"),
 					getOrGenerateID(element, warner, idFactory)), element, warner);
 		});
@@ -423,7 +422,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		}
 		final String tempOrders = orders.toString().trim();
 		if (!tempOrders.isEmpty()) {
-			retval.setOrders(-1, assertNotNull(tempOrders));
+			retval.setOrders(-1, tempOrders);
 		}
 		return retval;
 	}
@@ -494,10 +493,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				if (child instanceof FortressMember) {
 					retval.addMember((FortressMember) child);
 				} else {
-					throw new UnwantedChildException(assertNotNull(element.getName()),
-															assertNotNull(
-																	event.asStartElement
-																				  ()));
+					throw new UnwantedChildException(element.getName(),
+															event.asStartElement());
 				}
 			} else if (event.isEndElement()
 							   &&
@@ -532,7 +529,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		requireTag(element, parent, "map", "view");
 		final int currentTurn;
 		final StartElement mapTag;
-		final String outerTag = assertNotNull(element.getName().getLocalPart());
+		final String outerTag = element.getName().getLocalPart();
 		if ("view".equalsIgnoreCase(outerTag)) {
 			currentTurn = getIntegerAttribute(element, "current_turn");
 			mapTag = getFirstStartElement(stream, element);
