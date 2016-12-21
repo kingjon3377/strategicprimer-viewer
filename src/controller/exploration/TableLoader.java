@@ -24,7 +24,6 @@ import model.exploration.old.RandomTable;
 import model.exploration.old.TerrainTable;
 import model.map.TileType;
 import util.ComparablePair;
-import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 
@@ -172,8 +171,7 @@ public final class TableLoader {
 					final String left = array[0];
 					final String right = array[1];
 					final Integer leftNum = Integer.valueOf(left);
-					list.add(ComparablePair.of(NullCleaner.assertNotNull(leftNum),
-							NullCleaner.assertNotNull(right)));
+					list.add(ComparablePair.of(leftNum, right));
 				} catch (final NumberFormatException except) {
 					throw new IOException("Non-numeric data", except);
 				}
@@ -199,10 +197,7 @@ public final class TableLoader {
 			if (array.length < SPLIT_ONCE) {
 				LOGGER.severe("Line with no blanks, continuing ...");
 			} else {
-				list.add(
-						Pair.of(TileType.getTileType(NullCleaner.assertNotNull
-																		 (array[0])),
-								NullCleaner.assertNotNull(array[1])));
+				list.add(Pair.of(TileType.getTileType(array[0]), array[1]));
 			}
 			line = reader.readLine();
 		}

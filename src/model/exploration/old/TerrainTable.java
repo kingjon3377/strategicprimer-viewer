@@ -9,7 +9,6 @@ import model.map.MapDimensions;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
-import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -56,7 +55,7 @@ public final class TerrainTable implements EncounterTable {
 								final Iterable<TileFixture> fixtures,
 								final MapDimensions mapDimensions) {
 		if (mapping.containsKey(terrain)) {
-			return NullCleaner.assertNotNull(mapping.get(terrain));
+			return mapping.get(terrain);
 		} else {
 			throw new IllegalArgumentException(
 					"Table does not account for that terrain type");
@@ -75,7 +74,7 @@ public final class TerrainTable implements EncounterTable {
 								final Stream<TileFixture> fixtures,
 								final MapDimensions mapDimensions) {
 		if (mapping.containsKey(terrain)) {
-			return NullCleaner.assertNotNull(mapping.get(terrain));
+			return mapping.get(terrain);
 		} else {
 			throw new IllegalArgumentException(
 					"Table does not account for that terrain type");

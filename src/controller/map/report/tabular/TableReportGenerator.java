@@ -33,8 +33,6 @@ import util.Pair;
 import util.PatientMap;
 import view.util.SystemOut;
 
-import static util.NullCleaner.assertNotNull;
-
 /**
  * A class to produce tabular reports based on a map for a player.
  *
@@ -70,8 +68,7 @@ public final class TableReportGenerator {
 	private static Point findHQ(final IMapNG map, final Player player) {
 		Point retval = PointFactory.point(-1, -1);
 		for (final Point location : map.locations()) {
-			for (final TileFixture fixture : map.getOtherFixtures(
-					assertNotNull(location))) {
+			for (final TileFixture fixture : map.getOtherFixtures(location)) {
 				if ((fixture instanceof Fortress) &&
 							((Fortress) fixture).getOwner().equals(player)) {
 					if ("HQ".equals(((Fortress) fixture).getName())) {
@@ -161,18 +158,17 @@ public final class TableReportGenerator {
 		final PatientMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
 		final IDRegistrar idf = IDFactoryFiller.createFactory(map);
 		for (final Point point : map.locations()) {
-			retval.putAll(
-					assertNotNull(getFixtures(map.streamOtherFixtures(point))
-										  .filter(fix -> (fix instanceof TileFixture)
-																 || (fix.getID() > 0))
-										  .collect(Collectors.toMap(fix -> {
-											  if ((fix instanceof TileFixture) &&
-														  (fix.getID() < 0)) {
-												  return Integer.valueOf(idf.createID());
-											  } else {
-												  return Integer.valueOf(fix.getID());
-											  }
-										  }, fix -> Pair.of(point, fix)))));
+			retval.putAll(getFixtures(map.streamOtherFixtures(point))
+								  .filter(fix -> (fix instanceof TileFixture)
+														 || (fix.getID() > 0))
+								  .collect(Collectors.toMap(fix -> {
+									  if ((fix instanceof TileFixture) &&
+												  (fix.getID() < 0)) {
+										  return Integer.valueOf(idf.createID());
+									  } else {
+										  return Integer.valueOf(fix.getID());
+									  }
+								  }, fix -> Pair.of(point, fix))));
 			final Ground ground = map.getGround(point);
 			final Forest forest = map.getForest(point);
 			if (ground != null) {
@@ -191,14 +187,14 @@ public final class TableReportGenerator {
 	 */
 	private static Stream<IFixture> getFixtures(final Stream<? extends IFixture>
 														stream) {
-		return assertNotNull(stream.flatMap(fix -> {
+		return stream.flatMap(fix -> {
 			if (fix instanceof FixtureIterable) {
 				return Stream.concat(Stream.of(fix),
-						getFixtures(assertNotNull(((FixtureIterable<?>) fix).stream())));
+						getFixtures(((FixtureIterable<?>) fix).stream()));
 			} else {
 				return Stream.of(fix);
 			}
-		}));
+		});
 	}
 }
 
