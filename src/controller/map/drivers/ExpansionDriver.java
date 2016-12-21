@@ -120,16 +120,10 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			addSurroundingFixtures(point, master, fixAdditions, mock);
 		}
 		for (final Map.Entry<Point, TileType> entry : terrainAdditions.entrySet()) {
-			if (entry == null) {
-				continue;
-			}
 			map.setBaseTerrain(NullCleaner.assertNotNull(entry.getKey()),
 					NullCleaner.assertNotNull(entry.getValue()));
 		}
 		for (final Map.Entry<Point, Set<TileFixture>> entry : fixAdditions.entrySet()) {
-			if (entry == null) {
-				continue;
-			}
 			final Point point = NullCleaner.assertNotNull(entry.getKey());
 			for (final TileFixture fix : entry.getValue()) {
 				if (fix instanceof HasOwner) {
