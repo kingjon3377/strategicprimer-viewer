@@ -2,7 +2,6 @@ package model.map.fixtures.towns;
 
 import java.util.HashMap;
 import java.util.Map;
-import util.NullCleaner;
 
 /**
  * Sizes of towns, fortifications, and cities.
@@ -62,7 +61,7 @@ public enum TownSize {
 	 */
 	public static TownSize parseTownSize(final String sizeDesc) {
 		if (TSZ_MAP.containsKey(sizeDesc)) {
-			return NullCleaner.assertNotNull(TSZ_MAP.get(sizeDesc));
+			return TSZ_MAP.get(sizeDesc);
 		} else {
 			throw new IllegalArgumentException("Unknown town size");
 		}

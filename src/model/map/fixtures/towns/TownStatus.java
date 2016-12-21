@@ -2,7 +2,6 @@ package model.map.fixtures.towns;
 
 import java.util.HashMap;
 import java.util.Map;
-import util.NullCleaner;
 
 /**
  * Possible status of towns, fortifications, and cities.
@@ -66,7 +65,7 @@ public enum TownStatus {
 	 */
 	public static TownStatus parseTownStatus(final String description) {
 		if (TST_MAP.containsKey(description)) {
-			return NullCleaner.assertNotNull(TST_MAP.get(description));
+			return TST_MAP.get(description);
 		} else {
 			throw new IllegalArgumentException("No such town status");
 		}

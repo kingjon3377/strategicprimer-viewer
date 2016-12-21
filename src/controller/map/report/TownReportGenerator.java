@@ -20,7 +20,6 @@ import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
 
@@ -82,8 +81,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separated.put(TownStatus.Ruined, new HtmlList("<h5>Ruined Communities</h5>"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
 				.sorted(pairComparator).forEach(
-				pair -> NullCleaner.assertNotNull(
-						separated.get(((ITownFixture) pair.second()).status()))
+				pair -> separated.get(((ITownFixture) pair.second()).status())
 								.add(produce(fixtures, map, currentPlayer,
 										(ITownFixture) pair.second(), pair.first())));
 		final HeadedList<String> retval =
@@ -91,8 +89,8 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 									 "about:</h4>");
 		Stream.of(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
 				TownStatus.Burned).map(separated::get).filter(Objects::nonNull)
-				.filter(coll -> !NullCleaner.assertNotNull(coll).isEmpty())
-				.map(Collection::toString).forEach(retval::add);
+				.filter(coll -> !coll.isEmpty()).map(Collection::toString)
+				.forEach(retval::add);
 		return retval.toString();
 	}
 
@@ -123,8 +121,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 				new SectionListReportNode(5, "Ruined Communities"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
 				.sorted(pairComparator).forEach(
-				pair -> NullCleaner.assertNotNull(
-						separated.get(((ITownFixture) pair.second()).status()))
+				pair -> separated.get(((ITownFixture) pair.second()).status())
 								.add(produceRIR(fixtures, map, currentPlayer,
 										(ITownFixture) pair.second(), pair.first())));
 
