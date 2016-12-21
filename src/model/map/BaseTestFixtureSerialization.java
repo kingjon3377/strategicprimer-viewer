@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 import org.hamcrest.CoreMatchers;
 import util.FatalWarningException;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -294,7 +293,7 @@ public abstract class BaseTestFixtureSerialization {
 		} else {
 			TestReaderFactory.createNewWriter().writeSPObject(writer, obj);
 		}
-		return NullCleaner.assertNotNull(writer.toString());
+		return writer.toString();
 	}
 
 	/**
