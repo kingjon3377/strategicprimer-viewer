@@ -569,12 +569,10 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		if (currPoint.getRow() >= 0) {
 			final IMutableMapNG mainMap = getMap();
 			@Nullable final Ground ground = mainMap.getGround(currPoint);
-			final List<TileFixture> diggables =
-					new ArrayList<>(Stream.concat(
-							Stream.of(ground),
-							mainMap.streamOtherFixtures(currPoint))
-											.filter(ExplorationModel::isDiggable)
-											.collect(Collectors.toList()));
+			final List<TileFixture> diggables = Stream.concat(Stream.of(ground),
+					mainMap.streamOtherFixtures(currPoint))
+														.filter(ExplorationModel::isDiggable)
+														.collect(Collectors.toList());
 			if (diggables.isEmpty()) {
 				return;
 			}
