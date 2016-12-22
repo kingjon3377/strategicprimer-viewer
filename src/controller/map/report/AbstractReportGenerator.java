@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Formatter;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.map.DistanceComparator;
@@ -258,15 +259,18 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 			final StringBuilder builder =
 					new StringBuilder(size() * 10 + header.length() + 5);
 			try (final Formatter formatter = new Formatter(builder)) {
-				formatter.format("%s%s", header, get(0).toString());
+				formatter.format("%s", header);
+				final BiConsumer<String, Point> cons =
+						(str, point) -> formatter.format(str, point.toString());
+				cons.accept("%s", get(0));
 				if (size() == 2) {
-					formatter.format(" and %s", get(1).toString());
+					cons.accept(" and %s", get(1));
 				} else {
 					for (int i = 1; i < size(); i++) {
 						if (i == (size() - 1)) {
-							formatter.format(", and %s", get(i).toString());
+							cons.accept(", and %s", get(i));
 						} else {
-							formatter.format(", %s", get(i).toString());
+							cons.accept(", %s", get(i));
 						}
 					}
 				}
