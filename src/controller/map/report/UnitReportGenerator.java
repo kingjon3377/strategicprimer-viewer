@@ -3,6 +3,7 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
@@ -86,43 +87,34 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 */
 	private static String workerReport(final IWorker worker, final boolean details) {
 		final StringBuilder builder = new StringBuilder(2048);
-		builder.append(worker.getName());
-		builder.append(", a ");
-		builder.append(worker.getRace());
-		builder.append(". ");
 		final WorkerStats stats = worker.getStats();
-		if ((stats != null) && details) {
-			builder.append("<p>He or she has the following stats: ");
-			//noinspection HardcodedFileSeparator
-			builder.append(stats.getHitPoints()).append(" / ")
-					.append(stats.getMaxHitPoints()).append(" Hit Points");
-			builder.append(", Strength ").append(
-					getModifierString(stats.getStrength()));
-			builder.append(", Dexterity ").append(
-					getModifierString(stats.getDexterity()));
-			builder.append(", Constitution ").append(
-					getModifierString(stats.getConstitution()));
-			builder.append(", Intelligence ").append(
-					getModifierString(stats.getIntelligence()));
-			builder.append(", Wisdom: ").append(
-					getModifierString(stats.getWisdom()));
-			builder.append(", Charisma: ").append(
-					getModifierString(stats.getCharisma()));
-			builder.append("</p>");
-		}
-		if (worker.iterator().hasNext() && details) {
-			builder.append(HAS_TRAINING).append(LineEnd.LINE_SEP).append(OPEN_LIST);
-			for (final IJob job : worker) {
-				if (job instanceof Job) {
-					builder.append(OPEN_LIST_ITEM);
-					builder.append(job.getLevel());
-					builder.append(" levels in ");
-					builder.append(job.getName());
-					builder.append(getSkills(job));
-					builder.append(CLOSE_LIST_ITEM);
-				}
+		try (final Formatter formatter = new Formatter(builder)) {
+			formatter.format("%s, a %s.", worker.getName(), worker.getRace());
+			if ((stats != null) && details) {
+				formatter.format("%n<p>He or she has the following stats: ");
+				//noinspection HardcodedFileSeparator
+				formatter.format("%d / %d Hit Points, Strength %s, Dexterity %s, ",
+						stats.getHitPoints(), stats.getMaxHitPoints(),
+						getModifierString(stats.getStrength()),
+						getModifierString(stats.getDexterity()));
+				formatter.format("Constitution %s, Intelligence %s, Wisdom %s, ",
+						getModifierString(stats.getConstitution()),
+						getModifierString(stats.getIntelligence()),
+						getModifierString(stats.getWisdom()));
+				formatter.format("Charisma %s</p>%n",
+						getModifierString(stats.getCharisma()));
 			}
-			builder.append(CLOSE_LIST);
+			if (worker.iterator().hasNext() && details) {
+				formatter.format("%s%n<ul>%n", HAS_TRAINING);
+				for (final IJob job : worker) {
+					if (job instanceof Job) {
+						formatter.format("<li>%d levels in %s%s</li>%n",
+								Integer.valueOf(job.getLevel()), job.getName(),
+								getSkills(job));
+					}
+				}
+				formatter.format("</ul>%n");
+			}
 		}
 		return builder.toString();
 	}
