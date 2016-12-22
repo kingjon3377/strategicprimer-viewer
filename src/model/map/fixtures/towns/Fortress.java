@@ -16,7 +16,6 @@ import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
-import util.LineEnd;
 
 /**
  * A fortress on the map. A player can only have one fortress per tile, but multiple
@@ -180,37 +179,31 @@ public class Fortress implements HasMutableImage, ITownFixture,
 		final String ownerStr = owner.toString();
 		// Assume each unit is at least half a K.
 		final int len = 40 + name.length() + ownerStr.length() + (units.size() * 512);
-		final StringBuilder builder = new StringBuilder(len).append("Fortress ");
-		builder.append(name);
-		builder.append(", owned by player ");
-		builder.append(ownerStr);
-		builder.append(". Members:");
-		int count = 0;
-		for (final FortressMember member : units) {
-			builder.append(LineEnd.LINE_SEP);
-			builder.append("\t\t\t");
-			if (member instanceof IUnit) {
-				final IUnit unit = (IUnit) member;
-				builder.append(unit.getName());
-				if (unit.getOwner().equals(owner)) {
-					builder.append(" (");
-					builder.append(unit.getKind());
-					builder.append(')');
-				} else if (unit.getOwner().isIndependent()) {
-					builder.append(", an independent ");
-					builder.append(unit.getKind());
+		final StringBuilder builder = new StringBuilder(len);
+		try (final Formatter formatter = new Formatter(builder)) {
+			formatter.format("Fortress %s, owned by player %s. Members:", name, ownerStr);
+			int count = 0;
+			for (final FortressMember member : units) {
+				formatter.format("%n\t\t\t");
+				if (member instanceof IUnit) {
+					final IUnit unit = (IUnit) member;
+					formatter.format("%s", unit.getName());
+					builder.append(unit.getName());
+					if (unit.getOwner().equals(owner)) {
+						formatter.format(" (%s)", unit.getKind());
+					} else if (unit.getOwner().isIndependent()) {
+						formatter.format(", an independent %s", unit.getKind());
+					} else {
+						formatter.format(" (%s), belonging to %s", unit.getKind(),
+								unit.getOwner().toString());
+					}
 				} else {
-					builder.append(" (");
-					builder.append(unit.getKind());
-					builder.append("), belonging to ");
-					builder.append(unit.getOwner());
+					formatter.format("%s", member.toString());
 				}
-			} else {
-				builder.append(member);
-			}
-			count++;
-			if (count < (units.size() - 1)) {
-				builder.append(';');
+				count++;
+				if (count < (units.size() - 1)) {
+					formatter.format(";");
+				}
 			}
 		}
 		return builder.toString();
