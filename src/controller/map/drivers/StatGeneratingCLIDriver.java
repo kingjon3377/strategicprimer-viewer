@@ -312,10 +312,10 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		cli.loopOnMutableList(units, clh -> clh.chooseFromList(units,
 				"Which unit contains the worker in question? (Select -1 to create new.)",
 				"There are no units owned by that player.", "Unit selection: ",
-				false), "Choose another unit? ", list -> {
-			final Point point = cli.inputPoint("Where to put new unit? ");
-			final IUnit temp = new Unit(player, cli.inputString("Kind of unit: "),
-											   cli.inputString("Unit name: "),
+				false), "Choose another unit? ", (list, clh) -> {
+			final Point point = clh.inputPoint("Where to put new unit? ");
+			final IUnit temp = new Unit(player, clh.inputString("Kind of unit: "),
+											   clh.inputString("Unit name: "),
 											   idf.createID());
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
 				pair.first().addFixture(point, temp);

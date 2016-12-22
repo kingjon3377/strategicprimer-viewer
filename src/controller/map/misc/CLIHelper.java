@@ -131,7 +131,7 @@ public final class CLIHelper implements ICLIHelper {
 				num = choice.choose(this)) {
 			final T item;
 			if (num < 0 || num == list.size()) {
-				final Optional<T> temp = addition.amendList(list);
+				final Optional<T> temp = addition.amendList(list, this);
 				if (temp.isPresent()) {
 					item = temp.get();
 				} else {

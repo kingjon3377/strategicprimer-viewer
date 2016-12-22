@@ -99,8 +99,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			final String none = "No existing jobs.";
 			final String prompt = "Job to advance: ";
 			cli.loopOnMutableList(jobs, clh -> clh.chooseFromList(jobs, hdr, none, prompt, false),
-					"Select another Job in these workers? ", list -> {
-						final String jobName = cli.inputString("Name of new Job: ");
+					"Select another Job in these workers? ", (list, clh) -> {
+						final String jobName = clh.inputString("Name of new Job: ");
 						workers.forEach(worker -> worker.addJob(new Job(jobName, 0)));
 						list.clear();
 						new ProxyWorker(unit).forEach(list::add);
@@ -129,8 +129,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final String none = "No existing skills.";
 		final String prompt = "Skill to advance: ";
 		cli.loopOnMutableList(skills, clh -> clh.chooseFromList(skills, hdr, none, prompt, false),
-				"Select another Skill in this Job? ", list -> {
-			final String skillName = cli.inputString("Name of new Skill: ");
+				"Select another Skill in this Job? ", (list, clh) -> {
+			final String skillName = clh.inputString("Name of new Skill: ");
 			jobs.forEach(job -> job.addSkill(new Skill(skillName, 0, 0)));
 			skills.clear();
 			new ProxyJob(jobName, false, workers.stream().toArray(IWorker[]::new))
@@ -224,8 +224,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final String none = "No existing jobs.";
 		final String prompt = "Job to advance: ";
 		cli.loopOnMutableList(jobs, clh -> clh.chooseFromList(jobs, hdr, none, prompt, false),
-				"Select another Job in this worker? ", list -> {
-					final String jobName = cli.inputString("Name of new Job: ");
+				"Select another Job in this worker? ", (list, clh) -> {
+					final String jobName = clh.inputString("Name of new Job: ");
 					worker.addJob(new Job(jobName, 0));
 					list.clear();
 					worker.forEach(list::add);
@@ -248,8 +248,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final String none = "No existing skills.";
 		final String prompt = "Skill to advance: ";
 		cli.loopOnMutableList(skills, clh -> clh.chooseFromList(skills, hdr, none, prompt, false),
-				"Select another Skill in this Job? ", list -> {
-			final String skillName = cli.inputString("Name of new Skill: ");
+				"Select another Skill in this Job? ", (list, clh) -> {
+			final String skillName = clh.inputString("Name of new Skill: ");
 			job.addSkill(new Skill(skillName, 0, 0));
 			list.clear();
 			job.forEach(list::add);

@@ -210,10 +210,12 @@ public interface ICLIHelper extends Closeable {
 	public interface ListAmendment<T> {
 		/**
 		 * @param list the list to amend
+		 * @param cli the interface for interacting with the user
 		 * @return the added item, or nothing if we couldn't get it.
 		 * @throws IOException on I/O error talking to the user
 		 */
-		Optional<T> amendList(final List<T> list) throws IOException;
+		Optional<T> amendList(final List<T> list, final ICLIHelper cli)
+				throws IOException;
 	}
 
 	/**
