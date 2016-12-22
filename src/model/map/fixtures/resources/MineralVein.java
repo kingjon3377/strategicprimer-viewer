@@ -1,5 +1,6 @@
 package model.map.fixtures.resources;
 
+import java.util.Formatter;
 import model.map.HasMutableKind;
 import model.map.IEvent;
 import model.map.IFixture;
@@ -109,18 +110,14 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	 */
 	@Override
 	public String getText() {
-		final StringBuilder build =
-				new StringBuilder(48 + mineral.length()).append("There is a");
-		if (exposed) {
-			build.append("n exposed");
-		}
-		build.append(" vein of ");
-		build.append(mineral);
-		build.append(" here");
-		if (exposed) {
-			build.append('.');
-		} else {
-			build.append(", but it's not exposed.");
+		final StringBuilder build = new StringBuilder(48 + mineral.length());
+		try (final Formatter formatter = new Formatter(build)) {
+			if (exposed) {
+				formatter.format("There is an exposed vein of %s here.", mineral);
+			} else {
+				formatter.format("There is a vein of %s here, but it's not exposed.",
+						mineral);
+			}
 		}
 		return build.toString();
 	}
