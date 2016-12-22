@@ -3,6 +3,7 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,6 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.MultiMapHelper;
 import util.Pair;
 import util.PatientMap;
@@ -89,14 +89,16 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			return "";
 		} else {
 			// We doubt this list will ever be over 16K.
-			final StringBuilder builder = new StringBuilder(16384).append(
-					"<h4>Animal sightings or encounters</h4>").append(LineEnd.LINE_SEP)
-												  .append(
-														  OPEN_LIST);
-			for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
-				builder.append(OPEN_LIST_ITEM).append(entry).append(CLOSE_LIST_ITEM);
+			final StringBuilder builder = new StringBuilder(16384);
+			try (final Formatter formatter = new Formatter(builder)) {
+				formatter.format("<h4>Animal sightings or encounters</h4>%n<ul>%n");
+				for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
+					formatter.format("<li>%s: %s</li>%n", entry.getKey(),
+							entry.getValue().toString());
+				}
+				formatter.format("</ul>%n");
 			}
-			return builder.append(CLOSE_LIST).toString();
+			return builder.toString();
 		}
 	}
 
