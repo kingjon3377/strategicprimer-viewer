@@ -179,21 +179,22 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				worker.getName(), worker.getRace()));
 		final WorkerStats stats = worker.getStats();
 		if ((stats != null) && details) {
-			//noinspection HardcodedFileSeparator
-			retval.add(new SimpleReportNode(loc, "He or she has the following stats: ",
-												   Integer.toString(stats.getHitPoints
-																				  ()),
-												   " / ", Integer.toString(
-					stats.getMaxHitPoints()), " Hit Points, Strength ",
-												   getModifierString(stats.getStrength
-																				   ()),
-												   ", Dexterity ", getModifierString(
-					stats.getDexterity()), ", Constitution ", getModifierString(
-					stats.getConstitution()), ", Intelligence ", getModifierString(
-					stats.getIntelligence()), ", Wisdom ",
-												   getModifierString(stats.getWisdom()),
-												   ", Charisma ", getModifierString(
-					stats.getCharisma())));
+			final StringBuilder builder = new StringBuilder(153);
+			try (final Formatter formatter = new Formatter(builder)) {
+				//noinspection HardcodedFileSeparator
+				formatter.format("He or she has the following stats: %d / %d, ",
+						Integer.valueOf(stats.getHitPoints()),
+						Integer.valueOf(stats.getMaxHitPoints()));
+				formatter.format("Strength %s, Dexterity %s, Constitution %s, ",
+						getModifierString(stats.getStrength()),
+						getModifierString(stats.getDexterity()),
+						getModifierString(stats.getConstitution()));
+				formatter.format("Intelligence %s, Wisdom %s, Charisma %s",
+						getModifierString(stats.getIntelligence()),
+						getModifierString(stats.getWisdom()),
+						getModifierString(stats.getCharisma()));
+			}
+			retval.add(new SimpleReportNode(loc, builder.toString()));
 		}
 		if (worker.iterator().hasNext() && details) {
 			final IReportNode jobs = new ListReportNode(loc, HAS_TRAINING);
