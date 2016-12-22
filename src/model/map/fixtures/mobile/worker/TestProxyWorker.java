@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile.worker;
 
 import java.io.IOException;
+import java.util.Formatter;
 import junit.framework.AssertionFailedError;
 import model.map.IFixture;
 import model.map.Player;
@@ -11,7 +12,6 @@ import model.map.fixtures.mobile.ProxyUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import org.junit.Test;
-import util.LineEnd;
 import util.NullStream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -45,19 +45,20 @@ public final class TestProxyWorker {
 		if (worker.getJob(jobName) != null) {
 			return;
 		}
-		final StringBuilder builder = new StringBuilder("Worker should contain job ");
-		builder.append(jobName);
-		builder.append(". Worker contained the following: ");
-		builder.append(LineEnd.LINE_SEP);
-		for (final IJob job : worker) {
-			builder.append(job.getName());
-			if (job.isEmpty()) {
-				builder.append(" (empty)");
+		final StringBuilder builder = new StringBuilder(512);
+		try (final Formatter format = new Formatter(builder)) {
+			format.format("Worker should contain job %n, but contained the following:%n",
+					jobName);
+			for (final IJob job : worker) {
+				format.format("%s", job.getName());
+				if (job.isEmpty()) {
+					format.format(" (empty)");
+				}
+				if (job instanceof ProxyJob) {
+					format.format(" (proxy)");
+				}
+				format.format("%n");
 			}
-			if (job instanceof ProxyJob) {
-				builder.append(" (proxy)");
-			}
-			builder.append(LineEnd.LINE_SEP);
 		}
 		throw new AssertionFailedError(builder.toString());
 	}
