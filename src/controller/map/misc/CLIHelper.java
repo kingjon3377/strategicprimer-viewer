@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import model.map.HasName;
 import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
@@ -151,13 +152,15 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Print a list of things by name and number.
 	 *
+	 * @param <T> the type of things in the list
 	 * @param list the list to print.
+	 * @param func the function to turn each item into a String
 	 */
-	private void printList(final List<? extends HasName> list) {
+	private <T> void printList(final List<? extends T> list, final Function<T, String> func) {
 		for (int i = 0; i < list.size(); i++) {
 			ostream.append(Integer.toString(i));
 			ostream.append(": ");
-			ostream.println(list.get(i).getName());
+			ostream.println(func.apply(list.get(i)));
 		}
 		ostream.flush();
 	}
@@ -180,21 +183,7 @@ public final class CLIHelper implements ICLIHelper {
 												  final String prompt, final boolean
 																			   auto)
 			throws IOException {
-		if (items.isEmpty()) {
-			ostream.println(none);
-			ostream.flush();
-			return -1;
-		}
-		ostream.println(desc);
-		if (auto && (items.size() == 1)) {
-			ostream.print("Automatically choosing only item, ");
-			ostream.println(items.get(0));
-			ostream.flush();
-			return 0;
-		} else {
-			printList(items);
-			return inputNumber(prompt);
-		}
+		return chooseFromListImpl(items, desc, none, prompt, auto, HasName::getName);
 	}
 
 	/**
@@ -362,20 +351,6 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	/**
-	 * Print a list of things by name and number.
-	 *
-	 * @param list the list to print.
-	 */
-	private void printStringList(final List<String> list) {
-		for (int i = 0; i < list.size(); i++) {
-			ostream.append(Integer.toString(i));
-			ostream.append(": ");
-			ostream.println(list.get(i));
-		}
-		ostream.flush();
-	}
-
-	/**
 	 * Have the user choose an item from a list.
 	 *
 	 * @param items  the list of items
@@ -391,21 +366,7 @@ public final class CLIHelper implements ICLIHelper {
 									final String none, final String prompt,
 									final boolean auto)
 			throws IOException {
-		if (items.isEmpty()) {
-			ostream.println(none);
-			ostream.flush();
-			return -1;
-		}
-		ostream.println(desc);
-		if (auto && (items.size() == 1)) {
-			ostream.print("Automatically choosing only item, ");
-			ostream.println(items.get(0));
-			ostream.flush();
-			return 0;
-		} else {
-			printStringList(items);
-			return inputNumber(prompt);
-		}
+		return chooseFromListImpl(items, desc, none, prompt, auto, x -> x);
 	}
 
 	/**
@@ -450,5 +411,35 @@ public final class CLIHelper implements ICLIHelper {
 		istream.close();
 		ostream.close();
 	}
-
+	/**
+	 * @param <T> the type of things in the list
+	 * @param items the list of items
+	 * @param desc the description to give before printing the list
+	 * @param none what to print if there are none
+	 * @param func the function to call to get each item's description
+	 * @param prompt what to prompt the user with
+	 * @param auto whether to automatically choose if there's only one choice
+	 * @return the user's selection, or -1 if there are none
+	 * @throws IOException on I/O error getting the user's input
+	 */
+	private <T> int chooseFromListImpl(final List<@NonNull ? extends T> items,
+									   final String desc, final String none,
+									   final String prompt, final boolean auto,
+									   final Function<T, String> func) throws IOException {
+		if (items.isEmpty()) {
+			ostream.println(none);
+			ostream.flush();
+			return -1;
+		}
+		ostream.println(desc);
+		if (auto && (items.size() == 1)) {
+			ostream.print("Automatically choosing only item, ");
+			ostream.println(func.apply(items.get(0)));
+			ostream.flush();
+			return 0;
+		} else {
+			printList(items, func);
+			return inputNumber(prompt);
+		}
+	}
 }
