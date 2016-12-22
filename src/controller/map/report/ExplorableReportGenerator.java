@@ -75,10 +75,8 @@ public final class ExplorableReportGenerator
 		final Collection<Point> portals = new PointList("Portals to other worlds: ");
 		// Similarly, I doubt either this will ever be over half a K, but
 		// we'll give it a whole K just in case.
-		final StringBuilder adventureBuilder = new StringBuilder(1024)
-													   .append("<h4>Possible " +
-																	   "Adventures</h4>")
-													   .append(OPEN_LIST);
+		final StringBuilder adventureBuilder = new StringBuilder(1024);
+		adventureBuilder.append("<h4>Possible Adventures</h4>").append(OPEN_LIST);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
 		boolean anyAdventures = false;
