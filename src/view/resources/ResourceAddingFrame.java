@@ -164,13 +164,10 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		mainPanel.add(panel);
 		mainPanel.addGlue();
 		mainPanel.add(implementLabel);
-		final JPanel secondPanel = new BoxPanel(true);
-		secondPanel.add(implQtyField);
-		secondPanel.add(implKindBox);
 		final ActionListener implListener = evt -> createImplement();
 		implKindBox.addSubmitListener(implListener);
-		secondPanel.add(new ListenedButton("Add Equipment", implListener));
-		mainPanel.add(secondPanel);
+		mainPanel.add(BoxPanel.centeredHorizBox(implQtyField, implKindBox,
+				new ListenedButton("Add Equipment", implListener)));
 		mainPanel.addGlue();
 		logLabel.setMinimumSize(new Dimension(getWidth() - 20, 50));
 		logLabel.setPreferredSize(new Dimension(getWidth(), 100));
