@@ -108,9 +108,10 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				formatter.format("%s%n<ul>%n", HAS_TRAINING);
 				for (final IJob job : worker) {
 					if (job instanceof Job) {
-						formatter.format("<li>%d levels in %s%s</li>%n",
-								Integer.valueOf(job.getLevel()), job.getName(),
-								getSkills(job));
+						formatter.format("<li>%d levels in %s",
+								Integer.valueOf(job.getLevel()), job.getName());
+						writeSkills(job, formatter);
+						formatter.format("</li>%n");
 					}
 				}
 				formatter.format("</ul>%n");
@@ -119,6 +120,27 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		return builder.toString();
 	}
 
+	/**
+	 * @param job a Job
+	 * @return a String describing its skills.
+	 */
+	private static void writeSkills(final Iterable<ISkill> job,
+									  final Formatter formatter) {
+		if (job.iterator().hasNext()) {
+			boolean first = true;
+			for (final ISkill skill : job) {
+				if (first) {
+					formatter.format(" (");
+					first = false;
+				} else {
+					formatter.format(", ");
+				}
+				formatter.format("%s %d", skill.getName(),
+						Integer.valueOf(skill.getLevel()));
+			}
+			formatter.format(")");
+		}
+	}
 	/**
 	 * @param job a Job
 	 * @return a String describing its skills.
