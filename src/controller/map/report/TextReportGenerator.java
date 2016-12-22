@@ -2,6 +2,7 @@ package controller.map.report;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Map;
 import model.map.IFixture;
@@ -84,16 +85,14 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 						  final TextFixture item, final Point loc) {
 		final StringBuilder builder =
 				new StringBuilder(item.getText().length() + 32);
-		builder.append("At ");
-		builder.append(loc);
-		builder.append(' ');
-		builder.append(distCalculator.distanceString(loc));
-		if (item.getTurn() >= 0) {
-			builder.append(": On turn ");
-			builder.append(Integer.toString(item.getTurn()));
+		try (final Formatter formatter = new Formatter(builder)) {
+			formatter.format("At %s %s", loc.toString(),
+					distCalculator.distanceString(loc));
+			if (item.getTurn() >= 0) {
+				formatter.format(": On turn %d", Integer.valueOf(item.getTurn()));
+			}
+			formatter.format(": %s", item.getText());
 		}
-		builder.append(": ");
-		builder.append(item.getText());
 		return builder.toString();
 	}
 
