@@ -70,7 +70,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		units.removeIf(unit -> !unit.iterator().hasNext());
 		cli.loopOnList(units, clh -> clh.chooseFromList(units, player.getName() + "'s units:",
 				"No unadvanced units remain.", "Chosen unit: ", false),
-				"Choose another unit? ", (unit) -> advanceWorkersInUnit(unit, cli));
+				"Choose another unit? ", AdvancementCLIDriver::advanceWorkersInUnit);
 	}
 
 	/**
@@ -88,7 +88,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		if (cli.inputBoolean("Add experience to workers individually? ")) {
 			cli.loopOnList(workers, clh -> clh.chooseFromList(workers, "Workers in unit:",
 					"No unadvanced workers remain.", "Chosen worker: ", false),
-					"Choose another worker? ", worker -> advanceSingleWorker(worker, cli));
+					"Choose another worker? ", AdvancementCLIDriver::advanceSingleWorker);
 		} else {
 			if (workers.isEmpty()) {
 				cli.println("No workers in unit.");
@@ -107,7 +107,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 						return list.stream()
 									   .filter(item -> jobName.equals(item.getName()))
 									   .findAny();
-					}, job -> advanceWorkersInJob(workers, job.getName(), cli));
+					}, (job, clh) -> advanceWorkersInJob(workers, job.getName(), clh));
 		}
 	}
 
@@ -137,7 +137,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 					.forEach(skills::add);
 			return skills.stream().filter(item -> skillName.equals(item.getName()))
 							.findAny();
-		}, skill -> advanceWorkersInSkill(workers, jobName, skill.getName(), cli));
+		}, (skill, clh) -> advanceWorkersInSkill(workers, jobName, skill.getName(), clh));
 	}
 
 	/**
@@ -231,7 +231,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 					worker.forEach(list::add);
 					return list.stream().filter(item -> jobName.equals(item.getName()))
 								   .findAny();
-				}, job -> advanceJob(job, cli));
+				}, AdvancementCLIDriver::advanceJob);
 	}
 
 	/**
@@ -255,12 +255,12 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			job.forEach(list::add);
 			return list.stream().filter(item -> skillName.equals(item.getName()))
 						   .findAny();
-		}, skill -> {
+		}, (skill, clh) -> {
 			final int oldLevel = skill.getLevel();
-			skill.addHours(cli.inputNumber("Hours of experience to add: "),
+			skill.addHours(clh.inputNumber("Hours of experience to add: "),
 					SingletonRandom.RANDOM.nextInt(100));
 			if (skill.getLevel() != oldLevel) {
-				cli.printf("Worker(s) gained a level in %s%n", skill.getName());
+				clh.printf("Worker(s) gained a level in %s%n", skill.getName());
 			}
 		});
 	}
@@ -310,7 +310,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			final String prompt = "Chosen player: ";
 			cli.loopOnList(playerList,
 					clh -> clh.chooseFromList(playerList, hdr, none, prompt, false), "Select another player? ",
-					player -> advanceWorkers(workerModel, player, cli));
+					(player, clh) -> advanceWorkers(workerModel, player, clh));
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error interacting with user",

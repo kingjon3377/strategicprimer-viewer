@@ -108,12 +108,12 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			final String prompt = "Player to add resources for: ";
 			cli.loopOnList(players,
 					clh -> clh.chooseFromList(players, desc, none, prompt, false),
-					"Choose another player? ", player -> {
-				while (cli.inputBoolean("Keep going? ")) {
-					if (cli.inputBooleanInSeries("Enter a (quantified) resource? ")) {
-						enterResource(idf, driverModel, cli, player);
-					} else if (cli.inputBooleanInSeries("Enter equipment etc.? ")) {
-						enterImplement(idf, driverModel, cli, player);
+					"Choose another player? ", (player, clh) -> {
+				while (clh.inputBoolean("Keep going? ")) {
+					if (clh.inputBooleanInSeries("Enter a (quantified) resource? ")) {
+						enterResource(idf, driverModel, clh, player);
+					} else if (clh.inputBooleanInSeries("Enter equipment etc.? ")) {
+						enterImplement(idf, driverModel, clh, player);
 					}
 				}
 			});

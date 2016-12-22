@@ -98,7 +98,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String prompt = "Player selection: ";
 		cli.loopOnList(players,
 				clh -> clh.chooseFromList(players, hdr, none, prompt, true),
-				"Choose another player? ", player -> enterStats(model, player, cli));
+				"Choose another player? ", (player, clh) -> enterStats(model, player, clh));
 	}
 
 	/**
@@ -118,7 +118,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String none = "All that player's units already have stats.";
 		final String prompt = "Unit selection: ";
 		cli.loopOnList(units, clh -> clh.chooseFromList(units, hdr, none, prompt, false),
-				"Choose another unit? ", unit -> enterStats(model, unit, cli));
+				"Choose another unit? ", (unit, clh) -> enterStats(model, unit, clh));
 	}
 
 	/**
@@ -175,7 +175,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		cli.loopOnList(workers,
 				clh -> clh.chooseFromList(workers, hdr, none, prompt, false),
 				"Choose another worker? ",
-				worker -> enterStats(model, worker.getID(), cli));
+				(worker, clh) -> enterStats(model, worker.getID(), clh));
 	}
 
 	/**
@@ -284,11 +284,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		cli.loopOnList(players,
 				clh -> clh.chooseFromList(players, hdr, none, prompt, false),
 				"Choose another player? ",
-				player -> {
+				(player, clh) -> {
 					boolean again = true;
 					while (again) {
-						createWorkersForPlayer(model, idf, player, cli);
-						again = cli.inputBoolean("Add more workers to another unit? ");
+						createWorkersForPlayer(model, idf, player, clh);
+						again = clh.inputBoolean("Add more workers to another unit? ");
 					}
 				});
 	}
@@ -322,11 +322,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			}
 			units.add(temp);
 			return Optional.of(temp);
-		}, unit -> {
-			if (cli.inputBooleanInSeries(LOAD_NAMES)) {
-				createWorkersFromFile(model, idf, unit, cli);
+		}, (unit, clh) -> {
+			if (clh.inputBooleanInSeries(LOAD_NAMES)) {
+				createWorkersFromFile(model, idf, unit, clh);
 			} else {
-				createWorkersForUnit(model, idf, unit, cli);
+				createWorkersForUnit(model, idf, unit, clh);
 			}
 		});
 	}

@@ -226,8 +226,9 @@ public interface ICLIHelper extends Closeable {
 	public interface ThrowingConsumer<T> {
 		/**
 		 * @param item the item to accept
+		 * @param cli the interface for user I/O
 		 * @throws IOException on I/O error
 		 */
-		void accept(final T item) throws IOException;
+		void accept(final T item, final ICLIHelper cli) throws IOException;
 	}
 }
