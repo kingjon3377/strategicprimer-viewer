@@ -199,22 +199,20 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 * @param collection	the collection of members in question
 	 * @param heading		the heading to use
 	 * @param generator		the report generator to use for members in the collection
-	 * @param builder 		the StringBuilder to append the report to
+	 * @param formatter		the Formatter to write the report to
 	 */
-	private static <T extends UnitMember> void produceInner(final StringBuilder builder,
+	private static <T extends UnitMember> void produceInner(final Formatter formatter,
 													 final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 													 final Collection<T> collection,
 													 final String heading,
 													 final Function<? super T, String> generator) {
-		try (final Formatter formatter = new Formatter(builder)) {
-			if (!collection.isEmpty()) {
-				formatter.format("<li>%s%n<ul>%n", heading);
-				for (final T item : collection) {
-					formatter.format("<li>%s</li>%n", generator.apply(item));
-					fixtures.remove(item.getID());
-				}
-				formatter.format("</ul>%n</li>%n");
+		if (!collection.isEmpty()) {
+			formatter.format("<li>%s%n<ul>%n", heading);
+			for (final T item : collection) {
+				formatter.format("<li>%s</li>%n", generator.apply(item));
+				fixtures.remove(item.getID());
 			}
+			formatter.format("</ul>%n</li>%n");
 		}
 	}
 	/**
@@ -237,59 +235,61 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				new StringBuilder(52 + item.getKind().length() +
 										  item.getName().length() +
 										  item.getOwner().getName().length());
-		builder.append("Unit of type ");
-		builder.append(item.getKind());
-		builder.append(", named ");
-		builder.append(item.getName());
-		if (item.getOwner().isIndependent()) {
-			builder.append(", independent");
-		} else {
-			builder.append(", owned by ");
-			builder.append(playerNameOrYou(item.getOwner()));
-		}
-		final Collection<IWorker> workers = new ArrayList<>();
-		final Collection<Implement> equipment = new ArrayList<>();
-		final Collection<ResourcePile> resources = new ArrayList<>();
-		final Collection<Animal> animals = new ArrayList<>();
-		final Collection<UnitMember> others = new ArrayList<>();
-		boolean hasMembers = false;
-		for (final UnitMember member : item) {
-			hasMembers = true;
-			if (member instanceof IWorker) {
-				workers.add((IWorker) member);
-			} else if (member instanceof Implement) {
-				equipment.add((Implement) member);
-			} else if (member instanceof ResourcePile) {
-				resources.add((ResourcePile) member);
-			} else if (member instanceof Animal) {
-				animals.add((Animal) member);
+		try (final Formatter formatter = new Formatter(builder)) {
+			formatter.format("Unit of type %s, named %s, ", item.getKind(),
+					item.getName());
+			if (item.getOwner().isIndependent()) {
+				formatter.format("independent");
 			} else {
-				others.add(member);
+				formatter.format("owned by %s", playerNameOrYou(item.getOwner()));
 			}
+			final Collection<IWorker> workers = new ArrayList<>();
+			final Collection<Implement> equipment = new ArrayList<>();
+			final Collection<ResourcePile> resources = new ArrayList<>();
+			final Collection<Animal> animals = new ArrayList<>();
+			final Collection<UnitMember> others = new ArrayList<>();
+			boolean hasMembers = false;
+			for (final UnitMember member : item) {
+				hasMembers = true;
+				if (member instanceof IWorker) {
+					workers.add((IWorker) member);
+				} else if (member instanceof Implement) {
+					equipment.add((Implement) member);
+				} else if (member instanceof ResourcePile) {
+					resources.add((ResourcePile) member);
+				} else if (member instanceof Animal) {
+					animals.add((Animal) member);
+				} else {
+					others.add(member);
+				}
+			}
+			if (hasMembers) {
+				formatter.format(". Members of the unit:%n<ul>%n");
+			}
+			produceInner(formatter, fixtures, workers, "Workers:",
+					worker -> workerReport(worker, worker instanceof HasOwner &&
+														   Objects.equals(currentPlayer,
+																   ((HasOwner) worker)
+																		   .getOwner())));
+
+			produceInner(formatter, fixtures, animals, "Animals:",
+					animal -> animalReportGenerator
+									  .produce(fixtures, map, currentPlayer, animal,
+											  loc));
+			produceInner(formatter, fixtures, equipment, "Equipment:",
+					member -> memberReportGenerator
+									  .produce(fixtures, map, currentPlayer, member,
+											  loc));
+			produceInner(formatter, fixtures, resources, "Resources:",
+					member -> memberReportGenerator
+									  .produce(fixtures, map, currentPlayer, member,
+											  loc));
+			produceInner(formatter, fixtures, resources, "Others:", Object::toString);
+			if (hasMembers) {
+				formatter.format("</ul>%n");
+			}
+			produceOrders(item, formatter);
 		}
-		if (hasMembers) {
-			builder.append(". Members of the unit:").append(LineEnd.LINE_SEP)
-					.append(OPEN_LIST);
-		}
-		produceInner(builder, fixtures, workers, "Workers:",
-				worker -> workerReport(worker, worker instanceof HasOwner &&
-													   Objects.equals(currentPlayer,
-															   ((HasOwner) worker)
-																	   .getOwner())));
-		produceInner(builder, fixtures, animals, "Animals:",
-				animal -> animalReportGenerator
-								  .produce(fixtures, map, currentPlayer, animal, loc));
-		produceInner(builder, fixtures, equipment, "Equipment:",
-				member -> memberReportGenerator
-								  .produce(fixtures, map, currentPlayer, member, loc));
-		produceInner(builder, fixtures, resources, "Resources:",
-				member -> memberReportGenerator
-								  .produce(fixtures, map, currentPlayer, member, loc));
-		produceInner(builder, fixtures, resources, "Others:", Object::toString);
-		if (hasMembers) {
-			builder.append(CLOSE_LIST);
-		}
-		produceOrders(item, builder);
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return builder.toString();
 	}
@@ -297,29 +297,27 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	/**
 	 * Produce the sub-sub-report about a unit's orders and results.
 	 * @param item the unit
-	 * @param builder the builder to write to
+	 * @param formatter the Formatter to write to
 	 */
-	private static void produceOrders(final IUnit item, final StringBuilder builder) {
-		try (final Formatter formatter = new Formatter(builder)) {
-			if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
-				formatter.format("Orders and Results:<ul>%n");
-				final Collection<Integer> turns =
-						new TreeSet<>(item.getAllOrders().keySet());
-				turns.addAll(item.getAllResults().keySet());
-				for (final Integer turn : turns) {
-					formatter.format("<li>Turn %d:<ul>", Integer.valueOf(turn));
-					final String orders = item.getOrders(turn);
-					if (!orders.isEmpty()) {
-						formatter.format("<li>Orders: %s</li>%n", orders);
-					}
-					final String results = item.getResults(turn);
-					if (!results.isEmpty()) {
-						formatter.format("<li>Results: %s</li>%n", results);
-					}
-					formatter.format("</ul>%n</li>%n");
+	private static void produceOrders(final IUnit item, final Formatter formatter) {
+		if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
+			formatter.format("Orders and Results:<ul>%n");
+			final Collection<Integer> turns =
+					new TreeSet<>(item.getAllOrders().keySet());
+			turns.addAll(item.getAllResults().keySet());
+			for (final Integer turn : turns) {
+				formatter.format("<li>Turn %d:<ul>", Integer.valueOf(turn));
+				final String orders = item.getOrders(turn);
+				if (!orders.isEmpty()) {
+					formatter.format("<li>Orders: %s</li>%n", orders);
 				}
-				formatter.format("</ul>%n");
+				final String results = item.getResults(turn);
+				if (!results.isEmpty()) {
+					formatter.format("<li>Results: %s</li>%n", results);
+				}
+				formatter.format("</ul>%n</li>%n");
 			}
+			formatter.format("</ul>%n");
 		}
 	}
 
