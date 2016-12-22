@@ -206,15 +206,15 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 													 final Collection<T> collection,
 													 final String heading,
 													 final Function<? super T, String> generator) {
-		if (!collection.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM).append(heading).append(LineEnd.LINE_SEP)
-					.append(OPEN_LIST);
-			for (final T item : collection) {
-				builder.append(OPEN_LIST_ITEM).append(generator.apply(item))
-						.append(CLOSE_LIST_ITEM);
-				fixtures.remove(item.getID());
+		try (final Formatter formatter = new Formatter(builder)) {
+			if (!collection.isEmpty()) {
+				formatter.format("<li>%s%n<ul>%n", heading);
+				for (final T item : collection) {
+					formatter.format("<li>%s</li>%n", generator.apply(item));
+					fixtures.remove(item.getID());
+				}
+				formatter.format("</ul>%n</li>%n");
 			}
-			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 		}
 	}
 	/**
