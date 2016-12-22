@@ -84,25 +84,23 @@ public final class StrategyExporter implements PlayerChangeListener {
 
 	/**
 	 * @param unit a unit
-	 * @return a String representing its members
+	 * @param formatter a Formatter to write to
 	 */
-	private static String unitMembers(final Iterable<UnitMember> unit) {
+	private static void writeUnitMembers(final Iterable<UnitMember> unit,
+										 final Formatter formatter) {
 		if (unit.iterator().hasNext()) {
-			// Assume at least two K.
-			final StringBuilder builder = new StringBuilder(2048).append(" [");
 			boolean first = true;
 			for (final UnitMember member : unit) {
+				final String fmt;
 				if (first) {
+					formatter.format(" [");
 					first = false;
 				} else {
-					builder.append(", ");
+					formatter.format(", ");
 				}
-				builder.append(memberString(member));
+				writeMember(member, formatter);
 			}
-			builder.append(']');
-			return builder.toString();
-		} else {
-			return "";
+			formatter.format("]");
 		}
 	}
 
@@ -127,32 +125,33 @@ public final class StrategyExporter implements PlayerChangeListener {
 
 	/**
 	 * @param member a unit member
-	 * @return a suitable string for it
+	 * @param formatter a Formatter to write it to
 	 */
-	private static String memberString(final UnitMember member) {
+	private static void writeMember(final UnitMember member, final Formatter formatter) {
 		if (member instanceof IWorker) {
 			final IWorker worker = (IWorker) member;
 			// To save calculations, assume a half-K every time.
 			final StringBuilder builder =
-					new StringBuilder(512).append(worker.getName());
+					new StringBuilder(512);
+			formatter.format("%s", worker.getName());
 			if (worker.iterator().hasNext()) {
 				builder.append(" (");
 				boolean first = true;
 				for (final IJob job : worker) {
+					final String fmt;
 					if (first) {
+						fmt = " (%s %d";
 						first = false;
 					} else {
-						builder.append(", ");
+						fmt = ", %s %d";
 					}
-					builder.append(job.getName());
-					builder.append(' ');
-					builder.append(job.getLevel());
+					formatter.format(fmt, job.getName(),
+							Integer.valueOf(job.getLevel()));
 				}
-				builder.append(')');
+				formatter.format(")");
 			}
-			return builder.toString();
 		} else {
-			return member.toString();
+			formatter.format("%s", member.toString());
 		}
 	}
 
@@ -218,12 +217,13 @@ public final class StrategyExporter implements PlayerChangeListener {
 		for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 			formatter.format("* %s:%n", entry.getKey());
 			for (final IUnit unit : entry.getValue()) {
-				formatter.format("  - %s%s:%n%n", unit.getName(), unitMembers(unit));
+				formatter.format("  - %s", unit.getName());
+				writeUnitMembers(unit, formatter);
 				final String unitOrders = orders.get(unit);
 				if (unitOrders.isEmpty()) {
-					formatter.format("TODO%n%n");
+					formatter.format(":%n%nTODO%n%n");
 				} else {
-					formatter.format("%s%n%n", unitOrders);
+					formatter.format(":%n%n%s%n%n", unitOrders);
 				}
 			}
 		}
