@@ -101,7 +101,8 @@ public final class CLIHelper implements ICLIHelper {
 							   final ChoiceOperation choice,
 							   final String prompt,
 							   final ThrowingConsumer<T> operation) throws IOException {
-		for (int num = choice.choose(); num >= 0 && num < list.size(); num = choice.choose()) {
+		for (int num = choice.choose(this); num >= 0 && num < list.size();
+				num = choice.choose(this)) {
 			operation.accept(list.remove(num));
 			if (list.isEmpty() || !inputBoolean(prompt)) {
 				break;
@@ -126,7 +127,8 @@ public final class CLIHelper implements ICLIHelper {
 									  final ListAmendment<T> addition,
 									  final ThrowingConsumer<T> operation)
 			throws IOException {
-		for (int num = choice.choose(); num <= list.size(); num = choice.choose()) {
+		for (int num = choice.choose(this); num <= list.size();
+				num = choice.choose(this)) {
 			final T item;
 			if (num < 0 || num == list.size()) {
 				final Optional<T> temp = addition.amendList(list);

@@ -107,7 +107,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			final String none = "No players found.";
 			final String prompt = "Player to add resources for: ";
 			cli.loopOnList(players,
-					() -> cli.chooseFromList(players, desc, none, prompt, false),
+					clh -> clh.chooseFromList(players, desc, none, prompt, false),
 					"Choose another player? ", player -> {
 				while (cli.inputBoolean("Keep going? ")) {
 					if (cli.inputBooleanInSeries("Enter a (quantified) resource? ")) {

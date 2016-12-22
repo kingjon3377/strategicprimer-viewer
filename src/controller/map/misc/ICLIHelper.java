@@ -195,10 +195,11 @@ public interface ICLIHelper extends Closeable {
 		/**
 		 * The operation.
 		 *
+		 * @param cli the interface for interacting with the user
 		 * @return the value the user chose.
 		 * @throws IOException on I/O error interacting with the user
 		 */
-		int choose() throws IOException;
+		int choose(final ICLIHelper cli) throws IOException;
 	}
 
 	/**

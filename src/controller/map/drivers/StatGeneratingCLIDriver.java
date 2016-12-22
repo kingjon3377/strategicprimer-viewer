@@ -97,7 +97,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String none = "There are no players shared by all the maps.";
 		final String prompt = "Player selection: ";
 		cli.loopOnList(players,
-				() -> cli.chooseFromList(players, hdr, none, prompt, true),
+				clh -> clh.chooseFromList(players, hdr, none, prompt, true),
 				"Choose another player? ", player -> enterStats(model, player, cli));
 	}
 
@@ -117,7 +117,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which unit contains the worker in question?";
 		final String none = "All that player's units already have stats.";
 		final String prompt = "Unit selection: ";
-		cli.loopOnList(units, () -> cli.chooseFromList(units, hdr, none, prompt, false),
+		cli.loopOnList(units, clh -> clh.chooseFromList(units, hdr, none, prompt, false),
 				"Choose another unit? ", unit -> enterStats(model, unit, cli));
 	}
 
@@ -173,7 +173,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String none = "There are no workers without stats in that unit.";
 		final String prompt = "Worker to modify: ";
 		cli.loopOnList(workers,
-				() -> cli.chooseFromList(workers, hdr, none, prompt, false),
+				clh -> clh.chooseFromList(workers, hdr, none, prompt, false),
 				"Choose another worker? ",
 				worker -> enterStats(model, worker.getID(), cli));
 	}
@@ -282,7 +282,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String none = "There are no players shared by all the maps.";
 		final String prompt = "Player selection: ";
 		cli.loopOnList(players,
-				() -> cli.chooseFromList(players, hdr, none, prompt, false),
+				clh -> clh.chooseFromList(players, hdr, none, prompt, false),
 				"Choose another player? ",
 				player -> {
 					boolean again = true;
@@ -309,7 +309,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 											   final ICLIHelper cli)
 			throws IOException {
 		final List<IUnit> units = model.getUnits(player);
-		cli.loopOnMutableList(units, () -> cli.chooseFromList(units,
+		cli.loopOnMutableList(units, clh -> clh.chooseFromList(units,
 				"Which unit contains the worker in question? (Select -1 to create new.)",
 				"There are no units owned by that player.", "Unit selection: ",
 				false), "Choose another unit? ", list -> {
