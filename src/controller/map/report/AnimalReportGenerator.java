@@ -78,10 +78,9 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				if (animal.getID() > 0) {
 					fixtures.remove(Integer.valueOf(animal.getID()));
 				} else {
-					fixtures.remove(fixtures.entrySet().stream()
-											.filter(entry -> entry.getValue()
-																	 .equals(pair))
-											.map(Map.Entry::getKey));
+					fixtures.entrySet().stream()
+							.filter(entry -> entry.getValue().equals(pair))
+							.map(Map.Entry::getKey).map(fixtures::remove);
 				}
 			}
 		}
