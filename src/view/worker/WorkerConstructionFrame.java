@@ -11,6 +11,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Formatter;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +26,6 @@ import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.RaceFactory;
-import util.LineEnd;
 import util.OnMac;
 import util.Pair;
 import util.SingletonRandom;
@@ -195,20 +195,17 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 * @param numbers a sequence of Pairs of supposedly-numeric Strings and what they
 	 *                represent. If any is non-numeric, the return String includes
 	 *                "such-and-such must be a number."
-	 * @return such an explanation
+	 * @param formatter a Formatter to write the explanation to
 	 */
 	@SafeVarargs
-	private static String numericExplanation(final Pair<String, String>... numbers) {
-		final StringBuilder builder = new StringBuilder(40);
+	private static void numericExplanation(final Formatter formatter,
+											 final Pair<String, String>... numbers) {
 		for (final Pair<String, String> number : numbers) {
 			final String num = number.first().trim();
 			if (!isNumeric(num)) {
-				builder.append(number.second());
-				builder.append(" must be a number.");
-				builder.append(LineEnd.LINE_SEP);
+				formatter.format("%s must be a number.%n", number.second());
 			}
 		}
-		return builder.toString();
 	}
 
 	/**
@@ -262,20 +259,19 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 */
 	private String getErrorExplanation() {
 		final StringBuilder builder = new StringBuilder(50);
-		if (name.getText().trim().isEmpty()) {
-			builder.append("Worker needs a name.").append(LineEnd.LINE_SEP);
+		try (final Formatter formatter = new Formatter(builder)) {
+			if (name.getText().trim().isEmpty()) {
+				formatter.format("Worker needs a name.%n");
+			}
+			if (race.getText().trim().isEmpty()) {
+				formatter.format("Worker needs a race.%n");
+			}
+			numericExplanation(formatter, getBoxText(hpBox, "HP"),
+					getBoxText(maxHP, "Max HP"), getBoxText(strength, "Strength"),
+					getBoxText(dex, "Dexterity"), getBoxText(con, "Constitution"),
+					getBoxText(intel, "Intelligence"), getBoxText(wis, "Wisdom"),
+					getBoxText(cha, "Charisma"));
 		}
-		if (race.getText().trim().isEmpty()) {
-			builder.append("Worker needs a race.").append(LineEnd.LINE_SEP);
-		}
-		builder.append(numericExplanation(getBoxText(hpBox, "HP"),
-				getBoxText(maxHP, "Max HP"),
-				getBoxText(strength, "Strength"),
-				getBoxText(dex, "Dexterity"),
-				getBoxText(con, "Constitution"),
-				getBoxText(intel, "Intelligence"),
-				getBoxText(wis, "Wisdom"),
-				getBoxText(cha, "Charisma")));
 		return builder.toString();
 	}
 
