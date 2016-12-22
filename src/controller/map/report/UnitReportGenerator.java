@@ -147,20 +147,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 */
 	private static String getSkills(final Iterable<ISkill> job) {
 		final StringBuilder builder = new StringBuilder(512);
-		if (job.iterator().hasNext()) {
-			boolean first = true;
-			for (final ISkill skill : job) {
-				if (first) {
-					builder.append(" (");
-					first = false;
-				} else {
-					builder.append(", ");
-				}
-				builder.append(skill.getName());
-				builder.append(' ');
-				builder.append(skill.getLevel());
-			}
-			builder.append(')');
+		try (final Formatter formatter = new Formatter(builder)) {
+			writeSkills(job, formatter);
 		}
 		return builder.toString();
 	}
