@@ -29,7 +29,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.EmptyIterator;
 import util.IteratorWrapper;
-import util.LineEnd;
 import util.MultiMapHelper;
 import util.NullStream;
 import util.TypesafeLogger;
@@ -587,78 +586,57 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder("SPMapNG:");
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Map version: ");
-		builder.append(dimensions().version);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Rows: ");
-		builder.append(dimensions().rows);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Columns: ");
-		builder.append(dimensions().cols);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Current Turn: ");
-		builder.append(turn);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Players:");
-		builder.append(LineEnd.LINE_SEP);
-		for (final Player player : players()) {
-			builder.append(player);
-			if (player.equals(getCurrentPlayer())) {
-				builder.append(" (current)");
-			}
-			builder.append(LineEnd.LINE_SEP);
-		}
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("Contents:");
-		builder.append(LineEnd.LINE_SEP);
-		for (final Point location : locations()) {
-			if (isLocationEmpty(location)) {
-				continue;
-			}
-			builder.append("At ");
-			builder.append(location);
-			builder.append(": ");
-			if (getBaseTerrain(location) != TileType.NotVisible) {
-				builder.append("terrain: ");
-				builder.append(getBaseTerrain(location));
-				builder.append(", ");
-			}
-			if (isMountainous(location)) {
-				builder.append("mountains, ");
-			}
-			if (getGround(location) != null) {
-				builder.append("ground: ");
-				builder.append(getGround(location));
-				builder.append(", ");
-			}
-			if (getForest(location) != null) {
-				builder.append("forest: ");
-				builder.append(getForest(location));
-				builder.append(", ");
-			}
-			if (StreamSupport.stream(getRivers(location).spliterator(), false).count() >
-						0) {
-				builder.append("rivers:");
-				for (final River river : getRivers(location)) {
-					builder.append(' ');
-					builder.append(river);
-				}
-				builder.append(", ");
-			}
-			if (streamOtherFixtures(location).anyMatch(x -> true)) {
-				builder.append("other: ");
-				for (final TileFixture fixture : getOtherFixtures(location)) {
-					builder.append(LineEnd.LINE_SEP);
-					builder.append(fixture);
-					// builder.append(" (");
-					// builder.append(fixture.getClass().getSimpleName());
-					// builder.append(")");
+		final StringBuilder builder = new StringBuilder(2048);
+		try (final Formatter formatter = new Formatter(builder)) {
+			formatter.format("SPMapNG:%nMap version: %d%nRows: %d%nColumns: %d%n",
+					Integer.valueOf(dimensions().version),
+					Integer.valueOf(dimensions().rows),
+					Integer.valueOf(dimensions().cols));
+			formatter.format("Current Turn: %d%n%nPlayers:%n", Integer.valueOf(turn));
+			for (final Player player : players()) {
+				if (player.isCurrent()) {
+					formatter.format("%s (current)%n", player.toString());
+				} else {
+					formatter.format("%s%n", player.toString());
 				}
 			}
-			builder.append(LineEnd.LINE_SEP);
+			formatter.format("%nContents:%n");
+			for (final Point location : locations()) {
+				if (isLocationEmpty(location)) {
+					continue;
+				}
+				formatter.format("At %s: ", location.toString());
+				if (getBaseTerrain(location) != TileType.NotVisible) {
+					formatter
+							.format("terrain: %s, ", getBaseTerrain(location).toString());
+				}
+				if (isMountainous(location)) {
+					formatter.format("mountains, ");
+				}
+				if (getGround(location) != null) {
+					formatter.format("ground: %s, ",
+							Objects.toString(getGround(location)));
+				}
+				if (getForest(location) != null) {
+					formatter.format("forest: %s, ", Objects.toString(getForest(location)));
+				}
+				if (StreamSupport.stream(getRivers(location).spliterator(), false)
+							.count() > 0) {
+					formatter.format("rivers: ");
+					for (final River river : getRivers(location)) {
+						formatter.format(" %s", river.toString());
+					}
+					formatter.format(", ");
+				}
+				if (streamOtherFixtures(location).anyMatch(x -> true)) {
+					formatter.format("other: ");
+					for (final TileFixture fixture : getOtherFixtures(location)) {
+						formatter.format("%n%s", fixture.toString());
+						// formatter.format(" (%s)", fixture.getClass().getSimpleName());
+					}
+				}
+				formatter.format("%n");
+			}
 		}
 		return builder.toString();
 	}
