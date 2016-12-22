@@ -243,9 +243,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 						  final IMapNG map, final Player currentPlayer, final IUnit item,
 						  final Point loc) {
 		final StringBuilder builder =
-				new StringBuilder(52 + item.getKind().length() +
-										  item.getName().length() +
-										  item.getOwner().getName().length());
+				new StringBuilder(item.getKind().length() + item.getName().length() +
+										  item.getOwner().getName().length() + 52);
 		try (final Formatter formatter = new Formatter(builder)) {
 			formatter.format("Unit of type %s, named %s, ", item.getKind(),
 					item.getName());
