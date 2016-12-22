@@ -3,6 +3,7 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Formatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -180,13 +181,14 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				final StringBuilder builder =
 						new StringBuilder(header.length() + 15 + stream().mapToInt(
 								value -> value.length() + 15).sum());
-				builder
-						.append(header).append(LineEnd.LINE_SEP).append(OPEN_LIST);
-				for (final String item : this) {
-					builder.append(OPEN_LIST_ITEM).append(item)
-							.append(CLOSE_LIST_ITEM);
+				try (final Formatter formatter = new Formatter(builder)) {
+					formatter.format("%s%n<ul>%n", header);
+					for (final String item : this) {
+						formatter.format("<li>%s</li>%n", item);
+					}
+					formatter.format("</ul>%n");
 				}
-				return builder.append(CLOSE_LIST).toString();
+				return builder.toString();
 			}
 		}
 
@@ -255,19 +257,18 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 			} // else
 			final StringBuilder builder =
 					new StringBuilder(size() * 10 + header.length() + 5);
-			builder.append(header);
-			builder.append(get(0));
-			if (size() == 2) {
-				builder.append(" and ");
-				builder.append(get(1));
-			} else {
-				for (int i = 1; i < size(); i++) {
-					if (i == (size() - 1)) {
-						builder.append(", and ");
-					} else {
-						builder.append(", ");
+			try (final Formatter formatter = new Formatter(builder)) {
+				formatter.format("%s%s", header, get(0).toString());
+				if (size() == 2) {
+					formatter.format(" and %s", get(1).toString());
+				} else {
+					for (int i = 1; i < size(); i++) {
+						if (i == (size() - 1)) {
+							formatter.format(", and %s", get(i).toString());
+						} else {
+							formatter.format(", %s", get(i).toString());
+						}
 					}
-					builder.append(get(i));
 				}
 			}
 			return builder.toString();
