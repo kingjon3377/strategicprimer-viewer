@@ -30,6 +30,8 @@ public interface IReportGenerator<T> {
 	 * All fixtures that this report references should be removed from the set before
 	 * returning.
 	 *
+	 * TODO: Should this take Formatter instead of returning String?
+	 *
 	 * @param fixtures      the set of fixtures (ignored if this is the map/map-view
 	 *                      report generator)
 	 * @param map           the map. (Needed to get terrain type for some reports.)
@@ -42,6 +44,8 @@ public interface IReportGenerator<T> {
 	/**
 	 * Produce a report on a single item. All fixtures that this report references should
 	 * be removed from the set before returning.
+	 *
+	 * TODO: Should this take Formatter instead of returning String?
 	 *
 	 * @param fixtures      the set of fixtures (ignored if this is the map/map-view
 	 *                      report generator)
