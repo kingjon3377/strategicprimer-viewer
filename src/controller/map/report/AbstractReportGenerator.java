@@ -184,9 +184,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 								value -> value.length() + 15).sum());
 				try (final Formatter formatter = new Formatter(builder)) {
 					formatter.format("%s%n<ul>%n", header);
-					for (final String item : this) {
-						formatter.format("<li>%s</li>%n", item);
-					}
+					stream().forEach(item -> formatter.format("<li>%s</li>%n", item));
 					formatter.format("</ul>%n");
 				}
 				return builder.toString();
