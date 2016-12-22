@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.IntFunction;
 import java.util.stream.StreamSupport;
 import javax.xml.namespace.QName;
@@ -414,9 +415,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
-			} else if (event.isEndElement() &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (event.isEndElement() && Objects.equals(element.getName(),
+					event.asEndElement().getName())) {
 				break;
 			}
 		}
