@@ -169,13 +169,19 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		mainPanel.add(BoxPanel.centeredHorizBox(implQtyField, implKindBox,
 				new ListenedButton("Add Equipment", implListener)));
 		mainPanel.addGlue();
-		logLabel.setMinimumSize(new Dimension(getWidth() - 20, 50));
-		logLabel.setPreferredSize(new Dimension(getWidth(), 100));
 		final JScrollPane scrolledLog = new JScrollPane(logLabel);
 		scrolledLog.setMinimumSize(logLabel.getMinimumSize());
 		add(SplitWithWeights.verticalSplit(0.2, 0.1, mainPanel, scrolledLog));
 		setJMenuBar(new WorkerMenu(menuHandler, this, driverModel));
 		pack();
+		fixSizes();
+	}
+	/**
+	 * Set sizes of components that are inclined to be tricky.
+	 */
+	private final void fixSizes() {
+		logLabel.setMinimumSize(new Dimension(getWidth() - 20, 50));
+		logLabel.setPreferredSize(new Dimension(getWidth(), 100));
 		// If we set these at model creation, the fields would (try to) be unnecessarily
 		// large. Not that this helps.
 		resCreatedModel.setMaximum(Integer.valueOf(Integer.MAX_VALUE));
