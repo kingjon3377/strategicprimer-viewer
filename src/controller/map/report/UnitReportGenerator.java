@@ -300,26 +300,26 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 * @param builder the builder to write to
 	 */
 	private static void produceOrders(final IUnit item, final StringBuilder builder) {
-		if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
-			builder.append("Orders and Results:").append(OPEN_LIST);
-			final Collection<Integer> turns = new TreeSet<>(item.getAllOrders().keySet());
-			turns.addAll(item.getAllResults().keySet());
-			for (final Integer turn : turns) {
-				builder.append(OPEN_LIST_ITEM).append("Turn ")
-						.append(Integer.toString(turn)).append(':').append(OPEN_LIST);
-				final String orders = item.getOrders(turn);
-				if (!orders.isEmpty()) {
-					builder.append(OPEN_LIST_ITEM).append("Orders: ").append(orders)
-							.append(CLOSE_LIST_ITEM);
+		try (final Formatter formatter = new Formatter(builder)) {
+			if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
+				formatter.format("Orders and Results:<ul>%n");
+				final Collection<Integer> turns =
+						new TreeSet<>(item.getAllOrders().keySet());
+				turns.addAll(item.getAllResults().keySet());
+				for (final Integer turn : turns) {
+					formatter.format("<li>Turn %d:<ul>", Integer.valueOf(turn));
+					final String orders = item.getOrders(turn);
+					if (!orders.isEmpty()) {
+						formatter.format("<li>Orders: %s</li>%n", orders);
+					}
+					final String results = item.getResults(turn);
+					if (!results.isEmpty()) {
+						formatter.format("<li>Results: %s</li>%n", results);
+					}
+					formatter.format("</ul>%n</li>%n");
 				}
-				final String results = item.getResults(turn);
-				if (!results.isEmpty()) {
-					builder.append(OPEN_LIST_ITEM).append("Results: ").append(results)
-							.append(CLOSE_LIST_ITEM);
-				}
-				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+				formatter.format("</ul>%n");
 			}
-			builder.append(CLOSE_LIST);
 		}
 	}
 
