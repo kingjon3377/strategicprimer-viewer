@@ -84,6 +84,7 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
+	 * Whether the driver is a GUI.
 	 * @return whether the driver is graphical or not.
 	 */
 	@Override
@@ -92,6 +93,7 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
+	 * The short option that invokes this driver.
 	 * @return the short option to give to AppStarter to get this driver
 	 */
 	@Override
@@ -100,6 +102,7 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
+	 * The long option that invokes this driver.
 	 * @return the long option to give to AppStarter to get this driver
 	 */
 	@Override
@@ -108,6 +111,7 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
+	 * How many parameters this driver wants.
 	 * @return how many parameters this driver wants
 	 */
 	@Override
@@ -116,6 +120,7 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
+	 * A short description of this driver.
 	 * @return a short (one-line) description of the driver.
 	 */
 	@Override
@@ -124,6 +129,7 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
+	 * A longer description of this driver.
 	 * @return a long(er) description of the driver.
 	 */
 	@Override
@@ -132,6 +138,7 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
+	 * Delegates to getShortDescription().
 	 * @return a description of the driver
 	 */
 	@Override
@@ -140,9 +147,9 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
+	 * A description of the first parameter.
 	 * @return a description of the first parameter for use in a usage statement;
-	 * defaults
-	 * to "filename.xml"
+	 * defaults to "filename.xml"
 	 */
 	@Override
 	public String getFirstParamDesc() {
@@ -159,6 +166,7 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
+	 * A description of subsequent parameters.
 	 * @return a description of each parameter after the first for use in a usage
 	 * statement; defaults to "filename.xml"
 	 */
@@ -168,6 +176,7 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
+	 * Set the subsequent-parameter description.
 	 * @param newDesc a new description for each parameter after the first
 	 */
 	public void setSubsequentParamDesc(final String newDesc) {
@@ -184,6 +193,7 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
+	 * The list of supported options.
 	 * @return a list of the options this driver supports, to show the user.
 	 */
 	@Override

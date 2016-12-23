@@ -58,6 +58,7 @@ public final class DualTileButton extends JButton {
 	@SuppressWarnings("FieldHasSetterButNoGetter")
 	private Point point = PointFactory.point(-1, -1);
 	/**
+	 * Constructor.
 	 * @param master      the first map
 	 * @param subordinate the second map
 	 * @param matchers    the matchers to determine which fixture to draw on top
@@ -130,6 +131,7 @@ public final class DualTileButton extends JButton {
 	}
 
 	/**
+	 * Shows the currently handled Point.
 	 * @return a diagnostic String
 	 */
 	@Override

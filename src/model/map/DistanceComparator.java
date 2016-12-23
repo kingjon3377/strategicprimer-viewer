@@ -50,6 +50,8 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	}
 
 	/**
+	 * Returns a String describing how far a point is from "HQ", which the base point is
+	 * presumed to be.
 	 * @param point a point
 	 * @return its distance from HQ, formatted for print
 	 */
@@ -64,6 +66,7 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a string representation of this class
 	 */
 	@Override

@@ -58,6 +58,7 @@ public enum DrawingNumericConstants {
 	public final double constant;
 
 	/**
+	 * Constructor.
 	 * @param numConst the constant this instance encapsulates.
 	 */
 	DrawingNumericConstants(final double numConst) {

@@ -49,6 +49,7 @@ public class Dragon
 	}
 
 	/**
+	 * Clone the dragon.
 	 * @param zero ignored, as a dragon has no sensitive information
 	 * @return a copy of this dragon
 	 */
@@ -61,6 +62,7 @@ public class Dragon
 	}
 
 	/**
+	 * The kind of dragon.
 	 * @return the kind of dragon
 	 */
 	@Override
@@ -69,6 +71,7 @@ public class Dragon
 	}
 
 	/**
+	 * Set the kind of the dragon.
 	 * @param nKind the new kind
 	 */
 	@Override
@@ -77,6 +80,7 @@ public class Dragon
 	}
 
 	/**
+	 * If the dragon has a kind, "such-and-such dragon"; otherwise, merely "dragon".
 	 * @return a String representation of the dragon
 	 */
 	@Override
@@ -100,6 +104,7 @@ public class Dragon
 	}
 
 	/**
+	 * We are only equal to dragons with the same kind and ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -111,6 +116,7 @@ public class Dragon
 	}
 
 	/**
+	 * The ID number is the hash value.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -119,6 +125,7 @@ public class Dragon
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -127,6 +134,7 @@ public class Dragon
 	}
 
 	/**
+	 * All dragons of the same kind are equal if we ignore ID.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -137,6 +145,7 @@ public class Dragon
 	}
 
 	/**
+	 * A fixture is a subset iff it is equal.
 	 * @param obj     another UnitMember
 	 * @param ostream a stream to report an explanation on
 	 * @param context a string to print before every line of output, describing the
@@ -165,6 +174,7 @@ public class Dragon
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -173,6 +183,7 @@ public class Dragon
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -181,6 +192,7 @@ public class Dragon
 	}
 
 	/**
+	 * The plural of Dragon is Dragons.
 	 * @return a string describing all dragons as a class
 	 */
 	@Override
@@ -189,6 +201,7 @@ public class Dragon
 	}
 
 	/**
+	 * We delegate to toString().
 	 * @return a short description of the fixture
 	 */
 	@Override

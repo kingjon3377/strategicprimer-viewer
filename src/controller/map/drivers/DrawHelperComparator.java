@@ -423,6 +423,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of this object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -431,6 +432,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 		return "DrawHelperComparator";
 	}
 	/**
+	 * Get a diagnostic message.
 	 * @param caching whether we're caching Points
 	 * @return a String saying so
 	 */
@@ -490,6 +492,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -523,12 +526,14 @@ public final class DrawHelperComparator implements SimpleDriver {
 		 */
 		private long value = 0;
 		/**
+		 * Get the value.
 		 * @return the value
 		 */
 		public long getValue() {
 			return value;
 		}
 		/**
+		 * Add a quantity to the stored value.
 		 * @param addend how much to add
 		 */
 		public void add(final long addend) {
@@ -557,6 +562,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 		protected final V third;
 
 		/**
+		 * Constructor.
 		 * @param one the first item in the triple.
 		 * @param two the second item in the triple.
 		 * @param three the third item in the triple.
