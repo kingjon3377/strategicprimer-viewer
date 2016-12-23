@@ -116,6 +116,7 @@ public final class EchoDriver implements UtilityDriver {
 	}
 
 	/**
+	 * Get the suitable message for the given exception.
 	 * @param filename the name of the file being read or written
 	 * @param except the exception being wrapped
 	 * @return an appropriate message for the DriverFailedException
@@ -135,6 +136,7 @@ public final class EchoDriver implements UtilityDriver {
 		}
 	}
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -143,6 +145,7 @@ public final class EchoDriver implements UtilityDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

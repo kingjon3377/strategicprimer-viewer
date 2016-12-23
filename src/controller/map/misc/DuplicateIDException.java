@@ -17,6 +17,7 @@ package controller.map.misc;
  */
 public final class DuplicateIDException extends Exception {
 	/**
+	 * Constructor.
 	 * @param idNum the duplicate ID.
 	 */
 	public DuplicateIDException(final int idNum) {

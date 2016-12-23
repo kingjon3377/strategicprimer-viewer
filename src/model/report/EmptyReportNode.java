@@ -39,9 +39,8 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	public static final IReportNode NULL_NODE = new EmptyReportNode();
 	/**
 	 * The point, if any, in the map that this node represents something on.
+	 * TODO: should this be static?
 	 */
-	@SuppressWarnings("FieldHasSetterButNoGetter")
-	@Nullable
 	private final Point point = PointFactory.point(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
 	/**
@@ -54,6 +53,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Always returns the empty string.
 	 * @return the empty string
 	 */
 	@Override
@@ -71,6 +71,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Always returns 0.
 	 * @return the number of characters we'll add to the report, namely zero.
 	 */
 	@Override
@@ -79,6 +80,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * This is the empty node.
 	 * @return true: this is "the empty node."
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -88,6 +90,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * All EmptyReportNodes are equal to each other.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -97,6 +100,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Our hash code is always 0.
 	 * @return a hash code for the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -116,6 +120,8 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Nothing done to an empty node should have any effect.
+	 * TODO: should we log a warning?
 	 * @param node ignored: nothing done to an empty node has any effect
 	 */
 	@Override
@@ -124,6 +130,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Our iterator is empty.
 	 * @return an iterator over the children
 	 */
 	@Override
@@ -140,6 +147,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Return the empty string.
 	 * @return the text of the node, usually the header.
 	 */
 	@Override
@@ -148,6 +156,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Do nothing. TODO: should this log a warning?
 	 * @param txt the new text for the node
 	 */
 	@Override
@@ -156,6 +165,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Returns the empty string. TODO: Inline this call?
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -164,6 +174,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Do nothing. TODO: should we log a warning?
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	@Override
@@ -172,6 +183,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Returns our constant null-equivalent Point.
 	 * @return the point, if any, in the map that this node in particular represents
 	 * something on
 	 */

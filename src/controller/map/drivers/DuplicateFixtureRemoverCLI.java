@@ -68,6 +68,7 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -76,6 +77,7 @@ public final class DuplicateFixtureRemoverCLI implements SimpleCLIDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
