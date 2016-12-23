@@ -62,6 +62,7 @@ public enum FieldStatus {
 	}
 
 	/**
+	 * Parse a FieldStatus from a String.
 	 * @param desc a string representing a FieldStatus
 	 * @return the FieldStatus it represents
 	 */
@@ -74,6 +75,7 @@ public enum FieldStatus {
 	}
 
 	/**
+	 * Get a random FieldStatus.
 	 * @param seed a number to use to seed the RNG
 	 * @return a random status
 	 */
@@ -82,6 +84,7 @@ public enum FieldStatus {
 	}
 
 	/**
+	 * A String representation of a FieldStatus.
 	 * @return a string representation of the status
 	 */
 	@Override

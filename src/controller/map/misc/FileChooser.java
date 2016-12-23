@@ -193,6 +193,7 @@ public final class FileChooser {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -219,6 +220,7 @@ public final class FileChooser {
 		protected final int operationId;
 
 		/**
+		 * Constructor. TODO: We don't use the operationId ...
 		 * @param id the equivalent JFileChooser-class constant.
 		 */
 		FileChooserOperation(final int id) {
@@ -235,6 +237,7 @@ public final class FileChooser {
 	 */
 	public static final class ChoiceInterruptedException extends Exception {
 		/**
+		 * Constructor.
 		 * @param cause an exception that we caught that interrupted the choice
 		 */
 		public ChoiceInterruptedException(final Throwable cause) {

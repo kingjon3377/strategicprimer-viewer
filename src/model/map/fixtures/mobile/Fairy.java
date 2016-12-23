@@ -48,6 +48,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * Clone a Fairy.
 	 * @param zero ignored, as a fairy has no sensitive information
 	 * @return a copy of this fairy
 	 */
@@ -60,6 +61,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * The kind of fairy.
 	 * @return the kind of fairy
 	 */
 	@Override
@@ -68,6 +70,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * Set the fairy's kind.
 	 * @param nKind the new kind
 	 */
 	@Override
@@ -76,6 +79,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * "[kind] fairy".
 	 * @return a String representation of the fairy
 	 */
 	@Override
@@ -84,6 +88,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the fairy
 	 */
 	@Override
@@ -92,6 +97,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * An object is equal iff it is a Fairy of the same kind with the same ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -103,6 +109,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * Use the ID number for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -111,6 +118,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -119,6 +127,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * If we ignore ID, a fixture is equal iff it is a Fairy of the same kind.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -129,6 +138,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * A fixture is a subset iff it is equal.
 	 * @param obj     another UnitMember
 	 * @param ostream a stream to report an explanation on
 	 * @param context a string to print before every line of output, describing the
@@ -157,6 +167,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -165,6 +176,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -173,6 +185,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * The plural of Fairy is Fairies.
 	 * @return a string describing all fairies as a class
 	 */
 	@Override
@@ -181,6 +194,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	}
 
 	/**
+	 * Delegate to toString(). TODO: should be the other way round.
 	 * @return a short description of the fixture
 	 */
 	@Override

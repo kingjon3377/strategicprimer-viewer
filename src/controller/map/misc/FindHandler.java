@@ -37,6 +37,7 @@ public class FindHandler implements ActionListener {
 	 */
 	private final IViewerModel model;
 	/**
+	 * Constructor.
 	 * @param mainWindow the main window
 	 * @param dmodel the driver model
 	 */
@@ -58,6 +59,7 @@ public class FindHandler implements ActionListener {
 		}
 	}
 	/**
+	 * Get a FindDialog.
 	 * @return a FindDialog
 	 */
 	@SuppressWarnings("SynchronizedMethod")

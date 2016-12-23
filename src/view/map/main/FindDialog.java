@@ -162,6 +162,7 @@ public final class FindDialog extends SPDialog {
 	}
 
 	/**
+	 * Whether the fixture has an owner matching the given pattern.
 	 * @param pattern         a pattern
 	 * @param idNum           the ID number that is the pattern if the pattern is numeric
 	 * @param fix             a fixture
@@ -187,11 +188,11 @@ public final class FindDialog extends SPDialog {
 	}
 
 	/**
+	 * Whether the fixture has an owner matching the given pattern in our special cases.
 	 * @param player  the player owning a fixture
 	 * @param pattern a pattern
 	 * @return whether the pattern is "me" and the fixture is owned by the current
-	 * player,
-	 * or if the pattern is "none" and the fixture is independent.
+	 * player, or if the pattern is "none" and the fixture is independent.
 	 */
 	private static boolean matchesOwnerSpecials(final String pattern,
 												final Player player) {
@@ -201,6 +202,7 @@ public final class FindDialog extends SPDialog {
 	}
 
 	/**
+	 * Whether the fixture has a "kind" matching the given pattern.
 	 * @param pattern         a pattern
 	 * @param fix             a fixture
 	 * @param caseSensitivity whether to search case-sensitively
@@ -220,6 +222,7 @@ public final class FindDialog extends SPDialog {
 	}
 
 	/**
+	 * Whether the fixture has a name matching the given pattern.
 	 * @param pattern         a patter
 	 * @param fix             a fixture
 	 * @param caseSensitivity whether to search case-sensitively
@@ -293,6 +296,7 @@ public final class FindDialog extends SPDialog {
 	}
 
 	/**
+	 * Whether the fixture matches the given pattern in any way we recognize.
 	 * @param pattern         a pattern
 	 * @param idNum           either MIN_INT, or (if pattern is numeric) its numeric
 	 *                        equivalent
@@ -314,6 +318,7 @@ public final class FindDialog extends SPDialog {
 	}
 
 	/**
+	 * Whether the fixture matches the pattern in any of our simple ways.
 	 * @param pattern         a pattern
 	 * @param idNum           either MIN_INT, or (if pattern is numeric) its numeric
 	 *                        equivalent
@@ -357,6 +362,7 @@ public final class FindDialog extends SPDialog {
 	}
 
 	/**
+	 * Report the last-searched-for pattern.
 	 * @return a diagnostic String
 	 */
 	@Override
@@ -430,6 +436,7 @@ public final class FindDialog extends SPDialog {
 		}
 
 		/**
+		 * A trivial toString().
 		 * @return a String representation of the object
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")

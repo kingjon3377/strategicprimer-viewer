@@ -153,6 +153,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	}
 
 	/**
+	 * Create a label with the given text.
 	 * @param text a String
 	 * @return a JLabel with that string on it
 	 */
@@ -161,6 +162,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	}
 
 	/**
+	 * Wrap the given Strings in HTML, each in its own paragraph.
 	 * @param paras Strings, each of which should be put in its own paragraph.
 	 * @return them wrapped in HTML.
 	 */
@@ -177,18 +179,21 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	}
 
 	/**
+	 * Get the model behind the MP-total field.
 	 * @return the model underlying the field containing the running MP total.
 	 */
 	public Document getMPDocument() {
 		return mpField.getDocument();
 	}
 	/**
+	 * The model behind the speed-selecting combo box.
 	 * @return the model underlying the speed-selecting combo box.
 	 */
 	public ComboBoxModel<Speed> getSpeedModel() {
 		return speedModel;
 	}
 	/**
+	 * Add a player-change listener.
 	 * @param list the listener to add
 	 */
 	@Override
@@ -197,6 +202,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	}
 
 	/**
+	 * Remove a player-change listener.
 	 * @param list the listener to remove
 	 */
 	@Override
@@ -205,6 +211,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	}
 
 	/**
+	 * Add a listener.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -213,6 +220,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	}
 
 	/**
+	 * Remove a listener.
 	 * @param list a listener to remove
 	 */
 	@Override
@@ -245,6 +253,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	}
 
 	/**
+	 * Report only the model's number of units, to avoid a too-long toString().
 	 * @return a quasi-diagnostic String
 	 */
 	@Override
