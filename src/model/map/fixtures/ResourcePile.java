@@ -1,8 +1,8 @@
 package model.map.fixtures;
 
 import java.util.Formatter;
+import model.map.HasKind;
 import model.map.HasMutableImage;
-import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.Quantity;
@@ -25,7 +25,7 @@ import util.Quantity;
  *         TODO: more members
  */
 public class ResourcePile
-		implements UnitMember, FortressMember, HasMutableKind, HasMutableImage {
+		implements UnitMember, FortressMember, HasKind, HasMutableImage {
 	/**
 	 * The ID # of the resource pile.
 	 */
@@ -33,7 +33,7 @@ public class ResourcePile
 	/**
 	 * What general kind of thing is in the resource pile.
 	 */
-	private String kind;
+	private final String kind;
 	/**
 	 * What specific kind of thing is in the resource pile.
 	 */
@@ -79,14 +79,6 @@ public class ResourcePile
 	@Override
 	public String getKind() {
 		return kind;
-	}
-
-	/**
-	 * @param nKind the new value for the general kind of resource this is
-	 */
-	@Override
-	public void setKind(final String nKind) {
-		kind = nKind;
 	}
 
 	/**

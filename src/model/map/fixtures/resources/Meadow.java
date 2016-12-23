@@ -1,6 +1,6 @@
 package model.map.fixtures.resources;
 
-import model.map.HasMutableKind;
+import model.map.HasKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -20,7 +20,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Meadow implements HarvestableFixture, HasMutableKind {
+public class Meadow implements HarvestableFixture, HasKind {
 	/**
 	 * Which season the field is in.
 	 */
@@ -44,7 +44,7 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	/**
 	 * Kind of grass or grain growing there.
 	 */
-	private String kind;
+	private final String kind;
 
 	/**
 	 * Constructor.
@@ -82,14 +82,6 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getKind() {
 		return kind;
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
 	}
 
 	/**

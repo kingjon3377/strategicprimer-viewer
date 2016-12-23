@@ -1,6 +1,6 @@
 package model.map.fixtures.resources;
 
-import model.map.HasMutableKind;
+import model.map.HasKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -19,7 +19,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class CacheFixture implements HarvestableFixture, HasMutableKind {
+public class CacheFixture implements HarvestableFixture, HasKind {
 	/**
 	 * The contents of this cache. TODO: Should be turned into objects (serialized as
 	 * children) as part of the general Resource framework.
@@ -38,7 +38,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	 *
 	 * TODO: Should perhaps be enumerated, so we can make images more granular.
 	 */
-	private String kind;
+	private final String kind;
 
 	/**
 	 * Constructor.
@@ -74,15 +74,6 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getKind() {
 		return kind;
-	}
-
-	/**
-	 * Set the kind of things in the cache.
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
 	}
 
 	/**

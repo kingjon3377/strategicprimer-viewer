@@ -1,6 +1,6 @@
 package model.map.fixtures.resources;
 
-import model.map.HasMutableKind;
+import model.map.HasKind;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
@@ -21,7 +21,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutableKind {
+public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	/**
 	 * The DC to discover the stone. TODO: Should perhaps be mutable.
 	 */
@@ -33,7 +33,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	/**
 	 * What kind of stone this deposit is.
 	 */
-	private StoneKind stone;
+	private final StoneKind stone;
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -153,16 +153,6 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	@Override
 	public String getKind() {
 		return stone.toString();
-	}
-
-	/**
-	 * TODO: Allow arbitrary-text.
-	 *
-	 * @param nKind the new kind
-	 */
-	@Override
-	public void setKind(final String nKind) {
-		stone = StoneKind.parseStoneKind(nKind);
 	}
 
 	/**

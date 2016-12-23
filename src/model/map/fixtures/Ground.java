@@ -1,7 +1,7 @@
 package model.map.fixtures;
 
+import model.map.HasKind;
 import model.map.HasMutableImage;
-import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
@@ -21,11 +21,11 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
+public class Ground implements TileFixture, HasMutableImage, HasKind {
 	/**
 	 * The kind of ground.
 	 */
-	private String kind;
+	private final String kind;
 	/**
 	 * Whether the ground is exposed.
 	 */
@@ -80,14 +80,6 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	@Override
 	public String getKind() {
 		return kind;
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
 	}
 
 	/**

@@ -1,8 +1,8 @@
 package model.map.fixtures.mobile;
 
 import java.util.Formatter;
+import model.map.HasKind;
 import model.map.HasMutableImage;
-import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
+public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMember {
 	/**
 	 * ID number.
 	 */
@@ -34,7 +34,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	/**
 	 * What kind of giant. (Usually blank, at least at first.)
 	 */
-	private String kind;
+	private final String kind;
 
 	/**
 	 * Constructor.
@@ -65,14 +65,6 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	@Override
 	public String getKind() {
 		return kind;
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
 	}
 
 	/**

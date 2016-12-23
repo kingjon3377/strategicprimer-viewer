@@ -329,16 +329,6 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
-	 * @param nKind the new race of the proxied workers
-	 */
-	@Override
-	public void setKind(final String nKind) {
-		for (final IWorker worker : workers) {
-			worker.setKind(nKind);
-		}
-	}
-
-	/**
 	 * @return the name of the workers (or "proxied" if they don't agree)
 	 */
 	@Override

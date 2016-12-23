@@ -1,6 +1,6 @@
 package model.map.fixtures.resources;
 
-import model.map.HasMutableKind;
+import model.map.HasKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -19,7 +19,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Shrub implements HarvestableFixture, HasMutableKind {
+public class Shrub implements HarvestableFixture, HasKind {
 	/**
 	 * ID number.
 	 */
@@ -31,7 +31,7 @@ public class Shrub implements HarvestableFixture, HasMutableKind {
 	/**
 	 * A description of what kind of shrub this is.
 	 */
-	private String description;
+	private final String description;
 
 	/**
 	 * Constructor.
@@ -62,14 +62,6 @@ public class Shrub implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getKind() {
 		return description;
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		description = nKind;
 	}
 
 	/**

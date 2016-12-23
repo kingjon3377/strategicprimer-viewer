@@ -1,7 +1,7 @@
 package model.map.fixtures.resources;
 
 import java.util.Formatter;
-import model.map.HasMutableKind;
+import model.map.HasKind;
 import model.map.IEvent;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
@@ -21,7 +21,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class MineralVein implements IEvent, HarvestableFixture, HasMutableKind {
+public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	/**
 	 * The DC to discover the vein. TODO: Should perhaps be mutable.
 	 */
@@ -37,7 +37,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	/**
 	 * What kind of mineral this is.
 	 */
-	private String mineral;
+	private final String mineral;
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -160,14 +160,6 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	@Override
 	public String getKind() {
 		return mineral;
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public void setKind(final String nKind) {
-		mineral = nKind;
 	}
 
 	/**

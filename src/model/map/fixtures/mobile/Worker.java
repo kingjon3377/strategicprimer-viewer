@@ -53,7 +53,7 @@ public class Worker implements IWorker, HasPortrait {
 	/**
 	 * The worker's race (elf, dwarf, human, etc.).
 	 */
-	private String race;
+	private final String race;
 	/**
 	 * The worker's stats.
 	 */
@@ -257,14 +257,6 @@ public class Worker implements IWorker, HasPortrait {
 	@Override
 	public String getKind() {
 		return race;
-	}
-
-	/**
-	 * @param nKind the worker's new race
-	 */
-	@Override
-	public void setKind(final String nKind) {
-		race = nKind;
 	}
 
 	/**

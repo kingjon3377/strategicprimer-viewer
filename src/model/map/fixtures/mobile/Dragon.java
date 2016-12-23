@@ -1,8 +1,8 @@
 package model.map.fixtures.mobile;
 
 import java.util.Formatter;
+import model.map.HasKind;
 import model.map.HasMutableImage;
-import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
@@ -22,8 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Dragon
-		implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
+public class Dragon implements MobileFixture, HasMutableImage, HasKind, UnitMember {
 	/**
 	 * ID number.
 	 */
@@ -35,7 +34,7 @@ public class Dragon
 	/**
 	 * What kind of dragon. (Usually blank, at least at first.)
 	 */
-	private String kind;
+	private final String kind;
 
 	/**
 	 * Constructor.
@@ -68,15 +67,6 @@ public class Dragon
 	@Override
 	public String getKind() {
 		return kind;
-	}
-
-	/**
-	 * Set the kind of the dragon.
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
 	}
 
 	/**

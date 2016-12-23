@@ -1,7 +1,7 @@
 package model.map.fixtures.terrain;
 
+import model.map.HasKind;
 import model.map.HasMutableImage;
-import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import org.eclipse.jdt.annotation.Nullable;
@@ -21,7 +21,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
+public class Forest implements TerrainFixture, HasMutableImage, HasKind {
 	/**
 	 * Whether this is "rows of" trees.
 	 */
@@ -29,7 +29,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	/**
 	 * What kind of trees dominate the forest.
 	 */
-	private String trees;
+	private final String trees;
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -59,15 +59,6 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	@Override
 	public String getKind() {
 		return trees;
-	}
-
-	/**
-	 * Set the kind of trees. TODO: Should this really be mutable?
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		trees = nKind;
 	}
 
 	/**

@@ -1,8 +1,8 @@
 package model.map.fixtures.mobile;
 
 import java.util.Formatter;
+import model.map.HasKind;
 import model.map.HasMutableImage;
-import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
+public class Fairy implements MobileFixture, HasMutableImage, HasKind, UnitMember {
 	/**
 	 * ID number.
 	 */
@@ -30,7 +30,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	/**
 	 * What kind of fairy (great, lesser, snow ...).
 	 */
-	private String kind;
+	private final String kind;
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -67,15 +67,6 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	@Override
 	public String getKind() {
 		return kind;
-	}
-
-	/**
-	 * Set the fairy's kind.
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
 	}
 
 	/**

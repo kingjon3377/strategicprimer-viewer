@@ -1,6 +1,6 @@
 package model.map.fixtures.resources;
 
-import model.map.HasMutableKind;
+import model.map.HasKind;
 import model.map.IFixture;
 import model.map.fixtures.towns.TownStatus;
 import org.eclipse.jdt.annotation.Nullable;
@@ -20,7 +20,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Mine implements HarvestableFixture, HasMutableKind {
+public class Mine implements HarvestableFixture, HasKind {
 	/**
 	 * The status of the mine.
 	 */
@@ -36,7 +36,7 @@ public class Mine implements HarvestableFixture, HasMutableKind {
 	/**
 	 * What the mine produces.
 	 */
-	private String kind;
+	private final String kind;
 
 	/**
 	 * Constructor.
@@ -69,14 +69,6 @@ public class Mine implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getKind() {
 		return kind;
-	}
-
-	/**
-	 * @param nKind the new kind
-	 */
-	@Override
-	public final void setKind(final String nKind) {
-		kind = nKind;
 	}
 
 	/**

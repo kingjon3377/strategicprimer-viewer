@@ -1,8 +1,8 @@
 package model.map.fixtures;
 
 import java.util.Formatter;
+import model.map.HasKind;
 import model.map.HasMutableImage;
-import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -23,8 +23,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  *         TODO: more members
  */
-public class Implement
-		implements UnitMember, FortressMember, HasMutableKind, HasMutableImage {
+public class Implement implements UnitMember, FortressMember, HasKind, HasMutableImage {
 	/**
 	 * The ID # of the implement.
 	 */
@@ -32,7 +31,7 @@ public class Implement
 	/**
 	 * The "kind" of the implement.
 	 */
-	private String kind;
+	private final String kind;
 	/**
 	 * The image to use for the implement.
 	 */
@@ -105,14 +104,6 @@ public class Implement
 	@Override
 	public String getKind() {
 		return kind;
-	}
-
-	/**
-	 * @param nKind the new "kind" for the implement
-	 */
-	@Override
-	public void setKind(final String nKind) {
-		kind = nKind;
 	}
 
 	/**
