@@ -22,8 +22,6 @@ public interface IEvent extends TileFixture {
 	/**
 	 * The DC to discover the event.
 	 *
-	 * TODO: Should perhaps be mutable, at least for some events
-	 *
 	 * @return the DC to discover the event.
 	 */
 	int getDC();

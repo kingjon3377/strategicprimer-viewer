@@ -24,7 +24,7 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixture {
 	/**
-	 * The DC to discover the city. TODO: Should perhaps be mutable.
+	 * The DC to discover the city.
 	 */
 	protected final int dc;
 	/**
