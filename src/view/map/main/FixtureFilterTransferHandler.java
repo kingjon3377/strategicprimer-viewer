@@ -56,6 +56,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 	}
 
 	/**
+	 * Create a wrapper to transfer contents of the given component.
 	 * @param component the component being dragged from
 	 * @return the encapsulated item
 	 */

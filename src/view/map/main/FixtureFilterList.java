@@ -81,6 +81,7 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 	}
 
 	/**
+	 * Whether the given fixture should be searched.
 	 * @param fix a fixture
 	 * @return whether it should be searched
 	 */
@@ -104,6 +105,7 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 	}
 
 	/**
+	 * Render a list item.
 	 * @param list         this
 	 * @param value        the value being rendered
 	 * @param index        its index
@@ -157,6 +159,7 @@ public final class FixtureFilterList extends JList<FixtureMatcher>
 	}
 
 	/**
+	 * Report how many items there are in the list.
 	 * @return a quasi-diagnostic String
 	 */
 	@Override

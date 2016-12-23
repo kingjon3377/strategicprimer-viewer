@@ -159,6 +159,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	/**
+	 * How many rows there are.
 	 * @return the number of rows in the model
 	 */
 	@Override
@@ -167,6 +168,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	/**
+	 * How many columns there are: 2.
 	 * @return the number of columns in the model
 	 */
 	@Override
@@ -175,6 +177,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	/**
+	 * Get the item at the given cell.
 	 * @param rowIndex    the row whose value is to be queried
 	 * @param columnIndex the column whose value is to be queried
 	 * @return the value Object at the specified cell
@@ -192,6 +195,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	/**
+	 * Get the name of the given column.
 	 * @param column the column being queried
 	 * @return the name of that column
 	 */
@@ -207,6 +211,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	/**
+	 * Get the Class ob data in the given column.
 	 * @param columnIndex the column being queried
 	 * @return the class of the data in that column
 	 */
@@ -222,6 +227,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	/**
+	 * Only the first column is editable.
 	 * @param rowIndex    the row being queried
 	 * @param columnIndex the column being queried
 	 * @return whether that cell is editable
@@ -232,7 +238,8 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	/**
-	 * @param aValue      value assign to a cell
+	 * Set the value of a cell. Only honored for the first column.
+	 * @param aValue      value to assign to a cell
 	 * @param rowIndex    the row of the cell
 	 * @param columnIndex the column of the cell
 	 */
@@ -265,6 +272,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	/**
+	 * Whether the given fixture should be displayed.
 	 * @param fix a fixture
 	 * @return whether it should be displayed
 	 */
@@ -287,6 +295,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	/**
+	 * An iterator over the list.
 	 * @return an iterator over fixture-matchers.
 	 */
 	@Override

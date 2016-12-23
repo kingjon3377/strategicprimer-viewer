@@ -23,7 +23,8 @@ import java.util.stream.StreamSupport;
 @FunctionalInterface
 public interface FixtureIterable<T extends IFixture> extends Iterable<T> {
 	/**
-	 * @return a Stream of the unit's members
+	 * Stream the fixture's members.
+	 * @return a Stream of the fixture's members
 	 */
 	default Stream<T> stream() {
 		return StreamSupport.stream(spliterator(), false);

@@ -147,6 +147,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 	}
 
 	/**
+	 * Convert a list of players to an array.
 	 * @param players a collection of players
 	 * @return it as an array
 	 */
@@ -184,7 +185,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always
@@ -197,6 +198,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 	}
 
 	/**
+	 * Report how many menu items we have.
 	 * @return a diagnostic String
 	 */
 	@Override

@@ -67,6 +67,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	private final Icon defaultFixtureIcon = createDefaultFixtureIcon();
 
 	/**
+	 * The default icon for a fixture.
 	 * @return the default icon for fixtures.
 	 */
 	private static Icon createDefaultFixtureIcon() {
@@ -122,6 +123,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	}
 
 	/**
+	 * Render a list item.
 	 * @param list         the list being rendered
 	 * @param value        the object in the list that's being rendered
 	 * @param index        the index of the item that's being rendered
@@ -154,6 +156,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	}
 
 	/**
+	 * An icon representing an object.
 	 * @param obj a HasImage object
 	 * @return an icon representing it
 	 */
@@ -184,6 +187,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

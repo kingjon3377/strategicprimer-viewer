@@ -114,6 +114,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	}
 
 	/**
+	 * Delegate the hash-value to the list model.
 	 * @return a hash-code for the object
 	 */
 	@Override
@@ -122,6 +123,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	}
 
 	/**
+	 * Selected-point handling is handled by the list model.
 	 * @param old      passed to the list model
 	 * @param newPoint passed to the list model
 	 */
@@ -182,6 +184,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		}
 
 		/**
+		 * Handle a mouse click.
 		 * @param event the event to handle
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -191,6 +194,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		}
 
 		/**
+		 * Handle a mouse-down event.
 		 * @param event the event to handle
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -200,6 +204,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		}
 
 		/**
+		 * Handle a mouse-release event.
 		 * @param event the event to handle
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -209,9 +214,9 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		}
 
 		/**
+		 * Handle a mouse event.
 		 * @param event the event to handle. Marked as @Nullable so we only have to
-		 *                    handle
-		 *              the null-event case once.
+		 *                    handle the null-event case once.
 		 */
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if ((event != null) && event.isPopupTrigger() &&
@@ -227,6 +232,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		}
 
 		/**
+		 * A trivial toString().
 		 * @return a String representation of the object
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -234,7 +240,9 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		public String toString() {
 			return "FixtureMouseListener";
 		}
-	}	/**
+	}
+	/**
+	 * Report how many items there are in the list.
 	 * @return a diagnostic String
 	 */
 	@Override
