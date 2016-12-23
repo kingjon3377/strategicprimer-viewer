@@ -30,7 +30,7 @@ public final class CurriedFixtureTransferable implements Transferable {
 	/**
 	 * The data flavor we handle.
 	 */
-	public static final DataFlavor FLAVOR = new DataFlavor(FixtureTransferable.class,
+	public static final DataFlavor FLAVOR = new DataFlavor(CurriedFixtureTransferable.class,
 																  "CurriedTransferable");
 	/**
 	 * Our payload.
