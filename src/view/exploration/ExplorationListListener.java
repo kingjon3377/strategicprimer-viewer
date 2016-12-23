@@ -165,8 +165,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 	 * Integer.
 	 *
 	 * TODO: If we start using Guava, use of this class should be replaced by
-	 * Multiset, or
-	 * something?
+	 * Multiset, or something?
 	 *
 	 * @param <T> the type in question.
 	 * @author Jonathan Lovelace
