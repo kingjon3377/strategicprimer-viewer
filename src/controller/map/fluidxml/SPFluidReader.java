@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.IntFunction;
 import java.util.stream.StreamSupport;
 import javax.xml.namespace.QName;
@@ -564,14 +565,12 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					warner.warn(new UnsupportedTagException(current));
 					continue;
 				}
-				final Object child =
+				retval.addPlayer(Optional.of(
 						readSPObject(current, tagStack.peek(), stream, players, warner,
-								idFactory);
-				if (child instanceof Player) {
-					retval.addPlayer((Player) child);
-				} else {
-					throw new UnwantedChildException(mapTag.getName(), current);
-				}
+								idFactory)).filter(Player.class::isInstance)
+										 .map(Player.class::cast).orElseThrow(
+								() -> new UnwantedChildException(mapTag.getName(),
+																		current)));
 			} else if (event.isEndElement()) {
 				if (!tagStack.isEmpty() &&
 							tagStack.peek().equals(event.asEndElement().getName())) {
