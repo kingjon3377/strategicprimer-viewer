@@ -37,6 +37,7 @@ public final class Coordinate {
 	}
 
 	/**
+	 * The format is "[x, y]".
 	 * @return a String representation of the object
 	 */
 	@Override

@@ -21,6 +21,7 @@ import java.util.NoSuchElementException;
  */
 public final class EmptyIterator<T> implements Iterator<T> {
 	/**
+	 * Always returns false, as befits an empty iterator.
 	 * @return false
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -30,6 +31,7 @@ public final class EmptyIterator<T> implements Iterator<T> {
 	}
 
 	/**
+	 * Always throws, as befits an empty iterator.
 	 * @return nothing
 	 */
 	@Override
@@ -47,6 +49,7 @@ public final class EmptyIterator<T> implements Iterator<T> {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

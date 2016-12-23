@@ -99,6 +99,7 @@ public final class DetailPanelNG extends JSplitPane
 	}
 
 	/**
+	 * Change the version; this is passed on to the key panel.
 	 * @param old        passed to key panel
 	 * @param newVersion passed to key panel
 	 */
@@ -108,6 +109,7 @@ public final class DetailPanelNG extends JSplitPane
 	}
 
 	/**
+	 * Handle a changed point; this is passed on to the list and shown in the header.
 	 * @param old      passed to fixture list
 	 * @param newPoint passed to fixture list and shown on the header
 	 */
@@ -143,6 +145,7 @@ public final class DetailPanelNG extends JSplitPane
 	}
 
 	/**
+	 * The only state this exposes is the header text.
 	 * @return a diagnostic String
 	 */
 	@Override
@@ -246,6 +249,7 @@ public final class DetailPanelNG extends JSplitPane
 		}
 
 		/**
+		 * A trivial toString().
 		 * @return a String representation of the object
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")
