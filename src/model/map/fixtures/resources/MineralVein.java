@@ -226,6 +226,10 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String shortDesc() {
-		return toString();
+		if (exposed) {
+			return "exposed " + mineral;
+		} else {
+			return "unexposed " + mineral;
+		}
 	}
 }

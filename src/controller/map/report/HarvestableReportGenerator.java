@@ -106,11 +106,7 @@ public final class HarvestableReportGenerator
 			} else if (item instanceof Mine) {
 				mines.add(produce(fixtures, map, currentPlayer, (Mine) item, point));
 			} else if (item instanceof MineralVein) {
-				final MineralVein mineral = (MineralVein) item;
-				final String kind =
-						ternary(mineral.isExposed(), "exposed ", "unexposed ") +
-								mineral.getKind();
-				MultiMapHelper.getMapValue(minerals, kind,
+				MultiMapHelper.getMapValue(minerals, ((MineralVein) item).shortDesc(),
 						AbstractReportGenerator::pointsListAt).add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (item instanceof Shrub) {
@@ -193,13 +189,8 @@ public final class HarvestableReportGenerator
 				} else if (item instanceof Mine) {
 					mines.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof MineralVein) {
-					final MineralVein mineral = (MineralVein) item;
-					final String kind =
-							ternary(mineral.isExposed(), "exposed ",
-									"unexposed ") +
-									mineral.getKind();
 					MultiMapHelper
-							.getMapValue(minerals, kind, ListReportNode::new)
+							.getMapValue(minerals, item.shortDesc(), ListReportNode::new)
 							.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof Shrub) {
 					MultiMapHelper
