@@ -2,6 +2,7 @@ package util;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * A class to count instances of enums.
@@ -48,11 +49,7 @@ public final class EnumCounter<T extends Enum<T>> {
 	 */
 	@SafeVarargs
 	public final void countMany(final T... values) {
-		for (final T value : values) {
-			if (value != null) {
-				count(value);
-			}
-		}
+		Stream.of(values).forEach(this::count);
 	}
 
 	/**
