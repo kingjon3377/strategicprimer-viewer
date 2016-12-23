@@ -48,8 +48,6 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	 */
 	private EmptyReportNode() {
 		super("");
-		setText("");
-		setPoint(null);
 	}
 
 	/**
