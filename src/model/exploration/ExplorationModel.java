@@ -92,7 +92,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
-	 * @param stream a sequence of members of that type
+	 * Get a Stream of the units in the stream, including in Fortresses.
+	 * @param stream a sequence of fixtures
 	 * @param player a player
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
@@ -158,6 +159,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * Remove a unit from a location, even if it's in a fortress.
 	 * @param map   the map we're dealing with
 	 * @param point the location where the unit is
 	 * @param unit  a unit to remove from that location, even if it's in a fortress
@@ -201,6 +203,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * Check whether a fixture is at a given location in a given map.
 	 * @param map   a map
 	 * @param point a location in that map
 	 * @param fix   a fixture
@@ -254,6 +257,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * Collect all the players shared by all the maps.
 	 * @return all the players shared by all the maps
 	 */
 	@Override
@@ -264,6 +268,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * Collect all the units in the main map belonging to the given player.
 	 * @param player a player
 	 * @return all that player's units in the main map
 	 */
@@ -359,6 +364,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * Get the location one tile in the given direction from the given point.
 	 * @param point     a point
 	 * @param direction a direction
 	 * @return the point one tile in that direction.
@@ -399,11 +405,11 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * Search the main map for the given fixture.
 	 * @param fix a fixture
 	 * @return the first location found (search order is not defined) containing a
-	 * fixture
-	 * "equal to" the specified one. (Using it on mountains, e.g., will *not* do what you
-	 * want ...)
+	 * fixture "equal to" the specified one. (Using it on mountains, e.g., will *not* do
+	 * what you want ...)
 	 */
 	@Override
 	public Point find(final TileFixture fix) {
@@ -415,6 +421,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 
 
 	/**
+	 * Get the currently selected unit.
 	 * @return the currently selected unit
 	 */
 	@Override
@@ -424,6 +431,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * Select the given unit.
 	 * @param unit the new selected unit
 	 */
 	@Override
@@ -440,6 +448,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * The location of the currently selected unit.
 	 * @return the location of the currently selected unit.
 	 */
 	@Override
@@ -448,6 +457,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * Add a selection-change listener.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -456,6 +466,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * Remove a selection-change listener.
 	 * @param list a listener to remove
 	 */
 	@Override
@@ -464,6 +475,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * Add a movement-cost listener.
 	 * @param listener the listener to add
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -473,6 +485,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * Remove a movement-cost listener.
 	 * @param listener the listener to remove
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -482,6 +495,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -512,6 +526,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		}
 	}
 	/**
+	 * Whether a given fixture is "diggable".
 	 * @param fix a TileFixture
 	 * @return whether it is "diggable"
 	 */

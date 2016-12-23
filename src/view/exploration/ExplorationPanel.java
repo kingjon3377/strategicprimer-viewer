@@ -300,6 +300,7 @@ public final class ExplorationPanel extends BorderedPanel
 	}
 
 	/**
+	 * Handle a change in the currently selected point.
 	 * @param old      the previously selected location
 	 * @param newPoint the newly selected location
 	 */
@@ -320,6 +321,7 @@ public final class ExplorationPanel extends BorderedPanel
 	}
 
 	/**
+	 * Add a listener.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -328,6 +330,7 @@ public final class ExplorationPanel extends BorderedPanel
 	}
 
 	/**
+	 * Remove a listener.
 	 * @param list a listener to remove
 	 */
 	@Override
@@ -360,6 +363,7 @@ public final class ExplorationPanel extends BorderedPanel
 	}
 
 	/**
+	 * Return a diagnostic String.
 	 * @return a diagnostic String
 	 */
 	@Override

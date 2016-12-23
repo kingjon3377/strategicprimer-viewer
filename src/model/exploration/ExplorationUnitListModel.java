@@ -82,6 +82,7 @@ public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IU
 	}
 
 	/**
+	 * We mostly delegate toString() to the wrapped driver model.
 	 * @return a diagnostic String
 	 */
 	@Override

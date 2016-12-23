@@ -151,6 +151,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -204,6 +205,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 		}
 
 		/**
+		 * The number in the pair.
 		 * @return the number in the pair
 		 */
 		public int first() {
@@ -211,6 +213,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 		}
 
 		/**
+		 * The object in the pair.
 		 * @return the object in the pair
 		 */
 		@SuppressWarnings("unused")
@@ -219,6 +222,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 		}
 
 		/**
+		 * "(num, objString)".
 		 * @return a String representation of the object
 		 */
 		@Override
@@ -240,6 +244,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 		private final ListModel<E> wrapped;
 
 		/**
+		 * Constructor.
 		 * @param listModel the wrapped object
 		 */
 		protected ListModelWrapper(final ListModel<E> listModel) {
@@ -247,6 +252,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 		}
 
 		/**
+		 * Get the element at the given index.
 		 * @param index an index
 		 * @return the object at that index
 		 */
@@ -256,6 +262,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 		}
 
 		/**
+		 * Get the size of the list-model.
 		 * @return the size of the list-model
 		 */
 		@Override
@@ -264,6 +271,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 		}
 
 		/**
+		 * Mostly delegate toString() to the wrapped object.
 		 * @return a diagnostic String
 		 */
 		@SuppressWarnings("StringConcatenationMissingWhitespace")

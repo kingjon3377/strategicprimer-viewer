@@ -43,6 +43,7 @@ public final class ExplorationRunner {
 	private final Map<String, EncounterTable> tables = new HashMap<>();
 
 	/**
+	 * Get the "default results" (primary rock and primary forest) for the given point.
 	 * @param point         the tile's location
 	 * @param terrain       the terrain at the location
 	 * @param fixtures      any fixtures at the location
@@ -79,6 +80,7 @@ public final class ExplorationRunner {
 	}
 
 	/**
+	 * Get the primary rock for the given location.
 	 * @param point         the location of the tile
 	 * @param terrain       the terrain of the tile
 	 * @param fixtures      any fixtures on the tile
@@ -95,6 +97,7 @@ public final class ExplorationRunner {
 	}
 
 	/**
+	 * Get the primary forest for the given location.
 	 * @param point         the location of the tile
 	 * @param terrain       the tile type
 	 * @param fixtures      any fixtures on the tile
@@ -299,6 +302,7 @@ public final class ExplorationRunner {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
