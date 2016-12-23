@@ -39,9 +39,9 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	public static final IReportNode NULL_NODE = new EmptyReportNode();
 	/**
 	 * The point, if any, in the map that this node represents something on.
-	 * TODO: should this be static?
 	 */
-	private final Point point = PointFactory.point(Integer.MIN_VALUE, Integer.MIN_VALUE);
+	private static final Point POINT =
+			PointFactory.point(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
 	/**
 	 * Constructor.
@@ -188,7 +188,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	@Override
 	@Nullable
 	public Point getLocalPoint() {
-		return point;
+		return POINT;
 	}
 
 	/**
