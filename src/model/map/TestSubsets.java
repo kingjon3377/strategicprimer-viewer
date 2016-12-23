@@ -168,8 +168,6 @@ public final class TestSubsets {
 	/**
 	 * A test of Fortress's subset feature.
 	 *
-	 * TODO: test subsets when one is named "unknown"
-	 *
 	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
@@ -208,6 +206,14 @@ public final class TestSubsets {
 				equalTo(Boolean.TRUE));
 		assertThat("Fortress with is not a subset of fortress without unit",
 				Boolean.valueOf(firstFort.isSubset(fourthFort, DEV_NULL, "")),
+				equalTo(Boolean.FALSE));
+		final Fortress fifthFort =
+				new Fortress(new Player(1, ONE_STR), "unknown", 5, TownSize.Small);
+		assertThat("Fortress named 'unknown' can be subset, first test",
+				Boolean.valueOf(firstFort.isSubset(fifthFort, DEV_NULL, "")),
+				equalTo(Boolean.TRUE));
+		assertThat("'unknown' is not commutative",
+				Boolean.valueOf(fifthFort.isSubset(firstFort, DEV_NULL, "")),
 				equalTo(Boolean.FALSE));
 	}
 
