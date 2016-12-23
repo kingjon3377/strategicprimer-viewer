@@ -550,6 +550,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		tagStack.push(mapTag.getName());
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		for (final XMLEvent event : stream) {
+			final QName stackTop = tagStack.peek();
 			if (isSPStartElement(event)) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
@@ -566,14 +567,14 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					continue;
 				}
 				retval.addPlayer(Optional.of(
-						readSPObject(current, tagStack.peek(), stream, players, warner,
+						readSPObject(current, stackTop, stream, players, warner,
 								idFactory)).filter(Player.class::isInstance)
 										 .map(Player.class::cast).orElseThrow(
 								() -> new UnwantedChildException(mapTag.getName(),
 																		current)));
 			} else if (event.isEndElement()) {
 				if (!tagStack.isEmpty() &&
-							tagStack.peek().equals(event.asEndElement().getName())) {
+							stackTop.equals(event.asEndElement().getName())) {
 					tagStack.pop();
 				}
 				if (element.getName().equals(event.asEndElement().getName())) {
@@ -582,7 +583,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
             } else if (event.isCharacters() &&
 					(!event.asCharacters().getData().trim().isEmpty())) {
 				//noinspection ObjectAllocationInLoop
-				warner.warn(new UnwantedChildException(tagStack.peek(),
+				warner.warn(new UnwantedChildException(stackTop,
 						new QName(NULL_NS_URI, "text"), event.getLocation(),
 						new IllegalStateException("Random text outside any tile")));
 			}
