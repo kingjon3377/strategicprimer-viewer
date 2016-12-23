@@ -48,6 +48,7 @@ public final class CurriedFixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * We only support the one data flavor.
 	 * @return the supported DataFlavors
 	 */
 	@Override
@@ -56,6 +57,7 @@ public final class CurriedFixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * We only support the one data flavor.
 	 * @param flavor a DataFlavor
 	 * @return whether it's the one we support
 	 */
@@ -84,6 +86,8 @@ public final class CurriedFixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * The String representation only gives the size of the payload, to avoid becoming
+	 * too long.
 	 * @return a String representation of the object
 	 */
 	@Override

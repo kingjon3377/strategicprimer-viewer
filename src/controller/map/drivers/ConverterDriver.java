@@ -64,6 +64,7 @@ public final class ConverterDriver implements UtilityDriver {
 	}
 
 	/**
+	 * Constructor taking the output stream.
 	 * @param outputStream the stream to write progress information to
 	 */
 	public ConverterDriver(final PrintStream outputStream) {
@@ -71,6 +72,7 @@ public final class ConverterDriver implements UtilityDriver {
 	}
 
 	/**
+	 * Constructor taking an output stream and whether it is connected to a GUI window.
 	 * @param outputStream the stream to write progress information to
 	 * @param gui          whether it is (presumed to be) connected to a GUI window
 	 *                        rather
@@ -141,6 +143,7 @@ public final class ConverterDriver implements UtilityDriver {
 	}
 
 	/**
+	 * Returns the usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -149,6 +152,7 @@ public final class ConverterDriver implements UtilityDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
