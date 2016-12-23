@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,6 +28,7 @@ import util.ImageLoader;
 import util.TypesafeLogger;
 import view.map.key.KeyPanel;
 import view.util.BorderedPanel;
+import view.util.FormattedLabel;
 import view.util.SplitWithWeights;
 
 /**
@@ -70,9 +70,10 @@ public final class DetailPanelNG extends JSplitPane
 	/**
 	 * The 'header' label above the list.
 	 */
-	private final JLabel header = new JLabel("<html><body><p>Contents of the tile" +
-													 " at (-1, -1)" +
-													 ":</p></body></html>");
+	private final FormattedLabel header =
+			new FormattedLabel(
+					"<html><body><p>Contents of the tile at (%d, %d):</p></body></html>",
+									  Integer.valueOf(-1), Integer.valueOf(-1));
 
 	/**
 	 * Constructor.
@@ -116,8 +117,8 @@ public final class DetailPanelNG extends JSplitPane
 	@Override
 	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		fixList.selectedPointChanged(old, newPoint);
-		header.setText("<html><body><p>Contents of the tile at "
-							   + newPoint + ":</p></body></html>");
+		header.setArgs(Integer.valueOf(newPoint.getRow()),
+				Integer.valueOf(newPoint.getCol()));
 	}
 
 	/**
