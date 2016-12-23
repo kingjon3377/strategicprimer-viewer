@@ -8,12 +8,14 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Formatter;
 import java.util.Iterator;
+import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
 import model.map.PointFactory;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NoCloneException;
+import util.TypesafeLogger;
 
 /**
  * A node to replace usages of null.
@@ -42,7 +44,10 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	 */
 	private static final Point POINT =
 			PointFactory.point(Integer.MIN_VALUE, Integer.MIN_VALUE);
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger.getLogger(EmptyReportNode.class);
 	/**
 	 * Constructor.
 	 */
@@ -108,7 +113,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * Add a node. Do nothing if null, rather than crashing.
+	 * Add a node.
 	 *
 	 * @param newChild the node to add
 	 */
@@ -119,11 +124,11 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 
 	/**
 	 * Nothing done to an empty node should have any effect.
-	 * TODO: should we log a warning?
 	 * @param node ignored: nothing done to an empty node has any effect
 	 */
 	@Override
 	public void addAsFirst(final @Nullable MutableTreeNode node) {
+		LOGGER.info("addAsFirst() called on EmptyReportNode");
 		// Do nothing.
 	}
 
@@ -154,11 +159,12 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * Do nothing. TODO: should this log a warning?
+	 * Do nothing.
 	 * @param txt the new text for the node
 	 */
 	@Override
 	public void setText(final String txt) {
+		LOGGER.info("setText() called on EmptyReportNode");
 		// Do nothing
 	}
 
@@ -172,11 +178,12 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * Do nothing. TODO: should we log a warning?
+	 * Do nothing.
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	@Override
 	public void setPoint(@Nullable final Point pt) {
+		LOGGER.info("setPoint() called on EmptyReportNode()");
 		// Do nothing
 	}
 
