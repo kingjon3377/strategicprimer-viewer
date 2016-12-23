@@ -70,12 +70,12 @@ public class Fairy implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
-	 * "[kind] fairy".
+	 * Delegates to shortDesc().
 	 * @return a String representation of the fairy
 	 */
 	@Override
 	public String toString() {
-		return kind + " fairy";
+		return shortDesc();
 	}
 
 	/**
@@ -185,11 +185,11 @@ public class Fairy implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
-	 * Delegate to toString(). TODO: should be the other way round.
+	 * "[kind] fairy".
 	 * @return a short description of the fixture
 	 */
 	@Override
 	public String shortDesc() {
-		return toString();
+		return kind + " fairy";
 	}
 }

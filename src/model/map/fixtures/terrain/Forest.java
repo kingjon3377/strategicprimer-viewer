@@ -75,16 +75,12 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind {
 	}
 
 	/**
-	 * Either "Rows of such-and-such trees." or "A such-and-such forest.".
+	 * Delegates to shortDesc().
 	 * @return a String representation of the forest.
 	 */
 	@Override
 	public String toString() {
-		if (rows) {
-			return "Rows of " + trees + " trees.";
-		} else {
-			return "A " + trees + " forest.";
-		}
+		return shortDesc();
 	}
 
 	/**
@@ -193,11 +189,15 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind {
 	}
 
 	/**
-	 * Delegate to toString(). TODO: should be the other way around.
+	 * Either "Rows of such-and-such trees." or "A such-and-such forest.".
 	 * @return a short description of the fixture
 	 */
 	@Override
 	public String shortDesc() {
-		return toString();
+		if (rows) {
+			return "Rows of " + trees + " trees.";
+		} else {
+			return "A " + trees + " forest.";
+		}
 	}
 }
