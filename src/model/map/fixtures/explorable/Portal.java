@@ -66,7 +66,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	public Portal copy(final boolean zero) {
 		final Portal retval;
 		if (zero) {
-			retval = new Portal("unknown", PointFactory.point(-1, -1), id);
+			retval = new Portal("unknown", PointFactory.INVALID_POINT, id);
 		} else {
 			retval = new Portal(destinationWorld, destinationCoordinates, id);
 		}

@@ -113,7 +113,7 @@ public final class QuadrantTable implements EncounterTable {
 	public String getQuadrantValue(final int row, final int col,
 								   final MapDimensions mapDimensions) {
 		final Map<Point, String> resultsMap = getValuesFor(mapDimensions);
-		Point bestKey = PointFactory.point(-1, -1);
+		Point bestKey = PointFactory.INVALID_POINT;
 		for (final Point iter : resultsMap.keySet()) {
 			if ((iter.getRow() <= row) && (iter.getRow() > bestKey.getRow()) &&
 						(iter.getCol() <= col) && (iter.getCol() > bestKey.getCol())) {

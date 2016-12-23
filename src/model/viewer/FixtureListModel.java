@@ -45,7 +45,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	/**
 	 * The current point.
 	 */
-	private Point point = PointFactory.point(-1, -1);
+	private Point point = PointFactory.INVALID_POINT;
 
 	/**
 	 * @param theMap the map to refer to

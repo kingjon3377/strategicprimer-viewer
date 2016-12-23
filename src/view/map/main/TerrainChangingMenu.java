@@ -53,7 +53,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	/**
 	 * The point at which we might change terrain.
 	 */
-	private Point point = PointFactory.point(-1, -1);
+	private Point point = PointFactory.INVALID_POINT;
 
 	/**
 	 * Constructor.

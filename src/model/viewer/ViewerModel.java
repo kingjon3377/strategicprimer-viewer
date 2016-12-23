@@ -71,7 +71,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	public ViewerModel(final IMutableMapNG firstMap, final Optional<Path> file) {
 		dimensions = new VisibleDimensions(0, firstMap.dimensions().rows - 1, 0,
 												  firstMap.dimensions().cols - 1);
-		selPoint = PointFactory.point(-1, -1);
+		selPoint = PointFactory.INVALID_POINT;
 		setMap(firstMap, file);
 	}
 
@@ -97,7 +97,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 		} else {
 			dimensions = new VisibleDimensions(0, model.getMapDimensions().rows - 1, 0,
 													  model.getMapDimensions().cols - 1);
-			selPoint = PointFactory.point(-1, -1);
+			selPoint = PointFactory.INVALID_POINT;
 		}
 		setMap(model.getMap(), model.getMapFile());
 	}
@@ -132,7 +132,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 */
 	public void clearSelection() {
 		final Point oldSel = selPoint;
-		selPoint = PointFactory.point(-1, -1);
+		selPoint = PointFactory.INVALID_POINT;
 		scs.fireChanges(oldSel, selPoint);
 	}
 

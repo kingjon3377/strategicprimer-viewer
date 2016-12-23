@@ -56,7 +56,7 @@ public final class DualTileButton extends JButton {
 	 * The currently selected point.
 	 */
 	@SuppressWarnings("FieldHasSetterButNoGetter")
-	private Point point = PointFactory.point(-1, -1);
+	private Point point = PointFactory.INVALID_POINT;
 	/**
 	 * Constructor.
 	 * @param master      the first map

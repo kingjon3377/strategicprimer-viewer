@@ -73,7 +73,7 @@ public final class ReportGenerator {
 	 */
 	@SuppressWarnings("IfStatementWithIdenticalBranches")
 	private static Point findHQ(final IMapNG map, final Player player) {
-		Point retval = PointFactory.point(-1, -1);
+		Point retval = PointFactory.INVALID_POINT;
 		for (final Point location : map.locations()) {
 			for (final TileFixture fixture : map.getOtherFixtures(location)) {
 				if ((fixture instanceof Fortress) &&

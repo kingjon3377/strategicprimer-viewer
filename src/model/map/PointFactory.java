@@ -24,6 +24,10 @@ import view.util.Coordinate;
 @SuppressWarnings("UtilityClassCanBeEnum")
 public final class PointFactory {
 	/**
+	 * The standard "invalid point."
+	 */
+	public static final Point INVALID_POINT = point(-1, -1);
+	/**
 	 * The point cache.
 	 */
 	private static final Map<Integer, Map<Integer, Point>> POINT_CACHE =

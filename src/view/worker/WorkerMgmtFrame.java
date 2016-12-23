@@ -233,7 +233,7 @@ public final class WorkerMgmtFrame extends SPFrame
 	 */
 	private static Point findHQ(final IDriverModel model) {
 		@NonNull
-		Point retval = PointFactory.point(-1, -1);
+		Point retval = PointFactory.INVALID_POINT;
 		for (final Point location : model.getMap().locations()) {
 			for (final TileFixture fix : model.getMap().getOtherFixtures(location)) {
 				if ((fix instanceof Fortress) &&

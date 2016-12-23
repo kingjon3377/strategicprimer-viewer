@@ -83,7 +83,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 					(DistanceComparator) ((PairComparator<Point, IFixture>) comparator)
 												 .first();
 		} else {
-			distCalculator = new DistanceComparator(PointFactory.point(-1, -1));
+			distCalculator = new DistanceComparator(PointFactory.INVALID_POINT);
 		}
 	}
 

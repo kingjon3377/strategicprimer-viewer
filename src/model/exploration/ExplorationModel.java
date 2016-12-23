@@ -70,7 +70,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * The currently selected unit and its location.
 	 */
 	private Pair<Point, Optional<IUnit>> selection =
-			Pair.of(PointFactory.point(-1, -1), Optional.empty());
+			Pair.of(PointFactory.INVALID_POINT, Optional.empty());
 
 	/**
 	 * Constructor.
@@ -416,7 +416,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final IMapNG source = getMap();
 		return source.locationStream()
 					   .filter(point -> doesLocationHaveFixture(source, point, fix))
-					   .findAny().orElse(PointFactory.point(-1, -1));
+					   .findAny().orElse(PointFactory.INVALID_POINT);
 	}
 
 
@@ -439,7 +439,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final Point oldLoc = selection.first();
 		final Point loc;
 		if (unit == null) {
-			loc = PointFactory.point(-1, -1);
+			loc = PointFactory.INVALID_POINT;
 		} else {
 			loc = find(unit);
 		}

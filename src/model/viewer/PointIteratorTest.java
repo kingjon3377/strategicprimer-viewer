@@ -85,8 +85,7 @@ public final class PointIteratorTest {
 	public void testInitialSelection() {
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1),
-															   PointFactory.point(-1,
-																	   -1),
+															   PointFactory.INVALID_POINT,
 															   true, false));
 		final Collection<Point> expected =
 				Arrays.asList(PointFactory.point(0, 0), PointFactory.point(1, 0),
