@@ -35,6 +35,7 @@ public final class EnumCounter<T extends Enum<T>> {
 	}
 
 	/**
+	 * Increment the counter for a value.
 	 * @param value a value to increase the counter for
 	 */
 	private void count(final T value) {
@@ -42,6 +43,7 @@ public final class EnumCounter<T extends Enum<T>> {
 	}
 
 	/**
+	 * Count the items in a sequence.
 	 * @param values a sequence of values to count.
 	 */
 	@SafeVarargs
@@ -54,6 +56,7 @@ public final class EnumCounter<T extends Enum<T>> {
 	}
 
 	/**
+	 * Get the count for a given value.
 	 * @param value a value we want a count for
 	 * @return the count for the specified value
 	 */
@@ -66,6 +69,7 @@ public final class EnumCounter<T extends Enum<T>> {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
