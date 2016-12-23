@@ -122,19 +122,6 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
-	 * @param model the exploration model
-	 * @param idNum an ID number
-	 * @return true if the number designates a unit containing a worker without stats,
-	 * and
-	 * false otherwise.
-	 */
-	private static boolean hasUnstattedWorker(final IDriverModel model,
-											  final int idNum) {
-		final IFixture fix = find(model.getMap(), idNum);
-		return (fix instanceof IUnit) && hasUnstattedWorker((IUnit) fix);
-	}
-
-	/**
 	 * @param unit a unit
 	 * @return whether it contains any workers without stats
 	 */
