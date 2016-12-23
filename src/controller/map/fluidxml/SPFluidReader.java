@@ -580,8 +580,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				if (Objects.equals(element.getName(), event.asEndElement().getName())) {
 					break;
 				}
-            } else if (event.isCharacters() &&
-					(!event.asCharacters().getData().trim().isEmpty())) {
+			} else if (event.isCharacters() &&
+							   !event.asCharacters().getData().trim().isEmpty()) {
 				//noinspection ObjectAllocationInLoop
 				warner.warn(new UnwantedChildException(stackTop,
 						new QName(NULL_NS_URI, "text"), event.getLocation(),
