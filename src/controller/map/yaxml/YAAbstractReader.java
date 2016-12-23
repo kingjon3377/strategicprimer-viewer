@@ -24,6 +24,8 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
+import model.map.Point;
+import model.map.PointFactory;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
@@ -491,5 +493,16 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 			retval = matcher.replaceAll(pair.second());
 		}
 		return retval;
+	}
+	/**
+	 * Parse a Point from a tag's attributes.
+	 * @param element a tag
+	 * @return a Point based on its 'row' and 'column' properties.
+	 * @throws SPFormatException if the tag doesn't have those properties
+	 */
+	protected static Point parsePoint(final StartElement element)
+			throws SPFormatException {
+		return PointFactory.point(getIntegerParameter(element, "row"),
+				getIntegerParameter(element, "column"));
 	}
 }

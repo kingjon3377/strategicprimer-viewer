@@ -6,7 +6,6 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.PointFactory;
 import model.map.fixtures.explorable.Portal;
 import util.Warning;
 
@@ -49,10 +48,7 @@ public final class YAPortalReader extends YAAbstractReader<Portal> {
 					   final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, parent, "portal");
 		final Portal retval = new Portal(getParameter(element, "world"),
-												PointFactory.point(getIntegerParameter(
-														element, "row"),
-														getIntegerParameter(element,
-																"column")),
+												parsePoint(element),
 												getOrGenerateID(element));
 		retval.setImage(getParameter(element, "image", ""));
 		spinUntilEnd(element.getName(), stream);

@@ -268,9 +268,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 						throw new UnwantedChildException(tagStack.peek(), current);
 					}
 					tagStack.push(current.getName());
-					point = PointFactory.point(
-							getIntegerParameter(current, "row"),
-							getIntegerParameter(current, "column"));
+					point = parsePoint(current);
 					// Since tiles have sometimes been *written* without "kind",
 					// then failed to load, be liberal in what we accept here
 					if (hasParameter(current, "kind")
