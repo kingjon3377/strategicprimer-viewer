@@ -16,6 +16,7 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	private final Point base;
 
 	/**
+	 * Constructor.
 	 * @param center the point we want to measure distance from
 	 */
 	public DistanceComparator(final Point center) {
@@ -23,6 +24,7 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	}
 
 	/**
+	 * Compare two points on the basis of distance from the base point.
 	 * @param firstPoint  the first point
 	 * @param secondPoint the second point
 	 * @return the result of the comparison

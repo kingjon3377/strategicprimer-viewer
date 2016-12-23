@@ -47,6 +47,7 @@ public final class DiggableTabularReportGenerator implements ITableGenerator<Til
 	}
 
 	/**
+	 * Whether we can handle a given fixture.
 	 * @param obj an object
 	 * @return whether this report generator covers it
 	 */
@@ -58,6 +59,7 @@ public final class DiggableTabularReportGenerator implements ITableGenerator<Til
 	}
 
 	/**
+	 * Produce the report line for a fixture.
 	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
 	 * @param item     the fixture to base the line on

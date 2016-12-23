@@ -121,6 +121,7 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

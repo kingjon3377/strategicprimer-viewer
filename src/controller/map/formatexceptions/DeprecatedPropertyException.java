@@ -39,6 +39,7 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	private final String preferred;
 
 	/**
+	 * Constructor.
 	 * @param tag        the current tag
 	 * @param deprecated the old form
 	 * @param newForm    the preferred form
@@ -54,6 +55,7 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	}
 
 	/**
+	 * The current tag.
 	 * @return the current tag.
 	 */
 	public QName getTag() {
@@ -61,6 +63,7 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	}
 
 	/**
+	 * The old name for the property.
 	 * @return the old name for the property.
 	 */
 	public String getOld() {
@@ -68,6 +71,7 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	}
 
 	/**
+	 * The preferred form for the property.
 	 * @return the preferred orm.
 	 */
 	public String getPreferred() {
