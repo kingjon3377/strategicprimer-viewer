@@ -32,6 +32,7 @@ public class FixtureMatcher {
 	 */
 	private final String description;
 	/**
+	 * Constructor.
 	 * @param matcher the predicate to use to match fixtures.
 	 * @param desc    a description of the fixtures that it matches
 	 */
@@ -56,6 +57,7 @@ public class FixtureMatcher {
 	}
 
 	/**
+	 * Whether we match the given fixture.
 	 * @param fixture a fixture
 	 * @return whether we match it.
 	 */
@@ -64,6 +66,7 @@ public class FixtureMatcher {
 	}
 
 	/**
+	 * Whether matching fixtures should be displayed.
 	 * @return whether matching fixtures should be displayed
 	 */
 	public boolean isDisplayed() {
@@ -71,6 +74,7 @@ public class FixtureMatcher {
 	}
 
 	/**
+	 * Set whether matching fixtures should be displayed.
 	 * @param display whether matching fixtures should be displayed
 	 */
 	public void setDisplayed(final boolean display) {
@@ -78,6 +82,7 @@ public class FixtureMatcher {
 	}
 
 	/**
+	 * A description of fixtures we match.
 	 * @return a description of items matched by this matcher
 	 */
 	public String getDescription() {

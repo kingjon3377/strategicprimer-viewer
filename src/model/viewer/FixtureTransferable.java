@@ -42,6 +42,7 @@ public final class FixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * We only support the one flavor.
 	 * @return the supported DataFlavors.
 	 */
 	@Override
@@ -50,6 +51,7 @@ public final class FixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * We only support the one flavor.
 	 * @param flavor a DataFlavor
 	 * @return whether it's the one we support
 	 */
@@ -78,6 +80,7 @@ public final class FixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * A description of what we're transferring.
 	 * @return a String representation of this object
 	 */
 	@Override
@@ -86,6 +89,7 @@ public final class FixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * An object is equal iff it is a FixtureTransferable transfering equal data.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -96,6 +100,7 @@ public final class FixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * Delegate hash-code calculation to the transferred object.
 	 * @return a hash value for the object
 	 */
 	@Override

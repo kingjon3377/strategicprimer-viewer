@@ -127,6 +127,7 @@ public final class FluidExplorableHandler {
 	}
 
 	/**
+	 * Parse a Cave.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
@@ -151,6 +152,7 @@ public final class FluidExplorableHandler {
 	}
 
 	/**
+	 * Parse a Battlefield.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from

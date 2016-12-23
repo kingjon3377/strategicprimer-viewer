@@ -64,6 +64,7 @@ public class FocusRequester extends ActionWrapper {
 	}
 
 	/**
+	 * Report what type of component we're requesting focus in.
 	 * @return a String representation of the action
 	 */
 	@Override

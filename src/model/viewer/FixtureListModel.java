@@ -48,6 +48,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	private Point point = PointFactory.INVALID_POINT;
 
 	/**
+	 * Constructor.
 	 * @param theMap the map to refer to
 	 */
 	public FixtureListModel(final IMutableMapNG theMap) {
@@ -55,6 +56,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	}
 
 	/**
+	 * Handle selected-point change.
 	 * @param old      the formerly selected location
 	 * @param newPoint the newly selected location
 	 */
@@ -164,6 +166,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	}
 
 	/**
+	 * A value to use for hashing.
 	 * @return a hash code for the object
 	 */
 	@Override
@@ -196,6 +199,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	}
 
 	/**
+	 * Report the point we're looking at now.
 	 * @return a diagnostic String
 	 */
 	@Override

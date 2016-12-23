@@ -53,6 +53,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * What kind of trees are in the forest.
 	 * @return what kind of trees
 	 */
 	@Override
@@ -61,6 +62,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * Set the kind of trees. TODO: Should this really be mutable?
 	 * @param nKind the new kind
 	 */
 	@Override
@@ -69,6 +71,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * Clone the forest.
 	 * @param zero ignored, as there's no sensitive data
 	 * @return a copy of this forest
 	 */
@@ -81,6 +84,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * Either "Rows of such-and-such trees." or "A such-and-such forest.".
 	 * @return a String representation of the forest.
 	 */
 	@Override
@@ -103,6 +107,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * Whether this is "rows of" trees.
 	 * @return whether this is "rows of" trees.
 	 */
 	public boolean isRows() {
@@ -110,6 +115,8 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * An object is equal iff it is a Forest of the same kind with the same ID and
+	 * either both or neither is rows.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -119,6 +126,8 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * A forest is equal iff it has the same ID and kind and either both or neither are
+	 * rows.
 	 * @param obj a forest
 	 * @return whether it's equal to this one
 	 */
@@ -127,6 +136,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -135,6 +145,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * The ID number.
 	 * @return an ID for the object
 	 */
 	@Override
@@ -151,6 +162,8 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * If we ignore ID, a fixture is equal iff it is a forest of the same kind and
+	 * either both or neither is rows.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -162,6 +175,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -170,6 +184,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -178,6 +193,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * The plural of Forest is Forests.
 	 * @return a string describing all forests as a class
 	 */
 	@Override
@@ -186,6 +202,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
+	 * Delegate to toString(). TODO: should be the other way around.
 	 * @return a short description of the fixture
 	 */
 	@Override

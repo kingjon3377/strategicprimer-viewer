@@ -62,7 +62,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	}
 
 	/**
-	 * A possible drag entering the component?
+	 * Handle a possible drag entering the component.
 	 *
 	 * @param dtde the event to handle
 	 */
@@ -201,6 +201,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

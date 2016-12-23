@@ -377,6 +377,7 @@ public final class FluidUnitMemberHandler {
 	}
 
 	/**
+	 * Parse an Animal.
 	 * @param element   the element containing an animal
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from

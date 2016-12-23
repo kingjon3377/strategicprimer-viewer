@@ -29,6 +29,7 @@ import util.Warning;
 @FunctionalInterface
 public interface FluidXMLReader {
 	/**
+	 * Parse an object from XML.
 	 * @param element   the XML tag being parsed
 	 * @param parent    the parent tag
 	 * @param stream    the stream of XML elements we're reading from
