@@ -91,7 +91,6 @@ public final class StrategyExporter implements PlayerChangeListener {
 		if (unit.iterator().hasNext()) {
 			boolean first = true;
 			for (final UnitMember member : unit) {
-				final String fmt;
 				if (first) {
 					formatter.format(" [");
 					first = false;
