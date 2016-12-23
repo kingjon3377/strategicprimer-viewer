@@ -150,7 +150,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 		for (final Point neighbor :
 				new SurroundingPointIterable(point, master.dimensions())) {
 			final Set<TileFixture> neighborFixtures =
-					getSetFromMap(additions, neighbor);
+					MultiMapHelper.getMapValue(additions, neighbor,
+							ignored -> new ArraySet<>());
 			possibilities.clear();
 			possibilities.add(master.getGround(neighbor));
 			possibilities.add(master.getForest(neighbor));
@@ -168,19 +169,6 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			possibilities.stream().filter(Objects::nonNull).findAny()
 					.map(neighborFixtures::add);
 		}
-	}
-
-	/**
-	 * Get a Set from a Map from keys to Sets. TODO: inline?
-	 * @param map a mapping from a key to a set of values
-	 * @param key the key to query the map for
-	 * @param <K> the type of the key
-	 * @param <V> the type of members of the set
-	 * @return the value at the key, or a new ArraySet (which is added) if there is no
-	 * value there yet.
-	 */
-	private static <K, V> Set<V> getSetFromMap(final Map<K, Set<V>> map, final K key) {
-		return MultiMapHelper.getMapValue(map, key, ignored -> new ArraySet<>());
 	}
 
 	/**
