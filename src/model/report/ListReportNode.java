@@ -36,11 +36,6 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	private static final int BOILERPLATE_LEN = "<ul></ul>".length() + 3;
 
 	/**
-	 * The estimated size of a child: half a kilobyte, which is absurdly high, but we
-	 * *really* don't want to resize the buffer!
-	 */
-	private static final int CHILD_BUF_SIZE = 512;
-	/**
 	 * The length of the boilerplate per child.
 	 */
 	private static final int PER_CHILD_BOILERPLATE = "<li></li>".length() + 1;
