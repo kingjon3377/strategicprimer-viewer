@@ -574,10 +574,10 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 																		current)));
 			} else if (event.isEndElement()) {
 				if (!tagStack.isEmpty() &&
-							stackTop.equals(event.asEndElement().getName())) {
+							Objects.equals(stackTop, event.asEndElement().getName())) {
 					tagStack.pop();
 				}
-				if (element.getName().equals(event.asEndElement().getName())) {
+				if (Objects.equals(element.getName(), event.asEndElement().getName())) {
 					break;
 				}
             } else if (event.isCharacters() &&
