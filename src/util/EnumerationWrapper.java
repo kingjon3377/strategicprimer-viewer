@@ -28,6 +28,7 @@ public final class EnumerationWrapper<@NonNull T> implements Iterator<@NonNull T
 	private final Enumeration<T> wrapped;
 
 	/**
+	 * Constructor.
 	 * @param wrappedEnumeration the object we're wrapping.
 	 */
 	public EnumerationWrapper(final Enumeration<T> wrappedEnumeration) {
@@ -35,6 +36,7 @@ public final class EnumerationWrapper<@NonNull T> implements Iterator<@NonNull T
 	}
 
 	/**
+	 * Whether there are any more elements.
 	 * @return whether there are more elements
 	 */
 	@Override
@@ -43,6 +45,7 @@ public final class EnumerationWrapper<@NonNull T> implements Iterator<@NonNull T
 	}
 
 	/**
+	 * Get the next element.
 	 * @return the next element
 	 * @throws NoSuchElementException if no more elements; required by superclass
 	 */
@@ -63,6 +66,7 @@ public final class EnumerationWrapper<@NonNull T> implements Iterator<@NonNull T
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

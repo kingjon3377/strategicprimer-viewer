@@ -43,6 +43,7 @@ public final class ExplorableReportGenerator
 		extends AbstractReportGenerator<ExplorableFixture> {
 
 	/**
+	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public ExplorableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
@@ -299,6 +300,7 @@ public final class ExplorableReportGenerator
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

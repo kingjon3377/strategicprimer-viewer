@@ -95,6 +95,7 @@ public final class ExplorationCLI implements MovementCostSource {
 	 */
 	private Speed speed = Speed.Normal;
 	/**
+	 * Constructor.
 	 * @param explorationModel the exploration model to use
 	 * @param cli              the helper to handle user I/O
 	 */
@@ -224,6 +225,7 @@ public final class ExplorationCLI implements MovementCostSource {
 		}
 	}
 	/**
+	 * Get an animal for there to be traces of near the given location.
 	 * @param point a location
 	 * @return a randomly-selected animal for that location to possibly have traces of
 	 */
@@ -247,10 +249,10 @@ public final class ExplorationCLI implements MovementCostSource {
 		}
 	}
 	/**
+	 * Copy the given fixture to subordinate maps and print it to the output stream.
 	 * @param dPoint the current location
 	 * @param fix    the fixture to copy to subordinate maps. May be null, to simplify
-	 *                  the
-	 *               caller.
+	 *                  the caller.
 	 * @param mover  the current unit (needed for its owner)
 	 */
 	private void printAndTransferFixture(final Point dPoint,
@@ -307,6 +309,7 @@ public final class ExplorationCLI implements MovementCostSource {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -316,6 +319,7 @@ public final class ExplorationCLI implements MovementCostSource {
 	}
 
 	/**
+	 * Add a listener.
 	 * @param listener the listener to add
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -325,6 +329,7 @@ public final class ExplorationCLI implements MovementCostSource {
 	}
 
 	/**
+	 * Remove a listener.
 	 * @param listener the listener to remove
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")

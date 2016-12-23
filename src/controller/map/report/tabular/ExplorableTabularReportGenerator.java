@@ -58,6 +58,7 @@ public final class ExplorableTabularReportGenerator
 	}
 
 	/**
+	 * Produce a report line about the given fixture.
 	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
 	 * @param item     the fixture to base the line on
@@ -140,6 +141,7 @@ public final class ExplorableTabularReportGenerator
 	}
 
 	/**
+	 * This generator can only handle ExplorableFixtures and TextFixtures.
 	 * @param obj an object
 	 * @return whether this report generator covers it
 	 */
@@ -204,6 +206,7 @@ public final class ExplorableTabularReportGenerator
 	}
 
 	/**
+	 * Produce a report line from a TextFixture.
 	 * @param ostream the stream to write the row to
 	 * @param item    the fixture to base the line on
 	 * @param loc     its location

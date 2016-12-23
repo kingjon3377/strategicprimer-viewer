@@ -33,6 +33,7 @@ import view.util.SPFrame;
  */
 public final class ExplorationFrame extends SPFrame {
 	/**
+	 * Constructor.
 	 * @param explorationModel the exploration model
 	 * @param menuHandler        Passed to menu constructor
 	 */
@@ -85,6 +86,7 @@ public final class ExplorationFrame extends SPFrame {
 	}
 
 	/**
+	 * The name of this app.
 	 * @return the title of this app
 	 */
 	@Override
@@ -147,6 +149,7 @@ public final class ExplorationFrame extends SPFrame {
 		}
 
 		/**
+		 * A trivial toString().
 		 * @return a String representation of the object
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")

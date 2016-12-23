@@ -78,6 +78,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Return a mock IUnit with the given owner.
 	 * @param player a player
 	 * @return a mock Unit that responds to getOwner() with that player and throws on
 	 * any other method call
@@ -101,6 +102,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Expand the map from the given master map.
 	 * @param master the master map
 	 * @param map    a player's map, to be expanded
 	 */
@@ -136,6 +138,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Add fixtures from the area surrounding a point.
 	 * @param point     a location
 	 * @param master    the master map
 	 * @param additions a collection of additions to make (by which they are returned)
@@ -173,6 +176,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Get a Set from a Map from keys to Sets. TODO: inline?
 	 * @param map a mapping from a key to a set of values
 	 * @param key the key to query the map for
 	 * @param <K> the type of the key
@@ -185,6 +189,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Copy the terrain surrounding a point into the player map.
 	 * @param point     a location
 	 * @param master    the master map
 	 * @param map       a player's map
@@ -208,6 +213,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Whether a location contains a town or village that has sworn allegiance to the
+	 * given player.
 	 * @param map    a map
 	 * @param point  a point in the map
 	 * @param player a player
@@ -222,6 +229,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -230,6 +238,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

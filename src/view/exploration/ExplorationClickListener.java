@@ -15,11 +15,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.ListModel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Speed;
 import model.listeners.MovementCostListener;
@@ -129,6 +125,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
+	 * Whether there are any fixtures, other than primary Ground or Forest, in the given
+	 * map at the given point.
 	 * @param map    a map
 	 * @param dPoint a point
 	 * @param fix    a fixture
@@ -140,6 +138,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
+	 * Handle the button press.
 	 * @param evt the event to handle.
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -245,6 +244,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
+	 * Add a selection-change listener.
 	 * @param listener the listener to add
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -254,6 +254,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
+	 * Remove a selection-change listener.
 	 * @param listener the listener to remove
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -263,6 +264,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
+	 * Add a movement-cost listener.
 	 * @param listener the listener to add
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -272,6 +274,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
+	 * Remove a movement-cost listener.
 	 * @param listener the listener to remove
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -281,6 +284,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
