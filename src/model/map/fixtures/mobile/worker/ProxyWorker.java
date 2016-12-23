@@ -349,16 +349,6 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
-	 * @param newName the new name for the workers
-	 */
-	@Override
-	public void setName(final String newName) {
-		for (final IWorker worker : workers) {
-			worker.setName(newName);
-		}
-	}
-
-	/**
 	 * @return the race of the proxied workers
 	 */
 	@Override

@@ -49,7 +49,7 @@ public class Worker implements IWorker, HasPortrait {
 	/**
 	 * The worker's name.
 	 */
-	private String name;
+	private final String name;
 	/**
 	 * The worker's race (elf, dwarf, human, etc.).
 	 */
@@ -138,14 +138,6 @@ public class Worker implements IWorker, HasPortrait {
 	@Override
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param newName the worker's new name
-	 */
-	@Override
-	public final void setName(final String newName) {
-		name = newName;
 	}
 
 	/**

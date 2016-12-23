@@ -17,7 +17,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class Player implements Comparable<Player>, HasMutableName {
+public final class Player implements Comparable<Player>, HasName {
 	/**
 	 * The player's number.
 	 */
@@ -25,7 +25,7 @@ public final class Player implements Comparable<Player>, HasMutableName {
 	/**
 	 * The player's code name.
 	 */
-	private String playerName;
+	private final String playerName;
 
 	/**
 	 * Whether this is the current player or not.
@@ -57,14 +57,6 @@ public final class Player implements Comparable<Player>, HasMutableName {
 	@Override
 	public String getName() {
 		return playerName;
-	}
-
-	/**
-	 * @param newName the player's new name
-	 */
-	@Override
-	public void setName(final String newName) {
-		playerName = newName;
 	}
 
 	/**

@@ -51,7 +51,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	/**
 	 * The name of the Job.
 	 */
-	private String name;
+	private final String name;
 
 	/**
 	 * @param jobName         the name of the Job
@@ -119,14 +119,6 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	@Override
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param newName the new name
-	 */
-	@Override
-	public void setName(final String newName) {
-		name = newName;
 	}
 
 	/**

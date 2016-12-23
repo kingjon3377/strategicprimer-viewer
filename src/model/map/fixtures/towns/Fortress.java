@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import model.map.FixtureIterable;
 import model.map.HasMutableImage;
+import model.map.HasMutableName;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
@@ -35,7 +36,7 @@ import util.EqualsAny;
  *
  * @author Jonathan Lovelace
  */
-public class Fortress implements HasMutableImage, ITownFixture,
+public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 										 FixtureIterable<@NonNull FortressMember>,
 										 SubsettableFixture {
 	/**

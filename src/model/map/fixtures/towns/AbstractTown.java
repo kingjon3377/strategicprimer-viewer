@@ -42,7 +42,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	/**
 	 * The name of this town, fortress, or city.
 	 */
-	private String name;
+	private final String name;
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -78,15 +78,6 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	@Override
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * Set the town's name.
-	 * @param newName the town's new name
-	 */
-	@Override
-	public final void setName(final String newName) {
-		name = newName;
 	}
 
 	/**

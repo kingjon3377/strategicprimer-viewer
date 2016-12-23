@@ -38,7 +38,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	/**
 	 * The name of the skill.
 	 */
-	private String name;
+	private final String name;
 
 	/**
 	 * @param skillName     the name of the skill
@@ -71,14 +71,6 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	@Override
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param newName the skills' new name
-	 */
-	@Override
-	public void setName(final String newName) {
-		name = newName;
 	}
 
 	/**

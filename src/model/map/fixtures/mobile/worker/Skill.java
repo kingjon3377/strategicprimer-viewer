@@ -21,7 +21,7 @@ public class Skill implements ISkill {
 	/**
 	 * The name of the skill.
 	 */
-	private String name;
+	private final String name;
 	/**
 	 * How many levels the worker has in the skill.
 	 */
@@ -60,14 +60,6 @@ public class Skill implements ISkill {
 	@Override
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param newName the skill's new name
-	 */
-	@Override
-	public final void setName(final String newName) {
-		name = newName;
 	}
 
 	/**

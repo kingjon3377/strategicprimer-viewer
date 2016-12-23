@@ -2,7 +2,7 @@ package model.map.fixtures.mobile.worker;
 
 import java.util.Arrays;
 import java.util.Collections;
-import model.map.HasMutableName;
+import model.map.HasName;
 import model.map.Subsettable;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -23,7 +23,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 public interface IJob
-		extends HasMutableName, Iterable<@NonNull ISkill>, Subsettable<@NonNull IJob> {
+		extends HasName, Iterable<@NonNull ISkill>, Subsettable<@NonNull IJob> {
 	/**
 	 * Skill names that are suspicious when they are the only Skill a Job has. In many
 	 * cases they should be 'miscellaneous' instead.

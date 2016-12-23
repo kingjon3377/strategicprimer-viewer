@@ -2,7 +2,7 @@ package model.map.fixtures.mobile.worker;
 
 import java.util.Formatter;
 import java.util.Objects;
-import model.map.HasMutableName;
+import model.map.HasName;
 import model.map.Subsettable;
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -21,7 +21,7 @@ import org.eclipse.jdt.annotation.NonNull;
  *
  * @author Jonathan Lovelace
  */
-public interface ISkill extends HasMutableName, Subsettable<@NonNull ISkill> {
+public interface ISkill extends HasName, Subsettable<@NonNull ISkill> {
 	/**
 	 * @return how many levels the worker has in the skill
 	 */

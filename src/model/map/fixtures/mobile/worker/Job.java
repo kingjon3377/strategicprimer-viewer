@@ -33,7 +33,7 @@ public class Job implements IJob {
 	/**
 	 * The name of the job.
 	 */
-	private String name;
+	private final String name;
 	/**
 	 * How many levels the worker has in the job.
 	 */
@@ -98,14 +98,6 @@ public class Job implements IJob {
 	@Override
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param newName the job's new name
-	 */
-	@Override
-	public final void setName(final String newName) {
-		name = newName;
 	}
 
 	/**

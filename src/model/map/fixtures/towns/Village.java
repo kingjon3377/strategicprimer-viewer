@@ -46,7 +46,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	/**
 	 * The name of the village.
 	 */
-	private String name;
+	private final String name;
 	/**
 	 * The filename of an image to use as a portrait for the village.
 	 */
@@ -165,14 +165,6 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	@Override
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param newName the town's new name
-	 */
-	@Override
-	public final void setName(final String newName) {
-		name = newName;
 	}
 
 	/**
