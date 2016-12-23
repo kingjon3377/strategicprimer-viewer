@@ -194,8 +194,7 @@ public final class HarvestableReportGenerator
 							.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof Shrub) {
 					MultiMapHelper
-							.getMapValue(shrubs, ((Shrub) item).getKind(),
-									ListReportNode::new)
+							.getMapValue(shrubs, item.shortDesc(), ListReportNode::new)
 							.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 					fixtures.remove(Integer.valueOf(item.getID()));
 				} else if (item instanceof StoneDeposit) {
