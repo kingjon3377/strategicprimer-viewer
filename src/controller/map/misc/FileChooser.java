@@ -55,6 +55,8 @@ public final class FileChooser {
 	 *
 	 * TODO: Provide constructor taking the operation but not a file-chooser
 	 *
+	 * TODO: Provide option taking an approve-text so we can implement Custom
+	 *
 	 * @param loc         the file to return
 	 * @param fileChooser the file-chooser to use
 	 * @param operation   which operation to use.
@@ -209,23 +211,11 @@ public final class FileChooser {
 		/**
 		 * Specifies the Open dialog.
 		 */
-		Open(JFileChooser.OPEN_DIALOG),
+		Open,
 		/**
 		 * Specifies the Save (or Save As) dialog.
 		 */
-		Save(JFileChooser.SAVE_DIALOG);
-		/**
-		 * The equivalent JFileChooser-class constant.
-		 */
-		protected final int operationId;
-
-		/**
-		 * Constructor. TODO: We don't use the operationId ...
-		 * @param id the equivalent JFileChooser-class constant.
-		 */
-		FileChooserOperation(final int id) {
-			operationId = id;
-		}
+		Save;
 	}
 
 	/**
