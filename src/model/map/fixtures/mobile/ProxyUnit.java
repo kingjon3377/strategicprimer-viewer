@@ -2,6 +2,7 @@ package model.map.fixtures.mobile;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Formatter;
 import java.util.Iterator;
 import java.util.Map;
@@ -23,7 +24,6 @@ import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
 import org.eclipse.jdt.annotation.Nullable;
-import util.EmptyIterator;
 import util.LineEnd;
 import util.TypesafeLogger;
 
@@ -291,7 +291,7 @@ public final class ProxyUnit
 	@Override
 	public Iterator<UnitMember> iterator() {
 		if (!parallel) {
-			return new EmptyIterator<>();
+			return Collections.emptyIterator();
 		} // else
 		final Map<Integer, UnitMember> map = new TreeMap<>();
 		for (final IUnit unit : proxied) {

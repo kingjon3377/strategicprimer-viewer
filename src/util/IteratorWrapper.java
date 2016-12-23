@@ -1,5 +1,6 @@
 package util;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Objects;
@@ -39,7 +40,7 @@ public final class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 	 */
 	public IteratorWrapper(@Nullable final Iterator<@NonNull T> iterator) {
 		if (iterator == null) {
-			iter = new EmptyIterator<>();
+			iter = Collections.emptyIterator();
 		} else {
 			iter = iterator;
 		}

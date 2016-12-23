@@ -27,7 +27,6 @@ import model.viewer.PointIterator;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
-import util.EmptyIterator;
 import util.IteratorWrapper;
 import util.MultiMapHelper;
 import util.NullStream;
@@ -482,7 +481,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (fixtures.containsKey(location)) {
 			return fixtures.get(location);
 		} else {
-			return new IteratorWrapper<>(new EmptyIterator<>());
+			return Collections.emptyList();
 		}
 	}
 
