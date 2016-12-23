@@ -169,12 +169,12 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * Returns the empty string. TODO: Inline this call?
-	 * @return a String representation of the object
+	 * Returns the empty string.
+	 * @return the empty string; this is the empty node
 	 */
 	@Override
 	public String toString() {
-		return getText();
+		return "";
 	}
 
 	/**
