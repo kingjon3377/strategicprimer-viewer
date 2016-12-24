@@ -38,6 +38,7 @@ public interface ISPReader {
 	String NAMESPACE = "https://github.com/kingjon3377/strategicprimer-viewer";
 
 	/**
+	 * Read an object from XML.
 	 * @param <T>     A supertype of the object the XML represents
 	 * @param file    the name of the file being read from
 	 * @param istream a reader from which to read the XML

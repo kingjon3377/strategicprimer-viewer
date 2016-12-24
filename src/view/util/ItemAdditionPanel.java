@@ -99,6 +99,7 @@ public final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 	}
 
 	/**
+	 * Add a listener.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -107,7 +108,8 @@ public final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 	}
 
 	/**
-	 * @param list a list to remove
+	 * Remove a listener.
+	 * @param list a listener to remove
 	 */
 	@Override
 	public void removeAddRemoveListener(final AddRemoveListener list) {
@@ -139,6 +141,7 @@ public final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 	}
 
 	/**
+	 * Reports the field's current text.
 	 * @return a diagnostic String
 	 */
 	@Override

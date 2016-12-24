@@ -88,6 +88,8 @@ public interface ISPDriver extends HasName {
 			throws DriverFailedException;
 
 	/**
+	 * Get the usage object for the driver. The default implementation throws, to allow
+	 * this to be a @FunctionalInterface.
 	 * @return an object indicating how to use and invoke the driver.
 	 */
 	default IDriverUsage usage() {
@@ -95,6 +97,7 @@ public interface ISPDriver extends HasName {
 	}
 
 	/**
+	 * What to call this driver in a CLI list.
 	 * @return what to call the driver in a CLI list.
 	 */
 	@Override

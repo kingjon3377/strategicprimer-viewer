@@ -107,6 +107,7 @@ public interface ITableGenerator<@NonNull T> {
 	}
 
 	/**
+	 * A String showing the distance between two points, rounded to a tenth of a tile.
 	 * @param first  one point
 	 * @param second another point
 	 * @return the distance between them, formatted for print
@@ -123,6 +124,7 @@ public interface ITableGenerator<@NonNull T> {
 	String headerRow();
 
 	/**
+	 * Compare two Point-fixture pairs.
 	 * @param one a Pair of one fixture and its location (in the other order)
 	 * @param two a Pair of another fixture and its location (in the other order)
 	 * @return the result of a comparison between the pairs
@@ -131,6 +133,8 @@ public interface ITableGenerator<@NonNull T> {
 	int comparePairs(Pair<Point, T> one, Pair<Point, T> two);
 
 	/**
+	 * A String representing the owner of a fixture, either "You" if currentPlayer,
+	 * "Independent" if an independent player, or otherwise the player's name.
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @param owner         the owner of the current fixture
 	 * @return a string describing the owner of the current fixture, either "you",
@@ -147,6 +151,8 @@ public interface ITableGenerator<@NonNull T> {
 	}
 
 	/**
+	 * The field delimiter; provided to limit "magic character" warnings and allow us to
+	 * change it.
 	 * @return the character delimiting fields in output files.
 	 */
 	@SuppressWarnings({"SameReturnValue", "MethodReturnAlwaysConstant"})
@@ -165,6 +171,8 @@ public interface ITableGenerator<@NonNull T> {
 	}
 
 	/**
+	 * The row delimiter; used to limit "magic character" warnings and allow us to
+	 * change it.
 	 * @return the character delimiting rows in the output
 	 */
 	@SuppressWarnings({"SameReturnValue", "TypeMayBeWeakened"})
@@ -195,6 +203,7 @@ public interface ITableGenerator<@NonNull T> {
 	}
 
 	/**
+	 * Whether this generator can handle an object. Returns true by default.
 	 * @param obj an object
 	 * @return whether this table generator can handle that object
 	 */
