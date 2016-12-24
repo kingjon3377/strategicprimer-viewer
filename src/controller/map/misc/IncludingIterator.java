@@ -154,14 +154,12 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 					new ComparableIterator<>(new TypesafeXMLEventReader(
 							new MagicReader(file)))));
 		} catch (final FileNotFoundException e) {
-			throw new NoSuchElementBecauseException("File referenced by <include> not " +
-															"found",
-														   e);
+			throw new NoSuchElementBecauseException(
+					"File referenced by <include> not found", e);
 		} catch (final XMLStreamException e) {
 			// TODO: Tests should handle include-non-XML case
-			throw new NoSuchElementBecauseException("XML stream error parsing <include>" +
-															" tag or opening file",
-														   e);
+			throw new NoSuchElementBecauseException(
+					"XML stream error parsing <include> tag or opening file", e);
 		} catch (final SPFormatException e) {
 			throw new NoSuchElementBecauseException("SP format problem in <include>", e);
 		}
