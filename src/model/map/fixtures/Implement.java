@@ -151,12 +151,12 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	/**
-	 * Use ID for hashing. TODO: *Only* use ID.
+	 * Use ID for hashing.
 	 * @return a hash value for this object
 	 */
 	@Override
 	public int hashCode() {
-		return id | kind.hashCode();
+		return id;
 	}
 
 	/**
