@@ -49,6 +49,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * Clone the Ground.
 	 * @param zero ignored, as there's no sensitive data
 	 * @return a copy of this ground
 	 */
@@ -61,6 +62,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * Whether the ground is exposed.
 	 * @return whether the ground is exposed
 	 */
 	public boolean isExposed() {
@@ -68,6 +70,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * Set whether the ground is exposed.
 	 * @param exp whether the ground is exposed
 	 */
 	public final void setExposed(final boolean exp) {
@@ -75,6 +78,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * The kind of ground.
 	 * @return a description of the ground
 	 */
 	@Override
@@ -83,6 +87,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * The default icon filename. Depends on whether the ground is exposed or not.
 	 * @return the name of an image to represent the ground.
 	 */
 	@Override
@@ -95,6 +100,8 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * An object is equal if it is Ground of the same kind and either both or neither
+	 * are exposed.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -106,6 +113,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * A hash code for the object. TODO: When we get variable ID, use it instead.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -118,6 +126,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the Ground.
 	 */
 	@Override
@@ -140,6 +149,8 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * Since we don't have variable ID, this delegates to equals().
+	 * TODO: when ID becomes variable, implement properly.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -149,6 +160,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -157,6 +169,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -165,6 +178,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * The plural of Ground is Ground, for our purposes.
 	 * @return a string describing all Ground as a class
 	 */
 	@Override
@@ -173,6 +187,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
+	 * Delegates to toString(). TODO: should be the other way around.
 	 * @return a short description of the fixture
 	 */
 	@Override

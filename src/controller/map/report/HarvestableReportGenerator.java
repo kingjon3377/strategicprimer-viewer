@@ -53,6 +53,7 @@ import static util.Ternary.ternary;
 public final class HarvestableReportGenerator
 		extends AbstractReportGenerator<HarvestableFixture> {
 	/**
+	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public HarvestableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
@@ -62,6 +63,7 @@ public final class HarvestableReportGenerator
 	}
 
 	/**
+	 * Sort all of a series of lists.
 	 * @param collections a series of lists to be sorted
 	 */
 	@SafeVarargs
@@ -140,6 +142,7 @@ public final class HarvestableReportGenerator
 		}
 	}
 	/**
+	 * Convert a Map from kinds to Points to a HtmlList.
 	 * @param map a map from kinds to HeadedLists of locations of those kinds
 	 * @param heading what to title the returned list
 	 * @return a HeadedList of those kinds and locations
@@ -362,6 +365,7 @@ public final class HarvestableReportGenerator
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

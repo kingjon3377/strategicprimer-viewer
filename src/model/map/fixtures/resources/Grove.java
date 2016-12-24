@@ -58,6 +58,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Clone the Grove.
 	 * @param zero ignored, as a grove has no sensitive information
 	 * @return a copy of this grove
 	 */
@@ -70,6 +71,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Whether this is an orchard rather than a grove.
 	 * @return true if this is an orchard, false otherwise
 	 */
 	public boolean isOrchard() {
@@ -77,6 +79,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Whether this is a cultivated grove or orchard.
 	 * @return if this is a cultivated grove or orchard, false if it's a wild one
 	 */
 	public boolean isCultivated() {
@@ -84,6 +87,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The kind of trees in the grove.
 	 * @return what kind of trees are in the grove
 	 */
 	@Override
@@ -92,6 +96,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the grove or orchard
 	 */
 	@Override
@@ -103,7 +108,7 @@ public class Grove implements HarvestableFixture, HasKind {
 		}
 	}
 
-	/**
+	/** "[Cultivated/Wild] [kind] [orchard/grove]".
 	 * @return a String representation of the grove or orchard
 	 */
 	@Override
@@ -124,6 +129,8 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * An object is equal if it's a Grove of the same kind and ID, either both or
+	 * neither are orchards, and either both or neither are cultivated.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -137,6 +144,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -145,6 +153,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -153,6 +162,8 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * If we ignore ID, a fixture is equal if it is a Grove of the same kind, either
+	 * both or neither are orchards, and either both or neither are cultivated.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -165,6 +176,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -173,6 +185,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -181,6 +194,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The plural of "grove or orchard" is "groves and orchards".
 	 * @return a string describing all groves and orchards as a class.
 	 */
 	@Override
@@ -189,6 +203,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Delegates to toString(). TODO: Should be the other way around.
 	 * @return a short description of the fixture
 	 */
 	@Override
