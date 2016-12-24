@@ -44,21 +44,25 @@ public interface IReportNode
 	}
 
 	/**
+	 * Write the HTML representation to a Formatter.
 	 * @param formatter a Formatter to write the HTML representation to
 	 */
 	void produce(Formatter formatter);
 
 	/**
+	 * How large the HTML representation will be, approximately.
 	 * @return an approximation of how large the HTML produced by this node will be.
 	 */
 	int size();
 
 	/**
+	 * The text of this node.
 	 * @return the text of the node, usually the header.
 	 */
 	String getText();
 
 	/**
+	 * Set the text for this node.
 	 * @param txt the new text for the node
 	 */
 	void setText(String txt);
@@ -84,6 +88,7 @@ public interface IReportNode
 	}
 
 	/**
+	 * The point, if any, that this and its children represent something on.
 	 * @return the point, if any, in the map that this represents something on
 	 */
 	default Point getPoint() {
@@ -109,11 +114,14 @@ public interface IReportNode
 	}
 
 	/**
+	 * Set the point that this represents something at.
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	void setPoint(final Point pt);
 
 	/**
+	 * The point, if any, in the map that this node (rather than its children)
+	 * represents anything on.
 	 * @return the point, if any, in the map that this node, as opposed to any of its
 	 * children, represents something on.
 	 */
@@ -121,6 +129,7 @@ public interface IReportNode
 	Point getLocalPoint();
 
 	/**
+	 * Whether this is "the empty node."
 	 * @return whether this is "the empty node," which should always be ignored.
 	 */
 	@SuppressWarnings({"MethodReturnAlwaysConstant", "BooleanMethodIsAlwaysInverted"})
@@ -129,6 +138,8 @@ public interface IReportNode
 	}
 
 	/**
+	 * Compare to another node. Note that this is an expensive implementation, producing
+	 * and delegating the HTML representation.
 	 * @param obj an object to compare to.
 	 * @return the result of the comparison
 	 */
@@ -139,6 +150,7 @@ public interface IReportNode
 	}
 
 	/**
+	 * Add children iff they have children of their own.
 	 * @param children new children to add, each only if it has children of its own
 	 */
 	default void addIfNonEmpty(final MutableTreeNode... children) {
@@ -149,12 +161,14 @@ public interface IReportNode
 		}
 	}
 	/**
+	 * A stream of the children of this node.
 	 * @return a stream over the children of this node
 	 */
 	default Stream<IReportNode> stream() {
 		return StreamSupport.stream(spliterator(), false);
 	}
 	/**
+	 * A node is empty if it is an IReportNode and "the empty node."
 	 * @param node a node
 	 * @return whether it is either a non-empty IReportNode or not an IReportNode at
 	 * all, but not null.
@@ -167,6 +181,7 @@ public interface IReportNode
 		}
 	}
 	/**
+	 * An iterator over the node's children.
 	 * @return an iterator over the node's children
 	 */
 	@Override

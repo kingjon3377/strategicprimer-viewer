@@ -23,11 +23,13 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public interface ISkill extends HasName, Subsettable<@NonNull ISkill> {
 	/**
+	 * How many levels the worker has in the skill.
 	 * @return how many levels the worker has in the skill
 	 */
 	int getLevel();
 
 	/**
+	 * How many hours the worker has accumulated since the skill level last increased.
 	 * @return how many hours the worker has accumulated since leveling up last
 	 */
 	int getHours();
@@ -43,6 +45,7 @@ public interface ISkill extends HasName, Subsettable<@NonNull ISkill> {
 	void addHours(int hrs, int condition);
 
 	/**
+	 * Clone the skill.
 	 * @return a copy of this skill
 	 */
 	ISkill copy();
@@ -56,6 +59,8 @@ public interface ISkill extends HasName, Subsettable<@NonNull ISkill> {
 	boolean isEmpty();
 
 	/**
+	 * A skill is a subset if it has the same name, equal or lower level, and if equal
+	 * level equal or lower hours.
 	 * @param obj     another Skill
 	 * @param ostream a stream to explain our results on
 	 * @param context a string to print before every line of output, describing the

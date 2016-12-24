@@ -39,6 +39,7 @@ public final class IsNumeric {
 	}
 
 	/**
+	 * Whether the given String contains only numeric (integer) data.
 	 * @param input a String
 	 * @return whether it contains numeric data or not
 	 */
@@ -53,6 +54,7 @@ public final class IsNumeric {
 	}
 
 	/**
+	 * Whether th given value is between the given bounds.
 	 * @param value a value
 	 * @param lower a lower bound
 	 * @param upper an upper bound

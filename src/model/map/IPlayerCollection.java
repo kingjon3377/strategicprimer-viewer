@@ -21,6 +21,7 @@ public interface IPlayerCollection
 		extends Iterable<@NonNull Player>, Subsettable<@NonNull IPlayerCollection> {
 
 	/**
+	 * Get a player with the given ID.
 	 * @param player a player-id
 	 * @return the player with that ID, or a new Player with that number if we don't have
 	 * it.
@@ -37,17 +38,20 @@ public interface IPlayerCollection
 	Player getCurrentPlayer();
 
 	/**
+	 * Whether we have the given player.
 	 * @param obj an object
 	 * @return whether we contain it
 	 */
 	boolean contains(Player obj);
 
 	/**
+	 * Get an "independent" player.
 	 * @return a player for "independent" fixtures.
 	 */
 	Player getIndependent();
 
 	/**
+	 * Clone the collection.
 	 * @return a copy of this collection
 	 */
 	IPlayerCollection copy();
