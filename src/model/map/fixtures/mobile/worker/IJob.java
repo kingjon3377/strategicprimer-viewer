@@ -49,16 +49,19 @@ public interface IJob
 	boolean addSkill(ISkill skill);
 
 	/**
+	 * The worker's Job level.
 	 * @return the worker's level in the job
 	 */
 	int getLevel();
 
 	/**
+	 * Set the worker's Job level.
 	 * @param newLevel the worker's new level in the job. Must not be negative.
 	 */
 	void setLevel(final int newLevel);
 
 	/**
+	 * Clone the Job.
 	 * @param zero whether to "zero out" sensitive details
 	 * @return a copy of this Job
 	 */
@@ -73,6 +76,7 @@ public interface IJob
 	boolean isEmpty();
 
 	/**
+	 * Get a Skill by name.
 	 * @param skillName the name of a Skill
 	 * @return the Skill by that name in the Job, or none if not present
 	 */

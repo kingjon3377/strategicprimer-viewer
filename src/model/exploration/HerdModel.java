@@ -111,6 +111,7 @@ public enum HerdModel {
 	}
 
 	/**
+	 * The coefficient to turn production into pounds.
 	 * @return The coefficient by which the unit of in which production is measured must
 	 * be multiplied to get pounds.
 	 */

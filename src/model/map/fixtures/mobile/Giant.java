@@ -70,7 +70,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
-	 * If no kind, "giant"; otherwise, "such-and-such giant"
+	 * If no kind, "giant"; otherwise, "such-and-such giant".
 	 * @return a String representation of the giant
 	 */
 	@Override

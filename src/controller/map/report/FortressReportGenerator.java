@@ -74,7 +74,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	}
 
 	/**
-	 *
+	 * Get a String describing the terrain around a fortress.
 	 * @param map      the map
 	 * @param point    a point
 	 * @param fixtures the set of fixtures, so we can schedule the removal the terrain
