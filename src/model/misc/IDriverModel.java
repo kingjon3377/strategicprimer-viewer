@@ -25,22 +25,26 @@ import model.map.MapDimensions;
  */
 public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 	/**
+	 * Set the main map and its filename.
 	 * @param newMap the new map
 	 * @param origin the file from which it was loaded
 	 */
 	void setMap(IMutableMapNG newMap, Optional<Path> origin);
 
 	/**
+	 * Get the main map.
 	 * @return the map
 	 */
 	IMutableMapNG getMap();
 
 	/**
+	 * Get the map's dimensions.
 	 * @return the dimensions and version of the map
 	 */
 	MapDimensions getMapDimensions();
 
 	/**
+	 * Get the filename of the main map.
 	 * @return the file from which the map was loaded
 	 */
 	Optional<Path> getMapFile();

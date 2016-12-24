@@ -37,6 +37,7 @@ public final class IDFactoryFiller {
 	}
 
 	/**
+	 * Fill an ID factory from the given map.
 	 * @param map a map
 	 * @return an ID factory that won't generate an ID the map already uses
 	 */
@@ -61,6 +62,7 @@ public final class IDFactoryFiller {
 	}
 
 	/**
+	 * Fill an ID factory from the given maps.
 	 * @param model a collection of maps
 	 * @return an ID factory that won't generate an ID any of the maps already uses.
 	 */
@@ -87,6 +89,7 @@ public final class IDFactoryFiller {
 	}
 
 	/**
+	 * Fill an ID factory from the given fixtures.
 	 * @param iter a collection of fixtures
 	 * @return an ID factory that won't generate an ID already used in the collection
 	 */
@@ -98,6 +101,7 @@ public final class IDFactoryFiller {
 	}
 
 	/**
+	 * Fill the given ID factory from the given fixtures.
 	 * @param idf  an IDFactory instance
 	 * @param iter a collection of fixtures, all of which (recursively) should have their
 	 *             IDs marked as used.

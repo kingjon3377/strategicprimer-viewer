@@ -27,6 +27,7 @@ public final class IDFactory implements IDRegistrar {
 	private final BitSet usedIDs = new BitSet();
 
 	/**
+	 * Whether the given ID is unused.
 	 * @param idNum the ID number to check
 	 * @return whether it's unused
 	 */
@@ -94,6 +95,7 @@ public final class IDFactory implements IDRegistrar {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

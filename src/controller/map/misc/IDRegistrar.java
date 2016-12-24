@@ -20,6 +20,7 @@ import util.Warning;
  */
 public interface IDRegistrar {
 	/**
+	 * Whether the given ID number is unused.
 	 * @param idNum the ID number to check
 	 * @return whether it's unused
 	 */

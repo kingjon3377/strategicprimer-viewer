@@ -33,6 +33,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	private String image = "";
 
 	/**
+	 * Constructor.
 	 * @param idNum the ID number.
 	 */
 	public Hill(final int idNum) {
@@ -40,6 +41,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Clone a Hill.
 	 * @param zero ignored, as a hill has no sensitive information
 	 * @return a copy of this hill
 	 */
@@ -52,6 +54,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the hill.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -61,6 +64,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the hill.
 	 */
 	@Override
@@ -69,6 +73,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * An object is equal iff it is a Hill with the same ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -79,6 +84,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -87,6 +93,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -95,6 +102,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * If we ignore ID, all Hills are equal.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -104,6 +112,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -112,6 +121,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -120,6 +130,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The plural of Hill is Hills.
 	 * @return a string describing all hills as a class
 	 */
 	@Override
@@ -128,6 +139,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * "a hill".
 	 * @return a short description of the fixture
 	 */
 	@Override

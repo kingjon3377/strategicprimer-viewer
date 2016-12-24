@@ -30,6 +30,7 @@ public interface ICLIHelper extends Closeable {
 	 * Ask the user to choose an item from the list, and if he does carry out an
 	 * operation on it and then ask if he wants to do another.
 	 * @param <T> the type of things in the list
+	 * @param list the list
 	 * @param choice how to ask the user to choose an item from the list
 	 * @param prompt the prompt to use to ask if the user wants to continue
 	 * @param operation what to do with the chosen item in the list
@@ -44,6 +45,7 @@ public interface ICLIHelper extends Closeable {
 	 * Ask the user to choose an item from the list, and if he does carry out an
 	 * operation on it and then ask if he wants to do another.
 	 * @param <T> the type of things in the list
+	 * @param list the list
 	 * @param choice how to ask the user to choose an item from the list
 	 * @param prompt the prompt to use to ask if the user wants to continue
 	 * @param addition what to do if the user chooses "add a new one"
@@ -209,6 +211,7 @@ public interface ICLIHelper extends Closeable {
 	@FunctionalInterface
 	public interface ListAmendment<T> {
 		/**
+		 * Let the user add a new item to the list.
 		 * @param list the list to amend
 		 * @param cli the interface for interacting with the user
 		 * @return the added item, or nothing if we couldn't get it.
@@ -225,6 +228,7 @@ public interface ICLIHelper extends Closeable {
 	@FunctionalInterface
 	public interface ThrowingConsumer<T> {
 		/**
+		 * Consume an item, using the specified CLI interface.
 		 * @param item the item to accept
 		 * @param cli the interface for user I/O
 		 * @throws IOException on I/O error

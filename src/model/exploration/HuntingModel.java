@@ -112,6 +112,7 @@ public final class HuntingModel {
 	}
 
 	/**
+	 * Get a list of hunting results.
 	 * @param point a point
 	 * @param items how many items to limit the list to
 	 * @return a list of hunting results from the surrounding area. About half will be
@@ -122,6 +123,7 @@ public final class HuntingModel {
 	}
 
 	/**
+	 * Get a list of fishing results.
 	 * @param point a point
 	 * @param items how many items to limit the list to
 	 * @return a list of fishing results from the surrounding area. About half will be
@@ -132,6 +134,7 @@ public final class HuntingModel {
 	}
 
 	/**
+	 * Get a list of gathering results.
 	 * @param point a point
 	 * @param items how many items to limit the list to
 	 * @return a list of gathering results from the surrounding area. Many will be
@@ -178,6 +181,7 @@ public final class HuntingModel {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
