@@ -287,6 +287,10 @@ public class Animal implements MobileFixture, HasMutableImage, HasKind, UnitMemb
 	 */
 	@Override
 	public int getDC() {
-		return 20;
+		if (traces) {
+			return 12;
+		} else {
+			return 22;
+		}
 	}
 }
