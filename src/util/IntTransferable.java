@@ -41,6 +41,7 @@ public final class IntTransferable implements Transferable {
 	}
 
 	/**
+	 * The flavor we support.
 	 * @return an array of data flavors in which this data can be transferred
 	 */
 	@Override
@@ -49,6 +50,7 @@ public final class IntTransferable implements Transferable {
 	}
 
 	/**
+	 * Whether we support the given flavor.
 	 * @param flavor the requested flavor for the data
 	 * @return boolean indicating whether or not the data flavor is supported
 	 */
@@ -58,6 +60,7 @@ public final class IntTransferable implements Transferable {
 	}
 
 	/**
+	 * Get the payload.
 	 * @param flavor the requested flavor for the data
 	 * @throws UnsupportedFlavorException if the requested data flavor is not supported.
 	 * @see DataFlavor#getRepresentationClass

@@ -24,6 +24,7 @@ public final class IntHolder implements Accumulator {
 	private int count;
 
 	/**
+	 * Constructor.
 	 * @param initial the initial value
 	 */
 	public IntHolder(final int initial) {
@@ -41,6 +42,7 @@ public final class IntHolder implements Accumulator {
 	}
 
 	/**
+	 * The current value.
 	 * @return the current value of the accumulation.
 	 */
 	@Override
@@ -49,6 +51,7 @@ public final class IntHolder implements Accumulator {
 	}
 
 	/**
+	 * A diagnostic String.
 	 * @return a diagnostic String
 	 */
 	@Override

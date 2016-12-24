@@ -88,6 +88,7 @@ public final class IOHandler implements ActionListener {
 	}
 
 	/**
+	 * If the given object is a Component, return it cast to that; otherwise return null.
 	 * @param obj an object
 	 * @return it if it's a component, or null
 	 */
@@ -132,6 +133,7 @@ public final class IOHandler implements ActionListener {
 	}
 
 	/**
+	 * Read a map from file.
 	 * @param file a file to load a map from
 	 * @return the map in that file
 	 * @throws IOException        on other I/O error
@@ -325,6 +327,7 @@ public final class IOHandler implements ActionListener {
 	}
 
 	/**
+	 * Trivial toString().
 	 * @return a String representation of the object.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

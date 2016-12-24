@@ -36,6 +36,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	private final Collection<@NonNull Integer> toRemove = new ArrayList<>();
 
 	/**
+	 * The size of the map.
 	 * @return the size of the map
 	 */
 	@Override
@@ -44,6 +45,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	}
 
 	/**
+	 * Whether the map is empty.
 	 * @return whether the map is empty
 	 */
 	@Override
@@ -52,6 +54,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	}
 
 	/**
+	 * Whether the map contains the given key.
 	 * @param key a key
 	 * @return whether the map contains it
 	 */
@@ -61,6 +64,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	}
 
 	/**
+	 * Whether the map contains the given value.
 	 * @param value a value
 	 * @return whether the map contains it
 	 */
@@ -70,6 +74,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	}
 
 	/**
+	 * Get the value for the given key.
 	 * @param key a key
 	 * @return the corresponding value in the map, if it exists
 	 */
@@ -80,6 +85,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	}
 
 	/**
+	 * Put the given value in the map for the given key.
 	 * @param key   a key
 	 * @param value a value
 	 * @return the result of putting the value into the map at the key
@@ -90,6 +96,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	}
 
 	/**
+	 * Schedule the given key to be removed.
 	 * *Schedules* the item to be removed; doesn't remove it yet!
 	 *
 	 * @param key a key
@@ -138,6 +145,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	}
 
 	/**
+	 * The key set.
 	 * @return the key set
 	 */
 	@Override
@@ -146,6 +154,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	}
 
 	/**
+	 * The value set.
 	 * @return the collection of values
 	 */
 	@Override
@@ -154,6 +163,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	}
 
 	/**
+	 * The entry set.
 	 * @return the set of entries in the map
 	 */
 	@Override
@@ -162,6 +172,7 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	}
 
 	/**
+	 * The String representation of the map.
 	 * @return a String representation of the object
 	 */
 	@Override

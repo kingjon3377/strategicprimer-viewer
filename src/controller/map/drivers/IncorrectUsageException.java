@@ -37,6 +37,7 @@ public class IncorrectUsageException extends DriverFailedException {
 	}
 
 	/**
+	 * The usage object for the driver.
 	 * @return an object describing the correct usage of the driver
 	 */
 	public final IDriverUsage getCorrectUsage() {
