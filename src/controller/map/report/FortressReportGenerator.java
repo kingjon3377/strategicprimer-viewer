@@ -156,11 +156,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
-			parent.add(new SimpleReportNode(loc,
-												   "There is a river on the tile, " +
-														   "flowing " +
-														   "through the following " +
-														   "borders: ",
+			parent.add(new SimpleReportNode(loc, "There is a river on the tile, ",
+												   "flowing through the following ",
+												   "borders: ",
 												   rivers.stream()
 														   .map(River::getDescription)
 														   .collect(Collectors.joining(
