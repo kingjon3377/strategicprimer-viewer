@@ -69,6 +69,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
+	 * Get an attribute that matches any of the given names.
 	 * @param element an element
 	 * @param names   names an attribute of it might be known by
 	 * @return the first matching attribute, or null if none found
@@ -86,6 +87,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
+	 * Get the 'file' attribute from the given tag.
 	 * @param startElement a tag
 	 * @return the value of the 'file' attribute.
 	 * @throws SPFormatException if the element doesn't have that attribute
@@ -218,6 +220,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
+	 * Show which file we're currently on.
 	 * @return a String representation of the object
 	 */
 	@Override

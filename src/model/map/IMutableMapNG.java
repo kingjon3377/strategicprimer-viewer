@@ -22,24 +22,28 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public interface IMutableMapNG extends IMapNG {
 	/**
+	 * Add a player to the map.
 	 * @param player a player to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addPlayer(Player player);
 
 	/**
+	 * Set base terrain at a location.
 	 * @param location    a location
 	 * @param terrainType the new "base terrain" at that location
 	 */
 	void setBaseTerrain(Point location, TileType terrainType);
 
 	/**
+	 * Set whether a location is mountainous.
 	 * @param location a location
 	 * @param mtn      whether it is mountainous
 	 */
 	void setMountainous(Point location, boolean mtn);
 
 	/**
+	 * Add rivers at a location.
 	 * @param location    a location
 	 * @param addedRivers rivers to add there
 	 */
@@ -47,6 +51,7 @@ public interface IMutableMapNG extends IMapNG {
 	void addRivers(Point location, @NonNull River @NonNull ... addedRivers);
 
 	/**
+	 * Remove rivers at a location.
 	 * @param location      a location
 	 * @param removedRivers rivers to remove there
 	 */
@@ -54,6 +59,7 @@ public interface IMutableMapNG extends IMapNG {
 	void removeRivers(Point location, @NonNull River @NonNull ... removedRivers);
 
 	/**
+	 * Set the primary forest at a location.
 	 * @param location a location
 	 * @param forest   the forest (if any) at that location; null to remove any that is
 	 *                 there
@@ -61,6 +67,7 @@ public interface IMutableMapNG extends IMapNG {
 	void setForest(Point location, @Nullable Forest forest);
 
 	/**
+	 * Set the primary ground at a location.
 	 * @param location  a location
 	 * @param newGround the Ground at that location; null to remove any that is there
 	 */
@@ -87,11 +94,13 @@ public interface IMutableMapNG extends IMapNG {
 	void removeFixture(Point location, TileFixture fix);
 
 	/**
+	 * Set the current player.
 	 * @param player the new current player
 	 */
 	void setCurrentPlayer(Player player);
 
 	/**
+	 * Set the current turn.
 	 * @param currentTurn the new current turn
 	 */
 	void setCurrentTurn(int currentTurn);

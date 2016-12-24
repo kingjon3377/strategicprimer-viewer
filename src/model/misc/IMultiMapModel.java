@@ -43,23 +43,27 @@ public interface IMultiMapModel extends IDriverModel {
 	void removeSubordinateMap(IMapNG map);
 
 	/**
+	 * Subordinate maps with their filenames.
 	 * @return an iterator over the subordinate maps
 	 */
 	Iterable<Pair<IMutableMapNG, Optional<Path>>> getSubordinateMaps();
 
 	/**
+	 * All maps with their filenames.
 	 * @return an iterator over all the maps, including the main map and the subordinate
 	 * maps
 	 */
 	Iterable<Pair<IMutableMapNG, Optional<Path>>> getAllMaps();
 	/**
+	 * A stream of subordinate maps with their filenames.
 	 * @return a stream over the subordinate maps and their files
 	 */
 	default Stream<Pair<IMutableMapNG, Optional<Path>>> streamSubordinateMaps() {
 		return StreamSupport.stream(getSubordinateMaps().spliterator(), false);
 	}
 	/**
-	 * @return a stream over all the maps, not including their filenames
+	 * A stream of all maps and their filenames.
+	 * @return a stream over all the maps and their filenames
 	 */
 	default Stream<Pair<IMutableMapNG, Optional<Path>>> streamAllMaps() {
 		return StreamSupport.stream(getAllMaps().spliterator(), false);

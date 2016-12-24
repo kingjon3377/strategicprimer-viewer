@@ -34,6 +34,7 @@ public interface IMutablePlayerCollection extends IPlayerCollection {
 	boolean remove(Object obj);
 
 	/**
+	 * Clone the player-collection.
 	 * @return a copy of this collection
 	 */
 	@Override
