@@ -11,7 +11,6 @@ import java.util.stream.StreamSupport;
 import model.exploration.IExplorationModel.Direction;
 import model.exploration.IExplorationModel.Speed;
 import model.map.HasOwner;
-import model.map.IEvent;
 import model.map.River;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -182,10 +181,12 @@ public final class SimpleMovement {
 			return ((Ground) fix).isExposed();
 		} else if (unit.equals(fix)) {
 			return false;
-		} else if (fix instanceof IEvent) {
+		} else if (fix != null) {
 			return (getHighestPerception(unit) + speed.getPerceptionModifier() + 15) >=
-						   ((IEvent) fix).getDC();
-		} else return fix != null;
+						   fix.getDC();
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -255,13 +256,8 @@ public final class SimpleMovement {
 		int perception = getHighestPerception(mover) + speed.getPerceptionModifier() + 1;
 		final List<TileFixture> retval = new ArrayList<>();
 		for (final TileFixture item : local) {
-			final int dc;
-			// TODO: More kinds of fixtures ought to have DCs---perhaps not per-instance
-			if (item instanceof IEvent) {
-				dc = ((IEvent) item).getDC();
-			} else {
-				dc = 10;
-			}
+			final int dc = item.getDC();
+			// FIXME: Give bonus for other relevant Skills depending on fixture type
 			if (SingletonRandom.RANDOM.nextInt(20) + 1 >= dc) {
 				retval.add(item);
 				perception -= 5;

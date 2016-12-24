@@ -814,11 +814,7 @@ public class SPMapNG implements IMutableMapNG {
 			}
 			// TODO: What other fixtures should we zero, or skip?
 			for (final TileFixture fixture : getOtherFixtures(point)) {
-				if (fixture instanceof IEvent) {
-					retval.addFixture(point, fixture.copy(zero));
-				} else {
-					retval.addFixture(point, fixture.copy(false));
-				}
+				retval.addFixture(point, fixture.copy(zero));
 			}
 		}
 		return retval;

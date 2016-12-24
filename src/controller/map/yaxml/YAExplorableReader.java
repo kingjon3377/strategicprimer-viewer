@@ -11,7 +11,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.IEvent;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.explorable.ExplorableFixture;
@@ -113,7 +112,7 @@ public final class YAExplorableReader extends YAAbstractReader<ExplorableFixture
 		} else {
 			throw new IllegalStateException("Unhandled ExplorableFixture subtype");
 		}
-		writeProperty(ostream, "dc", Integer.toString(((IEvent) obj).getDC()));
+		writeProperty(ostream, "dc", Integer.toString(obj.getDC()));
 		writeProperty(ostream, "id", Integer.toString(obj.getID()));
 		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);

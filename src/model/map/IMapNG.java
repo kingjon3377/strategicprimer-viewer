@@ -114,6 +114,7 @@ public interface IMapNG
 	Player getCurrentPlayer();
 
 	/**
+	 * FIXME: Should take a Player for whom it is being zeroed, to *not* zero his HQ!
 	 * @param zero whether to "zero" sensitive data (probably just DCs)
 	 * @return a copy of this map
 	 */

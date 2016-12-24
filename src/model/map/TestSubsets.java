@@ -382,8 +382,7 @@ public final class TestSubsets {
 		// DCs, the only thing zeroed out in *map* copy() at the moment, are ignored in
 		// equals().
 		clone.streamOtherFixtures(pointOne).filter(AbstractTown.class::isInstance)
-				.map(IEvent.class::cast).forEach(
-				fix -> assertThat("Copied map didn't copy DCs",
+				.forEach(fix -> assertThat("Copied map didn't copy DCs",
 						Integer.valueOf(fix.getDC()), equalTo(
 								Integer.valueOf(0))));
 		final Unit uOne = new Unit(new Player(0, ""), "type", "name", 7);
