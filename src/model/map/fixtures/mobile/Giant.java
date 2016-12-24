@@ -48,6 +48,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * Clone the giant.
 	 * @param zero ignored, as a giant has no sensitive information
 	 * @return a copy of this giant
 	 */
@@ -60,6 +61,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * What kind of giant.
 	 * @return the kind of giant
 	 */
 	@Override
@@ -68,6 +70,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * If no kind, "giant"; otherwise, "such-and-such giant"
 	 * @return a String representation of the giant
 	 */
 	@Override
@@ -80,6 +83,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the fairy
 	 */
 	@Override
@@ -88,6 +92,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * An object is equal if it is a giant of the same kind with the same ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -99,6 +104,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -107,6 +113,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -115,6 +122,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * If we ignore ID, a fixture is equal if it is a Giant of the same kind.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -125,6 +133,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * A fixture is a subset iff is equal.
 	 * @param obj     another UnitMember
 	 * @param ostream a stream to report an explanation on
 	 * @param context a string to print before every line of output, describing the
@@ -153,6 +162,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -161,6 +171,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -169,6 +180,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * The plural of Giant is Giants.
 	 * @return a string describing all giants as a class
 	 */
 	@Override
@@ -177,6 +189,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
+	 * Delegates to toString(). TODO: Should be the other way around.
 	 * @return a short description of the fixture
 	 */
 	@Override

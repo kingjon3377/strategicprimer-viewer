@@ -22,6 +22,7 @@ import javax.swing.GroupLayout;
  */
 public class FunctionalGroupLayout extends GroupLayout {
 	/**
+	 * Constructor.
 	 * @param host the Container this is the layout manager for
 	 * @throws IllegalArgumentException if host is {@code null}
 	 */
@@ -29,6 +30,7 @@ public class FunctionalGroupLayout extends GroupLayout {
 		super(host);
 	}
 	/**
+	 * Factory for a parallel group.
 	 * @param components components to add in a parallel group. Can be Components or
 	 *                      Groups; will throw IllegalArgumentException on anything else
 	 * @return that group
@@ -37,6 +39,7 @@ public class FunctionalGroupLayout extends GroupLayout {
 		return initializeGroup(createParallelGroup(), components);
 	}
 	/**
+	 * Factory for a sequential group.
 	 * @param components components to add in a sequential group. Can be Components or
 	 *                      Groups; will throw IllegalArgumentException on anything else.
 	 * @return that group
@@ -45,6 +48,7 @@ public class FunctionalGroupLayout extends GroupLayout {
 		return initializeGroup(createSequentialGroup(), components);
 	}
 	/**
+	 * Add components and/or groups to a group.
 	 * @param group a group
 	 * @param components components to add to it. Can be Components or Groups; will
 	 *                      throw IllegalArgumentException on anything else

@@ -7,6 +7,8 @@ import model.viewer.VisibleDimensions;
  * An interface for objects that want to keep abreast of visible dimensions and zoom
  * level.
  *
+ * TODO: Be a FunctionalInterface taking an Event object
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -21,6 +23,7 @@ import model.viewer.VisibleDimensions;
  */
 public interface GraphicalParamsListener extends EventListener {
 	/**
+	 * Handle a change in map dimensions.
 	 * @param oldDim the previous dimensions
 	 * @param newDim the new dimensions
 	 */
@@ -28,6 +31,7 @@ public interface GraphicalParamsListener extends EventListener {
 	void dimensionsChanged(VisibleDimensions oldDim, VisibleDimensions newDim);
 
 	/**
+	 * Handle a change in tile size.
 	 * @param oldSize the previous tile-size/zoom level
 	 * @param newSize the new tile-size/zoom level
 	 */

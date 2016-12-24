@@ -33,6 +33,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	private String image = "";
 
 	/**
+	 * Constructor.
 	 * @param idNum the ID number.
 	 */
 	public Griffin(final int idNum) {
@@ -40,6 +41,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * Clone the griffin.
 	 * @param zero ignored; there is no sensitive information to zero out
 	 * @return a copy of this troll
 	 */
@@ -52,6 +54,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the griffin
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -61,6 +64,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the griffin
 	 */
 	@Override
@@ -69,6 +73,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * An object is equal if it is a Griffin with the same ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -79,6 +84,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -87,6 +93,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -95,6 +102,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * If we ignore ID, all Griffins are equal to each other.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -104,6 +112,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * A fixture is a subset if it is equal.
 	 * @param obj     another UnitMember
 	 * @param ostream a stream to report an explanation on
 	 * @param context a string to print before every line of output, describing the
@@ -125,6 +134,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -133,6 +143,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -141,6 +152,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * The plural of Griffin is Griffins.
 	 * @return a string describing all griffins as a class
 	 */
 	@Override
@@ -149,6 +161,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
+	 * "a griffin".
 	 * @return a short description of the fixture
 	 */
 	@Override

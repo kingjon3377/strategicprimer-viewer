@@ -18,12 +18,14 @@ package model.listeners;
  */
 public interface GraphicalParamsSource {
 	/**
+	 * Add a listener.
 	 * @param list a listener to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addGraphicalParamsListener(GraphicalParamsListener list);
 
 	/**
+	 * Remove a listener.
 	 * @param list a listener to remove
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")

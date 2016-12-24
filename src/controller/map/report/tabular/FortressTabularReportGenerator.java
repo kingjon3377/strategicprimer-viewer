@@ -48,6 +48,7 @@ public final class FortressTabularReportGenerator implements ITableGenerator<For
 	}
 
 	/**
+	 * Write a table row representing the fortress.
 	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
 	 * @param item     the fortress to base the line on
@@ -77,6 +78,7 @@ public final class FortressTabularReportGenerator implements ITableGenerator<For
 	}
 
 	/**
+	 * The header fields are Distance, Location, Owner, and Name.
 	 * @return the header row for the tabular report
 	 */
 	@Override
@@ -85,6 +87,7 @@ public final class FortressTabularReportGenerator implements ITableGenerator<For
 	}
 
 	/**
+	 * Compare two Point-Fortress pairs.
 	 * @param one a Pair of one fortress and its location (in the other order)
 	 * @param two a Pair of another fortress and its location (in the other order)
 	 * @return the result of a comparison between the pairs.
