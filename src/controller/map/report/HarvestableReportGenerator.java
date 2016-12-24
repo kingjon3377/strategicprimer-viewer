@@ -114,15 +114,11 @@ public final class HarvestableReportGenerator
 				fixtures.remove(Integer.valueOf(item.getID()));
 			}
 		}
-		final HeadedList<String> shrubsText =
-				mapToList(shrubs, "<h5>Shrubs, small trees, and such</h4>");
-		final HeadedList<String> mineralsText =
-				mapToList(minerals, "<h5>Mineral deposits</h5>");
-		final HeadedList<String> stoneText =
-				mapToList(stone, "<h5>Exposed stone deposits</h5>");
 		final List<HeadedList<String>> all =
-				Arrays.asList(caches, groves, meadows, mines, mineralsText, stoneText,
-						shrubsText);
+				Arrays.asList(caches, groves, meadows, mines,
+						mapToList(minerals, "<h5>Mineral deposits</h5>"),
+						mapToList(stone, "<h5>Exposed stone deposits</h5>"),
+						mapToList(shrubs, "<h5>Shrubs, small trees, and such</h4>"));
 		all.forEach(Collections::sort);
 		if (all.stream().allMatch(Collection::isEmpty)) {
 			return "";
