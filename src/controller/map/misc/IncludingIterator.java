@@ -9,6 +9,8 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -16,7 +18,6 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.Pair;
 
@@ -69,24 +70,6 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
-	 * Get an attribute that matches any of the given names.
-	 * @param element an element
-	 * @param names   names an attribute of it might be known by
-	 * @return the first matching attribute, or null if none found
-	 */
-	@Nullable
-	private static Attribute getAttribute(final StartElement element, final QName...
-																			  names) {
-		for (final QName name : names) {
-			final Attribute retval = element.getAttributeByName(name);
-			if ((retval != null) && (retval.getValue() != null)) {
-				return retval;
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * Get the 'file' attribute from the given tag.
 	 * @param startElement a tag
 	 * @return the value of the 'file' attribute.
@@ -94,15 +77,11 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 */
 	private static String getFileAttribute(final StartElement startElement)
 			throws SPFormatException {
-		final Attribute attr =
-				getAttribute(startElement, new QName(ISPReader.NAMESPACE,
-															FILE_ATTR_NAME),
-						new QName(FILE_ATTR_NAME));
-		if (attr == null) {
-			throw new MissingPropertyException(startElement, FILE_ATTR_NAME);
-		} else {
-			return attr.getValue();
-		}
+		return Stream.of(new QName(ISPReader.NAMESPACE, FILE_ATTR_NAME),
+				new QName(FILE_ATTR_NAME)).map(startElement::getAttributeByName)
+					   .filter(Objects::nonNull).map(Attribute::getValue)
+					   .filter(Objects::nonNull).findFirst().orElseThrow(
+						() -> new MissingPropertyException(startElement, FILE_ATTR_NAME));
 	}
 
 	/**
