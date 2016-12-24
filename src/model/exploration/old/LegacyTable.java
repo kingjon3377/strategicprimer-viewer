@@ -82,7 +82,7 @@ public final class LegacyTable implements EncounterTable {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addData(final IEvent event) {
-		data.add(event.toString());
+		data.add(event.getText());
 	}
 
 	/**
