@@ -315,11 +315,11 @@ public final class QueryCLI implements SimpleDriver {
 		cli.println("expert herders, twice daily.");
 		cli.printf("Gathering them for each milking takes %d min more.%n",
 				Integer.valueOf(animal.getDailyTimeFloor() / 2));
+		final double production = animal.getProductionPerHead().getNumber().doubleValue();
 		cli.printf("This produces %,.1f %s, %,.1f lbs, of milk per day.%n",
-				Double.valueOf(animal.getProductionPerHead() * count),
-				animal.getProductionUnit(), Double.valueOf(
-						animal.getProductionPerHead() * animal.getPoundsCoefficient() *
-								count));
+				Double.valueOf(production * count),
+				animal.getProductionPerHead().getUnits(),
+				Double.valueOf(production * animal.getPoundsCoefficient() * count));
 		final int costPerHerder;
 		if (cli.inputBooleanInSeries("Are the herders experts? ")) {
 			costPerHerder = animal.getDailyTimePerHead() - 5;
@@ -347,11 +347,11 @@ public final class QueryCLI implements SimpleDriver {
 		cli.printf("which should be done every %d turns at least, takes %.1f hours.%n",
 				Integer.valueOf(bird.getExtraChoresInterval() + 1),
 				Double.valueOf((flockPerHerder * bird.getExtraTimePerHead()) / 60.0));
+		final double production = bird.getProductionPerHead().getNumber().doubleValue();
 		cli.printf("This produces %.0f %s, totaling %.1f oz.%n",
-				Double.valueOf(bird.getProductionPerHead() * count),
-				bird.getProductionUnit(), Double.valueOf(
-						bird.getProductionPerHead() * bird.getPoundsCoefficient() *
-								count));
+				Double.valueOf(production * count),
+				bird.getProductionPerHead().getUnits(),
+				Double.valueOf(production * bird.getPoundsCoefficient() * count));
 		final int cost;
 		if (cli.inputBooleanInSeries("Do they do the cleaning this turn? ")) {
 			cost = bird.getDailyTimePerHead() + bird.getExtraTimePerHead();

@@ -1,5 +1,7 @@
 package model.exploration;
 
+import util.Quantity;
+
 /**
  * Models of (game statistics for) herding, including dairy cattle, small mammals,
  * large mammals, small poultry, large poultry, etc.
@@ -20,33 +22,29 @@ public enum HerdModel {
 	/**
 	 * The model for dairy cattle.
 	 */
-	DairyCattle(4, "gallons", 8.6, 40, 60, 0, 0),
+	DairyCattle(new Quantity(Integer.valueOf(4), "gallons"), 8.6, 40, 60, 0, 0),
 	/**
 	 * The model for other roughly-cattle-sized mammals. (Not anything as large as
 	 * elephants.)
 	 */
-	LargeMammals(3, "gallons", 8.6, 40, 60, 0, 0),
+	LargeMammals(new Quantity(Integer.valueOf(3), "gallons"), 8.6, 40, 60, 0, 0),
 	/**
 	 * The model for roughly-goat-sized mammals.
 	 */
-	SmallMammals(1.5, "gallons", 8.6, 30, 60, 0, 0),
+	SmallMammals(new Quantity(Double.valueOf(1.5), "gallons"), 8.6, 30, 60, 0, 0),
 	/**
 	 * The model for chickens.
 	 */
-	Chickens(0.75, "eggs", 0.125, 2, 0, 30, 2),
+	Chickens(new Quantity(Double.valueOf(0.75), "eggs"), 0.125, 2, 0, 30, 2),
 	/**
 	 * The model for turkeys.
 	 */
-	Turkeys(0.75, "eggs", 0.25, 2, 0, 30, 2);
+	Turkeys(new Quantity(Double.valueOf(0.75), "eggs"), 0.25, 2, 0, 30, 2);
 
 	/**
-	 * The amount, in some model-specified unit, produced per head per turn.
+	 * The amount produced per head per turn.
 	 */
-	private final double productionPerHead;
-	/**
-	 * The unit in which production is measured.
-	 */
-	private final String productionUnit;
+	private final Quantity productionPerHead;
 	/**
 	 * The coefficient by which the unit of in which production is measured must be
 	 * multiplied to get pounds.
@@ -74,9 +72,7 @@ public enum HerdModel {
 	/**
 	 * Constructor.
 	 *
-	 * @param production    The amount, in some model-specified unit, produced per head
-	 *                      per turn.
-	 * @param unit          The unit in which production is measured.
+	 * @param production    The amount produced per head per turn.
 	 * @param coefficient   The coefficient by which the unit of in which production is
 	 *                      measured must be multiplied to get pounds
 	 * @param unitCost      How much time, per head, in minutes, must be spent to milk,
@@ -90,11 +86,9 @@ public enum HerdModel {
 	 * @param extraInterval How many turns at most should elapse between "extra chores"
 	 *                      days.
 	 */
-	HerdModel(final double production, final String unit, final double coefficient,
-			  final int unitCost, final int constantCost, final int extraCost,
-			  final int extraInterval) {
+	HerdModel(final Quantity production, final double coefficient, final int unitCost,
+			  final int constantCost, final int extraCost, final int extraInterval) {
 		productionPerHead = production;
-		productionUnit = unit;
 		poundsCoefficient = coefficient;
 		dailyTimePerHead = unitCost;
 		dailyTimeFloor = constantCost;
@@ -109,19 +103,11 @@ public enum HerdModel {
 		return this == Chickens || this == Turkeys;
 	}
 	/**
-	 * How much is produced per head per turn. TODO: Use Quantity
+	 * How much is produced per head per turn.
 	 * @return The amount, in some model-specified unit, produced per head per turn.
 	 */
-	public double getProductionPerHead() {
+	public Quantity getProductionPerHead() {
 		return productionPerHead;
-	}
-
-	/**
-	 * What that production is measured in.
-	 * @return The unit in which production is measured.
-	 */
-	public String getProductionUnit() {
-		return productionUnit;
 	}
 
 	/**
