@@ -45,6 +45,7 @@ public final class Fortification extends AbstractTown {
 	}
 
 	/**
+	 * Clone the Fortification.
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this fortification
 	 */
@@ -62,6 +63,7 @@ public final class Fortification extends AbstractTown {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the event.
 	 */
 	@Override
@@ -70,6 +72,7 @@ public final class Fortification extends AbstractTown {
 	}
 
 	/**
+	 * The ID for the fixture.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -78,6 +81,7 @@ public final class Fortification extends AbstractTown {
 	}
 
 	/**
+	 * The plural of Fortification is Fortifications.
 	 * @return a string describing all fortifications as a class
 	 */
 	@Override
@@ -86,6 +90,7 @@ public final class Fortification extends AbstractTown {
 	}
 
 	/**
+	 * The kind of town this is.
 	 * @return that this is a fortification
 	 */
 	@Override

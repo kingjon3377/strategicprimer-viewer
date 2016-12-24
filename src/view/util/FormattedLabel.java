@@ -23,6 +23,7 @@ public class FormattedLabel extends JLabel {
 	 */
 	private final String formatString;
 	/**
+	 * Constructor.
 	 * @param format the format string to use
 	 * @param args initial parameters
 	 */

@@ -42,6 +42,7 @@ import util.PatientMap;
 public final class FortressMemberReportGenerator
 		extends AbstractReportGenerator<FortressMember> {
 	/**
+	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public FortressMemberReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,

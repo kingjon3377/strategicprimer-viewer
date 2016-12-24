@@ -87,6 +87,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * Clone the fortress.
 	 * @param zero whether to omit the fortress's contents
 	 * @return a copy of this fortress
 	 */
@@ -107,6 +108,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * An iterator over the members of the fortress.
 	 * @return the units in the fortress.
 	 */
 	@Override
@@ -135,6 +137,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * The owner of the fortress.
 	 * @return the player that owns the fortress
 	 */
 	@Override
@@ -143,6 +146,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * Set the owner of the fortress.
 	 * @param player the fort's new owner
 	 */
 	@Override
@@ -151,6 +155,8 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * An object is equal iff it is a Fortress with the same name, owner, ID, and
+	 * members.
 	 * @param obj an object
 	 * @return whether it is an identical fortress
 	 */
@@ -166,6 +172,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * Use our ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -174,6 +181,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * A fairly complex String representation of the Fortress.
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -222,6 +230,9 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * A fixture is a subset if it is a Fortress with the same ID, owner, and name (or
+	 * it has the name "unknown") and every member it has is equal to, or a subset of,
+	 * one of our members.
 	 * @param obj     another Fortress
 	 * @param ostream a stream to write details to
 	 * @param context a string to print before every line of output, describing the
@@ -237,6 +248,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 			return false;
 		}
 		final Fortress fort = (Fortress) obj;
+		// TODO: Check ID first
 		if (EqualsAny.equalsAny(fort.name, name, "unknown")
 					&& (fort.owner.getPlayerId() == owner.getPlayerId())) {
 			final Map<Integer, FortressMember> ours = new HashMap<>();
@@ -266,6 +278,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * The ID of the fortress.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -274,6 +287,8 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * A fixture is equal, if we ignore ID, to this one if it is a Fortress with the
+	 * same name, owner, and members.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -289,6 +304,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * The name of the fortress.
 	 * @return the fortress's name.
 	 */
 	@Override
@@ -297,6 +313,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * Set the name of the fortress.
 	 * @param newName the fort's new name
 	 */
 	@Override
@@ -318,6 +335,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * The size of the fortress.
 	 * @return the size of the fortress.
 	 */
 	@Override
@@ -326,6 +344,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -334,6 +353,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -342,6 +362,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * The plural of Fortress is Fortresses.
 	 * @return a string describing all fortresses as a class
 	 */
 	@Override
@@ -350,6 +371,8 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * Either "a fortress, [name], owned by you" or "a fortress, [name], owned by
+	 * [owner]". TODO: Handle independent fortresses specially?
 	 * @return a short description of the fixture
 	 */
 	@Override
@@ -362,6 +385,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * The kind of town this is is a fortress.
 	 * @return what kind of town this is
 	 */
 	@Override
@@ -370,6 +394,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * The portrait image filename, if any.
 	 * @return The filename of an image to use as a portrait for the fortress.
 	 */
 	@Override
@@ -378,6 +403,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	}
 
 	/**
+	 * Set the portrait image.
 	 * @param portrait The filename of an image to use as a portrait for the fortress.
 	 */
 	@Override

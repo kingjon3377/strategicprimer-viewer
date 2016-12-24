@@ -64,6 +64,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	private final IReportGenerator<FortressMember> memberReportGenerator =
 			new FortressMemberReportGenerator(pairComparator);
 	/**
+	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public FortressReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
@@ -73,6 +74,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	}
 
 	/**
+	 *
 	 * @param map      the map
 	 * @param point    a point
 	 * @param fixtures the set of fixtures, so we can schedule the removal the terrain
@@ -104,6 +106,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				fixtures.remove(Integer.valueOf(fix.getID()));
 			} else if (fix instanceof Mountain) {
 				builder.append(", mountainous");
+				// FIXME: This does nothing; Mountains don't have positive IDs.
+				// Not that it matters, since they never show up anyway.
 				fixtures.remove(Integer.valueOf(fix.getID()));
 			} else if (fix instanceof Hill) {
 				builder.append(", hilly");
@@ -117,6 +121,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	}
 
 	/**
+	 * Produce a String representing a collection of rivers.
 	 * @param rivers a collection of rivers
 	 * @return an equivalent string.
 	 */
@@ -139,6 +144,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	}
 
 	/**
+	 * Add IReportNodes representing rivers to a parent.
 	 * @param loc    where this is
 	 * @param parent the node to add nodes describing rivers to
 	 * @param rivers the collection of rivers
@@ -372,6 +378,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
