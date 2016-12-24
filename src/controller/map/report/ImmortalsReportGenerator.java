@@ -54,6 +54,7 @@ import util.PatientMap;
 public final class ImmortalsReportGenerator
 		extends AbstractReportGenerator<MobileFixture> {
 	/**
+	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public ImmortalsReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
@@ -63,6 +64,7 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
+	 * Turn a map from kinds to nodes into a parent node.
 	 * @param header  the heading to put above the children
 	 * @param mapping a mapping from kinds to nodes
 	 * @return a node with all of the nodes as children
@@ -105,6 +107,7 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
+	 * Handle a simple fixture class.
 	 * @param meta the mapping from types to Consumers
 	 * @param cls a type of fixture
 	 * @param heading the heading to put at the top of the list
@@ -121,6 +124,7 @@ public final class ImmortalsReportGenerator
 		return retval;
 	}
 	/**
+	 * Handle a more complex fixture class.
 	 * @param meta the mapping from types to Consumers
 	 * @param cls a type of fixture
 	 * @param plural the pluralization to add after each list
@@ -273,6 +277,7 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
+	 * Produce a report on an individual fixture.
 	 * @param fixtures      The set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the current player
@@ -295,6 +300,7 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
+	 * Produce a report node on an individual fixture.
 	 * @param fixtures      The set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the current player
@@ -318,6 +324,7 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

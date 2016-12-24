@@ -52,6 +52,7 @@ public final class ImmortalsTabularReportGenerator implements ITableGenerator<Mo
 	}
 
 	/**
+	 * Whether we can handle the given object. TODO: Create Immortal marker interface.
 	 * @param obj an object
 	 * @return whether this report generator covers it
 	 */
@@ -66,6 +67,7 @@ public final class ImmortalsTabularReportGenerator implements ITableGenerator<Mo
 	}
 
 	/**
+	 * Produce a table row for the given fixture.
 	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
 	 * @param item     the fixture to base the line on

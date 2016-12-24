@@ -73,6 +73,7 @@ public final class ImageLoader {
 	}
 
 	/**
+	 * The singleton.
 	 * @return the instance.
 	 */
 	public static ImageLoader getLoader() {
@@ -125,6 +126,7 @@ public final class ImageLoader {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

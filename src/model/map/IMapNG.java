@@ -33,38 +33,45 @@ import org.eclipse.jdt.annotation.Nullable;
 public interface IMapNG
 		extends Subsettable<@NonNull IMapNG>, Comparable<@NonNull IMapNG> {
 	/**
+	 * The dimensions of the map.
 	 * @return the map version and dimensions
 	 */
 	MapDimensions dimensions();
 
 	/**
+	 * The players in the map.
 	 * @return a view of the players in the map.
 	 */
 	Iterable<Player> players();
 
 	/**
+	 * The locations in the map.
 	 * @return a view of the locations on the map
 	 */
 	Iterable<Point> locations();
 
 	/**
+	 * A stream of the locations in the map.
 	 * @return a view of the locations on the map
 	 */
 	Stream<Point> locationStream();
 
 	/**
+	 * The base terrain at the given point.
 	 * @param location a location
 	 * @return the "base terrain" at that location
 	 */
 	TileType getBaseTerrain(Point location);
 
 	/**
+	 * Whether the given location is mountainous.
 	 * @param location a location
 	 * @return whether that location is mountainous
 	 */
 	boolean isMountainous(Point location);
 
 	/**
+	 * The rivers, if any, at the given location.
 	 * @param location a location
 	 * @return a view of the river directions, if any, at that location
 	 */
@@ -89,14 +96,16 @@ public interface IMapNG
 	@Nullable Ground getGround(Point location);
 
 	/**
+	 * Any fixtures, other than the main ground and forest, at the given location.
 	 * @param location a location
 	 * @return a view of any fixtures on the map that aren't covered in the other
-	 * querying
-	 * methods.
+	 * querying methods.
 	 */
 	Iterable<@NonNull TileFixture> getOtherFixtures(Point location);
 
 	/**
+	 * A stream of any fixtures, other than the main ground and forest, at the given
+	 * location.
 	 * @param location a location
 	 * @return a stream of any fixtures on the map that aren't covered in the other
 	 * querying methods.
@@ -104,16 +113,19 @@ public interface IMapNG
 	Stream<@NonNull TileFixture> streamOtherFixtures(Point location);
 
 	/**
+	 * The current turn.
 	 * @return the current turn
 	 */
 	int getCurrentTurn();
 
 	/**
+	 * The current player.
 	 * @return the current player
 	 */
 	Player getCurrentPlayer();
 
 	/**
+	 * Clone the map.
 	 * @param zero whether to "zero" sensitive data (probably just DCs)
 	 * @param player the player for whom the map is being prepared, or null if none
 	 * @return a copy of this map
@@ -145,6 +157,7 @@ public interface IMapNG
 		return locationStream().allMatch(this::isLocationEmpty);
 	}
 	/**
+	 * A stream of the players in the map.
 	 * @return a stream of the players in the map
 	 */
 	default Stream<Player> streamPlayers() {

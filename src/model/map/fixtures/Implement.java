@@ -38,6 +38,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	private String image = "";
 
 	/**
+	 * Constructor.
 	 * @param implKind the "kind" of implement
 	 * @param idNum    an ID # for the implement
 	 */
@@ -47,6 +48,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	/**
+	 * The ID number.
 	 * @return the ID # of the implement
 	 */
 	@Override
@@ -55,6 +57,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	/**
+	 * If we ignore ID, a fixture is equal if it is an Implement of the same kind.
 	 * @param fix a fixture
 	 * @return whether it equals this one except for ID
 	 */
@@ -64,7 +67,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 		return (fix instanceof Implement) && kind.equals(((Implement) fix).kind);
 	}
 
-	/**
+	/** A fixture is a subset iff it is equal.
 	 * @param obj     a fixture
 	 * @param ostream the stream to report errors to
 	 * @param context the context to report before errors
@@ -89,6 +92,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	/**
+	 * Clone the implement.
 	 * @param zero whether to "zero out" sensitive information
 	 * @return a copy of this Implement
 	 */
@@ -99,6 +103,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	/**
+	 * The kind of equipment.
 	 * @return the "kind" of implement
 	 */
 	@Override
@@ -107,6 +112,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the filename of an image to use for implements by default
 	 */
 	@Override
@@ -115,6 +121,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the filename of an image to use for this implement
 	 */
 	@Override
@@ -123,6 +130,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the filename of an image to use for this implement
 	 */
 	@Override
@@ -131,6 +139,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	/**
+	 * An object is equal iff it is an Object of the same kind and ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -142,6 +151,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	/**
+	 * Use ID for hashing. TODO: *Only* use ID.
 	 * @return a hash value for this object
 	 */
 	@Override
@@ -150,6 +160,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the implement
 	 */
 	@Override
