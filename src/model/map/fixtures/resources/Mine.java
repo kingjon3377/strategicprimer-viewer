@@ -164,4 +164,18 @@ public class Mine implements HarvestableFixture, HasKind {
 	public String shortDesc() {
 		return status.toString() + ' ' + kind + " mine";
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * TODO: should perhaps be variable and loaded from XML
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		if (TownStatus.Active == status) {
+			return 15;
+		} else {
+			return 25;
+		}
+	}
 }

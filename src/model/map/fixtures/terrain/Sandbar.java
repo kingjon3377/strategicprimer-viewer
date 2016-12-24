@@ -133,4 +133,13 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 		retval.image = image;
 		return retval;
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 18;
+	}
 }

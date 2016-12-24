@@ -192,4 +192,15 @@ public class Fairy implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	public String shortDesc() {
 		return kind + " fairy";
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * TODO: should vary, either defined in XML or computed from kind
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 30;
+	}
 }

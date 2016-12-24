@@ -183,4 +183,15 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	public String shortDesc() {
 		return toString();
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * TODO: should this vary with kind?
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 28;
+	}
 }

@@ -159,4 +159,13 @@ public class Troll implements MobileFixture, HasMutableImage, UnitMember {
 	public String shortDesc() {
 		return "a troll";
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 28;
+	}
 }

@@ -306,4 +306,17 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	public void setPortrait(final String portrait) {
 		portraitName = portrait;
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		if (TownStatus.Active == status) {
+			return 15;
+		} else {
+			return 30;
+		}
+	}
 }

@@ -157,4 +157,13 @@ public class Ogre implements MobileFixture, HasMutableImage, UnitMember {
 	public String shortDesc() {
 		return "an ogre";
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 28;
+	}
 }

@@ -179,4 +179,17 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	public String shortDesc() {
 		return toString();
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		if (exposed) {
+			return 10;
+		} else {
+			return 40;
+		}
+	}
 }

@@ -1,10 +1,8 @@
 package model.map;
 
 /**
- * An "event" --- something, other than a fortress, unit, or river, that can be on a tile.
- * Intended to replace legacy/numeric "events."
- *
- * TODO: Most TileFixtures should be IEvents, to make Perception more meaningful
+ * An interface for things that were on the original table of numeric "events" in
+ * version-0 maps.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -19,13 +17,6 @@ package model.map;
  * @author Jonathan Lovelace
  */
 public interface IEvent extends TileFixture {
-	/**
-	 * The DC to discover the event.
-	 *
-	 * @return the DC to discover the event.
-	 */
-	int getDC();
-
 	/**
 	 * @return exploration-result text for the event.
 	 */

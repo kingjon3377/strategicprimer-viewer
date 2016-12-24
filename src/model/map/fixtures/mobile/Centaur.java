@@ -192,4 +192,13 @@ public class Centaur implements MobileFixture, HasMutableImage, HasKind, UnitMem
 	public String shortDesc() {
 		return toString();
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 20;
+	}
 }

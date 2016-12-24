@@ -168,6 +168,7 @@ public final class SimpleMovement {
 	 * FIXME: *Some* explorers *would* notice even unexposed ground.
 	 *
 	 * TODO: We now check DCs on Events, but ignore relevant skills other than Perception
+	 * And now a lot more things have DCs for which those other skills are relevant.
 	 *
 	 * @param unit a unit
 	 * @param speed how fast the unit is moving

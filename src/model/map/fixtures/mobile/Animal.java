@@ -277,4 +277,16 @@ public class Animal implements MobileFixture, HasMutableImage, HasKind, UnitMemb
 		retval.image = image;
 		return retval;
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * FIXME: This should be variable, either read from XML or computed from kind using
+	 * some other read-from-file data
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 20;
+	}
 }

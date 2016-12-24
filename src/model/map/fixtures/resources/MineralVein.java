@@ -23,7 +23,7 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	/**
-	 * The DC to discover the vein. TODO: Should perhaps be mutable.
+	 * The DC to discover the vein. TODO: Should have good defaults
 	 */
 	private final int dc;
 	/**

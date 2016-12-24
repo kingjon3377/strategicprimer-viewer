@@ -155,4 +155,13 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	public String shortDesc() {
 		return "a griffin";
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 28;
+	}
 }

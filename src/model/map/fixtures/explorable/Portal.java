@@ -232,4 +232,15 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 			return false;
 		}
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * TODO: This should probably be variable (i.e. read from XML)
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 35;
+	}
 }

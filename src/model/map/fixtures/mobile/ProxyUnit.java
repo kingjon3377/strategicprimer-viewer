@@ -683,4 +683,13 @@ public final class ProxyUnit
 			return true;
 		}
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return getCommonValue(IUnit::getDC, 10, 10);
+	}
 }

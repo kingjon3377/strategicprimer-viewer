@@ -233,4 +233,15 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof AdventureFixture) && equalsImpl((AdventureFixture) fix);
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * TODO: This should probably be variable (i.e. read from XML)
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 30;
+	}
 }

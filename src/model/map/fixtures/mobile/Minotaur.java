@@ -157,4 +157,13 @@ public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 			return false;
 		}
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 30;
+	}
 }

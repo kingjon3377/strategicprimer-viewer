@@ -23,7 +23,7 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	/**
-	 * The DC to discover the stone. TODO: Should perhaps be mutable.
+	 * The DC to discover the stone. TODO: reasonable defaults
 	 */
 	private final int dc;
 	/**

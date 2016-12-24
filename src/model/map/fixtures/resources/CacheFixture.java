@@ -191,4 +191,13 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	public String shortDesc() {
 		return "a cache of " + kind;
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 25;
+	}
 }

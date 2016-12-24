@@ -154,4 +154,15 @@ public class Shrub implements HarvestableFixture, HasKind {
 	public String shortDesc() {
 		return toString();
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * TODO: Should this vary, either loading from XML or by kind?
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 15;
+	}
 }

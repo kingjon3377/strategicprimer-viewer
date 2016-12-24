@@ -14,6 +14,7 @@ import model.map.HasMutableOwner;
 import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.Player;
+import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -415,5 +416,18 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	@Override
 	public void setPortrait(final String portrait) {
 		portraitName = portrait;
+	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		final int natural = 25 - members.size();
+		final int memberDC = stream().filter(TileFixture.class::isInstance)
+									 .map(TileFixture.class::cast)
+									 .mapToInt(TileFixture::getDC).min().orElse(100);
+		return Integer.min(natural, memberDC);
 	}
 }

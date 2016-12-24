@@ -431,7 +431,8 @@ public final class TestMoreFixtureSerialization extends
 		assertThat("Serialized form contains new results too",
 				createSerializedForm(secondUnit, false),
 				containsString("some other results"));
-		// TODO: Test old non-tag-based orders deserialization
+		// TODO: Test old non-tag-based orders deserialization somehow (orders don't
+		// affect equality)
 	}
 	/**
 	 * Test that in orders and results quoting XML meta-characters are quoted properly.

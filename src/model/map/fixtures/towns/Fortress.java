@@ -12,6 +12,7 @@ import model.map.HasMutableName;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
+import model.map.TileFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.NonNull;
@@ -382,5 +383,20 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	@Override
 	public void setPortrait(final String portrait) {
 		portraitName = portrait;
+	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * TODO: should depend on size
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		final int natural = 20 - units.size();
+		final int memberDC = stream().filter(TileFixture.class::isInstance)
+									 .map(TileFixture.class::cast)
+									 .mapToInt(TileFixture::getDC).min().orElse(100);
+		return Integer.min(natural, memberDC);
 	}
 }

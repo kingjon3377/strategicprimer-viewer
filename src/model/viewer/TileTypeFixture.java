@@ -171,4 +171,13 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 		LOGGER.warning("TileTypeFixture#shortDesc() called");
 		return "You shouldn't see this text; report this";
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 0;
+	}
 }

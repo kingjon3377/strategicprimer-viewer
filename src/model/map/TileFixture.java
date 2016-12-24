@@ -60,4 +60,25 @@ public interface TileFixture extends IFixture, Comparable<@NonNull TileFixture> 
 		}
 	}
 
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * Some rough guidelines for the scale:
+	 *
+	 * <ul>
+	 * <li>0 is "impossible to miss": the type of terrain you pass through</li>
+	 * <li>10 and under is "hard to miss": forests, mountains, rivers, perhaps hills</li>
+	 * <li>10-20 is "not hard to spot": shrubs, active populations</li>
+	 * <li>20-30 is "you have to be observant": ruins, etc.</li>
+	 * <li>30+ is generally "<i>really</i> observant or specialized equipment":
+	 * unexposed mineral deposits, portals to other worlds, etc.</li>
+	 * </ul>
+	 *
+	 * TODO: In many or most cases, DCs should take surrounding-terrain context into
+	 * account, and so this shouldn't be an instance function here, but either on the
+	 * map or in a separate class
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	int getDC();
 }

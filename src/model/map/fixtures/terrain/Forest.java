@@ -200,4 +200,13 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind {
 			return "A " + trees + " forest.";
 		}
 	}
+	/**
+	 * The required Perception check for an explorer to find the fixture.
+	 *
+	 * @return the DC to discover the fixture.
+	 */
+	@Override
+	public int getDC() {
+		return 5;
+	}
 }
