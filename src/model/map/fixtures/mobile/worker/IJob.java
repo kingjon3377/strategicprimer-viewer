@@ -62,10 +62,9 @@ public interface IJob
 
 	/**
 	 * Clone the Job.
-	 * @param zero whether to "zero out" sensitive details
 	 * @return a copy of this Job
 	 */
-	IJob copy(boolean zero);
+	IJob copy();
 
 	/**
 	 * A Job is "empty" if the worker has no levels in it and no experience in any skills

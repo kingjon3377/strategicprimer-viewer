@@ -60,7 +60,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	public ISkill copy() {
 		final ProxySkill retval = new ProxySkill(name, parallel);
 		for (final IJob job : proxied) {
-			retval.addProxied(job.copy(false));
+			retval.addProxied(job.copy());
 		}
 		return retval;
 	}

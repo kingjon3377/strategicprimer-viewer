@@ -314,7 +314,7 @@ public class Worker implements IWorker, HasPortrait {
 			retval.image = image;
 			for (final IJob job : this) {
 				if (!job.isEmpty()) {
-					retval.addJob(job.copy(false));
+					retval.addJob(job.copy());
 				}
 			}
 			return retval;

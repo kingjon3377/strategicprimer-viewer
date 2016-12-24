@@ -54,20 +54,15 @@ public class Job implements IJob {
 	}
 
 	/**
-	 * @param zero whether to "zero out" sensitive information
 	 * @return a copy of this
 	 */
 	@Override
-	public IJob copy(final boolean zero) {
-		if (zero) {
-			return new Job(name, 0);
-		} else {
-			final IJob retval = new Job(name, level);
-			for (final ISkill skill : this) {
-				retval.addSkill(skill.copy());
-			}
-			return retval;
+	public IJob copy() {
+		final IJob retval = new Job(name, level);
+		for (final ISkill skill : this) {
+			retval.addSkill(skill.copy());
 		}
+		return retval;
 	}
 
 	/**
