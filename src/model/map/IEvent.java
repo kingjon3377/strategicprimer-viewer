@@ -18,6 +18,7 @@ package model.map;
  */
 public interface IEvent extends TileFixture {
 	/**
+	 * Exploration-result text describing the event.
 	 * @return exploration-result text for the event.
 	 */
 	String getText();

@@ -19,18 +19,21 @@ package model.map;
  */
 public interface IFixture {
 	/**
-	 * @return an ID (UID for most fixtures, though perhaps not for things like mountains
-	 * and hills) for the fixture.
+	 * The fixture's ID number.
+	 * @return an ID (UID for most fixtures, though perhaps not for things like
+	 * mountains) for the fixture.
 	 */
 	int getID();
 
 	/**
+	 * Whether a fixture is equal if we ignore its ID.
 	 * @param fix a fixture
 	 * @return whether it's equal, ignoring ID (and DC for events), to this one
 	 */
 	boolean equalsIgnoringID(IFixture fix);
 
 	/**
+	 * Clone the fixture.
 	 * @param zero whether to "zero out" (omit) sensitive information in the copy
 	 * @return A copy of this fixture, possibly "sanitized" in a way that won't break
 	 * subsets.

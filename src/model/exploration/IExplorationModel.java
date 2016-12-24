@@ -30,11 +30,13 @@ import org.eclipse.jdt.annotation.Nullable;
 public interface IExplorationModel
 		extends IMultiMapModel, SelectionChangeSource, MovementCostSource {
 	/**
+	 * Players that are shared by all the maps.
 	 * @return all the players that are shared by all the maps
 	 */
 	List<Player> getPlayerChoices();
 
 	/**
+	 * The given player's units in the master map.
 	 * @param player a player
 	 * @return all that player's units in the master map
 	 */
@@ -57,7 +59,7 @@ public interface IExplorationModel
 	int move(Direction direction, Speed speed)
 			throws SimpleMovement.TraversalImpossibleException;
 
-	/**
+	/** Given a starting point and a direction, get the next point in that direction.
 	 * @param point     a point
 	 * @param direction a direction
 	 * @return the point bordering the specified one in the specified direction
@@ -65,25 +67,29 @@ public interface IExplorationModel
 	Point getDestination(Point point, Direction direction);
 
 	/**
+	 * Get the location of the first fixture that can be found that is "equal to" the
+	 * given fixture.
 	 * @param fix a fixture
 	 * @return the first location found (search order is not defined) containing a
-	 * fixture
-	 * "equal to" the specified one. (Using it on mountains, e.g., will *not* do what you
-	 * want ...)
+	 * fixture "equal to" the specified one. (Using it on mountains, e.g., will *not* do
+	 * what you want ...)
 	 */
 	Point find(TileFixture fix);
 
 	/**
+	 * Get the currently selected unit, if any.
 	 * @return the currently selected unit---may be null!
 	 */
 	@Nullable IUnit getSelectedUnit();
 
 	/**
+	 * Change the currently selected unit.
 	 * @param unit the new selected unit
 	 */
 	void selectUnit(@Nullable IUnit unit);
 
 	/**
+	 * Get the location of the currently selected unit.
 	 * @return its location. This will *not* be null.
 	 */
 	Point getSelectedUnitLocation();
@@ -91,8 +97,7 @@ public interface IExplorationModel
 	/**
 	 * If there is a currently selected unit, make any independent villages at its
 	 * location change to be owned by the owner of the currently selected unit. This
-	 * costs
-	 * MP.
+	 * costs MP.
 	 */
 	void swearVillages();
 
@@ -185,18 +190,21 @@ public interface IExplorationModel
 		 */
 		private final String desc;
 		/**
+		 * The modifier by which to multiply movement costs.
 		 * @return the multiplicative modifier to apply to movement costs
 		 */
 		public double getMpMultiplier() {
 			return mpMultiplier;
 		}
 		/**
+		 * The modifier to add to Perception checks.
 		 * @return the additive modifier to apply to Perception checks
 		 */
 		public int getPerceptionModifier() {
 			return perceptionModifier;
 		}
 		/**
+		 * A description to use in menus.
 		 * @return a String description for use in CLI menus.
 		 */
 		@Override
@@ -204,6 +212,7 @@ public interface IExplorationModel
 			return desc;
 		}
 		/**
+		 * Constructor.
 		 * @param mpMod the multiplicative modifier to movement costs
 		 * @param perceptionMod the additive modifier to Perception checks
 		 */
