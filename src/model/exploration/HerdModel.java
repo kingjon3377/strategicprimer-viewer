@@ -102,12 +102,14 @@ public enum HerdModel {
 		extraChoresInterval = extraInterval;
 	}
 	/**
+	 * Whether this is poultry.
 	 * @return true if this is poultry, false otherwise
 	 */
 	public boolean isPoultry() {
 		return this == Chickens || this == Turkeys;
 	}
 	/**
+	 * How much is produced per head per turn. TODO: Use Quantity
 	 * @return The amount, in some model-specified unit, produced per head per turn.
 	 */
 	public double getProductionPerHead() {
@@ -115,6 +117,7 @@ public enum HerdModel {
 	}
 
 	/**
+	 * What that production is measured in.
 	 * @return The unit in which production is measured.
 	 */
 	public String getProductionUnit() {
@@ -130,6 +133,7 @@ public enum HerdModel {
 	}
 
 	/**
+	 * How much time per head is spent to collect the food, in minutes.
 	 * @return How much time, per head, in minutes, must be spent to milk, gather
 	 * eggs, or
 	 * otherwise collect the food produced by the animals. Callers may adjust this
@@ -140,6 +144,7 @@ public enum HerdModel {
 	}
 
 	/**
+	 * How much time must be spent on the herd regardless of its size per turn.
 	 * @return How much time, in minutes, must be spent on the entire herd or flock each
 	 * turn, regardless of its size. This should be *added* to the quotient of the total
 	 * time for the entire herd divided by the number of herders.
@@ -149,6 +154,7 @@ public enum HerdModel {
 	}
 
 	/**
+	 * How many minutes must be spent per head on "extra chores" days.
 	 * @return How much time, in minutes, must be spent per head on "extra chores" days.
 	 */
 	public int getExtraTimePerHead() {
@@ -156,6 +162,7 @@ public enum HerdModel {
 	}
 
 	/**
+	 * How often "extra chores" days should be.
 	 * @return How many turns at most should elapse between "extra chores" days. A return
 	 * value less than or equal to zero indicates that there are no extra chores that
 	 * should be regularly, but not daily, scheduled.

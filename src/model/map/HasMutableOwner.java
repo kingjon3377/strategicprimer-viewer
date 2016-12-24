@@ -17,6 +17,7 @@ package model.map;
  */
 public interface HasMutableOwner extends HasOwner {
 	/**
+	 * Set the new owner.
 	 * @param player the player that should now own it.
 	 */
 	void setOwner(Player player);

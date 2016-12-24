@@ -17,6 +17,7 @@ package model.map;
  */
 public interface HasMutableKind extends HasKind {
 	/**
+	 * Set the kind of whatever this is.
 	 * @param nKind the thing's new kind
 	 */
 	void setKind(String nKind);

@@ -20,11 +20,13 @@ package model.map;
  */
 public interface HasPortrait {
 	/**
+	 * The portrait image filename.
 	 * @return the name of the image file containing the portrait.
 	 */
 	String getPortrait();
 
 	/**
+	 * Set a portrait image filename.
 	 * @param portrait the name of the image file containing the portrait
 	 */
 	void setPortrait(String portrait);

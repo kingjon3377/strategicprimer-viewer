@@ -18,6 +18,7 @@ package model.map;
 @FunctionalInterface
 public interface HasKind {
 	/**
+	 * The kind of whatever this is.
 	 * @return the kind of whatever this is
 	 */
 	String getKind();

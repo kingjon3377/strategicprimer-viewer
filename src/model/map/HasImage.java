@@ -29,6 +29,7 @@ public interface HasImage {
 	String getDefaultImage();
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to represent this individual fixture.
 	 */
 	String getImage();

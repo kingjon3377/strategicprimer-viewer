@@ -17,6 +17,7 @@ package model.map;
  */
 public interface HasMutableName extends HasName {
 	/**
+	 * Set the name.
 	 * @param newName the thing's new name
 	 */
 	void setName(String newName);

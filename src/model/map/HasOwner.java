@@ -18,6 +18,7 @@ package model.map;
 @FunctionalInterface
 public interface HasOwner {
 	/**
+	 * The owner of whatever this is.
 	 * @return The player that owns whatever this is.
 	 */
 	Player getOwner();

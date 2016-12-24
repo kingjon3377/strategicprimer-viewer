@@ -18,6 +18,7 @@ package model.map;
 @FunctionalInterface
 public interface HasName {
 	/**
+	 * The name of whatever this is.
 	 * @return the name
 	 */
 	String getName();

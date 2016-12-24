@@ -18,6 +18,7 @@ package model.map;
  */
 public interface HasMutableImage extends HasImage {
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the new image for this *individual* fixture. If null or the empty
 	 *            string, the default image will be used.
 	 */
