@@ -384,7 +384,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 		old.players().forEach(retval::addPlayer);
 		final List<Point> converted = new LinkedList<>();
 		final IDRegistrar idFactory = IDFactoryFiller.createFactory(old);
-		final IMapNG oldCopy = old.copy(false);
+		final IMapNG oldCopy = old.copy(false, null);
 		for (int row = 0; row < oldDim.rows; row++) {
 			for (int col = 0; col < oldDim.cols; col++) {
 				converted.addAll(convertTile(PointFactory.point(row, col), oldCopy,

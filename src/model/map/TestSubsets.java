@@ -373,9 +373,9 @@ public final class TestSubsets {
 		firstMap.addFixture(pointOne,
 				new Fortification(TownStatus.Burned, TownSize.Large, 15, "fortification",
 										 6, new Player(0, "")));
-		assertThat("Cloned map equals original", firstMap.copy(false),
+		assertThat("Cloned map equals original", firstMap.copy(false, null),
 				equalTo(firstMap));
-		final IMapNG clone = firstMap.copy(true);
+		final IMapNG clone = firstMap.copy(true, null);
 		assertThat("unfilled map is still a subset of zeroed clone",
 				Boolean.valueOf(clone.isSubset(zero, DEV_NULL, "")),
 				equalTo(Boolean.TRUE));

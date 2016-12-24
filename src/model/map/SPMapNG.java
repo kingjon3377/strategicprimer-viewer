@@ -788,10 +788,11 @@ public class SPMapNG implements IMutableMapNG {
 
 	/**
 	 * @param zero whether to "zero" sensitive data (probably just DCs)
+	 * @param player the player for whom the map is being prepared, or null for none
 	 * @return a copy of this map
 	 */
 	@Override
-	public IMapNG copy(final boolean zero) {
+	public IMapNG copy(final boolean zero, final @Nullable Player player) {
 		final IMutableMapNG retval =
 				new SPMapNG(dimensions(), playerCollection.copy(), turn);
 		for (final Point point : locations()) {
@@ -814,9 +815,23 @@ public class SPMapNG implements IMutableMapNG {
 			}
 			// TODO: What other fixtures should we zero, or skip?
 			for (final TileFixture fixture : getOtherFixtures(point)) {
-				retval.addFixture(point, fixture.copy(zero));
+				retval.addFixture(point,
+						fixture.copy(zero && shouldZero(fixture, player)));
 			}
 		}
 		return retval;
+	}
+	/**
+	 * @param player a player
+	 * @param fixture a fixture
+	 * @return false if the fixture is a HasOwner owned by the player, and true otherwise
+	 */
+	private static boolean shouldZero(final TileFixture fixture,
+									  @Nullable final Player player) {
+		if (fixture instanceof HasOwner) {
+			return !Objects.equals(player, ((HasOwner) fixture).getOwner());
+		} else {
+			return true;
+		}
 	}
 }

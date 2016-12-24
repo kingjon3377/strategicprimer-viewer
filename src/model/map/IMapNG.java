@@ -114,11 +114,11 @@ public interface IMapNG
 	Player getCurrentPlayer();
 
 	/**
-	 * FIXME: Should take a Player for whom it is being zeroed, to *not* zero his HQ!
 	 * @param zero whether to "zero" sensitive data (probably just DCs)
+	 * @param player the player for whom the map is being prepared, or null if none
 	 * @return a copy of this map
 	 */
-	IMapNG copy(boolean zero);
+	IMapNG copy(boolean zero, final @Nullable Player player);
 
 	/**
 	 * A location is empty if it has no terrain, no Ground, no Forest, no rivers, and no
