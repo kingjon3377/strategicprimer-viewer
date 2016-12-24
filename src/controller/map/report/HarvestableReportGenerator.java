@@ -1,13 +1,13 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -60,15 +60,6 @@ public final class HarvestableReportGenerator
 																			@NonNull
 																					IFixture>> comparator) {
 		super(comparator);
-	}
-
-	/**
-	 * Sort all of a series of lists.
-	 * @param collections a series of lists to be sorted
-	 */
-	@SafeVarargs
-	private static void sortAll(final List<String>... collections) {
-		Stream.of(collections).forEach(Collections::sort);
 	}
 
 	/**
@@ -129,16 +120,18 @@ public final class HarvestableReportGenerator
 				mapToList(minerals, "<h5>Mineral deposits</h5>");
 		final HeadedList<String> stoneText =
 				mapToList(stone, "<h5>Exposed stone deposits</h5>");
-		sortAll(caches, groves, meadows, mines, mineralsText, stoneText, shrubsText);
-		if (Stream.of(caches, groves, meadows, mines, mineralsText, stoneText,
-				shrubsText).allMatch(Collection::isEmpty)) {
+		final List<HeadedList<String>> all =
+				Arrays.asList(caches, groves, meadows, mines, mineralsText, stoneText,
+						shrubsText);
+		all.forEach(Collections::sort);
+		if (all.stream().allMatch(Collection::isEmpty)) {
 			return "";
 		} else {
-			return concat("<h4>Resource Sources</h4>", LineEnd.LINE_SEP,
-					caches.toString(),
-					groves.toString(), meadows.toString(), mines.toString(),
-					mineralsText.toString(), stoneText.toString(),
-					shrubsText.toString());
+			final StringBuilder builder = new StringBuilder(30 + all.stream().mapToInt(
+					Collection::size).sum() * 50);
+			builder.append("<h4>Resource Sources</h4>").append(LineEnd.LINE_SEP);
+			all.forEach(builder::append);
+			return builder.toString();
 		}
 	}
 	/**
