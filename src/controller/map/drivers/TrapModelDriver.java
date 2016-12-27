@@ -207,7 +207,7 @@ public final class TrapModelDriver implements SimpleDriver {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(usage());
 		}
-		SimpleDriver.super.startDriver(options, args);
+		SimpleDriver.super.startDriver(cli, options, args);
 	}
 
 	/**

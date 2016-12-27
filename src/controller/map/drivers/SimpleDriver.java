@@ -74,7 +74,7 @@ public interface SimpleDriver extends ISPDriver {
 		if (args.length == 0) {
 			if (EqualsAny.equalsAny(desiderata, ParamCount.None,
 					ParamCount.AnyNumber)) {
-				startDriver(options);
+				startDriver(cli, options);
 			} else if (EqualsAny.equalsAny(desiderata, ParamCount.Two,
 					ParamCount.AtLeastTwo)) {
 				final Path masterPath = askUserForFile();
