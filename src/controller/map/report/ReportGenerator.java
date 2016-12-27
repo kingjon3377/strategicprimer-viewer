@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.map.DistanceComparator;
@@ -32,6 +33,7 @@ import util.LineEnd;
 import util.Pair;
 import util.PairComparator;
 import util.PatientMap;
+import util.TypesafeLogger;
 import view.util.SystemOut;
 
 /**
@@ -56,6 +58,10 @@ public final class ReportGenerator {
 	 */
 	private static final Comparator<@NonNull IFixture> SIMPLE_COMPARATOR =
 			Comparator.comparingInt(IFixture::hashCode);
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger.getLogger(ReportGenerator.class);
 
 	/**
 	 * No non-static members anymore.
@@ -312,7 +318,13 @@ public final class ReportGenerator {
 								  .filter(Objects::nonNull)
 								  .filter(ReportGenerator::isReportableFixture)
 								  .collect(Collectors.toMap(checkID,
-										  fix -> Pair.of(point, fix))));
+										  fix -> Pair.of(point, fix), (pairOne, pairTwo) -> {
+									        if (!Objects.equals(pairOne, pairTwo)) {
+									            LOGGER.warning(String.format("Duplicate key for Pairs %s and %s",
+											            pairOne.toString(), pairTwo.toString()));
+								            }
+								            return pairOne;
+										  })));
 		}
 		return retval;
 	}
