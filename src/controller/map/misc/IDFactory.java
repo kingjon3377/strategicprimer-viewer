@@ -73,10 +73,12 @@ public final class IDFactory implements IDRegistrar {
 	 */
 	@Override
 	public int createID() {
-		if (usedIDs.cardinality() < Integer.MAX_VALUE) {
-			return register(usedIDs.nextClearBit(0));
-		} else {
-			throw new IllegalStateException("Exhausted all ints ...");
+		synchronized (usedIDs) {
+			if (usedIDs.cardinality() < Integer.MAX_VALUE) {
+				return register(usedIDs.nextClearBit(0));
+			} else {
+				throw new IllegalStateException("Exhausted all ints ...");
+			}
 		}
 	}
 
