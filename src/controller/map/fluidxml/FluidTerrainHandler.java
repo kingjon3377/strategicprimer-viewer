@@ -107,9 +107,13 @@ public final class FluidTerrainHandler {
 									final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "forest");
+		final int id = getIntegerAttribute(element, "id", -1);
+		if (id >= 0) {
+			idFactory.register(warner, id);
+		}
 		final Forest retval =
 				new Forest(getAttribute(element, "kind"), hasAttribute(element, "rows"),
-								  getIntegerAttribute(element, "id", -1));
+								  id);
 		spinUntilEnd(element.getName(), stream);
 		return setImage(retval, element, warner);
 	}

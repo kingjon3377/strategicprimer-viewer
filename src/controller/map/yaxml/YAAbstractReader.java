@@ -210,6 +210,15 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 	}
 
 	/**
+	 * Register the specified ID.
+	 *
+	 * @param id the ID number to register.
+	 * @return it
+	 */
+	protected int registerID(final int id) {
+		return idf.register(warner, id);
+	}
+	/**
 	 * If the specified tag has an ID as a property, return it; otherwise warn about its
 	 * absence and generate one.
 	 *
@@ -221,10 +230,9 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 			throws SPFormatException {
 		if (hasParameter(element, "id")) {
 			try {
-				return idf.register(warner, NumberFormat.getIntegerInstance()
-														  .parse(getParameter(element,
-																  "id"))
-														  .intValue());
+				return registerID(NumberFormat.getIntegerInstance().parse(getParameter(element,
+													  "id"))
+												  .intValue());
 			} catch (final NumberFormatException | ParseException except) {
 				throw new MissingPropertyException(element, "id", except);
 			}

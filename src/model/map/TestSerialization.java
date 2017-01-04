@@ -85,22 +85,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
-	 * Encapsulate the given string in a 'tile' tag inside a 'map' tag.
-	 *
-	 * @param str a string
-	 * @return it, encapsulated.
-	 */
-	@SuppressWarnings("StringBufferReplaceableByString")
-	private static String encapsulateTileString(final String str) {
-		final StringBuilder builder = new StringBuilder(55 + str.length());
-		builder.append("<map version=\"2\" rows=\"2\" columns=\"2\">");
-		builder.append("<tile row=\"1\" column=\"1\" kind=\"plains\">");
-		builder.append(str);
-		builder.append("</tile></map>");
-		return builder.toString();
-	}
-
-	/**
 	 * Create a simple SPMapNG.
 	 *
 	 * @param dims    the dimensions of the map

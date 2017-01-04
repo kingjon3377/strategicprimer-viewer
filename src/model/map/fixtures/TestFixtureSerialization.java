@@ -37,6 +37,7 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownSize;
 import org.junit.Test;
+import util.Warning;
 
 /**
  * A class to test serialization of TileFixtures.
@@ -222,14 +223,9 @@ public final class TestFixtureSerialization extends
 		map.setForest(point, new Forest("trees", false, 4));
 		map.addFixture(point, new Forest("secondForest", true, 5));
 		assertSerialization("Map with multiple Forests on a tile", map);
-		assertForwardDeserialization("Duplicate Forests ignored", map,
-				"<view current_turn=\"-1\"><map version=\"2\" rows=\"1\" " +
-						"columns=\"1\"><tile row=\"0\" column=\"0\" " +
-						"kind=\"plains\"><forest kind=\"trees\" id=\"4\"/><forest " +
-						"kind=\"trees\"" +
-						" id=\"4\"/><forest kind=\"secondForest\" rows=\"true\" " +
-						"id=\"5\"" +
-						"/></tile></map></view>");
+		assertEquivalentForms("Duplicate Forests ignored", encapsulateTileString("<forest kind=\"trees\" id=\"4\" /><forest kind=\"second\" rows=\"true\" id=\"5\" />"),
+			encapsulateTileString("<forest kind=\"trees\" id=\"4\" /><forest kind=\"trees\" id=\"4\" /><forest kind=\"second\" rows=\"true\" id=\"5\" />"),
+			IMutableMapNG.class, Warning.Ignore);
 	}
 
 	/**

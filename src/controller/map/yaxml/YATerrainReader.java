@@ -75,8 +75,12 @@ public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 		final TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "forest":
+			final int id = getIntegerParameter(element, "id", -1);
+			if (id >= 0) {
+				registerID(id);
+			}
 			retval = new Forest(getParameter(element, "kind"), hasParameter(
-					element, "rows"), getIntegerParameter(element, "id", -1));
+					element, "rows"), id);
 			break;
 		case "hill":
 			retval = new Hill(getOrGenerateID(element));
