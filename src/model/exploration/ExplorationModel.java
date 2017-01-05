@@ -524,8 +524,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					.filter(village -> village.getOwner().isIndependent())
 					.forEach(fix -> fix.setOwner(owner));
 			getMap().streamOtherFixtures(currPoint).filter(Village.class::isInstance)
-				.map(Village.class::cast)
-				.filter(village -> village.getOwner().equals(owner))
+				.map(Village.class::cast).filter(village -> village.getOwner().equals(owner))
+				.collect(Collectors.toList())
 				.forEach(village -> streamAllMaps().map(Pair::first).
 					forEach(map -> map.addFixture(currPoint, village)));
 			fireMovementCost(5);
