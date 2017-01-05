@@ -518,10 +518,14 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		if (temp.isPresent()) {
 			final IUnit mover = temp.get();
 			final Player owner = mover.getOwner();
+			// FIXME: Shouldn't be able to swear other players' villages, only independents
 			streamAllMaps().map(Pair::first)
 					.flatMap(map -> map.streamOtherFixtures(currPoint))
 					.filter(Village.class::isInstance).map(HasMutableOwner.class::cast)
 					.forEach(fix -> fix.setOwner(owner));
+			getMap().streamOtherFixtures(currPoint).filter(Village.class::isInstance).
+				forEach(village -> streamAllMaps().map(Pair::first).
+					forEach(map -> map.addFixture(currPoint, village)));
 			fireMovementCost(5);
 		}
 	}
