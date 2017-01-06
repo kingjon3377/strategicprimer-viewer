@@ -264,6 +264,8 @@ public final class QueryCLI implements SimpleDriver {
 			herdModel = HerdModel.Chickens;
 		} else if (cli.inputBooleanInSeries("Are these turkeys?\t")) {
 			herdModel = HerdModel.Turkeys;
+		} else if (cli.inputBooleanInSeries("Are these pigeons?\t")) {
+			herdModel = HerdModel.Pigeons;
 		} else {
 			herdModel = HerdModel.LargeMammals;
 		}

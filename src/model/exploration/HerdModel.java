@@ -6,6 +6,8 @@ import util.Quantity;
  * Models of (game statistics for) herding, including dairy cattle, small mammals,
  * large mammals, small poultry, large poultry, etc.
  *
+ * TODO: Turn into interface implemented by one for mammals and one for poultry.
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -39,7 +41,11 @@ public enum HerdModel {
 	/**
 	 * The model for turkeys.
 	 */
-	Turkeys(new Quantity(Double.valueOf(0.75), "eggs"), 0.25, 2, 0, 30, 2);
+	Turkeys(new Quantity(Double.valueOf(0.75), "eggs"), 0.25, 2, 0, 30, 2),
+	/**
+	 * The model for pigeons.
+	 */
+	Pigeons(new Quantity(Double.valueOf(0.5), "eggs"), 0.035, 1, 0, 30, 4);
 
 	/**
 	 * The amount produced per head per turn.
@@ -100,7 +106,7 @@ public enum HerdModel {
 	 * @return true if this is poultry, false otherwise
 	 */
 	public boolean isPoultry() {
-		return this == Chickens || this == Turkeys;
+		return this == Chickens || this == Turkeys || this == Pigeons;
 	}
 	/**
 	 * How much is produced per head per turn.
