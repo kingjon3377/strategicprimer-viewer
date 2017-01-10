@@ -29,11 +29,13 @@ public interface Pair<@NonNull L, @NonNull R> {
 	}
 
 	/**
+	 * The first item in the pair.
 	 * @return the first item in the pair
 	 */
 	L first();
 
 	/**
+	 * The second item in the pair.
 	 * @return the second item in the pair
 	 */
 	R second();
@@ -69,6 +71,7 @@ public interface Pair<@NonNull L, @NonNull R> {
 		}
 
 		/**
+		 * The first item in the Pair.
 		 * @return the first item in the pair
 		 */
 		@Override
@@ -77,6 +80,7 @@ public interface Pair<@NonNull L, @NonNull R> {
 		}
 
 		/**
+		 * The second item in the Pair.
 		 * @return the second item in the pair
 		 */
 		@Override
@@ -85,6 +89,7 @@ public interface Pair<@NonNull L, @NonNull R> {
 		}
 
 		/**
+		 * A hash code for the Pair.
 		 * @return a hash code for the pair.
 		 */
 		@Override
@@ -93,6 +98,10 @@ public interface Pair<@NonNull L, @NonNull R> {
 		}
 
 		/**
+		 * A Pair is equal only if it is the same Pair implementation with equal objects
+		 * in corresponding positions.
+		 *
+		 * TODO: Don't require the same implementation.
 		 * @param obj an object
 		 * @return whether it's the same as this one
 		 */
@@ -107,6 +116,7 @@ public interface Pair<@NonNull L, @NonNull R> {
 		}
 
 		/**
+		 * A simple toString().
 		 * @return a String representation of the pair.
 		 */
 		@Override

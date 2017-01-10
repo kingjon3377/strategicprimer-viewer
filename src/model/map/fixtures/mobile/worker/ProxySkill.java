@@ -41,6 +41,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	private final String name;
 
 	/**
+	 * Constructor.
 	 * @param skillName     the name of the skill
 	 * @param parallelUnits whether the worker containing this represents corresponding
 	 *                      units in different maps, rather than workers in a single unit
@@ -54,6 +55,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
+	 * Clone this object.
 	 * @return a copy of this proxy
 	 */
 	@Override
@@ -66,6 +68,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
+	 * The name of the proxied skills.
 	 * @return the skills' name
 	 */
 	@Override
@@ -97,6 +100,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
+	 * Returns the lowest  number of hours any of the proxied Jobs has for the skill.
 	 * @return the most hours any of the proxied Jobs has for the skill
 	 */
 	@SuppressWarnings("ObjectEquality")
@@ -116,6 +120,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
+	 * Add hours to the proxied skills.
 	 * @param hrs       how many hours to add
 	 * @param condition the seed to randomly generate conditions for the proxied skills
 	 */
@@ -173,6 +178,8 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
+	 * We use the name of the skills we're proxying as our String representation.
+	 * TODO: indicate this is a proxy?
 	 * @return a String representation
 	 */
 	@Override
@@ -202,6 +209,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
+	 * We are empty iff every proxied skill is empty.
 	 * @return whether any of the proxied Skills is "empty"
 	 */
 	@SuppressWarnings("ObjectEquality")
@@ -220,6 +228,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
+	 * Whether this is a "parallel" proxy.
 	 * @return Whether this should be considered (if true) a proxy for multiple
 	 * representations of the same Job, e.g. in different maps, or (if false) a proxy for
 	 * different related Jobs.
@@ -232,6 +241,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
+	 * Always returns false; proxies should not be involved in subset checking.
 	 * @param obj     ignored
 	 * @param ostream a stream to report this call on
 	 * @param context a string to print before every line of output, describing the

@@ -12,6 +12,8 @@ import org.eclipse.jdt.annotation.Nullable;
 /**
  * A label to show the current player.
  *
+ * TODO: Extend FormattedLabel.
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -64,6 +66,7 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	}
 
 	/**
+	 * Set the label's text to reflect a new player.
 	 * @param old       the old current player
 	 * @param newPlayer the new current player
 	 */
@@ -98,6 +101,7 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	}
 
 	/**
+	 * Reports the currently-showing text.
 	 * @return a String representation of the object
 	 */
 	@Override

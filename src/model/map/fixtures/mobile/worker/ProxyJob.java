@@ -54,6 +54,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	private final String name;
 
 	/**
+	 * Constructor.
 	 * @param jobName         the name of the Job
 	 * @param parallelWorkers whether the workers containing these jobs are corresponding
 	 *                        workers in different maps (if true) or workers in the same
@@ -101,6 +102,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
+	 * Clone the object.
 	 * @return a copy of this
 	 */
 	@Override
@@ -113,6 +115,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
+	 * The name of the Job.
 	 * @return the name of the Job.
 	 */
 	@Override
@@ -121,6 +124,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
+	 * An iterator over skills in any of the proxied Jobs.
 	 * @return an iterator over the skills that any of the proxied jobs has.
 	 */
 	@Override
@@ -129,6 +133,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
+	 * Add a skill.
 	 * @param skill a skill to proxy
 	 * @return true if we weren't proxying that skill already
 	 */
@@ -145,6 +150,8 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
+	 * Currently always returns 0.
+	 * TODO: Return highest level among proxied Jobs.
 	 * @return 0
 	 */
 	@Override
@@ -153,6 +160,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
+	 * Always throws. TODO: should it? TODO: message is wrong
 	 * @param newLevel Ignored; always throws
 	 */
 	@Override
@@ -162,6 +170,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
+	 * Returns the name of the Job being proxied. TODO: indicate we're a proxy?
 	 * @return a String representation of the Job.
 	 */
 	@Override
@@ -170,6 +179,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
+	 * Returns false; proxies should never be involved in subset checking.
 	 * @param obj     ignored
 	 * @param ostream a stream to report this call on
 	 * @param context a string to print before every line of output, describing the
@@ -209,6 +219,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
+	 * An Iterable view of the proxied Jobs.
 	 * @return the proxied Jobs.
 	 */
 	@Override
@@ -228,6 +239,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
+	 * Get a Skill by name.
 	 * @param skillName the name of a Skill
 	 * @return the Skill by that name the Job has, or null if it has none
 	 */
@@ -246,9 +258,10 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
-	 * @return Whether this should be considered (if true) a proxy for multiple
-	 * representations of the same Job, e.g. in different maps, or (if false) a proxy for
-	 * different related Jobs.
+	 * Whether this should be considered (if true) a proxy for multiple representations
+	 * of the same Job, e.g. in different maps, or (if false) a proxy for ifferent
+	 * related Jobs.
+	 * @return whether this is a "parallel" proxy.
 	 */
 	@Override
 	public boolean isParallel() {

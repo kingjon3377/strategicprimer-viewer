@@ -89,6 +89,8 @@ public final class ProxyUnit
 		kind = uKind;
 	}
 	/**
+	 * "Merge" two Strings by returning one of them if they are equal and the empty
+	 * string otherwise.
 	 * @param first one String
 	 * @param second another String
 	 * @return them if they are equal, or the empty string otherwise
@@ -121,6 +123,7 @@ public final class ProxyUnit
 		return retval;
 	}
 	/**
+	 * All orders shared by all the proxied units.
 	 * @return the units' orders for all turns
 	 */
 	@Override
@@ -129,6 +132,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * All results that all the proxied units share.
 	 * @return the units' orders for all turns
 	 */
 	@Override
@@ -137,6 +141,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Proxy an additional unit.
 	 * @param item a unit to start proxying
 	 */
 	@SuppressWarnings("ObjectEquality")
@@ -154,6 +159,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero whether to "zero out" sensitive information
 	 * @return a copy of this proxy
 	 */
@@ -172,6 +178,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * The plural of Unit is Units. TODO: Pull up to IUnit.
 	 * @return "Units"
 	 */
 	@Override
@@ -180,6 +187,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * A short description of the units. TODO: handle non-parallel specially?
 	 * @return a short description
 	 */
 	@Override
@@ -194,6 +202,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * The units' ID number.
 	 * @return the ID number of the units we proxy for
 	 */
 	@Override
@@ -214,6 +223,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Warns, then delegates to IUnit's default implementation.
 	 * @param fix a fixture
 	 * @return the result of a comparison with it
 	 */
@@ -224,6 +234,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * The icon filename to use by default.
 	 * @return the name of an image to represent the unit
 	 */
 	@Override
@@ -232,6 +243,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * The icon filename to use for this instance.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -255,6 +267,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * The kind of the units.
 	 * @return the kind of the units
 	 */
 	@Override
@@ -286,6 +299,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * An iterator over (proxies for) unit members.
 	 * @return an iterator over (proxies for) unit members
 	 */
 	@Override
@@ -331,6 +345,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * The name of the units, or "proxied" if they don't agree.
 	 * @return the name of the units (or "proxied" if they don't agree)
 	 */
 	@Override
@@ -339,6 +354,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Set the units' name.
 	 * @param newName the new name for the units
 	 */
 	@Override
@@ -353,6 +369,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * The owner of the units, or a dummy value if not all are owned by the same player.
 	 * @return the owner of the proxied units, or a dummy value if the proxied units are
 	 * not all owned by the same player
 	 */
@@ -363,6 +380,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Assign the proxied units to a new owner.
 	 * @param player the new owner for the units
 	 */
 	@Override
@@ -377,6 +395,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Returns false; proxies should not be involved in subset checking.
 	 * @param obj     ignored
 	 * @param ostream the stream to write to
 	 * @param context the context to write before writing our results
@@ -390,6 +409,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Get the orders shared by the units for a particular turn.
 	 * @param turn the turn to get orders for
 	 * @return the orders shared by the units, or the empty string if their orders are
 	 * different.
@@ -400,6 +420,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Results shared by all the units for the given turn.
 	 * @param turn the turn to get results for
 	 * @return the results shared by the units, or the empty string if their results are
 	 * different.
@@ -410,6 +431,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Set the units' orders for the given turn.
 	 * @param turn the turn to set orders for
 	 * @param newOrders The units' new orders for that turn
 	 */
@@ -421,6 +443,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Set the units' results for the given turn.
 	 * @param turn       a turn
 	 * @param newResults The units' new results for that turn
 	 */
@@ -432,6 +455,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * A "verbose" description of the units.
 	 * @return a "verbose" description of the unit
 	 */
 	@Override
@@ -487,6 +511,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * An iterable view of the proxied units.
 	 * @return the proxied units
 	 */
 	@Override
@@ -495,6 +520,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * A String representation of the proxy-unit.
 	 * @return a string representation of this class
 	 */
 	@Override
@@ -507,6 +533,8 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * An object is equal iff it is a ProxyUnit proxying the same units, with both or
+	 * neither parallel.
 	 * @param obj an object
 	 * @return whether it's the same as this one
 	 */
@@ -520,6 +548,9 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * We use the first proxied unit's hash code.
+	 * TODO: go deeper
+	 * TODO: in the interim, use Optional/stream methods?
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -533,6 +564,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Whether this is a "parallel" proxy.
 	 * @return Whether this should be considered (if true) a proxy for multiple
 	 * representations of the same Unit, e.g. in different maps, or (if false) a proxy
 	 * for
@@ -543,6 +575,8 @@ public final class ProxyUnit
 		return parallel;
 	}
 	/**
+	 * Call a function on every proxied member, and return the value returned if it was
+	 * always the same, or else a provided value.
 	 * @param method a method to call on each proxied member
 	 * @param <T> the type it returns
 	 * @param empty what to return if there are no proxied members
@@ -584,6 +618,7 @@ public final class ProxyUnit
 		}
 
 		/**
+		 * Constructor.
 		 * @param member the first member to proxy
 		 */
 		protected ProxyMember(final UnitMember member) {
@@ -591,6 +626,7 @@ public final class ProxyUnit
 		}
 
 		/**
+		 * Clone the object.
 		 * @param zero whether to "zero out" sensitive information
 		 * @return a copy of this proxy
 		 */
@@ -605,6 +641,8 @@ public final class ProxyUnit
 		}
 
 		/**
+		 * Since the only user of this class proxies members that should all have the
+		 * same ID number, we just get the ID of the first proxied member.
 		 * @return the ID number of the first proxied unit member (since they should all
 		 * have the same, in the only usage of this class)
 		 */
@@ -619,6 +657,8 @@ public final class ProxyUnit
 		}
 
 		/**
+		 * A fixture is equal iff it is a ProxyMember proxying the same fixtures.
+		 * TODO: print a warning if this is called?
 		 * @param fix a fixture
 		 * @return whether it equals this one
 		 */
@@ -629,6 +669,7 @@ public final class ProxyUnit
 		}
 
 		/**
+		 * Always returns false; proxies should not be involved in subset checking.
 		 * @param obj     ignored
 		 * @param ostream the stream to write to
 		 * @param context the context to write before we write our error
@@ -652,6 +693,7 @@ public final class ProxyUnit
 		}
 
 		/**
+		 * An iterable view of the proxied members.
 		 * @return the proxied members
 		 */
 		@Override
@@ -660,6 +702,7 @@ public final class ProxyUnit
 		}
 
 		/**
+		 * Delegates to the first proxied item. TODO: implement properly
 		 * @return a string representation of the proxied member
 		 */
 		@Override
@@ -673,10 +716,10 @@ public final class ProxyUnit
 		}
 
 		/**
+		 * Always returns true.
 		 * @return Whether this should be considered (if true) a proxy for multiple
 		 * representations of the same UnitMember, e.g. in different maps, or (if
-		 * false) a
-		 * proxy for different related UnitMembers.
+		 * false) a proxy for different related UnitMembers.
 		 */
 		@Override
 		public boolean isParallel() {
