@@ -43,6 +43,7 @@ public final class MapVersionException extends SPFormatException {
 	 */
 	private static class ZeroLocation implements Location {
 		/**
+		 * The zero location is at line 0.
 		 * @return zero
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -52,6 +53,7 @@ public final class MapVersionException extends SPFormatException {
 		}
 
 		/**
+		 * The zero location is at column 0.
 		 * @return zero
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -61,6 +63,7 @@ public final class MapVersionException extends SPFormatException {
 		}
 
 		/**
+		 * The zero location is at character offset 0.
 		 * @return zero
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -70,6 +73,7 @@ public final class MapVersionException extends SPFormatException {
 		}
 
 		/**
+		 * The zero location doesn't have a public ID.
 		 * @return null
 		 */
 		@SuppressWarnings("ReturnOfNull")
@@ -80,6 +84,7 @@ public final class MapVersionException extends SPFormatException {
 		}
 
 		/**
+		 * The zero location doesn't have a system ID.
 		 * @return null
 		 */
 		@SuppressWarnings("ReturnOfNull")

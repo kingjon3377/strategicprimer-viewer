@@ -47,6 +47,7 @@ public final class MapDimensions {
 	}
 
 	/**
+	 * The number of rows in the map.
 	 * @return The number of rows in the map.
 	 */
 	public int getRows() {
@@ -54,6 +55,7 @@ public final class MapDimensions {
 	}
 
 	/**
+	 * The number of columns in the map.
 	 * @return The number of columns in the map.
 	 */
 	public int getColumns() {
@@ -61,6 +63,7 @@ public final class MapDimensions {
 	}
 
 	/**
+	 * The map version.
 	 * @return The map version.
 	 */
 	public int getVersion() {
@@ -68,6 +71,7 @@ public final class MapDimensions {
 	}
 
 	/**
+	 * An object is equal iff it is a MapDimensions that passes equalsImpl().
 	 * @param obj an object
 	 * @return whether it equals this
 	 */
@@ -78,6 +82,8 @@ public final class MapDimensions {
 	}
 
 	/**
+	 * A MapDimensions is equal iff it has the same version and numbers of columns and
+	 * rows.
 	 * @param obj a map-dimensions object
 	 * @return whether it equals this
 	 */
@@ -86,6 +92,7 @@ public final class MapDimensions {
 	}
 
 	/**
+	 * A hash value for the object. FIXME: This looks wrong.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -94,6 +101,7 @@ public final class MapDimensions {
 	}
 
 	/**
+	 * "Map dimensions: N rows x N cols; map version N".
 	 * @return a String representation of the object
 	 */
 	@Override

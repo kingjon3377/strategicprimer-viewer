@@ -51,6 +51,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	private String text;
 
 	/**
+	 * Constructor.
 	 * @param pt  the point in the map that this represents something on
 	 * @param txt the header text
 	 */
@@ -62,6 +63,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Constructor taking header text but no point.
 	 * @param txt the header text
 	 */
 	public ListReportNode(final String txt) {
@@ -72,6 +74,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Write the HTML representation of the node to a Formatter.
 	 * @param formatter a Formatter to write the HTML representation to
 	 */
 	@Override
@@ -86,6 +89,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The approximate size of the HTML representation of the node.
 	 * @return approximately how long the HTML representation of this node will be.
 	 */
 	@Override
@@ -96,6 +100,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * An object is equal iff it is a ListReportNode with equal text and children.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -109,6 +114,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * We delegate to the header string.
 	 * @return a hash code for the object
 	 */
 	@Override
@@ -138,6 +144,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The header text.
 	 * @return the text of the node, usually the header.
 	 */
 	@Override
@@ -146,6 +153,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the header text.
 	 * @param txt the new text for the node
 	 */
 	@Override
@@ -157,6 +165,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * This simply returns the header text.
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -165,6 +174,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the point this represents.
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	@Override
@@ -173,6 +183,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Get the point, if any, that this node (as opposed to its children) refers to.
 	 * @return the point, if any, in the map that this node in particular represents
 	 * something on
 	 */

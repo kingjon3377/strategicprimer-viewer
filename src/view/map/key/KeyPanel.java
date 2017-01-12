@@ -53,6 +53,7 @@ public final class KeyPanel extends JPanel implements VersionChangeListener {
 	}
 
 	/**
+	 * Handle a map-version change.
 	 * @param old        the previous map version
 	 * @param newVersion the new map version
 	 */

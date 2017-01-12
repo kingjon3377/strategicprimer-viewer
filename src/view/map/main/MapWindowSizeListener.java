@@ -32,6 +32,7 @@ public final class MapWindowSizeListener extends WindowAdapter {
 	private boolean add = false;
 
 	/**
+	 * Constructor.
 	 * @param comp The component to remind of its having been resized on these events.
 	 */
 	public MapWindowSizeListener(final JComponent comp) {
@@ -75,6 +76,7 @@ public final class MapWindowSizeListener extends WindowAdapter {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

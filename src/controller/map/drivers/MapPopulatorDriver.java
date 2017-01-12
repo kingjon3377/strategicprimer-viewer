@@ -77,6 +77,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * The probability of adding to any given tile.
 	 * @return The probability of adding to any given tile.
 	 */
 	@SuppressWarnings({"MethodReturnAlwaysConstant", "SameReturnValue"})
@@ -134,6 +135,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -142,6 +144,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a string representation of this class
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

@@ -39,6 +39,8 @@ public final class LevelListener
 	private ISkill skill = null;
 
 	/**
+	 * Wrapper around {@link HasName#getName()} that also handles non-HasName objects,
+	 * using their toString().
 	 * @param named something that may have a name
 	 * @return its name if it has one, "null" if null, or its toString otherwise.
 	 */
@@ -52,6 +54,7 @@ public final class LevelListener
 	}
 
 	/**
+	 * Set the currently-selected skill.
 	 * @param selectedSkill the newly selected skill
 	 */
 	@Override
@@ -75,6 +78,7 @@ public final class LevelListener
 	}
 
 	/**
+	 * Select a new unit member.
 	 * @param old      the previously selected member
 	 * @param selected the newly selected unit member
 	 */
@@ -85,6 +89,7 @@ public final class LevelListener
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

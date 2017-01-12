@@ -1,8 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -11,10 +9,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
@@ -114,6 +109,7 @@ public final class MapComponent extends JComponent
 	}
 
 	/**
+	 * The tool-tip text to show on mouse-hover.
 	 * @param event an event indicating where the mouse is
 	 * @return an appropriate tool-tip
 	 */
@@ -144,6 +140,7 @@ public final class MapComponent extends JComponent
 	}
 
 	/**
+	 * Paint the map.
 	 * @param pen the graphics context
 	 */
 	private void drawMap(final Graphics pen) {
@@ -191,6 +188,8 @@ public final class MapComponent extends JComponent
 	}
 
 	/**
+	 * If given a rectangle, return it; otherwise, return a rectangle surrounding the
+	 * whole map.
 	 * @param rect a bounding rectangle
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
@@ -238,6 +237,7 @@ public final class MapComponent extends JComponent
 	}
 
 	/**
+	 * The driver model we represent.
 	 * @return the map model
 	 */
 	@Override
@@ -246,6 +246,7 @@ public final class MapComponent extends JComponent
 	}
 
 	/**
+	 * Handle a change in the map's visible dimensions.
 	 * @param oldDim the old visible dimensions
 	 * @param newDim the new visible dimensions
 	 */
@@ -256,6 +257,7 @@ public final class MapComponent extends JComponent
 	}
 
 	/**
+	 * Handle a change in the zoom level.
 	 * @param oldSize the old zoom level
 	 * @param newSize the new zoom level
 	 */
@@ -271,6 +273,7 @@ public final class MapComponent extends JComponent
 	}
 
 	/**
+	 * Handle a change in the selected point.
 	 * @param old      ignored
 	 * @param newPoint ignored
 	 */
@@ -295,6 +298,7 @@ public final class MapComponent extends JComponent
 	}
 
 	/**
+	 * Whether the selected tile is, if in the map at all, currently visible.
 	 * @return whether the selected tile is either not in the map or visible in the
 	 * current bounds.
 	 */
@@ -369,6 +373,7 @@ public final class MapComponent extends JComponent
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a quasi-diagnostic String
 	 */
 	@Override

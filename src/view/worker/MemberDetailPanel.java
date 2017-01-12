@@ -106,6 +106,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	}
 
 	/**
+	 * Create the "stat panel".
 	 * @return the panel for showing worker stats, all laid out.
 	 */
 	private JPanel createStatPanel() {
@@ -297,6 +298,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a diagnostic String
 	 */
 	@Override
@@ -361,6 +363,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		}
 
 		/**
+		 * A simple toString().
 		 * @return a diagnostic String
 		 */
 		@Override
@@ -382,6 +385,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		private Image portrait = null;
 
 		/**
+		 * Set the portrait to show.
 		 * @param image the image to draw from now on
 		 */
 		public void setPortrait(@Nullable final Image image) {
@@ -389,6 +393,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		}
 
 		/**
+		 * Draw the component.
 		 * @param pen the graphics context
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")

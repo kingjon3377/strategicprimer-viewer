@@ -89,6 +89,7 @@ public class MagicReader extends Reader {
 	}
 
 	/**
+	 * Whether the stream supports mark().
 	 * @return whether the stream supports mark()
 	 */
 	@Override
@@ -120,6 +121,7 @@ public class MagicReader extends Reader {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a diagnostic String.
 	 */
 	@Override

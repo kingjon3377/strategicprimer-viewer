@@ -65,6 +65,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero ignored; there's no sensitive information
 	 * @return a copy of this meadow
 	 */
@@ -77,6 +78,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The kind of grass or grain growing in the meadow or field.
 	 * @return the kind of grass or grain growing in the meadow or field
 	 */
 	@Override
@@ -85,6 +87,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Whether the field or meadow is cultivated.
 	 * @return if this is a cultivated field or meadow
 	 */
 	public boolean isCultivated() {
@@ -92,6 +95,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Whether this is a field, rather than a meadow.
 	 * @return true if this is a field, false if it's a meadow
 	 */
 	public boolean isField() {
@@ -99,6 +103,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The status (season) of the field.
 	 * @return the status of the field, i.e. what season it's in
 	 */
 	public FieldStatus getStatus() {
@@ -120,6 +125,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Simple toString().
 	 * @return a String representation of the field or meadow
 	 */
 	@Override
@@ -139,6 +145,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Delegated to equalsImpl().
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -148,6 +155,8 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * A Meadow is equal iff it has the same kind and ID, both or neither are fields,
+	 * and both or neither are cultivated. TODO: should consider status
 	 * @param obj a Meadow
 	 * @return whether it equals this one
 	 */
@@ -157,6 +166,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -165,6 +175,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -173,6 +184,9 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * If we ignore ID, a fixture is equal iff it is a Meadow, its status and kind are
+	 * the same, either both or neither are fields, and either both or neither are
+	 * cultivated.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -186,6 +200,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -194,6 +209,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -202,6 +218,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The plural of "Field or meadow" is "Fields and meadows".
 	 * @return a string describing all meadows as a class
 	 */
 	@Override
@@ -210,6 +227,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Delegates to toString(). TODO: should be the other way around.
 	 * @return a short description of the fixture
 	 */
 	@Override

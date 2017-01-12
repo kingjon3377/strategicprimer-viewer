@@ -131,6 +131,7 @@ public final class KeyElement extends BoxPanel {
 		}
 
 		/**
+		 * Draw the component.
 		 * @param pen the graphics context
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -173,6 +174,7 @@ public final class KeyElement extends BoxPanel {
 		}
 
 		/**
+		 * A simple toString().
 		 * @return a String representation of the object
 		 */
 		@Override

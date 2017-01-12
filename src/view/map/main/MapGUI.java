@@ -19,6 +19,7 @@ import model.misc.IDriverModel;
  */
 public interface MapGUI {
 	/**
+	 * The driver model the GUI represents. TODO: should this be IViewerModel?
 	 * @return the model encapsulating the map, secondary map, etc.
 	 */
 	IDriverModel getMapModel();

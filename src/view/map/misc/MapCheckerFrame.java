@@ -189,6 +189,7 @@ public final class MapCheckerFrame extends SPFrame {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a diagnostic String
 	 */
 	@Override
@@ -197,6 +198,7 @@ public final class MapCheckerFrame extends SPFrame {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return the title of this app
 	 */
 	@Override

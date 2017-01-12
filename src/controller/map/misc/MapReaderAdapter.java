@@ -66,6 +66,8 @@ public final class MapReaderAdapter {
 	}
 
 	/**
+	 * Turn a series of Strings to an array of equivalent Files, optionally omitting the
+	 * first.
 	 * @param names     some filenames
 	 * @param dropFirst whether to skip the first filename.
 	 * @return an array of equivalent Files
@@ -80,14 +82,14 @@ public final class MapReaderAdapter {
 	}
 
 	/**
+	 * Read a map from a file.
 	 * @param file   the file to open
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map it contains
 	 * @throws IOException        on I/O error opening the file
 	 * @throws XMLStreamException if the XML is badly formed
 	 * @throws SPFormatException  if the reader can't handle this map version or there
-	 * are
-	 *                            map format errors
+	 * are map format errors
 	 */
 	public IMutableMapNG readMap(final Path file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
@@ -95,13 +97,13 @@ public final class MapReaderAdapter {
 	}
 
 	/**
+	 * Read a map from a stream.
 	 * @param stream the stream to read the map from
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map it contains
 	 * @throws XMLStreamException if the XML is badly formed
 	 * @throws SPFormatException  if the reader can't handle this map version or there
-	 * are
-	 *                            map format errors
+	 * are map format errors
 	 */
 	public IMutableMapNG readMapFromStream(final Reader stream, final Warning warner)
 			throws XMLStreamException, SPFormatException {
@@ -245,6 +247,7 @@ public final class MapReaderAdapter {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

@@ -49,6 +49,7 @@ public final class MapSizeListener extends ComponentAdapter {
 	@Override
 	public void componentResized(@Nullable final ComponentEvent event) {
 		if ((event != null) && (event.getComponent() instanceof MapGUI)) {
+			// TODO: Use the model from event.getComponent() instead of our own?
 			synchronized (model) {
 				final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
 						model.getMapDimensions().getVersion());
@@ -100,6 +101,7 @@ public final class MapSizeListener extends ComponentAdapter {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

@@ -65,6 +65,7 @@ public enum LodeStatus {
 	private final double notHigherProbability;
 
 	/**
+	 * Simple (delegating) constructor.
 	 * @param qty the number of parts of other rock per part of ore
 	 */
 	LodeStatus(final int qty) {
@@ -72,6 +73,7 @@ public enum LodeStatus {
 	}
 
 	/**
+	 * Constructor.
 	 * @param qty             the number of parts of other rock per part of ore
 	 * @param lowerChance     the probability that an adjacent area will be the next
 	 *                           state
@@ -86,6 +88,7 @@ public enum LodeStatus {
 	}
 
 	/**
+	 * Get the next status lower than a given status.
 	 * @param state a LodeStatus
 	 * @return the next status lower
 	 */
@@ -113,6 +116,7 @@ public enum LodeStatus {
 	}
 
 	/**
+	 * Get the next status higher than a given status.
 	 * @param state a LodeStatus
 	 * @return the next status higher
 	 */
@@ -140,6 +144,7 @@ public enum LodeStatus {
 	}
 
 	/**
+	 * Randomly choose a status of a location adjacent to one with the given status.
 	 * @param state the status of one location
 	 * @param rng   a random-number generator
 	 * @return the status of an adjacent location
@@ -158,10 +163,11 @@ public enum LodeStatus {
 	}
 
 	/**
+	 * Randomly choose the status of a location horizontally adjacent in a "banded" (e.g
+	 * . sand) mine to one with the given location.
 	 * @param state the status of one location
 	 * @param rng   a random-number generator
-	 * @return the status of a horizontally-adjacent location in a "banded" (e.g. sand)
-	 * mine
+	 * @return the status of a horizontally-adjacent location in a "banded" mine
 	 */
 	public static LodeStatus bandedAdjacent(final LodeStatus state, final Random rng) {
 		// "normal" distribution with mean 0.5 and standard deviation 0.25
@@ -178,6 +184,7 @@ public enum LodeStatus {
 	}
 
 	/**
+	 * The number of parts of other rock per part of ore.
 	 * @return the number of parts of other rock per part of ore
 	 */
 	public int getRatio() {
