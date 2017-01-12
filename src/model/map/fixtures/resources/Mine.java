@@ -52,6 +52,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero ignored; there isn't any sensitive information
 	 * @return a copy of this mine
 	 */
@@ -64,6 +65,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * What kind of mine this is, ie what it produces.
 	 * @return what the mine produces
 	 */
 	@Override
@@ -72,6 +74,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The status of the mine.
 	 * @return the status of the mine
 	 */
 	public TownStatus getStatus() {
@@ -79,6 +82,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the mine
 	 */
 	@Override
@@ -87,6 +91,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * "[status] mine of [kind]".
 	 * @return a string representation of the mine
 	 */
 	@Override
@@ -95,6 +100,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * An object is equal iff it is a Mine with the same kind, status, and ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -107,6 +113,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -115,6 +122,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -123,6 +131,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * If we ignore ID, a fixture is equal if it is a Mine with the same kind and status.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -134,6 +143,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -142,6 +152,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -150,6 +161,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The plural of Mine is Mines.
 	 * @return a string describing all mines as a class
 	 */
 	@Override
@@ -158,6 +170,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * A short description of the mine.
 	 * @return a short description of the fixture
 	 */
 	@Override

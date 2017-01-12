@@ -43,6 +43,7 @@ public final class MiningCLI implements UtilityDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -51,6 +52,7 @@ public final class MiningCLI implements UtilityDriver {
 	}
 
 	/**
+	 * Start the driver.
 	 * @param cli the interface for user I/O
 	 * @param options any options passed to the driver
 	 * @param args    Arg 0 is the name of a file to write the CSV to; Arg 1 is the value

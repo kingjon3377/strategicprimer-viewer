@@ -27,6 +27,9 @@ public final class MultiMapHelper {
 		// Static-only utility class.
 	}
 	/**
+	 * If the given key is in the map, return its value. Otherwise, use the provided
+	 * function to turn it into a value, put that in the map for that key, and return
+	 * the value.
 	 * @param map a map
 	 * @param key a key
 	 * @param constructor an operation to transform the key into a new value if

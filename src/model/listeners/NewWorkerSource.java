@@ -17,12 +17,14 @@ package model.listeners;
  */
 public interface NewWorkerSource {
 	/**
+	 * Add a listener.
 	 * @param list a new listener to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addNewWorkerListener(NewWorkerListener list);
 
 	/**
+	 * Remove a listener.
 	 * @param list a listener to remove
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")

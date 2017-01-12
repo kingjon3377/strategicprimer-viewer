@@ -35,6 +35,7 @@ public final class MissingPropertyException extends SPFormatException {
 	private final String param;
 
 	/**
+	 * Constructor taking an exception that caused this one.
 	 * @param tag       the current tag
 	 * @param parameter the missing parameter
 	 * @param cause     the underlying cause
@@ -48,6 +49,7 @@ public final class MissingPropertyException extends SPFormatException {
 	}
 
 	/**
+	 * Constructor.
 	 * @param tag       the current tag
 	 * @param parameter the missing parameter
 	 */
@@ -59,6 +61,7 @@ public final class MissingPropertyException extends SPFormatException {
 	}
 
 	/**
+	 * The tag missing a parameter.
 	 * @return the current tag
 	 */
 	public QName getTag() {
@@ -66,6 +69,7 @@ public final class MissingPropertyException extends SPFormatException {
 	}
 
 	/**
+	 * The parameter it wants.
 	 * @return the missing parameter
 	 */
 	public String getParam() {

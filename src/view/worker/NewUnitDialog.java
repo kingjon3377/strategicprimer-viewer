@@ -178,6 +178,7 @@ public final class NewUnitDialog extends SPDialog
 	}
 
 	/**
+	 * Add a listener.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -186,6 +187,7 @@ public final class NewUnitDialog extends SPDialog
 	}
 
 	/**
+	 * Remove a listener.
 	 * @param list a listener to remove
 	 */
 	@Override
@@ -218,6 +220,7 @@ public final class NewUnitDialog extends SPDialog
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a quasi-diagnostic String
 	 */
 	@Override

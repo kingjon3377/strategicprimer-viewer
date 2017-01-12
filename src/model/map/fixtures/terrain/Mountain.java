@@ -42,6 +42,7 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the forest.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -51,6 +52,7 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the mountain.
 	 */
 	@Override
@@ -59,6 +61,7 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * An object is equal iff it is a Mountain.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -68,6 +71,7 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Since Mountains have no state, use a constant hash value.
 	 * @return a hash value for the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -77,6 +81,7 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * A dummy (and invalid) ID number.
 	 * @return an ID number
 	 */
 	@Override
@@ -85,6 +90,7 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * A fixture is equal iff it is a Mountain.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -94,6 +100,7 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -102,6 +109,7 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -110,6 +118,8 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The plural of Mountain is Mountains.
+	 * FIXME: method doesn't return that
 	 * @return a string describing all mountains as a class
 	 */
 	@Override
@@ -118,6 +128,7 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * "a mountain".
 	 * @return a short description of the fixture
 	 */
 	@Override

@@ -29,6 +29,7 @@ public final class MissingChildException extends SPFormatException {
 	private final QName context;
 
 	/**
+	 * Constructor.
 	 * @param tag the current tag (the one that needs a child)
 	 */
 	public MissingChildException(final StartElement tag) {
@@ -38,6 +39,7 @@ public final class MissingChildException extends SPFormatException {
 	}
 
 	/**
+	 * The tag that is missing a child.
 	 * @return the current tag.
 	 */
 	public QName getTag() {

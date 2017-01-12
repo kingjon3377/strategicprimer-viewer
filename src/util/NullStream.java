@@ -39,6 +39,7 @@ public final class NullStream extends OutputStream {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

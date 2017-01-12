@@ -67,6 +67,7 @@ public enum MineralKind {
 	}
 
 	/**
+	 * Parse a mineral kind from a String.
 	 * @param desc a string representing a MineralKind
 	 * @return the MineralKind it represents
 	 */
@@ -79,6 +80,7 @@ public enum MineralKind {
 	}
 
 	/**
+	 * The string representation of the mineral.
 	 * @return a string representation of the mineral
 	 */
 	@Override

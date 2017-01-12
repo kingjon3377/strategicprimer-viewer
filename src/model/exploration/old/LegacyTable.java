@@ -86,6 +86,7 @@ public final class LegacyTable implements EncounterTable {
 	}
 
 	/**
+	 * Get the text of the first IEvent on the tile.
 	 * @param point         ignored
 	 * @param terrain       ignored
 	 * @param fixtures      any fixtures on the tile
@@ -105,6 +106,7 @@ public final class LegacyTable implements EncounterTable {
 	}
 
 	/**
+	 * Get the text of the first IEvent on the tile.
 	 * @param point         ignored
 	 * @param terrain       ignored
 	 * @param fixtures      any fixtures on the tile
@@ -121,6 +123,7 @@ public final class LegacyTable implements EncounterTable {
 	}
 
 	/**
+	 * The set of all events this table (thinks it) can generate.
 	 * @return all events this table can generate.
 	 */
 	@Override
@@ -129,6 +132,7 @@ public final class LegacyTable implements EncounterTable {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

@@ -134,6 +134,7 @@ public final class MiningModel {
 	}
 
 	/**
+	 * The lowest column in the set of points.
 	 * @param set a set of Points
 	 * @return the lowest column in the set
 	 */
@@ -142,6 +143,7 @@ public final class MiningModel {
 	}
 
 	/**
+	 * Get a Point that has the set's highest column and row as its column and row.
 	 * @param set a set of points
 	 * @return a Point with the highest column and row in the set
 	 */
@@ -162,6 +164,7 @@ public final class MiningModel {
 	}
 
 	/**
+	 * The bottom-right corner of the set.
 	 * @return the bottom-right corner
 	 */
 	public Point getMaxPoint() {
@@ -169,6 +172,7 @@ public final class MiningModel {
 	}
 
 	/**
+	 * The mine's status at the given point.
 	 * @param point a point
 	 * @return what's there
 	 */
@@ -181,6 +185,7 @@ public final class MiningModel {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a string representation of this class
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

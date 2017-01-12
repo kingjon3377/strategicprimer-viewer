@@ -59,6 +59,7 @@ public final class JobTreeModel
 	private TreeSelectionModel tsm = new DefaultTreeSelectionModel();
 
 	/**
+	 * Get the Nth item in an iterable.
 	 * @param <T>      the type of thing we want to get
 	 * @param iterable an iterable
 	 * @param index    the index of the item we want to return
@@ -86,6 +87,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * Wrap an int in an array.
 	 * @param integer an int
 	 * @return an array containing it
 	 */
@@ -94,6 +96,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * Wrap an object in an array.
 	 * @param obj an object
 	 * @return an array containing it
 	 */
@@ -111,6 +114,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * The root of the tree, namely the worker.
 	 * @return the root of the tree, the worker.
 	 */
 	@Override
@@ -120,6 +124,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * Get the Nth child of the given parent.
 	 * @param parent an object in the tree
 	 * @param index  the index of the child we want
 	 * @return the specified child
@@ -140,6 +145,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * How many children a given object has in the tree.
 	 * @param parent an object in the tree
 	 * @return how many children it has
 	 */
@@ -158,6 +164,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * Whether a given object is a leaf node.
 	 * @param node a node in the tree
 	 * @return whether it's a leaf node
 	 */
@@ -167,6 +174,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * TODO: implement if necessary
 	 * @param path     a path indicating a node
 	 * @param newValue the new value for that place
 	 */
@@ -177,6 +185,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * Get the index of the given child in the given parent
 	 * @param parent an object presumably in the tree
 	 * @param child  something that's presumably one of its children
 	 * @return which child it is, or -1 if preconditions broken
@@ -201,6 +210,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * Add a listener to the list of listeners we notify
 	 * @param list something to listen for tree model changes
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -212,6 +222,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * Stop notifying a listener.
 	 * @param list something that doesn't want to listen for tree model changes anymore
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -221,6 +232,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * Add a new Job.
 	 * @param category what kind of thing is being added; if not a Job we ignore it
 	 * @param addendum a description of what to add
 	 */
@@ -251,6 +263,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * Change what unit member is currently selected.
 	 * @param old      the previously selected member
 	 * @param selected the newly selected unit member
 	 */
@@ -289,6 +302,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the object
 	 */
 	@Override

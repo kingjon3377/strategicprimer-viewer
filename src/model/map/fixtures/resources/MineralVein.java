@@ -60,6 +60,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this vein
 	 */
@@ -77,6 +78,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * What kind of mineral.
 	 * @return what kind of mineral this is
 	 */
 	public String mineral() {
@@ -84,6 +86,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Whether the vein is exposed.
 	 * @return whether the vein is exposed
 	 */
 	public boolean isExposed() {
@@ -91,6 +94,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Set whether the vein is exposed.
 	 * @param exp whether the vein is exposed
 	 */
 	public void setExposed(final boolean exp) {
@@ -98,6 +102,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The DC to discover the mineral vein.
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -106,6 +111,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Text to explain having discovered the vein.
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -123,6 +129,8 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * An object is equal iff it is a MineralVein with the same mineral and ID and
+	 * either both or neither are exposed. TODO: delegate to equalsContents().
 	 * @param obj an object
 	 * @return whether it's an identical event
 	 */
@@ -135,6 +143,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the event
 	 */
 	@Override
@@ -143,6 +152,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * A simple string representation.
 	 * @return a string representation of the event
 	 */
 	@Override
@@ -155,6 +165,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The kind of mineral.
 	 * @return the kind of mineral
 	 */
 	@Override
@@ -163,6 +174,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the event
 	 */
 	@Override
@@ -171,6 +183,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -179,6 +192,8 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * If we ignore ID and DC, a fixture is equal if it is a MineralVein with the same
+	 * kind of mineral and either both or neither are exposed.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -190,6 +205,8 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * If we ignore ID and DC, a fixture is equal if it is a MineralVein with the same
+	 * kind of mineral and either both or neither are exposed.
 	 * @param fix another MineralEvent
 	 * @return whether its contents equal ours
 	 */
@@ -198,6 +215,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -206,6 +224,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -214,6 +233,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The plural of "Mineral vein" is "Mineral veins".
 	 * @return a string describing all mineral veins as a class
 	 */
 	@Override
@@ -222,6 +242,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * A short description of the vein.
 	 * @return a short description of the fixture
 	 */
 	@Override

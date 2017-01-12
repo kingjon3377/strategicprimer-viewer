@@ -17,12 +17,14 @@ package model.listeners;
  */
 public interface NewUnitSource {
 	/**
+	 * Add a listener.
 	 * @param list a new listener to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addNewUnitListener(NewUnitListener list);
 
 	/**
+	 * Remove a listener.
 	 * @param list a listener to remove
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")

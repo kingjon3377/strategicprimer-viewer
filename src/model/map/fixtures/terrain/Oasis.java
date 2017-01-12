@@ -32,6 +32,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	private String image = "";
 
 	/**
+	 * Constructor.
 	 * @param idNum the ID number.
 	 */
 	public Oasis(final int idNum) {
@@ -39,6 +40,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero ignored, as an oasis has no sensitive information
 	 * @return a copy of this oasis
 	 */
@@ -51,6 +53,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the oasis.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -60,6 +63,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the oasis.
 	 */
 	@Override
@@ -68,6 +72,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * An object is equal iff it is an Oasis with the same ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -78,6 +83,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -86,6 +92,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -94,6 +101,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * If we ignore ID, a fixture is equal iff it is an Oasis.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -103,6 +111,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -111,6 +120,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -119,6 +129,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The plural of Oasis is Oases.
 	 * @return a string describing all oases as a class
 	 */
 	@Override
@@ -127,6 +138,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * "an oasis".
 	 * @return a short description of the fixture
 	 */
 	@Override

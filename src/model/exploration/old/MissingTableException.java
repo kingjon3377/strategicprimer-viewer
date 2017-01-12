@@ -37,6 +37,7 @@ public final class MissingTableException extends Exception {
 	}
 
 	/**
+	 * The name of the missing table.
 	 * @return the name of the missing table
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
