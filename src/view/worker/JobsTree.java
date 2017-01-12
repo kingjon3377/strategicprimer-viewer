@@ -108,6 +108,7 @@ public final class JobsTree extends JTree implements SkillSelectionSource {
 	}
 
 	/**
+	 * Add a listener to notify when a new skill is selected.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -116,6 +117,7 @@ public final class JobsTree extends JTree implements SkillSelectionSource {
 	}
 
 	/**
+	 * Stop notifying a listener about skill selection changes.
 	 * @param list a listener to remove
 	 */
 	@Override
@@ -148,6 +150,7 @@ public final class JobsTree extends JTree implements SkillSelectionSource {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a quasi-diagnostic String
 	 */
 	@Override

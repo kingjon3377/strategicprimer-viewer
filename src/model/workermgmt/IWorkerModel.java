@@ -23,23 +23,27 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public interface IWorkerModel extends IMultiMapModel {
 	/**
+	 * All the players in all the maps.
 	 * @return a list of all the players in all the maps
 	 */
 	List<Player> getPlayers();
 
 	/**
+	 * The units in the map belonging to the given player.
 	 * @param player a player in the map
 	 * @return a list of the units in the map belonging to the player
 	 */
 	List<IUnit> getUnits(Player player);
 
 	/**
+	 * The "kinds" of units that the given player has.
 	 * @param player a player in the map
 	 * @return the "kinds" of unit that player has.
 	 */
 	List<String> getUnitKinds(Player player);
 
 	/**
+	 * The units with the given "kind" that the given player has.
 	 * @param player a player in the map
 	 * @param kind   a "kind" of unit.
 	 * @return a list of the units of that kind in the map belonging to that player

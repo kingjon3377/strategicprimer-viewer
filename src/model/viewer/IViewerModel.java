@@ -24,6 +24,7 @@ import model.misc.IDriverModel;
 public interface IViewerModel
 		extends IDriverModel, SelectionChangeSource, GraphicalParamsSource {
 	/**
+	 * The coordinates of the currently selected tile.
 	 * @return the location of the currently selected tile.
 	 */
 	Point getSelectedPoint();
@@ -36,16 +37,19 @@ public interface IViewerModel
 	void setSelection(Point point);
 
 	/**
+	 * The visible dimensions of the map.
 	 * @return the visible dimensions of the map
 	 */
 	VisibleDimensions getDimensions();
 
 	/**
+	 * Set the visible dimensions of the map.
 	 * @param dim the new visible dimensions of the map
 	 */
 	void setDimensions(VisibleDimensions dim);
 
 	/**
+	 * The current zoom level.
 	 * @return the current zoom level
 	 */
 	int getZoomLevel();

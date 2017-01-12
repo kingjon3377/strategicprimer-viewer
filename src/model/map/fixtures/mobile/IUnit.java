@@ -36,6 +36,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 									   FixtureIterable<@NonNull UnitMember>, HasOwner,
 									   FortressMember {
 	/**
+	 * The unit's latest orders as of the given turn.
 	 * @param turn the current turn
 	 * @return that unit's latest orders as of that turn
 	 */
@@ -53,6 +54,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	}
 
 	/**
+	 * The latest turn the given orders were the current orders.
 	 * @param orders an orders string
 	 * @return the latest turn those orders are our orders, or -1 if they're not
 	 */
@@ -67,40 +69,47 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	}
 
 	/**
+	 * The unit's orders for the given turn.
 	 * @param turn which turn these are orders for
 	 * @return the unit's orders
 	 */
 	String getOrders(final int turn);
 
 	/**
+	 * The unit's orders history.
 	 * @return the unit's orders for all turns
 	 */
 	NavigableMap<Integer, String> getAllOrders();
 
 	/**
+	 * Set the unit's orders for a turn.
 	 * @param turn      which turn these are orders for
 	 * @param newOrders the unit's new orders
 	 */
 	void setOrders(final int turn, String newOrders);
 
 	/**
+	 * The unit's results for the given turn.
 	 * @param turn which turn these are results for
 	 * @return the unit's results
 	 */
 	String getResults(final int turn);
 
 	/**
+	 * The unit's results history.
 	 * @return the unit's results for all turns
 	 */
 	NavigableMap<Integer, String> getAllResults();
 
 	/**
+	 * Set the unit's results for the given turn.
 	 * @param turn       which turn these are results for
 	 * @param newResults the unit's new results
 	 */
 	void setResults(final int turn, String newResults);
 
 	/**
+	 * Get the unit's latest results as of the given turn.
 	 * @param turn the current turn
 	 * @return that unit's latest results as of that turn
 	 */
@@ -116,6 +125,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	}
 
 	/**
+	 * A verbose description of the unit.
 	 * @return a verbose description of the Unit.
 	 */
 	String verbose();
@@ -146,6 +156,9 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	IUnit copy(boolean zero);
 
 	/**
+	 * A fixture is a subset if it is a unit with the same ID and no extra members, and
+	 * all corresponding (by ID, presumably) members are either equal or themselves
+	 * subsets.
 	 * @param obj     another unit
 	 * @param ostream the stream to report results on
 	 * @param context a string to print before every line of output, describing the

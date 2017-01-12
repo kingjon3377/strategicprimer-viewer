@@ -41,11 +41,13 @@ public interface IWorker
 	boolean addJob(IJob job);
 
 	/**
+	 * The worker's race.
 	 * @return the worker's race
 	 */
 	String getRace();
 
 	/**
+	 * The worker's stats.
 	 * @return the worker's stats
 	 */
 	@Nullable WorkerStats getStats();
@@ -60,6 +62,7 @@ public interface IWorker
 	IWorker copy(boolean zero);
 
 	/**
+	 * Get the Job that the worker has with the given name.
 	 * @param jobName the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none
 	 */

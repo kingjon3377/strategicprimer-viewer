@@ -64,6 +64,7 @@ public final class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 	}
 
 	/**
+	 * The wrapped iterator.
 	 * @return the iterator
 	 */
 	@Override
@@ -72,6 +73,7 @@ public final class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 	}
 
 	/**
+	 * We delegate toString() to the wrapped iterator.
 	 * @return a String representation of the object
 	 */
 	@Override

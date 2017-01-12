@@ -54,6 +54,7 @@ public class Job implements IJob {
 	}
 
 	/**
+	 * Clone the Job.
 	 * @return a copy of this
 	 */
 	@Override
@@ -88,6 +89,7 @@ public class Job implements IJob {
 	}
 
 	/**
+	 * The name of the Job.
 	 * @return the name of the job
 	 */
 	@Override
@@ -96,6 +98,7 @@ public class Job implements IJob {
 	}
 
 	/**
+	 * The worker's level in this Job.
 	 * @return the worker's level in the job
 	 */
 	@Override
@@ -104,6 +107,7 @@ public class Job implements IJob {
 	}
 
 	/**
+	 * Set the worker's level in this Job. Cannot be negative.
 	 * @param newLevel the worker's new level in the job. Must not be negative.
 	 */
 	@Override
@@ -115,6 +119,7 @@ public class Job implements IJob {
 	}
 
 	/**
+	 * An iterator over (the worker's level in) the Skills in this Job.
 	 * @return an iterator over the worker's level in the various skills associated with
 	 * the job
 	 */
@@ -124,6 +129,8 @@ public class Job implements IJob {
 	}
 
 	/**
+	 * A Job equals an object iff it is a Job with the same name and level and identical
+	 * skills.
 	 * @param obj an object
 	 * @return whether it's the same as this
 	 */
@@ -182,6 +189,7 @@ public class Job implements IJob {
 	}
 
 	/**
+	 * For stability, only the name is used to compute the hash value.
 	 * @return a hash value for the Job.
 	 */
 	@Override
@@ -190,6 +198,7 @@ public class Job implements IJob {
 	}
 
 	/**
+	 * JobName (level).
 	 * @return a String representation of the Job
 	 */
 	@Override
@@ -213,6 +222,7 @@ public class Job implements IJob {
 	}
 
 	/**
+	 * Get a Skill by name, or null if not present.
 	 * @param skillName the name of a Skill
 	 * @return the Skill by that name in the Job, or none if not present
 	 */

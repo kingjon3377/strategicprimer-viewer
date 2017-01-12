@@ -45,6 +45,8 @@ public interface IWorkerTreeModel
 	void addUnit(IUnit unit);
 
 	/**
+	 * If obj is a node in the tree, returns the model object it represents; otherwise,
+	 * returns obj.
 	 * @param obj an object, possibly a node in the tree
 	 * @return the model object it represents, if it is a node, or the object itself
 	 * otherwise
@@ -84,6 +86,7 @@ public interface IWorkerTreeModel
 	void dismissUnitMember(UnitMember member);
 
 	/**
+	 * The unit members that have been dismissed during this session.
 	 * @return Unit members that have been dismissed during this session.
 	 */
 	Iterable<UnitMember> dismissed();

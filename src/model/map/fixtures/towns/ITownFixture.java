@@ -23,16 +23,19 @@ import model.map.TileFixture;
  */
 public interface ITownFixture extends TileFixture, HasName, HasMutableOwner, HasPortrait {
 	/**
+	 * The status of the town.
 	 * @return the status of the town, fortress, or city
 	 */
 	TownStatus status();
 
 	/**
+	 * The size of the town.
 	 * @return the size of the town, fortress, or city
 	 */
 	TownSize size();
 
 	/**
+	 * What kind of "town" this is.
 	 * @return a description of what kind of 'town' this is.
 	 */
 	String kind();
