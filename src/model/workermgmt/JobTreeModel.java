@@ -71,10 +71,7 @@ public final class JobTreeModel
 			if (iter.hasNext()) {
 				iter.next();
 			} else {
-				throw new ArrayIndexOutOfBoundsException(
-																"Parent does not have " +
-																		"that many " +
-																		"children");
+				throw new ArrayIndexOutOfBoundsException("Not enough children");
 			}
 		}
 		if (iter.hasNext()) {
@@ -84,8 +81,7 @@ public final class JobTreeModel
 			}
 			return retval;
 		} else {
-			throw new ArrayIndexOutOfBoundsException("Parent does not have that" +
-																	" many children");
+			throw new ArrayIndexOutOfBoundsException("Not enough children");
 		}
 	}
 
