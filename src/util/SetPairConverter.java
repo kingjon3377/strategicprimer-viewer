@@ -30,6 +30,7 @@ public final class SetPairConverter<@NonNull I, @NonNull K>
 	private final Map<I, K> theMap;
 
 	/**
+	 * Constructor.
 	 * @param map the set we're wrapping.
 	 */
 	@SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
@@ -38,6 +39,7 @@ public final class SetPairConverter<@NonNull I, @NonNull K>
 	}
 
 	/**
+	 * The iterator over the entries.
 	 * @return the iterator
 	 */
 
@@ -61,6 +63,7 @@ public final class SetPairConverter<@NonNull I, @NonNull K>
 		private final Iterator<Map.Entry<I, K>> wrapped;
 
 		/**
+		 * A trivial toString().
 		 * @return a String representation of the object
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -79,6 +82,7 @@ public final class SetPairConverter<@NonNull I, @NonNull K>
 		}
 
 		/**
+		 * Whether there is at least one more item in the iterator.
 		 * @return whether there's more in the iterator
 		 */
 		@Override
@@ -87,6 +91,7 @@ public final class SetPairConverter<@NonNull I, @NonNull K>
 		}
 
 		/**
+		 * The next item in the iterator.
 		 * @return the next pair in line
 		 */
 		@Override
@@ -106,6 +111,7 @@ public final class SetPairConverter<@NonNull I, @NonNull K>
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

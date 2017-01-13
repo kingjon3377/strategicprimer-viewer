@@ -27,6 +27,7 @@ public final class SelectionChangeSupport implements SelectionChangeSource {
 	private final Collection<SelectionChangeListener> listeners = new ArrayList<>();
 
 	/**
+	 * Notify the given listener of future selection changes.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -35,6 +36,7 @@ public final class SelectionChangeSupport implements SelectionChangeSource {
 	}
 
 	/**
+	 * Stop notifying the given listener of selection changes.
 	 * @param list a listener to remove
 	 */
 	@Override
@@ -56,6 +58,7 @@ public final class SelectionChangeSupport implements SelectionChangeSource {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

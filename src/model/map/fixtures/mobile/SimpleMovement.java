@@ -57,6 +57,7 @@ public final class SimpleMovement {
 	}
 
 	/**
+	 * Whether land movement is possible.
 	 * @param terrain a terrain type
 	 * @return whether it's passable by land movement.
 	 */
@@ -64,6 +65,8 @@ public final class SimpleMovement {
 		return TileType.Ocean != terrain;
 	}
 	/**
+	 * Whether rivers in either the source or destination will speed travel in the given
+	 * direction.
 	 * @param direction the direction of travel
 	 * @param sourceRivers the rivers in the location the mover is traveling from
 	 * @param destRivers the rivers in the location the mover is traveling to
@@ -105,6 +108,7 @@ public final class SimpleMovement {
 	}
 
 	/**
+	 * Get the cost of movement in the given conditions.
 	 * @param terrain  a terrain type
 	 * @param forest   whether the location is forested
 	 * @param mountain whether the location is mountainous
@@ -144,6 +148,8 @@ public final class SimpleMovement {
 	}
 
 	/**
+	 * Whether any of the stream of fixtures was a forest.
+	 * FIXME: use the stream as a stream, not its Spliterator!
 	 * @param fixtures a sequence of fixtures
 	 * @return whether any of them is a forest
 	 */
@@ -154,6 +160,8 @@ public final class SimpleMovement {
 	}
 
 	/**
+	 * Whether any of the fixtures is a mountain or hill.
+	 * FIXME: use the stream as a stream, not its Spliterator!
 	 * @param fixtures a sequence of fixtures
 	 * @return whether any of them is a mountain or a hill
 	 */
@@ -201,6 +209,7 @@ public final class SimpleMovement {
 	}
 
 	/**
+	 * The worker's Perception score.
 	 * @param worker a worker
 	 * @return the worker's Perception score
 	 */
@@ -242,6 +251,8 @@ public final class SimpleMovement {
 								((ITownFixture) fix).getOwner().equals(unit.getOwner()));
 	}
 	/**
+	 * Choose what the mover should in fact find from the list of things he or she might
+	 * find.
 	 * @param possibilities a list of things the mover might find
 	 * @param mover the explorer
 	 * @param speed how fast the explorer is moving

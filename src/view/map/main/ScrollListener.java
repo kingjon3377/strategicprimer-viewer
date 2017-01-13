@@ -125,6 +125,7 @@ public final class ScrollListener
 	}
 
 	/**
+	 * Whether the given value is between the two endpoints (both inclusive).
 	 * @param min   the start of a range
 	 * @param value a value
 	 * @param max   the end of te range
@@ -135,6 +136,7 @@ public final class ScrollListener
 	}
 
 	/**
+	 * Handle a change in visible dimensions.
 	 * @param oldDim the old visible dimensions
 	 * @param newDim the new visible dimensions
 	 */
@@ -151,6 +153,7 @@ public final class ScrollListener
 	}
 
 	/**
+	 * Ignored.
 	 * @param oldSize the old zoom level
 	 * @param newSize the new zoom level
 	 */
@@ -194,6 +197,7 @@ public final class ScrollListener
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -237,6 +241,7 @@ public final class ScrollListener
 		}
 
 		/**
+		 * Gets the relevant dimension.
 		 * @return the map's size in the dimension we're concerned with
 		 */
 		private int dimension() {
@@ -248,6 +253,7 @@ public final class ScrollListener
 		}
 
 		/**
+		 * Gets the relevant visible dimensions.
 		 * @return the map's visible size in the dimension we're concerned with
 		 */
 		private int visibleDimension() {
@@ -275,6 +281,7 @@ public final class ScrollListener
 		}
 
 		/**
+		 * A nearly trivial toString().
 		 * @return a quasi-diagnostic String
 		 */
 		@Override

@@ -33,6 +33,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 			new ArrayList<>();
 
 	/**
+	 * Constructor.
 	 * @param map  the map we're wrapping
 	 * @param file the file the map was loaded from or should be saved to
 	 */
@@ -58,6 +59,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	}
 
 	/**
+	 * Add a secondary map.
 	 * @param map  the subordinate map to add
 	 * @param file the name of the file it was loaded from
 	 */
@@ -84,6 +86,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	}
 
 	/**
+	 * An iterator over subordinate maps.
 	 * @return an iterator over the subordinate maps
 	 */
 	@Override
@@ -92,6 +95,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	}
 
 	/**
+	 * An iterator over all maps, including main and subordinate.
 	 * @return an iterator over both the main map and the subordinate maps
 	 */
 	@Override
@@ -103,6 +107,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a string representation of this class
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

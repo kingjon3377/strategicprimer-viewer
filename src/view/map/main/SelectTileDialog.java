@@ -1,7 +1,6 @@
 package view.map.main;
 
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -11,9 +10,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
@@ -125,6 +122,8 @@ public final class SelectTileDialog extends SPDialog {
 	}
 
 	/**
+	 * Check whether the given String represents a number less than the given maximum
+	 * value.
 	 * @param text  a String to test, representing a number
 	 * @param bound its maximum value
 	 * @return a State representing any problems with it.
@@ -234,6 +233,7 @@ public final class SelectTileDialog extends SPDialog {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a quasi-diagnostic String
 	 */
 	@Override

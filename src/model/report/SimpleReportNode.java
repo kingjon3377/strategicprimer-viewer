@@ -44,6 +44,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	private String text;
 
 	/**
+	 * Constructor that the public constructors delegate to.
 	 * @param concatenated a concatenated string to make the text of the node
 	 */
 	private SimpleReportNode(final String concatenated) {
@@ -53,6 +54,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Constructor.
 	 * @param pt    the point, if any, in the map that this represents something on
 	 * @param texts a number of strings to concatenate and make the text of the node.
 	 */
@@ -63,6 +65,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Constructor not taking a Point.
 	 * @param texts a number of strings to concatenate and make the text of the node.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
@@ -72,6 +75,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Concatenate a number of Strings.
 	 * @param strings a number of strings
 	 * @return them all concatenated together
 	 */
@@ -83,6 +87,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The HTML representation of the node is its text.
 	 * @return the HTML representation of the node, its text.
 	 */
 	@Override
@@ -91,6 +96,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Write the HTML representation of the node to a Formatter.
 	 * @param formatter a Formatter to write the HTML representation to
 	 */
 	@Override
@@ -99,6 +105,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The size of the HTML representation of the node.
 	 * @return the size of the HTML representation of the node.
 	 */
 	@Override
@@ -107,6 +114,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * An object is equal iff it is a SimpleReportNode with the same text.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -117,6 +125,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Use the text's hash value for ours.
 	 * @return a hash code for the object
 	 */
 	@Override
@@ -152,6 +161,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The text of the node.
 	 * @return the text of the node, usually the header.
 	 */
 	@Override
@@ -160,6 +170,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the text of the node.
 	 * @param txt the new text for the node
 	 */
 	@Override
@@ -171,6 +182,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Use the text of the node as its String representation.
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -179,6 +191,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the location, if any, of what this represents.
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	@Override
@@ -187,6 +200,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The location, if any, that this represents something at.
 	 * @return the point, if any, in the map that this node in particular represents
 	 * something on
 	 */

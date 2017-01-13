@@ -45,6 +45,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero ignored, as there's no sensitive data
 	 * @return a copy of this shrub
 	 */
@@ -57,6 +58,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The kind of shrub.
 	 * @return a description of the shrub
 	 */
 	@Override
@@ -65,6 +67,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the shrub.
 	 */
 	@Override
@@ -73,6 +76,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * We use the kind of shrub as toString() as well.
 	 * @return the description of the shrub
 	 */
 	@Override
@@ -81,6 +85,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * An object is equal iff it is a Shrub with the same kind and ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -90,6 +95,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * A Shrub is equal iff it has the same kind and ID.
 	 * @param obj a shrub
 	 * @return whether it's equal to this one
 	 */
@@ -98,6 +104,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -106,6 +113,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -114,6 +122,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * If we ignore ID, a fixture is equal iff it is a Shrub with the same kind.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -124,6 +133,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -132,6 +142,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -140,6 +151,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The plural of Shrub is Shrubs.
 	 * @return a string describing all shrubs as a class
 	 */
 	@Override
@@ -148,6 +160,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The short description is the shrub's kind. TODO: inline to "description"
 	 * @return a short description of the fixture
 	 */
 	@Override

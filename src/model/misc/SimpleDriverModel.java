@@ -49,6 +49,7 @@ public class SimpleDriverModel implements IDriverModel {
 	private Optional<Path> file = Optional.empty();
 
 	/**
+	 * Set a new main map.
 	 * @param newMap the new map
 	 * @param origin the file from which the map was loaded
 	 */
@@ -64,6 +65,7 @@ public class SimpleDriverModel implements IDriverModel {
 	}
 
 	/**
+	 * The (main) map.
 	 * @return the main map
 	 */
 	@Override
@@ -72,6 +74,7 @@ public class SimpleDriverModel implements IDriverModel {
 	}
 
 	/**
+	 * The dimensions of the map.
 	 * @return the dimensions and version of the map
 	 */
 	@Override
@@ -80,6 +83,7 @@ public class SimpleDriverModel implements IDriverModel {
 	}
 
 	/**
+	 * The file from which the map was loaded.
 	 * @return the file from which the map was loaded
 	 */
 	@Override
@@ -128,6 +132,7 @@ public class SimpleDriverModel implements IDriverModel {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a diagnostic String
 	 */
 	@Override

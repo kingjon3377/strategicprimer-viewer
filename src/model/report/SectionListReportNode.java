@@ -95,6 +95,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Write the HTML representation to a Formatter.
 	 * @param formatter a Formatter to write the HTML representation to
 	 */
 	@Override
@@ -116,6 +117,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The approximate size of the HTML representation of this node.
 	 * @return approximately how long the HTML representation of this node will be.
 	 */
 	@Override
@@ -125,6 +127,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The header level of this section. TODO: Do we need this?
 	 * @return the header level
 	 */
 	public final int getHeaderLevel() {
@@ -132,6 +135,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the header level of this section. TODO: Do we need this?
 	 * @param lvl the new header level
 	 */
 	public final void setHeaderLevel(final int lvl) {
@@ -139,6 +143,8 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * An object is equal iff it is a SectionListReportNode with the same header text
+	 * and section level and equal children in the same order.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -154,6 +160,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Use the level and the header text in determining the hash code.
 	 * @return a hash code for the object
 	 */
 	@Override
@@ -184,6 +191,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The header text.
 	 * @return the text of the node, usually the header.
 	 */
 	@Override
@@ -192,6 +200,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the header text. Null is ignored.
 	 * @param txt the new text for the node
 	 */
 	@Override
@@ -203,6 +212,8 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Returns the header text as the String representation.
+	 * TODO: Should we use the children?
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -211,6 +222,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the location, if any, of what this represents.
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	@Override
@@ -219,6 +231,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Get the point, if any, that this node (as opposed to its children) represents.
 	 * @return the point, if any, in the map that this node in particular represents
 	 * something on
 	 */

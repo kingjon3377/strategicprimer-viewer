@@ -61,6 +61,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Write the HTML representation to a Formatter.
 	 * @param formatter a Formatter to write the HTML representation to
 	 */
 	@Override
@@ -73,6 +74,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The approximate size of the HTML representation of the node.
 	 * @return approximately how long the HTML representation of this node will be.
 	 */
 	@Override
@@ -81,6 +83,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The section header level. TODO: do we need this?
 	 * @return the header level
 	 */
 	public int getHeaderLevel() {
@@ -88,6 +91,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the section header level. TODO: do we need this?
 	 * @param lvl the new header level
 	 */
 	public void setHeaderLevel(final int lvl) {
@@ -95,6 +99,8 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * An object is equal iff it is a SectionReportNode with the same header text and
+	 * level and the same children in the same order.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -109,6 +115,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Only uses the header text and level to calculate the hash code.
 	 * @return a hash code for the object
 	 */
 	@Override
@@ -139,6 +146,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The header text.
 	 * @return the text of the node, usually the header.
 	 */
 	@Override
@@ -147,6 +155,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the header text. Null is ignored.
 	 * @param txt the new text for the node
 	 */
 	@Override
@@ -158,6 +167,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Just returns the header text. TODO: use the level and/or children?
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -166,6 +176,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the location, if any, of what this node represents.
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	@Override
@@ -174,6 +185,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The location, if any, of what this node in particular represents.
 	 * @return the point, if any, in the map that this node in particular represents
 	 * something on
 	 */

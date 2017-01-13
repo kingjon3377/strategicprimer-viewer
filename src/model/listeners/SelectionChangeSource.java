@@ -17,12 +17,14 @@ package model.listeners;
  */
 public interface SelectionChangeSource {
 	/**
+	 * Notify the given listener of future selection changes.
 	 * @param list a listener to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addSelectionChangeListener(SelectionChangeListener list);
 
 	/**
+	 * Stop notifying the given listener of selection changes.
 	 * @param list a listener to remove
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
