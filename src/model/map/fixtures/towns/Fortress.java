@@ -255,16 +255,13 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 					Collectors.toMap(FortressMember::getID, x -> x, (one, two) -> one));
 			boolean retval = true;
 			for (final FortressMember unit : fort) {
-				if (!isConditionTrue(ostream,
-						ours.containsKey(Integer.valueOf(unit.getID())),
+				final Integer memberId = Integer.valueOf(unit.getID());
+				if (!isConditionTrue(ostream, ours.containsKey(memberId),
 						"%s In fortress %s (ID #%d): Extra member:\t%s, ID #%d%n",
-						context, name, Integer.valueOf(id), unit.toString(),
-						Integer.valueOf(unit.getID())) ||
-							!ours.get(Integer.valueOf(unit.getID()))
-									 .isSubset(unit, ostream,
-											 String.format("%s In fortress %s (ID #%d):",
-													 context, name,
-													 Integer.valueOf(id)))) {
+						context, name, Integer.valueOf(id), unit.toString(), memberId) ||
+							!ours.get(memberId).isSubset(unit, ostream,
+									String.format("%s In fortress %s (ID #%d):", context,
+											name, Integer.valueOf(id)))) {
 					retval = false;
 				}
 			}
