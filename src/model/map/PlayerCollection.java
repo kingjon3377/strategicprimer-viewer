@@ -124,6 +124,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
+	 * Whether we contain the given player.
 	 * @param obj an object
 	 * @return whether we contain it
 	 */

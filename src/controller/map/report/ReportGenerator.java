@@ -71,11 +71,11 @@ public final class ReportGenerator {
 	}
 
 	/**
+	 * Find the location of the given player's HQ in the given map.
 	 * @param map    a map
 	 * @param player a player
 	 * @return the location of that player's HQ, or another of that player's
-	 * fortresses if
-	 * not found, (-1, -1) if none found
+	 * fortresses if not found, (-1, -1) if none found
 	 */
 	@SuppressWarnings("IfStatementWithIdenticalBranches")
 	private static Point findHQ(final IMapNG map, final Player player) {
@@ -117,6 +117,7 @@ public final class ReportGenerator {
 	}
 
 	/**
+	 * Create the report for the given player based on the given map.
 	 * @param map the map to base the report on
 	 * @param player the player to create the report for
 	 * @return the report, in HTML, as a String
@@ -232,7 +233,7 @@ public final class ReportGenerator {
 		}
 	}
 
-	/**
+	/** Create the report, in intermediate representation, based on the given map.
 	 * @param map the map to base the report on
 	 * @return the report, in ReportIntermediateRepresentation
 	 */
@@ -300,6 +301,8 @@ public final class ReportGenerator {
 	}
 
 	/**
+	 * Create a mapping from ID numbers to Pairs of fixtures and their location for all
+	 * fixtures in the map.
 	 * @param map a map
 	 * @return the fixtures in it, a mapping from their ID to a Pair of the fixture's
 	 * location and the fixture itself.
@@ -329,6 +332,8 @@ public final class ReportGenerator {
 		return retval;
 	}
 	/**
+	 * The report can include fixtures that are <i>tile</i> fixtures, and also fixtures
+	 * with nonnegative IDs.
 	 * @param fix a fixture
 	 * @return whether we are able to report on it
 	 */
@@ -336,6 +341,8 @@ public final class ReportGenerator {
 		return fix instanceof TileFixture || fix.getID() >= 0;
 	}
 	/**
+	 * Produce a Function that, given a fixture, returns either its ID number (if
+	 * nonnegative) or one newly generated using the given registrar.
 	 * @param idf an ID number factory
 	 * @return a Function from fixtures to ints that returns the fixture's ID if
 	 * nonnegative and a newly generated, using the given factory, ID if negative
@@ -350,6 +357,7 @@ public final class ReportGenerator {
 		};
 	}
 	/**
+	 * Flattens a stream so all fixtures are in the main stream.
 	 * @param stream a source of tile-fixtures
 	 * @return all the tile-fixtures in it, recursively.
 	 */

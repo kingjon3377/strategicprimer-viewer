@@ -314,6 +314,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a quasi-diagnostic String
 	 */
 	@Override
@@ -322,6 +323,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	}
 
 	/**
+	 * The title of this app.
 	 * @return the title of this app
 	 */
 	@Override
@@ -405,6 +407,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		}
 
 		/**
+		 * A simple toString().
 		 * @return a quasi-diagnostic String
 		 */
 		@Override
@@ -413,6 +416,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		}
 
 		/**
+		 * The selected item in the combo box, as a String.
 		 * @return the selected item, as a String
 		 */
 		@Override

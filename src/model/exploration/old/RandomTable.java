@@ -46,6 +46,7 @@ public final class RandomTable implements EncounterTable {
 	}
 
 	/**
+	 * Generate an "event" at random.
 	 * @param point         ignored
 	 * @param terrain       ignored
 	 * @param fixtures      ignored
@@ -62,6 +63,7 @@ public final class RandomTable implements EncounterTable {
 	}
 
 	/**
+	 * Generate an "event" at random.
 	 * @param point         ignored
 	 * @param terrain       ignored
 	 * @param fixtures      any fixtures on the tile
@@ -76,6 +78,7 @@ public final class RandomTable implements EncounterTable {
 	}
 
 	/**
+	 * Get the first item in the table whose numeric value is above the given value.
 	 * @param value a number to check the table against
 	 * @return the result of the check
 	 */
@@ -89,6 +92,7 @@ public final class RandomTable implements EncounterTable {
 	}
 
 	/**
+	 * All the "events" this table can produce.
 	 * @return all events that this table can produce.
 	 */
 	@Override
@@ -97,6 +101,7 @@ public final class RandomTable implements EncounterTable {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the class
 	 */
 	@Override

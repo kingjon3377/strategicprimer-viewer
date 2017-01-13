@@ -54,6 +54,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Write the HTML to a formatter.
 	 * @param formatter a Formatter to write the HTML representation to
 	 */
 	@Override
@@ -66,6 +67,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * How long the HTML representation of this node (recursively) will be.
 	 * @return approximately how long the HTML representation of this node will be.
 	 */
 	@Override
@@ -74,6 +76,8 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * An object is equal iff it is a RootReportNode with the same text and equal
+	 * children in the same order.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -87,6 +91,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Use the header text's hash value, for stability.
 	 * @return a hash code for the object
 	 */
 	@Override
@@ -117,6 +122,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * The text of the node.
 	 * @return the text of the node, usually the header.
 	 */
 	@Override
@@ -124,7 +130,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 		return text;
 	}
 
-	/**
+	/** Set the text of the node.
 	 * @param txt the new text for the node
 	 */
 	@Override
@@ -136,6 +142,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Returns the text of the node.
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -144,6 +151,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Set the point, if any, that this represents something at.
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	@Override
@@ -152,6 +160,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
+	 * Get the point, if any, that this point in particular represents something at.
 	 * @return the point, if any, in the map that this node in particular represents
 	 * something on
 	 */

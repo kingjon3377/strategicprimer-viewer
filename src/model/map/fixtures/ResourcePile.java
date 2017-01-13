@@ -52,6 +52,7 @@ public class ResourcePile
 	private int created = -1;
 
 	/**
+	 * Constructor.
 	 * @param idNum       an ID number for the fixture
 	 * @param resKind     the general kind of resource
 	 * @param resContents the specific kind of resource
@@ -66,6 +67,7 @@ public class ResourcePile
 	}
 
 	/**
+	 * The ID number.
 	 * @return the ID # of the resource pile
 	 */
 	@Override
@@ -74,6 +76,7 @@ public class ResourcePile
 	}
 
 	/**
+	 * What general kind of resource this is. (E.g. "food")
 	 * @return the general kind of resource this is
 	 */
 	@Override
@@ -82,6 +85,7 @@ public class ResourcePile
 	}
 
 	/**
+	 * What specific kind of resource this is. (E.g. "meat")
 	 * @return the specific kind of resource this is
 	 */
 	public String getContents() {
@@ -89,6 +93,7 @@ public class ResourcePile
 	}
 
 	/**
+	 * Set the specific kind of resource.
 	 * @param nContents the new value of the specific kind of resource this is
 	 */
 	public void setContents(final String nContents) {
@@ -96,7 +101,8 @@ public class ResourcePile
 	}
 
 	/**
-	 * @return the filename of an image to use for implements by default
+	 * The default icon filename.
+	 * @return the filename of an image to use for resource piles by default
 	 */
 	@Override
 	public String getDefaultImage() {
@@ -104,7 +110,8 @@ public class ResourcePile
 	}
 
 	/**
-	 * @return the filename of an image to use for this implement
+	 * The per-instance icon filename.
+	 * @return the filename of an image to use for this resource pile
 	 */
 	@Override
 	public String getImage() {
@@ -112,7 +119,8 @@ public class ResourcePile
 	}
 
 	/**
-	 * @param img the filename of an image to use for this implement
+	 * Set the per-instance icon filename.
+	 * @param img the filename of an image to use for this resource pile.
 	 */
 	@Override
 	public void setImage(final String img) {
@@ -120,6 +128,8 @@ public class ResourcePile
 	}
 
 	/**
+	 * If we ignore ID, a fixture is equal iff it is a ResourcePile with the same kind and
+	 * contents and equal quantity. TODO: check age
 	 * @param fix a fixture
 	 * @return whether it equals this one except for ID
 	 */
@@ -132,6 +142,9 @@ public class ResourcePile
 	}
 
 	/**
+	 * A fixture is a subset iff it is a ResourcePile of the same kind and contents,
+	 * with the same ID, and its quantity is a subset of ours.
+	 * TODO: Check age?
 	 * @param obj     a fixture
 	 * @param ostream the stream to report errors to
 	 * @param context the context to report before errors
@@ -168,6 +181,7 @@ public class ResourcePile
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero whether to "zero out" sensitive information
 	 * @return a copy of this Implement
 	 */
@@ -182,6 +196,7 @@ public class ResourcePile
 	}
 
 	/**
+	 * The quantity of resource in the pile.
 	 * @return the quantity of resource in the pile
 	 */
 	public Quantity getQuantity() {
@@ -189,9 +204,7 @@ public class ResourcePile
 	}
 
 	/**
-	 * Using Number implementations other than Integer or BigDecimal may lead to
-	 * unwanted behavior (such as either exceptions or data loss) down the line.
-	 *
+	 * Set the quantity of resource in the pile.
 	 * @param qty the new quantity of resource in the pile.
 	 */
 	public void setQuantity(final Quantity qty) {
@@ -199,6 +212,7 @@ public class ResourcePile
 	}
 
 	/**
+	 * FIXME: Use ID for hashing.
 	 * @return a hash code for the object.
 	 */
 	@Override
@@ -210,6 +224,8 @@ public class ResourcePile
 	}
 
 	/**
+	 * An object is equal iff it is a ResourcePile with equal ID and quantity and the
+	 * same kind, contents, and created date.
 	 * @param obj an object
 	 * @return whether it equals this one
 	 */
@@ -226,6 +242,7 @@ public class ResourcePile
 	}
 
 	/**
+	 * A String representaiton of the pile.
 	 * @return a String representation of the resource pile
 	 */
 	@Override
@@ -246,6 +263,7 @@ public class ResourcePile
 	}
 
 	/**
+	 * The turn on which the resource was created. A negative return value means N/A.
 	 * @return the turn on which the resource was created
 	 */
 	public int getCreated() {
@@ -253,6 +271,7 @@ public class ResourcePile
 	}
 
 	/**
+	 * Set the turn on which the resource was created.
 	 * @param createdTurn the turn on which the resource was created
 	 */
 	public void setCreated(final int createdTurn) {

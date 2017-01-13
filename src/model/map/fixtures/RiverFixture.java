@@ -53,6 +53,7 @@ public final class RiverFixture
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero ignored, as this fixture has no sensitive information
 	 * @return a copy of this fixture
 	 */
@@ -85,6 +86,7 @@ public final class RiverFixture
 	}
 
 	/**
+	 * The rivers this represents.
 	 * @return the river directions
 	 */
 	public Set<River> getRivers() {
@@ -92,6 +94,7 @@ public final class RiverFixture
 	}
 
 	/**
+	 * An iterator over the rivers this represents.
 	 * @return an iterator over the rivers
 	 */
 	@Override
@@ -100,6 +103,7 @@ public final class RiverFixture
 	}
 
 	/**
+	 * An object is equal iff it is a RiverFixture representing the same rivers.
 	 * @param obj an object
 	 * @return whether it's an identical RiverFixture
 	 */
@@ -110,9 +114,8 @@ public final class RiverFixture
 	}
 
 	/**
-	 * @return a hash value for the object
-	 *
 	 * Because of Java bug #6579200, this has to return a constant.
+	 * @return a hash value for the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
@@ -121,6 +124,7 @@ public final class RiverFixture
 	}
 
 	/**
+	 * A String representation of the object. TODO: Use Stream operations?
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -137,6 +141,7 @@ public final class RiverFixture
 	}
 
 	/**
+	 * A fixture is a subset if it is a RiverFixture with no rivers we don't have.
 	 * @param obj     another RiverFixture
 	 * @param ostream a stream to print any error messages on, or which rivers are extra
 	 * @param context a string to print before every line of output, describing the
@@ -182,6 +187,7 @@ public final class RiverFixture
 	}
 
 	/**
+	 * Since this doesn't have a valid ID, delegates to equals().
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -191,6 +197,7 @@ public final class RiverFixture
 	}
 
 	/**
+	 * The plural of River is Rivers.
 	 * @return a string describing all river fixtures as a class
 	 */
 	@Override
@@ -199,6 +206,7 @@ public final class RiverFixture
 	}
 
 	/**
+	 * A short description of the fixture.
 	 * @return a short description of the fixture
 	 */
 	@Override

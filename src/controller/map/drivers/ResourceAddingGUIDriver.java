@@ -37,6 +37,7 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -76,6 +77,7 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

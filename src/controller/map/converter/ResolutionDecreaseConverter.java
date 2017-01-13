@@ -125,6 +125,7 @@ public final class ResolutionDecreaseConverter {
 	}
 
 	/**
+	 * Get the rivers at the given point.
 	 * @param old   a map
 	 * @param point a point
 	 * @return the rivers there, if any
@@ -136,6 +137,7 @@ public final class ResolutionDecreaseConverter {
 	}
 
 	/**
+	 * Combine a series of sets of rivers into one RiverFixture.
 	 * @param rivers a series of rivers to combine into one collection
 	 * @return a RiverFixture containing all of them
 	 */
@@ -147,6 +149,7 @@ public final class ResolutionDecreaseConverter {
 	}
 
 	/**
+	 * Add a series of sets of rivers to a RiverFixture.
 	 * @param fix    a RiverFixture
 	 * @param rivers a series of rivers to add to it
 	 */
@@ -160,6 +163,7 @@ public final class ResolutionDecreaseConverter {
 	}
 
 	/**
+	 * Remove rivers from a set.
 	 * @param set    a set of rivers
 	 * @param rivers a series of rivers to remove from it
 	 */
@@ -170,6 +174,7 @@ public final class ResolutionDecreaseConverter {
 	}
 
 	/**
+	 * Get the most common tile-type from among four tiles.
 	 * @param firstType  one tile-type
 	 * @param secondType a second tile-type
 	 * @param thirdType  a third tile-type
@@ -211,6 +216,7 @@ public final class ResolutionDecreaseConverter {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

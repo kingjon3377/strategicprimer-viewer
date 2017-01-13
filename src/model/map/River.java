@@ -69,6 +69,7 @@ public enum River {
 	}
 
 	/**
+	 * The direction of the river.
 	 * @return a description of the direction of the river
 	 */
 	public String getDescription() {

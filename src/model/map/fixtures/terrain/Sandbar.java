@@ -32,6 +32,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	private String image = "";
 
 	/**
+	 * Constructor.
 	 * @param idNum the ID number.
 	 */
 	public Sandbar(final int idNum) {
@@ -39,6 +40,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Trivial toString().
 	 * @return a String representation of the sandbar.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -48,6 +50,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name o an image to represent the sandbar.
 	 */
 	@Override
@@ -56,6 +59,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * An object is equal iff it is a Sandbar with the same ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -66,6 +70,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -74,6 +79,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -82,6 +88,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * If we ignore ID, all Sandbars are equal.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -91,6 +98,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -99,6 +107,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -107,6 +116,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * The plural of Sandbar is Sandbars.
 	 * @return a string describing all sandbars as a class
 	 */
 	@Override
@@ -115,6 +125,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * A short description.
 	 * @return a short description of the fixture
 	 */
 	@Override
@@ -123,6 +134,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero ignored, as a sandbar has no sensitive information
 	 * @return a copy of this sandbar
 	 */

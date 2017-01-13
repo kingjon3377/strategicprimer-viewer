@@ -48,6 +48,7 @@ public final class RaceFactory {
 	}
 
 	/**
+	 * Select a race at random, using a caller-provided RNG.
 	 * @param random a Random instance to use
 	 * @return a race selected using that instance.
 	 */
@@ -56,6 +57,7 @@ public final class RaceFactory {
 	}
 
 	/**
+	 * Select a race at random.
 	 * @return a race selected at random.
 	 */
 	public static String getRace() {
@@ -63,6 +65,7 @@ public final class RaceFactory {
 	}
 
 	/**
+	 * The list of races.
 	 * @return the collection of races.
 	 */
 	public static Collection<String> getRaces() {

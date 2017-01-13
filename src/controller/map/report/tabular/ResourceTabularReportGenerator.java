@@ -37,6 +37,7 @@ import util.PatientMap;
 public final class ResourceTabularReportGenerator implements ITableGenerator<IFixture> {
 
 	/**
+	 * This generator can handle caches, resource piles, and implements.
 	 * @param obj an object
 	 * @return whether this report generator covers it
 	 */
@@ -47,6 +48,8 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 	}
 
 	/**
+	 * Write a table row based on the given fixture.
+	 * TODO: simplify, as elsewhere.
 	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
 	 * @param item     the fixture to base the line on

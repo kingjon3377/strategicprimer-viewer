@@ -221,6 +221,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -229,6 +230,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

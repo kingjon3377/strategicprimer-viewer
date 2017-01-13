@@ -74,6 +74,7 @@ public final class QueryCLI implements SimpleDriver {
 	private static final int HOURLY_ENCOUNTERS = 4;
 
 	/**
+	 * Accept and respond to commands.
 	 * @param options options passed to the driver
 	 * @param model   the driver model containing the map to explore
 	 * @param cli     the interface to the user
@@ -94,6 +95,7 @@ public final class QueryCLI implements SimpleDriver {
 	}
 
 	/**
+	 * Handle a user command.
 	 * @param options   options passed to the driver
 	 * @param model     the driver model
 	 * @param huntModel the hunting model
@@ -178,6 +180,7 @@ public final class QueryCLI implements SimpleDriver {
 		cli.printf("%s has %d workers.%n", player.getName(), Integer.valueOf(count));
 	}
 	/**
+	 * Count the workers owned by the given player.
 	 * @param iter an iterable over fixtures
 	 * @param owner a player
 	 * @return how many Workers it recursively contains owned by that player
@@ -213,6 +216,7 @@ public final class QueryCLI implements SimpleDriver {
 	}
 
 	/**
+	 * Calculate the distance between two points.
 	 * @param base a first point
 	 * @param dest a second point
 	 * @param dims the dimensions of the map
@@ -432,6 +436,7 @@ public final class QueryCLI implements SimpleDriver {
 	}
 
 	/**
+	 * Find the nearest obviously-reachable unexplored location.
 	 * @param map  the map
 	 * @param base the starting point
 	 * @return the nearest obviously-reachable unexplored point
@@ -492,6 +497,7 @@ public final class QueryCLI implements SimpleDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -533,6 +539,7 @@ public final class QueryCLI implements SimpleDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override

@@ -32,6 +32,7 @@ import util.Pair;
  */
 public class ResourceManagementDriver extends SimpleMultiMapModel {
 	/**
+	 * Constructor.
 	 * @param map  the first map
 	 * @param file the file it was loaded from
 	 */
@@ -40,6 +41,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	}
 
 	/**
+	 * Constructor taking a driver model.
 	 * @param driverModel a driver model to take our state from
 	 */
 	public ResourceManagementDriver(final IDriverModel driverModel) {
@@ -47,6 +49,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	}
 
 	/**
+	 * All the players in all the maps.
 	 * @return the players to choose from
 	 */
 	public Iterable<Player> getPlayers() {
@@ -92,6 +95,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 				.forEach(fort -> fort.addMember(resource));
 	}
 	/**
+	 * Get the current player; if none is current, returns null.
 	 * @return the current player, or null if there is none
 	 */
 	@Nullable

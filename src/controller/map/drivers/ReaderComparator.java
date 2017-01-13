@@ -99,10 +99,10 @@ public final class ReaderComparator implements UtilityDriver {
 	}
 
 	/**
+	 * Read a file's contents into a String.
 	 * @param file a file
 	 * @return a string containing its contents, so reading from it won't be
-	 * confounded by
-	 * disk I/O.
+	 * confounded by disk I/O.
 	 * @throws IOException if file not found, or on other I/O error reading from file
 	 */
 	private static String readIntoBuffer(final Path file)
@@ -168,6 +168,7 @@ public final class ReaderComparator implements UtilityDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of this object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -191,6 +192,7 @@ public final class ReaderComparator implements UtilityDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override

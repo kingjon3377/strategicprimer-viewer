@@ -58,6 +58,7 @@ public final class ResourceInputStream extends InputStream {
 	}
 
 	/**
+	 * Read a single byte from the wrapped stream.
 	 * @return the result of reading from the file
 	 * @throws IOException when thrown by wrapped stream
 	 */
@@ -67,6 +68,7 @@ public final class ResourceInputStream extends InputStream {
 	}
 
 	/**
+	 * Read from the wrapped stream into a provided buffer.
 	 * @param buf a buffer into which to read
 	 * @return the number of bytes read
 	 * @throws IOException when thrown by wrapped stream
@@ -78,6 +80,7 @@ public final class ResourceInputStream extends InputStream {
 	}
 
 	/**
+	 * Read from the wrapped stream into a provided buffer at some offset.
 	 * @param buf the buffer into which to read the data
 	 * @param off the offset in the array
 	 * @param len the maximum number of bytes to read
@@ -92,6 +95,7 @@ public final class ResourceInputStream extends InputStream {
 	}
 
 	/**
+	 * Skip some bytes in the wrapped stream.
 	 * @param num how many bytes to skip
 	 * @return the actual number of bytes skipped
 	 * @throws IOException if thrown by wrapped implementation.
@@ -103,6 +107,7 @@ public final class ResourceInputStream extends InputStream {
 	}
 
 	/**
+	 * How many bytes are estimated to be available in the wrapped stream.
 	 * @return an estimate of the number of bytes that can be read or skipped over in the
 	 * stream without blocking
 	 * @throws IOException if thrown by wrapped implementation
@@ -113,6 +118,7 @@ public final class ResourceInputStream extends InputStream {
 	}
 
 	/**
+	 * Close the wrapped stream.
 	 * @throws IOException if thrown by wrapped implementation
 	 */
 	@Override
@@ -121,6 +127,7 @@ public final class ResourceInputStream extends InputStream {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the object
 	 */
 	@Override

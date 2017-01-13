@@ -651,6 +651,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 		return "OneToTwoConverter";
 	}
 	/**
+	 * Write a newly-converted map to a filename based on the version-1 map's filename.
 	 * @param old the old filename
 	 * @param map the newly converted map to write
 	 * @throws DriverFailedException on error writing
