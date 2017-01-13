@@ -101,6 +101,17 @@ public final class DrawHelperComparator implements SimpleDriver {
 							DrawHelperComparator::fifthOne),
 					Pair.of("5b. Ordered iteration vs filtering: Filtering",
 							DrawHelperComparator::fifthTwo));
+	/**
+	 * Instances of the classes being tested.
+	 */
+	private static final List<Triple<TileDrawHelper, String, LongAccumulator>> HELPERS =
+			Arrays.asList(Triple.of(new CachingTileDrawHelper(), CACHING, new LongAccumulator()),
+					Triple.of(new DirectTileDrawHelper(), DIRECT, new LongAccumulator()),
+					Triple.of(new Ver2TileDrawHelper(
+							(img, infoFlags, xCoordinate, yCoordinate, width, height) ->
+									false, fix -> true, Collections.singleton(
+											new FixtureMatcher(fix -> true, "test"))),
+							VER_TWO, new LongAccumulator()));
 
 	/**
 	 * The first test: all in one place.
@@ -380,18 +391,10 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 */
 	private static void runAllTests(final ICLIHelper cli, final IMapNG map,
 									final int repetitions) {
-		final List<Triple<TileDrawHelper, String, LongAccumulator>> cases = Arrays.asList(
-				Triple.of(new CachingTileDrawHelper(), CACHING, new LongAccumulator()),
-				Triple.of(new DirectTileDrawHelper(), DIRECT, new LongAccumulator()),
-				Triple.of(new Ver2TileDrawHelper((img, infoFlags, xCoordinate,
-												yCoordinate, width, height) -> false,
-													  fix -> true, Collections.singleton(
-								new FixtureMatcher(fix -> true, "test"))), VER_TWO,
-						new LongAccumulator()));
 		for (final Pair<String, DrawingTest> pair : TESTS) {
 			cli.printf("%s:%n", pair.first());
 			for (final Triple<TileDrawHelper, String, LongAccumulator> testCase :
-					cases) {
+					HELPERS) {
 				testCase.third.add(printStats(cli, testCase.second,
 						pair.second().runTest(testCase.first, map, repetitions,
 								TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL,
@@ -400,7 +403,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 			}
 		}
 		cli.printf("--------------------------------------%nTotal:");
-		for (final Triple<TileDrawHelper, String, LongAccumulator> testCase : cases) {
+		for (final Triple<TileDrawHelper, String, LongAccumulator> testCase : HELPERS) {
 			printStats(cli, testCase.second, testCase.third.getValue(), repetitions);
 		}
 		cli.printf("%n");
