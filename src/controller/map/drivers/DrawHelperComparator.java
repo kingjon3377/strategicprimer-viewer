@@ -444,6 +444,28 @@ public final class DrawHelperComparator implements SimpleDriver {
 		}
 	}
 	/**
+	 * The test procedure. Extracted from startDriver() to reduce duplication.
+	 * @param cli the interface for user I/O
+	 * @param map the map to use for the tests
+	 * @param filename the name of the file it was loaded from, for user I/O only
+	 * @param rng the Random instance to use
+	 */
+	private void runTestProcedure(final ICLIHelper cli, final IMapNG map,
+								  final Optional<Path> filename, final Random rng) {
+		final int reps = 50;
+		cli.printf("Testing using%s%n",
+				filename.map(Path::toString).orElse("an unsaved map"));
+		PointFactory.clearCache();
+		final boolean startCaching = rng.nextBoolean();
+		PointFactory.shouldUseCache(startCaching);
+		cli.println(getCachingMessage(startCaching));
+		runAllTests(cli, map, reps);
+		PointFactory.shouldUseCache(!startCaching);
+		cli.println(getCachingMessage(!startCaching));
+		runAllTests(cli, map, reps);
+
+	}
+	/**
 	 * Start the driver.
 	 *
 	 * @param cli the interface for user I/O
@@ -454,40 +476,13 @@ public final class DrawHelperComparator implements SimpleDriver {
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
 							final IDriverModel model) {
 		final Random random = new Random();
-		final int reps = 50;
 		if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
-																		   model)
-																		  .getAllMaps
-																				   ()) {
-				cli.print("Testing using ");
-				final Optional<Path> file = pair.second();
-				cli.println(
-						file.map(Path::toString).orElse("a map not loaded from file"));
-				final IMapNG map = pair.first();
-				PointFactory.clearCache();
-				final boolean startCaching = random.nextBoolean();
-				PointFactory.shouldUseCache(startCaching);
-				cli.println(getCachingMessage(startCaching));
-				runAllTests(cli, map, reps);
-				PointFactory.shouldUseCache(!startCaching);
-				cli.println(getCachingMessage(!startCaching));
-				runAllTests(cli, map, reps);
+			for (final Pair<IMutableMapNG, Optional<Path>> pair :
+					((IMultiMapModel) model).getAllMaps()) {
+				runTestProcedure(cli, pair.first(), pair.second(), random);
 			}
 		} else {
-			cli.print("Testing using ");
-			final Optional<Path> mapFile = model.getMapFile();
-			cli.println(
-					mapFile.map(Path::toString).orElse("an unsaved map"));
-			final IMapNG map = model.getMap();
-			PointFactory.clearCache();
-			final boolean startCaching = random.nextBoolean();
-			PointFactory.shouldUseCache(startCaching);
-			cli.println(getCachingMessage(startCaching));
-			runAllTests(cli, map, reps);
-			PointFactory.shouldUseCache(!startCaching);
-			cli.println(getCachingMessage(!startCaching));
-			runAllTests(cli, map, reps);
+			runTestProcedure(cli, model.getMap(), model.getMapFile(), random);
 		}
 	}
 
