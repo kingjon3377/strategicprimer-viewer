@@ -331,29 +331,23 @@ public final class OneToTwoConverter implements SimpleDriver {
 		switch (river) {
 		case East:
 			map.addRivers(points.get(10), River.East);
-			map.addRivers(points.get(11), River.East);
-			map.addRivers(points.get(11), River.West);
+			map.addRivers(points.get(11), River.East, River.West);
 			break;
 		case Lake:
 			map.addRivers(points.get(10), River.Lake);
 			break;
 		case North:
-			map.addRivers(points.get(2), River.North);
-			map.addRivers(points.get(2), River.South);
-			map.addRivers(points.get(6), River.North);
-			map.addRivers(points.get(6), River.South);
+			map.addRivers(points.get(2), River.North, River.South);
+			map.addRivers(points.get(6), River.North, River.South);
 			map.addRivers(points.get(10), River.North);
 			break;
 		case South:
 			map.addRivers(points.get(10), River.South);
-			map.addRivers(points.get(14), River.South);
-			map.addRivers(points.get(14), River.North);
+			map.addRivers(points.get(14), River.South, River.North);
 			break;
 		case West:
-			map.addRivers(points.get(8), River.West);
-			map.addRivers(points.get(8), River.East);
-			map.addRivers(points.get(9), River.West);
-			map.addRivers(points.get(9), River.East);
+			map.addRivers(points.get(8), River.West, River.East);
+			map.addRivers(points.get(9), River.West, River.East);
 			map.addRivers(points.get(10), River.West);
 			break;
 		default:
