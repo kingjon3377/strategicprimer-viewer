@@ -105,9 +105,9 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 * Instances of the classes being tested.
 	 */
 	private static final List<Triple<TileDrawHelper, String, LongAccumulator>> HELPERS =
-			Arrays.asList(Triple.of(new CachingTileDrawHelper(), CACHING, new LongAccumulator()),
-					Triple.of(new DirectTileDrawHelper(), DIRECT, new LongAccumulator()),
-					Triple.of(new Ver2TileDrawHelper(
+			Arrays.asList(triple(new CachingTileDrawHelper(), CACHING, new LongAccumulator()),
+					triple(new DirectTileDrawHelper(), DIRECT, new LongAccumulator()),
+					triple(new Ver2TileDrawHelper(
 							(img, infoFlags, xCoordinate, yCoordinate, width, height) ->
 									false, fix -> true, Collections.singleton(
 											new FixtureMatcher(fix -> true, "test"))),
@@ -560,31 +560,31 @@ public final class DrawHelperComparator implements SimpleDriver {
 		protected final V third;
 
 		/**
-		 * Constructor.
+		 * Constructor. Protected so it can be accessed from enclosing class without
+		 * synthetic method.
 		 * @param one the first item in the triple.
 		 * @param two the second item in the triple.
 		 * @param three the third item in the triple.
 		 */
-		private Triple(final T one, final U two, final V three) {
+		protected Triple(final T one, final U two, final V three) {
 			first = one;
 			second = two;
 			third = three;
 		}
 
-		/**
-		 * Factory method, so you don't have to put type parameters on the constructor
-		 * call.
-		 * @param one the first item in the triple
-		 * @param two the second item in the triple.
-		 * @param three the third item in the triple.
-		 * @param <T> the type of the first item
-		 * @param <U> the type of the second item
-		 * @param <V> the type of the third item.
-		 * @return the triple
-		 */
-		public static <T, U, V> Triple<T, U, V> of(final T one, final U two,
-												   final V three) {
-			return new Triple(one, two, three);
-		}
+	}
+	/**
+	 * Triple factory method.
+	 * @param one the first item in the triple
+	 * @param two the second item in the triple.
+	 * @param three the third item in the triple.
+	 * @param <T> the type of the first item
+	 * @param <U> the type of the second item
+	 * @param <V> the type of the third item.
+	 * @return the triple
+	 */
+	private static <T, U, V> Triple<T, U, V> triple(final T one, final U two,
+													final V three) {
+		return new Triple<>(one, two, three);
 	}
 }
