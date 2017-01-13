@@ -198,7 +198,6 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 				if (member instanceof IUnit) {
 					final IUnit unit = (IUnit) member;
 					formatter.format("%s", unit.getName());
-					builder.append(unit.getName());
 					if (unit.getOwner().equals(owner)) {
 						formatter.format(" (%s)", unit.getKind());
 					} else if (unit.getOwner().isIndependent()) {
