@@ -529,13 +529,12 @@ public final class OneToTwoConverter implements SimpleDriver {
 			final TileType origTerrain = map.getBaseTerrain(point);
 			if (TileType.Mountain == origTerrain) {
 				map.setMountainous(point, true);
-			} else if (TileType.TemperateForest == origTerrain ||
-							   TileType.BorealForest == origTerrain) {
-				if (isPointUnforested(map, point)) {
-					map.setForest(point, new Forest(runner.getPrimaryTree(point,
-							origTerrain, map.streamOtherFixtures(point),
-							map.dimensions()), false, idFac.createID()));
-				}
+			} else if ((TileType.TemperateForest == origTerrain ||
+								TileType.BorealForest == origTerrain) &&
+							   isPointUnforested(map, point)) {
+				map.setForest(point, new Forest(runner.getPrimaryTree(point,
+						origTerrain, map.streamOtherFixtures(point),
+						map.dimensions()), false, idFac.createID()));
 			}
 			map.setBaseTerrain(point, equivalentTerrain(origTerrain));
 			addFixture(map, point,
