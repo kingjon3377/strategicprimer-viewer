@@ -112,8 +112,8 @@ public final class YAExplorableReader extends YAAbstractReader<ExplorableFixture
 		} else {
 			throw new IllegalStateException("Unhandled ExplorableFixture subtype");
 		}
-		writeProperty(ostream, "dc", Integer.toString(obj.getDC()));
-		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		writeProperty(ostream, "dc", obj.getDC());
+		writeProperty(ostream, "id", obj.getID());
 		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);
 	}

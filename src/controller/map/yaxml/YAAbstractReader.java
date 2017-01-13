@@ -352,7 +352,17 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 			writeProperty(ostream, name, value);
 		}
 	}
-
+	/**
+	 * Write a property to XML with an integer value.
+	 * @param ostream the stream to write to
+	 * @param name the name of the property to write
+	 * @param value the value to write
+	 * @throws IOException on I/O error
+	 */
+	protected static void writeProperty(final Appendable ostream, final String name,
+										final int value) throws IOException {
+		writeProperty(ostream, name, Integer.toString(value));
+	}
 	/**
 	 * Parse an integer.
 	 *

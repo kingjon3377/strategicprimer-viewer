@@ -87,7 +87,7 @@ public final class YATextReader extends YAAbstractReader<TextFixture> {
 					  final int indent) throws IOException {
 		writeTag(ostream, "text", indent);
 		if (obj.getTurn() != -1) {
-			writeProperty(ostream, "turn", Integer.toString(obj.getTurn()));
+			writeProperty(ostream, "turn", obj.getTurn());
 		}
 		writeImageXML(ostream, obj);
 		ostream.append('>');

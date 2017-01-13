@@ -222,7 +222,7 @@ public final class YAMobileReader extends
 				writeProperty(ostream, "status", animal.getStatus());
 			}
 			if (!animal.isTraces()) {
-				writeProperty(ostream, "id", Integer.toString(obj.getID()));
+				writeProperty(ostream, "id", obj.getID());
 			}
 			writeImageXML(ostream, (Animal) obj);
 			closeLeafTag(ostream);
@@ -231,7 +231,7 @@ public final class YAMobileReader extends
 			if (obj instanceof HasKind) {
 				writeProperty(ostream, "kind", ((HasKind) obj).getKind());
 			}
-			writeProperty(ostream, "id", Integer.toString(obj.getID()));
+			writeProperty(ostream, "id", obj.getID());
 			if (obj instanceof HasImage) {
 				writeImageXML(ostream, (HasImage) obj);
 			}

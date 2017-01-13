@@ -178,14 +178,14 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 			throws IOException {
 		if (stats != null) {
 			writeTag(ostream, "stats", indent);
-			writeProperty(ostream, "hp", Integer.toString(stats.getHitPoints()));
-			writeProperty(ostream, "max", Integer.toString(stats.getMaxHitPoints()));
-			writeProperty(ostream, "str", Integer.toString(stats.getStrength()));
-			writeProperty(ostream, "dex", Integer.toString(stats.getDexterity()));
-			writeProperty(ostream, "con", Integer.toString(stats.getConstitution()));
-			writeProperty(ostream, "int", Integer.toString(stats.getIntelligence()));
-			writeProperty(ostream, "wis", Integer.toString(stats.getWisdom()));
-			writeProperty(ostream, "cha", Integer.toString(stats.getCharisma()));
+			writeProperty(ostream, "hp", stats.getHitPoints());
+			writeProperty(ostream, "max", stats.getMaxHitPoints());
+			writeProperty(ostream, "str", stats.getStrength());
+			writeProperty(ostream, "dex", stats.getDexterity());
+			writeProperty(ostream, "con", stats.getConstitution());
+			writeProperty(ostream, "int", stats.getIntelligence());
+			writeProperty(ostream, "wis", stats.getWisdom());
+			writeProperty(ostream, "cha", stats.getCharisma());
 			closeLeafTag(ostream);
 		}
 	}
@@ -205,7 +205,7 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 		}
 		writeTag(ostream, "job", indent);
 		writeProperty(ostream, "name", obj.getName());
-		writeProperty(ostream, "level", Integer.toString(obj.getLevel()));
+		writeProperty(ostream, "level", obj.getLevel());
 		if (obj.iterator().hasNext()) {
 			finishParentTag(ostream);
 			for (final ISkill skill : obj) {
@@ -230,8 +230,8 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 		if (!obj.isEmpty()) {
 			writeTag(ostream, "skill", indent);
 			writeProperty(ostream, "name", obj.getName());
-			writeProperty(ostream, "level", Integer.toString(obj.getLevel()));
-			writeProperty(ostream, "hours", Integer.toString(obj.getHours()));
+			writeProperty(ostream, "level", obj.getLevel());
+			writeProperty(ostream, "hours", obj.getHours());
 			closeLeafTag(ostream);
 		}
 	}
@@ -291,7 +291,7 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 		if (!"human".equals(obj.getRace())) {
 			writeProperty(ostream, "race", obj.getRace());
 		}
-		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		writeProperty(ostream, "id", obj.getID());
 		writeImageXML(ostream, obj);
 		if (obj instanceof HasPortrait) {
 			writeNonemptyProperty(ostream, "portrait", ((HasPortrait) obj).getPortrait());

@@ -245,10 +245,10 @@ public final class YAUnitReader extends YAAbstractReader<IUnit> {
 	public void write(final Appendable ostream, final IUnit obj, final int indent)
 			throws IOException {
 		writeTag(ostream, "unit", indent);
-		writeProperty(ostream, "owner", Integer.toString(obj.getOwner().getPlayerId()));
+		writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
 		writeNonemptyProperty(ostream, "kind", obj.getKind());
 		writeNonemptyProperty(ostream, "name", obj.getName());
-		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		writeProperty(ostream, "id", obj.getID());
 		writeImageXML(ostream, obj);
 		if (obj instanceof HasPortrait) {
 			writeNonemptyProperty(ostream, "portrait", ((HasPortrait) obj).getPortrait());
@@ -299,7 +299,7 @@ public final class YAUnitReader extends YAAbstractReader<IUnit> {
 		}
 		writeTag(ostream, tag, indent);
 		if (turn >= 0) {
-			writeProperty(ostream, "turn", Integer.toString(turn));
+			writeProperty(ostream, "turn", turn);
 		}
 		ostream.append('>');
 		ostream.append(simpleQuote(value));

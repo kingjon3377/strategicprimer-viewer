@@ -366,15 +366,14 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 	public void write(final Appendable ostream, final IMapNG obj, final int indent)
 			throws IOException {
 		writeTag(ostream, "view", indent);
-		writeProperty(ostream, "current_player",
-				Integer.toString(obj.getCurrentPlayer().getPlayerId()));
-		writeProperty(ostream, "current_turn", Integer.toString(obj.getCurrentTurn()));
+		writeProperty(ostream, "current_player", obj.getCurrentPlayer().getPlayerId());
+		writeProperty(ostream, "current_turn", obj.getCurrentTurn());
 		finishParentTag(ostream);
 		writeTag(ostream, "map", indent + 1);
 		final MapDimensions dim = obj.dimensions();
-		writeProperty(ostream, "version", Integer.toString(dim.version));
-		writeProperty(ostream, "rows", Integer.toString(dim.rows));
-		writeProperty(ostream, "columns", Integer.toString(dim.cols));
+		writeProperty(ostream, "version", dim.version);
+		writeProperty(ostream, "rows", dim.rows);
+		writeProperty(ostream, "columns", dim.cols);
 		finishParentTag(ostream);
 		for (final Player player : obj.players()) {
 			playerReader.write(ostream, player, indent + 2);
@@ -388,12 +387,12 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 					if (rowEmpty) {
 						rowEmpty = false;
 						writeTag(ostream, "row", indent + 2);
-						writeProperty(ostream, "index", Integer.toString(i));
+						writeProperty(ostream, "index", i);
 						finishParentTag(ostream);
 					}
 					writeTag(ostream, "tile", indent + 3);
-					writeProperty(ostream, "row", Integer.toString(i));
-					writeProperty(ostream, "column", Integer.toString(j));
+					writeProperty(ostream, "row", i);
+					writeProperty(ostream, "column", j);
 					if (TileType.NotVisible != terrain) {
 						writeProperty(ostream, "kind", terrain.toXML());
 					}

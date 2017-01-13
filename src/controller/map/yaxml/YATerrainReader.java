@@ -136,7 +136,7 @@ public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 			throw new IllegalStateException("Unexpected TerrainFixture type.");
 		}
 		writeImageXML(ostream, (HasImage) obj);
-		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		writeProperty(ostream, "id", obj.getID());
 		closeLeafTag(ostream);
 	}
 

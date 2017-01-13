@@ -280,7 +280,7 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 			final MineralVein mineral = (MineralVein) obj;
 			writeProperty(ostream, "kind", mineral.getKind());
 			writeProperty(ostream, "exposed", Boolean.toString(mineral.isExposed()));
-			writeProperty(ostream, "dc", Integer.toString(mineral.getDC()));
+			writeProperty(ostream, "dc", mineral.getDC());
 		} else if (obj instanceof Shrub) {
 			writeTag(ostream, "shrub", indent);
 			writeProperty(ostream, "kind", ((Shrub) obj).getKind());
@@ -288,11 +288,11 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 			writeTag(ostream, "stone", indent);
 			final StoneDeposit stone = (StoneDeposit) obj;
 			writeProperty(ostream, "kind", stone.stone().toString());
-			writeProperty(ostream, "dc", Integer.toString(stone.getDC()));
+			writeProperty(ostream, "dc", stone.getDC());
 		} else {
 			throw new IllegalStateException("Unhandled HarvestableFixture subtype");
 		}
-		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		writeProperty(ostream, "id", obj.getID());
 		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);
 	}

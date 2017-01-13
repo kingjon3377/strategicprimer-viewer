@@ -73,7 +73,7 @@ public final class YAPlayerReader extends YAAbstractReader<Player> {
 	public void write(final Appendable ostream, final Player obj, final int indent)
 			throws IOException {
 		writeTag(ostream, "player", indent);
-		writeProperty(ostream, "number", Integer.toString(obj.getPlayerId()));
+		writeProperty(ostream, "number", obj.getPlayerId());
 		writeProperty(ostream, "code_name", obj.getName());
 		closeLeafTag(ostream);
 	}

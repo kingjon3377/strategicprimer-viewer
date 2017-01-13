@@ -82,10 +82,9 @@ public final class YAAdventureReader extends YAAbstractReader<AdventureFixture> 
 	public void write(final Appendable ostream, final AdventureFixture obj,
 					  final int indent) throws IOException {
 		writeTag(ostream, "adventure", indent);
-		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		writeProperty(ostream, "id", obj.getID());
 		if (!obj.getOwner().isIndependent()) {
-			writeProperty(ostream, "owner",
-					Integer.toString(obj.getOwner().getPlayerId()));
+			writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
 		}
 		writeNonemptyProperty(ostream, "brief", obj.getBriefDescription());
 		writeNonemptyProperty(ostream, "full", obj.getFullDescription());

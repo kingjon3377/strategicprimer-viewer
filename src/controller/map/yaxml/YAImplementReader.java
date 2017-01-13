@@ -74,7 +74,7 @@ public final class YAImplementReader extends YAAbstractReader<Implement> {
 					  final int indent) throws IOException {
 		writeTag(ostream, "implement", indent);
 		writeProperty(ostream, "kind", obj.getKind());
-		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		writeProperty(ostream, "id", obj.getID());
 		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);
 	}

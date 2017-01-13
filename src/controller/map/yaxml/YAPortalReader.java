@@ -68,11 +68,9 @@ public final class YAPortalReader extends YAAbstractReader<Portal> {
 					  final int indent) throws IOException {
 		writeTag(ostream, "portal", indent);
 		writeProperty(ostream, "world", obj.getDestinationWorld());
-		writeProperty(ostream, "row",
-				Integer.toString(obj.getDestinationCoordinates().getRow()));
-		writeProperty(ostream, "column",
-				Integer.toString(obj.getDestinationCoordinates().getCol()));
-		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		writeProperty(ostream, "row", obj.getDestinationCoordinates().getRow());
+		writeProperty(ostream, "column", obj.getDestinationCoordinates().getCol());
+		writeProperty(ostream, "id", obj.getID());
 		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);
 	}

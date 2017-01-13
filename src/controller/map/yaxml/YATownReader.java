@@ -223,12 +223,12 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 		writeTag(ostream, obj.kind(), indent);
 		writeProperty(ostream, "status", obj.status().toString());
 		writeProperty(ostream, "size", obj.size().toString());
-		writeProperty(ostream, "dc", Integer.toString(obj.getDC()));
+		writeProperty(ostream, "dc", obj.getDC());
 		if (!obj.getName().isEmpty()) {
 			writeProperty(ostream, "name", obj.getName());
 		}
-		writeProperty(ostream, "id", Integer.toString(obj.getID()));
-		writeProperty(ostream, "owner", Integer.toString(obj.getOwner().getPlayerId()));
+		writeProperty(ostream, "id", obj.getID());
+		writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
 		writeImageXML(ostream, obj);
 		writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
 		closeLeafTag(ostream);
@@ -286,9 +286,8 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 			if (!obj.getName().isEmpty()) {
 				writeProperty(ostream, "name", obj.getName());
 			}
-			writeProperty(ostream, "id", Integer.toString(obj.getID()));
-			writeProperty(ostream, "owner",
-					Integer.toString(obj.getOwner().getPlayerId()));
+			writeProperty(ostream, "id", obj.getID());
+			writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
 			final Village village = (Village) obj;
 			writeProperty(ostream, "race", village.getRace());
 			writeImageXML(ostream, (Village) obj);
@@ -296,13 +295,12 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 			closeLeafTag(ostream);
 		} else if (obj instanceof Fortress) {
 			writeTag(ostream, "fortress", indent);
-			writeProperty(ostream, "owner",
-					Integer.toString(obj.getOwner().getPlayerId()));
+			writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
 			writeNonemptyProperty(ostream, "name", obj.getName());
 			if (TownSize.Small != obj.size()) {
 				writeProperty(ostream, "size", obj.size().toString());
 			}
-			writeProperty(ostream, "id", Integer.toString(obj.getID()));
+			writeProperty(ostream, "id", obj.getID());
 			final Fortress fortress = (Fortress) obj;
 			writeImageXML(ostream, (Fortress) obj);
 			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());

@@ -90,13 +90,13 @@ public final class YAResourcePileReader extends YAAbstractReader<ResourcePile> {
 	public void write(final Appendable ostream, final ResourcePile obj,
 					  final int indent) throws IOException {
 		writeTag(ostream, "resource", indent);
-		writeProperty(ostream, "id", Integer.toString(obj.getID()));
+		writeProperty(ostream, "id", obj.getID());
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "contents", obj.getContents());
 		writeProperty(ostream, "quantity", obj.getQuantity().getNumber().toString());
 		writeProperty(ostream, "unit", obj.getQuantity().getUnits());
 		if (obj.getCreated() >= 0) {
-			writeProperty(ostream, "created", Integer.toString(obj.getCreated()));
+			writeProperty(ostream, "created", obj.getCreated());
 		}
 		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);
