@@ -651,7 +651,22 @@ public final class OneToTwoConverter implements SimpleDriver {
 	public String toString() {
 		return "OneToTwoConverter";
 	}
-
+	/**
+	 * @param old the old filename
+	 * @param map the newly converted map to write
+	 * @throws DriverFailedException on error writing
+	 */
+	private void writeConvertedMap(final Path old, final IMapNG map)
+			throws DriverFailedException {
+		final MapReaderAdapter writer = new MapReaderAdapter();
+		try {
+			writer.write(old.resolveSibling(old.getFileName() + ".converted.xml"), map);
+		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
+			throw new DriverFailedException("I/O error writing to " + old.getFileName() +
+													".converted.xml", except);
+		}
+	}
 	/**
 	 * Start the driver.
 	 * @param cli the interface for user I/O
@@ -671,15 +686,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 													   new IllegalStateException("No " +
 																						 "path for main map")));
 		final IMapNG newMain = converter.convert(oldMain, true);
-		try {
-			reader.write(oldMainPath.resolveSibling(
-					oldMainPath.getFileName() + ".converted.xml"), newMain);
-		} catch (final IOException except) {
-			//noinspection HardcodedFileSeparator
-			throw new DriverFailedException("I/O error writing to " +
-													oldMainPath.getFileName() +
-													".converted.xml", except);
-		}
+		writeConvertedMap(oldMainPath, newMain);
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :
 					((IMultiMapModel) model).getSubordinateMaps()) {
@@ -693,16 +700,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 					continue;
 				}
 				final IMapNG newMap = converter.convert(map, false);
-				try {
-					reader.write(
-							path.resolveSibling(path.getFileName() + ".converted.xml"),
-							newMap);
-				} catch (final IOException except) {
-					//noinspection HardcodedFileSeparator
-					LOGGER.log(Level.SEVERE,
-							"I/O error writing to " + path.getFileName() +
-									".converted.xml", except);
-				}
+				writeConvertedMap(path, newMap);
 			}
 		}
 	}
