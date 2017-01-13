@@ -118,8 +118,7 @@ public final class YAUnitReader extends YAAbstractReader<IUnit> {
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() &&
-						isSupportedNamespace(event.asStartElement().getName())) {
+			if (isSPStartElement(event)) {
 				if ("orders".equalsIgnoreCase(
 						event.asStartElement().getName().getLocalPart())) {
 					parseOrders(event.asStartElement(), retval,

@@ -189,8 +189,7 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 									   final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
-			if (event.isStartElement() &&
-						isSupportedNamespace(event.asStartElement().getName())) {
+			if (isSPStartElement(event)) {
 				throw new UnwantedChildException(tag, event.asStartElement());
 			} else if (isMatchingEnd(tag, event)) {
 				break;
@@ -522,5 +521,13 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 			throws SPFormatException {
 		return PointFactory.point(getIntegerParameter(element, "row"),
 				getIntegerParameter(element, "column"));
+	}
+	/**
+	 * @param element an XML element
+	 * @return whether it's a StartElement in a namespace we can handle
+	 */
+	protected static boolean isSPStartElement(final XMLEvent element) {
+		return element.isStartElement() &&
+					   isSupportedNamespace(element.asStartElement().getName());
 	}
 }

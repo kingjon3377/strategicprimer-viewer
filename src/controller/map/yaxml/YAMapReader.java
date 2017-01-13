@@ -154,8 +154,8 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 													 final StartElement parent)
 			throws SPFormatException {
 		return StreamSupport.stream(stream.spliterator(), false)
-					   .filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
-					   .filter(elem -> isSupportedNamespace(elem.getName())).findFirst()
+					   .filter(YAAbstractReader::isSPStartElement)
+					   .map(XMLEvent::asStartElement).findFirst()
 					   .orElseThrow(() -> new MissingChildException(parent));
 	}
 
@@ -248,8 +248,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		Point point = PointFactory.INVALID_POINT;
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() &&
-						isSupportedNamespace(event.asStartElement().getName())) {
+			if (isSPStartElement(event)) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart().toLowerCase();
 				if ("player".equals(type)) {

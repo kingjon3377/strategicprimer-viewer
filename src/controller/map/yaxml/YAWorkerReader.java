@@ -104,8 +104,7 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 		boolean anySkills = false;
 		boolean onlyOneSkill = true;
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() &&
-						isSupportedNamespace(event.asStartElement().getName())) {
+			if (isSPStartElement(event)) {
 				if ("skill".equalsIgnoreCase(
 						event.asStartElement().getName().getLocalPart())) {
 					retval.addSkill(
@@ -254,8 +253,7 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() &&
-						isSupportedNamespace(event.asStartElement().getName())) {
+			if (isSPStartElement(event)) {
 				if ("job".equalsIgnoreCase(
 						event.asStartElement().getName().getLocalPart())) {
 					retval.addJob(

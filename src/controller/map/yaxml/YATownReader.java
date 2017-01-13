@@ -188,8 +188,7 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 									TownSize.parseTownSize(
 											getParameter(element, "size", "small")));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && isSupportedNamespace(
-							event.asStartElement().getName())) {
+			if (isSPStartElement(event)) {
 				final String memberTag = event.asStartElement().getName()
 												 .getLocalPart().toLowerCase();
 				final YAReader<? extends FortressMember> reader =
