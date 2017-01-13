@@ -20,16 +20,19 @@ import org.eclipse.jdt.annotation.NonNull;
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public interface Point extends Comparable<@NonNull Point> {
 	/**
+	 * The first coordinate, the point's row.
 	 * @return the first coordinate.
 	 */
 	int getRow();
 
 	/**
+	 * The second coordinate, the point's column.
 	 * @return the second coordinate.
 	 */
 	int getCol();
 
 	/**
+	 * Compare to another point, by first row and then column.
 	 * @param point another point
 	 * @return the result of a comparison with that point
 	 */

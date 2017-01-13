@@ -77,6 +77,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
+	 * Get the lowest level any of the proxied Jobs has in the Skill.
 	 * @return the lowest level any of the proxied Jobs has the skill
 	 */
 	@SuppressWarnings("ObjectEquality")

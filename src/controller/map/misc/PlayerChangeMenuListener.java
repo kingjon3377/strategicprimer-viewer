@@ -44,12 +44,14 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	 */
 	private final IDriverModel model;
 	/**
+	 * Constructor.
 	 * @param dmodel the driver model to operate on
 	 */
 	public PlayerChangeMenuListener(final IDriverModel dmodel) {
 		model = dmodel;
 	}
 	/**
+	 * Add a listener.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -58,6 +60,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	}
 
 	/**
+	 * Remove a listener.
 	 * @param list a listener to remove
 	 */
 	@Override
@@ -87,6 +90,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 		}
 	}
 	/**
+	 * Return the given object if it is a component, and null otherwise.
 	 * @param obj an object
 	 * @return it if it's a component, or null
 	 */
@@ -100,6 +104,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 		}
 	}
 	/**
+	 * Convert a collection of players to an array.
 	 * @param players a collection of players
 	 * @return the players as an array
 	 */
@@ -113,6 +118,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 		}
 	}
 	/**
+	 * The containing frame, if any, of a component.
 	 * @param component a component
 	 * @return the frame containing it, if any
 	 */

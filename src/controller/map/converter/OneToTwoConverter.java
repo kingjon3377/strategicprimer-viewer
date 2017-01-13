@@ -133,6 +133,9 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * Whether there's anything at the given point.
+	 *
+	 * TODO: use {@link IMapNG#isLocationEmpty(Point)} instead?
 	 * @param map   a map
 	 * @param point a point
 	 * @return whether that location in the map has anything (terrain type, ground,
@@ -175,6 +178,8 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * Whether the given fixture is "background," and so shouldn't obstruct any further
+	 * fixtures.
 	 * @param fix a fixture
 	 * @return true if it's "background", not making a sub-tile unsuitable for more
 	 * fixtures, false otherwise.
@@ -266,6 +271,8 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * Whether there's a town (fortress, town, city, fortification, or village) in an
+	 * adjacent tile.
 	 * @param point the tile's location
 	 * @param map   the map it's in
 	 * @return whether the tile is adjacent to a town.
@@ -276,6 +283,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * Whether there's an ocean tile or a river in an adjacent tile.
 	 * @param point the location of the tile
 	 * @param map   the map it's in
 	 * @return whether the tile is adjacent to a river or ocean
@@ -287,6 +295,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * False if there is a forest already, true otherwise.
 	 * @param point a location
 	 * @param map   the map
 	 * @return false if that location already has a forest, true otherwise
@@ -298,6 +307,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * The number of sub-tiles per tile that the addRiver() algorithm is tuned for.
 	 * @return How many sub-tiles per tile the addRiver() algorithm is optimized for.
 	 */
 	@SuppressWarnings({"MethodReturnAlwaysConstant", "SameReturnValue"})
@@ -306,6 +316,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * Expand a river to sub-tiles.
 	 * @param river  a river
 	 * @param points the sub-points to apply it to
 	 * @param map    the map to work in
@@ -351,6 +362,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * The RNG seed to use for the given point.
 	 * @param point the location of the tile
 	 * @return a seed for the RNG for conversion based on the given tile
 	 */
@@ -359,6 +371,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -367,6 +380,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * Convert a version-1 map to a higher-resolution version-2 map.
 	 * @param old  a version-1 map
 	 * @param main whether the map is the main map (new encounter-type fixtures don't go
 	 *             on players' maps)
@@ -431,6 +445,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * Convert a single tile of the version-1 map to the equivalent version-2 tiles.
 	 * @param point             a location in the old map
 	 * @param oldMap            the old map
 	 * @param newMap            the new map
@@ -490,6 +505,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 		return initial;
 	}
 	/**
+	 * Convert the base terrain from version 1 to version 2.
 	 * @param original the base terrain in the version-1 map
 	 * @return the base terrain in the version-2 map
 	 */
@@ -633,6 +649,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -642,6 +659,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
+	 * Start the driver.
 	 * @param cli the interface for user I/O
 	 * @param options options passed to the driver
 	 * @param model   the driver model containing the maps to convert

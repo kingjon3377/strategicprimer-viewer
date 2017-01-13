@@ -57,6 +57,7 @@ public final class PointFactory {
 	}
 
 	/**
+	 * Whether we should use our cache of points.
 	 * @param shouldUseCache whether to use the cache from now on
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
@@ -89,6 +90,7 @@ public final class PointFactory {
 	}
 
 	/**
+	 * Produce, perhaps by getting from cache, a Coordinate with the given coordinates.
 	 * @param xCoordinate an X coordinate or extent
 	 * @param yCoordinate a Y coordinate or extent
 	 * @return a Coordinate representing those coordinates.
@@ -130,6 +132,7 @@ public final class PointFactory {
 		}
 
 		/**
+		 * The location's first coordinate, its row.
 		 * @return the first coordinate.
 		 */
 		@Override
@@ -138,6 +141,7 @@ public final class PointFactory {
 		}
 
 		/**
+		 * The location's second coordinate, its column.
 		 * @return the second coordinate.
 		 */
 		@Override
@@ -146,6 +150,7 @@ public final class PointFactory {
 		}
 
 		/**
+		 * An object is equal iff it is a Point with the same row and column.
 		 * @param obj the other object
 		 * @return whether this object equals another.
 		 */
@@ -157,6 +162,7 @@ public final class PointFactory {
 		}
 
 		/**
+		 * A hash code. TODO: This probably collides more than we want.
 		 * @return a hash code.
 		 */
 		@Override
@@ -165,6 +171,7 @@ public final class PointFactory {
 		}
 
 		/**
+		 * "(row, col)".
 		 * @return a String representation of the class
 		 */
 		@Override

@@ -174,6 +174,7 @@ public final class JobTreeModel
 	}
 
 	/**
+	 * Handling changed values is not yet implemented.
 	 * TODO: implement if necessary
 	 * @param path     a path indicating a node
 	 * @param newValue the new value for that place
@@ -185,7 +186,7 @@ public final class JobTreeModel
 	}
 
 	/**
-	 * Get the index of the given child in the given parent
+	 * Get the index of the given child in the given parent.
 	 * @param parent an object presumably in the tree
 	 * @param child  something that's presumably one of its children
 	 * @return which child it is, or -1 if preconditions broken
@@ -210,7 +211,7 @@ public final class JobTreeModel
 	}
 
 	/**
-	 * Add a listener to the list of listeners we notify
+	 * Add a listener to the list of listeners we notify.
 	 * @param list something to listen for tree model changes
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")

@@ -105,6 +105,7 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
+	 * Get the item in the table at the quadrant containing the given row and column.
 	 * @param row           the row of a tile
 	 * @param col           the column of a tile
 	 * @param mapDimensions the dimensions of the map
@@ -124,6 +125,7 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
+	 * Generate an "event".
 	 * @param point         the location of the tile
 	 * @param terrain       ignored
 	 * @param fixtures      ignored
@@ -138,6 +140,7 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
+	 * Generate an "event".
 	 * @param point         ignored
 	 * @param terrain       ignored
 	 * @param fixtures      any fixtures on the tile
@@ -152,6 +155,7 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
+	 * All "events" this table can produce.
 	 * @return all events that this table can produce.
 	 */
 	@Override
@@ -160,6 +164,7 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the object
 	 */
 	@Override

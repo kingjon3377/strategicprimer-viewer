@@ -252,6 +252,7 @@ public final class ProxyUnit
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override

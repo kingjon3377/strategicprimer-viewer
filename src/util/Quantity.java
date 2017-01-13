@@ -65,6 +65,8 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	}
 
 	/**
+	 * A Quantity is a subset iff it has the same units and either the same quantity or
+	 * zero quantity. TODO: should accept any lesser quantity, I suppose.
 	 * @param obj     an object
 	 * @param ostream the stream to write details to
 	 * @param context a string to print before every line of output, describing the

@@ -33,9 +33,10 @@ public interface ProxyFor<T> /* extends T */ {
 	Iterable<T> getProxied();
 
 	/**
-	 * @return Whether this should be considered (if true) a proxy for multiple
-	 * representations of the same T, e.g. in different maps, or (if false) a proxy for
-	 * different related Ts.
+	 * Whether this should be considered (if true) a proxy for multiple representations
+	 * of the same T, e.g. in different maps, or (if false) a proxy for different
+	 * related Ts.
+	 * @return whether this is a "parallel" proxy.
 	 */
 	boolean isParallel();
 }

@@ -32,6 +32,7 @@ public final class PlayerListModel extends DefaultListModel<@NonNull Player> imp
 	private final IExplorationModel model;
 
 	/**
+	 * Constructor.
 	 * @param explorationModel the exploration model
 	 */
 	public PlayerListModel(final IExplorationModel explorationModel) {
@@ -73,6 +74,7 @@ public final class PlayerListModel extends DefaultListModel<@NonNull Player> imp
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a quasi-diagnostic String
 	 */
 	@Override

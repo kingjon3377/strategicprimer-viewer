@@ -29,6 +29,7 @@ public final class Player implements Comparable<Player>, HasName {
 
 	/**
 	 * Whether this is the current player or not.
+	 * TODO: should this really be encapsulated in Player, not PlayerCollection?
 	 */
 	private boolean current;
 
@@ -45,6 +46,7 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
+	 * The player's ID number.
 	 * @return the player's number
 	 */
 	public int getPlayerId() {
@@ -52,6 +54,7 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
+	 * The player's in-game name.
 	 * @return the player's code name
 	 */
 	@Override
@@ -60,6 +63,7 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
+	 * An object is equal iff it is a Player with the same ID number and name.
 	 * @param obj an object
 	 * @return whether it's an identical Player
 	 */
@@ -71,6 +75,7 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
+	 * Use the ID number for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -99,6 +104,7 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
+	 * If the player name is non-empty, return it; otherwise, "player #number".
 	 * @return a String representation of the Player
 	 */
 	@Override
@@ -111,6 +117,7 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
+	 * Whether this is the current player.
 	 * @return true iff this is the current player
 	 */
 	public boolean isCurrent() {
@@ -118,6 +125,7 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
+	 * Set whether this is the current player.
 	 * @param curr whether this is the current player or not
 	 */
 	public void setCurrent(final boolean curr) {
@@ -125,6 +133,7 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
+	 * Whether this is the (or an) "independent" player.
 	 * @return whether this is the (or an) "independent" player---the "owner" of unowned
 	 * fixtures.
 	 */

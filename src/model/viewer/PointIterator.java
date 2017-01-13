@@ -95,6 +95,8 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	}
 
 	/**
+	 * If the given value is negative, return the "wrap" value; otherwise, return the
+	 * first given value.
 	 * @param val  a value
 	 * @param wrap another
 	 * @return the first, unless it's negative, in which case the second
@@ -108,6 +110,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	}
 
 	/**
+	 * Return a diagnostic string.
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -134,6 +137,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	}
 
 	/**
+	 * Whether there are more points to go; false if we've returned to where we started.
 	 * @return false if we've reached where we started.
 	 */
 	@Override
@@ -146,6 +150,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	}
 
 	/**
+	 * Get the next point.
 	 * @return the next point in the map.
 	 */
 	@Override
@@ -171,6 +176,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	}
 
 	/**
+	 * Get the next point, searching horizontally.
 	 * @return the next point, searching horizontally.
 	 */
 	private Point horizontalNext() {
@@ -188,6 +194,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	}
 
 	/**
+	 * Get the previous point, searching horizontally.
 	 * @return the previous point, searching horizontally.
 	 */
 	private Point horizontalPrev() {
@@ -205,6 +212,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	}
 
 	/**
+	 * Get the next point, searching vertically.
 	 * @return the next point, searching vertically.
 	 */
 	private Point verticalNext() {
@@ -222,6 +230,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	}
 
 	/**
+	 * Get the previous point, searching vertically.
 	 * @return the previous point, searching vertically.
 	 */
 	private Point verticalPrev() {

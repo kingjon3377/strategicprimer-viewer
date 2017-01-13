@@ -75,6 +75,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * Constructor, for proxying all workers in a single unit.
 	 * @param unit the unit to proxy for
 	 */
 	public ProxyWorker(final Iterable<UnitMember> unit) {
@@ -103,6 +104,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * Constructor for proxying a series of (parallel) workers.
 	 * @param proxied workers to proxy for
 	 */
 	@SuppressWarnings({"ObjectEquality", "OverloadedVarargsMethod"})
@@ -130,6 +132,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero whether to "zero out" sensitive information
 	 * @return a copy of this proxy
 	 */
@@ -143,6 +146,9 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * Since this isn't a valid fixture, always returns -1.
+	 *
+	 * TODO: Implement properly for the parallel case?
 	 * @return -1, since this isn't a valid fixture.
 	 */
 	@Override
@@ -151,6 +157,9 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * An object is equal iff it is a ProxyWorker proxying the same Jobs.
+	 *
+	 * TODO: Should check parallel as well.
 	 * @param fix a fixture
 	 * @return whether it's equal to this one
 	 */
@@ -162,6 +171,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * An iterator over the workers' Jobs.
 	 * @return The iterator over the proxied jobs.
 	 */
 	@Override
@@ -171,6 +181,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * Add a Job to the workers.
 	 * @param job the job to add
 	 * @return true if we weren't already proxying for it
 	 */
@@ -188,6 +199,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * Always returns false; proxies should not be involved in subset checking.
 	 * @param obj     ignored
 	 * @param ostream a stream to report the call on
 	 * @param context a string to print before every line of output, describing the
@@ -249,6 +261,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * An iterable view of the proxied workers.
 	 * @return the proxied Workers.
 	 */
 	@Override
@@ -257,6 +270,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * The default icon filename for the proxied workers.
 	 * @return the name of an image to represent the worker
 	 */
 	@Override
@@ -278,6 +292,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * The per-instance icon filename shared by the proxied workers.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -298,6 +313,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -309,6 +325,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * Get the race (aka kind) of the workers. If not all are the same, "proxied".
 	 * @return the race of the workers
 	 */
 	@Override
@@ -329,6 +346,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * Returns the name of the workers, or "proxied" if they don't all share a name.
 	 * @return the name of the workers (or "proxied" if they don't agree)
 	 */
 	@Override
@@ -349,6 +367,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * Delegates to getKind().
 	 * @return the race of the proxied workers
 	 */
 	@Override
@@ -357,6 +376,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * Get a Job by name.
 	 * @param jobName the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none
 	 */
@@ -376,6 +396,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a string representation of this class
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -385,9 +406,10 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
-	 * @return Whether this should be considered (if true) a proxy for multiple
-	 * representations of the same Worker, e.g. in different maps, or (if false) a proxy
-	 * for different related Workers.
+	 * Whether this should be considered (if true) a proxy for multiple representations
+	 * of the same Worker, e.g. in different maps, or (if false) a proxy for different
+	 * related Workers.
+	 * @return whether this is a "parallel" proxy.
 	 */
 	@Override
 	public boolean isParallel() {
@@ -395,6 +417,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
+	 * The stats of the proxied workers.
 	 * @return the stats of the proxied workers, or null if either no workers are being
 	 * proxied or their stats are not all identical.
 	 */

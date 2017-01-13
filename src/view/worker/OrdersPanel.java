@@ -8,13 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.function.BiFunction;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -196,6 +190,7 @@ public final class OrdersPanel extends BorderedPanel
 	}
 
 	/**
+	 * Handle a changed value in the tree.
 	 * @param evt the event to handle
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -221,6 +216,7 @@ public final class OrdersPanel extends BorderedPanel
 	}
 
 	/**
+	 * Handle a change in the current player.
 	 * @param old       the previously selected player
 	 * @param newPlayer the newly selected player
 	 */
@@ -254,6 +250,7 @@ public final class OrdersPanel extends BorderedPanel
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a quasi-diagnostic String
 	 */
 	@Override
@@ -268,6 +265,8 @@ public final class OrdersPanel extends BorderedPanel
 	@FunctionalInterface
 	public interface OrdersSupplier {
 		/**
+		 * Get the given unit's orders for the given turn. We don't use BiFunction
+		 * because this needs to have a primitive second argument.
 		 * @param unit the unit whose orders (or results) are wanted
 		 * @param turn the turn for which the orders (or results) are wanted
 		 * @return the orders (or results) for that unit for that turn
@@ -282,6 +281,7 @@ public final class OrdersPanel extends BorderedPanel
 	@FunctionalInterface
 	public interface OrdersConsumer {
 		/**
+		 * Set the given unit's orders for the given turn.
 		 * @param unit   the unit whose orders (or results) are being set
 		 * @param turn   the turn for which the orders (or results) are being set
 		 * @param orders the orders (or results) to set for that unit for that turn
@@ -306,6 +306,8 @@ public final class OrdersPanel extends BorderedPanel
 		}
 
 		/**
+		 * Whether the given key-press includes the system modifier being pressed.
+		 * TODO: Add a Predicate-of-KeyEvent to OnMac for here and in equivalent usages.
 		 * @param evt a key-event
 		 * @return whether it records the system modifier key being pressed.
 		 */

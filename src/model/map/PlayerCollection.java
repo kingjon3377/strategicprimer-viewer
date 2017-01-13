@@ -36,6 +36,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	private Player independent = new Player(-1, "Independent");
 
 	/**
+	 * Get a player by ID number.
 	 * @param player a player-id
 	 * @return the player with that ID, or a new Player with that number if we don't have
 	 * it.
@@ -51,6 +52,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
+	 * An iterator over the players in the collection.
 	 * @return an iterator over the players we contain.
 	 */
 	@Override
@@ -59,6 +61,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
+	 * An object is equal iff it is a player-collection and both contain equal players
+	 * (ie each is a subset of the other).
 	 * @param obj an object
 	 * @return whether it is another identical PlayerCollection or not
 	 */
@@ -72,6 +76,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
+	 * Delegate to the hash-value of the collection of players we use as an
+	 * implementation detail.
 	 * @return a hash value for this collection.
 	 */
 	@Override
@@ -93,6 +99,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the class
 	 */
 	@Override
@@ -101,6 +108,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
+	 * A player collection is a subset if it has no players we don't.
 	 * @param obj     another PlayerCollection
 	 * @param ostream the stream to write details of the differences to
 	 * @param context a string to print before every line of output, describing the
@@ -162,6 +170,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
+	 * Get the player for "independent" fixtures.
 	 * @return a player for "independent" fixtures.
 	 */
 	@Override
@@ -170,6 +179,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
+	 * Get an array of the players.
 	 * @return an array of the players
 	 */
 	public Player[] asArray() {
@@ -177,6 +187,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
+	 * Clone the collection.
 	 * @return a copy of this collection
 	 */
 	@Override

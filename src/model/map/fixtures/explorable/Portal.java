@@ -58,6 +58,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero whether to "zero out" the destination coordinates
 	 * @return a copy of this portal
 	 */
@@ -75,6 +76,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * The world the portal connects to.
 	 * @return a string identifying the world the portal connects to
 	 */
 	public String getDestinationWorld() {
@@ -82,6 +84,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * Where in that world it connects to.
 	 * @return the location in that world the portal connects to
 	 */
 	public Point getDestinationCoordinates() {
@@ -89,6 +92,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * Set the destination coordinates.
 	 * @param destination the new destination coordinates
 	 */
 	public void setDestinationCoordinates(final Point destination) {
@@ -96,6 +100,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * A trivial toSting().
 	 * @return a String representation of the fixture
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -105,9 +110,9 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the fixture if no instance-specific
-	 * image
-	 * has been specified
+	 * image has been specified
 	 */
 	@Override
 	public String getDefaultImage() {
@@ -115,6 +120,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * An object is equal iff it is equal ignoring ID but also has the same ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -125,6 +131,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -133,6 +140,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -141,6 +149,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -149,6 +158,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * The plural of Portal is Portals.
 	 * @return a string describing all portals as a class
 	 */
 	@Override
@@ -157,6 +167,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * A short description.
 	 * @return a short description of the fixture
 	 */
 	@Override
@@ -165,6 +176,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * The ID number.
 	 * @return an ID # for the fixture
 	 */
 	@Override
@@ -173,6 +185,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	/**
+	 * A fixture is equal iff its destination world and coordinates are the same as ours.
 	 * @param fix a fixture
 	 * @return whether it would be equal to this one if its ID # were not considered
 	 */
