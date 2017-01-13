@@ -154,7 +154,7 @@ public final class SimpleMovement {
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static boolean isForest(final Stream<TileFixture> fixtures) {
-		return fixtures.anyMatch(fix -> fix instanceof Forest);
+		return fixtures.anyMatch(Forest.class::isInstance);
 	}
 
 	/**
