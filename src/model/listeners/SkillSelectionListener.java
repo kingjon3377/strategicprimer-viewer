@@ -22,6 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @FunctionalInterface
 public interface SkillSelectionListener {
 	/**
+	 * Handle a new skill being selected.
 	 * @param selectedSkill the newly selected Skill. May be null if no selection.
 	 */
 	void selectSkill(@Nullable ISkill selectedSkill);

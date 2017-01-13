@@ -28,6 +28,7 @@ public class SPFormatException extends Exception {
 	private final Location location;
 
 	/**
+	 * Constructor.
 	 * @param message  a message describing what's wrong with the XML
 	 * @param errorLoc the location of the text causing the error
 	 * @param cause    the "initial cause" of this
@@ -52,6 +53,7 @@ public class SPFormatException extends Exception {
 	}
 
 	/**
+	 * The line of the XML file containing the mistake.
 	 * @return the line of the XML file containing the mistake
 	 */
 	public int getLine() {
@@ -59,6 +61,7 @@ public class SPFormatException extends Exception {
 	}
 
 	/**
+	 * The location of the mistake in the XML file.
 	 * @return the location in the XML file containing the mistake
 	 */
 	public Location getLocation() {

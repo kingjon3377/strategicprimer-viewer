@@ -122,6 +122,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Whether a unit contains any workers that don't have stats.
 	 * @param unit a unit
 	 * @return whether it contains any workers without stats
 	 */
@@ -131,6 +132,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * The units in the given collection that have workers without stats.
 	 * @param units a list of units
 	 * @return a list of the units in the list that have workers without stats
 	 */
@@ -205,6 +207,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Find a fixture in the given map with the given ID.
 	 * @param map   a map
 	 * @param idNum an ID number
 	 * @return the fixture with that ID, or null if not found
@@ -233,6 +236,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Find a fixture in the given iterable with the given ID.
 	 * @param iter  something containing fixtures
 	 * @param idNum an ID number
 	 * @return the fixture with that ID, or null if not found
@@ -531,6 +535,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 									  racialBonus);
 	}
 	/**
+	 * Get the index of the lowest value in the array.
 	 * @param array an array of ints
 	 * @return the index of the lowest value
 	 */
@@ -583,6 +588,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Generate a random number from 1 to 8 a number of times, add the given bonus each
+	 * time, and return the total.
 	 * @param times how many times to roll
 	 * @param bonus the bonus to apply to each roll
 	 * @return the result of rolling
@@ -596,6 +603,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Roll 3d6.
 	 * @return the result of simulating a 3d6 roll.
 	 */
 	private static int threeDeeSix() {
@@ -604,6 +612,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -646,7 +655,6 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * appropriate. If no levels, do nothing.
 	 * @param cli the interface for user I/O
 	 * @param levels how many levels the worker has
-	 * @throws IOException on I/O error
 	 */
 	private static void printLevelCount(final ICLIHelper cli, final int levels) {
 		if (levels == 1) {
@@ -657,6 +665,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

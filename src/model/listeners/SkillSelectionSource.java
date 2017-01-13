@@ -3,6 +3,8 @@ package model.listeners;
 /**
  * An interface for objects that handle the user's selection of Skills.
  *
+ * TODO: is there a more generic interface that could be used instead?
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -17,12 +19,14 @@ package model.listeners;
  */
 public interface SkillSelectionSource {
 	/**
+	 * Notify the given listener of newly selected skills.
 	 * @param list a listener to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addSkillSelectionListener(SkillSelectionListener list);
 
 	/**
+	 * Stop notifying the given listener.
 	 * @param list a listener to remove
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")

@@ -167,6 +167,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Strict-subset calculations should skip caches, text fixtures, and animal tracks.
 	 * @param fix a fixture
 	 * @return whether strict-subset calculations should skip it.
 	 */
@@ -176,6 +177,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Whether another map is a "strict" subset of this one.
 	 * @param obj     another map
 	 * @param ostream the stream to write verbose results to
 	 * @param context a string to print before every line of output, describing the
@@ -363,6 +365,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Compare another map to this one. TODO: Use Integer.compare() to simplify
 	 * @param other another map
 	 * @return the result of a comparison between us and it.
 	 */
@@ -385,6 +388,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * The dimensions of the map.
 	 * @return the map's dimensions
 	 */
 	@Override
@@ -393,6 +397,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * The players in the map.
 	 * @return the players in the map
 	 */
 	@Override
@@ -401,6 +406,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * The locations in the map.
 	 * @return the locations in the map
 	 */
 	@Override
@@ -409,6 +415,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * A stream of the locations in the map.
 	 * @return the locations in the map
 	 */
 	@Override
@@ -418,6 +425,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * The base terrain at the given location.
 	 * @param location a location
 	 * @return the base terrain at that location
 	 */
@@ -431,6 +439,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Whether the given location is mountainous.
 	 * @param location a location
 	 * @return whether that location is mountainous
 	 */
@@ -440,6 +449,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * The rivers, if any, at the given location.
 	 * @param location a location
 	 * @return the rivers there
 	 */
@@ -453,6 +463,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * The primary forest, if any, at the given location.
 	 * @param location a location
 	 * @return any forests there
 	 */
@@ -463,6 +474,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * The base ground, if any, at the given location.
 	 * @param location a location
 	 * @return the ground there
 	 */
@@ -473,6 +485,8 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Any fixtures other than mountain, rivers, primary forest, and primary ground at
+	 * the given location.
 	 * @param location a location
 	 * @return any other fixtures there
 	 */
@@ -486,6 +500,10 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * A stream of fixtures other than mountain, rivers, primary forest, and primary
+	 * ground at the given location.
+	 *
+	 * TODO: make streamAllFixtures() to include forest and ground
 	 * @param location a location
 	 * @return a stream of any other fixtures there
 	 */
@@ -499,6 +517,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * The current turn.
 	 * @return the current turn
 	 */
 	@Override
@@ -507,6 +526,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Set the current turn.
 	 * @param currentTurn the new current turn
 	 */
 	@Override
@@ -515,6 +535,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * The current player.
 	 * @return the current player
 	 */
 	@Override
@@ -523,6 +544,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Set the current player.
 	 * @param player the new current player
 	 */
 	@Override
@@ -532,6 +554,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Whether an object is an equal map.
 	 * @param obj an object
 	 * @return whether it's a map equal to this one
 	 */
@@ -541,6 +564,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Whether a map is equal. TODO: Make a default method on IMapNG?
 	 * @param obj another map
 	 * @return whether it equals this one
 	 */
@@ -581,6 +605,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * A String representation of the map.
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -641,6 +666,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Add a player.
 	 * @param player the player to add
 	 */
 	@Override
@@ -649,6 +675,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Set the base terrain at a location.
 	 * @param location    a location
 	 * @param terrainType the terrain there
 	 */
@@ -658,6 +685,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Set whether a location is mountainous.
 	 * @param location a location
 	 * @param mtn      whether it's mountainous there
 	 */
@@ -671,6 +699,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Add rivers at a location.
 	 * @param location    a location
 	 * @param addedRivers rivers to add to that location
 	 */
@@ -688,6 +717,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Remove rivers from the given location.
 	 * @param location      a location
 	 * @param removedRivers rivers to remove from it
 	 */
@@ -700,6 +730,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Set the primary forest at the given location.
 	 * @param location a location
 	 * @param forest   what should be the primary forest there, if any
 	 */
@@ -713,6 +744,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Set the main ground at a location.
 	 * @param location  a location
 	 * @param newGround what the ground there should be, if any
 	 */
@@ -726,6 +758,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Add a fixture at a location.
 	 * @param location a location
 	 * @param fix      a fixture to add there
 	 */
@@ -776,6 +809,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Remove a fixture from a location.
 	 * @param location a location
 	 * @param fix      a fixture to remove from that location
 	 */
@@ -787,6 +821,8 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Clone a map, possibly for a specific player, who shouldn't see other players'
+	 * details.
 	 * @param zero whether to "zero" sensitive data (probably just DCs)
 	 * @param player the player for whom the map is being prepared, or null for none
 	 * @return a copy of this map
@@ -822,6 +858,7 @@ public class SPMapNG implements IMutableMapNG {
 		return retval;
 	}
 	/**
+	 * Whether the given fixture should be zeroed out if the map is for the given player.
 	 * @param player a player
 	 * @param fixture a fixture
 	 * @return false if the fixture is a HasOwner owned by the player, and true otherwise

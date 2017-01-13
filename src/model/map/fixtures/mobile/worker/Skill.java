@@ -46,6 +46,7 @@ public class Skill implements ISkill {
 	}
 
 	/**
+	 * Clone the object.
 	 * @return a copy of this skill
 	 */
 	@SuppressWarnings("MethodReturnOfConcreteClass")
@@ -55,6 +56,7 @@ public class Skill implements ISkill {
 	}
 
 	/**
+	 * The name of the skill.
 	 * @return the name of the skill
 	 */
 	@Override
@@ -63,6 +65,7 @@ public class Skill implements ISkill {
 	}
 
 	/**
+	 * How many levels the worker has in the skill.
 	 * @return how many levels the worker has in the skill
 	 */
 	@Override
@@ -71,6 +74,7 @@ public class Skill implements ISkill {
 	}
 
 	/**
+	 * How many hours the worker has worked on the skill since last leveling it.
 	 * @return how many hours the worker has accumulated since leveling up last
 	 */
 	@Override
@@ -79,6 +83,8 @@ public class Skill implements ISkill {
 	}
 
 	/**
+	 * An object is equal iff it is a Skill with the same name, level, and number of
+	 * hours.
 	 * @param obj an object
 	 * @return whether it's the same as this one
 	 */
@@ -91,6 +97,7 @@ public class Skill implements ISkill {
 	}
 
 	/**
+	 * Use the name's hash value for ours.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -115,6 +122,7 @@ public class Skill implements ISkill {
 	}
 
 	/**
+	 * "name (level)".
 	 * @return a string representation of the skill
 	 */
 	@Override

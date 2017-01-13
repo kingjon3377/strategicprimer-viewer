@@ -36,6 +36,7 @@ public class SPOptionsImpl implements SPOptions {
 	private final Iterable<Pair<String, String>> adapter;
 
 	/**
+	 * Add an option without any argument.
 	 * @param opt an option without argument
 	 */
 	public void addOption(final String opt) {
@@ -43,6 +44,7 @@ public class SPOptionsImpl implements SPOptions {
 	}
 
 	/**
+	 * Add an option taking an argument.
 	 * @param opt an option taking an argument
 	 * @param arg its argument
 	 */
@@ -51,6 +53,7 @@ public class SPOptionsImpl implements SPOptions {
 	}
 
 	/**
+	 * Whether the given option was provided.
 	 * @param opt an option
 	 * @return whether that option was given, either with or without an argument
 	 */
@@ -60,6 +63,8 @@ public class SPOptionsImpl implements SPOptions {
 	}
 
 	/**
+	 * Get the argument that was provided for the given argument, or "false" if it
+	 * wasn't specified.
 	 * @param opt an option
 	 * @return the value that was given for that option, or "true" if it didn't have one,
 	 * or "false" if it wasn't given at all
@@ -74,6 +79,7 @@ public class SPOptionsImpl implements SPOptions {
 	}
 
 	/**
+	 * An iterator over the specified options.
 	 * @return an iterator over the options
 	 */
 	@Override
@@ -81,6 +87,7 @@ public class SPOptionsImpl implements SPOptions {
 		return adapter.iterator();
 	}
 	/**
+	 * Copy constructor.
 	 * @param existing another instance to copy from
 	 */
 	public SPOptionsImpl(final Iterable<Pair<String, String>> existing) {
@@ -96,6 +103,7 @@ public class SPOptionsImpl implements SPOptions {
 		adapter = new SetPairConverter<>(options);
 	}
 	/**
+	 * Clone the object.
 	 * @return a copy of this object.
 	 */
 	@Override

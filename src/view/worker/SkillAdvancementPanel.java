@@ -132,6 +132,7 @@ public final class SkillAdvancementPanel extends BoxPanel
 	}
 
 	/**
+	 * Select the given skill.
 	 * @param selectedSkill the newly selected skill.
 	 */
 	@SuppressWarnings("VariableNotUsedInsideIf")
@@ -144,6 +145,7 @@ public final class SkillAdvancementPanel extends BoxPanel
 	}
 
 	/**
+	 * Add a listener.
 	 * @param list the listener to add
 	 */
 	@Override
@@ -152,6 +154,7 @@ public final class SkillAdvancementPanel extends BoxPanel
 	}
 
 	/**
+	 * Remove a listener.
 	 * @param list the listener to remove
 	 */
 	@Override
@@ -184,6 +187,7 @@ public final class SkillAdvancementPanel extends BoxPanel
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the object
 	 */
 	@Override

@@ -37,6 +37,7 @@ public abstract class SPFrame extends JFrame implements ISPWindow {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	/**
+	 * Constructor.
 	 * @param title the window title
 	 * @param file the map file, if any, being shown or edited
 	 * @param minSize the minimum size of the window

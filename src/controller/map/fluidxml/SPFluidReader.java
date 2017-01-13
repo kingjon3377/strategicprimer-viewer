@@ -170,6 +170,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	}
 
 	/**
+	 * Get the first start-element (in one of our namespaces) in the stream.
 	 * @param stream a stream of XMLEvents
 	 * @param parent the parent tag
 	 * @return the first start-element in the stream
@@ -220,6 +221,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	}
 
 	/**
+	 * Read the SP object the XML represents.
 	 * @param <T>     A supertype of the object the XML represents
 	 * @param file    the file we're reading from
 	 * @param istream the stream to read from
@@ -256,6 +258,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	}
 
 	/**
+	 * Read a map from a file.
 	 * @param file   the file to read from
 	 * @param warner a Warning instance to use for warnings
 	 * @return the map contained in the file
@@ -272,6 +275,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	}
 
 	/**
+	 * Read a map from a file.
 	 * @param file    the file we're reading from
 	 * @param istream the stream to read from
 	 * @param warner  a Warning instance to use for warnings
@@ -287,6 +291,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -656,7 +661,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @param idFactory The factory for ID numbers
 	 * @param currentTile The current row and column.
 	 * @param element The tag to parse
-	 * @throws SPFormatException
+	 * @throws SPFormatException on SP format issues.
 	 */
 	private void parseTileChild(final IMutableMapNG map, final StartElement parent,
 								final Iterable<XMLEvent> stream,

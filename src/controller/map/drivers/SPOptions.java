@@ -23,12 +23,15 @@ import util.Pair;
  */
 public interface SPOptions extends Iterable<Pair<String, String>> {
 	/**
+	 * Whether the given option was given.
 	 * @param opt an option
 	 * @return whether that option was given, either with or without an argument
 	 */
 	boolean hasOption(String opt);
 
 	/**
+	 * Get the argument provided for the given argument (or "true" if given without one,
+	 * "false" if not given).
 	 * @param opt an option
 	 * @return the value that was given for that option, or "true" if it didn't have one,
 	 * or "false" if it wasn't given at all
@@ -36,12 +39,14 @@ public interface SPOptions extends Iterable<Pair<String, String>> {
 	String getArgument(String opt);
 
 	/**
+	 * An iterator over the options the user provided.
 	 * @return an iterator over the options
 	 */
 	@Override
 	Iterator<Pair<String, String>> iterator();
 
 	/**
+	 * Clone the object.
 	 * @return a copy of this object.
 	 */
 	SPOptions copy();

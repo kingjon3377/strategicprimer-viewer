@@ -28,6 +28,7 @@ public final class SPMalformedInputException extends SPFormatException {
 	}
 
 	/**
+	 * Constructor.
 	 * @param location where this occurred
 	 * @param cause    the underlying exception
 	 */

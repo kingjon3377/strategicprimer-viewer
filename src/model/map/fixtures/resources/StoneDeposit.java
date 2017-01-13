@@ -53,6 +53,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero whether to zero out the DC
 	 * @return a copy of this deposit
 	 */
@@ -70,6 +71,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * What kind of stone this deposit is.
 	 * @return what kind of stone this deposit is.
 	 */
 	public StoneKind stone() {
@@ -77,6 +79,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The Perception check result required to discover the deposit.
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -85,15 +88,18 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The exploration-result text for this event.
 	 * @return exploration-result text for the event.
 	 */
 	@Override
 	public String getText() {
-		final String stoneStr = stone.toString();
+		final String stoneStr = stone.toString(); // TODO: inline
 		return String.format("There is an exposed %s deposit here.", stoneStr);
 	}
 
 	/**
+	 * An object is equal iff it is a StoneDeposit with the same kind of stone and the
+	 * same ID.
 	 * @param obj an object
 	 * @return whether it's an identical event
 	 */
@@ -105,6 +111,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the event
 	 */
 	@Override
@@ -113,6 +120,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a string representation of the object
 	 */
 	@Override
@@ -121,6 +129,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the event
 	 */
 	@Override
@@ -129,6 +138,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -137,6 +147,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * A fixture is equal, ignoring ID, if it is a StoneDeposit of the same kind.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -148,6 +159,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The kind of stone in the deposit, as a String.
 	 * @return a string representation of the kind of stone in the deposit
 	 */
 	@Override
@@ -156,6 +168,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -164,6 +177,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -172,6 +186,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * The plural of "Stone deposit" is "Stone deposits".
 	 * @return a string describing all stone deposits as a class
 	 */
 	@Override
@@ -180,6 +195,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * A short description.
 	 * @return a short description of the fixture
 	 */
 	@Override
