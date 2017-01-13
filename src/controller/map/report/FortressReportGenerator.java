@@ -106,9 +106,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				fixtures.remove(Integer.valueOf(fix.getID()));
 			} else if (fix instanceof Mountain) {
 				builder.append(", mountainous");
-				// FIXME: This does nothing; Mountains don't have positive IDs.
-				// Not that it matters, since they never show up anyway.
-				fixtures.remove(Integer.valueOf(fix.getID()));
+				// Mountains don't have positive IDs, so don't bother removing.
 			} else if (fix instanceof Hill) {
 				builder.append(", hilly");
 				fixtures.remove(Integer.valueOf(fix.getID()));
