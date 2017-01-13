@@ -2,10 +2,10 @@ package model.map.fixtures.towns;
 
 import java.util.ArrayList;
 import java.util.Formatter;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import model.map.FixtureIterable;
 import model.map.HasMutableImage;
 import model.map.HasMutableName;
@@ -251,11 +251,8 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 		// TODO: Check ID first
 		if (EqualsAny.equalsAny(fort.name, name, "unknown")
 					&& (fort.owner.getPlayerId() == owner.getPlayerId())) {
-			final Map<Integer, FortressMember> ours = new HashMap<>();
-			for (final FortressMember member : this) {
-				ours.put(Integer.valueOf(member.getID()),
-						member);
-			}
+			final Map<Integer, FortressMember> ours = stream().collect(
+					Collectors.toMap(FortressMember::getID, x -> x, (one, two) -> one));
 			boolean retval = true;
 			for (final FortressMember unit : fort) {
 				if (!isConditionTrue(ostream,
