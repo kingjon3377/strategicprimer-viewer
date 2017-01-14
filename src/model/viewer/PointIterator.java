@@ -29,6 +29,10 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class PointIterator implements Iterator<@NonNull Point> {
 	/**
+	 * How many points remain, that we haven't returned yet.
+	 */
+	private long remainingCount;
+	/**
 	 * Whether we're searching forwards (if true) or backwards (if false).
 	 */
 	private final boolean forwards;
@@ -79,6 +83,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 						 final boolean searchForwards, final boolean searchHorizontal) {
 		horizontal = searchHorizontal;
 		forwards = searchForwards;
+		remainingCount = dims.getRows() * dims.getColumns();
 		maxRow = dims.getRows() - 1;
 		maxCol = dims.getColumns() - 1;
 		if (sel == null) {
@@ -159,6 +164,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	@Override
 	public Point next() {
 		if (hasNext()) {
+			remainingCount--;
 			started = true;
 			if (horizontal) {
 				if (forwards) {
@@ -261,6 +267,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	 * @return a Stream of the points.
 	 */
 	public Stream<Point> stream() {
-		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(this, 0), false);
+		return StreamSupport
+					   .stream(Spliterators.spliterator(this, remainingCount, 0), false);
 	}
 }
