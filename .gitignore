@@ -33,3 +33,5 @@ dist/*
 /dist/
 .idea/workspace.xml
 infer-out/*
+jacoco.exec
+jacoco.xml
