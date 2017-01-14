@@ -46,6 +46,8 @@ public class TabularReportDriver implements SimpleDriver {
 			TypesafeLogger.getLogger(TabularReportDriver.class);
 
 	/**
+	 * Produce a function for producing a stream for writing to a sibling file to the
+	 * given file.
 	 * @param base the base file
 	 * @return a function for producing a stream for writing to a sibling file
 	 */
@@ -97,6 +99,7 @@ public class TabularReportDriver implements SimpleDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver
 	 */
 	@Override
@@ -105,6 +108,7 @@ public class TabularReportDriver implements SimpleDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

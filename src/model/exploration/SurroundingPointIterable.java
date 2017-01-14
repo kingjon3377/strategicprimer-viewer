@@ -49,6 +49,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	}
 
 	/**
+	 * Constructor with no defaults.
 	 * @param starting   the starting point.
 	 * @param dimensions the dimensions of the map
 	 * @param radius     how far from the starting point to go
@@ -99,6 +100,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	}
 
 	/**
+	 * An iterator over the points.
 	 * @return an iterator over the points
 	 */
 	@Override
@@ -107,6 +109,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -114,6 +117,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 		return "Points surrounding " + startingPoint;
 	}
 	/**
+	 * A Stream view of the points.
 	 * @return a Stream view of the points.
 	 */
 	public Stream<Point> stream() {

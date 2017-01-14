@@ -107,6 +107,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -115,6 +116,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

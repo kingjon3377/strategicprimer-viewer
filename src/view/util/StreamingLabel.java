@@ -46,6 +46,7 @@ public final class StreamingLabel extends JEditorPane {
 	}
 
 	/**
+	 * The Writer that writes to the label.
 	 * @return the writer to "print" to.
 	 */
 	public PrintWriter getWriter() {
@@ -64,7 +65,7 @@ public final class StreamingLabel extends JEditorPane {
 	}
 
 	/**
-	 * Prevent serialization
+	 * Prevent serialization.
 	 *
 	 * @param in ignored
 	 * @throws IOException            always
@@ -113,6 +114,7 @@ public final class StreamingLabel extends JEditorPane {
 		private final JEditorPane control;
 
 		/**
+		 * Constructor.
 		 * @param wrapped the writer we wrap
 		 * @param label   the component to update when written to
 		 */
@@ -148,7 +150,7 @@ public final class StreamingLabel extends JEditorPane {
 		}
 
 		/**
-		 * Don't close the writer after every line!
+		 * Don't close the writer after every line! Thus this method is ignored.
 		 */
 		@Override
 		public void close() {
@@ -164,6 +166,7 @@ public final class StreamingLabel extends JEditorPane {
 		}
 
 		/**
+		 * A trivial toString().
 		 * @return a String representation of the object
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -173,6 +176,7 @@ public final class StreamingLabel extends JEditorPane {
 		}
 
 		/**
+		 * Append a string.
 		 * @param csq a string to append
 		 * @return this
 		 */
@@ -185,6 +189,7 @@ public final class StreamingLabel extends JEditorPane {
 		}
 
 		/**
+		 * Write data using a format string.
 		 * @param format a format string
 		 * @param args   arguments to place in that string as per the spec
 		 * @return this

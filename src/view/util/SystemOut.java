@@ -44,6 +44,7 @@ public final class SystemOut extends FilterOutputStream {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

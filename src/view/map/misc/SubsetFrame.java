@@ -289,6 +289,7 @@ public final class SubsetFrame extends SPFrame {
 	}
 
 	/**
+	 * The title of this app.
 	 * @return the title of this app
 	 */
 	@Override
@@ -342,6 +343,7 @@ public final class SubsetFrame extends SPFrame {
 		}
 
 		/**
+		 * A trivial toString().
 		 * @return a String representation of the object
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")

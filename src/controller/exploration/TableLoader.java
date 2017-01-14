@@ -89,6 +89,7 @@ public final class TableLoader {
 	}
 
 	/**
+	 * Load a table from a Reader.
 	 * @param reader the stream to read from
 	 * @return the table constructed from the file
 	 * @throws IOException on I/O error or badly formed table.
@@ -271,6 +272,7 @@ public final class TableLoader {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of this class
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

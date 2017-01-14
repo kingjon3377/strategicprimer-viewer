@@ -58,11 +58,11 @@ public final class TableReportGenerator {
 	}
 
 	/**
+	 * Find the player's HQ.
 	 * @param map    a map
 	 * @param player a player
 	 * @return the location of that player's HQ, or another of that player's
-	 * fortresses if
-	 * not found, (-1, -1) if none found
+	 * fortresses if not found, (-1, -1) if none found
 	 */
 	@SuppressWarnings("IfStatementWithIdenticalBranches")
 	private static Point findHQ(final IMapNG map, final Player player) {
@@ -83,6 +83,7 @@ public final class TableReportGenerator {
 	}
 
 	/**
+	 * Create tabular reports from the given map.
 	 * @param map    the map to base the report on
 	 * @param source a function returning an output stream for each new report.
 	 * @throws IOException on I/O error while writing
@@ -148,6 +149,7 @@ public final class TableReportGenerator {
 	}
 
 	/**
+	 * Get the fixtures from the map.
 	 * @param map a map
 	 * @return the fixtures in it, a mapping from their ID (or a synthetic one, for
 	 * fixtures without a unique ID) to a Pair of the fixture's location and the fixture
@@ -182,6 +184,7 @@ public final class TableReportGenerator {
 	}
 
 	/**
+	 * Get the fixtures in the given stream, flattened.
 	 * @param stream a source of tile-fixtures
 	 * @return all the tile-fixtures in it, recursively.
 	 */

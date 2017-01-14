@@ -66,6 +66,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	}
 
 	/**
+	 * The size of the string needed to represent the unit's members.
 	 * @param unit a unit
 	 * @return the size of string needed to represent its members
 	 */
@@ -83,6 +84,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	}
 
 	/**
+	 * Write the unit's members to a Formatter.
 	 * @param unit a unit
 	 * @param formatter a Formatter to write to
 	 */
@@ -104,6 +106,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	}
 
 	/**
+	 * The number of characters needed to write the given member.
 	 * @param member a unit member
 	 * @return the size of a string for it
 	 */
@@ -123,6 +126,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	}
 
 	/**
+	 * Write a unit member to a Formatter.
 	 * @param member a unit member
 	 * @param formatter a Formatter to write it to
 	 */
@@ -155,6 +159,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	}
 
 	/**
+	 * Create the proto-strategy.
 	 * @param dismissed the list of dismissed members
 	 * @param options command-line options that were passed to the app
 	 * @return the proto-strategy as a String
@@ -230,6 +235,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	}
 
 	/**
+	 * Calculate the needed buffer size.
 	 * @param dismissed the list of dismissed workers
 	 * @param playerName the name of the current player
 	 * @param turnString the current turn, as a String
@@ -283,6 +289,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -292,6 +299,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 	}
 
 	/**
+	 * Handle a change in the current player.
 	 * @param old       the previous current player
 	 * @param newPlayer the new current player
 	 */

@@ -117,6 +117,7 @@ public final class SubsetDriver implements SimpleDriver {
 	}
 
 	/**
+	 * Test whether the given subordinate map is a subset of the given main map.
 	 * @param mainMap the main map
 	 * @param map     a subordinate map
 	 * @param file    the file the subordinate map came from
@@ -134,6 +135,7 @@ public final class SubsetDriver implements SimpleDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -157,7 +159,9 @@ public final class SubsetDriver implements SimpleDriver {
 		 * The map failed to load.
 		 */
 		Fail
-	}	/**
+	}
+	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

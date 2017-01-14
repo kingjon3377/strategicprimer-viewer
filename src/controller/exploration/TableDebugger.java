@@ -61,6 +61,7 @@ public final class TableDebugger implements SimpleCLIDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return the usage object
 	 */
 	@Override
@@ -134,6 +135,7 @@ public final class TableDebugger implements SimpleCLIDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -164,6 +166,7 @@ public final class TableDebugger implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Start the driver.
 	 * @param cli the interface for user I/O
 	 * @param options command-line options passed in
 	 * @param model   ignored

@@ -24,12 +24,12 @@ import org.eclipse.jdt.annotation.Nullable;
 @FunctionalInterface
 public interface Subsettable<T> {
 	/**
+	 * Test whether an object is a strict subset of this one.
 	 * @param obj     an object
 	 * @param ostream the stream to write details to
 	 * @param context a string to print before every line of output, describing the
 	 *                context; it should be passed through and appended to. Whenever
-	 *                it is
-	 *                put onto ostream, it should probably be followed by a tab.
+	 *                it is put onto ostream, it should probably be followed by a tab.
 	 * @return whether it is a strict subset of this object---with no members that aren't
 	 * also in this.
 	 */

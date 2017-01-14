@@ -97,6 +97,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	}
 
 	/**
+	 * Handle a change to a new version.
 	 * @param old        the previously selected version
 	 * @param newVersion the newly selected version
 	 */
@@ -106,6 +107,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	}
 
 	/**
+	 * Add a new listener to the list we notify.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -114,6 +116,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	}
 
 	/**
+	 * Remove a listener from the list we notify.
 	 * @param list a listener to remove
 	 */
 	@Override
@@ -122,6 +125,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	}
 
 	/**
+	 * Handle a change to the selected point.
 	 * @param old      ignored
 	 * @param newPoint ignored
 	 */
@@ -160,6 +164,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a quasi-diagnostic String
 	 */
 	@Override

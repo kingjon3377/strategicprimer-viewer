@@ -76,6 +76,7 @@ public enum StoneKind {
 	}
 
 	/**
+	 * Parse a StoneKind from a string.
 	 * @param kind a string representing a StoneKind
 	 * @return the StoneKind it represents
 	 */
@@ -88,6 +89,7 @@ public enum StoneKind {
 	}
 
 	/**
+	 * The kind of stone is also the String representation.
 	 * @return a string representation of the kind of stone
 	 */
 	@Override
