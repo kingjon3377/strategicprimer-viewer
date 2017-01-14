@@ -11,16 +11,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
+import model.map.FixtureIterable;
+import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Point;
-import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
+import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -127,14 +130,50 @@ public final class MapChecker implements UtilityDriver {
 		}
 		for (final Check checker : EXTRA_CHECKS) {
 			for (final Point location : map.locations()) {
-				// TODO: check forest and ground
-				for (final TileFixture fix : map.getOtherFixtures(location)) {
-					checker.check(map.getBaseTerrain(location), location, fix, warner);
-				}
+				final TileType terrain = map.getBaseTerrain(location);
+				contentCheck(checker, terrain, location,
+						singletonOrEmpty(map.getGround(location)), warner);
+				contentCheck(checker, terrain, location,
+						singletonOrEmpty(map.getForest(location)), warner);
+				contentCheck(checker, terrain, location, map.getOtherFixtures(location),
+						warner);
 			}
 		}
 		SYS_OUT.print("No errors in ");
 		SYS_OUT.println(file);
+	}
+	/**
+	 * @param <T> the type of the item
+	 * @param item something or null
+	 * @return an empty collection if null, or a singleton collection containing the
+	 * item if not
+	 */
+	private static <T> Collection<T> singletonOrEmpty(@Nullable final T item) {
+		if (item == null) {
+			return Collections.emptyList();
+		} else {
+			return Collections.singleton(item);
+		}
+	}
+	/**
+	 * Run the given extra check on the given fixtures from the given point.
+	 * @param checker a Check
+	 * @param terrain the terrain at this point in the map
+	 * @param context the current point in the map
+	 * @param list a series of fixtures
+	 * @param warner the Warning instance to use
+	 */
+	private static void contentCheck(final Check checker, final TileType terrain,
+									 final Point context,
+									 final Iterable<? extends IFixture> list,
+									 final Warning warner) {
+		for (final IFixture fix : list) {
+			if (fix instanceof FixtureIterable) {
+				contentCheck(checker, terrain, context, (FixtureIterable<?>) fix,
+						warner);
+			}
+			checker.check(terrain, context, fix, warner);
+		}
 	}
 
 	/**
@@ -168,7 +207,7 @@ public final class MapChecker implements UtilityDriver {
 		 * @param fixture The tile fixture to check
 		 * @param warner the Warning instance to use.
 		 */
-		void check(final TileType terrain, final Point context, final TileFixture fixture,
+		void check(final TileType terrain, final Point context, final IFixture fixture,
 				   final Warning warner);
 	}
 	/**
