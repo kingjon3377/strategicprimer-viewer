@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<project default="all" name="SP viewer" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle">
+<project default="all" name="SP viewer" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"
+    xmlns:jacoco="antlib:org.jacoco.ant">
   <target name="all" depends="clean,release" />
   <property file="build.properties" />
   <tstamp />
@@ -116,7 +117,7 @@
       <classpath refid="viewer.classpath" />
     </javadoc>
   </target>
-  
+
   <!-- Test targets -->
   <target name="test" depends="build">
     <echo message='If Ant fails to find JUnit task on a Gentoo system,' />
@@ -306,4 +307,55 @@
   </target>
   <target name="release"
     depends="app,exe,jar,dmg,dist" />
+  <target name="coverage" depends="build">
+      <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+          <classpath path="../../../lib/jacocoant.jar"/>
+      </taskdef>
+      <!--
+      <echo message='You may need to export ANT_TASKS="ant-junit4 jacoco" on a Gentoo system.' />
+      <jacoco:coverage>
+          <junit fork="yes">
+       -->
+             <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
+             <!-- We can do this once ant 1.9.3 is in our CI; see
+                 http://stackoverflow.com/a/25148876 -->
+      <!--
+             <test name="controller.exploration.TestTableLoader" todir="${junit.output.dir}" />
+             <test name="controller.map.misc.TestCLIHelper" todir="${junit.output.dir}" />
+             <test name="model.exploration.old.TestExplorationRunner"
+                   todir="${junit.output.dir}" />
+             <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
+             <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
+             <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />
+             <test name="model.map.fixtures.towns.TestTownSerialization"
+                   todir="${junit.output.dir}" />
+             <test name="model.map.fixtures.towns.TestVillageSerialization"
+                   todir="${junit.output.dir}" />
+             <test name="model.map.fixtures.resources.TestStoneSerialization"
+                   todir="${junit.output.dir}" />
+             <test name="model.map.fixtures.TestFixtureSerialization"
+                   todir="${junit.output.dir}" />
+             <test name="model.map.fixtures.TestMoreFixtureSerialization"
+                   todir="${junit.output.dir}" />
+             <test name="model.viewer.PointIteratorTest" todir="${junit.output.dir}" />
+             <test name="model.workermgmt.TestWorkerModel" todir="${junit.output.dir}" />
+             <test name="controller.map.converter.TestConverter" todir="${junit.output.dir}" />
+             <test name="model.map.fixtures.mobile.worker.TestProxyWorker"
+                   todir="${junit.output.dir}" />
+             <test name="model.exploration.TestDirection" todir="${junit.output.dir}" />
+             <test name="controller.map.misc.TestTownComparator" todir="${junit.output.dir}" />
+             <test name="controller.map.misc.TestFileHandling" todir="${junit.output.dir}" />
+             <classpath refid="viewer.classpath" />
+          </junit>
+      </jacoco:coverage>
+      <jacoco:report>
+          <executiondata><file file="jacoco.exec" /></executiondata>
+          <structure name="Strategic Primer Assistive Programs">
+              <classfiles><fileset dir="bin"><include name="**/*.class" /></fileset></classfiles>
+              <sourcefiles encoding="UTF-8"><fileset dir="src" /></sourcefiles>
+          </structure>
+          <xml destfile="jacoco.xml" />
+      </jacoco:report>
+      -->
+  </target>
 </project>

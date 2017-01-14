@@ -36,4 +36,5 @@ deploy:
     repo: kingjon3377/strategicprimer-viewer
     tags: true
 after_success:
+  - ./run_coverage.sh
   - bash <(curl -s https://codecov.io/bash)
