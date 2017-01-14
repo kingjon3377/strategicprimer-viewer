@@ -23,7 +23,9 @@ import model.map.Point;
 import model.map.TileType;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
+import model.map.fixtures.towns.Village;
 import org.eclipse.jdt.annotation.Nullable;
+import util.EqualsAny;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -72,6 +74,14 @@ public final class MapChecker implements UtilityDriver {
 						TileType.Jungle != terrain) {
 				warner.warn(
 						new SPContentWarning(context, "Laterite stone in non-jungle"));
+			}
+		});
+		EXTRA_CHECKS.add((terrain, context, fixture, warner) -> {
+			if (fixture instanceof Village && EqualsAny.equalsAny(
+					((Village) fixture).getRace(), "Danan", "dwarf", "elf", "half-elf",
+					"gnome", "human") && TileType.Ocean == terrain) {
+				warner.warn(new SPContentWarning(context,
+														"Aquatic village has non-aquatic race"));
 			}
 		});
 	}
