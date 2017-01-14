@@ -20,6 +20,7 @@ import java.util.EventListener;
 @FunctionalInterface
 public interface VersionChangeListener extends EventListener {
 	/**
+	 * Handle a change in map version.
 	 * @param old        the previous version
 	 * @param newVersion the new version
 	 */

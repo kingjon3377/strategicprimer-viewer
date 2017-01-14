@@ -7,6 +7,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * An interface for objects that want to know when the user selects a Unit from a list or
  * tree.
  *
+ * TODO: combine with other similar interface?
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -22,6 +24,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @FunctionalInterface
 public interface UnitSelectionListener {
 	/**
+	 * Respond to the fact that the given unit is the new selected unit.
 	 * @param unit the newly selected Unit. May be null if no selection.
 	 */
 	void selectUnit(@Nullable IUnit unit);

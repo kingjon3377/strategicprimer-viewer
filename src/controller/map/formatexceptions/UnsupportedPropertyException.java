@@ -34,6 +34,7 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	private final String param;
 
 	/**
+	 * Constructor.
 	 * @param tag       the current tag
 	 * @param parameter the unsupported parameter
 	 */
@@ -45,6 +46,7 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	}
 
 	/**
+	 * The current tag.
 	 * @return the current tag
 	 */
 	public QName getTag() {
@@ -52,6 +54,7 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	}
 
 	/**
+	 * The unupported property.
 	 * @return the unsupported parameter
 	 */
 	public String getParam() {

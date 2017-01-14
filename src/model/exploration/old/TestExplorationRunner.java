@@ -248,6 +248,7 @@ public final class TestExplorationRunner {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the class
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

@@ -42,6 +42,7 @@ public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent>
 	}
 
 	/**
+	 * Constructor.
 	 * @param reader a source of (unparsed) XML data
 	 * @throws XMLStreamException on malformed XML data
 	 */
@@ -51,6 +52,7 @@ public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent>
 	}
 
 	/**
+	 * Whether there's another event in the stream.
 	 * @return whether there's another event in the stream
 	 */
 	@Override
@@ -59,11 +61,13 @@ public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent>
 	}
 
 	/**
+	 * Get the next element.
 	 * @return the next element in the stream.
 	 */
 	@Override
 	public XMLEvent next() {
 		try {
+			// TODO: use Optional to condense
 			final XMLEvent retval = wrapped.nextEvent();
 			if (retval == null) {
 				throw new NoSuchElementException("next event was null");
@@ -87,6 +91,7 @@ public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent>
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a string representation of this class
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

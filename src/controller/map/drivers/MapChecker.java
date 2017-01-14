@@ -153,6 +153,7 @@ public final class MapChecker implements UtilityDriver {
 		SYS_OUT.println(file);
 	}
 	/**
+	 * Turn a Nullable reference into a Collection.
 	 * @param <T> the type of the item
 	 * @param item something or null
 	 * @return an empty collection if null, or a singleton collection containing the

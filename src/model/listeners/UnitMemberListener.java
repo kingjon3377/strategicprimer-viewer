@@ -11,6 +11,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
+ * TODO: combine with similar interfaces?
+ *
  * Copyright (C) 2013-2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
@@ -23,6 +25,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @FunctionalInterface
 public interface UnitMemberListener extends EventListener {
 	/**
+	 * Handle a change in the selected member.
 	 * @param old      the previous selection
 	 * @param selected the new selection. Because sometimes there's no selection, may be
 	 *                 null.

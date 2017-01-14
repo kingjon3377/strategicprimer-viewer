@@ -72,6 +72,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	private final IReportGenerator<Animal> animalReportGenerator =
 			new AnimalReportGenerator(pairComparator);
 	/**
+	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public UnitReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
@@ -80,6 +81,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	/**
+	 * Create the report on a Worker.
 	 * @param worker  a Worker.
 	 * @param details whether we should give details of the worker's stats and
 	 *                experience---true only if the current player owns the worker.
@@ -121,8 +123,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	/**
+	 * Write text describing the Job's Skills to the given Formatter.
 	 * @param job a Job
-	 * @return a String describing its skills.
+	 * @param formatter the Formatter to write to
 	 */
 	private static void writeSkills(final Iterable<ISkill> job,
 									  final Formatter formatter) {
@@ -142,6 +145,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		}
 	}
 	/**
+	 * Produce a String describing the Job's Skills.
 	 * @param job a Job
 	 * @return a String describing its skills.
 	 */
@@ -154,6 +158,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	/**
+	 * Produce the RIR sub-report on a worker.
 	 * @param loc     the location of the worker in the map
 	 * @param worker  a Worker.
 	 * @param details whether we should give details of the worker's stats and
@@ -195,6 +200,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	/**
+	 * Produce the RIR sub-sub-report on a Job.
 	 * @param loc the location of the worker in the map
 	 * @param job a Job
 	 * @return a sub-report on that Job.
@@ -509,6 +515,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

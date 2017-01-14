@@ -103,6 +103,8 @@ public final class ViewerModel extends SimpleDriverModel implements
 	}
 
 	/**
+	 * Set the (main) map and its filename, and also clear the selection and  reset the
+	 * visible dimensions and the zoom level.
 	 * @param newMap the new map
 	 * @param origin the file the map was loaded from or should be saved to
 	 */
@@ -145,6 +147,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	}
 
 	/**
+	 * Set the visible dimensions.
 	 * @param dim the new visible dimensions of the map
 	 */
 	@Override
@@ -156,6 +159,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the class
 	 */
 	@Override
@@ -166,6 +170,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	}
 
 	/**
+	 * The current zoom level.
 	 * @return the current zoom level.
 	 */
 	@Override
@@ -212,6 +217,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	}
 
 	/**
+	 * The currently selected point.
 	 * @return the location of the currently selected tile
 	 */
 	@Override
@@ -220,6 +226,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	}
 
 	/**
+	 * Add a selection-change listener.
 	 * @param list a selection-change listener to add
 	 */
 	@Override
@@ -228,6 +235,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	}
 
 	/**
+	 * Remove a selection-change listener.
 	 * @param list a selection-change listener to remove
 	 */
 	@Override
@@ -236,6 +244,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	}
 
 	/**
+	 * Add a graphical-parameters listener.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -244,6 +253,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	}
 
 	/**
+	 * Remove a graphical-parameters listener.
 	 * @param list a listener to remove
 	 */
 	@Override

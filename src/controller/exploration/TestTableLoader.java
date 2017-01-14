@@ -167,6 +167,7 @@ public final class TestTableLoader {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of this class
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

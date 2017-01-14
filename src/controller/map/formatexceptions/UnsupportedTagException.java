@@ -29,6 +29,7 @@ public final class UnsupportedTagException extends SPFormatException {
 	private final QName tag;
 
 	/**
+	 * Constructor.
 	 * @param uTag the unsupported tag
 	 */
 	public UnsupportedTagException(final StartElement uTag) {
@@ -39,6 +40,7 @@ public final class UnsupportedTagException extends SPFormatException {
 	}
 
 	/**
+	 * The unsupported tag.
 	 * @return the tag.
 	 */
 	public QName getTag() {

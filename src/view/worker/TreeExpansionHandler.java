@@ -24,6 +24,7 @@ public final class TreeExpansionHandler implements TreeExpansionOrderListener {
 	private final JTree tree;
 
 	/**
+	 * Constructor.
 	 * @param theTree The tree to handle.
 	 */
 	public TreeExpansionHandler(final JTree theTree) {
@@ -31,6 +32,7 @@ public final class TreeExpansionHandler implements TreeExpansionOrderListener {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

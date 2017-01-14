@@ -43,6 +43,7 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 					Comparator.comparing(HasName::getName));
 
 	/**
+	 * Compare town sizes.
 	 * @param one One town-size
 	 * @param two Another
 	 * @return the result of a comparison between them
@@ -163,6 +164,7 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

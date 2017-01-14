@@ -47,6 +47,7 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 	private final StoneKind kind;
 
 	/**
+	 * Constructor for parametrized test.
 	 * @param stone the stone kind to use for this test
 	 */
 	public TestStoneSerialization(final StoneKind stone) {
@@ -54,6 +55,7 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
+	 * Generate the test parameters.
 	 * @return a collection of values to use for tests
 	 */
 	@Parameterized.Parameters

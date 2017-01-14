@@ -65,6 +65,7 @@ public final class TownTabularReportGenerator implements ITableGenerator<Abstrac
 	}
 
 	/**
+	 * Produce a table line representing a town.
 	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
 	 * @param item     the village to base the line on
@@ -94,6 +95,7 @@ public final class TownTabularReportGenerator implements ITableGenerator<Abstrac
 	}
 
 	/**
+	 * The header row for the tabular report on towns.
 	 * @return the header row for the tabular report
 	 */
 	@Override
@@ -102,6 +104,7 @@ public final class TownTabularReportGenerator implements ITableGenerator<Abstrac
 	}
 
 	/**
+	 * Compare two pairs.
 	 * @param one a Pair of one town and its location (in the other order)
 	 * @param two a Pair of another town and its location (in the other order)
 	 * @return the result of a comparison between the pairs.

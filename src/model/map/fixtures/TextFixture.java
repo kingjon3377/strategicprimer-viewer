@@ -48,6 +48,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero ignored, as a text fixture without its sensitive information is
 	 *             meaningless
 	 * @return a copy of this fixture
@@ -61,6 +62,8 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * A String representation of the fixture: its text, plus a note of the turn it was
+	 * created.
 	 * @return a String representation of the fixture
 	 */
 	@Override
@@ -73,6 +76,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * The turn the note is associated with.
 	 * @return the turn this is associated with
 	 */
 	public int getTurn() {
@@ -80,6 +84,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the fixture
 	 */
 	@Override
@@ -88,6 +93,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * The text of the note.
 	 * @return the text this fixture encapsulates
 	 */
 	public String getText() {
@@ -95,6 +101,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * Set new text for the note. TODO: is this really necessary?
 	 * @param newText the new text for the fixture
 	 */
 	public void setText(final String newText) {
@@ -102,6 +109,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * An object is equal iff it is a TextFixture from the same turn with the same text.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -112,6 +120,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * A TextFixture is equal iff it has the same text and the same turn.
 	 * @param obj a text-fixture
 	 * @return whether it's equal to this one
 	 */
@@ -120,6 +129,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * A hash value for the object, since we don't have an ID.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -139,6 +149,8 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * Since text fixtures don't have an ID, equality calculations already "ignore" ID,
+	 * so we delegate to equals() here.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID.
 	 */
@@ -148,6 +160,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -156,6 +169,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -164,6 +178,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * The plural of "Arbitrary-text note" is "Arbitrary-text notes".
 	 * @return a string describing all text fixtures as a class
 	 */
 	@Override
@@ -172,6 +187,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
+	 * Delegates to toString(). TODO: reverse that
 	 * @return a short description of the fixture
 	 */
 	@Override

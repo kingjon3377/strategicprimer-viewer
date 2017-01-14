@@ -97,6 +97,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * The unit's orders for all turns.
 	 * @return the unit's orders for all turns.
 	 */
 	@Override
@@ -105,6 +106,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * The unit's results for all turns.
 	 * @return the unit's results for all turns.
 	 */
 	@Override
@@ -136,6 +138,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * The unit's owner.
 	 * @return the player that owns the unit
 	 */
 	@Override
@@ -144,7 +147,8 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
-	 * @param player the town's new owner
+	 * Change the unit's owner.
+	 * @param player the unit's new owner
 	 */
 	@Override
 	public final void setOwner(final Player player) {
@@ -152,6 +156,8 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * The unit's "kind". For player-owned units this is usually their "category" (e.g.
+	 * "agriculture"); for independent units it's more descriptive.
 	 * @return the kind of unit
 	 */
 	@Override
@@ -160,6 +166,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * Set the unit's "kind".
 	 * @param nKind the new kind
 	 */
 	@Override
@@ -168,6 +175,8 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * The "name" of the unit. For independent units this is often something like "party
+	 * from the village".
 	 * @return the name of the unit
 	 */
 	@Override
@@ -176,6 +185,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * Set the unit's name.
 	 * @param newName the unit's new name
 	 */
 	@Override
@@ -209,6 +219,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * An iterator over the unit's members.
 	 * @return an iterator over the unit's members
 	 */
 	@Override
@@ -218,6 +229,8 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * An object is equal iff it is an IUnit owned by the same player, with the same
+	 * kind, ID, and name, and with equal members.
 	 * @param obj an object
 	 * @return whether it's an identical Unit.
 	 */
@@ -233,6 +246,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * Test equality of members only.
 	 * @param obj another unit
 	 * @return whether its "members" are the same as ours
 	 */
@@ -243,6 +257,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * Use the ID number for hashing.
 	 * @return a hash-code for the object
 	 */
 	@Override
@@ -251,6 +266,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * A String representation of the unit.
 	 * @return a String representation of the Unit.
 	 */
 	@Override
@@ -264,6 +280,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * A more verbose String representation of the unit, including its members.
 	 * @return a verbose description of the Unit.
 	 */
 	@Override
@@ -295,6 +312,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -303,6 +321,8 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * If we ignore ID (and members, which we probably shouldn't), a fixture is equal
+	 * iff it is a IUnit owned by the same player with the same kind and name.
 	 * FIXME: Should this look at unit members?
 	 *
 	 * @param fix a fixture
@@ -319,6 +339,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * Set orders for a turn.
 	 * @param turn the turn to set orders for
 	 * @param newOrders the unit's new orders for that turn
 	 */
@@ -328,6 +349,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * Get orders for a turn.
 	 * @param turn the turn to get orders for
 	 * @return the unit's orders for that turn
 	 */
@@ -343,6 +365,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * Set results for a turn.
 	 * @param turn       a turn
 	 * @param newResults the unit's new results for that turn
 	 */
@@ -352,6 +375,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * Get results for a turn.
 	 * @param turn a turn
 	 * @return the unit's results for that turn
 	 */
@@ -367,6 +391,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * Get the per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -375,6 +400,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -383,6 +409,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * The plural of Unit is Units.
 	 * @return a phrase describing all units as a class
 	 */
 	@Override
@@ -391,6 +418,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * A short description of the fixture, giving its kind and owner, but not name.
 	 * @return a short description of the fixture
 	 */
 	@Override
@@ -403,6 +431,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * The portrait image filename.
 	 * @return The filename of an image to use as a portrait for the unit.
 	 */
 	@Override
@@ -411,6 +440,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
+	 * Set the portrait image filename.
 	 * @param portrait The filename of an image to use as a portrait for the unit.
 	 */
 	@Override

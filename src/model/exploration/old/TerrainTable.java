@@ -44,6 +44,7 @@ public final class TerrainTable implements EncounterTable {
 	}
 
 	/**
+	 * Generate a terrain-dependent "event".
 	 * @param point         the location of the tile
 	 * @param terrain       the terrain at the location
 	 * @param fixtures      ignored
@@ -63,6 +64,7 @@ public final class TerrainTable implements EncounterTable {
 	}
 
 	/**
+	 * Generate a terrain-dependent "event".
 	 * @param point         ignored
 	 * @param terrain       ignored
 	 * @param fixtures      any fixtures on the tile
@@ -82,6 +84,7 @@ public final class TerrainTable implements EncounterTable {
 	}
 
 	/**
+	 * All the events possible in this table.
 	 * @return all events that this table can produce.
 	 */
 	@Override
@@ -90,6 +93,7 @@ public final class TerrainTable implements EncounterTable {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the class
 	 */
 	@Override

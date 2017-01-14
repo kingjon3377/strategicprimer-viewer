@@ -155,6 +155,7 @@ public enum TileType {
 	}
 
 	/**
+	 * Whether the given map version supports this tile type.
 	 * @param ver a map version
 	 * @return whether that version supports this tile type.
 	 */
@@ -163,6 +164,7 @@ public enum TileType {
 	}
 
 	/**
+	 * The string to put into XML's tile "kind" field for this tile type.
 	 * @return the XML representation of the tile type.
 	 */
 	public String toXML() {

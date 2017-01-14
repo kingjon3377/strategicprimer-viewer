@@ -70,6 +70,7 @@ public final class TrapModelDriver implements SimpleDriver {
 			Collections.unmodifiableList(Arrays.asList(TrapperCommand.values()));
 
 	/**
+	 * Allow the user to interact with the driver.
 	 * @param map the map to explore
 	 * @param cli the interface to interact with the user
 	 */
@@ -116,6 +117,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	}
 
 	/**
+	 * Convert a number of minutes to an hours-and-minutes String.
 	 * @param minutes a number of minutes
 	 * @return a String representation, including the number of hours
 	 */
@@ -211,6 +213,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -257,13 +260,16 @@ public final class TrapModelDriver implements SimpleDriver {
 		}
 
 		/**
+		 * The "name" of the command.
 		 * @return the "name" of the command
 		 */
 		@Override
 		public String getName() {
 			return name;
 		}
-	}	/**
+	}
+	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

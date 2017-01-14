@@ -52,6 +52,7 @@ public interface TileDrawHelper {
 				  Coordinate dimensions);
 
 	/**
+	 * Whether the given map has any fortresses at the given location.
 	 * @param map      a map
 	 * @param location a location
 	 * @return whether there are any fortresses at that location
@@ -61,6 +62,7 @@ public interface TileDrawHelper {
 	}
 
 	/**
+	 * Whether the given map has any units at the given location.
 	 * @param map      a map
 	 * @param location a location
 	 * @return whether there are any units at that location
@@ -70,6 +72,7 @@ public interface TileDrawHelper {
 	}
 
 	/**
+	 * Whether the given map has any "events" at the given location.
 	 * @param map      a map
 	 * @param location a location
 	 * @return whether there are any 'events' at that location

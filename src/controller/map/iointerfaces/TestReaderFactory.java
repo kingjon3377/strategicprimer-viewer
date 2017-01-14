@@ -31,6 +31,7 @@ public final class TestReaderFactory {
 	}
 
 	/**
+	 * Get an instance of the old reader.
 	 * @return an instance of the old reader
 	 */
 	public static ISPReader createOldReader() {
@@ -38,6 +39,7 @@ public final class TestReaderFactory {
 	}
 
 	/**
+	 * Get an instance of the new reader.
 	 * @return an instance of the new reader
 	 */
 	public static ISPReader createNewReader() {
@@ -45,6 +47,7 @@ public final class TestReaderFactory {
 	}
 
 	/**
+	 * Get an instance of the old writer.
 	 * @return an instance of the old writer
 	 */
 	public static SPWriter createOldWriter() {
@@ -52,6 +55,7 @@ public final class TestReaderFactory {
 	}
 
 	/**
+	 * Get an instance of the new writer.
 	 * @return an instance of the new writer
 	 */
 	public static SPWriter createNewWriter() {

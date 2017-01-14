@@ -47,6 +47,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 	 */
 	private final TownStatus status;
 	/**
+	 * Constructor for parametrized testing.
 	 * @param sz the size of the town to use for the test
 	 * @param st the status of the town to use for the test
 	 */
@@ -56,6 +57,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
+	 * Generate test parameters.
 	 * @return a list of values to use for tests
 	 */
 	@SuppressWarnings("ObjectAllocationInLoop")

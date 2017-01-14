@@ -519,6 +519,7 @@ public final class TestMoreFixtureSerialization extends
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

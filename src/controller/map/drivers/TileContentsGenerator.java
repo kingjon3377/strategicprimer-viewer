@@ -73,6 +73,7 @@ public final class TileContentsGenerator {
 	}
 
 	/**
+	 * Get an instance to generate contents for the specified map file.
 	 * @param filename the name of a map
 	 * @return an instance to generate the contents of a tile on it
 	 * @throws SPFormatException  if the reader doesn't support the specified map version
@@ -94,6 +95,7 @@ public final class TileContentsGenerator {
 	}
 
 	/**
+	 * Main method.
 	 * @param args the map to work from, the row, and the column
 	 */
 	public static void main(final String... args) {
@@ -169,6 +171,7 @@ public final class TileContentsGenerator {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

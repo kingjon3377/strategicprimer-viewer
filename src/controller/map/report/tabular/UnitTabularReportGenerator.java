@@ -49,6 +49,7 @@ public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> 
 	}
 
 	/**
+	 * Write a table row representing a unit.
 	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
 	 * @param item     the fortress to base the line on
@@ -89,6 +90,7 @@ public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> 
 	}
 
 	/**
+	 * The header row for this table.
 	 * @return the header row for the report
 	 */
 	@Override

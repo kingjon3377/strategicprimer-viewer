@@ -37,6 +37,7 @@ public final class TileDrawHelperFactory {
 	}
 
 	/**
+	 * Get or create a draw-helper for the specified map version.
 	 * @param version  the version of the map that'll be drawn
 	 * @param observer the object to be notified when images finish drawing
 	 * @param zof      a filter to tell a ver-two helper which tiles to draw
@@ -58,6 +59,7 @@ public final class TileDrawHelperFactory {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

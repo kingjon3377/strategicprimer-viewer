@@ -126,6 +126,8 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Get the simplified-terrain-model instance covering the map's terrain at the given
+	 * location.
 	 * @param map      the map we're dealing with
 	 * @param location a location in the map
 	 * @return the kind of terrain, with very coarse granularity, here
@@ -153,6 +155,8 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * Assuming the map's terrain at the given location is plains, get the rough-model
+	 * terrain there.
 	 * @param map      the map we're dealing with
 	 * @param location a location
 	 * @return the appropriate terrain for it if it is plains
@@ -190,6 +194,7 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a string representation of this class
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

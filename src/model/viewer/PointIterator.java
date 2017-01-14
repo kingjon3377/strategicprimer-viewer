@@ -264,6 +264,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 		throw new UnsupportedOperationException("Can't remove a Point from a map.");
 	}
 	/**
+	 * A Stream of the points.
 	 * @return a Stream of the points.
 	 */
 	public Stream<Point> stream() {

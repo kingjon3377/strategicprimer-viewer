@@ -22,14 +22,16 @@ public interface TileFixture extends IFixture, Comparable<@NonNull TileFixture> 
 	// Marker interface; also, TODO: what members should this have?
 
 	/**
+	 * A plural phrase describing all members of a kind of fixture.
 	 * @return a String describing all members of a kind of fixture.
 	 */
 	String plural();
 
 	/**
-	 * @return a *short*, no more than one line and preferably no more than two dozen
+	 * A *short*, no more than one line and preferably no more than two dozen
 	 * characters, description of the fixture, suitable for saying what it is when an
 	 * explorer happens on it.
+	 * @return a short description of the fixture.
 	 */
 	String shortDesc();
 
@@ -43,6 +45,7 @@ public interface TileFixture extends IFixture, Comparable<@NonNull TileFixture> 
 	TileFixture copy(boolean zero);
 
 	/**
+	 * Compare to another fixture.
 	 * @param fix A TileFixture to compare to
 	 * @return the result of the comparison
 	 */

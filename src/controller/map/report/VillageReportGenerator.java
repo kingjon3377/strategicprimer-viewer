@@ -39,6 +39,7 @@ import util.PatientMap;
  */
 public final class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	/**
+	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public VillageReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
@@ -216,6 +217,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

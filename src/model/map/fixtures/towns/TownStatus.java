@@ -60,6 +60,7 @@ public enum TownStatus {
 	}
 
 	/**
+	 * Parse a town status.
 	 * @param description a string representing a TownStatus
 	 * @return the TownStatus it represents
 	 */
@@ -72,6 +73,7 @@ public enum TownStatus {
 	}
 
 	/**
+	 * The String representation of the status.
 	 * @return a string representation of the status
 	 */
 	@Override

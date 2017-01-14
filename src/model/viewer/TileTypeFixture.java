@@ -45,6 +45,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero ignored, as this has no state other than the terrain
 	 * @return a copy of this fixture
 	 * @deprecated This class should only ever be in a FixtureListModel, and copying a
@@ -62,6 +63,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * Compare to another fixture. Fires a warning, since this should never be called.
 	 * @param fix another TileFixture
 	 * @return the result of a comparison
 	 * @deprecated This class should only ever be in a FixtureListModel, so this method
@@ -75,6 +77,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * A dummy "ID number".
 	 * @return an "ID".
 	 * @deprecated This class should only ever be in a FixtureListModel, so this method
 	 * should never be called.
@@ -87,6 +90,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * Whether this equals another fixture ignoring ID. Should never be called.
 	 * @param fix another fixture
 	 * @return whether it equals this one
 	 * @deprecated This class should only ever be in a FixtureListModel, so this method
@@ -100,6 +104,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * The tile type this wraps.
 	 * @return the TileType this wraps.
 	 */
 	public TileType getTileType() {
@@ -107,6 +112,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * An object is equal iff it is a TileTypeFixture wrapping the same tile type.
 	 * @param obj an object
 	 * @return whether it's the same as this one
 	 */
@@ -117,6 +123,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * Use the tile type's hash code as ours.
 	 * @return a hash code for the object
 	 */
 	@Override
@@ -125,6 +132,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -147,6 +155,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * We don't allow per-instance icons for these.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -155,6 +164,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * This method should never be called, and so returns a String saying so.
 	 * @return a String indicating that this method shouldn't be called
 	 */
 	@Override
@@ -164,6 +174,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * This method should never be called, and so returns a String saying so.
 	 * @return a short description of the fixture
 	 */
 	@Override

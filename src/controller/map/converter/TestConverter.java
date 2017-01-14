@@ -109,6 +109,7 @@ public final class TestConverter {
 	private static final Pattern POSITIVE_IDS =
 			Pattern.compile("id=\"[0-9]*\"");
 	/**
+	 * Initialize a point in the map with its terrain and a list of fixtures.
 	 * @param map a map
 	 * @param point a point
 	 * @param terrain the terrain type there
@@ -983,6 +984,7 @@ public final class TestConverter {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

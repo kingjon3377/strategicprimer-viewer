@@ -605,6 +605,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

@@ -35,6 +35,7 @@ import util.PatientMap;
  */
 public final class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	/**
+	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public TextReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
@@ -43,6 +44,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	}
 
 	/**
+	 * Produce the sub-report dealing with arbitrary-text notes.
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -97,6 +99,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	}
 
 	/**
+	 * Produce the sub-report, in RIR, dealing with arbitrary-text notes.
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -155,6 +158,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a string representation of this class
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

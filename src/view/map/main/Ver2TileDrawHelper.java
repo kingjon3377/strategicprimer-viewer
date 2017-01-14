@@ -1,8 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
@@ -175,6 +173,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * Turn a series of rivers into a Set.
 	 * @param rivers any number of rivers
 	 * @return a set containing them
 	 */
@@ -186,6 +185,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * Use the "Z-order filter"'s hash code.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -194,6 +194,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * An object is equal iff it is a Ver2TileDrawHelper with an equal list of matchers.
 	 * @param obj an object
 	 * @return whether it's the same as this
 	 */
@@ -256,12 +257,14 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * A Stream of the drawable fixtures at the given location.
 	 * @param map      a map
 	 * @param location a location
-	 * @return an Iterable of the drawable fixtures there
+	 * @return a Stream of the drawable fixtures there
 	 */
 	private Stream<TileFixture> getDrawableFixtures(final IMapNG map,
 													final Point location) {
+		// TODO: Use Stream.concat() instead of constructing a list
 		final Collection<TileFixture> temp = new ArrayList<>();
 		@Nullable
 		final Ground ground = map.getGround(location);
@@ -282,6 +285,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * Whether the map has any fixtures at the given location.
 	 * @param map      a map
 	 * @param location a location
 	 * @return whether there are any fixtures worth drawing there
@@ -291,6 +295,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * Get the image representing the given configuration of rivers.
 	 * @param rivers a collection of rivers
 	 * @return an image representing them
 	 */
@@ -305,6 +310,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * Get the "top" fixture at the given location.
 	 * @param map      a map
 	 * @param location a location
 	 * @return the top fixture there
@@ -315,6 +321,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * Whether we need a different color to show a non-top fixture at the given location.
 	 * @param map      a map
 	 * @param location a location
 	 * @return whether we needs a different color to show a non-top fixture there (like a
@@ -334,6 +341,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * Whether there is a "terrain fixture" at the given location.
 	 * @param map      a map
 	 * @param location a location
 	 * @return whether there is a terrain fixture there
@@ -344,6 +352,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * Get the color representing a "not-on-top" terrain fixture at the given location.
 	 * @param map      a map
 	 * @param location a location
 	 * @return a color to represent the not-on-top terrain feature there.
@@ -358,6 +367,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * Get the image representing the given fixtuer.
 	 * @param fix a TileFixture
 	 * @return an Image to draw to represent it.
 	 */
@@ -457,6 +467,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

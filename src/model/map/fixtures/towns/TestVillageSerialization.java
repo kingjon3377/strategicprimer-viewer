@@ -52,6 +52,7 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	 */
 	private final String race;
 	/**
+	 * Constructor for parametrized testing.
 	 * @param villageStatus the status to use for the village in the test
 	 * @param villageRace   the race to use for the village in the test
 	 */

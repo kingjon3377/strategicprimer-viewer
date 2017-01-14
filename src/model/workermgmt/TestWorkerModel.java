@@ -47,6 +47,7 @@ import static org.junit.Assert.assertThat;
  */
 public final class TestWorkerModel {
 	/**
+	 * Flatten any proxies in the list, replacing them with what they are proxies for.
 	 * @param list a list
 	 * @param <T>  the type of the list
 	 * @return the contents of that list, with any proxies replaced by the items they
@@ -136,6 +137,7 @@ public final class TestWorkerModel {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

@@ -151,6 +151,7 @@ public final class ViewerFrame extends SPFrame {
 	}
 
 	/**
+	 * Get the driver model this window is displaying.
 	 * @return the map model
 	 */
 	public IViewerModel getModel() {
@@ -182,6 +183,7 @@ public final class ViewerFrame extends SPFrame {
 	}
 
 	/**
+	 * A simple toString.
 	 * @return a quasi-diagnostic String
 	 */
 	@Override
@@ -192,6 +194,7 @@ public final class ViewerFrame extends SPFrame {
 	}
 
 	/**
+	 * The title of this app.
 	 * @return the title of this app
 	 */
 	@Override

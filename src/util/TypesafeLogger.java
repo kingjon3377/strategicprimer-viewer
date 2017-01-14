@@ -28,6 +28,7 @@ public final class TypesafeLogger {
 	}
 
 	/**
+	 * Get a logger for the given type.
 	 * @param type the class that will be calling the logger
 	 * @return the logger produced by {@link Logger#getLogger(String)}.
 	 */

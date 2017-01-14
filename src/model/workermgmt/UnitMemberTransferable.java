@@ -47,6 +47,7 @@ public final class UnitMemberTransferable implements Transferable {
 	}
 
 	/**
+	 * The flavor we support.
 	 * @return the supported DataFlavors.
 	 */
 	@Override
@@ -55,6 +56,7 @@ public final class UnitMemberTransferable implements Transferable {
 	}
 
 	/**
+	 * We only support the one flavor.
 	 * @param flavor a DataFlavor
 	 * @return whether it's the one we support
 	 */
@@ -83,6 +85,7 @@ public final class UnitMemberTransferable implements Transferable {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of this object
 	 */
 	@Override
@@ -91,6 +94,7 @@ public final class UnitMemberTransferable implements Transferable {
 	}
 
 	/**
+	 * An object is equal iff it is a UnitMemberTransferable conveying equal data.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -101,6 +105,7 @@ public final class UnitMemberTransferable implements Transferable {
 	}
 
 	/**
+	 * Use the transfered data's hash code.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -133,6 +138,7 @@ public final class UnitMemberTransferable implements Transferable {
 		}
 
 		/**
+		 * Get the pair at the given index.
 		 * @param index an index into the list
 		 * @return the item at that index
 		 */
@@ -142,6 +148,7 @@ public final class UnitMemberTransferable implements Transferable {
 		}
 
 		/**
+		 * The size of the list.
 		 * @return the size of the list
 		 */
 		@Override
@@ -150,6 +157,7 @@ public final class UnitMemberTransferable implements Transferable {
 		}
 
 		/**
+		 * A simple toString().
 		 * @return a String representation of the object
 		 */
 		@Override

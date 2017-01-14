@@ -1,8 +1,6 @@
 package view.worker;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,10 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
@@ -80,6 +75,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	private final IntSupplier turnSupplier;
 
 	/**
+	 * Constructor.
 	 * @param turnSource how to get the current turn.
 	 * @param check      whether to visually warn on certain ominous conditions
 	 */
@@ -89,6 +85,8 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	}
 
 	/**
+	 * If the object is a DefaultMutableTreeNode, return its user object; otherwise,
+	 * return the given object.
 	 * @param value a node of the tree
 	 * @return it, unless it's a DefaultMutableTreeNode, in which case return the
 	 * associated user object
@@ -103,6 +101,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	}
 
 	/**
+	 * Convert a list of Jobs into a comma-separated list.
 	 * @param iter something containing Jobs
 	 * @return a comma-separated list of them, in parentheses, prepended by a space, if
 	 * there are any.
@@ -144,6 +143,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	}
 
 	/**
+	 * Create the default icon for fixtures.
 	 * @return the default icon for fixtures.
 	 */
 	private static Icon createDefaultFixtureIcon() {
@@ -176,6 +176,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	}
 
 	/**
+	 * Get and configure the component to render a tree cell.
 	 * @param tree     the tree being rendered
 	 * @param value    the object in the tree that's being rendered
 	 * @param selected whether it's selected
@@ -253,6 +254,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	}
 
 	/**
+	 * Get the text to represent a worker.
 	 * @param worker a worker
 	 * @return a String representing that worker.
 	 */
@@ -288,6 +290,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		}
 	}
 	/**
+	 * Get the icon for a HasImage object.
 	 * @param obj a HasImage object
 	 * @return an icon representing it
 	 */
@@ -308,6 +311,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

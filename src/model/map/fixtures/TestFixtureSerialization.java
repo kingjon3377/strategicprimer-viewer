@@ -440,6 +440,7 @@ public final class TestFixtureSerialization extends
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

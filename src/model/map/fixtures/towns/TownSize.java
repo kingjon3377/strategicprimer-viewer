@@ -56,6 +56,7 @@ public enum TownSize {
 	}
 
 	/**
+	 * Parse a town-size.
 	 * @param sizeDesc a string representing a TownSize
 	 * @return the TownSize it represents
 	 */
@@ -68,6 +69,7 @@ public enum TownSize {
 	}
 
 	/**
+	 * The String representation of the size.
 	 * @return a string representation of the size
 	 */
 	@Override

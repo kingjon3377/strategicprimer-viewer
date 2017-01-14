@@ -53,6 +53,7 @@ public final class UnwantedChildException extends SPFormatException {
 	}
 
 	/**
+	 * Constructor.
 	 * @param parent the current tag
 	 * @param child  the unwanted child
 	 */
@@ -65,6 +66,7 @@ public final class UnwantedChildException extends SPFormatException {
 	}
 
 	/**
+	 * Constructor taking a cause.
 	 * @param parent the current tag
 	 * @param child  the unwanted child
 	 * @param cause  another exception that caused this one
@@ -97,6 +99,7 @@ public final class UnwantedChildException extends SPFormatException {
 	}
 
 	/**
+	 * The current tag.
 	 * @return the current tag.
 	 */
 	public QName getTag() {
@@ -104,6 +107,7 @@ public final class UnwantedChildException extends SPFormatException {
 	}
 
 	/**
+	 * The unwanted child.
 	 * @return the unwanted child.
 	 */
 	public QName getChild() {

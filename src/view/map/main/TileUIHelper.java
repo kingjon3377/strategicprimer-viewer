@@ -76,6 +76,7 @@ public final class TileUIHelper {
 	}
 
 	/**
+	 * Create the version-2 terrains-to-colors mapping.
 	 * @return a mapping from tile types to the colors used for a version-2 map.
 	 */
 	private static Map<TileType, Color> verTwoColors() {
@@ -91,6 +92,7 @@ public final class TileUIHelper {
 	}
 
 	/**
+	 * Create the version-1 terrains-to-colors mapping.
 	 * @return a mapping from tile types to the colors used for a version-1 map
 	 */
 	private static Map<TileType, Color> verOneColors() {
@@ -108,6 +110,7 @@ public final class TileUIHelper {
 	}
 
 	/**
+	 * Whether the given map version supports the given tile type.
 	 * @param version a map version
 	 * @param type    a tile type
 	 * @return whether that map version supports that tile type
@@ -118,6 +121,7 @@ public final class TileUIHelper {
 	}
 
 	/**
+	 * Get the color to use for the given tile type in the given map version.
 	 * @param version what version the map is
 	 * @param type    a tile type
 	 * @return the tile's color, if any, under that map version
@@ -140,6 +144,7 @@ public final class TileUIHelper {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object.
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -149,6 +154,7 @@ public final class TileUIHelper {
 	}
 
 	/**
+	 * A String representation of the given terrain type.
 	 * @param type a terrain type
 	 * @return a String representation of that terrain type
 	 */
@@ -161,6 +167,7 @@ public final class TileUIHelper {
 	}
 
 	/**
+	 * Get the color that a fixture should turn the tile if it's not on top.
 	 * @param fix a fixture
 	 * @return the color it should turn the tile
 	 */

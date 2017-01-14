@@ -123,6 +123,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

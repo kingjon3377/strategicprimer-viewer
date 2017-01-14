@@ -57,6 +57,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 			Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
 					TownStatus.Burned));
 	/**
+	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public TownReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
@@ -100,6 +101,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * Separate towns by status.
 	 * @param <T> the type of things stored in the given mapping
 	 * @param <U> the type of things our caller wants to return
+	 * @param coll the collection of fixtures.
 	 * @param mapping the collection of collections to put the products into
 	 * @param function the function to produce the products and put them into the
 	 */
@@ -237,6 +239,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

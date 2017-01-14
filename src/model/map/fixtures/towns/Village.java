@@ -71,6 +71,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero ignored, as a village has no sensitive information that is not
 	 *             essential
 	 * @return a copy of this village
@@ -84,6 +85,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * Produce a String representation of the village.
 	 * @return a String representation of the village
 	 */
 	@Override
@@ -109,6 +111,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * The default icon filename.
 	 * @return the name of an image to represent the village
 	 */
 	@Override
@@ -117,6 +120,8 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * An object is equal iff it is a Village with the same status, name, ID, owner, and
+	 * race.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -131,6 +136,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -139,6 +145,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * The ID number.
 	 * @return a UID for the fixture.
 	 */
 	@Override
@@ -147,6 +154,8 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * If we ignore ID, a fixture is equal iff it is a Village with the same name,
+	 * status, owner, and race.
 	 * @param fix a fixture
 	 * @return whether it's an identical-but-for-ID village.
 	 */
@@ -160,6 +169,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * The name of the village.
 	 * @return the name of the village
 	 */
 	@Override
@@ -168,6 +178,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * The status of the village.
 	 * @return the status of the village
 	 */
 	@Override
@@ -186,6 +197,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * The player the village has pledged to serve and support, if any.
 	 * @return the "owner" of the village---the player it's pledged to serve and support
 	 */
 	@Override
@@ -194,6 +206,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * Set the village's new liege-lord.
 	 * @param player the town's new owner
 	 */
 	@Override
@@ -202,6 +215,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -210,6 +224,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -218,6 +233,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * The dominant race of the village.
 	 * @return the dominant race of the village.
 	 */
 	public String getRace() {
@@ -225,6 +241,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * Set the dominant race of the village. TODO: should this really be mutable?
 	 * @param vRace the new dominant race of the village.
 	 */
 	public void setRace(final String vRace) {
@@ -232,6 +249,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * The plural of Village is Villages.
 	 * @return a phrase describing all villages as a class.
 	 */
 	@Override
@@ -240,6 +258,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * Delegates to toString(). TODO: should be the other way around.
 	 * @return a short description of the fixture
 	 */
 	@Override
@@ -249,9 +268,8 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 
 	/**
 	 * A village is a "subset" of another if they are identical, or if the only
-	 * difference
-	 * is that the "subset" is independent and the "superset" owes allegiance to some
-	 * player.
+	 * difference is that the "subset" is independent and the "superset" owes allegiance
+	 * to some player.
 	 *
 	 * @param obj     a fixture
 	 * @param ostream a stream to write explanation to
@@ -284,6 +302,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * This is a village.
 	 * @return what kind of town this is
 	 */
 	@Override
@@ -292,6 +311,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * The portrait image filename.
 	 * @return The filename of an image to use as a portrait for the village.
 	 */
 	@Override
@@ -300,6 +320,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
+	 * Set a portrait image filename.
 	 * @param portrait The filename of an image to use as a portrait for the village.
 	 */
 	@Override
