@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.Spliterators;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -420,8 +419,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public Stream<@NonNull Point> locationStream() {
-		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
-				new PointIterator(dimensions(), null, true, true), 0), false);
+		return new PointIterator(dimensions(), null, true, true).stream();
 	}
 
 	/**

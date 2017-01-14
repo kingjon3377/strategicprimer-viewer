@@ -3,6 +3,9 @@ package model.viewer;
 import java.util.Formatter;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
@@ -253,5 +256,11 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException("Can't remove a Point from a map.");
+	}
+	/**
+	 * @return a Stream of the points.
+	 */
+	public Stream<Point> stream() {
+		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(this, 0), false);
 	}
 }

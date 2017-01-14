@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -34,7 +35,6 @@ import model.viewer.PointIterator;
 import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
-import util.IteratorWrapper;
 import util.OnMac;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
@@ -267,31 +267,21 @@ public final class FindDialog extends SPDialog {
 				LOGGER.log(Level.SEVERE, "Pattern we detected as numeric wasn't", e);
 			}
 		}
-		final Iterable<Point> iter =
-				new IteratorWrapper<>(new PointIterator(map.getMapDimensions(),
-															   map.getSelectedPoint(),
-															   !backwards.isSelected(),
-															   !vertically.isSelected
-																				   ()));
-		for (final Point point : iter) {
-			final TileFixture ground = map.getMap().getGround(point);
-			final TileFixture forest = map.getMap().getForest(point);
-			if (((ground != null) && matches(pattern, idNum, ground, caseSensitivity))
-						|| ((forest != null) &&
-									matches(pattern, idNum, forest, caseSensitivity))) {
-				SYS_OUT.print("Found in point");
-				SYS_OUT.println(point);
-				map.setSelection(point);
-				return;
-			}
-			for (final TileFixture fix : map.getMap().getOtherFixtures(point)) {
-				if (matches(pattern, idNum, fix, caseSensitivity)) {
-					SYS_OUT.print("Found in point");
-					SYS_OUT.println(point);
-					map.setSelection(point);
-					return;
-				}
-			}
+		final int finalID = idNum;
+		final Optional<Point> result =
+				new PointIterator(map.getMapDimensions(), map.getSelectedPoint(),
+										 !backwards.isSelected(),
+										 !vertically.isSelected()).stream()
+						.filter(point -> Stream.concat(
+								Stream.of(map.getMap().getGround(point),
+										map.getMap().getForest(point)),
+								map.getMap().streamOtherFixtures(point)).anyMatch(
+								fix -> matches(pattern, finalID, fix, caseSensitivity)))
+						.findFirst();
+		if (result.isPresent()) {
+			SYS_OUT.print("Found in point");
+			SYS_OUT.println(result.get());
+			map.setSelection(result.get());
 		}
 	}
 

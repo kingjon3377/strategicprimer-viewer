@@ -3,12 +3,10 @@ package model.viewer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
 import org.junit.Test;
-import util.IteratorWrapper;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -47,11 +45,9 @@ public final class PointIteratorTest {
 						PointFactory.point(1, 1), PointFactory.point(1, 2),
 						PointFactory.point(2, 0), PointFactory.point(2, 1),
 						PointFactory.point(2, 2));
-		final Iterable<Point> iter =
-				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
-															   true, true));
-		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-												 .collect(Collectors.toList());
+		final Collection<Point> actual =
+				new PointIterator(new MapDimensions(3, 3, 1), null, true, true).stream()
+						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
@@ -61,18 +57,16 @@ public final class PointIteratorTest {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testFromSelection() {
-		final Iterable<Point> iter =
-				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1),
-															   PointFactory.point(1, 1),
-															   true, true));
 		final Collection<Point> expected =
 				Arrays.asList(PointFactory.point(1, 2), PointFactory.point(2, 0),
 						PointFactory.point(2, 1), PointFactory.point(2, 2),
 						PointFactory.point(0, 0), PointFactory.point(0, 1),
 						PointFactory.point(0, 2), PointFactory.point(1, 0),
 						PointFactory.point(1, 1));
-		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-												 .collect(Collectors.toList());
+		final Collection<Point> actual =
+				new PointIterator(new MapDimensions(3, 3, 1), PointFactory.point(1, 1),
+										 true, true).stream()
+						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
@@ -83,18 +77,16 @@ public final class PointIteratorTest {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testInitialSelection() {
-		final Iterable<Point> iter =
-				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1),
-															   PointFactory.INVALID_POINT,
-															   true, false));
 		final Collection<Point> expected =
 				Arrays.asList(PointFactory.point(0, 0), PointFactory.point(1, 0),
 						PointFactory.point(2, 0), PointFactory.point(0, 1),
 						PointFactory.point(1, 1), PointFactory.point(2, 1),
 						PointFactory.point(0, 2), PointFactory.point(1, 2),
 						PointFactory.point(2, 2));
-		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-												 .collect(Collectors.toList());
+		final Collection<Point> actual =
+				new PointIterator(new MapDimensions(3, 3, 1), PointFactory.INVALID_POINT,
+										 true, false).stream()
+						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
@@ -110,11 +102,9 @@ public final class PointIteratorTest {
 						PointFactory.point(1, 1), PointFactory.point(2, 1),
 						PointFactory.point(0, 2), PointFactory.point(1, 2),
 						PointFactory.point(2, 2));
-		final Iterable<Point> iter =
-				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
-															   true, false));
-		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-												 .collect(Collectors.toList());
+		final Collection<Point> actual =
+				new PointIterator(new MapDimensions(3, 3, 1), null, true, false).stream()
+						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
@@ -130,11 +120,9 @@ public final class PointIteratorTest {
 						PointFactory.point(1, 1), PointFactory.point(1, 0),
 						PointFactory.point(0, 2), PointFactory.point(0, 1),
 						PointFactory.point(0, 0));
-		final Iterable<Point> iter =
-				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
-															   false, true));
-		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-												 .collect(Collectors.toList());
+		final Collection<Point> actual =
+				new PointIterator(new MapDimensions(3, 3, 1), null, false, true).stream()
+						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
@@ -150,11 +138,10 @@ public final class PointIteratorTest {
 						PointFactory.point(1, 1), PointFactory.point(0, 1),
 						PointFactory.point(2, 0), PointFactory.point(1, 0),
 						PointFactory.point(0, 0));
-		final Iterable<Point> iter =
-				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
-															   false, false));
-		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-												 .collect(Collectors.toList());
+		final Collection<Point> actual =
+				new PointIterator(new MapDimensions(3, 3, 1), null, false, false)
+						.stream()
+						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
