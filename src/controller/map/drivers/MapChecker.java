@@ -9,10 +9,18 @@ import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
+import model.map.IMapNG;
+import model.map.Point;
+import model.map.TileFixture;
+import model.map.TileType;
+import model.map.fixtures.resources.StoneDeposit;
+import model.map.fixtures.resources.StoneKind;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -47,10 +55,23 @@ public final class MapChecker implements UtilityDriver {
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(MapChecker.class);
 	/**
+	 * Additional checks.
+	 */
+	private static final Collection<Check> EXTRA_CHECKS = new ArrayList<>();
+	/**
 	 * The map reader we'll use.
 	 */
 	private final MapReaderAdapter reader = new MapReaderAdapter();
-
+	static {
+		EXTRA_CHECKS.add((terrain, context, fixture, warner) -> {
+			if (fixture instanceof StoneDeposit &&
+						StoneKind.Laterite == ((StoneDeposit) fixture).stone() &&
+						TileType.Jungle != terrain) {
+				warner.warn(
+						new SPContentWarning(context, "Laterite stone in non-jungle"));
+			}
+		});
+	}
 	/**
 	 * Run the driver.
 	 *
@@ -80,32 +101,40 @@ public final class MapChecker implements UtilityDriver {
 		SYS_OUT.print("Starting ");
 		SYS_OUT.println(file);
 		boolean retval = true;
+		final IMapNG map;
+		final Warning warner = Warning.DEFAULT;
 		try {
-			reader.readMap(file, Warning.DEFAULT);
+			map = reader.readMap(file, warner);
 		} catch (final MapVersionException e) {
 			LOGGER.log(Level.SEVERE,
 					"Map version in " + file + " not acceptable to reader", e);
-			retval = false;
+			return;
 		} catch (final FileNotFoundException | NoSuchFileException e) {
 			LOGGER.log(Level.SEVERE, file + " not found", e);
-			retval = false;
+			return;
 		} catch (final IOException e) {
 			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error reading " + file, e);
-			retval = false;
+			return;
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE,
 					"XML stream error reading " + file, e);
-			retval = false;
+			return;
 		} catch (final SPFormatException e) {
 			LOGGER.log(Level.SEVERE,
 					"SP map format error reading " + file, e);
-			retval = false;
+			return;
 		}
-		if (retval) {
-			SYS_OUT.print("No errors in ");
-			SYS_OUT.println(file);
+		for (final Check checker : EXTRA_CHECKS) {
+			for (final Point location : map.locations()) {
+				// TODO: check forest and ground
+				for (final TileFixture fix : map.getOtherFixtures(location)) {
+					checker.check(map.getBaseTerrain(location), location, fix, warner);
+				}
+			}
 		}
+		SYS_OUT.print("No errors in ");
+		SYS_OUT.println(file);
 	}
 
 	/**
@@ -125,5 +154,35 @@ public final class MapChecker implements UtilityDriver {
 	@Override
 	public String toString() {
 		return "MapChecker";
+	}
+	/**
+	 * An interface for checks of a map's *contents* that we don't want the
+	 * XML-*reading* code to do.
+	 */
+	@FunctionalInterface
+	private interface Check {
+		/**
+		 * Run the check.
+		 * @param terrain the terrain at the current location
+		 * @param context The current location.
+		 * @param fixture The tile fixture to check
+		 * @param warner the Warning instance to use.
+		 */
+		void check(final TileType terrain, final Point context, final TileFixture fixture,
+				   final Warning warner);
+	}
+	/**
+	 * An exception for "content" warnings.
+	 */
+	private static final class SPContentWarning extends Exception {
+		/**
+		 * Constructor.
+		 * @param context the location in the map where the problem is
+		 * @param message a message describing the problem
+		 */
+		protected SPContentWarning(final Point context, final String message) {
+			super(String.format("At (%d, %d): %s", context.getRow(), context.getCol(),
+					message));
+		}
 	}
 }

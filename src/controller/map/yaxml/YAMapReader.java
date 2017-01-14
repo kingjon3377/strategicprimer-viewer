@@ -3,7 +3,6 @@ package controller.map.yaxml;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
@@ -32,8 +31,6 @@ import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
-import model.map.fixtures.resources.StoneDeposit;
-import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.EqualsAny;
@@ -291,17 +288,8 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 					tagStack.push(current.getName());
 					retval.setMountainous(point, true);
 				} else {
-					final TileFixture fix =
-							parseFixture(current, tagStack.peek(), stream);
-					if ((fix instanceof StoneDeposit) &&
-								(StoneKind.Laterite ==
-										 ((StoneDeposit) fix).stone()) &&
-								(TileType.Jungle != retval.getBaseTerrain(point))) {
-						//noinspection ObjectAllocationInLoop
-						warner.warn(new UnsupportedPropertyException(current,
-																			"laterite"));
-					}
-					addFixture(retval, point, fix);
+					addFixture(retval, point,
+							parseFixture(current, tagStack.peek(), stream));
 				}
 			} else if (event.isEndElement()) {
 				if (!tagStack.isEmpty() && Objects.equals(tagStack.peek(),

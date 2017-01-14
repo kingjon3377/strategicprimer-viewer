@@ -26,6 +26,8 @@ import view.util.StreamingLabel;
 /**
  * A window to show the results of checking maps for errors.
  *
+ * FIXME: Combine (call into) MapChecker (the CLI), since it does more now.
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
