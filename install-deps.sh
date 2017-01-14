@@ -21,3 +21,13 @@ if test -n "${TRAVIS_TAG}"; then
     echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\)$@s:SNAPSHOT:\1:@' | \
         sed -f - -i version.properties
 fi
+get_maven_url() {
+    curl -L "https://search.maven.org/remotecontent?filepath=${1}/${2}/${3}/${2}-${3}.jar" \
+        -o "${HOME}/.ant/lib/${4}.jar"
+}
+jacoco_ver=0.7.4.201502262128
+get_maven_url org/jacoco org.jacoco.core ${jacoco_ver} jacoco
+get_maven_url org/jacoco org.jacoco.ant ${jacoco_ver} jacocoant
+get_maven_url org/jacoco org.jacoco.agent ${jacoco_ver} jacocoagent
+get_maven_url org/jacoco org.jacoco.report ${jacoco_ver} jacocoreport
+get_maven_url org/ow2/asm asm-debug-all 5.0.3 asm-debug-all
