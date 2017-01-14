@@ -309,12 +309,13 @@
     depends="app,exe,jar,dmg,dist" />
   <target name="coverage" depends="build">
       <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
-          <classpath path="../../../lib/jacocoant.jar"/>
+          <classpath path="${jacoco.classpath}" />
       </taskdef>
       <!--
       <echo message='You may need to export ANT_TASKS="ant-junit4 jacoco" on a Gentoo system.' />
       <jacoco:coverage>
           <junit fork="yes">
+	     <classpath path="${jacoco.classpath}" />
        -->
              <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
              <!-- We can do this once ant 1.9.3 is in our CI; see
