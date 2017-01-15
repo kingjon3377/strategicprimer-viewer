@@ -10,7 +10,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -23,7 +22,6 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import org.eclipse.jdt.annotation.Nullable;
 import util.IteratorWrapper;
 import util.LineEnd;
 import util.TypesafeLogger;
@@ -122,11 +120,11 @@ public final class ZeroToOneConverter {
 				if (isSpecifiedTag(startElement.getName(), "tile")) {
 					//noinspection unchecked
 					convertTile(ostream, startElement,
-							iFactory(startElement.getAttributes()));
+							new IteratorWrapper<>(startElement.getAttributes()));
 				} else if (isSpecifiedTag(startElement.getName(), "map")) {
 					//noinspection unchecked
 					convertMap(ostream, startElement,
-							iFactory(startElement.getAttributes()));
+							new IteratorWrapper<>(startElement.getAttributes()));
 				} else {
 					printStartElement(ostream, startElement);
 				}
@@ -219,16 +217,6 @@ public final class ZeroToOneConverter {
 			ostream.append(LineEnd.LINE_SEP);
 			ostream.append(getEventXML(events.pop()));
 		}
-	}
-
-	/**
-	 * An Iterable factory. (TODO: Do we really need this?)
-	 * @param iter an iterator
-	 * @return a wrapper
-	 */
-	private static Iterable<Attribute> iFactory(@Nullable
-												final Iterator<Attribute> iter) {
-		return new IteratorWrapper<>(iter);
 	}
 
 	/**
