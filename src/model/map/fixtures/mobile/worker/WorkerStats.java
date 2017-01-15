@@ -2,6 +2,8 @@ package model.map.fixtures.mobile.worker;
 
 import java.util.Formatter;
 import java.util.function.IntSupplier;
+import java.util.function.ToIntFunction;
+import java.util.stream.Stream;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -212,16 +214,25 @@ public class WorkerStats {
 
 	/**
 	 * A WorkerStats is equal iff every stat is equal.
-	 * TODO: Use method references to reduce _calculated_ complexity.
 	 * @param obj another stats object
 	 * @return whether it's equal to this.
 	 */
 	private boolean equalsImpl(final WorkerStats obj) {
-		return (hp == obj.hp) && (maxHP == obj.maxHP) && (strength == obj.strength) &&
-					   (dex == obj.dex) && (con == obj.con) && (intel == obj.intel) &&
-					   (wis == obj.wis) && (cha == obj.cha);
+		return Stream.<ToIntFunction<WorkerStats>>of(WorkerStats::getHitPoints,
+				WorkerStats::getMaxHitPoints, WorkerStats::getStrength,
+				WorkerStats::getDexterity, WorkerStats::getConstitution,
+				WorkerStats::getIntelligence, WorkerStats::getWisdom,
+				WorkerStats::getCharisma).allMatch(stat -> equalStat(obj, stat));
 	}
-
+	/**
+	 * @param obj a WorkerStats object
+	 * @param stat a reference to a method
+	 * @return whether that we and that object agree in that method.
+	 */
+	private boolean equalStat(final WorkerStats obj,
+							  final ToIntFunction<WorkerStats> stat) {
+		return stat.applyAsInt(this) == stat.applyAsInt(obj);
+	}
 	/**
 	 * A hash value for the object.
 	 * @return a hash value for the object
