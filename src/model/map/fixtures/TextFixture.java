@@ -30,7 +30,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	/**
 	 * The text.
 	 */
-	private String text;
+	private final String text;
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -93,14 +93,6 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	 */
 	public String getText() {
 		return text;
-	}
-
-	/**
-	 * Set new text for the note. TODO: is this really necessary?
-	 * @param newText the new text for the fixture
-	 */
-	public void setText(final String newText) {
-		text = newText;
 	}
 
 	/**
