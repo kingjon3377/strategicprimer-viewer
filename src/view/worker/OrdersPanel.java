@@ -300,29 +300,10 @@ public final class OrdersPanel extends BorderedPanel
 	 */
 	private class ModifiedEnterListener extends KeyAdapter {
 		/**
-		 * Whether we're running on a Mac.
-		 */
-		private final boolean onMac = OnMac.SYSTEM_IS_MAC;
-
-		/**
 		 * Protected so we can call it without synthetic-access warnings.
 		 */
 		protected ModifiedEnterListener() {
 			// do nothing
-		}
-
-		/**
-		 * Whether the given key-press includes the system modifier being pressed.
-		 * TODO: Add a Predicate-of-KeyEvent to OnMac for here and in equivalent usages.
-		 * @param evt a key-event
-		 * @return whether it records the system modifier key being pressed.
-		 */
-		private boolean isModifierPressed(final KeyEvent evt) {
-			if (onMac) {
-				return evt.isMetaDown();
-			} else {
-				return evt.isControlDown();
-			}
 		}
 
 		/**
@@ -333,10 +314,9 @@ public final class OrdersPanel extends BorderedPanel
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void keyPressed(@Nullable final KeyEvent evt) {
-			if ((evt != null) && (evt.getKeyCode() == KeyEvent.VK_ENTER)
-						&& isModifierPressed(evt)) {
+			if ((evt != null) && (evt.getKeyCode() == KeyEvent.VK_ENTER) &&
+						OnMac.isHotkeyPressed(evt)) {
 				apply();
-
 			}
 		}
 	}

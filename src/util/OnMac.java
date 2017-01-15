@@ -74,4 +74,15 @@ public final class OnMac {
 			}
 		}
 	}
+	/**
+	 * @param event an InputEvent
+	 * @return whether it has the current platform's hotkey pressed.
+	 */
+	public static boolean isHotkeyPressed(final InputEvent event) {
+		if (SYSTEM_IS_MAC) {
+			return event.isMetaDown();
+		} else {
+			return event.isControlDown();
+		}
+	}
 }
