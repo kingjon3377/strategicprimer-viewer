@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.util.Formatter;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Collectors;
 import model.map.IFixture;
 import model.map.River;
 import model.map.SubsettableFixture;
@@ -124,20 +125,13 @@ public final class RiverFixture
 	}
 
 	/**
-	 * A String representation of the object. TODO: Use Stream operations?
+	 * A String representation of the object.
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder =
-				new StringBuilder(BASE_STRING.length() + (MAX_RIVER_SIZE * rivers.size
-																						  ()))
-						.append(BASE_STRING);
-		for (final River river : rivers) {
-			builder.append(river);
-			builder.append(' ');
-		}
-		return builder.toString();
+		return rivers.stream().map(River::getDescription)
+					   .collect(Collectors.joining(" "));
 	}
 
 	/**
