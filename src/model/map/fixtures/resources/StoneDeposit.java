@@ -93,8 +93,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String getText() {
-		final String stoneStr = stone.toString(); // TODO: inline
-		return String.format("There is an exposed %s deposit here.", stoneStr);
+		return String.format("There is an exposed %s deposit here.", stone.toString());
 	}
 
 	/**
