@@ -129,7 +129,7 @@ public class ResourcePile
 
 	/**
 	 * If we ignore ID, a fixture is equal iff it is a ResourcePile with the same kind and
-	 * contents and equal quantity. TODO: check age
+	 * contents, of the same age, and with equal quantity.
 	 * @param fix a fixture
 	 * @return whether it equals this one except for ID
 	 */
@@ -138,13 +138,13 @@ public class ResourcePile
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof ResourcePile) && kind.equals(((ResourcePile) fix).kind) &&
 					   contents.equals(((ResourcePile) fix).contents) &&
-					   quantity.equals(((ResourcePile) fix).quantity);
+					   quantity.equals(((ResourcePile) fix).quantity) &&
+					   created == ((ResourcePile) fix).created;
 	}
 
 	/**
-	 * A fixture is a subset iff it is a ResourcePile of the same kind and contents,
+	 * A fixture is a subset iff it is a ResourcePile of the same kind, contents, and age,
 	 * with the same ID, and its quantity is a subset of ours.
-	 * TODO: Check age?
 	 * @param obj     a fixture
 	 * @param ostream the stream to report errors to
 	 * @param context the context to report before errors
@@ -171,6 +171,10 @@ public class ResourcePile
 				retval &= quantity.isSubset(((ResourcePile) obj).quantity, ostream,
 						String.format("%s\tIn Resource Pile, ID #%d", context,
 								idNum));
+				retval &= areIntItemsEqual(ostream, created, ((ResourcePile) obj)
+																	 .created,
+						"%s\tIn Resource Pile, ID #%d, Age differs", context,
+						Integer.valueOf(id));
 				return retval;
 			} else {
 				ostream.format("%s\tDifferent fixture types given for ID #%d", context,
