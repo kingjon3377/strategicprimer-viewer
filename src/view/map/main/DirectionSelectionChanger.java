@@ -5,6 +5,7 @@ import java.awt.event.MouseWheelListener;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
 import org.eclipse.jdt.annotation.Nullable;
+import util.OnMac;
 
 /**
  * A class for moving the cursor around the single-component map UI, including scrolling
@@ -168,7 +169,7 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	public void mouseWheelMoved(@Nullable final MouseWheelEvent evt) {
 		if (evt == null) {
 			return;
-		} else if (evt.isControlDown() || evt.isMetaDown()) {
+		} else if (OnMac.isHotkeyPressed(evt)) {
 			final int count = evt.getWheelRotation();
 			if (count < 0) {
 				for (int i = 0; i > count; i--) {
