@@ -84,7 +84,6 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 
 	/**
 	 * All the players in all the maps.
-	 * TODO: Here and in IMapNG, should we have a stream-of-Players method?
 	 * @return a list of all the players in all the maps
 	 */
 	@Override
@@ -95,7 +94,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
-	 * Get all the given player's units. TODO: Maybe return Stream instead in interface?
+	 * Get all the given player's units.
 	 * @param player a player in the map
 	 * @return a list of that player's units
 	 */
@@ -121,7 +120,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
-	 * Get all the "kinds" of units the player has. TODO: should this be a Stream?
+	 * Get all the "kinds" of units the player has.
 	 * @param player a player in the map
 	 * @return the "kinds" of unit that player has.
 	 */
@@ -132,7 +131,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
-	 * Get all the player's units of the given kind. TODO: should this be a Stream?
+	 * Get all the player's units of the given kind.
 	 * @param player a player in the map
 	 * @param kind   a "kind" of unit.
 	 * @return a list of the units of that kind in the map belonging to that player

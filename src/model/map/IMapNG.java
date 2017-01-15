@@ -40,6 +40,7 @@ public interface IMapNG
 
 	/**
 	 * The players in the map.
+	 * TODO: Should we have a stream-of-Players method?
 	 * @return a view of the players in the map.
 	 */
 	Iterable<Player> players();
