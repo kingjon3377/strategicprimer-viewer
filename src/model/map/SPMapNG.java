@@ -364,7 +364,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
-	 * Compare another map to this one. TODO: Use Integer.compare() to simplify
+	 * Compare another map to this one.
 	 * @param other another map
 	 * @return the result of a comparison between us and it.
 	 */
@@ -374,15 +374,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (equals(other)) {
 			return 0;
 		} else {
-			final int ours = hashCode();
-			final int theirs = Objects.hashCode(other);
-			if (ours > theirs) {
-				return 1;
-			} else if (ours < theirs) {
-				return -1;
-			} else {
-				return 0;
-			}
+			return Integer.compare(hashCode(), Objects.hashCode(other));
 		}
 	}
 
