@@ -542,17 +542,11 @@ public final class ProxyUnit
 	/**
 	 * We use the first proxied unit's hash code.
 	 * TODO: go deeper
-	 * TODO: in the interim, use Optional/stream methods?
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		final Iterator<IUnit> iter = proxied.iterator();
-		if (iter.hasNext()) {
-			return iter.next().hashCode();
-		} else {
-			return -1;
-		}
+		return proxied.stream().mapToInt(Object::hashCode).findFirst().orElse(-1);
 	}
 
 	/**
