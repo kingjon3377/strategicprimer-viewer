@@ -24,8 +24,6 @@ import model.map.HasMutableImage;
 import model.map.IPlayerCollection;
 import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import util.EqualsAny;
 import util.LineEnd;
 import util.Warning;
@@ -477,15 +475,6 @@ public final class XMLHelper {
 		return obj;
 	}
 
-	/**
-	 * Create an XML tag in the given Document. FIXME: Remove this unused method.
-	 * @param tag      a tag
-	 * @param document the Document to use as an Element factory.
-	 * @return a properly namespaced Element for that tag
-	 */
-	public static Element createElement(final Document document, final String tag) {
-		return document.createElementNS(ISPReader.NAMESPACE, tag);
-	}
 	/**
 	 * Whether the given XML element is a start-element and is in a namespace we support.
 	 * @param element an XML element
