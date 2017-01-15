@@ -95,17 +95,6 @@ public final class VisibleDimensions {
 	}
 
 	/**
-	 * Whether another VisibleDimensions is the same size as this one.
-	 * TODO: remove? IntelliJ says it's unused.
-	 * @param other another VisibleDimensions
-	 * @return whether it's the same size as this one.
-	 */
-	public boolean isSameSize(final VisibleDimensions other) {
-		return ((maxCol - minCol) == (other.maxCol - other.minCol)) &&
-					   ((maxRow - minRow) == (other.maxRow - other.minRow));
-	}
-
-	/**
 	 * The number of columns visible. (Possibly off-by-one.)
 	 * @return the width (in columns) visible.
 	 */
