@@ -101,7 +101,7 @@ public final class MapComponent extends JComponent
 			throw new IllegalStateException("Input map was null");
 		}
 		ArrowKeyListener.setUpListeners(dsl, inputMap, actionMap);
-		addComponentListener(new MapSizeListener(model));
+		addComponentListener(new MapSizeListener());
 		setToolTipText("");
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")

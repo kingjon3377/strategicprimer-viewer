@@ -26,20 +26,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class MapSizeListener extends ComponentAdapter {
 	/**
-	 * The map model we'll be modifying.
-	 */
-	private final IViewerModel model;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param map the map model we'll be modifying.
-	 */
-	public MapSizeListener(final IViewerModel map) {
-		model = map;
-	}
-
-	/**
 	 * Adjust the visible size of the map based on the map component being resized.
 	 *
 	 * @param event the resize event
@@ -49,17 +35,17 @@ public final class MapSizeListener extends ComponentAdapter {
 	@Override
 	public void componentResized(@Nullable final ComponentEvent event) {
 		if ((event != null) && (event.getComponent() instanceof MapGUI)) {
-			// TODO: Use the model from event.getComponent() instead of our own?
-			synchronized (model) {
-				final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
-						model.getMapDimensions().getVersion());
+			final IViewerModel localModel = ((MapGUI) event.getComponent()).getMapModel();
+			synchronized (localModel) {
+				final int tileSize = TileViewSize.scaleZoom(localModel.getZoomLevel(),
+						localModel.getMapDimensions().getVersion());
 				final int visibleCols = event.getComponent().getWidth() / tileSize;
 				final int visibleRows = event.getComponent().getHeight() / tileSize;
-				int minCol = model.getDimensions().getMinimumCol();
-				int maxCol = model.getDimensions().getMaximumCol();
-				int minRow = model.getDimensions().getMinimumRow();
-				int maxRow = model.getDimensions().getMaximumRow();
-				final MapDimensions mapDim = model.getMapDimensions();
+				int minCol = localModel.getDimensions().getMinimumCol();
+				int maxCol = localModel.getDimensions().getMaximumCol();
+				int minRow = localModel.getDimensions().getMinimumRow();
+				int maxRow = localModel.getDimensions().getMaximumRow();
+				final MapDimensions mapDim = localModel.getMapDimensions();
 				if ((visibleCols != (maxCol - minCol)) ||
 							(visibleRows != (maxRow - minRow))) {
 					final int totalCols = mapDim.cols;
@@ -82,7 +68,7 @@ public final class MapSizeListener extends ComponentAdapter {
 					} else {
 						maxRow = (minRow + visibleRows) - 1;
 					}
-					model.setDimensions(
+					localModel.setDimensions(
 							new VisibleDimensions(minRow, maxRow, minCol, maxCol));
 				}
 			}

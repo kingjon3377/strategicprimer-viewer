@@ -1,6 +1,6 @@
 package view.map.main;
 
-import model.misc.IDriverModel;
+import model.viewer.IViewerModel;
 
 /**
  * An interface for a UI representing a map.
@@ -19,8 +19,8 @@ import model.misc.IDriverModel;
  */
 public interface MapGUI {
 	/**
-	 * The driver model the GUI represents. TODO: should this be IViewerModel?
+	 * The driver model the GUI represents.
 	 * @return the model encapsulating the map, secondary map, etc.
 	 */
-	IDriverModel getMapModel();
+	IViewerModel getMapModel();
 }
