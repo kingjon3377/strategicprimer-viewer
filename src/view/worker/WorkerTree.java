@@ -62,6 +62,7 @@ public final class WorkerTree extends JTree
 	private final WorkerTreeSelectionListener tsl;
 
 	/**
+	 * Constructor.
 	 * @param turnSource how to get the current turn
 	 * @param wtModel    the tree model
 	 * @param orderCheck whether we should visually warn if orders contain substrings
@@ -140,6 +141,7 @@ public final class WorkerTree extends JTree
 	}
 
 	/**
+	 * Get the tooltip that should be shown for the current mouse position.
 	 * @param event an event indicating the mouse cursor
 	 * @return a tooltip if over a worker, null otherwise
 	 */
@@ -162,6 +164,7 @@ public final class WorkerTree extends JTree
 	}
 
 	/**
+	 * Get the tooltip for the given node.
 	 * @param node a node in the tree
 	 * @return a tooltip if it's a worker or a worker node, null otherwise
 	 */
@@ -187,6 +190,7 @@ public final class WorkerTree extends JTree
 	}
 
 	/**
+	 * Add a unit-selection listener.
 	 * @param list the listener to add
 	 */
 	@Override
@@ -195,6 +199,7 @@ public final class WorkerTree extends JTree
 	}
 
 	/**
+	 * Remove a unit-selection listener.
 	 * @param list the listener to remove
 	 */
 	@Override
@@ -203,6 +208,7 @@ public final class WorkerTree extends JTree
 	}
 
 	/**
+	 * Add a unit-member listener.
 	 * @param list the listener to add
 	 */
 	@Override
@@ -211,6 +217,7 @@ public final class WorkerTree extends JTree
 	}
 
 	/**
+	 * Remove a unit-member listener.
 	 * @param list the listener to remove
 	 */
 	@Override
@@ -243,6 +250,7 @@ public final class WorkerTree extends JTree
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a quasi-diagnostic String.
 	 */
 	@Override
@@ -285,6 +293,7 @@ public final class WorkerTree extends JTree
 		}
 
 		/**
+		 * Handle a mouse click.
 		 * @param event the event to handle
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -294,6 +303,7 @@ public final class WorkerTree extends JTree
 		}
 
 		/**
+		 * Handle a mouse-down event.
 		 * @param event the event to handle
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -303,6 +313,7 @@ public final class WorkerTree extends JTree
 		}
 
 		/**
+		 * Handle a mouse-up event.
 		 * @param event the event to handle
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -312,6 +323,7 @@ public final class WorkerTree extends JTree
 		}
 
 		/**
+		 * Handle any mouse event.
 		 * @param event the event to handle. Marked @Nullable so we only have to handle
 		 *              the null-event case once.
 		 */
@@ -336,6 +348,7 @@ public final class WorkerTree extends JTree
 		}
 
 		/**
+		 * A trivial toString().
 		 * @return a String representation of the object
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -377,6 +390,7 @@ public final class WorkerTree extends JTree
 		}
 
 		/**
+		 * Handle a change to the tree.
 		 * @param evt the event to handle
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -422,6 +436,7 @@ public final class WorkerTree extends JTree
 		}
 
 		/**
+		 * Add a unit-selection listener.
 		 * @param list a listener to add
 		 */
 		@Override
@@ -430,6 +445,7 @@ public final class WorkerTree extends JTree
 		}
 
 		/**
+		 * Remove a unit-selection listener.
 		 * @param list a listener to remove
 		 */
 		@Override
@@ -438,6 +454,7 @@ public final class WorkerTree extends JTree
 		}
 
 		/**
+		 * Add a unit-member listener.
 		 * @param list a listener to add
 		 */
 		@Override
@@ -446,6 +463,7 @@ public final class WorkerTree extends JTree
 		}
 
 		/**
+		 * Remove a unit-member listener.
 		 * @param list a listener to remove
 		 */
 		@Override
@@ -454,6 +472,7 @@ public final class WorkerTree extends JTree
 		}
 
 		/**
+		 * A trivial toString().
 		 * @return a String representation of the object
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")

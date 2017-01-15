@@ -69,6 +69,7 @@ public final class WorkerCreationListener
 	}
 
 	/**
+	 * Update our currently-selected-unit reference.
 	 * @param unit the newly selected unit.
 	 */
 	@Override
@@ -109,6 +110,7 @@ public final class WorkerCreationListener
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

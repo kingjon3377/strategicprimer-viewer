@@ -120,7 +120,7 @@ public final class WorkerMgmtFrame extends SPFrame
 	 *
 	 * @param options   options passed to the driver
 	 * @param model     the driver model.
-	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
+	 * @param menuHandler the menu-item handler.
 	 */
 	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model,
 						   final MenuBroker menuHandler) {
@@ -190,8 +190,9 @@ public final class WorkerMgmtFrame extends SPFrame
 	}
 
 	/**
+	 * Create the "report" tree.
 	 * @param model the driver model
-	 * @param ioHandler the menu-item/hot-key listener
+	 * @param menuHandler the menu-item/hot-key broker
 	 * @param reportModel the report-tree model
 	 * @return the report tree based on that model
 	 */
@@ -228,6 +229,7 @@ public final class WorkerMgmtFrame extends SPFrame
 	}
 
 	/**
+	 * Find the location of the current player's headquarters fortress.
 	 * @param model a driver model
 	 * @return the location of the current player's headquarters
 	 */
@@ -252,8 +254,9 @@ public final class WorkerMgmtFrame extends SPFrame
 	}
 
 	/**
+	 * Get a map-GUI driver model viewing the same map as that of the given model.
 	 * @param model the driver-model of the worker-management GUI
-	 * @param ioh   the I/O handler
+	 * @param menuHandler   the menu-item broker.
 	 * @return the viewer model of a viewer window the same map as that in the given
 	 * driver-model
 	 */
@@ -302,6 +305,7 @@ public final class WorkerMgmtFrame extends SPFrame
 	}
 
 	/**
+	 * The title of this app.
 	 * @return the title of this app
 	 */
 	@Override
@@ -323,9 +327,11 @@ public final class WorkerMgmtFrame extends SPFrame
 		playerLabel.setArgs(newPlayer.getName(), OnMac.SHORTCUT_DESC);
 	}
 	/**
+	 * Create the report-generation thread.
 	 * @param treeModel     The tree-model to put the report into.
 	 * @param workerModel   the driver model to generate the report from
 	 * @param currentPlayer the player to generate the report for
+	 * @return the thread, not yet started
 	 */
 	protected static Thread createReportGeneratorThread(final DefaultTreeModel treeModel,
 														final IWorkerModel workerModel,
@@ -376,6 +382,7 @@ public final class WorkerMgmtFrame extends SPFrame
 		}
 
 		/**
+		 * A trivial toString().
 		 * @return a String representation of the object
 		 */
 		@SuppressWarnings("MethodReturnAlwaysConstant")
@@ -436,6 +443,7 @@ public final class WorkerMgmtFrame extends SPFrame
 		}
 
 		/**
+		 * A simple toString().
 		 * @return a String representation of the thread
 		 */
 		@Override
@@ -518,6 +526,7 @@ public final class WorkerMgmtFrame extends SPFrame
 		private final Window dialog;
 
 		/**
+		 * Constructor.
 		 * @param subWindow The window that we are to eventually dispose.
 		 */
 		protected CloseListener(final NewUnitDialog subWindow) {
@@ -525,6 +534,7 @@ public final class WorkerMgmtFrame extends SPFrame
 		}
 
 		/**
+		 * Dispose the dialog when the parent window is closed.
 		 * @param event the event to handle by disposing the dialog
 		 */
 		@Override

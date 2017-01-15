@@ -25,12 +25,14 @@ public class WindowCloser implements ActionListener {
 	 */
 	private final Window frame;
 	/**
+	 * Constructor.
 	 * @param window the window to close
 	 */
 	public WindowCloser(final Window window) {
 		frame = window;
 	}
 	/**
+	 * Close the window.
 	 * @param evt ignored: only set this to listen to the item you want!
 	 */
 	@Override

@@ -67,6 +67,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
+	 * Get the node in the subtree under the given node that represents the given object.
 	 * @param node a node
 	 * @param obj  an object
 	 * @return the node in the subtree under the node representing the object, or null if
@@ -91,6 +92,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
+	 * Whether the given object equals the given node's user-object.
 	 * @param node a node
 	 * @param obj  an object
 	 * @return whether the object is or equals the node's user-object
@@ -239,6 +241,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
+	 * Handle a change in the current player.
 	 * @param old       the old current player
 	 * @param newPlayer the new current player
 	 */
@@ -249,6 +252,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
+	 * Get the model object represented by a node.
 	 * @param obj an object
 	 * @return the model object it contains if it's a node, otherwise the object itself
 	 */
@@ -290,6 +294,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -299,6 +304,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
+	 * Get the node representing the given object.
 	 * @param obj a model object
 	 * @return the node representing it, or null if it isn't in the tree
 	 */
@@ -313,6 +319,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
+	 * Rename an item in the tree.
 	 * @param item the newly renamed item
 	 */
 	@Override
@@ -328,6 +335,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
+	 * Move the given item to "the current point" in the tree.
 	 * @param item the item to move to this point in the tree
 	 */
 	@Override
@@ -396,6 +404,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
+	 * Dismiss a member of a unit.
 	 * @param member the member to dismiss
 	 */
 	@Override
@@ -419,6 +428,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
+	 * The members that the user has dismissed in the current session.
 	 * @return an iteration over the unit-members the user has dismissed.
 	 */
 	@Override
@@ -459,6 +469,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	public static class WorkerTreeNode<T> extends
 			DefaultMutableTreeNode implements Iterable<TreeNode> {
 		/**
+		 * Node constructor.
 		 * @param userObj         the user object the node wraps
 		 * @param permitsChildren whether to allow children
 		 */
@@ -476,6 +487,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
+		 * An iterator over the node's immediate children.
 		 * @return an iterator over the immediate children of this node
 		 */
 		@SuppressWarnings("unchecked")
@@ -547,6 +559,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
+		 * The node's user object, a Player.
 		 * @return the node's user object, asserting it is a Player
 		 */
 		@Override
@@ -557,6 +570,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
+		 * Set the node's user object.
 		 * @param userObj the new user-object for the node, which must be a Player
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -619,6 +633,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
+		 * Get the node's user object.
 		 * @return the user object for the node, asserting that it is a String
 		 */
 		@Override
@@ -629,6 +644,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
+		 * Set the node's user object.
 		 * @param userObj the user object for the node, which must be a String
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -689,6 +705,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
+		 * The node's user object.
 		 * @return the user object for the node, asserting that it is an IUnit
 		 */
 		@Override
@@ -699,6 +716,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
+		 * Set the node's user object.
 		 * @param userObj the new user object for the node, which must be an IUnit
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -753,6 +771,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
+		 * The node's user object.
 		 * @return the user-object for the node, asserting that it is a UnitMember
 		 */
 		@Override
@@ -763,6 +782,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		/**
+		 * Set the node's user object.
 		 * @param userObj the new user-object for the node, which must be a UnitMember
 		 */
 		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")

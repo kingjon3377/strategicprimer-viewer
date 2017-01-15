@@ -86,6 +86,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * Wrap the given (varargs) objects in an array.
 	 * @param args a series of objects
 	 * @return them as an array
 	 */
@@ -94,6 +95,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * Get the root of the tree, the player.
 	 * @return the root of the tree, the player.
 	 */
 	@Override
@@ -102,6 +104,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * Get the Nth child of the given parent.
 	 * @param parent an object in the tree
 	 * @param index  the index of the child we want
 	 * @return the specified child
@@ -139,6 +142,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * How many child nodes the given parent has.
 	 * @param parent an object in the tree
 	 * @return how many children it has
 	 */
@@ -157,6 +161,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * Whether the given node is a leaf.
 	 * @param node a node in the tree
 	 * @return whether it's a leaf node
 	 */
@@ -167,6 +172,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * Not yet implemented.
 	 * @param path     a path indicating a node
 	 * @param newValue the new value for that place
 	 */
@@ -177,6 +183,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * Get the index of the given child in the given parent.
 	 * @param parent an object presumably in the tree
 	 * @param child  something that's presumably one of its children
 	 * @return which child it is, or -1 if preconditions broken
@@ -202,6 +209,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * Add a tree-model listener.
 	 * @param list something to listen for tree model changes
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -213,6 +221,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * Remove a tree-model listener.
 	 * @param list something that doesn't want to listen for tree model changes anymore
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -297,6 +306,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * Handle a change in the current player.
 	 * @param old       the old current player
 	 * @param newPlayer the new current player
 	 */
@@ -311,6 +321,8 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * In this tree-model the model objects are represented by themselves, so this is a
+	 * no-op.
 	 * @param obj an object
 	 * @return it
 	 */
@@ -338,6 +350,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * A simple toString().
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -346,6 +359,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * Rename an item in the tree.
 	 * @param item the item that has changed
 	 */
 	@Override
@@ -388,6 +402,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * Move an item to "the current point" in the tree.
 	 * @param item the item to move to this point in the tree
 	 */
 	@Override
@@ -447,6 +462,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
+	 * The unit members that the user has dismissed in the current session.
 	 * @return the unit members that have been dismissed.
 	 */
 	@Override

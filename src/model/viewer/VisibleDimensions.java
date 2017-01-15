@@ -52,6 +52,7 @@ public final class VisibleDimensions {
 	}
 
 	/**
+	 * The top visible row.
 	 * @return the minimum visible row
 	 */
 	public int getMinimumRow() {
@@ -59,6 +60,7 @@ public final class VisibleDimensions {
 	}
 
 	/**
+	 * The bottom visible row.
 	 * @return the maximum visible row
 	 */
 	public int getMaximumRow() {
@@ -66,6 +68,7 @@ public final class VisibleDimensions {
 	}
 
 	/**
+	 * The leftmost visible column.
 	 * @return the minimum visible column
 	 */
 	public int getMinimumCol() {
@@ -73,6 +76,7 @@ public final class VisibleDimensions {
 	}
 
 	/**
+	 * The rightmost visible column.
 	 * @return the maximum visible column
 	 */
 	public int getMaximumCol() {
@@ -80,6 +84,7 @@ public final class VisibleDimensions {
 	}
 
 	/**
+	 * A String representation of the dimensions.
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -90,6 +95,8 @@ public final class VisibleDimensions {
 	}
 
 	/**
+	 * Whether another VisibleDimensions is the same size as this one.
+	 * TODO: remove? IntelliJ says it's unused.
 	 * @param other another VisibleDimensions
 	 * @return whether it's the same size as this one.
 	 */
@@ -99,6 +106,7 @@ public final class VisibleDimensions {
 	}
 
 	/**
+	 * The number of columns visible. (Possibly off-by-one.)
 	 * @return the width (in columns) visible.
 	 */
 	public int getWidth() {
@@ -106,6 +114,7 @@ public final class VisibleDimensions {
 	}
 
 	/**
+	 * The number of rows visible. (Possibly off-by-one.)
 	 * @return the height (in rows) visible.
 	 */
 	public int getHeight() {

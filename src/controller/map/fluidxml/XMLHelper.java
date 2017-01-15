@@ -197,6 +197,7 @@ public final class XMLHelper {
 	}
 
 	/**
+	 * Get a parameter from an XML tag by name.
 	 * @param element the current tag
 	 * @param param   the parameter we want
 	 * @return it if it's present in either the default namespace or our namespace, or
@@ -215,6 +216,7 @@ public final class XMLHelper {
 	}
 
 	/**
+	 * Whether an XML tag has the given parameter.
 	 * @param element the current tag
 	 * @param param   the parameter we want
 	 * @return whether the tag has that parameter
@@ -225,6 +227,9 @@ public final class XMLHelper {
 	}
 
 	/**
+	 * If the given XML tag has the preferred parameter, return its value; if not, but
+	 * it has the deprecated parameter, fire a warning but return its value; otherwise,
+	 * throw an exception.
 	 * @param element    the current tag
 	 * @param preferred  the preferred name of the parameter
 	 * @param deprecated the deprecated name of the parameter
@@ -249,6 +254,7 @@ public final class XMLHelper {
 	}
 
 	/**
+	 * Write the given number of tabs to the given stream.
 	 * @param ostream the stream to write the tabs to
 	 * @param tabs    a non-negative integer: how many tabs to add to the stream
 	 * @throws XMLStreamException on I/O error writing to ostream
@@ -472,6 +478,7 @@ public final class XMLHelper {
 	}
 
 	/**
+	 * Create an XML tag in the given Document. FIXME: Remove this unused method.
 	 * @param tag      a tag
 	 * @param document the Document to use as an Element factory.
 	 * @return a properly namespaced Element for that tag
@@ -480,6 +487,7 @@ public final class XMLHelper {
 		return document.createElementNS(ISPReader.NAMESPACE, tag);
 	}
 	/**
+	 * Whether the given XML element is a start-element and is in a namespace we support.
 	 * @param element an XML element
 	 * @return true iff it is a start element and in a namespace we read
 	 */
@@ -489,6 +497,8 @@ public final class XMLHelper {
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI);
 	}
 	/**
+	 * Get the text (any tags cause an exception) between here and the closing tag we're
+	 * looking for.
 	 * @param tag the name of the tag whose closing tag we're waiting for
 	 * @param stream the stream of tags to sift through
 	 * @return the text between now and then (trimmed of whitespace)

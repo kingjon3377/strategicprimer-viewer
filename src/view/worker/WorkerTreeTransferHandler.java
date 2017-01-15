@@ -71,6 +71,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	}
 
 	/**
+	 * We only support moves, not copies or links.
 	 * @param component ignored
 	 * @return the actions we support
 	 */
@@ -83,6 +84,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	}
 
 	/**
+	 * Create a transferable representing the selected node.
 	 * @param component the component being dragged from? In any case, ignored.
 	 * @return a Transferable representing the selected node, or null if none selected
 	 */
@@ -121,6 +123,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	}
 
 	/**
+	 * Whether a drop here is possible.
 	 * @param support the object containing the detail of the transfer
 	 * @return whether the drop is possible
 	 */
@@ -153,6 +156,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	}
 
 	/**
+	 * Handle a drop.
 	 * @param support the object containing the details of the transfer
 	 * @return whether the transfer succeeded
 	 */
@@ -211,6 +215,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

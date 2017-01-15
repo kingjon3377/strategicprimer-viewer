@@ -45,6 +45,7 @@ public final class WorkerTabularReportGenerator implements ITableGenerator<IWork
 	}
 
 	/**
+	 * Produce a table line representing a worker.
 	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
 	 * @param item     the worker to base the line on
@@ -88,6 +89,7 @@ public final class WorkerTabularReportGenerator implements ITableGenerator<IWork
 	}
 
 	/**
+	 * The header row of the table.
 	 * @return the header row for the tabular report
 	 */
 	@Override
@@ -96,6 +98,7 @@ public final class WorkerTabularReportGenerator implements ITableGenerator<IWork
 	}
 
 	/**
+	 * Compare two worker-location pairs.
 	 * @param one a Pair of one animal and its location (in the other order)
 	 * @param two a Pair of another animal and its location (in the other order)
 	 * @return the result of a comparison between the pairs.

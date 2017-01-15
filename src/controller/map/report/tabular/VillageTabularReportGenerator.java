@@ -47,6 +47,7 @@ public final class VillageTabularReportGenerator implements ITableGenerator<Vill
 	}
 
 	/**
+	 * Write a row of the table based on the given village.
 	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
 	 * @param item     the village to base the line on
@@ -70,6 +71,7 @@ public final class VillageTabularReportGenerator implements ITableGenerator<Vill
 	}
 
 	/**
+	 * The header of this table.
 	 * @return the header row for the tabular report
 	 */
 	@Override
@@ -78,6 +80,7 @@ public final class VillageTabularReportGenerator implements ITableGenerator<Vill
 	}
 
 	/**
+	 * Compare two location-and-village pairs.
 	 * @param one a Pair of one village and its location (in the other order)
 	 * @param two a Pair of another village and its location (in the other order)
 	 * @return the result of a comparison between the pairs.

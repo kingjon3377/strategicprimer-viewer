@@ -1,8 +1,7 @@
 package view.worker;
 
 import controller.map.misc.IDRegistrar;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -16,11 +15,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import model.listeners.NewWorkerListener;
 import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
@@ -165,6 +160,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
+	 * Create the stats panel.
 	 * @return the initialized stats panel
 	 */
 	private JPanel createStatsPanel() {
@@ -183,8 +179,10 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
+	 * Given a text box and an explanation/title, return a pair of the box's text and
+	 * the title.
 	 * @param box a text box
-	 * @param expl an explanation or tile of it
+	 * @param expl an explanation or title of it
 	 * @return its contents, asserted to not be null
 	 */
 	private static Pair<String, String> getBoxText(final JTextField box, final String expl) {
@@ -192,9 +190,11 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
+	 * The Pairs' first elements are supposedly-numeric strings (as the second elements
+	 * are what they represent); uf any of the supposedly-numeric Srings are
+	 * non-numeric, "such-and-such must be a number" is printed to the Formatter.
 	 * @param numbers a sequence of Pairs of supposedly-numeric Strings and what they
-	 *                represent. If any is non-numeric, the return String includes
-	 *                "such-and-such must be a number."
+	 *                represent.
 	 * @param formatter a Formatter to write the explanation to
 	 */
 	@SafeVarargs
@@ -209,6 +209,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
+	 * Parse the text box's contents as an integer.
 	 * @param box a text field
 	 * @return the integer value of its text
 	 * @throws ParseException on non-numeric input
@@ -218,6 +219,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
+	 * Whether any of the text boxes contains non-numeric data.
 	 * @param boxes a collection of text fields
 	 * @return true if any of them contains non-numeric data
 	 */
@@ -255,6 +257,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
+	 * Produce an explanation of what's wrong with the user's input.
 	 * @return an explanation of what's wrong with the user's input.
 	 */
 	private String getErrorExplanation() {
@@ -290,6 +293,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
+	 * Add a new-worker listener.
 	 * @param list a listener to add
 	 */
 	@Override
@@ -298,6 +302,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
+	 * Remove a new-worker listener.
 	 * @param list a listener to remove
 	 */
 	@Override

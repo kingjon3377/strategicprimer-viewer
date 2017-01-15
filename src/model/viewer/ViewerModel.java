@@ -139,6 +139,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 	}
 
 	/**
+	 * The visible dimensions of the map.
 	 * @return the visible dimensions of the map
 	 */
 	@Override

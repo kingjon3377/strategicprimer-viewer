@@ -84,6 +84,7 @@ public class WorkerStats {
 		cha = charisma;
 	}
 	/**
+	 * Constructor for racial adjustments.
 	 * @param hitPoints the number to use for HP and maxHP
 	 * @param base a set of base stats
 	 * @param adjustment a set of adjustments to those stats
@@ -100,6 +101,7 @@ public class WorkerStats {
 		cha = base.cha + adjustment.cha;
 	}
 	/**
+	 * Get the modifier string for a stat with the given value.
 	 * @param stat a stat
 	 * @return a String representing the modifier it conveys.
 	 */
@@ -114,6 +116,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * Get the modifier for (effect of) the given stat value.
 	 * @param stat a stat
 	 * @return the modifier it conveys
 	 */
@@ -123,6 +126,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * Clone the object.
 	 * @return a copy of this
 	 */
 	@SuppressWarnings("MethodReturnOfConcreteClass")
@@ -131,6 +135,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * The worker's HP.
 	 * @return the worker's health
 	 */
 	public int getHitPoints() {
@@ -138,6 +143,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * The worker's maximum HP.
 	 * @return the worker's max health
 	 */
 	public int getMaxHitPoints() {
@@ -145,6 +151,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * The worker's Strength.
 	 * @return the worker's strength
 	 */
 	public int getStrength() {
@@ -152,6 +159,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * The worker's Dexterity.
 	 * @return the worker's dexterity
 	 */
 	public int getDexterity() {
@@ -159,6 +167,8 @@ public class WorkerStats {
 	}
 
 	/**
+	 * The worker's Constitution. Its modifier should be added to every "die" of the
+	 * worker's Hit Points.
 	 * @return the worker's constitution
 	 */
 	public int getConstitution() {
@@ -166,6 +176,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * The worker's Intelligence.
 	 * @return the worker's intelligence
 	 */
 	public int getIntelligence() {
@@ -173,6 +184,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * The worker's Wisdom.
 	 * @return the worker's wisdom
 	 */
 	public int getWisdom() {
@@ -180,6 +192,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * The worker's Charisma.
 	 * @return the worker's charisma
 	 */
 	public int getCharisma() {
@@ -187,6 +200,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * An object is equal iff it is a WorkerStats with all stats equal.
 	 * @param obj another object
 	 * @return whether it's a WorkerStats equal to this one
 	 */
@@ -197,6 +211,8 @@ public class WorkerStats {
 	}
 
 	/**
+	 * A WorkerStats is equal iff every stat is equal.
+	 * TODO: Use method references to reduce _calculated_ complexity.
 	 * @param obj another stats object
 	 * @return whether it's equal to this.
 	 */
@@ -207,6 +223,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * A hash value for the object.
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -216,6 +233,7 @@ public class WorkerStats {
 	}
 
 	/**
+	 * A String representation of the object.
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("StringBufferReplaceableByString")
@@ -255,6 +273,7 @@ public class WorkerStats {
 				rng.getAsInt(), rng.getAsInt());
 	}
 	/**
+	 * An array containing the stats (not including HP).
 	 * @return the stats as an array
 	 */
 	public int[] toArray() {

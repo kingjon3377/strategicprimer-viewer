@@ -43,6 +43,7 @@ public final class WorkerStart implements SimpleDriver {
 	}
 
 	/**
+	 * The usage object.
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -89,6 +90,7 @@ public final class WorkerStart implements SimpleDriver {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

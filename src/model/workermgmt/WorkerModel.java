@@ -63,6 +63,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
+	 * Flatten and filter the stream to include only units, and only those owned by the
+	 * given player.
 	 * @param iter   a sequence of members of that type
 	 * @param player a player
 	 * @return a list of the members of the sequence that are units owned by the player
@@ -81,6 +83,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
+	 * All the players in all the maps.
+	 * TODO: Here and in IMapNG, should we have a stream-of-Players method?
 	 * @return a list of all the players in all the maps
 	 */
 	@Override
@@ -91,6 +95,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
+	 * Get all the given player's units. TODO: Maybe return Stream instead in interface?
 	 * @param player a player in the map
 	 * @return a list of that player's units
 	 */
@@ -116,6 +121,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
+	 * Get all the "kinds" of units the player has. TODO: should this be a Stream?
 	 * @param player a player in the map
 	 * @return the "kinds" of unit that player has.
 	 */
@@ -126,6 +132,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
+	 * Get all the player's units of the given kind. TODO: should this be a Stream?
 	 * @param player a player in the map
 	 * @param kind   a "kind" of unit.
 	 * @return a list of the units of that kind in the map belonging to that player
@@ -137,6 +144,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
+	 * Add a unit to all the maps, at the location of the player's HQ in the main map.
 	 * @param unit the unit to add
 	 */
 	@Override
@@ -154,6 +162,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
+	 * Get a unit by its owner and ID.
 	 * @param owner the unit's owner
 	 * @param id    the ID # to search for
 	 * @return the unit with that ID, or null if none.
@@ -200,6 +209,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

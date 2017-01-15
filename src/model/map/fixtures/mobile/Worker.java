@@ -85,6 +85,8 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * Whether two Sets of Jobs are equal, neither containing a nonempty Job that the
+	 * other does not.
 	 * @param firstSet  a set of Jobs
 	 * @param secondSet a set of Jobs
 	 * @return whether they are equal, ignoring any "empty" Jobs.
@@ -109,6 +111,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * An iterator over the worker's Jobs.
 	 * @return An iterator over the worker's jobs.
 	 */
 	@Override
@@ -117,6 +120,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * The worker's ID number.
 	 * @return the ID number of the worker.
 	 */
 	@Override
@@ -125,6 +129,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * The worker's race.
 	 * @return the worker's race (elf, human, or whatever)
 	 */
 	@Override
@@ -133,6 +138,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * The worker's name.
 	 * @return the worker's name
 	 */
 	@Override
@@ -141,6 +147,8 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * An object is equal iff it is a worker that is equal if we ignore ID and also has
+	 * the same ID as this one.
 	 * @param obj an object
 	 * @return whether it's the same as this
 	 */
@@ -152,6 +160,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * Use the ID for hashing.
 	 * @return a hash code for the object
 	 */
 	@Override
@@ -160,6 +169,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * A simple toString(). TODO: omit race if human?
 	 * @return a String representation of the Worker.
 	 */
 	@Override
@@ -168,6 +178,9 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * This delegates to a Worker-specific helper method.
+	 *
+	 * TODO: Remove obsolete warning-suppression: we don't cast to a concrete class.
 	 * @param fix a fixture
 	 * @return whether it equals this one except its ID.
 	 */
@@ -179,6 +192,8 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * A worker is equal iff it has the same name, race, and stats (if any), and neither
+	 * has a non-empty Job the other does not.
 	 * @param fix a worker
 	 * @return whether it equals this one except for ID.
 	 */
@@ -190,6 +205,8 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * A fixture is a subset if it is a worker with the same ID, name, race, and stats,
+	 * and no Jobs we don't have, and its Jobs are subsets of our corresponding Jobs.
 	 * @param obj     another UnitMember
 	 * @param ostream a stream to report an explanation on
 	 * @param context a string to print before every line of output, describing the
@@ -244,6 +261,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * The worker's race.
 	 * @return the worker's "kind" (i.e. race, i.e elf, dwarf, human, etc.)
 	 */
 	@Override
@@ -252,6 +270,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * The worker's stats.
 	 * @return the worker's stats
 	 */
 	@Override
@@ -261,6 +280,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * Set the worker's stats.
 	 * @param newStats the worker's new stats
 	 */
 	public void setStats(final WorkerStats newStats) {
@@ -279,6 +299,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * The per-instance icon filename.
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
@@ -287,6 +308,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * Set the per-instance icon filename.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -295,6 +317,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * Clone the object.
 	 * @param zero whether to "zero out" the worker
 	 * @return a copy of this worker
 	 */
@@ -322,6 +345,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * Get a Job by name.
 	 * @param jobName the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none
 	 */
@@ -340,6 +364,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * The filename of the worker's portrait, if any.
 	 * @return The filename of an image to use as a portrait for the unit.
 	 */
 	@Override
@@ -348,6 +373,7 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
+	 * Set a portrait filename.
 	 * @param portrait The filename of an image to use as a portrait for the unit.
 	 */
 	@Override
