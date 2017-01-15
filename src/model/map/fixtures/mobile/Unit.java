@@ -409,15 +409,6 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
-	 * The plural of Unit is Units.
-	 * @return a phrase describing all units as a class
-	 */
-	@Override
-	public String plural() {
-		return "Units";
-	}
-
-	/**
 	 * A short description of the fixture, giving its kind and owner, but not name.
 	 * @return a short description of the fixture
 	 */

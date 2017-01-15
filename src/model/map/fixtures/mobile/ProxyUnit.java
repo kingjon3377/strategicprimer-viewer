@@ -178,15 +178,6 @@ public final class ProxyUnit
 	}
 
 	/**
-	 * The plural of Unit is Units. TODO: Pull up to IUnit.
-	 * @return "Units"
-	 */
-	@Override
-	public String plural() {
-		return "Units";
-	}
-
-	/**
 	 * A short description of the units. TODO: handle non-parallel specially?
 	 * @return a short description
 	 */

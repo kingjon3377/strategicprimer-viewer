@@ -156,6 +156,15 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	IUnit copy(boolean zero);
 
 	/**
+	 * The plural of Unit is Units.
+	 * @return "Units"
+	 */
+	@Override
+	default String plural() {
+		return "Units";
+	}
+
+	/**
 	 * A fixture is a subset if it is a unit with the same ID and no extra members, and
 	 * all corresponding (by ID, presumably) members are either equal or themselves
 	 * subsets.
