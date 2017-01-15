@@ -119,12 +119,11 @@ public final class Mountain implements TerrainFixture, HasMutableImage {
 
 	/**
 	 * The plural of Mountain is Mountains.
-	 * FIXME: method doesn't return that
 	 * @return a string describing all mountains as a class
 	 */
 	@Override
 	public String plural() {
-		return "Mountain";
+		return "Mountains";
 	}
 
 	/**
