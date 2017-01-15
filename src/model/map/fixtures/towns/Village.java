@@ -85,29 +85,12 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
-	 * Produce a String representation of the village.
+	 * Delegates to shortDesc().
 	 * @return a String representation of the village
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder =
-				new StringBuilder(52 + name.length() + owner.getName().length());
-		if (owner.isIndependent()) {
-			builder.append("Independent ");
-		}
-		builder.append(status);
-		builder.append(" village");
-		if (!name.isEmpty()) {
-			builder.append(" named ");
-			builder.append(name);
-		}
-		if (owner.isCurrent()) {
-			builder.append(", owned by you");
-		} else if (!owner.isIndependent()) {
-			builder.append(", owned by ");
-			builder.append(owner.getName());
-		}
-		return builder.toString();
+		return shortDesc();
 	}
 
 	/**
@@ -258,12 +241,29 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
-	 * Delegates to toString(). TODO: should be the other way around.
+	 * A short description of the village.
 	 * @return a short description of the fixture
 	 */
 	@Override
 	public String shortDesc() {
-		return toString();
+		final StringBuilder builder =
+				new StringBuilder(52 + name.length() + owner.getName().length());
+		if (owner.isIndependent()) {
+			builder.append("Independent ");
+		}
+		builder.append(status);
+		builder.append(" village");
+		if (!name.isEmpty()) {
+			builder.append(" named ");
+			builder.append(name);
+		}
+		if (owner.isCurrent()) {
+			builder.append(", owned by you");
+		} else if (!owner.isIndependent()) {
+			builder.append(", owned by ");
+			builder.append(owner.getName());
+		}
+		return builder.toString();
 	}
 
 	/**

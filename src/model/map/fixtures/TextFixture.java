@@ -62,17 +62,12 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
-	 * A String representation of the fixture: its text, plus a note of the turn it was
-	 * created.
+	 * Delegates to shortDesc().
 	 * @return a String representation of the fixture
 	 */
 	@Override
 	public String toString() {
-		if (turn == -1) {
-			return text;
-		} else {
-			return text + "(turn " + turn + ')';
-		}
+		return shortDesc();
 	}
 
 	/**
@@ -187,12 +182,16 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	/**
-	 * Delegates to toString(). TODO: reverse that
+	 * The text, plus a note of the turn it is associated with.
 	 * @return a short description of the fixture
 	 */
 	@Override
 	public String shortDesc() {
-		return toString();
+		if (turn == -1) {
+			return text;
+		} else {
+			return text + "(turn " + turn + ')';
+		}
 	}
 	/**
 	 * The required Perception check for an explorer to find the fixture.

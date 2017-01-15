@@ -108,24 +108,13 @@ public class Grove implements HarvestableFixture, HasKind {
 		}
 	}
 
-	/** "[Cultivated/Wild] [kind] [orchard/grove]".
+	/**
+	 * Delegates to shortDesc().
 	 * @return a String representation of the grove or orchard
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder(19 + kind.length());
-		if (cultivated) {
-			builder.append("Cultivated ");
-		} else {
-			builder.append("Wild ");
-		}
-		builder.append(kind);
-		if (orchard) {
-			builder.append(" orchard");
-		} else {
-			builder.append(" grove");
-		}
-		return builder.toString();
+		return shortDesc();
 	}
 
 	/**
@@ -203,12 +192,24 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
-	 * Delegates to toString(). TODO: Should be the other way around.
+	 * "[Cultivated/Wild] [kind] [orchard/grove]".
 	 * @return a short description of the fixture
 	 */
 	@Override
 	public String shortDesc() {
-		return toString();
+		final StringBuilder builder = new StringBuilder(19 + kind.length());
+		if (cultivated) {
+			builder.append("Cultivated ");
+		} else {
+			builder.append("Wild ");
+		}
+		builder.append(kind);
+		if (orchard) {
+			builder.append(" orchard");
+		} else {
+			builder.append(" grove");
+		}
+		return builder.toString();
 	}
 	/**
 	 * The required Perception check for an explorer to find the fixture.

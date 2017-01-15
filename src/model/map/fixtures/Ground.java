@@ -126,16 +126,12 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
-	 * A simple toString().
+	 * Delegates to shortDesc().
 	 * @return a String representation of the Ground.
 	 */
 	@Override
 	public String toString() {
-		if (exposed) {
-			return "Exposed ground of kind " + kind;
-		} else {
-			return "Unexposed ground of kind " + kind;
-		}
+		return shortDesc();
 	}
 
 	/**
@@ -187,12 +183,16 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
-	 * Delegates to toString(). TODO: should be the other way around.
+	 * A short description of the fixture.
 	 * @return a short description of the fixture
 	 */
 	@Override
 	public String shortDesc() {
-		return toString();
+		if (exposed) {
+			return "Exposed ground of kind " + kind;
+		} else {
+			return "Unexposed ground of kind " + kind;
+		}
 	}
 	/**
 	 * The required Perception check for an explorer to find the fixture.

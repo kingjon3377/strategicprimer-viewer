@@ -70,16 +70,12 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
-	 * If no kind, "giant"; otherwise, "such-and-such giant".
+	 * Delegates to shortDesc().
 	 * @return a String representation of the giant
 	 */
 	@Override
 	public String toString() {
-		if (kind.isEmpty()) {
-			return "giant";
-		} else {
-			return kind + " giant";
-		}
+		return shortDesc();
 	}
 
 	/**
@@ -189,12 +185,16 @@ public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMembe
 	}
 
 	/**
-	 * Delegates to toString(). TODO: Should be the other way around.
+	 * If no kind, "giant"; otherwise, "such-and-such giant".
 	 * @return a short description of the fixture
 	 */
 	@Override
 	public String shortDesc() {
-		return toString();
+		if (kind.isEmpty()) {
+			return "giant";
+		} else {
+			return kind + " giant";
+		}
 	}
 	/**
 	 * The required Perception check for an explorer to find the fixture.

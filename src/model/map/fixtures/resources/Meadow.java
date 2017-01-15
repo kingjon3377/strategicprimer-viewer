@@ -125,23 +125,12 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
-	 * Simple toString().
+	 * Delegates to shortDesc().
 	 * @return a String representation of the field or meadow
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder(25 + kind.length());
-		if (field) {
-			if (!cultivated) {
-				builder.append("Wild or abandoned ");
-			}
-			builder.append(kind);
-			builder.append(" field");
-		} else {
-			builder.append(kind);
-			builder.append(" meadow");
-		}
-		return builder.toString();
+		return shortDesc();
 	}
 
 	/**
@@ -227,12 +216,23 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
-	 * Delegates to toString(). TODO: should be the other way around.
+	 * A short description of the fixture.
 	 * @return a short description of the fixture
 	 */
 	@Override
 	public String shortDesc() {
-		return toString();
+		final StringBuilder builder = new StringBuilder(25 + kind.length());
+		if (field) {
+			if (!cultivated) {
+				builder.append("Wild or abandoned ");
+			}
+			builder.append(kind);
+			builder.append(" field");
+		} else {
+			builder.append(kind);
+			builder.append(" meadow");
+		}
+		return builder.toString();
 	}
 	/**
 	 * The required Perception check for an explorer to find the fixture.
