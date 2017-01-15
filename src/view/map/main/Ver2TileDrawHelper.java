@@ -30,9 +30,7 @@ import model.map.PointFactory;
 import model.map.River;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
-import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.viewer.FixtureMatcher;
 import model.viewer.TileTypeFixture;
@@ -264,24 +262,17 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private Stream<TileFixture> getDrawableFixtures(final IMapNG map,
 													final Point location) {
-		// TODO: Use Stream.concat() instead of constructing a list
-		final Collection<TileFixture> temp = new ArrayList<>();
-		@Nullable
-		final Ground ground = map.getGround(location);
-		if (ground != null) {
-			temp.add(ground);
-		}
-		@Nullable
-		final Forest forest = map.getForest(location);
-		if (forest != null) {
-			temp.add(forest);
-		}
+		@Nullable final Mountain mtn;
 		if (map.isMountainous(location)) {
-			temp.add(new Mountain());
+			mtn = new Mountain();
+		} else {
+			mtn = null;
 		}
-		map.streamOtherFixtures(location).forEach(temp::add);
-		return temp.stream().filter(fix -> !(fix instanceof TileTypeFixture))
-				.filter(zof::shouldDisplay).sorted(fixComp);
+		return Stream.concat(
+				Stream.of(map.getGround(location), map.getForest(location), mtn)
+						.filter(Objects::nonNull), map.streamOtherFixtures(location))
+					   .filter(fix -> !(fix instanceof TileTypeFixture))
+					   .filter(zof::shouldDisplay).sorted(fixComp);
 	}
 
 	/**
