@@ -3,6 +3,7 @@ package controller.map.misc;
 import java.io.Reader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -67,13 +68,8 @@ public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent>
 	@Override
 	public XMLEvent next() {
 		try {
-			// TODO: use Optional to condense
-			final XMLEvent retval = wrapped.nextEvent();
-			if (retval == null) {
-				throw new NoSuchElementException("next event was null");
-			} else {
-				return retval;
-			}
+			return Optional.ofNullable(wrapped.nextEvent()).orElseThrow(
+					() -> new NoSuchElementException("next event was null"));
 		} catch (final XMLStreamException except) {
 			final NoSuchElementException nse =
 					new NoSuchElementException("Malformed XML");
