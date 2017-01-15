@@ -133,23 +133,6 @@ public final class OneToTwoConverter implements SimpleDriver {
 	}
 
 	/**
-	 * Whether there's anything at the given point.
-	 *
-	 * TODO: use {@link IMapNG#isLocationEmpty(Point)} instead?
-	 * @param map   a map
-	 * @param point a point
-	 * @return whether that location in the map has anything (terrain type, ground,
-	 * forest, rivers, or fixtures) on it
-	 */
-	private static boolean doesPointHaveContents(final IMapNG map, final Point point) {
-		return (TileType.NotVisible != map.getBaseTerrain(point)) ||
-					   (map.getGround(point) != null) || (map.getForest(point) !=
-																  null) ||
-					   map.getRivers(point).iterator().hasNext() ||
-					   map.streamOtherFixtures(point).anyMatch(fix -> true);
-	}
-
-	/**
 	 * Deal with rivers separately.
 	 *
 	 * @param point   the location being handled
@@ -423,7 +406,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 											  final boolean main,
 											  final IDRegistrar idFac) {
 		final List<Point> initial = new LinkedList<>();
-		if (doesPointHaveContents(oldMap, point)) {
+		if (!oldMap.isLocationEmpty(point)) {
 			for (int i = 0; i < RES_JUMP; i++) {
 				for (int j = 0; j < RES_JUMP; j++) {
 					final int row = (point.getRow() * RES_JUMP) + i;
@@ -456,7 +439,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 										  final Player independentPlayer) {
 		final List<Point> initial = createInitialSubtiles(point,
 				oldMap, newMap, main, idFactory);
-		if (doesPointHaveContents(oldMap, point)) {
+		if (!oldMap.isLocationEmpty(point)) {
 			final int idNum = idFactory.createID();
 			if (oldMap instanceof IMutableMapNG) {
 				((IMutableMapNG) oldMap).addFixture(point,
