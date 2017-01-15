@@ -49,7 +49,6 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 
 	/**
 	 * Write a table row based on the given fixture.
-	 * TODO: simplify, as elsewhere.
 	 * @param ostream  the stream to write the row to
 	 * @param fixtures the set of fixtures
 	 * @param item     the fixture to base the line on
@@ -61,35 +60,33 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   final IFixture item, final Point loc) throws IOException {
+		final String kind;
+		final String quantity;
+		final String specifics;
 		if (item instanceof ResourcePile) {
 			final ResourcePile pile = (ResourcePile) item;
-			writeField(ostream, pile.getKind());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, pile.getQuantity().toString());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, pile.getContents());
-			ostream.append(getRowDelimiter());
-			return true;
+			kind = pile.getKind();
+			quantity = pile.getQuantity().toString();
+			specifics = pile.getContents();
 		} else if (item instanceof Implement) {
-			writeField(ostream, "equipment");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "1");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, ((Implement) item).getKind());
-			ostream.append(getRowDelimiter());
-			return true;
+			kind = "equipment";
+			quantity = "1";
+			specifics = ((Implement) item).getKind();
 		} else if (item instanceof CacheFixture) {
 			final CacheFixture cache = (CacheFixture) item;
-			writeField(ostream, cache.getKind());
-			writeFieldDelimiter(ostream);
-			writeField(ostream, "---");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, cache.getContents());
-			ostream.append(getRowDelimiter());
-			return true;
+			kind = cache.getKind();
+			quantity = "---";
+			specifics = cache.getContents();
 		} else {
 			return false;
 		}
+		writeField(ostream, kind);
+		writeFieldDelimiter(ostream);
+		writeField(ostream, quantity);
+		writeFieldDelimiter(ostream);
+		writeField(ostream, specifics);
+		ostream.append(getRowDelimiter());
+		return true;
 	}
 
 	@Override
