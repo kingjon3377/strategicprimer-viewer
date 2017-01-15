@@ -98,21 +98,20 @@ public interface Pair<@NonNull L, @NonNull R> {
 		}
 
 		/**
-		 * A Pair is equal only if it is the same Pair implementation with equal objects
-		 * in corresponding positions.
+		 * A Pair is equal only if it is a Pair with equal objects in corresponding
+		 * positions.
 		 *
-		 * TODO: Don't require the same implementation.
 		 * @param obj an object
 		 * @return whether it's the same as this one
 		 */
 		@SuppressWarnings("rawtypes")
 		@Override
 		public boolean equals(@Nullable final Object obj) {
-			return (this == obj) || ((obj instanceof Pair.PairImpl) &&
+			return (this == obj) || ((obj instanceof Pair) &&
 											 Objects.equals(first,
-													 ((PairImpl) obj).first) &&
+													 ((Pair) obj).first()) &&
 											 Objects.equals(second,
-													 ((PairImpl) obj).second));
+													 ((Pair) obj).second()));
 		}
 
 		/**
