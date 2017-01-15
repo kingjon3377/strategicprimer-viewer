@@ -212,15 +212,12 @@ public class ResourcePile
 	}
 
 	/**
-	 * FIXME: Use ID for hashing.
+	 * Use ID for hashing.
 	 * @return a hash code for the object.
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		return (prime * ((prime * ((prime * (prime + contents.hashCode())) +
-													 id)) + kind.hashCode())) +
-								 quantity.hashCode();
+		return id;
 	}
 
 	/**
