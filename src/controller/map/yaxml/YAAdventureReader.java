@@ -33,6 +33,7 @@ public final class YAAdventureReader extends YAAbstractReader<AdventureFixture> 
 	 */
 	private final IPlayerCollection players;
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 * @param playerCollection the map's growing collection of players
@@ -93,6 +94,7 @@ public final class YAAdventureReader extends YAAbstractReader<AdventureFixture> 
 	}
 
 	/**
+	 * We only support the "adventure" tag.
 	 * @param tag a tag
 	 * @return whether it is one we support
 	 */
@@ -102,6 +104,7 @@ public final class YAAdventureReader extends YAAbstractReader<AdventureFixture> 
 	}
 
 	/**
+	 * We can only write AdventureFixtures.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

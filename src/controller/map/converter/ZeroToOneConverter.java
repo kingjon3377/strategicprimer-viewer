@@ -97,6 +97,7 @@ public final class ZeroToOneConverter {
 	}
 
 	/**
+	 * Whether the specified tag is the desired tag, in a namespace we support.
 	 * @param tag     the name of an XML tag
 	 * @param desired the desired XML tag
 	 * @return whether it matches, either in our namespace or the default namespace
@@ -107,6 +108,8 @@ public final class ZeroToOneConverter {
 	}
 
 	/**
+	 * Read version-0 XML from the input stream and write version-1 equivalent XML to
+	 * the output stream.
 	 * @param stream  a stream representing a SP map, format version 0
 	 * @param ostream the stream to write the equivalent map, format version 1, to
 	 * @throws IOException on I/O error writing to ostream
@@ -219,6 +222,7 @@ public final class ZeroToOneConverter {
 	}
 
 	/**
+	 * An Iterable factory. (TODO: Do we really need this?)
 	 * @param iter an iterator
 	 * @return a wrapper
 	 */
@@ -228,6 +232,7 @@ public final class ZeroToOneConverter {
 	}
 
 	/**
+	 * Get the equivalent XML to a numerical "event" property.
 	 * @param num an event number
 	 * @return the XML representing it, or "" if none.
 	 */
@@ -295,6 +300,7 @@ public final class ZeroToOneConverter {
 	}
 
 	/**
+	 * Write an attribute back to XML.
 	 * @param attr an attribute
 	 * @return its XML representation
 	 */
@@ -343,6 +349,7 @@ public final class ZeroToOneConverter {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

@@ -41,6 +41,7 @@ import util.Warning;
 @SuppressWarnings("ClassHasNoToStringMethod")
 public final class YAXMLReader implements IMapReader, ISPReader {
 	/**
+	 * Read an object from XML.
 	 * @param <T>     A supertype of the object the XML represents
 	 * @param file    the file we're reading from
 	 * @param istream the stream to read from
@@ -75,6 +76,7 @@ public final class YAXMLReader implements IMapReader, ISPReader {
 	}
 
 	/**
+	 * Read a map from XML.
 	 * @param file   the file to read from
 	 * @param warner a Warning instance to use for warnings
 	 * @return the map contained in the file
@@ -91,6 +93,7 @@ public final class YAXMLReader implements IMapReader, ISPReader {
 	}
 
 	/**
+	 * Read a map from a stream.
 	 * @param file    the file we're reading from
 	 * @param istream the stream to read from
 	 * @param warner  a Warning instance to use for warnings

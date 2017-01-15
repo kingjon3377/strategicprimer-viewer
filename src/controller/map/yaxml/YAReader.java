@@ -26,6 +26,7 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public interface YAReader<@NonNull T> {
 	/**
+	 * Read an object from XML.
 	 * @param element   the element being parsed
 	 * @param parent    the parent tag
 	 * @param stream    to read more elements from
@@ -46,12 +47,14 @@ public interface YAReader<@NonNull T> {
 	void write(Appendable ostream, T obj, int indent) throws IOException;
 
 	/**
-	 * @param tag a tag. May be null, to simplify callers.
-	 * @return whether we support it. Should return false if null.
+	 * Whether we can read the supported tag.
+	 * @param tag a tag.
+	 * @return whether we support it.
 	 */
 	boolean isSupportedTag(String tag);
 
 	/**
+	 * Whether we can write the given object.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

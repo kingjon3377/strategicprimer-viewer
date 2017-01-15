@@ -56,6 +56,7 @@ public final class YAUnitReader extends YAAbstractReader<IUnit> {
 	private final List<YAReader<? extends IFixture>> readers;
 
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 * @param playerCollection the map's collection of players
@@ -98,6 +99,7 @@ public final class YAUnitReader extends YAAbstractReader<IUnit> {
 	}
 
 	/**
+	 * Read a unit from XML.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
@@ -224,6 +226,7 @@ public final class YAUnitReader extends YAAbstractReader<IUnit> {
 	}
 
 	/**
+	 * We only support the "unit" tag.
 	 * @param tag a tag
 	 * @return whether it's one we can read
 	 */
@@ -274,6 +277,7 @@ public final class YAUnitReader extends YAAbstractReader<IUnit> {
 	}
 
 	/**
+	 * We can only write Units. (TODO: Should this be IUnit instead?)
 	 * @param obj an object
 	 * @return whether we can write it
 	 */
@@ -305,6 +309,7 @@ public final class YAUnitReader extends YAAbstractReader<IUnit> {
 		closeTag(ostream, 0, tag);
 	}
 	/**
+	 * Write a unit member.
 	 * @param child a child object to write
 	 * @param ostream the stream to write it to
 	 * @param indent  how far indented we are already

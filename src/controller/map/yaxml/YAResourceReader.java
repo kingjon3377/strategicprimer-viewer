@@ -70,6 +70,7 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 	private final Warning warner;
 
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 */
@@ -78,6 +79,7 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 		warner = warning;
 	}
 	/**
+	 * Get the "DC" parameter.
 	 * @param element a tag
 	 * @return the value of its 'dc' property.
 	 * @throws SPFormatException on SP format problem
@@ -127,6 +129,7 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 	}
 
 	/**
+	 * Get whether the grove or orchard is cultivated.
 	 * @param element a tag representing a grove or orchard
 	 * @return whether the grove or orchard is cultivated
 	 * @throws SPFormatException on SP format problems: use of 'wild' if warnings are
@@ -147,6 +150,7 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 	}
 
 	/**
+	 * Get which tag to use for a meadow or field.
 	 * @param meadow a meadow or field
 	 * @return the proper tag for it
 	 */
@@ -160,6 +164,7 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 	}
 
 	/**
+	 * Get which tag to use for a grove or orchard.
 	 * @param grove a grove or orchard
 	 * @return the proper tag for it
 	 */
@@ -173,6 +178,7 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 	}
 
 	/**
+	 * Whether we can read the given tag.
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
@@ -182,6 +188,7 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 	}
 
 	/**
+	 * Read an object from XML.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed
@@ -298,6 +305,7 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 	}
 
 	/**
+	 * We can write any HarvestableFixture.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

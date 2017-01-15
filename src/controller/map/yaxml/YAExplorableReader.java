@@ -40,6 +40,7 @@ public final class YAExplorableReader extends YAAbstractReader<ExplorableFixture
 			Collections.unmodifiableSet(
 					new HashSet<>(Arrays.asList("cave", "battlefield")));
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 */
@@ -48,6 +49,7 @@ public final class YAExplorableReader extends YAAbstractReader<ExplorableFixture
 	}
 
 	/**
+	 * Get the "DC" parameter. TODO: Is this worth having an extra method?
 	 * @param element a tag
 	 * @return the value of its 'dc' property.
 	 * @throws SPFormatException on SP format problem
@@ -58,6 +60,7 @@ public final class YAExplorableReader extends YAAbstractReader<ExplorableFixture
 	}
 
 	/**
+	 * Whether we can read the given tag.
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
@@ -67,6 +70,7 @@ public final class YAExplorableReader extends YAAbstractReader<ExplorableFixture
 	}
 
 	/**
+	 * Read a cave or battlefield from XML.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed
@@ -119,6 +123,7 @@ public final class YAExplorableReader extends YAAbstractReader<ExplorableFixture
 	}
 
 	/**
+	 * We can only write Caves and Battlefields.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

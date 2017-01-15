@@ -45,6 +45,7 @@ public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 					"sandbar")));
 
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 */
@@ -53,6 +54,7 @@ public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 	}
 
 	/**
+	 * Whether the tag is one we support.
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
@@ -62,6 +64,7 @@ public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 	}
 
 	/**
+	 * Read a fixture from XML.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed tile
@@ -141,6 +144,7 @@ public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 	}
 
 	/**
+	 * We can write any TerrainFixture.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

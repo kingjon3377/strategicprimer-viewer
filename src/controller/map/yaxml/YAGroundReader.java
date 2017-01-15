@@ -28,6 +28,7 @@ import util.Warning;
 public final class YAGroundReader extends YAAbstractReader<Ground> {
 
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory to use for ID numbers
 	 */
@@ -35,6 +36,7 @@ public final class YAGroundReader extends YAAbstractReader<Ground> {
 		super(warning, idRegistrar);
 	}
 	/**
+	 * Read a Ground from XML.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed tile
@@ -56,6 +58,7 @@ public final class YAGroundReader extends YAAbstractReader<Ground> {
 	}
 
 	/**
+	 * We only support the "ground" tag.
 	 * @param tag a tag
 	 * @return whether it's one we support
 	 */
@@ -83,6 +86,7 @@ public final class YAGroundReader extends YAAbstractReader<Ground> {
 	}
 
 	/**
+	 * We can only write Ground.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

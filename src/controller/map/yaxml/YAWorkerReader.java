@@ -46,6 +46,7 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 	private final Warning warner;
 
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 */
@@ -236,6 +237,7 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 	}
 
 	/**
+	 * Read a worker from XML.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed
@@ -308,6 +310,7 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 	}
 
 	/**
+	 * We only support the "worker" tag.
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
@@ -317,6 +320,7 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 	}
 
 	/**
+	 * We can only write Workers. (TODO: Should this be the interface?)
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

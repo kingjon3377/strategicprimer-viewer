@@ -76,6 +76,7 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 					Pair.of(Pattern.compile("'"), "&apos;"));
 
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 */
@@ -260,6 +261,7 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 		}
 	}
 	/**
+	 * Create a QName for the given tag in our namespace.
 	 * @param tag a tag
 	 * @return a QName combining it with our namespace
 	 */
@@ -523,6 +525,7 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 				getIntegerParameter(element, "column"));
 	}
 	/**
+	 * Whether the given XML event is a StartElement in a namespace we support.
 	 * @param element an XML element
 	 * @return whether it's a StartElement in a namespace we can handle
 	 */

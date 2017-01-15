@@ -75,6 +75,7 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 	 */
 	private final Collection<YAReader<? extends FortressMember>> memberReaders;
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 * @param playerCollection the map's collection of players
@@ -210,6 +211,7 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 	}
 
 	/**
+	 * Write a town, city, or fortification.
 	 * @param ostream the stream to write to
 	 * @param obj     the AbstractTownEvent to write
 	 * @param indent  how far to indent the tag
@@ -234,6 +236,7 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 	}
 
 	/**
+	 * Whether the given tag is one we support.
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
@@ -244,6 +247,7 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 	}
 
 	/**
+	 * Read a town from XML.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed town
@@ -327,6 +331,7 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 	}
 
 	/**
+	 * We can write any kind of town.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

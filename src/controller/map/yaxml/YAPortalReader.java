@@ -27,6 +27,7 @@ import util.Warning;
 @SuppressWarnings("ClassHasNoToStringMethod")
 public final class YAPortalReader extends YAAbstractReader<Portal> {
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 */
@@ -76,6 +77,7 @@ public final class YAPortalReader extends YAAbstractReader<Portal> {
 	}
 
 	/**
+	 * We only support the "portal" tag.
 	 * @param tag a tag
 	 * @return whether it is one we support
 	 */
@@ -85,6 +87,7 @@ public final class YAPortalReader extends YAAbstractReader<Portal> {
 	}
 
 	/**
+	 * We can only write Portals.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

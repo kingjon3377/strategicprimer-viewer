@@ -20,6 +20,7 @@ import model.map.TileFixture;
 @FunctionalInterface
 public interface ZOrderFilter {
 	/**
+	 * Whether the fixture should be displayed.
 	 * @param fix a fixture
 	 * @return whether it should be displayed or not
 	 */

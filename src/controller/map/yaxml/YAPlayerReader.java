@@ -35,6 +35,7 @@ public final class YAPlayerReader extends YAAbstractReader<Player> {
 		super(warning, idRegistrar);
 	}
 	/**
+	 * Read a Player from XML.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed tile
@@ -53,6 +54,7 @@ public final class YAPlayerReader extends YAAbstractReader<Player> {
 	}
 
 	/**
+	 * We only support the "player" tag.
 	 * @param tag a tag
 	 * @return whether it's one we can read
 	 */
@@ -79,6 +81,7 @@ public final class YAPlayerReader extends YAAbstractReader<Player> {
 	}
 
 	/**
+	 * We can only write Players.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

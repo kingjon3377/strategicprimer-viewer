@@ -53,6 +53,7 @@ public final class YAReaderAdapter {
 		this(Warning.DEFAULT, new IDFactory());
 	}
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idFactory the factory for ID numbers
 	 */

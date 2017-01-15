@@ -60,6 +60,7 @@ public final class YAMobileReader extends
 	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP;
 
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 */
@@ -84,6 +85,7 @@ public final class YAMobileReader extends
 		SUPP_TAGS = Collections.unmodifiableSet(new HashSet<>(TAG_MAP.values()));
 	}
 	/**
+	 * Get the value of the "kind" tag.
 	 * @param element the current tag
 	 * @return the value of its 'kind' parameter
 	 * @throws SPFormatException on SP format error---if the parameter is missing, e.g.
@@ -116,6 +118,8 @@ public final class YAMobileReader extends
 	}
 
 	/**
+	 * Read a fixture that only has ID (and possibly image filename), no other state to
+	 * read.
 	 * @param tag   the tag being read
 	 * @param idNum the ID # to give the fixture
 	 * @return the thing being read
@@ -144,6 +148,7 @@ public final class YAMobileReader extends
 	}
 
 	/**
+	 * Whether the tag is one we support.
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
@@ -153,6 +158,7 @@ public final class YAMobileReader extends
 	}
 
 	/**
+	 * Read an object from XML.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed tile
@@ -240,6 +246,7 @@ public final class YAMobileReader extends
 	}
 
 	/**
+	 * We can write any MobileFixture except units.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

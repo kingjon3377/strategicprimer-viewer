@@ -74,6 +74,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 	private final YAReader<Player> playerReader;
 
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 * @param playerCollection the map's collection of players
@@ -142,6 +143,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 	}
 
 	/**
+	 * Get the first open-tag event (with our namespace) in the stream.
 	 * @param stream a stream of XMLEvents
 	 * @param parent the parent tag
 	 * @return the first start-element in the stream
@@ -344,6 +346,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 	}
 
 	/**
+	 * Write a map.
 	 * @param obj     a map
 	 * @param ostream the stream to write it to
 	 * @param indent  how far indented we are already
@@ -427,6 +430,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 		closeTag(ostream, indent, "view");
 	}
 	/**
+	 * Write an object to a child tag.
 	 * @param child a child object to write
 	 * @param ostream the stream to write it to
 	 * @param indent  how far indented we are already
@@ -442,6 +446,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 				.writeRaw(ostream, child, indent);
 	}
 	/**
+	 * We only support the "map" and "view" tags.
 	 * @param tag a tag
 	 * @return whether this class supports it
 	 */
@@ -451,6 +456,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 	}
 
 	/**
+	 * We can only write maps (the IMapNG interface).
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

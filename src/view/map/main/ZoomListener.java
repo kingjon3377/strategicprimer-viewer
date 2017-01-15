@@ -40,6 +40,7 @@ public final class ZoomListener implements ActionListener {
 	}
 
 	/**
+	 * Handle the menu item.
 	 * @param evt the event to handle
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
@@ -90,6 +91,7 @@ public final class ZoomListener implements ActionListener {
 	}
 
 	/**
+	 * A trivial toString().
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")

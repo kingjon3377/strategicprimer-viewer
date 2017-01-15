@@ -27,6 +27,7 @@ import util.Warning;
 @SuppressWarnings("ClassHasNoToStringMethod")
 public final class YAImplementReader extends YAAbstractReader<Implement> {
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 */
@@ -34,6 +35,7 @@ public final class YAImplementReader extends YAAbstractReader<Implement> {
 		super(warning, idRegistrar);
 	}
 	/**
+	 * Read an Implement from XML.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from
@@ -53,6 +55,7 @@ public final class YAImplementReader extends YAAbstractReader<Implement> {
 	}
 
 	/**
+	 * We only support the "implement" tag.
 	 * @param tag a tag
 	 * @return whether it's one we supported
 	 */
@@ -80,6 +83,7 @@ public final class YAImplementReader extends YAAbstractReader<Implement> {
 	}
 
 	/**
+	 * We can only write Implements.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */

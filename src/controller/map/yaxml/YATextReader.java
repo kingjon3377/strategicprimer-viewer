@@ -28,6 +28,7 @@ import util.Warning;
 @SuppressWarnings("ClassHasNoToStringMethod")
 public final class YATextReader extends YAAbstractReader<TextFixture> {
 	/**
+	 * Constructor.
 	 * @param warning the Warning instance to use
 	 * @param idRegistrar the factory for ID numbers.
 	 */
@@ -36,6 +37,7 @@ public final class YATextReader extends YAAbstractReader<TextFixture> {
 	}
 
 	/**
+	 * We only support the "text" tag.
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
@@ -45,6 +47,7 @@ public final class YATextReader extends YAAbstractReader<TextFixture> {
 	}
 
 	/**
+	 * Read a text fixture from XML.
 	 * @param element   the XML element to parse
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed tile
@@ -96,6 +99,7 @@ public final class YATextReader extends YAAbstractReader<TextFixture> {
 	}
 
 	/**
+	 * We can only write TextFixtures.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */
