@@ -258,9 +258,9 @@ public class SPMapNG implements IMutableMapNG {
 								&& ourGround.isExposed()) {
 						// They just don't have the exposed bit set; carry on
 						// ...
-					} else if ((ourGround == null) || !streamOtherFixtures(point)
-															   .anyMatch(
-																	   theirGround::equals)) {
+					} else if ((ourGround == null) || streamOtherFixtures(point)
+															  .noneMatch(
+																	  theirGround::equals)) {
 						ostream.format(
 								"%s At %s:\tHas different primary ground, or ground we " +
 										"don't%n",
