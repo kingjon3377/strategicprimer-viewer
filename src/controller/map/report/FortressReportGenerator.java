@@ -119,26 +119,22 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	}
 
 	/**
-	 * Produce a String representing a collection of rivers.
+	 * Write HTML representing a collection of rivers.
 	 * @param rivers a collection of rivers
-	 * @return an equivalent string.
+	 * @param formatter a Formatter to write to
 	 */
-	private static String riversToString(final Collection<River> rivers) {
-		final StringBuilder builder = new StringBuilder(64);
+	private static void riversToString(final Formatter formatter,
+										 final Collection<River> rivers) {
 		if (rivers.contains(River.Lake)) {
-			builder.append("<li>There is a nearby lake.</li>");
-			builder.append(LineEnd.LINE_SEP);
+			formatter.format("<li>There is a nearby lake.</li>%n");
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM);
-			builder.append("There is a river on the tile, ");
-			builder.append("flowing through the following borders: ");
-			builder.append(rivers.stream().map(River::getDescription)
-								   .collect(Collectors.joining(", ")));
-			builder.append(CLOSE_LIST_ITEM);
+			formatter.format("<li>%nThere is a river on the tile, flowing through ");
+			formatter.format("the following borders: %s</li>%n",
+					rivers.stream().map(River::getDescription)
+							.collect(Collectors.joining(", ")));
 		}
-		return builder.toString();
 	}
 
 	/**
@@ -278,9 +274,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			formatter.format("<ul>%n<li>Located at %s %s</li>%n", loc.toString(),
 					distCalculator.distanceString(loc));
 			formatter.format("<li>%s</li>%n", getTerrain(map, loc, fixtures));
-			builder.append(riversToString(
+			riversToString(formatter,
 					StreamSupport.stream(map.getRivers(loc).spliterator(), false)
-							.collect(Collectors.toSet())));
+							.collect(Collectors.toSet()));
 			final Collection<String> units = new HtmlList("Units on the tile:");
 			final HeadedList<String> resourcesText = new HtmlList("Resources:");
 			final Collection<String> equipment = new HtmlList("Equipment:");
@@ -308,11 +304,10 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 												 loc));
 				}
 			}
-			builder.append(units);
 			resources.values().stream().map(Collection::toString)
 					.forEach(resourcesText::add);
-			builder.append(resources);
-			builder.append(equipment);
+			formatter.format("%s%s%s", units.toString(), resources.toString(),
+					equipment.toString());
 		}
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return builder.toString();
