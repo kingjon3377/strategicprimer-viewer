@@ -93,19 +93,9 @@ public final class AnimalTabularReportGenerator implements ITableGenerator<Anima
 		final Comparator<Point> comparator = new DistanceComparator(base);
 		final int cmp = comparator.compare(one.first(), two.first());
 		if (cmp == 0) {
-			final Animal first = one.second();
-			final Animal second = two.second();
-			if (first.isTalking() && !second.isTalking()) {
-				return -1;
-			} else if (second.isTalking() && !first.isTalking()) {
-				return 1;
-			} else if (first.isTraces() && !second.isTraces()) {
-				return 1;
-			} else if (second.isTraces() && !first.isTraces()) {
-				return -1;
-			} else {
-				return first.getKind().compareTo(second.getKind());
-			}
+			return Comparator.comparing(Animal::isTalking).thenComparing(
+					(animal) -> !animal.isTraces()).thenComparing(Animal::getKind)
+						   .compare(one.second(), two.second());
 		} else {
 			return cmp;
 		}
