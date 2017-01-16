@@ -21,7 +21,6 @@ import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
-import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
@@ -199,15 +198,13 @@ public final class IOHandler implements ActionListener {
 				break;
 			case "open secondary map in map viewer":
 				if (model instanceof IMultiMapModel) {
-					final Optional<IViewerModel> newModel =
-							((IMultiMapModel) model).streamSubordinateMaps().findFirst()
-									.map(ViewerModel::new);
-					if (newModel.isPresent()) {
-						// FIXME: Somehow get the CLI interface and options from previous
-						new ViewerStart()
-								.startDriver(new CLIHelper(), new SPOptionsImpl(),
-										newModel.get());
-					}
+					// FIXME: Somehow get the CLI interface and options from previous
+					((IMultiMapModel) model).streamSubordinateMaps().findFirst()
+							.map(ViewerModel::new)
+							.ifPresent(vModel -> new ViewerStart()
+														 .startDriver(new CLIHelper(),
+																 new SPOptionsImpl(),
+																 vModel));
 				}
 				break;
 			default:
