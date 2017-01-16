@@ -641,9 +641,9 @@ public final class OneToTwoConverter implements SimpleDriver {
 	 */
 	private void writeConvertedMap(final Path old, final IMapNG map)
 			throws DriverFailedException {
-		final MapReaderAdapter writer = new MapReaderAdapter();
 		try {
-			writer.write(old.resolveSibling(old.getFileName() + ".converted.xml"), map);
+			new MapReaderAdapter()
+					.write(old.resolveSibling(old.getFileName() + ".converted.xml"), map);
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException("I/O error writing to " + old.getFileName() +
