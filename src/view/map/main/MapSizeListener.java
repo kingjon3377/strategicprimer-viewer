@@ -36,41 +36,39 @@ public final class MapSizeListener extends ComponentAdapter {
 	public void componentResized(@Nullable final ComponentEvent event) {
 		if ((event != null) && (event.getComponent() instanceof MapGUI)) {
 			final IViewerModel localModel = ((MapGUI) event.getComponent()).getMapModel();
-			synchronized (localModel) {
-				final int tileSize = TileViewSize.scaleZoom(localModel.getZoomLevel(),
-						localModel.getMapDimensions().getVersion());
-				final int visibleCols = event.getComponent().getWidth() / tileSize;
-				final int visibleRows = event.getComponent().getHeight() / tileSize;
-				int minCol = localModel.getDimensions().getMinimumCol();
-				int maxCol = localModel.getDimensions().getMaximumCol();
-				int minRow = localModel.getDimensions().getMinimumRow();
-				int maxRow = localModel.getDimensions().getMaximumRow();
-				final MapDimensions mapDim = localModel.getMapDimensions();
-				if ((visibleCols != (maxCol - minCol)) ||
-							(visibleRows != (maxRow - minRow))) {
-					final int totalCols = mapDim.cols;
-					if (visibleCols >= totalCols) {
-						minCol = 0;
-						maxCol = totalCols - 1;
-					} else if ((minCol + visibleCols) >= totalCols) {
-						maxCol = totalCols - 1;
-						minCol = totalCols - visibleCols - 2;
-					} else {
-						maxCol = (minCol + visibleCols) - 1;
-					}
-					final int totalRows = mapDim.rows;
-					if (visibleRows >= totalRows) {
-						minRow = 0;
-						maxRow = totalRows - 1;
-					} else if ((minRow + visibleRows) >= totalRows) {
-						maxRow = totalRows - 1;
-						minRow = totalRows - visibleRows - 2;
-					} else {
-						maxRow = (minRow + visibleRows) - 1;
-					}
-					localModel.setDimensions(
-							new VisibleDimensions(minRow, maxRow, minCol, maxCol));
+			final int tileSize = TileViewSize.scaleZoom(localModel.getZoomLevel(),
+					localModel.getMapDimensions().getVersion());
+			final int visibleCols = event.getComponent().getWidth() / tileSize;
+			final int visibleRows = event.getComponent().getHeight() / tileSize;
+			int minCol = localModel.getDimensions().getMinimumCol();
+			int maxCol = localModel.getDimensions().getMaximumCol();
+			int minRow = localModel.getDimensions().getMinimumRow();
+			int maxRow = localModel.getDimensions().getMaximumRow();
+			final MapDimensions mapDim = localModel.getMapDimensions();
+			if ((visibleCols != (maxCol - minCol)) ||
+						(visibleRows != (maxRow - minRow))) {
+				final int totalCols = mapDim.cols;
+				if (visibleCols >= totalCols) {
+					minCol = 0;
+					maxCol = totalCols - 1;
+				} else if ((minCol + visibleCols) >= totalCols) {
+					maxCol = totalCols - 1;
+					minCol = totalCols - visibleCols - 2;
+				} else {
+					maxCol = (minCol + visibleCols) - 1;
 				}
+				final int totalRows = mapDim.rows;
+				if (visibleRows >= totalRows) {
+					minRow = 0;
+					maxRow = totalRows - 1;
+				} else if ((minRow + visibleRows) >= totalRows) {
+					maxRow = totalRows - 1;
+					minRow = totalRows - visibleRows - 2;
+				} else {
+					maxRow = (minRow + visibleRows) - 1;
+				}
+				localModel.setDimensions(
+						new VisibleDimensions(minRow, maxRow, minCol, maxCol));
 			}
 		}
 	}
