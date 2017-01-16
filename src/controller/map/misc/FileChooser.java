@@ -215,7 +215,7 @@ public final class FileChooser {
 		/**
 		 * Specifies the Save (or Save As) dialog.
 		 */
-		Save;
+		Save
 	}
 
 	/**
