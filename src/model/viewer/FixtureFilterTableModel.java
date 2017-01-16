@@ -127,6 +127,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 * the class names plus "s".
 	 * @param classes the classes to match
 	 */
+	@SafeVarargs
 	private final void addTrivialMatchers(final Class<? extends TileFixture>... classes) {
 		for (final Class<? extends TileFixture> cls : classes) {
 			list.add(new FixtureMatcher(cls::isInstance, cls.getSimpleName() + 's'));
