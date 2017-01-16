@@ -133,12 +133,9 @@ public final class StrategyExporter implements PlayerChangeListener {
 	private static void writeMember(final UnitMember member, final Formatter formatter) {
 		if (member instanceof IWorker) {
 			final IWorker worker = (IWorker) member;
-			// To save calculations, assume a half-K every time.
-			final StringBuilder builder =
-					new StringBuilder(512);
 			formatter.format("%s", worker.getName());
 			if (worker.iterator().hasNext()) {
-				builder.append(" (");
+				formatter.format(" (");
 				boolean first = true;
 				for (final IJob job : worker) {
 					final String fmt;
