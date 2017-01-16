@@ -31,6 +31,7 @@ public interface IJob
 	 * Skill names that are suspicious when they are the only Skill a Job has. In many
 	 * cases they should be 'miscellaneous' instead.
 	 */
+	@SuppressWarnings("PublicStaticCollectionField")
 	Collection<String> SUSPICIOUS_SKILLS = Collections.unmodifiableList(
 			Arrays.asList("hunter", "hunting", "explorer", "exploration",
 					"research", "carpentry", "woodcutting", "farming",
