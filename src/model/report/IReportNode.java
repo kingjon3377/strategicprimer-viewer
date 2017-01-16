@@ -153,6 +153,7 @@ public interface IReportNode
 	 * Add children iff they have children of their own.
 	 * @param children new children to add, each only if it has children of its own
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	default void addIfNonEmpty(final MutableTreeNode... children) {
 		for (final MutableTreeNode child : children) {
 			if (child.getChildCount() != 0) {

@@ -178,6 +178,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * @param unit the unit to add
 	 * @param location where to add it
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addUnitAtLocation(final IMutableMapNG map, final IUnit unit,
 										  final Point location) {
 		final Optional<Fortress> fort =

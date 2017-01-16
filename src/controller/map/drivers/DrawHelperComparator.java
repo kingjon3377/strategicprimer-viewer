@@ -534,6 +534,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 		 * Add a quantity to the stored value.
 		 * @param addend how much to add
 		 */
+		@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 		public void add(final long addend) {
 			value += addend;
 		}

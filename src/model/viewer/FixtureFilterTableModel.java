@@ -127,6 +127,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 * the class names plus "s".
 	 * @param classes the classes to match
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	@SafeVarargs
 	private final void addTrivialMatchers(final Class<? extends TileFixture>... classes) {
 		for (final Class<? extends TileFixture> cls : classes) {
@@ -139,6 +140,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 * @param cls the class to match
 	 * @param desc the description to use in the matcher
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private final void addTrivialMatcher(final Class<? extends TileFixture> cls,
 										 final String desc) {
 		list.add(new FixtureMatcher(cls::isInstance, desc));
@@ -152,6 +154,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 * @param secondDesc the description to use for the matcher using the predicate
 	 *                      reversed
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private final <T extends TileFixture> void addComplements(
 			final Class<? extends T> cls, final Predicate<T> method,
 			final String firstDesc, final String secondDesc) {

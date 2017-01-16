@@ -188,6 +188,7 @@ public class DriverUsage implements IDriverUsage {
 	 *
 	 * @param option an option to add to the list of supported options.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addSupportedOption(final String option) {
 		supportedOptions.add(option);
 	}

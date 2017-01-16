@@ -39,6 +39,7 @@ public class SPOptionsImpl implements SPOptions {
 	 * Add an option without any argument.
 	 * @param opt an option without argument
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addOption(final String opt) {
 		options.put(opt, "true");
 	}

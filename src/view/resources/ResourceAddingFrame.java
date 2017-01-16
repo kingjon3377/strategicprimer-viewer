@@ -436,6 +436,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		 * usually want.
 		 * @param listener a listener to add.
 		 */
+		@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 		public void addSubmitListener(final ActionListener listener) {
 			final Component inner = getEditor().getEditorComponent();
 			if (inner instanceof JTextField) {

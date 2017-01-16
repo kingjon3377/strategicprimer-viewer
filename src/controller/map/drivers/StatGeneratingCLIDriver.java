@@ -348,6 +348,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @param unit the unit to use as our base for finding corresponding units
 	 * @param worker the worker to add to them.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addWorkerToUnit(final IMultiMapModel model, final IFixture unit,
 										final IWorker worker) {
 		for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
