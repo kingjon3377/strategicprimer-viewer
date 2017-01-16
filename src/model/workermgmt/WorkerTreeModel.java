@@ -151,7 +151,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		if (parent instanceof Player) {
 			return model.getUnits((Player) parent).size();
 		} else if (parent instanceof String &&
-						   model.getUnitKinds(root).contains((String) parent)) {
+						   model.getUnitKinds(root).contains(parent)) {
 			return model.getUnits(root, (String) parent).size();
 		} else if (parent instanceof IUnit) {
 			return (int) ((IUnit) parent).stream().count();

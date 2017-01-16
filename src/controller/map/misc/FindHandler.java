@@ -66,8 +66,7 @@ public class FindHandler implements ActionListener {
 	@Nullable
 	private synchronized FindDialog getFindDialog() {
 		if (finder == null) {
-			final FindDialog local =
-					new FindDialog(parent, (IViewerModel) model);
+			final FindDialog local = new FindDialog(parent, model);
 			finder = local;
 			return local;
 		} else {
