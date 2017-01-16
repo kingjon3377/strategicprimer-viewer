@@ -278,7 +278,6 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 					StreamSupport.stream(map.getRivers(loc).spliterator(), false)
 							.collect(Collectors.toSet()));
 			final Collection<String> units = new HtmlList("Units on the tile:");
-			final HeadedList<String> resourcesText = new HtmlList("Resources:");
 			final Collection<String> equipment = new HtmlList("Equipment:");
 			final Map<String, Collection<String>> resources = new HashMap<>();
 			final Collection<String> contents = new HtmlList("Other fortress contents:");
@@ -304,6 +303,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 												 loc));
 				}
 			}
+			final HeadedList<String> resourcesText = new HtmlList("Resources:");
 			resources.values().stream().map(Collection::toString)
 					.forEach(resourcesText::add);
 			formatter.format("%s%s%s", units.toString(), resources.toString(),

@@ -289,6 +289,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 									  "/>%n\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view" +
 									  ">%n",
 						ISPReader.NAMESPACE);
+		assertThat("Multiple units", createSerializedForm(five, true),
+				equalTo(xmlTwoLogical));
 		final String xmlTwoAlphabetical = String.format(
 				"<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"%s\">%n\t<map" +
 						" columns=\"4\" rows=\"3\" version=\"2\">%n\t\t<row " +
@@ -298,8 +300,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						"kind=\"explorer\" name=\"name two\" " +
 						"owner=\"2\"/>%n\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view>%n",
 				ISPReader.NAMESPACE);
-		assertThat("Multiple units", createSerializedForm(five, true),
-				equalTo(xmlTwoLogical));
 		assertThat("Multiple units", createSerializedForm(five, false),
 				anyOf(equalTo(xmlTwoLogical), equalTo(xmlTwoAlphabetical),
 						equalTo(LOOSE_END_TAG.matcher(xmlTwoLogical)

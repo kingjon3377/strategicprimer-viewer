@@ -252,8 +252,7 @@ public final class ExplorationPanel extends BorderedPanel
 		final IMutableMapNG subMap =
 				model.streamSubordinateMaps().map(Pair::first).findFirst()
 						.orElseGet(model::getMap);
-		final Iterable<Player> players;
-		players = subMap.players();
+		final Iterable<Player> players = subMap.players();
 		final FixtureList secList =
 				new FixtureList(panel, new FixtureListModel(subMap), players);
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();

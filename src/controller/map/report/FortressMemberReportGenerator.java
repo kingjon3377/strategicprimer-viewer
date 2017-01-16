@@ -65,8 +65,6 @@ public final class FortressMemberReportGenerator
 	@Override
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer) {
-		final Collection<String> retval =
-				new HtmlList("<h4>Resources and Equipment</h4>");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
 		final Collection<String> equipment = new HtmlList("Equipment:");
@@ -89,6 +87,8 @@ public final class FortressMemberReportGenerator
 		final HeadedList<String> resourcesText = new HtmlList("Resources:");
 		resources.values().stream().map(Collection::toString)
 				.forEach(resourcesText::add);
+		final Collection<String> retval =
+				new HtmlList("<h4>Resources and Equipment</h4>");
 		retval.add(equipment.toString());
 		retval.add(resourcesText.toString());
 		return retval.toString();
@@ -111,7 +111,6 @@ public final class FortressMemberReportGenerator
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final IReportNode rsr = new ListReportNode("Resources:");
 		final Map<String, IReportNode> resourceKinds = new HashMap<>();
 		final IReportNode equip = new ListReportNode("Equipment:");
 		for (final Pair<Point, IFixture> pair : values) {
@@ -127,6 +126,7 @@ public final class FortressMemberReportGenerator
 						(FortressMember) pair.second(), pair.first()));
 			}
 		}
+		final IReportNode rsr = new ListReportNode("Resources:");
 		resourceKinds.values().forEach(rsr::addIfNonEmpty);
 		final IReportNode retval =
 				new SectionListReportNode(4, "Resources and Equipment");

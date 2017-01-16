@@ -173,12 +173,12 @@ public final class TestConverter {
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 0);
 		final Point pointOne = PointFactory.point(0, 0);
 		start.setMountainous(pointOne, true);
-		final Ground groundOne = new Ground("groundOne", false);
 		start.addRivers(pointOne, River.East, River.South);
+		final Ground groundOne = new Ground("groundOne", false);
 		initialize(start, pointOne, TileType.Steppe, groundOne);
 		final Point pointTwo = PointFactory.point(0, 1);
-		final Ground groundTwo = new Ground("groundTwo", false);
 		start.addRivers(pointTwo, River.Lake);
+		final Ground groundTwo = new Ground("groundTwo", false);
 		initialize(start, pointTwo, TileType.Steppe, groundTwo);
 		final Point pointThree = PointFactory.point(1, 0);
 		final Forest forestOne = new Forest("forestOne", false, 1);
@@ -574,9 +574,9 @@ public final class TestConverter {
 			throws IOException, XMLStreamException, SPFormatException {
 		final IMutableMapNG original =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
-		final Player independent = new Player(2, "independent");
 		initialize(original, PointFactory.point(0, 0), TileType.NotVisible,
 				new Ground(ROCK_TYPE, false));
+		final Player independent = new Player(2, "independent");
 		initialize(original, PointFactory.point(0, 1), TileType.BorealForest,
 				new Forest(TEMP_TREE, false, 1), new Hill(1),
 				new Animal("animalKind", false, false, "wild", 2),

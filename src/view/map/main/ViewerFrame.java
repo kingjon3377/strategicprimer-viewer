@@ -126,8 +126,8 @@ public final class ViewerFrame extends SPFrame {
 					tableModel.forEach(matcher -> matcher.setDisplayed(false));
 					tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
 				});
-		final JPanel buttonPanel;
 		OnMac.makeButtonsSegmented(allButton, noneButton);
+		final JPanel buttonPanel;
 		if (OnMac.SYSTEM_IS_MAC) {
 			buttonPanel = BoxPanel.centeredHorizBox(allButton, noneButton);
 		} else {

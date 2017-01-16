@@ -394,9 +394,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			fixtures.remove(Integer.valueOf(member.getID()));
 		}
 		retval.addIfNonEmpty(workers, animals, equipment, resources, others);
-		final ListReportNode ordersNode = new ListReportNode("Orders and Results:");
 		final Collection<Integer> turns = new TreeSet<>(item.getAllOrders().keySet());
 		turns.addAll(item.getAllResults().keySet());
+		final ListReportNode ordersNode = new ListReportNode("Orders and Results:");
 		for (final Integer turn : turns) {
 			final ListReportNode current = new ListReportNode("Turn " + turn + ':');
 			final String orders = item.getOrders(turn);
@@ -434,10 +434,10 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		builder.append(LineEnd.LINE_SEP);
 		builder.append("<p>(Any units listed above are not described again.)</p>");
 		builder.append(LineEnd.LINE_SEP);
-		final Collection<String> ours = new HtmlList("<h5>Your units</h5>");
-		final Collection<String> foreign = new HtmlList("<h5>Foreign units</h5>");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
+		final Collection<String> foreign = new HtmlList("<h5>Foreign units</h5>");
+		final Collection<String> ours = new HtmlList("<h5>Your units</h5>");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof IUnit) {
 				final IUnit unit = (IUnit) pair.second();
@@ -489,7 +489,6 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				theirs.add(unitNode);
 			}
 		});
-		final IReportNode retval;
 		final MutableTreeNode textNode =
 				new SimpleReportNode("(Any units reported above are not described again" +
 											 ".)");
@@ -506,7 +505,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			ours.setText("Your units in the map:");
 			return ours;
 		} else {
-			retval = new SectionReportNode(4, "Units in the map");
+			final IReportNode retval = new SectionReportNode(4, "Units in the map");
 			retval.add(textNode);
 			retval.add(ours);
 			retval.add(theirs);

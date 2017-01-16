@@ -166,7 +166,6 @@ public final class StrategyExporter implements PlayerChangeListener {
 								 final Iterable<UnitMember> dismissed) {
 		final String playerName = currentPlayer.getName();
 		final int turn = model.getMap().getCurrentTurn();
-		final String turnString = Integer.toString(turn);
 		final List<IUnit> units = model.getUnits(currentPlayer);
 
 		final Map<String, List<IUnit>> unitsByKind = new HashMap<>();
@@ -194,6 +193,7 @@ public final class StrategyExporter implements PlayerChangeListener {
 				orders.put(unit, unitOrders);
 			}
 		}
+		final String turnString = Integer.toString(turn);
 		final StringBuilder builder =
 				new StringBuilder(getBufferSize(dismissed, playerName, turnString,
 						unitsByKind, orders));

@@ -455,13 +455,13 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 */
 	private void runTestProcedure(final ICLIHelper cli, final IMapNG map,
 								  final Optional<Path> filename, final Random rng) {
-		final int reps = 50;
 		cli.printf("Testing using%s%n",
 				filename.map(Path::toString).orElse("an unsaved map"));
 		PointFactory.clearCache();
 		final boolean startCaching = rng.nextBoolean();
 		PointFactory.shouldUseCache(startCaching);
 		cli.println(getCachingMessage(startCaching));
+		final int reps = 50;
 		runAllTests(cli, map, reps);
 		PointFactory.shouldUseCache(!startCaching);
 		cli.println(getCachingMessage(!startCaching));

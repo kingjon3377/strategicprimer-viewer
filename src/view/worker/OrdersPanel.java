@@ -105,8 +105,6 @@ public final class OrdersPanel extends BorderedPanel
 		supplier = ordersSupplier;
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
-		final String prefix = OnMac.SHORTCUT_DESC;
-		final int keyMask = OnMac.SHORTCUT_MASK;
 		final int initialTurn = currentTurn;
 		final int minTurn;
 		if (initialTurn < 0) {
@@ -135,13 +133,14 @@ public final class OrdersPanel extends BorderedPanel
 					new ListenedButton("Apply", evt -> apply());
 			final ListenedButton revertButton =
 					new ListenedButton("Revert", evt -> revert());
-			final JPanel buttonPanel;
 			OnMac.makeButtonsSegmented(applyButton, revertButton);
+			final JPanel buttonPanel;
 			if (OnMac.SYSTEM_IS_MAC) {
 				buttonPanel = BoxPanel.centeredHorizBox(applyButton, revertButton);
 			} else {
 				buttonPanel = horizontalPanel(applyButton, null, revertButton);
 			}
+			final String prefix = OnMac.SHORTCUT_DESC;
 			setPageStart(horizontalPanel(
 					new JLabel("Orders for current selection, if a unit: (" + prefix +
 									   "D)"), null,
@@ -154,6 +153,7 @@ public final class OrdersPanel extends BorderedPanel
 		area.setWrapStyleWord(true);
 		// Prevent synthetic access warning
 		final JTextArea localArea = area;
+		final int keyMask = OnMac.SHORTCUT_MASK;
 		createHotKey(this, "openOrders", new ActionWrapper(evt -> {
 			final boolean newlyGainingFocus = !localArea.isFocusOwner();
 			localArea.requestFocusInWindow();

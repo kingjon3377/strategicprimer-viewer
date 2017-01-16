@@ -125,8 +125,6 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				5, "Villages pledged to your service:");
 		final IReportNode independents =
 				new SectionListReportNode(5, "Villages you think are independent:");
-		final IReportNode others =
-				new SectionListReportNode(5, "Other villages you know about:");
 		@SuppressWarnings("TooBroadScope") final Map<Player, IReportNode> othersMap =
 				new HashMap<>();
 		values.stream().filter(pair -> pair.second() instanceof Village)
@@ -145,6 +143,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 																	   player.getName())).add(product);
 			}
 		});
+		final IReportNode others =
+				new SectionListReportNode(5, "Other villages you know about:");
 		othersMap.values().forEach(others::addIfNonEmpty);
 		final IReportNode retval = new SectionReportNode(4, "Villages:");
 		retval.addIfNonEmpty(own, independents, others);

@@ -69,11 +69,6 @@ public final class ExplorableReportGenerator
 		final StringBuilder builder = new StringBuilder(2048).append(
 				"<h4>Caves, Battlefields, and Portals</h4>").append(LineEnd.LINE_SEP)
 											  .append(OPEN_LIST);
-		final Collection<Point> caves =
-				new PointList("Caves beneath the following tiles: ");
-		final Collection<Point> battles =
-				new PointList("Signs of long-ago battles on the following tiles: ");
-		final Collection<Point> portals = new PointList("Portals to other worlds: ");
 		// Similarly, I doubt either this will ever be over half a K, but
 		// we'll give it a whole K just in case.
 		final StringBuilder adventureBuilder = new StringBuilder(1024);
@@ -81,6 +76,11 @@ public final class ExplorableReportGenerator
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
 		boolean anyAdventures = false;
+		final Collection<Point> portals = new PointList("Portals to other worlds: ");
+		final Collection<Point> battles =
+				new PointList("Signs of long-ago battles on the following tiles: ");
+		final Collection<Point> caves =
+				new PointList("Caves beneath the following tiles: ");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
 				caves.add(pair.first());

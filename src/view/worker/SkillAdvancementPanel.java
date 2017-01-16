@@ -115,8 +115,8 @@ public final class SkillAdvancementPanel extends BoxPanel
 		// successfully adding skill
 		final ListenedButton cancelButton =
 				new ListenedButton("Cancel", evt -> hours.setText(""));
-		final JPanel secondPanel;
 		OnMac.makeButtonsSegmented(okButton, cancelButton);
+		final JPanel secondPanel;
 		if (OnMac.SYSTEM_IS_MAC) {
 			secondPanel = BoxPanel.centeredHorizBox(okButton, cancelButton);
 		} else {

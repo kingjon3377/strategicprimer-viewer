@@ -126,8 +126,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			}
 			return 0;
 		};
-		final String[] files = {"trees.png", "mountain.png"};
 		createRiverFiles();
+		final String[] files = {"trees.png", "mountain.png"};
 		for (final String file : files) {
 			if (file != null) {
 				try {
