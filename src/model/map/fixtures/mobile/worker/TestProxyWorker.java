@@ -47,7 +47,7 @@ public final class TestProxyWorker {
 		}
 		final StringBuilder builder = new StringBuilder(512);
 		try (final Formatter format = new Formatter(builder)) {
-			format.format("Worker should contain job %n, but contained the following:%n",
+			format.format("Worker should contain job %s, but contained the following:%n",
 					jobName);
 			for (final IJob job : worker) {
 				format.format("%s", job.getName());
