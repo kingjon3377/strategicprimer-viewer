@@ -250,6 +250,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 		// TODO: Check ID first
 		if (EqualsAny.equalsAny(fort.name, name, "unknown")
 					&& (fort.owner.getPlayerId() == owner.getPlayerId())) {
+			@SuppressWarnings("QuestionableName")
 			final Map<Integer, FortressMember> ours = stream().collect(
 					Collectors.toMap(FortressMember::getID, x -> x, (one, two) -> one));
 			boolean retval = true;
