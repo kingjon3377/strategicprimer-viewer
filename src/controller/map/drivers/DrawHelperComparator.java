@@ -567,6 +567,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 		 * @param two the second item in the triple.
 		 * @param three the third item in the triple.
 		 */
+		@SuppressWarnings("QuestionableName")
 		protected Triple(final T one, final U two, final V three) {
 			first = one;
 			second = two;
@@ -584,6 +585,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 * @param <V> the type of the third item.
 	 * @return the triple
 	 */
+	@SuppressWarnings("QuestionableName")
 	private static <T, U, V> Triple<T, U, V> triple(final T one, final U two,
 													final V three) {
 		return new Triple<>(one, two, three);
