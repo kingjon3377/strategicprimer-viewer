@@ -135,13 +135,13 @@ public final class ExplorationPanel extends BorderedPanel
 	private final IExplorationModel model;
 
 	static {
-		ObjIntConsumer<IExplorationModel.Direction> arrow =
+		final ObjIntConsumer<IExplorationModel.Direction> arrow =
 				(dir, num) -> ARROW_KEYS.put(dir, KeyStroke.getKeyStroke(num, 0));
 		arrow.accept(Direction.North, KeyEvent.VK_UP);
 		arrow.accept(Direction.South, KeyEvent.VK_DOWN);
 		arrow.accept(Direction.West, KeyEvent.VK_LEFT);
 		arrow.accept(Direction.East, KeyEvent.VK_RIGHT);
-		ObjIntConsumer<IExplorationModel.Direction> numPad =
+		final ObjIntConsumer<IExplorationModel.Direction> numPad =
 				(dir, num) -> NUM_KEYS.put(dir, KeyStroke.getKeyStroke(num, 0));
 		numPad.accept(Direction.North, KeyEvent.VK_NUMPAD8);
 		numPad.accept(Direction.South, KeyEvent.VK_NUMPAD2);
