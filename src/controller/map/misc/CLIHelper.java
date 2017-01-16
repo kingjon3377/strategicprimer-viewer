@@ -242,7 +242,7 @@ public final class CLIHelper implements ICLIHelper {
 					retval = new BigDecimal(input.trim(), MathContext.UNLIMITED);
 				} catch (final NumberFormatException except) {
 					ostream.println("Invalid number.");
-					continue;
+					// continue;
 				}
 			}
 		}
