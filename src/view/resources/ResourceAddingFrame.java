@@ -106,7 +106,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	/**
 	 * The current player.
 	 */
-	@SuppressWarnings({"FieldMayBeFinal", "CanBeFinal"})
+	@SuppressWarnings("CanBeFinal")
 	private Player current;
 	/**
 	 * Whether we have yet to ask the user to choose a player.
@@ -280,7 +280,6 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	 *
 	 * @param addend what was added
 	 */
-	@SuppressWarnings("resource")
 	private void logAddition(final String addend) {
 		try (final PrintWriter writer = logLabel.getWriter()) {
 			writer.print("<p style=\"color:white; margin-bottom: 0.5em; ");
@@ -295,7 +294,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -307,7 +306,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
@@ -388,7 +387,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		 * @param out ignored
 		 * @throws IOException always
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
@@ -400,7 +399,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 		 * @throws IOException            always
 		 * @throws ClassNotFoundException never
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");

@@ -42,7 +42,6 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	/**
 	 * The HTML tag for the end of a bulleted list. Plus a newline.
 	 */
-	@SuppressWarnings("HardcodedLineSeparator")
 	protected static final String CLOSE_LIST = "</ul>" + LineEnd.LINE_SEP;
 	/**
 	 * The HTML tag for the start of a bulleted list. Plus a newline, to keep the HTML

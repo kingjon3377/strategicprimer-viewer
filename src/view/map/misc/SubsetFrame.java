@@ -270,7 +270,7 @@ public final class SubsetFrame extends SPFrame {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -282,7 +282,7 @@ public final class SubsetFrame extends SPFrame {
 	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
@@ -302,7 +302,6 @@ public final class SubsetFrame extends SPFrame {
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	@SuppressWarnings("resource")
 	private static final class HTMLWriter extends FilterWriter {
 		/**
 		 * Pre-compiled pattern for matching newlines.
@@ -329,7 +328,7 @@ public final class SubsetFrame extends SPFrame {
 		 * @return this
 		 * @throws IOException on I/O error
 		 */
-		@SuppressWarnings({"ReturnOfThis", "StandardVariableNames"})
+		@SuppressWarnings("ReturnOfThis")
 		@Override
 		public Writer append(@Nullable final CharSequence csq) throws IOException {
 			final String local = Objects.toString(csq);

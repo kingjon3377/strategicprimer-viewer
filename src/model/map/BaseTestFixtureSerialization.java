@@ -283,7 +283,6 @@ public abstract class BaseTestFixtureSerialization {
 	 * @return its serialized form
 	 * @throws IOException on I/O error creating it
 	 */
-	@SuppressWarnings("deprecation")
 	protected static String createSerializedForm(final Object obj,
 												 final boolean deprecated)
 			throws IOException {

@@ -272,7 +272,6 @@ public final class XMLHelper {
 	 * @param obj     an object being written out that might have a custom image
 	 * @throws XMLStreamException on I/O error when writing
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeImage(final XMLStreamWriter ostream, final HasImage obj)
 			throws XMLStreamException {
 		final String image = obj.getImage();
@@ -351,7 +350,6 @@ public final class XMLHelper {
 	 * @param leaf    Whether to automatically close the tag (use writeEmptyElement()
 	 * @throws XMLStreamException on I/O error writing to stream
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeTag(final XMLStreamWriter ostream, final String tag,
 								final int indent, final boolean leaf)
 			throws XMLStreamException {
@@ -376,7 +374,6 @@ public final class XMLHelper {
 	 * @param value   the value of the attribute
 	 * @throws XMLStreamException on I/O error
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeAttribute(final XMLStreamWriter ostream, final String name,
 									  final String value) throws XMLStreamException {
 		ostream.writeAttribute(ISPReader.NAMESPACE, name, value);
@@ -390,7 +387,6 @@ public final class XMLHelper {
 	 * @param value   the value of the attribute
 	 * @throws XMLStreamException on I/O error
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeIntegerAttribute(final XMLStreamWriter ostream,
 											 final String name, final int value)
 			throws XMLStreamException {
@@ -405,7 +401,6 @@ public final class XMLHelper {
 	 * @param value   the value of the attribute
 	 * @throws XMLStreamException on error creating XML
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeNonEmptyAttribute(final XMLStreamWriter ostream,
 											  final String name, final String value)
 			throws XMLStreamException {
@@ -422,7 +417,6 @@ public final class XMLHelper {
 	 * @param value   the value of the attribute
 	 * @throws XMLStreamException on error creating XML
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeBooleanAttribute(final XMLStreamWriter ostream,
 											 final String name, final boolean value)
 			throws XMLStreamException {

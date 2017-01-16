@@ -335,7 +335,6 @@ public final class TestSubsets {
 	/**
 	 * Test subsets' interaction with copy().
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testSubsetsAndCopy() {
 		final IMutableMapNG firstMap =

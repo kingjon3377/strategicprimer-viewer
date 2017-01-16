@@ -212,7 +212,6 @@ public final class ExplorableTabularReportGenerator
 	 * @param loc     its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
-	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	public void produceFromText(final Appendable ostream,
 								final TextFixture item, final Point loc)
 			throws IOException {

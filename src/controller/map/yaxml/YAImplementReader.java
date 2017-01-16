@@ -24,7 +24,6 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("ClassHasNoToStringMethod")
 public final class YAImplementReader extends YAAbstractReader<Implement> {
 	/**
 	 * Constructor.

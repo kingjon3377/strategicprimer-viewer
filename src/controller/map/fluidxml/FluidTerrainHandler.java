@@ -69,7 +69,6 @@ public final class FluidTerrainHandler {
 	 * @return the parsed Ground
 	 * @throws SPFormatException on SP format problems
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static Ground readGround(final StartElement element,
 									final QName parent,
 									final Iterable<XMLEvent> stream,
@@ -98,7 +97,6 @@ public final class FluidTerrainHandler {
 	 * @return the parsed Forest
 	 * @throws SPFormatException on SP format problems
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static Forest readForest(final StartElement element,
 									final QName parent,
 									final Iterable<XMLEvent> stream,
@@ -130,7 +128,6 @@ public final class FluidTerrainHandler {
 	 * @return the parsed Mountain
 	 * @throws SPFormatException on SP format problems
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static Mountain readMountain(final StartElement element,
 										final QName parent,
 										final Iterable<XMLEvent> stream,
@@ -220,7 +217,7 @@ public final class FluidTerrainHandler {
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings({"SameReturnValue", "UnusedParameters"})
+	@SuppressWarnings("SameReturnValue")
 	public static River readLake(final StartElement element,
 								 final QName parent,
 								 final Iterable<XMLEvent> stream,
@@ -246,7 +243,6 @@ public final class FluidTerrainHandler {
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static River readRiver(final StartElement element,
 								  final QName parent,
 								  final Iterable<XMLEvent> stream,

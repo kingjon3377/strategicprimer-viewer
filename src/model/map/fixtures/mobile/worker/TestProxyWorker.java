@@ -33,7 +33,6 @@ import static org.junit.Assert.assertThat;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("static-method")
 public final class TestProxyWorker {
 	/**
 	 * Assert that a worker contains a Job and that this Job is not empty.

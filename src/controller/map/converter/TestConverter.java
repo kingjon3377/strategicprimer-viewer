@@ -132,7 +132,6 @@ public final class TestConverter {
 	/**
 	 * Test conversion.
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testConversion() {
 		final IMutableMapNG start =
@@ -166,7 +165,6 @@ public final class TestConverter {
 	/**
 	 * Test more corners of resolution-decrease conversion.
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testMoreConversion() {
 		final IMutableMapNG start =
@@ -224,7 +222,7 @@ public final class TestConverter {
 	 * @throws XMLStreamException on error in creating XML
 	 * @throws SPFormatException on SP format error causing test failure
 	 */
-	@SuppressWarnings({"deprecation", "boxing", "static-method"})
+	@SuppressWarnings({"deprecation", "boxing"})
 	@Test
 	public void testOneToTwoConversion()
 			throws IOException, XMLStreamException, SPFormatException {
@@ -391,7 +389,7 @@ public final class TestConverter {
 	 * @throws XMLStreamException on error creating XML
 	 * @throws SPFormatException on SP format error causing test failure
 	 */
-	@SuppressWarnings({"deprecation", "boxing", "static-method"})
+	@SuppressWarnings({"deprecation", "boxing"})
 	@Test
 	public void testMoreOneToTwoConversion()
 			throws IOException, XMLStreamException, SPFormatException {
@@ -568,7 +566,7 @@ public final class TestConverter {
 	 * @throws XMLStreamException on error creating XML
 	 * @throws SPFormatException on SP format error causing test failure
 	 */
-	@SuppressWarnings({"deprecation", "boxing", "static-method"})
+	@SuppressWarnings({"deprecation", "boxing"})
 	@Test
 	public void testThirdOneToTwoConversion()
 			throws IOException, XMLStreamException, SPFormatException {
@@ -799,7 +797,7 @@ public final class TestConverter {
 	 *
 	 * @throws IOException        on I/O error causing test failure
 	 */
-	@SuppressWarnings({"deprecation", "boxing", "static-method"})
+	@SuppressWarnings({"boxing", "static-method"})
 	@Test
 	public void testFourthOneToTwoConversion() throws IOException {
 		final IMutableMapNG original =
@@ -931,7 +929,7 @@ public final class TestConverter {
 	 * @throws XMLStreamException on malformed XML in tests
 	 * @throws SPFormatException  on malformed SP XML in tests
 	 */
-	@SuppressWarnings({"deprecation", "static-method"})
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testZeroToOneConversion()
 			throws XMLStreamException, IOException, SPFormatException {

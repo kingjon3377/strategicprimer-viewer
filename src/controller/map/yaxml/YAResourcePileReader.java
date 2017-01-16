@@ -26,7 +26,6 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("ClassHasNoToStringMethod")
 public final class YAResourcePileReader extends YAAbstractReader<ResourcePile> {
 	/**
 	 * Constructor.

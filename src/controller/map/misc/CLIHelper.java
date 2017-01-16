@@ -39,7 +39,6 @@ import view.util.SystemOut;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("resource")
 public final class CLIHelper implements ICLIHelper {
 	/**
 	 * A parser for numbers.
@@ -62,7 +61,6 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * No-arg constructor.
 	 */
-	@SuppressWarnings("null") // System.in cannot be null
 	public CLIHelper() {
 		this(new InputStreamReader(SystemIn.SYS_IN),
 				new OutputStreamWriter(SystemOut.SYS_OUT));

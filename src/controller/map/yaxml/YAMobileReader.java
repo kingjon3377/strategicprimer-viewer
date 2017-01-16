@@ -47,7 +47,6 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("ClassHasNoToStringMethod")
 public final class YAMobileReader extends
 		YAAbstractReader<@NonNull MobileFixture> {
 	/**

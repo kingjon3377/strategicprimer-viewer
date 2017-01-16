@@ -26,7 +26,6 @@ import model.mining.MiningModel;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("UtilityClassCanBeEnum")
 public final class MiningCLI implements UtilityDriver {
 	/**
 	 * An object describing how to use the driver.

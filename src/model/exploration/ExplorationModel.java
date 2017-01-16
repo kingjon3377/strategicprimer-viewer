@@ -145,7 +145,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param unit     the mover
 	 * @param dest     where the mover moved to
 	 */
-	@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "resource"})
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void checkNearbyWatcher(final Stream<TileFixture> fixtures,
 										   final Point point, final HasOwner unit,
 										   final Point dest) {

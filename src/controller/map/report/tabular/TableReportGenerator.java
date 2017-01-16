@@ -64,7 +64,6 @@ public final class TableReportGenerator {
 	 * @return the location of that player's HQ, or another of that player's
 	 * fortresses if not found, (-1, -1) if none found
 	 */
-	@SuppressWarnings("IfStatementWithIdenticalBranches")
 	private static Point findHQ(final IMapNG map, final Player player) {
 		Point retval = PointFactory.INVALID_POINT;
 		for (final Point location : map.locations()) {

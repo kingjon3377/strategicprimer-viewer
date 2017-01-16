@@ -121,7 +121,6 @@ public final class TrapModelDriver implements SimpleDriver {
 	 * @param minutes a number of minutes
 	 * @return a String representation, including the number of hours
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
 	private static String inHours(final int minutes) {
 		if (minutes < MIN_PER_HOUR) {
 			return Integer.toString(minutes) + " minutes";

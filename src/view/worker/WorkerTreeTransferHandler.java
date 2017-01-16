@@ -129,7 +129,6 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 */
 	@Override
 	public boolean canImport(@Nullable final TransferSupport support) {
-		//noinspection ConstantConditions
 		if ((support != null) &&
 					support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR)) {
 			final DropLocation dropLocation = support.getDropLocation();
@@ -162,7 +161,6 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 */
 	@Override
 	public boolean importData(@Nullable final TransferSupport support) {
-		//noinspection ConstantConditions
 		if ((support != null) && canImport(support)) {
 			final DropLocation dropLocation = support.getDropLocation();
 			if (!(dropLocation instanceof JTree.DropLocation)) {
@@ -230,7 +228,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -242,7 +240,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

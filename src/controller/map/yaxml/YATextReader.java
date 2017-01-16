@@ -25,7 +25,6 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("ClassHasNoToStringMethod")
 public final class YATextReader extends YAAbstractReader<TextFixture> {
 	/**
 	 * Constructor.

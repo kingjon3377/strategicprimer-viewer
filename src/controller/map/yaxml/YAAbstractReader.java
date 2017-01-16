@@ -331,7 +331,6 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 	 * @param ostream the stream to write to
 	 * @throws IOException on I/O error while writing
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
 	protected static void writeImageXML(final Appendable ostream, final HasImage obj)
 			throws IOException {
 		final String image = obj.getImage();
@@ -431,7 +430,6 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 	 * @param indent  the indentation level
 	 * @throws IOException on I/O error writing to stream
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
 	protected static void writeTag(final Appendable ostream, final String tag,
 								   final int indent) throws IOException {
 		indent(ostream, indent);

@@ -41,7 +41,7 @@ public final class ListenedButton extends JButton {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -53,7 +53,7 @@ public final class ListenedButton extends JButton {
 	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

@@ -81,7 +81,6 @@ public final class FluidResourceHandler {
 	 * @return the resource pile represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static ResourcePile readResource(final StartElement element,
 											final QName parent,
 											final Iterable<XMLEvent> stream,
@@ -125,7 +124,6 @@ public final class FluidResourceHandler {
 	 * @return the cache represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static CacheFixture readCache(final StartElement element,
 										 final QName parent,
 										 final Iterable<XMLEvent> stream,
@@ -155,7 +153,6 @@ public final class FluidResourceHandler {
 	 * @return the grove represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static Grove readGrove(final StartElement element,
 								  final QName parent,
 								  final Iterable<XMLEvent> stream,
@@ -194,7 +191,6 @@ public final class FluidResourceHandler {
 	 * @return the grove represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static Grove readOrchard(final StartElement element,
 									final QName parent,
 									final Iterable<XMLEvent> stream,
@@ -233,7 +229,6 @@ public final class FluidResourceHandler {
 	 * @return the meadow represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static Meadow readMeadow(final StartElement element,
 									final QName parent,
 									final Iterable<XMLEvent> stream,
@@ -266,7 +261,6 @@ public final class FluidResourceHandler {
 	 * @return the meadow represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static Meadow readField(final StartElement element,
 								   final QName parent,
 								   final Iterable<XMLEvent> stream,
@@ -299,7 +293,6 @@ public final class FluidResourceHandler {
 	 * @return the mine represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static Mine readMine(final StartElement element,
 								final QName parent,
 								final Iterable<XMLEvent> stream,
@@ -329,7 +322,6 @@ public final class FluidResourceHandler {
 	 * @return the parsed mineral
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static MineralVein readMineral(final StartElement element,
 										  final QName parent,
 										  final Iterable<XMLEvent> stream,
@@ -361,7 +353,6 @@ public final class FluidResourceHandler {
 	 * @return the shrub represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static Shrub readShrub(final StartElement element,
 								  final QName parent,
 								  final Iterable<XMLEvent> stream,
@@ -389,7 +380,6 @@ public final class FluidResourceHandler {
 	 * @return the parsed stone
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static StoneDeposit readStone(final StartElement element,
 										 final QName parent,
 										 final Iterable<XMLEvent> stream,

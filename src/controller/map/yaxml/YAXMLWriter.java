@@ -20,7 +20,6 @@ import model.map.IMapNG;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("ClassHasNoToStringMethod")
 public final class YAXMLWriter implements SPWriter {
 	/**
 	 * Write a map to file.

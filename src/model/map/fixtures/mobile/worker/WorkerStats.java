@@ -248,7 +248,6 @@ public class WorkerStats {
 	 * A String representation of the object.
 	 * @return a String representation of the object
 	 */
-	@SuppressWarnings("StringBufferReplaceableByString")
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder(70);

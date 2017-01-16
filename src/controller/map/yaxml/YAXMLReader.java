@@ -38,7 +38,6 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("ClassHasNoToStringMethod")
 public final class YAXMLReader implements IMapReader, ISPReader {
 	/**
 	 * Read an object from XML.

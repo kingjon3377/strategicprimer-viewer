@@ -27,7 +27,6 @@ public interface GraphicalParamsListener extends EventListener {
 	 * @param oldDim the previous dimensions
 	 * @param newDim the new dimensions
 	 */
-	@SuppressWarnings("UnusedParameters")
 	void dimensionsChanged(VisibleDimensions oldDim, VisibleDimensions newDim);
 
 	/**
@@ -35,6 +34,5 @@ public interface GraphicalParamsListener extends EventListener {
 	 * @param oldSize the previous tile-size/zoom level
 	 * @param newSize the new tile-size/zoom level
 	 */
-	@SuppressWarnings("UnusedParameters")
 	void tileSizeChanged(int oldSize, int newSize);
 }

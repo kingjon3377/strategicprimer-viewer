@@ -76,7 +76,6 @@ public final class MapVersionException extends SPFormatException {
 		 * The zero location doesn't have a public ID.
 		 * @return null
 		 */
-		@SuppressWarnings("ReturnOfNull")
 		@Override
 		@Nullable
 		public String getPublicId() {
@@ -87,7 +86,6 @@ public final class MapVersionException extends SPFormatException {
 		 * The zero location doesn't have a system ID.
 		 * @return null
 		 */
-		@SuppressWarnings("ReturnOfNull")
 		@Override
 		@Nullable
 		public String getSystemId() {

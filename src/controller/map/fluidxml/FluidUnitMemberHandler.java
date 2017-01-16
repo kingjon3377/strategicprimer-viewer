@@ -173,7 +173,6 @@ public final class FluidUnitMemberHandler {
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static ISkill readSkill(final StartElement element,
 								   final QName parent,
 								   final Iterable<XMLEvent> stream,
@@ -202,7 +201,6 @@ public final class FluidUnitMemberHandler {
 	 * @return the parsed stats object
 	 * @throws SPFormatException on SP format error
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static WorkerStats readStats(final StartElement element,
 										final QName parent,
 										final Iterable<XMLEvent> stream,
@@ -361,7 +359,6 @@ public final class FluidUnitMemberHandler {
 	 * @return the animal
 	 * @throws SPFormatException if the data is invalid
 	 */
-	@SuppressWarnings("UnusedParameters")
 	public static Animal readAnimal(final StartElement element,
 									final QName parent,
 									final Iterable<XMLEvent> stream,

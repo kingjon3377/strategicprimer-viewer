@@ -59,7 +59,7 @@ public final class StreamingLabel extends JEditorPane {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -71,7 +71,7 @@ public final class StreamingLabel extends JEditorPane {
 	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
@@ -194,7 +194,7 @@ public final class StreamingLabel extends JEditorPane {
 		 * @param args   arguments to place in that string as per the spec
 		 * @return this
 		 */
-		@SuppressWarnings({"ReturnOfThis", "OverloadedVarargsMethod", "resource"})
+		@SuppressWarnings({"ReturnOfThis", "OverloadedVarargsMethod"})
 		@Override
 		public PrintWriter printf(final String format, final Object @Nullable ... args) {
 			super.printf(format, args);

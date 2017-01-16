@@ -85,7 +85,6 @@ public final class TestWorkerModel {
 	/**
 	 * Test for getUnits().
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testGetUnits() {
 		final List<TileFixture> fixtures = new ArrayList<>();

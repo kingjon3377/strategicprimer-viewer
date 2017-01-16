@@ -35,7 +35,6 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("ClassHasNoToStringMethod")
 public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 	/**
 	 * List of supported tags.

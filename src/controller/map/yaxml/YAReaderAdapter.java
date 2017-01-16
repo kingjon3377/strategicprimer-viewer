@@ -111,7 +111,6 @@ public final class YAReaderAdapter {
 	 * @param indent  the current indentation level.
 	 * @throws IOException on I/O problems
 	 */
-	@SuppressWarnings("unchecked")
 	public void write(final Appendable ostream, final Object obj,
 							 final int indent) throws IOException {
 		if (obj instanceof River) {

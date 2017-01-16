@@ -36,7 +36,6 @@ public class TestCLIHelper {
 	 *
 	 * @throws IOException on I/O error causing test failure
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testChooseFromList() throws IOException {
 		try (StringWriter out = new StringWriter();
@@ -95,7 +94,6 @@ public class TestCLIHelper {
 	 *
 	 * @throws IOException on I/O error causing test failure
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testChooseFromListMore() throws IOException {
 		try (StringWriter out = new StringWriter();
@@ -155,7 +153,6 @@ public class TestCLIHelper {
 	 *
 	 * @throws IOException on I/O error causing test failure
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testInputNumber() throws IOException {
 		try (StringWriter out = new StringWriter();
@@ -201,7 +198,6 @@ public class TestCLIHelper {
 	 *
 	 * @throws IOException on I/O error causing test failure
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testInputDecimal() throws IOException {
 		try (StringWriter out = new StringWriter();
@@ -261,7 +257,6 @@ public class TestCLIHelper {
 	 *
 	 * @throws IOException on I/O error causing test failure
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testInputString() throws IOException {
 		try (StringWriter out = new StringWriter();
@@ -294,7 +289,7 @@ public class TestCLIHelper {
 	 *
 	 * @throws IOException on I/O error causing test failure
 	 */
-	@SuppressWarnings({"boxing", "static-method"})
+	@SuppressWarnings("boxing")
 	@Test
 	public void testInputBoolean() throws IOException {
 		try (StringWriter out = new StringWriter();
@@ -539,7 +534,6 @@ public class TestCLIHelper {
 	 *
 	 * @throws IOException on I/O error causing test failure
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testStringChooseFromList() throws IOException {
 		try (StringWriter out = new StringWriter();
@@ -597,7 +591,6 @@ public class TestCLIHelper {
 	 *
 	 * @throws IOException on I/O error causing test failure
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testStringChooseFromListMore() throws IOException {
 		try (StringWriter out = new StringWriter();

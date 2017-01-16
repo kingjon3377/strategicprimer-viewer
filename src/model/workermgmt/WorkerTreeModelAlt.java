@@ -73,7 +73,6 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @return the node in the subtree under the node representing the object, or null if
 	 * it isn't in this subtree
 	 */
-	@SuppressWarnings("ReturnOfNull")
 	@Nullable
 	private static MutableTreeNode getNode(final TreeNode node, final Object obj) {
 		if ((node instanceof MutableTreeNode) && areTreeObjectsEqual(node, obj)) {
@@ -442,7 +441,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -454,7 +453,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
@@ -465,7 +464,6 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 *
 	 * @param <T> the type of thing stored in the node
 	 */
-	@SuppressWarnings("CloneableClassInSecureContext")
 	public static class WorkerTreeNode<T> extends
 			DefaultMutableTreeNode implements Iterable<TreeNode> {
 		/**
@@ -502,7 +500,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param out ignored
 		 * @throws IOException always
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
@@ -514,7 +512,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @throws IOException            always
 		 * @throws ClassNotFoundException never
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
@@ -590,7 +588,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param out ignored
 		 * @throws IOException always
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
@@ -602,7 +600,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @throws IOException            always
 		 * @throws ClassNotFoundException never
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
@@ -663,7 +661,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param out ignored
 		 * @throws IOException always
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
@@ -675,7 +673,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @throws IOException            always
 		 * @throws ClassNotFoundException never
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
@@ -735,7 +733,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param out ignored
 		 * @throws IOException always
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
@@ -747,7 +745,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @throws IOException            always
 		 * @throws ClassNotFoundException never
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
@@ -802,7 +800,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param out ignored
 		 * @throws IOException always
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
@@ -814,7 +812,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @throws IOException            always
 		 * @throws ClassNotFoundException never
 		 */
-		@SuppressWarnings({"unused", "static-method"})
+		@SuppressWarnings("unused")
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");

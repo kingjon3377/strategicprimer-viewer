@@ -91,7 +91,6 @@ public final class IOHandler implements ActionListener {
 	 * @param obj an object
 	 * @return it if it's a component, or null
 	 */
-	@SuppressWarnings("ReturnOfNull")
 	@Nullable
 	private static Component eventSource(@Nullable final Object obj) {
 		if (obj instanceof Component) {
@@ -116,7 +115,6 @@ public final class IOHandler implements ActionListener {
 			msg = "Error reading XML file %s";
 		} else if (except instanceof FileNotFoundException ||
 						   except instanceof NoSuchFileException) {
-			//noinspection StringConcatenationMissingWhitespace
 			msg = "File %s not found";
 		} else if (except instanceof IOException) {
 			//noinspection HardcodedFileSeparator

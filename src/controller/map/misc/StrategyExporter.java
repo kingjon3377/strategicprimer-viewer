@@ -277,7 +277,6 @@ public final class StrategyExporter implements PlayerChangeListener {
 	public void writeStrategy(final Path file, final SPOptions options,
 							  final Iterable<UnitMember> dismissed) {
 		try (final BufferedWriter writer = Files.newBufferedWriter(file)) {
-			//noinspection resource
 			writer.append(createStrategy(options, dismissed));
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator

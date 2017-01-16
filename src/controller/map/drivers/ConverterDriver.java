@@ -95,7 +95,7 @@ public final class ConverterDriver implements UtilityDriver {
 	 * @param args    command-line argument
 	 * @throws DriverFailedException on fatal error
 	 */
-	@SuppressWarnings({"OverloadedVarargsMethod", "resource"})
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
 							final String... args)
@@ -109,7 +109,6 @@ public final class ConverterDriver implements UtilityDriver {
 			}
 			ostream.printf("Reading %s ... ", filename);
 			try {
-				//noinspection ObjectAllocationInLoop
 				final IMutableMapNG old =
 						READER.readMap(Paths.get(filename), Warning.DEFAULT);
 				if (options.hasOption("--current-turn")) {
@@ -122,7 +121,6 @@ public final class ConverterDriver implements UtilityDriver {
 				ostream.print("About to write ");
 				final String newFilename = filename + ".new";
 				ostream.println(newFilename);
-				//noinspection ObjectAllocationInLoop
 				READER.write(Paths.get(newFilename), map);
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename

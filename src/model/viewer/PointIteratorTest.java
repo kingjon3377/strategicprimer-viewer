@@ -36,7 +36,6 @@ public final class PointIteratorTest {
 	/**
 	 * Test without startFromSel, horizontally, forwards.
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testFromBeginning() {
 		final Collection<Point> expected =
@@ -54,7 +53,6 @@ public final class PointIteratorTest {
 	/**
 	 * Test with startFromSel, horizontally, forwards.
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testFromSelection() {
 		final Collection<Point> expected =
@@ -74,7 +72,6 @@ public final class PointIteratorTest {
 	 * Test working from the "selection" that the viewer starts with. And vertically, to
 	 * exercise that part too.
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testInitialSelection() {
 		final Collection<Point> expected =
@@ -93,7 +90,6 @@ public final class PointIteratorTest {
 	/**
 	 * Test searching vertically, forwards.
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testVertical() {
 		final Collection<Point> expected =
@@ -111,7 +107,6 @@ public final class PointIteratorTest {
 	/**
 	 * Test searching backwards, horizontally.
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testReverse() {
 		final Collection<Point> expected =
@@ -129,7 +124,6 @@ public final class PointIteratorTest {
 	/**
 	 * Test searching vertically, backwards.
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void testVerticalReverse() {
 		final Collection<Point> expected =

@@ -130,7 +130,6 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void putAll(@Nullable final Map<? extends Integer, ? extends V> map) {
-		//noinspection ConstantConditions
 		if (map != null) {
 			backing.putAll(map);
 		}

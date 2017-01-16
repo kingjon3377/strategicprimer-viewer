@@ -66,7 +66,6 @@ public final class HuntingModel {
 	 *
 	 * @param map the map to hunt in
 	 */
-	@SuppressWarnings("deprecation")
 	public HuntingModel(final IMapNG map) {
 		dims = map.dimensions();
 		final Collection<String> fishKinds =

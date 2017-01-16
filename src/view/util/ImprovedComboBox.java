@@ -47,7 +47,6 @@ public class ImprovedComboBox<T> extends JComboBox<T> {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void processKeyEvent(@Nullable final KeyEvent evt) {
-		//noinspection ConstantConditions
 		if (evt == null) {
 			return;
 		}
@@ -79,7 +78,7 @@ public class ImprovedComboBox<T> extends JComboBox<T> {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -91,7 +90,7 @@ public class ImprovedComboBox<T> extends JComboBox<T> {
 	 * @throws IOException            always
 	 * @throws ClassNotFoundException never
 	 */
-	@SuppressWarnings({"unused", "static-method"})
+	@SuppressWarnings("unused")
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

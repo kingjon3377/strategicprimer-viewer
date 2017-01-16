@@ -154,7 +154,6 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 	 * @param meadow a meadow or field
 	 * @return the proper tag for it
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getMeadowTag(final Meadow meadow) {
 		if (meadow.isField()) {
 			return "field";
@@ -168,7 +167,6 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 	 * @param grove a grove or orchard
 	 * @return the proper tag for it
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getGroveTag(final Grove grove) {
 		if (grove.isOrchard()) {
 			return "orchard";

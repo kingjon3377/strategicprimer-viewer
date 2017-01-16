@@ -31,7 +31,6 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("ClassHasNoToStringMethod")
 public final class YAExplorableReader extends YAAbstractReader<ExplorableFixture> {
 	/**
 	 * List of supported tags.
