@@ -234,9 +234,25 @@ public final class AppStarter implements ISPDriver {
 		try {
 			new AppStarter().startDriver(new SPOptionsImpl(), args);
 		} catch (final IncorrectUsageException except) {
-			final StringBuilder buff = new StringBuilder();
-			final Formatter formatter = new Formatter(buff);
 			final IDriverUsage usage = except.getCorrectUsage();
+			final String message = getUsageMessage(usage);
+			System.err.println(message);
+			DriverQuit.quit(1);
+		} catch (final DriverFailedException except) {
+			LOGGER.log(Level.SEVERE, except.getLocalizedMessage(),
+					except.getCause());
+			DriverQuit.quit(2);
+		}
+	}
+
+	/**
+	 * Create the usage message to print to stderr on incorrect usage.
+	 * @param usage The object indicating proper usage.
+	 * @return the usage message
+	 */
+	private static String getUsageMessage(final IDriverUsage usage) {
+		final StringBuilder buff = new StringBuilder();
+		try (final Formatter formatter = new Formatter(buff)) {
 			formatter.format("Usage: java %s %s %s|%s",
 					AppStarter.class.getCanonicalName(),
 					ternary(usage.isGraphical(), "[-g|--gui]", "-c|--cli"),
@@ -267,13 +283,8 @@ public final class AppStarter implements ISPDriver {
 				break;
 			}
 			formatter.format("%n%s", usage.getShortDescription());
-			System.err.println(buff);
-			DriverQuit.quit(1);
-		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getLocalizedMessage(),
-					except.getCause());
-			DriverQuit.quit(2);
 		}
+		return buff.toString();
 	}
 
 	/**
