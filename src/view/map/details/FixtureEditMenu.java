@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.swing.JLabel;
@@ -72,13 +73,13 @@ public final class FixtureEditMenu extends JPopupMenu {
 		final Component outer = this;
 		if (fixture instanceof HasMutableName) {
 			addMenuItem(new JMenuItem("Rename", KeyEvent.VK_N), event -> {
-				final String result = (String) showInputDialog(outer,
+				final String origName = ((HasMutableName) fixture).getName();
+				final Optional<String> result = Optional.ofNullable((String) showInputDialog(outer,
 						"Fixture's new name:", "Rename Fixture",
 						PLAIN_MESSAGE, null, null,
-						((HasMutableName) fixture).getName());
-				if ((result != null) &&
-							!result.equals(((HasMutableName) fixture).getName())) {
-					((HasMutableName) fixture).setName(result);
+						origName)).filter(name -> !origName.equals(name));
+				if (result.isPresent()) {
+					((HasMutableName) fixture).setName(result.get());
 					for (final IWorkerTreeModel listener : listeners) {
 						listener.renameItem((HasMutableName) fixture);
 					}
@@ -90,13 +91,14 @@ public final class FixtureEditMenu extends JPopupMenu {
 			addMenuItem(new JMenuItem("Change kind", KeyEvent.VK_K),
 					event -> {
 						final String old = ((HasKind) fixture).getKind();
-						final String result = (String) showInputDialog(
-								outer, "Fixture's new kind:",
-								"Change Fixture Kind",
-								PLAIN_MESSAGE, null, null,
-								((HasKind) fixture).getKind());
-						if ((result != null) && !old.equals(result)) {
-							((HasMutableKind) fixture).setKind(result);
+						final Optional<String> result = Optional.ofNullable(
+								(String) showInputDialog(outer, "Fixture's new kind:",
+										"Change Fixture Kind", PLAIN_MESSAGE, null, null,
+										((HasKind) fixture).getKind()))
+																.filter(kind -> !old.equals(
+																		kind));
+						if (result.isPresent()) {
+							((HasMutableKind) fixture).setKind(result.get());
 							for (final IWorkerTreeModel listener : listeners) {
 								listener.moveItem((HasKind) fixture);
 							}
@@ -107,16 +109,13 @@ public final class FixtureEditMenu extends JPopupMenu {
 		if (fixture instanceof HasMutableOwner) {
 			addMenuItem(new JMenuItem("Change owner", KeyEvent.VK_O),
 					event -> {
-						final Player result =
-								(Player) showInputDialog(outer,
+						Optional.ofNullable((Player) showInputDialog(outer,
 										"Fixture's new owner:",
 										"Change Fixture Owner",
 										PLAIN_MESSAGE, null,
 										playersAsArray(players),
-										((HasOwner) fixture).getOwner());
-						if (result != null) {
-							((HasMutableOwner) fixture).setOwner(result);
-						}
+								((HasOwner) fixture).getOwner()))
+								.ifPresent(((HasMutableOwner) fixture)::setOwner);
 					});
 			immutable = false;
 		}
