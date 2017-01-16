@@ -50,6 +50,7 @@ public class FindHandler implements ActionListener {
 	 *
 	 * @param evt the event to handle
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
 		if ("find a fixture".equalsIgnoreCase(evt.getActionCommand())) {

@@ -120,6 +120,7 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	 * @return a negative integer, zero, or a positive integer as this object is less
 	 * than, equal to, or greater than the specified object.
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compareTo(final Quantity obj) {
 		final int unitsComp = units.compareTo(obj.getUnits());

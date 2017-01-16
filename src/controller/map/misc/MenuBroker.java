@@ -49,6 +49,7 @@ public class MenuBroker implements ActionListener {
 	 * logs a warning.
 	 * @param evt a menu item press to handle
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
 		final String action = evt.getActionCommand().toLowerCase();

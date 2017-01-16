@@ -74,6 +74,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	 *
 	 * @param evt ignored
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
 		final Player currentPlayer = model.getMap().getCurrentPlayer();

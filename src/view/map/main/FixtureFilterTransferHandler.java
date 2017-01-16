@@ -60,6 +60,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 	 * @param component the component being dragged from
 	 * @return the encapsulated item
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	protected Transferable createTransferable(final JComponent component) {
 		if (component instanceof JList) {

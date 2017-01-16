@@ -536,6 +536,7 @@ public final class WorkerMgmtFrame extends SPFrame
 		 * Dispose the dialog when the parent window is closed.
 		 * @param event the event to handle by disposing the dialog
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void windowClosed(final WindowEvent event) {
 			dialog.dispose();

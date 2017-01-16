@@ -35,6 +35,7 @@ public class WindowCloser implements ActionListener {
 	 * Close the window.
 	 * @param evt ignored: only set this to listen to the item you want!
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
 		frame.setVisible(false);
