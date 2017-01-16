@@ -41,13 +41,13 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param cliHelper the interface for user I/O
+	 * @param cli the interface for user I/O
 	 * @param options command-line options passed in
 	 * @param model   the driver model
 	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final ICLIHelper cliHelper, final SPOptions options,
+	public void startDriver(final ICLIHelper cli, final SPOptions options,
 							final IDriverModel model)
 			throws DriverFailedException {
 		final IExplorationModel explorationModel;
@@ -57,17 +57,17 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 			explorationModel = new ExplorationModel(model);
 		}
 		try {
-			final ExplorationCLI cli = new ExplorationCLI(explorationModel, cliHelper);
-			final Player player = cli.choosePlayer();
+			final ExplorationCLI eCLI = new ExplorationCLI(explorationModel, cli);
+			final Player player = eCLI.choosePlayer();
 			if (player == null) {
 				return;
 			}
-			final IUnit unit = cli.chooseUnit(player);
+			final IUnit unit = eCLI.chooseUnit(player);
 			if (unit == null) {
 				return;
 			} else {
 				explorationModel.selectUnit(unit);
-				cli.moveUntilDone();
+				eCLI.moveUntilDone();
 			}
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator
