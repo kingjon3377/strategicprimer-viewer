@@ -200,7 +200,7 @@ public final class AppStarter implements ISPDriver {
 	private static void startChosenGUIDriver(final ISPDriver driver,
 											 final SPOptions options,
 											 final List<String> params) {
-		final Logger lgr = LOGGER;
+		@SuppressWarnings("UnnecessaryLocalVariable") final Logger lgr = LOGGER;
 		SwingUtilities.invokeLater(() -> {
 			try {
 				startChosenDriver(driver, options, params);

@@ -107,6 +107,7 @@ public final class FindDialog extends SPDialog {
 	 */
 	public FindDialog(final Frame parent, final IViewerModel model) {
 		super(parent, "Find");
+		@SuppressWarnings("UnnecessaryLocalVariable")
 		final Frame parentFrame = parent;
 
 		final ActionListener okListener = evt -> {

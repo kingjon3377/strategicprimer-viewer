@@ -77,7 +77,7 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 		retval.add(first);
 		final JPanel second = new BoxPanel(false);
 		second.add(field);
-		final String category = what;
+		@SuppressWarnings("UnnecessaryLocalVariable") final String category = what;
 		final ActionListener okListener = evt -> {
 			final String text = field.getText();
 			for (final AddRemoveListener listener : retval.arListeners) {
