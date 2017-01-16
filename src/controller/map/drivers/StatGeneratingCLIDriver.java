@@ -539,7 +539,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @param array an array of ints
 	 * @return the index of the lowest value
 	 */
-	private static final int getMinIndex(final int[] array) {
+	private static final int getMinIndex(final int... array) {
 		int retval = 0;
 		for (int i = 0; i < array.length; i++) {
 			final int value = array[i];
