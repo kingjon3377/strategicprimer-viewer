@@ -72,6 +72,7 @@ public final class SimpleMovement {
 	 * @param destRivers the rivers in the location the mover is traveling to
 	 * @return whether any of those rivers are in the direction of travel
 	 */
+	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	public static boolean doRiversApply(final Direction direction,
 										final Iterable<River> sourceRivers,
 										final Iterable<River> destRivers) {
