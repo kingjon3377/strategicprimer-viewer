@@ -322,7 +322,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 					new TreeSet<>(item.getAllOrders().keySet());
 			turns.addAll(item.getAllResults().keySet());
 			for (final Integer turn : turns) {
-				formatter.format("<li>Turn %d:<ul>", Integer.valueOf(turn));
+				formatter.format("<li>Turn %d:<ul>", turn);
 				final String orders = item.getOrders(turn);
 				if (!orders.isEmpty()) {
 					formatter.format("<li>Orders: %s</li>%n", orders);
