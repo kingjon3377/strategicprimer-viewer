@@ -75,6 +75,7 @@ public final class OnMac {
 		}
 	}
 	/**
+	 * Whether the current platform's hotkey is pressed in the given event.
 	 * @param event an InputEvent
 	 * @return whether it has the current platform's hotkey pressed.
 	 */

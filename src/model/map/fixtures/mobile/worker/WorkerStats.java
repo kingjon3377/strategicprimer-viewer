@@ -225,6 +225,7 @@ public class WorkerStats {
 				WorkerStats::getCharisma).allMatch(stat -> equalStat(obj, stat));
 	}
 	/**
+	 * Whether the object agrees with us in this one stat.
 	 * @param obj a WorkerStats object
 	 * @param stat a reference to a method
 	 * @return whether that we and that object agree in that method.
