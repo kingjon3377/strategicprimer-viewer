@@ -155,10 +155,7 @@ public class ResourcePile
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) {
-		if (obj.getID() != id) {
-			ostream.format("%s\tIDs differ%n", context);
-			return false;
-		} else {
+		if (obj.getID() == id) {
 			final Integer idNum = Integer.valueOf(id);
 			if (obj instanceof ResourcePile) {
 				boolean retval = areObjectsEqual(ostream, kind, ((ResourcePile) obj).kind,
@@ -181,6 +178,9 @@ public class ResourcePile
 						idNum);
 				return false;
 			}
+		} else {
+			ostream.format("%s\tIDs differ%n", context);
+			return false;
 		}
 	}
 

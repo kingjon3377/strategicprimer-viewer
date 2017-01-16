@@ -209,10 +209,10 @@ public final class HarvestableReportGenerator
 		final SectionReportNode retval = new SectionReportNode(4, "Resource Sources");
 		retval.addIfNonEmpty(caches, groves, meadows, mines, mineralsNode, stoneNode,
 				shrubsNode);
-		if (retval.getChildCount() != 0) {
-			return retval;
-		} else {
+		if (retval.getChildCount() == 0) {
 			return EmptyReportNode.NULL_NODE;
+		} else {
+			return retval;
 		}
 	}
 

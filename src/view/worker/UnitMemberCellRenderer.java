@@ -264,12 +264,12 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * @return a String representing that worker.
 	 */
 	private static String getWorkerText(final IWorker worker) {
-		if (!"human".equals(worker.getRace())) {
-			return String.format("<html><p>%s, a %s%s</p></html>", worker.getName(),
-					worker.getRace(), jobCSL(worker));
-		} else {
+		if ("human".equals(worker.getRace())) {
 			return String.format("<html><p>%s%s</p></html>", worker.getName(),
 					jobCSL(worker));
+		} else {
+			return String.format("<html><p>%s, a %s%s</p></html>", worker.getName(),
+					worker.getRace(), jobCSL(worker));
 		}
 	}
 
