@@ -252,6 +252,7 @@ public class WorkerStats {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder(70);
         try (final Formatter fmt = new Formatter(builder)) {
+			//noinspection HardcodedFileSeparator
 			fmt.format("HP: %d / %d%nStr: %d%nDex: %d%n", hp, maxHP, strength, dex);
 			fmt.format("Con: %d%nInt: %d%nWis: %d%nCha: %d%n", con, intel, wis, cha);
 		}
