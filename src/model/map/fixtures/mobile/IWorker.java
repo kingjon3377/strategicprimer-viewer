@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile;
 
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import model.map.HasKind;
 import model.map.HasMutableImage;
 import model.map.HasName;
@@ -67,4 +69,11 @@ public interface IWorker
 	 * @return the Job by that name the worker has, or null if it has none
 	 */
 	@Nullable IJob getJob(String jobName);
+	/**
+	 * A stream of the worker's Jobs.
+	 * @return the worker's Jobs as a Stream.
+	 */
+	default Stream<IJob> stream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
 }

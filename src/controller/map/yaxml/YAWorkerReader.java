@@ -21,8 +21,6 @@ import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
 import util.Warning;
 
-import static util.EqualsAny.equalsAny;
-
 /**
  * A reader for Workers.
  *
@@ -101,21 +99,12 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 		if (hasParameter(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException(element, "hours"));
 		}
-		StartElement lastSkill = element;
-		boolean anySkills = false;
-		boolean onlyOneSkill = true;
 		for (final XMLEvent event : stream) {
 			if (isSPStartElement(event)) {
 				if ("skill".equalsIgnoreCase(
 						event.asStartElement().getName().getLocalPart())) {
 					retval.addSkill(
 							parseSkill(event.asStartElement(), element.getName()));
-					if (anySkills) {
-						onlyOneSkill = false;
-					} else {
-						anySkills = true;
-					}
-					lastSkill = event.asStartElement();
 					spinUntilEnd(event.asStartElement().getName(), stream);
 				} else {
 					throw new UnwantedChildException(element.getName(),
@@ -123,20 +112,6 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
-			}
-		}
-		if (anySkills && onlyOneSkill) {
-			final String skill = retval.iterator().next().getName();
-			if (equalsAny(skill, IJob.SUSPICIOUS_SKILLS) ||
-						skill.equals(retval.getName())) {
-				final UnwantedChildException except =
-						new UnwantedChildException(element.getName(), qname(skill),
-														  lastSkill.getLocation(),
-														  new
-																  DeprecatedPropertyException(lastSkill,
-																								 skill,
-																								 "miscellaneous"));
-				warner.warn(except);
 			}
 		}
 		return retval;

@@ -1,7 +1,10 @@
 package model.map.fixtures.mobile.worker;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import model.map.HasName;
 import model.map.Subsettable;
 import org.eclipse.jdt.annotation.NonNull;
@@ -28,7 +31,7 @@ public interface IJob
 	 * Skill names that are suspicious when they are the only Skill a Job has. In many
 	 * cases they should be 'miscellaneous' instead.
 	 */
-	Iterable<String> SUSPICIOUS_SKILLS = Collections.unmodifiableList(
+	Collection<String> SUSPICIOUS_SKILLS = Collections.unmodifiableList(
 			Arrays.asList("hunter", "hunting", "explorer", "exploration",
 					"research", "carpentry", "woodcutting", "farming",
 					"food gathering", "scientist", "woodcutter", "farmer",
@@ -80,4 +83,11 @@ public interface IJob
 	 * @return the Skill by that name in the Job, or none if not present
 	 */
 	@Nullable ISkill getSkill(String skillName);
+	/**
+	 * The skills in the Job as a stream.
+	 * @return a stream of the skills in the Job.
+	 */
+	default Stream<ISkill> stream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
 }

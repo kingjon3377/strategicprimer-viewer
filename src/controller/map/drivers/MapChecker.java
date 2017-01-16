@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -21,6 +22,9 @@ import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Point;
 import model.map.TileType;
+import model.map.fixtures.mobile.IWorker;
+import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.Village;
@@ -60,7 +64,7 @@ public final class MapChecker implements UtilityDriver {
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(MapChecker.class);
 	/**
-	 * Additional checks.
+	 * Additional checks. TODO: Test these checks!
 	 */
 	private static final Collection<Check> EXTRA_CHECKS = new ArrayList<>();
 	/**
@@ -82,6 +86,23 @@ public final class MapChecker implements UtilityDriver {
 					"gnome", "human") && TileType.Ocean == terrain) {
 				warner.warn(new SPContentWarning(context,
 														"Aquatic village has non-aquatic race"));
+			}
+		});
+		final Predicate<IJob> suspiciousSkill = job -> {
+			if (job.stream().count() > 1) {
+				return false;
+			} else {
+				return job.stream().map(ISkill::getName)
+							   .anyMatch(IJob.SUSPICIOUS_SKILLS::contains);
+			}
+		};
+		EXTRA_CHECKS.add((terrain, context, fixture, warner) -> {
+			if (fixture instanceof IWorker &&
+						((IWorker) fixture).stream().anyMatch(suspiciousSkill)) {
+				final String message =
+						String.format("%s has a Job with one suspiciously-named Skill",
+								((IWorker) fixture).getName());
+				warner.warn(new SPContentWarning(context, message));
 			}
 		});
 	}

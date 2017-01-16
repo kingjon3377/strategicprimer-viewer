@@ -4,7 +4,6 @@ import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDRegistrar;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,7 +41,6 @@ import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
 import static java.lang.Boolean.parseBoolean;
-import static util.EqualsAny.equalsAny;
 
 /**
  * A class to hold XML I/O for workers and animals, the only not-trivially-simple unit
@@ -146,39 +144,19 @@ public final class FluidUnitMemberHandler {
 		}
 		final Job retval = new Job(getAttribute(element, "name"),
 										  getIntegerAttribute(element, "level"));
-		StartElement lastSkill = element;
-		boolean anySkills = false;
-		boolean onlyOneSkill = true;
 		for (final XMLEvent event : stream) {
 			if (isSPStartElement(event)) {
 				final StartElement startElement = event.asStartElement();
 				if ("skill".equals(startElement.getName().getLocalPart())) {
-					if (anySkills) {
-						onlyOneSkill = false;
-					} else {
-						anySkills = true;
-					}
 					retval.addSkill(
 							readSkill(startElement, element.getName(), stream, players,
 									warner, idFactory));
-					lastSkill = startElement;
 				} else {
 					throw new UnwantedChildException(element.getName(), startElement);
 				}
 			} else if (event.isEndElement() && Objects.equals(element.getName(),
 					event.asEndElement().getName())) {
 				break;
-			}
-		}
-		if (anySkills && onlyOneSkill) {
-			final String skill = retval.iterator().next().getName();
-			if (equalsAny(skill, IJob.SUSPICIOUS_SKILLS) ||
-						skill.equals(retval.getName())) {
-
-				warner.warn(new UnwantedChildException(
-						element.getName(), new QName(ISPReader.NAMESPACE, skill),
-						lastSkill.getLocation(),
-						new DeprecatedPropertyException(lastSkill, skill, "miscellaneous")));
 			}
 		}
 		return retval;

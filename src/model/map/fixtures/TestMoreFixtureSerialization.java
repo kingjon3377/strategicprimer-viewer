@@ -557,22 +557,4 @@ public final class TestMoreFixtureSerialization extends
 										new Quantity(new BigDecimal("1.5"),
 															"cubic feet")));
 	}
-
-	/**
-	 * Test that desired warnings get fired when workers have "suspicious" skills.
-	 *
-	 * @throws IOException        on I/O error creating serialized form
-	 * @throws XMLStreamException on trying to read malformed XML
-	 * @throws SPFormatException  on trying to read improper SP XML
-	 */
-	@Test
-	public void testSuspiciousSkills()
-			throws IOException, XMLStreamException, SPFormatException {
-		final IJob job = new Job("jobName", 0, new Skill("hunting", 1, 0));
-		final IWorker worker = new Worker("workerName", "race", 1, job);
-		assertUnwantedChild(createSerializedForm(worker, false), Worker.class, true);
-		job.addSkill(new Skill("secondSkill", 1, 0));
-		assertSerialization("No warning if 'suspicious' skill isn't only one in a Job",
-				worker);
-	}
 }
