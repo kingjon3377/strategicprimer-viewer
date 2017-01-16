@@ -23,6 +23,7 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	/**
 	 * A quantity of zero.
 	 */
+	@SuppressWarnings("ConstantNamingConvention")
 	private static final Number ZERO = Integer.valueOf(0);
 	/**
 	 * The number.
