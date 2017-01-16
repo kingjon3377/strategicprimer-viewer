@@ -35,6 +35,7 @@ public class FunctionalGroupLayout extends GroupLayout {
 	 *                      Groups; will throw IllegalArgumentException on anything else
 	 * @return that group
 	 */
+	@SuppressWarnings("ReturnOfInnerClass")
 	public ParallelGroup createParallelGroupOf(final Object... components) {
 		return initializeGroup(createParallelGroup(), components);
 	}
@@ -44,6 +45,7 @@ public class FunctionalGroupLayout extends GroupLayout {
 	 *                      Groups; will throw IllegalArgumentException on anything else.
 	 * @return that group
 	 */
+	@SuppressWarnings("ReturnOfInnerClass")
 	public SequentialGroup createSequentialGroupOf(final Object... components) {
 		return initializeGroup(createSequentialGroup(), components);
 	}
