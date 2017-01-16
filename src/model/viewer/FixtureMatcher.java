@@ -1,5 +1,6 @@
 package model.viewer;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 import model.map.TileFixture;
 
@@ -52,8 +53,9 @@ public class FixtureMatcher {
 	public static <T extends TileFixture> FixtureMatcher simpleMatcher(
 			final Class<? extends T> cls, final Predicate<T> method,
 			final String desc) {
-		return new FixtureMatcher(fix -> cls.isInstance(fix) && method.test((T) fix),
-										 desc);
+		return new FixtureMatcher(fix -> Optional.of(fix).filter(cls::isInstance)
+												 .map(cls::cast).filter(method)
+												 .isPresent(), desc);
 	}
 
 	/**
