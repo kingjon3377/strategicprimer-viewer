@@ -1,7 +1,8 @@
 package view.worker;
 
 import controller.map.misc.IDRegistrar;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -15,7 +16,11 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import model.listeners.NewWorkerListener;
 import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
