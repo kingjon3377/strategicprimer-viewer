@@ -272,44 +272,48 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 						  final Fortress item, final Point loc) {
 		// This can get long. we'll give it 16K.
 		final StringBuilder builder = new StringBuilder(16384);
-		final Formatter formatter = new Formatter(builder);
-		formatter.format("<h5>Fortress %s belonging to %s</h5>%n", item.getName(),
-				playerNameOrYou(item.getOwner()));
-		formatter.format("<ul>%n<li>Located at %s %s</li>%n", loc.toString(),
-				distCalculator.distanceString(loc));
-		formatter.format("<li>%s</li>%n", getTerrain(map, loc, fixtures));
-		builder.append(riversToString(
-				StreamSupport.stream(map.getRivers(loc).spliterator(), false)
-						.collect(Collectors.toSet())));
-		final Collection<String> units = new HtmlList("Units on the tile:");
-		final HeadedList<String> resourcesText = new HtmlList("Resources:");
-		final Collection<String> equipment = new HtmlList("Equipment:");
-		final Map<String, Collection<String>> resources = new HashMap<>();
-		final Collection<String> contents = new HtmlList("Other fortress contents:");
-		for (final FortressMember member : item) {
-			if (member instanceof IUnit) {
-				units.add(urg.produce(fixtures, map, currentPlayer, (IUnit) member, loc));
-			} else if (member instanceof Implement) {
-				equipment.add(memberReportGenerator
-									  .produce(fixtures, map, currentPlayer, member,
-											  loc));
-			} else if (member instanceof ResourcePile) {
-				final ResourcePile pile = (ResourcePile) member;
-				final String kind = pile.getKind();
-				MultiMapHelper
-						.getMapValue(resources, kind, key -> new HtmlList(key + ':'))
-						.add(memberReportGenerator
-									 .produce(fixtures, map, currentPlayer, pile, loc));
-			} else {
-				contents.add(memberReportGenerator
-									 .produce(fixtures, map, currentPlayer, member, loc));
+		try (final Formatter formatter = new Formatter(builder)) {
+			formatter.format("<h5>Fortress %s belonging to %s</h5>%n", item.getName(),
+					playerNameOrYou(item.getOwner()));
+			formatter.format("<ul>%n<li>Located at %s %s</li>%n", loc.toString(),
+					distCalculator.distanceString(loc));
+			formatter.format("<li>%s</li>%n", getTerrain(map, loc, fixtures));
+			builder.append(riversToString(
+					StreamSupport.stream(map.getRivers(loc).spliterator(), false)
+							.collect(Collectors.toSet())));
+			final Collection<String> units = new HtmlList("Units on the tile:");
+			final HeadedList<String> resourcesText = new HtmlList("Resources:");
+			final Collection<String> equipment = new HtmlList("Equipment:");
+			final Map<String, Collection<String>> resources = new HashMap<>();
+			final Collection<String> contents = new HtmlList("Other fortress contents:");
+			for (final FortressMember member : item) {
+				if (member instanceof IUnit) {
+					units.add(urg.produce(fixtures, map, currentPlayer, (IUnit) member,
+							loc));
+				} else if (member instanceof Implement) {
+					equipment.add(memberReportGenerator
+										  .produce(fixtures, map, currentPlayer, member,
+												  loc));
+				} else if (member instanceof ResourcePile) {
+					final ResourcePile pile = (ResourcePile) member;
+					final String kind = pile.getKind();
+					MultiMapHelper
+							.getMapValue(resources, kind, key -> new HtmlList(key + ':'))
+							.add(memberReportGenerator
+										 .produce(fixtures, map, currentPlayer, pile,
+												 loc));
+				} else {
+					contents.add(memberReportGenerator
+										 .produce(fixtures, map, currentPlayer, member,
+												 loc));
+				}
 			}
+			builder.append(units);
+			resources.values().stream().map(Collection::toString)
+					.forEach(resourcesText::add);
+			builder.append(resources);
+			builder.append(equipment);
 		}
-		builder.append(units);
-		resources.values().stream().map(Collection::toString)
-				.forEach(resourcesText::add);
-		builder.append(resources);
-		builder.append(equipment);
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return builder.toString();
 	}
