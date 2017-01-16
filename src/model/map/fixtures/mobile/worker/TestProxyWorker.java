@@ -145,11 +145,9 @@ public final class TestProxyWorker {
 	/**
 	 * Test that the next simplest case, of a proxy for the workers in a unit, works
 	 * properly.
-	 *
-	 * @throws IOException never; required to be declared by our use of isSubset().
 	 */
 	@Test
-	public void testProxyUnit() throws IOException {
+	public void testProxyUnit() {
 		final Worker firstWorker = new Worker("one", "human", 1,
 													 new Job("jobOne", 1,
 																	new Skill("skillOne",
@@ -210,11 +208,9 @@ public final class TestProxyWorker {
 	 * Test that the complex case, of a proxy for the workers in a unit, which is
 	 * itself a
 	 * proxy for parallel units in multiple maps, works properly.
-	 *
-	 * @throws IOException never; required to be declared by our use of isSubset().
 	 */
 	@Test
-	public void testProxyUnitProxy() throws IOException {
+	public void testProxyUnitProxy() {
 		final Worker firstWorker = new Worker("one", "human", 1,
 													 new Job("jobOne", 1,
 																	new Skill("skillOne",

@@ -1,6 +1,5 @@
 package model.map;
 
-import java.io.IOException;
 import java.util.function.Consumer;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
@@ -48,12 +47,10 @@ public final class TestSubsets {
 
 	/**
 	 * A test of PlayerCollection's subset feature.
-	 *
-	 * @throws IOException never
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testPlayerCollectionSubset() throws IOException {
+	public void testPlayerCollectionSubset() {
 		final IMutablePlayerCollection firstCollection = new PlayerCollection();
 		firstCollection.add(new Player(1, ONE_STR));
 		final IMutablePlayerCollection secondCollection = new PlayerCollection();
@@ -98,12 +95,10 @@ public final class TestSubsets {
 
 	/**
 	 * A test of RiverFixture's subset feature.
-	 *
-	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testRiverSubset() throws IOException {
+	public void testRiverSubset() {
 		final RiverFixture zero = new RiverFixture();
 		final RiverFixture thirdCollection =
 				new RiverFixture(River.Lake, River.South, River.East, River.North,
@@ -167,12 +162,10 @@ public final class TestSubsets {
 
 	/**
 	 * A test of Fortress's subset feature.
-	 *
-	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testFortressSubset() throws IOException {
+	public void testFortressSubset() {
 		final Fortress firstFort = new Fortress(new Player(1, ONE_STR), "fOne", 1,
 													   TownSize.Small);
 		final Fortress secondFort = new Fortress(new Player(2, "two"), "fOne", 1,
@@ -219,12 +212,10 @@ public final class TestSubsets {
 
 	/**
 	 * Test the MapNG subset feature.
-	 *
-	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testMapSubset() throws IOException {
+	public void testMapSubset() {
 		final IMutableMapNG firstMap =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
 		final Point pointOne = PointFactory.point(0, 0);
@@ -290,11 +281,9 @@ public final class TestSubsets {
 
 	/**
 	 * Test map subsets to ensure off-by-one errors are caught.
-	 *
-	 * @throws IOException on I/O error writing to bit bucket
 	 */
 	@Test
-	public void testMapOffByOne() throws IOException {
+	public void testMapOffByOne() {
 		final IMutableMapNG baseMap =
 				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(), -1);
 		baseMap.locationStream()
@@ -345,12 +334,10 @@ public final class TestSubsets {
 
 	/**
 	 * Test subsets' interaction with copy().
-	 *
-	 * @throws IOException on I/O writing to bit bucket
 	 */
 	@SuppressWarnings("static-method")
 	@Test
-	public void testSubsetsAndCopy() throws IOException {
+	public void testSubsetsAndCopy() {
 		final IMutableMapNG firstMap =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
 		final Point pointOne = PointFactory.point(0, 0);
