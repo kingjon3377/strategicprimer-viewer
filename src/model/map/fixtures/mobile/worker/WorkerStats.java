@@ -222,7 +222,7 @@ public class WorkerStats {
 				WorkerStats::getMaxHitPoints, WorkerStats::getStrength,
 				WorkerStats::getDexterity, WorkerStats::getConstitution,
 				WorkerStats::getIntelligence, WorkerStats::getWisdom,
-				WorkerStats::getCharisma).allMatch(stat -> equalStat(obj, stat));
+				WorkerStats::getCharisma).allMatch(stat -> isStatEqual(obj, stat));
 	}
 	/**
 	 * Whether the object agrees with us in this one stat.
@@ -230,8 +230,8 @@ public class WorkerStats {
 	 * @param stat a reference to a method
 	 * @return whether that we and that object agree in that method.
 	 */
-	private boolean equalStat(final WorkerStats obj,
-							  final ToIntFunction<WorkerStats> stat) {
+	private boolean isStatEqual(final WorkerStats obj,
+								final ToIntFunction<WorkerStats> stat) {
 		return stat.applyAsInt(this) == stat.applyAsInt(obj);
 	}
 	/**
