@@ -184,6 +184,7 @@ public interface IReportNode
 	 * An iterator over the node's children.
 	 * @return an iterator over the node's children
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	default Iterator<IReportNode> iterator() {
 		return new EnumerationWrapper<>(children());
