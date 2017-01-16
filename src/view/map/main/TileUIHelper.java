@@ -95,6 +95,7 @@ public final class TileUIHelper {
 	 * Create the version-1 terrains-to-colors mapping.
 	 * @return a mapping from tile types to the colors used for a version-1 map
 	 */
+	@SuppressWarnings("deprecation")
 	private static Map<TileType, Color> verOneColors() {
 		final Map<TileType, Color> verOneColors = new EnumMap<>(TileType.class);
 		verOneColors.put(TileType.BorealForest, new Color(72, 218, 164));
