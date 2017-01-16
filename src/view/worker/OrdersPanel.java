@@ -105,20 +105,19 @@ public final class OrdersPanel extends BorderedPanel
 		supplier = ordersSupplier;
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
-		final int initialTurn = currentTurn;
 		final int minTurn;
-		if (initialTurn < 0) {
-			minTurn = initialTurn;
+		if (currentTurn < 0) {
+			minTurn = currentTurn;
 		} else {
 			minTurn = -1;
 		}
 		final int maxTurn;
-		if (initialTurn > 100) {
-			maxTurn = initialTurn;
+		if (currentTurn > 100) {
+			maxTurn = currentTurn;
 		} else {
 			maxTurn = 100;
 		}
-		spinnerModel = new SpinnerNumberModel(initialTurn, minTurn, maxTurn, 1);
+		spinnerModel = new SpinnerNumberModel(currentTurn, minTurn, maxTurn, 1);
 		if (ordersConsumer == null) {
 			consumer = (unit, turn, orders) -> {
 			};
