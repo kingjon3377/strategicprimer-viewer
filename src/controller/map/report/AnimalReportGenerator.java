@@ -80,7 +80,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				} else {
 					fixtures.entrySet().stream()
 							.filter(entry -> entry.getValue().equals(pair))
-							.map(Map.Entry::getKey).map(fixtures::remove);
+							.map(Map.Entry::getKey).forEach(fixtures::remove);
 				}
 			}
 		}
