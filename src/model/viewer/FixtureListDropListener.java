@@ -82,23 +82,21 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 							 .contains(FixtureTransferable.FLAVOR) ||
 							 dtde.getCurrentDataFlavorsAsList()
 									 .contains(CurriedFixtureTransferable.FLAVOR)) &&
-					!isIntraComponentXfr(dtde)) {
+					isXfrFromOutside(dtde)) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
 		}
 	}
 	/**
-	 * TODO: Figure out how to skip all this (return false) on non-local drags.
+	 * TODO: Figure out how to skip all this (return true) on non-local drags.
 	 *
 	 * @param dtde an event
-	 * @return whether the data it holds come from are (probably) from this component.
-	 * I/O
-	 * etc. problems return true.
+	 * @return whether the data it holds come from are (probably) from outside component.
 	 */
-	private boolean isIntraComponentXfr(final DropTargetEvent dtde) {
-		return (dtde.getSource() instanceof Component) &&
-					   parentComponent.isAncestorOf((Component) dtde.getSource());
+	private boolean isXfrFromOutside(final DropTargetEvent dtde) {
+		return (!(dtde.getSource() instanceof Component)) ||
+					   !parentComponent.isAncestorOf((Component) dtde.getSource());
 	}
 
 	/**
@@ -134,7 +132,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	public void drop(@Nullable final DropTargetDropEvent dtde) {
 		if (dtde == null) {
 			return;
-		} else if (!isIntraComponentXfr(dtde)) {
+		} else if (isXfrFromOutside(dtde)) {
 			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
 				if ((flavor != null) && EqualsAny.equalsAny(flavor,
 						FixtureTransferable.FLAVOR, CurriedFixtureTransferable.FLAVOR)) {
