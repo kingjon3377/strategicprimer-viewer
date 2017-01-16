@@ -1,12 +1,10 @@
 package controller.map.yaxml;
 
-import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
-import java.util.Objects;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -128,16 +126,9 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 	private ISkill parseSkill(final StartElement element,
 							 final QName parent) throws SPFormatException {
 		requireTag(element, parent, "skill");
-		final ISkill retval =
-				new Skill(getParameter(element, "name"),
-								 getIntegerParameter(element, "level"),
-								 getIntegerParameter(element, "hours"));
-		if (Objects.equals("miscellaneous", retval.getName()) &&
-					(retval.getLevel() > 0)) {
-			warner.warn(
-					new DeprecatedPropertyException(element, "miscellaneous", "other"));
-		}
-		return retval;
+		return new Skill(getParameter(element, "name"),
+						 getIntegerParameter(element, "level"),
+						 getIntegerParameter(element, "hours"));
 	}
 
 	/**

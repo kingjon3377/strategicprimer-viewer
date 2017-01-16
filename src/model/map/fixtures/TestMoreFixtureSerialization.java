@@ -21,10 +21,8 @@ import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.explorable.Portal;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
-import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
-import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
@@ -355,23 +353,6 @@ public final class TestMoreFixtureSerialization extends
 		assertForwardDeserialization("Explicit specification of default race works",
 				new Worker("third", DEFAULT_RACE, 5),
 				"<worker name=\"third\" race=\"human\" id=\"5\" />");
-		assertDeprecatedDeserialization(
-				"'miscellaneous' skill with level should be warned about",
-				new Worker("4th", DEFAULT_RACE, 6,
-								  new Job("5th", 0, new Skill("miscellaneous", 1, 0))),
-				"<worker name=\"4th\" id=\"6\"><job name=\"5th\" level=\"0\">"
-						+ "<skill name=\"miscellaneous\" level=\"1\" hours=\"0\"/>"
-						+ "</job></worker>", "miscellaneous");
-		assertSerialization("but 'miscellaneous' skill without levels causes no " +
-									"warnings",
-				new Worker("sixth", DEFAULT_RACE, 7,
-								  new Job("seventh", 0,
-												 new Skill("miscellaneous", 0, 20))),
-				Warning.Die);
-		assertSerialization("and levels in another skill cause no warnings",
-				new Worker("fourth", DEFAULT_RACE, 8,
-								  new Job("fifth", 0, new Skill("odd-skill", 1, 0))),
-				Warning.Die);
 		final Worker secondWorker = new Worker("sixth", "dwarf", 9);
 		secondWorker.setStats(new WorkerStats(0, 0, 1, 2, 3, 4, 5, 6));
 		assertSerialization("Worker can have skills", secondWorker);

@@ -97,12 +97,20 @@ public final class MapChecker implements UtilityDriver {
 			}
 		};
 		EXTRA_CHECKS.add((terrain, context, fixture, warner) -> {
-			if (fixture instanceof IWorker &&
-						((IWorker) fixture).stream().anyMatch(suspiciousSkill)) {
-				final String message =
-						String.format("%s has a Job with one suspiciously-named Skill",
-								((IWorker) fixture).getName());
-				warner.warn(new SPContentWarning(context, message));
+			if (fixture instanceof IWorker) {
+				if (((IWorker) fixture).stream().anyMatch(suspiciousSkill)) {
+					final String message =
+							String.format("%s has a Job with one suspiciously-named Skill",
+									((IWorker) fixture).getName());
+					warner.warn(new SPContentWarning(context, message));
+				} else if (((IWorker) fixture).stream().flatMap(IJob::stream).anyMatch(
+						skill -> "miscellaneous".equals(skill.getName()) &&
+										 skill.getLevel() > 0)) {
+					final String message =
+							String.format("%s has a level in 'miscellaneous'",
+									((IWorker) fixture).getName());
+					warner.warn(new SPContentWarning(context, message));
+				}
 			}
 		});
 	}

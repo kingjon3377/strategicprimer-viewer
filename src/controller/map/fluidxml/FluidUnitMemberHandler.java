@@ -186,14 +186,9 @@ public final class FluidUnitMemberHandler {
 		requireNonEmptyAttribute(element, "level", true, warner);
 		requireNonEmptyAttribute(element, "hours", true, warner);
 		spinUntilEnd(element.getName(), stream);
-		final ISkill retval = new Skill(getAttribute(element, "name"),
+		return new Skill(getAttribute(element, "name"),
 											   getIntegerAttribute(element, "level"),
 											   getIntegerAttribute(element, "hours"));
-		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
-			warner.warn(
-					new DeprecatedPropertyException(element, "miscellaneous", "other"));
-		}
-		return retval;
 	}
 
 	/**
