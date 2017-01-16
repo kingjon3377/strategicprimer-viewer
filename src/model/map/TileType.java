@@ -130,9 +130,9 @@ public enum TileType {
 	 */
 	@SuppressWarnings("SynchronizationOnStaticField")
 	public static Iterable<TileType> valuesForVersion(final int ver) {
-		final Integer boxedVer = Integer.valueOf(ver);
 		synchronized (VALS_BY_VER) {
-			return unmodifiableSet(MultiMapHelper.getMapValue(VALS_BY_VER, boxedVer,
+			return unmodifiableSet(MultiMapHelper.getMapValue(VALS_BY_VER,
+					Integer.valueOf(ver),
 					key -> EnumSet.copyOf(
 							Stream.of(values())
 									.filter(type -> type.isSupportedByVersion(key))
