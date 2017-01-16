@@ -503,7 +503,7 @@ public final class WorkerMgmtFrame extends SPFrame
 				return;
 			}
 			final Object node = selPath.getLastPathComponent();
-			if ((OnMac.isHotkeyPressed(evt)) && (node instanceof IReportNode)) {
+			if (OnMac.isHotkeyPressed(evt) && (node instanceof IReportNode)) {
 				final Point point = ((IReportNode) node).getPoint();
 				// (-inf, -inf) replaces null
 				if (point.getRow() > Integer.MIN_VALUE) {
