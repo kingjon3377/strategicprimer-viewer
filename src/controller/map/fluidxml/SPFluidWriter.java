@@ -400,11 +400,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				final TileType terrain = map.getBaseTerrain(point);
-				if ((TileType.NotVisible != terrain)
-							|| map.isMountainous(point)
-							|| (map.getGround(point) != null)
-							|| (map.getForest(point) != null)
-							|| map.streamOtherFixtures(point).anyMatch(x -> true)) {
+				if (!map.isLocationEmpty(point)) {
 					if (rowEmpty) {
 						writeTag(ostream, "row", indent + 2, false);
 						rowEmpty = false;
