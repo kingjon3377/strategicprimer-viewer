@@ -177,59 +177,63 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	@Override
 	default boolean isSubset(final IFixture obj, final Formatter ostream,
 							 final String context) {
-		if (obj.getID() != getID()) {
-			ostream.format("%s\tFixtures have different IDs%n", context);
-			return false;
-		} else if (!(obj instanceof IUnit)) {
-			ostream.format("%s\tDifferent kinds of fixtures for ID #%d%n", context,
-					Integer.valueOf(getID()));
-			return false;
-		} else if (areIntItemsEqual(ostream, getOwner().getPlayerId(),
-				((IUnit) obj).getOwner().getPlayerId(),
-				"%s Unit of ID #%d:\tOwners differ%n", context,
-				Integer.valueOf(getID())) &&
-						   areObjectsEqual(ostream, getName(), ((IUnit) obj).getName(),
-								   "%s Unit of ID #%d\tNames differ%n", context,
-								   Integer.valueOf(getID())) &&
-						   areObjectsEqual(ostream, getKind(), ((IUnit) obj).getKind(),
-								   "%s Unit of ID #%d\tKinds differ%n", context,
-								   Integer.valueOf(getID()))) {
-			final Iterable<UnitMember> other = (IUnit) obj;
-			final Map<Integer, UnitMember> ours = new HashMap<>();
-			for (final UnitMember member : this) {
-				ours.put(Integer.valueOf(member.getID()), member);
-			}
-			boolean retval = true;
-			for (final UnitMember member : other) {
-				if (!ours.containsKey(Integer.valueOf(member.getID()))) {
-					ostream.format(
-							"%s In unit of kind %s named %s (ID #%d): " +
-									"Extra member:\t%s, ID #%d%n",
-							context, getKind(), getName(), Integer.valueOf(getID()),
-							member.toString(), Integer.valueOf(member.getID()));
-					retval = false;
-				} else if (!ours.get(Integer.valueOf(member.getID()))
-									.isSubset(member, ostream, String.format(
-											"%s In unit of kind %s named %s (ID #%d):",
-											context, getKind(), getName(),
-											Integer.valueOf(getID())))) {
-					retval = false;
+		if (obj.getID() == getID()) {
+			if ((obj instanceof IUnit)) {
+				if (areIntItemsEqual(ostream, getOwner().getPlayerId(),
+						((IUnit) obj).getOwner().getPlayerId(),
+						"%s Unit of ID #%d:\tOwners differ%n", context,
+						Integer.valueOf(getID())) &&
+								   areObjectsEqual(ostream, getName(), ((IUnit) obj).getName(),
+										   "%s Unit of ID #%d\tNames differ%n", context,
+										   Integer.valueOf(getID())) &&
+								   areObjectsEqual(ostream, getKind(), ((IUnit) obj).getKind(),
+										   "%s Unit of ID #%d\tKinds differ%n", context,
+										   Integer.valueOf(getID()))) {
+					final Iterable<UnitMember> other = (IUnit) obj;
+					final Map<Integer, UnitMember> ours = new HashMap<>();
+					for (final UnitMember member : this) {
+						ours.put(Integer.valueOf(member.getID()), member);
+					}
+					boolean retval = true;
+					for (final UnitMember member : other) {
+						if (!ours.containsKey(Integer.valueOf(member.getID()))) {
+							ostream.format(
+									"%s In unit of kind %s named %s (ID #%d): " +
+											"Extra member:\t%s, ID #%d%n",
+									context, getKind(), getName(), Integer.valueOf(getID()),
+									member.toString(), Integer.valueOf(member.getID()));
+							retval = false;
+						} else if (!ours.get(Integer.valueOf(member.getID()))
+											.isSubset(member, ostream, String.format(
+													"%s In unit of kind %s named %s (ID #%d):",
+													context, getKind(), getName(),
+													Integer.valueOf(getID())))) {
+							retval = false;
+						}
+					}
+					if (retval) {
+						if (EqualsAny.equalsAny("unassigned", getName(), getKind()) &&
+									iterator().hasNext() && !other.iterator().hasNext()) {
+							ostream.format(
+									"%s In unit of kind %s named %s (ID #%d): Nonempty " +
+											"'unassigned' when submap has it empty%n",
+									context, getKind(), getName(), Integer.valueOf(getID()));
+						}
+						return true;
+					} else {
+						return false;
+					}
+					//			return retval;
+				} else {
+					return false;
 				}
-			}
-			if (retval) {
-				if (EqualsAny.equalsAny("unassigned", getName(), getKind()) &&
-							iterator().hasNext() && !other.iterator().hasNext()) {
-					ostream.format(
-							"%s In unit of kind %s named %s (ID #%d): Nonempty " +
-									"'unassigned' when submap has it empty%n",
-							context, getKind(), getName(), Integer.valueOf(getID()));
-				}
-				return true;
 			} else {
+				ostream.format("%s\tDifferent kinds of fixtures for ID #%d%n", context,
+						Integer.valueOf(getID()));
 				return false;
 			}
-			//			return retval;
 		} else {
+			ostream.format("%s\tFixtures have different IDs%n", context);
 			return false;
 		}
 	}
