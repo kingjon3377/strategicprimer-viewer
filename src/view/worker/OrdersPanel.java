@@ -147,7 +147,7 @@ public final class OrdersPanel extends BorderedPanel
 							new JSpinner(spinnerModel))))
 					.setCenter(new JScrollPane(area)).setPageEnd(buttonPanel);
 		}
-		area.addKeyListener(new ModifiedEnterListener());
+		area.addKeyListener(new ModifiedEnterListener(this::apply));
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);
 		// Prevent synthetic access warning
@@ -297,12 +297,17 @@ public final class OrdersPanel extends BorderedPanel
 	/**
 	 * A class to listen for ctrl-enter/cmd-enter.
 	 */
-	private class ModifiedEnterListener extends KeyAdapter {
+	private static class ModifiedEnterListener extends KeyAdapter {
+		/**
+		 * The method to call when the key is pressed. Type is "no-arg no-return method".
+		 */
+		private final Runnable listener;
 		/**
 		 * Protected so we can call it without synthetic-access warnings.
+		 * @param method the method to call when the key is pressed.
 		 */
-		protected ModifiedEnterListener() {
-			// do nothing
+		protected ModifiedEnterListener(final Runnable method) {
+			listener = method;
 		}
 
 		/**
@@ -315,7 +320,7 @@ public final class OrdersPanel extends BorderedPanel
 		public void keyPressed(@Nullable final KeyEvent evt) {
 			if ((evt != null) && (evt.getKeyCode() == KeyEvent.VK_ENTER) &&
 						OnMac.isHotkeyPressed(evt)) {
-				apply();
+				listener.run();
 			}
 		}
 	}
