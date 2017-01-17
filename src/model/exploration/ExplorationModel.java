@@ -548,6 +548,12 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 						.filter(pair -> pair.second() instanceof Animal).limit(1)
 						.forEach(pair -> streamSubordinateMaps().map(Pair::first).forEach(
 								map -> map.addFixture(pair.first(), pair.second())));
+				surroundingPoints.stream().filter(point -> mainMap.getForest(point) != null)
+						.forEach(point -> streamSubordinateMaps().map(Pair::first)
+												  .filter(map -> map.getForest(point) ==
+																		 null).forEach(
+										map -> map.setForest(point,
+												mainMap.getForest(point))));
 			}
 			fireMovementCost(5);
 		}
