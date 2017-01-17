@@ -324,7 +324,7 @@ public final class TestConverter {
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(4, 3),
 				PointFactory.point(5, 3), PointFactory.point(6, 2),
-				PointFactory.point(7, 1), PointFactory.point(7, 3)	)) {
+				PointFactory.point(7, 1), PointFactory.point(7, 3))) {
 			initialize(converted, point, TileType.Plains, new Ground(ROCK_TYPE, false));
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(4, 4),
