@@ -77,16 +77,18 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) {
-		if (obj.getID() != id) {
-			ostream.format("%s\tIDs differ%n", context);
-			return false;
-		} else if (obj instanceof Implement) {
-			return areObjectsEqual(ostream, kind, ((Implement) obj).kind,
-					"%s\tIn Implement ID #%d%n: Kinds differ",
-					context, Integer.valueOf(id));
+		if (obj.getID() == id) {
+			if (obj instanceof Implement) {
+				return areObjectsEqual(ostream, kind, ((Implement) obj).kind,
+						"%s\tIn Implement ID #%d%n: Kinds differ",
+						context, Integer.valueOf(id));
+			} else {
+				ostream.format("%s\tDifferent fixture types given for ID #%d%n", context,
+						Integer.valueOf(id));
+				return false;
+			}
 		} else {
-			ostream.format("%s\tDifferent fixture types given for ID #%d%n", context,
-					Integer.valueOf(id));
+			ostream.format("%s\tIDs differ%n", context);
 			return false;
 		}
 	}

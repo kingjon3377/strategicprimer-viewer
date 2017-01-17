@@ -64,13 +64,13 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 		// Hares won't appear in mountains, forests, or ocean.
 		if (map.isMountainous(location)) {
 			return false;
-		} else if (map.getForest(location) != null) {
-			return false;
 		} else if (TileType.Ocean == terrain) {
 			return false;
-		} else {
+		} else if (map.getForest(location) == null) {
 			suitableCount++;
 			return true;
+		} else {
+			return false;
 		}
 	}
 

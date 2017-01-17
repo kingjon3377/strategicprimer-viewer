@@ -310,10 +310,10 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Nullable
 	public TreeNode getNode(final Object obj) {
 		final TreeNode localRoot = root;
-		if (localRoot != null) {
-			return getNode(localRoot, obj);
-		} else {
+		if (localRoot == null) {
 			return null;
+		} else {
+			return getNode(localRoot, obj);
 		}
 	}
 

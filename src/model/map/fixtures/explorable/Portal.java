@@ -1,12 +1,12 @@
 package model.map.fixtures.explorable;
 
 import java.util.Formatter;
+import java.util.stream.Stream;
 import model.map.IFixture;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.SubsettableFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.EqualsAny;
 
 /**
  * A fixture representing a portal to another world.
@@ -217,8 +217,8 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 		if (obj.getID() == id) {
 			if (obj instanceof Portal) {
 				final Portal other = (Portal) obj;
-				if (!EqualsAny.equalsAny(other.destinationWorld, "unknown",
-						destinationWorld)) {
+				if (Stream.of(destinationWorld, "unknown")
+							.noneMatch(other.destinationWorld::equals)) {
 					ostream.format(
 							"%s\tIn portal with ID #%d: Different destination world%n",
 							context, Integer.valueOf(id));
