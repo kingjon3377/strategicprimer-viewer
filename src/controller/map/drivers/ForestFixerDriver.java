@@ -10,13 +10,14 @@ import java.util.stream.Stream;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
+import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import util.Pair;
 
 /**
- * A driver to fix ID mismatches between forests in the main and player maps.
+ * A driver to fix ID mismatches between forests and Ground in the main and player maps.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -62,9 +63,12 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 		final IMutableMapNG mainMap = model.getMap();
 		final List<Forest> mainForests = new ArrayList<>();
 		final List<Forest> subForests = new ArrayList<>();
+		final List<Ground> mainGround = new ArrayList<>();
+		final List<Ground> subGround = new ArrayList<>();
 		for (final Pair<IMutableMapNG, Optional<Path>> pair :
 				mmodel.getSubordinateMaps()) {
 			final Optional<Path> maybePath = pair.second();
+			// TODO: use orElse()
 			if (maybePath.isPresent()) {
 				System.out.printf("Starting %s%n", maybePath.get().toString());
 			} else {
@@ -89,6 +93,23 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 						mainMap.addFixture(location, forest.copy(false));
 					}
 				}
+				extractGround(mainMap, location, mainGround);
+				extractGround(map, location, subGround);
+				for (final Ground ground : subGround) {
+					if (mainGround.contains(ground)) {
+						continue;
+					}
+					final Optional<Ground> matching =
+							mainGround.stream().filter(ground::equalsIgnoringID)
+									.findAny();
+					if (matching.isPresent()) {
+						ground.setID(matching.get().getID());
+					} else {
+						System.out.printf("Unmatched ground in %s: %s%n",
+								location.toString(), ground.toString());
+						mainMap.addFixture(location, ground.copy(false));
+					}
+				}
 			}
 		}
 	}
@@ -105,6 +126,21 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 		Stream.concat(Stream.of(map.getForest(point)),
 				map.streamOtherFixtures(point).filter(Forest.class::isInstance)
 						.map(Forest.class::cast)).filter(Objects::nonNull)
+				.forEach(list::add);
+	}
+	/**
+	 * We clear the list, then add all Ground at the given point in the given map to
+	 * the list.
+	 * @param map a map
+	 * @param point a location
+	 * @param list a list to add ground to
+	 */
+	private static void extractGround(final IMapNG map, final Point point,
+									   final List<Ground> list) {
+		list.clear();
+		Stream.concat(Stream.of(map.getGround(point)),
+				map.streamOtherFixtures(point).filter(Ground.class::isInstance)
+						.map(Ground.class::cast)).filter(Objects::nonNull)
 				.forEach(list::add);
 	}
 }

@@ -37,13 +37,20 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	private String image = "";
 
 	/**
+	 * The ID number.
+	 */
+	private int id;
+
+	/**
 	 * Constructor.
 	 *
+	 * @param idNum the ID number
 	 * @param desc a description of the ground (the type of rock)
 	 * @param exp  whether it's exposed. (If not, the tile should also include a grass or
 	 *             forest Fixture ...)
 	 */
-	public Ground(final String desc, final boolean exp) {
+	public Ground(final int idNum, final String desc, final boolean exp) {
+		id = idNum;
 		kind = desc;
 		exposed = exp;
 	}
@@ -56,7 +63,7 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	@SuppressWarnings("MethodReturnOfConcreteClass")
 	@Override
 	public Ground copy(final boolean zero) {
-		final Ground retval = new Ground(kind, exposed);
+		final Ground retval = new Ground(id, kind, exposed);
 		retval.image = image;
 		return retval;
 	}
@@ -100,8 +107,8 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
-	 * An object is equal if it is Ground of the same kind and either both or neither
-	 * are exposed.
+	 * An object is equal if it is Ground of the same kind, either both or neither
+	 * are exposed, and it has the same ID.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -109,20 +116,16 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) ||
 					   ((obj instanceof Ground) && kind.equals(((Ground) obj).kind) &&
-								(exposed == ((Ground) obj).exposed));
+								(exposed == ((Ground) obj).exposed) && id == ((Ground) obj).id);
 	}
 
 	/**
-	 * A hash code for the object. TODO: When we get variable ID, use it instead.
+	 * Use the ID for hashing.
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		if (exposed) {
-			return kind.hashCode() << 1;
-		} else {
-			return kind.hashCode();
-		}
+		return id;
 	}
 
 	/**
@@ -131,17 +134,25 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	 */
 	@Override
 	public String toString() {
-		return shortDesc();
+		return shortDesc() + ", ID #" + id;
 	}
 
 	/**
-	 * TODO: make this different between instances.
+	 * The ID number.
 	 *
 	 * @return an ID number.
 	 */
 	@Override
 	public int getID() {
-		return -1;
+		return id;
+	}
+
+	/**
+	 * Set the ID for the object.
+	 * @param idNum the new ID number
+	 */
+	public void setID(final int idNum) {
+		id = idNum;
 	}
 
 	/**
@@ -152,7 +163,9 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return equals(fix);
+		return (this == fix) ||
+					   ((fix instanceof Ground) && kind.equals(((Ground) fix).kind) &&
+								(exposed == ((Ground) fix).exposed));
 	}
 
 	/**

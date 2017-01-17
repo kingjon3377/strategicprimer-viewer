@@ -4,6 +4,8 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.iointerfaces.SPWriter;
 import controller.map.iointerfaces.TestReaderFactory;
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDRegistrar;
 import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
 import java.io.StringReader;
@@ -118,7 +120,9 @@ public final class TestConverter {
 	private static void initialize(final IMutableMapNG map, final Point point,
 								   final TileType terrain,
 								   final TileFixture... fixtures) {
-		map.setBaseTerrain(point, terrain);
+		if (TileType.NotVisible != terrain) {
+			map.setBaseTerrain(point, terrain);
+		}
 		for (final TileFixture fixture : fixtures) {
 			if (fixture instanceof Ground && map.getGround(point) == null) {
 				map.setGround(point, (Ground) fixture);
@@ -172,11 +176,11 @@ public final class TestConverter {
 		final Point pointOne = PointFactory.point(0, 0);
 		start.setMountainous(pointOne, true);
 		start.addRivers(pointOne, River.East, River.South);
-		final Ground groundOne = new Ground("groundOne", false);
+		final Ground groundOne = new Ground(-1, "groundOne", false);
 		initialize(start, pointOne, TileType.Steppe, groundOne);
 		final Point pointTwo = PointFactory.point(0, 1);
 		start.addRivers(pointTwo, River.Lake);
-		final Ground groundTwo = new Ground("groundTwo", false);
+		final Ground groundTwo = new Ground(-1, "groundTwo", false);
 		initialize(start, pointTwo, TileType.Steppe, groundTwo);
 		final Point pointThree = PointFactory.point(1, 0);
 		final Forest forestOne = new Forest("forestOne", false, 1);
@@ -242,60 +246,60 @@ public final class TestConverter {
 		converted.addPlayer(player);
 		converted.addPlayer(independent);
 		initialize(converted, PointFactory.point(0, 0), TileType.Steppe,
-				new Ground(ROCK_TYPE, false),
+				new Ground(-1, ROCK_TYPE, false),
 				new Village(TownStatus.Active, "", -1, independent, "human"));
 		initialize(converted, PointFactory.point(0, 1), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(1, 0), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(1, 1), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(2, 1), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Forest(TEMP_TREE, false, -1));
 		initialize(converted, PointFactory.point(2, 6), TileType.Plains,
-				new Ground(ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
 				new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(3, 0), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(3, 6), TileType.Plains,
-				new Ground(ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
 				new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(3, 7), TileType.Plains,
-				new Ground(ROCK_TYPE, false),
-				new Village(TownStatus.Active, "", -1, independent, "half-elf"));
+				new Ground(-1, ROCK_TYPE, false),
+				new Village(TownStatus.Active, "", -1, independent, "dwarf"));
 		initialize(converted, PointFactory.point(4, 0), TileType.Desert,
-				new Ground(ROCK_TYPE, false),
+				new Ground(-1, ROCK_TYPE, false),
 				new Village(TownStatus.Active, "", -1, independent, "human"));
 		initialize(converted, PointFactory.point(4, 1), TileType.Desert,
-				new Ground(ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
+				new Ground(-1, ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(4, 6), TileType.Plains,
-				new Ground("rock4", false), new Grove(true, true, "fruit4", -1));
+				new Ground(-1, "rock4", false), new Grove(true, true, "fruit4", -1));
 		initialize(converted, PointFactory.point(4, 7), TileType.Plains,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(5, 0), TileType.Desert,
-				new Ground(ROCK_TYPE, false),
+				new Ground(-1, ROCK_TYPE, false),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(6, 5), TileType.Plains,
-				new Ground("rock4", false), new Grove(true, true, "fruit4", -1));
+				new Ground(-1, "rock4", false), new Grove(true, true, "fruit4", -1));
 		initialize(converted, PointFactory.point(6, 6), TileType.Plains,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(6, 7), TileType.Plains,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(7, 6), TileType.Plains,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Village(TownStatus.Active, "", -1, independent, "human"));
 		initialize(converted, PointFactory.point(5, 7), TileType.Plains,
-				new Ground("rock4", false), new Forest("ttree4", false, -1));
+				new Ground(-1, "rock4", false), new Forest("ttree4", false, -1));
 		initialize(converted, PointFactory.point(7, 7), TileType.Plains,
-				new Ground("rock4", false), new Grove(true, true, "fruit4", -1));
+				new Ground(-1, "rock4", false), new Grove(true, true, "fruit4", -1));
 		for (final Point point : Arrays.asList(PointFactory.point(0, 2),
 				PointFactory.point(0, 3), PointFactory.point(1, 2),
 				PointFactory.point(1, 3), PointFactory.point(2, 0),
@@ -303,7 +307,7 @@ public final class TestConverter {
 				PointFactory.point(3, 1), PointFactory.point(3, 2),
 				PointFactory.point(3, 3))) {
 			initialize(converted, point, TileType.Steppe,
-					new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1));
+					new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1));
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(0, 4),
 				PointFactory.point(0, 5), PointFactory.point(0, 6),
@@ -313,26 +317,26 @@ public final class TestConverter {
 				PointFactory.point(2, 5), PointFactory.point(2, 7),
 				PointFactory.point(3, 4), PointFactory.point(3, 5))) {
 			initialize(converted, point, TileType.Plains,
-					new Ground(ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1));
+					new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1));
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(4, 2),
 				PointFactory.point(5, 1), PointFactory.point(5, 2),
 				PointFactory.point(6, 0), PointFactory.point(6, 1),
 				PointFactory.point(6, 3), PointFactory.point(7, 0),
 				PointFactory.point(7, 2))) {
-			initialize(converted, point, TileType.Desert, new Ground(ROCK_TYPE, false));
+			initialize(converted, point, TileType.Desert, new Ground(-1, ROCK_TYPE, false));
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(4, 3),
 				PointFactory.point(5, 3), PointFactory.point(6, 2),
 				PointFactory.point(7, 1), PointFactory.point(7, 3))) {
-			initialize(converted, point, TileType.Plains, new Ground(ROCK_TYPE, false));
+			initialize(converted, point, TileType.Plains, new Ground(-1, ROCK_TYPE, false));
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(4, 4),
 				PointFactory.point(4, 5), PointFactory.point(5, 4),
 				PointFactory.point(5, 5), PointFactory.point(5, 6),
 				PointFactory.point(6, 4), PointFactory.point(7, 4),
 				PointFactory.point(7, 5))) {
-			initialize(converted, point, TileType.Plains, new Ground("rock4", false));
+			initialize(converted, point, TileType.Plains, new Ground(-1, "rock4", false));
 		}
 
 //		new SPFluidWriter().write(SystemOut.SYS_OUT,
@@ -400,7 +404,7 @@ public final class TestConverter {
 				new Forest(TEMP_TREE, false, 1));
 		initialize(original, PointFactory.point(1, 0), TileType.Mountain);
 		initialize(original, PointFactory.point(1, 1), TileType.Tundra,
-				new Ground(ROCK_TYPE, false));
+				new Ground(-1, ROCK_TYPE, false));
 		final Player player = new Player(1, "playerName");
 		original.addPlayer(player);
 		final Player independent = new Player(2, "independent");
@@ -411,62 +415,62 @@ public final class TestConverter {
 		converted.addPlayer(player);
 		converted.addPlayer(independent);
 		initialize(converted, PointFactory.point(0, 0), TileType.Jungle,
-				new Ground(ROCK_TYPE, false),
-				new Village(TownStatus.Active, "", -1, independent, "dwarf"));
+				new Ground(-1, ROCK_TYPE, false),
+				new Village(TownStatus.Active, "", -1, independent, "human"));
 		initialize(converted, PointFactory.point(0, 1), TileType.Jungle,
-				new Ground(ROCK_TYPE, false),
+				new Ground(-1, ROCK_TYPE, false),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(2, 3), TileType.Jungle,
-				new Ground(ROCK_TYPE, false),
+				new Ground(-1, ROCK_TYPE, false),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(2, 5), TileType.Plains,
-				new Ground(ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
 				new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(3, 0), TileType.Jungle,
-				new Ground(ROCK_TYPE, false),
+				new Ground(-1, ROCK_TYPE, false),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(3, 1), TileType.Jungle,
-				new Ground(ROCK_TYPE, false),
+				new Ground(-1, ROCK_TYPE, false),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(3, 4), TileType.Plains,
-				new Ground(ROCK_TYPE, false),
+				new Ground(-1, ROCK_TYPE, false),
 				new Village(TownStatus.Active, "", -1, independent, "human"));
 		initialize(converted, PointFactory.point(3, 5), TileType.Plains,
-				new Ground(ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(4, 0), TileType.Plains,
-				new Ground(ROCK_TYPE, false),
-				new Village(TownStatus.Active, "", -1, independent, "dwarf"));
+				new Ground(-1, ROCK_TYPE, false),
+				new Village(TownStatus.Active, "", -1, independent, "Danan"));
 		initialize(converted, PointFactory.point(4, 3), TileType.Plains,
-				new Ground(ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
+				new Ground(-1, ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(4, 4), TileType.Tundra,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(5, 0), TileType.Plains,
-				new Ground(ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
+				new Ground(-1, ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(5, 1), TileType.Plains,
-				new Ground(ROCK_TYPE, false),
+				new Ground(-1, ROCK_TYPE, false),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(5, 4), TileType.Tundra,
-				new Ground("rock4", false), new Forest("ttree4", false, -1));
+				new Ground(-1, "rock4", false), new Forest("ttree4", false, -1));
 		initialize(converted, PointFactory.point(5, 6), TileType.Tundra,
-				new Ground("rock4", false), new Ground(ROCK_TYPE, false));
+				new Ground(-1, "rock4", false), new Ground(-1, ROCK_TYPE, false));
 		initialize(converted, PointFactory.point(6, 5), TileType.Tundra,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(6, 6), TileType.Tundra,
-				new Ground("rock4", false), new Grove(true, true, "fruit4", -1));
-		initialize(converted, PointFactory.point(7, 5), TileType.Tundra, new Ground("rock4", false), new Meadow("grain4", true, true, -1, Growing));
+				new Ground(-1, "rock4", false), new Grove(true, true, "fruit4", -1));
+		initialize(converted, PointFactory.point(7, 5), TileType.Tundra, new Ground(-1, "rock4", false), new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(7, 6), TileType.Tundra,
-				new Ground("rock4", false), new Forest("ttree4", false, -1),
-				new Village(TownStatus.Active, "", -1, independent, "human"));
+				new Ground(-1, "rock4", false), new Forest("ttree4", false, -1),
+				new Village(TownStatus.Active, "", -1, independent, "dwarf"));
 		for (final Point point : Arrays.asList(PointFactory.point(0, 2),
 				PointFactory.point(0, 3), PointFactory.point(1, 0),
 				PointFactory.point(1, 1), PointFactory.point(1, 2),
 				PointFactory.point(1, 3), PointFactory.point(2, 0),
 				PointFactory.point(2, 1), PointFactory.point(2, 2),
 				PointFactory.point(3, 2), PointFactory.point(3, 3))) {
-			initialize(converted, point, TileType.Jungle, new Ground(ROCK_TYPE, false));
+			initialize(converted, point, TileType.Jungle, new Ground(-1, ROCK_TYPE, false));
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(0, 4),
 				PointFactory.point(0, 5), PointFactory.point(0, 6),
@@ -475,12 +479,12 @@ public final class TestConverter {
 				PointFactory.point(1, 7), PointFactory.point(2, 4),
 				PointFactory.point(2, 6), PointFactory.point(2, 7),
 				PointFactory.point(3, 6), PointFactory.point(3, 7))) {
-			initialize(converted, point, TileType.Plains, new Ground(ROCK_TYPE, false),
+			initialize(converted, point, TileType.Plains, new Ground(-1, ROCK_TYPE, false),
 					new Forest(TEMP_TREE, false, -1));
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(4, 1),
 				PointFactory.point(5, 2), PointFactory.point(7, 1))) {
-			initialize(converted, point, TileType.Plains, new Ground(ROCK_TYPE, false),
+			initialize(converted, point, TileType.Plains, new Ground(-1, ROCK_TYPE, false),
 					new Forest(TEMP_TREE, false, -1));
 			converted.setMountainous(point, true);
 		}
@@ -489,7 +493,7 @@ public final class TestConverter {
 				PointFactory.point(6, 1), PointFactory.point(6, 2),
 				PointFactory.point(6, 3), PointFactory.point(7, 0),
 				PointFactory.point(7, 2), PointFactory.point(7, 3))) {
-			initialize(converted, point, TileType.Plains, new Ground(ROCK_TYPE, false));
+			initialize(converted, point, TileType.Plains, new Ground(-1, ROCK_TYPE, false));
 			converted.setMountainous(point, true);
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(4, 5),
@@ -497,7 +501,7 @@ public final class TestConverter {
 				PointFactory.point(5, 5), PointFactory.point(5, 7),
 				PointFactory.point(6, 4), PointFactory.point(6, 7),
 				PointFactory.point(7, 4), PointFactory.point(7, 7))) {
-			initialize(converted, point, TileType.Tundra, new Ground("rock4", false));
+			initialize(converted, point, TileType.Tundra, new Ground(-1, "rock4", false));
 		}
 
 		// The converter adds a second forest here, but trying to do the same gets it
@@ -573,7 +577,7 @@ public final class TestConverter {
 		final IMutableMapNG original =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
 		initialize(original, PointFactory.point(0, 0), TileType.NotVisible,
-				new Ground(ROCK_TYPE, false));
+				new Ground(-1, ROCK_TYPE, false));
 		final Player independent = new Player(2, "independent");
 		initialize(original, PointFactory.point(0, 1), TileType.BorealForest,
 				new Forest(TEMP_TREE, false, 1), new Hill(1),
@@ -603,99 +607,99 @@ public final class TestConverter {
 		converted.addPlayer(independent);
 
 		initialize(converted, PointFactory.point(0, 4), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Hill(-1), new Centaur("hill", -1),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(0, 5), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Troll(-1), new Forest(TEMP_TREE, false, -1));
 		initialize(converted, PointFactory.point(0, 6), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new AdventureFixture(independent, "briefDescription", "fullDescription",
 											-1));
 		initialize(converted, PointFactory.point(0, 7), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Griffin(-1), new Forest(TEMP_TREE, false, -1));
 		initialize(converted, PointFactory.point(1, 0), TileType.NotVisible,
-				new Ground(ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1));
+				new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1));
 		initialize(converted, PointFactory.point(1, 3), TileType.NotVisible,
-				new Ground(ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
-				new Village(TownStatus.Active, "", -1, independent, "dwarf"));
+				new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
+				new Village(TownStatus.Active, "", -1, independent, "half-elf"));
 		initialize(converted, PointFactory.point(1, 4), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Mine("mineral", TownStatus.Active, -1),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(1, 5), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Giant("frost", -1), new Forest(TEMP_TREE, false, -1));
 		initialize(converted, PointFactory.point(1, 6), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new StoneDeposit(StoneKind.Conglomerate, 0, -1));
 		initialize(converted, PointFactory.point(1, 7), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Dragon("ice", -1), new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(2, 2), TileType.NotVisible,
-				new Ground(ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
+				new Ground(-1, ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(2, 3), TileType.NotVisible,
-				new Ground(ROCK_TYPE, false),
+				new Ground(-1, ROCK_TYPE, false),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(2, 4), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Fairy("lesser", -1), new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(2, 5), TileType.Steppe,
-				new Ground(ROCK_TYPE, false),
+				new Ground(-1, ROCK_TYPE, false),
 				new Fortification(TownStatus.Burned, TownSize.Medium, 0, "townName", -1,
 										 independent),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(2, 6), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Djinn(-1),
-				new Village(TownStatus.Active, "", -1, independent, "human"),
+				new Village(TownStatus.Active, "", -1, independent, "Danan"),
 				new TextFixture(OneToTwoConverter.MAX_ITER_WARN, 10),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(2, 7), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Ogre(-1));
 		initialize(converted, PointFactory.point(3, 0), TileType.NotVisible,
-				new Ground(ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
+				new Ground(-1, ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(3, 4), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Simurgh(-1), new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(3, 5), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Minotaur(-1), new Forest(TEMP_TREE, false, -1));
 		initialize(converted, PointFactory.point(3, 6), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
 				new City(TownStatus.Ruined, TownSize.Large, 0, "cityName", -1,
 								independent));
 		initialize(converted, PointFactory.point(3, 7), TileType.Steppe,
-				new Ground(ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
+				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new Animal("animalKind", false, false, "wild", -1),
 				new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(4, 0), TileType.Plains,
-				new Ground(ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
-				new Village(TownStatus.Active, "", -1, independent, "human"));
+				new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
+				new Village(TownStatus.Active, "", -1, independent, "dwarf"));
 		initialize(converted, PointFactory.point(4, 6), TileType.Tundra,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(4, 7), TileType.Tundra,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(5, 1), TileType.Plains,
-				new Ground(ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
+				new Ground(-1, ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(6, 1), TileType.Plains,
-				new Ground(ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1));
+				new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1));
 		initialize(converted, PointFactory.point(6, 5), TileType.Tundra,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(6, 7), TileType.Tundra,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(7, 5), TileType.Tundra,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(7, 6), TileType.Tundra,
-				new Ground("rock4", false),
+				new Ground(-1, "rock4", false),
 				new Village(TownStatus.Active, "", -1, independent, "human"));
 		for (final Point point : Arrays.asList(PointFactory.point(0, 0),
 				PointFactory.point(0, 1), PointFactory.point(1, 1),
@@ -703,12 +707,12 @@ public final class TestConverter {
 				PointFactory.point(2, 1), PointFactory.point(3, 1),
 				PointFactory.point(3, 2), PointFactory.point(3, 3))) {
 			initialize(converted, point, TileType.NotVisible,
-					new Ground(ROCK_TYPE, false));
+					new Ground(-1, ROCK_TYPE, false));
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(0, 2),
 				PointFactory.point(0, 3))) {
 			initialize(converted, point, TileType.NotVisible,
-					new Ground(ROCK_TYPE, false),
+					new Ground(-1, ROCK_TYPE, false),
 					new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(4, 1),
@@ -718,7 +722,7 @@ public final class TestConverter {
 				PointFactory.point(6, 2), PointFactory.point(6, 3),
 				PointFactory.point(7, 0), PointFactory.point(7, 1),
 				PointFactory.point(7, 2), PointFactory.point(7, 3))) {
-			initialize(converted, point, TileType.Plains, new Ground(ROCK_TYPE, false));
+			initialize(converted, point, TileType.Plains, new Ground(-1, ROCK_TYPE, false));
 			converted.setMountainous(point, true);
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(4, 4),
@@ -727,7 +731,7 @@ public final class TestConverter {
 				PointFactory.point(5, 7), PointFactory.point(6, 4),
 				PointFactory.point(6, 6), PointFactory.point(7, 4),
 				PointFactory.point(7, 7))) {
-			initialize(converted, point, TileType.Tundra, new Ground("rock4", false));
+			initialize(converted, point, TileType.Tundra, new Ground(-1, "rock4", false));
 		}
 		converted.addRivers(PointFactory.point(2, 6), River.Lake, River.South);
 		converted.addRivers(PointFactory.point(3, 6), River.North, River.South);
@@ -791,7 +795,27 @@ public final class TestConverter {
 			}
 		}
 	}
-
+	/**
+	 * @param idFac an ID factory
+	 * @param fix a fixture
+	 * @return the fixture, having registered its ID.
+	 */
+	private static TileFixture register(final IDRegistrar idFac, final TileFixture fix) {
+		switch (idFac.register(fix.getID())) {
+		case 1:
+			System.err.println("1 was registered");
+			break;
+		case 2:
+			System.err.println("2 was registered");
+			break;
+		default:
+			if (fix.getID() == 1 || fix.getID() == 2) {
+				System.err.println("1 or 2 wasn't registered!");
+			}
+		}
+		System.err.flush();
+		return fix;
+	}
 	/**
 	 * Test more version-1 to version-2 conversion.
 	 *
@@ -816,45 +840,62 @@ public final class TestConverter {
 				new SPMapNG(new MapDimensions(8, 8, 2), new PlayerCollection(), -1);
 		converted.addPlayer(player);
 		converted.addPlayer(independent);
+		final IDRegistrar testFactory = new IDFactory();
 		initialize(converted, PointFactory.point(0, 0), TileType.Ocean,
-				new Ground(ROCK_TYPE, false),
-				new Village(TownStatus.Active, "", 0, independent, "dwarf"));
-		initialize(converted, PointFactory.point(2, 6), TileType.Desert,
-				new Ground(ROCK_TYPE, false), new Grove(true, true, "fruit1", 4));
-		initialize(converted, PointFactory.point(2, 7), TileType.Desert,
-				new Ground(ROCK_TYPE, false),
-				new Meadow(FIELD_TYPE, true, true, 5, Growing));
-		initialize(converted, PointFactory.point(3, 6), TileType.Desert,
-				new Ground(ROCK_TYPE, false),
-				new Meadow(FIELD_TYPE, true, true, 11, Growing));
+				register(testFactory,
+						new Village(TownStatus.Active, "", 16, independent, "human")));
 		initialize(converted, PointFactory.point(3, 7), TileType.Plains,
-				new Ground(ROCK_TYPE, false),
-				new Village(TownStatus.Active, "", 1, independent, "human"));
+				register(testFactory, new Village(TownStatus.Active, "", 33, independent, "half-elf")));
 		initialize(converted, PointFactory.point(4, 0), TileType.Desert,
-				new Ground(ROCK_TYPE, false),
-				new Village(TownStatus.Active, "", 2, independent, "human"));
+				register(testFactory, new Village(TownStatus.Active, "", 50, independent, "human")));
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				initialize(converted, PointFactory.point(i, j), TileType.NotVisible,
+						new Ground(testFactory.createID(), ROCK_TYPE, false));
+			}
+		}
+		for (int i = 0; i < 4; i++) {
+			for (int j = 4; j < 8; j++) {
+				initialize(converted, PointFactory.point(i, j), TileType.NotVisible,
+						new Ground(testFactory.createID(), ROCK_TYPE, false));
+			}
+		}
+		for (int i = 4; i < 8; i++) {
+			for (int j = 0; j < 4; j++) {
+				initialize(converted, PointFactory.point(i, j), TileType.NotVisible,
+						new Ground(testFactory.createID(), ROCK_TYPE, false));
+			}
+		}
+		for (int i = 4; i < 8; i++) {
+			for (int j = 4; j < 8; j++) {
+				initialize(converted, PointFactory.point(i, j), TileType.NotVisible,
+						new Ground(testFactory.createID(), "rock4", false));
+			}
+		}
+		initialize(converted, PointFactory.point(3, 6), TileType.Desert,
+				register(testFactory, new Meadow(FIELD_TYPE, true, true, 75, Growing)));
 		initialize(converted, PointFactory.point(4, 1), TileType.Desert,
-				new Ground(ROCK_TYPE, false),
-				new Meadow(FIELD_TYPE, true, true, 8, Growing));
+				register(testFactory, new Meadow(FIELD_TYPE, true, true, 72, Growing)));
 		initialize(converted, PointFactory.point(4, 6), TileType.Desert,
-				new Ground("rock4", false), new Grove(true, true, "fruit4", 14));
-		initialize(converted, PointFactory.point(4, 7), TileType.Desert,
-				new Ground("rock4", false), new Meadow("grain4", true, true, 6, Growing));
+				register(testFactory, new Grove(true, true, "fruit4", 78)));
 		initialize(converted, PointFactory.point(5, 1), TileType.Desert,
-				new Ground(ROCK_TYPE, false), new Grove(true, true, "fruit1", 7));
+				register(testFactory, new Grove(true, true, "fruit1", 71)));
 		initialize(converted, PointFactory.point(6, 5), TileType.Desert,
-				new Ground("rock4", false), new Grove(true, true, "fruit4", 9));
+				register(testFactory, new Grove(true, true, "fruit4", 73)));
 		initialize(converted, PointFactory.point(6, 6), TileType.Desert,
-				new Ground("rock4", false),
-				new Meadow("grain4", true, true, 12, Growing));
+				register(testFactory, new Meadow("grain4", true, true, 76, Growing)));
 		initialize(converted, PointFactory.point(6, 7), TileType.Desert,
-				new Ground("rock4", false),
-				new Meadow("grain4", true, true, 13, Growing));
+				register(testFactory, new Meadow("grain4", true, true, 77, Growing)));
 		initialize(converted, PointFactory.point(7, 5), TileType.Desert,
-				new Ground("rock4", false), new Grove(true, true, "fruit4", 10));
+				register(testFactory, new Grove(true, true, "fruit4", 74)));
 		initialize(converted, PointFactory.point(7, 6), TileType.Desert,
-				new Ground("rock4", false),
-				new Village(TownStatus.Active, "", 3, independent, "human"));
+				register(testFactory, new Village(TownStatus.Active, "", 67, independent, "human")));
+		initialize(converted, PointFactory.point(2, 6), TileType.Desert,
+				register(testFactory, new Grove(true, true, "fruit1", 68)));
+		initialize(converted, PointFactory.point(2, 7), TileType.Desert,
+				register(testFactory, new Meadow(FIELD_TYPE, true, true, 69, Growing)));
+		initialize(converted, PointFactory.point(4, 7), TileType.Desert,
+				register(testFactory, new Meadow("grain4", true, true, 70, Growing)));
 		for (final Point point : Arrays.asList(PointFactory.point(0, 1),
 				PointFactory.point(0, 2), PointFactory.point(0, 3),
 				PointFactory.point(1, 0), PointFactory.point(1, 1),
@@ -863,7 +904,7 @@ public final class TestConverter {
 				PointFactory.point(2, 2), PointFactory.point(2, 3),
 				PointFactory.point(3, 0), PointFactory.point(3, 1),
 				PointFactory.point(3, 2), PointFactory.point(3, 3))) {
-			initialize(converted, point, TileType.Ocean, new Ground(ROCK_TYPE, false));
+			initialize(converted, point, TileType.Ocean);
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(0, 4),
 				PointFactory.point(0, 5), PointFactory.point(1, 4),
@@ -872,7 +913,7 @@ public final class TestConverter {
 				PointFactory.point(5, 2), PointFactory.point(6, 0),
 				PointFactory.point(6, 1), PointFactory.point(7, 0),
 				PointFactory.point(7, 1), PointFactory.point(7, 3))) {
-			initialize(converted, point, TileType.Desert, new Ground(ROCK_TYPE, false));
+			initialize(converted, point, TileType.Desert);
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(0, 6),
 				PointFactory.point(0, 7), PointFactory.point(1, 5),
@@ -881,17 +922,17 @@ public final class TestConverter {
 				PointFactory.point(3, 4), PointFactory.point(5, 3),
 				PointFactory.point(6, 2), PointFactory.point(6, 3),
 				PointFactory.point(7, 2))) {
-			initialize(converted, point, TileType.Plains, new Ground(ROCK_TYPE, false));
+			initialize(converted, point, TileType.Plains);
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(4, 4),
 				PointFactory.point(5, 4), PointFactory.point(5, 6),
 				PointFactory.point(6, 4), PointFactory.point(7, 4),
 				PointFactory.point(7, 7))) {
-			initialize(converted, point, TileType.Plains, new Ground("rock4", false));
+			initialize(converted, point, TileType.Plains);
 		}
 		for (final Point point : Arrays.asList(PointFactory.point(4, 5),
 				PointFactory.point(5, 5), PointFactory.point(5, 7))) {
-			initialize(converted, point, TileType.Desert, new Ground("rock4", false));
+			initialize(converted, point, TileType.Desert);
 		}
 
 //		new SPFluidWriter().write(SystemOut.SYS_OUT,

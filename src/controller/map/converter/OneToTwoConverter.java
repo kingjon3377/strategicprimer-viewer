@@ -521,7 +521,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 			}
 			map.setBaseTerrain(point, equivalentTerrain(origTerrain));
 			addFixture(map, point,
-					new Ground(runner.getPrimaryRock(point, map.getBaseTerrain(point),
+					new Ground(idFac.createID(), runner.getPrimaryRock(point, map.getBaseTerrain(point),
 							map.streamOtherFixtures(point), map.dimensions()), false),
 					main);
 		} catch (final MissingTableException e) {

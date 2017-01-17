@@ -77,11 +77,16 @@ public final class FluidTerrainHandler {
 									final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "ground");
+		final int id = getIntegerAttribute(element, "id", -1);
+		if (id >= 0) {
+			idFactory.register(warner, id);
+		}
 		final String kind = getAttrWithDeprecatedForm(element, "kind",
 				"ground", warner);
 		requireNonEmptyAttribute(element, "exposed", true, warner);
 		spinUntilEnd(element.getName(), stream);
-		return setImage(new Ground(kind, parseBoolean(getAttribute(element, "exposed"))),
+		return setImage(
+				new Ground(id, kind, parseBoolean(getAttribute(element, "exposed"))),
 				element, warner);
 	}
 
@@ -158,6 +163,7 @@ public final class FluidTerrainHandler {
 		writeTag(ostream, "ground", indent, true);
 		writeAttribute(ostream, "kind", grd.getKind());
 		writeBooleanAttribute(ostream, "exposed", grd.isExposed());
+		writeIntegerAttribute(ostream, "id", grd.getID());
 		writeImage(ostream, grd);
 	}
 

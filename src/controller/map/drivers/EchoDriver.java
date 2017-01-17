@@ -14,6 +14,7 @@ import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.TileFixture;
+import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
 import util.Warning;
 
@@ -72,11 +73,12 @@ public final class EchoDriver implements UtilityDriver {
 		} catch (final IOException | SPFormatException | XMLStreamException except) {
 			throw new DriverFailedException(message(infile, except), except);
 		}
-		// Fix forest IDs in a way that shouldn't break consistency between main and
+		// Fix forest and ground IDs in a way that shouldn't break consistency between main and
 		// player maps too much.
 		final IDRegistrar idFactory = IDFactoryFiller.createFactory(map);
 		for (final Point location : map.locations()) {
 			fixForestIDs(map, idFactory, location);
+			fixGroundIDs(map, idFactory, location);
 		}
 		if (options.hasOption("--current-turn")) {
 			map.setCurrentTurn(Integer.parseInt(options.getArgument("--current-turn")));
@@ -111,6 +113,31 @@ public final class EchoDriver implements UtilityDriver {
 		for (final TileFixture fix : map.getOtherFixtures(location)) {
 			if (fix instanceof Forest && fix.getID() < 0) {
 				((Forest) fix).setID(idFactory.createID());
+			}
+		}
+	}
+
+	/**
+	 * Fix ground IDs in a way that shouldn't break consistency between main and player
+	 * maps too much. Ground used to all be "ID -1," but can now have positive
+	 * IDs---but simply using "the first unused ID" in the reading code would cause
+	 * chaos from a subset-consistency standpoint.
+	 * @param map the map
+	 * @param idFactory the ID factory
+	 * @param location the point we're handling now
+	 */
+	private static void fixGroundIDs(final IMapNG map,
+									 final IDRegistrar idFactory,
+									 final Point location) {
+		final Ground mainGround = map.getGround(location);
+		if (mainGround != null && mainGround.getID() < 0) {
+			final int id = 1171484 + location.getRow() * 176 + location.getCol();
+			idFactory.register(id);
+			mainGround.setID(id);
+		}
+		for (final TileFixture fix : map.getOtherFixtures(location)) {
+			if (fix instanceof Ground && fix.getID() < 0) {
+				((Ground) fix).setID(idFactory.createID());
 			}
 		}
 	}

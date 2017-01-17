@@ -343,7 +343,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final IMutableMapNG six =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 5);
 		six.setMountainous(point(0, 0), true);
-		six.setGround(point(0, 1), new Ground("basalt", false));
+		six.setGround(point(0, 1), new Ground(22, "basalt", false));
 		six.setForest(point(1, 0), new Forest("pine", false, 19));
 		six.addFixture(point(1, 1), new Animal("beaver", false, false, "wild", 18));
 		assertMissingPropertyDeserialization(

@@ -295,16 +295,16 @@ public final class TestFixtureSerialization extends
 	public void testGroundSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First test of Ground serialization",
-				new Ground("one", true));
+				new Ground(1, "one", true));
 		assertSerialization("Second test of Ground serialization",
-				new Ground("two", true));
+				new Ground(2, "two", true));
 		assertSerialization("Third test of Ground serialization",
-				new Ground("three", false));
+				new Ground(3, "three", false));
 		final Point point = PointFactory.point(0, 0);
 		final IMutableMapNG map =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), -1);
 		map.setBaseTerrain(point, TileType.Plains);
-		map.setGround(point, new Ground("four", true));
+		map.setGround(point, new Ground(-1, "four", true));
 		assertSerialization("Test that reader handles ground as a fixture", map);
 		assertForwardDeserialization("Duplicate Ground ignored", map,
 				"<view current_turn=\"-1\"><map version=\"2\" rows=\"1\" " +
@@ -312,7 +312,7 @@ public final class TestFixtureSerialization extends
 						"kind=\"plains\"><ground kind=\"four\" exposed=\"true\" " +
 						"/><ground kind=\"four\" exposed=\"true\" " +
 						"/></tile></map></view>");
-		map.addFixture(point, new Ground("five", false));
+		map.addFixture(point, new Ground(-1, "five", false));
 		assertForwardDeserialization("Exposed Ground made main", map,
 				"<view current_turn=\"-1\"><map version=\"2\" rows=\"1\" " +
 						"columns=\"1\"><tile row=\"0\" column=\"0\" " +
@@ -335,7 +335,7 @@ public final class TestFixtureSerialization extends
 				"<ground ground=\"ground\" exposed=\"true\" />", Ground.class,
 				"ground", true);
 		assertImageSerialization("Ground image property is preserved",
-				new Ground("five", true));
+				new Ground(5, "five", true));
 	}
 
 	/**

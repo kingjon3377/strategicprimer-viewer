@@ -51,7 +51,11 @@ public final class YAGroundReader extends YAAbstractReader<Ground> {
 				"ground");
 		requireNonEmptyParameter(element, "exposed", true);
 		spinUntilEnd(element.getName(), stream);
-		final Ground retval = new Ground(kind, Boolean.parseBoolean(
+		final int id = getIntegerParameter(element, "id", -1);
+		if (id >= 0) {
+			registerID(id);
+		}
+		final Ground retval = new Ground(id, kind, Boolean.parseBoolean(
 				getParameter(element, "exposed")));
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
@@ -81,6 +85,7 @@ public final class YAGroundReader extends YAAbstractReader<Ground> {
 		writeTag(ostream, "ground", indent);
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "exposed", Boolean.toString(obj.isExposed()));
+		writeProperty(ostream, "id", obj.getID());
 		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);
 	}
