@@ -1,6 +1,5 @@
 package model.map.fixtures.mobile.worker;
 
-import java.io.IOException;
 import java.util.Formatter;
 import junit.framework.AssertionFailedError;
 import model.map.IFixture;
