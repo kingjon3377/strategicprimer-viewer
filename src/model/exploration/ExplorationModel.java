@@ -525,6 +525,13 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				villages.forEach(fix -> fix.setOwner(owner));
 				villages.forEach(village -> streamAllMaps().map(Pair::first).forEach(
 						map -> map.addFixture(currPoint, village)));
+				final IMapNG mainMap = getMap();
+				new SurroundingPointIterable(currPoint, getMapDimensions(), 1).stream()
+						.forEach(point -> streamSubordinateMaps().map(Pair::first)
+												  .forEach(
+														  map -> ensureTerrain(map, point,
+																  mainMap.getBaseTerrain(
+																		  point))));
 			}
 			fireMovementCost(5);
 		}
