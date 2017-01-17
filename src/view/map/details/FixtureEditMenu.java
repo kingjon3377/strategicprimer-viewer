@@ -10,9 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -154,9 +152,8 @@ public final class FixtureEditMenu extends JPopupMenu {
 		if (players instanceof PlayerCollection) {
 			return ((PlayerCollection) players).asArray();
 		} else {
-			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
-											  .collect(Collectors.toList());
-			return list.toArray(new Player[list.size()]);
+			return StreamSupport.stream(players.spliterator(), false)
+						   .toArray(Player[]::new);
 		}
 	}
 

@@ -6,8 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -112,9 +110,8 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 		if (players instanceof PlayerCollection) {
 			return ((PlayerCollection) players).asArray();
 		} else {
-			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
-											  .collect(Collectors.toList());
-			return list.toArray(new Player[list.size()]);
+			return StreamSupport.stream(players.spliterator(), false)
+											  .toArray(Player[]::new);
 		}
 	}
 	/**
