@@ -227,10 +227,9 @@ public final class ExplorationRunner {
 		if (tables.keySet().contains(table)) {
 			try {
 				for (final String value : getTable(table).allEvents()) {
-					if (value.contains("#")) {
-						if (recursiveCheck(value.split("#", 3)[1], state)) {
-							return true;
-						}
+					if (value.contains("#") &&
+								recursiveCheck(value.split("#", 3)[1], state)) {
+						return true;
 					}
 				}
 			} catch (final MissingTableException e) {
