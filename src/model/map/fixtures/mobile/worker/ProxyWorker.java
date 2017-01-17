@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import model.map.HasName;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
@@ -98,9 +97,8 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		}
 		final IWorker @NonNull [] workerArray =
 				workers.toArray(new IWorker[workers.size()]);
-		proxyJobs.addAll(jobNames.stream()
-								 .map(job -> new ProxyJob(job, false, workerArray))
-								 .collect(Collectors.toList()));
+		jobNames.stream().map(job -> new ProxyJob(job, false, workerArray))
+				.forEach(proxyJobs::add);
 	}
 
 	/**
@@ -127,8 +125,8 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 				jobNames.add(job.getName());
 			}
 		}
-		proxyJobs.addAll(jobNames.stream().map(job -> new ProxyJob(job, true, proxied))
-								 .collect(Collectors.toList()));
+		jobNames.stream().map(job -> new ProxyJob(job, true, proxied))
+				.forEach(proxyJobs::add);
 	}
 
 	/**
