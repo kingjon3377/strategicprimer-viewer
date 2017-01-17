@@ -10,10 +10,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
@@ -73,12 +71,13 @@ public final class MapReaderAdapter {
 	 * @return an array of equivalent Files
 	 */
 	public static Path[] namesToFiles(final boolean dropFirst, final String... names) {
-		final List<Path> retval =
-				Stream.of(names).map(Paths::get).collect(Collectors.toList());
+		final int skip;
 		if (dropFirst) {
-			retval.remove(0);
+			skip = 1;
+		} else {
+			skip = 0;
 		}
-		return retval.toArray(new Path[retval.size()]);
+		return Stream.of(names).map(Paths::get).skip(skip).toArray(Path[]::new);
 	}
 
 	/**
