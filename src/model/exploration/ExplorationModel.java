@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.map.FixtureIterable;
-import model.map.HasMutableOwner;
 import model.map.HasOwner;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -518,16 +517,15 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		if (temp.isPresent()) {
 			final IUnit mover = temp.get();
 			final Player owner = mover.getOwner();
-			streamAllMaps().map(Pair::first)
+			final List<Village> villages = streamAllMaps().map(Pair::first)
 					.flatMap(map -> map.streamOtherFixtures(currPoint))
-					.filter(Village.class::isInstance).map(HasMutableOwner.class::cast)
-					.filter(village -> village.getOwner().isIndependent())
-					.forEach(fix -> fix.setOwner(owner));
-			getMap().streamOtherFixtures(currPoint).filter(Village.class::isInstance)
-				.map(Village.class::cast).filter(village -> village.getOwner().equals(owner))
-				.collect(Collectors.toList())
-				.forEach(village -> streamAllMaps().map(Pair::first).
-					forEach(map -> map.addFixture(currPoint, village)));
+					.filter(Village.class::isInstance).map(Village.class::cast)
+					.filter(village -> village.getOwner().isIndependent()).collect(Collectors.toList());
+			if (!villages.isEmpty()) {
+				villages.forEach(fix -> fix.setOwner(owner));
+				villages.forEach(village -> streamAllMaps().map(Pair::first).forEach(
+						map -> map.addFixture(currPoint, village)));
+			}
 			fireMovementCost(5);
 		}
 	}
