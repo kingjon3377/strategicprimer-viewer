@@ -25,9 +25,12 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Ground;
+import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.resources.Grove;
+import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.terrain.Mountain;
@@ -526,12 +529,25 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				villages.forEach(village -> streamAllMaps().map(Pair::first).forEach(
 						map -> map.addFixture(currPoint, village)));
 				final IMapNG mainMap = getMap();
-				new SurroundingPointIterable(currPoint, getMapDimensions(), 1).stream()
-						.forEach(point -> streamSubordinateMaps().map(Pair::first)
-												  .forEach(
-														  map -> ensureTerrain(map, point,
-																  mainMap.getBaseTerrain(
-																		  point))));
+				final SurroundingPointIterable surroundingPoints =
+						new SurroundingPointIterable(currPoint, getMapDimensions(), 1);
+				surroundingPoints.stream().forEach(
+						point -> streamSubordinateMaps().map(Pair::first).forEach(
+								map -> ensureTerrain(map, point,
+										mainMap.getBaseTerrain(point))));
+				surroundingPoints.stream().flatMap(
+						point -> mainMap.streamOtherFixtures(point)
+										 .map(fix -> Pair.of(point, fix)))
+						.filter(pair -> pair.second() instanceof Meadow ||
+												pair.second() instanceof Grove).limit(1)
+						.forEach(pair -> streamSubordinateMaps().map(Pair::first).forEach(
+								map -> map.addFixture(pair.first(), pair.second())));
+				surroundingPoints.stream().flatMap(
+						point -> mainMap.streamOtherFixtures(point)
+										 .map(fix -> Pair.of(point, fix)))
+						.filter(pair -> pair.second() instanceof Animal).limit(1)
+						.forEach(pair -> streamSubordinateMaps().map(Pair::first).forEach(
+								map -> map.addFixture(pair.first(), pair.second())));
 			}
 			fireMovementCost(5);
 		}
