@@ -209,6 +209,7 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 	 * @param stream    the stream to read more elements from     @return the parsed
 	 *                  worker
 	 * @throws SPFormatException on SP format problems
+	 * @return the object read from XML
 	 */
 	@Override
 	public IWorker read(final StartElement element,

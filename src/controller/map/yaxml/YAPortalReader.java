@@ -41,6 +41,7 @@ public final class YAPortalReader extends YAAbstractReader<Portal> {
 	 * @param stream    the stream to read more elements from     @return the parsed
 	 *                  portal
 	 * @throws SPFormatException on SP format problems
+	 * @return the object read from XML
 	 */
 	@Override
 	public Portal read(final StartElement element,

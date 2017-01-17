@@ -192,6 +192,7 @@ public final class YAResourceReader extends YAAbstractReader<HarvestableFixture>
 	 * @param stream    the stream to read more elements from     @return the parsed
 	 *                  resource
 	 * @throws SPFormatException on SP format problems
+	 * @return the object read from XML
 	 */
 	@Override
 	public HarvestableFixture read(final StartElement element,

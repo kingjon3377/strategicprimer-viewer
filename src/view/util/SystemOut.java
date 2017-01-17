@@ -37,6 +37,7 @@ public final class SystemOut extends FilterOutputStream {
 
 	/**
 	 * Do *not* close; this is stdout. However, flush the stream.
+	 * @throws IOException on I/O error
 	 */
 	@Override
 	public void close() throws IOException {

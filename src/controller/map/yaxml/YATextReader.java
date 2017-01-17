@@ -51,6 +51,7 @@ public final class YATextReader extends YAAbstractReader<TextFixture> {
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format errors
+	 * @return the object read from XML
 	 */
 	@Override
 	public TextFixture read(final StartElement element, final QName parent,

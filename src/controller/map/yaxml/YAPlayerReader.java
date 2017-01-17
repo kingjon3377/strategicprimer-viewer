@@ -39,6 +39,7 @@ public final class YAPlayerReader extends YAAbstractReader<Player> {
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed tile
 	 * @throws SPFormatException on SP format problems
+	 * @return the object read from XML
 	 */
 	@Override
 	public Player read(final StartElement element,

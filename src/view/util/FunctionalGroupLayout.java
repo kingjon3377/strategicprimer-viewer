@@ -52,6 +52,7 @@ public class FunctionalGroupLayout extends GroupLayout {
 	/**
 	 * Add components and/or groups to a group.
 	 * @param group a group
+	 * @param <T> the type of the group
 	 * @param components components to add to it. Can be Components or Groups; will
 	 *                      throw IllegalArgumentException on anything else
 	 * @return the group

@@ -74,6 +74,7 @@ public final class YAExplorableReader extends YAAbstractReader<ExplorableFixture
 	 * @param parent    the parent tag
 	 * @param stream    the stream to read more elements from     @return the parsed
 	 *                  resource
+	 * @return the object read from XML
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override

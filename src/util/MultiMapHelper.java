@@ -32,6 +32,8 @@ public final class MultiMapHelper {
 	 * the value.
 	 * @param map a map
 	 * @param key a key
+	 * @param <K> the type of the key
+	 * @param <V> the type of things stored in the map
 	 * @param constructor an operation to transform the key into a new value if
 	 *                       it's missing from the map
 	 * @return the value in the map, or the newly added value created using the given

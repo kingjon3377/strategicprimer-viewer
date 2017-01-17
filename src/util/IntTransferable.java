@@ -64,6 +64,7 @@ public final class IntTransferable implements Transferable {
 	 * @param flavor the requested flavor for the data
 	 * @throws UnsupportedFlavorException if the requested data flavor is not supported.
 	 * @see DataFlavor#getRepresentationClass
+	 * @return the payload
 	 */
 	@Override
 	public Object getTransferData(final DataFlavor flavor)

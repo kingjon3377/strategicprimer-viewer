@@ -142,6 +142,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 
 	/**
 	 * Add generic-type information for the compiler.
+	 * @return an empty enumeration.
 	 */
 	@Override
 	public Enumeration<IReportNode> children() {
