@@ -80,7 +80,7 @@ public final class ViewerStart implements SimpleDriver {
 														.setVisible(true), "go to tile");
 					menuHandler.register(new FindHandler(frame, viewerModel),
 							"find a fixture", "find next");
-					menuHandler.register(evt -> new AboutDialog(frame, frame.getTitle())
+					menuHandler.register(evt -> new AboutDialog(frame, frame.getWindowName())
 														.setVisible(true), "about");
 					frame.setVisible(true);
 				});

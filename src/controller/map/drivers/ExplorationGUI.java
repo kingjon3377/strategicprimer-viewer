@@ -67,7 +67,7 @@ public final class ExplorationGUI implements SimpleDriver {
 					final ExplorationFrame frame =
 							new ExplorationFrame(explorationModel, menuHandler);
 					menuHandler.register(new WindowCloser(frame), "close");
-					menuHandler.register(evt -> new AboutDialog(frame, frame.getTitle())
+					menuHandler.register(evt -> new AboutDialog(frame, frame.getWindowName())
 														.setVisible(true), "about");
 					frame.setVisible(true);
 				});

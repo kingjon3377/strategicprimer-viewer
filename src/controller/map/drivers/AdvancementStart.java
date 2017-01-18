@@ -76,7 +76,7 @@ public final class AdvancementStart implements SimpleDriver {
 							evt -> frame.playerChanged(model.getMap().getCurrentPlayer(),
 									model.getMap().getCurrentPlayer()), "reload tree");
 					menuHandler.register(new WindowCloser(frame), "close");
-					menuHandler.register(evt -> new AboutDialog(frame, frame.getTitle())
+					menuHandler.register(evt -> new AboutDialog(frame, frame.getWindowName())
 														.setVisible(true), "about");
 					frame.setVisible(true);
 				});
