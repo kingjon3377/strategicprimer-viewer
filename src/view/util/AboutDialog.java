@@ -14,7 +14,6 @@ import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -76,9 +75,8 @@ public final class AboutDialog extends SPDialog {
 			add(new JLabel("<html><p>We failed to read the contents of the About page. " +
 								   "This should never happen.</p></html>"));
 		}
-		final JButton close = new JButton("Close");
-		add(BoxPanel.centeredHorizBox(close), BorderLayout.SOUTH);
-		close.addActionListener(new WindowCloser(this));
+		add(BoxPanel.centeredHorizBox(
+				new ListenedButton("Close", new WindowCloser(this))), BorderLayout.SOUTH);
 		pack();
 	}
 
