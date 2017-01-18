@@ -68,12 +68,8 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 		for (final Pair<IMutableMapNG, Optional<Path>> pair :
 				mmodel.getSubordinateMaps()) {
 			final Optional<Path> maybePath = pair.second();
-			// TODO: use orElse()
-			if (maybePath.isPresent()) {
-				System.out.printf("Starting %s%n", maybePath.get().toString());
-			} else {
-				System.out.println("Starting a map with no associated path");
-			}
+			System.out.printf("Starting %s%n", maybePath.map(Path::toString)
+													   .orElse("a map with no associated path"));
 			final IMutableMapNG map = pair.first();
 			for (final Point location : map.locations()) {
 				extractForests(mainMap, location, mainForests);
