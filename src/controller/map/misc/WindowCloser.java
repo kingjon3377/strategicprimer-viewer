@@ -38,7 +38,6 @@ public class WindowCloser implements ActionListener {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
-		frame.setVisible(false);
 		frame.dispose();
 	}
 }
