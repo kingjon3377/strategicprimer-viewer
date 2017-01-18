@@ -156,8 +156,8 @@ public class Ground implements TileFixture, HasMutableImage, HasKind {
 	}
 
 	/**
-	 * Since we don't have variable ID, this delegates to equals().
-	 * TODO: when ID becomes variable, implement properly.
+	 * A fixture is equal, ignoring ID, if it is a Ground with equal kind and either
+	 * both or neither are exposed.
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
