@@ -801,19 +801,7 @@ public final class TestConverter {
 	 * @return the fixture, having registered its ID.
 	 */
 	private static TileFixture register(final IDRegistrar idFac, final TileFixture fix) {
-		switch (idFac.register(fix.getID())) {
-		case 1:
-			System.err.println("1 was registered");
-			break;
-		case 2:
-			System.err.println("2 was registered");
-			break;
-		default:
-			if (fix.getID() == 1 || fix.getID() == 2) {
-				System.err.println("1 or 2 wasn't registered!");
-			}
-		}
-		System.err.flush();
+		idFac.register(fix.getID());
 		return fix;
 	}
 	/**
