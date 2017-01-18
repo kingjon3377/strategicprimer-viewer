@@ -1,17 +1,25 @@
 package view.util;
 
 import controller.map.misc.WindowCloser;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.BoxLayout;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import org.eclipse.jdt.annotation.Nullable;
+import util.TypesafeLogger;
 
 /**
  * A dialog to explain what this program is, and the sources of code and graphics.
@@ -30,98 +38,48 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class AboutDialog extends SPDialog {
 	/**
-	 * Constructor.
+	 * The pattern to match the placeholder in the HTML.
+	 */
+	private static final Pattern PATTERN =
+			Pattern.compile("App Name Here");
+
+	/**
+	 * Constructor. FIXME: Credits for other images?
 	 * @param parent the parent window
 	 * @param app    a string describing what the application is
 	 */
 	@SuppressWarnings("ConditionalExpression")
 	public AboutDialog(@Nullable final Component parent, final String app) {
 		super((parent instanceof Frame) ? (Frame) parent : null, "About");
-		setPreferredSize(new Dimension(300, 390));
-		setMinimumSize(new Dimension(300, 390));
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-		final StringBuilder builder = new StringBuilder(1500 + app.length());
-		builder.append("<html>");
-		if (app.isEmpty()) {
-			paragraph(builder, "Assistive Programs Suite");
-		} else {
-			paragraph(builder, app);
-			paragraph(builder, "Part of the Assistive Programs Suite");
+		setLayout(new BorderLayout());
+		try (final BufferedReader reader = new BufferedReader(
+				new InputStreamReader(AboutDialog.class.getResourceAsStream(
+						"/images/about.html")))) {
+			final String origHtml = reader.lines().collect(Collectors.joining());
+			final String html;
+			if (app.isEmpty()) {
+				html = PATTERN.matcher(origHtml)
+							   .replaceAll("Strategic Primer Assistive Programs");
+			} else {
+				html = PATTERN.matcher(origHtml).replaceAll(app);
+			}
+			final JEditorPane pane = new JEditorPane("text/html", html);
+			pane.setCaretPosition(0); // scroll to the top
+			pane.setEditable(false);
+			final JScrollPane scrollPane = new JScrollPane(pane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			scrollPane.setMinimumSize(new Dimension(300, 400));
+			scrollPane.setPreferredSize(new Dimension(400, 500));
+			add(scrollPane, BorderLayout.CENTER);
+		} catch (final IOException except) {
+			TypesafeLogger.getLogger(AboutDialog.class)
+					.log(Level.SEVERE, "I/O error in reading About page", except);
+			add(new JLabel("<html><p>We failed to read the contents of the About page. " +
+								   "This should never happen.</p></html>"));
 		}
-		builder.append("<p>for players and Judges of ");
-		link(builder, "https://shinecycle.wordpress.com/archives/strategic-primer",
-				"Strategic Primer");
-		builder.append("</p>");
-		paragraph(builder, "Developed by Jonathan Lovelace");
-		builder.append("<p>Released under the terms of ");
-		link(builder, "https://www.gnu.org/licenses/gpl-3.0.en.html",
-				"the GNU General Public License version 3");
-		builder.append("</p>");
-		builder.append("<p>Unit image by jreijonen from ");
-		link(builder, "http://opengameart.org/content/faction-symbols-allies-axis",
-				"OpenGameArt");
-		builder.append("</p>");
-		builder.append("<p>Cave image by MrBeast from ");
-		link(builder, "http://opengameart.org/content/cave-tileset-0", "OpenGameArt");
-		builder.append("</p>");
-		builder.append("<p>Minotaur, troll, and ogre images by 'www.36peas.com',");
-		builder.append(" licensed under CC-BY</p>");
-		builder.append("<p>Window menu managed by BSD-licensed code by Jeremy Wood,");
-		builder.append("downloaded from ");
-		link(builder, "http://javagraphics.java.net", "javagraphics.java.net");
-		builder.append("</p>");
-		builder.append("<p>Pair implementation by Peter Lawrey on ");
-		link(builder, "https://stackoverflow.com/a/3646398", "StackOverflow");
-		builder.append("</p>");
-		builder.append("<p>Drag-and-drop implementation uses code adapted from ");
-		//noinspection HardcodedFileSeparator
-		builder.append(
-				"'helloworld922' on the <a href=\"http://www.javaprogrammingforums.com");
-		//noinspection HardcodedFileSeparator
-		builder.append("/java-swing-tutorials/3141-drag-drop-jtrees.html\">");
-		builder.append("Java Programming Forums</a></p>");
-		builder.append("<p>WrapLayout taken from ");
-		link(builder, "http://tips4java.wordpress.com/2008/11/06/wrap-layout/",
-				"tips4java.wordpress.com");
-		builder.append(", which released code to be used \"without restriction\".</p>");
-		builder.append("<p>Code to make Tab work properly in combo boxes adapted from ");
-		link(builder, "http://stackoverflow.com/a/24336768",
-				"StackOverflow user Joshua Goldberg");
-		builder.append("</p>");
-		builder.append("</html>");
-		add(new JLabel(builder.toString()));
 		final JButton close = new JButton("Close");
-		add(close);
+		add(BoxPanel.centeredHorizBox(close), BorderLayout.SOUTH);
 		close.addActionListener(new WindowCloser(this));
 		pack();
-	}
-
-	/**
-	 * Add a link to the string.
-	 *
-	 * @param builder the StringBuilder to write to.
-	 * @param href    the target of the link
-	 * @param text    the text of the link
-	 */
-	private static void link(final StringBuilder builder, final String href,
-							 final String text) {
-		builder.append("<a href=\"");
-		builder.append(href);
-		builder.append("\">");
-		builder.append(text);
-		builder.append("</a>.");
-	}
-
-	/**
-	 * Add a paragraph to the string.
-	 *
-	 * @param builder the StringBuilder to write to
-	 * @param text    the text of the paragraph
-	 */
-	private static void paragraph(final StringBuilder builder, final String text) {
-		builder.append("<p>");
-		builder.append(text);
-		builder.append("</p>");
 	}
 
 	/**
