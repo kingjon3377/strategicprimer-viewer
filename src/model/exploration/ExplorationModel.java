@@ -630,9 +630,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				}
 				map.addFixture(currPoint, newFix.copy(condition.booleanValue()));
 			};
-			// TODO: When Ground gets unique IDs, check it instead of using ==
-			//noinspection ObjectEquality
-			if (ground == oldFix) {
+			if (ground.equals(oldFix)) {
 				streamAllMaps().map(Pair::first)
 						.forEach(map -> addToMap.accept(map, Boolean.FALSE));
 			} else {
