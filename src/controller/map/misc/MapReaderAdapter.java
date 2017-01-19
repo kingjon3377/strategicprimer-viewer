@@ -1,11 +1,11 @@
 package controller.map.misc;
 
 import controller.map.drivers.DriverFailedException;
-import controller.map.fluidxml.SPFluidReader;
-import controller.map.fluidxml.SPFluidWriter;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.SPWriter;
+import controller.map.yaxml.YAXMLReader;
+import controller.map.yaxml.YAXMLWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Path;
@@ -59,8 +59,8 @@ public final class MapReaderAdapter {
 	 * Constructor.
 	 */
 	public MapReaderAdapter() {
-		reader = new SPFluidReader();
-		spWriter = new SPFluidWriter();
+		reader = new YAXMLReader();
+		spWriter = new YAXMLWriter();
 	}
 
 	/**
