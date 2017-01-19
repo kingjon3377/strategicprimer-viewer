@@ -7,6 +7,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -163,11 +164,9 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 * @return them wrapped in HTML.
 	 */
 	private static String html(final String... paras) {
-		int len = MIN_HTML_LEN;
-		for (final String para : paras) {
-			len += para.length() + HTML_PAR_LEN;
-		}
-		final StringBuilder builder = new StringBuilder(len).append("<html><body>");
+		final StringBuilder builder =
+				new StringBuilder(MIN_HTML_LEN + Arrays.stream(paras).mapToInt(
+						par -> par.length() + HTML_PAR_LEN).sum()).append("<html><body>");
 		for (final String para : paras) {
 			builder.append("<p>").append(para).append("</p>");
 		}
