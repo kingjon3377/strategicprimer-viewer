@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
 
@@ -65,7 +66,10 @@ public final class AboutDialog extends SPDialog {
 			final JEditorPane pane = new JEditorPane("text/html", html);
 			pane.setCaretPosition(0); // scroll to the top
 			pane.setEditable(false);
-			final JScrollPane scrollPane = new JScrollPane(pane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			final JScrollPane scrollPane = new JScrollPane(pane,
+																  ScrollPaneConstants
+																		  .VERTICAL_SCROLLBAR_AS_NEEDED,
+																  ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			scrollPane.setMinimumSize(new Dimension(300, 400));
 			scrollPane.setPreferredSize(new Dimension(400, 500));
 			add(scrollPane, BorderLayout.CENTER);
