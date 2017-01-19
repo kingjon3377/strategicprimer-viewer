@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.DefaultListModel;
 import model.listeners.SelectionChangeListener;
@@ -15,6 +17,7 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.terrain.Forest;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -46,13 +49,23 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 * The current point.
 	 */
 	private Point point = PointFactory.INVALID_POINT;
-
+	/**
+	 * If true, we shouldn't add animal tracks to the map.
+	 */
+	private final boolean filterTracks;
+	/**
+	 * Any animal tracks that have been "added" to the current tile but kept out of the
+	 * map.
+	 */
+	private final List<Animal> currentTracks = new ArrayList<>();
 	/**
 	 * Constructor.
 	 * @param theMap the map to refer to
+	 * @param separateTracks whether to keep animal tracks out of the map
 	 */
-	public FixtureListModel(final IMutableMapNG theMap) {
+	public FixtureListModel(final IMutableMapNG theMap, final boolean separateTracks) {
 		map = theMap;
+		filterTracks = separateTracks;
 	}
 
 	/**
@@ -64,6 +77,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	public void selectedPointChanged(@Nullable final Point old,
 									 final Point newPoint) {
 		clear();
+		currentTracks.clear();
 		final TileType base = map.getBaseTerrain(newPoint);
 		if (TileType.NotVisible != base) {
 			addElement(new TileTypeFixture(base));
@@ -110,6 +124,9 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 				map.setBaseTerrain(point, typeFix.getTileType());
 				selectedPointChanged(null, point);
 			}
+		} else if (filterTracks && fix instanceof Animal && ((Animal) fix).isTraces()) {
+			currentTracks.add((Animal) fix);
+			addElement(fix);
 		} else {
 			// FIXME: Make addFixture() on IMutableMapNG boolean so we can just
 			// add the fixture to the list model if the add operation isn't
@@ -142,6 +159,9 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 						map.removeRivers(point, river);
 					}
 					removeElement(fix);
+				} else if (filterTracks && currentTracks.contains(fix)) {
+					currentTracks.remove(fix);
+					removeElement(fix);
 				} else {
 					map.removeFixture(point, fix);
 					removeElement(fix);
@@ -162,7 +182,11 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof FixtureListModel) &&
 										 ((FixtureListModel) obj).map.equals(map) &&
-										 ((FixtureListModel) obj).point.equals(point));
+										 ((FixtureListModel) obj).point.equals(point) &&
+										 filterTracks ==
+												 ((FixtureListModel) obj).filterTracks &&
+										 currentTracks
+												 .equals(((FixtureListModel) obj).currentTracks));
 	}
 
 	/**

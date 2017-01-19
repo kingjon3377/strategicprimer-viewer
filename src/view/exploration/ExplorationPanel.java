@@ -230,7 +230,7 @@ public final class ExplorationPanel extends BorderedPanel
 							final IExplorationModel.Direction direction) {
 		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
 		final FixtureList mainList =
-				new FixtureList(panel, new FixtureListModel(model.getMap()),
+				new FixtureList(panel, new FixtureListModel(model.getMap(), true),
 									   model.getMap().players());
 		mainPCS.addSelectionChangeListener(mainList);
 		panel.add(new JScrollPane(mainList));
@@ -254,7 +254,7 @@ public final class ExplorationPanel extends BorderedPanel
 						.orElseGet(model::getMap);
 		final Iterable<Player> players = subMap.players();
 		final FixtureList secList =
-				new FixtureList(panel, new FixtureListModel(subMap), players);
+				new FixtureList(panel, new FixtureListModel(subMap, false), players);
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
 		secPCS.addSelectionChangeListener(secList);
 		panel.add(new JScrollPane(secList));

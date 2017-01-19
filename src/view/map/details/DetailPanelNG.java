@@ -84,7 +84,7 @@ public final class DetailPanelNG extends JSplitPane
 	public DetailPanelNG(final int version, final IDriverModel model) {
 		super(HORIZONTAL_SPLIT, true);
 
-		fixList = new FixtureList(this, new FixtureListModel(model.getMap()),
+		fixList = new FixtureList(this, new FixtureListModel(model.getMap(), false),
 										 model.getMap().players());
 		final PortraitPanel portrait = new PortraitPanel(fixList);
 		fixList.addListSelectionListener(portrait);
