@@ -68,8 +68,8 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 		for (final Pair<IMutableMapNG, Optional<Path>> pair :
 				mmodel.getSubordinateMaps()) {
 			final Optional<Path> maybePath = pair.second();
-			System.out.printf("Starting %s%n", maybePath.map(Path::toString)
-													   .orElse("a map with no associated path"));
+			cli.printf("Starting %s%n", maybePath.map(Path::toString)
+												.orElse("a map with no associated path"));
 			final IMutableMapNG map = pair.first();
 			for (final Point location : map.locations()) {
 				extractForests(mainMap, location, mainForests);
@@ -84,8 +84,8 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 					if (matching.isPresent()) {
 						forest.setID(matching.get().getID());
 					} else {
-						System.out.printf("Unmatched forest in %s: %s%n",
-								location.toString(), forest.toString());
+						cli.printf("Unmatched forest in %s: %s%n", location.toString(),
+								forest.toString());
 						mainMap.addFixture(location, forest.copy(false));
 					}
 				}
@@ -101,8 +101,8 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 					if (matching.isPresent()) {
 						ground.setID(matching.get().getID());
 					} else {
-						System.out.printf("Unmatched ground in %s: %s%n",
-								location.toString(), ground.toString());
+						cli.printf("Unmatched ground in %s: %s%n", location.toString(),
+								ground.toString());
 						mainMap.addFixture(location, ground.copy(false));
 					}
 				}
