@@ -209,7 +209,7 @@ public interface ICLIHelper extends Closeable {
 	 * @param <T> the type of things in the list
 	 */
 	@FunctionalInterface
-	public interface ListAmendment<T> {
+	interface ListAmendment<T> {
 		/**
 		 * Let the user add a new item to the list.
 		 * @param list the list to amend
@@ -226,7 +226,7 @@ public interface ICLIHelper extends Closeable {
 	 * @param <T> the type of thing accepted
 	 */
 	@FunctionalInterface
-	public interface ThrowingConsumer<T> {
+	interface ThrowingConsumer<T> {
 		/**
 		 * Consume an item, using the specified CLI interface.
 		 * @param item the item to accept

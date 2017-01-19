@@ -216,7 +216,7 @@ public interface IExplorationModel
 		 * @param mpMod the multiplicative modifier to movement costs
 		 * @param perceptionMod the additive modifier to Perception checks
 		 */
-		private Speed(final double mpMod, final int perceptionMod) {
+		Speed(final double mpMod, final int perceptionMod) {
 			mpMultiplier = mpMod;
 			perceptionModifier = perceptionMod;
 			final String perceptionString;
