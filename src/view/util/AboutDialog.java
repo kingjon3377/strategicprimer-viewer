@@ -12,6 +12,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.swing.JEditorPane;
@@ -54,13 +55,12 @@ public final class AboutDialog extends SPDialog {
 		try (final BufferedReader reader = new BufferedReader(
 				new InputStreamReader(AboutDialog.class.getResourceAsStream(
 						"/images/about.html")))) {
-			final String origHtml = reader.lines().collect(Collectors.joining());
+			final Matcher matcher = PATTERN.matcher(reader.lines().collect(Collectors.joining()));
 			final String html;
 			if (app.isEmpty()) {
-				html = PATTERN.matcher(origHtml)
-							   .replaceAll("Strategic Primer Assistive Programs");
+				html = matcher.replaceAll("Strategic Primer Assistive Programs");
 			} else {
-				html = PATTERN.matcher(origHtml).replaceAll(app);
+				html = matcher.replaceAll(app);
 			}
 			final JEditorPane pane = new JEditorPane("text/html", html);
 			pane.setCaretPosition(0); // scroll to the top
