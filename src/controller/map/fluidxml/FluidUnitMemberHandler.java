@@ -141,7 +141,7 @@ public final class FluidUnitMemberHandler {
 		if (hasAttribute(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException(element, "hours"));
 		}
-		final Job retval = new Job(getAttribute(element, "name"),
+		final IJob retval = new Job(getAttribute(element, "name"),
 										  getIntegerAttribute(element, "level"));
 		for (final XMLEvent event : stream) {
 			if (isSPStartElement(event)) {

@@ -5,7 +5,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.stream.Collectors;
 import javax.swing.DefaultListModel;
 import model.listeners.SelectionChangeListener;
@@ -57,7 +57,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 * Any animal tracks that have been "added" to the current tile but kept out of the
 	 * map.
 	 */
-	private final List<Animal> currentTracks = new ArrayList<>();
+	private final Collection<Animal> currentTracks = new ArrayList<>();
 	/**
 	 * Constructor.
 	 * @param theMap the map to refer to

@@ -15,6 +15,7 @@ import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.map.FixtureIterable;
 import model.map.HasOwner;
+import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
@@ -575,7 +576,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @return whether they're "equal enough" for the purposes of updating a map after
 	 * digging
 	 */
-	private static boolean areDiggablesEqual(final TileFixture firstFix, final TileFixture secondFix) {
+	private static boolean areDiggablesEqual(final IFixture firstFix, final IFixture secondFix) {
 
 		if (firstFix.equals(secondFix)) {
 			return true;

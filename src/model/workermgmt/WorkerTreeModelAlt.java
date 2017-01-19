@@ -112,8 +112,8 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old,
 						   final IUnit newOwner) {
-		final PlayerNode playerNode = (PlayerNode) root;
-		final UnitNode oldNode = (UnitNode) getNode(playerNode, old);
+		final TreeNode playerNode = root;
+		final MutableTreeNode oldNode = getNode(playerNode, old);
 		final UnitNode newNode = (UnitNode) getNode(playerNode, newOwner);
 		final MutableTreeNode node = getNode(playerNode, member);
 		fireTreeNodesRemoved(this,

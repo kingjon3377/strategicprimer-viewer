@@ -187,7 +187,7 @@ public final class MapChecker implements UtilityDriver {
 	 * @return an empty collection if null, or a singleton collection containing the
 	 * item if not
 	 */
-	private static <T> Collection<T> singletonOrEmpty(@Nullable final T item) {
+	private static <T> Iterable<T> singletonOrEmpty(@Nullable final T item) {
 		if (item == null) {
 			return Collections.emptyList();
 		} else {

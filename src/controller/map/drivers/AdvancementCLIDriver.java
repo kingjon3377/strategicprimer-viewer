@@ -147,7 +147,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * @param jobName the name of the Job to check or add.
 	 * @return the collection of Jobs in all the workers.
 	 */
-	private static Collection<IJob> getWorkerJobs(final Collection<IWorker> workers,
+	private static Collection<IJob> getWorkerJobs(final Iterable<IWorker> workers,
 												  final String jobName) {
 		final Map<String, IJob> jobs = new HashMap<>();
 		for (final IWorker worker : workers) {
