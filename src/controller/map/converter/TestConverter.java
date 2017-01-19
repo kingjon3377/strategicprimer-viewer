@@ -796,6 +796,7 @@ public final class TestConverter {
 		}
 	}
 	/**
+	 * Register a fixture's ID in an ID factory.
 	 * @param idFac an ID factory
 	 * @param fix a fixture
 	 * @return the fixture, having registered its ID.
