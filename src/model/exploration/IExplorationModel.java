@@ -219,7 +219,7 @@ public interface IExplorationModel
 		private Speed(final double mpMod, final int perceptionMod) {
 			mpMultiplier = mpMod;
 			perceptionModifier = perceptionMod;
-			String perceptionString;
+			final String perceptionString;
 			if (perceptionModifier >= 0) {
 				perceptionString =
 						String.format("+%d", Integer.valueOf(perceptionModifier));
