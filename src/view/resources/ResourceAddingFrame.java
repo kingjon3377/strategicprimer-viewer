@@ -179,7 +179,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	/**
 	 * Set sizes of components that are inclined to be tricky.
 	 */
-	private final void fixSizes() {
+	private void fixSizes() {
 		logLabel.setMinimumSize(new Dimension(getWidth() - 20, 50));
 		logLabel.setPreferredSize(new Dimension(getWidth(), 100));
 		// If we set these at model creation, the fields would (try to) be unnecessarily
