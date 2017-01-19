@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.map.FixtureIterable;
@@ -599,11 +600,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @return the result of rolling
 	 */
 	private static int rollDeeEight(final int times, final int bonus) {
-		int total = 0;
-		for (int i = 0; i < times; i++) {
-			total += RANDOM.nextInt(8) + bonus + 1;
-		}
-		return total;
+		return IntStream.range(0, times).map(i -> RANDOM.nextInt(8) + bonus + 1).sum();
 	}
 
 	/**
