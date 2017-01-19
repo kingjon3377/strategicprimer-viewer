@@ -418,12 +418,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String name = cli.inputString("Worker is a " + race
 													+ ". Worker name: ");
 		final Worker retval = new Worker(name, race, idf.createID());
-		int levels = 0;
-		for (int i = 0; i < 3; i++) {
-			if (RANDOM.nextInt(20) == 0) {
-				levels++;
-			}
-		}
+		final int levels =
+				(int) IntStream.range(0, 3).filter(i -> RANDOM.nextInt(20) == 0).count();
 		printLevelCount(cli, levels);
 
 		final boolean pregenStats =
@@ -578,12 +574,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String race = RaceFactory.getRace();
 		cli.printf("Worker %s is a %s%n", name, race);
 		final Worker retval = new Worker(name, race, idf.createID());
-		int levels = 0;
-		for (int i = 0; i < 3; i++) {
-			if (RANDOM.nextInt(20) == 0) {
-				levels++;
-			}
-		}
+		final int levels =
+				(int) IntStream.range(0, 3).filter(i -> RANDOM.nextInt(20) == 0).count();
 		final WorkerStats stats = createWorkerStats(race, levels, cli);
 		retval.setStats(stats);
 		printLevelCount(cli, levels);
