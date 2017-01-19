@@ -305,8 +305,8 @@ public final class YATownReader extends YAAbstractReader<ITownFixture> {
 			}
 			writeProperty(ostream, "id", obj.getID());
 			final Fortress fortress = (Fortress) obj;
-			writeImageXML(ostream, (Fortress) obj);
-			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
+			writeImageXML(ostream, fortress);
+			writeNonemptyProperty(ostream, "portrait", fortress.getPortrait());
 			ostream.append('>');
 			if (fortress.iterator().hasNext()) {
 				ostream.append(LineEnd.LINE_SEP);
