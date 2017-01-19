@@ -301,8 +301,7 @@ public final class FindDialog extends SPDialog {
 			return true;
 		} else if (fix instanceof FixtureIterable) {
 			return ((FixtureIterable<?>) fix).stream().anyMatch(
-					(final IFixture member) -> matches(pattern, idNum, member,
-							caseSensitivity));
+					member -> matches(pattern, idNum, member, caseSensitivity));
 		} else {
 			return false;
 		}

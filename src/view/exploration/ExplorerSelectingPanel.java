@@ -28,7 +28,6 @@ import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
@@ -113,10 +112,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 				new ExplorationUnitListModel(explorationModel);
 		addPlayerChangeListener(unitListModel);
 		unitList = new JList<>(unitListModel);
-		unitList.setCellRenderer((final JList<? extends @NonNull IUnit> list,
-								  @Nullable final IUnit value, final int index,
-								  final boolean isSelected, final boolean cellHasFocus)
-										 -> {
+		unitList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
 			final ListCellRenderer<@Nullable Object> defRenderer =
 					new DefaultListCellRenderer();
 			final Component retval = defRenderer.getListCellRendererComponent(list,
