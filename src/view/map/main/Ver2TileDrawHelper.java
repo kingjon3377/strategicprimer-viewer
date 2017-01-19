@@ -340,7 +340,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private boolean hasTerrainFixture(final IMapNG map, final Point location) {
 		return getDrawableFixtures(map, location)
-					   .anyMatch(fix -> fix instanceof TerrainFixture);
+					   .anyMatch(TerrainFixture.class::isInstance);
 	}
 
 	/**

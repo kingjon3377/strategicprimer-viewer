@@ -262,7 +262,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	 */
 	private static boolean isAdjacentToTown(final Point point, final IMapNG map) {
 		return getNeighbors(point).flatMap(map::streamOtherFixtures)
-					   .anyMatch(fix -> fix instanceof ITownFixture);
+					   .anyMatch(ITownFixture.class::isInstance);
 	}
 
 	/**
