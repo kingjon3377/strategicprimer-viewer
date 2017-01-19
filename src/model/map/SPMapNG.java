@@ -757,8 +757,9 @@ public class SPMapNG implements IMutableMapNG {
 		// If we use a lambda in anyMatch(), many tests error with
 		// BoostrapMethodError caused by LambdaConversionException
 		// trying to convert HasMutableImage to IFixture.
+		//noinspection Convert2MethodRef
 		if (Stream.of(getForest(location), getGround(location))
-					.anyMatch(fix::equalsIgnoringID)) {
+					.anyMatch(newFix -> fix.equalsIgnoringID(newFix))) {
 			return;
 		}
 		final Collection<TileFixture> local =
