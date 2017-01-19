@@ -553,16 +553,12 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			if (isSPStartElement(event)) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
-				if ("row".equals(type)) {
+				if ("row".equals(type) || isFutureTag(current, warner)) {
 					tagStack.push(current.getName());
 					// Deliberately ignore
 					continue;
 				} else if ("tile".equals(type)) {
 					parseTile(retval, current, stream, players, warner, idFactory);
-					continue;
-				} else if (equalsAny(type, ISPReader.FUTURE)) {
-					// noinspection ObjectAllocationInLoop
-					warner.warn(new UnsupportedTagException(current));
 					continue;
 				}
 				retval.addPlayer(Optional.of(
@@ -644,7 +640,21 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			}
 		}
 	}
-
+	/**
+	 * If the tag is a "future" tag, fire a warning and return true; otherwise, return
+	 * false.
+	 * @param tag a tag
+	 * @param warner the Warning instance to use.
+	 * @return if it's a "future" tag, to be skipped.
+	 */
+	private static boolean isFutureTag(final StartElement tag, final Warning warner) {
+		if (equalsAny(tag.getName().getLocalPart(), ISPReader.FUTURE)) {
+			warner.warn(new UnsupportedTagException(tag));
+			return true;
+		} else {
+			return false;
+		}
+	}
 	/**
 	 * Parse a child tag of a tile tag.
 	 * @param map The map we're building
@@ -664,9 +674,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 								final Point currentTile, final StartElement element)
 			throws SPFormatException {
 		final String type = element.getName().getLocalPart();
-		if (equalsAny(type, ISPReader.FUTURE)) {
-			//noinspection ObjectAllocationInLoop
-			warner.warn(new UnsupportedTagException(element));
+		if (isFutureTag(element, warner)) {
 			return;
 		} else if ("tile".equals(type)) {
 			throw new UnwantedChildException(parent.getName(), element);
