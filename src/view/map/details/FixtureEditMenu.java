@@ -106,15 +106,13 @@ public final class FixtureEditMenu extends JPopupMenu {
 		}
 		if (fixture instanceof HasMutableOwner) {
 			addMenuItem(new JMenuItem("Change owner", KeyEvent.VK_O),
-					event -> {
-						Optional.ofNullable((Player) showInputDialog(outer,
-										"Fixture's new owner:",
-										"Change Fixture Owner",
-										PLAIN_MESSAGE, null,
-										playersAsArray(players),
-								((HasOwner) fixture).getOwner()))
-								.ifPresent(((HasMutableOwner) fixture)::setOwner);
-					});
+					event -> Optional.ofNullable((Player) showInputDialog(outer,
+									"Fixture's new owner:",
+									"Change Fixture Owner",
+									PLAIN_MESSAGE, null,
+									playersAsArray(players),
+							((HasOwner) fixture).getOwner()))
+							.ifPresent(((HasMutableOwner) fixture)::setOwner));
 			immutable = false;
 		}
 		if (fixture instanceof UnitMember) {
