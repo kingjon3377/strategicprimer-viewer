@@ -296,7 +296,7 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 		final Optional<String> prefProp =
 				Optional.ofNullable(getAttributeByName(element, preferred))
 						.map(Attribute::getValue);
-		Optional<String> deprecatedProp =
+		final Optional<String> deprecatedProp =
 				Optional.ofNullable(getAttributeByName(element, deprecated))
 						.map(Attribute::getValue);
 		final MissingPropertyException exception =
