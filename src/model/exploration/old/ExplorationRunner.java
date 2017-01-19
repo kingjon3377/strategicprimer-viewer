@@ -250,12 +250,7 @@ public final class ExplorationRunner {
 	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	public boolean recursiveCheck() {
 		final Set<String> state = new HashSet<>();
-		for (final String table : tables.keySet()) {
-			if (recursiveCheck(table, state)) {
-				return true;
-			}
-		}
-		return false;
+		return tables.keySet().stream().anyMatch(table -> recursiveCheck(table, state));
 	}
 
 	/**
