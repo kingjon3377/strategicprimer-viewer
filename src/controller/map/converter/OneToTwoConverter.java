@@ -662,7 +662,6 @@ public final class OneToTwoConverter implements SimpleDriver {
 							final IDriverModel model) throws
 			DriverFailedException {
 		final OneToTwoConverter converter = new OneToTwoConverter();
-		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IMapNG oldMain = model.getMap();
 		final Path oldMainPath = model.getMapFile().orElseThrow(
 				() -> new DriverFailedException("No path for main map",
