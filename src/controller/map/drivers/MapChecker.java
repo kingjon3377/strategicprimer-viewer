@@ -142,7 +142,6 @@ public final class MapChecker implements UtilityDriver {
 	private void check(final Path file) {
 		SYS_OUT.print("Starting ");
 		SYS_OUT.println(file);
-		boolean retval = true;
 		final IMapNG map;
 		final Warning warner = Warning.DEFAULT;
 		try {
