@@ -23,7 +23,6 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
-import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.report.ComplexReportNode;
 import model.report.EmptyReportNode;
@@ -108,12 +107,10 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			if (worker.iterator().hasNext() && details) {
 				formatter.format("%s%n<ul>%n", HAS_TRAINING);
 				for (final IJob job : worker) {
-					if (job instanceof Job) {
-						formatter.format("<li>%d levels in %s",
-								Integer.valueOf(job.getLevel()), job.getName());
-						writeSkills(job, formatter);
-						formatter.format("</li>%n");
-					}
+					formatter.format("<li>%d levels in %s",
+							Integer.valueOf(job.getLevel()), job.getName());
+					writeSkills(job, formatter);
+					formatter.format("</li>%n");
 				}
 				formatter.format("</ul>%n");
 			}
