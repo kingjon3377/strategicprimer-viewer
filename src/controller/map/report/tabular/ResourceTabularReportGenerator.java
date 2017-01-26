@@ -2,6 +2,7 @@ package controller.map.report.tabular;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,25 +104,15 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 		if (!applies(first) || !applies(second)) {
 			throw new IllegalArgumentException("Unhandleable argument");
 		}
+		// TODO: Try to use new-fangled Comparator style
 		if (first instanceof ResourcePile) {
 			if (second instanceof ResourcePile) {
 				final ResourcePile firstPile = (ResourcePile) first;
 				final ResourcePile secondPile = (ResourcePile) second;
-				final int kindCmp = firstPile.getKind()
-											.compareTo(secondPile.getKind());
-				if (kindCmp == 0) {
-					final int contentsCmp = firstPile.getContents()
-													.compareTo(secondPile
-																	   .getContents());
-					if (contentsCmp == 0) {
-						return firstPile.getQuantity()
-									   .compareTo(secondPile.getQuantity());
-					} else {
-						return contentsCmp;
-					}
-				} else {
-					return kindCmp;
-				}
+				return Comparator.comparing(ResourcePile::getKind)
+							   .thenComparing(ResourcePile::getContents)
+							   .thenComparing(ResourcePile::getQuantity)
+							   .compare(firstPile, secondPile);
 			} else {
 				return -1;
 			}
@@ -138,13 +129,9 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 			if (second instanceof CacheFixture) {
 				final CacheFixture firstCache = (CacheFixture) first;
 				final CacheFixture secondCache = (CacheFixture) second;
-				final int kindCmp = firstCache.getKind()
-											.compareTo(secondCache.getKind());
-				if (kindCmp == 0) {
-					return firstCache.getContents().compareTo(secondCache.getContents());
-				} else {
-					return kindCmp;
-				}
+				return Comparator.comparing(CacheFixture::getKind)
+							   .thenComparing(CacheFixture::getContents)
+							   .compare(firstCache, secondCache);
 			} else {
 				return 1;
 			}
