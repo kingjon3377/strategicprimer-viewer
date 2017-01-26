@@ -194,14 +194,14 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * Ensure that a given map has at least terrain information for the specified
 	 * location.
 	 *
+	 * @param mainMap the map to take the terrain type from
 	 * @param map     the map we're operating on
 	 * @param point   the location to look at
-	 * @param terrain the terrain type it should be
 	 */
-	private static void ensureTerrain(final IMutableMapNG map,
-									  final Point point, final TileType terrain) {
+	private static void ensureTerrain(final IMapNG mainMap, final IMutableMapNG map,
+									  final Point point) {
 		if (TileType.NotVisible == map.getBaseTerrain(point)) {
-			map.setBaseTerrain(point, terrain);
+			map.setBaseTerrain(point, mainMap.getBaseTerrain(point));
 		}
 	}
 
@@ -324,7 +324,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				if (!doesLocationHaveFixture(subMap, point, unit)) {
 					continue;
 				}
-				ensureTerrain(subMap, dest, map.getBaseTerrain(dest));
+				ensureTerrain(map, subMap, dest);
 				removeImpl(subMap, point, unit);
 				subMap.addFixture(dest, unit);
 			}
@@ -336,7 +336,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		} else {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : getSubordinateMaps()) {
 				final IMutableMapNG subMap = pair.first();
-				ensureTerrain(subMap, dest, map.getBaseTerrain(dest));
+				ensureTerrain(map, subMap, dest);
 			}
 			fireMovementCost(1);
 			throw new SimpleMovement.TraversalImpossibleException();
@@ -533,8 +533,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 						new SurroundingPointIterable(currPoint, getMapDimensions(), 1);
 				surroundingPoints.stream().forEach(
 						point -> streamSubordinateMaps().map(Pair::first).forEach(
-								map -> ensureTerrain(map, point,
-										mainMap.getBaseTerrain(point))));
+								map -> ensureTerrain(mainMap, map, point)));
 				surroundingPoints.stream().flatMap(
 						point -> mainMap.streamOtherFixtures(point)
 										 .map(fix -> Pair.of(point, fix)))
