@@ -170,6 +170,7 @@ public final class WorkerMgmtFrame extends SPFrame
 				new ListenedButton("Add New Unit", evt -> newUnitFrame.setVisible(true)),
 				ordersPanel,
 				new ListenedButton("Export a proto-strategy", exporterLambda));
+		//noinspection SuspiciousNameCombination
 		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
 				verticalSplit(TWO_THIRDS, TWO_THIRDS,
 						verticalPanel(playerLabel, new JScrollPane(tree), null),
