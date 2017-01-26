@@ -454,6 +454,7 @@ public final class ProxyUnit
 	public String verbose() {
 		if (parallel) {
 			final Optional<IUnit> first = proxied.stream().findFirst();
+			//noinspection StringConcatenationMissingWhitespace
 			return first.map(unitMembers ->
 									 "A proxy for units in several maps, such as the " +
 											 "following:" +
