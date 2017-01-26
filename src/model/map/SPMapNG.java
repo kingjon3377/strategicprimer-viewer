@@ -287,10 +287,8 @@ public class SPMapNG implements IMutableMapNG {
 						obj.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
 					if (ourFixtures.contains(fix) || shouldSkip(fix) ||
-								((fix instanceof Ground) &&
-										 Objects.equals(fix, getGround(point))) ||
-								((fix instanceof Forest) &&
-										 Objects.equals(fix, getForest(point)))) {
+								Objects.equals(fix, getGround(point)) ||
+								Objects.equals(fix, getForest(point))) {
 						continue;
 					} else if ((fix instanceof IUnit) && ourUnits.containsKey(
 							Integer.valueOf(fix.getID()))) {
