@@ -517,10 +517,9 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	public void swearVillages() {
 		final Pair<Point, Optional<IUnit>> localSelection = selection;
 		final Point currPoint = localSelection.first();
-		final Optional<IUnit> temp = localSelection.second();
+		final Optional<Player> temp = localSelection.second().map(HasOwner::getOwner);
 		if (temp.isPresent()) {
-			final IUnit mover = temp.get();
-			final Player owner = mover.getOwner();
+			final Player owner = temp.get();
 			final List<Village> villages = streamAllMaps().map(Pair::first)
 					.flatMap(map -> map.streamOtherFixtures(currPoint))
 					.filter(Village.class::isInstance).map(Village.class::cast)
