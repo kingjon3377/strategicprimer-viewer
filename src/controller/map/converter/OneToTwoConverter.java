@@ -184,7 +184,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	 */
 	private static void changeFor(final IMutableMapNG map, final Point point,
 								  final TileFixture fix) {
-		if ((fix instanceof Village) || (fix instanceof ITownFixture)) {
+		if (fix instanceof ITownFixture) {
 			final List<TileFixture> toRemove =
 					map.streamOtherFixtures(point).filter(Forest.class::isInstance)
 							.collect(Collectors.toList());
