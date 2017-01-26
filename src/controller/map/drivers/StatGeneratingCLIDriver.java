@@ -182,7 +182,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		for (final Pair<IMutableMapNG, Optional<Path>> pair : model.getAllMaps()) {
 			final IMapNG map = pair.first();
 			final IFixture fix = find(map, idNum);
-			if ((fix instanceof Worker) && (((Worker) fix).getStats() == null)) {
+			if ((fix instanceof Worker) && (((IWorker) fix).getStats() == null)) {
 				((Worker) fix).setStats(stats);
 			}
 		}
