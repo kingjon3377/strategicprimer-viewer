@@ -1,5 +1,6 @@
 package model.map;
 
+import java.util.stream.StreamSupport;
 import org.eclipse.jdt.annotation.NonNull;
 
 /**
@@ -55,4 +56,11 @@ public interface IPlayerCollection
 	 * @return a copy of this collection
 	 */
 	IPlayerCollection copy();
+
+	/**
+	 * @return an array view of this collection
+	 */
+	default Player[] asArray() {
+		return StreamSupport.stream(spliterator(), false).toArray(Player[]::new);
+	}
 }

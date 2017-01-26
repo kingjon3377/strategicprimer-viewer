@@ -183,6 +183,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 * Get an array of the players.
 	 * @return an array of the players
 	 */
+	@Override
 	public Player[] asArray() {
 		return players.values().toArray(new Player[players.size()]);
 	}

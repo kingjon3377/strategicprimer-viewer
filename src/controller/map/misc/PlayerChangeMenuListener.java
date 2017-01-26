@@ -11,8 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
+import model.map.IPlayerCollection;
 import model.map.Player;
-import model.map.PlayerCollection;
 import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -107,8 +107,8 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	 * @return the players as an array
 	 */
 	private static Player[] playersAsArray(final Iterable<Player> players) {
-		if (players instanceof PlayerCollection) {
-			return ((PlayerCollection) players).asArray();
+		if (players instanceof IPlayerCollection) {
+			return ((IPlayerCollection) players).asArray();
 		} else {
 			return StreamSupport.stream(players.spliterator(), false)
 											  .toArray(Player[]::new);

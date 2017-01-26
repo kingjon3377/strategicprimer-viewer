@@ -22,8 +22,8 @@ import model.map.HasMutableOwner;
 import model.map.HasName;
 import model.map.HasOwner;
 import model.map.IFixture;
+import model.map.IPlayerCollection;
 import model.map.Player;
-import model.map.PlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.workermgmt.IWorkerTreeModel;
 import org.eclipse.jdt.annotation.NonNull;
@@ -147,8 +147,8 @@ public final class FixtureEditMenu extends JPopupMenu {
 	 * @return it as an array
 	 */
 	private static Player[] playersAsArray(final Iterable<Player> players) {
-		if (players instanceof PlayerCollection) {
-			return ((PlayerCollection) players).asArray();
+		if (players instanceof IPlayerCollection) {
+			return ((IPlayerCollection) players).asArray();
 		} else {
 			return StreamSupport.stream(players.spliterator(), false)
 						   .toArray(Player[]::new);
