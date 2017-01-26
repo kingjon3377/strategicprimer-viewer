@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.exploration.IExplorationModel.Direction;
 import model.exploration.IExplorationModel.Speed;
+import model.map.FixtureIterable;
 import model.map.HasOwner;
 import model.map.River;
 import model.map.TileFixture;
@@ -201,7 +202,7 @@ public final class SimpleMovement {
 	 * @param unit a unit
 	 * @return the highest Perception score of any member, or 0 if no members
 	 */
-	private static int getHighestPerception(final IUnit unit) {
+	private static int getHighestPerception(final FixtureIterable<? super IWorker> unit) {
 		return unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
 					   .mapToInt(SimpleMovement::getPerception).max().orElse(0);
 	}

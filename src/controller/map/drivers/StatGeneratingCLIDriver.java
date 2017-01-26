@@ -153,7 +153,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void enterStats(final IMultiMapModel model,
-								   final IUnit unit, final ICLIHelper cli)
+								   final FixtureIterable<? super Worker> unit,
+								   final ICLIHelper cli)
 			throws IOException {
 		final List<Worker> workers =
 				unit.stream().filter(Worker.class::isInstance).map(Worker.class::cast)
