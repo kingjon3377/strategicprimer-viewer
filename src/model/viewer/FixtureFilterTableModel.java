@@ -131,6 +131,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	@SafeVarargs
 	private final void addTrivialMatchers(final Class<? extends TileFixture>... classes) {
 		for (final Class<? extends TileFixture> cls : classes) {
+			//noinspection StringConcatenationMissingWhitespace
 			list.add(new FixtureMatcher(cls::isInstance, cls.getSimpleName() + 's'));
 		}
 	}

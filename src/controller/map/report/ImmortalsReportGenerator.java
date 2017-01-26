@@ -137,6 +137,7 @@ public final class ImmortalsReportGenerator
 												  final Class<? extends IFixture> cls,
 												  final String plural) {
 		final  Map<String, Collection<Point>> retval = new HashMap<>();
+		//noinspection StringConcatenationMissingWhitespace
 		meta.put(cls, (kind, point) -> MultiMapHelper.getMapValue(retval, kind,
 				key -> new PointList(key + plural)).add(point));
 		return retval;
