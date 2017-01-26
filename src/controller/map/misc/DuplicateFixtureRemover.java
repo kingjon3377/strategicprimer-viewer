@@ -17,7 +17,6 @@ import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.ResourcePile;
 import model.map.fixtures.mobile.IUnit;
-import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.towns.Fortress;
 import util.MultiMapHelper;
@@ -133,7 +132,7 @@ public final class DuplicateFixtureRemover {
 						.add(res);
 			}
 		}
-		if (!(iter instanceof Unit) && !(iter instanceof Fortress)) {
+		if (!(iter instanceof IUnit) && !(iter instanceof Fortress)) {
 			// We can't add items to or remove them from any other iterable
 			return;
 		}
@@ -145,8 +144,8 @@ public final class DuplicateFixtureRemover {
 			list.stream().map(Object::toString).forEach(cli::println);
 			if (cli.inputBooleanInSeries("Combine them? ")) {
 				final ResourcePile combined = combineResources(list);
-				if (iter instanceof Unit) {
-					final Unit unit = (Unit) iter;
+				if (iter instanceof IUnit) {
+					final IUnit unit = (IUnit) iter;
 					list.forEach(unit::removeMember);
 					unit.addMember(combined);
 				} else if (iter instanceof Fortress) {

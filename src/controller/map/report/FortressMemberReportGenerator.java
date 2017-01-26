@@ -13,7 +13,7 @@ import model.map.Point;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 import model.report.EmptyReportNode;
 import model.report.IReportNode;
 import model.report.ListReportNode;
@@ -152,9 +152,9 @@ public final class FortressMemberReportGenerator
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer,
 						  final FortressMember item, final Point loc) {
-		if (item instanceof Unit) {
+		if (item instanceof IUnit) {
 			return new UnitReportGenerator(pairComparator)
-						   .produce(fixtures, map, currentPlayer, (Unit) item, loc);
+						   .produce(fixtures, map, currentPlayer, (IUnit) item, loc);
 		} else if (item instanceof ResourcePile) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final ResourcePile rsr = (ResourcePile) item;
@@ -196,10 +196,10 @@ public final class FortressMemberReportGenerator
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer,
 								  final FortressMember item, final Point loc) {
-		if (item instanceof Unit) {
+		if (item instanceof IUnit) {
 			return new UnitReportGenerator(pairComparator)
 						   .produceRIR(fixtures, map, currentPlayer,
-								   (Unit) item, loc);
+								   (IUnit) item, loc);
 		} else if (item instanceof ResourcePile) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final ResourcePile rsr = (ResourcePile) item;

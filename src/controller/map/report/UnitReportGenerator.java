@@ -21,7 +21,6 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
@@ -477,7 +476,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		values.sort(pairComparator);
 		final IReportNode theirs = new SectionListReportNode(5, "Foreign units");
 		final IReportNode ours = new SectionListReportNode(5, "Your units");
-		values.stream().filter(pair -> pair.second() instanceof Unit).forEach(pair -> {
+		values.stream().filter(pair -> pair.second() instanceof IUnit).forEach(pair -> {
 			final IUnit unit = (IUnit) pair.second();
 			final IReportNode unitNode = produceRIR(fixtures, map,
 					currentPlayer, unit, pair.first());
