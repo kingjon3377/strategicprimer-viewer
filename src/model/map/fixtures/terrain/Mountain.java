@@ -8,6 +8,8 @@ import org.eclipse.jdt.annotation.Nullable;
 /**
  * A mountain on the map---or at least a fixture representing mountainous terrain.
  *
+ * TODO: can we get rid of this class?
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *

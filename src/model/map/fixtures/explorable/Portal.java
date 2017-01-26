@@ -189,7 +189,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	 * @param fix a fixture
 	 * @return whether it would be equal to this one if its ID # were not considered
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Portal) &&
@@ -211,6 +211,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	 *                put onto ostream, it should probably be followed by a tab.
 	 * @return whether that object equals, or is a zeroed-out equivalent of, this one
 	 */
+	@SuppressWarnings("InstanceofInterfaces")
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) {

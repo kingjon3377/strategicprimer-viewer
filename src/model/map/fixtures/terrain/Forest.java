@@ -154,6 +154,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind {
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
+	@SuppressWarnings("InstanceofInterfaces")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) ||

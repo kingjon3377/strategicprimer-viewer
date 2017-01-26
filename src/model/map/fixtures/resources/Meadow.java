@@ -179,7 +179,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Meadow) && kind.equals(((Meadow) fix).kind)

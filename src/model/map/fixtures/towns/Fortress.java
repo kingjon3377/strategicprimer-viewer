@@ -238,7 +238,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	 *                context
 	 * @return whether it's a strict subset of this one
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) {
@@ -286,7 +286,7 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
-	@SuppressWarnings({"ObjectEquality", "CastToConcreteClass"})
+	@SuppressWarnings({"ObjectEquality", "CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof Fortress)

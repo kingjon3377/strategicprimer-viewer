@@ -173,7 +173,7 @@ public class Animal implements MobileFixture, HasMutableImage, HasKind, UnitMemb
 	 *                context
 	 * @return whether that member is a subset of this one
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) {
@@ -219,7 +219,7 @@ public class Animal implements MobileFixture, HasMutableImage, HasKind, UnitMemb
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Animal) && ((Animal) fix).kind.equals(kind)

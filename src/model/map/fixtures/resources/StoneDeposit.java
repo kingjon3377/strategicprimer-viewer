@@ -150,7 +150,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
-	@SuppressWarnings({"ObjectEquality", "CastToConcreteClass"})
+	@SuppressWarnings({"ObjectEquality", "CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof StoneDeposit) &&

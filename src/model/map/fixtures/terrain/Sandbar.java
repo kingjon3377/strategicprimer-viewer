@@ -92,6 +92,7 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
+	@SuppressWarnings("InstanceofInterfaces")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Sandbar;

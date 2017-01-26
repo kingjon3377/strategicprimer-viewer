@@ -107,6 +107,7 @@ public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
+	@SuppressWarnings("InstanceofInterfaces")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Minotaur;
@@ -156,6 +157,7 @@ public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 	 *                context
 	 * @return whether that member equals this one
 	 */
+	@SuppressWarnings("InstanceofInterfaces")
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) {

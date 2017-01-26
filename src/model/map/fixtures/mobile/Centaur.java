@@ -122,7 +122,7 @@ public class Centaur implements MobileFixture, HasMutableImage, HasKind, UnitMem
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Centaur) && ((Centaur) fix).kind.equals(kind);
@@ -136,7 +136,7 @@ public class Centaur implements MobileFixture, HasMutableImage, HasKind, UnitMem
 	 *                context
 	 * @return whether that member equals this one
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) {

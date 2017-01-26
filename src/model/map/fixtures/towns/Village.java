@@ -142,7 +142,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 * @param fix a fixture
 	 * @return whether it's an identical-but-for-ID village.
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Village) && (status == ((Village) fix).status) &&
@@ -277,7 +277,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 *                context
 	 * @return whether the fixture is a "subset" of this
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) {

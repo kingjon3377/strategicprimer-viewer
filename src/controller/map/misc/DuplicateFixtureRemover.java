@@ -78,7 +78,7 @@ public final class DuplicateFixtureRemover {
 							   final ICLIHelper cli) throws IOException {
 		final Collection<TileFixture> fixtures = new ArrayList<>();
 		final Collection<TileFixture> toRemove = new ArrayList<>();
-		// We ignore ground and forests because they don't have IDs.
+		// TODO: cover Ground and Forest now that they have IDs.
 		// TODO: Try to use Streams API instead of complicated loop
 		for (final TileFixture fix : map.getOtherFixtures(location)) {
 			if (((fix instanceof IUnit) && ((IUnit) fix).getKind().contains("TODO")) ||

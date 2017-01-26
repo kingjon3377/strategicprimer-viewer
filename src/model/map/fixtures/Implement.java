@@ -61,7 +61,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	 * @param fix a fixture
 	 * @return whether it equals this one except for ID
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Implement) && kind.equals(((Implement) fix).kind);
@@ -73,7 +73,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	 * @param context the context to report before errors
 	 * @return whether it's a subset of (i.e. equal to) this one
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) {

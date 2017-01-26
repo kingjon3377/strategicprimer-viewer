@@ -16,6 +16,8 @@ import org.eclipse.jdt.annotation.Nullable;
 /**
  * A Fixture to encapsulate the rivers on a tile, so we can show a chit for rivers.
  *
+ * TODO: Can we remove this class?
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -143,7 +145,7 @@ public final class RiverFixture
 	 * @return whether it's a strict subset of this one, containing no rivers that this
 	 * doesn't
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) {

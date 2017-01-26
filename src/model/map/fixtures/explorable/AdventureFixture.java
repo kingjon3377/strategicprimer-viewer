@@ -228,7 +228,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	 * @param fix a fixture
 	 * @return whether it's equal to this one except for its ID number
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof AdventureFixture) && equalsImpl((AdventureFixture) fix);

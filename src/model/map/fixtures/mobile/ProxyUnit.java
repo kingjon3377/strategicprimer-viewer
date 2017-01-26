@@ -648,6 +648,7 @@ public final class ProxyUnit
 		 * @param fix a fixture
 		 * @return whether it equals this one
 		 */
+		@SuppressWarnings("InstanceofInterfaces")
 		@Override
 		public boolean equalsIgnoringID(final IFixture fix) {
 			return (fix instanceof ProxyMember) &&

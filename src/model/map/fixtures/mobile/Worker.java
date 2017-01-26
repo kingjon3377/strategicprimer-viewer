@@ -213,7 +213,7 @@ public class Worker implements IWorker, HasPortrait {
 	 *                context
 	 * @return whether that member equals this one
 	 */
-	@SuppressWarnings("CastToConcreteClass")
+	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean isSubset(final IFixture obj, final Formatter ostream,
 							final String context) {
