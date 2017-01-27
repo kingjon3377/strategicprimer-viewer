@@ -84,6 +84,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			case "getOwner":
 				return player;
 			case "equals":
+				//noinspection ObjectEquality
 				return proxy == args[0];
 			case "stream":
 				return Stream.empty();
