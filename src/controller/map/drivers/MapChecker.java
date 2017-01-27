@@ -246,6 +246,7 @@ public final class MapChecker implements UtilityDriver {
 		 * @param fixture The tile fixture to check
 		 * @param warner the Warning instance to use.
 		 */
+		@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 		void check(final TileType terrain, final Point context, final IFixture fixture,
 				   final Warning warner);
 	}
