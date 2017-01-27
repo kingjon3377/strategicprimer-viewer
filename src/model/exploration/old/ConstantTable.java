@@ -30,13 +30,6 @@ public final class ConstantTable implements EncounterTable {
 	private final String value;
 
 	/**
-	 * Constructor; defaults to the empty string.
-	 */
-	public ConstantTable() {
-		this("");
-	}
-
-	/**
 	 * Constructor.
 	 *
 	 * @param val the value to return for all queries.
