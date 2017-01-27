@@ -58,6 +58,7 @@ public final class MiningCLI implements UtilityDriver {
 	 *                of the top center (as an index into the LodeStatus values array)
 	 * @throws DriverFailedException on incorrect usage
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
 							final String... args)
