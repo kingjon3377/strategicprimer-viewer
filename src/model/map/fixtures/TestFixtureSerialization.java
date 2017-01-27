@@ -223,8 +223,12 @@ public final class TestFixtureSerialization extends
 		map.setForest(point, new Forest("trees", false, 4));
 		map.addFixture(point, new Forest("secondForest", true, 5));
 		assertSerialization("Map with multiple Forests on a tile", map);
-		assertEquivalentForms("Duplicate Forests ignored", encapsulateTileString("<forest kind=\"trees\" id=\"4\" /><forest kind=\"second\" rows=\"true\" id=\"5\" />"),
-			encapsulateTileString("<forest kind=\"trees\" id=\"4\" /><forest kind=\"trees\" id=\"4\" /><forest kind=\"second\" rows=\"true\" id=\"5\" />"),
+		assertEquivalentForms("Duplicate Forests ignored", encapsulateTileString(
+				"<forest kind=\"trees\" id=\"4\" /><forest kind=\"second\" rows=\"true\"" +
+						" id=\"5\" />"),
+				encapsulateTileString(
+						"<forest kind=\"trees\" id=\"4\" /><forest kind=\"trees\" " +
+								"id=\"4\" /><forest kind=\"second\" rows=\"true\" id=\"5\" />"),
 			IMutableMapNG.class, Warning.Ignore);
 	}
 

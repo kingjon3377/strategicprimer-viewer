@@ -131,11 +131,9 @@ public final class ImmortalsReportGenerator
 	 * @return the collection of lists for that kind of fixture, with a Consumer
 	 * handling them added to meta
 	 */
-	private static  Map<String, Collection<Point>> handleComplex(final Map<Class<? extends IFixture>,
-																   BiConsumer<String,
-																					 Point>> meta,
-												  final Class<? extends IFixture> cls,
-												  final String plural) {
+	private static  Map<String, Collection<Point>> handleComplex(
+			final Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta,
+			final Class<? extends IFixture> cls, final String plural) {
 		final  Map<String, Collection<Point>> retval = new HashMap<>();
 		//noinspection StringConcatenationMissingWhitespace
 		meta.put(cls, (kind, point) -> MultiMapHelper.getMapValue(retval, kind,

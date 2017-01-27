@@ -128,7 +128,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Skills in Jobs:";
 		final String none = "No existing skills.";
 		final String prompt = "Skill to advance: ";
-		cli.loopOnMutableList(skills, clh -> clh.chooseFromList(skills, hdr, none, prompt, false),
+		cli.loopOnMutableList(skills,
+				clh -> clh.chooseFromList(skills, hdr, none, prompt, false),
 				"Select another Skill in this Job? ", (list, clh) -> {
 			final String skillName = clh.inputString("Name of new Skill: ");
 			jobs.forEach(job -> job.addSkill(new Skill(skillName, 0, 0)));
@@ -247,7 +248,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Skills in Job:";
 		final String none = "No existing skills.";
 		final String prompt = "Skill to advance: ";
-		cli.loopOnMutableList(skills, clh -> clh.chooseFromList(skills, hdr, none, prompt, false),
+		cli.loopOnMutableList(skills,
+				clh -> clh.chooseFromList(skills, hdr, none, prompt, false),
 				"Select another Skill in this Job? ", (list, clh) -> {
 			final String skillName = clh.inputString("Name of new Skill: ");
 			job.addSkill(new Skill(skillName, 0, 0));
@@ -309,7 +311,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			final String none = "No players found.";
 			final String prompt = "Chosen player: ";
 			cli.loopOnList(playerList,
-					clh -> clh.chooseFromList(playerList, hdr, none, prompt, false), "Select another player? ",
+					clh -> clh.chooseFromList(playerList, hdr, none, prompt, false),
+					"Select another player? ",
 					(player, clh) -> advanceWorkers(workerModel, player, clh));
 		} catch (final IOException except) {
 			//noinspection HardcodedFileSeparator

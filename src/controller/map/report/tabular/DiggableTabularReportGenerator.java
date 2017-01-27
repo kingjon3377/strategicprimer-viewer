@@ -31,7 +31,8 @@ import static util.Ternary.ternary;
  *
  * @author Jonathan Lovelace
  */
-public final class DiggableTabularReportGenerator implements ITableGenerator<TileFixture> {
+public final class DiggableTabularReportGenerator
+		implements ITableGenerator<TileFixture> {
 	/**
 	 * The base point to use for distance calculations.
 	 */

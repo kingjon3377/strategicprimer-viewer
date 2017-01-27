@@ -154,7 +154,8 @@ public final class CLIHelper implements ICLIHelper {
 	 * @param list the list to print.
 	 * @param func the function to turn each item into a String
 	 */
-	private <T> void printList(final List<? extends T> list, final Function<T, String> func) {
+	private <T> void printList(final List<? extends T> list,
+							   final Function<T, String> func) {
 		for (int i = 0; i < list.size(); i++) {
 			ostream.append(Integer.toString(i));
 			ostream.append(": ");

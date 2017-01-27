@@ -460,7 +460,9 @@ public final class TestConverter {
 				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(6, 6), TileType.Tundra,
 				new Ground(-1, "rock4", false), new Grove(true, true, "fruit4", -1));
-		initialize(converted, PointFactory.point(7, 5), TileType.Tundra, new Ground(-1, "rock4", false), new Meadow("grain4", true, true, -1, Growing));
+		initialize(converted, PointFactory.point(7, 5), TileType.Tundra,
+				new Ground(-1, "rock4", false),
+				new Meadow("grain4", true, true, -1, Growing));
 		initialize(converted, PointFactory.point(7, 6), TileType.Tundra,
 				new Ground(-1, "rock4", false), new Forest("ttree4", false, -1),
 				new Village(TownStatus.Active, "", -1, independent, "dwarf"));
@@ -834,7 +836,8 @@ public final class TestConverter {
 				register(testFactory,
 						new Village(TownStatus.Active, "", 16, independent, "human")));
 		initialize(converted, PointFactory.point(3, 7), TileType.Plains,
-				register(testFactory, new Village(TownStatus.Active, "", 33, independent, "half-elf")));
+				register(testFactory,
+						new Village(TownStatus.Active, "", 33, independent, "half-elf")));
 		initialize(converted, PointFactory.point(4, 0), TileType.Desert,
 				register(testFactory, new Village(TownStatus.Active, "", 50, independent, "human")));
 		for (int i = 0; i < 4; i++) {

@@ -574,8 +574,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @return whether they're "equal enough" for the purposes of updating a map after
 	 * digging
 	 */
-	private static boolean areDiggablesEqual(final IFixture firstFix, final IFixture secondFix) {
-
+	private static boolean areDiggablesEqual(final IFixture firstFix,
+											 final IFixture secondFix) {
 		if (firstFix.equals(secondFix)) {
 			return true;
 		} else if ((firstFix instanceof StoneDeposit) ||

@@ -36,7 +36,8 @@ import util.PatientMap;
  *
  * @author Jonathan Lovelace
  */
-public final class ImmortalsTabularReportGenerator implements ITableGenerator<MobileFixture> {
+public final class ImmortalsTabularReportGenerator
+		implements ITableGenerator<MobileFixture> {
 	/**
 	 * The base point to use for distance calculations.
 	 */

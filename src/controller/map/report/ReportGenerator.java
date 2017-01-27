@@ -322,9 +322,12 @@ public final class ReportGenerator {
 								  .collect(Collectors.toMap(checkID,
 										  fix -> Pair.of(point, fix), (pairOne, pairTwo) -> {
 									        if (!Objects.equals(pairOne, pairTwo)) {
-									            LOGGER.warning(String.format("Duplicate key, %d, for Pairs %s and %s",
-											            checkID.apply(pairOne.second()), pairOne.toString(), pairTwo.toString()));
-								            }
+												LOGGER.warning(String.format(
+														"Duplicate key, %d, for Pairs %s and %s",
+														checkID.apply(pairOne.second()),
+														pairOne.toString(),
+														pairTwo.toString()));
+											}
 								            return pairOne;
 										  })));
 		}
