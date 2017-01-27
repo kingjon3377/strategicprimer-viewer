@@ -95,7 +95,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	 * @return whether the data it holds come from are (probably) from outside component.
 	 */
 	private boolean isXfrFromOutside(final DropTargetEvent dtde) {
-		return (!(dtde.getSource() instanceof Component)) ||
+		return !(dtde.getSource() instanceof Component) ||
 					   !parentComponent.isAncestorOf((Component) dtde.getSource());
 	}
 

@@ -178,7 +178,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	default boolean isSubset(final IFixture obj, final Formatter ostream,
 							 final String context) {
 		if (obj.getID() == getID()) {
-			if ((obj instanceof IUnit)) {
+			if (obj instanceof IUnit) {
 				if (areIntItemsEqual(ostream, getOwner().getPlayerId(),
 						((IUnit) obj).getOwner().getPlayerId(),
 						"%s Unit of ID #%d:\tOwners differ%n", context,

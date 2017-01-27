@@ -94,7 +94,7 @@ public final class AnimalTabularReportGenerator implements ITableGenerator<Anima
 		final int cmp = comparator.compare(one.first(), two.first());
 		if (cmp == 0) {
 			return Comparator.comparing(Animal::isTalking).thenComparing(
-					(animal) -> !animal.isTraces()).thenComparing(Animal::getKind)
+					animal -> !animal.isTraces()).thenComparing(Animal::getKind)
 						   .compare(one.second(), two.second());
 		} else {
 			return cmp;
