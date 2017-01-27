@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import java.util.Iterator;
 import util.Pair;
 
 /**
@@ -37,13 +36,6 @@ public interface SPOptions extends Iterable<Pair<String, String>> {
 	 * or "false" if it wasn't given at all
 	 */
 	String getArgument(String opt);
-
-	/**
-	 * An iterator over the options the user provided.
-	 * @return an iterator over the options
-	 */
-	@Override
-	Iterator<Pair<String, String>> iterator();
 
 	/**
 	 * Clone the object.
