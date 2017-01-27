@@ -1,6 +1,7 @@
 package util;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Formatter;
 import model.map.Subsettable;
 
@@ -123,12 +124,9 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compareTo(final Quantity obj) {
-		final int unitsComp = units.compareTo(obj.units);
-		if (unitsComp == 0) {
-			return compareNumbers(number, obj.number);
-		} else {
-			return unitsComp;
-		}
+		return Comparator.comparing(Quantity::getUnits)
+					   .thenComparing(Quantity::getNumber, Quantity::compareNumbers)
+					   .compare(this, obj);
 	}
 	/**
 	 * Compare two Numbers. If they're both Integers or BigDecimals, use the native
