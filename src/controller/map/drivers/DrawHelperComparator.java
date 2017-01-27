@@ -453,7 +453,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 * @param filename the name of the file it was loaded from, for user I/O only
 	 * @param rng the Random instance to use
 	 */
-	private void runTestProcedure(final ICLIHelper cli, final IMapNG map,
+	private static void runTestProcedure(final ICLIHelper cli, final IMapNG map,
 								  final Optional<Path> filename, final Random rng) {
 		cli.printf("Testing using%s%n",
 				filename.map(Path::toString).orElse("an unsaved map"));

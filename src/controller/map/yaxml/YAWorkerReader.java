@@ -123,7 +123,7 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 	 * @return the parsed skill
 	 * @throws SPFormatException on SP format problem
 	 */
-	private ISkill parseSkill(final StartElement element,
+	private static ISkill parseSkill(final StartElement element,
 							 final QName parent) throws SPFormatException {
 		requireTag(element, parent, "skill");
 		return new Skill(getParameter(element, "name"),

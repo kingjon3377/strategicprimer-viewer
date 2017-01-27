@@ -639,7 +639,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	 * @param map the newly converted map to write
 	 * @throws DriverFailedException on error writing
 	 */
-	private void writeConvertedMap(final Path old, final IMapNG map)
+	private static void writeConvertedMap(final Path old, final IMapNG map)
 			throws DriverFailedException {
 		try {
 			new MapReaderAdapter()
