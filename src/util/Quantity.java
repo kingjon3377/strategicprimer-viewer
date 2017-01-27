@@ -80,8 +80,8 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	@Override
 	public boolean isSubset(final Quantity obj, final Formatter ostream,
 							final String context) {
-		if (units.equals(obj.getUnits())) {
-			if (number.equals(obj.getNumber()) || ZERO.equals(obj.getNumber())) {
+		if (units.equals(obj.units)) {
+			if (number.equals(obj.number) || ZERO.equals(obj.number)) {
 				return true;
 			} else {
 				ostream.format("%s: Quantities differ%n", context);
@@ -99,8 +99,8 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Quantity && units.equals(((Quantity) obj).getUnits()) &&
-					   number.equals(((Quantity) obj).getNumber());
+		return obj instanceof Quantity && units.equals(((Quantity) obj).units) &&
+					   number.equals(((Quantity) obj).number);
 	}
 	/**
 	 * Hash value.
@@ -123,9 +123,9 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compareTo(final Quantity obj) {
-		final int unitsComp = units.compareTo(obj.getUnits());
+		final int unitsComp = units.compareTo(obj.units);
 		if (unitsComp == 0) {
-			return compareNumbers(number, obj.getNumber());
+			return compareNumbers(number, obj.number);
 		} else {
 			return unitsComp;
 		}
