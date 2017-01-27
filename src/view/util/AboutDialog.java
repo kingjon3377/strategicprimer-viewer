@@ -81,7 +81,8 @@ public final class AboutDialog extends SPDialog {
 								   "This should never happen.</p></html>"));
 		}
 		add(BoxPanel.centeredHorizBox(
-				new ListenedButton("Close", new WindowCloser(this))), BorderLayout.SOUTH);
+				new ListenedButton("Close", new WindowCloser(this))),
+				BorderLayout.PAGE_END);
 		pack();
 	}
 
