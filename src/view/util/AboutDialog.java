@@ -74,6 +74,7 @@ public final class AboutDialog extends SPDialog {
 			scrollPane.setPreferredSize(new Dimension(400, 500));
 			add(scrollPane, BorderLayout.CENTER);
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			TypesafeLogger.getLogger(AboutDialog.class)
 					.log(Level.SEVERE, "I/O error in reading About page", except);
 			add(new JLabel("<html><p>We failed to read the contents of the About page. " +
