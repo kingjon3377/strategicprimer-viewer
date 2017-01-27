@@ -486,6 +486,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	 * @param original the base terrain in the version-1 map
 	 * @return the base terrain in the version-2 map
 	 */
+	@SuppressWarnings("deprecation")
 	private static TileType equivalentTerrain(final TileType original) {
 		if (TileType.Mountain == original || TileType.TemperateForest == original) {
 			return TileType.Plains;
