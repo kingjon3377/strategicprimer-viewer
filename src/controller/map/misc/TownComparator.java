@@ -1,8 +1,6 @@
 package controller.map.misc;
 
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import model.map.HasName;
 import model.map.fixtures.towns.City;
 import model.map.fixtures.towns.Fortification;
@@ -32,15 +30,6 @@ import org.eclipse.jdt.annotation.NonNull;
  * @author Jonathan Lovelace
  */
 public final class TownComparator implements Comparator<@NonNull ITownFixture> {
-	/**
-	 * A list of comparators in the order to use them.
-	 */
-	@SuppressWarnings("QuestionableName")
-	private static final List<Comparator<ITownFixture>> COMPARATORS =
-			Arrays.asList((one, two) -> compareTownStatus(one.status(), two.status()),
-					(one, two) -> compareTownSize(one.size(), two.size()),
-					TownComparator::compareTownKind,
-					Comparator.comparing(HasName::getName));
 
 	/**
 	 * Compare town sizes.
@@ -152,15 +141,13 @@ public final class TownComparator implements Comparator<@NonNull ITownFixture> {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compare(final ITownFixture townOne, final ITownFixture townTwo) {
-		int retval = 0;
-		for (final Comparator<ITownFixture> comparator : COMPARATORS) {
-			if (retval == 0) {
-				retval = comparator.compare(townOne, townTwo);
-			} else {
-				return retval;
-			}
-		}
-		return retval;
+		return Comparator
+					   .comparing(ITownFixture::status,
+							   TownComparator::compareTownStatus)
+					   .thenComparing(ITownFixture::size,
+							   TownComparator::compareTownSize)
+					   .thenComparing(TownComparator::compareTownKind)
+					   .thenComparing(HasName::getName).compare(townOne, townTwo);
 	}
 
 	/**
