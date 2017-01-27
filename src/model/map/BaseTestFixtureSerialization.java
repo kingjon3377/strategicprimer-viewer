@@ -205,6 +205,8 @@ public abstract class BaseTestFixtureSerialization {
 	 * only supposed to be a warning, assert that it'll pass with warnings disabled but
 	 * object with them made fatal.
 	 *
+	 * TODO: check the tag it's on and the preferred form
+	 *
 	 * @param reader      the reader to do the reading
 	 * @param xml         the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
