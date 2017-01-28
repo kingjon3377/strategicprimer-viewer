@@ -277,13 +277,13 @@ public final class YAUnitReader extends YAAbstractReader<IUnit> {
 	}
 
 	/**
-	 * We can only write Units. (TODO: Should this be IUnit instead?)
+	 * We can only write Units.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */
 	@Override
 	public boolean canWrite(final Object obj) {
-		return obj instanceof Unit;
+		return obj instanceof IUnit;
 	}
 	/**
 	 * Write orders or results.
