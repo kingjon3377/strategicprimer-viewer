@@ -180,7 +180,6 @@ public class Worker implements IWorker, HasPortrait {
 	/**
 	 * This delegates to a Worker-specific helper method.
 	 *
-	 * TODO: Remove obsolete warning-suppression: we don't cast to a concrete class.
 	 * @param fix a fixture
 	 * @return whether it equals this one except its ID.
 	 */
