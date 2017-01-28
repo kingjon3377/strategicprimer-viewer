@@ -28,7 +28,6 @@ import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.RiverFixture;
-import model.map.fixtures.terrain.Mountain;
 import model.misc.IDriverModel;
 import model.viewer.IViewerModel;
 import model.viewer.PointIterator;
@@ -394,10 +393,6 @@ public final class FindDialog extends SPDialog {
 			for (final Point point : map.locations()) {
 				populate(map.getGround(point));
 				populate(map.getForest(point));
-				if (map.isMountainous(point)) {
-					//noinspection ObjectAllocationInLoop
-					populate(new Mountain());
-				}
 				if (map.getRivers(point).iterator().hasNext()) {
 					//noinspection ObjectAllocationInLoop
 					populate(new RiverFixture());
