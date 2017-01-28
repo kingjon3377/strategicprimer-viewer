@@ -287,12 +287,12 @@ public final class YAWorkerReader extends YAAbstractReader<IWorker> {
 	}
 
 	/**
-	 * We can only write Workers. (TODO: Should this be the interface?)
+	 * We can only write Workers.
 	 * @param obj an object
 	 * @return whether we can write it
 	 */
 	@Override
 	public boolean canWrite(final Object obj) {
-		return obj instanceof Worker;
+		return obj instanceof IWorker;
 	}
 }
