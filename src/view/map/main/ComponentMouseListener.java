@@ -15,7 +15,6 @@ import model.map.TerrainFixture;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
-import model.map.fixtures.terrain.Mountain;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
@@ -87,9 +86,15 @@ public final class ComponentMouseListener extends MouseAdapter implements
 						+ dimensions.getMinimumCol());
 		if ((point.getRow() < mapDim.getRows()) &&
 					(point.getCol() < mapDim.getColumns())) {
-			return String.format("<html><body>%s: %s<br />%s</br></body></html>",
+			final String mtnString;
+			if (model.getMap().isMountainous(point)) {
+				mtnString = ", mountainous";
+			} else {
+				mtnString = "";
+			}
+			return String.format("<html><body>%s: %s%s<br />%s</br></body></html>",
 					point.toString(), model.getMap().getBaseTerrain(point).toString(),
-					getTerrainFixturesAndTop(point));
+					mtnString, getTerrainFixturesAndTop(point));
 		} else {
 			return null;
 		}
@@ -106,9 +111,6 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	private String getTerrainFixturesAndTop(final Point point) {
 		final IMapNG map = model.getMap();
 		final Collection<TileFixture> fixes = new ArraySet<>();
-		if (map.isMountainous(point)) {
-			fixes.add(new Mountain());
-		}
 		final Ground ground = map.getGround(point);
 		if (ground != null && zof.shouldDisplay(ground)) {
 			fixes.add(ground);
