@@ -21,7 +21,6 @@ import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownSize;
@@ -88,7 +87,7 @@ public final class TestWorkerModel {
 	@Test
 	public void testGetUnits() {
 		final List<TileFixture> fixtures = new ArrayList<>();
-		fixtures.add(new Mountain());
+		fixtures.add(new Oasis(14));
 		fixtures.add(new Animal("animal", false, false, "wild", 1));
 		final List<IUnit> listOne = new ArrayList<>();
 		final Player playerOne = new Player(0, "player1");
