@@ -203,6 +203,9 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		if (TileType.NotVisible == map.getBaseTerrain(point)) {
 			map.setBaseTerrain(point, mainMap.getBaseTerrain(point));
 		}
+		if (mainMap.isMountainous(point)) {
+			map.setMountainous(point, true);
+		}
 	}
 
 	/**
