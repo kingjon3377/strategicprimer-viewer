@@ -9,7 +9,6 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 
@@ -73,7 +72,6 @@ public final class TileUIHelper {
 		descriptions.put(TileType.Steppe, "<html><p>Steppe</p></html>");
 		featureColors = new HashMap<>();
 		featureColors.put(Forest.class, new Color(0, 117, 0));
-		featureColors.put(Mountain.class, MOUNTAIN_COLOR);
 		featureColors.put(Oasis.class, new Color(72, 218, 164));
 		featureColors.put(Sandbar.class, new Color(249, 233, 28));
 		featureColors.put(Hill.class, new Color(141, 182, 0));
