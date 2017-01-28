@@ -34,7 +34,6 @@ import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
 import model.misc.IDriverModel;
@@ -217,9 +216,6 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point,
 												   final TileFixture fix) {
-		if ((fix instanceof Mountain) && map.isMountainous(point)) {
-			return true;
-		}
 		return Stream.concat(Stream.of(map.getForest(point), map.getGround(point)),
 				map.streamOtherFixtures(point)).filter(Objects::nonNull)
 					   .flatMap(fixture -> {
