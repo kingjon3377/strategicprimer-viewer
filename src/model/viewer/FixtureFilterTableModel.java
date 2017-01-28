@@ -113,9 +113,6 @@ public class FixtureFilterTableModel extends AbstractTableModel
 
 		addComplements(Meadow.class, Meadow::isField, "Fields", "Meadows");
 
-		// TODO: Mountains are now a separate aspect of a tile; should this be omitted?
-		addTrivialMatchers(Mountain.class);
-
 		// TODO: Sandbar and Hill were both 5; consider.
 		addTrivialMatchers(Sandbar.class, Hill.class);
 
