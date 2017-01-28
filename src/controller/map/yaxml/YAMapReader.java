@@ -32,7 +32,6 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.terrain.Forest;
-import model.map.fixtures.terrain.Mountain;
 import util.EqualsAny;
 import util.LineEnd;
 import util.Warning;
@@ -127,13 +126,9 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 			} else if (!Objects.equals(oldForest, forest)) {
 				map.addFixture(point, forest);
 			}
-		} else if (fix instanceof Mountain) {
-			// We shouldn't get here, since the parser above doesn't even
-			// instantiate Mountains, but we don't want to lose data if I
-			// forget.
-			map.setMountainous(point, true);
 		} else if (fix instanceof RiverFixture) {
-			// Similarly
+			// We shouldn't get here, since the parser above doesn't use them, but we
+			// don't want to lose data if I forget.
 			for (final River river : (RiverFixture) fix) {
 				map.addRivers(point, river);
 			}
