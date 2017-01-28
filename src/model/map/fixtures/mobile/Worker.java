@@ -169,12 +169,16 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
-	 * A simple toString(). TODO: omit race if human?
+	 * A simple toString().
 	 * @return a String representation of the Worker.
 	 */
 	@Override
 	public String toString() {
-		return name + ", a " + race;
+		if ("human".equals(race)) {
+			return name;
+		} else {
+			return name + ", a " + race;
+		}
 	}
 
 	/**
