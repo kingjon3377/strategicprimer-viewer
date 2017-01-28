@@ -542,12 +542,12 @@ public final class ProxyUnit
 
 	/**
 	 * We use the first proxied unit's hash code.
-	 * TODO: go deeper
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return proxied.stream().mapToInt(Object::hashCode).findFirst().orElse(-1);
+		return proxied.stream().mapToInt(Object::hashCode)
+					   .reduce(0, (left, right) -> left | right);
 	}
 
 	/**
