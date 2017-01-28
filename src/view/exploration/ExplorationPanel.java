@@ -245,7 +245,8 @@ public final class ExplorationPanel extends BorderedPanel
 		dtb.addActionListener(ecl);
 		ecl.addSelectionChangeListener(this);
 		ecl.addMovementCostListener(this);
-		final SelectionChangeListener ell = new ExplorationListListener(model, mainList);
+		final SelectionChangeListener ell =
+				new ExplorationListListener(model, mainList, speedSource);
 //		mainList.getModel().addListDataListener(ell);
 		model.addSelectionChangeListener(ell);
 		ecl.addSelectionChangeListener(ell);

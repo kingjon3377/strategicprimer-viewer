@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import model.exploration.HuntingModel;
@@ -70,19 +71,26 @@ public final class ExplorationListListener implements SelectionChangeListener {
 	 * Mutex.
 	 */
 	private boolean outsideCritical = true;
+	/**
+	 * The model underlying the current-speed combo box.
+	 */
+	private final Supplier<Speed> speedSource;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param mainList         the list this is attached to
 	 * @param explorationModel the exploration model
+	 * @param speedSupplier the way to get the current speed
 	 */
 	public ExplorationListListener(final IExplorationModel explorationModel,
-								   final FixtureList mainList) {
+								   final FixtureList mainList,
+								   final Supplier<Speed> speedSupplier) {
 		model = explorationModel;
 		list = mainList;
 		huntingModel = new HuntingModel(model.getMap());
 		idf = IDFactoryFiller.createFactory(model);
+		speedSource = speedSupplier;
 	}
 
 	@Override
@@ -107,11 +115,11 @@ public final class ExplorationListListener implements SelectionChangeListener {
 			final List<IntPair<TileFixture>> possibles = new ArrayList<>();
 			int i = 0;
 			for (final TileFixture fix : new ListModelWrapper<>(list.getModel())) {
-				// FIXME: Take speed into account
 				if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
 					constants.add(IntPair.of(i, fix));
 				} else if (SimpleMovement
-								   .shouldSometimesNotice(selUnit, Speed.Normal, fix)) {
+								   .shouldSometimesNotice(selUnit, speedSource.get(),
+										   fix)) {
 					possibles.add(IntPair.of(i, fix));
 				}
 				i++;
