@@ -645,13 +645,13 @@ public final class ProxyUnit
 
 		/**
 		 * A fixture is equal iff it is a ProxyMember proxying the same fixtures.
-		 * TODO: print a warning if this is called?
 		 * @param fix a fixture
 		 * @return whether it equals this one
 		 */
 		@SuppressWarnings("InstanceofInterfaces")
 		@Override
 		public boolean equalsIgnoringID(final IFixture fix) {
+			LOGGER.warning("ProxyMember.equalsIgnoringID() called");
 			return (fix instanceof ProxyMember) &&
 						   ((ProxyMember) fix).proxiedMembers.equals(proxiedMembers);
 		}
