@@ -209,7 +209,7 @@ public final class ExplorationCLI implements MovementCostSource {
 		helper.printf("The explorer comes to %s, a tile with terrain %s%n",
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
 		final List<TileFixture> noticed =
-				SimpleMovement.selectNoticed(allFixtures, mover, speed);
+				SimpleMovement.selectNoticed(allFixtures, x -> x, mover, speed);
 		if (noticed.isEmpty()) {
 			helper.println("The following were automatically noticed:");
 		} else if (noticed.size() > 1) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -251,25 +252,30 @@ public final class SimpleMovement {
 	}
 	/**
 	 * Choose what the mover should in fact find from the list of things he or she might
-	 * find.
+	 * find. Since some callers need to have a list of Pairs instead of TileFixtures, we
+	 * take a function for getting the fixtures out of the list.
+	 * @param <T> the type of things in the list
 	 * @param possibilities a list of things the mover might find
+	 * @param getter how to get the things out of the list
 	 * @param mover the explorer
 	 * @param speed how fast the explorer is moving
 	 * @return a list of things from the list of possibilities that the mover should in
 	 * fact find
 	 */
-	public static List<TileFixture> selectNoticed(final List<TileFixture> possibilities,
+	public static <T> List<T> selectNoticed(final List<T> possibilities,
+											final Function<T, TileFixture> getter,
 												  final IUnit mover, final Speed speed) {
-		final List<TileFixture> local = new ArrayList<>(possibilities);
+		final List<T> local = new ArrayList<>(possibilities);
 		Collections.shuffle(local);
 		// Perception gets an extra +1 because our RNG generates 0-19, not 1-20.
 		int perception = getHighestPerception(mover) + speed.getPerceptionModifier() + 1;
-		final List<TileFixture> retval = new ArrayList<>();
-		for (final TileFixture item : local) {
+		final List<T> retval = new ArrayList<>();
+		for (final T temp : local) {
+			final TileFixture item = getter.apply(temp);
 			final int dc = item.getDC();
 			// FIXME: Give bonus for other relevant Skills depending on fixture type
 			if (SingletonRandom.RANDOM.nextInt(20) + 1 >= dc) {
-				retval.add(item);
+				retval.add(temp);
 				perception -= 5;
 			}
 		}
