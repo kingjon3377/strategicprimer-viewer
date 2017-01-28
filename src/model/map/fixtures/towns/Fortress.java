@@ -366,13 +366,15 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 
 	/**
 	 * Either "a fortress, [name], owned by you" or "a fortress, [name], owned by
-	 * [owner]". TODO: Handle independent fortresses specially?
+	 * [owner]".
 	 * @return a short description of the fixture
 	 */
 	@Override
 	public String shortDesc() {
 		if (owner.isCurrent()) {
 			return "a fortress, " + name + ", owned by you";
+		} else if (owner.isIndependent()) {
+			return "an independent fortress, " + name;
 		} else {
 			return "a fortress, " + name + ", owned by " + owner.getName();
 		}
