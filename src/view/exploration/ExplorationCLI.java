@@ -29,7 +29,6 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
-import model.map.fixtures.terrain.Mountain;
 import org.eclipse.jdt.annotation.Nullable;
 import util.Accumulator;
 import util.IntHolder;
@@ -180,9 +179,6 @@ public final class ExplorationCLI implements MovementCostSource {
 		}
 		final Collection<TileFixture> constants = new ArrayList<>();
 		final IMutableMapNG map = model.getMap();
-		if (map.isMountainous(dPoint)) {
-			constants.add(new Mountain());
-		}
 		final List<TileFixture> allFixtures = new ArrayList<>();
 		final Consumer<TileFixture> consider = fix -> {
 			if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
@@ -206,8 +202,16 @@ public final class ExplorationCLI implements MovementCostSource {
 				model.dig();
 			}
 		}
-		helper.printf("The explorer comes to %s, a tile with terrain %s%n",
-				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
+		final String mtn;
+		if (map.isMountainous(dPoint)) {
+			mtn = "mountainous ";
+			model.streamSubordinateMaps().map(Pair::first)
+					.forEach(subMap -> subMap.setMountainous(dPoint, true));
+		} else {
+			mtn = "";
+		}
+		helper.printf("The explorer comes to %s, a %stile with terrain %s%n",
+				dPoint.toString(), mtn, map.getBaseTerrain(dPoint).toString());
 		final List<TileFixture> noticed =
 				SimpleMovement.selectNoticed(allFixtures, x -> x, mover, speed);
 		if (noticed.isEmpty()) {
@@ -270,8 +274,6 @@ public final class ExplorationCLI implements MovementCostSource {
 					map.setGround(dPoint, ((Ground) fix).copy(false));
 				} else if ((fix instanceof Forest) && (map.getForest(dPoint) == null)) {
 					map.setForest(dPoint, ((Forest) fix).copy(false));
-				} else if (fix instanceof Mountain) {
-					map.setMountainous(dPoint, true);
 				} else {
 					map.addFixture(dPoint, fix.copy(zero));
 				}
