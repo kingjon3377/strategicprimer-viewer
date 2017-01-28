@@ -23,7 +23,6 @@ import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.ITownFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
@@ -167,8 +166,7 @@ public final class SimpleMovement {
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static boolean isHill(final Stream<TileFixture> fixtures) {
-		return fixtures.anyMatch(
-				fix -> (fix instanceof Mountain) || (fix instanceof Hill));
+		return fixtures.anyMatch(Hill.class::isInstance);
 	}
 
 	/**
@@ -245,10 +243,11 @@ public final class SimpleMovement {
 	 */
 	public static boolean shouldAlwaysNotice(final HasOwner unit,
 											 @Nullable final TileFixture fix) {
-		return (fix instanceof Mountain) || (fix instanceof RiverFixture) ||
-					   (fix instanceof Hill) || (fix instanceof Forest) ||
-					   ((fix instanceof ITownFixture) &&
-								((ITownFixture) fix).getOwner().equals(unit.getOwner()));
+		return (fix instanceof RiverFixture) || (fix instanceof Hill) ||
+					   (fix instanceof Forest) || ((fix instanceof ITownFixture) &&
+														   ((ITownFixture) fix)
+																   .getOwner()
+																   .equals(unit.getOwner()));
 	}
 	/**
 	 * Choose what the mover should in fact find from the list of things he or she might
