@@ -45,7 +45,6 @@ import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.ITownFixture;
 import model.map.fixtures.towns.TownStatus;
@@ -168,7 +167,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	 * fixtures, false otherwise.
 	 */
 	private static boolean isBackground(final TileFixture fix) {
-		return (fix instanceof Forest) || (fix instanceof Mountain) ||
+		return (fix instanceof Forest) ||
 					   (fix instanceof Ground) || (fix instanceof Sandbar) ||
 					   (fix instanceof Shrub) || (fix instanceof Meadow) ||
 					   (fix instanceof Hill);
