@@ -166,9 +166,10 @@ public final class TestSubsets {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testFortressSubset() {
-		final Fortress firstFort = new Fortress(new Player(1, ONE_STR), "fOne", 1,
+		final int fortId = 1;
+		final Fortress firstFort = new Fortress(new Player(1, ONE_STR), "fOne", fortId,
 													   TownSize.Small);
-		final Fortress secondFort = new Fortress(new Player(2, "two"), "fOne", 1,
+		final Fortress secondFort = new Fortress(new Player(2, "two"), "fOne", fortId,
 														TownSize.Small);
 		assertThat("Subset requires same owner, first test",
 				Boolean.valueOf(firstFort.isSubset(secondFort, DEV_NULL, "")),
@@ -176,7 +177,7 @@ public final class TestSubsets {
 		assertThat("Subset requires same owner, second test",
 				Boolean.valueOf(secondFort.isSubset(firstFort, DEV_NULL, "")),
 				equalTo(Boolean.FALSE));
-		final Fortress thirdFort = new Fortress(new Player(1, ONE_STR), "fTwo", 2,
+		final Fortress thirdFort = new Fortress(new Player(1, ONE_STR), "fTwo", fortId,
 													   TownSize.Small);
 		assertThat("Subset requires same name, first test",
 				Boolean.valueOf(firstFort.isSubset(thirdFort, DEV_NULL, "")),
@@ -186,27 +187,29 @@ public final class TestSubsets {
 				equalTo(Boolean.FALSE));
 		final Fortress fourthFort = new Fortress(new Player(1, ONE_STR), "fOne", 3,
 														TownSize.Small);
-		assertThat("Subset doesn't require identity or ID equality",
-				Boolean.valueOf(firstFort.isSubset(fourthFort, DEV_NULL, "")),
-				equalTo(Boolean.TRUE));
-		assertThat("Subset doesn't require identity or ID equality",
-				Boolean.valueOf(fourthFort.isSubset(firstFort, DEV_NULL, "")),
-				equalTo(Boolean.TRUE));
-		fourthFort.addMember(new Unit(new Player(2, "two"), "unit_type", "unit_name",
-											 4));
-		assertThat("Fortress without is a subset of fortress with unit",
-				Boolean.valueOf(fourthFort.isSubset(firstFort, DEV_NULL, "")),
-				equalTo(Boolean.TRUE));
-		assertThat("Fortress with is not a subset of fortress without unit",
+		assertThat("Subset requires identity or ID equality",
 				Boolean.valueOf(firstFort.isSubset(fourthFort, DEV_NULL, "")),
 				equalTo(Boolean.FALSE));
+		assertThat("Subset requires identity or ID equality",
+				Boolean.valueOf(fourthFort.isSubset(firstFort, DEV_NULL, "")),
+				equalTo(Boolean.FALSE));
 		final Fortress fifthFort =
-				new Fortress(new Player(1, ONE_STR), "unknown", 5, TownSize.Small);
-		assertThat("Fortress named 'unknown' can be subset, first test",
+				new Fortress(new Player(1, ONE_STR), "fOne", fortId, TownSize.Small);
+		fifthFort.addMember(new Unit(new Player(2, "two"), "unit_type", "unit_name",
+											 4));
+		assertThat("Fortress without is a subset of fortress with unit",
+				Boolean.valueOf(fifthFort.isSubset(firstFort, DEV_NULL, "")),
+				equalTo(Boolean.TRUE));
+		assertThat("Fortress with is not a subset of fortress without unit",
 				Boolean.valueOf(firstFort.isSubset(fifthFort, DEV_NULL, "")),
+				equalTo(Boolean.FALSE));
+		final Fortress sixthFort =
+				new Fortress(new Player(1, ONE_STR), "unknown", fortId, TownSize.Small);
+		assertThat("Fortress named 'unknown' can be subset, first test",
+				Boolean.valueOf(firstFort.isSubset(sixthFort, DEV_NULL, "")),
 				equalTo(Boolean.TRUE));
 		assertThat("'unknown' is not commutative",
-				Boolean.valueOf(fifthFort.isSubset(firstFort, DEV_NULL, "")),
+				Boolean.valueOf(sixthFort.isSubset(firstFort, DEV_NULL, "")),
 				equalTo(Boolean.FALSE));
 	}
 

@@ -246,8 +246,11 @@ public class Fortress implements HasMutableImage, ITownFixture, HasMutableName,
 			ostream.format("%sIncompatible type to Fortress%n", context);
 			return false;
 		}
+		if (obj.getID() != id) {
+			ostream.format("%sID mismatch between Fortresses%n", context);
+			return false;
+		}
 		final Fortress fort = (Fortress) obj;
-		// TODO: Check ID first
 		if (EqualsAny.equalsAny(fort.name, name, "unknown")
 					&& (fort.owner.getPlayerId() == owner.getPlayerId())) {
 			@SuppressWarnings("QuestionableName")
