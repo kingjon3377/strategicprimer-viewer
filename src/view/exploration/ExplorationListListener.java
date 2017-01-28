@@ -24,7 +24,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
 import util.Pair;
-import util.SingletonRandom;
 import view.map.details.FixtureList;
 
 import static model.map.TileType.Ocean;
@@ -142,13 +141,9 @@ public final class ExplorationListListener implements SelectionChangeListener {
 				}
 			}
 			Collections.shuffle(possibles);
-			// TODO: Use Perception to decide how many, as in SimpleMovement.selectNoticed
-			if ((possibles.size() > 1) && (SingletonRandom.RANDOM.nextDouble() < 0.1)) {
-				constants.add(possibles.get(0));
-				constants.add(possibles.get(1));
-			} else if (!possibles.isEmpty()) {
-				constants.add(possibles.get(0));
-			}
+			constants.addAll(SimpleMovement
+									 .selectNoticed(possibles, IntPair::second, selUnit,
+											 speedSource.get()));
 			final int[] indices = new int[constants.size()];
 			for (int index = 0; index < constants.size(); index++) {
 				indices[index] = constants.get(index).first();
