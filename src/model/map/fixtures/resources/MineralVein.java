@@ -130,16 +130,15 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 
 	/**
 	 * An object is equal iff it is a MineralVein with the same mineral and ID and
-	 * either both or neither are exposed. TODO: delegate to equalsContents().
+	 * either both or neither are exposed.
 	 * @param obj an object
 	 * @return whether it's an identical event
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof MineralVein)
-										 && mineral.equals(((MineralVein) obj).mineral)
-										 && (exposed == ((MineralVein) obj).exposed)
-										 && (id == ((MineralVein) obj).id));
+										 && (id == ((MineralVein) obj).id) &&
+										 equalsContents((MineralVein) obj));
 	}
 
 	/**
