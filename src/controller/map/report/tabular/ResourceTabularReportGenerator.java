@@ -104,7 +104,6 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 		if (!applies(first) || !applies(second)) {
 			throw new IllegalArgumentException("Unhandleable argument");
 		}
-		// TODO: Try to use new-fangled Comparator style
 		if (first instanceof ResourcePile) {
 			if (second instanceof ResourcePile) {
 				final ResourcePile firstPile = (ResourcePile) first;
