@@ -32,7 +32,6 @@ import model.map.River;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
 import model.map.fixtures.RiverFixture;
-import model.map.fixtures.terrain.Mountain;
 import model.viewer.FixtureMatcher;
 import model.viewer.TileTypeFixture;
 import model.viewer.ZOrderFilter;
@@ -230,9 +229,13 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 					coordinates.y, dimensions.x, dimensions.y, observer);
 		}
 		if (hasFixture(map, location)) {
-			pen.drawImage(getImageForFixture(getTopFixture(map, location)),
+			pen.drawImage(getImageForFixture(getTopFixture(map, location).orElseThrow(
+					() -> new IllegalArgumentException("No top fixture"))),
 					coordinates.x, coordinates.y, dimensions.x, dimensions.y,
 					observer);
+		} else if (map.isMountainous(location)) {
+			pen.drawImage(getImage("mountain.png"), coordinates.x, coordinates.y,
+					dimensions.x, dimensions.y, observer);
 		}
 		pen.setColor(Color.black);
 		pen.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
@@ -263,14 +266,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private Stream<TileFixture> getDrawableFixtures(final IMapNG map,
 													final Point location) {
-		@Nullable final Mountain mtn;
-		if (map.isMountainous(location)) {
-			mtn = new Mountain();
-		} else {
-			mtn = null;
-		}
 		return Stream.concat(
-				Stream.of(map.getGround(location), map.getForest(location), mtn)
+				Stream.of(map.getGround(location), map.getForest(location))
 						.filter(Objects::nonNull), map.streamOtherFixtures(location))
 					   .filter(fix -> !(fix instanceof TileTypeFixture))
 					   .filter(zof::shouldDisplay).sorted(fixComp);
@@ -307,9 +304,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param location a location
 	 * @return the top fixture there
 	 */
-	private TileFixture getTopFixture(final IMapNG map, final Point location) {
-		return getDrawableFixtures(map, location).findFirst().orElseThrow(
-				() -> new IllegalArgumentException("Tile has no fixtures"));
+	private Optional<TileFixture> getTopFixture(final IMapNG map, final Point location) {
+		return getDrawableFixtures(map, location).findFirst();
 	}
 
 	/**
@@ -321,12 +317,18 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private boolean needsFixtureColor(final IMapNG map, final Point location) {
 		if (hasTerrainFixture(map, location)) {
-			final TileFixture topFixture = getTopFixture(map, location);
-			// getLast() equivalent from http://stackoverflow.com/a/21441634
-			final Optional<TileFixture> bottomTerrain = getDrawableFixtures(map,
-					location).filter(TerrainFixture.class::isInstance).reduce(
-					(first, second) -> second);
-			return bottomTerrain.isPresent() && !topFixture.equals(bottomTerrain.get());
+			final Optional<TileFixture> topFixture = getTopFixture(map, location);
+			if (topFixture.isPresent()) {
+				// getLast() equivalent from http://stackoverflow.com/a/21441634
+				final Optional<TileFixture> bottomTerrain = getDrawableFixtures(map,
+						location).filter(TerrainFixture.class::isInstance).reduce(
+						(first, second) -> second);
+				return (bottomTerrain.isPresent() &&
+							   !topFixture.get().equals(bottomTerrain.get())) ||
+										map.isMountainous(location);
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -340,7 +342,9 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private boolean hasTerrainFixture(final IMapNG map, final Point location) {
 		return getDrawableFixtures(map, location)
-					   .anyMatch(TerrainFixture.class::isInstance);
+					   .anyMatch(TerrainFixture.class::isInstance) ||
+					   (getDrawableFixtures(map, location).anyMatch(x -> true) &&
+								map.isMountainous(location));
 	}
 
 	/**
@@ -350,12 +354,18 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return a color to represent the not-on-top terrain feature there.
 	 */
 	private Color getFixtureColor(final IMapNG map, final Point location) {
-		final TileFixture topFixture = getTopFixture(map, location);
-		return getDrawableFixtures(map, location).filter(
+		final TileFixture topFixture = getTopFixture(map, location).orElse(null);
+		final Optional<Color> retval = getDrawableFixtures(map, location).filter(
 				fix -> !Objects.equals(topFixture, fix))
 					   .filter(TerrainFixture.class::isInstance)
-					   .map(fix -> getHelper().getFeatureColor(fix)).findFirst()
-					   .orElse(getTileColor(2, map.getBaseTerrain(location)));
+					   .map(fix -> getHelper().getFeatureColor(fix)).findFirst();
+		if (retval.isPresent()) {
+			return retval.get();
+		} else if (map.isMountainous(location)) {
+			return TileUIHelper.MOUNTAIN_COLOR;
+		} else {
+			return getTileColor(2, map.getBaseTerrain(location));
+		}
 	}
 
 	/**
