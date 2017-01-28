@@ -36,7 +36,6 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
 import model.viewer.TileTypeFixture;
 import org.eclipse.jdt.annotation.Nullable;
@@ -198,8 +197,6 @@ public final class ExplorationClickListener extends AbstractAction implements
 					} else if ((fix instanceof Forest) &&
 									   fix.equals(map.getForest(dPoint))) {
 						continue;
-					} else if (fix instanceof Mountain) {
-						map.setMountainous(dPoint, true);
 					} else if (!hasFixture(map, dPoint, fix)) {
 						final boolean zero = (fix instanceof HasOwner) &&
 													 !((HasOwner) fix).getOwner()
