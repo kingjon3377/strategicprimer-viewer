@@ -7,13 +7,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.HasImage;
 import model.map.IMutablePlayerCollection;
 import model.map.River;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
-import model.map.fixtures.terrain.Mountain;
 import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
@@ -122,30 +120,6 @@ public final class FluidTerrainHandler {
 	}
 
 	/**
-	 * Read a Mountain from XML.
-	 *
-	 * @param element   the XML element to parse
-	 * @param parent    the parent tag
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed Mountain
-	 * @throws SPFormatException on SP format problems
-	 */
-	public static Mountain readMountain(final StartElement element,
-										final QName parent,
-										final Iterable<XMLEvent> stream,
-										final IMutablePlayerCollection players,
-										final Warning warner,
-										final IDRegistrar idFactory)
-			throws SPFormatException {
-		requireTag(element, parent, "mountain");
-		spinUntilEnd(element.getName(), stream);
-		return setImage(new Mountain(), element, warner);
-	}
-
-	/**
 	 * Write Ground to XML.
 	 *
 	 * @param ostream the writer to write to
@@ -165,24 +139,6 @@ public final class FluidTerrainHandler {
 		writeBooleanAttribute(ostream, "exposed", grd.isExposed());
 		writeIntegerAttribute(ostream, "id", grd.getID());
 		writeImage(ostream, grd);
-	}
-
-	/**
-	 * Write a Mountain to XML.
-	 *
-	 * @param ostream the writer to write to
-	 * @param indent  the indentation level
-	 * @param obj     The object being written.
-	 * @throws XMLStreamException       on error in the writer
-	 * @throws IllegalArgumentException if obj is not the type we expect
-	 */
-	public static void writeMountain(final XMLStreamWriter ostream, final Object obj,
-									 final int indent) throws XMLStreamException {
-		if (!(obj instanceof Mountain)) {
-			throw new IllegalArgumentException("Can only write Mountain");
-		}
-		writeTag(ostream, "mountain", indent, true);
-		writeImage(ostream, (HasImage) obj);
 	}
 
 	/**

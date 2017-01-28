@@ -15,7 +15,6 @@ import model.map.HasMutableImage;
 import model.map.TerrainFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import util.Warning;
@@ -40,8 +39,7 @@ public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 	 * List of supported tags.
 	 */
 	private static final Set<String> SUPP_TAGS = Collections.unmodifiableSet(
-			new HashSet<>(Arrays.asList("forest", "hill", "mountain", "oasis",
-					"sandbar")));
+			new HashSet<>(Arrays.asList("forest", "hill", "oasis", "sandbar")));
 
 	/**
 	 * Constructor.
@@ -74,7 +72,7 @@ public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 	public TerrainFixture read(final StartElement element, final QName parent,
 							   final Iterable<XMLEvent> stream) throws
 			SPFormatException {
-		requireTag(element, parent, "forest", "hill", "mountain", "oasis", "sandbar");
+		requireTag(element, parent, "forest", "hill", "oasis", "sandbar");
 		final TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "forest":
@@ -87,9 +85,6 @@ public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 			break;
 		case "hill":
 			retval = new Hill(getOrGenerateID(element));
-			break;
-		case "mountain":
-			retval = new Mountain();
 			break;
 		case "oasis":
 			retval = new Oasis(getOrGenerateID(element));
@@ -117,12 +112,7 @@ public final class YATerrainReader extends YAAbstractReader<TerrainFixture> {
 	@Override
 	public void write(final Appendable ostream, final TerrainFixture obj,
 					  final int indent) throws IOException {
-		if (obj instanceof Mountain) {
-			writeTag(ostream, "mountain", indent);
-			writeImageXML(ostream, (Mountain) obj);
-			closeLeafTag(ostream);
-			return; // Mountains don't yet have IDs.
-		} else if (obj instanceof Forest) {
+		if (obj instanceof Forest) {
 			writeTag(ostream, "forest", indent);
 			final Forest forest = (Forest) obj;
 			writeProperty(ostream, "kind", forest.getKind());

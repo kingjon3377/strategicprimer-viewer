@@ -61,7 +61,6 @@ import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
@@ -120,7 +119,6 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put("ground", FluidTerrainHandler::readGround);
 		readers.put("forest", FluidTerrainHandler::readForest);
 		createSimpleFixtureReader("hill", Hill::new);
-		readers.put("mountain", FluidTerrainHandler::readMountain);
 		createSimpleFixtureReader("oasis", Oasis::new);
 		createSimpleFixtureReader("sandbar", Sandbar::new);
 		createSimpleFixtureReader("djinn", Djinn::new);
@@ -678,14 +676,15 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			return;
 		} else if ("tile".equals(type)) {
 			throw new UnwantedChildException(parent.getName(), element);
+		} else if ("mountain".equals(type)) {
+			map.setMountainous(currentTile, true);
+			return;
 		}
 		final Object child =
 				readSPObject(element, parent.getName(), stream, players, warner,
 						idFactory);
 		if (child instanceof River) {
 			map.addRivers(currentTile, (River) child);
-		} else if (child instanceof Mountain) {
-			map.setMountainous(currentTile, true);
 		} else if (child instanceof Ground) {
 			final Ground ground = (Ground) child;
 			final Ground oldGround = map.getGround(currentTile);

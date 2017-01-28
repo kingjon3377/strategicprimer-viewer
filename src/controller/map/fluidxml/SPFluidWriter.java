@@ -63,7 +63,6 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.AbstractTown;
@@ -121,7 +120,6 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		createSimpleFixtureWriter(Hill.class, "hill");
 		createSimpleFixtureWriter(Oasis.class, "oasis");
 		createSimpleFixtureWriter(Sandbar.class, "sandbar");
-		writers.put(Mountain.class, FluidTerrainHandler::writeMountain);
 		writers.put(Animal.class, FluidUnitMemberHandler::writeAnimal);
 		createSimpleFixtureWriter(Centaur.class, "centaur");
 		createSimpleFixtureWriter(Djinn.class, "djinn");

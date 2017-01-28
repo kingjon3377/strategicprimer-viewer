@@ -31,7 +31,6 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
@@ -357,8 +356,6 @@ public final class TestFixtureSerialization extends
 		assertUnwantedChild("<hill><griffin /></hill>", Hill.class, false);
 		assertUnwantedChild("<minotaur><troll /></minotaur>", Minotaur.class,
 				false);
-		assertUnwantedChild("<mountain><troll /></mountain>", Mountain.class,
-				false);
 		assertUnwantedChild("<oasis><troll /></oasis>", Oasis.class, false);
 		assertUnwantedChild("<ogre><troll /></ogre>", Ogre.class, false);
 		assertUnwantedChild("<phoenix><troll /></phoenix>", Phoenix.class,
@@ -387,7 +384,6 @@ public final class TestFixtureSerialization extends
 		assertImageSerialization("Hill image property is preserved", new Hill(3));
 		assertImageSerialization("Minotaur image property is preserved", new Minotaur
 																				 (3));
-		assertImageSerialization("Mountain image property is preserved", new Mountain());
 		assertImageSerialization("Oasis image property is preserved", new Oasis(3));
 		assertImageSerialization("Ogre image property is preserved", new Ogre(3));
 		assertImageSerialization("Phoenix image property is preserved", new Phoenix(3));
@@ -419,7 +415,6 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Minotaur serialization", new Minotaur(1));
 		assertSerialization("Minotaur serialization", new Minotaur(2));
 		assertMissingProperty("<minotaur />", Minotaur.class, "id", true);
-		assertSerialization("Mountain serialization", new Mountain());
 		assertSerialization("Oasis serialization", new Oasis(1));
 		assertSerialization("Oasis serialization", new Oasis(2));
 		assertMissingProperty("<oasis />", Oasis.class, "id", true);
