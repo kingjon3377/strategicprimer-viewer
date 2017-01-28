@@ -145,12 +145,12 @@ public class Meadow implements HarvestableFixture, HasKind {
 
 	/**
 	 * A Meadow is equal iff it has the same kind and ID, both or neither are fields,
-	 * and both or neither are cultivated. TODO: should consider status
+	 * and both or neither are cultivated.
 	 * @param obj a Meadow
 	 * @return whether it equals this one
 	 */
 	private boolean equalsImpl(final Meadow obj) {
-		return kind.equals(obj.kind) && (field == obj.field)
+		return kind.equals(obj.kind) && (field == obj.field) && (status == obj.status)
 					   && (cultivated == obj.cultivated) && (id == obj.id);
 	}
 
