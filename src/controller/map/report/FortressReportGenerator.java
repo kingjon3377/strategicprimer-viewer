@@ -22,7 +22,6 @@ import model.map.fixtures.ResourcePile;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
 import model.report.ComplexReportNode;
@@ -104,9 +103,6 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 							((Forest) fix).getKind());
 				}
 				fixtures.remove(Integer.valueOf(fix.getID()));
-			} else if (fix instanceof Mountain) {
-				builder.append(", mountainous");
-				// Mountains don't have positive IDs, so don't bother removing.
 			} else if (fix instanceof Hill) {
 				builder.append(", hilly");
 				fixtures.remove(Integer.valueOf(fix.getID()));
