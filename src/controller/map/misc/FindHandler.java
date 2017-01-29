@@ -64,14 +64,14 @@ public class FindHandler implements ActionListener {
 	 * @return a FindDialog
 	 */
 	@SuppressWarnings("SynchronizedMethod")
-	@Nullable
 	private synchronized FindDialog getFindDialog() {
-		if (finder == null) {
+		final FindDialog temp = finder;
+		if (temp == null) {
 			final FindDialog local = new FindDialog(parent, model);
 			finder = local;
 			return local;
 		} else {
-			return finder;
+			return temp;
 		}
 	}
 }
