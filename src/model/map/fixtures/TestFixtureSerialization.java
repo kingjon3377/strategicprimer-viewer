@@ -16,17 +16,10 @@ import model.map.SPMapNG;
 import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Centaur;
-import model.map.fixtures.mobile.Djinn;
 import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
-import model.map.fixtures.mobile.Griffin;
-import model.map.fixtures.mobile.Minotaur;
-import model.map.fixtures.mobile.Ogre;
-import model.map.fixtures.mobile.Phoenix;
-import model.map.fixtures.mobile.Simurgh;
-import model.map.fixtures.mobile.Sphinx;
-import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.mobile.SimpleImmortal;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
@@ -36,6 +29,7 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownSize;
 import org.junit.Test;
+import util.SingletonRandom;
 import util.Warning;
 
 /**
@@ -350,22 +344,22 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testSimpleSerializationNoChildren()
 			throws XMLStreamException, SPFormatException {
-		assertUnwantedChild("<djinn><troll /></djinn>", Djinn.class, false);
-		assertUnwantedChild("<griffin><djinn /></griffin>", Griffin.class,
+		assertUnwantedChild("<djinn><troll /></djinn>", SimpleImmortal.class, false);
+		assertUnwantedChild("<griffin><djinn /></griffin>", SimpleImmortal.class,
 				false);
 		assertUnwantedChild("<hill><griffin /></hill>", Hill.class, false);
-		assertUnwantedChild("<minotaur><troll /></minotaur>", Minotaur.class,
+		assertUnwantedChild("<minotaur><troll /></minotaur>", SimpleImmortal.class,
 				false);
 		assertUnwantedChild("<oasis><troll /></oasis>", Oasis.class, false);
-		assertUnwantedChild("<ogre><troll /></ogre>", Ogre.class, false);
-		assertUnwantedChild("<phoenix><troll /></phoenix>", Phoenix.class,
+		assertUnwantedChild("<ogre><troll /></ogre>", SimpleImmortal.class, false);
+		assertUnwantedChild("<phoenix><troll /></phoenix>", SimpleImmortal.class,
 				false);
 		assertUnwantedChild("<sandbar><troll /></sandbar>", Sandbar.class,
 				false);
-		assertUnwantedChild("<simurgh><troll /></simurgh>", Simurgh.class,
+		assertUnwantedChild("<simurgh><troll /></simurgh>", SimpleImmortal.class,
 				false);
-		assertUnwantedChild("<sphinx><troll /></sphinx>", Sphinx.class, false);
-		assertUnwantedChild("<troll><troll /></troll>", Troll.class, false);
+		assertUnwantedChild("<sphinx><troll /></sphinx>", SimpleImmortal.class, false);
+		assertUnwantedChild("<troll><troll /></troll>", SimpleImmortal.class, false);
 	}
 
 	/**
@@ -379,18 +373,15 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testSimpleImageSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
-		assertImageSerialization("Djinn image property is preserved", new Djinn(3));
-		assertImageSerialization("Griffin image property is preserved", new Griffin(3));
+		for (final SimpleImmortal.SimpleImmortalKind kind : SimpleImmortal
+																	.SimpleImmortalKind
+																	.values()) {
+			assertImageSerialization(kind + " image property is preserved",
+					new SimpleImmortal(kind, SingletonRandom.RANDOM.nextInt(1048576)));
+		}
 		assertImageSerialization("Hill image property is preserved", new Hill(3));
-		assertImageSerialization("Minotaur image property is preserved", new Minotaur
-																				 (3));
 		assertImageSerialization("Oasis image property is preserved", new Oasis(3));
-		assertImageSerialization("Ogre image property is preserved", new Ogre(3));
-		assertImageSerialization("Phoenix image property is preserved", new Phoenix(3));
 		assertImageSerialization("Sandbar image property is preserved", new Sandbar(3));
-		assertImageSerialization("Simurgh image property is preserved", new Simurgh(3));
-		assertImageSerialization("Sphinx image property is preserved", new Sphinx(3));
-		assertImageSerialization("Troll image property is preserved", new Troll(3));
 	}
 
 	/**
@@ -403,39 +394,29 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testSimpleSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
-		assertSerialization("Djinn serialization", new Djinn(1));
-		assertSerialization("Djinn serialization", new Djinn(2));
-		assertMissingProperty("<djinn />", Djinn.class, "id", true);
-		assertSerialization("Griffin serialization", new Griffin(1));
-		assertSerialization("Griffin serialization", new Griffin(2));
-		assertMissingProperty("<griffin />", Griffin.class, "id", true);
+		for (final SimpleImmortal.SimpleImmortalKind kind : SimpleImmortal
+																	.SimpleImmortalKind
+																	.values()) {
+			assertSerialization(kind + " serialization",
+					new SimpleImmortal(kind, SingletonRandom.RANDOM.nextInt(1048576)));
+		}
+		assertMissingProperty("<djinn />", SimpleImmortal.class, "id", true);
+		assertMissingProperty("<griffin />", SimpleImmortal.class, "id", true);
 		assertSerialization("Hill serialization", new Hill(1));
 		assertSerialization("Hill serialization", new Hill(2));
 		assertMissingProperty("<hill />", Hill.class, "id", true);
-		assertSerialization("Minotaur serialization", new Minotaur(1));
-		assertSerialization("Minotaur serialization", new Minotaur(2));
-		assertMissingProperty("<minotaur />", Minotaur.class, "id", true);
+		assertMissingProperty("<minotaur />", SimpleImmortal.class, "id", true);
 		assertSerialization("Oasis serialization", new Oasis(1));
 		assertSerialization("Oasis serialization", new Oasis(2));
 		assertMissingProperty("<oasis />", Oasis.class, "id", true);
-		assertSerialization("Ogre serialization", new Ogre(1));
-		assertSerialization("Ogre serialization", new Ogre(2));
-		assertMissingProperty("<ogre />", Ogre.class, "id", true);
-		assertSerialization("Phoenix serialization", new Phoenix(1));
-		assertSerialization("Phoenix serialization", new Phoenix(2));
-		assertMissingProperty("<phoenix />", Phoenix.class, "id", true);
+		assertMissingProperty("<ogre />", SimpleImmortal.class, "id", true);
+		assertMissingProperty("<phoenix />", SimpleImmortal.class, "id", true);
 		assertSerialization("Sandbar serialization", new Sandbar(1));
 		assertSerialization("Sandbar serialization", new Sandbar(2));
 		assertMissingProperty("<sandbar />", Sandbar.class, "id", true);
-		assertSerialization("Simurgh serialization", new Simurgh(1));
-		assertSerialization("Simurgh serialization", new Simurgh(2));
-		assertMissingProperty("<simurgh />", Simurgh.class, "id", true);
-		assertSerialization("Sphinx serialization", new Sphinx(1));
-		assertSerialization("Sphinx serialization", new Sphinx(2));
-		assertMissingProperty("<sphinx />", Sphinx.class, "id", true);
-		assertSerialization("Troll serialization", new Troll(1));
-		assertSerialization("Troll serialization", new Troll(2));
-		assertMissingProperty("<troll />", Troll.class, "id", true);
+		assertMissingProperty("<simurgh />", SimpleImmortal.class, "id", true);
+		assertMissingProperty("<sphinx />", SimpleImmortal.class, "id", true);
+		assertMissingProperty("<troll />", SimpleImmortal.class, "id", true);
 	}
 
 	/**

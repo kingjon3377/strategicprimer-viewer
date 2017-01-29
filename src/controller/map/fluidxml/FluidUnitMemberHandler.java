@@ -15,6 +15,7 @@ import model.map.HasPortrait;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IWorker;
+import model.map.fixtures.mobile.SimpleImmortal;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
@@ -410,6 +411,25 @@ public final class FluidUnitMemberHandler {
 		if (!fix.isTraces()) {
 			writeIntegerAttribute(ostream, "id", fix.getID());
 		}
+		writeImage(ostream, fix);
+	}
+	/**
+	 * Write a "simple" immortal to XML.
+	 *
+	 * @param ostream the writer to write to
+	 * @param indent  the indentation level
+	 * @param obj     The object being written.
+	 * @throws XMLStreamException       on error in the writer
+	 * @throws IllegalArgumentException if obj is not the type we expect
+	 */
+	public static void writeSimpleImmortal(final XMLStreamWriter ostream, final Object obj,
+										   final int indent) throws XMLStreamException {
+		if (!(obj instanceof SimpleImmortal)) {
+			throw new IllegalArgumentException("Can only write SimpleImmortal");
+		}
+		final SimpleImmortal fix = (SimpleImmortal) obj;
+		writeTag(ostream, fix.getKind(), indent, true);
+		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeImage(ostream, fix);
 	}
 }

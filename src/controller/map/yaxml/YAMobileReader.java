@@ -3,11 +3,11 @@ package controller.map.yaxml;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDRegistrar;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -16,19 +16,13 @@ import model.map.HasKind;
 import model.map.HasMutableImage;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Centaur;
-import model.map.fixtures.mobile.Djinn;
 import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
-import model.map.fixtures.mobile.Griffin;
 import model.map.fixtures.mobile.IUnit;
-import model.map.fixtures.mobile.Minotaur;
 import model.map.fixtures.mobile.MobileFixture;
-import model.map.fixtures.mobile.Ogre;
-import model.map.fixtures.mobile.Phoenix;
-import model.map.fixtures.mobile.Simurgh;
-import model.map.fixtures.mobile.Sphinx;
-import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.mobile.SimpleImmortal;
+import model.map.fixtures.mobile.SimpleImmortal.SimpleImmortalKind;
 import org.eclipse.jdt.annotation.NonNull;
 import util.Warning;
 
@@ -70,18 +64,13 @@ public final class YAMobileReader extends
 		TAG_MAP = new HashMap<>();
 		TAG_MAP.put(Animal.class, "animal");
 		TAG_MAP.put(Centaur.class, "centaur");
-		TAG_MAP.put(Djinn.class, "djinn");
 		TAG_MAP.put(Dragon.class, "dragon");
 		TAG_MAP.put(Fairy.class, "fairy");
 		TAG_MAP.put(Giant.class, "giant");
-		TAG_MAP.put(Griffin.class, "griffin");
-		TAG_MAP.put(Minotaur.class, "minotaur");
-		TAG_MAP.put(Ogre.class, "ogre");
-		TAG_MAP.put(Phoenix.class, "phoenix");
-		TAG_MAP.put(Simurgh.class, "simurgh");
-		TAG_MAP.put(Sphinx.class, "sphinx");
-		TAG_MAP.put(Troll.class, "troll");
-		SUPP_TAGS = Collections.unmodifiableSet(new HashSet<>(TAG_MAP.values()));
+		SUPP_TAGS = Stream.concat(TAG_MAP.values().stream(),
+				Stream.of(SimpleImmortal.SimpleImmortalKind.values())
+						.map(SimpleImmortal.SimpleImmortalKind::getTag))
+							.collect(Collectors.toSet());
 	}
 	/**
 	 * Get the value of the "kind" tag.
@@ -124,26 +113,7 @@ public final class YAMobileReader extends
 	 * @return the thing being read
 	 */
 	private static MobileFixture readSimple(final String tag, final int idNum) {
-		switch (tag) {
-		case "djinn":
-			return new Djinn(idNum);
-		case "griffin":
-			return new Griffin(idNum);
-		case "minotaur":
-			return new Minotaur(idNum);
-		case "ogre":
-			return new Ogre(idNum);
-		case "phoenix":
-			return new Phoenix(idNum);
-		case "simurgh":
-			return new Simurgh(idNum);
-		case "sphinx":
-			return new Sphinx(idNum);
-		case "troll":
-			return new Troll(idNum);
-		default:
-			throw new IllegalArgumentException("Unhandled mobile tag " + tag);
-		}
+		return new SimpleImmortal(SimpleImmortalKind.parse(tag), idNum);
 	}
 
 	/**
@@ -231,7 +201,12 @@ public final class YAMobileReader extends
 			}
 			writeImageXML(ostream, (Animal) obj);
 			closeLeafTag(ostream);
-		} else {
+		} else if (obj instanceof SimpleImmortal) {
+			writeTag(ostream, ((SimpleImmortal) obj).getKind(), indent);
+			writeProperty(ostream, "id", obj.getID());
+			writeImageXML(ostream, (HasImage) obj);
+			closeLeafTag(ostream);
+		} else if (TAG_MAP.containsKey(obj.getClass())) {
 			writeTag(ostream, TAG_MAP.get(obj.getClass()), indent);
 			if (obj instanceof HasKind) {
 				writeProperty(ostream, "kind", ((HasKind) obj).getKind());
@@ -241,6 +216,8 @@ public final class YAMobileReader extends
 				writeImageXML(ostream, (HasImage) obj);
 			}
 			closeLeafTag(ostream);
+		} else {
+			throw new IllegalArgumentException("No tag for " + obj.shortDesc());
 		}
 	}
 

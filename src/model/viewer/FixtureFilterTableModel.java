@@ -15,17 +15,11 @@ import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.explorable.Portal;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Centaur;
-import model.map.fixtures.mobile.Djinn;
 import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
-import model.map.fixtures.mobile.Griffin;
-import model.map.fixtures.mobile.Minotaur;
-import model.map.fixtures.mobile.Ogre;
-import model.map.fixtures.mobile.Phoenix;
-import model.map.fixtures.mobile.Simurgh;
-import model.map.fixtures.mobile.Sphinx;
-import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.mobile.SimpleImmortal;
+import model.map.fixtures.mobile.SimpleImmortal.SimpleImmortalKind;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.Grove;
@@ -79,11 +73,12 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		addTrivialMatcher(AbstractTown.class, "Cities, Towns, and Fortifications");
 		// TODO: Village through Centaur were all 45, so their ordering happened by
 		// chance
-		addTrivialMatchers(Village.class, Troll.class, Simurgh.class, Ogre.class,
-				Minotaur.class, Mine.class, Griffin.class);
-		addTrivialMatcher(Sphinx.class, "Sphinxes");
-		addTrivialMatcher(Phoenix.class, "Phoenixes");
-		addTrivialMatcher(Djinn.class, "Djinni");
+		addTrivialMatchers(Village.class);
+		addSimpleImmortalMatchers(SimpleImmortalKind.Troll, SimpleImmortalKind.Simurgh,
+				SimpleImmortalKind.Ogre, SimpleImmortalKind.Minotaur);
+		addTrivialMatchers(Mine.class);
+		addSimpleImmortalMatchers(SimpleImmortalKind.Griffin, SimpleImmortalKind.Sphinx,
+				SimpleImmortalKind.Phoenix, SimpleImmortalKind.Djinn);
 		addTrivialMatchers(Centaur.class);
 		// TODO: StoneDeposit through Animal were all 40; they too should be reviewed
 		addTrivialMatcher(StoneDeposit.class, "Stone Deposits");
@@ -117,7 +112,19 @@ public class FixtureFilterTableModel extends AbstractTableModel
 
 		addComplements(Ground.class, Ground::isExposed, "Ground (exposed)", "Ground");
 	}
-
+	/**
+	 * Add matchers for simple immortals.
+	 * @param kinds the kinds of immortals to match
+	 */
+	private final void addSimpleImmortalMatchers(final SimpleImmortal
+															   .SimpleImmortalKind...
+														 kinds) {
+		for (final SimpleImmortal.SimpleImmortalKind kind : kinds) {
+			list.add(new FixtureMatcher(fix -> fix instanceof SimpleImmortal &&
+													   ((SimpleImmortal) fix).kind() ==
+															   kind, kind.plural()));
+		}
+	}
 	/**
 	 * Add matchers that match all instances of given classes, for which we can use
 	 * the class names plus "s".

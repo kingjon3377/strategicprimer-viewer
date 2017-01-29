@@ -3,6 +3,7 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,19 +15,12 @@ import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.mobile.Centaur;
-import model.map.fixtures.mobile.Djinn;
 import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
-import model.map.fixtures.mobile.Griffin;
 import model.map.fixtures.mobile.Immortal;
-import model.map.fixtures.mobile.Minotaur;
 import model.map.fixtures.mobile.MobileFixture;
-import model.map.fixtures.mobile.Ogre;
-import model.map.fixtures.mobile.Phoenix;
-import model.map.fixtures.mobile.Simurgh;
-import model.map.fixtures.mobile.Sphinx;
-import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.mobile.SimpleImmortal;
 import model.report.EmptyReportNode;
 import model.report.IReportNode;
 import model.report.ListReportNode;
@@ -141,23 +135,18 @@ public final class ImmortalsReportGenerator
 		values.sort(pairComparator);
 		final Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta =
 				new HashMap<>();
-		final HeadedList<Point> griffins =
-				handleSimple(meta, Griffin.class, "Griffin(s) at ");
-		final HeadedList<Point> simurghs =
-				handleSimple(meta, Simurgh.class, "Simurgh(s) at ");
-		final HeadedList<Point> phoenixes =
-				handleSimple(meta, Phoenix.class, "Phoenix(es) at ");
+		final Map<SimpleImmortal.SimpleImmortalKind, HeadedList<Point>> simples =
+				new EnumMap<>(SimpleImmortal.SimpleImmortalKind.class);
+		for (final SimpleImmortal.SimpleImmortalKind kind : SimpleImmortal.SimpleImmortalKind.values()) {
+			simples.put(kind, new PointList(kind.plural() + " at:"));
+		}
+		meta.put(SimpleImmortal.class,
+				(s, point) -> simples.get(SimpleImmortal.SimpleImmortalKind.parse(s))
+									  .add(point));
 		final Map<String, Collection<Point>> centaurs =
 				handleComplex(meta, Centaur.class, "(s) at ");
-		final HeadedList<Point> ogres = handleSimple(meta, Ogre.class, "Ogre(s) at ");
-		final HeadedList<Point> minotaurs =
-				handleSimple(meta, Minotaur.class, "Minotaur(s) at ");
 		final Map<String, Collection<Point>> giants =
 				handleComplex(meta, Giant.class, "(s) at ");
-		final HeadedList<Point> sphinxes =
-				handleSimple(meta, Sphinx.class, "Sphinx(es) at ");
-		final HeadedList<Point> djinni = handleSimple(meta, Djinn.class, "Djinn(i) at ");
-		final HeadedList<Point> trolls = handleSimple(meta, Troll.class, "Troll(s) at ");
 		final Map<String, Collection<Point>> fairies =
 				handleComplex(meta, Fairy.class, " at ");
 		final Map<String, Collection<Point>> dragons =
@@ -171,11 +160,9 @@ public final class ImmortalsReportGenerator
 			}
 		}
 		final HeadedList<String> retval = new HtmlList("<h4>Immortals</h4>");
-		Stream.of(dragons, fairies, giants, centaurs).map(Map::values)
+		Stream.of(dragons, fairies, giants, centaurs, simples).map(Map::values)
 				.flatMap(Collection::stream).map(Collection::toString)
 				.forEach(retval::add);
-		Stream.of(trolls, djinni, sphinxes, minotaurs, ogres, phoenixes, simurghs,
-				griffins).map(Collection::toString).forEach(retval::add);
 		return retval.toString();
 	}
 
@@ -193,16 +180,10 @@ public final class ImmortalsReportGenerator
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final IReportNode griffins = new ListReportNode("Griffins");
-		final IReportNode simurghs = new ListReportNode("Simurghs");
-		final IReportNode phoenixes = new ListReportNode("Phoenixes");
+		final Map<SimpleImmortal.SimpleImmortalKind, IReportNode> simples =
+				new EnumMap<>(SimpleImmortal.SimpleImmortalKind.class);
 		final Map<String, IReportNode> centaurs = new HashMap<>();
-		final IReportNode ogres = new ListReportNode("Ogres");
-		final IReportNode minotaurs = new ListReportNode("Minotaurs");
 		final Map<String, IReportNode> giants = new HashMap<>();
-		final IReportNode sphinxes = new ListReportNode("Sphinxes");
-		final IReportNode djinni = new ListReportNode("Djinni");
-		final IReportNode trolls = new ListReportNode("Trolls");
 		final Map<String, IReportNode> fairies = new HashMap<>();
 		final Map<String, IReportNode> dragons = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
@@ -216,45 +197,27 @@ public final class ImmortalsReportGenerator
 				separateByKindRIR(fairies, (Fairy) immortal)
 						.add(produceRIR(fixtures, map, currentPlayer,
 								(MobileFixture) immortal, point));
-			} else if (immortal instanceof Troll) {
-				trolls.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
-			} else if (immortal instanceof Djinn) {
-				djinni.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
-			} else if (immortal instanceof Sphinx) {
-				sphinxes.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
+			} else if (immortal instanceof SimpleImmortal) {
+				MultiMapHelper.getMapValue(simples, ((SimpleImmortal) immortal).kind(),
+						kind -> new ListReportNode(kind.plural()))
+						.add(produceRIR(fixtures, map, currentPlayer,
+								(MobileFixture) immortal, point));
 			} else if (immortal instanceof Giant) {
 				separateByKindRIR(giants, (Giant) immortal)
 						.add(produceRIR(fixtures, map, currentPlayer,
 								(MobileFixture) immortal, point));
-			} else if (immortal instanceof Minotaur) {
-				minotaurs.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
-			} else if (immortal instanceof Ogre) {
-				ogres.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Centaur) {
 				separateByKindRIR(centaurs, (Centaur) immortal)
 						.add(produceRIR(fixtures, map, currentPlayer,
 								(MobileFixture) immortal, point));
-			} else if (immortal instanceof Phoenix) {
-				phoenixes.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
-			} else if (immortal instanceof Simurgh) {
-				simurghs.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
-			} else if (immortal instanceof Griffin) {
-				griffins.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
 			}
 		}
 		final IReportNode retval = new SectionListReportNode(4, "Immortals");
+		simples.values().forEach(retval::addIfNonEmpty);
 		retval.addIfNonEmpty(coalesce("Dragons", dragons),
-				coalesce("Fairies", fairies), trolls, djinni, sphinxes,
-				coalesce("Giants", giants), minotaurs, ogres,
-				coalesce("Centaurs", centaurs), phoenixes, simurghs, griffins);
+				coalesce("Fairies", fairies),
+				coalesce("Giants", giants),
+				coalesce("Centaurs", centaurs));
 		if (retval.getChildCount() == 0) {
 			return EmptyReportNode.NULL_NODE;
 		} else {

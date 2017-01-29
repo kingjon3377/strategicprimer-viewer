@@ -16,8 +16,8 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
-import model.map.fixtures.mobile.Griffin;
-import model.map.fixtures.mobile.Ogre;
+import model.map.fixtures.mobile.SimpleImmortal;
+import model.map.fixtures.mobile.SimpleImmortal.SimpleImmortalKind;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
@@ -196,7 +196,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				createSimpleMap(point(1, 1), Pair.of(point(0, 0), Desert)));
 		final IMutableMapNG firstMap =
 				createSimpleMap(point(2, 2), Pair.of(point(1, 1), Plains));
-		firstMap.addFixture(point(1, 1), new Griffin(1));
+		firstMap.addFixture(point(1, 1),
+				new SimpleImmortal(SimpleImmortalKind.Griffin, 1));
 		assertSerialization("Tile with one fixture", firstMap);
 		final IMutableMapNG secondMap =
 				createSimpleMap(point(3, 3), Pair.of(point(2, 2), Steppe));
@@ -562,7 +563,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Test
 	public void testInclude() throws XMLStreamException, SPFormatException {
-		assertForwardDeserialization("Reading Ogre via <include>", new Ogre(1),
+		assertForwardDeserialization("Reading Ogre via <include>",
+				new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Ogre, 1),
 				"<include file=\"string:&lt;ogre id=&quot;1&quot; /&gt;\" />");
 	}
 

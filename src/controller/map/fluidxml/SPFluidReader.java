@@ -46,18 +46,12 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Centaur;
-import model.map.fixtures.mobile.Djinn;
 import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
-import model.map.fixtures.mobile.Griffin;
 import model.map.fixtures.mobile.IUnit;
-import model.map.fixtures.mobile.Minotaur;
-import model.map.fixtures.mobile.Ogre;
-import model.map.fixtures.mobile.Phoenix;
-import model.map.fixtures.mobile.Simurgh;
-import model.map.fixtures.mobile.Sphinx;
-import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.mobile.SimpleImmortal;
+import model.map.fixtures.mobile.SimpleImmortal.SimpleImmortalKind;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
@@ -121,14 +115,30 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		createSimpleFixtureReader("hill", Hill::new);
 		createSimpleFixtureReader("oasis", Oasis::new);
 		createSimpleFixtureReader("sandbar", Sandbar::new);
-		createSimpleFixtureReader("djinn", Djinn::new);
-		createSimpleFixtureReader("griffin", Griffin::new);
-		createSimpleFixtureReader("minotaur", Minotaur::new);
-		createSimpleFixtureReader("ogre", Ogre::new);
-		createSimpleFixtureReader("phoenix", Phoenix::new);
-		createSimpleFixtureReader("simurgh", Simurgh::new);
-		createSimpleFixtureReader("sphinx", Sphinx::new);
-		createSimpleFixtureReader("troll", Troll::new);
+		// TODO: Make createSimpleImmortalReader(), using SimpleImmortalKind.parse()
+		createSimpleFixtureReader("djinn",
+				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Djinn,
+													 idNum));
+		createSimpleFixtureReader("griffin",
+				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Griffin,
+													 idNum));
+		createSimpleFixtureReader("minotaur",
+				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Minotaur,
+													 idNum));
+		createSimpleFixtureReader("ogre",
+				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Ogre,
+													 idNum));
+		createSimpleFixtureReader("phoenix",
+				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Phoenix,
+													 idNum));
+		createSimpleFixtureReader("simurgh",
+				(idNum) -> new SimpleImmortal(SimpleImmortalKind.Simurgh, idNum));
+		createSimpleFixtureReader("sphinx",
+				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Sphinx,
+													 idNum));
+		createSimpleFixtureReader("troll",
+				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Troll,
+													 idNum));
 		readers.put("animal", FluidUnitMemberHandler::readAnimal);
 		createSimpleHasKindReader("centaur", Centaur::new);
 		createSimpleHasKindReader("dragon", Dragon::new);

@@ -31,16 +31,12 @@ import model.map.fixtures.TextFixture;
 import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Centaur;
-import model.map.fixtures.mobile.Djinn;
 import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
-import model.map.fixtures.mobile.Griffin;
 import model.map.fixtures.mobile.IUnit;
-import model.map.fixtures.mobile.Minotaur;
-import model.map.fixtures.mobile.Ogre;
-import model.map.fixtures.mobile.Simurgh;
-import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.mobile.SimpleImmortal;
+import model.map.fixtures.mobile.SimpleImmortal.SimpleImmortalKind;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.Grove;
@@ -586,11 +582,17 @@ public final class TestConverter {
 				new Animal("animalKind", false, false, "wild", 2),
 				new Mine("mineral", TownStatus.Active, 3),
 				new AdventureFixture(independent, "briefDescription", "fullDescription",
-											4), new Simurgh(5), new Griffin(6),
+											4),
+				new SimpleImmortal(SimpleImmortalKind.Simurgh, 5),
+				new SimpleImmortal(SimpleImmortalKind.Griffin, 6),
 				new City(TownStatus.Ruined, TownSize.Large, 0, "cityName", 7,
-								independent), new Ogre(8), new Minotaur(9),
-				new Centaur("hill", 10), new Giant("frost", 11), new Djinn(12),
-				new Fairy("lesser", 13), new Dragon("ice", 14), new Troll(15),
+								independent),
+				new SimpleImmortal(SimpleImmortalKind.Ogre, 8),
+				new SimpleImmortal(SimpleImmortalKind.Minotaur, 9),
+				new Centaur("hill", 10), new Giant("frost", 11),
+				new SimpleImmortal(SimpleImmortalKind.Djinn, 12),
+				new Fairy("lesser", 13), new Dragon("ice", 14),
+				new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Troll, 15),
 				new Fortification(TownStatus.Burned, TownSize.Medium, 0, "townName", 16,
 										 independent),
 				new StoneDeposit(StoneKind.Conglomerate, 0, 17));
@@ -614,14 +616,15 @@ public final class TestConverter {
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(0, 5), TileType.Steppe,
 				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
-				new Troll(-1), new Forest(TEMP_TREE, false, -1));
+				new SimpleImmortal(SimpleImmortalKind.Troll, -1), new Forest(TEMP_TREE, false, -1));
 		initialize(converted, PointFactory.point(0, 6), TileType.Steppe,
 				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
 				new AdventureFixture(independent, "briefDescription", "fullDescription",
 											-1));
 		initialize(converted, PointFactory.point(0, 7), TileType.Steppe,
 				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
-				new Griffin(-1), new Forest(TEMP_TREE, false, -1));
+				new SimpleImmortal(SimpleImmortalKind.Griffin, -1),
+				new Forest(TEMP_TREE, false, -1));
 		initialize(converted, PointFactory.point(1, 0), TileType.NotVisible,
 				new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1));
 		initialize(converted, PointFactory.point(1, 3), TileType.NotVisible,
@@ -655,21 +658,23 @@ public final class TestConverter {
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(2, 6), TileType.Steppe,
 				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
-				new Djinn(-1),
+				new SimpleImmortal(SimpleImmortalKind.Djinn, -1),
 				new Village(TownStatus.Active, "", -1, independent, "Danan"),
 				new TextFixture(OneToTwoConverter.MAX_ITER_WARN, 10),
 				new Meadow(FIELD_TYPE, true, true, -1, Growing));
 		initialize(converted, PointFactory.point(2, 7), TileType.Steppe,
 				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
-				new Ogre(-1));
+				new SimpleImmortal(SimpleImmortalKind.Ogre, -1));
 		initialize(converted, PointFactory.point(3, 0), TileType.NotVisible,
 				new Ground(-1, ROCK_TYPE, false), new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(3, 4), TileType.Steppe,
 				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
-				new Simurgh(-1), new Grove(true, true, "fruit1", -1));
+				new SimpleImmortal(SimpleImmortalKind.Simurgh, -1),
+				new Grove(true, true, "fruit1", -1));
 		initialize(converted, PointFactory.point(3, 5), TileType.Steppe,
 				new Ground(-1, ROCK_TYPE, false), new Forest(BOREAL_TREE, false, -1),
-				new Minotaur(-1), new Forest(TEMP_TREE, false, -1));
+				new SimpleImmortal(SimpleImmortalKind.Minotaur, -1),
+				new Forest(TEMP_TREE, false, -1));
 		initialize(converted, PointFactory.point(3, 6), TileType.Steppe,
 				new Ground(-1, ROCK_TYPE, false), new Forest(TEMP_TREE, false, -1),
 				new City(TownStatus.Ruined, TownSize.Large, 0, "cityName", -1,
