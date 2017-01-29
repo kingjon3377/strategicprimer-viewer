@@ -634,8 +634,7 @@ public class SPMapNG implements IMutableMapNG {
 					}
 					formatter.format(", ");
 				}
-				// TODO: Use fixtures.containsKey() instead of the Stream op here
-				if (streamOtherFixtures(location).anyMatch(x -> true)) {
+				if (fixtures.containsKey(location)) {
 					formatter.format("other: ");
 					for (final TileFixture fixture : getOtherFixtures(location)) {
 						formatter.format("%n%s", fixture.toString());
