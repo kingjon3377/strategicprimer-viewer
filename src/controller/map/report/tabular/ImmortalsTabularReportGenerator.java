@@ -5,19 +5,8 @@ import java.util.Comparator;
 import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Point;
-import model.map.fixtures.mobile.Centaur;
-import model.map.fixtures.mobile.Djinn;
-import model.map.fixtures.mobile.Dragon;
-import model.map.fixtures.mobile.Fairy;
-import model.map.fixtures.mobile.Giant;
-import model.map.fixtures.mobile.Griffin;
-import model.map.fixtures.mobile.Minotaur;
+import model.map.fixtures.mobile.Immortal;
 import model.map.fixtures.mobile.MobileFixture;
-import model.map.fixtures.mobile.Ogre;
-import model.map.fixtures.mobile.Phoenix;
-import model.map.fixtures.mobile.Simurgh;
-import model.map.fixtures.mobile.Sphinx;
-import model.map.fixtures.mobile.Troll;
 import util.Pair;
 import util.PatientMap;
 
@@ -53,18 +42,13 @@ public final class ImmortalsTabularReportGenerator
 	}
 
 	/**
-	 * Whether we can handle the given object. TODO: Create Immortal marker interface.
+	 * Whether we can handle the given object.
 	 * @param obj an object
 	 * @return whether this report generator covers it
 	 */
 	@Override
 	public boolean applies(final IFixture obj) {
-		return (obj instanceof Dragon) || (obj instanceof Fairy)
-					   || (obj instanceof Troll) || (obj instanceof Djinn)
-					   || (obj instanceof Sphinx) || (obj instanceof Giant)
-					   || (obj instanceof Minotaur) || (obj instanceof Ogre)
-					   || (obj instanceof Centaur) || (obj instanceof Phoenix)
-					   || (obj instanceof Simurgh) || (obj instanceof Griffin);
+		return obj instanceof Immortal;
 	}
 
 	/**

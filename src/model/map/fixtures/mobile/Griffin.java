@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
+public class Griffin implements Immortal, HasMutableImage {
 	/**
 	 * ID number.
 	 */

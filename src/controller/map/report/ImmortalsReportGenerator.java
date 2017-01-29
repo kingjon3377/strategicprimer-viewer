@@ -19,6 +19,7 @@ import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
 import model.map.fixtures.mobile.Griffin;
+import model.map.fixtures.mobile.Immortal;
 import model.map.fixtures.mobile.Minotaur;
 import model.map.fixtures.mobile.MobileFixture;
 import model.map.fixtures.mobile.Ogre;
@@ -77,18 +78,13 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
-	 * TODO: Create Immortal marker interface.
+	 * Whether the given fixture is an immortal. TODO: inline this
 	 *
 	 * @param item a fixture
 	 * @return whether it's an immortal
 	 */
 	private static boolean isImmortal(final MobileFixture item) {
-		return (item instanceof Dragon) || (item instanceof Fairy)
-					   || (item instanceof Troll) || (item instanceof Djinn)
-					   || (item instanceof Sphinx) || (item instanceof Giant)
-					   || (item instanceof Minotaur) || (item instanceof Ogre)
-					   || (item instanceof Centaur) || (item instanceof Phoenix)
-					   || (item instanceof Simurgh) || (item instanceof Griffin);
+		return item instanceof Immortal;
 	}
 
 	/**

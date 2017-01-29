@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Phoenix implements MobileFixture, HasMutableImage, UnitMember {
+public class Phoenix implements Immortal, HasMutableImage {
 	/**
 	 * ID number.
 	 */

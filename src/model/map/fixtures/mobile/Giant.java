@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Giant implements MobileFixture, HasMutableImage, HasKind, UnitMember {
+public class Giant implements Immortal, HasMutableImage, HasKind {
 	/**
 	 * ID number.
 	 */

@@ -24,7 +24,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Sphinx implements MobileFixture, HasMutableImage, UnitMember {
+public class Sphinx implements Immortal, HasMutableImage {
 	/**
 	 * ID number.
 	 */

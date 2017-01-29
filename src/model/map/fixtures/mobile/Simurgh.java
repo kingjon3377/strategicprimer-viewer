@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Simurgh implements MobileFixture, HasMutableImage, UnitMember {
+public class Simurgh implements Immortal, HasMutableImage {
 	/**
 	 * ID number.
 	 */

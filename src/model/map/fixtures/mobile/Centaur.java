@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Centaur implements MobileFixture, HasMutableImage, HasKind, UnitMember {
+public class Centaur implements Immortal, HasMutableImage, HasKind {
 	/**
 	 * ID number.
 	 */

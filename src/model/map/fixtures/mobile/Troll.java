@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Troll implements MobileFixture, HasMutableImage, UnitMember {
+public class Troll implements Immortal, HasMutableImage {
 	/**
 	 * ID number.
 	 */

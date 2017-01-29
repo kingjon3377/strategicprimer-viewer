@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Djinn implements MobileFixture, HasMutableImage, UnitMember {
+public class Djinn implements Immortal, HasMutableImage {
 	/**
 	 * ID number.
 	 */

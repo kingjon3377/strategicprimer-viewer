@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Fairy implements MobileFixture, HasMutableImage, HasKind, UnitMember {
+public class Fairy implements Immortal, HasMutableImage, HasKind {
 	/**
 	 * ID number.
 	 */

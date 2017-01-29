@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
+public class Minotaur implements Immortal, HasMutableImage {
 	/**
 	 * ID number.
 	 */
