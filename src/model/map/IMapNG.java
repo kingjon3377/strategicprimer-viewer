@@ -115,8 +115,9 @@ public interface IMapNG
 	Stream<@NonNull TileFixture> streamOtherFixtures(Point location);
 
 	/**
-	 * A Stream over *all* fixtures on a tile, including its primary forest and Ground, if any.
-	 * @param a location
+	 * A Stream over *all* fixtures on a tile, including its primary forest and Ground,
+	 * if any.
+	 * @param location a location
 	 * @return a Stream of all fixtures there
 	 */
 	default Stream<@NonNull TileFixture> streamAllFixtures(final Point location) {
