@@ -58,14 +58,14 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
 							final IDriverModel model) throws DriverFailedException {
-		final IMultiMapModel mmodel = (IMultiMapModel) model;
+		final IMultiMapModel mapModel = (IMultiMapModel) model;
 		final IMutableMapNG mainMap = model.getMap();
 		final List<Forest> mainForests = new ArrayList<>();
 		final List<Forest> subForests = new ArrayList<>();
 		final List<Ground> mainGround = new ArrayList<>();
 		final List<Ground> subGround = new ArrayList<>();
 		for (final Pair<IMutableMapNG, Optional<Path>> pair :
-				mmodel.getSubordinateMaps()) {
+				mapModel.getSubordinateMaps()) {
 			final Optional<Path> maybePath = pair.second();
 			cli.printf("Starting %s%n", maybePath.map(Path::toString)
 												.orElse("a map with no associated path"));
