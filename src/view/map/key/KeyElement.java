@@ -38,9 +38,9 @@ public final class KeyElement extends BoxPanel {
 	 */
 	private static final TileUIHelper T_UI_H = new TileUIHelper();
 	/**
-	 * Minimum buffer space between elements.
+	 * Minimum (horizontal) buffer space between elements.
 	 */
-	private static final int HORIZ_BUF = 7;
+	private static final int BUFFER = 7;
 	/**
 	 * Minimum size of a colored area.
 	 */
@@ -59,7 +59,7 @@ public final class KeyElement extends BoxPanel {
 	public KeyElement(final int version, final TileType type) {
 		super(true);
 		addGlue();
-		addRigidArea(HORIZ_BUF);
+		addRigidArea(BUFFER);
 		final BoxPanel panel = new BoxPanel(false);
 		panel.addRigidArea(4);
 		final int tileSize = TileViewSize.scaleZoom(DEF_ZOOM_LEVEL, version);
@@ -70,12 +70,12 @@ public final class KeyElement extends BoxPanel {
 		panel.add(label);
 		panel.addRigidArea(4);
 		add(panel);
-		addRigidArea(HORIZ_BUF);
+		addRigidArea(BUFFER);
 		addGlue();
 		final Dimension captionSize = label.getMinimumSize();
 		setMinimumSize(
 				new Dimension(Math.max(MIN_SIZE.width, captionSize.width) +
-									  (HORIZ_BUF * 2),
+									  (BUFFER * 2),
 									 MIN_SIZE.height + captionSize.height + 12));
 	}
 
