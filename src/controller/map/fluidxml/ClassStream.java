@@ -73,6 +73,6 @@ public class ClassStream implements Supplier<Stream<Class<?>>> {
 	 */
 	@Override
 	public String toString() {
-		return "ClassIterable: " + classes;
+		return "ClassStream: " + classes;
 	}
 }
