@@ -321,7 +321,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 */
 	@Override
 	public int compare(final TileFixture first, final TileFixture second) {
-		for (final FixtureMatcher matcher : this) {
+		for (final FixtureMatcher matcher : list) {
 			if (!matcher.isDisplayed()) {
 				continue;
 			}
