@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.function.IntSupplier;
 import javax.swing.JTree;
 import javax.swing.ToolTipManager;
@@ -101,10 +102,8 @@ public final class WorkerTree extends JTree
 		wtModel.addTreeModelListener(new TreeModelListener() {
 			@Override
 			public void treeStructureChanged(@Nullable final TreeModelEvent e) {
-				if (e == null) {
-					return;
-				}
-				retval.expandPath(e.getTreePath().getParentPath());
+				Optional.ofNullable(e).map(TreeModelEvent::getTreePath)
+						.map(TreePath::getParentPath).ifPresent(retval::expandPath);
 				for (int i = 0; i < retval.getRowCount(); i++) {
 					retval.expandRow(i);
 				}
@@ -118,20 +117,17 @@ public final class WorkerTree extends JTree
 
 			@Override
 			public void treeNodesInserted(@Nullable final TreeModelEvent e) {
-				if (e == null) {
-					return;
+				if (e != null) {
+					retval.expandPath(e.getTreePath());
+					retval.expandPath(e.getTreePath().getParentPath());
 				}
-				retval.expandPath(e.getTreePath());
-				retval.expandPath(e.getTreePath().getParentPath());
 				retval.updateUI();
 			}
 
 			@Override
 			public void treeNodesChanged(@Nullable final TreeModelEvent e) {
-				if (e == null) {
-					return;
-				}
-				retval.expandPath(e.getTreePath().getParentPath());
+				Optional.ofNullable(e).map(TreeModelEvent::getTreePath)
+						.map(TreePath::getParentPath).ifPresent(retval::expandPath);
 				retval.updateUI();
 			}
 		});
