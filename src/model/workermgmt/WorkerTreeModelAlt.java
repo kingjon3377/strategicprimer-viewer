@@ -116,9 +116,18 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		final MutableTreeNode oldNode = getNode(playerNode, old);
 		final UnitNode newNode = (UnitNode) getNode(playerNode, newOwner);
 		final MutableTreeNode node = getNode(playerNode, member);
+		if (newNode == null || node == null) {
+			return;
+		}
+		final int oldIndex;
+		if (oldNode == null) {
+			oldIndex = -1;
+		} else {
+			oldIndex = oldNode.getIndex(node);
+		}
 		fireTreeNodesRemoved(this,
 				new Object[]{playerNode, getNode(old.getKind()), oldNode},
-				new int[]{oldNode.getIndex(node)}, new Object[]{node});
+				new int[]{oldIndex}, new Object[]{node});
 		oldNode.remove(node);
 		if ((member instanceof ProxyFor) && (old instanceof ProxyUnit)
 					&& (newOwner instanceof ProxyUnit)) {
