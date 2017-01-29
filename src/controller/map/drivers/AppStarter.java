@@ -288,7 +288,7 @@ public final class AppStarter implements ISPDriver {
 	}
 
 	/**
-	 * Since there's no way of choosing which driver programmatically here, we present
+	 * Since there's no way of choosing which driver here via some algorithm, we present
 	 * our choice to the user.
 	 *
 	 * @param cli the interface for user I/O
