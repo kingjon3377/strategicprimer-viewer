@@ -4,7 +4,6 @@ import java.util.Formatter;
 import model.map.HasKind;
 import model.map.HasMutableImage;
 import model.map.IFixture;
-import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
