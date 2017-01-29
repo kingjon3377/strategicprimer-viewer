@@ -41,7 +41,8 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(FixtureListDropListener.class);
 	/**
-	 * A parent component. If it's an ancestor of the drop, it's an intra-component drop.
+	 * A parent component. If it's an ancestor of the drop, the drop is within the same
+	 * component.
 	 */
 	private final JComponent parentComponent;
 	/**
