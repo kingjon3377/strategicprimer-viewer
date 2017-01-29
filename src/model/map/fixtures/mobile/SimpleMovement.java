@@ -16,7 +16,6 @@ import model.map.HasOwner;
 import model.map.River;
 import model.map.TileFixture;
 import model.map.TileType;
-import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
@@ -170,8 +169,6 @@ public final class SimpleMovement {
 	}
 
 	/**
-	 * FIXME: *Some* explorers *would* notice even unexposed ground.
-	 *
 	 * TODO: We now check DCs on Events, but ignore relevant skills other than Perception
 	 * And now a lot more things have DCs for which those other skills are relevant.
 	 *
@@ -183,9 +180,7 @@ public final class SimpleMovement {
 	 */
 	public static boolean shouldSometimesNotice(final IUnit unit, final Speed speed,
 												@Nullable final TileFixture fix) {
-		if (fix instanceof Ground) {
-			return ((Ground) fix).isExposed();
-		} else if (unit.equals(fix)) {
+		if (unit.equals(fix)) {
 			return false;
 		} else if (fix != null) {
 			return (getHighestPerception(unit) + speed.getPerceptionModifier() + 15) >=
