@@ -167,8 +167,7 @@ public final class IOHandler implements ActionListener {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent event) {
-		if (event != null) { // it wouldn't be @Nullable except that the JDK
-			// isn't annotated
+		if (event != null) { // only needed because the JDK isn't annotated
 			final Component source = eventSource(event.getSource());
 			switch (event.getActionCommand().toLowerCase()) {
 			case "load":
