@@ -33,6 +33,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
@@ -175,7 +176,9 @@ public final class ExplorationClickListener extends AbstractAction implements
 			}
 			model.move(direction, speedSource.get());
 			final Point dPoint = model.getSelectedUnitLocation();
-			final Player player = model.getSelectedUnit().getOwner();
+			final Player player =
+					Optional.ofNullable(model.getSelectedUnit()).map(IUnit::getOwner)
+							.orElseGet(() -> new Player(-1, "no-one"));
 			final Collection<CacheFixture> caches = new HashSet<>();
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :
 					model.getSubordinateMaps()) {
