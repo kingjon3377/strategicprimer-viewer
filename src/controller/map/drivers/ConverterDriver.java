@@ -54,7 +54,7 @@ public final class ConverterDriver implements UtilityDriver {
 	 *                        rather
 	 *                     than stdout
 	 */
-	private ConverterDriver(final boolean gui) {
+	public ConverterDriver(final boolean gui) {
 		usageObject = new DriverUsage(gui, "-v", "--convert", ParamCount.One,
 											 "Convert a map's format",
 											 "Convert a map. At present, this means " +
