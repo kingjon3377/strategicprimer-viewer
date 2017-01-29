@@ -140,11 +140,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 					Optional.ofNullable(((JTree.DropLocation) dropLocation).getPath())
 							.map(TreePath::getLastPathComponent)
 							.map(model::getModelObject).orElse(null);
-			if ((pathLast instanceof IUnit) || (pathLast instanceof UnitMember)) {
-				return true;
-			} else {
-				return false;
-			}
+			return (pathLast instanceof IUnit) || (pathLast instanceof UnitMember);
 		} else {
 			return false;
 		}
