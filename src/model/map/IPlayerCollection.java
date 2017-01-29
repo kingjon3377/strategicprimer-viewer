@@ -58,6 +58,7 @@ public interface IPlayerCollection
 	IPlayerCollection copy();
 
 	/**
+	 * The players as an array.
 	 * @return an array view of this collection
 	 */
 	default Player[] asArray() {

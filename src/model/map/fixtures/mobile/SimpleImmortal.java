@@ -74,6 +74,7 @@ public class SimpleImmortal implements Immortal, HasMutableImage, HasKind {
 		 */
 		private final int dc;
 		/**
+		 * Constructor.
 		 * @param tagParam the word to use for both default image and XML tag.
 		 * @param pluralString the plural of this kind
 		 * @param dcNum the DC to use for this kind
@@ -85,12 +86,14 @@ public class SimpleImmortal implements Immortal, HasMutableImage, HasKind {
 			dc = dcNum;
 		}
 		/**
+		 * The word to use for both default image and XML tag.
 		 * @return the word to use for both default image and XML tag.
 		 */
 		public String getTag() {
 			return tag;
 		}
 		/**
+		 * The plural of this kind.
 		 * @return the plural of this kind
 		 */
 		public String plural() {
@@ -98,11 +101,13 @@ public class SimpleImmortal implements Immortal, HasMutableImage, HasKind {
 		}
 		/**
 		 * The DC to use for this kind.
+		 * @return the Perception DC to use for this kind.
 		 */
 		public int getDC() {
 			return dc;
 		}
 		/**
+		 * Get the enum value representing the given tag sString.
 		 * @param desc a string representing a kind of immortal
 		 * @return what kind that represents
 		 */
@@ -126,6 +131,7 @@ public class SimpleImmortal implements Immortal, HasMutableImage, HasKind {
 	 */
 	private String image = "";
 	/**
+	 * Constructor.
 	 * @param iKind what kind of immortal this is
 	 * @param idNum its ID number
 	 */
@@ -282,6 +288,7 @@ public class SimpleImmortal implements Immortal, HasMutableImage, HasKind {
 		return kind.getDC();
 	}
 	/**
+	 * What kind of immortal this is, as a String.
 	 * @return what kind of immortal this is
 	 */
 	@Override
@@ -289,6 +296,7 @@ public class SimpleImmortal implements Immortal, HasMutableImage, HasKind {
 		return kind.getTag();
 	}
 	/**
+	 * What kind of immortal this is, as an enum object.
 	 * @return what kind of immortal this is
 	 */
 	public SimpleImmortalKind kind() {
