@@ -186,8 +186,8 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	/**
-	 * Read input from stdin repeatedly until a non-negative integer is entered, and
-	 * return it.
+	 * Read input from standard input repeatedly until a non-negative integer is
+	 * entered, and return it.
 	 *
 	 * @param prompt The prompt to prompt the user with
 	 * @return the number entered
@@ -220,8 +220,8 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	/**
-	 * Read input from stdin repeatedly until a valid non-negative decimal number is
-	 * entered, and return it.
+	 * Read input from standard input repeatedly until a valid non-negative decimal
+	 * number is entered, and return it.
 	 *
 	 * @param prompt the prompt to prompt the user with
 	 * @return the number entered
@@ -249,7 +249,8 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	/**
-	 * Read input from stdin. (The input is trimmed of leading and trailing whitespace.)
+	 * Read input from standard input. (The input is trimmed of leading and trailing
+	 * whitespace.)
 	 *
 	 * @param prompt The prompt to prompt the user with
 	 * @return the string entered.
