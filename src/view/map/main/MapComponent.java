@@ -21,6 +21,7 @@ import model.listeners.SelectionChangeListener;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
+import model.viewer.FixtureFilterTableModel;
 import model.viewer.FixtureMatcher;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
@@ -77,7 +78,7 @@ public final class MapComponent extends JComponent
 	 * @param fixOrderer a stream of matchers to say which fixture is "on top"
 	 */
 	public MapComponent(final IViewerModel theMap, final ZOrderFilter filter,
-						final Iterable<FixtureMatcher> fixOrderer) {
+						final FixtureFilterTableModel fixOrderer) {
 		setDoubleBuffered(true);
 		model = theMap;
 		zof = filter;
@@ -85,7 +86,7 @@ public final class MapComponent extends JComponent
 		//noinspection TrivialMethodReference
 		helper = TileDrawHelperFactory.INSTANCE.factory(
 				model.getMapDimensions().version, this::imageUpdate, zof, matchers);
-		cml = new ComponentMouseListener(model, zof);
+		cml = new ComponentMouseListener(model, zof, fixOrderer);
 		//noinspection TrivialMethodReference
 		cml.addSelectionChangeListener(this::selectedPointChanged);
 		addMouseListener(cml);

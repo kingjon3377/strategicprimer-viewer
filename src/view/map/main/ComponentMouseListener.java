@@ -3,6 +3,7 @@ package view.map.main;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import model.listeners.SelectionChangeListener;
@@ -51,19 +52,25 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 * The filter to tell us what fixtures to ignore.
 	 */
 	private final ZOrderFilter zof;
-
+	/**
+	 * The Comparator to sort fixtures by dynamic Z-value.
+	 */
+	private final Comparator<TileFixture> sorter;
 	/**
 	 * Constructor.
 	 * @param mapModel the map model we'll refer to
 	 * @param filter the filter to tell us what fixtures to ignore
+	 * @param comparator the comparator to sort fixtures by dynamic Z-value
 	 */
 	public ComponentMouseListener(final IViewerModel mapModel,
-								  final ZOrderFilter filter) {
+								  final ZOrderFilter filter,
+								  final Comparator<TileFixture> comparator) {
 		model = mapModel;
 		zof = filter;
 		menu = new TerrainChangingMenu(model.getMapDimensions().version, model);
 		model.addSelectionChangeListener(menu);
 		model.addVersionChangeListener(menu);
+		sorter = comparator;
 	}
 
 	/**
@@ -100,7 +107,6 @@ public final class ComponentMouseListener extends MouseAdapter implements
 
 	/**
 	 * Create a description of the terrain and "top" fixture on the tile.
-	 * TODO: sort by dynamic Z-value
 	 * @param point a point
 	 * @return a HTML-wrapped String (including final newline entity) representing the
 	 * TerrainFixtures at that point, and the fixture the user can see as its top
@@ -110,10 +116,11 @@ public final class ComponentMouseListener extends MouseAdapter implements
 		final IMapNG map = model.getMap();
 		final Collection<TileFixture> fixes = new ArraySet<>();
 		final Optional<TileFixture> first =
-				map.streamAllFixtures(point).filter(zof::shouldDisplay).findAny();
+				map.streamAllFixtures(point).filter(zof::shouldDisplay).sorted(sorter)
+						.findAny();
 		first.ifPresent(fixes::add);
 		map.streamAllFixtures(point).filter(TerrainFixture.class::isInstance)
-				.filter(zof::shouldDisplay).forEach(fixes::add);
+				.filter(zof::shouldDisplay).sorted(sorter).forEach(fixes::add);
 		return fixes.stream().map(TileFixture::toString)
 					   .collect(Collectors.joining("<br />"));
 	}

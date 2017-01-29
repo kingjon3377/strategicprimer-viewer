@@ -1,6 +1,7 @@
 package model.viewer;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -55,7 +56,8 @@ import static model.viewer.FixtureMatcher.simpleMatcher;
  * @author Jonathan Lovelace
  */
 public class FixtureFilterTableModel extends AbstractTableModel
-		implements Reorderable, ZOrderFilter, Iterable<FixtureMatcher> {
+		implements Reorderable, ZOrderFilter, Iterable<FixtureMatcher>,
+						   Comparator<TileFixture> {
 	/**
 	 * The backing collection.
 	 */
@@ -309,5 +311,30 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	@Override
 	public Iterator<FixtureMatcher> iterator() {
 		return list.iterator();
+	}
+
+	/**
+	 * Compare two fixtures on the basis of which is matched first.
+	 * @param first the first object to be compared.
+	 * @param second the second object to be compared.
+	 * @return a number indicating which one is "closer to the top"
+	 */
+	@Override
+	public int compare(final TileFixture first, final TileFixture second) {
+		for (final FixtureMatcher matcher : this) {
+			if (!matcher.isDisplayed()) {
+				continue;
+			}
+			if (matcher.matches(first)) {
+				if (matcher.matches(second)) {
+					return 0;
+				} else {
+					return -1;
+				}
+			} else if (matcher.matches(second)) {
+				return 1;
+			}
+		}
+		return 0;
 	}
 }
