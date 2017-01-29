@@ -215,7 +215,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 
 		/**
 		 * Handle a mouse event.
-		 * @param event the event to handle. Marked as @Nullable so we only have to
+		 * @param event the event to handle. Marked as possibly null so we only have to
 		 *                    handle the null-event case once.
 		 */
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
