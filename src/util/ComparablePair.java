@@ -1,5 +1,6 @@
 package util;
 
+import java.util.Objects;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -75,9 +76,9 @@ public final class ComparablePair<K extends Comparable<K>, V extends Comparable<
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof ComparablePair) &&
-										 first().equals(((ComparablePair) obj).first()
-										 ) &&
-										 second().equals(
+										 Objects.equals(first(),
+												 ((ComparablePair) obj).first()) &&
+										 Objects.equals(second(),
 												 ((ComparablePair) obj).second()));
 	}
 }

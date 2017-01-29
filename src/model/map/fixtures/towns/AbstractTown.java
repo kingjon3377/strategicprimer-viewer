@@ -1,5 +1,6 @@
 package model.map.fixtures.towns;
 
+import java.util.Objects;
 import model.map.HasMutableImage;
 import model.map.IEvent;
 import model.map.IFixture;
@@ -158,8 +159,8 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 * @return whether it's equal to this one ignoring ID.
 	 */
 	protected final boolean equalsContents(final AbstractTown fix) {
-		return (fix.size() == size) && fix.name.equals(name)
-					   && (fix.status() == status) && fix.owner.equals(owner);
+		return (fix.size() == size) && Objects.equals(fix.name, name)
+					   && (fix.status() == status) && Objects.equals(fix.owner, owner);
 	}
 
 	/**

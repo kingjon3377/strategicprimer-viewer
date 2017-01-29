@@ -3,6 +3,7 @@ package util;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.util.Objects;
 
 /**
  * A Transferable implementation that transfers a single int.
@@ -56,7 +57,7 @@ public final class IntTransferable implements Transferable {
 	 */
 	@Override
 	public boolean isDataFlavorSupported(final DataFlavor flavor) {
-		return reportedFlavor.equals(flavor);
+		return Objects.equals(reportedFlavor, flavor);
 	}
 
 	/**
@@ -69,7 +70,7 @@ public final class IntTransferable implements Transferable {
 	@Override
 	public Object getTransferData(final DataFlavor flavor)
 			throws UnsupportedFlavorException {
-		if (reportedFlavor.equals(flavor)) {
+		if (Objects.equals(reportedFlavor, flavor)) {
 			return Integer.valueOf(payload);
 		} else {
 			throw new UnsupportedFlavorException(flavor);

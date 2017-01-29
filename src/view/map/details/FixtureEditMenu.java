@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 import javax.swing.JLabel;
@@ -75,7 +76,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 				final Optional<String> result = Optional.ofNullable((String) showInputDialog(outer,
 						"Fixture's new name:", "Rename Fixture",
 						PLAIN_MESSAGE, null, null,
-						origName)).filter(name -> !origName.equals(name));
+						origName)).filter(name -> !Objects.equals(origName, name));
 				if (result.isPresent()) {
 					((HasMutableName) fixture).setName(result.get());
 					for (final IWorkerTreeModel listener : listeners) {
@@ -93,8 +94,9 @@ public final class FixtureEditMenu extends JPopupMenu {
 								(String) showInputDialog(outer, "Fixture's new kind:",
 										"Change Fixture Kind", PLAIN_MESSAGE, null, null,
 										((HasKind) fixture).getKind()))
-																.filter(kind -> !old.equals(
-																		kind));
+																.filter(kind ->
+																				!Objects.equals(
+																		old, kind));
 						if (result.isPresent()) {
 							((HasMutableKind) fixture).setKind(result.get());
 							for (final IWorkerTreeModel listener : listeners) {
