@@ -78,16 +78,6 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
-	 * Whether the given fixture is an immortal. TODO: inline this
-	 *
-	 * @param item a fixture
-	 * @return whether it's an immortal
-	 */
-	private static boolean isImmortal(final MobileFixture item) {
-		return item instanceof Immortal;
-	}
-
-	/**
 	 * If there's an entry in the map for the thing's kind already, return that entry; if
 	 * not, create one, add it to the map, and return it..
 	 *
@@ -286,7 +276,7 @@ public final class ImmortalsReportGenerator
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer,
 						  final MobileFixture item, final Point loc) {
-		if (isImmortal(item)) {
+		if (item instanceof Immortal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), "A(n) ", item.toString(), " ",
 					distCalculator.distanceString(loc));
@@ -310,7 +300,7 @@ public final class ImmortalsReportGenerator
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer,
 								  final MobileFixture item, final Point loc) {
-		if (isImmortal(item)) {
+		if (item instanceof Immortal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString(), " ",
 											   distCalculator.distanceString(loc));
