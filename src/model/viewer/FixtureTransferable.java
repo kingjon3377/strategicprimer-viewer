@@ -89,7 +89,7 @@ public final class FixtureTransferable implements Transferable {
 	}
 
 	/**
-	 * An object is equal iff it is a FixtureTransferable transfering equal data.
+	 * An object is equal iff it is a FixtureTransferable transferring equal data.
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
