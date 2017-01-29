@@ -2,7 +2,8 @@ package controller.map.fluidxml;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * A utility class to make iterating over the types of an object (its class, its
@@ -20,7 +21,7 @@ import java.util.Iterator;
  *
  * @author Jonathan Lovelace
  */
-public class ClassIterable implements Iterable<Class<?>> {
+public class ClassStream implements Supplier<Stream<Class<?>>> {
 	/**
 	 * The list of class objects.
 	 */
@@ -31,7 +32,7 @@ public class ClassIterable implements Iterable<Class<?>> {
 	 *
 	 * @param obj the object whose superclasses we want to iterate over.
 	 */
-	public ClassIterable(final Object obj) {
+	public ClassStream(final Object obj) {
 		final Class<?> base = obj.getClass();
 		classes.add(base);
 		addInterfaces(classes, base);
@@ -62,8 +63,8 @@ public class ClassIterable implements Iterable<Class<?>> {
 	 * @return an iterator over the object's superclasses.
 	 */
 	@Override
-	public Iterator<Class<?>> iterator() {
-		return classes.iterator();
+	public Stream<Class<?>> get() {
+		return classes.stream();
 	}
 
 	/**

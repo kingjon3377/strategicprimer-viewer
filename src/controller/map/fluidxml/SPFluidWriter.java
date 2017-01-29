@@ -174,14 +174,10 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	public void writeSPObject(final XMLStreamWriter ostream, final Object obj,
 							  final int indent)
 			throws XMLStreamException, IllegalArgumentException {
-		final Iterable<Class<?>> types = new ClassIterable(obj);
-		for (final Class<?> cls : types) {
-			if (writers.containsKey(cls)) {
-				writers.get(cls).writeSPObject(ostream, obj, indent);
-				return;
-			}
-		}
-		throw new IllegalArgumentException("Not an object we know how to write");
+		new ClassStream(obj).get().filter(writers::containsKey).map(writers::get)
+				.findAny().orElseThrow(
+				() -> new IllegalArgumentException("Not an object we know how to write"))
+				.writeSPObject(ostream, obj, indent);
 	}
 
 	/**
