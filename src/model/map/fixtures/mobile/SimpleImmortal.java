@@ -78,8 +78,8 @@ public class SimpleImmortal implements Immortal, HasMutableImage, HasKind {
 		 * @param pluralString the plural of this kind
 		 * @param dcNum the DC to use for this kind
 		 */
-		private SimpleImmortalKind(final String tagParam, final String pluralString,
-								   final int dcNum) {
+		SimpleImmortalKind(final String tagParam, final String pluralString,
+						   final int dcNum) {
 			tag = tagParam;
 			plural = pluralString;
 			dc = dcNum;
