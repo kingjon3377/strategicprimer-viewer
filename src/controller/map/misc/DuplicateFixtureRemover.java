@@ -8,8 +8,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMutableMapNG;
@@ -77,7 +79,8 @@ public final class DuplicateFixtureRemover {
 							   final ICLIHelper cli) throws IOException {
 		final Collection<TileFixture> fixtures = new ArrayList<>();
 		final Collection<TileFixture> toRemove = new ArrayList<>();
-		// TODO: cover Ground and Forest now that they have IDs.
+		Stream.of(map.getGround(location), map.getForest(location))
+				.filter(Objects::nonNull).forEach(fixtures::add);
 		// TODO: Try to use Streams API instead of complicated loop
 		for (final TileFixture fix : map.getOtherFixtures(location)) {
 			if (((fix instanceof IUnit) && ((IUnit) fix).getKind().contains("TODO")) ||
