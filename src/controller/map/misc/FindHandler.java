@@ -39,10 +39,10 @@ public class FindHandler implements ActionListener {
 	/**
 	 * Constructor.
 	 * @param mainWindow the main window
-	 * @param dmodel the driver model
+	 * @param driverModel the driver model
 	 */
-	public FindHandler(final Frame mainWindow, final IViewerModel dmodel) {
-		model = dmodel;
+	public FindHandler(final Frame mainWindow, final IViewerModel driverModel) {
+		model = driverModel;
 		parent = mainWindow;
 	}
 	/**
