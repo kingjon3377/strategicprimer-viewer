@@ -128,8 +128,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
-	 * Whether there are any fixtures, other than primary Ground or Forest, in the given
-	 * map at the given point.
+	 * Whether there are any fixtures in the given map at the given point that match the
+	 * given fixture.
 	 * @param map    a map
 	 * @param dPoint a point
 	 * @param fix    a fixture
@@ -137,7 +137,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 */
 	private static boolean hasFixture(final IMapNG map, final Point dPoint,
 									  final TileFixture fix) {
-		return map.streamOtherFixtures(dPoint).anyMatch(fix::equals);
+		return map.streamAllFixtures(dPoint).anyMatch(fix::equals);
 	}
 
 	/**
@@ -188,15 +188,9 @@ public final class ExplorationClickListener extends AbstractAction implements
 					} else if ((fix instanceof Ground) &&
 									   (map.getGround(dPoint) == null)) {
 						map.setGround(dPoint, ((Ground) fix).copy(false));
-					} else if ((fix instanceof Ground) &&
-									   fix.equals(map.getGround(dPoint))) {
-						continue;
 					} else if ((fix instanceof Forest) &&
 									   (map.getForest(dPoint) == null)) {
 						map.setForest(dPoint, ((Forest) fix).copy(false));
-					} else if ((fix instanceof Forest) &&
-									   fix.equals(map.getForest(dPoint))) {
-						continue;
 					} else if (!hasFixture(map, dPoint, fix)) {
 						final boolean zero = (fix instanceof HasOwner) &&
 													 !((HasOwner) fix).getOwner()

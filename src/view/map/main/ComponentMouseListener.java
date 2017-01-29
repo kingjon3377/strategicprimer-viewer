@@ -13,8 +13,6 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-import model.map.fixtures.Ground;
-import model.map.fixtures.terrain.Forest;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
@@ -111,18 +109,10 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	private String getTerrainFixturesAndTop(final Point point) {
 		final IMapNG map = model.getMap();
 		final Collection<TileFixture> fixes = new ArraySet<>();
-		final Ground ground = map.getGround(point);
-		if (ground != null && zof.shouldDisplay(ground)) {
-			fixes.add(ground);
-		}
-		final Forest forest = map.getForest(point);
-		if (forest != null && zof.shouldDisplay(forest)) {
-			fixes.add(forest);
-		}
 		final Optional<TileFixture> first =
-				map.streamOtherFixtures(point).filter(zof::shouldDisplay).findAny();
+				map.streamAllFixtures(point).filter(zof::shouldDisplay).findAny();
 		first.ifPresent(fixes::add);
-		map.streamOtherFixtures(point).filter(TerrainFixture.class::isInstance)
+		map.streamAllFixtures(point).filter(TerrainFixture.class::isInstance)
 				.filter(zof::shouldDisplay).forEach(fixes::add);
 		return fixes.stream().map(TileFixture::toString)
 					   .collect(Collectors.joining("<br />"));

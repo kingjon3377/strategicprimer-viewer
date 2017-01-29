@@ -312,24 +312,20 @@ public final class ReportGenerator {
 		final Function<IFixture, Integer> checkID = createIDChecker(
 				IDFactoryFiller.createFactory(map));
 		for (final Point point : map.locations()) {
-			// Because neither Mountains nor Ground have positive IDs,
-			// we can ignore everything but Forests and the "other" fixtures.
-			retval.putAll(getFixtures(
-					Stream.concat(map.streamOtherFixtures(point),
-							Stream.of(map.getForest(point))))
-								  .filter(Objects::nonNull)
-								  .filter(ReportGenerator::isReportableFixture)
-								  .collect(Collectors.toMap(checkID,
-										  fix -> Pair.of(point, fix), (pairOne, pairTwo) -> {
-									        if (!Objects.equals(pairOne, pairTwo)) {
-												LOGGER.warning(String.format(
-														"Duplicate key, %d, for Pairs %s and %s",
-														checkID.apply(pairOne.second()),
-														pairOne.toString(),
-														pairTwo.toString()));
-											}
-								            return pairOne;
-										  })));
+			retval.putAll(
+					getFixtures(map.streamAllFixtures(point)).filter(Objects::nonNull)
+							.filter(ReportGenerator::isReportableFixture)
+							.collect(Collectors.toMap(checkID,
+									fix -> Pair.of(point, fix), (pairOne, pairTwo) -> {
+										if (!Objects.equals(pairOne, pairTwo)) {
+											LOGGER.warning(String.format(
+													"Duplicate key, %d, for Pairs %s and %s",
+													checkID.apply(pairOne.second()),
+													pairOne.toString(),
+													pairTwo.toString()));
+										}
+										return pairOne;
+									})));
 		}
 		return retval;
 	}

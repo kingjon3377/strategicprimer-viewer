@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
@@ -119,10 +118,8 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 	private static void extractForests(final IMapNG map, final Point point,
 									   final List<Forest> list) {
 		list.clear();
-		Stream.concat(Stream.of(map.getForest(point)),
-				map.streamOtherFixtures(point).filter(Forest.class::isInstance)
-						.map(Forest.class::cast)).filter(Objects::nonNull)
-				.forEach(list::add);
+		map.streamAllFixtures(point).filter(Forest.class::isInstance)
+				.map(Forest.class::cast).filter(Objects::nonNull).forEach(list::add);
 	}
 	/**
 	 * We clear the list, then add all Ground at the given point in the given map to
@@ -134,9 +131,7 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 	private static void extractGround(final IMapNG map, final Point point,
 									   final List<Ground> list) {
 		list.clear();
-		Stream.concat(Stream.of(map.getGround(point)),
-				map.streamOtherFixtures(point).filter(Ground.class::isInstance)
-						.map(Ground.class::cast)).filter(Objects::nonNull)
-				.forEach(list::add);
+		map.streamAllFixtures(point).filter(Ground.class::isInstance)
+				.map(Ground.class::cast).filter(Objects::nonNull).forEach(list::add);
 	}
 }

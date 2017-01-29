@@ -92,15 +92,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 				addElement(newRivers);
 			}
 		}
-		final Ground ground = map.getGround(newPoint);
-		if (ground != null) {
-			addElement(ground);
-		}
-		final Forest forest = map.getForest(newPoint);
-		if (forest != null) {
-			addElement(forest);
-		}
-		map.streamOtherFixtures(newPoint).collect(Collectors.toList())
+		map.streamAllFixtures(newPoint).collect(Collectors.toList())
 				.forEach(this::addElement);
 		point = newPoint;
 	}

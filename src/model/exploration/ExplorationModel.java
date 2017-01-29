@@ -216,9 +216,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point,
 												   final TileFixture fix) {
-		return Stream.concat(Stream.of(map.getForest(point), map.getGround(point)),
-				map.streamOtherFixtures(point)).filter(Objects::nonNull)
-					   .flatMap(fixture -> {
+		return map.streamAllFixtures(point).filter(Objects::nonNull).flatMap(fixture -> {
 			if (fixture instanceof FixtureIterable) {
 				return Stream.concat(Stream.of(fixture),
 						((FixtureIterable<@NonNull ?>) fixture).stream());
@@ -313,7 +311,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 						map.getForest(dest) != null, map.isMountainous(dest),
 						SimpleMovement.doRiversApply(direction, map.getRivers(point),
 								map.getRivers(dest)),
-						() -> map.streamOtherFixtures(dest));
+						() -> map.streamAllFixtures(dest));
 			}
 			final int retval = (int) (Math.ceil(base * speed.getMpMultiplier()) + 0.1);
 			removeImpl(map, point, unit);
@@ -595,9 +593,9 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		if (currPoint.getRow() >= 0) {
 			final IMutableMapNG mainMap = getMap();
 			@Nullable final Ground ground = mainMap.getGround(currPoint);
-			final List<TileFixture> diggables = Stream.concat(Stream.of(ground),
-					mainMap.streamOtherFixtures(currPoint))
-														.filter(ExplorationModel::isDiggable)
+			final List<TileFixture> diggables = mainMap.streamAllFixtures(currPoint)
+														.filter
+																 (ExplorationModel::isDiggable)
 														.collect(Collectors.toList());
 			if (diggables.isEmpty()) {
 				return;
@@ -622,7 +620,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					map.setGround(currPoint,
 							(Ground) newFix.copy(condition.booleanValue()));
 					return;
-				} else if (map.streamOtherFixtures(currPoint)
+				} else if (map.streamAllFixtures(currPoint)
 								   .anyMatch(fix -> areDiggablesEqual(fix, oldFix))) {
 					map.removeFixture(currPoint, oldFix);
 				}

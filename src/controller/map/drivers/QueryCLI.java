@@ -13,7 +13,6 @@ import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import model.exploration.HerdModel;
 import model.exploration.HuntingModel;
 import model.exploration.SurroundingPointIterable;
@@ -412,9 +411,7 @@ public final class QueryCLI implements SimpleDriver {
 		cli.print("Terrain is ");
 		cli.println(map.getBaseTerrain(location).toString());
 		final List<TileFixture> fixtures =
-				Stream.concat(Stream.of(map.getGround(location), map.getForest
-																			 (location)),
-						map.streamOtherFixtures(location)).filter(Objects::nonNull)
+				map.streamAllFixtures(location).filter(Objects::nonNull)
 						.collect(Collectors.toList());
 		final Collection<Ground> ground = new ArrayList<>();
 		final Collection<Forest> forests = new ArrayList<>();

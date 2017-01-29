@@ -283,9 +283,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 	 * @return false if that location already has a forest, true otherwise
 	 */
 	private static boolean isPointUnforested(final IMapNG map, final Point point) {
-		return (map.getForest(point) == null) &&
-					   map.streamOtherFixtures(point)
-							   .noneMatch(Forest.class::isInstance);
+		return map.streamAllFixtures(point).noneMatch(Forest.class::isInstance);
 	}
 
 	/**
@@ -446,8 +444,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 										   RaceFactory.getRace(new Random(idNum))));
 			}
 			final List<TileFixture> fixtures = new LinkedList<>();
-			Stream.concat(Stream.of(oldMap.getGround(point), oldMap.getForest(point)),
-					oldMap.streamOtherFixtures(point)).filter(Objects::nonNull)
+			oldMap.streamAllFixtures(point).filter(Objects::nonNull)
 					.forEach(fixtures::add);
 			separateRivers(point, initial, oldMap, newMap);
 			final Random random = new Random(getSeed(point));
@@ -516,13 +513,13 @@ public final class OneToTwoConverter implements SimpleDriver {
 								TileType.BorealForest == origTerrain) &&
 							   isPointUnforested(map, point)) {
 				map.setForest(point, new Forest(runner.getPrimaryTree(point,
-						origTerrain, map.streamOtherFixtures(point),
+						origTerrain, map.streamAllFixtures(point),
 						map.dimensions()), false, idFac.createID()));
 			}
 			map.setBaseTerrain(point, equivalentTerrain(origTerrain));
 			addFixture(map, point,
 					new Ground(idFac.createID(), runner.getPrimaryRock(point, map.getBaseTerrain(point),
-							map.streamOtherFixtures(point), map.dimensions()), false),
+							map.streamAllFixtures(point), map.dimensions()), false),
 					main);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing table", e);
@@ -576,7 +573,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 			if (field) {
 				addFixture(map, point,
 						new Meadow(runner.recursiveConsultTable("grain", point,
-								map.getBaseTerrain(point), map.streamOtherFixtures
+								map.getBaseTerrain(point), map.streamAllFixtures
 																	   (point),
 								map.dimensions()), true, true, id,
 										  FieldStatus.random(id)), main);
@@ -586,7 +583,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 																"fruit_trees",
 																point,
 																map.getBaseTerrain(point),
-																map.streamOtherFixtures(
+																map.streamAllFixtures(
 																		point),
 																map.dimensions()),
 														id), main);
@@ -612,7 +609,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 			final String forestType =
 					runner.recursiveConsultTable("temperate_major_tree",
 							point,
-							map.getBaseTerrain(point), map.streamOtherFixtures(point),
+							map.getBaseTerrain(point), map.streamAllFixtures(point),
 							map.dimensions());
 			final Forest existingForest = map.getForest(point);
 			if (existingForest == null || !forestType.equals(existingForest.getKind())) {

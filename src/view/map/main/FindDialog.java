@@ -272,10 +272,7 @@ public final class FindDialog extends SPDialog {
 				new PointIterator(map.getMapDimensions(), map.getSelectedPoint(),
 										 !backwards.isSelected(),
 										 !vertically.isSelected()).stream()
-						.filter(point -> Stream.concat(
-								Stream.of(map.getMap().getGround(point),
-										map.getMap().getForest(point)),
-								map.getMap().streamOtherFixtures(point)).anyMatch(
+						.filter(point -> map.getMap().streamAllFixtures(point).anyMatch(
 								fix -> matches(pattern, finalID, fix, caseSensitivity)))
 						.findFirst();
 		if (result.isPresent()) {
@@ -391,13 +388,11 @@ public final class FindDialog extends SPDialog {
 		@Override
 		public void run() {
 			for (final Point point : map.locations()) {
-				populate(map.getGround(point));
-				populate(map.getForest(point));
 				if (map.getRivers(point).iterator().hasNext()) {
 					//noinspection ObjectAllocationInLoop
 					populate(new RiverFixture());
 				}
-				populate(map.streamOtherFixtures(point));
+				populate(map.streamAllFixtures(point));
 			}
 		}
 

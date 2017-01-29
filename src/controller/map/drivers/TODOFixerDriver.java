@@ -75,7 +75,7 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	/**
 	 * Fix a stubbed-out kind for a unit.
 	 *
-	 * @param unit    the unit to fix
+	 * @param unit    the unit to fix TODO: take IUnit interface?
 	 * @param terrain the terrain the unit is in
 	 * @param cli     the helper to get input from the user
 	 */

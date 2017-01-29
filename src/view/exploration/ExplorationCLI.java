@@ -187,9 +187,7 @@ public final class ExplorationCLI implements MovementCostSource {
 				allFixtures.add(fix);
 			}
 		};
-		consider.accept(map.getGround(dPoint));
-		consider.accept(map.getForest(dPoint));
-		map.streamOtherFixtures(dPoint).forEach(consider);
+		map.streamAllFixtures(dPoint).forEach(consider);
 		final String tracks = getAnimalTraces(dPoint);
 		if (!HuntingModel.NOTHING.equals(tracks)) {
 			allFixtures.add(new Animal(tracks, true, false, "wild", idf.createID()));

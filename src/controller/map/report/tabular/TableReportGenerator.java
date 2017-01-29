@@ -15,13 +15,11 @@ import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
-import model.map.fixtures.Ground;
 import model.map.fixtures.explorable.ExplorableFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.MobileFixture;
-import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
@@ -158,8 +156,9 @@ public final class TableReportGenerator {
 																				  map) {
 		final PatientMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
 		final IDRegistrar idf = IDFactoryFiller.createFactory(map);
+		// TODO: Use Stream operations instead of this outer loop
 		for (final Point point : map.locations()) {
-			retval.putAll(getFixtures(map.streamOtherFixtures(point))
+			retval.putAll(getFixtures(map.streamAllFixtures(point))
 								  .filter(fix -> (fix instanceof TileFixture)
 														 || (fix.getID() > 0))
 								  .collect(Collectors.toMap(fix -> {
@@ -170,14 +169,6 @@ public final class TableReportGenerator {
 										  return Integer.valueOf(fix.getID());
 									  }
 								  }, fix -> Pair.of(point, fix))));
-			final Ground ground = map.getGround(point);
-			final Forest forest = map.getForest(point);
-			if (ground != null) {
-				retval.put(Integer.valueOf(idf.createID()), Pair.of(point, ground));
-			}
-			if (forest != null) {
-				retval.put(Integer.valueOf(forest.getID()), Pair.of(point, forest));
-			}
 		}
 		return retval;
 	}

@@ -266,9 +266,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private Stream<TileFixture> getDrawableFixtures(final IMapNG map,
 													final Point location) {
-		return Stream.concat(
-				Stream.of(map.getGround(location), map.getForest(location))
-						.filter(Objects::nonNull), map.streamOtherFixtures(location))
+		return map.streamAllFixtures(location)
 					   .filter(fix -> !(fix instanceof TileTypeFixture))
 					   .filter(zof::shouldDisplay).sorted(fixComp);
 	}

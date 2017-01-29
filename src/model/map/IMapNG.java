@@ -1,5 +1,6 @@
 package model.map;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.map.fixtures.Ground;
@@ -114,6 +115,16 @@ public interface IMapNG
 	Stream<@NonNull TileFixture> streamOtherFixtures(Point location);
 
 	/**
+	 * A Stream over *all* fixtures on a tile, including its primary forest and Ground, if any.
+	 * @param a location
+	 * @return a Stream of all fixtures there
+	 */
+	default Stream<@NonNull TileFixture> streamAllFixtures(final Point location) {
+		return Stream.concat(Stream.of(getGround(location), getForest(location))
+									 .filter(Objects::nonNull),
+				streamOtherFixtures(location));
+	}
+	/**
 	 * The current turn.
 	 * @return the current turn
 	 */
@@ -142,10 +153,9 @@ public interface IMapNG
 	 */
 	default boolean isLocationEmpty(final Point location) {
 		return TileType.NotVisible == getBaseTerrain(location) &&
-					   !isMountainous(location) && getGround(location) == null &&
-					   getForest(location) == null &&
+					   !isMountainous(location) &&
 					   !getRivers(location).iterator().hasNext() &&
-					   streamOtherFixtures(location).noneMatch(x -> true);
+					   streamAllFixtures(location).noneMatch(x -> true);
 	}
 
 	/**

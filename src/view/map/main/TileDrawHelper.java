@@ -78,7 +78,7 @@ public interface TileDrawHelper {
 	 * @return whether there are any 'events' at that location
 	 */
 	default boolean hasEvent(final IMapNG map, final Point location) {
-		return map.streamOtherFixtures(location).anyMatch(IEvent.class::isInstance);
+		return map.streamAllFixtures(location).anyMatch(IEvent.class::isInstance);
 	}
 
 }

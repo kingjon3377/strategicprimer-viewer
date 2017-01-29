@@ -491,7 +491,6 @@ public class SPMapNG implements IMutableMapNG {
 	 * A stream of fixtures other than mountain, rivers, primary forest, and primary
 	 * ground at the given location.
 	 *
-	 * TODO: make streamAllFixtures() to include forest and ground
 	 * @param location a location
 	 * @return a stream of any other fixtures there
 	 */
@@ -503,7 +502,6 @@ public class SPMapNG implements IMutableMapNG {
 			return Stream.empty();
 		}
 	}
-
 	/**
 	 * The current turn.
 	 * @return the current turn
@@ -567,12 +565,8 @@ public class SPMapNG implements IMutableMapNG {
 									 ) &&
 									 areIterablesEqual(getRivers(point),
 											 obj.getRivers(point)) &&
-									 Objects.equals(getForest(point),
-											 obj.getForest(point)) &&
-									 Objects.equals(getGround(point),
-											 obj.getGround(point)) &&
-									 areStreamsEqual(streamOtherFixtures(point),
-											 obj.streamOtherFixtures(point)));
+									 areStreamsEqual(streamAllFixtures(point),
+											 obj.streamAllFixtures(point)));
 		} else {
 			return false;
 		}
@@ -640,6 +634,7 @@ public class SPMapNG implements IMutableMapNG {
 					}
 					formatter.format(", ");
 				}
+				// TODO: Use fixtures.containsKey() instead of the Stream op here
 				if (streamOtherFixtures(location).anyMatch(x -> true)) {
 					formatter.format("other: ");
 					for (final TileFixture fixture : getOtherFixtures(location)) {
