@@ -184,6 +184,12 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		throw new IllegalArgumentException("Not an object we know how to write");
 	}
 
+	/**
+	 * Write a map to a file.
+	 * @param file the file to write to
+	 * @param map  the map to write.
+	 * @throws IOException on I/O error.
+	 */
 	@Override
 	public void write(final Path file, final IMapNG map)
 			throws IOException {
@@ -192,6 +198,12 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		}
 	}
 
+	/**
+	 * Write a map to a stream.
+	 * @param ostream the stream to write to
+	 * @param map     the map to write
+	 * @throws IOException on I/O error.
+	 */
 	@Override
 	public void write(final Appendable ostream, final IMapNG map)
 			throws IOException {
