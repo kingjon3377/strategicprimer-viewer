@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -135,18 +136,13 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 			if (!(dropLocation instanceof JTree.DropLocation)) {
 				return false;
 			}
-			final TreePath path = ((JTree.DropLocation) dropLocation).getPath();
-			if (path == null) {
-				return false;
+			final Object pathLast =
+					Optional.ofNullable(((JTree.DropLocation) dropLocation).getPath())
+							.map(TreePath::getLastPathComponent)
+							.map(model::getModelObject).orElse(null);
+			if ((pathLast instanceof IUnit) || (pathLast instanceof UnitMember)) {
+				return true;
 			} else {
-				final Object pathLast = path.getLastPathComponent();
-				if (pathLast != null) {
-					final Object pathLastObj = model.getModelObject(pathLast);
-					if ((pathLastObj instanceof IUnit) ||
-								(pathLastObj instanceof UnitMember)) {
-						return true;
-					}
-				}
 				return false;
 			}
 		} else {
