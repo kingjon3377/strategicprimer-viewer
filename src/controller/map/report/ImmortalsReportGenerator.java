@@ -87,23 +87,6 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
-	 * Handle a simple fixture class.
-	 * @param meta the mapping from types to Consumers
-	 * @param cls a type of fixture
-	 * @param heading the heading to put at the top of the list
-	 * @return the list for that kind of fixture, with a reference to its add() method
-	 * added to meta.
-	 */
-	private static HeadedList<Point> handleSimple(final Map<Class<? extends IFixture>,
-																   BiConsumer<String,
-																					 Point>> meta,
-												  final Class<? extends IFixture> cls,
-												  final String heading) {
-		final HeadedList<Point> retval = new PointList(heading);
-		meta.put(cls, (kind, point) -> retval.add(point));
-		return retval;
-	}
-	/**
 	 * Handle a more complex fixture class.
 	 * @param meta the mapping from types to Consumers
 	 * @param cls a type of fixture
