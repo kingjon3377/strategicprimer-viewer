@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
@@ -146,10 +145,6 @@ public final class MapChecker implements UtilityDriver {
 		final Warning warner = Warning.DEFAULT;
 		try {
 			map = reader.readMap(file, warner);
-		} catch (final MapVersionException e) {
-			LOGGER.log(Level.SEVERE,
-					"Map version in " + file + " not acceptable to reader", e);
-			return;
 		} catch (final FileNotFoundException | NoSuchFileException e) {
 			LOGGER.log(Level.SEVERE, file + " not found", e);
 			return;

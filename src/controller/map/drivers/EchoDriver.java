@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactoryFiller;
@@ -149,9 +148,7 @@ public final class EchoDriver implements UtilityDriver {
 	 * @return an appropriate message for the DriverFailedException
 	 */
 	private static String message(final Path filename, final Exception except) {
-		if (except instanceof MapVersionException) {
-			return "Unsupported map version";
-		} else if (except instanceof IOException) {
+		if (except instanceof IOException) {
 			//noinspection HardcodedFileSeparator
 			return "I/O error reading file " + filename;
 		} else if (except instanceof XMLStreamException) {

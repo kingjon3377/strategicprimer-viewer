@@ -1,9 +1,8 @@
 package view.map.misc;
 
-import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FilterWriter;
 import java.io.IOException;
@@ -20,7 +19,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -131,10 +130,6 @@ public final class SubsetFrame extends SPFrame {
 		} catch (final FileNotFoundException | NoSuchFileException except) {
 			printParagraph("File " + arg + " not found", ERROR_COLOR);
 			throw except;
-		} catch (final MapVersionException except) {
-			printParagraph("ERROR: Map version of main map " + arg +
-								   " not acceptable to reader", ERROR_COLOR);
-			throw except;
 		} catch (final XMLStreamException except) {
 			printParagraph("ERROR: Malformed XML in file " + arg +
 								   "; see following error message for details",
@@ -215,13 +210,6 @@ public final class SubsetFrame extends SPFrame {
 		final IMapNG map;
 		try {
 			map = reader.readMap(arg, Warning.Ignore);
-		} catch (final MapVersionException except) {
-			LOGGER.log(Level.SEVERE,
-					"Map version in " + arg + " not acceptable to reader",
-					except);
-			printParagraph("ERROR: Map version not acceptable to reader",
-					ERROR_COLOR);
-			return;
 		} catch (final FileNotFoundException | NoSuchFileException except) {
 			printParagraph("FAIL: File not found", ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, arg + " not found", except);

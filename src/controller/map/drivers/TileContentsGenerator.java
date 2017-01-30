@@ -1,7 +1,6 @@
 package controller.map.drivers;
 
 import controller.exploration.TableLoader;
-import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
@@ -111,9 +110,6 @@ public final class TileContentsGenerator {
 			} catch (final NumberFormatException | ParseException e) {
 				logger.log(Level.SEVERE, "Non-numeric row or column", e);
 				System.exit(1);
-			} catch (final MapVersionException e) {
-				logger.log(Level.SEVERE, "Unexpected map version", e);
-				System.exit(2);
 			} catch (final IOException e) {
 				//noinspection HardcodedFileSeparator
 				logger.log(Level.SEVERE, "I/O error", e);

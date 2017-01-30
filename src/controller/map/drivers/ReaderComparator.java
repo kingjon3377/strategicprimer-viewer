@@ -1,7 +1,6 @@
 package controller.map.drivers;
 
 import controller.map.fluidxml.SPFluidReader;
-import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.misc.ICLIHelper;
@@ -74,9 +73,6 @@ public final class ReaderComparator implements UtilityDriver {
 			LOGGER.log(Level.SEVERE,
 					"XMLStreamException (probably badly formed input) in " + file,
 					except);
-		} else if (except instanceof MapVersionException) {
-			LOGGER.log(Level.SEVERE,
-					"Map version too old for old-style reader in file " + file, except);
 		} else if (except instanceof SPFormatException) {
 			LOGGER.log(Level.SEVERE, "New reader claims invalid SP map data in " + file,
 					except);

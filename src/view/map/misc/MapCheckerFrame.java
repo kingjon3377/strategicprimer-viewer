@@ -1,6 +1,5 @@
 package view.map.misc;
 
-import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import java.awt.Color;
@@ -130,12 +129,7 @@ public final class MapCheckerFrame extends SPFrame {
 	 * @param filename what file was being read
 	 */
 	private void printError(final Exception except, final String filename) {
-		if (except instanceof MapVersionException) {
-			LOGGER.log(Level.SEVERE,
-					"Map version in " + filename + " not acceptable to reader", except);
-			printParagraph("ERROR: Map version not acceptable to reader",
-					ERROR_COLOR);
-		} else if (except instanceof FileNotFoundException ||
+		if (except instanceof FileNotFoundException ||
 						   except instanceof NoSuchFileException) {
 			printParagraph("ERROR: File not found", ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, filename + " not found", except);

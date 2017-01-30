@@ -1,7 +1,6 @@
 package controller.map.drivers;
 
 import controller.map.converter.ResolutionDecreaseConverter;
-import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
@@ -97,9 +96,6 @@ public final class ConverterDriver implements UtilityDriver {
 				final String newFilename = filename + ".new";
 				cli.println(newFilename);
 				READER.write(Paths.get(newFilename), map);
-			} catch (final MapVersionException e) {
-				LOGGER.log(Level.SEVERE, "Map version in " + filename
-												 + " not acceptable to reader", e);
 			} catch (final FileNotFoundException | NoSuchFileException e) {
 				LOGGER.log(Level.SEVERE, filename + " not found", e);
 			} catch (final IOException e) {
