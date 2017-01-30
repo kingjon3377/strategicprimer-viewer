@@ -196,7 +196,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 
 	/**
 	 * The Pairs' first elements are supposedly-numeric strings (as the second elements
-	 * are what they represent); uf any of the supposedly-numeric Srings are
+	 * are what they represent); uf any of the supposedly-numeric Strings are
 	 * non-numeric, "such-and-such must be a number" is printed to the Formatter.
 	 * @param numbers a sequence of Pairs of supposedly-numeric Strings and what they
 	 *                represent.
