@@ -54,7 +54,7 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	}
 
 	/**
-	 * The unupported property.
+	 * The unsupported property.
 	 * @return the unsupported parameter
 	 */
 	public String getParam() {
