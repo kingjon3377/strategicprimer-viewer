@@ -18,14 +18,6 @@ import javax.xml.stream.Location;
  * @author Jonathan Lovelace
  */
 public final class SPMalformedInputException extends SPFormatException {
-	/**
-	 * Constructor.
-	 *
-	 * @param location where this occurred
-	 */
-	public SPMalformedInputException(final Location location) {
-		super("Malformed input", location);
-	}
 
 	/**
 	 * Constructor.
