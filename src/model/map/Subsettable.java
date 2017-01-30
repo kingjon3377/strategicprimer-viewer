@@ -69,28 +69,6 @@ public interface Subsettable<T> {
 	 * @param second   the second item
 	 * @return whether the two items are equal
 	 */
-	default boolean areItemsEqual(final Formatter ostream, final boolean first,
-								  final boolean second, final String message,
-								  final Object... parameters) {
-		if (first == second) {
-			return true;
-		} else {
-			ostream.format(message, parameters);
-			return false;
-		}
-	}
-
-	/**
-	 * A helper method to compare two items and, if they're not equal, report this to
-	 * the stream.
-	 *
-	 * @param ostream  the stream to write to
-	 * @param message  message (format string) to write if the two aren't equal
-	 * @param parameters	parameters to use with the format string
-	 * @param first    the first item
-	 * @param second   the second item
-	 * @return whether the two items are equal
-	 */
 	default boolean areIntItemsEqual(final Formatter ostream, final int first,
 									 final int second, final String message,
 									 final Object... parameters) {
