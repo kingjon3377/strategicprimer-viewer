@@ -1,10 +1,8 @@
 package util;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.PriorityQueue;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -44,23 +42,6 @@ public final class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 		} else {
 			iter = iterator;
 		}
-	}
-
-	/**
-	 * Constructor to produce a *sorted* Iterable. Unlike normal operation, this
-	 * evaluates
-	 * its arguments greedily.
-	 *
-	 * @param iterator   the iterator to get elements from.
-	 * @param comparator the comparator to use for sorting elements.
-	 */
-	public IteratorWrapper(final Iterator<T> iterator,
-						   final Comparator<T> comparator) {
-		final PriorityQueue<T> queue = new PriorityQueue<>(1, comparator);
-		while (iterator.hasNext()) {
-			queue.add(iterator.next());
-		}
-		iter = queue.iterator();
 	}
 
 	/**
