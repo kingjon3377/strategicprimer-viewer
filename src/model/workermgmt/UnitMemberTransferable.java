@@ -105,7 +105,7 @@ public final class UnitMemberTransferable implements Transferable {
 	}
 
 	/**
-	 * Use the transfered data's hash code.
+	 * Use the transferred data's hash code.
 	 * @return a hash value for the object
 	 */
 	@Override
