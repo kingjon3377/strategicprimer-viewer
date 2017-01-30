@@ -1,8 +1,5 @@
 package model.map.fixtures.resources;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Kinds of minerals whose events the program knows about.
  *
@@ -43,19 +40,9 @@ public enum MineralKind {
 	 */
 	Coal("coal");
 	/**
-	 * A mapping from string to MineralKind.
-	 */
-	private static final Map<String, MineralKind> M_MAP = new HashMap<>();
-	/**
 	 * A string representing the MineralKind.
 	 */
 	private final String str;
-
-	static {
-		for (final MineralKind kind : values()) {
-			M_MAP.put(kind.str, kind);
-		}
-	}
 
 	/**
 	 * Constructor.
@@ -64,19 +51,6 @@ public enum MineralKind {
 	 */
 	MineralKind(final String desc) {
 		str = desc;
-	}
-
-	/**
-	 * Parse a mineral kind from a String.
-	 * @param desc a string representing a MineralKind
-	 * @return the MineralKind it represents
-	 */
-	public static MineralKind parseMineralKind(final String desc) {
-		if (M_MAP.containsKey(desc)) {
-			return M_MAP.get(desc);
-		} else {
-			throw new IllegalArgumentException("Not a kind of mineral we recognize");
-		}
 	}
 
 	/**
