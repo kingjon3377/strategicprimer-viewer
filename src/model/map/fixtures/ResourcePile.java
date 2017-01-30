@@ -243,7 +243,7 @@ public class ResourcePile
 	}
 
 	/**
-	 * A String representaiton of the pile.
+	 * A String representation of the pile.
 	 * @return a String representation of the resource pile
 	 */
 	@Override
