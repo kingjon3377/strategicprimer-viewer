@@ -78,14 +78,6 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
-	 * What kind of mineral.
-	 * @return what kind of mineral this is
-	 */
-	public String mineral() {
-		return mineral;
-	}
-
-	/**
 	 * Whether the vein is exposed.
 	 * @return whether the vein is exposed
 	 */
