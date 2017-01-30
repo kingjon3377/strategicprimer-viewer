@@ -367,7 +367,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
-	 * Get the image representing the given fixtuer.
+	 * Get the image representing the given fixture.
 	 * @param fix a TileFixture
 	 * @return an Image to draw to represent it.
 	 */
