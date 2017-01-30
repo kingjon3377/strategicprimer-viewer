@@ -228,14 +228,5 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 			super(message);
 			initCause(cause);
 		}
-
-		/**
-		 * Constructor.
-		 *
-		 * @param cause the cause
-		 */
-		public NoSuchElementBecauseException(final Throwable cause) {
-			initCause(cause);
-		}
 	}
 }
