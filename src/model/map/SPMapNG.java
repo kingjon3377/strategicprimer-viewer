@@ -747,7 +747,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void addFixture(final Point location, final TileFixture fix) {
 		// If we use a lambda in anyMatch(), many tests error with
-		// BoostrapMethodError caused by LambdaConversionException
+		// BootstrapMethodError caused by LambdaConversionException
 		// trying to convert HasMutableImage to IFixture.
 		//noinspection Convert2MethodRef
 		if (Stream.of(getForest(location), getGround(location))
