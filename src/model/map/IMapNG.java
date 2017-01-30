@@ -160,15 +160,6 @@ public interface IMapNG
 	}
 
 	/**
-	 * A map is empty if *every* location is empty. Note that calculating this can be
-	 * quite expensive!
-	 *
-	 * @return whether the map is entirely empty
-	 */
-	default boolean isEmpty() {
-		return locationStream().allMatch(this::isLocationEmpty);
-	}
-	/**
 	 * A stream of the players in the map.
 	 * @return a stream of the players in the map
 	 */
