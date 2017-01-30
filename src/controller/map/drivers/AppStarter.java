@@ -231,11 +231,12 @@ public final class AppStarter implements ISPDriver {
 					"Failed to switch to system look-and-feel", except);
 		}
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		final SPOptionsImpl options = new SPOptionsImpl();
 		try {
-			new AppStarter().startDriver(new SPOptionsImpl(), args);
+			new AppStarter().startDriver(options, args);
 		} catch (final IncorrectUsageException except) {
 			final IDriverUsage usage = except.getCorrectUsage();
-			final String message = getUsageMessage(usage);
+			final String message = getUsageMessage(usage, options.hasOption("--verbose"));
 			System.err.println(message);
 			DriverQuit.quit(1);
 		} catch (final DriverFailedException except) {
@@ -248,9 +249,11 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * Create the usage message to print to stderr on incorrect usage.
 	 * @param usage The object indicating proper usage.
+	 * @param verbose whether to use long, rather than short, descriptions
 	 * @return the usage message
 	 */
-	private static String getUsageMessage(final IDriverUsage usage) {
+	private static String getUsageMessage(final IDriverUsage usage,
+										  final boolean verbose) {
 		final StringBuilder buff = new StringBuilder();
 		try (final Formatter formatter = new Formatter(buff)) {
 			formatter.format("Usage: java %s %s %s|%s",
@@ -282,7 +285,11 @@ public final class AppStarter implements ISPDriver {
 				formatter.format(" [%s ...]", usage.getSubsequentParamDesc());
 				break;
 			}
-			formatter.format("%n%s", usage.getShortDescription());
+			if (verbose) {
+				formatter.format("%n%s", usage.getLongDescription());
+			} else {
+				formatter.format("%n%s", usage.getShortDescription());
+			}
 		}
 		return buff.toString();
 	}
@@ -323,6 +330,8 @@ public final class AppStarter implements ISPDriver {
 
 	/**
 	 * Start the driver, and then start the specified other driver.
+	 *
+	 * TODO: somehow support --help
 	 *
 	 * @param cli the interface for user I/O
 	 * @param options options to pass to the driver.
