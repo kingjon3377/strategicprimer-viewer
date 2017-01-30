@@ -257,7 +257,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 
 	/**
 	 * Whether this should be considered (if true) a proxy for multiple representations
-	 * of the same Job, e.g. in different maps, or (if false) a proxy for ifferent
+	 * of the same Job, e.g. in different maps, or (if false) a proxy for different
 	 * related Jobs.
 	 * @return whether this is a "parallel" proxy.
 	 */
