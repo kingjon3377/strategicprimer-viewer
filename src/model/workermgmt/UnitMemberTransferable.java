@@ -67,8 +67,7 @@ public final class UnitMemberTransferable implements Transferable {
 
 	/**
 	 * This now returns the source component's listened property for text flavors, as
-	 * part
-	 * of a hack to disallow intra-component drops.
+	 * part of a hack to disallow drops within the same component.
 	 *
 	 * @param flavor a DataFlavor
 	 * @return our underlying data if they want it in the flavor we support
