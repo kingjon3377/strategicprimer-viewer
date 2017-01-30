@@ -33,14 +33,6 @@ import org.eclipse.jdt.annotation.Nullable;
 public final class RiverFixture
 		implements TileFixture, Iterable<@NonNull River>, SubsettableFixture {
 	/**
-	 * The maximum size of a river's equivalent string, plus a space.
-	 */
-	private static final int MAX_RIVER_SIZE = 6;
-	/**
-	 * The base string we use in toString before listing the rivers.
-	 */
-	private static final String BASE_STRING = "RiverFixture with rivers: ";
-	/**
 	 * The Set we're using to hold the Rivers.
 	 */
 	private final Set<River> rivers;
