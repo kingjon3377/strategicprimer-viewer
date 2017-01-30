@@ -43,10 +43,10 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	private final IDriverModel model;
 	/**
 	 * Constructor.
-	 * @param dmodel the driver model to operate on
+	 * @param driverModel the driver model to operate on
 	 */
-	public PlayerChangeMenuListener(final IDriverModel dmodel) {
-		model = dmodel;
+	public PlayerChangeMenuListener(final IDriverModel driverModel) {
+		model = driverModel;
 	}
 	/**
 	 * Add a listener.
