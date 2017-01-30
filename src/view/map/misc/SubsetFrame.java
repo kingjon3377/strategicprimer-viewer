@@ -2,7 +2,7 @@ package view.map.misc;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.*;
+import java.awt.Dimension;
 import java.io.FileNotFoundException;
 import java.io.FilterWriter;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.swing.*;
+import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.MapDimensions;
