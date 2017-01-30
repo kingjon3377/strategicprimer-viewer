@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import model.map.IMapNG;
 
 /**
@@ -40,18 +39,6 @@ public interface SPWriter {
 	 * @throws IOException on error in writing
 	 */
 	void write(Appendable ostream, IMapNG map) throws IOException;
-
-	/**
-	 * Write an object to file.
-	 *
-	 * @param filename the file to write to
-	 * @param obj      the object to write
-	 * @throws IOException on I/O error
-	 */
-	default void writeSPObject(final String filename, final Object obj)
-			throws IOException {
-		writeSPObject(Paths.get(filename), obj);
-	}
 
 	/**
 	 * Write an object to file.
