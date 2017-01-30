@@ -70,10 +70,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 * No-arg constructor.
 	 */
 	public ComplexReportNode() {
-		super("");
-		text = ""; // required by Eclipse
-		setText("");
-		point = null;
+		this("");
 	}
 
 	/**
