@@ -124,7 +124,6 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	 * Fix an aquatic village with a non-aquatic race.
 	 * @param village the village to fix
 	 * @param cli the interface to the user.
-	 * @throws IOException on I/O error interacting with user
 	 */
 	private void fixVillage(final Village village, final ICLIHelper cli) {
 		final Integer id = Integer.valueOf(village.getID());
