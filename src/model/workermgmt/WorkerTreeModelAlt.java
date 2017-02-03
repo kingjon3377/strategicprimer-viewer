@@ -128,7 +128,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		fireTreeNodesRemoved(this,
 				new Object[]{playerNode, getNode(old.getKind()), oldNode},
 				new int[]{oldIndex}, new Object[]{node});
-		oldNode.remove(node);
+		if (oldNode != null) {
+			oldNode.remove(node);
+		}
 		if ((member instanceof ProxyFor) && (old instanceof ProxyUnit)
 					&& (newOwner instanceof ProxyUnit)) {
 			moveProxied(member, (ProxyUnit) old, (ProxyUnit) newOwner, newNode, node);
