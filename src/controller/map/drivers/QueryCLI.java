@@ -30,7 +30,6 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.terrain.Forest;
 import model.misc.IDriverModel;
-import util.ListMaker;
 import util.TypesafeLogger;
 
 /**
@@ -134,7 +133,8 @@ public final class QueryCLI implements SimpleDriver {
 			distance(model.getMapDimensions(), cli);
 			break;
 		case 'c':
-			count(model.getMap(), ListMaker.toList(model.getMap().players()), cli);
+			count(model.getMap(),
+					model.getMap().streamPlayers().collect(Collectors.toList()), cli);
 			break;
 		case 'u':
 			final Point base = cli.inputPoint("Starting point? ");
