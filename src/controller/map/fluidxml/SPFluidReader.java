@@ -51,7 +51,6 @@ import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleImmortal;
-import model.map.fixtures.mobile.SimpleImmortal.SimpleImmortalKind;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
@@ -115,30 +114,12 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		createSimpleFixtureReader("hill", Hill::new);
 		createSimpleFixtureReader("oasis", Oasis::new);
 		createSimpleFixtureReader("sandbar", Sandbar::new);
-		// TODO: Make createSimpleImmortalReader(), using SimpleImmortalKind.parse()
-		createSimpleFixtureReader("djinn",
-				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Djinn,
-													 idNum));
-		createSimpleFixtureReader("griffin",
-				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Griffin,
-													 idNum));
-		createSimpleFixtureReader("minotaur",
-				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Minotaur,
-													 idNum));
-		createSimpleFixtureReader("ogre",
-				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Ogre,
-													 idNum));
-		createSimpleFixtureReader("phoenix",
-				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Phoenix,
-													 idNum));
-		createSimpleFixtureReader("simurgh",
-				(idNum) -> new SimpleImmortal(SimpleImmortalKind.Simurgh, idNum));
-		createSimpleFixtureReader("sphinx",
-				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Sphinx,
-													 idNum));
-		createSimpleFixtureReader("troll",
-				(idNum) -> new SimpleImmortal(SimpleImmortal.SimpleImmortalKind.Troll,
-													 idNum));
+		for (final SimpleImmortal.SimpleImmortalKind immortal : SimpleImmortal
+																		.SimpleImmortalKind
+																		.values()) {
+			createSimpleFixtureReader(immortal.getTag(),
+					idNum -> new SimpleImmortal(immortal, idNum));
+		}
 		readers.put("animal", FluidUnitMemberHandler::readAnimal);
 		createSimpleHasKindReader("centaur", Centaur::new);
 		createSimpleHasKindReader("dragon", Dragon::new);
