@@ -36,7 +36,6 @@ import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
-import model.map.Player;
 import model.map.Point;
 import model.viewer.FixtureFilterTableModel;
 import model.viewer.FixtureListModel;
@@ -253,9 +252,9 @@ public final class ExplorationPanel extends BorderedPanel
 		final IMutableMapNG subMap =
 				model.streamSubordinateMaps().map(Pair::first).findFirst()
 						.orElseGet(model::getMap);
-		final Iterable<Player> players = subMap.players();
 		final FixtureList secList =
-				new FixtureList(panel, new FixtureListModel(subMap, false), players);
+				new FixtureList(panel, new FixtureListModel(subMap, false),
+									   subMap.players());
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
 		secPCS.addSelectionChangeListener(secList);
 		panel.add(new JScrollPane(secList));
