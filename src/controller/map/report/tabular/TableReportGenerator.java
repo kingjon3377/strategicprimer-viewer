@@ -156,7 +156,8 @@ public final class TableReportGenerator {
 																				  map) {
 		final PatientMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
 		final IDRegistrar idf = IDFactoryFiller.createFactory(map);
-		// TODO: Use Stream operations instead of this outer loop
+		// Have to use a loop instead of Stream operations because the point is needed
+		// both at the outer level, for streamAllFixtures(), and at the end.
 		for (final Point point : map.locations()) {
 			retval.putAll(getFixtures(map.streamAllFixtures(point))
 								  .filter(fix -> (fix instanceof TileFixture)
