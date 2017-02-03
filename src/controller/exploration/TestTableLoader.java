@@ -52,7 +52,6 @@ public final class TestTableLoader {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testLoadQuadrantTable() throws IOException {
-		// TODO: Test using different dimensions!
 		try (final BufferedReader reader = new BufferedReader(new StringReader(
 				String.format("quadrant%n2%none%ntwo%nthree%nfour%nfive%nsix")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
@@ -61,6 +60,12 @@ public final class TestTableLoader {
 			assertThat("loading quadrant table",
 					result.generateEvent(point, TileType.Tundra, EMPTY, dimensions),
 					equalTo(ONE_STRING));
+			assertThat("quadrant table isn't a constant table",
+					result.generateEvent(PointFactory.point(36, 30), TileType.Tundra,
+							EMPTY, dimensions), equalTo("five"));
+			assertThat("quadrant table can use alternate dimensions",
+					result.generateEvent(PointFactory.point(36, 30), TileType.Tundra,
+							EMPTY, new MapDimensions(36, 32, 2)), equalTo("six"));
 		}
 		try (final BufferedReader readerTwo = new BufferedReader(new StringReader
 																		 ("quadrant"))) {
