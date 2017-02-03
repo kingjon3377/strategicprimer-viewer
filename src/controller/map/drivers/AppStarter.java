@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
@@ -130,13 +129,14 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * Start the app-chooser window.
 	 *
+	 * @param cli the interface for CLI I/O
 	 * @param gui     whether to show the GUI chooser (or a CLI list)
 	 * @param options the option parameters to pass to the chosen driver
 	 * @param others  the non-option parameters to pass to the chosen driver
 	 * @throws DriverFailedException if the chosen driver fails
 	 */
-	private static void startChooser(final boolean gui, final SPOptions options,
-									 final List<String> others)
+	private static void startChooser(final ICLIHelper cli, final boolean gui,
+									 final SPOptions options, final List<String> others)
 			throws DriverFailedException {
 		if (gui) {
 			SwingUtilities
@@ -146,10 +146,10 @@ public final class AppStarter implements ISPDriver {
 			final List<ISPDriver> drivers =
 					CACHE.values().stream().map(Pair::first).distinct()
 							.collect(Collectors.toList());
-			try (final ICLIHelper cli = new CLIHelper()) {
+			try {
 				startChosenDriver(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
-								"No applications available", "App to start: ", true)),
+								"No applications available", "App to start: ", true)), cli,
 						options, others);
 			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator
@@ -163,46 +163,50 @@ public final class AppStarter implements ISPDriver {
 	 * Start a driver.
 	 *
 	 * @param driver  the driver to start
+	 * @param cli the CLI I/O interface
 	 * @param options option parameters
 	 * @param params  non-option parameters
 	 * @throws DriverFailedException on fatal error
 	 */
-	private static void startChosenDriver(final ISPDriver driver, final SPOptions
-																		  options,
+	private static void startChosenDriver(final ISPDriver driver, final ICLIHelper cli,
+										  final SPOptions options,
 										  final List<String> params)
 			throws DriverFailedException {
-		driver.startDriver(options, params.toArray(new String[params.size()]));
+		driver.startDriver(cli, options, params.toArray(new String[params.size()]));
 	}
 
 	/**
 	 * Start a GUI driver.
 	 *
+	 * @param cli the CLI I/O interface to pass to the driver
 	 * @param driver  the driver to start
 	 * @param options option parameters
 	 * @param model   the driver model
 	 * @throws DriverFailedException on fatal error
 	 */
-	private static void startChosenDriver(final ISPDriver driver, final SPOptions
-																		  options,
+	private static void startChosenDriver(final ISPDriver driver, final ICLIHelper cli,
+										  final SPOptions options,
 										  final IDriverModel model)
 			throws DriverFailedException {
-		driver.startDriver(new CLIHelper(), options, model);
+		driver.startDriver(cli, options, model);
 	}
 
 	/**
 	 * Start a GUI driver.
 	 *
+	 * @param cli the CLI I/O interface
 	 * @param driver  the driver to start
 	 * @param options option parameters
 	 * @param params  non-option parameters
 	 */
 	private static void startChosenGUIDriver(final ISPDriver driver,
+											 final ICLIHelper cli,
 											 final SPOptions options,
 											 final List<String> params) {
 		@SuppressWarnings("UnnecessaryLocalVariable") final Logger lgr = LOGGER;
 		SwingUtilities.invokeLater(() -> {
 			try {
-				startChosenDriver(driver, options, params);
+				startChosenDriver(driver, cli, options, params);
 			} catch (final DriverFailedException e) {
 				final String message = e.getMessage();
 				lgr.log(Level.SEVERE, message, e.getCause());
@@ -314,7 +318,7 @@ public final class AppStarter implements ISPDriver {
 				startChosenDriver(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
 								"No applications available", "App to start: ", true)),
-						options, model);
+						cli, options, model);
 			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator
 				LOGGER.log(Level.SEVERE,
@@ -369,10 +373,10 @@ public final class AppStarter implements ISPDriver {
 			} else if (CACHE.containsKey(arg.toLowerCase(Locale.ENGLISH))) {
 				if (drivers != null) {
 					if (gui) {
-						startChosenGUIDriver(drivers.second(), currentOptions,
-								new ArrayList<>(others));
+						startChosenGUIDriver(drivers.second(), cli, currentOptions,
+														new ArrayList<>(others));
 					} else {
-						startChosenDriver(drivers.first(), currentOptions,
+						startChosenDriver(drivers.first(), cli, currentOptions,
 								new ArrayList<>(others));
 					}
 					currentOptions = new SPOptionsImpl(options);
@@ -391,7 +395,7 @@ public final class AppStarter implements ISPDriver {
 			// No need to wrap startChooser() with invokeLater(), since it handles it
 			// internally.
 			try {
-				startChooser(localGui, currentOptions, others);
+				startChooser(cli, localGui, currentOptions, others);
 			} catch (final DriverFailedException e) {
 				final String message = e.getMessage();
 				LOGGER.log(Level.SEVERE, message, e.getCause());
@@ -399,9 +403,9 @@ public final class AppStarter implements ISPDriver {
 						.invokeLater(() -> ErrorShower.showErrorDialog(null, message));
 			}
 		} else if (gui) {
-			startChosenGUIDriver(drivers.second(), currentOptions, others);
+			startChosenGUIDriver(drivers.second(), cli, currentOptions, others);
 		} else {
-			startChosenDriver(drivers.first(), currentOptions, others);
+			startChosenDriver(drivers.first(), cli, currentOptions, others);
 		}
 	}
 
