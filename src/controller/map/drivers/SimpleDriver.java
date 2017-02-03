@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.misc.CLIHelper;
 import controller.map.misc.FileChooser;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
@@ -85,14 +84,14 @@ public interface SimpleDriver extends ISPDriver {
 																masterPath,
 																subPath);
 				mapModel.streamAllMaps().map(Pair::first).forEach(turnFixer);
-				startDriver(new CLIHelper(), options, mapModel);
+				startDriver(cli, options, mapModel);
 			} else {
 				final IMultiMapModel mapModel = new MapReaderAdapter()
 														.readMultiMapModel(
 																Warning.DEFAULT,
 																askUserForFile());
 				mapModel.streamAllMaps().map(Pair::first).forEach(turnFixer);
-				startDriver(new CLIHelper(), options, mapModel);
+				startDriver(cli, options, mapModel);
 			}
 		} else if (ParamCount.None == desiderata) {
 			throw new IncorrectUsageException(usage());
@@ -103,7 +102,7 @@ public interface SimpleDriver extends ISPDriver {
 															Paths.get(args[0]),
 															askUserForFile());
 			mapModel.streamAllMaps().map(Pair::first).forEach(turnFixer);
-			startDriver(new CLIHelper(), options, mapModel);
+			startDriver(cli, options, mapModel);
 		} else {
 			final IMultiMapModel mapModel = new MapReaderAdapter()
 													.readMultiMapModel(Warning.DEFAULT,
@@ -112,7 +111,7 @@ public interface SimpleDriver extends ISPDriver {
 																	.namesToFiles(true,
 																			args));
 			mapModel.streamAllMaps().map(Pair::first).forEach(turnFixer);
-			startDriver(new CLIHelper(), options, mapModel);
+			startDriver(cli, options, mapModel);
 		}
 	}
 

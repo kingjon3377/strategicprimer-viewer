@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
 import java.nio.file.Paths;
@@ -90,7 +89,7 @@ public interface SimpleCLIDriver extends SimpleDriver {
 			model.streamAllMaps().map(Pair::first)
 					.forEach(map -> map.setCurrentTurn(currentTurn));
 		}
-		startDriver(new CLIHelper(), options, model);
+		startDriver(cli, options, model);
 		reader.writeModel(model);
 	}
 }
