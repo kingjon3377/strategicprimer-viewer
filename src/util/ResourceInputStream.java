@@ -76,6 +76,7 @@ public final class ResourceInputStream extends InputStream {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int read(final byte @Nullable [] buf) throws IOException {
+		//noinspection ConstantConditions
 		return wrapped.read(buf);
 	}
 
@@ -91,6 +92,7 @@ public final class ResourceInputStream extends InputStream {
 	@Override
 	public int read(final byte @Nullable [] buf, final int off, final int len)
 			throws IOException {
+		//noinspection ConstantConditions
 		return wrapped.read(buf, off, len);
 	}
 

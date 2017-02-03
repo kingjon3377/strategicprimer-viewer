@@ -64,6 +64,7 @@ public class MagicReader extends Reader {
 	@Override
 	public int read(final char @Nullable [] buffer, final int offset, final int length)
 			throws IOException {
+		//noinspection ConstantConditions
 		return delegate.read(buffer, offset, length);
 	}
 

@@ -102,6 +102,7 @@ public final class ArraySet<U> implements Set<U> {
 			{"SuspiciousToArrayCall", "ParameterNameDiffersFromOverriddenParameter"})
 	@Override
 	public <T> T[] toArray(final T @Nullable [] array) {
+		//noinspection ConstantConditions
 		return impl.toArray(array);
 	}
 
@@ -147,6 +148,7 @@ public final class ArraySet<U> implements Set<U> {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public boolean containsAll(@Nullable final Collection<?> coll) {
+		//noinspection ConstantConditions
 		return impl.containsAll(coll);
 	}
 
@@ -179,6 +181,7 @@ public final class ArraySet<U> implements Set<U> {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public boolean retainAll(@Nullable final Collection<?> coll) {
+		//noinspection ConstantConditions
 		final boolean retval = impl.retainAll(coll);
 		if (retval) {
 			hash = impl.stream().mapToInt(Object::hashCode).sum();
@@ -195,6 +198,7 @@ public final class ArraySet<U> implements Set<U> {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public boolean removeAll(@Nullable final Collection<?> coll) {
+		//noinspection ConstantConditions
 		final boolean retval = impl.removeAll(coll);
 		if (retval) {
 			hash = impl.stream().mapToInt(Object::hashCode).sum();
