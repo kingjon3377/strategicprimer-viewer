@@ -164,16 +164,17 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
-	 * An object is equal iff it is a ProxyWorker proxying the same Jobs.
+	 * An object is equal iff it is a ProxyWorker proxying the same Jobs and either both
+	 * or neither is a proxy for parallel workers.
 	 *
-	 * TODO: Should check parallel as well.
 	 * @param fix a fixture
 	 * @return whether it's equal to this one
 	 */
 	@SuppressWarnings({"CastToConcreteClass", "InstanceofInterfaces"})
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return (fix instanceof ProxyWorker) &&
+		return (fix instanceof ProxyWorker) && parallel == ((ProxyWorker) fix)
+																   .parallel &&
 					   proxyJobs.equals(((ProxyWorker) fix).proxyJobs);
 	}
 
