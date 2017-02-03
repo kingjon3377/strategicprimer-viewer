@@ -99,9 +99,7 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 																		 map
 																				 .getBaseTerrain(
 																				 point))
-												.flatMap(point -> map
-																		  .streamOtherFixtures(
-														point))
+												.flatMap(map::streamOtherFixtures)
 												.filter(Village.class::isInstance)
 												.map(Village.class::cast)
 												.filter(village -> EqualsAny.equalsAny(
