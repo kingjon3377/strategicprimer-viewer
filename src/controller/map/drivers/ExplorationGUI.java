@@ -58,7 +58,7 @@ public final class ExplorationGUI implements SimpleDriver {
 			explorationModel = new ExplorationModel(model);
 		}
 		final MenuBroker menuHandler = new MenuBroker();
-		menuHandler.register(new IOHandler(explorationModel), "load", "save", "save as",
+		menuHandler.register(new IOHandler(explorationModel, options, cli), "load", "save", "save as",
 				"new", "load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer");
 		menuHandler.register(evt -> DriverQuit.quit(0), "quit");

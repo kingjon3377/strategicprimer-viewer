@@ -65,7 +65,7 @@ public final class ViewerStart implements SimpleDriver {
 			viewerModel = new ViewerModel(model);
 		}
 		final MenuBroker menuHandler = new MenuBroker();
-		menuHandler.register(new IOHandler(viewerModel), "load", "save", "save as",
+		menuHandler.register(new IOHandler(viewerModel, options, cli), "load", "save", "save as",
 				"new", "load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer");
 		menuHandler.register(evt -> DriverQuit.quit(0), "quit");

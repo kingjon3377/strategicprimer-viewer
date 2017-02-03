@@ -61,7 +61,7 @@ public final class AdvancementStart implements SimpleDriver {
 			workerModel = new WorkerModel(model);
 		}
 		final MenuBroker menuHandler = new MenuBroker();
-		menuHandler.register(new IOHandler(workerModel), "load", "save", "save as",
+		menuHandler.register(new IOHandler(workerModel, options, cli), "load", "save", "save as",
 				"new", "load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer");
 		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(workerModel);

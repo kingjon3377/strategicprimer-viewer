@@ -1,6 +1,6 @@
 package controller.map.misc;
 
-import controller.map.drivers.SPOptionsImpl;
+import controller.map.drivers.SPOptions;
 import controller.map.drivers.ViewerStart;
 import controller.map.formatexceptions.SPFormatException;
 import java.awt.Component;
@@ -64,16 +64,28 @@ public final class IOHandler implements ActionListener {
 	 * saved.
 	 */
 	private final IDriverModel model;
-
+	/**
+	 * User options.
+	 */
+	private final SPOptions options;
+	/**
+	 * CLI helper to pass to any newly-opened drivers.
+	 */
+	private final ICLIHelper cli;
 	/**
 	 * Constructor.
 	 *
 	 * @param map         the map model
 	 * @param fileChooser the file chooser
+	 * @param opts command-line options
+	 * @param cliHelper user I/O helper
 	 */
-	public IOHandler(final IDriverModel map, final JFileChooser fileChooser) {
+	public IOHandler(final IDriverModel map, final JFileChooser fileChooser,
+					 final SPOptions opts, final ICLIHelper cliHelper) {
 		model = map;
 		chooser = fileChooser;
+		options = opts;
+		cli = cliHelper;
 	}
 
 	/**
@@ -81,9 +93,12 @@ public final class IOHandler implements ActionListener {
 	 * only maps.
 	 *
 	 * @param map the map model
+	 * @param opts command-line options
+	 * @param cliHelper user I/O helper
 	 */
-	public IOHandler(final IDriverModel map) {
-		this(map, new FilteredFileChooser());
+	public IOHandler(final IDriverModel map,
+					 final SPOptions opts, final ICLIHelper cliHelper) {
+		this(map, new FilteredFileChooser(), opts, cliHelper);
 	}
 
 	/**
@@ -189,19 +204,16 @@ public final class IOHandler implements ActionListener {
 				saveAll(source);
 				break;
 			case "open in map viewer":
-				// FIXME: Somehow get the CLI interface and options from previous ...
-				new ViewerStart().startDriver(new CLIHelper(), new SPOptionsImpl(),
-						new ViewerModel(model));
+				new ViewerStart().startDriver(cli, options, new ViewerModel(model));
 				break;
 			case "open secondary map in map viewer":
 				if (model instanceof IMultiMapModel) {
-					// FIXME: Somehow get the CLI interface and options from previous
 					((IMultiMapModel) model).streamSubordinateMaps().findFirst()
-							.map(ViewerModel::new)
-							.ifPresent(vModel -> new ViewerStart()
-														 .startDriver(new CLIHelper(),
-																 new SPOptionsImpl(),
-																 vModel));
+							.map(ViewerModel::new).ifPresent(vModel -> new ViewerStart()
+																			   .startDriver(
+																					   cli,
+																					   options,
+																					   vModel));
 				}
 				break;
 			default:
@@ -216,8 +228,7 @@ public final class IOHandler implements ActionListener {
 	 * map.
 	 */
 	private void startNewViewerWindow() {
-		// FIXME: Somehow get the CLI interface and options from previous ...
-		new ViewerStart().startDriver(new CLIHelper(), new SPOptionsImpl(),
+		new ViewerStart().startDriver(cli, options,
 				new ViewerModel(new SPMapNG(model.getMapDimensions(),
 												   new PlayerCollection(),
 												   model.getMap().getCurrentTurn()),

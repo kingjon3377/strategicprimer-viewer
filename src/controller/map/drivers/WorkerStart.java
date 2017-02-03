@@ -69,7 +69,7 @@ public final class WorkerStart implements SimpleDriver {
 			driverModel = new WorkerModel(model);
 		}
 		final MenuBroker menuHandler = new MenuBroker();
-		menuHandler.register(new IOHandler(driverModel), "load", "save", "save as",
+		menuHandler.register(new IOHandler(driverModel, options, cli), "load", "save", "save as",
 				"new", "load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer");
 		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(driverModel);
