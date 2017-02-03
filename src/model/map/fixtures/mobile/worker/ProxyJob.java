@@ -7,10 +7,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyFor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import util.TypesafeLogger;
 
 /**
  * An IJob implementation to let the Job tree operate on a whole unit at once.
@@ -51,7 +53,10 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 * The name of the Job.
 	 */
 	private final String name;
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger.getLogger(ProxyJob.class);
 	/**
 	 * Constructor.
 	 * @param jobName         the name of the Job
@@ -148,23 +153,24 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
-	 * Currently always returns 0.
-	 * TODO: Return highest level among proxied Jobs.
-	 * @return 0
+	 * Returns the lowest level among proxied jobs.
+	 * @return the lowest levela among proxied jobs.
 	 */
 	@Override
 	public int getLevel() {
-		return 0;
+		return proxiedJobs.stream().mapToInt(IJob::getLevel).reduce(0, Math::min);
 	}
 
 	/**
-	 * Always throws. TODO: should it? TODO: message is wrong
+	 * Always throws.
 	 * @param newLevel Ignored; always throws
 	 */
 	@Override
 	public void setLevel(final int newLevel) {
-		throw new IllegalStateException
-					  ("Tried to set the level of all a worker's Jobs at once");
+		LOGGER.warning("setLevel called on ProxyJob");
+		for (final IJob proxied : proxiedJobs) {
+			proxied.setLevel(newLevel);
+		}
 	}
 
 	/**
