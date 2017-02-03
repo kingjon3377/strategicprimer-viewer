@@ -10,7 +10,7 @@ import java.util.TreeMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
@@ -88,9 +88,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public List<Player> getPlayers() {
-		return streamAllMaps().map(Pair::first).flatMap(
-				map -> StreamSupport.stream(map.players().spliterator(), false))
-					   .distinct().collect(Collectors.toList());
+		return streamAllMaps().map(Pair::first).flatMap(IMapNG::streamPlayers).distinct()
+					   .collect(Collectors.toList());
 	}
 
 	/**

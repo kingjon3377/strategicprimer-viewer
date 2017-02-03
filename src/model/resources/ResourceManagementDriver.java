@@ -53,8 +53,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @return the players to choose from
 	 */
 	public Iterable<Player> getPlayers() {
-		return streamAllMaps().map(Pair::first).flatMap(
-				map -> StreamSupport.stream(map.players().spliterator(), false))
+		return streamAllMaps().map(Pair::first).flatMap(IMapNG::streamPlayers)
 					   .collect(Collectors.toSet());
 	}
 
