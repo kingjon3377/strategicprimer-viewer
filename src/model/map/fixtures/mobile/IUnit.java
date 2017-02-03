@@ -18,8 +18,6 @@ import util.EqualsAny;
 /**
  * An interface for units.
  *
- * TODO: Should mutability of name and owner be pushed down to implementations?
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
