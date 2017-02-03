@@ -141,7 +141,7 @@ public final class AppStarter implements ISPDriver {
 		if (gui) {
 			SwingUtilities
 					.invokeLater(
-							() -> new AppChooserFrame(options, others).setVisible(true));
+							() -> new AppChooserFrame(cli, options, others).setVisible(true));
 		} else {
 			final List<ISPDriver> drivers =
 					CACHE.values().stream().map(Pair::first).distinct()
@@ -327,7 +327,7 @@ public final class AppStarter implements ISPDriver {
 			}
 		} else {
 			SwingUtilities.invokeLater(
-					() -> new AppChooserFrame(model, options).setVisible(true));
+					() -> new AppChooserFrame(cli, model, options).setVisible(true));
 		}
 	}
 

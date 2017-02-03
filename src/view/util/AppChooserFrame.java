@@ -7,7 +7,7 @@ import controller.map.drivers.ISPDriver;
 import controller.map.drivers.SPOptions;
 import controller.map.drivers.ViewerStart;
 import controller.map.drivers.WorkerStart;
-import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -53,19 +53,21 @@ public final class AppChooserFrame extends SPFrame {
 	/**
 	 * Constructor taking a driver model.
 	 *
+	 * @param cli the CLI I/O interface to pass to the driver
 	 * @param model   the driver model
 	 * @param options options to pass to the driver
 	 */
-	public AppChooserFrame(final IDriverModel model, final SPOptions options) {
+	public AppChooserFrame(final ICLIHelper cli, final IDriverModel model,
+						   final SPOptions options) {
 		super("SP App Chooser", model.getMapFile());
 
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
-		buttonPanel.add(button("Map Viewer", model, options, ViewerStart.class));
-		buttonPanel.add(button("Worker Skill Advancement", model, options,
+		buttonPanel.add(button("Map Viewer", model, cli, options, ViewerStart.class));
+		buttonPanel.add(button("Worker Skill Advancement", model, cli, options,
 				AdvancementStart.class));
-		buttonPanel.add(button("Unit Orders and Worker Management", model, options,
+		buttonPanel.add(button("Unit Orders and Worker Management", model, cli, options,
 				WorkerStart.class));
-		buttonPanel.add(button("Exploration", model, options, ExplorationGUI.class));
+		buttonPanel.add(button("Exploration", model, cli, options, ExplorationGUI.class));
 		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
 												new JLabel("Please choose one of the " +
 																   "applications " +
@@ -77,21 +79,23 @@ public final class AppChooserFrame extends SPFrame {
 	/**
 	 * Constructor.
 	 *
+	 * @param cli the CLI I/O interface to pass to the driver
 	 * @param params  the non-option parameters passed to main().
 	 * @param options options to pass to the driver
 	 */
-	public AppChooserFrame(final SPOptions options, final List<@NonNull String> params) {
+	public AppChooserFrame(final ICLIHelper cli, final SPOptions options,
+						   final List<@NonNull String> params) {
 		super("SP App Chooser", Optional.empty());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		final List<@NonNull String> parameters = Collections.unmodifiableList(params);
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
-		buttonPanel.add(button("Map Viewer", parameters, options, ViewerStart.class));
-		buttonPanel.add(button("Worker Skill Advancement", parameters, options,
-				AdvancementStart.class));
-		buttonPanel.add(button("Unit Orders and Worker Management", parameters, options,
+		buttonPanel.add(button("Map Viewer", parameters, cli, options, ViewerStart.class));
+		buttonPanel.add(button("Worker Skill Advancement", parameters, cli, options,
+						AdvancementStart.class));
+		buttonPanel.add(button("Unit Orders and Worker Management", parameters, cli, options,
 				WorkerStart.class));
-		buttonPanel.add(button("Exploration", parameters, options, ExplorationGUI
+		buttonPanel.add(button("Exploration", parameters, cli, options, ExplorationGUI
 																		   .class));
 		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
 												new JLabel("Please choose one of the " +
@@ -104,6 +108,7 @@ public final class AppChooserFrame extends SPFrame {
 	/**
 	 * Create a button for a target.
 	 *
+	 * @param cli the CLI I/O interface to pass to the app
 	 * @param desc    the descriptive string
 	 * @param params  the parameters to pass to the chosen app
 	 * @param options options to pass to the driver
@@ -111,12 +116,12 @@ public final class AppChooserFrame extends SPFrame {
 	 * @return the button
 	 */
 	private JButton button(final String desc, final List<String> params,
-						   final SPOptions options,
+						   final ICLIHelper cli, final SPOptions options,
 						   final Class<? extends ISPDriver> target) {
 		return new ListenedButton(desc, evt -> {
 			try {
 				target.getConstructor().newInstance()
-						.startDriver(options, params.toArray(new String[params.size()]));
+						.startDriver(cli, options, params.toArray(new String[params.size()]));
 			} catch (final InstantiationException | IllegalAccessException
 								   | NoSuchMethodException | InvocationTargetException
 								   | DriverFailedException except) {
@@ -135,6 +140,7 @@ public final class AppChooserFrame extends SPFrame {
 	/**
 	 * Create a button for a target.
 	 *
+	 * @param cli the CLI I/O interface to pass to the app
 	 * @param desc    the descriptive string
 	 * @param model   the driver model to pass to the chosen app
 	 * @param target  the class
@@ -142,12 +148,11 @@ public final class AppChooserFrame extends SPFrame {
 	 * @return the button
 	 */
 	private JButton button(final String desc, final IDriverModel model,
-						   final SPOptions options,
+						   final ICLIHelper cli, final SPOptions options,
 						   final Class<? extends ISPDriver> target) {
 		return new ListenedButton(desc, evt -> {
 			try {
-				target.getConstructor().newInstance()
-						.startDriver(new CLIHelper(), options, model);
+				target.getConstructor().newInstance().startDriver(cli, options, model);
 			} catch (final InstantiationException | IllegalAccessException
 								   | NoSuchMethodException | InvocationTargetException
 								   | DriverFailedException except) {
