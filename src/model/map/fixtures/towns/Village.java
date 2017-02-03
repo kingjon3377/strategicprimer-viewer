@@ -224,7 +224,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
-	 * Set the dominant race of the village. TODO: should this really be mutable?
+	 * Set the dominant race of the village.
 	 * @param vRace the new dominant race of the village.
 	 */
 	public void setRace(final String vRace) {

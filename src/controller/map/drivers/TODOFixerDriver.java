@@ -5,16 +5,23 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
+import model.map.TileType;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.towns.Village;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
+import util.EqualsAny;
 import util.Pair;
 import util.TypesafeLogger;
 
@@ -53,6 +60,14 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	 */
 	private final Collection<String> oceanList = new ArrayList<>();
 	/**
+	 * A map from village IDs to races.
+	 */
+	private final Map<Integer, String> raceMap = new HashMap<>();
+	/**
+	 * A list of aquatic races.
+	 */
+	private final List<String> raceList = new ArrayList<>();
+	/**
 	 * How many units we've fixed.
 	 */
 	private int count = -1;
@@ -71,7 +86,60 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 					.forEach(unit -> fixUnit(unit, terrain, cli));
 		}
 	}
-
+	/**
+	 * Search for and fix aquatic villages with non-aquatic races.
+	 * @param map the map we're operating on
+	 * @param cli the interface to the user
+	 * @throws IOException on I/O error interacting with user
+	 */
+	private void fixAllVillages(final IMapNG map, final ICLIHelper cli)
+			throws IOException {
+		final Collection<Village> all = map.locationStream()
+												.filter(point -> TileType.Ocean ==
+																		 map
+																				 .getBaseTerrain(
+																				 point))
+												.flatMap(point -> map
+																		  .streamOtherFixtures(
+														point))
+												.filter(Village.class::isInstance)
+												.map(Village.class::cast)
+												.filter(village -> EqualsAny.equalsAny(
+														village.getRace(), "Danan",
+														"dwarf", "elf", "half-elf",
+														"gnome", "human"))
+												.collect(Collectors.toList());
+		if (!all.isEmpty()) {
+			if (raceList.isEmpty()) {
+				final ICLIHelper.ThrowingSupplier<String> supp =
+						cliHelper -> cliHelper.inputString("Next aquatic race: ");
+				for (String race = supp.get(cli).trim(); !race.isEmpty(); race = supp.get(cli).trim()) {
+					raceList.add(race);
+				}
+			}
+			for (final Village village : all) {
+				fixVillage(village, cli);
+			}
+		}
+	}
+	/**
+	 * Fix an aquatic village with a non-aquatic race.
+	 * @param village the village to fix
+	 * @param cli the interface to the user.
+	 * @throws IOException on I/O error interacting with user
+	 */
+	private void fixVillage(final Village village, final ICLIHelper cli) {
+		final Integer id = Integer.valueOf(village.getID());
+		if (raceMap.containsKey(id)) {
+			village.setRace(raceMap.get(id));
+		} else {
+			final Random random = new Random(village.getID());
+			final int index = random.nextInt(raceList.size());
+			final String race = raceList.get(index);
+			village.setRace(race);
+			raceMap.put(id, race);
+		}
+	}
 	/**
 	 * Fix a stubbed-out kind for a unit.
 	 *
@@ -176,19 +244,32 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 	 * @param cli the interface for user I/O
 	 * @param options options passed to the driver
 	 * @param model   the driver model to operate on
+	 * @throws DriverFailedException on I/O error interacting with the user
 	 */
 	@Override
 	public void startDriver(final ICLIHelper cli, final SPOptions options,
-							final IDriverModel model) {
+							final IDriverModel model) throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, Optional<Path>> pair : ((IMultiMapModel)
 																		   model)
 																		  .getAllMaps
 																				   ()) {
 				fixAllUnits(pair.first(), cli);
+				try {
+					fixAllVillages(pair.first(), cli);
+				} catch (IOException except) {
+					//noinspection HardcodedFileSeparator
+					throw new DriverFailedException("I/O error", except);
+				}
 			}
 		} else {
 			fixAllUnits(model.getMap(), cli);
+			try {
+				fixAllVillages(model.getMap(), cli);
+			} catch (IOException except) {
+				//noinspection HardcodedFileSeparator
+				throw new DriverFailedException("I/O error", except);
+			}
 		}
 	}
 
