@@ -235,4 +235,19 @@ public interface ICLIHelper extends Closeable {
 		 */
 		void accept(final T item, final ICLIHelper cli) throws IOException;
 	}
+	/**
+	 * An interface like Supplier except declaring a thrown exception.
+	 * @param <T> the type of thing accepted
+	 */
+	@FunctionalInterface
+	interface ThrowingSupplier<T> {
+		/**
+		 * Gets a result using the specified CLI interface.
+		 *
+		 * @param cli the interface for user I/O
+		 * @return a result
+		 * @throws IOException on I/O error
+		 */
+		T get(final ICLIHelper cli) throws IOException;
+	}
 }
