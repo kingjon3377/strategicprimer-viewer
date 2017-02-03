@@ -55,8 +55,6 @@ public final class FileChooser {
 	 *
 	 * TODO: Provide constructor taking the operation but not a file-chooser
 	 *
-	 * TODO: Provide option taking an approve-text so we can implement Custom
-	 *
 	 * @param loc         the file to return
 	 * @param fileChooser the file-chooser to use
 	 * @param operation   which operation to use.
@@ -79,6 +77,23 @@ public final class FileChooser {
 		}
 	}
 
+	/**
+	 * Constructor allowing the caller to pass in a file-chooser to have the user choose
+	 * with.
+	 *
+	 * TODO: Provide constructor taking the approve-text but not a file-chooser
+	 *
+	 * @param loc         the file to return
+	 * @param fileChooser the file-chooser to use
+	 * @param approveText the string to use instead of "Open" or "Save" in the dialog
+	 */
+	public FileChooser(final Optional<Path> loc, final JFileChooser fileChooser,
+					   final String approveText) {
+		file = Optional.empty();
+		file = loc;
+		chooser = fileChooser;
+		chooserFunc = component -> chooser.showDialog(component, approveText);
+	}
 	/**
 	 * Constructor. When the filename is asked for, if the given value is valid, we'll
 	 * return it instead of showing a dialog.
@@ -205,7 +220,8 @@ public final class FileChooser {
 	}
 
 	/**
-	 * Possible operations. TODO: We'd like to support CUSTOM.
+	 * Possible operations. For CUSTOM, use the FileChooser constructor taking a String
+	 * instead of a FileChooserOperation.
 	 */
 	public enum FileChooserOperation {
 		/**
