@@ -144,14 +144,23 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
-	 * Since this isn't a valid fixture, always returns -1.
+	 * If parallel, returns the ID of the worker; otherwise, returns -1.
 	 *
-	 * TODO: Implement properly for the parallel case?
-	 * @return -1, since this isn't a valid fixture.
+	 * @return the ID of parallel workers, or -1.
 	 */
 	@Override
 	public int getID() {
-		return -1;
+		if (parallel) {
+			return workers.stream().mapToInt(IWorker::getID).reduce(-1, (left, right) -> {
+				if (left == right) {
+					return left;
+				} else {
+					return -1;
+				}
+			});
+		} else {
+			return -1;
+		}
 	}
 
 	/**
