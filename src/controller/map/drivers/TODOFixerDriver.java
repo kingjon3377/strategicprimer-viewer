@@ -257,7 +257,7 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 				fixAllUnits(pair.first(), cli);
 				try {
 					fixAllVillages(pair.first(), cli);
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					//noinspection HardcodedFileSeparator
 					throw new DriverFailedException("I/O error", except);
 				}
@@ -266,7 +266,7 @@ public final class TODOFixerDriver implements SimpleCLIDriver {
 			fixAllUnits(model.getMap(), cli);
 			try {
 				fixAllVillages(model.getMap(), cli);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException("I/O error", except);
 			}
