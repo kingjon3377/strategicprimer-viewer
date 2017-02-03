@@ -92,12 +92,12 @@ public final class MapDimensions {
 	}
 
 	/**
-	 * A hash value for the object. FIXME: This looks wrong.
+	 * A hash value for the object.
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return (rows + cols) << 2;
+		return rows + (cols << 2);
 	}
 
 	/**
