@@ -33,7 +33,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	/**
 	 * The header level.
 	 */
-	private int level;
+	private final int level;
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -82,21 +82,6 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * The section header level. TODO: do we need this?
-	 * @return the header level
-	 */
-	public int getHeaderLevel() {
-		return level;
-	}
-
-	/**
-	 * Set the section header level. TODO: do we need this?
-	 * @param lvl the new header level
-	 */
-	public void setHeaderLevel(final int lvl) {
-		level = lvl;
-	}
-
 	/**
 	 * An object is equal iff it is a SectionReportNode with the same header text and
 	 * level and the same children in the same order.

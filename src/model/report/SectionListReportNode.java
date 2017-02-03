@@ -49,7 +49,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	/**
 	 * The header level.
 	 */
-	private int level;
+	private final int level;
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -123,22 +123,6 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	public int size() {
 		return MIN_BOILERPLATE + text.length() + subHeader.length() +
 					   stream().mapToInt(node -> node.size() + PER_CHILD_BPLATE).sum();
-	}
-
-	/**
-	 * The header level of this section. TODO: Do we need this?
-	 * @return the header level
-	 */
-	public final int getHeaderLevel() {
-		return level;
-	}
-
-	/**
-	 * Set the header level of this section. TODO: Do we need this?
-	 * @param lvl the new header level
-	 */
-	public final void setHeaderLevel(final int lvl) {
-		level = lvl;
 	}
 
 	/**
