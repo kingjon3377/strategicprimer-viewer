@@ -240,7 +240,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		for (final TreeNode child : node) {
 			if (child instanceof WorkerTreeModelAlt.UnitNode) {
 				final IUnit unit = (IUnit) getNodeValue(child);
-				if (unit.stream().noneMatch(x -> true)) {
+				if (unit == null || unit.stream().noneMatch(x -> true)) {
 					continue;
 				}
 				final String orders =
