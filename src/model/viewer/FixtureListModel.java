@@ -120,11 +120,9 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 			currentTracks.add((Animal) fix);
 			addElement(fix);
 		} else {
-			// FIXME: Make addFixture() on IMutableMapNG boolean so we can just
-			// add the fixture to the list model if the add operation isn't
-			// redundant, rather than regenerating it every time.
-			map.addFixture(point, fix);
-			selectedPointChanged(null, point);
+			if (map.addFixture(point, fix)) {
+				addElement(fix);
+			}
 		}
 	}
 

@@ -79,9 +79,10 @@ public interface IMutableMapNG extends IMapNG {
 	 *
 	 * @param location a location
 	 * @param fix      a fixture to add there
+	 * @return whether the "all fixtures at this point" set has an additional member as
+	 * a result of this
 	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	void addFixture(Point location, TileFixture fix);
+	boolean addFixture(Point location, TileFixture fix);
 
 	/**
 	 * Note that this is not necessarily related to the specific properties; if getForest

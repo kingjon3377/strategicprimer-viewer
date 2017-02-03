@@ -743,16 +743,18 @@ public class SPMapNG implements IMutableMapNG {
 	 * Add a fixture at a location.
 	 * @param location a location
 	 * @param fix      a fixture to add there
+	 * @return whether the "all fixtures at this point" set has an additional member as
+	 * a result of this
 	 */
 	@Override
-	public void addFixture(final Point location, final TileFixture fix) {
+	public boolean addFixture(final Point location, final TileFixture fix) {
 		// If we use a lambda in anyMatch(), many tests error with
 		// BootstrapMethodError caused by LambdaConversionException
 		// trying to convert HasMutableImage to IFixture.
 		//noinspection Convert2MethodRef
 		if (Stream.of(getForest(location), getGround(location))
 					.anyMatch(newFix -> fix.equalsIgnoringID(newFix))) {
-			return;
+			return false;
 		}
 		final Collection<TileFixture> local =
 				MultiMapHelper.getMapValue(fixtures, location, key -> new ArraySet<>());
@@ -777,6 +779,10 @@ public class SPMapNG implements IMutableMapNG {
 													 ""))) {
 					local.remove(existing);
 					local.add(fix);
+					// The return value is primarily used by FixtureListModel, which
+					// won't care about differences, but would end up with double
+					// entries if we returned true here
+					return false;
 				} else {
 					local.add(fix);
 					LOGGER.log(Level.WARNING,
@@ -785,12 +791,13 @@ public class SPMapNG implements IMutableMapNG {
 							new Throwable());
 					LOGGER.fine("Existing fixture was: " + existing.shortDesc());
 					LOGGER.fine("Added: " + fix.shortDesc());
+					return true;
 				}
 			} else {
-				local.add(fix);
+				return local.add(fix);
 			}
 		} else {
-			local.add(fix);
+			return local.add(fix);
 		}
 	}
 
