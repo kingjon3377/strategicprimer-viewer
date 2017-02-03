@@ -113,12 +113,12 @@ public final class TestMoreFixtureSerialization extends
 				false);
 		assertDeprecatedProperty(
 				"<grove cultivated=\"true\" tree=\"tree\" id=\"0\" />",
-				Grove.class, "tree", true);
+				Grove.class, "tree", KIND_PROPERTY, "grove", true);
 		assertMissingProperty("<grove cultivated=\"true\" kind=\"kind\" />",
 				Grove.class, "id", true);
 		assertDeprecatedProperty(
 				"<grove wild=\"true\" kind=\"tree\" id=\"0\" />", Grove.class,
-				"wild", true);
+				"wild", "cultivated", "grove", true);
 		assertEquivalentForms(
 				"Assert that wild is the inverse of cultivated",
 				"<grove wild=\"true\" kind=\"tree\" id=\"0\" />",
@@ -185,11 +185,11 @@ public final class TestMoreFixtureSerialization extends
 		assertDeprecatedDeserialization("Deprecated Mine idiom", fourthMine,
 				KIND_PATTERN.matcher(createSerializedForm(fourthMine, true))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "mine");
 		assertDeprecatedDeserialization("Deprecated Mine idiom", fourthMine,
 				KIND_PATTERN.matcher(createSerializedForm(fourthMine, false))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "mine");
 		assertUnwantedChild(
 				"<mine kind=\"gold\" status=\"active\"><troll /></mine>",
 				Mine.class, false);
@@ -219,11 +219,11 @@ public final class TestMoreFixtureSerialization extends
 		assertDeprecatedDeserialization("Deserialization of mangled shrub",
 				secondShrub, KIND_PATTERN.matcher(createSerializedForm(secondShrub, true))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "shrub");
 		assertDeprecatedDeserialization("Deserialization of mangled shrub",
 				secondShrub, KIND_PATTERN.matcher(createSerializedForm(secondShrub, false))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "shrub");
 		assertUnwantedChild("<shrub kind=\"shrub\"><troll /></shrub>",
 				Shrub.class, false);
 		assertMissingProperty("<shrub />", Shrub.class, KIND_PROPERTY, false);
@@ -301,12 +301,12 @@ public final class TestMoreFixtureSerialization extends
 				"Deserialize properly with deprecated use of 'type' for unit kind",
 				firstUnit, KIND_PATTERN.matcher(createSerializedForm(firstUnit, true))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "unit");
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
 				firstUnit, KIND_PATTERN.matcher(createSerializedForm(firstUnit, false))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "unit");
 		assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", Unit.class,
 				NAME_PROPERTY, true);
 		assertSerialization("Deserialize unit with no kind properly",

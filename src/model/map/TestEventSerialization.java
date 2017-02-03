@@ -78,12 +78,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"Deserialization of deprecated Mineral idiom", secondVein,
 				KIND_PATTERN.matcher(createSerializedForm(secondVein, true))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "mineral");
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", secondVein,
 				KIND_PATTERN.matcher(createSerializedForm(secondVein, false))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "mineral");
 		assertUnwantedChild(
 				"<mineral kind=\"gold\" exposed=\"false\" dc=\"0\">"
 						+ "<troll /></mineral>", MineralVein.class, false);

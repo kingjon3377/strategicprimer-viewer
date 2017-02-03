@@ -249,12 +249,12 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				fourthMap,
 				KIND_PATTERN.matcher(createSerializedForm(fourthMap, true))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "tile");
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom", fourthMap,
 				KIND_PATTERN.matcher(createSerializedForm(fourthMap, false))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "tile");
 	}
 	/**
 	 * Further test Tile serialization.

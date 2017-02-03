@@ -205,12 +205,12 @@ public abstract class BaseTestFixtureSerialization {
 	 * only supposed to be a warning, assert that it'll pass with warnings disabled but
 	 * object with them made fatal.
 	 *
-	 * TODO: check the tag it's on and the preferred form
-	 *
 	 * @param reader      the reader to do the reading
 	 * @param xml         the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
 	 * @param deprecated  the deprecated property
+	 * @param preferred   its preferred form
+	 * @param tag 		  what tag the property is on
 	 * @param warning     whether this is supposed to be only a warning
 	 * @throws SPFormatException  on unexpected SP format error
 	 * @throws XMLStreamException on XML format error
@@ -219,6 +219,8 @@ public abstract class BaseTestFixtureSerialization {
 												 final String xml,
 												 final Class<?> desideratum,
 												 final String deprecated,
+												 final String preferred,
+												 final String tag,
 												 final boolean warning)
 			throws XMLStreamException, SPFormatException {
 		if (warning) {
@@ -234,9 +236,14 @@ public abstract class BaseTestFixtureSerialization {
 				final Throwable cause = except.getCause();
 				assertThat("Missing property", cause,
 						instanceOf(DeprecatedPropertyException.class));
+				final DeprecatedPropertyException realCause =
+						(DeprecatedPropertyException) cause;
 				assertThat("Missing property should be one we're expecting",
-						((DeprecatedPropertyException) cause).getOld(),
-						equalTo(deprecated));
+						realCause.getOld(), equalTo(deprecated));
+				assertThat("Missing property should be on the tag we expect",
+						realCause.getTag().getLocalPart(), equalTo(tag));
+				assertThat("Preferred form should be as expected",
+						realCause.getPreferred(), equalTo(preferred));
 			}
 		} else {
 			try (StringReader stringReader = new StringReader(xml)) {
@@ -245,6 +252,10 @@ public abstract class BaseTestFixtureSerialization {
 			} catch (final DeprecatedPropertyException except) {
 				assertThat("Missing property should be one we're expecting",
 						except.getOld(), equalTo(deprecated));
+				assertThat("Missing property should be on the tag we expect",
+						except.getTag(), equalTo(tag));
+				assertThat("Preferred form should be as expected",
+						except.getPreferred(), equalTo(preferred));
 			}
 		}
 	}
@@ -451,6 +462,8 @@ public abstract class BaseTestFixtureSerialization {
 	 * @param xml         the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
 	 * @param deprecated  the deprecated property
+	 * @param preferred   its preferred form
+	 * @param tag 		  what tag the property is on
 	 * @param warning     whether this is supposed to be only a warning
 	 * @throws SPFormatException  on unexpected SP format error
 	 * @throws XMLStreamException on XML format error
@@ -458,12 +471,14 @@ public abstract class BaseTestFixtureSerialization {
 	protected final void assertDeprecatedProperty(final String xml,
 												  final Class<?> desideratum,
 												  final String deprecated,
+												  final String preferred,
+												  final String tag,
 												  final boolean warning)
 			throws XMLStreamException, SPFormatException {
 		assertDeprecatedProperty(oldReader, xml, desideratum, deprecated,
-				warning);
+				preferred, tag, warning);
 		assertDeprecatedProperty(newReader, xml, desideratum, deprecated,
-				warning);
+				preferred, tag, warning);
 	}
 
 	/**
@@ -503,17 +518,21 @@ public abstract class BaseTestFixtureSerialization {
 	 * Assert that a deprecated idiom deserializes properly if warnings are ignored, but
 	 * is warned about.
 	 *
-	 * @param message  the message to pass to JUnit
-	 * @param expected the object we expect the deserialized form to equal
-	 * @param xml      the serialized form
-	 * @param property the deprecated property
+	 * @param message     the message to pass to JUnit
+	 * @param expected    the object we expect the deserialized form to equal
+	 * @param xml         the serialized form
+	 * @param property    the deprecated property
+	 * @param preferred   its preferred form
+	 * @param tag 		  what tag the property is on
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
 	protected final void assertDeprecatedDeserialization(final String message,
 														 final Object expected,
 														 final String xml,
-														 final String property)
+														 final String property,
+														 final String preferred,
+														 final String tag)
 			throws XMLStreamException, SPFormatException {
 		try (StringReader stringReader = new StringReader(xml)) {
 			assertThat(message, oldReader.readXML(FAKE_FILENAME, stringReader,
@@ -523,7 +542,8 @@ public abstract class BaseTestFixtureSerialization {
 			assertThat(message, newReader.readXML(FAKE_FILENAME, stringReader,
 					expected.getClass(), Warning.Ignore), equalTo(expected));
 		}
-		assertDeprecatedProperty(xml, expected.getClass(), property, true);
+		assertDeprecatedProperty(xml, expected.getClass(), property, preferred, tag,
+				true);
 	}
 
 	/**

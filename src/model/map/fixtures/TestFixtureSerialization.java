@@ -330,7 +330,7 @@ public final class TestFixtureSerialization extends
 				"exposed", false);
 		assertDeprecatedProperty(
 				"<ground ground=\"ground\" exposed=\"true\" />", Ground.class,
-				"ground", true);
+				"ground", KIND_PROPERTY, "ground", true);
 		assertImageSerialization("Ground image property is preserved",
 				new Ground(5, "five", true));
 	}

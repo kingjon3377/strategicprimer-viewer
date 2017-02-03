@@ -100,12 +100,12 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 				"Deserialization of deprecated stone idiom", thirdDeposit,
 				KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, true))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "stone");
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", thirdDeposit,
 				KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, false))
 						.replaceAll(Matcher.quoteReplacement(oldKindProperty)),
-				oldKindProperty);
+				oldKindProperty, KIND_PROPERTY, "stone");
 	}
 
 	/**
