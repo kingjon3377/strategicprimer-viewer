@@ -55,18 +55,8 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 * @param iter the iterator we'll start with.
 	 */
 	public IncludingIterator(final Path file, final Iterator<XMLEvent> iter) {
-		this(file.toString(), iter);
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param file the name of the file we're reading
-	 * @param iter the iterator we'll start with.
-	 */
-	public IncludingIterator(final String file, final Iterator<XMLEvent> iter) {
 		stack = new LinkedList<>();
-		stack.addFirst(Pair.of(file, new ComparableIterator<>(iter)));
+		stack.addFirst(Pair.of(file.toString(), new ComparableIterator<>(iter)));
 	}
 
 	/**
