@@ -96,17 +96,9 @@ public final class ExplorableReportGenerator
 			ostream.format("%s%s%s</ul>%n", caves.toString(), battles.toString(),
 					portals.toString());
 		}
-		if (!adventures.isEmpty()) {
-			ostream.format("<h4>Possible Adventures</h4>%n<ul>%n");
-			for (final Map.Entry<AdventureFixture, Point> entry :
-					adventures.entrySet()) {
-				ostream.format("%s", OPEN_LIST_ITEM);
-				produce(fixtures, map, currentPlayer, entry.getKey(), entry.getValue(),
-						ostream);
-				ostream.format("</li>%n");
-			}
-			ostream.format("</ul>%n");
-		}
+		writeMap(ostream, adventures, "<h4>Possible Adventures</h4>",
+				(entry, formatter) -> produce(fixtures, map, currentPlayer,
+						entry.getKey(), entry.getValue(), formatter));
 	}
 
 	/**

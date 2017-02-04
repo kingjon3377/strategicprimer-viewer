@@ -7,8 +7,10 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.swing.tree.MutableTreeNode;
 import model.map.HasOwner;
@@ -437,30 +439,16 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		if (!ours.isEmpty() && !foreign.isEmpty()) {
 			ostream.format("<h4>Units in the map</h4>%n<p>Any units listed above are ");
 			ostream.format("not described again.)</p>%n");
-			if (!ours.isEmpty()) {
-				ostream.format("<h5>Your units</h5>%n<ul>%n");
-				for (final Map.Entry<IUnit, Point> entry : ours.entrySet()) {
-					ostream.format("%sAt %s%s", OPEN_LIST_ITEM,
-							entry.getValue().toString(),
-							distCalculator.distanceString(entry.getValue()));
-					produce(fixtures, map, currentPlayer, entry.getKey(),
-							entry.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n");
-			}
-			if (!foreign.isEmpty()) {
-				ostream.format("<h5>Foreign units</h5>%n<ul>%n");
-				for (final Map.Entry<IUnit, Point> entry : foreign.entrySet()) {
-					ostream.format("%sAt %s%s", OPEN_LIST_ITEM,
-							entry.getValue().toString(),
-							distCalculator.distanceString(entry.getValue()));
-					produce(fixtures, map, currentPlayer, entry.getKey(),
-							entry.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n");
-			}
+			final BiConsumer<Entry<IUnit, Point>, Formatter> unitFormatter =
+					(entry, formatter) -> {
+						formatter.format("At %s%s", entry.getValue().toString(),
+								distCalculator.distanceString(entry.getValue()));
+						produce(fixtures, map, currentPlayer, entry.getKey(),
+								entry.getValue(), formatter);
+					};
+			writeMap(ostream, ours, "<h5>Your units</h5>",
+					unitFormatter);
+			writeMap(ostream, foreign, "<h5>Foreign units</h5>", unitFormatter);
 		}
 	}
 

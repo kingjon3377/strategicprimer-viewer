@@ -132,47 +132,18 @@ public final class HarvestableReportGenerator
 		if (Stream.of(caches, groves, meadows, mines).noneMatch(Map::isEmpty) &&
 					all.stream().noneMatch(Collection::isEmpty)) {
 			ostream.format("<h4>Resource Sources</h4>%n");
-			if (!caches.isEmpty()) {
-				ostream.format(
-						"<h5>Caches collected by your explorers and workers:</h5>%n<ul>%n");
-				for (final Map.Entry<CacheFixture, Point> entry : caches.entrySet()) {
-					ostream.format("%s", OPEN_LIST_ITEM);
-					produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n");
-			}
-			if (!groves.isEmpty()) {
-				ostream.format("<h5>Groves and orchards</h5>%n<ul>%n");
-				for (final Map.Entry<Grove, Point> entry : groves.entrySet()) {
-					ostream.format("%s", OPEN_LIST_ITEM);
-					produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n");
-			}
-			if (!meadows.isEmpty()) {
-				ostream.format("<h5>Meadows and fields</h5>%n<ul>%n");
-				for (final Map.Entry<Meadow, Point> entry : meadows.entrySet()) {
-					ostream.format("%s", OPEN_LIST_ITEM);
-					produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n");
-			}
-			if (!mines.isEmpty()) {
-				ostream.format("<h5>Mines</h5>%n<ul>%n");
-				for (final Map.Entry<Mine, Point> entry : mines.entrySet()) {
-					ostream.format("%s", OPEN_LIST_ITEM);
-					produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n");
-			}
+			writeMap(ostream, caches, "<h5>Caches collected by your explorers and workers:</h5>",
+					(entry, formatter) -> produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), ostream));
+			writeMap(ostream, groves, "<h5>Groves and orchards</h5>",
+					(entry, formatter) -> produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), ostream));
+			writeMap(ostream, meadows, "<h5>Meadows and fields</h5>",
+					(entry, formatter) -> produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), ostream));
+			writeMap(ostream, mines, "<h5>Mines</h5>",
+					(entry, formatter) -> produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), ostream));
 			for (final HeadedList<String> list : all) {
 				ostream.format("%s", list.toString());
 			}

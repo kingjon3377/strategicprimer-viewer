@@ -94,28 +94,17 @@ public final class FortressMemberReportGenerator
 		}
 		if (!equipment.isEmpty() && !resources.isEmpty()) {
 			ostream.format("<h4>Resources and Equipment</h4>%n<ul>%n");
-			if (!equipment.isEmpty()) {
-				ostream.format("<li>Equipment:<ul>%n");
-				for (final Map.Entry<Implement, Point> entry : equipment.entrySet()) {
-					ostream.format("%s", OPEN_LIST_ITEM);
-					produce(fixtures, map, currentPlayer, entry.getKey(), entry.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n</li>%n");
-			}
+			writeMap(ostream, equipment, "<li>Equipment:",
+					(entry, formatter) -> produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), formatter));
 			if (!resources.isEmpty()) {
 				ostream.format("<li>Resources:<ul>%n");
 				for (final Map.Entry<String, Map<ResourcePile, Point>> outer :
 						resources.entrySet()) {
-					ostream.format("<li>%s: <ul>%n", outer.getKey());
-					for (final Map.Entry<ResourcePile, Point> inner :
-							outer.getValue().entrySet()) {
-						ostream.format("%s", OPEN_LIST_ITEM);
-						produce(fixtures, map, currentPlayer, inner.getKey(),
-								inner.getValue(), ostream);
-						ostream.format("</li>%n");
-					}
-					ostream.format("</ul>%n</li>%n");
+					writeMap(ostream, outer.getValue(), "<li>%s:",
+							(entry, formatter) -> produce(fixtures, map, currentPlayer,
+									entry.getKey(), entry.getValue(), formatter));
+					ostream.format("</li>%n");
 				}
 				ostream.format("</ul>%n</li>%n");
 			}

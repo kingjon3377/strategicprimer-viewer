@@ -100,46 +100,18 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 			// TODO: reorder so active is first?
 			ostream.format(
 					"<h4>Cities, towns, and/or fortifications you know about:</h4>%n");
-			if (!abandoned.isEmpty()) {
-				ostream.format("<<h5>Abandoned Communities</h5>%n<ul>%n");
-				for (final Map.Entry<ITownFixture, Point> entry : abandoned.entrySet()) {
-					ostream.format("%s", OPEN_LIST_ITEM);
-					produce(fixtures, map, currentPlayer, entry.getKey(),
-							entry.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n");
-			}
-			if (!active.isEmpty()) {
-				ostream.format("<h5>Active Communities</h5>%n<ul>%n");
-				for (final Map.Entry<ITownFixture, Point> entry : active.entrySet()) {
-					ostream.format("%s", OPEN_LIST_ITEM);
-					produce(fixtures, map, currentPlayer, entry.getKey(),
-							entry.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n");
-			}
-			if (!burned.isEmpty()) {
-				ostream.format("<h5>Burned-Out Communities</h5>%n<ul>%n");
-				for (final Map.Entry<ITownFixture, Point> entry : burned.entrySet()) {
-					ostream.format("%s", OPEN_LIST_ITEM);
-					produce(fixtures, map, currentPlayer, entry.getKey(),
-							entry.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n");
-			}
-			if (!ruined.isEmpty()) {
-				ostream.format("<h5>Ruined Communities</h5>%n<ul>%n");
-				for (final Map.Entry<ITownFixture, Point> entry : ruined.entrySet()) {
-					ostream.format("%s", OPEN_LIST_ITEM);
-					produce(fixtures, map, currentPlayer, entry.getKey(),
-							entry.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n");
-			}
+			writeMap(ostream, abandoned, "<h5>Abandoned Communities</h5>",
+					(entry, formatter) -> produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), formatter));
+			writeMap(ostream, active, "<h5>Active Communities</h5>",
+					(entry, formatter) -> produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), formatter));
+			writeMap(ostream, burned, "<h5>Burned-Out Communities</h5>",
+					(entry, formatter) -> produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), formatter));
+			writeMap(ostream, ruined, "<h5>Ruined Communities</h5>",
+					(entry, formatter) -> produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), formatter));
 		}
 	}
 	/**

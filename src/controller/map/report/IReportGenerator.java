@@ -1,6 +1,8 @@
 package controller.map.report;
 
 import java.util.Formatter;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -81,5 +83,26 @@ public interface IReportGenerator<T> {
 	 */
 	IReportNode produceRIR(PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   IMapNG map, Player currentPlayer, T item, Point loc);
-
+	/**
+	 * Write the contents of a Map to a Formatter as a list, but don't write anything if
+	 * it is empty.
+	 * @param <T> the type of thing in the map
+	 * @param heading the heading to put at the top (including any HTML heading tags)
+	 * @param map the map to write
+	 * @param ostream the stream to write to
+	 * @param lambda the method to write each item
+	 */
+	default <T> void writeMap(final Formatter ostream, final Map<T, Point> map,
+							  final String heading,
+							  final BiConsumer<Map.Entry<T, Point>, Formatter> lambda) {
+		if (!map.isEmpty()) {
+			ostream.format("%s%n<ul>%n", heading);
+			for (final Map.Entry<T, Point> entry : map.entrySet()) {
+				ostream.format("<li>");
+				lambda.accept(entry, ostream);
+				ostream.format("</li>%n");
+			}
+			ostream.format("</ul>%n");
+		}
+	}
 }

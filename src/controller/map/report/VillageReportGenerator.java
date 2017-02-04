@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.BiConsumer;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -52,8 +53,6 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 * Produce the report on all villages. All fixtures referred to in this report are
 	 * removed from the collection.
 	 *
-	 * TODO: Postpone converting to String
-	 *
 	 * @param fixtures      the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @param map           ignored
@@ -84,38 +83,18 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 								.put(village, pair.first());
 					}
 				});
-		if (!own.isEmpty()) {
-			ostream.format("<h4>Villages pledged to your service:</h4>%n<ul>%n");
-			for (final Map.Entry<Village, Point> entry : own.entrySet()) {
-				ostream.format("%s", OPEN_LIST_ITEM);
-				produce(fixtures, map, currentPlayer, entry.getKey(), entry.getValue(),
-						ostream);
-				ostream.format("</li>%n");
-			}
-			ostream.format("</ul>%n");
-		}
-		if (!independents.isEmpty()) {
-			ostream.format("<h4>Villages you think are independent:</h4>%n<ul>%n");
-			for (final Map.Entry<Village, Point> entry : independents.entrySet()) {
-				ostream.format("%s", OPEN_LIST_ITEM);
-				produce(fixtures, map, currentPlayer, entry.getKey(), entry.getValue(),
-						ostream);
-				ostream.format("</li>%n");
-			}
-			ostream.format("</ul>%n");
-		}
+		final BiConsumer<Map.Entry<Village, Point>, Formatter> writer =
+				(entry, formatter) -> produce(fixtures, map, currentPlayer,
+						entry.getKey(), entry.getValue(), formatter);
+		writeMap(ostream, own, "<h4>Villages pledged to your service:</h4>", writer);
+		writeMap(ostream, independents, "<h4>Villages you think are independent:</h4>",
+				writer);
 		if (!others.isEmpty()) {
 			ostream.format("<h4>Other villages you know about:</h4>%n");
 			for (final Map.Entry<Player, Map<Village, Point>> outer : others.entrySet()) {
-				ostream.format("<h5>Villages sworn to %s</h5>%n<ul>%n",
-						outer.getKey().getName());
-				for (final Map.Entry<Village, Point> inner : outer.getValue().entrySet()) {
-					ostream.format("%s", OPEN_LIST_ITEM);
-					produce(fixtures, map, currentPlayer, inner.getKey(),
-							inner.getValue(), ostream);
-					ostream.format("</li>%n");
-				}
-				ostream.format("</ul>%n");
+				writeMap(ostream, outer.getValue(),
+						String.format("<h5>Villages sworn to %s</h5>%n<ul>%n",
+								outer.getKey().getName()), writer);
 			}
 		}
 	}
