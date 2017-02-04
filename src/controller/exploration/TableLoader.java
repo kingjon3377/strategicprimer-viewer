@@ -240,34 +240,38 @@ public final class TableLoader {
 		final Path dir = Paths.get(path);
 		try (final DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 			for (final Path table : stream) {
-				try {
-					if (Files.isHidden(table) || table.getFileName().startsWith(".")) {
-						LOGGER.info(table + " looks like a hidden file, skipping ...");
-						continue;
-					} else if (Files.exists(table)) {
-						runner.loadTable(table.getFileName().toString(),
-								loadTable(table));
-					}
-				} catch (final FileNotFoundException | NoSuchFileException e) {
-					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
-				} catch (final IOException e) {
-					//noinspection HardcodedFileSeparator
-					LOGGER.log(Level.SEVERE,
-							"I/O error while parsing " + table, e);
-				} catch (final IllegalArgumentException e) {
-					LOGGER.log(
-							Level.SEVERE,
-							"Illegal argument while parsing "
-									+ table
-									+ ", probably a malformed file",
-							e);
-				}
+				maybeLoadTable(runner, table);
 			}
 		} catch (final IOException e) {
 			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error while getting list of files in " +
 											 "directory",
 					e);
+		}
+	}
+
+	/**
+	 * Try to load a table from file if it doesn't look like a hidden file; log but
+	 * swallow errors.
+	 * @param runner the exploration-runner to add the table to
+	 * @param file the path to load the table from
+	 */
+	private static void maybeLoadTable(final ExplorationRunner runner, final Path file) {
+		try {
+			if (Files.isHidden(file) || file.getFileName().startsWith(".")) {
+				LOGGER.info(file + " looks like a hidden file, skipping ...");
+				return;
+			} else if (Files.exists(file)) {
+				runner.loadTable(file.getFileName().toString(), loadTable(file));
+			}
+		} catch (final FileNotFoundException | NoSuchFileException except) {
+			LOGGER.log(Level.SEVERE, "File " + file + " not found", except);
+		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
+			LOGGER.log(Level.SEVERE, "I/O error while parsing " + file, except);
+		} catch (final IllegalArgumentException except) {
+			LOGGER.log(Level.SEVERE, "Illegal argument while parsing " + file +
+											 ", probably a malformed file", except);
 		}
 	}
 
