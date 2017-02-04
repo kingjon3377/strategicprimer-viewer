@@ -88,7 +88,7 @@ public final class SubsetFrame extends SPFrame {
 	 *
 	 * @param paragraph the string to enclose
 	 */
-	protected void printParagraph(final String paragraph) {
+	private void printParagraph(final String paragraph) {
 		printParagraph(paragraph, StreamingLabel.LabelTextColor.white);
 	}
 
@@ -101,8 +101,8 @@ public final class SubsetFrame extends SPFrame {
 	 * @param paragraph the string to enclose
 	 * @param color     the color to make it, or the empty string if none.
 	 */
-	protected void printParagraph(final String paragraph,
-								  final StreamingLabel.LabelTextColor color) {
+	private void printParagraph(final String paragraph,
+								final StreamingLabel.LabelTextColor color) {
 		try (final PrintWriter writer = label.getWriter()) {
 			// Because StringWriter's close() does nothing, this is safe.
 			writer.print("<p style=\"color:");
