@@ -437,6 +437,7 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 		ostream.append('<');
 		ostream.append(simpleQuote(tag));
 		if (indent == 0) {
+			//noinspection SpellCheckingInspection
 			ostream.append(" xmlns=\"");
 			ostream.append(ISPReader.NAMESPACE);
 			ostream.append("\"");
