@@ -520,9 +520,16 @@ public final class DrawHelperComparator implements SimpleDriver {
 	 */
 	private static final class LongAccumulator {
 		/**
+		 * Constructor. The default was private, which causes synthetic-access warnings
+		 * when called from the outer class.
+		 */
+		protected LongAccumulator() {
+			value = 0;
+		}
+		/**
 		 * The value.
 		 */
-		private long value = 0;
+		private long value;
 		/**
 		 * Get the value.
 		 * @return the value
