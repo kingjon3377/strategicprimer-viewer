@@ -189,6 +189,14 @@ public final class WorkerMgmtFrame extends SPFrame
 				new ReportUpdater(model, reportModel), resultsPanel));
 		pack();
 	}
+	/**
+	 * A trivial toString().
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "WorkerMgmtFrame";
+	}
 
 	/**
 	 * Create the "report" tree.
@@ -541,6 +549,14 @@ public final class WorkerMgmtFrame extends SPFrame
 		@Override
 		public void windowClosed(final WindowEvent event) {
 			dialog.dispose();
+		}
+		/**
+		 * A trivial toString().
+		 * @return a String representation of the object.
+		 */
+		@Override
+		public String toString() {
+			return "CloseListener";
 		}
 	}
 }
