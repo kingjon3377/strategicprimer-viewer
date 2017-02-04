@@ -149,13 +149,13 @@ public final class ZeroToOneConverter {
 	 * Convert the version attribute of the map.
 	 *
 	 * @param element the map element
-	 * @param attrs   its attributes
+	 * @param attributes   its attributes
 	 * @param ostream the stream to which to write the converted tag, in XML
 	 *                representation.
 	 * @throws IOException on I/O error writing to ostream
 	 */
 	private static void convertMap(final Appendable ostream, final StartElement element,
-								   final Iterable<Attribute> attrs) throws IOException {
+								   final Iterable<Attribute> attributes) throws IOException {
 		ostream.append('<');
 		if (!Objects.equals(XMLConstants.DEFAULT_NS_PREFIX,
 				element.getName().getNamespaceURI())) {
@@ -168,7 +168,7 @@ public final class ZeroToOneConverter {
 			ostream.append(' ');
 			ostream.append(namespace.toString());
 		}
-		for (final Attribute attr : attrs) {
+		for (final Attribute attr : attributes) {
 			if ("version".equalsIgnoreCase(attr.getName().getLocalPart())) {
 				ostream.append(" version=\"1\"");
 			} else {
@@ -183,14 +183,14 @@ public final class ZeroToOneConverter {
 	 * that, I think.
 	 *
 	 * @param element the current element
-	 * @param attrs   its attributes.
+	 * @param attributes   its attributes.
 	 * @param ostream the stream to which to write the converted tile, in XML
 	 *                representation
 	 * @throws NumberFormatException if a tile has a non-numeric 'event'
 	 * @throws IOException           on I/O error writing to ostream
 	 */
 	private static void convertTile(final Appendable ostream, final StartElement element,
-									final Iterable<Attribute> attrs)
+									final Iterable<Attribute> attributes)
 			throws IOException {
 		ostream.append('<');
 		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI()
@@ -200,7 +200,7 @@ public final class ZeroToOneConverter {
 		}
 		ostream.append(element.getName().getLocalPart());
 		final Deque<Integer> events = new LinkedList<>();
-		for (final Attribute attr : attrs) {
+		for (final Attribute attr : attributes) {
 			if ("event".equalsIgnoreCase(attr.getName().getLocalPart())) {
 				try {
 					events.push(Integer.valueOf(
