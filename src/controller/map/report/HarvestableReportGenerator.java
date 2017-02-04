@@ -129,8 +129,8 @@ public final class HarvestableReportGenerator
 						mapToList(stone, "<h5>Exposed stone deposits</h5>"),
 						mapToList(shrubs, "<h5>Shrubs, small trees, and such</h4>"));
 		all.forEach(Collections::sort);
-		if (Stream.of(caches, groves, meadows, mines).noneMatch(Map::isEmpty) &&
-					all.stream().noneMatch(Collection::isEmpty)) {
+		if (!Stream.of(caches, groves, meadows, mines).allMatch(Map::isEmpty) ||
+					!all.stream().allMatch(Collection::isEmpty)) {
 			ostream.format("<h4>Resource Sources</h4>%n");
 			writeMap(ostream, caches, "<h5>Caches collected by your explorers and workers:</h5>",
 					(entry, formatter) -> produce(fixtures, map, currentPlayer,
