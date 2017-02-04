@@ -48,7 +48,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	/**
 	 * The driver model.
 	 */
-	protected final IWorkerModel model;
+	private final IWorkerModel model;
 
 	/**
 	 * A list of unit members that have been dismissed.
