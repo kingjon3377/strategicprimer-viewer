@@ -89,16 +89,14 @@ public interface IReportGenerator<T> {
 	 * Write the contents of a Map to a Formatter as a list, but don't write anything if
 	 * it is empty.
 	 * @param <T> the type of thing in the map
-	 * @param heading the heading to put at the top (including any HTML heading tags)
-	 * @param map the map to write
+	 * @param map the map to write. Must be a HeadedMap so we can get its heading from there
 	 * @param ostream the stream to write to
 	 * @param lambda the method to write each item
 	 */
-	default <T> void writeMap(final Formatter ostream, final Map<T, Point> map,
-							  final String heading,
+	default <T> void writeMap(final Formatter ostream, final HeadedMap<T, Point> map,
 							  final BiConsumer<Map.Entry<T, Point>, Formatter> lambda) {
 		if (!map.isEmpty()) {
-			ostream.format("%s%n<ul>%n", heading);
+			ostream.format("%s%n<ul>%n", map.getHeader());
 			for (final Map.Entry<T, Point> entry : map.entrySet()) {
 				ostream.format("<li>");
 				lambda.accept(entry, ostream);

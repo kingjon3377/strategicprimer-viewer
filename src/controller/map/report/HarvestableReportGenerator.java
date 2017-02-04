@@ -9,8 +9,7 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -82,22 +81,31 @@ public final class HarvestableReportGenerator
 		final Map<String, Collection<Point>> stone = new HashMap<>();
 		final Map<String, Collection<Point>> shrubs = new HashMap<>();
 		final Map<String, Collection<Point>> minerals = new HashMap<>();
-		final Map<Mine, Point> mines = new TreeMap<>(Comparator.comparing(Mine::getKind)
-															 .thenComparing(
-																	 Mine::getStatus)
-															 .thenComparingInt(
-																	 Mine::getID));
-		final Map<Meadow, Point> meadows =
-				new TreeMap<>(Comparator.comparing(Meadow::getKind)
-									  .thenComparing(Meadow::getStatus)
-									  .thenComparingInt(Meadow::getID));
-		final Map<Grove, Point> groves =
-				new TreeMap<>(Comparator.comparing(Grove::getKind)
-									  .thenComparingInt(Grove::getID));
-		final Map<CacheFixture, Point> caches =
-				new TreeMap<>(Comparator.comparing(CacheFixture::getKind)
-									  .thenComparing(CacheFixture::getContents)
-									  .thenComparingInt(CacheFixture::getID));
+		final HeadedMap<Mine, Point> mines = new HeadedMapImpl<>("<h5>Mines</h5>",
+																		Comparator
+																				.comparing(
+																						Mine::getKind)
+																				.thenComparing(
+																						Mine::getStatus)
+																				.thenComparingInt(
+																						Mine::getID));
+		final HeadedMap<Meadow, Point> meadows =
+				new HeadedMapImpl<>("<h5>Meadows and fields</h5>",
+										   Comparator.comparing(Meadow::getKind)
+												   .thenComparing(Meadow::getStatus)
+												   .thenComparingInt(Meadow::getID));
+		final HeadedMap<Grove, Point> groves =
+				new HeadedMapImpl<>("<h5>Groves and orchards</h5>",
+										   Comparator.comparing(Grove::getKind)
+												   .thenComparingInt(Grove::getID));
+		final HeadedMap<CacheFixture, Point> caches =
+				new HeadedMapImpl<>(
+						"<h5>Caches collected by your explorers and workers:</h5>",
+										   Comparator.comparing(CacheFixture::getKind)
+												   .thenComparing(
+														   CacheFixture::getContents)
+												   .thenComparingInt(
+														   CacheFixture::getID));
 		for (final Pair<Point, IFixture> pair : values) {
 			final IFixture item = pair.second();
 			final Point point = pair.first();
@@ -133,15 +141,14 @@ public final class HarvestableReportGenerator
 		if (!Stream.of(caches, groves, meadows, mines).allMatch(Map::isEmpty) ||
 					!all.stream().allMatch(Collection::isEmpty)) {
 			ostream.format("<h4>Resource Sources</h4>%n");
-			BiConsumer<String, Map<? extends HarvestableFixture, Point>> consumer =
-					(text, mapping) -> writeMap(ostream, mapping, text,
+			Consumer<HeadedMap<? extends HarvestableFixture, Point>> consumer =
+					(mapping) -> writeMap(ostream, mapping,
 							(entry, formatter) -> produce(fixtures, map, currentPlayer,
 									entry.getKey(), entry.getValue(), ostream));
-			consumer.accept("<h5>Caches collected by your explorers and workers:</h5>",
-					caches);
-			consumer.accept("<h5>Groves and orchards</h5>", groves);
-			consumer.accept("<h5>Meadows and fields</h5>", meadows);
-			consumer.accept("<h5>Mines</h5>", mines);
+			consumer.accept(caches);
+			consumer.accept(groves);
+			consumer.accept(meadows);
+			consumer.accept(mines);
 			for (final HeadedList<String> list : all) {
 				ostream.format("%s", list.toString());
 			}

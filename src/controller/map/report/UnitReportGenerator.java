@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Formatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.TreeSet;
@@ -424,8 +422,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final Map<IUnit, Point> foreign = new HashMap<>();
-		final Map<IUnit, Point> ours = new HashMap<>();
+		final HeadedMap<IUnit, Point> foreign =
+				new HeadedMapImpl<>("<h5>Foreign units</h5>");
+		final HeadedMap<IUnit, Point> ours = new HeadedMapImpl<>("<h5>Your units</h5>");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof IUnit) {
 				final IUnit unit = (IUnit) pair.second();
@@ -446,9 +445,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 						produce(fixtures, map, currentPlayer, entry.getKey(),
 								entry.getValue(), formatter);
 					};
-			writeMap(ostream, ours, "<h5>Your units</h5>",
-					unitFormatter);
-			writeMap(ostream, foreign, "<h5>Foreign units</h5>", unitFormatter);
+			writeMap(ostream, ours, unitFormatter);
+			writeMap(ostream, foreign, unitFormatter);
 		}
 	}
 

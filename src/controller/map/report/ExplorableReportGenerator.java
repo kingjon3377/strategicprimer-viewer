@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Formatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -74,7 +72,8 @@ public final class ExplorableReportGenerator
 				new PointList("Signs of long-ago battles on the following tiles: ");
 		final Collection<Point> caves =
 				new PointList("Caves beneath the following tiles: ");
-		final Map<AdventureFixture, Point> adventures = new HashMap<>();
+		final HeadedMap<AdventureFixture, Point> adventures =
+				new HeadedMapImpl<>("<h4>Possible Adventures</h4>");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
 				caves.add(pair.first());
@@ -96,7 +95,7 @@ public final class ExplorableReportGenerator
 			ostream.format("%s%s%s</ul>%n", caves.toString(), battles.toString(),
 					portals.toString());
 		}
-		writeMap(ostream, adventures, "<h4>Possible Adventures</h4>",
+		writeMap(ostream, adventures,
 				(entry, formatter) -> produce(fixtures, map, currentPlayer,
 						entry.getKey(), entry.getValue(), formatter));
 	}

@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Formatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -84,10 +83,15 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 						Player currentPlayer, final Formatter ostream) {
 		final Map<TownStatus, Map<ITownFixture, Point>> separated =
 				new EnumMap<>(TownStatus.class);
-		final Map<ITownFixture, Point> abandoned = new HashMap<>();
-		final Map<ITownFixture, Point> active = new HashMap<>();
-		final Map<ITownFixture, Point> burned = new HashMap<>();
-		final Map<ITownFixture, Point> ruined = new HashMap<>();
+		// TODO: sort within them by what?
+		final HeadedMap<ITownFixture, Point> abandoned =
+				new HeadedMapImpl<>("<h5>Abandoned Communities</h5>");
+		final HeadedMap<ITownFixture, Point> active =
+				new HeadedMapImpl<>("<h5>Active Communities</h5>");
+		final HeadedMap<ITownFixture, Point> burned =
+				new HeadedMapImpl<>("<h5>Burned-Out Communities</h5>");
+		final HeadedMap<ITownFixture, Point> ruined =
+				new HeadedMapImpl<>("<h5>Ruined Communities</h5>");
 		separated.put(TownStatus.Abandoned, abandoned);
 		separated.put(TownStatus.Active, active);
 		separated.put(TownStatus.Burned, burned);
@@ -97,21 +101,15 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 						pair.first()));
 		if (Stream.of(abandoned, active, burned, ruined)
 					.anyMatch(mapping -> !mapping.isEmpty())) {
-			// TODO: reorder so active is first?
 			ostream.format(
 					"<h4>Cities, towns, and/or fortifications you know about:</h4>%n");
-			writeMap(ostream, abandoned, "<h5>Abandoned Communities</h5>",
-					(entry, formatter) -> produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), formatter));
-			writeMap(ostream, active, "<h5>Active Communities</h5>",
-					(entry, formatter) -> produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), formatter));
-			writeMap(ostream, burned, "<h5>Burned-Out Communities</h5>",
-					(entry, formatter) -> produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), formatter));
-			writeMap(ostream, ruined, "<h5>Ruined Communities</h5>",
-					(entry, formatter) -> produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), formatter));
+			// TODO: reorder so active is first?
+			for (final HeadedMap<ITownFixture, Point> mapping : Arrays.asList(abandoned,
+					active, burned, ruined)) {
+				writeMap(ostream, mapping,
+						(entry, formatter) -> produce(fixtures, map, currentPlayer,
+								entry.getKey(), entry.getValue(), formatter));
+			}
 		}
 	}
 	/**

@@ -6,7 +6,6 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -68,15 +67,16 @@ public final class FortressMemberReportGenerator
 						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final Map<Implement, Point> equipment =
-				new TreeMap<>(Comparator.comparing(Implement::getKind)
-									  .thenComparingInt(Implement::getID));
-		final Map<String, Map<ResourcePile, Point>> resources = new HashMap<>();
+		final HeadedMap<Implement, Point> equipment =
+				new HeadedMapImpl<>("<li>Equipment:",
+										   Comparator.comparing(Implement::getKind)
+												   .thenComparingInt(Implement::getID));
+		final Map<String, HeadedMap<ResourcePile, Point>> resources = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof ResourcePile) {
 				final ResourcePile resource = (ResourcePile) pair.second();
 				MultiMapHelper.getMapValue(resources, resource.getKind(),
-						key -> new TreeMap<>(Comparator.comparing(ResourcePile::getKind)
+						key -> new HeadedMapImpl<>(String.format("<li>%s:", key), Comparator.comparing(ResourcePile::getKind)
 													 .thenComparing(
 															 ResourcePile::getContents)
 													 .thenComparing(
@@ -94,14 +94,14 @@ public final class FortressMemberReportGenerator
 		}
 		if (!equipment.isEmpty() && !resources.isEmpty()) {
 			ostream.format("<h4>Resources and Equipment</h4>%n<ul>%n");
-			writeMap(ostream, equipment, "<li>Equipment:",
+			writeMap(ostream, equipment,
 					(entry, formatter) -> produce(fixtures, map, currentPlayer,
 							entry.getKey(), entry.getValue(), formatter));
 			if (!resources.isEmpty()) {
 				ostream.format("<li>Resources:<ul>%n");
-				for (final Map.Entry<String, Map<ResourcePile, Point>> outer :
+				for (final Map.Entry<String, HeadedMap<ResourcePile, Point>> outer :
 						resources.entrySet()) {
-					writeMap(ostream, outer.getValue(), "<li>%s:",
+					writeMap(ostream, outer.getValue(),
 							(entry, formatter) -> produce(fixtures, map, currentPlayer,
 									entry.getKey(), entry.getValue(), formatter));
 					ostream.format("</li>%n");

@@ -6,7 +6,6 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.function.BiConsumer;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -67,9 +66,13 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				Comparator.comparing(Village::getName).thenComparing(Village::getRace)
 						.thenComparingInt(Village::getID);
 		// TODO: sort by distance somehow?
-		final Map<Village, Point> own = new TreeMap<>(villageComparator);
-		final Map<Village, Point> independents = new TreeMap<>(villageComparator);
-		final Map<Player, Map<Village, Point>> others = new HashMap<>();
+		final HeadedMap<Village, Point> own =
+				new HeadedMapImpl<>("<h4>Villages pledged to your service:</h4>",
+										   villageComparator);
+		final HeadedMap<Village, Point> independents =
+				new HeadedMapImpl<>("<h4>Villages you think are independent:</h4>",
+										   villageComparator);
+		final Map<Player, HeadedMap<Village, Point>> others = new HashMap<>();
 		values.stream().filter(pair -> pair.second() instanceof Village)
 				.forEach(pair -> {
 					final Village village = (Village) pair.second();
@@ -79,22 +82,22 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 						independents.put(village, pair.first());
 					} else {
 						MultiMapHelper.getMapValue(others, village.getOwner(),
-								key -> new TreeMap<>(villageComparator))
+								key -> new HeadedMapImpl<>(String.format(
+										"<h5>Villages sworn to %s</h5>%n<ul>%n",
+										key.getName()), villageComparator))
 								.put(village, pair.first());
 					}
 				});
 		final BiConsumer<Map.Entry<Village, Point>, Formatter> writer =
 				(entry, formatter) -> produce(fixtures, map, currentPlayer,
 						entry.getKey(), entry.getValue(), formatter);
-		writeMap(ostream, own, "<h4>Villages pledged to your service:</h4>", writer);
-		writeMap(ostream, independents, "<h4>Villages you think are independent:</h4>",
-				writer);
+		writeMap(ostream, own, writer);
+		writeMap(ostream, independents, writer);
 		if (!others.isEmpty()) {
 			ostream.format("<h4>Other villages you know about:</h4>%n");
-			for (final Map.Entry<Player, Map<Village, Point>> outer : others.entrySet()) {
-				writeMap(ostream, outer.getValue(),
-						String.format("<h5>Villages sworn to %s</h5>%n<ul>%n",
-								outer.getKey().getName()), writer);
+			for (final Map.Entry<Player, HeadedMap<Village, Point>> outer :
+					others.entrySet()) {
+				writeMap(ostream, outer.getValue(), writer);
 			}
 		}
 	}
