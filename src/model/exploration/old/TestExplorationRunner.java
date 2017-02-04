@@ -3,6 +3,7 @@ package model.exploration.old;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
@@ -75,7 +76,7 @@ public final class TestExplorationRunner {
 		runner.loadTable("major_rock", new ConstantTable("primary_rock_test"));
 		assertThat("primary rock test",
 				runner.getPrimaryRock(PointFactory.point(0, 0), TileType.Tundra, EMPTY,
-						new MapDimensions(69, 88, 2)), equalTo("primary_rock_test"));
+						new MapDimensionsImpl(69, 88, 2)), equalTo("primary_rock_test"));
 	}
 
 	/**
@@ -92,7 +93,7 @@ public final class TestExplorationRunner {
 		runner.loadTable("temperate_major_tree",
 				new ConstantTable("temperate_major_test"));
 		final Point point = PointFactory.point(0, 0);
-		final MapDimensions dimensions = new MapDimensions(69, 88, 2);
+		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertThat("primary tree test for boreal forest",
 				runner.getPrimaryTree(point, TileType.BorealForest, EMPTY, dimensions),
 				equalTo("boreal_major_test"));
@@ -111,7 +112,7 @@ public final class TestExplorationRunner {
 	public void testIllegalGetPrimaryTree() throws MissingTableException {
 		final Point point = PointFactory.point(0, 0);
 		runner.getPrimaryTree(point, TileType.Tundra, EMPTY,
-				new MapDimensions(69, 88, 2));
+				new MapDimensionsImpl(69, 88, 2));
 		fail("gave a primary tree for non-forest");
 	}
 
@@ -128,7 +129,7 @@ public final class TestExplorationRunner {
 		runner.loadTable(TEST_TABLE_TWO, new ConstantTable("test_two"));
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
 		final Point point = PointFactory.point(0, 0);
-		final MapDimensions dimensions = new MapDimensions(69, 88, 2);
+		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertThat("first table", runner.consultTable(TEST_TABLE_ONE,
 				point, TileType.Tundra, EMPTY, dimensions), equalTo("test_one"));
 		assertThat("second table", runner.consultTable(TEST_TABLE_TWO, point,
@@ -152,7 +153,7 @@ public final class TestExplorationRunner {
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
 		runner.loadTable("test_table_four", new ConstantTable("_ #test_table_one"));
 		final Point point = PointFactory.point(0, 0);
-		final MapDimensions dimensions = new MapDimensions(69, 88, 2);
+		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertThat(
 				"two levels of recursion",
 				runner.recursiveConsultTable(TEST_TABLE_ONE, point,
@@ -185,7 +186,7 @@ public final class TestExplorationRunner {
 		runner.loadTable("boreal_major_tree", new ConstantTable("boreal_tree"));
 		runner.loadTable("temperate_major_tree", new ConstantTable("temperate_tree"));
 		final Point point = PointFactory.point(0, 0);
-		final MapDimensions dimensions = new MapDimensions(69, 88, 2);
+		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertThat("defaultResults in non-forest",
 				runner.defaultResults(point, TileType.Tundra, EMPTY, dimensions).trim(),
 				equalTo("The primary rock type here is test_rock."));

@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import model.exploration.old.EncounterTable;
 import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
@@ -56,7 +57,7 @@ public final class TestTableLoader {
 				String.format("quadrant%n2%none%ntwo%nthree%nfour%nfive%nsix")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(0, 0);
-			final MapDimensions dimensions = new MapDimensions(69, 88, 2);
+			final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 			assertThat("loading quadrant table",
 					result.generateEvent(point, TileType.Tundra, EMPTY, dimensions),
 					equalTo(ONE_STRING));
@@ -65,7 +66,7 @@ public final class TestTableLoader {
 							EMPTY, dimensions), equalTo("five"));
 			assertThat("quadrant table can use alternate dimensions",
 					result.generateEvent(PointFactory.point(36, 30), TileType.Tundra,
-							EMPTY, new MapDimensions(36, 32, 2)), equalTo("six"));
+							EMPTY, new MapDimensionsImpl(36, 32, 2)), equalTo("six"));
 		}
 		try (final BufferedReader readerTwo = new BufferedReader(new StringReader
 																		 ("quadrant"))) {
@@ -92,7 +93,7 @@ public final class TestTableLoader {
 			final Point point = PointFactory.point(30, 30);
 			assertThat("loading random table",
 					result.generateEvent(point, TileType.Tundra, EMPTY,
-							new MapDimensions(69, 88, 2)), equalTo(ONE_STRING));
+							new MapDimensionsImpl(69, 88, 2)), equalTo(ONE_STRING));
 		}
 	}
 
@@ -110,7 +111,7 @@ public final class TestTableLoader {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point firstPoint = PointFactory.point(30, 30);
 			// TODO: Make MapDimensions an interface and use a mock object here
-			final MapDimensions dimensions = new MapDimensions(69, 88, 2);
+			final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 			assertThat("loading terrain table: tundra",
 					result.generateEvent(firstPoint, TileType.Tundra, EMPTY, dimensions),
 					equalTo(ONE_STRING));
@@ -141,7 +142,7 @@ public final class TestTableLoader {
 			final Point point = PointFactory.point(10, 5);
 			assertThat("loading constant table: first test",
 					result.generateEvent(point, TileType.Plains, EMPTY,
-							new MapDimensions(69, 88, 2)), equalTo(ONE_STRING));
+							new MapDimensionsImpl(69, 88, 2)), equalTo(ONE_STRING));
 		}
 	}
 

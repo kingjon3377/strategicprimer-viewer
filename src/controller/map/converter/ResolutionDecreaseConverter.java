@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
-import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
@@ -50,10 +50,10 @@ public final class ResolutionDecreaseConverter {
 		checkRequirements(old);
 		final PlayerCollection players = new PlayerCollection();
 		old.players().forEach(players::add);
-		final int newCols = old.dimensions().cols / 2;
-		final int newRows = old.dimensions().rows / 2;
+		final int newCols = old.dimensions().getColumns() / 2;
+		final int newRows = old.dimensions().getRows() / 2;
 		final IMutableMapNG retval =
-				new SPMapNG(new MapDimensions(newRows, newCols, 2), players,
+				new SPMapNG(new MapDimensionsImpl(newRows, newCols, 2), players,
 								   old.getCurrentTurn());
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
@@ -117,8 +117,8 @@ public final class ResolutionDecreaseConverter {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void checkRequirements(final IMapNG map) {
-		if (((map.dimensions().rows % 2) != 0)
-					|| ((map.dimensions().cols % 2) != 0)) {
+		if (((map.dimensions().getRows() % 2) != 0) ||
+					((map.dimensions().getColumns() % 2) != 0)) {
 			throw new IllegalArgumentException("Can only convert maps with even numbers" +
 													   " of rows and columns.");
 		}

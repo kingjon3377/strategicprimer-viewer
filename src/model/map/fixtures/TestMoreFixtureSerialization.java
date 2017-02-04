@@ -11,7 +11,7 @@ import model.map.HasMutableImage;
 import model.map.HasPortrait;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
-import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.PlayerImpl;
@@ -256,7 +256,7 @@ public final class TestMoreFixtureSerialization extends
 				TextFixture.class, false);
 		assertImageSerialization("Text image property is preserved", thirdText);
 		final IMutableMapNG wrapper =
-				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), 0);
+				new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
 		wrapper.setBaseTerrain(point(0, 0), TileType.Plains);
 		wrapper.addFixture(point(0, 0), firstText);
 		assertForwardDeserialization("Deprecated text-in-map still works", wrapper,
@@ -481,7 +481,7 @@ public final class TestMoreFixtureSerialization extends
 		assertThat("Two different hooks are not equal", secondAdventure,
 				not(equalTo(firstAdventure)));
 		final IMutableMapNG wrapper =
-				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), -1);
 		wrapper.addPlayer(independent);
 		wrapper.setBaseTerrain(point(0, 0), TileType.Plains);
 		wrapper.addFixture(point(0, 0), firstAdventure);

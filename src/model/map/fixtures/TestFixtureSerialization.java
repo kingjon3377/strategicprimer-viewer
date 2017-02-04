@@ -7,7 +7,7 @@ import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.HasMutableImage;
 import model.map.IMutableMapNG;
-import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.PlayerImpl;
@@ -211,7 +211,7 @@ public final class TestFixtureSerialization extends
 		assertImageSerialization("Forest image property is preserved",
 				new Forest("thirdForest", true, 3));
 		final IMutableMapNG map =
-				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), -1);
 		final Point point = PointFactory.point(0, 0);
 		map.setBaseTerrain(point, TileType.Plains);
 		map.setForest(point, new Forest("trees", false, 4));
@@ -300,7 +300,7 @@ public final class TestFixtureSerialization extends
 				new Ground(3, "three", false));
 		final Point point = PointFactory.point(0, 0);
 		final IMutableMapNG map =
-				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), -1);
 		map.setBaseTerrain(point, TileType.Plains);
 		map.setGround(point, new Ground(-1, "four", true));
 		assertSerialization("Test that reader handles ground as a fixture", map);

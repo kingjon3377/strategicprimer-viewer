@@ -169,8 +169,8 @@ public final class DrawHelperComparator implements SimpleDriver {
 	private static long second(final TileDrawHelper helper, final IMapNG map,
 							   final int reps, final int tileSize) {
 		final MapDimensions dim = map.dimensions();
-		final BufferedImage image = new BufferedImage(tileSize * dim.cols,
-															 tileSize * dim.rows,
+		final BufferedImage image = new BufferedImage(tileSize * dim.getColumns(),
+															 tileSize * dim.getRows(),
 															 BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		secondBody(helper, image, map, reps, tileSize);
@@ -256,7 +256,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 							   final int reps, final int tileSize) {
 		final MapDimensions dim = map.dimensions();
 		final BufferedImage image =
-				new BufferedImage(tileSize * dim.cols, tileSize * dim.rows,
+				new BufferedImage(tileSize * dim.getColumns(), tileSize * dim.getRows(),
 										 BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
@@ -298,9 +298,9 @@ public final class DrawHelperComparator implements SimpleDriver {
 	private static long fifthOne(final TileDrawHelper helper, final IMapNG map,
 								 final int reps, final int tileSize) {
 		final MapDimensions dim = map.dimensions();
-		final BufferedImage image = new BufferedImage(tileSize * dim.cols,
-															 tileSize * dim.rows,
-															 BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image =
+				new BufferedImage(tileSize * dim.getColumns(), tileSize * dim.getRows(),
+										 BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -345,9 +345,9 @@ public final class DrawHelperComparator implements SimpleDriver {
 	private static long fifthTwo(final TileDrawHelper helper, final IMapNG map,
 								 final int reps, final int tileSize) {
 		final MapDimensions dim = map.dimensions();
-		final BufferedImage image = new BufferedImage(tileSize * dim.cols,
-															 tileSize * dim.rows,
-															 BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image =
+				new BufferedImage(tileSize * dim.getColumns(), tileSize * dim.getRows(),
+										 BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -398,7 +398,7 @@ public final class DrawHelperComparator implements SimpleDriver {
 				testCase.third.add(printStats(cli, testCase.second,
 						pair.second().runTest(testCase.first, map, repetitions,
 								TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL,
-										map.dimensions().version)),
+										map.dimensions().getVersion())),
 						repetitions));
 			}
 		}

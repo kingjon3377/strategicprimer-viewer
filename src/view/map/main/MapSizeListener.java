@@ -47,7 +47,7 @@ public final class MapSizeListener extends ComponentAdapter {
 			final MapDimensions mapDim = localModel.getMapDimensions();
 			if ((visibleCols != (maxCol - minCol)) ||
 						(visibleRows != (maxRow - minRow))) {
-				final int totalCols = mapDim.cols;
+				final int totalCols = mapDim.getColumns();
 				if (visibleCols >= totalCols) {
 					minCol = 0;
 					maxCol = totalCols - 1;
@@ -57,7 +57,7 @@ public final class MapSizeListener extends ComponentAdapter {
 				} else {
 					maxCol = (minCol + visibleCols) - 1;
 				}
-				final int totalRows = mapDim.rows;
+				final int totalRows = mapDim.getRows();
 				if (visibleRows >= totalRows) {
 					minRow = 0;
 					maxRow = totalRows - 1;

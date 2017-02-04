@@ -67,7 +67,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 								  final Comparator<TileFixture> comparator) {
 		model = mapModel;
 		zof = filter;
-		menu = new TerrainChangingMenu(model.getMapDimensions().version, model);
+		menu = new TerrainChangingMenu(model.getMapDimensions().getVersion(), model);
 		model.addSelectionChangeListener(menu);
 		model.addVersionChangeListener(menu);
 		sorter = comparator;

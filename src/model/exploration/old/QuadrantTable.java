@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
@@ -55,7 +56,7 @@ public final class QuadrantTable implements EncounterTable {
 						 final List<String> items) {
 		possibleResults = new ArrayList<>(items);
 		quadrantRows = rows;
-		final MapDimensions dimensions = new MapDimensions(mapRows, mapCols, 2);
+		final MapDimensions dimensions = new MapDimensionsImpl(mapRows, mapCols, 2);
 		final Map<Point, String> firstQuadrants =
 				getValuesFor(dimensions);
 		quadrants.put(dimensions, firstQuadrants);
@@ -86,8 +87,8 @@ public final class QuadrantTable implements EncounterTable {
 			final Map<Point, String> retval = new HashMap<>();
 			final int cols = possibleResults.size() / quadrantRows;
 			int i = 0;
-			final int mapCols = mapDimensions.cols;
-			final int mapRows = mapDimensions.rows;
+			final int mapCols = mapDimensions.getColumns();
+			final int mapRows = mapDimensions.getRows();
 			final int colRemain = mapCols % cols;
 			final int rowRemain = mapRows % quadrantRows;
 			final int colStep = mapCols / cols;

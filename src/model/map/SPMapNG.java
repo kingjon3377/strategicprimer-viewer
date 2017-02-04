@@ -592,9 +592,9 @@ public class SPMapNG implements IMutableMapNG {
 		final StringBuilder builder = new StringBuilder(2048);
 		try (final Formatter formatter = new Formatter(builder)) {
 			formatter.format("SPMapNG:%nMap version: %d%nRows: %d%nColumns: %d%n",
-					Integer.valueOf(dimensions().version),
-					Integer.valueOf(dimensions().rows),
-					Integer.valueOf(dimensions().cols));
+					Integer.valueOf(dimensions().getVersion()),
+					Integer.valueOf(dimensions().getRows()),
+					Integer.valueOf(dimensions().getColumns()));
 			formatter.format("Current Turn: %d%n%nPlayers:%n", Integer.valueOf(turn));
 			for (final Player player : players()) {
 				if (player.isCurrent()) {

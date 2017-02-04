@@ -74,11 +74,11 @@ public final class ScrollListener
 		horizontalBar = horizontal;
 		final Point selPoint = map.getSelectedPoint();
 		horizontalBar.getModel().setRangeProperties(Math.max(selPoint.getCol(), 0), 1, 0,
-				mapDim.cols - map.getDimensions().getWidth(), false);
+				mapDim.getColumns() - map.getDimensions().getWidth(), false);
 		horizontalBar.setInputVerifier(new LocalInputVerifier(mapDim, map, true));
 		verticalBar = vertical;
 		verticalBar.getModel().setRangeProperties(Math.max(selPoint.getRow(), 0), 1, 0,
-				mapDim.rows - map.getDimensions().getHeight(), false);
+				mapDim.getRows() - map.getDimensions().getHeight(), false);
 		verticalBar.setInputVerifier(new LocalInputVerifier(mapDim, map, false));
 		final AdjustmentListener adjList = evt -> model.setDimensions(
 				new VisibleDimensions(verticalBar.getValue(),
@@ -146,10 +146,10 @@ public final class ScrollListener
 		dimensions = newDim;
 		horizontalBar.getModel().setRangeProperties(
 				Math.max(model.getSelectedPoint().getCol(), 0), 1, 0,
-				mapDimensions.cols - newDim.getWidth(), false);
+				mapDimensions.getColumns() - newDim.getWidth(), false);
 		verticalBar.getModel().setRangeProperties(
 				Math.max(model.getSelectedPoint().getRow(), 0), 1, 0,
-				mapDimensions.rows - newDim.getHeight(), false);
+				mapDimensions.getRows() - newDim.getHeight(), false);
 	}
 
 	/**
@@ -190,9 +190,9 @@ public final class ScrollListener
 	public void mapChanged() {
 		mapDimensions = model.getMapDimensions();
 		horizontalBar.getModel().setRangeProperties(0, 1, 0,
-				mapDimensions.cols - model.getDimensions().getWidth(), false);
+				mapDimensions.getColumns() - model.getDimensions().getWidth(), false);
 		verticalBar.getModel().setRangeProperties(0, 1, 0,
-				mapDimensions.rows - model.getDimensions().getHeight(), false);
+				mapDimensions.getRows() - model.getDimensions().getHeight(), false);
 		dimensions = model.getDimensions();
 	}
 
@@ -246,9 +246,9 @@ public final class ScrollListener
 		 */
 		private int dimension() {
 			if (horizontalAxis) {
-				return dimensions.cols;
+				return dimensions.getColumns();
 			} else {
-				return dimensions.rows;
+				return dimensions.getRows();
 			}
 		}
 

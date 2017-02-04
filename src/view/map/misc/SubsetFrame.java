@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
-import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import org.eclipse.jdt.annotation.Nullable;
@@ -70,7 +70,7 @@ public final class SubsetFrame extends SPFrame {
 	 * The main map.
 	 */
 	private IMapNG mainMap =
-			new SPMapNG(new MapDimensions(0, 0, 2), new PlayerCollection(), -1);
+			new SPMapNG(new MapDimensionsImpl(0, 0, 2), new PlayerCollection(), -1);
 
 	/**
 	 * Constructor.

@@ -220,16 +220,16 @@ public final class TestSubsets {
 	@Test
 	public void testMapSubset() {
 		final IMutableMapNG firstMap =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), -1);
 		final Point pointOne = PointFactory.point(0, 0);
 		firstMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final IMutableMapNG secondMap =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), -1);
 		secondMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final Point pointTwo = PointFactory.point(1, 1);
 		secondMap.setBaseTerrain(pointTwo, TileType.Ocean);
 		final IMapNG zero =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), -1);
 		assertThat("None is a subset of itself",
 				Boolean.valueOf(zero.isSubset(zero, DEV_NULL, "")),
 				equalTo(Boolean.TRUE));
@@ -288,7 +288,7 @@ public final class TestSubsets {
 	@Test
 	public void testMapOffByOne() {
 		final IMutableMapNG baseMap =
-				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(3, 3, 2), new PlayerCollection(), -1);
 		baseMap.locationStream()
 				.forEach(point -> baseMap.setBaseTerrain(point, TileType.Plains));
 		baseMap.setForest(PointFactory.point(1, 1), new Forest("elm", false, 1));
@@ -341,16 +341,16 @@ public final class TestSubsets {
 	@Test
 	public void testSubsetsAndCopy() {
 		final IMutableMapNG firstMap =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), -1);
 		final Point pointOne = PointFactory.point(0, 0);
 		firstMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final IMapNG zero =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), -1);
 		assertThat("zero is a subset of one before copy",
 				Boolean.valueOf(firstMap.isSubset(zero, DEV_NULL, "")),
 				equalTo(Boolean.TRUE));
 		final IMutableMapNG secondMap =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), -1);
 		secondMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final Point pointTwo = PointFactory.point(1, 1);
 		secondMap.setBaseTerrain(pointTwo, TileType.Ocean);

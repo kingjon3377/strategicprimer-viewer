@@ -181,17 +181,18 @@ public final class SelectTileDialog extends SPDialog {
 	private void handleOK(final String rowText, final String colText) {
 		errorLabel.setText("");
 		final MapDimensions dim = map.getMapDimensions();
-		final State colState = checkNumber(colText, dim.cols - 1);
+		final State colState = checkNumber(colText, dim.getColumns() - 1);
 		if (colState != State.Valid) {
 			errorLabel.setText(errorLabel.getText() + "Column " +
-									   getErrorMessage(colState, dim.cols));
+									   getErrorMessage(colState, dim.getColumns()));
 			column.setText("-1");
 			column.selectAll();
 		}
-		final State rowState = checkNumber(rowText, dim.rows - 1);
+		final State rowState = checkNumber(rowText, dim.getRows() - 1);
 		if (rowState != State.Valid) {
 			errorLabel.setText(
-					errorLabel.getText() + "Row " + getErrorMessage(rowState, dim.rows));
+					errorLabel.getText() + "Row " +
+							getErrorMessage(rowState, dim.getRows()));
 			row.setText("-1");
 			row.selectAll();
 		}

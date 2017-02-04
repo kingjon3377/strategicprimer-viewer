@@ -8,6 +8,7 @@ import model.listeners.MapChangeListener;
 import model.listeners.VersionChangeListener;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 
@@ -38,7 +39,7 @@ public class SimpleDriverModel implements IDriverModel {
 	/**
 	 * The dimensions of the map.
 	 */
-	private MapDimensions mapDim = new MapDimensions(-1, -1, -1);
+	private MapDimensions mapDim = new MapDimensionsImpl(-1, -1, -1);
 	/**
 	 * The main map.
 	 */
@@ -56,7 +57,7 @@ public class SimpleDriverModel implements IDriverModel {
 	@Override
 	public void setMap(final IMutableMapNG newMap, final Optional<Path> origin) {
 		for (final VersionChangeListener list : vcListeners) {
-			list.changeVersion(mapDim.version, newMap.dimensions().version);
+			list.changeVersion(mapDim.getVersion(), newMap.dimensions().getVersion());
 		}
 		map = newMap;
 		mapDim = newMap.dimensions();

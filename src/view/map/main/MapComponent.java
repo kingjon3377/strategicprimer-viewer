@@ -85,7 +85,7 @@ public final class MapComponent extends JComponent
 		matchers = fixOrderer;
 		//noinspection TrivialMethodReference
 		helper = TileDrawHelperFactory.INSTANCE.factory(
-				model.getMapDimensions().version, this::imageUpdate, zof, matchers);
+				model.getMapDimensions().getVersion(), this::imageUpdate, zof, matchers);
 		cml = new ComponentMouseListener(model, zof, fixOrderer);
 		//noinspection TrivialMethodReference
 		cml.addSelectionChangeListener(this::selectedPointChanged);
@@ -160,9 +160,9 @@ public final class MapComponent extends JComponent
 			drawMapPortion(context, (int) Math.round(bounds.getMinX() / tileSize),
 					(int) Math.round(bounds.getMinY() / tileSize), Math.min(
 							(int) Math.round((bounds.getMaxX() / tileSize) + 1),
-							mapDim.cols), Math.min(
+							mapDim.getColumns()), Math.min(
 							(int) Math.round((bounds.getMaxY() / tileSize) + 1),
-							mapDim.rows));
+							mapDim.getRows()));
 		} finally {
 			context.dispose();
 		}
@@ -298,7 +298,7 @@ public final class MapComponent extends JComponent
 	@Override
 	public void mapChanged() {
 		helper = TileDrawHelperFactory.INSTANCE.factory(
-				model.getMapDimensions().version, this, zof, matchers);
+				model.getMapDimensions().getVersion(), this, zof, matchers);
 		repaint();
 	}
 
@@ -316,9 +316,9 @@ public final class MapComponent extends JComponent
 		final int maxCol = model.getDimensions().getMaximumCol();
 		final MapDimensions mapDim = model.getMapDimensions();
 		return ((selRow < 0) || (selRow >= minRow))
-					   && ((selRow >= mapDim.rows) || (selRow <= maxRow))
+					   && ((selRow >= mapDim.getRows()) || (selRow <= maxRow))
 					   && ((selCol < 0) || (selCol >= minCol))
-					   && ((selCol >= mapDim.cols) || (selCol <= maxCol));
+					   && ((selCol >= mapDim.getColumns()) || (selCol <= maxCol));
 	}
 
 	/**
@@ -384,6 +384,6 @@ public final class MapComponent extends JComponent
 	@Override
 	public String toString() {
 		return "MapComponent depicting a map of version " +
-					   model.getMapDimensions().version;
+					   model.getMapDimensions().getVersion();
 	}
 }

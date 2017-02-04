@@ -32,6 +32,7 @@ import model.map.HasKind;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.PlayerImpl;
@@ -531,7 +532,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			throw new UnwantedChildException(new QName("xml"), element);
 		}
 		final MapDimensions dimensions =
-				new MapDimensions(getIntegerAttribute(mapTag, "rows"),
+				new MapDimensionsImpl(getIntegerAttribute(mapTag, "rows"),
 										 getIntegerAttribute(mapTag, "columns"),
 										 getIntegerAttribute(mapTag, "version"));
 		final Deque<QName> tagStack = new LinkedList<>();

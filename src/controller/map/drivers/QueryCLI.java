@@ -13,10 +13,10 @@ import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import model.exploration.PoultryModel;
 import model.exploration.HerdModel;
 import model.exploration.HuntingModel;
 import model.exploration.MammalModel;
+import model.exploration.PoultryModel;
 import model.exploration.SurroundingPointIterable;
 import model.map.DistanceComparator;
 import model.map.FixtureIterable;
@@ -229,16 +229,16 @@ public final class QueryCLI implements SimpleDriver {
 		final int rawXDiff = base.getRow() - dest.getRow();
 		final int rawYDiff = base.getCol() - dest.getCol();
 		final int xDiff;
-		if (rawXDiff < (dims.rows / 2)) {
+		if (rawXDiff < (dims.getRows() / 2)) {
 			xDiff = rawXDiff;
 		} else {
-			xDiff = dims.rows - rawXDiff;
+			xDiff = dims.getRows() - rawXDiff;
 		}
 		final int yDiff;
-		if (rawYDiff < (dims.cols / 2)) {
+		if (rawYDiff < (dims.getColumns() / 2)) {
 			yDiff = rawYDiff;
 		} else {
-			yDiff = dims.cols - rawYDiff;
+			yDiff = dims.getColumns() - rawYDiff;
 		}
 		return Math.round(Math.sqrt((xDiff * xDiff) + (yDiff * yDiff)));
 

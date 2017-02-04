@@ -78,9 +78,9 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	 */
 	private static int roundCol(final int col, final MapDimensions dims) {
 		if (col < 0) {
-			return dims.cols + col;
+			return dims.getColumns() + col;
 		} else {
-			return col % dims.cols;
+			return col % dims.getColumns();
 		}
 	}
 
@@ -93,9 +93,9 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	 */
 	private static int roundRow(final int row, final MapDimensions dims) {
 		if (row < 0) {
-			return dims.rows + row;
+			return dims.getRows() + row;
 		} else {
-			return row % dims.rows;
+			return row % dims.getRows();
 		}
 	}
 

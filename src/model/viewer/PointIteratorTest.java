@@ -3,7 +3,7 @@ package model.viewer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.Point;
 import model.map.PointFactory;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public final class PointIteratorTest {
 						PointFactory.point(2, 0), PointFactory.point(2, 1),
 						PointFactory.point(2, 2));
 		final Collection<Point> actual =
-				new PointIterator(new MapDimensions(3, 3, 1), null, true, true).stream()
+				new PointIterator(new MapDimensionsImpl(3, 3, 1), null, true, true).stream()
 						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
@@ -62,7 +62,7 @@ public final class PointIteratorTest {
 						PointFactory.point(0, 2), PointFactory.point(1, 0),
 						PointFactory.point(1, 1));
 		final Collection<Point> actual =
-				new PointIterator(new MapDimensions(3, 3, 1), PointFactory.point(1, 1),
+				new PointIterator(new MapDimensionsImpl(3, 3, 1), PointFactory.point(1, 1),
 										 true, true).stream()
 						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));
@@ -81,7 +81,7 @@ public final class PointIteratorTest {
 						PointFactory.point(0, 2), PointFactory.point(1, 2),
 						PointFactory.point(2, 2));
 		final Collection<Point> actual =
-				new PointIterator(new MapDimensions(3, 3, 1), PointFactory.INVALID_POINT,
+				new PointIterator(new MapDimensionsImpl(3, 3, 1), PointFactory.INVALID_POINT,
 										 true, false).stream()
 						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));
@@ -99,7 +99,7 @@ public final class PointIteratorTest {
 						PointFactory.point(0, 2), PointFactory.point(1, 2),
 						PointFactory.point(2, 2));
 		final Collection<Point> actual =
-				new PointIterator(new MapDimensions(3, 3, 1), null, true, false).stream()
+				new PointIterator(new MapDimensionsImpl(3, 3, 1), null, true, false).stream()
 						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
@@ -116,7 +116,7 @@ public final class PointIteratorTest {
 						PointFactory.point(0, 2), PointFactory.point(0, 1),
 						PointFactory.point(0, 0));
 		final Collection<Point> actual =
-				new PointIterator(new MapDimensions(3, 3, 1), null, false, true).stream()
+				new PointIterator(new MapDimensionsImpl(3, 3, 1), null, false, true).stream()
 						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
@@ -133,7 +133,7 @@ public final class PointIteratorTest {
 						PointFactory.point(2, 0), PointFactory.point(1, 0),
 						PointFactory.point(0, 0));
 		final Collection<Point> actual =
-				new PointIterator(new MapDimensions(3, 3, 1), null, false, false)
+				new PointIterator(new MapDimensionsImpl(3, 3, 1), null, false, false)
 						.stream()
 						.collect(Collectors.toList());
 		assertThat(EXPECTATION, actual, equalTo(expected));

@@ -77,7 +77,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	private static IMapNG encapsulateRivers(final Point point,
 											final River... rivers) {
 		final IMutableMapNG retval =
-				new SPMapNG(new MapDimensions(point.getRow() + 1, point.getCol() + 1, 2),
+				new SPMapNG(new MapDimensionsImpl(point.getRow() + 1, point.getCol() + 1, 2),
 								   new PlayerCollection(), -1);
 		retval.setBaseTerrain(point, Plains);
 		retval.addRivers(point, rivers);
@@ -96,7 +96,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 												 final Pair<Point, TileType>...
 														 terrain) {
 		final IMutableMapNG retval =
-				new SPMapNG(new MapDimensions(dims.getRow(), dims.getCol(), 2),
+				new SPMapNG(new MapDimensionsImpl(dims.getRow(), dims.getCol(), 2),
 								   new PlayerCollection(), -1);
 		for (final Pair<Point, TileType> pair : terrain) {
 			retval.setBaseTerrain(pair.first(), pair.second());
@@ -342,7 +342,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testTileSerializationThree()
 			throws XMLStreamException, SPFormatException, IOException {
 		final IMutableMapNG six =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 5);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), 5);
 		six.setMountainous(point(0, 0), true);
 		six.setGround(point(0, 1), new Ground(22, "basalt", false));
 		six.setForest(point(1, 0), new Forest("pine", false, 19));
@@ -398,7 +398,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
 		final IMutableMapNG firstMap =
-				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), -1);
 		firstMap.addPlayer(player);
 		final Point point = point(0, 0);
 		firstMap.setBaseTerrain(point, Plains);
@@ -434,7 +434,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final IMutablePlayerCollection players = new PlayerCollection();
 		players.add(player);
 		final IMutableMapNG firstMap =
-				new SPMapNG(new MapDimensions(1, 1, 2), players, 0);
+				new SPMapNG(new MapDimensionsImpl(1, 1, 2), players, 0);
 		final Point point = point(0, 0);
 		firstMap.setBaseTerrain(point, Plains);
 		assertSerialization("Simple Map serialization", firstMap);
@@ -459,7 +459,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
 		final IMutableMapNG firstMap =
-				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), 0);
+				new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
 		firstMap.addPlayer(player);
 		final Point point = point(0, 0);
 		firstMap.setBaseTerrain(point, Steppe);
@@ -503,7 +503,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
 		final IMutableMapNG firstMap =
-				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), 0);
+				new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
 		firstMap.addPlayer(player);
 		final Point point = point(0, 0);
 		firstMap.setBaseTerrain(point, Steppe);

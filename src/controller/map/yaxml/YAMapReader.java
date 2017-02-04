@@ -21,6 +21,7 @@ import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
@@ -233,7 +234,7 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 			throw new UnwantedChildException(new QName("xml"), element);
 		}
 		final MapDimensions dimensions =
-				new MapDimensions(getIntegerParameter(mapTag, "rows"),
+				new MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
 										 getIntegerParameter(mapTag, "columns"),
 										 getIntegerParameter(mapTag, "version"));
 		final Deque<QName> tagStack = new LinkedList<>();
@@ -356,16 +357,16 @@ public final class YAMapReader extends YAAbstractReader<IMapNG> {
 		finishParentTag(ostream);
 		writeTag(ostream, "map", indent + 1);
 		final MapDimensions dim = obj.dimensions();
-		writeProperty(ostream, "version", dim.version);
-		writeProperty(ostream, "rows", dim.rows);
-		writeProperty(ostream, "columns", dim.cols);
+		writeProperty(ostream, "version", dim.getVersion());
+		writeProperty(ostream, "rows", dim.getRows());
+		writeProperty(ostream, "columns", dim.getColumns());
 		finishParentTag(ostream);
 		for (final Player player : obj.players()) {
 			playerReader.write(ostream, player, indent + 2);
 		}
-		for (int i = 0; i < dim.rows; i++) {
+		for (int i = 0; i < dim.getRows(); i++) {
 			boolean rowEmpty = true;
-			for (int j = 0; j < dim.cols; j++) {
+			for (int j = 0; j < dim.getColumns(); j++) {
 				final Point point = PointFactory.point(i, j);
 				final TileType terrain = obj.getBaseTerrain(point);
 				if (!obj.isLocationEmpty(point)) {

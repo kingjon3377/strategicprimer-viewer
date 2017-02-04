@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.map.IMutableMapNG;
-import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.PlayerImpl;
@@ -113,7 +113,7 @@ public final class TestWorkerModel {
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
 		final IMutableMapNG map =
-				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(3, 3, 2), new PlayerCollection(), -1);
 		for (final Point point : map.locations()) {
 			map.addFixture(point, fixtures.remove(0));
 		}

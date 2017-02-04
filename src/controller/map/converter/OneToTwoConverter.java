@@ -29,6 +29,7 @@ import model.exploration.old.MissingTableException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.PlayerImpl;
@@ -364,9 +365,9 @@ public final class OneToTwoConverter implements SimpleDriver {
 	public IMapNG convert(final IMapNG old, final boolean main) {
 		final MapDimensions oldDim = old.dimensions();
 		final IMutableMapNG retval =
-				new SPMapNG(new MapDimensions(oldDim.rows * RES_JUMP,
-													 oldDim.cols * RES_JUMP, 2),
-								   new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(oldDim.getRows() * RES_JUMP,
+														 oldDim.getColumns() * RES_JUMP,
+														 2), new PlayerCollection(), -1);
 		final Player independent =
 				old.streamPlayers().filter(Player::isIndependent).findAny()
 						.orElse(new PlayerImpl(-1, "independent"));
@@ -374,8 +375,8 @@ public final class OneToTwoConverter implements SimpleDriver {
 		final List<Point> converted = new LinkedList<>();
 		final IDRegistrar idFactory = IDFactoryFiller.createFactory(old);
 		final IMapNG oldCopy = old.copy(false, null);
-		for (int row = 0; row < oldDim.rows; row++) {
-			for (int col = 0; col < oldDim.cols; col++) {
+		for (int row = 0; row < oldDim.getRows(); row++) {
+			for (int col = 0; col < oldDim.getColumns(); col++) {
 				converted.addAll(convertTile(PointFactory.point(row, col), oldCopy,
 						retval, main, idFactory, independent));
 			}

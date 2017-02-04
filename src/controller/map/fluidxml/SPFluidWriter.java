@@ -382,15 +382,15 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writeIntegerAttribute(ostream, "current_turn", map.getCurrentTurn());
 		writeTag(ostream, "map", indent + 1, false);
 		final MapDimensions dim = map.dimensions();
-		writeIntegerAttribute(ostream, "version", dim.version);
-		writeIntegerAttribute(ostream, "rows", dim.rows);
-		writeIntegerAttribute(ostream, "columns", dim.cols);
+		writeIntegerAttribute(ostream, "version", dim.getVersion());
+		writeIntegerAttribute(ostream, "rows", dim.getRows());
+		writeIntegerAttribute(ostream, "columns", dim.getColumns());
 		for (final Player player : map.players()) {
 			writeSPObject(ostream, player, indent + 2);
 		}
-		for (int i = 0; i < dim.rows; i++) {
+		for (int i = 0; i < dim.getRows(); i++) {
 			boolean rowEmpty = true;
-			for (int j = 0; j < dim.cols; j++) {
+			for (int j = 0; j < dim.getColumns(); j++) {
 				final Point point = PointFactory.point(i, j);
 				final TileType terrain = map.getBaseTerrain(point);
 				if (!map.isLocationEmpty(point)) {

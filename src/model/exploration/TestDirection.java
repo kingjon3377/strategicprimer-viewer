@@ -1,7 +1,7 @@
 package model.exploration;
 
 import java.util.Optional;
-import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class TestDirection {
 	 * interface, it can't be static.
 	 */
 	private final IExplorationModel model =
-			new ExplorationModel(new SPMapNG(new MapDimensions(5, 5, 2),
+			new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
 													new PlayerCollection(), 0),
 										Optional.empty());
 

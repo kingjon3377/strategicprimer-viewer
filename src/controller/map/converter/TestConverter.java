@@ -17,7 +17,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
-import model.map.MapDimensions;
+import model.map.MapDimensionsImpl;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.PlayerImpl;
@@ -136,7 +136,7 @@ public final class TestConverter {
 	@Test
 	public void testConversion() {
 		final IMutableMapNG start =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 0);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), 0);
 		final Animal fixture = new Animal("animal", false, true, "domesticated", 1);
 		initialize(start, PointFactory.point(0, 0), TileType.Desert, fixture);
 		final CacheFixture fixtureTwo = new CacheFixture("gemstones", "small",
@@ -169,7 +169,7 @@ public final class TestConverter {
 	@Test
 	public void testMoreConversion() {
 		final IMutableMapNG start =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 0);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), 0);
 		final Point pointOne = PointFactory.point(0, 0);
 		start.setMountainous(pointOne, true);
 		start.addRivers(pointOne, River.East, River.South);
@@ -212,7 +212,7 @@ public final class TestConverter {
 	@Test(expected = IllegalArgumentException.class)
 	public void testResolutionDecreaseRequirement() {
 		ResolutionDecreaseConverter.convert(
-				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(), -1));
+				new SPMapNG(new MapDimensionsImpl(3, 3, 2), new PlayerCollection(), -1));
 		fail("Shouldn't accept non-even dimensions");
 	}
 
@@ -228,7 +228,7 @@ public final class TestConverter {
 	public void testOneToTwoConversion()
 			throws IOException, XMLStreamException, SPFormatException {
 		final IMutableMapNG original =
-				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 1), new PlayerCollection(), 0);
 		original.setBaseTerrain(PointFactory.point(0, 0), TileType.BorealForest);
 		original.setBaseTerrain(PointFactory.point(0, 1), TileType.TemperateForest);
 		original.setBaseTerrain(PointFactory.point(1, 0), TileType.Desert);
@@ -239,7 +239,7 @@ public final class TestConverter {
 		original.addPlayer(independent);
 
 		final IMutableMapNG converted =
-				new SPMapNG(new MapDimensions(8, 8, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(8, 8, 2), new PlayerCollection(), -1);
 		converted.addPlayer(player);
 		converted.addPlayer(independent);
 		initialize(converted, PointFactory.point(0, 0), TileType.Steppe,
@@ -388,7 +388,7 @@ public final class TestConverter {
 	public void testMoreOneToTwoConversion()
 			throws IOException, XMLStreamException, SPFormatException {
 		final IMutableMapNG original =
-				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 1), new PlayerCollection(), 0);
 		initialize(original, PointFactory.point(0, 0), TileType.Jungle);
 		initialize(original, PointFactory.point(0, 1), TileType.TemperateForest,
 				new Forest(TEMP_TREE, false, 1));
@@ -401,7 +401,7 @@ public final class TestConverter {
 		original.addPlayer(independent);
 
 		final IMutableMapNG converted =
-				new SPMapNG(new MapDimensions(8, 8, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(8, 8, 2), new PlayerCollection(), -1);
 		converted.addPlayer(player);
 		converted.addPlayer(independent);
 		initialize(converted, PointFactory.point(0, 0), TileType.Jungle,
@@ -560,7 +560,7 @@ public final class TestConverter {
 	public void testThirdOneToTwoConversion()
 			throws IOException, XMLStreamException, SPFormatException {
 		final IMutableMapNG original =
-				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 1), new PlayerCollection(), 0);
 		initialize(original, PointFactory.point(0, 0), TileType.NotVisible,
 				new Ground(-1, ROCK_TYPE, false));
 		final Player independent = new PlayerImpl(2, "independent");
@@ -593,7 +593,7 @@ public final class TestConverter {
 		original.addPlayer(independent);
 
 		final IMutableMapNG converted =
-				new SPMapNG(new MapDimensions(8, 8, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(8, 8, 2), new PlayerCollection(), -1);
 		converted.addPlayer(player);
 		converted.addPlayer(independent);
 
@@ -822,7 +822,7 @@ public final class TestConverter {
 	@Test
 	public void testFourthOneToTwoConversion() throws IOException {
 		final IMutableMapNG original =
-				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 1), new PlayerCollection(), 0);
 		initialize(original, PointFactory.point(0, 0), TileType.Ocean);
 		for (final Point point : Arrays.asList(PointFactory.point(0, 1),
 				PointFactory.point(1, 0), PointFactory.point(1, 1))) {
@@ -834,7 +834,7 @@ public final class TestConverter {
 		original.addPlayer(independent);
 
 		final IMutableMapNG converted =
-				new SPMapNG(new MapDimensions(8, 8, 2), new PlayerCollection(), -1);
+				new SPMapNG(new MapDimensionsImpl(8, 8, 2), new PlayerCollection(), -1);
 		converted.addPlayer(player);
 		converted.addPlayer(independent);
 		final IDRegistrar testFactory = new IDFactory();
@@ -997,7 +997,7 @@ public final class TestConverter {
 														new StringReader(out.toString()),
 														Warning.Ignore));
 		final IMutableMapNG expected =
-				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
+				new SPMapNG(new MapDimensionsImpl(2, 2, 1), new PlayerCollection(), 0);
 		final Player player = new PlayerImpl(0, "Test Player");
 		expected.addPlayer(player);
 		initialize(expected, PointFactory.point(0, 0), TileType.Tundra,

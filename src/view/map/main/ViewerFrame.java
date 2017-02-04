@@ -76,7 +76,7 @@ public final class ViewerFrame extends SPFrame {
 		map.addMapChangeListener(mapPanel);
 		map.addSelectionChangeListener(mapPanel);
 		final DetailPanelNG detailPanel =
-				new DetailPanelNG(map.getMapDimensions().version, map);
+				new DetailPanelNG(map.getMapDimensions().getVersion(), map);
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
 		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
