@@ -41,7 +41,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	/**
 	 * The attribute on include tags that tells what file to include.
 	 */
-	public static final String FILE_ATTR_NAME = "file";
+	private static final String FILE_ATTR_NAME = "file";
 	/**
 	 * The stack of iterators we're working with.
 	 */
