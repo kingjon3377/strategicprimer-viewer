@@ -1,7 +1,7 @@
 package model.map;
 
 /**
- * TODO: explain this class
+ * An encapsulation of a map's dimensions (and its map version as well).
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
