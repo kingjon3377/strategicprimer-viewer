@@ -3,6 +3,10 @@ package view.util;
 import controller.map.misc.WindowCloser;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.KeyStroke;
@@ -38,5 +42,28 @@ public class SPDialog extends JDialog implements HotKeyCreator {
 				JComponent.WHEN_IN_FOCUSED_WINDOW,
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, OnMac.SHORTCUT_MASK),
 				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+	}
+	/**
+	 * Prevent serialization.
+	 *
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	@SuppressWarnings("unused")
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * Prevent serialization.
+	 *
+	 * @param in ignored
+	 * @throws IOException            always
+	 * @throws ClassNotFoundException never
+	 */
+	@SuppressWarnings("unused")
+	private void readObject(final ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }
