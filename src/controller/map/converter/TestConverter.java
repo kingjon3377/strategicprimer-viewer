@@ -788,7 +788,7 @@ public final class TestConverter {
 					equalTo(outOne.out().toString()));
 		}
 		try (StringWriter out = new StringWriter();
-			 StringWriter err = new StringWriter()) {
+			 Formatter err = new Formatter()) {
 			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.writeSPObject(out, new OneToTwoConverter().convert(original, true));
 			try (final StringReader in = new StringReader(POSITIVE_IDS
@@ -798,7 +798,7 @@ public final class TestConverter {
 				 final Formatter stdout = new Formatter(SystemOut.SYS_OUT)) {
 				assertThat("Actual is at least subset of expected converted, modulo IDs",
 						converted.isSubset(new MapReaderAdapter().readMapFromStream(in,
-								Warning.Ignore), stdout, ""), equalTo(true));
+								Warning.Ignore), err, ""), equalTo(true));
 			}
 		}
 	}
