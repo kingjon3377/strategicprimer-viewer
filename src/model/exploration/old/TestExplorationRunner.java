@@ -37,10 +37,6 @@ import static org.junit.Assert.fail;
  */
 public final class TestExplorationRunner {
 	/**
-	 * The empty list.
-	 */
-	private static final Stream<TileFixture> EMPTY = Stream.empty();
-	/**
 	 * Extracted constant, to fix a warning because it occurred three or more times.
 	 */
 	private static final String TEST_THREE = "test_three";
@@ -121,7 +117,8 @@ public final class TestExplorationRunner {
 	public void testGetPrimaryRock() throws MissingTableException {
 		runner.loadTable("major_rock", new MockTable(Collections.singletonList("primary_rock_test")));
 		assertThat("primary rock test",
-				runner.getPrimaryRock(PointFactory.point(0, 0), TileType.Tundra, EMPTY,
+				runner.getPrimaryRock(PointFactory.point(0, 0), TileType.Tundra,
+						Stream.empty(),
 						new MapDimensionsImpl(69, 88, 2)), equalTo("primary_rock_test"));
 	}
 
@@ -140,10 +137,10 @@ public final class TestExplorationRunner {
 		final Point point = PointFactory.point(0, 0);
 		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertThat("primary tree test for boreal forest",
-				runner.getPrimaryTree(point, TileType.BorealForest, EMPTY, dimensions),
+				runner.getPrimaryTree(point, TileType.BorealForest, Stream.empty(), dimensions),
 				equalTo("boreal_major_test"));
 		assertThat("primary tree test for temperate forest",
-				runner.getPrimaryTree(point, TileType.TemperateForest, EMPTY,
+				runner.getPrimaryTree(point, TileType.TemperateForest, Stream.empty(),
 						dimensions),
 				equalTo("temperate_major_test"));
 	}
@@ -156,7 +153,7 @@ public final class TestExplorationRunner {
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalGetPrimaryTree() throws MissingTableException {
 		final Point point = PointFactory.point(0, 0);
-		runner.getPrimaryTree(point, TileType.Tundra, EMPTY,
+		runner.getPrimaryTree(point, TileType.Tundra, Stream.empty(),
 				new MapDimensionsImpl(69, 88, 2));
 		fail("gave a primary tree for non-forest");
 	}
@@ -177,11 +174,11 @@ public final class TestExplorationRunner {
 		final Point point = PointFactory.point(0, 0);
 		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertThat("first table", runner.consultTable(TEST_TABLE_ONE,
-				point, TileType.Tundra, EMPTY, dimensions), equalTo("test_one"));
+				point, TileType.Tundra, Stream.empty(), dimensions), equalTo("test_one"));
 		assertThat("second table", runner.consultTable(TEST_TABLE_TWO, point,
-				TileType.Tundra, EMPTY, dimensions), equalTo("test_two"));
+				TileType.Tundra, Stream.empty(), dimensions), equalTo("test_two"));
 		assertThat("third table", runner.consultTable(TEST_TABLE_THREE,
-				point, TileType.Tundra, EMPTY, dimensions), equalTo(TEST_THREE));
+				point, TileType.Tundra, Stream.empty(), dimensions), equalTo(TEST_THREE));
 	}
 
 	/**
@@ -202,20 +199,20 @@ public final class TestExplorationRunner {
 		assertThat(
 				"two levels of recursion",
 				runner.recursiveConsultTable(TEST_TABLE_ONE, point,
-						TileType.Tundra, EMPTY, dimensions),
+						TileType.Tundra, Stream.empty(), dimensions),
 				equalTo("( ( test_three ) )"));
 		assertThat(
 				"one level of recursion",
 				runner.recursiveConsultTable(TEST_TABLE_TWO, point,
-						TileType.Tundra, EMPTY, dimensions), equalTo("( test_three )"));
+						TileType.Tundra, Stream.empty(), dimensions), equalTo("( test_three )"));
 		assertThat(
 				"no recursion",
 				runner.recursiveConsultTable(TEST_TABLE_THREE, point,
-						TileType.Tundra, EMPTY, dimensions), equalTo(TEST_THREE));
+						TileType.Tundra, Stream.empty(), dimensions), equalTo(TEST_THREE));
 		assertThat(
 				"one-sided split",
 				runner.recursiveConsultTable("test_table_four", point,
-						TileType.Plains, EMPTY, dimensions),
+						TileType.Plains, Stream.empty(), dimensions),
 				equalTo("_ ( ( test_three ) )"));
 	}
 
@@ -233,16 +230,16 @@ public final class TestExplorationRunner {
 		final Point point = PointFactory.point(0, 0);
 		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertThat("defaultResults in non-forest",
-				runner.defaultResults(point, TileType.Tundra, EMPTY, dimensions).trim(),
+				runner.defaultResults(point, TileType.Tundra, Stream.empty(), dimensions).trim(),
 				equalTo("The primary rock type here is test_rock."));
 		assertThat("defaultResults in boreal forest",
-				runner.defaultResults(point, TileType.BorealForest, EMPTY, dimensions),
+				runner.defaultResults(point, TileType.BorealForest, Stream.empty(), dimensions),
 				equalTo(String.format("The primary rock type here is test_rock.%n"
 											  +
 											  "The main kind of tree is boreal_tree" +
 											  ".%n")));
 		assertThat("defaultResults in temperate forest",
-				runner.defaultResults(point, TileType.TemperateForest, EMPTY,
+				runner.defaultResults(point, TileType.TemperateForest, Stream.empty(),
 						dimensions),
 				equalTo(String.format("The primary rock type here is test_rock.%n"
 											  +
