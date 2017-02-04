@@ -19,7 +19,6 @@ import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
 import model.map.fixtures.mobile.Immortal;
-import model.map.fixtures.mobile.MobileFixture;
 import model.map.fixtures.mobile.SimpleImmortal;
 import model.report.EmptyReportNode;
 import model.report.IReportNode;
@@ -47,7 +46,7 @@ import util.PatientMap;
  * @author Jonathan Lovelace
  */
 public final class ImmortalsReportGenerator
-		extends AbstractReportGenerator<MobileFixture> {
+		extends AbstractReportGenerator<Immortal> {
 	/**
 	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
@@ -175,24 +174,24 @@ public final class ImmortalsReportGenerator
 			if (immortal instanceof Dragon) {
 				separateByKindRIR(dragons, (Dragon) immortal)
 						.add(produceRIR(fixtures, map, currentPlayer,
-								(MobileFixture) immortal, point));
+								(Immortal) immortal, point));
 			} else if (immortal instanceof Fairy) {
 				separateByKindRIR(fairies, (Fairy) immortal)
 						.add(produceRIR(fixtures, map, currentPlayer,
-								(MobileFixture) immortal, point));
+								(Immortal) immortal, point));
 			} else if (immortal instanceof SimpleImmortal) {
 				MultiMapHelper.getMapValue(simples, ((SimpleImmortal) immortal).kind(),
 						kind -> new ListReportNode(kind.plural()))
 						.add(produceRIR(fixtures, map, currentPlayer,
-								(MobileFixture) immortal, point));
+								(Immortal) immortal, point));
 			} else if (immortal instanceof Giant) {
 				separateByKindRIR(giants, (Giant) immortal)
 						.add(produceRIR(fixtures, map, currentPlayer,
-								(MobileFixture) immortal, point));
+								(Immortal) immortal, point));
 			} else if (immortal instanceof Centaur) {
 				separateByKindRIR(centaurs, (Centaur) immortal)
 						.add(produceRIR(fixtures, map, currentPlayer,
-								(MobileFixture) immortal, point));
+								(Immortal) immortal, point));
 			}
 		}
 		final IReportNode retval = new SectionListReportNode(4, "Immortals");
@@ -221,7 +220,7 @@ public final class ImmortalsReportGenerator
 	@Override
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						  final IMapNG map, final Player currentPlayer,
-						  final MobileFixture item, final Point loc) {
+						  final Immortal item, final Point loc) {
 		if (item instanceof Immortal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), "A(n) ", item.toString(), " ",
@@ -245,7 +244,7 @@ public final class ImmortalsReportGenerator
 	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer,
-								  final MobileFixture item, final Point loc) {
+								  final Immortal item, final Point loc) {
 		if (item instanceof Immortal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString(), " ",
