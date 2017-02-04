@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JTable;
@@ -17,6 +19,7 @@ import javax.swing.table.TableModel;
 import model.viewer.FixtureMatcher;
 import util.IntTransferable;
 import util.Reorderable;
+import util.TypesafeLogger;
 
 /**
  * A transfer-handler to let the user drag items in the list to control Z-order.
@@ -39,7 +42,11 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 	 */
 	private static final DataFlavor FLAVOR =
 			new DataFlavor(FixtureMatcher.class, "FixtureMatcher");
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(FixtureFilterTransferHandler.class);
 	/**
 	 * Whether a given drag/drop operation is supported.
 	 *
@@ -100,6 +107,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 		try {
 			payload = (Integer) transfer.getTransferData(FLAVOR);
 		} catch (final UnsupportedFlavorException | IOException except) {
+			LOGGER.log(Level.FINE, "Transfer failure", except);
 			return false;
 		}
 		final int data = payload.intValue();
