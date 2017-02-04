@@ -794,8 +794,7 @@ public final class TestConverter {
 			try (final StringReader in = new StringReader(POSITIVE_IDS
 																  .matcher(out.toString())
 																  .replaceAll(
-																		  "id=\"-1\""));
-				 final Formatter stdout = new Formatter(SystemOut.SYS_OUT)) {
+																		  "id=\"-1\""))) {
 				assertThat("Actual is at least subset of expected converted, modulo IDs",
 						converted.isSubset(new MapReaderAdapter().readMapFromStream(in,
 								Warning.Ignore), err, ""), equalTo(true));
