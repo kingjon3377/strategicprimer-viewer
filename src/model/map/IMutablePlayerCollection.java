@@ -16,7 +16,6 @@ package model.map;
  * @author Jonathan Lovelace
  */
 public interface IMutablePlayerCollection extends IPlayerCollection {
-
 	/**
 	 * Add a player to the collection.
 	 *

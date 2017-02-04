@@ -8,6 +8,7 @@ import java.util.HashSet;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.Player;
+import model.map.PlayerImpl;
 import model.workermgmt.RaceFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -94,7 +95,7 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 			throws XMLStreamException, SPFormatException, IOException {
 		assert status != null;
 		assert race != null;
-		final Player owner = new Player(-1, "");
+		final Player owner = new PlayerImpl(-1, "");
 		assertSerialization("First Village serialization test, " + status,
 				new Village(status, "villageOne", 1, owner, race));
 		assertSerialization("2nd Village serialization test,  " + status,

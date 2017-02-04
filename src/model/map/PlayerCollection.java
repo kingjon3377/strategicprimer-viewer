@@ -33,7 +33,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	/**
 	 * The player for "independent" fixtures.
 	 */
-	private Player independent = new Player(-1, "Independent");
+	private Player independent = new PlayerImpl(-1, "Independent");
 
 	/**
 	 * Get a player by ID number.
@@ -47,7 +47,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 		if (players.containsKey(pValue)) {
 			return players.get(pValue);
 		} else {
-			return new Player(player, "");
+			return new PlayerImpl(player, "");
 		}
 	}
 
@@ -95,7 +95,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	@Override
 	public Player getCurrentPlayer() {
 		return players.values().stream().filter(Player::isCurrent)
-					   .findFirst().orElse(new Player(-1, ""));
+					   .findFirst().orElse(new PlayerImpl(-1, ""));
 	}
 
 	/**

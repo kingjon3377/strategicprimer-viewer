@@ -12,6 +12,7 @@ import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
+import model.map.PlayerImpl;
 import model.map.Point;
 import model.map.SPMapNG;
 import model.map.TileFixture;
@@ -90,16 +91,16 @@ public final class TestWorkerModel {
 		fixtures.add(new Oasis(14));
 		fixtures.add(new Animal("animal", false, false, "wild", 1));
 		final List<IUnit> listOne = new ArrayList<>();
-		final Player playerOne = new Player(0, "player1");
+		final Player playerOne = new PlayerImpl(0, "player1");
 		addItem(new Unit(playerOne, "one", "unitOne", 2), fixtures,
 				listOne);
 		final List<IUnit> listTwo = new ArrayList<>();
-		final Player playerTwo = new Player(1, "player2");
+		final Player playerTwo = new PlayerImpl(1, "player2");
 		addItem(new Unit(playerTwo, "two", "unitTwo", 3), fixtures,
 				listTwo);
-		final Fortress fort = new Fortress(new Player(3, "player4"), "fort", 4,
+		final Fortress fort = new Fortress(new PlayerImpl(3, "player4"), "fort", 4,
 												  TownSize.Small);
-		final Player playerThree = new Player(2, "player3");
+		final Player playerThree = new PlayerImpl(2, "player3");
 		final IUnit unit = new Unit(playerThree, "three", "unitThree", 5);
 		fort.addMember(unit);
 		final Collection<IUnit> listThree = new ArrayList<>();

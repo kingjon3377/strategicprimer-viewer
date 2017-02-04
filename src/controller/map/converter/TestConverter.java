@@ -20,6 +20,7 @@ import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
+import model.map.PlayerImpl;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.River;
@@ -142,9 +143,9 @@ public final class TestConverter {
 																2);
 		initialize(start, PointFactory.point(0, 1), TileType.Desert, fixtureTwo);
 		final IUnit fixtureThree =
-				new Unit(new Player(0, "A. Player"), "legion", "eagles", 3);
+				new Unit(new PlayerImpl(0, "A. Player"), "legion", "eagles", 3);
 		initialize(start, PointFactory.point(1, 0), TileType.Desert, fixtureThree);
-		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"), "HQ", 4,
+		final Fortress fixtureFour = new Fortress(new PlayerImpl(1, "B. Player"), "HQ", 4,
 														 TownSize.Small);
 		initialize(start, PointFactory.point(1, 1), TileType.Plains, fixtureFour);
 
@@ -232,9 +233,9 @@ public final class TestConverter {
 		original.setBaseTerrain(PointFactory.point(0, 1), TileType.TemperateForest);
 		original.setBaseTerrain(PointFactory.point(1, 0), TileType.Desert);
 		original.setBaseTerrain(PointFactory.point(1, 1), TileType.Plains);
-		final Player player = new Player(1, "playerName");
+		final Player player = new PlayerImpl(1, "playerName");
 		original.addPlayer(player);
-		final Player independent = new Player(2, "independent");
+		final Player independent = new PlayerImpl(2, "independent");
 		original.addPlayer(independent);
 
 		final IMutableMapNG converted =
@@ -394,9 +395,9 @@ public final class TestConverter {
 		initialize(original, PointFactory.point(1, 0), TileType.Mountain);
 		initialize(original, PointFactory.point(1, 1), TileType.Tundra,
 				new Ground(-1, ROCK_TYPE, false));
-		final Player player = new Player(1, "playerName");
+		final Player player = new PlayerImpl(1, "playerName");
 		original.addPlayer(player);
-		final Player independent = new Player(2, "independent");
+		final Player independent = new PlayerImpl(2, "independent");
 		original.addPlayer(independent);
 
 		final IMutableMapNG converted =
@@ -562,7 +563,7 @@ public final class TestConverter {
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
 		initialize(original, PointFactory.point(0, 0), TileType.NotVisible,
 				new Ground(-1, ROCK_TYPE, false));
-		final Player independent = new Player(2, "independent");
+		final Player independent = new PlayerImpl(2, "independent");
 		initialize(original, PointFactory.point(0, 1), TileType.BorealForest,
 				new Forest(TEMP_TREE, false, 1), new Hill(1),
 				new Animal("animalKind", false, false, "wild", 2),
@@ -587,7 +588,7 @@ public final class TestConverter {
 		original.addRivers(PointFactory.point(0, 1), River.Lake, River.South);
 		original.addRivers(PointFactory.point(1, 0), River.East, River.West);
 		original.addRivers(PointFactory.point(1, 1), River.West, River.North);
-		final Player player = new Player(1, "playerName");
+		final Player player = new PlayerImpl(1, "playerName");
 		original.addPlayer(player);
 		original.addPlayer(independent);
 
@@ -827,9 +828,9 @@ public final class TestConverter {
 				PointFactory.point(1, 0), PointFactory.point(1, 1))) {
 			initialize(original, point, TileType.Desert);
 		}
-		final Player player = new Player(1, "playerName");
+		final Player player = new PlayerImpl(1, "playerName");
 		original.addPlayer(player);
-		final Player independent = new Player(2, "independent");
+		final Player independent = new PlayerImpl(2, "independent");
 		original.addPlayer(independent);
 
 		final IMutableMapNG converted =
@@ -997,14 +998,14 @@ public final class TestConverter {
 														Warning.Ignore));
 		final IMutableMapNG expected =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
-		final Player player = new Player(0, "Test Player");
+		final Player player = new PlayerImpl(0, "Test Player");
 		expected.addPlayer(player);
 		initialize(expected, PointFactory.point(0, 0), TileType.Tundra,
 				new TextFixture("Random event here", -1));
 		initialize(expected, PointFactory.point(0, 1), TileType.BorealForest);
 		initialize(expected, PointFactory.point(1, 0), TileType.Mountain,
 				new Town(TownStatus.Burned, TownSize.Small, 0, "", 0,
-								new Player(-1, "Independent")),
+								new PlayerImpl(-1, "Independent")),
 				new Fortress(player, "HQ", 15, TownSize.Small));
 		initialize(expected, PointFactory.point(1, 1), TileType.TemperateForest,
 				new MineralVein("coal", true, 0, 1));

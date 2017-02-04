@@ -435,8 +435,8 @@ public final class XMLHelper {
 	 * @throws SPFormatException on SP format problems reading the attribute.
 	 */
 	public static Player getPlayerOrIndependent(final StartElement element,
-												final Warning warner,
-												final IPlayerCollection players)
+													final Warning warner,
+													final IPlayerCollection players)
 			throws SPFormatException {
 		final Player retval;
 		if (hasAttribute(element, "owner") &&

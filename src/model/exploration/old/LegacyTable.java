@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import model.map.IEvent;
 import model.map.MapDimensions;
 import model.map.Player;
+import model.map.PlayerImpl;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -51,7 +52,7 @@ public final class LegacyTable implements EncounterTable {
 	public LegacyTable() {
 		addData(new Battlefield(0, -1));
 		addData(new Cave(0, -1));
-		final Player player = new Player(-1, "Independent");
+		final Player player = new PlayerImpl(-1, "Independent");
 		for (final TownStatus status : TownStatus.values()) {
 			assert status != null;
 			for (final TownSize size : TownSize.values()) {

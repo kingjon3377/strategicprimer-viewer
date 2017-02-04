@@ -14,6 +14,7 @@ import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
+import model.map.PlayerImpl;
 import model.map.SPMapNG;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -295,7 +296,7 @@ public final class TestMoreFixtureSerialization extends
 	public void testUnitWarnings()
 			throws XMLStreamException, SPFormatException, IOException {
 		assertUnwantedChild("<unit><unit /></unit>", Unit.class, false);
-		final IUnit firstUnit = new Unit(new Player(1, ""), "unitType", "unitName", 1);
+		final IUnit firstUnit = new Unit(new PlayerImpl(1, ""), "unitType", "unitName", 1);
 		final String oldKindProperty = "type";
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
@@ -310,12 +311,12 @@ public final class TestMoreFixtureSerialization extends
 		assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", Unit.class,
 				NAME_PROPERTY, true);
 		assertSerialization("Deserialize unit with no kind properly",
-				new Unit(new Player(2, ""), "", NAME_PROPERTY, 2),
+				new Unit(new PlayerImpl(2, ""), "", NAME_PROPERTY, 2),
 				Warning.Ignore);
 		assertMissingPropertyDeserialization("Deserialize unit with no owner properly",
-				new Unit(new Player(-1, ""), "kind", "unitThree", 3),
+				new Unit(new PlayerImpl(-1, ""), "kind", "unitThree", 3),
 				"<unit kind=\"kind\" name=\"unitThree\" id=\"3\" />", OWNER_PROPERTY);
-		final IUnit fourthUnit = new Unit(new Player(3, ""), "unitKind", "", 4);
+		final IUnit fourthUnit = new Unit(new PlayerImpl(3, ""), "unitKind", "", 4);
 		assertMissingPropertyDeserialization(
 				"Deserialize unit with no name properly", fourthUnit,
 				createSerializedForm(fourthUnit, true), NAME_PROPERTY);
@@ -341,7 +342,7 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testUnitMemberSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
-		final IUnit firstUnit = new Unit(new Player(1, ""), "unitType", "unitName", 1);
+		final IUnit firstUnit = new Unit(new PlayerImpl(1, ""), "unitType", "unitName", 1);
 		firstUnit.addMember(new Animal("animal", false, true, "wild", 2));
 		assertSerialization("Unit can have an animal as a member", firstUnit);
 		firstUnit.addMember(new Worker("worker", DEFAULT_RACE, 3));
@@ -378,7 +379,7 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testOrdersSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
-		final Player player = new Player(0, "");
+		final Player player = new PlayerImpl(0, "");
 		final IUnit secondUnit = new Unit(player, "kind of unit", "name of unit", 2);
 		secondUnit.setOrders(-1, "some orders");
 		final IUnit firstUnit = new Unit(player, "kind of unit", "name of unit", 2);
@@ -425,7 +426,7 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testQuoting()
 			throws XMLStreamException, IOException, SPFormatException {
-		final Player player = new Player(0, "");
+		final Player player = new PlayerImpl(0, "");
 		final Unit unit = new Unit(player, "kind of unit", "name of unit", 2);
 		unit.setOrders(4, "I <3 & :( \"meta'");
 		unit.setResults(5, "2 --> 1");
@@ -448,7 +449,7 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testUnitPortraitSerialization()
 			throws XMLStreamException, IOException, SPFormatException {
-		final HasPortrait unit = new Unit(new Player(1, ""), "kind", "name", 2);
+		final HasPortrait unit = new Unit(new PlayerImpl(1, ""), "kind", "name", 2);
 		unit.setPortrait("portraitFile");
 		assertSerialization("Portrait doesn't mess up serialization", unit, Warning.Die);
 		assertThat("Serialized form contains portrait", createSerializedForm(unit, true),
@@ -470,12 +471,12 @@ public final class TestMoreFixtureSerialization extends
 	public void testAdventureSerialization() throws XMLStreamException,
 															SPFormatException,
 															IOException {
-		final Player independent = new Player(1, "independent");
+		final Player independent = new PlayerImpl(1, "independent");
 		final TileFixture firstAdventure =
 				new AdventureFixture(independent,
 											"first hook brief", "first hook full", 1);
 		final AdventureFixture secondAdventure =
-				new AdventureFixture(new Player(2, "player"),
+				new AdventureFixture(new PlayerImpl(2, "player"),
 											"second hook brief", "second hook full", 2);
 		assertThat("Two different hooks are not equal", secondAdventure,
 				not(equalTo(firstAdventure)));
@@ -487,7 +488,7 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("First adventure hook serialization test", wrapper);
 		assertSerialization("Second adventure hook serialization test", secondAdventure);
 		assertSerialization("Adventure hook with empty descriptions",
-				new AdventureFixture(new Player(3, "third"), "", "", 4));
+				new AdventureFixture(new PlayerImpl(3, "third"), "", "", 4));
 		final TileFixture thirdPortal =
 				new Portal("portal dest", point(1, 2), 3);
 		final Portal fourthPortal =
@@ -519,7 +520,7 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testFortressMemberSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
-		final Fortress firstFort = new Fortress(new Player(1, ""), "fortName", 1,
+		final Fortress firstFort = new Fortress(new PlayerImpl(1, ""), "fortName", 1,
 													   TownSize.Small);
 		firstFort.addMember(new Implement("implKind", 2));
 		assertSerialization("Fortress can have an Implement as a member", firstFort);

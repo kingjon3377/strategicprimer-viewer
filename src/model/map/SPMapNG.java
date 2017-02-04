@@ -522,8 +522,18 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public void setCurrentPlayer(final Player player) {
-		playerCollection.getCurrentPlayer().setCurrent(false);
-		playerCollection.getPlayer(player.getPlayerId()).setCurrent(true);
+		final Player oldCurrent = playerCollection.getCurrentPlayer();
+		if (oldCurrent instanceof MutablePlayer) {
+			((MutablePlayer) oldCurrent).setCurrent(false);
+		} else {
+			LOGGER.warning("setCurrent() called but old current wasn't mutable");
+		}
+		final Player newCurrent = playerCollection.getPlayer(player.getPlayerId());
+		if (newCurrent instanceof MutablePlayer) {
+			((MutablePlayer) newCurrent).setCurrent(true);
+		} else {
+			LOGGER.warning("setCurrent() called but matching player wasn't mutable");
+		}
 	}
 
 	/**

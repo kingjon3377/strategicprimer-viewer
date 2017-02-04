@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import model.map.Player;
+import model.map.PlayerImpl;
 import model.map.fixtures.towns.City;
 import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Fortress;
@@ -42,7 +43,7 @@ public class TestTownComparator {
 	public void testComparison() {
 		final List<ITownFixture> input = new ArrayList<>();
 		int id = 0;
-		final Player owner = new Player(1, "player");
+		final Player owner = new PlayerImpl(1, "player");
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
 				input.add(new Town(status, size, -1, "inputTown", id++, owner));

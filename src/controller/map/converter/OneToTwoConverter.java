@@ -31,6 +31,7 @@ import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
+import model.map.PlayerImpl;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.River;
@@ -368,7 +369,7 @@ public final class OneToTwoConverter implements SimpleDriver {
 								   new PlayerCollection(), -1);
 		final Player independent =
 				old.streamPlayers().filter(Player::isIndependent).findAny()
-						.orElse(new Player(-1, "independent"));
+						.orElse(new PlayerImpl(-1, "independent"));
 		old.players().forEach(retval::addPlayer);
 		final List<Point> converted = new LinkedList<>();
 		final IDRegistrar idFactory = IDFactoryFiller.createFactory(old);

@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.Player;
+import model.map.PlayerImpl;
 import util.Warning;
 
 /**
@@ -49,7 +50,7 @@ public final class YAPlayerReader extends YAAbstractReader<Player> {
 		requireNonEmptyParameter(element, "number", true);
 		requireNonEmptyParameter(element, "code_name", true);
 		spinUntilEnd(element.getName(), stream);
-		return new Player(getIntegerParameter(element, "number"),
+		return new PlayerImpl(getIntegerParameter(element, "number"),
 								 getParameter(element, "code_name"));
 	}
 

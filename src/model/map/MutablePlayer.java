@@ -15,25 +15,10 @@ package model.map;
  *
  * @author Jonathan Lovelace
  */
-public interface Player extends Comparable<Player>, HasName {
+public interface MutablePlayer extends Player {
 	/**
-	 * The player's ID number.
-	 * @return the player's number
+	 * Set whether this is the current player.
+	 * @param curr whether this is the current player or not
 	 */
-	int getPlayerId();
-
-	/**
-	 * Whether this is the current player.
-	 * @return true iff this is the current player
-	 */
-	boolean isCurrent();
-
-	/**
-	 * Whether this is the (or an) "independent" player.
-	 * @return whether this is the (or an) "independent" player---the "owner" of unowned
-	 * fixtures.
-	 */
-	default boolean isIndependent() {
-		return "independent".equalsIgnoreCase(getName());
-	}
+	void setCurrent(boolean curr);
 }

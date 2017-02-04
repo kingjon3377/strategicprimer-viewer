@@ -10,6 +10,7 @@ import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
+import model.map.PlayerImpl;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMapNG;
@@ -237,12 +238,12 @@ public final class TestFixtureSerialization extends
 			throws XMLStreamException, SPFormatException, IOException {
 		// Can't give player names because our test environment doesn't let us
 		// pass a set of players in
-		final Player firstPlayer = new Player(1, "");
+		final Player firstPlayer = new PlayerImpl(1, "");
 		assertSerialization("First test of Fortress serialization",
 				new Fortress(firstPlayer, "one", 1, TownSize.Small));
 		assertSerialization("Second test of Fortress serialization",
 				new Fortress(firstPlayer, "two", 2, TownSize.Medium));
-		final Player secondPlayer = new Player(2, "");
+		final Player secondPlayer = new PlayerImpl(2, "");
 		assertSerialization("Third test of Fortress serialization",
 				new Fortress(secondPlayer, "three", 3, TownSize.Large));
 		assertSerialization("Fourth test of Fortress serialization",

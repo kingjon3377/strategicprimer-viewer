@@ -11,6 +11,7 @@ import model.map.HasMutableImage;
 import model.map.HasMutableName;
 import model.map.IFixture;
 import model.map.Player;
+import model.map.PlayerImpl;
 import model.map.SubsettableFixture;
 import model.map.TileFixture;
 import model.map.fixtures.FortressMember;

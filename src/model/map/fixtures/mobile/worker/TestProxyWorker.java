@@ -4,6 +4,7 @@ import java.util.Formatter;
 import junit.framework.AssertionFailedError;
 import model.map.IFixture;
 import model.map.Player;
+import model.map.PlayerImpl;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
@@ -166,7 +167,7 @@ public final class TestProxyWorker {
 		final IWorker twoCopy = secondWorker.copy(false);
 		final IWorker oneOrig = firstWorker.copy(false);
 		final IWorker twoOrig = secondWorker.copy(false);
-		final Player player = new Player(3, "");
+		final Player player = new PlayerImpl(3, "");
 		final IUnit unitOne = new Unit(player, "unitKInd", "unitName", 4);
 		final IUnit unitTwo = unitOne.copy(false);
 		unitOne.addMember(firstWorker);
@@ -229,7 +230,7 @@ public final class TestProxyWorker {
 		final IWorker twoCopy = secondWorker.copy(false);
 		final IWorker oneOrig = firstWorker.copy(false);
 		final IWorker twoOrig = secondWorker.copy(false);
-		final Player player = new Player(3, "");
+		final Player player = new PlayerImpl(3, "");
 		final IUnit unitOne = new Unit(player, "unitKInd", "unitName", 4);
 		final IUnit unitTwo = unitOne.copy(false);
 		unitOne.addMember(firstWorker);

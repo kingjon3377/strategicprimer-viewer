@@ -34,6 +34,7 @@ import model.map.IMutablePlayerCollection;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
+import model.map.PlayerImpl;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.River;
@@ -200,7 +201,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		requireNonEmptyAttribute(element, "number", true, warner);
 		requireNonEmptyAttribute(element, "code_name", true, warner);
 		spinUntilEnd(element.getName(), stream);
-		return new Player(getIntegerAttribute(element, "number"),
+		return new PlayerImpl(getIntegerAttribute(element, "number"),
 								 getAttribute(element, "code_name"));
 	}
 

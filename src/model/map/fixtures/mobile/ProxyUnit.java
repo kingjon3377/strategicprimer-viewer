@@ -20,6 +20,7 @@ import model.map.HasMutableName;
 import model.map.HasMutableOwner;
 import model.map.IFixture;
 import model.map.Player;
+import model.map.PlayerImpl;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
@@ -367,7 +368,7 @@ public final class ProxyUnit
 	 */
 	@Override
 	public Player getOwner() {
-		final Player defaultValue = new Player(-1, "proxied");
+		final Player defaultValue = new PlayerImpl(-1, "proxied");
 		return getCommonValue(IUnit::getOwner, defaultValue, defaultValue);
 	}
 

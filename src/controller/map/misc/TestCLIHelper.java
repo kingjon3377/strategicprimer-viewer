@@ -7,7 +7,7 @@ import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
-import model.map.Player;
+import model.map.PlayerImpl;
 import model.map.PointFactory;
 import org.junit.Test;
 import util.NullStream;
@@ -42,8 +42,8 @@ public class TestCLIHelper {
 			 ICLIHelper cli = new CLIHelper(new StringReader(String.format("0%n")),
 												   out)) {
 			assertThat("chooseFromList chooses the one specified by user",
-					Integer.valueOf(cli.chooseFromList(Arrays.asList(new Player(1, "one"),
-							new Player(2, "two")),
+					Integer.valueOf(cli.chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
+							new PlayerImpl(2, "two")),
 							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat("chooseFromList prompted the user", out.toString(),
@@ -54,8 +54,8 @@ public class TestCLIHelper {
 												   out)) {
 			assertThat("chooseFromList chooses the one specified by user",
 					Integer.valueOf(
-							cli.chooseFromList(Arrays.asList(new Player(1, "one"),
-									new Player(2, "two")),
+							cli.chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
+									new PlayerImpl(2, "two")),
 									"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(1)));
 			assertThat("chooseFromList prompted the user", out.toString(),
@@ -66,7 +66,7 @@ public class TestCLIHelper {
 			assertThat(
 					"chooseFromList chooses only choice when this is specified",
 					Integer.valueOf(cli.chooseFromList(
-							Collections.singletonList(new Player(1, "one")),
+							Collections.singletonList(new PlayerImpl(1, "one")),
 							"test desc", "none present", "prompt", true)),
 					equalTo(Integer.valueOf(0)));
 			assertThat("chooseFromList automatically chose only choice",
@@ -80,7 +80,7 @@ public class TestCLIHelper {
 			assertThat(
 					"chooseFromList doesn't always auto-choose only choice",
 					Integer.valueOf(cli.chooseFromList(
-							Collections.singletonList(new Player(1, "one")),
+							Collections.singletonList(new PlayerImpl(1, "one")),
 							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat(
@@ -102,8 +102,8 @@ public class TestCLIHelper {
 			assertThat(
 					"chooseFromList prompts again when negative index given",
 					Integer.valueOf(cli.chooseFromList(
-							Arrays.asList(new Player(1, "one"),
-									new Player(2, "two")),
+							Arrays.asList(new PlayerImpl(1, "one"),
+									new PlayerImpl(2, "two")),
 							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(0)));
 			assertThat(
@@ -116,8 +116,8 @@ public class TestCLIHelper {
 												   out)) {
 			assertThat("chooseFromList allows too-large choice",
 					Integer.valueOf(cli.chooseFromList(
-							Arrays.asList(new Player(1, "one"),
-									new Player(2, "two")),
+							Arrays.asList(new PlayerImpl(1, "one"),
+									new PlayerImpl(2, "two")),
 							"test desc", "none present", " prompt", false)),
 					equalTo(Integer.valueOf(3)));
 			assertThat("chooseFromList allows too-large choice",
@@ -129,8 +129,8 @@ public class TestCLIHelper {
 												   out)) {
 			assertThat("chooseFromList asks even if 'auto' when multiple items",
 					Integer.valueOf(
-							cli.chooseFromList(Arrays.asList(new Player(1, "one"),
-									new Player(2, "two")),
+							cli.chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
+									new PlayerImpl(2, "two")),
 									"test desc", "none present", " prompt", true)),
 					equalTo(Integer.valueOf(0)));
 			assertThat("chooseFromList prompted the user", out.toString(),

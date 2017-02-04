@@ -3,6 +3,7 @@ package model.map.fixtures.explorable;
 import model.map.HasMutableOwner;
 import model.map.IFixture;
 import model.map.Player;
+
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

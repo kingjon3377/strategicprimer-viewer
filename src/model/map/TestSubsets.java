@@ -52,10 +52,10 @@ public final class TestSubsets {
 	@Test
 	public void testPlayerCollectionSubset() {
 		final IMutablePlayerCollection firstCollection = new PlayerCollection();
-		firstCollection.add(new Player(1, ONE_STR));
+		firstCollection.add(new PlayerImpl(1, ONE_STR));
 		final IMutablePlayerCollection secondCollection = new PlayerCollection();
-		secondCollection.add(new Player(1, ONE_STR));
-		secondCollection.add(new Player(2, "two"));
+		secondCollection.add(new PlayerImpl(1, ONE_STR));
+		secondCollection.add(new PlayerImpl(2, "two"));
 		final IPlayerCollection zero = new PlayerCollection();
 		assertThat("Empty is subset of self",
 				Boolean.valueOf(zero.isSubset(zero, DEV_NULL, "")), equalTo(
@@ -167,9 +167,9 @@ public final class TestSubsets {
 	@Test
 	public void testFortressSubset() {
 		final int fortId = 1;
-		final Fortress firstFort = new Fortress(new Player(1, ONE_STR), "fOne", fortId,
+		final Fortress firstFort = new Fortress(new PlayerImpl(1, ONE_STR), "fOne", fortId,
 													   TownSize.Small);
-		final Fortress secondFort = new Fortress(new Player(2, "two"), "fOne", fortId,
+		final Fortress secondFort = new Fortress(new PlayerImpl(2, "two"), "fOne", fortId,
 														TownSize.Small);
 		assertThat("Subset requires same owner, first test",
 				Boolean.valueOf(firstFort.isSubset(secondFort, DEV_NULL, "")),
@@ -177,7 +177,7 @@ public final class TestSubsets {
 		assertThat("Subset requires same owner, second test",
 				Boolean.valueOf(secondFort.isSubset(firstFort, DEV_NULL, "")),
 				equalTo(Boolean.FALSE));
-		final Fortress thirdFort = new Fortress(new Player(1, ONE_STR), "fTwo", fortId,
+		final Fortress thirdFort = new Fortress(new PlayerImpl(1, ONE_STR), "fTwo", fortId,
 													   TownSize.Small);
 		assertThat("Subset requires same name, first test",
 				Boolean.valueOf(firstFort.isSubset(thirdFort, DEV_NULL, "")),
@@ -185,7 +185,7 @@ public final class TestSubsets {
 		assertThat("Subset requires same name, second test",
 				Boolean.valueOf(thirdFort.isSubset(firstFort, DEV_NULL, "")),
 				equalTo(Boolean.FALSE));
-		final Fortress fourthFort = new Fortress(new Player(1, ONE_STR), "fOne", 3,
+		final Fortress fourthFort = new Fortress(new PlayerImpl(1, ONE_STR), "fOne", 3,
 														TownSize.Small);
 		assertThat("Subset requires identity or ID equality",
 				Boolean.valueOf(firstFort.isSubset(fourthFort, DEV_NULL, "")),
@@ -194,8 +194,8 @@ public final class TestSubsets {
 				Boolean.valueOf(fourthFort.isSubset(firstFort, DEV_NULL, "")),
 				equalTo(Boolean.FALSE));
 		final Fortress fifthFort =
-				new Fortress(new Player(1, ONE_STR), "fOne", fortId, TownSize.Small);
-		fifthFort.addMember(new Unit(new Player(2, "two"), "unit_type", "unit_name",
+				new Fortress(new PlayerImpl(1, ONE_STR), "fOne", fortId, TownSize.Small);
+		fifthFort.addMember(new Unit(new PlayerImpl(2, "two"), "unit_type", "unit_name",
 											 4));
 		assertThat("Fortress without is a subset of fortress with unit",
 				Boolean.valueOf(fifthFort.isSubset(firstFort, DEV_NULL, "")),
@@ -204,7 +204,7 @@ public final class TestSubsets {
 				Boolean.valueOf(firstFort.isSubset(fifthFort, DEV_NULL, "")),
 				equalTo(Boolean.FALSE));
 		final Fortress sixthFort =
-				new Fortress(new Player(1, ONE_STR), "unknown", fortId, TownSize.Small);
+				new Fortress(new PlayerImpl(1, ONE_STR), "unknown", fortId, TownSize.Small);
 		assertThat("Fortress named 'unknown' can be subset, first test",
 				Boolean.valueOf(firstFort.isSubset(sixthFort, DEV_NULL, "")),
 				equalTo(Boolean.TRUE));
@@ -361,7 +361,7 @@ public final class TestSubsets {
 		firstMap.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
 		firstMap.addFixture(pointOne,
 				new Fortification(TownStatus.Burned, TownSize.Large, 15, "fortification",
-										 6, new Player(0, "")));
+										 6, new PlayerImpl(0, "")));
 		assertThat("Cloned map equals original", firstMap.copy(false, null),
 				equalTo(firstMap));
 		final IMapNG clone = firstMap.copy(true, null);
@@ -374,7 +374,7 @@ public final class TestSubsets {
 				.forEach(fix -> assertThat("Copied map didn't copy DCs",
 						Integer.valueOf(fix.getDC()), equalTo(
 								Integer.valueOf(0))));
-		final Unit uOne = new Unit(new Player(0, ""), "type", "name", 7);
+		final Unit uOne = new Unit(new PlayerImpl(0, ""), "type", "name", 7);
 		uOne.addMember(new Worker("worker", "dwarf", 8, new Job("job", 1)));
 		assertThat("clone equals original", uOne.copy(false), equalTo(uOne));
 		assertThat("zeroed clone doesn't equal original",

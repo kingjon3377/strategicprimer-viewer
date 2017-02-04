@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import model.listeners.PlayerChangeListener;
 import model.map.HasName;
 import model.map.Player;
+import model.map.PlayerImpl;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;

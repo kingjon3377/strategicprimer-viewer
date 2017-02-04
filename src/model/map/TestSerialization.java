@@ -115,9 +115,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testPlayerSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First Player serialization test, reflection",
-				new Player(1, "one"));
+				new PlayerImpl(1, "one"));
 		assertSerialization("Second Player serialization test, reflection",
-				new Player(2, "two"));
+				new PlayerImpl(2, "two"));
 		assertUnwantedChild(
 				"<player code_name=\"one\" number=\"1\"><troll /></player>",
 				Player.class, false);
@@ -202,7 +202,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final IMutableMapNG secondMap =
 				createSimpleMap(point(3, 3), Pair.of(point(2, 2), Steppe));
 		secondMap.addFixture(point(2, 2),
-				new Unit(new Player(1, ""), "unitOne", "firstUnit", 1));
+				new Unit(new PlayerImpl(1, ""), "unitOne", "firstUnit", 1));
 		secondMap.setForest(point(2, 2), new Forest("forestKind", true, 8));
 		assertSerialization("Tile with two fixtures", secondMap);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
@@ -234,9 +234,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			throws XMLStreamException, SPFormatException, IOException {
 		final IMutableMapNG thirdMap =
 				createSimpleMap(point(4, 4), Pair.of(point(3, 3), Jungle));
-		final Fortress fort = new Fortress(new Player(2, ""), "fortOne", 1,
+		final Fortress fort = new Fortress(new PlayerImpl(2, ""), "fortOne", 1,
 												  TownSize.Small);
-		fort.addMember(new Unit(new Player(2, ""), "unitTwo", "secondUnit", 2));
+		fort.addMember(new Unit(new PlayerImpl(2, ""), "unitTwo", "secondUnit", 2));
 		thirdMap.addFixture(point(3, 3), fort);
 		thirdMap.addFixture(point(3, 3), new TextFixture("Random text here", 5));
 		thirdMap.addRivers(point(3, 3), Lake);
@@ -269,10 +269,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final IMutableMapNG five =
 				createSimpleMap(point(3, 4), Pair.of(point(2, 3), Jungle));
 		five.addFixture(point(2, 3), new Unit(
-													 new Player(2, ""), "explorer",
+													 new PlayerImpl(2, ""), "explorer",
 													 "name one", 1));
 		five.addFixture(point(2, 3), new Unit(
-													 new Player(2, ""), "explorer",
+													 new PlayerImpl(2, ""), "explorer",
 													 "name two", 2));
 		assertThat("Just checking ...",
 				Long.valueOf(five.streamOtherFixtures(point(2, 3)).count()),
@@ -329,7 +329,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 								"xmlns=\"%s\">%n\t<map columns=\"1\" rows=\"1\" " +
 								"version=\"2\"/>%n</view>%n", ISPReader.NAMESPACE))));
 		assertImageSerialization("Unit image property is preserved",
-				new Unit(new Player(5, ""), "herder", "herderName", 9));
+				new Unit(new PlayerImpl(5, ""), "herder", "herderName", 9));
 	}
 	/**
 	 * Yet further test Tile serialization.
@@ -395,7 +395,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertUnwantedChild(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
 				IMapNG.class, false);
-		final Player player = new Player(1, "playerOne");
+		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
 		final IMutableMapNG firstMap =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), -1);
@@ -429,7 +429,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertUnwantedChild(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
 				SPMapNG.class, false);
-		final Player player = new Player(1, "playerOne");
+		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
 		final IMutablePlayerCollection players = new PlayerCollection();
 		players.add(player);
@@ -456,7 +456,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testViewSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
-		final Player player = new Player(1, "playerOne");
+		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
 		final IMutableMapNG firstMap =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), 0);
@@ -500,7 +500,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testNamespacedSerialization()
 			throws XMLStreamException, SPFormatException {
-		final Player player = new Player(1, "playerOne");
+		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
 		final IMutableMapNG firstMap =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), 0);

@@ -30,6 +30,7 @@ import model.map.HasOwner;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
+import model.map.PlayerImpl;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
@@ -179,7 +180,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 			final Point dPoint = model.getSelectedUnitLocation();
 			final Player player =
 					Optional.ofNullable(model.getSelectedUnit()).map(IUnit::getOwner)
-							.orElseGet(() -> new Player(-1, "no-one"));
+							.orElseGet(() -> new PlayerImpl(-1, "no-one"));
 			final Collection<CacheFixture> caches = new HashSet<>();
 			for (final Pair<IMutableMapNG, Optional<Path>> pair :
 					model.getSubordinateMaps()) {

@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
+import model.map.PlayerImpl;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.resources.ResourceManagementDriver;
@@ -102,7 +103,7 @@ public class ResourceAddingFrame extends SPFrame implements PlayerChangeListener
 	/**
 	 * The Player to use when the selected Player is null.
 	 */
-	private final static Player NULL_PLAYER = new Player(-1, "");
+	private final static Player NULL_PLAYER = new PlayerImpl(-1, "");
 	/**
 	 * The current player.
 	 */

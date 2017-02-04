@@ -7,6 +7,7 @@ import java.util.Collection;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.Player;
+import model.map.PlayerImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -85,7 +86,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 			throws XMLStreamException, SPFormatException, IOException {
 		assert status != null;
 		assert size != null;
-		final Player owner = new Player(-1, "");
+		final Player owner = new PlayerImpl(-1, "");
 		assertSerialization(
 				"First City serialization test, status " + status + ", size " + size,
 				new City(status, size, 10, "oneCity", 0, owner));
@@ -125,7 +126,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 																IOException {
 		assert status != null;
 		assert size != null;
-		final Player owner = new Player(-1, "");
+		final Player owner = new PlayerImpl(-1, "");
 		assertSerialization(
 				"Fortification serialization: status " + status + ", size " + size,
 				new Fortification(status, size, 10, "one", 1, owner));
@@ -167,7 +168,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 			throws XMLStreamException, SPFormatException, IOException {
 		assert status != null;
 		assert size != null;
-		final Player owner = new Player(-1, "");
+		final Player owner = new PlayerImpl(-1, "");
 		assertSerialization(
 				"First Town serialization test, status " + status + " and size " + size,
 				new Town(status, size, 10, "one", 1, owner));
