@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -102,7 +103,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	 */
 	@Override
 	public NavigableMap<Integer, String> getAllOrders() {
-		return orders;
+		return Collections.unmodifiableNavigableMap(orders);
 	}
 
 	/**
@@ -111,7 +112,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	 */
 	@Override
 	public NavigableMap<Integer, String> getAllResults() {
-		return results;
+		return Collections.unmodifiableNavigableMap(results);
 	}
 
 	/**
