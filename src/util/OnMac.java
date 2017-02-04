@@ -36,6 +36,7 @@ public final class OnMac {
 	 * Set up system-dependent properties.
 	 */
 	static {
+		//noinspection AccessOfSystemProperties
 		final String temp = System.getProperty("os.name");
 		if (temp == null) {
 			SYSTEM_IS_MAC = false;
