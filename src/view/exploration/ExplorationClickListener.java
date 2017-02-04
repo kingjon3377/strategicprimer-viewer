@@ -157,6 +157,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * this
 	 * code in the Runnable means accessing private members from that inner class ...
 	 */
+	@SuppressWarnings("WeakerAccess")
 	protected void handleMove() {
 		try {
 			final List<TileFixture> fixtures = getSelectedValuesList();
