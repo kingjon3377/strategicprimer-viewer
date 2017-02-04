@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.stream.Stream;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -216,26 +215,21 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
-	 * Produce a report on an individual fixture.
+	 * Produce a report on an individual immortal.
 	 * @param fixtures      The set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the current player
 	 * @param item          a fixture
 	 * @param loc           its location
-	 * @return a sub-sub-report on just that fixture, or the empty string if it's not one
-	 * we handle here.
+	 * @param ostream	    the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer,
-						  final Immortal item, final Point loc) {
-		if (item instanceof Immortal) {
-			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), "A(n) ", item.toString(), " ",
-					distCalculator.distanceString(loc));
-		} else {
-			return "";
-		}
+	public void produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final Immortal item, final Point loc, final Formatter ostream) {
+		fixtures.remove(Integer.valueOf(item.getID()));
+		ostream.format("%sA(n) %s %s", atPoint(loc), item.toString(),
+				distCalculator.distanceString(loc));
 	}
 
 	/**

@@ -135,22 +135,19 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 * @param map           ignored
 	 * @param item          an animal
 	 * @param loc           its location
-	 * @return a sub-report on the animal
+	 * @param ostream	    the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer,
-						  final Animal item, final Point loc) {
-		final String tracesOrTalking;
+	public void produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final Animal item, final Point loc, final Formatter ostream) {
+		ostream.format("%s", atPoint(loc));
 		if (item.isTraces()) {
-			tracesOrTalking = "tracks or traces of ";
+			ostream.format("tracks or traces of ");
 		} else if (item.isTalking()) {
-			tracesOrTalking = "talking ";
-		} else {
-			tracesOrTalking = "";
+			ostream.format("talking ");
 		}
-		return concat(atPoint(loc), tracesOrTalking, item.getKind(), " ",
-				distCalculator.distanceString(loc));
+		ostream.format("%s %s", item.getKind(), distCalculator.distanceString(loc));
 	}
 
 	/**

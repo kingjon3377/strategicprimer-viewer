@@ -164,52 +164,43 @@ public final class ExplorableReportGenerator
 	}
 
 	/**
-	 * Produces a more verbose sub-report on a cave or battlefield.
+	 * Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
+	 * hook.
 	 *
 	 * @param fixtures      the set of fixtures.
 	 * @param map           ignored
 	 * @param item          the item to report on
 	 * @param loc           its location
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return a sub-report (more verbose than the bulk produce() above reports, for
-	 * caves
-	 * and battlefields) on the item
+	 * @param ostream	    the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer,
-						  final ExplorableFixture item, final Point loc) {
+	public void produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final ExplorableFixture item, final Point loc, final Formatter ostream) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat("Caves beneath ", loc.toString(), " ",
+			ostream.format("Caves beneath %s %s", loc.toString(),
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat("Signs of a long-ago battle on ", loc.toString(), " ",
+			ostream.format("Signs of a long-ago battle on %s %s", loc.toString(),
 					distCalculator.distanceString(loc));
 		} else if (item instanceof AdventureFixture) {
+			fixtures.remove(Integer.valueOf(item.getID()));
 			final AdventureFixture adventure = (AdventureFixture) item;
+			ostream.format("%s at %s: %s %s", adventure.getBriefDescription(),
+					loc.toString(), adventure.getFullDescription(),
+					distCalculator.distanceString(loc));
 			if (adventure.getOwner().isIndependent()) {
-				return concat(adventure.getBriefDescription(),
-						" at ", loc.toString(), ": ",
-						adventure.getFullDescription(), " ",
-						distCalculator.distanceString(loc));
 			} else if (currentPlayer.equals(adventure.getOwner())) {
-				return concat(adventure.getBriefDescription(),
-						" at ", loc.toString(), ": ",
-						adventure.getFullDescription(), " ",
-						distCalculator.distanceString(loc),
-						" (already investigated by you)");
+				ostream.format(" (already investigated by you)");
 			} else {
-				return concat(adventure.getBriefDescription(),
-						" at ", loc.toString(), ": ",
-						adventure.getFullDescription(), " ",
-						distCalculator.distanceString(loc),
-						" (already investigated by another player)");
+				ostream.format(" (already investigated by another player)");
 			}
 		} else if (item instanceof Portal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat("A portal to another world at ", loc.toString(), " ",
+			ostream.format("A portal to another world at %s %s", loc.toString(),
 					distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected ExplorableFixture type");

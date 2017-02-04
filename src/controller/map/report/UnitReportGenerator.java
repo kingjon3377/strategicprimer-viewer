@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeSet;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import javax.swing.tree.MutableTreeNode;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -34,7 +34,6 @@ import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.Pair;
 import util.PatientMap;
 
@@ -81,43 +80,40 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	/**
-	 * Create the report on a Worker.
+	 * Write the report on a Worker to a Formatter.
+	 * @param ostream the Formatter to write to
 	 * @param worker  a Worker.
 	 * @param details whether we should give details of the worker's stats and
 	 *                experience---true only if the current player owns the worker.
-	 * @return a sub-report on that worker.
 	 */
-	private static String workerReport(final IWorker worker, final boolean details) {
-		final StringBuilder builder = new StringBuilder(2048);
+	private static void workerReport(final IWorker worker, final boolean details,
+									   final Formatter ostream) {
 		final WorkerStats stats = worker.getStats();
-		try (final Formatter formatter = new Formatter(builder)) {
-			formatter.format("%s, a %s.", worker.getName(), worker.getRace());
-			if ((stats != null) && details) {
-				formatter.format("%n<p>He or she has the following stats: ");
-				//noinspection HardcodedFileSeparator
-				formatter.format("%d / %d Hit Points, Strength %s, Dexterity %s, ",
-						stats.getHitPoints(), stats.getMaxHitPoints(),
-						getModifierString(stats.getStrength()),
-						getModifierString(stats.getDexterity()));
-				formatter.format("Constitution %s, Intelligence %s, Wisdom %s, ",
-						getModifierString(stats.getConstitution()),
-						getModifierString(stats.getIntelligence()),
-						getModifierString(stats.getWisdom()));
-				formatter.format("Charisma %s</p>%n",
-						getModifierString(stats.getCharisma()));
-			}
-			if (worker.iterator().hasNext() && details) {
-				formatter.format("%s%n<ul>%n", HAS_TRAINING);
-				for (final IJob job : worker) {
-					formatter.format("<li>%d levels in %s",
-							Integer.valueOf(job.getLevel()), job.getName());
-					writeSkills(job, formatter);
-					formatter.format("</li>%n");
-				}
-				formatter.format("</ul>%n");
-			}
+		ostream.format("%s, a %s.", worker.getName(), worker.getRace());
+		if ((stats != null) && details) {
+			ostream.format("%n<p>He or she has the following stats: ");
+			//noinspection HardcodedFileSeparator
+			ostream.format("%d / %d Hit Points, Strength %s, Dexterity %s, ",
+					stats.getHitPoints(), stats.getMaxHitPoints(),
+					getModifierString(stats.getStrength()),
+					getModifierString(stats.getDexterity()));
+			ostream.format("Constitution %s, Intelligence %s, Wisdom %s, ",
+					getModifierString(stats.getConstitution()),
+					getModifierString(stats.getIntelligence()),
+					getModifierString(stats.getWisdom()));
+			ostream.format("Charisma %s</p>%n",
+					getModifierString(stats.getCharisma()));
 		}
-		return builder.toString();
+		if (worker.iterator().hasNext() && details) {
+			ostream.format("%s%n<ul>%n", HAS_TRAINING);
+			for (final IJob job : worker) {
+				ostream.format("<li>%d levels in %s",
+						Integer.valueOf(job.getLevel()), job.getName());
+				writeSkills(job, ostream);
+				ostream.format("</li>%n");
+			}
+			ostream.format("</ul>%n");
+		}
 	}
 
 	/**
@@ -220,92 +216,89 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 													 final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 													 final Collection<T> collection,
 													 final String heading,
-													 final Function<? super T, String> generator) {
+													 final Consumer<? super T> generator) {
 		if (!collection.isEmpty()) {
 			formatter.format("<li>%s%n<ul>%n", heading);
 			for (final T item : collection) {
-				formatter.format("<li>%s</li>%n", generator.apply(item));
+				formatter.format("%s", OPEN_LIST_ITEM);
+				generator.accept(item);
+				formatter.format("</li>%n");
 				fixtures.remove(item.getID());
 			}
 			formatter.format("</ul>%n</li>%n");
 		}
 	}
 	/**
-	 * We assume we're already in the middle of a paragraph or bullet point.
+	 * Produce a sub-sub-report on a unit. We assume we're already in the middle of a paragraph or bullet point.
 	 *
 	 * @param fixtures      the set of fixtures, so we can remove the unit and its
-	 *                         members
-	 *                      from it.
+	 *                         members from it.
 	 * @param map           ignored
 	 * @param item          a unit
 	 * @param loc           the unit's location
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return a sub-report on the unit
+	 * @param ostream	    the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer, final IUnit item,
-						  final Point loc) {
-		final StringBuilder builder =
-				new StringBuilder(item.getKind().length() + item.getName().length() +
-										  item.getOwner().getName().length() + 52);
-		try (final Formatter formatter = new Formatter(builder)) {
-			formatter.format("Unit of type %s, named %s, ", item.getKind(),
-					item.getName());
-			if (item.getOwner().isIndependent()) {
-				formatter.format("independent");
-			} else {
-				formatter.format("owned by %s", playerNameOrYou(item.getOwner()));
-			}
-			final Collection<IWorker> workers = new ArrayList<>();
-			final Collection<Implement> equipment = new ArrayList<>();
-			final Collection<ResourcePile> resources = new ArrayList<>();
-			final Collection<Animal> animals = new ArrayList<>();
-			final Collection<UnitMember> others = new ArrayList<>();
-			boolean hasMembers = false;
-			for (final UnitMember member : item) {
-				hasMembers = true;
-				if (member instanceof IWorker) {
-					workers.add((IWorker) member);
-				} else if (member instanceof Implement) {
-					equipment.add((Implement) member);
-				} else if (member instanceof ResourcePile) {
-					resources.add((ResourcePile) member);
-				} else if (member instanceof Animal) {
-					animals.add((Animal) member);
-				} else {
-					others.add(member);
-				}
-			}
-			if (hasMembers) {
-				formatter.format(". Members of the unit:%n<ul>%n");
-			}
-			produceInner(formatter, fixtures, workers, "Workers:",
-					worker -> workerReport(worker, worker instanceof HasOwner &&
-														   Objects.equals(currentPlayer,
-																   ((HasOwner) worker)
-																		   .getOwner())));
-
-			produceInner(formatter, fixtures, animals, "Animals:",
-					animal -> animalReportGenerator
-									  .produce(fixtures, map, currentPlayer, animal,
-											  loc));
-			produceInner(formatter, fixtures, equipment, "Equipment:",
-					member -> memberReportGenerator
-									  .produce(fixtures, map, currentPlayer, member,
-											  loc));
-			produceInner(formatter, fixtures, resources, "Resources:",
-					member -> memberReportGenerator
-									  .produce(fixtures, map, currentPlayer, member,
-											  loc));
-			produceInner(formatter, fixtures, resources, "Others:", Object::toString);
-			if (hasMembers) {
-				formatter.format("</ul>%n");
-			}
-			produceOrders(item, formatter);
+	public void produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final IUnit item, final Point loc, final Formatter ostream) {
+		ostream.format("Unit of type %s, named %s, ", item.getKind(),
+				item.getName());
+		if (item.getOwner().isIndependent()) {
+			ostream.format("independent");
+		} else {
+			ostream.format("owned by %s", playerNameOrYou(item.getOwner()));
 		}
+		final Collection<IWorker> workers = new ArrayList<>();
+		final Collection<Implement> equipment = new ArrayList<>();
+		final Collection<ResourcePile> resources = new ArrayList<>();
+		final Collection<Animal> animals = new ArrayList<>();
+		final Collection<UnitMember> others = new ArrayList<>();
+		boolean hasMembers = false;
+		for (final UnitMember member : item) {
+			hasMembers = true;
+			if (member instanceof IWorker) {
+				workers.add((IWorker) member);
+			} else if (member instanceof Implement) {
+				equipment.add((Implement) member);
+			} else if (member instanceof ResourcePile) {
+				resources.add((ResourcePile) member);
+			} else if (member instanceof Animal) {
+				animals.add((Animal) member);
+			} else {
+				others.add(member);
+			}
+		}
+		if (hasMembers) {
+			ostream.format(". Members of the unit:%n<ul>%n");
+		}
+		produceInner(ostream, fixtures, workers, "Workers:",
+				worker -> workerReport(worker, worker instanceof HasOwner &&
+													   Objects.equals(currentPlayer,
+															   ((HasOwner) worker)
+																	   .getOwner()),
+						ostream));
+
+		produceInner(ostream, fixtures, animals, "Animals:",
+				animal -> animalReportGenerator
+								  .produce(fixtures, map, currentPlayer, animal,
+										  loc, ostream));
+		produceInner(ostream, fixtures, equipment, "Equipment:",
+				member -> memberReportGenerator
+								  .produce(fixtures, map, currentPlayer, member,
+										  loc, ostream));
+		produceInner(ostream, fixtures, resources, "Resources:",
+				member -> memberReportGenerator
+								  .produce(fixtures, map, currentPlayer, member,
+										  loc, ostream));
+		produceInner(ostream, fixtures, resources, "Others:",
+				obj -> ostream.format("%s", obj.toString()));
+		if (hasMembers) {
+			ostream.format("</ul>%n");
+		}
+		produceOrders(item, ostream);
 		fixtures.remove(Integer.valueOf(item.getID()));
-		return builder.toString();
 	}
 
 	/**

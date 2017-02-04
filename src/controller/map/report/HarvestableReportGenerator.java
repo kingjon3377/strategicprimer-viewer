@@ -9,6 +9,8 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Stream;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -28,7 +30,6 @@ import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import model.report.SortedSectionListReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.MultiMapHelper;
 import util.Pair;
 import util.PatientMap;
@@ -80,24 +81,33 @@ public final class HarvestableReportGenerator
 		final Map<String, Collection<Point>> stone = new HashMap<>();
 		final Map<String, Collection<Point>> shrubs = new HashMap<>();
 		final Map<String, Collection<Point>> minerals = new HashMap<>();
-		final HeadedList<String> mines = new HtmlList("<h5>Mines</h5>");
-		final HeadedList<String> meadows = new HtmlList("<h5>Meadows and fields</h5>");
-		final HeadedList<String> groves = new HtmlList("<h5>Groves and orchards</h5>");
-		final HeadedList<String> caches =
-				new HtmlList("<h5>Caches collected by your explorers and workers:</h5>");
+		final Map<Mine, Point> mines = new TreeMap<>(Comparator.comparing(Mine::getKind)
+															 .thenComparing(
+																	 Mine::getStatus)
+															 .thenComparingInt(
+																	 Mine::getID));
+		final Map<Meadow, Point> meadows =
+				new TreeMap<>(Comparator.comparing(Meadow::getKind)
+									  .thenComparing(Meadow::getStatus)
+									  .thenComparingInt(Meadow::getID));
+		final Map<Grove, Point> groves =
+				new TreeMap<>(Comparator.comparing(Grove::getKind)
+									  .thenComparingInt(Grove::getID));
+		final Map<CacheFixture, Point> caches =
+				new TreeMap<>(Comparator.comparing(CacheFixture::getKind)
+									  .thenComparing(CacheFixture::getContents)
+									  .thenComparingInt(CacheFixture::getID));
 		for (final Pair<Point, IFixture> pair : values) {
 			final IFixture item = pair.second();
 			final Point point = pair.first();
 			if (item instanceof CacheFixture) {
-				caches.add(produce(fixtures, map, currentPlayer,
-						(CacheFixture) item, point));
+				caches.put((CacheFixture) item, point);
 			} else if (item instanceof Grove) {
-				groves.add(produce(fixtures, map, currentPlayer, (Grove) item, point));
+				groves.put((Grove) item, point);
 			} else if (item instanceof Meadow) {
-				meadows.add(produce(fixtures, map, currentPlayer, (Meadow) item,
-						point));
+				meadows.put((Meadow) item, point);
 			} else if (item instanceof Mine) {
-				mines.add(produce(fixtures, map, currentPlayer, (Mine) item, point));
+				mines.put((Mine) item, point);
 			} else if (item instanceof MineralVein) {
 				MultiMapHelper.getMapValue(minerals, ((MineralVein) item).shortDesc(),
 						AbstractReportGenerator::pointsListAt).add(point);
@@ -115,13 +125,54 @@ public final class HarvestableReportGenerator
 			}
 		}
 		final List<HeadedList<String>> all =
-				Arrays.asList(caches, groves, meadows, mines,
-						mapToList(minerals, "<h5>Mineral deposits</h5>"),
+				Arrays.asList(mapToList(minerals, "<h5>Mineral deposits</h5>"),
 						mapToList(stone, "<h5>Exposed stone deposits</h5>"),
 						mapToList(shrubs, "<h5>Shrubs, small trees, and such</h4>"));
 		all.forEach(Collections::sort);
-		if (!all.stream().allMatch(Collection::isEmpty)) {
+		if (Stream.of(caches, groves, meadows, mines).noneMatch(Map::isEmpty) &&
+					all.stream().noneMatch(Collection::isEmpty)) {
 			ostream.format("<h4>Resource Sources</h4>%n");
+			if (!caches.isEmpty()) {
+				ostream.format(
+						"<h5>Caches collected by your explorers and workers:</h5>%n<ul>%n");
+				for (final Map.Entry<CacheFixture, Point> entry : caches.entrySet()) {
+					ostream.format("%s", OPEN_LIST_ITEM);
+					produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n");
+			}
+			if (!groves.isEmpty()) {
+				ostream.format("<h5>Groves and orchards</h5>%n<ul>%n");
+				for (final Map.Entry<Grove, Point> entry : groves.entrySet()) {
+					ostream.format("%s", OPEN_LIST_ITEM);
+					produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n");
+			}
+			if (!meadows.isEmpty()) {
+				ostream.format("<h5>Meadows and fields</h5>%n<ul>%n");
+				for (final Map.Entry<Meadow, Point> entry : meadows.entrySet()) {
+					ostream.format("%s", OPEN_LIST_ITEM);
+					produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n");
+			}
+			if (!mines.isEmpty()) {
+				ostream.format("<h5>Mines</h5>%n<ul>%n");
+				for (final Map.Entry<Mine, Point> entry : mines.entrySet()) {
+					ostream.format("%s", OPEN_LIST_ITEM);
+					produce(fixtures, map, currentPlayer,
+							entry.getKey(), entry.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n");
+			}
 			for (final HeadedList<String> list : all) {
 				ostream.format("%s", list.toString());
 			}
@@ -222,61 +273,48 @@ public final class HarvestableReportGenerator
 	 * @param item          the fixture to report on
 	 * @param loc           its location
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return a sub-report dealing with the fixture
+	 * @param ostream	    the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer,
-						  final HarvestableFixture item, final Point loc) {
-		final String retval;
+	public void produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final HarvestableFixture item, final Point loc, final Formatter ostream) {
 		if (item instanceof CacheFixture) {
 			final CacheFixture cache = (CacheFixture) item;
-			retval = concat(atPoint(loc), " ", distCalculator.distanceString(loc),
-					"A cache of ",
-					cache.getKind(), ", containing ",
+			ostream.format("%s %sA cache of %s, containing %s", atPoint(loc),
+					distCalculator.distanceString(loc), cache.getKind(),
 					cache.getContents());
 		} else if (item instanceof Grove) {
 			final Grove grove = (Grove) item;
-			retval = concat(
-					atPoint(loc),
-					"A ",
-					ternary(grove.isCultivated(), "cultivated ", "wild "),
-					grove.getKind(),
-					ternary(grove.isOrchard(), " orchard", " grove"), " ",
+			// TODO: drop ternary() usage?
+			ostream.format("%sA %s %s %s %s", atPoint(loc),
+					ternary(grove.isCultivated(), "cultivated", "wild"), grove.getKind(),
+					ternary(grove.isOrchard(), "orchard", "grove"),
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
 			final Meadow meadow = (Meadow) item;
-			retval = concat(
-					atPoint(loc),
-					"A ",
-					meadow.getStatus().toString(),
-					ternary(meadow.isCultivated(), " cultivated ",
-							" wild or abandoned "), meadow.getKind(),
-					ternary(meadow.isField(), " field", " meadow"), " ",
-					distCalculator.distanceString(loc));
+			// TODO: drop ternary() usage?
+			ostream.format("%sA %s %s %s %s %s", atPoint(loc), meadow.getStatus().toString(),
+					ternary(meadow.isCultivated(), "cultivated", "wild or abandoned"), meadow.getKind(),
+					ternary(meadow.isField(), "field", "meadow"), distCalculator.distanceString(loc));
 		} else if (item instanceof Mine) {
-			retval = concat(atPoint(loc), item.toString(), " ",
+			ostream.format("%s%s %s", atPoint(loc), item.toString(),
 					distCalculator.distanceString(loc));
 		} else if (item instanceof MineralVein) {
 			final MineralVein mineral = (MineralVein) item;
-			retval = concat(
-					atPoint(loc),
-					"An ",
-					ternary(mineral.isExposed(), "exposed ", "unexposed "), "vein of ",
-					mineral.getKind(), " ",
-					distCalculator.distanceString(loc));
+			ostream.format("%sAn %s vein of %s %s", atPoint(loc),
+					ternary(mineral.isExposed(), "exposed", "unexposed"),
+					mineral.getKind(), distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
-			retval = concat(atPoint(loc), ((Shrub) item).getKind(), " ",
+			ostream.format("%s%s %s", atPoint(loc), ((Shrub) item).getKind(),
 					distCalculator.distanceString(loc));
 		} else if (item instanceof StoneDeposit) {
-			retval = concat(atPoint(loc), "An exposed ",
-					((StoneDeposit) item).getKind(), " deposit",
-					distCalculator.distanceString(loc));
+			ostream.format("%sAn exposed %s deposit %s", atPoint(loc),
+					((StoneDeposit) item).getKind(), distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected HarvestableFixture type");
 		}
 		fixtures.remove(Integer.valueOf(item.getID()));
-		return retval;
 	}
 
 	/**

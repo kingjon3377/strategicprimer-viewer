@@ -43,22 +43,6 @@ public interface IReportGenerator<T> {
 	 * Produce a report on a single item. All fixtures that this report references should
 	 * be removed from the set before returning.
 	 *
-	 * TODO: Should this take Formatter instead of returning String?
-	 *
-	 * @param fixtures      the set of fixtures (ignored if this is the map/map-view
-	 *                      report generator)
-	 * @param map           the map. (Needed to get terrain type for some reports.)
-	 * @param currentPlayer the player for whom the report is being produced
-	 * @param item          the particular item we are to be reporting on.
-	 * @param loc           the location of that item, if it's a fixture.
-	 * @return the (sub-)report, or the empty string if nothing to report.
-	 */
-	String produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
-				   Player currentPlayer, T item, Point loc);
-	/**
-	 * Produce a report on a single item. All fixtures that this report references should
-	 * be removed from the set before returning.
-	 *
 	 * @param fixtures      the set of fixtures (ignored if this is the map/map-view
 	 *                      report generator)
 	 * @param map           the map. (Needed to get terrain type for some reports.)
@@ -67,10 +51,8 @@ public interface IReportGenerator<T> {
 	 * @param loc           the location of that item, if it's a fixture.
 	 * @param ostream	    the Formatter to write to
 	 */
-	default void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
-				   Player currentPlayer, T item, Point loc, final Formatter ostream) {
-		ostream.format("%s", produce(fixtures, map, currentPlayer, item, loc));
-	}
+	void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
+				   Player currentPlayer, T item, Point loc, final Formatter ostream);
 
 	/**
 	 * All fixtures that this report references should be removed from the set before

@@ -75,32 +75,27 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	}
 
 	/**
-	 * This does *not* remove the fixture from the collection, because it doesn't know
-	 * the
-	 * synthetic ID # that was assigned to it.
+	 * Produce a report on an individual arbitrary-text note. This does *not* remove the
+	 * fixture from the collection, because it doesn't know the synthetic ID # that was
+	 * assigned to it.
 	 *
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @param item          an arbitrary-text note
 	 * @param loc           where it is located
-	 * @return the sub-report dealing with that note
+	 * @param ostream	    the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer,
-						  final TextFixture item, final Point loc) {
-		final StringBuilder builder =
-				new StringBuilder(item.getText().length() + 32);
-		try (final Formatter formatter = new Formatter(builder)) {
-			formatter.format("At %s %s", loc.toString(),
-					distCalculator.distanceString(loc));
-			if (item.getTurn() >= 0) {
-				formatter.format(": On turn %d", Integer.valueOf(item.getTurn()));
-			}
-			formatter.format(": %s", item.getText());
+	public void produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final TextFixture item, final Point loc, final Formatter ostream) {
+		ostream.format("At %s %s", loc.toString(),
+				distCalculator.distanceString(loc));
+		if (item.getTurn() >= 0) {
+			ostream.format(": On turn %d", Integer.valueOf(item.getTurn()));
 		}
-		return builder.toString();
+		ostream.format(": %s", item.getText());
 	}
 
 	/**

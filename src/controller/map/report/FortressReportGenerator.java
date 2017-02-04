@@ -32,7 +32,6 @@ import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.MultiMapHelper;
 import util.Pair;
 import util.PatientMap;
@@ -243,64 +242,92 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	}
 
 	/**
-	 * All fixtures referred to in this report are removed from the collection.
+	 * Produces a sub-report on a fortress. All fixtures referred to in this report are
+	 * removed from the collection.
 	 *
 	 * @param item          the fortress to report on
 	 * @param loc           its location
 	 * @param fixtures      the set of fixtures
 	 * @param map           the map (needed to get terrain information)
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the part of the report dealing with fortresses
+	 * @param ostream	    the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer,
-						  final Fortress item, final Point loc) {
-		// This can get long. we'll give it 16K.
-		final StringBuilder builder = new StringBuilder(16384);
-		try (final Formatter formatter = new Formatter(builder)) {
-			formatter.format("<h5>Fortress %s belonging to %s</h5>%n", item.getName(),
-					playerNameOrYou(item.getOwner()));
-			formatter.format("<ul>%n<li>Located at %s %s</li>%n", loc.toString(),
-					distCalculator.distanceString(loc));
-			formatter.format("<li>%s</li>%n", getTerrain(map, loc, fixtures));
-			riversToString(formatter,
-					StreamSupport.stream(map.getRivers(loc).spliterator(), false)
-							.collect(Collectors.toSet()));
-			final Collection<String> units = new HtmlList("Units on the tile:");
-			final Collection<String> equipment = new HtmlList("Equipment:");
-			final Map<String, Collection<String>> resources = new HashMap<>();
-			final Collection<String> contents = new HtmlList("Other fortress contents:");
-			for (final FortressMember member : item) {
-				if (member instanceof IUnit) {
-					units.add(urg.produce(fixtures, map, currentPlayer, (IUnit) member,
-							loc));
-				} else if (member instanceof Implement) {
-					equipment.add(memberReportGenerator
-										  .produce(fixtures, map, currentPlayer, member,
-												  loc));
-				} else if (member instanceof ResourcePile) {
-					final ResourcePile pile = (ResourcePile) member;
-					final String kind = pile.getKind();
-					MultiMapHelper
-							.getMapValue(resources, kind, key -> new HtmlList(key + ':'))
-							.add(memberReportGenerator
-										 .produce(fixtures, map, currentPlayer, pile,
-												 loc));
-				} else {
-					contents.add(memberReportGenerator
-										 .produce(fixtures, map, currentPlayer, member,
-												 loc));
-				}
+	public void produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final Fortress item, final Point loc, final Formatter ostream) {
+		ostream.format("<h5>Fortress %s belonging to %s</h5>%n", item.getName(),
+				playerNameOrYou(item.getOwner()));
+		ostream.format("<ul>%n<li>Located at %s %s</li>%n", loc.toString(),
+				distCalculator.distanceString(loc));
+		ostream.format("<li>%s</li>%n", getTerrain(map, loc, fixtures));
+		riversToString(ostream,
+				StreamSupport.stream(map.getRivers(loc).spliterator(), false)
+						.collect(Collectors.toSet()));
+		final Collection<IUnit> units = new ArrayList<>();
+		final Collection<Implement> equipment = new ArrayList<>();
+		final Map<String, Collection<ResourcePile>> resources = new HashMap<>();
+		final Collection<FortressMember> contents = new ArrayList<>();
+		for (final FortressMember member : item) {
+			if (member instanceof IUnit) {
+				units.add((IUnit) member);
+			} else if (member instanceof Implement) {
+				equipment.add((Implement) member);
+			} else if (member instanceof ResourcePile) {
+				final ResourcePile pile = (ResourcePile) member;
+				final String kind = pile.getKind();
+				MultiMapHelper.getMapValue(resources, kind, key -> new ArrayList<>())
+						.add(pile);
+			} else {
+				contents.add(member);
 			}
-			final HeadedList<String> resourcesText = new HtmlList("Resources:");
-			resources.values().stream().map(Collection::toString)
-					.forEach(resourcesText::add);
-			formatter.format("%s%s%s", units.toString(), resources.toString(),
-					equipment.toString());
+			fixtures.remove(Integer.valueOf(item.getID()));
+		}
+		if (!units.isEmpty()) {
+			ostream.format("Units on the tile:<ul>%n");
+			for (final IUnit unit : units) {
+				ostream.format("%s", OPEN_LIST_ITEM);
+				urg.produce(fixtures, map, currentPlayer, unit, loc, ostream);
+				ostream.format("</li>%n");
+			}
+			ostream.format("</ul>%n");
+		}
+		if (!equipment.isEmpty()) {
+			ostream.format("Equipment:<ul>%n");
+			for (final Implement implement : equipment) {
+				ostream.format("%s", OPEN_LIST_ITEM);
+				memberReportGenerator
+						.produce(fixtures, map, currentPlayer, implement, loc, ostream);
+				ostream.format("</li>%n");
+			}
+			ostream.format("</ul>%n");
+		}
+		if (!resources.isEmpty()) {
+			ostream.format("Resources:<ul>%n");
+			for (final Map.Entry<String, Collection<ResourcePile>> entry :
+					resources.entrySet()) {
+				ostream.format("<li>%s:<ul>%n", entry.getKey());
+				for (final ResourcePile pile : entry.getValue()) {
+					ostream.format("%s", OPEN_LIST_ITEM);
+					memberReportGenerator
+							.produce(fixtures, map, currentPlayer, pile, loc, ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n</li>%n");
+			}
+			ostream.format("</ul>%n");
+		}
+		if (!contents.isEmpty()) {
+			ostream.format("Other fortress contents:<ul>%n");
+			for (final FortressMember member : contents) {
+				ostream.format("%s", OPEN_LIST_ITEM);
+				memberReportGenerator
+						.produce(fixtures, map, currentPlayer, member, loc, ostream);
+				ostream.format("</li>%n");
+			}
+			ostream.format("</ul>%n");
 		}
 		fixtures.remove(Integer.valueOf(item.getID()));
-		return builder.toString();
 	}
 
 	/**

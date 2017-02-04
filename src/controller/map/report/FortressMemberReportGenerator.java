@@ -1,12 +1,12 @@
 package controller.map.report;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -68,30 +68,58 @@ public final class FortressMemberReportGenerator
 						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final Collection<String> equipment = new HtmlList("Equipment:");
-		final Map<String, HeadedList<String>> resources =
-				new HashMap<>();
+		final Map<Implement, Point> equipment =
+				new TreeMap<>(Comparator.comparing(Implement::getKind)
+									  .thenComparingInt(Implement::getID));
+		final Map<String, Map<ResourcePile, Point>> resources = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof ResourcePile) {
 				final ResourcePile resource = (ResourcePile) pair.second();
 				MultiMapHelper.getMapValue(resources, resource.getKind(),
-						key -> new HtmlList(key + ':'))
-						.add(produce(fixtures, map, currentPlayer, resource,
-								pair.first()));
+						key -> new TreeMap<>(Comparator.comparing(ResourcePile::getKind)
+													 .thenComparing(
+															 ResourcePile::getContents)
+													 .thenComparing(
+															 ResourcePile::getQuantity)
+													 .thenComparingInt(
+															 ResourcePile::getCreated)
+													 .thenComparingInt(
+															 ResourcePile::getID)))
+						.put(resource, pair.first());
 				fixtures.remove(Integer.valueOf(resource.getID()));
 			} else if (pair.second() instanceof Implement) {
-				equipment.add(produce(fixtures, map, currentPlayer,
-						(FortressMember) pair.second(), pair.first()));
+				equipment.put((Implement) pair.second(), pair.first());
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			}
 		}
-		final HeadedList<String> resourcesText = new HtmlList("Resources:");
-		resources.values().stream().map(Collection::toString)
-				.forEach(resourcesText::add);
 		if (!equipment.isEmpty() && !resources.isEmpty()) {
 			ostream.format("<h4>Resources and Equipment</h4>%n<ul>%n");
-			ostream.format("<li>%s</li>%n<li>%s</li>%n", equipment.toString(),
-					resourcesText.toString());
+			if (!equipment.isEmpty()) {
+				ostream.format("<li>Equipment:<ul>%n");
+				for (final Map.Entry<Implement, Point> entry : equipment.entrySet()) {
+					ostream.format("%s", OPEN_LIST_ITEM);
+					produce(fixtures, map, currentPlayer, entry.getKey(), entry.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n</li>%n");
+			}
+			if (!resources.isEmpty()) {
+				ostream.format("<li>Resources:<ul>%n");
+				for (final Map.Entry<String, Map<ResourcePile, Point>> outer :
+						resources.entrySet()) {
+					ostream.format("<li>%s: <ul>%n", outer.getKey());
+					for (final Map.Entry<ResourcePile, Point> inner :
+							outer.getValue().entrySet()) {
+						ostream.format("%s", OPEN_LIST_ITEM);
+						produce(fixtures, map, currentPlayer, inner.getKey(),
+								inner.getValue(), ostream);
+						ostream.format("</li>%n");
+					}
+					ostream.format("</ul>%n</li>%n");
+				}
+				ostream.format("</ul>%n</li>%n");
+			}
+			ostream.format("</ul>%n");
 		}
 	}
 
@@ -147,36 +175,31 @@ public final class FortressMemberReportGenerator
 	 * @param item          the item to report on
 	 * @param loc           its location
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return a sub-report on the item; calls UnitReportGenerator for units.
+	 * @param ostream	    the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer,
-						  final FortressMember item, final Point loc) {
+	public void produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final FortressMember item, final Point loc, final Formatter ostream) {
 		if (item instanceof IUnit) {
-			return new UnitReportGenerator(pairComparator)
-						   .produce(fixtures, map, currentPlayer, (IUnit) item, loc);
+			new UnitReportGenerator(pairComparator)
+					.produce(fixtures, map, currentPlayer, (IUnit) item, loc, ostream);
 		} else if (item instanceof ResourcePile) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final ResourcePile rsr = (ResourcePile) item;
-			final String age;
-			if (rsr.getCreated() < 0) {
-				age = "";
-			} else {
-				age = " from turn " + rsr.getCreated();
-			}
 			if (rsr.getQuantity().getUnits().isEmpty()) {
-				return String.format("A pile of %s %s (%s)%s",
-						rsr.getQuantity().toString(), rsr.getContents(),
-						rsr.getKind(), age);
+				ostream.format("A pile of %s %s (%s)", rsr.getQuantity().toString(),
+						rsr.getContents(), rsr.getKind());
 			} else {
-				return String.format("A pile of %s of %s (%s)%s",
-						rsr.getQuantity().toString(),
-						rsr.getContents(), rsr.getKind(), age);
+				ostream.format("A pile of %s of %s (%s)", rsr.getQuantity().toString(),
+						rsr.getContents(), rsr.getKind());
+			}
+			if (rsr.getCreated() >= 0) {
+				ostream.format(" from turn %d", Integer.valueOf(rsr.getCreated()));
 			}
 		} else if (item instanceof Implement) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return "Equipment: " + ((Implement) item).getKind();
+			ostream.format("Equipment: %s", ((Implement) item).getKind());
 		} else {
 			throw new IllegalArgumentException("Unexpected FortressMember type");
 		}

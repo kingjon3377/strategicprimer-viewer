@@ -1,12 +1,12 @@
 package controller.map.report;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -64,45 +64,58 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final Collection<String> own =
-				new HtmlList("<h4>Villages pledged to your service:</h4>");
-		final Collection<String> independents =
-				new HtmlList("<h4>Villages you think are independent:</h4>");
-		final Map<Player, Collection<String>> others = new HashMap<>();
+		final Comparator<Village> villageComparator =
+				Comparator.comparing(Village::getName).thenComparing(Village::getRace)
+						.thenComparingInt(Village::getID);
+		// TODO: sort by distance somehow?
+		final Map<Village, Point> own = new TreeMap<>(villageComparator);
+		final Map<Village, Point> independents = new TreeMap<>(villageComparator);
+		final Map<Player, Map<Village, Point>> others = new HashMap<>();
 		values.stream().filter(pair -> pair.second() instanceof Village)
 				.forEach(pair -> {
 					final Village village = (Village) pair.second();
-					final String product =
-							produce(fixtures, map, currentPlayer, village,
-									pair.first());
 					if (village.getOwner().isCurrent()) {
-						own.add(product);
+						own.put(village, pair.first());
 					} else if (village.getOwner().isIndependent()) {
-						independents.add(product);
-					} else if (others.containsKey(village.getOwner())) {
-						others.get(village.getOwner()).add(product);
+						independents.put(village, pair.first());
 					} else {
-						final Collection<String> coll = new HtmlList("<h5>Villages sworn to " +
-																			 village.getOwner()
-																					 .getName() +
-																			 "</h5>");
-						coll.add(product);
-						others.put(village.getOwner(), coll);
+						MultiMapHelper.getMapValue(others, village.getOwner(),
+								key -> new TreeMap<>(villageComparator))
+								.put(village, pair.first());
 					}
 				});
-		final String ownString = own.toString();
-		final String independentsString = independents.toString();
-		final StringBuilder retval =
-				new StringBuilder(40 + ownString.length() + independentsString.length() +
-										  (others.values().stream()
-												   .mapToInt(Collection::size).sum() *
-												   512));
-		// HtmlLists will return the empty string if they are empty.
-		ostream.format("%s%s", own.toString(), independents.toString());
+		if (!own.isEmpty()) {
+			ostream.format("<h4>Villages pledged to your service:</h4>%n<ul>%n");
+			for (final Map.Entry<Village, Point> entry : own.entrySet()) {
+				ostream.format("%s", OPEN_LIST_ITEM);
+				produce(fixtures, map, currentPlayer, entry.getKey(), entry.getValue(),
+						ostream);
+				ostream.format("</li>%n");
+			}
+			ostream.format("</ul>%n");
+		}
+		if (!independents.isEmpty()) {
+			ostream.format("<h4>Villages you think are independent:</h4>%n<ul>%n");
+			for (final Map.Entry<Village, Point> entry : independents.entrySet()) {
+				ostream.format("%s", OPEN_LIST_ITEM);
+				produce(fixtures, map, currentPlayer, entry.getKey(), entry.getValue(),
+						ostream);
+				ostream.format("</li>%n");
+			}
+			ostream.format("</ul>%n");
+		}
 		if (!others.isEmpty()) {
 			ostream.format("<h4>Other villages you know about:</h4>%n");
-			for (final Collection<String> other : others.values()) {
-				ostream.format("%s", other.toString());
+			for (final Map.Entry<Player, Map<Village, Point>> outer : others.entrySet()) {
+				ostream.format("<h5>Villages sworn to %s</h5>%n<ul>%n",
+						outer.getKey().getName());
+				for (final Map.Entry<Village, Point> inner : outer.getValue().entrySet()) {
+					ostream.format("%s", OPEN_LIST_ITEM);
+					produce(fixtures, map, currentPlayer, inner.getKey(),
+							inner.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n");
 			}
 		}
 	}
@@ -166,24 +179,21 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 * @param item          the village to report on
 	 * @param loc           its location
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the report on the village (its location and name, nothing more)
+	 * @param ostream	    the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer,
-						  final Village item, final Point loc) {
+	public void produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final Village item, final Point loc, final Formatter ostream) {
 		fixtures.remove(Integer.valueOf(item.getID()));
+		ostream.format("%s %s, a(n) %s village, ", atPoint(loc), item.getName(),
+				item.getRace());
 		if (item.getOwner().isIndependent()) {
-			return concat(atPoint(loc), item.getName(), ", a(n) ",
-					item.getRace(), " village", ", independent ",
-					distCalculator.distanceString(loc));
+			ostream.format("independent");
 		} else {
-			return concat(atPoint(loc), item.getName(), ", a(n) ",
-					item.getRace(), " village", ", sworn to "
-														+
-														playerNameOrYou(item.getOwner()),
-					" ", distCalculator.distanceString(loc));
+			ostream.format("sworn to %s", playerNameOrYou(item.getOwner()));
 		}
+		ostream.format(" %s", distCalculator.distanceString(loc));
 	}
 
 	/**

@@ -6,11 +6,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -81,28 +82,64 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	@Override
 	public void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
 						Player currentPlayer, final Formatter ostream) {
-		final Map<TownStatus, Collection<String>> separated =
+		final Map<TownStatus, Map<ITownFixture, Point>> separated =
 				new EnumMap<>(TownStatus.class);
-		separated.put(TownStatus.Abandoned,
-				new HtmlList("<h5>Abandoned Communities</h5>"));
-		separated.put(TownStatus.Active, new HtmlList("<h5>Active Communities</h5>"));
-		separated.put(TownStatus.Burned, new HtmlList("<h5>Burned-Out " +
-															  "Communities</h5>"));
-		separated.put(TownStatus.Ruined, new HtmlList("<h5>Ruined Communities</h5>"));
-		separateByStatus(separated, fixtures.values(), (list, pair) -> list.add(
-				produce(fixtures, map, currentPlayer, (ITownFixture) pair.second(),
-						pair.first())));
-		final Collection<Collection<String>> filtered =
-				STATUSES.stream().map(separated::get).filter(Objects::nonNull)
-						.filter(coll -> !coll.isEmpty()).collect(Collectors.toList());
-		if (!filtered.isEmpty()) {
+		final Map<ITownFixture, Point> abandoned = new HashMap<>();
+		final Map<ITownFixture, Point> active = new HashMap<>();
+		final Map<ITownFixture, Point> burned = new HashMap<>();
+		final Map<ITownFixture, Point> ruined = new HashMap<>();
+		separated.put(TownStatus.Abandoned, abandoned);
+		separated.put(TownStatus.Active, active);
+		separated.put(TownStatus.Burned, burned);
+		separated.put(TownStatus.Ruined, ruined);
+		separateByStatus(separated, fixtures.values(),
+				(mapping, pair) -> mapping.put((ITownFixture) pair.second(),
+						pair.first()));
+		if (Stream.of(abandoned, active, burned, ruined)
+					.anyMatch(mapping -> !mapping.isEmpty())) {
+			// TODO: reorder so active is first?
 			ostream.format(
 					"<h4>Cities, towns, and/or fortifications you know about:</h4>%n");
-			ostream.format("<ul>%n");
-			for (final Collection<String> coll : filtered) {
-				ostream.format("<li>%s</li>%n", coll.toString());
+			if (!abandoned.isEmpty()) {
+				ostream.format("<<h5>Abandoned Communities</h5>%n<ul>%n");
+				for (final Map.Entry<ITownFixture, Point> entry : abandoned.entrySet()) {
+					ostream.format("%s", OPEN_LIST_ITEM);
+					produce(fixtures, map, currentPlayer, entry.getKey(),
+							entry.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n");
 			}
-			ostream.format("</ul>%n");
+			if (!active.isEmpty()) {
+				ostream.format("<h5>Active Communities</h5>%n<ul>%n");
+				for (final Map.Entry<ITownFixture, Point> entry : active.entrySet()) {
+					ostream.format("%s", OPEN_LIST_ITEM);
+					produce(fixtures, map, currentPlayer, entry.getKey(),
+							entry.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n");
+			}
+			if (!burned.isEmpty()) {
+				ostream.format("<h5>Burned-Out Communities</h5>%n<ul>%n");
+				for (final Map.Entry<ITownFixture, Point> entry : burned.entrySet()) {
+					ostream.format("%s", OPEN_LIST_ITEM);
+					produce(fixtures, map, currentPlayer, entry.getKey(),
+							entry.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n");
+			}
+			if (!ruined.isEmpty()) {
+				ostream.format("<h5>Ruined Communities</h5>%n<ul>%n");
+				for (final Map.Entry<ITownFixture, Point> entry : ruined.entrySet()) {
+					ostream.format("%s", OPEN_LIST_ITEM);
+					produce(fixtures, map, currentPlayer, entry.getKey(),
+							entry.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n");
+			}
 		}
 	}
 	/**
@@ -170,30 +207,30 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * @param item          the town to report on
 	 * @param loc           its location
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the sub-report dealing with the town.
+	 * @param ostream	    the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer,
-						  final ITownFixture item, final Point loc) {
+	public void produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final ITownFixture item, final Point loc, final Formatter ostream) {
 		if (item instanceof Village) {
-			return new VillageReportGenerator(pairComparator).produce(fixtures, map,
-					currentPlayer, (Village) item, loc);
+			new VillageReportGenerator(pairComparator)
+					.produce(fixtures, map, currentPlayer, (Village) item, loc, ostream);
 		} else if (item instanceof Fortress) {
-			return new FortressReportGenerator(pairComparator).produce(fixtures, map,
-					currentPlayer, (Fortress) item, loc);
+			new FortressReportGenerator(pairComparator)
+					.produce(fixtures, map, currentPlayer, (Fortress) item, loc, ostream);
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
+			ostream.format("%s%s,", atPoint(loc), item.getName());
 			if (item.getOwner().isIndependent()) {
-				return concat(atPoint(loc), item.getName(), ", an independent ",
-						item.size().toString(), " ", item.status().toString(), " ",
-						item.kind(), " ", distCalculator.distanceString(loc));
+				ostream.format(" an independent %s %s %s", item.size().toString(),
+						item.status().toString(), item.kind());
 			} else {
-				return concat(atPoint(loc), item.getName(), ", a ",
-						item.size().toString(), " ", item.status().toString(), " ",
-						item.kind(), " allied with ", playerNameOrYou(item.getOwner()),
-						" ", distCalculator.distanceString(loc));
+				ostream.format(" a %s %s %s allied with %s", item.size().toString(),
+						item.status().toString(), item.kind(),
+						playerNameOrYou(item.getOwner()));
 			}
+			ostream.format(" %s", distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");
 		}
