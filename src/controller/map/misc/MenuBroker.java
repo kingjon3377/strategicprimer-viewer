@@ -60,4 +60,13 @@ public class MenuBroker implements ActionListener {
 			LOGGER.log(Level.WARNING, "Unhandled action: %s", evt.getActionCommand());
 		}
 	}
+	/**
+	 * A simple toString().
+	 * @return a String saying how many listeners we have
+	 */
+	@Override
+	public String toString() {
+		return String.format("MenuBroker with %d listeners",
+				Integer.valueOf(mapping.size()));
+	}
 }

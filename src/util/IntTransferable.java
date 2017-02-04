@@ -76,4 +76,12 @@ public final class IntTransferable implements Transferable {
 			throw new UnsupportedFlavorException(flavor);
 		}
 	}
+	/**
+	 * A simple toString().
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "IntTransferable: " + payload;
+	}
 }

@@ -90,4 +90,12 @@ public class FixtureMatcher {
 	public String getDescription() {
 		return description;
 	}
+	/**
+	 * A simple toString().
+	 * @return a String representation of the matcher.
+	 */
+	@Override
+	public String toString() {
+		return "Matcher for " + description;
+	}
 }

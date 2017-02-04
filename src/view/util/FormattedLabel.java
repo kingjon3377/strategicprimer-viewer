@@ -38,4 +38,11 @@ public class FormattedLabel extends JLabel {
 	public void setArgs(final Object... args) {
 		setText(String.format(formatString, args));
 	}
+	/**
+	 * A simple toString().
+	 */
+	@Override
+	public String toString() {
+		return "FormattedLabel with format " + formatString;
+	}
 }
