@@ -43,7 +43,7 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	 * @param point a point
 	 * @return the square of the distance to it from the base
 	 */
-	public int distance(final Point point) {
+	private int distance(final Point point) {
 		return ((point.getCol() - base.getCol()) * (point.getCol() - base.getCol())) +
 					   ((point.getRow() - base.getRow()) *
 								(point.getRow() - base.getRow()));
