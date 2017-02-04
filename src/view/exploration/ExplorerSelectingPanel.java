@@ -28,7 +28,6 @@ import model.listeners.CompletionSource;
 import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
 import model.map.Player;
-import model.map.PlayerImpl;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.Nullable;
 import view.util.BorderedPanel;

@@ -20,7 +20,6 @@ import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
-import model.map.PlayerImpl;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;

@@ -20,7 +20,6 @@ import javax.swing.tree.TreeNode;
 import model.map.HasKind;
 import model.map.HasMutableName;
 import model.map.Player;
-import model.map.PlayerImpl;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.ProxyFor;
