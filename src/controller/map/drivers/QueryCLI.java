@@ -32,6 +32,7 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.terrain.Forest;
 import model.misc.IDriverModel;
+import util.Quantity;
 import util.TypesafeLogger;
 
 /**
@@ -315,26 +316,25 @@ public final class QueryCLI implements SimpleDriver {
 	private static int herdMammals(final ICLIHelper cli, final MammalModel animal,
 								   final int count, final int flockPerHerder)
 			throws IOException {
-		cli.printf("Tending the animals takes %d minutes, or %d minutes with ",
-				Integer.valueOf((flockPerHerder * animal.getDailyTimePerHead()) / 2),
-				Integer.valueOf(
-						flockPerHerder * ((animal.getDailyTimePerHead() / 2) - 5)));
-		cli.println("expert herders, twice daily.");
-		cli.printf("Gathering them for each milking takes %d min more.%n",
-				Integer.valueOf(animal.getDailyTimeFloor() / 2));
-		final double production = animal.getProductionPerHead().getNumber().doubleValue();
+		cli.printf(
+				"Taking the day's two milkings together, tending the animals takes %d ",
+				Integer.valueOf(flockPerHerder * animal.getDailyTimePerHead()));
+		cli.printf(
+				"minutes, or %d min with expert herders, plus %d min to gather them.%n",
+				Integer.valueOf(flockPerHerder * (animal.getDailyTimePerHead() - 10)),
+				Integer.valueOf(animal.getDailyTimeFloor()));
+		final Quantity base = animal.getScaledProduction(count);
+		final double production = base.getNumber().doubleValue();
 		cli.printf("This produces %,.1f %s, %,.1f lbs, of milk per day.%n",
-				Double.valueOf(production * count),
-				animal.getProductionPerHead().getUnits(),
-				Double.valueOf(production * animal.getPoundsCoefficient() * count));
-		final int costPerHerder;
+				Double.valueOf(production), base.getUnits(),
+				Double.valueOf(animal.getScaledPoundsProduction(count)));
+		final int cost;
 		if (cli.inputBooleanInSeries("Are the herders experts? ")) {
-			costPerHerder = animal.getDailyTimePerHead() - 5;
+			cost = animal.getDailyExpertTime(flockPerHerder);
 		} else {
-			costPerHerder = animal.getDailyTimePerHead();
+			cost = animal.getDailyTime(flockPerHerder);
 		}
-		return round(((flockPerHerder * costPerHerder) + animal.getDailyTimeFloor()) /
-							  60.0);
+		return round(cost / 60.0);
 	}
 
 	/**
@@ -350,15 +350,15 @@ public final class QueryCLI implements SimpleDriver {
 								   final int count, final int flockPerHerder)
 			throws IOException {
 		cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",
-				Integer.valueOf(flockPerHerder * bird.getDailyTimePerHead()));
+				Integer.valueOf(bird.getDailyTime(flockPerHerder)));
 		cli.printf("which should be done every %d turns at least, takes %.1f hours.%n",
 				Integer.valueOf(bird.getExtraChoresInterval() + 1),
-				Double.valueOf((flockPerHerder * bird.getExtraTimePerHead()) / 60.0));
-		final double production = bird.getProductionPerHead().getNumber().doubleValue();
+				Double.valueOf(bird.getDailyExtraTime(flockPerHerder) / 60.0));
+		final Quantity base = bird.getScaledProduction(count);
+		final double production = base.getNumber().doubleValue();
 		cli.printf("This produces %.0f %s, totaling %.1f oz.%n",
-				Double.valueOf(production * count),
-				bird.getProductionPerHead().getUnits(),
-				Double.valueOf(production * bird.getPoundsCoefficient() * count));
+				Double.valueOf(production), base.getUnits(),
+				Double.valueOf(bird.getScaledPoundsProduction(count)));
 		final int cost;
 		if (cli.inputBooleanInSeries("Do they do the cleaning this turn? ")) {
 			cost = bird.getDailyTimePerHead() + bird.getExtraTimePerHead();

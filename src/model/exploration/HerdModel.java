@@ -41,4 +41,29 @@ public interface HerdModel {
 	 * this downward somewhat if the herders in question are experts.
 	 */
 	int getDailyTimePerHead();
+	/**
+	 * How much time is spent for a flock (per herder) of the given size.
+	 * @param heads how many animals
+	 * @return the number of minutes per day
+	 */
+	public int getDailyTime(final int heads);
+	/**
+	 * How much is produced by a flock of the given size.
+	 * @param heads how many animals
+	 * @return the production of that size flock
+	 */
+	default Quantity getScaledProduction(final int heads) {
+		return new Quantity(getProductionPerHead().getNumber().doubleValue() * heads,
+								   getProductionPerHead().getUnits());
+	}
+	/**
+	 * How many pounds are produced by a flock of the given size.
+	 * @param heads how many animals
+	 * @return the production of that size flock, in pounds
+	 */
+	default double getScaledPoundsProduction(final int heads) {
+		return getProductionPerHead().getNumber().doubleValue() * heads *
+					   getPoundsCoefficient();
+	}
+
 }

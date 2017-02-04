@@ -106,4 +106,22 @@ public enum MammalModel implements HerdModel {
 	public int getDailyTimeFloor() {
 		return dailyTimeFloor;
 	}
+
+	/**
+	 * How much time is spent for a flock (per herder) of the given size.
+	 * @param heads how many animals
+	 * @return the number of minutes per day
+	 */
+	public int getDailyTime(final int heads) {
+		return heads * dailyTimePerHead + dailyTimeFloor;
+	}
+	/**
+	 * How much time is spent by an expert herder for a flock (per herder) of the given
+	 * size.
+	 * @param heads how many animals
+	 * @return the number of minutes per day
+	 */
+	public int getDailyExpertTime(final int heads) {
+		return heads * (dailyTimePerHead - 10) + dailyTimeFloor;
+	}
 }

@@ -119,4 +119,20 @@ public enum PoultryModel implements HerdModel {
 	public int getExtraChoresInterval() {
 		return extraChoresInterval;
 	}
+	/**
+	 * How much time is spent for a flock (per herder) of the given size.
+	 * @param heads how many animals
+	 * @return the number of minutes per day
+	 */
+	public int getDailyTime(final int heads) {
+		return heads * dailyTimePerHead;
+	}
+	/**
+	 * How much time is spent on extra chores for a flock (per herder) of the given size.
+	 * @param heads how many animals
+	 * @return the number of minutes per day
+	 */
+	public int getDailyExtraTime(final int heads) {
+		return heads * extraTimePerHead;
+	}
 }
