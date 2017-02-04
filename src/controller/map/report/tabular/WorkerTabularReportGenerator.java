@@ -57,17 +57,15 @@ public final class WorkerTabularReportGenerator implements ITableGenerator<IWork
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   final IWorker item, final Point loc) throws IOException {
-		writeField(ostream, distanceString(loc, base));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, loc.toString());
-		writeFieldDelimiter(ostream);
-		writeField(ostream, item.getName());
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, distanceString(loc, base));
+		writeDelimitedField(ostream, loc.toString());
+		writeDelimitedField(ostream, item.getName());
 		final Optional<WorkerStats> stats = Optional.ofNullable(item.getStats());
+		// TODO: no-stats ends with field delimiter, with-stats doesn't
+		// (and avoids using writeDelimitedField() to preserve that status quo)
 		if (stats.isPresent()) {
 			final WorkerStats actual = stats.get();
-			writeField(ostream, Integer.toString(actual.getHitPoints()));
-			writeFieldDelimiter(ostream);
+			writeDelimitedField(ostream, Integer.toString(actual.getHitPoints()));
 			writeField(ostream, Integer.toString(actual.getMaxHitPoints()));
 			for (final ToIntFunction<WorkerStats> field :
 					Arrays.<ToIntFunction<WorkerStats>>asList(WorkerStats::getStrength,
@@ -80,8 +78,7 @@ public final class WorkerTabularReportGenerator implements ITableGenerator<IWork
 			}
 		} else {
 			for (int i = 0; i < 9; i++) {
-				writeField(ostream, "--");
-				writeFieldDelimiter(ostream);
+				writeDelimitedField(ostream, "--");
 			}
 		}
 		ostream.append(getRowDelimiter());

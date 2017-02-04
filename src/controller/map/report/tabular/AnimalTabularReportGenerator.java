@@ -53,10 +53,8 @@ public final class AnimalTabularReportGenerator implements ITableGenerator<Anima
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   final Animal item, final Point loc) throws IOException {
-		writeField(ostream, distanceString(loc, base));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, loc.toString());
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, distanceString(loc, base));
+		writeDelimitedField(ostream, loc.toString());
 		if (item.isTraces()) {
 			writeField(ostream, "tracks or traces of " + item.getKind());
 		} else if (item.isTalking()) {

@@ -77,18 +77,12 @@ public final class TownTabularReportGenerator implements ITableGenerator<Abstrac
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   final AbstractTown item, final Point loc) throws IOException {
-		writeField(ostream, distanceString(loc, base));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, loc.toString());
-		writeFieldDelimiter(ostream);
-		writeField(ostream, getOwnerString(player, item.getOwner()));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, item.kind());
-		writeFieldDelimiter(ostream);
-		writeField(ostream, item.size().toString());
-		writeFieldDelimiter(ostream);
-		writeField(ostream, item.status().toString());
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, distanceString(loc, base));
+		writeDelimitedField(ostream, loc.toString());
+		writeDelimitedField(ostream, getOwnerString(player, item.getOwner()));
+		writeDelimitedField(ostream, item.kind());
+		writeDelimitedField(ostream, item.size().toString());
+		writeDelimitedField(ostream, item.status().toString());
 		writeField(ostream, item.getName());
 		ostream.append(getRowDelimiter());
 		return true;

@@ -81,10 +81,8 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 		} else {
 			return false;
 		}
-		writeField(ostream, kind);
-		writeFieldDelimiter(ostream);
-		writeField(ostream, quantity);
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, kind);
+		writeDelimitedField(ostream, quantity);
 		writeField(ostream, specifics);
 		ostream.append(getRowDelimiter());
 		return true;
@@ -178,10 +176,8 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 			}
 		}
 		for (final Map.Entry<String, Accumulator> entry : implementCounts.entrySet()) {
-			writeField(ostream, "equipment");
-			writeFieldDelimiter(ostream);
-			writeField(ostream, Integer.toString(entry.getValue().getValue()));
-			writeFieldDelimiter(ostream);
+			writeDelimitedField(ostream, "equipment");
+			writeDelimitedField(ostream, Integer.toString(entry.getValue().getValue()));
 			writeField(ostream, entry.getKey());
 			ostream.append(getRowDelimiter());
 		}

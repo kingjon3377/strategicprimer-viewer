@@ -59,12 +59,9 @@ public final class VillageTabularReportGenerator implements ITableGenerator<Vill
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   final Village item, final Point loc) throws IOException {
-		writeField(ostream, distanceString(loc, base));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, loc.toString());
-		writeFieldDelimiter(ostream);
-		writeField(ostream, getOwnerString(player, item.getOwner()));
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, distanceString(loc, base));
+		writeDelimitedField(ostream, loc.toString());
+		writeDelimitedField(ostream, getOwnerString(player, item.getOwner()));
 		writeField(ostream, item.getName());
 		ostream.append(getRowDelimiter());
 		return true;

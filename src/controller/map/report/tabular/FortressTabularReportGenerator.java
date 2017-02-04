@@ -60,12 +60,9 @@ public final class FortressTabularReportGenerator implements ITableGenerator<For
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   final Fortress item, final Point loc) throws IOException {
-		writeField(ostream, distanceString(loc, base));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, loc.toString());
-		writeFieldDelimiter(ostream);
-		writeField(ostream, getOwnerString(player, item.getOwner()));
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, distanceString(loc, base));
+		writeDelimitedField(ostream, loc.toString());
+		writeDelimitedField(ostream, getOwnerString(player, item.getOwner()));
 		writeField(ostream, item.getName());
 		ostream.append(getRowDelimiter());
 		// Players shouldn't be able to see the contents of others' fortresses.

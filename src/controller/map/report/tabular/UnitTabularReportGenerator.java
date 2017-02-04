@@ -63,16 +63,11 @@ public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> 
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						   final IUnit item,
 						   final Point loc) throws IOException {
-		writeField(ostream, distanceString(loc, base));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, loc.toString());
-		writeFieldDelimiter(ostream);
-		writeField(ostream, getOwnerString(player, item.getOwner()));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, item.getKind());
-		writeFieldDelimiter(ostream);
-		writeField(ostream, item.getName());
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, distanceString(loc, base));
+		writeDelimitedField(ostream, loc.toString());
+		writeDelimitedField(ostream, getOwnerString(player, item.getOwner()));
+		writeDelimitedField(ostream, item.getKind());
+		writeDelimitedField(ostream, item.getName());
 		writeField(ostream, item.getAllOrders().lastEntry().getValue());
 		ostream.append(getRowDelimiter());
 		for (final UnitMember member : item) {

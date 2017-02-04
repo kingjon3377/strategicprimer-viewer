@@ -106,14 +106,10 @@ public final class ExplorableTabularReportGenerator
 		} else {
 			return false;
 		}
-		writeField(ostream, distanceString(loc, base));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, loc.toString());
-		writeFieldDelimiter(ostream);
-		writeField(ostream, brief);
-		writeFieldDelimiter(ostream);
-		writeField(ostream, owner);
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, distanceString(loc, base));
+		writeDelimitedField(ostream, loc.toString());
+		writeDelimitedField(ostream, brief);
+		writeDelimitedField(ostream, owner);
 		writeField(ostream, longDesc);
 		ostream.append(getRowDelimiter());
 		return true;
@@ -215,19 +211,15 @@ public final class ExplorableTabularReportGenerator
 	private void produceFromText(final Appendable ostream,
 								final TextFixture item, final Point loc)
 			throws IOException {
-		writeField(ostream, distanceString(loc, base));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, loc.toString());
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, distanceString(loc, base));
+		writeDelimitedField(ostream, loc.toString());
 		if (item.getTurn() >= 0) {
-			writeField(ostream, String.format("Text Note (Turn %d)",
+			writeDelimitedField(ostream, String.format("Text Note (Turn %d)",
 					Integer.valueOf(item.getTurn())));
 		} else {
-			writeField(ostream, "Text Note");
+			writeDelimitedField(ostream, "Text Note");
 		}
-		writeFieldDelimiter(ostream);
-		writeField(ostream, "---");
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, "---");
 		writeField(ostream, item.getText());
 		ostream.append(getRowDelimiter());
 	}

@@ -66,10 +66,8 @@ public final class ImmortalsTabularReportGenerator
 						   final MobileFixture item, final Point loc) throws
 			IOException {
 		if (applies(item)) {
-			writeField(ostream, distanceString(loc, base));
-			writeFieldDelimiter(ostream);
-			writeField(ostream, loc.toString());
-			writeFieldDelimiter(ostream);
+			writeDelimitedField(ostream, distanceString(loc, base));
+			writeDelimitedField(ostream, loc.toString());
 			writeField(ostream, item.toString());
 			ostream.append(getRowDelimiter());
 			return true;

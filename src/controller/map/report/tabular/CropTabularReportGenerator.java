@@ -119,16 +119,11 @@ public final class CropTabularReportGenerator implements ITableGenerator<TileFix
 		} else {
 			return false;
 		}
-		writeField(ostream, distanceString(loc, base));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, loc.toString());
-		writeFieldDelimiter(ostream);
-		writeField(ostream, kind);
-		writeFieldDelimiter(ostream);
-		writeField(ostream, cultivation);
-		writeFieldDelimiter(ostream);
-		writeField(ostream, status);
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, distanceString(loc, base));
+		writeDelimitedField(ostream, loc.toString());
+		writeDelimitedField(ostream, kind);
+		writeDelimitedField(ostream, cultivation);
+		writeDelimitedField(ostream, status);
 		writeField(ostream, crop);
 		ostream.append(getRowDelimiter());
 		return true;

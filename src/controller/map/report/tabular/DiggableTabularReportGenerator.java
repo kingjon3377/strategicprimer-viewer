@@ -91,14 +91,10 @@ public final class DiggableTabularReportGenerator
 		} else {
 			return false;
 		}
-		writeField(ostream, distanceString(loc, base));
-		writeFieldDelimiter(ostream);
-		writeField(ostream, loc.toString());
-		writeFieldDelimiter(ostream);
-		writeField(ostream, classField);
-		writeFieldDelimiter(ostream);
-		writeField(ostream, ((HasKind) item).getKind());
-		writeFieldDelimiter(ostream);
+		writeDelimitedField(ostream, distanceString(loc, base));
+		writeDelimitedField(ostream, loc.toString());
+		writeDelimitedField(ostream, classField);
+		writeDelimitedField(ostream, ((HasKind) item).getKind());
 		writeField(ostream, statusField);
 		ostream.append(getRowDelimiter());
 		return true;

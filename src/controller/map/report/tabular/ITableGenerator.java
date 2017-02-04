@@ -203,6 +203,19 @@ public interface ITableGenerator<@NonNull T> {
 	}
 
 	/**
+	 * Write a field to a stream, quoting it if necessary, and then write the field
+	 * delimiter.
+	 *
+	 * @param ostream the stream to write to
+	 * @param field   the field-value to write
+	 * @throws IOException on I/O error while writing
+	 */
+	default void writeDelimitedField(final Appendable ostream, final String field)
+			throws IOException {
+		writeField(ostream, field);
+		writeFieldDelimiter(ostream);
+	}
+	/**
 	 * Whether this generator can handle an object. Returns true by default.
 	 * @param obj an object
 	 * @return whether this table generator can handle that object
