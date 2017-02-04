@@ -6,8 +6,6 @@ import util.Quantity;
  * Models of (game statistics for) herding, including dairy cattle, small mammals,
  * large mammals, small poultry, large poultry, etc.
  *
- * TODO: Turn into interface implemented by one for mammals and one for poultry.
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
