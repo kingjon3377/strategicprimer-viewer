@@ -3,7 +3,10 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -20,7 +23,6 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.Pair;
 import util.PatientMap;
 
@@ -59,20 +61,11 @@ public final class ExplorableReportGenerator
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the part of the report listing things that can be explored.
+	 * @param ostream       the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer) {
-		// At only three (albeit potentially rather long) list items, I doubt this
-		// will ever be over one K ... but we'll give it two just in case.
-		final StringBuilder builder = new StringBuilder(2048).append(
-				"<h4>Caves, Battlefields, and Portals</h4>").append(LineEnd.LINE_SEP)
-											  .append(OPEN_LIST);
-		// Similarly, I doubt either this will ever be over half a K, but
-		// we'll give it a whole K just in case.
-		final StringBuilder adventureBuilder = new StringBuilder(1024);
-		adventureBuilder.append("<h4>Possible Adventures</h4>").append(OPEN_LIST);
+	public void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
+						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
 		boolean anyAdventures = false;
@@ -81,6 +74,7 @@ public final class ExplorableReportGenerator
 				new PointList("Signs of long-ago battles on the following tiles: ");
 		final Collection<Point> caves =
 				new PointList("Caves beneath the following tiles: ");
+		final Map<AdventureFixture, Point> adventures = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
 				caves.add(pair.first());
@@ -89,34 +83,29 @@ public final class ExplorableReportGenerator
 				battles.add(pair.first());
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof AdventureFixture) {
+				adventures.put((AdventureFixture) pair.second(), pair.first());
 				anyAdventures = true;
-				adventureBuilder.append(OPEN_LIST_ITEM)
-						.append(produce(fixtures, map, currentPlayer,
-								(ExplorableFixture) pair.second(),
-								pair.first()))
-						.append(CLOSE_LIST_ITEM);
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof Portal) {
 				portals.add(pair.first());
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			}
 		}
-		builder.append(caves);
-		builder.append(battles);
-		builder.append(portals);
-		adventureBuilder.append(CLOSE_LIST);
-		builder.append(CLOSE_LIST);
-		if (caves.isEmpty() && battles.isEmpty() && portals.isEmpty()) {
-			if (anyAdventures) {
-				return adventureBuilder.toString();
-			} else {
-				return "";
+		if (!caves.isEmpty() || !battles.isEmpty() || !portals.isEmpty()) {
+			ostream.format("<h4>Caves, Battlefields, and Portals</h4>%n<ul>%n");
+			ostream.format("%s%s%s</ul>%n", caves.toString(), battles.toString(),
+					portals.toString());
+		}
+		if (!adventures.isEmpty()) {
+			ostream.format("<h4>Possible Adventures</h4>%n<ul>%n");
+			for (final Map.Entry<AdventureFixture, Point> entry :
+					adventures.entrySet()) {
+				ostream.format("%s", OPEN_LIST_ITEM);
+				produce(fixtures, map, currentPlayer, entry.getKey(), entry.getValue(),
+						ostream);
+				ostream.format("</li>%n");
 			}
-		} else {
-			if (anyAdventures) {
-				builder.append(adventureBuilder);
-			}
-			return builder.toString();
+			ostream.format("</ul>%n");
 		}
 	}
 

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,6 @@ public final class HarvestableReportGenerator
 																					IFixture>> comparator) {
 		super(comparator);
 	}
-
 	/**
 	 * Produce the sub-reports dealing with "harvestable" fixtures. All fixtures referred
 	 * to in this report are to be removed from the collection. Caves and battlefields,
@@ -70,11 +70,11 @@ public final class HarvestableReportGenerator
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the part of the report listing things that can be harvested.
+	 * @param ostream       the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer) {
+	public void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
+						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
 		final Map<String, Collection<Point>> stone = new HashMap<>();
@@ -120,16 +120,14 @@ public final class HarvestableReportGenerator
 						mapToList(stone, "<h5>Exposed stone deposits</h5>"),
 						mapToList(shrubs, "<h5>Shrubs, small trees, and such</h4>"));
 		all.forEach(Collections::sort);
-		if (all.stream().allMatch(Collection::isEmpty)) {
-			return "";
-		} else {
-			final StringBuilder builder = new StringBuilder(30 + all.stream().mapToInt(
-					Collection::size).sum() * 50);
-			builder.append("<h4>Resource Sources</h4>").append(LineEnd.LINE_SEP);
-			all.forEach(builder::append);
-			return builder.toString();
+		if (!all.stream().allMatch(Collection::isEmpty)) {
+			ostream.format("<h4>Resource Sources</h4>%n");
+			for (final HeadedList<String> list : all) {
+				ostream.format("%s", list.toString());
+			}
 		}
 	}
+
 	/**
 	 * Convert a Map from kinds to Points to a HtmlList.
 	 * @param map a map from kinds to HeadedLists of locations of those kinds

@@ -3,6 +3,7 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,11 +61,11 @@ public final class FortressMemberReportGenerator
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the part of the report listing non-unit fortress members.
+	 * @param ostream       the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer) {
+	public void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
+						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
 		final Collection<String> equipment = new HtmlList("Equipment:");
@@ -87,11 +88,11 @@ public final class FortressMemberReportGenerator
 		final HeadedList<String> resourcesText = new HtmlList("Resources:");
 		resources.values().stream().map(Collection::toString)
 				.forEach(resourcesText::add);
-		final Collection<String> retval =
-				new HtmlList("<h4>Resources and Equipment</h4>");
-		retval.add(equipment.toString());
-		retval.add(resourcesText.toString());
-		return retval.toString();
+		if (!equipment.isEmpty() && !resources.isEmpty()) {
+			ostream.format("<h4>Resources and Equipment</h4>%n<ul>%n");
+			ostream.format("<li>%s</li>%n<li>%s</li>%n", equipment.toString(),
+					resourcesText.toString());
+		}
 	}
 
 	/**

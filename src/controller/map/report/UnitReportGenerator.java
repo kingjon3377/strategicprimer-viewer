@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -414,46 +416,58 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	/**
-	 * All fixtures referred to in this report are removed from the collection.
+	 * Produce the part of the report dealing with units. All fixtures referred to in
+	 * this report are removed from the collection.
 	 *
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the part of the report dealing with units
+	 * @param ostream       the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer) {
-		// This can get big; we'll say 8K.
-		final StringBuilder builder =
-				new StringBuilder(8192).append("<h4>Units in the map</h4>");
-		builder.append(LineEnd.LINE_SEP);
-		builder.append("<p>(Any units listed above are not described again.)</p>");
-		builder.append(LineEnd.LINE_SEP);
+	public void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
+						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		final Collection<String> foreign = new HtmlList("<h5>Foreign units</h5>");
-		final Collection<String> ours = new HtmlList("<h5>Your units</h5>");
+		final Map<IUnit, Point> foreign = new HashMap<>();
+		final Map<IUnit, Point> ours = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof IUnit) {
 				final IUnit unit = (IUnit) pair.second();
 				if (currentPlayer.equals(unit.getOwner())) {
-					ours.add(String.format("At %s: %s%s", pair.first().toString(),
-							distCalculator.distanceString(pair.first()),
-							produce(fixtures, map, currentPlayer, unit, pair.first())));
+					ours.put(unit, pair.first());
 				} else {
-					foreign.add(String.format("At %s: %s%s", pair.first().toString(),
-							distCalculator.distanceString(pair.first()),
-							produce(fixtures, map, currentPlayer, unit, pair.first())));
+					foreign.put(unit, pair.first());
 				}
 			}
 		}
-		builder.append(ours);
-		builder.append(foreign);
-		if (ours.isEmpty() && foreign.isEmpty()) {
-			return "";
-		} else {
-			return builder.toString();
+		if (!ours.isEmpty() && !foreign.isEmpty()) {
+			ostream.format("<h4>Units in the map</h4>%n<p>Any units listed above are ");
+			ostream.format("not described again.)</p>%n");
+			if (!ours.isEmpty()) {
+				ostream.format("<h5>Your units</h5>%n<ul>%n");
+				for (final Map.Entry<IUnit, Point> entry : ours.entrySet()) {
+					ostream.format("%sAt %s%s", OPEN_LIST_ITEM,
+							entry.getValue().toString(),
+							distCalculator.distanceString(entry.getValue()));
+					produce(fixtures, map, currentPlayer, entry.getKey(),
+							entry.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n");
+			}
+			if (!foreign.isEmpty()) {
+				ostream.format("<h5>Foreign units</h5>%n<ul>%n");
+				for (final Map.Entry<IUnit, Point> entry : foreign.entrySet()) {
+					ostream.format("%sAt %s%s", OPEN_LIST_ITEM,
+							entry.getValue().toString(),
+							distCalculator.distanceString(entry.getValue()));
+					produce(fixtures, map, currentPlayer, entry.getKey(),
+							entry.getValue(), ostream);
+					ostream.format("</li>%n");
+				}
+				ostream.format("</ul>%n");
+			}
 		}
 	}
 

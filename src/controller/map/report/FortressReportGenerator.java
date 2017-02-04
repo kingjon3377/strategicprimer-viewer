@@ -157,50 +157,44 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	}
 
 	/**
-	 * All fixtures referred to in this report are removed from the collection.
+	 * Produce the sub-report on fortresses. All fixtures referred to in this report are
+	 * removed from the collection.
 	 *
 	 * @param fixtures      the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @param map           the map (needed to get terrain information)
-	 * @return the part of the report dealing with fortresses
+	 * @param ostream       the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer) {
-		// This can get long. We'll give it 16K.
-		final StringBuilder ours =
-				new StringBuilder(16384).append("<h4>Your fortresses in the map:</h4>")
-						.append(LineEnd.LINE_SEP);
-		final StringBuilder builder =
-				new StringBuilder(16384).append("<h4>Other fortresses in the map:</h4>")
-						.append(LineEnd.LINE_SEP);
+	public void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
+						Player currentPlayer, final Formatter ostream) {
+		final Map<Fortress, Point> ours = new HashMap<>();
+		final Map<Fortress, Point> others = new HashMap<>();
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		boolean anyForts = false;
-		boolean anyOurs = false;
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Fortress) {
 				final Fortress fort = (Fortress) pair.second();
 				if (currentPlayer.equals(fort.getOwner())) {
-					anyOurs = true;
-					ours.append(produce(fixtures, map, currentPlayer, fort,
-							pair.first()));
+					ours.put(fort, pair.first());
 				} else {
-					anyForts = true;
-					builder.append(produce(fixtures, map, currentPlayer,
-							fort, pair.first()));
+					others.put(fort, pair.first());
 				}
 			}
 		}
-		if (anyOurs) {
-			if (anyForts) {
-				ours.append(builder);
+		if (!ours.isEmpty()) {
+			ostream.format("<h4>Your fortresses in the map:</h4>%n");
+			for (final Map.Entry<Fortress, Point> entry : ours.entrySet()) {
+				produce(fixtures, map, currentPlayer, entry.getKey(), entry.getValue(),
+						ostream);
 			}
-			return ours.toString();
-		} else if (anyForts) {
-			return builder.toString();
-		} else {
-			return "";
+		}
+		if (!others.isEmpty()) {
+			ostream.format("<h4>Other fortresses in the map:</h4>%n");
+			for (final Map.Entry<Fortress, Point> entry : others.entrySet()) {
+				produce(fixtures, map, currentPlayer, entry.getKey(), entry.getValue(),
+						ostream);
+			}
 		}
 	}
 

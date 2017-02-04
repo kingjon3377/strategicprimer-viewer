@@ -48,11 +48,11 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the sub-report dealing with arbitrary-text notes
+	 * @param ostream       the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer) {
+	public void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
+						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, TextFixture>> items = new ArrayList<>();
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry :
 				fixtures.entrySet()) {
@@ -63,10 +63,15 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 			}
 		}
 		items.sort(Comparator.comparingInt(pair -> pair.second().getTurn()));
-		final HeadedList<String> list = new HtmlList("<h4>Miscellaneous Notes</h4>");
-		items.stream().map(item -> produce(fixtures, map, currentPlayer,
-				item.second(), item.first())).forEach(list::add);
-		return list.toString();
+		if (!items.isEmpty()) {
+			ostream.format("<h4>Miscellaneous Notes</h4>%n<ul>%n");
+			for (final Pair<Point, TextFixture> item : items) {
+				ostream.format("%s", OPEN_LIST_ITEM);
+				produce(fixtures, map, currentPlayer, item.second(), item.first(), ostream);
+				ostream.format("</li>%n");
+			}
+			ostream.format("</ul>%n");
+		}
 	}
 
 	/**

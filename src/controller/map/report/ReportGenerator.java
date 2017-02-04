@@ -3,6 +3,7 @@ package controller.map.report;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IDRegistrar;
 import java.util.Comparator;
+import java.util.Formatter;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -109,9 +110,11 @@ public final class ReportGenerator {
 																			   IFixture>> fixtures,
 										 final IMapNG map, final Player player,
 										 final IReportGenerator<?>... generators) {
-		for (final IReportGenerator<?> generator : generators) {
-			builder.append(generator.produce(fixtures, map, player));
-			fixtures.coalesce();
+		try (final Formatter ostream = new Formatter(builder)) {
+			for (final IReportGenerator<?> generator : generators) {
+				generator.produce(fixtures, map, player, ostream);
+				fixtures.coalesce();
+			}
 		}
 	}
 

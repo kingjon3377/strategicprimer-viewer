@@ -1,9 +1,11 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,11 +110,11 @@ public final class ImmortalsReportGenerator
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the part of the report listing "immortals"
+	 * @param ostream       the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer) {
+	public void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
+						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
 		final Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta =
@@ -141,11 +143,17 @@ public final class ImmortalsReportGenerator
 				fixtures.remove(Integer.valueOf(immortal.getID()));
 			}
 		}
-		final HeadedList<String> retval = new HtmlList("<h4>Immortals</h4>");
-		Stream.of(dragons, fairies, giants, centaurs, simples).map(Map::values)
-				.flatMap(Collection::stream).map(Collection::toString)
-				.forEach(retval::add);
-		return retval.toString();
+		if (!centaurs.isEmpty() && !giants.isEmpty() && !fairies.isEmpty() &&
+					!dragons.isEmpty() && !simples.isEmpty()) {
+			ostream.format("<h4>Immortals</h4>%n");
+			for (final Collection<? extends Collection<Point>> coll : Arrays.asList(centaurs.values(),
+					giants.values(), fairies.values(), dragons.values(),
+					simples.values())) {
+				for (final Collection<Point> inner : coll) {
+					ostream.format("%s", inner);
+				}
+			}
+		}
 	}
 
 	/**

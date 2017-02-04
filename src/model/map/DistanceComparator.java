@@ -60,6 +60,7 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 		if (dist == 0) {
 			return "(at HQ)";
 		} else {
+			// TODO: space should probably precede rather than follow the string
 			return String.format("(%.0f tiles from HQ) ",
 					Double.valueOf(Math.sqrt(dist)));
 		}

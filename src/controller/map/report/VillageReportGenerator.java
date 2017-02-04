@@ -3,6 +3,7 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,6 @@ import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.LineEnd;
 import util.MultiMapHelper;
 import util.Pair;
 import util.PatientMap;
@@ -52,14 +52,16 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 * Produce the report on all villages. All fixtures referred to in this report are
 	 * removed from the collection.
 	 *
+	 * TODO: Postpone converting to String
+	 *
 	 * @param fixtures      the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @param map           ignored
-	 * @return the part of the report dealing with villages.
+	 * @param ostream       the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer) {
+	public void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
+						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
 		final Collection<String> own =
@@ -69,25 +71,25 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		final Map<Player, Collection<String>> others = new HashMap<>();
 		values.stream().filter(pair -> pair.second() instanceof Village)
 				.forEach(pair -> {
-			final Village village = (Village) pair.second();
-			final String product =
-					produce(fixtures, map, currentPlayer, village,
-							pair.first());
-			if (village.getOwner().isCurrent()) {
-				own.add(product);
-			} else if (village.getOwner().isIndependent()) {
-				independents.add(product);
-			} else if (others.containsKey(village.getOwner())) {
-				others.get(village.getOwner()).add(product);
-			} else {
-				final Collection<String> coll = new HtmlList("<h5>Villages sworn to " +
-																	 village.getOwner()
-																			 .getName() +
-																	 "</h5>");
-				coll.add(product);
-				others.put(village.getOwner(), coll);
-			}
-		});
+					final Village village = (Village) pair.second();
+					final String product =
+							produce(fixtures, map, currentPlayer, village,
+									pair.first());
+					if (village.getOwner().isCurrent()) {
+						own.add(product);
+					} else if (village.getOwner().isIndependent()) {
+						independents.add(product);
+					} else if (others.containsKey(village.getOwner())) {
+						others.get(village.getOwner()).add(product);
+					} else {
+						final Collection<String> coll = new HtmlList("<h5>Villages sworn to " +
+																			 village.getOwner()
+																					 .getName() +
+																			 "</h5>");
+						coll.add(product);
+						others.put(village.getOwner(), coll);
+					}
+				});
 		final String ownString = own.toString();
 		final String independentsString = independents.toString();
 		final StringBuilder retval =
@@ -96,14 +98,13 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 												   .mapToInt(Collection::size).sum() *
 												   512));
 		// HtmlLists will return the empty string if they are empty.
-		retval.append(ownString);
-		retval.append(independentsString);
+		ostream.format("%s%s", own.toString(), independents.toString());
 		if (!others.isEmpty()) {
-			retval.append("<h4>Other villages you know about:</h4>");
-			retval.append(LineEnd.LINE_SEP);
-			others.values().stream().map(Object::toString).forEach(retval::append);
+			ostream.format("<h4>Other villages you know about:</h4>%n");
+			for (final Collection<String> other : others.values()) {
+				ostream.format("%s", other.toString());
+			}
 		}
-		return retval.toString();
 	}
 
 	/**

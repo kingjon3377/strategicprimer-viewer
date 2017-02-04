@@ -5,10 +5,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -66,20 +68,19 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	}
 
 	/**
-	 * Produce the part of the report dealing with towns. Note that while this class
-	 * specifies {@link ITownFixture}, this method ignores {@link Fortress}es and {@link
-	 * Village}s. All fixtures referred to in this report are removed from the
-	 * collection.
+	 * Produce the part of the report dealing with towns, sorted in a way I hope is
+	 * helpful. Note that while this class specifies {@link ITownFixture}, this method
+	 * ignores {@link Fortress}es and {@link Village}s. All fixtures referred to in this
+	 * report are removed from the collection.
 	 *
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the part of the report dealing with towns, sorted in a way I hope is
-	 * helpful.
+	 * @param ostream       the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer) {
+	public void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
+						Player currentPlayer, final Formatter ostream) {
 		final Map<TownStatus, Collection<String>> separated =
 				new EnumMap<>(TownStatus.class);
 		separated.put(TownStatus.Abandoned,
@@ -91,11 +92,18 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separateByStatus(separated, fixtures.values(), (list, pair) -> list.add(
 				produce(fixtures, map, currentPlayer, (ITownFixture) pair.second(),
 						pair.first())));
-		final HeadedList<String> retval = new HtmlList(
-				"<h4>Cities, towns, and/or fortifications you know about:</h4>");
-		STATUSES.stream().map(separated::get).filter(Objects::nonNull)
-				.map(Collection::toString).forEach(retval::add);
-		return retval.toString();
+		final Collection<Collection<String>> filtered =
+				STATUSES.stream().map(separated::get).filter(Objects::nonNull)
+						.filter(coll -> !coll.isEmpty()).collect(Collectors.toList());
+		if (!filtered.isEmpty()) {
+			ostream.format(
+					"<h4>Cities, towns, and/or fortifications you know about:</h4>%n");
+			ostream.format("<ul>%n");
+			for (final Collection<String> coll : filtered) {
+				ostream.format("<li>%s</li>%n", coll.toString());
+			}
+			ostream.format("</ul>%n");
+		}
 	}
 	/**
 	 * Separate towns by status.

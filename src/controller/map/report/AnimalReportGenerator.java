@@ -46,18 +46,17 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 																						IFixture>> comparator) {
 		super(comparator);
 	}
-
 	/**
 	 * Produce the sub-report on sightings of animals.
 	 *
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the report
+	 * @param ostream       the Formatter to write to
 	 */
 	@Override
-	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						  final IMapNG map, final Player currentPlayer) {
+	public void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
+						 Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
 		final Map<String, Collection<Point>> items = new HashMap<>();
@@ -84,21 +83,12 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				}
 			}
 		}
-		if (items.isEmpty()) {
-			return "";
-		} else {
-			// We doubt this list will ever be over 16K.
-			final StringBuilder builder = new StringBuilder(16384);
-			try (final Formatter formatter = new Formatter(builder)) {
-				formatter.format("<h4>Animal sightings or encounters</h4>%n<ul>%n");
-				for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
-					formatter.format("<li>%s: %s</li>%n", entry.getKey(),
-							entry.getValue().toString());
-				}
-				formatter.format("</ul>%n");
-			}
-			return builder.toString();
+		ostream.format("<h4>Animal sightings or encounters</h4>%n<ul>%n");
+		for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
+			ostream.format("<li>%s: %s</li>%n", entry.getKey(),
+					entry.getValue().toString());
 		}
+		ostream.format("</ul>%n");
 	}
 
 	/**
