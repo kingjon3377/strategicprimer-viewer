@@ -122,6 +122,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 * Add matchers for simple immortals.
 	 * @param kinds the kinds of immortals to match
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private final void addSimpleImmortalMatchers(final SimpleImmortal
 															   .SimpleImmortalKind...
 														 kinds) {
