@@ -174,7 +174,7 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 	 * @param tag a tag
 	 * @return whether it's in a namespace we support.
 	 */
-	protected static boolean isSupportedNamespace(final QName tag) {
+	private static boolean isSupportedNamespace(final QName tag) {
 		return EqualsAny.equalsAny(tag.getNamespaceURI(), ISPReader.NAMESPACE,
 				XMLConstants.NULL_NS_URI);
 	}
@@ -251,7 +251,7 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 	 * null if not present
 	 */
 	@Nullable
-	protected static Attribute getAttributeByName(final StartElement element,
+	private static Attribute getAttributeByName(final StartElement element,
 												  final String param) {
 		final Attribute retval =
 				element.getAttributeByName(qname(param));
@@ -266,7 +266,7 @@ public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull 
 	 * @param tag a tag
 	 * @return a QName combining it with our namespace
 	 */
-	protected static QName qname(final String tag) {
+	private static QName qname(final String tag) {
 		return new QName(ISPReader.NAMESPACE, tag);
 	}
 	/**
