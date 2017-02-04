@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -116,9 +117,9 @@ public final class AppStarter implements ISPDriver {
 		if (cliUsage.isGraphical() || !guiUsage.isGraphical()) {
 			//noinspection HardcodedFileSeparator
 			LOGGER.warning("Two-arg addChoice expects non-GUI / GUI pair");
-		} else if (!cliUsage.getShortOption().equals(guiUsage.getShortOption())
-						   ||
-						   !cliUsage.getLongOption().equals(guiUsage.getLongOption())) {
+		} else if (!Objects.equals(cliUsage.getShortOption(),
+				guiUsage.getShortOption()) || !Objects.equals(cliUsage.getLongOption(),
+				guiUsage.getLongOption())) {
 			LOGGER.warning("In two-arg addChoice, args' options should match");
 		}
 		final Pair<ISPDriver, ISPDriver> pair = Pair.of(cliDriver, guiDriver);
