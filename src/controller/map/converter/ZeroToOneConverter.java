@@ -12,6 +12,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.XMLConstants;
@@ -156,8 +157,8 @@ public final class ZeroToOneConverter {
 	private static void convertMap(final Appendable ostream, final StartElement element,
 								   final Iterable<Attribute> attrs) throws IOException {
 		ostream.append('<');
-		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI()
-		)) {
+		if (!Objects.equals(XMLConstants.DEFAULT_NS_PREFIX,
+				element.getName().getNamespaceURI())) {
 			ostream.append(element.getName().getPrefix());
 			ostream.append(':');
 		}
