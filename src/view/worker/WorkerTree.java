@@ -319,8 +319,8 @@ public final class WorkerTree extends JTree
 
 		/**
 		 * Handle any mouse event.
-		 * @param event the event to handle. Marked @Nullable so we only have to handle
-		 *              the null-event case once.
+		 * @param event the event to handle. Marked as possibly null so we only have to
+		 *                    handle the null-event case once.
 		 */
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if ((event != null) && event.isPopupTrigger()
