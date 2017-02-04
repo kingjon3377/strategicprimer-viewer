@@ -378,11 +378,18 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	@SuppressWarnings("ClassHasNoToStringMethod")
 	private static class PortraitComponent extends JComponent {
 		/**
+		 * Constructor. Protected to fix synthetic-access warning when instantiated from
+		 * outer class.
+		 */
+		protected PortraitComponent() {
+			portrait = null;
+		}
+		/**
 		 * The image to draw.
 		 */
 		@SuppressWarnings("FieldHasSetterButNoGetter")
 		@Nullable
-		private Image portrait = null;
+		private Image portrait;
 
 		/**
 		 * Set the portrait to show.
