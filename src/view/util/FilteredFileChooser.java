@@ -27,7 +27,7 @@ public final class FilteredFileChooser extends JFileChooser {
 	/**
 	 * A file filter for maps.
 	 */
-	public static final FileFilter MAP_EXTS =
+	private static final FileFilter MAP_EXTS =
 			new FileNameExtensionFilter("Strategic Primer world map files", "map",
 											   "xml");
 
