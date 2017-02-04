@@ -56,10 +56,6 @@ public final class DetailPanelNG extends JSplitPane
 	 */
 	private static final double DIVIDER_LOCATION = 0.9;
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(DetailPanelNG.class);
-	/**
 	 * The 'key' panel, showing what each tile color represents.
 	 */
 	private final KeyPanel keyPanel;
@@ -159,6 +155,11 @@ public final class DetailPanelNG extends JSplitPane
 	 */
 	private static class PortraitPanel extends JComponent
 			implements ListSelectionListener {
+		/**
+		 * Logger.
+		 */
+		private static final Logger LOGGER =
+				TypesafeLogger.getLogger(DetailPanelNG.PortraitPanel.class);
 		/**
 		 * The list we're watching.
 		 */
