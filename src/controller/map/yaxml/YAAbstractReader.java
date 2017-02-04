@@ -52,6 +52,7 @@ import static java.lang.String.format;
  * @param <T> the type of things the subclass of this can read and write
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 public abstract class YAAbstractReader<@NonNull T> implements YAReader<@NonNull T> {
 	/**
 	 * The Warning instance to use.
