@@ -168,8 +168,8 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	@Override
 	public void setLevel(final int newLevel) {
 		LOGGER.warning("setLevel called on ProxyJob");
-		for (final IJob proxied : proxiedJobs) {
-			proxied.setLevel(newLevel);
+		for (final IJob proxiedJob : proxiedJobs) {
+			proxiedJob.setLevel(newLevel);
 		}
 	}
 
