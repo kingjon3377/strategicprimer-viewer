@@ -319,7 +319,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @return the node representing it, or null if it isn't in the tree
 	 */
 	@Nullable
-	public TreeNode getNode(final Object obj) {
+	private TreeNode getNode(final Object obj) {
 		final TreeNode localRoot = root;
 		if (localRoot == null) {
 			return null;
