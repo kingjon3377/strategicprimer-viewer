@@ -21,15 +21,15 @@ public enum PoultryModel implements HerdModel {
 	/**
 	 * The model for chickens.
 	 */
-	Chickens(new Quantity(Double.valueOf(0.75), "eggs"), 0.125, 2, 30, 2),
+	Chickens(0.75, 0.125, 2, 2),
 	/**
 	 * The model for turkeys.
 	 */
-	Turkeys(new Quantity(Double.valueOf(0.75), "eggs"), 0.25, 2, 30, 2),
+	Turkeys(0.75, 0.25, 2, 2),
 	/**
 	 * The model for pigeons.
 	 */
-	Pigeons(new Quantity(Double.valueOf(0.5), "eggs"), 0.035, 1, 30, 4);
+	Pigeons(0.5, 0.035, 1, 4);
 	/**
 	 * The amount produced per head per turn.
 	 */
@@ -55,23 +55,21 @@ public enum PoultryModel implements HerdModel {
 	/**
 	 * Constructor.
 	 *
-	 * @param production    The amount produced per head per turn.
+	 * @param production    The number of eggs produced per head per turn.
 	 * @param coefficient   The coefficient by which the unit of in which production is
 	 *                      measured must be multiplied to get pounds
 	 * @param unitCost      How much time, per head, in minutes, must be spent to milk,
 	 *                      gather eggs, or otherwise collect the food produced by the
 	 *                      animals.
-	 * @param extraCost     How much time, in minutes, must be spent per head on "extra
-	 *                      chores" days.
 	 * @param extraInterval How many turns at most should elapse between "extra chores"
 	 *                      days.
 	 */
-	PoultryModel(final Quantity production, final double coefficient, final int unitCost,
-			  final int extraCost, final int extraInterval) {
-		productionPerHead = production;
+	PoultryModel(final double production, final double coefficient, final int unitCost,
+			  final int extraInterval) {
+		productionPerHead = new Quantity(Double.valueOf(production), "eggs");
 		poundsCoefficient = coefficient;
 		dailyTimePerHead = unitCost;
-		extraTimePerHead = extraCost;
+		extraTimePerHead = 30;
 		extraChoresInterval = extraInterval;
 	}
 	/**

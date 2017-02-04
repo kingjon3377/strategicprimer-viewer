@@ -21,16 +21,16 @@ public enum MammalModel implements HerdModel {
 	/**
 	 * The model for dairy cattle.
 	 */
-	DairyCattle(new Quantity(Integer.valueOf(4), "gallons"), 8.6, 40, 60),
+	DairyCattle(4, 40),
 	/**
 	 * The model for other roughly-cattle-sized mammals. (Not anything as large as
 	 * elephants.)
 	 */
-	LargeMammals(new Quantity(Integer.valueOf(3), "gallons"), 8.6, 40, 60),
+	LargeMammals(3, 40),
 	/**
 	 * The model for roughly-goat-sized mammals.
 	 */
-	SmallMammals(new Quantity(Double.valueOf(1.5), "gallons"), 8.6, 30, 60);
+	SmallMammals(1.5, 30);
 	/**
 	 * The amount produced per head per turn.
 	 */
@@ -54,20 +54,15 @@ public enum MammalModel implements HerdModel {
 	/**
 	 * Constructor.
 	 *
-	 * @param production    The amount produced per head per turn.
-	 * @param coefficient   The coefficient by which the unit of in which production is
-	 *                      measured must be multiplied to get pounds
+	 * @param production    The amount produced per head per turn, in gallons
 	 * @param unitCost      How much time, per head, in minutes, must be spent to milk,
 	 *                      or otherwise collect the food produced by the animals.
-	 * @param constantCost  How much time, in minutes, must be spent on the entire
-	 *                         herd each turn, regardless of its size.
 	 */
-	MammalModel(final Quantity production, final double coefficient, final int unitCost,
-			  final int constantCost) {
-		productionPerHead = production;
-		poundsCoefficient = coefficient;
+	MammalModel(final double production, final int unitCost) {
+		productionPerHead = new Quantity(Double.valueOf(production), "gallons");
+		poundsCoefficient = 8.6;
 		dailyTimePerHead = unitCost;
-		dailyTimeFloor = constantCost;
+		dailyTimeFloor = 60;
 	}
 	/**
 	 * How much is produced per head per turn.
