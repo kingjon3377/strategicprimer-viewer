@@ -48,7 +48,7 @@ public final class ProxyUnit
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(ProxyUnit.class);
+	protected static final Logger LOGGER = TypesafeLogger.getLogger(ProxyUnit.class);
 	/**
 	 * Whether we are proxying parallel units in different maps.
 	 */
