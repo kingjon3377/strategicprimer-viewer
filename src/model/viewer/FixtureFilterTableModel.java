@@ -337,4 +337,12 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		}
 		return 0;
 	}
+	/**
+	 * A simple toString().
+	 * @return a String showing how many matchers we have
+	 */
+	@Override
+	public String toString() {
+		return String.format("FixtureFilterTableModel with %d matchers", list.size());
+	}
 }
