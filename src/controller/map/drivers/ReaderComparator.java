@@ -112,7 +112,7 @@ public final class ReaderComparator implements UtilityDriver {
 	 * @param args The list of specified files to compare them on
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
-	public void compareReaders(final String... args) {
+	private void compareReaders(final String... args) {
 		Stream.of(args).map(Paths::get).forEach(this::compareReaders);
 	}
 
@@ -121,7 +121,7 @@ public final class ReaderComparator implements UtilityDriver {
 	 *
 	 * @param arg the file to have each read.
 	 */
-	public void compareReaders(final Path arg) {
+	private void compareReaders(final Path arg) {
 		SYS_OUT.print(arg);
 		SYS_OUT.println(':');
 		final String contents;
