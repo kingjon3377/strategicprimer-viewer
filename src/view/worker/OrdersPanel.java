@@ -323,5 +323,13 @@ public final class OrdersPanel extends BorderedPanel
 				listener.run();
 			}
 		}
+		/**
+		 * A trivial toString().
+		 * @return a String representation of the object.
+		 */
+		@Override
+		public String toString() {
+			return "ModifiedEnterListener";
+		}
 	}
 }
