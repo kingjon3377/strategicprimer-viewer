@@ -334,8 +334,6 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * Start the driver, and then start the specified other driver.
 	 *
-	 * TODO: somehow support --help
-	 *
 	 * @param cli the interface for user I/O
 	 * @param options options to pass to the driver.
 	 * @param args    command-line arguments
@@ -389,6 +387,17 @@ public final class AppStarter implements ISPDriver {
 			} else {
 				others.add(arg);
 			}
+		}
+		if (options.hasOption("--help")) {
+			final ISPDriver driver;
+			if (drivers == null) {
+				driver = this;
+			} else if (gui) {
+				driver = drivers.second();
+			} else {
+				driver = drivers.first();
+			}
+			throw new IncorrectUsageException(driver.usage());
 		}
 		final boolean localGui = gui;
 		if (drivers == null) {
