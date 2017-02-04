@@ -42,21 +42,6 @@ public final class ConstantTable implements EncounterTable {
 	 * "Generate" an event.
 	 * @param point         ignored
 	 * @param terrain       ignored
-	 * @param fixtures      ignored
-	 * @param mapDimensions ignored
-	 * @return our specified value.
-	 */
-	@Override
-	public String generateEvent(final Point point, final TileType terrain,
-								final Iterable<TileFixture> fixtures,
-								final MapDimensions mapDimensions) {
-		return value;
-	}
-
-	/**
-	 * "Generate" an event.
-	 * @param point         ignored
-	 * @param terrain       ignored
 	 * @param fixtures      any fixtures on the tile
 	 * @param mapDimensions ignored
 	 * @return the event on that tile

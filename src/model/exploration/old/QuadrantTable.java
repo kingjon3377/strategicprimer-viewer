@@ -127,21 +127,6 @@ public final class QuadrantTable implements EncounterTable {
 
 	/**
 	 * Generate an "event".
-	 * @param point         the location of the tile
-	 * @param terrain       ignored
-	 * @param fixtures      ignored
-	 * @param mapDimensions the dimensions of the map
-	 * @return what the table has for that tile
-	 */
-	@Override
-	public String generateEvent(final Point point, final TileType terrain,
-								final Iterable<TileFixture> fixtures,
-								final MapDimensions mapDimensions) {
-		return getQuadrantValue(point.getRow(), point.getCol(), mapDimensions);
-	}
-
-	/**
-	 * Generate an "event".
 	 * @param point         ignored
 	 * @param terrain       ignored
 	 * @param fixtures      any fixtures on the tile

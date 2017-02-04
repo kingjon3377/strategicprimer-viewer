@@ -45,26 +45,6 @@ public final class TerrainTable implements EncounterTable {
 
 	/**
 	 * Generate a terrain-dependent "event".
-	 * @param point         the location of the tile
-	 * @param terrain       the terrain at the location
-	 * @param fixtures      ignored
-	 * @param mapDimensions ignored
-	 * @return what the table has for that kind of tile.
-	 */
-	@Override
-	public String generateEvent(final Point point, final TileType terrain,
-								final Iterable<TileFixture> fixtures,
-								final MapDimensions mapDimensions) {
-		if (mapping.containsKey(terrain)) {
-			return mapping.get(terrain);
-		} else {
-			throw new IllegalArgumentException(
-					"Table does not account for that terrain type");
-		}
-	}
-
-	/**
-	 * Generate a terrain-dependent "event".
 	 * @param point         ignored
 	 * @param terrain       ignored
 	 * @param fixtures      any fixtures on the tile

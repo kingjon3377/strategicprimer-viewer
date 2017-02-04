@@ -96,26 +96,6 @@ public final class LegacyTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-								final Iterable<TileFixture> fixtures,
-								final MapDimensions mapDimensions) {
-		for (final TileFixture fix : fixtures) {
-			if (fix instanceof IEvent) {
-				return ((IEvent) fix).getText();
-			}
-		}
-		return "Nothing interesting here ...";
-	}
-
-	/**
-	 * Get the text of the first IEvent on the tile.
-	 * @param point         ignored
-	 * @param terrain       ignored
-	 * @param fixtures      any fixtures on the tile
-	 * @param mapDimensions ignored
-	 * @return the event on that tile
-	 */
-	@Override
-	public String generateEvent(final Point point, final TileType terrain,
 								final Stream<TileFixture> fixtures,
 								final MapDimensions mapDimensions) {
 		return fixtures.filter(IEvent.class::isInstance).map(IEvent.class::cast)
