@@ -1,6 +1,11 @@
 package model.exploration.old;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 import model.map.MapDimensions;
 import model.map.MapDimensionsImpl;
@@ -55,7 +60,50 @@ public final class TestExplorationRunner {
 	 * The object we're testing.
 	 */
 	private ExplorationRunner runner = new ExplorationRunner();
+	/**
+	 * Mock table class.
+	 */
+	private static class MockTable implements EncounterTable {
+		/**
+		 * The (remaining) values that should be returned, in order.
+		 */
+		private final Deque<String> values = new LinkedList<>();
+		/**
+		 * Constructor.
+		 * @param vals the values that should be returned, in order
+		 */
+		protected MockTable(final List<String> vals) {
+			values.addAll(vals);
+		}
 
+		/**
+		 * Generates an "encounter." For QuadrantTables this is always the same for each
+		 * tile for random event tables the result will be randomly selected from that
+		 * table.
+		 *
+		 * @param point         the location of the tile
+		 * @param terrain       the terrain at the location
+		 * @param fixtures      the fixtures on the tile, if any
+		 * @param mapDimensions the dimensions of the map
+		 * @return an appropriate event for that tile
+		 */
+		@Override
+		public String generateEvent(final Point point, final TileType terrain,
+									final Stream<TileFixture> fixtures,
+									final MapDimensions mapDimensions) {
+			return values.pop();
+		}
+
+		/**
+		 * For table-debugging purposes.
+		 *
+		 * @return all events the table can return.
+		 */
+		@Override
+		public Set<String> allEvents() {
+			throw new UnsupportedOperationException("mock object");
+		}
+	}
 	/**
 	 * Set up for the tests.
 	 */
@@ -67,13 +115,11 @@ public final class TestExplorationRunner {
 	/**
 	 * Test the getPrimaryRock method.
 	 *
-	 * TODO: Use a mock object rather than a real object for the Table.
-	 *
 	 * @throws MissingTableException if the table is missing
 	 */
 	@Test
 	public void testGetPrimaryRock() throws MissingTableException {
-		runner.loadTable("major_rock", new ConstantTable("primary_rock_test"));
+		runner.loadTable("major_rock", new MockTable(Collections.singletonList("primary_rock_test")));
 		assertThat("primary rock test",
 				runner.getPrimaryRock(PointFactory.point(0, 0), TileType.Tundra, EMPTY,
 						new MapDimensionsImpl(69, 88, 2)), equalTo("primary_rock_test"));
@@ -82,16 +128,15 @@ public final class TestExplorationRunner {
 	/**
 	 * Test the getPrimaryTree method.
 	 *
-	 * TODO Use mock objects rather than real Tables.
-	 *
 	 * @throws MissingTableException if a table is missing
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
 	public void testGetPrimaryTree() throws MissingTableException {
-		runner.loadTable("boreal_major_tree", new ConstantTable("boreal_major_test"));
+		runner.loadTable("boreal_major_tree",
+				new MockTable(Collections.singletonList("boreal_major_test")));
 		runner.loadTable("temperate_major_tree",
-				new ConstantTable("temperate_major_test"));
+				new MockTable(Collections.singletonList("temperate_major_test")));
 		final Point point = PointFactory.point(0, 0);
 		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertThat("primary tree test for boreal forest",
@@ -119,15 +164,16 @@ public final class TestExplorationRunner {
 	/**
 	 * Test the consultTable method.
 	 *
-	 * TODO: Use a mock object rather than a real object for the Tables.
-	 *
 	 * @throws MissingTableException if a table is missing
 	 */
 	@Test
 	public void testConsultTable() throws MissingTableException {
-		runner.loadTable(TEST_TABLE_ONE, new ConstantTable("test_one"));
-		runner.loadTable(TEST_TABLE_TWO, new ConstantTable("test_two"));
-		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
+		runner.loadTable(TEST_TABLE_ONE,
+				new MockTable(Collections.singletonList("test_one")));
+		runner.loadTable(TEST_TABLE_TWO,
+				new MockTable(Collections.singletonList("test_two")));
+		runner.loadTable(TEST_TABLE_THREE,
+				new MockTable(Collections.singletonList(TEST_THREE)));
 		final Point point = PointFactory.point(0, 0);
 		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertThat("first table", runner.consultTable(TEST_TABLE_ONE,
@@ -140,9 +186,8 @@ public final class TestExplorationRunner {
 
 	/**
 	 * Test the recursiveConsultTable method: the one method under test whose correctness
-	 * is non-obvious.
-	 *
-	 * TODO: Use a mock object rather than a real object for the Tables.
+	 * is non-obvious. We don't use mock tables here because setting them up would be
+	 * more trouble than they're worth.
 	 *
 	 * @throws MissingTableException if a table is missing
 	 */
