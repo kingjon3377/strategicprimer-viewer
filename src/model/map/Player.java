@@ -1,7 +1,7 @@
 package model.map;
 
 /**
- * TODO: explain this class
+ * An interface for the representation of a player in the game.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
