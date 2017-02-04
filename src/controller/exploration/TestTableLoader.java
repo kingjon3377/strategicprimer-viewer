@@ -44,6 +44,23 @@ public final class TestTableLoader {
 	 * The string "static-method", used in an annotation on each method.
 	 */
 	private static final String ST_MET = "static-method";
+	/**
+	 * A mock object to pass to tables that shouldn't use the map's dimensions.
+	 */
+	private static final MapDimensions MOCK_DIMENSIONS = new MapDimensions() {
+		@Override
+		public int getRows() {
+			throw new UnsupportedOperationException("mock object");
+		}
+		@Override
+		public int getColumns() {
+			throw new UnsupportedOperationException("mock object");
+		}
+		@Override
+		public int getVersion() {
+			throw new UnsupportedOperationException("mock object");
+		}
+	};
 
 	/**
 	 * Test method for loading quadrant tables.
@@ -93,7 +110,7 @@ public final class TestTableLoader {
 			final Point point = PointFactory.point(30, 30);
 			assertThat("loading random table",
 					result.generateEvent(point, TileType.Tundra, EMPTY,
-							new MapDimensionsImpl(69, 88, 2)), equalTo(ONE_STRING));
+							MOCK_DIMENSIONS), equalTo(ONE_STRING));
 		}
 	}
 
@@ -110,18 +127,18 @@ public final class TestTableLoader {
 						"terrain%ntundra one%nplains two%nocean three")))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point firstPoint = PointFactory.point(30, 30);
-			// TODO: Make MapDimensions an interface and use a mock object here
-			final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 			assertThat("loading terrain table: tundra",
-					result.generateEvent(firstPoint, TileType.Tundra, EMPTY, dimensions),
+					result.generateEvent(firstPoint, TileType.Tundra, EMPTY,
+							MOCK_DIMENSIONS),
 					equalTo(ONE_STRING));
 			final Point secondPoint = PointFactory.point(15, 15);
 			assertThat("loading terrain table: plains",
 					result.generateEvent(secondPoint, TileType.Plains, EMPTY,
-							dimensions),
+							MOCK_DIMENSIONS),
 					equalTo("two"));
 			assertThat("loading terrain table: ocean",
-					result.generateEvent(secondPoint, TileType.Ocean, EMPTY, dimensions),
+					result.generateEvent(secondPoint, TileType.Ocean, EMPTY,
+							MOCK_DIMENSIONS),
 					equalTo("three"));
 		}
 	}
@@ -142,7 +159,7 @@ public final class TestTableLoader {
 			final Point point = PointFactory.point(10, 5);
 			assertThat("loading constant table: first test",
 					result.generateEvent(point, TileType.Plains, EMPTY,
-							new MapDimensionsImpl(69, 88, 2)), equalTo(ONE_STRING));
+							MOCK_DIMENSIONS), equalTo(ONE_STRING));
 		}
 	}
 
