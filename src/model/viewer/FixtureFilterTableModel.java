@@ -324,6 +324,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 * @param second the second object to be compared.
 	 * @return a number indicating which one is "closer to the top"
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compare(final TileFixture first, final TileFixture second) {
 		for (final FixtureMatcher matcher : list) {
