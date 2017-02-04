@@ -5,6 +5,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
@@ -74,10 +75,10 @@ public final class UnitMemberTransferable implements Transferable {
 	 * @throws UnsupportedFlavorException if they want an unsupported flavor
 	 */
 	@Override
-	public UnitMemberPairList getTransferData(@Nullable final DataFlavor flavor)
+	public List<Pair<UnitMember, IUnit>> getTransferData(@Nullable final DataFlavor flavor)
 			throws UnsupportedFlavorException {
 		if (FLAVOR.equals(flavor)) {
-			return data;
+			return Collections.unmodifiableList(data);
 		} else {
 			throw new UnsupportedFlavorException(flavor);
 		}
