@@ -83,12 +83,14 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				}
 			}
 		}
-		ostream.format("<h4>Animal sightings or encounters</h4>%n<ul>%n");
-		for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
-			ostream.format("<li>%s: %s</li>%n", entry.getKey(),
-					entry.getValue().toString());
+		if (!items.isEmpty()) {
+			ostream.format("<h4>Animal sightings or encounters</h4>%n<ul>%n");
+			for (final Map.Entry<String, Collection<Point>> entry : items.entrySet()) {
+				ostream.format("<li>%s: %s</li>%n", entry.getKey(),
+						entry.getValue().toString());
+			}
+			ostream.format("</ul>%n");
 		}
-		ostream.format("</ul>%n");
 	}
 
 	/**
