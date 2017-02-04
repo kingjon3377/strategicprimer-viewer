@@ -35,6 +35,8 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.junit.Test;
 import util.Quantity;
 import util.Warning;
@@ -413,8 +415,19 @@ public final class TestMoreFixtureSerialization extends
 		assertThat("Serialized form contains new results too",
 				createSerializedForm(secondUnit, false),
 				containsString("some other results"));
-		// TODO: Test old non-tag-based orders deserialization somehow (orders don't
-		// affect equality)
+		assertForwardDeserialization("Orders can be read without tags",
+				"<unit name=\"name\" kind=\"kind\" id=\"1\" owner=\"-1\">Orders orders</unit>",
+				IUnit.class,
+				new BaseMatcher<IUnit>() {
+					@Override
+					public boolean matches(final Object obj) {
+						return obj instanceof IUnit && ((IUnit) obj).getOrders(-1).equals("Orders orders");
+					}
+					@Override
+					public void describeTo(final Description description) {
+						description.appendText(" with orders 'Orders orders'");
+					}
+				});
 	}
 	/**
 	 * Test that in orders and results quoting XML meta-characters are quoted properly.

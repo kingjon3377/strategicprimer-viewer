@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matcher;
 import util.FatalWarningException;
 import util.TypesafeLogger;
 import util.Warning;
@@ -572,11 +573,35 @@ public abstract class BaseTestFixtureSerialization {
 		}
 		assertMissingProperty(xml, expected.getClass(), property, true);
 	}
-
+	/**
+	 * Asser that a "forward idiom"---an idiom that we do not yet (or, conversely,
+	 * anymore) produce, but want to accept---will be initialized properly by both
+	 * readers.
+	 * @param message  the message to pass to JUnit
+	 * @param matcher  how to test the deserialized object
+	 * @param xml      the serialized form
+	 * @param cls      the class expected to be produced
+	 * @param <T> 	   the type expected to be produced
+	 * @throws SPFormatException  on SP format error
+	 * @throws XMLStreamException on XML format error
+	 */
+	protected final <T> void assertForwardDeserialization(final String message,
+													  final String xml,
+													  final Class<? extends T> cls,
+													  final Matcher<? super T> matcher)
+			throws XMLStreamException, SPFormatException {
+		try (StringReader stringReader = new StringReader(xml)) {
+			assertThat(message, oldReader.readXML(FAKE_FILENAME, stringReader,
+					cls, Warning.Die), matcher);
+		}
+		try (StringReader stringReader = new StringReader(xml)) {
+			assertThat(message, newReader.readXML(FAKE_FILENAME, stringReader,
+					cls, Warning.Die), matcher);
+		}
+	}
 	/**
 	 * Assert that a "forward idiom"---an idiom that we do not yet produce, but want to
-	 * accept---will be deserialized properly by both readers, both with and without
-	 * reflection.
+	 * accept---will be deserialized properly by both readers.
 	 *
 	 * @param message  the message to pass to JUnit
 	 * @param expected the object we expect the deserialized form to equal
@@ -588,20 +613,13 @@ public abstract class BaseTestFixtureSerialization {
 													  final Object expected, final String
 																					 xml)
 			throws XMLStreamException, SPFormatException {
-		try (StringReader stringReader = new StringReader(xml)) {
-			assertThat(message, oldReader.readXML(FAKE_FILENAME, stringReader,
-					expected.getClass(), Warning.Die), equalTo(expected));
-		}
-		try (StringReader stringReader = new StringReader(xml)) {
-			assertThat(message, newReader.readXML(FAKE_FILENAME, stringReader,
-					expected.getClass(), Warning.Die), equalTo(expected));
-		}
+		assertForwardDeserialization(message, xml, expected.getClass(),
+				equalTo(expected));
 	}
 
 	/**
 	 * Assert that two deserialized forms are equivalent, using both readers, both with
-	 * and
-	 * without reflection.
+	 * and without reflection.
 	 *
 	 * @param <T>          the type they'll deserialize to.
 	 * @param message      the message to pass to JUnit
