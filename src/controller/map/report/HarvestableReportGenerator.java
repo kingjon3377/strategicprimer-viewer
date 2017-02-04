@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -132,18 +133,15 @@ public final class HarvestableReportGenerator
 		if (!Stream.of(caches, groves, meadows, mines).allMatch(Map::isEmpty) ||
 					!all.stream().allMatch(Collection::isEmpty)) {
 			ostream.format("<h4>Resource Sources</h4>%n");
-			writeMap(ostream, caches, "<h5>Caches collected by your explorers and workers:</h5>",
-					(entry, formatter) -> produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), ostream));
-			writeMap(ostream, groves, "<h5>Groves and orchards</h5>",
-					(entry, formatter) -> produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), ostream));
-			writeMap(ostream, meadows, "<h5>Meadows and fields</h5>",
-					(entry, formatter) -> produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), ostream));
-			writeMap(ostream, mines, "<h5>Mines</h5>",
-					(entry, formatter) -> produce(fixtures, map, currentPlayer,
-							entry.getKey(), entry.getValue(), ostream));
+			BiConsumer<String, Map<? extends HarvestableFixture, Point>> consumer =
+					(text, mapping) -> writeMap(ostream, mapping, text,
+							(entry, formatter) -> produce(fixtures, map, currentPlayer,
+									entry.getKey(), entry.getValue(), ostream));
+			consumer.accept("<h5>Caches collected by your explorers and workers:</h5>",
+					caches);
+			consumer.accept("<h5>Groves and orchards</h5>", groves);
+			consumer.accept("<h5>Meadows and fields</h5>", meadows);
+			consumer.accept("<h5>Mines</h5>", mines);
 			for (final HeadedList<String> list : all) {
 				ostream.format("%s", list.toString());
 			}
