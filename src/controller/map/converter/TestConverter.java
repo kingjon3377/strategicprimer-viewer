@@ -371,14 +371,7 @@ public final class TestConverter {
 			 Formatter err = new Formatter()) {
 			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.writeSPObject(out, new OneToTwoConverter().convert(original, true));
-			try (final StringReader in = new StringReader(POSITIVE_IDS
-																  .matcher(out.toString())
-																  .replaceAll(
-																		  "id=\"-1\""))) {
-				assertThat("Actual is at least subset of expected converted, modulo IDs",
-						converted.isSubset(new MapReaderAdapter().readMapFromStream(in,
-								Warning.Ignore), err, ""), equalTo(true));
-			}
+			assertModuloID(converted, out.toString(), err);
 		}
 	}
 
@@ -550,14 +543,7 @@ public final class TestConverter {
 			 Formatter err = new Formatter()) {
 			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.writeSPObject(out, new OneToTwoConverter().convert(original, true));
-			try (final StringReader in = new StringReader(POSITIVE_IDS
-																  .matcher(out.toString())
-																  .replaceAll(
-																		  "id=\"-1\""))) {
-				assertThat("Actual is at least subset of expected converted, modulo IDs",
-						converted.isSubset(new MapReaderAdapter().readMapFromStream(in,
-								Warning.Ignore), err, ""), equalTo(true));
-			}
+			assertModuloID(converted, out.toString(), err);
 		}
 	}
 
@@ -791,14 +777,29 @@ public final class TestConverter {
 			 Formatter err = new Formatter()) {
 			final SPWriter writer = TestReaderFactory.createNewWriter();
 			writer.writeSPObject(out, new OneToTwoConverter().convert(original, true));
-			try (final StringReader in = new StringReader(POSITIVE_IDS
-																  .matcher(out.toString())
-																  .replaceAll(
-																		  "id=\"-1\""))) {
-				assertThat("Actual is at least subset of expected converted, modulo IDs",
-						converted.isSubset(new MapReaderAdapter().readMapFromStream(in,
-								Warning.Ignore), err, ""), equalTo(true));
-			}
+			assertModuloID(converted, out.toString(), err);
+		}
+	}
+	/**
+	 * Assert that a String contains a map that is at least a subset of the given map if
+	 * IDs of fixtures are ignored.
+	 * @param map the expected map
+	 * @param serialized the String containing the map
+	 * @param err the stream to write debug output to
+	 * @throws IOException        on I/O error causing test failure
+	 * @throws XMLStreamException on error creating XML
+	 * @throws SPFormatException on SP format error causing test failure
+	 */
+	private static final void assertModuloID(final IMapNG map, final String serialized,
+											 final Formatter err)
+			throws IOException, XMLStreamException, SPFormatException {
+		try (final StringReader in = new StringReader(POSITIVE_IDS
+															  .matcher(serialized)
+															  .replaceAll(
+																	  "id=\"-1\""))) {
+			assertThat("Actual is at least subset of expected converted, modulo IDs",
+					map.isSubset(new MapReaderAdapter().readMapFromStream(in,
+							Warning.Ignore), err, ""), equalTo(true));
 		}
 	}
 	/**
