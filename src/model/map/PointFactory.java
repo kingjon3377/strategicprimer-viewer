@@ -161,12 +161,12 @@ public final class PointFactory {
 		}
 
 		/**
-		 * A hash code. TODO: This probably collides more than we want.
+		 * A hash code.
 		 * @return a hash code.
 		 */
 		@Override
 		public int hashCode() {
-			return row | col;
+			return (row << 9) + col;
 		}
 
 		/**
