@@ -90,6 +90,7 @@ public class FixtureFilterTransferHandler extends TransferHandler {
 	 * @param c ignored
 	 * @return MOVE
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public int getSourceActions(final JComponent c) {
 		return TransferHandler.MOVE;

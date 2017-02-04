@@ -186,6 +186,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	 * How many columns there are: 2.
 	 * @return the number of columns in the model
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public int getColumnCount() {
 		return 2;

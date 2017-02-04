@@ -172,6 +172,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	 * Returns the empty string.
 	 * @return the empty string; this is the empty node
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "";
