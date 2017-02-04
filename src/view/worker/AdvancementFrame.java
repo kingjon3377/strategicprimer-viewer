@@ -170,4 +170,12 @@ public final class AdvancementFrame extends SPFrame implements PlayerChangeListe
 		playerLabel.setArgs(newPlayer.getName());
 		treeModel.playerChanged(old, newPlayer);
 	}
+	/**
+	 * A trivial toString().
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "AdvancementFrame";
+	}
 }

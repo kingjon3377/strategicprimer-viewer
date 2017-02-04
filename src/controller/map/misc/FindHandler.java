@@ -74,4 +74,12 @@ public class FindHandler implements ActionListener {
 			return temp;
 		}
 	}
+	/**
+	 * A trivial toString().
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "FindHandler";
+	}
 }
