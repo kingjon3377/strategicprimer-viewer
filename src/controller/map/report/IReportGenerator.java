@@ -119,5 +119,16 @@ public interface IReportGenerator<T> {
 		 */
 		String getHeader();
 	}
-
+	/**
+	 * A Map that knows what its title should be when its contents are written to HTML.
+	 * @param <K> the type of keys in the map
+	 * @param <V> the type of values in the map
+	 */
+	interface HeadedMap<@NonNull K, @NonNull V> extends Map<@NonNull K, @NonNull V> {
+		/**
+		 * The header text.
+		 * @return the header text
+		 */
+		String getHeader();
+	}
 }

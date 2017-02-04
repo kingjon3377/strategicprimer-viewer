@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Formatter;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,6 +21,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
 import util.NoCloneException;
 import util.Pair;
@@ -332,5 +336,175 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 */
 	protected static Collection<Point> pointsListAt(final String desc) {
 		return new PointList(desc + ": at ");
+	}
+	/**
+	 * An implementation of HeadedMap.
+	 * @param <K> the type of keys
+	 * @param <V> the type of values
+	 */
+	protected static class HeadedMapImpl<K, V> implements HeadedMap<K, V> {
+		/**
+		 * The header.
+		 */
+		private final String header;
+		/**
+		 * The actual implementation.
+		 */
+		private final Map<K, V> wrapped;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param head the header
+		 */
+		protected HeadedMapImpl(final String head) {
+			header = head;
+			wrapped = new HashMap<>();
+		}
+		/**
+		 * If a Comparator is passed in, we use a TreeMap for our implementation instead.
+		 * @param head the header
+		 * @param comparator the ordering to use for keys in the map
+		 */
+		protected HeadedMapImpl(final String head, final Comparator<K> comparator) {
+			header = head;
+			wrapped = new TreeMap<>(comparator);
+		}
+
+		/**
+		 * The list header.
+		 * @return the header
+		 */
+		@Override
+		public String getHeader() {
+			return header;
+		}
+
+
+		/**
+		 * The number of mappings in the map.
+		 *
+		 * @return the size of the map
+		 */
+		@Override
+		public int size() {
+			return wrapped.size();
+		}
+
+		/**
+		 * Whether this map is empty.
+		 *
+		 * @return true if the map is empty
+		 */
+		@Override
+		public boolean isEmpty() {
+			return wrapped.isEmpty();
+		}
+
+		/**
+		 * Whether this map contains a mapping for the given key.
+		 *
+		 * @param key the key to test for
+		 * @return true if this map contains a value for it
+		 */
+		@Override
+		public boolean containsKey(final Object key) {
+			return wrapped.containsKey(key);
+		}
+
+		/**
+		 * Whether any key in the map maps to the given value.
+		 *
+		 * @param value value to test for
+		 * @return true iff at least one ky maps to it
+		 */
+		@Override
+		public boolean containsValue(final Object value) {
+			return wrapped.containsValue(value);
+		}
+
+		/**
+		 * Get the value to which the specified key is mapped,
+		 * or null if the map contains no value for that key.
+		 * @param key the key to extract the value for
+		 * @return the value for that key
+		 */
+		@Nullable
+		@Override
+		public V get(final Object key) {
+			return wrapped.get(key);
+		}
+
+		/**
+		 * Insert the given key-value mapping into the map.
+		 *
+		 * @param key   the key to use for the mapping
+		 * @param value the value to associate with that key.
+		 * @return the value previously associated with that key, or null if there was none
+		 */
+		@Override
+		@Nullable
+		public V put(@NonNull final K key, @NonNull final V value) {
+			return wrapped.put(key, value);
+		}
+
+		/**
+		 * Remove the mapping, if any, for the given key from this map.
+		 *
+		 * @param key the key to remove
+		 * @return the previous value associated with that key.
+		 */
+		@Nullable
+		@Override
+		public V remove(final Object key) {
+			return wrapped.remove(key);
+		}
+
+		/**
+		 * Copy all mappings from the specified map to this map.
+		 *
+		 * @param map mappings to add to this map
+		 */
+		@Override
+		public void putAll(final Map<? extends K, ? extends V> map) {
+			wrapped.putAll(map);
+		}
+
+		/**
+		 * Removes all mappings from this map.
+		 */
+		@Override
+		public void clear() {
+			wrapped.clear();
+		}
+
+		/**
+		 * Get a {@link Set} view of the keys contained in this map.
+		 *
+		 * @return a set view of the keys contained in this map
+		 */
+		@Override
+		public Set<K> keySet() {
+			return wrapped.keySet();
+		}
+
+		/**
+		 * Get a {@link Collection} view of the values in this map.
+		 * @return a collection view of the values contained in this map
+		 */
+		@Override
+		public Collection<V> values() {
+			return wrapped.values();
+		}
+
+		/**
+		 * Get a {@link Set} view of the mappings in this map.
+		 *
+		 * @return a set view of the mappings contained in this map
+		 */
+		@Override
+		public Set<Entry<K, V>> entrySet() {
+			return wrapped.entrySet();
+		}
 	}
 }
