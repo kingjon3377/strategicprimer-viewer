@@ -345,7 +345,7 @@ public class SPMapNG implements IMutableMapNG {
 				final Set<River> ourRivers = rivers.get(point);
 				final Iterable<River> theirRivers = obj.getRivers(point);
 				for (final River river : theirRivers) {
-					if (!ourRivers.contains(river)) {
+					if ((ourRivers == null) || !ourRivers.contains(river)) {
 						ostream.format("%s At %s:\tExtra river%n", context,
 								Objects.toString(point));
 						retval = false;
