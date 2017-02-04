@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.Formatter;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import model.map.IFixture;
@@ -8,6 +9,7 @@ import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.report.IReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.Pair;
 import util.PatientMap;
 
@@ -105,4 +107,17 @@ public interface IReportGenerator<T> {
 			ostream.format("</ul>%n");
 		}
 	}
+	/**
+	 * A list that knows what its title should be when its contents are written to HTML.
+	 *
+	 * @param <T> the type of thing in the list
+	 */
+	interface HeadedList<@NonNull T> extends List<@NonNull T> {
+		/**
+		 * The header text. This method exists so we can have the interface.
+		 * @return the header text
+		 */
+		String getHeader();
+	}
+
 }

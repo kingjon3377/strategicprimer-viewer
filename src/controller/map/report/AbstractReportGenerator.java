@@ -129,19 +129,6 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	}
 
 	/**
-	 * A list that prints a header in its toString().
-	 *
-	 * @param <T> the type of thing in the list
-	 */
-	protected interface HeadedList<@NonNull T> extends List<@NonNull T> {
-		/**
-		 * The header text. This method exists so we can have the interface.
-		 * @return the header text
-		 */
-		String getHeader();
-	}
-
-	/**
 	 * A list that produces HTML in its toString().
 	 *
 	 * @author Jonathan Lovelace
