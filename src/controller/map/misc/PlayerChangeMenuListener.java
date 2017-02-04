@@ -133,4 +133,12 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 		}
 		return null;
 	}
+	/**
+	 * A trivial toString().
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "PlayerChangeMenuListener";
+	}
 }

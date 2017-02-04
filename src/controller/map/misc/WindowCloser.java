@@ -40,4 +40,12 @@ public class WindowCloser implements ActionListener {
 	public void actionPerformed(final ActionEvent evt) {
 		frame.dispose();
 	}
+	/**
+	 * A trivial toString().
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "WindowCloser";
+	}
 }

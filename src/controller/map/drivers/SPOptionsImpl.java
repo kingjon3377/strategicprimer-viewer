@@ -111,4 +111,21 @@ public class SPOptionsImpl implements SPOptions {
 	public SPOptionsImpl copy() {
 		return new SPOptionsImpl(this);
 	}
+	/**
+	 * Shows the options that the user has selected.
+	 * @return a String representation of the options
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder build = new StringBuilder(options.size() * 20);
+		for (final Map.Entry<String, String> entry : options.entrySet()) {
+			build.append(entry.getKey());
+			if (!"true".equals(entry.getValue())) {
+				build.append('=');
+				build.append(entry.getValue());
+			}
+			build.append('\n');
+		}
+		return build.toString();
+	}
 }
