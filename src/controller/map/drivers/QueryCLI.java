@@ -13,8 +13,10 @@ import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import model.exploration.PoultryModel;
 import model.exploration.HerdModel;
 import model.exploration.HuntingModel;
+import model.exploration.MammalModel;
 import model.exploration.SurroundingPointIterable;
 import model.map.DistanceComparator;
 import model.map.FixtureIterable;
@@ -260,17 +262,17 @@ public final class QueryCLI implements SimpleDriver {
 			throws IOException {
 		final HerdModel herdModel;
 		if (cli.inputBooleanInSeries("Are these small animals, like sheep?\t")) {
-			herdModel = HerdModel.SmallMammals;
+			herdModel = MammalModel.SmallMammals;
 		} else if (cli.inputBooleanInSeries("Are these dairy cattle?\t")) {
-			herdModel = HerdModel.DairyCattle;
+			herdModel = MammalModel.DairyCattle;
 		} else if (cli.inputBooleanInSeries("Are these chickens?\t")) {
-			herdModel = HerdModel.Chickens;
+			herdModel = PoultryModel.Chickens;
 		} else if (cli.inputBooleanInSeries("Are these turkeys?\t")) {
-			herdModel = HerdModel.Turkeys;
+			herdModel = PoultryModel.Turkeys;
 		} else if (cli.inputBooleanInSeries("Are these pigeons?\t")) {
-			herdModel = HerdModel.Pigeons;
+			herdModel = PoultryModel.Pigeons;
 		} else {
-			herdModel = HerdModel.LargeMammals;
+			herdModel = MammalModel.LargeMammals;
 		}
 		final int count = cli.inputNumber("How many animals?\t");
 		if (count == 0) {
@@ -287,10 +289,10 @@ public final class QueryCLI implements SimpleDriver {
 			}
 			final int flockPerHerder = ((count + herders) - 1) / herders;
 			final int hours;
-			if (herdModel.isPoultry()) {
-				hours = herdPoultry(cli, herdModel, count, flockPerHerder);
+			if (herdModel instanceof PoultryModel) {
+				hours = herdPoultry(cli, (PoultryModel) herdModel, count, flockPerHerder);
 			} else {
-				hours = herdMammals(cli, herdModel, count, flockPerHerder);
+				hours = herdMammals(cli, (MammalModel) herdModel, count, flockPerHerder);
 			}
 			if ((hours < HUNTER_HOURS) &&
 						cli.inputBooleanInSeries(
@@ -310,7 +312,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @return how many hours each herder spends "herding"
 	 * @throws IOException on I/O error
 	 */
-	private static int herdMammals(final ICLIHelper cli, final HerdModel animal,
+	private static int herdMammals(final ICLIHelper cli, final MammalModel animal,
 								   final int count, final int flockPerHerder)
 			throws IOException {
 		cli.printf("Tending the animals takes %d minutes, or %d minutes with ",
@@ -344,7 +346,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @return how long each herder spends "herding"
 	 * @throws IOException on I/O error
 	 */
-	private static int herdPoultry(final ICLIHelper cli, final HerdModel bird,
+	private static int herdPoultry(final ICLIHelper cli, final PoultryModel bird,
 								   final int count, final int flockPerHerder)
 			throws IOException {
 		cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",
