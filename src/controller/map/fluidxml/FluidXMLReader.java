@@ -43,5 +43,5 @@ public interface FluidXMLReader {
 	Object readSPObject(StartElement element, QName parent, Iterable<XMLEvent> stream,
 						IMutablePlayerCollection players, Warning warner,
 						IDRegistrar idFactory)
-			throws SPFormatException, IllegalArgumentException;
+			throws SPFormatException;
 }

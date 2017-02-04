@@ -291,7 +291,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 							   final IMutablePlayerCollection players,
 							   final Warning warner,
 							   final IDRegistrar idFactory)
-			throws SPFormatException, IllegalArgumentException {
+			throws SPFormatException {
 		final String namespace = element.getName().getNamespaceURI();
 		final String tag = element.getName().getLocalPart().toLowerCase();
 		if (namespace.isEmpty() || NAMESPACE.equals(namespace)) {

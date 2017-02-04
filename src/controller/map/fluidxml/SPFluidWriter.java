@@ -163,7 +163,8 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	}
 
 	/**
-	 * Create DOM subtree representing the given object.
+	 * Create DOM subtree representing the given object. Throws IllegalArgumentException
+	 * if no writer knows how to write it.
 	 *
 	 * @param ostream the writer to write to
 	 * @param indent  the indentation level
@@ -173,7 +174,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	@Override
 	public void writeSPObject(final XMLStreamWriter ostream, final Object obj,
 							  final int indent)
-			throws XMLStreamException, IllegalArgumentException {
+			throws XMLStreamException {
 		new ClassStream(obj).get().filter(writers::containsKey).map(writers::get)
 				.findAny().orElseThrow(
 				() -> new IllegalArgumentException("Not an object we know how to write"))
