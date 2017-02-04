@@ -4,6 +4,9 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.map.fixtures.Ground;
+import model.map.fixtures.TextFixture;
+import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -164,5 +167,14 @@ public interface IMapNG
 	 */
 	default Stream<Player> streamPlayers() {
 		return StreamSupport.stream(players().spliterator(), false);
+	}
+	/**
+	 * Strict-subset calculations should skip caches, text fixtures, and animal tracks.
+	 * @param fix a fixture
+	 * @return whether strict-subset calculations should skip it.
+	 */
+	default boolean shouldSkip(final TileFixture fix) {
+		return (fix instanceof CacheFixture) || (fix instanceof TextFixture) ||
+					   ((fix instanceof Animal) && ((Animal) fix).isTraces());
 	}
 }
