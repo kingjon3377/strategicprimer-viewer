@@ -61,25 +61,23 @@ public final class WorkerTabularReportGenerator implements ITableGenerator<IWork
 		writeDelimitedField(ostream, loc.toString());
 		writeDelimitedField(ostream, item.getName());
 		final Optional<WorkerStats> stats = Optional.ofNullable(item.getStats());
-		// TODO: no-stats ends with field delimiter, with-stats doesn't
-		// (and avoids using writeDelimitedField() to preserve that status quo)
 		if (stats.isPresent()) {
 			final WorkerStats actual = stats.get();
 			writeDelimitedField(ostream, Integer.toString(actual.getHitPoints()));
-			writeField(ostream, Integer.toString(actual.getMaxHitPoints()));
+			writeDelimitedField(ostream, Integer.toString(actual.getMaxHitPoints()));
 			for (final ToIntFunction<WorkerStats> field :
 					Arrays.<ToIntFunction<WorkerStats>>asList(WorkerStats::getStrength,
 							WorkerStats::getDexterity, WorkerStats::getConstitution,
-							WorkerStats::getIntelligence, WorkerStats::getWisdom,
-							WorkerStats::getCharisma)) {
-				writeFieldDelimiter(ostream);
-				writeField(ostream,
+							WorkerStats::getIntelligence, WorkerStats::getWisdom)) {
+				writeDelimitedField(ostream,
 						WorkerStats.getModifierString(field.applyAsInt(actual)));
 			}
+			writeField(ostream, WorkerStats.getModifierString(actual.getCharisma()));
 		} else {
-			for (int i = 0; i < 9; i++) {
+			for (int i = 0; i < 8; i++) {
 				writeDelimitedField(ostream, "--");
 			}
+			writeField(ostream, "---");
 		}
 		ostream.append(getRowDelimiter());
 		return true;
