@@ -101,7 +101,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param input     the command
 	 * @throws IOException           on I/O error
 	 */
-	public static void handleCommand(final SPOptions options, final IDriverModel model,
+	private static void handleCommand(final SPOptions options, final IDriverModel model,
 									 final HuntingModel huntModel, final ICLIHelper cli,
 									 final char input) throws IOException {
 		switch (input) {
@@ -472,7 +472,7 @@ public final class QueryCLI implements SimpleDriver {
 	 *
 	 * @param cli the interface to the user
 	 */
-	public static void usage(final ICLIHelper cli) {
+	private static void usage(final ICLIHelper cli) {
 		cli.println("The following commands are supported:");
 		cli.print("Fortress: Print what a player automatically knows ");
 		cli.println("about his fortress's tile.");
