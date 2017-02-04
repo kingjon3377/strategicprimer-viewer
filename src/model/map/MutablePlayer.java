@@ -1,7 +1,7 @@
 package model.map;
 
 /**
- * TODO: explain this class
+ * A Player object that can be set as current or not.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
