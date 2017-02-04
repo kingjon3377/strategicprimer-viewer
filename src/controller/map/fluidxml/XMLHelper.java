@@ -202,7 +202,7 @@ public final class XMLHelper {
 	 * null if not present
 	 */
 	@Nullable
-	public static Attribute getAttributeByName(final StartElement element,
+	private static Attribute getAttributeByName(final StartElement element,
 											   final String param) {
 		final Attribute retval =
 				element.getAttributeByName(new QName(ISPReader.NAMESPACE, param));
