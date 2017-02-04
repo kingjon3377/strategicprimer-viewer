@@ -538,6 +538,14 @@ public final class DrawHelperComparator implements SimpleDriver {
 		public void add(final long addend) {
 			value += addend;
 		}
+		/**
+		 * A simple toString().
+		 * @return a string representation of the accumulator's state
+		 */
+		@Override
+		public String toString() {
+			return Long.toString(value);
+		}
 	}
 
 	/**
@@ -573,7 +581,15 @@ public final class DrawHelperComparator implements SimpleDriver {
 			second = two;
 			third = three;
 		}
-
+		/**
+		 * A simple toString().
+		 * @return a String representation of the Triple.
+		 */
+		@Override
+		public String toString() {
+			return String.format("(%s, %s, %s)", first.toString(), second.toString(),
+					third.toString());
+		}
 	}
 	/**
 	 * Triple factory method.
