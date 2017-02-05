@@ -24,7 +24,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
 import util.NoCloneException;
-import util.Pair;
 import util.PairComparator;
 
 /**
@@ -69,7 +68,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	/**
 	 * A comparator for pairs of Points and fixtures.
 	 */
-	protected final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>>
+	protected final PairComparator<@NonNull Point, @NonNull IFixture>
 			pairComparator;
 	/**
 	 * A distance calculator (comparator).
@@ -80,15 +79,11 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * Constructor, to initialize the pair-comparator.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>>
+	protected AbstractReportGenerator(final PairComparator<Point, IFixture>
 											  comparator) {
 		pairComparator = comparator;
-		if ((comparator instanceof PairComparator) &&
-					(((PairComparator<Point, IFixture>) comparator)
-							 .first() instanceof DistanceComparator)) {
-			distCalculator =
-					(DistanceComparator) ((PairComparator<Point, IFixture>) comparator)
-												 .first();
+		if (comparator.first() instanceof DistanceComparator) {
+			distCalculator = (DistanceComparator) comparator.first();
 		} else {
 			distCalculator = new DistanceComparator(PointFactory.INVALID_POINT);
 		}

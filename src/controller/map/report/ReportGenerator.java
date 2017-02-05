@@ -32,6 +32,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import util.IntMap;
 import util.LineEnd;
 import util.Pair;
+import util.PairComparator;
 import util.PairComparatorImpl;
 import util.PatientMap;
 import util.TypesafeLogger;
@@ -135,9 +136,9 @@ public final class ReportGenerator {
 		builder.append("<body>");
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
+		final PairComparator<@NonNull Point, @NonNull IFixture> comparator =
 				new PairComparatorImpl<>(new DistanceComparator(findHQ(map, player)),
-											SIMPLE_COMPARATOR);
+												SIMPLE_COMPARATOR);
 		createSubReports(builder, fixtures, map, player,
 				new FortressReportGenerator(comparator),
 				new UnitReportGenerator(comparator), new TextReportGenerator(comparator),
@@ -186,7 +187,7 @@ public final class ReportGenerator {
 		builder.append("<body>");
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
+		final PairComparator<@NonNull Point, @NonNull IFixture> comparator =
 				new PairComparatorImpl<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
 
@@ -247,7 +248,7 @@ public final class ReportGenerator {
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Player player = map.getCurrentPlayer();
-		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
+		final PairComparator<@NonNull Point, @NonNull IFixture> comparator =
 				new PairComparatorImpl<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
 		createSubReportsIR(retval, fixtures, map, player,
@@ -274,7 +275,7 @@ public final class ReportGenerator {
 														final Player player) {
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
+		final PairComparator<@NonNull Point, @NonNull IFixture> comparator =
 				new PairComparatorImpl<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
 

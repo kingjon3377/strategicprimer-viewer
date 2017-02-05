@@ -2,7 +2,6 @@ package controller.map.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Map.Entry;
@@ -35,6 +34,7 @@ import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.Pair;
+import util.PairComparator;
 import util.PatientMap;
 
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
@@ -74,8 +74,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public UnitReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
-																					  IFixture>> comparator) {
+	public UnitReportGenerator(final PairComparator<@NonNull Point, @NonNull IFixture>
+									   comparator) {
 		super(comparator);
 	}
 

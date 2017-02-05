@@ -22,6 +22,7 @@ import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.MultiMapHelper;
 import util.Pair;
+import util.PairComparator;
 import util.PatientMap;
 
 /**
@@ -45,9 +46,8 @@ public final class FortressMemberReportGenerator
 	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public FortressMemberReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-																			   @NonNull
-																					   IFixture>> comparator) {
+	public FortressMemberReportGenerator(final PairComparator<@NonNull Point, @NonNull
+																					  IFixture> comparator) {
 		super(comparator);
 	}
 

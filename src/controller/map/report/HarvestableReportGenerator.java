@@ -32,6 +32,7 @@ import model.report.SortedSectionListReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.MultiMapHelper;
 import util.Pair;
+import util.PairComparator;
 import util.PatientMap;
 
 import static util.Ternary.ternary;
@@ -58,9 +59,8 @@ public final class HarvestableReportGenerator
 	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public HarvestableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-																			@NonNull
-																					IFixture>> comparator) {
+	public HarvestableReportGenerator(final PairComparator<@NonNull Point, @NonNull
+																				   IFixture> comparator) {
 		super(comparator);
 	}
 	/**

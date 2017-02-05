@@ -2,7 +2,6 @@ package controller.map.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Formatter;
 import java.util.List;
 import model.map.IFixture;
@@ -22,6 +21,7 @@ import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.Pair;
+import util.PairComparator;
 import util.PatientMap;
 
 /**
@@ -46,9 +46,8 @@ public final class ExplorableReportGenerator
 	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public ExplorableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-																		   @NonNull
-																				   IFixture>> comparator) {
+	public ExplorableReportGenerator(final PairComparator<@NonNull Point, @NonNull
+																				  IFixture> comparator) {
 		super(comparator);
 	}
 

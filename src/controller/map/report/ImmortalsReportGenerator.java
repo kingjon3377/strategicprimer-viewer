@@ -3,7 +3,6 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -29,6 +28,7 @@ import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.MultiMapHelper;
 import util.Pair;
+import util.PairComparator;
 import util.PatientMap;
 
 /**
@@ -52,9 +52,8 @@ public final class ImmortalsReportGenerator
 	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public ImmortalsReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-																		  @NonNull
-																				  IFixture>> comparator) {
+	public ImmortalsReportGenerator(final PairComparator<@NonNull Point, @NonNull
+																				 IFixture> comparator) {
 		super(comparator);
 	}
 

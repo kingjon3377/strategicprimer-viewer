@@ -16,6 +16,7 @@ import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.Pair;
+import util.PairComparator;
 import util.PatientMap;
 
 /**
@@ -38,8 +39,8 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public TextReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
-																					  IFixture>> comparator) {
+	public TextReportGenerator(final PairComparator<@NonNull Point, @NonNull IFixture>
+									   comparator) {
 		super(comparator);
 	}
 

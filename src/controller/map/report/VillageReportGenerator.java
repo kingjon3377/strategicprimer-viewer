@@ -20,6 +20,7 @@ import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.MultiMapHelper;
 import util.Pair;
+import util.PairComparator;
 import util.PatientMap;
 
 /**
@@ -42,9 +43,9 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public VillageReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-																		@NonNull
-																				IFixture>> comparator) {
+	public VillageReportGenerator(final PairComparator<@NonNull Point, @NonNull
+																			   IFixture>
+										  comparator) {
 		super(comparator);
 	}
 

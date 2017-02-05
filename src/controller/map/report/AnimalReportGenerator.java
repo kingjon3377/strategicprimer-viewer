@@ -2,7 +2,6 @@ package controller.map.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +19,7 @@ import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.MultiMapHelper;
 import util.Pair;
+import util.PairComparator;
 import util.PatientMap;
 
 /**
@@ -42,8 +42,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public AnimalReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
-																						IFixture>> comparator) {
+	public AnimalReportGenerator(final PairComparator<@NonNull Point, @NonNull IFixture>
+										 comparator) {
 		super(comparator);
 	}
 	/**

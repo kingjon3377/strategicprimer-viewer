@@ -3,7 +3,6 @@ package controller.map.report;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Formatter;
 import java.util.List;
@@ -26,6 +25,7 @@ import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.Pair;
+import util.PairComparator;
 import util.PatientMap;
 
 /**
@@ -62,8 +62,8 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * Constructor.
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public TownReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
-																					  IFixture>> comparator) {
+	public TownReportGenerator(final PairComparator<@NonNull Point, @NonNull IFixture>
+									   comparator) {
 		super(comparator);
 	}
 
