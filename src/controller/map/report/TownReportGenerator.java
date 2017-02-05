@@ -83,7 +83,6 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 						Player currentPlayer, final Formatter ostream) {
 		final Map<TownStatus, Map<ITownFixture, Point>> separated =
 				new EnumMap<>(TownStatus.class);
-		// TODO: sort within them by what?
 		final HeadedMap<ITownFixture, Point> abandoned =
 				new HeadedMapImpl<>("<h5>Abandoned Communities</h5>");
 		final HeadedMap<ITownFixture, Point> active =
@@ -96,6 +95,8 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separated.put(TownStatus.Active, active);
 		separated.put(TownStatus.Burned, burned);
 		separated.put(TownStatus.Ruined, ruined);
+		// separateByStatus() sorts using pairComparator, which should be
+		// by distance from HQ
 		separateByStatus(separated, fixtures.values(),
 				(mapping, pair) -> mapping.put((ITownFixture) pair.second(),
 						pair.first()));
