@@ -373,32 +373,31 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	public Point getDestination(final Point point, final Direction direction) {
 		final MapDimensions dims = getMapDimensions();
-		// TODO: extract local variables for current point and dims?
+		final int maxColumn = dims.getColumns() - 1;
+		final int maxRow = dims.getRows() - 1;
+		final int row = point.getRow();
+		final int column = point.getCol();
 		switch (direction) {
 		case East:
-			return PointFactory.point(point.getRow(),
-					increment(point.getCol(), dims.getColumns() - 1));
+			return PointFactory.point(row, increment(column, maxColumn));
 		case North:
-			return PointFactory.point(decrement(point.getRow(), dims.getRows() - 1),
-					point.getCol());
+			return PointFactory.point(decrement(row, maxRow), column);
 		case Northeast:
-			return PointFactory.point(decrement(point.getRow(), dims.getRows() - 1),
-					increment(point.getCol(), dims.getColumns() - 1));
+			return PointFactory
+						   .point(decrement(row, maxRow), increment(column, maxColumn));
 		case Northwest:
-			return PointFactory.point(decrement(point.getRow(), dims.getRows() - 1),
-					decrement(point.getCol(), dims.getColumns() - 1));
+			return PointFactory
+						   .point(decrement(row, maxRow), decrement(column, maxColumn));
 		case South:
-			return PointFactory.point(increment(point.getRow(), dims.getRows() - 1),
-					point.getCol());
+			return PointFactory.point(increment(row, maxRow), column);
 		case Southeast:
-			return PointFactory.point(increment(point.getRow(), dims.getRows() - 1),
-					increment(point.getCol(), dims.getColumns() - 1));
+			return PointFactory
+						   .point(increment(row, maxRow), increment(column, maxColumn));
 		case Southwest:
-			return PointFactory.point(increment(point.getRow(), dims.getRows() - 1),
-					decrement(point.getCol(), dims.getColumns() - 1));
+			return PointFactory
+						   .point(increment(row, maxRow), decrement(column, maxColumn));
 		case West:
-			return PointFactory.point(point.getRow(),
-					decrement(point.getCol(), dims.getColumns() - 1));
+			return PointFactory.point(row, decrement(column, maxColumn));
 		case Nowhere:
 			return point;
 		default:
