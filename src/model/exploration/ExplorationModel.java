@@ -35,7 +35,6 @@ import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.MineralVein;
-import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
 import model.misc.IDriverModel;
@@ -575,15 +574,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	private static boolean areDiggablesEqual(final IFixture firstFix,
 											 final IFixture secondFix) {
-		// TODO: drop instanceof test and simply always try zeroing out
-		if (firstFix.equals(secondFix)) {
-			return true;
-		} else if ((firstFix instanceof StoneDeposit) ||
-						   (firstFix instanceof MineralVein)) {
-			return firstFix.copy(true).equals(secondFix.copy(true));
-		} else {
-			return false;
-		}
+		return firstFix.equals(secondFix) ||
+					   firstFix.copy(true).equals(secondFix.copy(true));
 	}
 	/**
 	 * If there is a currently selected unit, change one Ground, StoneDeposit, or
