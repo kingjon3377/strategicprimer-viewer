@@ -1,9 +1,9 @@
 package view.map.misc;
 
+import controller.map.drivers.MapChecker;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -15,17 +15,16 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import util.TypesafeLogger;
 import util.Warning;
 import view.util.SPFrame;
 import view.util.StreamingLabel;
+import view.util.StreamingLabel.LabelTextColor;
 
 /**
  * A window to show the results of checking maps for errors.
- *
- * FIXME: Combine (call into) MapChecker (the CLI), since it does more now.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -50,9 +49,9 @@ public final class MapCheckerFrame extends SPFrame {
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(MapCheckerFrame.class);
 	/**
-	 * The map reader we'll use.
+	 * The object that will do the actual checks.
 	 */
-	private final MapReaderAdapter reader = new MapReaderAdapter();
+	private final MapChecker checker = new MapChecker();
 	/**
 	 * The label that's the bulk of the GUI.
 	 */
@@ -112,52 +111,13 @@ public final class MapCheckerFrame extends SPFrame {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void check(final Path filename) {
-		printParagraph("Starting " + filename);
-		try {
-			reader.readMap(filename, Warning.Custom);
-		} catch (final IOException | XMLStreamException | SPFormatException except) {
-			printError(except, filename.toString());
-			return;
-		}
-		printParagraph("No errors in " + filename, StreamingLabel.LabelTextColor.green);
-	}
-
-	/**
-	 * Tell the user about, and log, an exception.
-	 *
-	 * @param except   the exception in question
-	 * @param filename what file was being read
-	 */
-	private void printError(final Exception except, final String filename) {
-		if (except instanceof FileNotFoundException ||
-						   except instanceof NoSuchFileException) {
-			printParagraph("ERROR: File not found", ERROR_COLOR);
-			LOGGER.log(Level.SEVERE, filename + " not found", except);
-		} else if (except instanceof IOException) {
-			//noinspection HardcodedFileSeparator
-			printParagraph("ERROR: I/O error reading file", ERROR_COLOR);
-			//noinspection HardcodedFileSeparator
-			LOGGER.log(Level.SEVERE, "I/O error reading " + filename, except);
-		} else if (except instanceof XMLStreamException) {
-			printParagraph("ERROR: Malformed XML in the file" +
-								   "; see following error message for details",
-					ERROR_COLOR);
-			final String message = except.getLocalizedMessage();
-			printParagraph(message, ERROR_COLOR);
-			LOGGER.log(Level.SEVERE, "Malformed XML in file " + filename,
-					except);
-		} else if (except instanceof SPFormatException) {
-			printParagraph("ERROR: SP map format error at line " +
-								   ((SPFormatException) except).getLine() +
-								   "; see following error message for details",
-					ERROR_COLOR);
-			final String message = except.getLocalizedMessage();
-			printParagraph(message, ERROR_COLOR);
-			LOGGER.log(Level.SEVERE, "SP map format error reading " + filename,
-					except);
-		} else {
-			throw new IllegalStateException("Unhandled exception class");
-		}
+		checker.check(filename, text -> {
+			if (text.startsWith("No errors")) {
+				printParagraph(text, LabelTextColor.green);
+			} else {
+				printParagraph(text);
+			}
+		}, text -> printParagraph(text, ERROR_COLOR));
 	}
 
 	/**

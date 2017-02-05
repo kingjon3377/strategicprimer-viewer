@@ -142,12 +142,13 @@ public final class MapChecker implements UtilityDriver {
 	 * @param err the stream to write errors to
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private void check(final Path file, final Consumer<String> out,
+	public void check(final Path file, final Consumer<String> out,
 					  final Consumer<String> err) {
 		out.accept("Starting " + file);
 		final IMapNG map;
 		final Warning warner = Warning.Custom;
-		warner.setCustomPrinter(Warning.wrapHandler(err));
+		// We assume that callers that need special handling have already called
+		// Warning.setCustomPrinter().
 		try {
 			map = reader.readMap(file, warner);
 		} catch (final FileNotFoundException | NoSuchFileException e) {
