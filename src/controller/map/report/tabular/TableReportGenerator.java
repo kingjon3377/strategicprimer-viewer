@@ -14,6 +14,7 @@ import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
+import model.map.TerrainFixture;
 import model.map.TileFixture;
 import model.map.fixtures.MineralFixture;
 import model.map.fixtures.explorable.ExplorableFixture;
@@ -21,9 +22,6 @@ import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.MobileFixture;
-import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Oasis;
-import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
@@ -138,9 +136,7 @@ public final class TableReportGenerator {
 		}
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fix = pair.second();
-			// TODO: use TerrainFixture
-			if ((fix instanceof Hill) || (fix instanceof Sandbar)
-						|| (fix instanceof Oasis)) {
+			if (fix instanceof TerrainFixture) {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 				continue;
 			}

@@ -18,13 +18,9 @@ import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
+import model.map.TerrainFixture;
 import model.map.TileFixture;
-import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.terrain.Forest;
-import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Oasis;
-import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
 import model.report.IReportNode;
 import model.report.RootReportNode;
@@ -155,10 +151,7 @@ public final class ReportGenerator {
 			final IFixture fix = pair.second();
 			if (fix.getID() < 0) {
 				continue;
-			// TODO: use TerrainFixture instead of Hill | Sandbar | Oasis | Forest
-			} else if ((fix instanceof Hill) || (fix instanceof Sandbar)
-							   || (fix instanceof Oasis) || (fix instanceof Forest) ||
-							   (fix instanceof Ground)) {
+			} else if (fix instanceof TerrainFixture) {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 				continue;
 			}
