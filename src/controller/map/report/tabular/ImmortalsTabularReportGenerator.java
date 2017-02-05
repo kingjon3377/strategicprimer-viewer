@@ -6,7 +6,6 @@ import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Point;
 import model.map.fixtures.mobile.Immortal;
-import model.map.fixtures.mobile.MobileFixture;
 import util.Pair;
 import util.PatientMap;
 
@@ -26,7 +25,7 @@ import util.PatientMap;
  * @author Jonathan Lovelace
  */
 public final class ImmortalsTabularReportGenerator
-		implements ITableGenerator<MobileFixture> {
+		implements ITableGenerator<Immortal> {
 	/**
 	 * The base point to use for distance calculations.
 	 */
@@ -63,7 +62,7 @@ public final class ImmortalsTabularReportGenerator
 	@Override
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						   final MobileFixture item, final Point loc) throws
+						   final Immortal item, final Point loc) throws
 			IOException {
 		if (applies(item)) {
 			writeDelimitedField(ostream, distanceString(loc, base));
@@ -83,11 +82,11 @@ public final class ImmortalsTabularReportGenerator
 
 	@SuppressWarnings("QuestionableName")
 	@Override
-	public int comparePairs(final Pair<Point, MobileFixture> one,
-							final Pair<Point, MobileFixture> two) {
+	public int comparePairs(final Pair<Point, Immortal> one,
+							final Pair<Point, Immortal> two) {
 		final Comparator<Point> comparator = new DistanceComparator(base);
-		final MobileFixture first = one.second();
-		final MobileFixture second = two.second();
+		final Immortal first = one.second();
+		final Immortal second = two.second();
 		final int cmp = comparator.compare(one.first(), two.first());
 		if (cmp == 0) {
 			final int kindCmp = Integer.compare(first.getClass().hashCode(),
@@ -108,7 +107,6 @@ public final class ImmortalsTabularReportGenerator
 		return "ImmortalsTabularReportGenerator";
 	}
 	/**
-	 * FIXME: Use Immortal as generic type parameter and here
 	 * The type of objects we accept. Needed so the default
 	 * {@link ITableGenerator#produce(Appendable, PatientMap)} can call the typesafe single-row
 	 * produce() without causing class-cast exceptions or taking this Class object as a
@@ -116,8 +114,8 @@ public final class ImmortalsTabularReportGenerator
 	 * @return the type of the objects we accept
 	 */
 	@Override
-	public Class<MobileFixture> type() {
-		return MobileFixture.class;
+	public Class<Immortal> type() {
+		return Immortal.class;
 	}
 	/**
 	 * The file-name to (by default) write this table to.
