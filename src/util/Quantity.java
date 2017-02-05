@@ -67,8 +67,8 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	}
 
 	/**
-	 * A Quantity is a subset iff it has the same units and either the same quantity or
-	 * zero quantity. TODO: should accept any lesser quantity, I suppose.
+	 * A Quantity is a subset iff it has the same units and either the same quantity,
+	 * zero quantity, or a lesser quantity by "double value".
 	 * @param obj     an object
 	 * @param ostream the stream to write details to
 	 * @param context a string to print before every line of output, describing the
@@ -82,10 +82,11 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	public boolean isSubset(final Quantity obj, final Formatter ostream,
 							final String context) {
 		if (units.equals(obj.units)) {
-			if (number.equals(obj.number) || ZERO.equals(obj.number)) {
+			if (number.equals(obj.number) || ZERO.equals(obj.number) ||
+						obj.number.doubleValue() < number.doubleValue()) {
 				return true;
 			} else {
-				ostream.format("%s: Quantities differ%n", context);
+				ostream.format("%s: Has greater quantity than we do%n", context);
 				return false;
 			}
 		} else {
