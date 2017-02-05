@@ -109,4 +109,15 @@ public final class VillageTabularReportGenerator implements ITableGenerator<Vill
 	public String toString() {
 		return "VillageTabularReportGenerator";
 	}
+	/**
+	 * The type of objects we accept. Needed so the default
+	 * {@link ITableGenerator#produce(Appendable, PatientMap)} can call the typesafe single-row
+	 * produce() without causing class-cast exceptions or taking this Class object as a
+	 * parameter.
+	 * @return the type of the objects we accept
+	 */
+	@Override
+	public Class<Village> type() {
+		return Village.class;
+	}
 }

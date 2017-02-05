@@ -16,15 +16,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-import model.map.fixtures.MineralFixture;
-import model.map.fixtures.explorable.ExplorableFixture;
-import model.map.fixtures.mobile.Animal;
-import model.map.fixtures.mobile.IUnit;
-import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.MobileFixture;
-import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
-import model.map.fixtures.towns.Village;
 import util.IntMap;
 import util.Pair;
 import util.PatientMap;
@@ -92,47 +84,46 @@ public final class TableReportGenerator {
 		final Player player = map.getCurrentPlayer();
 		final Point hq = findHQ(map, player);
 		// TODO: make generators supply the table file name so we don't have to enumerate them
-		// TODO: try to remove the Class parameter from produce()
 		try (final PrintStream out = new PrintStream(source.apply("fortresses"))) {
 			new FortressTabularReportGenerator(player, hq)
-					.produce(out, Fortress.class, fixtures);
+					.produce(out, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("units"))) {
 			new UnitTabularReportGenerator(player, hq)
-					.produce(out, IUnit.class, fixtures);
+					.produce(out, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("animals"))) {
-			new AnimalTabularReportGenerator(hq).produce(out, Animal.class, fixtures);
+			new AnimalTabularReportGenerator(hq).produce(out, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("workers"))) {
 			new WorkerTabularReportGenerator(hq)
-					.produce(out, IWorker.class, fixtures);
+					.produce(out, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("villages"))) {
 			new VillageTabularReportGenerator(player, hq)
-					.produce(out, Village.class, fixtures);
+					.produce(out, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("towns"))) {
 			new TownTabularReportGenerator(player, hq)
-					.produce(out, AbstractTown.class, fixtures);
+					.produce(out, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("crops"))) {
-			new CropTabularReportGenerator(hq).produce(out, TileFixture.class, fixtures);
+			new CropTabularReportGenerator(hq).produce(out, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("minerals"))) {
 			new DiggableTabularReportGenerator(hq)
-					.produce(out, MineralFixture.class, fixtures);
+					.produce(out, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("resources"))) {
-			new ResourceTabularReportGenerator().produce(out, IFixture.class, fixtures);
+			new ResourceTabularReportGenerator().produce(out, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("immortals"))) {
 			new ImmortalsTabularReportGenerator(hq)
-					.produce(out, MobileFixture.class, fixtures);
+					.produce(out, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("explorables"))) {
 			new ExplorableTabularReportGenerator(player, hq)
-					.produce(out, ExplorableFixture.class, fixtures);
+					.produce(out, fixtures);
 		}
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fix = pair.second();

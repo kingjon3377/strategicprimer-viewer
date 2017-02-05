@@ -141,14 +141,14 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 	 * Produce a tabular report on a particular category of fixtures in the map. All
 	 * fixtures covered in this table should be removed from the set before returning.
 	 *
-	 * @param ostream  the stream to write the table to
 	 * @param type     the type of object being looked for
+	 * @param ostream  the stream to write the table to
 	 * @param fixtures the set of fixtures
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@SuppressWarnings("QuestionableName")
 	@Override
-	public void produce(final Appendable ostream, final Class<IFixture> type,
+	public void produce(final Appendable ostream,
 						final PatientMap<Integer, Pair<Point, IFixture>> fixtures)
 			throws IOException {
 		final List<Pair<Integer, Pair<Point, IFixture>>> values =
@@ -157,7 +157,7 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 																		 .second()))
 										.map(entry -> Pair.of(entry.getKey(),
 												Pair.of(entry.getValue().first(),
-														type.cast(entry.getValue()
+														IFixture.class.cast(entry.getValue()
 																		  .second()))))
 										.collect(Collectors.toList()));
 		values.sort((one, two) -> comparePairs(one.second(), two.second()));
@@ -182,5 +182,16 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 			ostream.append(getRowDelimiter());
 		}
 		fixtures.coalesce();
+	}
+	/**
+	 * The type of objects we accept. Needed so the default
+	 * {@link ITableGenerator#produce(Appendable, PatientMap)} can call the typesafe single-row
+	 * produce() without causing class-cast exceptions or taking this Class object as a
+	 * parameter.
+	 * @return the type of the objects we accept
+	 */
+	@Override
+	public Class<IFixture> type() {
+		return IFixture.class;
 	}
 }

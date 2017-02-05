@@ -123,4 +123,15 @@ public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> 
 	public String toString() {
 		return "UnitTabularReportGenerator";
 	}
+	/**
+	 * The type of objects we accept. Needed so the default
+	 * {@link ITableGenerator#produce(Appendable, PatientMap)} can call the typesafe single-row
+	 * produce() without causing class-cast exceptions or taking this Class object as a
+	 * parameter.
+	 * @return the type of the objects we accept
+	 */
+	@Override
+	public Class<IUnit> type() {
+		return IUnit.class;
+	}
 }

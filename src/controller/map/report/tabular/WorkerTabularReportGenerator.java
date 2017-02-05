@@ -118,4 +118,15 @@ public final class WorkerTabularReportGenerator implements ITableGenerator<IWork
 	public String toString() {
 		return "WorkerTabularReportGenerator";
 	}
+	/**
+	 * The type of objects we accept. Needed so the default
+	 * {@link ITableGenerator#produce(Appendable, PatientMap)} can call the typesafe single-row
+	 * produce() without causing class-cast exceptions or taking this Class object as a
+	 * parameter.
+	 * @return the type of the objects we accept
+	 */
+	@Override
+	public Class<IWorker> type() {
+		return IWorker.class;
+	}
 }

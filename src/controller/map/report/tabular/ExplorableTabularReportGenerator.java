@@ -152,14 +152,14 @@ public final class ExplorableTabularReportGenerator
 	 * We override this to, in addition to the fixtures covered by the type parameter,
 	 * report on text fixtures.
 	 *
-	 * @param ostream  the stream to write the table to
 	 * @param type     the type of object being looked for
+	 * @param ostream  the stream to write the table to
 	 * @param fixtures the set of fixtures
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	@Override
 	@SuppressWarnings("QuestionableName")
-	public void produce(final Appendable ostream, final Class<ExplorableFixture> type,
+	public void produce(final Appendable ostream,
 						final PatientMap<Integer, Pair<Point, IFixture>> fixtures)
 			throws IOException {
 		final List<Pair<Integer, Pair<Point, IFixture>>> values =
@@ -228,5 +228,16 @@ public final class ExplorableTabularReportGenerator
 	@Override
 	public String toString() {
 		return "ExplorableTabularReportGenerator";
+	}
+	/**
+	 * The type of objects we accept. Needed so the default
+	 * {@link ITableGenerator#produce(Appendable, PatientMap)} can call the typesafe single-row
+	 * produce() without causing class-cast exceptions or taking this Class object as a
+	 * parameter.
+	 * @return the type of the objects we accept
+	 */
+	@Override
+	public Class<ExplorableFixture> type() {
+		return ExplorableFixture.class;
 	}
 }
