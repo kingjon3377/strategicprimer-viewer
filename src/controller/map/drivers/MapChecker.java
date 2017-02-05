@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -129,36 +130,45 @@ public final class MapChecker implements UtilityDriver {
 		if (args.length < 1) {
 			throw new IncorrectUsageException(usage());
 		}
-		Stream.of(args).map(Paths::get).forEach(this::check);
+		Stream.of(args).map(Paths::get)
+				.forEach(path -> check(path, SYS_OUT::println, SYS_OUT::println));
 	}
 
 	/**
 	 * Check a map.
 	 *
 	 * @param file the file to check
+	 * @param out the stream to write progress messages to
+	 * @param err the stream to write errors to
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private void check(final Path file) {
-		SYS_OUT.print("Starting ");
-		SYS_OUT.println(file);
+	private void check(final Path file, final Consumer<String> out,
+					  final Consumer<String> err) {
+		out.accept("Starting " + file);
 		final IMapNG map;
-		final Warning warner = Warning.DEFAULT;
+		final Warning warner = Warning.Custom;
+		warner.setCustomPrinter(Warning.wrapHandler(err));
 		try {
 			map = reader.readMap(file, warner);
 		} catch (final FileNotFoundException | NoSuchFileException e) {
+			err.accept(file + " not found");
 			LOGGER.log(Level.SEVERE, file + " not found", e);
 			return;
 		} catch (final IOException e) {
 			//noinspection HardcodedFileSeparator
 			LOGGER.log(Level.SEVERE, "I/O error reading " + file, e);
+			//noinspection HardcodedFileSeparator
+			err.accept("I/O error reading " + file);
 			return;
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE,
 					"XML stream error reading " + file, e);
+			err.accept("XML stream error reading " + file);
 			return;
 		} catch (final SPFormatException e) {
 			LOGGER.log(Level.SEVERE,
 					"SP map format error reading " + file, e);
+			err.accept("SP map format error in " + file);
 			return;
 		}
 		for (final Check checker : EXTRA_CHECKS) {
@@ -172,8 +182,7 @@ public final class MapChecker implements UtilityDriver {
 						warner);
 			}
 		}
-		SYS_OUT.print("No errors in ");
-		SYS_OUT.println(file);
+		out.accept("No errors in " + file);
 	}
 	/**
 	 * Turn a Nullable reference into a Collection.
