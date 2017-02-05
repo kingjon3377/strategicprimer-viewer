@@ -5,6 +5,8 @@ import controller.map.misc.IDRegistrar;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -83,47 +85,22 @@ public final class TableReportGenerator {
 				getFixtures(map);
 		final Player player = map.getCurrentPlayer();
 		final Point hq = findHQ(map, player);
-		// TODO: make generators supply the table file name so we don't have to enumerate them
-		try (final PrintStream out = new PrintStream(source.apply("fortresses"))) {
-			new FortressTabularReportGenerator(player, hq)
-					.produce(out, fixtures);
-		}
-		try (final PrintStream out = new PrintStream(source.apply("units"))) {
-			new UnitTabularReportGenerator(player, hq)
-					.produce(out, fixtures);
-		}
-		try (final PrintStream out = new PrintStream(source.apply("animals"))) {
-			new AnimalTabularReportGenerator(hq).produce(out, fixtures);
-		}
-		try (final PrintStream out = new PrintStream(source.apply("workers"))) {
-			new WorkerTabularReportGenerator(hq)
-					.produce(out, fixtures);
-		}
-		try (final PrintStream out = new PrintStream(source.apply("villages"))) {
-			new VillageTabularReportGenerator(player, hq)
-					.produce(out, fixtures);
-		}
-		try (final PrintStream out = new PrintStream(source.apply("towns"))) {
-			new TownTabularReportGenerator(player, hq)
-					.produce(out, fixtures);
-		}
-		try (final PrintStream out = new PrintStream(source.apply("crops"))) {
-			new CropTabularReportGenerator(hq).produce(out, fixtures);
-		}
-		try (final PrintStream out = new PrintStream(source.apply("minerals"))) {
-			new DiggableTabularReportGenerator(hq)
-					.produce(out, fixtures);
-		}
-		try (final PrintStream out = new PrintStream(source.apply("resources"))) {
-			new ResourceTabularReportGenerator().produce(out, fixtures);
-		}
-		try (final PrintStream out = new PrintStream(source.apply("immortals"))) {
-			new ImmortalsTabularReportGenerator(hq)
-					.produce(out, fixtures);
-		}
-		try (final PrintStream out = new PrintStream(source.apply("explorables"))) {
-			new ExplorableTabularReportGenerator(player, hq)
-					.produce(out, fixtures);
+		final List<ITableGenerator<?>> generators =
+				Arrays.asList(new FortressTabularReportGenerator(player, hq),
+						new UnitTabularReportGenerator(player, hq),
+						new AnimalTabularReportGenerator(hq),
+						new WorkerTabularReportGenerator(hq),
+						new VillageTabularReportGenerator(player, hq),
+						new TownTabularReportGenerator(player, hq),
+						new CropTabularReportGenerator(hq),
+						new DiggableTabularReportGenerator(hq),
+						new ResourceTabularReportGenerator(),
+						new ImmortalsTabularReportGenerator(hq),
+						new ExplorableTabularReportGenerator(player, hq));
+		for (final ITableGenerator<?> generator : generators) {
+			try (final PrintStream out = new PrintStream(source.apply(generator.getTableName()))) {
+				generator.produce(out, fixtures);
+			}
 		}
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fix = pair.second();

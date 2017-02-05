@@ -194,4 +194,11 @@ public final class ResourceTabularReportGenerator implements ITableGenerator<IFi
 	public Class<IFixture> type() {
 		return IFixture.class;
 	}
+	/**
+	 * The file-name to (by default) write this table to.
+	 */
+	@Override
+	public String getTableName() {
+		return "resources";
+	}
 }

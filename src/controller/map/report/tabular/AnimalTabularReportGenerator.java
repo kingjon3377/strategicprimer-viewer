@@ -115,4 +115,11 @@ public final class AnimalTabularReportGenerator implements ITableGenerator<Anima
 	public Class<Animal> type() {
 		return Animal.class;
 	}
+	/**
+	 * The file-name to (by default) write this table to.
+	 */
+	@Override
+	public String getTableName() {
+		return "animals";
+	}
 }

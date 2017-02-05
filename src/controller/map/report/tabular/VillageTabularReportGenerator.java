@@ -120,4 +120,11 @@ public final class VillageTabularReportGenerator implements ITableGenerator<Vill
 	public Class<Village> type() {
 		return Village.class;
 	}
+	/**
+	 * The file-name to (by default) write this table to.
+	 */
+	@Override
+	public String getTableName() {
+		return "villages";
+	}
 }

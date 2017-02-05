@@ -134,4 +134,11 @@ public final class FortressTabularReportGenerator implements ITableGenerator<For
 	public Class<Fortress> type() {
 		return Fortress.class;
 	}
+	/**
+	 * The file-name to (by default) write this table to.
+	 */
+	@Override
+	public String getTableName() {
+		return "fortresses";
+	}
 }

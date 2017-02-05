@@ -134,4 +134,11 @@ public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> 
 	public Class<IUnit> type() {
 		return IUnit.class;
 	}
+	/**
+	 * The file-name to (by default) write this table to.
+	 */
+	@Override
+	public String getTableName() {
+		return "units";
+	}
 }

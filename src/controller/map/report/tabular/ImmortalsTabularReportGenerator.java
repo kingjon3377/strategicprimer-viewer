@@ -119,4 +119,11 @@ public final class ImmortalsTabularReportGenerator
 	public Class<MobileFixture> type() {
 		return MobileFixture.class;
 	}
+	/**
+	 * The file-name to (by default) write this table to.
+	 */
+	@Override
+	public String getTableName() {
+		return "immortals";
+	}
 }

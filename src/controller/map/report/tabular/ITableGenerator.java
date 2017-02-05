@@ -232,4 +232,8 @@ public interface ITableGenerator<@NonNull T> {
 	 * @return the type of the objects we accept
 	 */
 	Class<T> type();
+	/**
+	 * The file-name to (by default) write this table to.
+	 */
+	String getTableName();
 }

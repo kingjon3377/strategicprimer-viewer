@@ -131,4 +131,11 @@ public final class DiggableTabularReportGenerator
 	public Class<MineralFixture> type() {
 		return MineralFixture.class;
 	}
+	/**
+	 * The file-name to (by default) write this table to.
+	 */
+	@Override
+	public String getTableName() {
+		return "minerals";
+	}
 }

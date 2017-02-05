@@ -240,4 +240,11 @@ public final class ExplorableTabularReportGenerator
 	public Class<ExplorableFixture> type() {
 		return ExplorableFixture.class;
 	}
+	/**
+	 * The file-name to (by default) write this table to.
+	 */
+	@Override
+	public String getTableName() {
+		return "explorables";
+	}
 }

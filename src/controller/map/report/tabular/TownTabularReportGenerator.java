@@ -133,4 +133,11 @@ public final class TownTabularReportGenerator implements ITableGenerator<Abstrac
 	public Class<AbstractTown> type() {
 		return AbstractTown.class;
 	}
+	/**
+	 * The file-name to (by default) write this table to.
+	 */
+	@Override
+	public String getTableName() {
+		return "towns";
+	}
 }

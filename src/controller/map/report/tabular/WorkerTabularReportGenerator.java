@@ -129,4 +129,11 @@ public final class WorkerTabularReportGenerator implements ITableGenerator<IWork
 	public Class<IWorker> type() {
 		return IWorker.class;
 	}
+	/**
+	 * The file-name to (by default) write this table to.
+	 */
+	@Override
+	public String getTableName() {
+		return "workers";
+	}
 }
