@@ -32,7 +32,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import util.IntMap;
 import util.LineEnd;
 import util.Pair;
-import util.PairComparator;
+import util.PairComparatorImpl;
 import util.PatientMap;
 import util.TypesafeLogger;
 import view.util.SystemOut;
@@ -136,7 +136,7 @@ public final class ReportGenerator {
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
-				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
+				new PairComparatorImpl<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
 		createSubReports(builder, fixtures, map, player,
 				new FortressReportGenerator(comparator),
@@ -187,7 +187,7 @@ public final class ReportGenerator {
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
-				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
+				new PairComparatorImpl<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
 
 		final Predicate<Pair<Point, IFixture>> filter =
@@ -248,7 +248,7 @@ public final class ReportGenerator {
 				getFixtures(map);
 		final Player player = map.getCurrentPlayer();
 		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
-				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
+				new PairComparatorImpl<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
 		createSubReportsIR(retval, fixtures, map, player,
 				new FortressReportGenerator(comparator),
@@ -275,7 +275,7 @@ public final class ReportGenerator {
 		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
-				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
+				new PairComparatorImpl<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
 
 		final Predicate<Pair<Point, IFixture>> filter =
