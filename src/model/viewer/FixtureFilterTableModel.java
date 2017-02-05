@@ -90,9 +90,9 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		addTrivialMatcher(StoneDeposit.class, "Stone Deposits");
 		addTrivialMatcher(MineralVein.class, "Mineral Veins");
 		addTrivialMatcher(Fairy.class, "Fairies");
-		addTrivialMatchers(Giant.class, Dragon.class, Cave.class, Battlefield.class,
-				Animal.class);
-		// TODO: Animal tracks should probably be matched separately
+		addTrivialMatchers(Giant.class, Dragon.class, Cave.class, Battlefield.class);
+		addComplements(Animal.class, animal -> !animal.isTraces(), "Animals",
+				"Animal tracks");
 
 		addComplements(Grove.class, Grove::isOrchard, "Orchards", "Groves");
 
