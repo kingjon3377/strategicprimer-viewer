@@ -1,7 +1,7 @@
 package model.map.fixtures.resources;
 
-import model.map.HasKind;
 import model.map.IFixture;
+import model.map.fixtures.MineralFixture;
 import model.map.fixtures.towns.TownStatus;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -20,7 +20,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Mine implements HarvestableFixture, HasKind {
+public class Mine implements HarvestableFixture, MineralFixture {
 	/**
 	 * The status of the mine.
 	 */

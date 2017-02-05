@@ -5,8 +5,8 @@ import model.map.DistanceComparator;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.Point;
-import model.map.TileFixture;
 import model.map.fixtures.Ground;
+import model.map.fixtures.MineralFixture;
 import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
@@ -32,7 +32,7 @@ import static util.Ternary.ternary;
  * @author Jonathan Lovelace
  */
 public final class DiggableTabularReportGenerator
-		implements ITableGenerator<TileFixture> {
+		implements ITableGenerator<MineralFixture> {
 	/**
 	 * The base point to use for distance calculations.
 	 */
@@ -54,9 +54,7 @@ public final class DiggableTabularReportGenerator
 	 */
 	@Override
 	public boolean applies(final IFixture obj) {
-		return (obj instanceof Ground) || (obj instanceof Mine) ||
-					   (obj instanceof MineralVein) ||
-					   (obj instanceof StoneDeposit);
+		return obj instanceof MineralFixture;
 	}
 
 	/**
@@ -71,7 +69,7 @@ public final class DiggableTabularReportGenerator
 	@Override
 	public boolean produce(final Appendable ostream,
 						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						   final TileFixture item, final Point loc) throws IOException {
+						   final MineralFixture item, final Point loc) throws IOException {
 		final String classField;
 		final String statusField;
 		if (item instanceof Ground) {
@@ -107,15 +105,12 @@ public final class DiggableTabularReportGenerator
 
 	@SuppressWarnings("QuestionableName")
 	@Override
-	public int comparePairs(final Pair<Point, TileFixture> one,
-							final Pair<Point, TileFixture> two) {
-		final TileFixture first = one.second();
-		final TileFixture second = two.second();
-		if (!applies(first) || !applies(second)) {
-			throw new IllegalArgumentException("Unhandleable argument");
-		}
-		final int prodCmp =
-				((HasKind) first).getKind().compareTo(((HasKind) second).getKind());
+	public int comparePairs(final Pair<Point, MineralFixture> one,
+							final Pair<Point, MineralFixture> two) {
+		final MineralFixture first = one.second();
+		final MineralFixture second = two.second();
+		// TODO: Use comparing()
+		final int prodCmp = first.getKind().compareTo(second.getKind());
 		if (prodCmp == 0) {
 			final int cmp =
 					new DistanceComparator(base).compare(one.first(), two.first());

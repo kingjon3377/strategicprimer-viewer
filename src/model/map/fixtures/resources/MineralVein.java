@@ -1,9 +1,9 @@
 package model.map.fixtures.resources;
 
 import java.util.Formatter;
-import model.map.HasKind;
 import model.map.IEvent;
 import model.map.IFixture;
+import model.map.fixtures.MineralFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -21,7 +21,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class MineralVein implements IEvent, HarvestableFixture, HasKind {
+public final class MineralVein implements IEvent, HarvestableFixture, MineralFixture {
 	/**
 	 * The DC to discover the vein. TODO: Should have good defaults
 	 */

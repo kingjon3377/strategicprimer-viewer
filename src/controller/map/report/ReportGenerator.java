@@ -155,6 +155,7 @@ public final class ReportGenerator {
 			final IFixture fix = pair.second();
 			if (fix.getID() < 0) {
 				continue;
+			// TODO: use TerrainFixture instead of Hill | Sandbar | Oasis | Forest
 			} else if ((fix instanceof Hill) || (fix instanceof Sandbar)
 							   || (fix instanceof Oasis) || (fix instanceof Forest) ||
 							   (fix instanceof Ground)) {
@@ -279,6 +280,7 @@ public final class ReportGenerator {
 				new PairComparatorImpl<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
 
+		// TODO: filter on IUnit, not Unit
 		final Predicate<Pair<Point, IFixture>> filter =
 				pair -> ((pair.second() instanceof Unit) ||
 								 (pair.second() instanceof Fortress)) &&

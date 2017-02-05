@@ -1,9 +1,7 @@
 package model.map.fixtures;
 
-import model.map.HasKind;
 import model.map.HasMutableImage;
 import model.map.IFixture;
-import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -21,7 +19,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Ground implements TileFixture, HasMutableImage, HasKind {
+public class Ground implements MineralFixture, HasMutableImage {
 	/**
 	 * The kind of ground.
 	 */

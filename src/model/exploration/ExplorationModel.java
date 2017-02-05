@@ -26,12 +26,14 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Ground;
+import model.map.fixtures.MineralFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
+import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.towns.Fortress;
@@ -561,8 +563,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @return whether it is "diggable"
 	 */
 	private static boolean isDiggable(final TileFixture fix) {
-		return (fix instanceof Ground) || (fix instanceof StoneDeposit) ||
-					   (fix instanceof MineralVein);
+		return (fix instanceof MineralFixture) && !(fix instanceof Mine);
 	}
 	/**
 	 * In StoneDeposit and MineralVein, equals() is false if DCs are not equal, so this
@@ -574,6 +575,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	private static boolean areDiggablesEqual(final IFixture firstFix,
 											 final IFixture secondFix) {
+		// TODO: drop instanceof test and simply always try zeroing out
 		if (firstFix.equals(secondFix)) {
 			return true;
 		} else if ((firstFix instanceof StoneDeposit) ||

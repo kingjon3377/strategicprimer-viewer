@@ -1,9 +1,9 @@
 package model.map.fixtures.resources;
 
-import model.map.HasKind;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
+import model.map.fixtures.MineralFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -21,7 +21,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
+public final class StoneDeposit implements IEvent, HarvestableFixture, MineralFixture {
 	/**
 	 * The DC to discover the stone. TODO: reasonable defaults
 	 */

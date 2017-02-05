@@ -15,6 +15,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
+import model.map.fixtures.MineralFixture;
 import model.map.fixtures.explorable.ExplorableFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
@@ -92,6 +93,8 @@ public final class TableReportGenerator {
 				getFixtures(map);
 		final Player player = map.getCurrentPlayer();
 		final Point hq = findHQ(map, player);
+		// TODO: make generators supply the table file name so we don't have to enumerate them
+		// TODO: try to remove the Class parameter from produce()
 		try (final PrintStream out = new PrintStream(source.apply("fortresses"))) {
 			new FortressTabularReportGenerator(player, hq)
 					.produce(out, Fortress.class, fixtures);
@@ -120,7 +123,7 @@ public final class TableReportGenerator {
 		}
 		try (final PrintStream out = new PrintStream(source.apply("minerals"))) {
 			new DiggableTabularReportGenerator(hq)
-					.produce(out, TileFixture.class, fixtures);
+					.produce(out, MineralFixture.class, fixtures);
 		}
 		try (final PrintStream out = new PrintStream(source.apply("resources"))) {
 			new ResourceTabularReportGenerator().produce(out, IFixture.class, fixtures);
@@ -135,6 +138,7 @@ public final class TableReportGenerator {
 		}
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fix = pair.second();
+			// TODO: use TerrainFixture
 			if ((fix instanceof Hill) || (fix instanceof Sandbar)
 						|| (fix instanceof Oasis)) {
 				fixtures.remove(Integer.valueOf(fix.getID()));
