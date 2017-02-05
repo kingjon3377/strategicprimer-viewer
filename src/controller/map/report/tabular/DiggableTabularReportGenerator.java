@@ -1,6 +1,7 @@
 package controller.map.report.tabular;
 
 import java.io.IOException;
+import java.util.Comparator;
 import model.map.DistanceComparator;
 import model.map.HasKind;
 import model.map.IFixture;
@@ -107,27 +108,11 @@ public final class DiggableTabularReportGenerator
 	@Override
 	public int comparePairs(final Pair<Point, MineralFixture> one,
 							final Pair<Point, MineralFixture> two) {
-		final MineralFixture first = one.second();
-		final MineralFixture second = two.second();
-		// TODO: Use comparing()
-		final int prodCmp = first.getKind().compareTo(second.getKind());
-		if (prodCmp == 0) {
-			final int cmp =
-					new DistanceComparator(base).compare(one.first(), two.first());
-			if (cmp == 0) {
-				final int kindCmp = Integer.compare(first.getClass().hashCode(),
-						second.getClass().hashCode());
-				if (kindCmp == 0) {
-					return Integer.compare(first.hashCode(), second.hashCode());
-				} else {
-					return kindCmp;
-				}
-			} else {
-				return cmp;
-			}
-		} else {
-			return prodCmp;
-		}
+		return Comparator.comparing(
+				(Pair<Point, MineralFixture> pair) -> pair.second().getKind())
+					   .thenComparing(Pair::first, new DistanceComparator(base))
+					   .thenComparingInt(pair -> pair.second().hashCode())
+					   .compare(one, two);
 	}
 
 	@SuppressWarnings("MethodReturnAlwaysConstant")
