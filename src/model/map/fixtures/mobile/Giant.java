@@ -7,7 +7,7 @@ import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * A giant. TODO: should probably be a unit, or something.
+ * A giant.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.

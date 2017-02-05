@@ -7,7 +7,7 @@ import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * A dragon. TODO: should probably be a unit, or something.
+ * A dragon.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.

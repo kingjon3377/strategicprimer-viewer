@@ -7,7 +7,7 @@ import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * A centaur. TODO: Should probably be a kind of unit instead, or something ...
+ * A centaur.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.

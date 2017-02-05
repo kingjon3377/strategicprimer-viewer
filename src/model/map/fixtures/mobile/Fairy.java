@@ -7,7 +7,7 @@ import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * A fairy. TODO: should probably be a unit, or something.
+ * A fairy.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
