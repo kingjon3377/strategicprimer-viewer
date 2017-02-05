@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Formatter;
+import java.util.List;
+import java.util.Objects;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
@@ -38,19 +42,13 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	@Nullable
 	private Point point;
 	/**
-	 * The (usually header) text. May be empty, but not null.
+	 * The provided format string.
 	 */
-	private String text;
-
+	private String formatString;
 	/**
-	 * Constructor that the public constructors delegate to.
-	 * @param formatted the finally-formatted string to make the text of the node
+	 * The provided arguments.
 	 */
-	private SimpleReportNode(final String formatted) {
-		super(formatted);
-		text = formatted; // required by Eclipse
-		setText(formatted);
-	}
+	private final List<Object> arguments;
 
 	/**
 	 * Constructor.
@@ -61,7 +59,9 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	@SuppressWarnings("OverloadedVarargsMethod")
 	public SimpleReportNode(final Point pt, final String format,
 							final Object... args) {
-		this(String.format(format, args));
+		super(String.format(format, args));
+		formatString = format;
+		arguments = new ArrayList<>(Arrays.asList(args));
 		point = pt;
 	}
 
@@ -72,7 +72,9 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	public SimpleReportNode(final String format, final Object... args) {
-		this(String.format(format, args));
+		super(String.format(format, args));
+		formatString = format;
+		arguments = new ArrayList<>(Arrays.asList(args));
 		point = null;
 	}
 
@@ -82,7 +84,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String produce() {
-		return text;
+		return String.format(formatString, arguments.toArray());
 	}
 
 	/**
@@ -91,16 +93,16 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public void produce(final Formatter formatter) {
-		formatter.format("%s", text);
+		formatter.format(formatString, arguments.toArray());
 	}
 
 	/**
-	 * The size of the HTML representation of the node.
+	 * The approximate size of the HTML representation of the node.
 	 * @return the size of the HTML representation of the node.
 	 */
 	@Override
 	public int size() {
-		return text.length();
+		return formatString.length() + arguments.size() * 64;
 	}
 
 	/**
@@ -111,7 +113,11 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof SimpleReportNode) &&
-										 text.equals(((IReportNode) obj).getText()));
+										 Objects.equals(formatString,
+												 ((SimpleReportNode) obj)
+														 .formatString) &&
+										 Objects.equals(arguments,
+												 ((SimpleReportNode) obj).arguments));
 	}
 
 	/**
@@ -120,7 +126,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int hashCode() {
-		return text.hashCode();
+		return formatString.hashCode();
 	}
 
 	/**
@@ -156,18 +162,20 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String getText() {
-		return text;
+		return String.format(formatString, arguments.toArray());
 	}
 
 	/**
-	 * Set the text of the node.
+	 * Set the text of the node. Overwrites format string and args.
 	 * @param txt the new text for the node
 	 */
 	@Override
 	public void setText(@Nullable final String txt) {
 		if (txt != null) {
-			text = txt;
-			setUserObject(text);
+			formatString = "%s";
+			arguments.clear();
+			arguments.add(txt);
+			setUserObject(txt);
 		}
 	}
 
@@ -177,7 +185,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String toString() {
-		return text;
+		return String.format(formatString, arguments.toArray());
 	}
 
 	/**
