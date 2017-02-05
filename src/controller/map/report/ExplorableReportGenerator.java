@@ -65,7 +65,6 @@ public final class ExplorableReportGenerator
 						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
-		boolean anyAdventures = false;
 		final Collection<Point> portals = new PointList("Portals to other worlds: ");
 		final Collection<Point> battles =
 				new PointList("Signs of long-ago battles on the following tiles: ");
@@ -82,7 +81,6 @@ public final class ExplorableReportGenerator
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof AdventureFixture) {
 				adventures.put((AdventureFixture) pair.second(), pair.first());
-				anyAdventures = true;
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof Portal) {
 				portals.add(pair.first());
