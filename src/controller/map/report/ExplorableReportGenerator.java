@@ -3,7 +3,11 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -65,25 +69,25 @@ public final class ExplorableReportGenerator
 						Player currentPlayer, final Formatter ostream) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
+		Map<Class<? extends IFixture>, Consumer<Pair<Point, IFixture>>>
+				collectors = new HashMap<>();
 		final Collection<Point> portals = new PointList("Portals to other worlds: ");
+		collectors.put(Portal.class, pair -> portals.add(pair.first()));
 		final Collection<Point> battles =
 				new PointList("Signs of long-ago battles on the following tiles: ");
+		collectors.put(Battlefield.class, pair -> battles.add(pair.first()));
 		final Collection<Point> caves =
 				new PointList("Caves beneath the following tiles: ");
+		collectors.put(Cave.class, pair -> caves.add(pair.first()));
 		final HeadedMap<AdventureFixture, Point> adventures =
 				new HeadedMapImpl<>("<h4>Possible Adventures</h4>");
+		collectors.put(AdventureFixture.class,
+				pair -> adventures.put((AdventureFixture) pair.second(), pair.first()));
 		for (final Pair<Point, IFixture> pair : values) {
-			if (pair.second() instanceof Cave) {
-				caves.add(pair.first());
-				fixtures.remove(Integer.valueOf(pair.second().getID()));
-			} else if (pair.second() instanceof Battlefield) {
-				battles.add(pair.first());
-				fixtures.remove(Integer.valueOf(pair.second().getID()));
-			} else if (pair.second() instanceof AdventureFixture) {
-				adventures.put((AdventureFixture) pair.second(), pair.first());
-				fixtures.remove(Integer.valueOf(pair.second().getID()));
-			} else if (pair.second() instanceof Portal) {
-				portals.add(pair.first());
+			final Optional<Consumer<Pair<Point, IFixture>>> collector =
+			Optional.ofNullable(collectors.get(pair.second().getClass()));
+			if (collector.isPresent()) {
+				collector.get().accept(pair);
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			}
 		}
@@ -112,25 +116,20 @@ public final class ExplorableReportGenerator
 								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		values.sort(pairComparator);
+		final Map<Class<? extends IFixture>, IReportNode> nodes = new HashMap<>();
 		final IReportNode portals = new ListReportNode("Portals");
 		final IReportNode battles = new ListReportNode("Battlefields");
 		final IReportNode caves = new ListReportNode("Caves");
 		final IReportNode adventures =
 				new SectionListReportNode(4, "Possible Adventures");
+		nodes.put(Portal.class, portals);
+		nodes.put(Battlefield.class, battles);
+		nodes.put(Cave.class, caves);
+		nodes.put(AdventureFixture.class, adventures);
 		for (final Pair<Point, IFixture> pair : values) {
-			if (pair.second() instanceof Cave) {
-				caves.add(produceRIR(fixtures, map, currentPlayer,
-						(ExplorableFixture) pair.second(), pair.first()));
-			} else if (pair.second() instanceof Battlefield) {
-				battles.add(produceRIR(fixtures, map, currentPlayer,
-						(ExplorableFixture) pair.second(), pair.first()));
-			} else if (pair.second() instanceof AdventureFixture) {
-				adventures.add(produceRIR(fixtures, map, currentPlayer,
-						(ExplorableFixture) pair.second(), pair.first()));
-			} else if (pair.second() instanceof Portal) {
-				portals.add(produceRIR(fixtures, map, currentPlayer,
-						(ExplorableFixture) pair.second(), pair.first()));
-			}
+			Optional.ofNullable(nodes.get(pair.second().getClass())).ifPresent(
+					node -> node.add(produceRIR(fixtures, map, currentPlayer,
+							(ExplorableFixture) pair.second(), pair.first())));
 		}
 		final IReportNode retval =
 				new SectionListReportNode(4, "Caves, Battlefields, and Portals");
