@@ -166,22 +166,21 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				worker.getName(), worker.getRace()));
 		final WorkerStats stats = worker.getStats();
 		if ((stats != null) && details) {
-			final StringBuilder builder = new StringBuilder(153);
-			try (final Formatter formatter = new Formatter(builder)) {
-				//noinspection HardcodedFileSeparator
-				formatter.format("He or she has the following stats: %d / %d, ",
-						Integer.valueOf(stats.getHitPoints()),
-						Integer.valueOf(stats.getMaxHitPoints()));
-				formatter.format("Strength %s, Dexterity %s, Constitution %s, ",
-						getModifierString(stats.getStrength()),
-						getModifierString(stats.getDexterity()),
-						getModifierString(stats.getConstitution()));
-				formatter.format("Intelligence %s, Wisdom %s, Charisma %s",
-						getModifierString(stats.getIntelligence()),
-						getModifierString(stats.getWisdom()),
-						getModifierString(stats.getCharisma()));
-			}
-			retval.add(new SimpleReportNode(loc, builder.toString()));
+			retval.add(
+					new SimpleReportNode("He or she has the following stats: %d / %d, " +
+												 "Strength %s, Dexterity %s, " +
+												 "Constitution %s, Intelligence %s, " +
+												 "Wisdom %s, Charisma %s",
+												Integer.valueOf(stats.getHitPoints()),
+												Integer.valueOf(stats.getMaxHitPoints()),
+												getModifierString(stats.getStrength()),
+												getModifierString(stats.getDexterity()),
+												getModifierString(
+														stats.getConstitution()),
+												getModifierString(
+														stats.getIntelligence()),
+												getModifierString(stats.getWisdom()),
+												getModifierString(stats.getCharisma())));
 		}
 		if (worker.iterator().hasNext() && details) {
 			final IReportNode jobs = new ListReportNode(loc, HAS_TRAINING);
@@ -200,8 +199,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 * @return a sub-report on that Job.
 	 */
 	private static MutableTreeNode produceJobRIR(final IJob job, final Point loc) {
-		return new SimpleReportNode(loc, Integer.toString(job.getLevel()),
-										   " levels in ", job.getName(), getSkills(job));
+		return new SimpleReportNode(loc, "%d levels in %s %s",
+										   Integer.valueOf(job.getLevel()),
+										   job.getName(), getSkills(job));
 	}
 	/**
 	 * If the collection is nonempty, append its sub-sub-report to the stream.
@@ -345,14 +345,14 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer,
 								  final IUnit item, final Point loc) {
-		final String simple;
+		final String base;
 		if (item.getOwner().isIndependent()) {
-			simple = concat("Unit of type ", item.getKind(), ", named ",
-					item.getName(), ", independent");
+			base = concat("Unit of type ", item.getKind(), ", named ",
+					item.getName(), ", independent. Members of the unit:");
 		} else {
-			simple = concat("Unit of type ", item.getKind(), ", named ",
+			base = concat("Unit of type ", item.getKind(), ", named ",
 					item.getName(),
-					", owned by " + playerNameOrYou(item.getOwner()));
+					", owned by " + playerNameOrYou(item.getOwner()), ". Members of the unit:");
 		}
 		fixtures.remove(Integer.valueOf(item.getID()));
 		final ListReportNode workers = new ListReportNode("Workers:");
@@ -361,7 +361,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		final ListReportNode resources = new ListReportNode("Resources:");
 		final ListReportNode others = new ListReportNode("Others:");
 		final IReportNode retval =
-				new ListReportNode(loc, concat(simple, ". Members of the unit:"));
+				new ListReportNode(loc, base);
 		for (final UnitMember member : item) {
 			if (member instanceof IWorker) {
 				workers.add(produceWorkerRIR(loc, (IWorker) member,
@@ -380,7 +380,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 											  (ResourcePile) member, loc));
 			} else {
 				//noinspection ObjectAllocationInLoop
-				others.add(new SimpleReportNode(loc, member.toString()));
+				others.add(new SimpleReportNode(loc, "%s", member.toString()));
 			}
 			fixtures.remove(Integer.valueOf(member.getID()));
 		}
@@ -392,17 +392,26 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			final ListReportNode current = new ListReportNode("Turn " + turn + ':');
 			final String orders = item.getOrders(turn);
 			if (!orders.isEmpty()) {
-				current.add(new SimpleReportNode("Orders: ", orders));
+				current.add(new SimpleReportNode("Orders: %s", orders));
 			}
 			final String results = item.getResults(turn);
 			if (!results.isEmpty()) {
-				current.add(new SimpleReportNode("Results: ", results));
+				current.add(new SimpleReportNode("Results: %s", results));
 			}
 			ordersNode.addIfNonEmpty(current);
 		}
 		retval.addIfNonEmpty(ordersNode);
 		if (retval.getChildCount() == 0) {
-			return new SimpleReportNode(loc, simple);
+			if (item.getOwner().isIndependent()) {
+				return new SimpleReportNode(loc, "Unit of type %s, named %s, " +
+														 "independent",
+												   item.getKind(), item.getName());
+			} else {
+				return new SimpleReportNode(loc, "Unit of type %s, named %s, owned by " +
+														 "%s",
+												   item.getKind(), item.getName(),
+												   playerNameOrYou(item.getOwner()));
+			}
 		} else {
 			return retval;
 		}
@@ -479,8 +488,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			}
 		});
 		final MutableTreeNode textNode =
-				new SimpleReportNode("(Any units reported above are not described again" +
-											 ".)");
+				new SimpleReportNode("(Any units reported above are not described again.)");
 		if (ours.getChildCount() == 0) {
 			if (theirs.getChildCount() == 0) {
 				return EmptyReportNode.NULL_NODE;

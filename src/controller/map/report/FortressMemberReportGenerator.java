@@ -223,19 +223,19 @@ public final class FortressMemberReportGenerator
 				age = " from turn " + rsr.getCreated();
 			}
 			if (rsr.getQuantity().getUnits().isEmpty()) {
-				return new SimpleReportNode("A pile of ",
+				return new SimpleReportNode("A pile of %s %s (%s)%s",
 												   rsr.getQuantity().getNumber()
-														   .toString(),
-												   rsr.getContents(), " (",
-												   rsr.getKind(), ")", age);
+														   .toString(), rsr.getContents(),
+												   rsr.getKind(), age);
 			} else {
-				return new SimpleReportNode("A pile of ", rsr.getQuantity().toString(),
-												   " of ", rsr.getContents(), " (",
-												   rsr.getKind(), ")", age);
+				return new SimpleReportNode("A pile of %s of %s (%s)%s",
+												   rsr.getQuantity().getNumber()
+														   .toString(), rsr.getContents(),
+												   rsr.getKind(), age);
 			}
 		} else if (item instanceof Implement) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode("Equipment: ", ((Implement) item).getKind());
+			return new SimpleReportNode("Equipment: %s", ((Implement) item).getKind());
 		} else {
 			throw new IllegalArgumentException("Unexpected FortressMember type");
 		}

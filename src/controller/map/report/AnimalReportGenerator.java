@@ -174,8 +174,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 		} else {
 			tracesOrTalking = "";
 		}
-		return new SimpleReportNode(loc, atPoint(loc), tracesOrTalking,
-										   item.getKind(), " ",
+		return new SimpleReportNode(loc, "At %s: %s%s %s", loc.toString(),
+										   tracesOrTalking, item.getKind(),
 										   distCalculator.distanceString(loc));
 	}
 

@@ -311,53 +311,50 @@ public final class HarvestableReportGenerator
 		final SimpleReportNode retval;
 		if (item instanceof CacheFixture) {
 			final CacheFixture cache = (CacheFixture) item;
-			retval = new SimpleReportNode(loc, atPoint(loc), " ",
-											   distCalculator.distanceString(loc),
-											   " A cache of ",
-											   cache.getKind(),
-											   ", containing ",
-											   cache.getContents());
+			retval = new SimpleReportNode(loc, "At %s: %s A cache of %s, containing %s",
+												 loc.toString(),
+												 distCalculator.distanceString(loc),
+												 cache.getKind(), cache.getContents());
 		} else if (item instanceof Grove) {
 			final Grove grove = (Grove) item;
-			retval = new SimpleReportNode(loc, atPoint(loc), "A ",
+			retval = new SimpleReportNode(loc, "At %s: A %s %s %s %s", loc.toString(),
 												 ternary(grove.isCultivated(),
-														 "cultivated ", "wild "),
-											   grove.getKind(),
-												 ternary(grove.isOrchard(),
-														 " orchard", " grove"), " ",
-											   distCalculator.distanceString(loc));
+														 "cultivated", "wild"),
+												 grove.getKind(),
+												 ternary(grove.isOrchard(), "orchard",
+														 "grove"),
+												 distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
 			final Meadow meadow = (Meadow) item;
-			retval = new SimpleReportNode(loc, atPoint(loc), "A ",
-											   meadow.getStatus().toString(),
+			retval = new SimpleReportNode(loc, "At %s: A %s %s %s %s %s", loc.toString(),
+												 meadow.getStatus().toString(),
 												 ternary(meadow.isCultivated(),
-														 " cultivated ",
-														 " wild or abandoned "),
-											   meadow.getKind(),
-												 ternary(meadow.isField(),
-														 " field", " meadow"), " ",
-											   distCalculator.distanceString(loc));
+														 "cultivated",
+														 "wild or abandoned"),
+												 meadow.getKind(),
+												 ternary(meadow.isField(), "field",
+														 "meadow"),
+												 distCalculator.distanceString(loc));
 		} else if (item instanceof Mine) {
-			retval = new SimpleReportNode(loc, atPoint(loc), item.toString(), " ",
-											   distCalculator
-													   .distanceString(loc));
+			retval = new SimpleReportNode(loc, "At %s: %s %s", loc.toString(),
+												 item.toString(),
+												 distCalculator.distanceString(loc));
 		} else if (item instanceof MineralVein) {
 			final MineralVein mineral = (MineralVein) item;
-			retval = new SimpleReportNode(loc, atPoint(loc), "An ",
-												 ternary(mineral.isExposed(), "exposed ",
-														 "unexposed "), "vein of ",
-											   mineral.getKind(), " ",
-											   distCalculator.distanceString(loc));
+			retval = new SimpleReportNode(loc, "At %s: An %s vein of %s %s",
+												 loc.toString(),
+												 ternary(mineral.isExposed(), "exposed",
+														 "unexposed"), mineral.getKind(),
+												 distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
 			final String kind = ((Shrub) item).getKind();
-			retval = new SimpleReportNode(loc, atPoint(loc), kind, " ",
-											   distCalculator
-													   .distanceString(loc));
+			retval = new SimpleReportNode(loc, "At %s: %s %s", loc.toString(), kind,
+												 distCalculator.distanceString(loc));
 		} else if (item instanceof StoneDeposit) {
-			retval = new SimpleReportNode(loc, atPoint(loc), "An exposed ",
-											   ((StoneDeposit) item).getKind(),
-											   " deposit", " ",
-											   distCalculator.distanceString(loc));
+			retval = new SimpleReportNode(loc, "At %s: An exposed %s deposit %s",
+												 loc.toString(),
+												 ((StoneDeposit) item).getKind(),
+												 distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected HarvestableFixture type");
 		}

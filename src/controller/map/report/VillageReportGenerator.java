@@ -197,15 +197,17 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 									   final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
-			return new SimpleReportNode(loc, atPoint(loc), item.getName(),
-											   ", a(n) ", item.getRace(), " village",
-											   ", independent ",
+			return new SimpleReportNode(loc, "At %s: %s, a(n) %s village, independent " +
+													 "%s",
+											   loc.toString(), item.getName(),
+											   item.getRace(),
 											   distCalculator.distanceString(loc));
 		} else {
-			return new SimpleReportNode(loc, atPoint(loc), item.getName(),
-											   ", a(n) ", item.getRace(), " village",
-											   ", sworn to ",
-											   playerNameOrYou(item.getOwner()), " ",
+			return new SimpleReportNode(loc, "At %s: %s, a(n) %s village, sworn to %s " +
+													 "%s",
+											   loc.toString(), item.getName(),
+											   item.getRace(),
+											   playerNameOrYou(item.getOwner()),
 											   distCalculator.distanceString(loc));
 		}
 	}

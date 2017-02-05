@@ -146,14 +146,13 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 								  final IMapNG map, final Player currentPlayer,
 								  final TextFixture item, final Point loc) {
 		if (item.getTurn() >= 0) {
-			return new SimpleReportNode(loc, "At ", loc.toString(), " ",
-											   distCalculator.distanceString(loc), ": ",
-											   "On turn ",
-											   Integer.toString(item.getTurn()), ": ",
+			return new SimpleReportNode(loc, "At %s %s On turn %d: %s", loc.toString(),
+											   distCalculator.distanceString(loc),
+											   Integer.valueOf(item.getTurn()),
 											   item.getText());
 		} else {
-			return new SimpleReportNode(loc, "At ", loc.toString(), " ",
-											   distCalculator.distanceString(loc), ": ",
+			return new SimpleReportNode(loc, "At %s %s: %s", loc.toString(),
+											   distCalculator.distanceString(loc),
 											   item.getText());
 		}
 	}

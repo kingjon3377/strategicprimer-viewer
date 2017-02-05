@@ -212,54 +212,43 @@ public final class ExplorableReportGenerator
 									   final ExplorableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, "Caves beneath ", loc.toString(), " ",
+			return new SimpleReportNode(loc, "Caves beneath %s %s", loc.toString(),
 											   distCalculator.distanceString(loc));
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, "Signs of a long-ago battle on ",
-											   loc.toString(), " ",
+			return new SimpleReportNode(loc, "Signs of a long-ago battle on %s %s",
+											   loc.toString(),
 											   distCalculator.distanceString(loc));
 		} else if (item instanceof AdventureFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final AdventureFixture adventure = (AdventureFixture) item;
 			if (adventure.getOwner().isIndependent()) {
-				return new SimpleReportNode(loc,
-												   adventure
-														   .getBriefDescription(),
-												   " at ",
+				return new SimpleReportNode(loc, "%s at %s%s %s",
+												   adventure.getBriefDescription(),
 												   loc.toString(),
-												   adventure
-														   .getFullDescription(),
-												   " ",
+												   adventure.getFullDescription(),
 												   distCalculator.distanceString(loc));
 			} else if (currentPlayer.equals(adventure.getOwner())) {
 				return new SimpleReportNode(loc,
-												   adventure
-														   .getBriefDescription(),
-												   " at ",
+												   "%s at %s%s %s (already investigated " +
+														   "by you)",
+												   adventure.getBriefDescription(),
 												   loc.toString(),
-												   adventure
-														   .getFullDescription(),
-												   " ",
-												   distCalculator.distanceString(loc),
-												   " (already investigated by you)");
+												   adventure.getFullDescription(),
+												   distCalculator.distanceString(loc));
 			} else {
 				return new SimpleReportNode(loc,
-												   adventure
-														   .getBriefDescription(),
-												   " at ",
+												   "%s at %s%s %s (already investigated " +
+														   "by another player)",
+												   adventure.getBriefDescription(),
 												   loc.toString(),
-												   adventure
-														   .getFullDescription(),
-												   " ",
-												   distCalculator.distanceString(loc),
-												   " (already investigated by another " +
-														   "player)");
+												   adventure.getFullDescription(),
+												   distCalculator.distanceString(loc));
 			}
 		} else if (item instanceof Portal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, "A portal to another world at ",
-											   loc.toString(), " ",
+			return new SimpleReportNode(loc, "A portal to another world at %s %s",
+											   loc.toString(),
 											   distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected ExplorableFixture type");

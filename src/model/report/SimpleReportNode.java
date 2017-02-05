@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import java.util.Formatter;
-import java.util.stream.Stream;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
@@ -14,7 +13,8 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.NoCloneException;
 
 /**
- * A simple node representing plain text. Any children are ignored!
+ * A simple node representing plain text, but which takes that text using a format
+ * string. Any children are ignored! TODO: delay formatting until produce() called
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -44,45 +44,36 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 
 	/**
 	 * Constructor that the public constructors delegate to.
-	 * @param concatenated a concatenated string to make the text of the node
+	 * @param formatted the finally-formatted string to make the text of the node
 	 */
-	private SimpleReportNode(final String concatenated) {
-		super(concatenated);
-		text = concatenated; // required by Eclipse
-		setText(concatenated);
+	private SimpleReportNode(final String formatted) {
+		super(formatted);
+		text = formatted; // required by Eclipse
+		setText(formatted);
 	}
 
 	/**
 	 * Constructor.
 	 * @param pt    the point, if any, in the map that this represents something on
-	 * @param texts a number of strings to concatenate and make the text of the node.
+	 * @param format the format string
+	 * @param args arguments to format into that string
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
-	public SimpleReportNode(final Point pt, final String... texts) {
-		this(concat(texts));
+	public SimpleReportNode(final Point pt, final String format,
+							final Object... args) {
+		this(String.format(format, args));
 		point = pt;
 	}
 
 	/**
 	 * Constructor not taking a Point.
-	 * @param texts a number of strings to concatenate and make the text of the node.
+	 * @param format the format string
+	 * @param args arguments to format into that string
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
-	public SimpleReportNode(final String... texts) {
-		this(concat(texts));
+	public SimpleReportNode(final String format, final Object... args) {
+		this(String.format(format, args));
 		point = null;
-	}
-
-	/**
-	 * Concatenate a number of Strings.
-	 * @param strings a number of strings
-	 * @return them all concatenated together
-	 */
-	private static String concat(final String... strings) {
-		final StringBuilder builder = new StringBuilder(2 + Stream.of(strings).mapToInt(
-				String::length).sum());
-		Stream.of(strings).forEach(builder::append);
-		return builder.toString();
 	}
 
 	/**

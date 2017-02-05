@@ -232,20 +232,19 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {
-				return new SimpleReportNode(loc, atPoint(loc), item.getName(),
-												   ", an independent ",
-												   item.size().toString(), " ",
-												   item.status().toString(), " ",
-												   item.kind(), " ",
+				return new SimpleReportNode(loc, "At %s: %s, an independent %s %s %s %s",
+												   loc.toString(), item.getName(),
+												   item.size().toString(),
+												   item.status().toString(), item.kind(),
 												   distCalculator.distanceString(loc));
 			} else {
-				return new SimpleReportNode(loc, atPoint(loc), item.getName(), ", a ",
-												   item.size().toString(), " ",
-												   item.status().toString(), " ",
-												   item.kind(),
-												   " allied with " + playerNameOrYou(
-														   item.getOwner()),
-												   " ",
+				return new SimpleReportNode(loc,
+												   "At %s: %s, a %s %s %s allied with %s" +
+														   " %s",
+												   loc.toString(), item.getName(),
+												   item.size().toString(),
+												   item.status().toString(), item.kind(),
+												   playerNameOrYou(item.getOwner()),
 												   distCalculator.distanceString(loc));
 			}
 		} else {

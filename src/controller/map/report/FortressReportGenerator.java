@@ -144,9 +144,10 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
-			parent.add(new SimpleReportNode(loc, "There is a river on the tile, ",
-												   "flowing through the following ",
-												   "borders: ",
+			parent.add(new SimpleReportNode(loc,
+												   "There is a river on the tile, " +
+														   "flowing through the " +
+														   "following borders: %s",
 												   rivers.stream()
 														   .map(River::getDescription)
 														   .collect(Collectors.joining(
@@ -347,9 +348,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		final IReportNode retval = new SectionListReportNode(loc, 5, concat(
 				"Fortress ", item.getName(), " belonging to ",
 				playerNameOrYou(item.getOwner())));
-		retval.add(new SimpleReportNode(loc, "Located at ", loc.toString(), " ",
+		retval.add(new SimpleReportNode(loc, "Located at %s %s", loc.toString(),
 											   distCalculator.distanceString(loc)));
-		retval.add(new SimpleReportNode(loc, getTerrain(map, loc, fixtures)));
+		retval.add(new SimpleReportNode(loc, "%s", getTerrain(map, loc, fixtures)));
 		if (map.getRivers(loc).iterator().hasNext()) {
 			riversToNode(loc, retval,
 					StreamSupport.stream(map.getRivers(loc).spliterator(), false)
