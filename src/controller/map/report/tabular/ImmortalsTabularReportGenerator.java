@@ -84,21 +84,11 @@ public final class ImmortalsTabularReportGenerator
 	@Override
 	public int comparePairs(final Pair<Point, Immortal> one,
 							final Pair<Point, Immortal> two) {
-		final Comparator<Point> comparator = new DistanceComparator(base);
-		final Immortal first = one.second();
-		final Immortal second = two.second();
-		final int cmp = comparator.compare(one.first(), two.first());
-		if (cmp == 0) {
-			final int kindCmp = Integer.compare(first.getClass().hashCode(),
-					second.getClass().hashCode());
-			if (kindCmp == 0) {
-				return Integer.compare(first.hashCode(), second.hashCode());
-			} else {
-				return kindCmp;
-			}
-		} else {
-			return cmp;
-		}
+		return Comparator.comparing((Pair<Point, Immortal> pair) -> pair.first(),
+				new DistanceComparator(base))
+					   .thenComparingInt(pair -> pair.second().getClass().hashCode())
+					   .thenComparingInt(pair -> pair.second().hashCode())
+					   .compare(one, two);
 	}
 
 	@SuppressWarnings("MethodReturnAlwaysConstant")
