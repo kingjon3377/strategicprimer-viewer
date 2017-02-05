@@ -51,5 +51,10 @@ public interface Point extends Comparable<@NonNull Point> {
 			return 0;
 		}
 	}
-
+	/**
+	 * A point is "valid" if neither row nor column is negative.
+	 */
+	default boolean isValid() {
+		return getRow() >= 0 && getCol() >= 0;
+	}
 }

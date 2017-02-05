@@ -224,8 +224,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 							"%s\tIn portal with ID #%d: Different destination world%n",
 							context, Integer.valueOf(id));
 					return false;
-				} else if (other.destinationCoordinates.getRow() > 0 &&
-								   other.destinationCoordinates.getCol() > 0 &&
+				} else if (other.destinationCoordinates.isValid() &&
 								   !destinationCoordinates
 											.equals(other.destinationCoordinates)) {
 					ostream.format(

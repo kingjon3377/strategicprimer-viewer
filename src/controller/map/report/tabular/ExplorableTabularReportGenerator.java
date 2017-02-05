@@ -85,7 +85,7 @@ public final class ExplorableTabularReportGenerator
 			longDesc = "";
 		} else if (item instanceof Portal) {
 			final Portal portal = (Portal) item;
-			if (portal.getDestinationCoordinates().getRow() < 0) {
+			if (!portal.getDestinationCoordinates().isValid()) {
 				brief = "portal to another world";
 			} else {
 				brief = "portal to world " + portal.getDestinationWorld();

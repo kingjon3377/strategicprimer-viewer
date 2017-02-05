@@ -372,6 +372,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	public Point getDestination(final Point point, final Direction direction) {
 		final MapDimensions dims = getMapDimensions();
+		// TODO: extract local variables for current point and dims?
 		switch (direction) {
 		case East:
 			return PointFactory.point(point.getRow(),
@@ -590,7 +591,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	public void dig() {
 		final Point currPoint = selection.first();
-		if (currPoint.getRow() >= 0) {
+		if (currPoint.isValid()) {
 			final IMutableMapNG mainMap = getMap();
 			@Nullable final Ground ground = mainMap.getGround(currPoint);
 			final List<TileFixture> diggables = mainMap.streamAllFixtures(currPoint)

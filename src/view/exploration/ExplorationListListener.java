@@ -124,7 +124,7 @@ public final class ExplorationListListener implements SelectionChangeListener {
 				i++;
 			}
 			final Point currentLocation = model.getSelectedUnitLocation();
-			if (currentLocation.getRow() >= 0 && currentLocation.getCol() >= 0) {
+			if (currentLocation.isValid()) {
 				final String possibleTracks;
 				if (Ocean == model.getMap().getBaseTerrain(currentLocation)) {
 					possibleTracks = huntingModel.fish(currentLocation, 1).get(0);

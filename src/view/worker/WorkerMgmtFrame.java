@@ -252,7 +252,7 @@ public final class WorkerMgmtFrame extends SPFrame
 									model.getMap().getCurrentPlayer())) {
 					if ("HQ".equals(((Fortress) fix).getName())) {
 						return location;
-					} else if ((retval.getRow() < 0) && (location.getRow() >= 0)) {
+					} else if (!retval.isValid() && location.isValid()) {
 						retval = location;
 						break;
 					}

@@ -86,7 +86,7 @@ public final class ReportGenerator {
 							((Fortress) fixture).getOwner().equals(player)) {
 					if ("HQ".equals(((Fortress) fixture).getName())) {
 						return location;
-					} else if ((location.getRow() >= 0) && (retval.getRow() == -1)) {
+					} else if (location.isValid() && !retval.isValid()) {
 						retval = location;
 					}
 				}
