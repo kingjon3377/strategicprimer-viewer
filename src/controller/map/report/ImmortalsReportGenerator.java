@@ -246,15 +246,10 @@ public final class ImmortalsReportGenerator
 										  fixtures,
 								  final IMapNG map, final Player currentPlayer,
 								  final Immortal item, final Point loc) {
-		// FIXME: Remove redundant check
-		if (item instanceof Immortal) {
-			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, "At %s: A(n) %s %s", loc.toString(),
-											   item.toString(),
-											   distCalculator.distanceString(loc));
-		} else {
-			return EmptyReportNode.NULL_NODE;
-		}
+		fixtures.remove(Integer.valueOf(item.getID()));
+		return new SimpleReportNode(loc, "At %s: A(n) %s %s", loc.toString(),
+										   item.toString(),
+										   distCalculator.distanceString(loc));
 	}
 
 	/**
