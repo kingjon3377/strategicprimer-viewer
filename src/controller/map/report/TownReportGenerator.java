@@ -99,11 +99,10 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separateByStatus(separated, fixtures.values(),
 				(mapping, pair) -> mapping.put((ITownFixture) pair.second(),
 						pair.first()));
-		if (Stream.of(abandoned, active, burned, ruined)
+		if (Stream.of(active, abandoned, ruined, burned)
 					.anyMatch(mapping -> !mapping.isEmpty())) {
 			ostream.format(
 					"<h4>Cities, towns, and/or fortifications you know about:</h4>%n");
-			// TODO: reorder so active is first?
 			for (final HeadedMap<ITownFixture, Point> mapping : Arrays.asList(abandoned,
 					active, burned, ruined)) {
 				writeMap(ostream, mapping,
