@@ -20,7 +20,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.towns.Fortress;
 import model.report.IReportNode;
 import model.report.RootReportNode;
@@ -186,7 +186,7 @@ public final class ReportGenerator {
 											SIMPLE_COMPARATOR);
 
 		final Predicate<Pair<Point, IFixture>> filter =
-				pair -> ((pair.second() instanceof Unit) ||
+				pair -> ((pair.second() instanceof IUnit) ||
 								 (pair.second() instanceof Fortress)) &&
 								player.equals(((HasOwner) pair.second()).getOwner());
 		fixtures.values().stream().filter(filter)
@@ -273,9 +273,8 @@ public final class ReportGenerator {
 				new PairComparatorImpl<>(new DistanceComparator(findHQ(map, player)),
 											SIMPLE_COMPARATOR);
 
-		// TODO: filter on IUnit, not Unit
 		final Predicate<Pair<Point, IFixture>> filter =
-				pair -> ((pair.second() instanceof Unit) ||
+				pair -> ((pair.second() instanceof IUnit) ||
 								 (pair.second() instanceof Fortress)) &&
 								player.equals(((HasOwner) pair.second()).getOwner());
 		fixtures.values().stream().filter(filter)
