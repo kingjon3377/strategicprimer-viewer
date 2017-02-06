@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/viewer.iml" filepath="$PROJECT_DIR$/viewer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/viewer-ceylon/viewer-ceylon.iml" filepath="$PROJECT_DIR$/viewer-ceylon/viewer-ceylon.iml" />
     </modules>
   </component>
 </project>

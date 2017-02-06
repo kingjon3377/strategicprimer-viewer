@@ -35,3 +35,4 @@ dist/*
 infer-out/*
 jacoco.exec
 jacoco.xml
+viewer-ceylon/modules

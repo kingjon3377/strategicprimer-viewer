@@ -19,6 +19,12 @@
       <os family="mac" />
   </condition>
 
+  <!-- The project now includes some Ceylon -->
+  <path id="ceylon-ant-tasks">
+       <pathelement location="${ceylon.ant.lib}"/>
+   </path>
+  <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ceylon-ant-tasks"/>
+
   <!-- Paths within the repository. This should just work, so long
        as the directories exist. -->
   <path id="junit.classpath">
@@ -48,7 +54,6 @@
     </path>
     <zipfileset id="apple.extensions.fileset" excludes="META-INF/**/*" src="${apple.extensions.path}" />
   </target>
-
 
   <!-- Clean targets -->
   <target name="clean">
@@ -109,6 +114,11 @@
            and so compilation will fail without this hacky compiler flag. -->
       <compilerarg value="-XDignore.symbol.file"/>
     </javac>
+    <ceylon-compile cwd="${ceylon.root}" src="${ceylon.source.dir}" resource="${ceylon.resource.dir}" encoding="UTF-8">
+        <moduleset>
+            <sourcemodules dir="${ceylon.source.dir}" />
+        </moduleset>
+    </ceylon-compile>
   </target>
   <target name="doc" depends="init">
     <javadoc sourcepath="${source_dir}" defaultexcludes="yes" destdir="${javadoc_dir}"
@@ -116,6 +126,11 @@
       <arg value="-notimestamp" />
       <classpath refid="viewer.classpath" />
     </javadoc>
+    <ceylon-doc cwd="${ceylon.root}" src="${ceylon.source.dir}" encoding="UTF-8">
+        <moduleset>
+            <sourcemodules dir="${ceylon.source.dir}" />
+        </moduleset>
+    </ceylon-doc>
   </target>
 
   <!-- Test targets -->
@@ -157,6 +172,11 @@
       <classpath refid="viewer.classpath" />
     </junit>
     <fail if="junit.failure" message="Unit test(s) failed. See reports." />
+    <ceylon-test cwd="${ceylon.root}" failOnError="true">
+        <moduleset>
+            <sourcemodules dir="${ceylon.source.dir}" />
+        </moduleset>
+    </ceylon-test>
   </target>
 
   <!-- Targets to run static analysis. -->
@@ -192,6 +212,13 @@
       <zipfileset excludes="META-INF/**/*" src="${windowmenu.jar.path}" />
       <resources refid="apple.extensions.fileset" />
     </jar>
+    <!-- there isn't a ceylon-fatjar Ant task (yet) -->
+    <exec executable="${ceylon.executable}">
+        <arg value="fatjar" />
+        <arg value="--cwd=${ceylon.root}" />
+        <arg value="--out=${release}/${basename}.ceylon.jar" />
+        <!-- <arg value="name.of.module" /> -->
+    </exec>
   </target>
   <target name="icon">
     <for list="512,256,128,64,48,32,16" param="resolution">

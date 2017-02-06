@@ -10,4 +10,5 @@ ant \
     -Dwindowmenu.jar.path=./WindowMenu.jar \
     -Dstub-script-path=./universalJavaApplicationStub-2.0.1/src/universalJavaApplicationStub \
     -Dapple.extensions.path=./orange-extensions-1.3.0.jar \
+    -Dceylon.home=./ceylon-1.3.1 \
     release
