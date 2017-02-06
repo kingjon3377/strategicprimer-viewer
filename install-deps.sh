@@ -38,3 +38,4 @@ ceylon-1.3.1/bin/ceylon import-jar --cwd=viewer-ceylon org.hamcrest/1.3 \
 echo '+org.hamcrest=1.3' > /tmp/junit.properties
 ceylon-1.3.1/bin/ceylon import-jar --cwd=viewer-ceylon --descriptor=/tmp/junit.properties \
     org.junit/4.12 /usr/share/java/junit4.jar
+ceylon-1.3.1/bin/ceylon import-jar com.bric.window.windowmenu/1.0 WindowMenu.jar
