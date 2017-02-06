@@ -97,6 +97,11 @@
       </fileset>
     </copy>
   </target>
+  <target name="init-ceylon" depends="jar">
+      <ceylon-import-jar cwd="${ceylon.root}" jar="${release}/${basename}.jar"
+          module="${shortname}/${major-version-number}.${minor-version-number}"
+          failOnError="true" descriptor="legacy-viewer.module.properties" />
+  </target>
   <target name="build" depends="init">
     <echo message="${ant.project.name}: ${ant.file}" />
     <echo>${toString:viewer.classpath}</echo>
@@ -114,6 +119,8 @@
            and so compilation will fail without this hacky compiler flag. -->
       <compilerarg value="-XDignore.symbol.file"/>
     </javac>
+  </target>
+  <target name="build-ceylon" depends="init-ceylon">
     <ceylon-compile cwd="${ceylon.root}" src="${ceylon.source.dir}" resource="${ceylon.resource.dir}" encoding="UTF-8">
         <moduleset>
             <sourcemodules dir="${ceylon.source.dir}" />
@@ -126,6 +133,8 @@
       <arg value="-notimestamp" />
       <classpath refid="viewer.classpath" />
     </javadoc>
+  </target>
+  <target name="doc-ceylon" depends="build-ceylon">
     <ceylon-doc cwd="${ceylon.root}" src="${ceylon.source.dir}" encoding="UTF-8">
         <moduleset>
             <sourcemodules dir="${ceylon.source.dir}" />
@@ -172,6 +181,8 @@
       <classpath refid="viewer.classpath" />
     </junit>
     <fail if="junit.failure" message="Unit test(s) failed. See reports." />
+  </target>
+  <target name="test-ceylon" depends="build-ceylon">
     <ceylon-test cwd="${ceylon.root}" failOnError="true">
         <moduleset>
             <sourcemodules dir="${ceylon.source.dir}" />
@@ -213,6 +224,8 @@
       <resources refid="apple.extensions.fileset" />
     </jar>
     <!-- there isn't a ceylon-fatjar Ant task (yet) -->
+  </target>
+  <target name="jar-ceylon" depends="test,get-builder">
     <exec executable="${ceylon.executable}">
         <arg value="fatjar" />
         <arg value="--cwd=${ceylon.root}" />
@@ -232,7 +245,7 @@
       </sequential>
     </for>
   </target>
-  <target name="exe" depends="jar,icon">
+  <target name="exe" depends="jar,jar-ceylon,icon">
       <exec executable="${icotool.path}" dir="${basedir}">
       <arg value="-o" />
       <arg value="icon.ico" />
@@ -244,7 +257,7 @@
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
       outfile="${release}/${basename}.exe" jar="${release}/${basename}.jar" />
   </target>
-  <target name="app" depends="jar,icon">
+  <target name="app" depends="jar,jar-ceylon,icon">
       <exec executable="${png2icns.path}" dir="${basedir}">
       <arg value="icon.icns" />
       <arg value="icon_512px.png" />
@@ -333,7 +346,7 @@
     </tar>
   </target>
   <target name="release"
-    depends="app,exe,jar,dmg,dist" />
+    depends="app,exe,jar,jar-ceylon,dmg,dist" />
   <target name="coverage" depends="build">
       <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
           <classpath path="${jacoco.classpath}" />
