@@ -1,7 +1,6 @@
 package model.map.fixtures.mobile.worker;
 
 import java.util.Formatter;
-import junit.framework.AssertionFailedError;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.PlayerImpl;
@@ -17,6 +16,7 @@ import util.NullStream;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * A class to test that the proxy classes work as expected.
@@ -59,7 +59,7 @@ public final class TestProxyWorker {
 				format.format("%n");
 			}
 		}
-		throw new AssertionFailedError(builder.toString());
+		fail(builder.toString());
 	}
 
 	/**
