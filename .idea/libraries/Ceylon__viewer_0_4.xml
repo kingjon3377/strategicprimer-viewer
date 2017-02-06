@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Ceylon: viewer/0.4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/viewer-ceylon/modules/viewer/0.4/viewer-0.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
