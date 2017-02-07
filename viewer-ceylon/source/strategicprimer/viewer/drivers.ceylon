@@ -1,7 +1,9 @@
 import controller.map.drivers { ... }
 import ceylon.collection {
     MutableMap,
-    HashMap
+    HashMap,
+    ArrayList,
+    MutableList
 }
 import ceylon.logging {
     Logger,
@@ -11,7 +13,26 @@ import java.lang {
     System
 }
 import javax.swing {
-    UIManager
+    UIManager,
+    SwingUtilities
+}
+import java.io {
+    IOException
+}
+import controller.map.misc {
+    CLIHelper, ICLIHelper
+}
+import view.util {
+    AppChooserFrame
+}
+import model.misc {
+    IDriverModel
+}
+import java.awt {
+    GraphicsEnvironment
+}
+import ceylon.interop.java {
+    JavaList
 }
 Logger log = logger(`module strategicprimer.viewer`);
 Map<String, ISPDriver[2]> createCache() {
@@ -107,7 +128,76 @@ String usageMessage(IDriverUsage usage, Boolean verbose) {
     }
     return builder.string;
 }
-void run() {
+object appStarter satisfies ISPDriver {
+    shared actual void startDriver(ICLIHelper cli, SPOptions options, String?* args) {
+        variable Boolean gui = !GraphicsEnvironment.headless;
+        variable SPOptionsImpl currentOptions = SPOptionsImpl(options);
+        if (!currentOptions.hasOption("--gui")) {
+            currentOptions.setOption("--gui", gui.string);
+        }
+        MutableList<String> others = ArrayList<String>();
+        variable [ISPDriver, ISPDriver]? currentDrivers = null;
+        for (arg in args.coalesced) {
+            if (arg == "-g" || arg == "--gui") {
+                currentOptions.setOption("--gui", "true");
+                gui = true;
+            } else if (arg == "-c" || arg == "--cli") {
+                currentOptions.setOption("--gui", "false");
+                gui = false;
+            } else if (arg.startsWith("--gui=")) {
+                String tempString = arg.substring(6);
+                value tempBool = Boolean.parse(tempString);
+                if (is Boolean tempBool) {
+                    currentOptions.setOption("--gui", tempString);
+                    gui = tempBool;
+                } else {
+                    throw DriverFailedException("--gui=nonBoolean", tempBool);
+                }
+            } else if (arg.startsWith("-") && arg.contains("=")) {
+                {String+} broken = arg.split('='.equals, true, false);
+                currentOptions.setOption(broken.first, broken.rest.reduce<String>(
+                    (String partial, String element) =>
+                        if (partial.empty) then element else "``partial``=``element``"));
+            } else if (driverCache.defines(arg.lowercased)) {
+                if (exists temp = currentDrivers) {
+                    SPOptions currentOptionsTyped = currentOptions;
+                    if (gui) {
+                        // TODO: catch and log a DriverFailedException inside the lambda
+                        SwingUtilities.invokeLater(() =>
+                                temp.rest.first.startDriver(cli, currentOptionsTyped,
+                                    *others));
+                    } else {
+                        temp.first.startDriver(cli, currentOptionsTyped, *others);
+                    }
+                }
+            }
+        }
+    }
+
+    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel driverModel) {
+        // TODO: what about -c?
+        if (GraphicsEnvironment.headless) {
+            List<ISPDriver> cliDrivers = ArrayList<ISPDriver>(driverCache.size,
+                1.5, driverCache.items.map((element) => element.first));
+            try {
+                assert (is CLIHelper cli);
+                if (exists driver = cliDrivers.get(cli.chooseFromList(JavaList(cliDrivers),
+                        "CLI apps available:", "No applications available", "App to start: ",
+                        true))) {
+                    driver.startDriver(cli, options, driverModel);
+                }
+            } catch (IOException except) {
+                log.error("I/O error prompting user for app to start", except);
+            }
+        } else {
+            SwingUtilities.invokeLater(
+                () => AppChooserFrame(cli, driverModel, options).setVisible(true));
+        }
+    }
+
+
+}
+shared void run() {
     System.setProperty("com.apple.mrj.application.apple.menu.about.name",
         "SP Helpers");
     System.setProperty("apple.awt.application.name", "SP Helpers");
@@ -115,12 +205,12 @@ void run() {
     System.setProperty("apple.laf.useScreenMenuBar", "true");
     SPOptionsImpl options = SPOptionsImpl();
     try {
-        AppStarter().startDriver(options, *process.arguments);
+        appStarter.startDriver(options, *process.arguments);
     } catch (IncorrectUsageException except) {
         IDriverUsage usage = except.correctUsage;
         process.writeErrorLine(usageMessage(usage, options.hasOption("--verbose")));
         process.exit(1);
-    } catch (DriverFailedException except) {
+    } catch (IOException|DriverFailedException except) {
         log.error(except.message, except.cause);
         process.exit(2);
     }
