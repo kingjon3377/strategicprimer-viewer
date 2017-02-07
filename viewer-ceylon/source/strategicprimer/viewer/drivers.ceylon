@@ -69,6 +69,44 @@ Map<String, ISPDriver[2]> createCache() {
     return cache;
 }
 Map<String, ISPDriver[2]> driverCache = createCache();
+String usageMessage(IDriverUsage usage, Boolean verbose) {
+    StringBuilder builder = StringBuilder();
+    // FIXME: should open with either "ceylon run" or "java -jar /path/to/fat.jar"
+    // and this module's name.
+    builder.append("Usage: java controller.map.drivers.AppStarter ");
+    if (usage.graphical) {
+        builder.append("[-g|--gui]");
+    } else {
+        builder.append("-c|--cli");
+    }
+    builder.append(" ``usage.shortOption``|``usage.longOption``");
+    for (option in usage.supportedOptions) {
+        builder.append(" [``option``");
+    }
+    switch (usage.paramsWanted)
+    case (ParamCount.none) {}
+    case (ParamCount.one) { builder.append(" ``usage.firstParamDesc``"); }
+    case (ParamCount.atLeastOne) {
+        builder.append(" ``usage.firstParamDesc`` [``usage.subsequentParamDesc`` ...]");
+    }
+    case (ParamCount.two) {
+        builder.append(" ``usage.firstParamDesc`` ``usage.subsequentParamDesc``");
+    }
+    case (ParamCount.atLeastTwo) {
+        builder.append(" ``usage.firstParamDesc`` ``
+        usage.subsequentParamDesc`` [``usage.subsequentParamDesc`` ...]");
+    }
+    case (ParamCount.anyNumber) {
+        builder.append(" [``usage.subsequentParamDesc`` ...]");
+    }
+    builder.appendNewline();
+    if (verbose) {
+        builder.append(usage.longDescription);
+    } else {
+        builder.append(usage.shortDescription);
+    }
+    return builder.string;
+}
 void run() {
     System.setProperty("com.apple.mrj.application.apple.menu.about.name",
         "SP Helpers");
@@ -80,42 +118,7 @@ void run() {
         AppStarter().startDriver(options, *process.arguments);
     } catch (IncorrectUsageException except) {
         IDriverUsage usage = except.correctUsage;
-        StringBuilder builder = StringBuilder();
-        // FIXME: should open with either "ceylon run" or "java -jar /path/to/fat.jar"
-        // and this module's name.
-        builder.append("Usage: java controller.map.drivers.AppStarter ");
-        if (usage.graphical) {
-            builder.append("[-g|--gui]");
-        } else {
-            builder.append("-c|--cli");
-        }
-        builder.append(" ``usage.shortOption``|``usage.longOption``");
-        for (option in usage.supportedOptions) {
-            builder.append(" [``option``");
-        }
-        switch (usage.paramsWanted)
-        case (ParamCount.none) {}
-        case (ParamCount.one) { builder.append(" ``usage.firstParamDesc``"); }
-        case (ParamCount.atLeastOne) {
-            builder.append(" ``usage.firstParamDesc`` [``usage.subsequentParamDesc`` ...]");
-        }
-        case (ParamCount.two) {
-            builder.append(" ``usage.firstParamDesc`` ``usage.subsequentParamDesc``");
-        }
-        case (ParamCount.atLeastTwo) {
-            builder.append(" ``usage.firstParamDesc`` ``
-                usage.subsequentParamDesc`` [``usage.subsequentParamDesc`` ...]");
-        }
-        case (ParamCount.anyNumber) {
-            builder.append(" [``usage.subsequentParamDesc`` ...]");
-        }
-        builder.appendNewline();
-        if (options.hasOption("--verbose")) {
-            builder.append(usage.longDescription);
-        } else {
-            builder.append(usage.shortDescription);
-        }
-        process.writeErrorLine(builder.string);
+        process.writeErrorLine(usageMessage(usage, options.hasOption("--verbose")));
         process.exit(1);
     } catch (DriverFailedException except) {
         log.error(except.message, except.cause);
