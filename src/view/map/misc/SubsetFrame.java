@@ -52,7 +52,7 @@ public final class SubsetFrame extends SPFrame {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(MapCheckerFrame.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(SubsetFrame.class);
 	/**
 	 * The color to use for errors.
 	 */

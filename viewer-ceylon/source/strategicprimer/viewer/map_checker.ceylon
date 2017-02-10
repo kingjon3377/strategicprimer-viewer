@@ -3,16 +3,59 @@ import controller.map.drivers {
     ParamCount,
     DriverUsage,
     IDriverUsage,
-    SPOptions
+    SPOptions,
+    MapChecker
 }
 import controller.map.misc {
     ICLIHelper
 }
-import view.map.misc {
-    MapCheckerFrame
-}
 import java.nio.file {
-    Paths
+    JPaths=Paths,
+    JPath=Path
+}
+import java.awt {
+    Dimension,
+    Color
+}
+import view.util {
+    SPFrame,
+    StreamingLabel
+}
+import java.util {
+    Optional
+}
+import util {
+    Warning
+}
+import javax.swing {
+    JScrollPane
+}
+class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker",
+        Optional.empty<JPath>(), Dimension(640, 320)) {
+    shared actual String windowName = "Map Checker";
+    StreamingLabel label = StreamingLabel();
+    void printParagraph(String paragraph,
+            StreamingLabel.LabelTextColor color = StreamingLabel.LabelTextColor.white) {
+        try (writer = label.writer) {
+            writer.println("<p style=\"color:``color``\">``paragraph``</p>");
+        }
+        label.repaint();
+    }
+    Warning.custom.setCustomPrinter(Warning.wrapHandler(
+        (string) => printParagraph(string, StreamingLabel.LabelTextColor.yellow)));
+    setBackground(Color.black);
+    contentPane = JScrollPane(label);
+    contentPane.background = Color.black;
+    MapChecker checker = MapChecker();
+    shared void check(JPath filename) {
+        checker.check(filename, (text) {
+            if (text.startsWith("No errors")) {
+                printParagraph(text, StreamingLabel.LabelTextColor.green);
+            } else {
+                printParagraph(text);
+            }
+        }, (text) => printParagraph(text, StreamingLabel.LabelTextColor.red));
+    }
 }
 "A driver to check every map file in a list for errors and report the results in a
  window."
@@ -24,7 +67,7 @@ object mapCheckerGUI satisfies UtilityDriver {
         MapCheckerFrame window = MapCheckerFrame();
         window.setVisible(true);
         for (arg in args.coalesced) {
-            window.check(Paths.get(arg));
+            window.check(JPaths.get(arg));
         }
     }
 }
