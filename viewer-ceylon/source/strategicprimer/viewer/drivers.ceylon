@@ -107,7 +107,7 @@ Map<String, ISPDriver[2]> createCache() {
     choices(WorkerReportDriver(), ViewerStart());
     choices(advancementCLI, advancementGUI);
     choices(StrategyExportDriver(), WorkerStart());
-    choices(ExplorationCLIDriver(), ExplorationGUI());
+    choices(explorationCLI, ExplorationGUI());
     choices(readerComparator, drawHelperComparator);
     choices(MapChecker(), MapCheckerGUI());
     choices(SubsetDriver(), SubsetGUIDriver());
