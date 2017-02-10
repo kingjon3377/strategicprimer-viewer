@@ -109,7 +109,7 @@ Map<String, ISPDriver[2]> createCache() {
     choices(StrategyExportDriver(), WorkerStart());
     choices(explorationCLI, explorationGUI);
     choices(readerComparator, drawHelperComparator);
-    choices(MapChecker(), mapCheckerGUI);
+    choices(mapCheckerCLI, mapCheckerGUI);
     choices(SubsetDriver(), SubsetGUIDriver());
     // FIXME: Write GUI equivalent of QueryCLI
     choice(QueryCLI());
