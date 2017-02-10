@@ -5,7 +5,8 @@ import controller.map.drivers {
     IDriverUsage,
     SPOptions,
     IncorrectUsageException,
-    DriverFailedException
+    DriverFailedException,
+    SimpleCLIDriver
 }
 import controller.map.misc {
     ICLIHelper,
@@ -14,7 +15,9 @@ import controller.map.misc {
     IDFactoryFiller
 }
 import model.map {
-    IMutableMapNG
+    IMutableMapNG,
+    Point,
+    IMapNG
 }
 import java.nio.file {
     JPaths = Paths
@@ -39,6 +42,10 @@ import model.map.fixtures.terrain {
 }
 import model.map.fixtures {
     Ground
+}
+import model.misc {
+    IDriverModel,
+    IMultiMapModel
 }
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated
@@ -101,6 +108,69 @@ object echoDriver satisfies UtilityDriver {
             }
         } else {
             throw IncorrectUsageException(usageObject);
+        }
+    }
+}
+"A driver to fix ID mismatches between forests and Ground in the main and player maps."
+object forestFixerDriver satisfies SimpleCLIDriver {
+    IDriverUsage usageObject = DriverUsage(false, "-f", "--fix-forest",
+        ParamCount.atLeastTwo, "Fix forest IDs",
+        "Make sure that forest IDs in submaps match the main map");
+    shared actual IDriverUsage usage() => usageObject;
+    {Forest*} extractForests(IMapNG map, Point location) {
+        {Forest*} retval = { for (fixture in map.getOtherFixtures(location))
+        if (is Forest fixture) fixture };
+        if (exists forest = map.getForest(location)) {
+            return retval.follow(forest);
+        } else {
+            return retval;
+        }
+    }
+    {Ground*} extractGround(IMapNG map, Point location) {
+        {Ground*} retval = { for (fixture in map.getOtherFixtures(location))
+        if (is Ground fixture) fixture };
+        if (exists ground = map.getGround(location)) {
+            return retval.follow(ground);
+        } else {
+            return retval;
+        }
+    }
+    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        assert (is IMultiMapModel model);
+        IMutableMapNG mainMap = model.map;
+        for (pair in model.subordinateMaps) {
+            cli.println("Starting ``pair.second().map(Object.string)
+                .orElse("a map with no associated path")``");
+            IMutableMapNG map = pair.first();
+            for (location in map.locations()) {
+                {Forest*} mainForests = extractForests(mainMap, location);
+                {Forest*} subForests = extractForests(map, location);
+                for (forest in subForests) {
+                    if (mainForests.contains(forest)) {
+                        continue ;
+                    } else if (exists matching = mainForests
+                            .find(forest.equalsIgnoringID)) {
+                        forest.id = matching.id;
+                    } else {
+                        cli.println("Unmatched forest in ``location``:``forest``");
+                        mainMap.addFixture(location, forest.copy(false));
+                    }
+                }
+                {Ground*} mainGround = extractGround(mainMap, location);
+                {Ground*} subGround = extractGround(map, location);
+                for (ground in subGround) {
+                    if (mainGround.contains(ground)) {
+                        continue;
+                    } else if (exists matching = mainGround
+                            .find(ground.equalsIgnoringID)) {
+                        ground.id = matching.id;
+                    } else {
+                        cli.println("Unmatched ground in ``location``: ``ground``");
+                        mainMap.addFixture(location, ground.copy(false));
+                    }
+                }
+            }
         }
     }
 }
