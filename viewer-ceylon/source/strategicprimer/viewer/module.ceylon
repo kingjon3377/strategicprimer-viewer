@@ -14,4 +14,5 @@ module strategicprimer.viewer "0.4.9900" {
     import ceylon.io "1.3.1";
     import com.bric.window.windowmenu "1.0";
     import viewer "0.4";
+    import java.desktop "8";
 }

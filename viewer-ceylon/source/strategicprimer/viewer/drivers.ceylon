@@ -59,7 +59,11 @@ import java.awt.event {
 import java.nio.file {
     Path
 }
-import strategicprimer.viewer { advancementCLI, advancementGUI }
+import strategicprimer.viewer {
+    advancementCLI,
+    advancementGUI,
+    drawHelperComparator
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."
@@ -102,7 +106,7 @@ Map<String, ISPDriver[2]> createCache() {
     choices(advancementCLI, advancementGUI);
     choices(StrategyExportDriver(), WorkerStart());
     choices(ExplorationCLIDriver(), ExplorationGUI());
-    choices(ReaderComparator(), DrawHelperComparator());
+    choices(ReaderComparator(), drawHelperComparator);
     choices(MapChecker(), MapCheckerGUI());
     choices(SubsetDriver(), SubsetGUIDriver());
     // FIXME: Write GUI equivalent of QueryCLI
