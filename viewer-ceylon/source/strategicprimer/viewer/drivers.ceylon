@@ -107,7 +107,7 @@ Map<String, ISPDriver[2]> createCache() {
     choices(WorkerReportDriver(), ViewerStart());
     choices(advancementCLI, advancementGUI);
     choices(StrategyExportDriver(), WorkerStart());
-    choices(explorationCLI, ExplorationGUI());
+    choices(explorationCLI, explorationGUI);
     choices(readerComparator, drawHelperComparator);
     choices(MapChecker(), MapCheckerGUI());
     choices(SubsetDriver(), SubsetGUIDriver());
@@ -333,7 +333,7 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
     buttonPanel.add(button("Map Viewer", ViewerStart));
     buttonPanel.add(button("Worker Skill Advancement", () => advancementGUI));
     buttonPanel.add(button("Unit Orders and Worker Management", WorkerStart));
-    buttonPanel.add(button("Exploration", ExplorationGUI));
+    buttonPanel.add(button("Exploration", () => explorationGUI));
     frame.contentPane = BorderedPanel(JScrollPane(buttonPanel),
         JLabel("Please choose one of the applications below"), null, null, null);
     frame.pack();
