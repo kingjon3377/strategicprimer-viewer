@@ -59,6 +59,7 @@ import java.awt.event {
 import java.nio.file {
     Path
 }
+import strategicprimer.viewer { advancementCLI }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."
@@ -98,7 +99,7 @@ Map<String, ISPDriver[2]> createCache() {
         cache.put(usage.longOption, [driver, driver]);
     }
     choices(WorkerReportDriver(), ViewerStart());
-    choices(AdvancementCLIDriver(), AdvancementStart());
+    choices(advancementCLI, AdvancementStart());
     choices(StrategyExportDriver(), WorkerStart());
     choices(ExplorationCLIDriver(), ExplorationGUI());
     choices(ReaderComparator(), DrawHelperComparator());
