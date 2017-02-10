@@ -81,7 +81,7 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 							mainForests.stream().filter(forest::equalsIgnoringID)
 									.findAny();
 					if (matching.isPresent()) {
-						forest.setID(matching.get().getID());
+						forest.setId(matching.get().getID());
 					} else {
 						cli.printf("Unmatched forest in %s: %s%n", location.toString(),
 								forest.toString());
@@ -98,7 +98,7 @@ public class ForestFixerDriver implements SimpleCLIDriver {
 							mainGround.stream().filter(ground::equalsIgnoringID)
 									.findAny();
 					if (matching.isPresent()) {
-						ground.setID(matching.get().getID());
+						ground.setId(matching.get().getID());
 					} else {
 						cli.printf("Unmatched ground in %s: %s%n", location.toString(),
 								ground.toString());

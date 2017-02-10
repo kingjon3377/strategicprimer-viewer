@@ -501,7 +501,7 @@ public final class TestConverter {
 		// its ID.
 		final Forest tempForest = new Forest(TEMP_TREE, false, 0);
 		converted.addFixture(PointFactory.point(3, 7), tempForest);
-		tempForest.setID(-1);
+		tempForest.setId(-1);
 
 		converted.setMountainous(PointFactory.point(4, 0), true);
 		converted.setMountainous(PointFactory.point(4, 3), true);
