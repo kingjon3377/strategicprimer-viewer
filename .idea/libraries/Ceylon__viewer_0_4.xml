@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/viewer-ceylon/modules/viewer/0.4/viewer-0.4.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/src" />
+    </SOURCES>
   </library>
 </component>
