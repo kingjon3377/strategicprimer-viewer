@@ -329,7 +329,7 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
     }
     JPanel buttonPanel = JPanel(GridLayout(0, 1));
     buttonPanel.add(button("Map Viewer", ViewerStart));
-    buttonPanel.add(button("Worker Skill Advancement", AdvancementStart));
+    buttonPanel.add(button("Worker Skill Advancement", () => advancementGUI));
     buttonPanel.add(button("Unit Orders and Worker Management", WorkerStart));
     buttonPanel.add(button("Exploration", ExplorationGUI));
     frame.contentPane = BorderedPanel(JScrollPane(buttonPanel),
