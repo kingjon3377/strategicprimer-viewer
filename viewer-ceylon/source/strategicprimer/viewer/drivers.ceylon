@@ -27,7 +27,8 @@ import java.io {
     IOException
 }
 import controller.map.misc {
-    CLIHelper, ICLIHelper
+    CLIHelper, ICLIHelper,
+    DuplicateFixtureRemover
 }
 import view.util {
     ErrorShower,
@@ -35,7 +36,8 @@ import view.util {
     BorderedPanel
 }
 import model.misc {
-    IDriverModel
+    IDriverModel,
+    IMultiMapModel
 }
 import java.awt {
     GraphicsEnvironment,
@@ -113,7 +115,7 @@ Map<String, ISPDriver[2]> createCache() {
     choice(QueryCLI());
     choice(EchoDriver());
     // FIXME: Write GUI for the duplicate fixture remover
-    choice(DuplicateFixtureRemoverCLI());
+    choice(duplicateFixtureRemoverCLI);
     // FIXME: Write trapping (and hunting, etc.) GUI
     choice(TrapModelDriver());
     // TODO: AppStarter went here
@@ -336,4 +338,28 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         JLabel("Please choose one of the applications below"), null, null, null);
     frame.pack();
     return frame;
+}
+"""A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
+   takes up on disk and the memory and CPU it takes to deal with it)."""
+object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
+    DriverUsage usageObject = DriverUsage(false, "-u", "--duplicates", ParamCount.one,
+        "Remove duplicate fixtures",
+        "Remove duplicate fixtures (identical except ID# and on the same tile) from a map."
+    );
+    usageObject.addSupportedOption("--current-turn=NN");
+    shared actual IDriverUsage usage() => usageObject;
+    "Run the driver"
+    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+        try {
+            if (is IMultiMapModel model) {
+                for (pair in model.allMaps) {
+                    DuplicateFixtureRemover.filter(pair.first(), cli);
+                }
+            } else {
+                DuplicateFixtureRemover.filter(model.map, cli);
+            }
+        } catch (IOException except) {
+            throw DriverFailedException("I/O error interacting with user", except);
+        }
+    }
 }
