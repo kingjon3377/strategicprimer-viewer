@@ -113,7 +113,7 @@ Map<String, ISPDriver[2]> createCache() {
     choices(SubsetDriver(), SubsetGUIDriver());
     // FIXME: Write GUI equivalent of QueryCLI
     choice(QueryCLI());
-    choice(EchoDriver());
+    choice(echoDriver);
     // FIXME: Write GUI for the duplicate fixture remover
     choice(duplicateFixtureRemoverCLI);
     // FIXME: Write trapping (and hunting, etc.) GUI
