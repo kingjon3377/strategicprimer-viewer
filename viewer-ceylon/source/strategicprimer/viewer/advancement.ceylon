@@ -4,10 +4,15 @@ import controller.map.drivers {
     DriverFailedException,
     ParamCount,
     DriverUsage,
-    IDriverUsage
+    IDriverUsage,
+    SimpleDriver
 }
 import controller.map.misc {
-    ICLIHelper
+    ICLIHelper,
+    MenuBroker,
+    PlayerChangeMenuListener,
+    WindowCloser,
+    IOHandler
 }
 import model.misc {
     IDriverModel
@@ -48,6 +53,16 @@ import model.map.fixtures.mobile.worker {
 }
 import util {
     SingletonRandom { singletonRandom = random }
+}
+import javax.swing {
+    SwingUtilities
+}
+import view.worker {
+    AdvancementFrame
+}
+import view.util {
+    AboutDialog,
+    DriverQuit
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
@@ -213,4 +228,39 @@ object advancementCLI satisfies SimpleCLIDriver {
            or her level in each Skill in each Job.""");
     usageTemp.addSupportedOption("--current-turn=NN");
     shared actual IDriverUsage usage() => usageTemp;
+}
+"The worker-advancement GUI driver."
+object advancementGUI satisfies SimpleDriver {
+    DriverUsage usageTemp = DriverUsage(true, "-a", "--adv", ParamCount.atLeastOne,
+        "View a player's workers and manage their advancement",
+        """View a player's units, the workers in those units, each worker's Jobs, and his
+           or her level in each Skill in each Job.""");
+    usageTemp.addSupportedOption("--current-turn=NN");
+    shared actual IDriverUsage usage() => usageTemp;
+    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+        IWorkerModel workerModel;
+        if (is IWorkerModel model) {
+            workerModel = model;
+        } else {
+            workerModel = WorkerModel(model);
+        }
+        MenuBroker menuHandler = MenuBroker();
+        menuHandler.register(IOHandler(workerModel, options, cli), "load", "save",
+            "save as", "new", "load secondary", "save all", "open in map viewer",
+            "open secondary map in map viewer");
+        PlayerChangeMenuListener pcml = PlayerChangeMenuListener(workerModel);
+        menuHandler.register(pcml, "change current player");
+        menuHandler.register((event) => DriverQuit.quit(0), "quit");
+        SwingUtilities.invokeLater(() {
+            AdvancementFrame frame = AdvancementFrame(workerModel, menuHandler);
+            pcml.addPlayerChangeListener(frame);
+            menuHandler.register((event) =>
+                    frame.playerChanged(model.map.currentPlayer, model.map.currentPlayer),
+                "reload tree");
+            menuHandler.register(WindowCloser(frame), "close");
+            menuHandler.register((event) =>
+                    AboutDialog(frame, frame.windowName).setVisible(true), "about");
+            frame.setVisible(true);
+        });
+    }
 }
