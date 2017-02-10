@@ -123,8 +123,8 @@ Map<String, ISPDriver[2]> createCache() {
     choice(StatGeneratingCLIDriver());
     // FIXME: Write GUI for map-expanding driver
     choice(expansionDriver);
-    // TODO: Write GUI equivalent of MapPopulatorDriver
-    choice(MapPopulatorDriver());
+    // TODO: Write GUI equivalent of Map Populator Driver
+    choice(mapPopulatorDriver);
     choices(ResourceAddingCLIDriver(), ResourceAddingGUIDriver());
     // TODO: Write GUI equivalent of TabularReportDriver
     choice(TabularReportDriver());

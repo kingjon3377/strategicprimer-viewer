@@ -6,7 +6,9 @@ import controller.map.drivers {
     SPOptions
 }
 import controller.map.misc {
-    ICLIHelper
+    ICLIHelper,
+    IDRegistrar,
+    IDFactoryFiller
 }
 import model.misc {
     IDriverModel,
@@ -31,7 +33,8 @@ import ceylon.collection {
 }
 import model.map.fixtures.mobile {
     IUnit,
-    SimpleMovement
+    SimpleMovement,
+    Animal
 }
 import ceylon.interop.java {
     CeylonIterable
@@ -44,6 +47,12 @@ import model.map.fixtures.resources {
     CacheFixture
 }
 import lovelace.util.jvm { shuffle }
+import lovelace.util.common {
+    todo
+}
+import ceylon.math.float {
+    random
+}
 IUnit mockUnit(Player player) {
     return UnitProxyMaker.makeProxyFor(player);
 }
@@ -122,5 +131,53 @@ object expansionDriver satisfies SimpleCLIDriver {
             log.warn("Expansion on a master map with no subordinate maps does nothing");
             startDriver(cli, options, SimpleMultiMapModel(model));
         }
+    }
+}
+"""A driver to add some kind of fixture to suitable tiles throughout the map. Customize
+   isSuitable(), chance(), and create() before each use."""
+todo("Make this an interface for objects to satisfy instead?")
+object mapPopulatorDriver satisfies SimpleCLIDriver {
+    DriverUsage usageObject = DriverUsage(false, "-l", "--populate", ParamCount.one,
+        "Add missing fixtures to a map",
+        "Add specified kinds of fixtures to suitable points throughout a map");
+    usageObject.addSupportedOption("--current-turn=NN");
+    shared actual IDriverUsage usage() => usageObject;
+    variable Integer suitableCount = 0;
+    variable Integer changedCount = 0;
+    "The first method to customize for each use: whether a point is suitable for the
+     kind of fixture we're creating."
+    Boolean isSuitable(IMapNG map, Point location) {
+        TileType terrain = map.getBaseTerrain(location);
+        // Hares won't appear in mountains, forests, or ocean.
+        if (map.isMountainous(location) || TileType.ocean == terrain ||
+                TileType.notVisible == terrain || map.getForest(location) exists) {
+            return false;
+        } else {
+            suitableCount++;
+            return true;
+        }
+    }
+    """The probability of adding something to any given tile. The second method to
+       customize."""
+    Float chance = 0.05;
+    """Add a fixture of the kind we're creating at the given location. The third method to
+       customize."""
+    void create(Point location, IMutableMapNG map, IDRegistrar idf) {
+        changedCount++;
+        map.addFixture(location, Animal("hare", false, false, "wild", idf.createID()));
+    }
+    "Populate the map. You shouldn't need to customize this."
+    void populate(IMutableMapNG map) {
+        IDRegistrar idf = IDFactoryFiller.createFactory(map);
+        for (location in map.locations()) {
+            if (isSuitable(map, location) && random() < chance) {
+                create(location, map, idf);
+            }
+        }
+    }
+    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+        populate(model.map);
+        cli.println(
+            "``changedCount`` out of ``suitableCount`` suitable locations were changed");
     }
 }
