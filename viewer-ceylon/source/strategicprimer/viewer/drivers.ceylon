@@ -12,11 +12,16 @@ import ceylon.logging {
     Priority
 }
 import java.lang {
-    System, JString = String
+    System,
+    Runnable
 }
 import javax.swing {
     UIManager,
-    SwingUtilities
+    SwingUtilities,
+    JButton,
+    JPanel,
+    JScrollPane,
+    JLabel
 }
 import java.io {
     IOException
@@ -25,25 +30,34 @@ import controller.map.misc {
     CLIHelper, ICLIHelper
 }
 import view.util {
-    AppChooserFrame,
-    ErrorShower
+    ErrorShower,
+    SPFrame,
+    BorderedPanel
 }
 import model.misc {
     IDriverModel
 }
 import java.awt {
-    GraphicsEnvironment
+    GraphicsEnvironment,
+    GridLayout
 }
 import ceylon.interop.java {
-    JavaList,
-    javaString
+    JavaList
 }
 import ceylon.language.meta.declaration {
     Package,
     Module
 }
 import java.util {
-    JList = List
+    JList = List,
+    Optional
+}
+import java.awt.event {
+    ActionListener,
+    ActionEvent
+}
+import java.nio.file {
+    Path
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -235,10 +249,8 @@ shared void run() {
                 SPOptions currentOptionsTyped = currentOptions;
                 if (gui) {
                     try {
-                        JList<JString> driversList = JavaList(ArrayList(others.size, 1.0,
-                            others.map(javaString)));
-                        SwingUtilities.invokeLater(() => AppChooserFrame(cli,
-                            currentOptionsTyped, driversList).setVisible(true));
+                        SwingUtilities.invokeLater(() => appChooserFrame(cli,
+                            currentOptionsTyped, others).setVisible(true));
                     } catch (DriverFailedException except) {
                         log.fatal(except.message, except);
                         SwingUtilities.invokeLater(() => ErrorShower.showErrorDialog(null, except.message));
@@ -272,7 +284,7 @@ shared void run() {
                 }
             } else {
                 SwingUtilities.invokeLater(
-                    () => AppChooserFrame(cli, driverModel, options).setVisible(true));
+                    () => appChooserFrame(cli, options, driverModel).setVisible(true));
             }
         }
     }
@@ -286,4 +298,37 @@ shared void run() {
         log.error(except.message, except.cause);
         process.exit(2);
     }
+}
+SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
+        {String*}|IDriverModel finalArg) {
+    object frame extends SPFrame("SP App Chooser", Optional.empty<Path>()) {
+        shared actual String windowName = "SP App Chooser";
+    }
+    JButton button(String desc, ISPDriver() target) {
+        object retval extends JButton(desc) satisfies ActionListener&Runnable {
+            shared actual void actionPerformed(ActionEvent event) {
+                if (is IDriverModel finalArg) {
+                    target().startDriver(cli, options, finalArg);
+                } else {
+                    target().startDriver(cli, options, *finalArg);
+                }
+                SwingUtilities.invokeLater(this);
+            }
+            shared actual void run() {
+                frame.setVisible(false);
+                frame.dispose();
+            }
+        }
+        retval.addActionListener(retval);
+        return retval;
+    }
+    JPanel buttonPanel = JPanel(GridLayout(0, 1));
+    buttonPanel.add(button("Map Viewer", ViewerStart));
+    buttonPanel.add(button("Worker Skill Advancement", AdvancementStart));
+    buttonPanel.add(button("Unit Orders and Worker Management", WorkerStart));
+    buttonPanel.add(button("Exploration", ExplorationGUI));
+    frame.contentPane = BorderedPanel(JScrollPane(buttonPanel),
+        JLabel("Please choose one of the applications below"), null, null, null);
+    frame.pack();
+    return frame;
 }
