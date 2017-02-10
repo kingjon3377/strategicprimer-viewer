@@ -15,4 +15,5 @@ module strategicprimer.viewer "0.4.9900" {
     import com.bric.window.windowmenu "1.0";
     import viewer "0.4";
     import java.desktop "8";
+    import lovelace.util.jvm "0.1.0";
 }

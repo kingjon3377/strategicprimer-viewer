@@ -122,7 +122,7 @@ Map<String, ISPDriver[2]> createCache() {
     // FIXME: Write stat-generating/stat-entering GUI
     choice(StatGeneratingCLIDriver());
     // FIXME: Write GUI for map-expanding driver
-    choice(ExpansionDriver());
+    choice(expansionDriver);
     // TODO: Write GUI equivalent of MapPopulatorDriver
     choice(MapPopulatorDriver());
     choices(ResourceAddingCLIDriver(), ResourceAddingGUIDriver());
