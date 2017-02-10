@@ -33,25 +33,7 @@ import model.map.fixtures.mobile {
     IUnit,
     SimpleMovement
 }
-import java.lang.reflect {
-    Proxy,
-    InvocationHandler,
-    Method
-}
-import java.lang {
-    IllegalStateException,
-    ObjectArray,
-    JClass=Class,
-    JBoolean=Boolean
-}
-import model.map.fixtures {
-    UnitMember
-}
-import java.util.stream {
-    Stream
-}
 import ceylon.interop.java {
-    javaClass,
     CeylonIterable
 }
 import model.exploration {
