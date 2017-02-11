@@ -129,7 +129,7 @@ Map<String, ISPDriver[2]> createCache() {
     // TODO: Write GUI equivalent of TabularReportDriver
     choice(TabularReportDriver());
     // TODO: Write GUI to allow user to visually explore a mine
-    choice(MiningCLI());
+    choice(miningCLI);
     return cache;
 }
 "Create the usage message for a particular driver."
