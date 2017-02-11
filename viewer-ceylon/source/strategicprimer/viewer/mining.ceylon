@@ -22,7 +22,6 @@ import model.map {
     PointFactory
 }
 import ceylon.file {
-    File,
     parsePath,
     Nil
 }

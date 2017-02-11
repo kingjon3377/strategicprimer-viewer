@@ -111,8 +111,8 @@ Map<String, ISPDriver[2]> createCache() {
     choices(readerComparator, drawHelperComparator);
     choices(mapCheckerCLI, mapCheckerGUI);
     choices(SubsetDriver(), SubsetGUIDriver());
-    // FIXME: Write GUI equivalent of QueryCLI
-    choice(QueryCLI());
+    // FIXME: Write GUI equivalent of query CLI
+    choice(queryCLI);
     choice(echoDriver);
     // FIXME: Write GUI for the duplicate fixture remover
     choice(duplicateFixtureRemoverCLI);
