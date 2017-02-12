@@ -8,7 +8,8 @@ import controller.map.drivers {
 import controller.map.misc {
     ICLIHelper,
     IDFactoryFiller,
-    IDRegistrar
+    IDRegistrar,
+    MapReaderAdapter
 }
 import model.misc {
     IDriverModel,
@@ -28,7 +29,10 @@ import model.map {
     IMapNG,
     IFixture,
     FixtureIterable,
-    Point
+    Point,
+    TileType,
+    TileFixture,
+    PointFactory
 }
 import model.map.fixtures.mobile {
     IUnit,
@@ -37,7 +41,9 @@ import model.map.fixtures.mobile {
 }
 import ceylon.collection {
     ArrayList,
-    Queue
+    Queue,
+    MutableMap,
+    HashMap
 }
 import ceylon.interop.java {
     CeylonIterable,
@@ -61,6 +67,25 @@ import ceylon.math.float {
 import ceylon.file {
     File,
     parsePath
+}
+import lovelace.util.common {
+    todo
+}
+import model.exploration.old {
+    ExplorationRunner
+}
+import controller.exploration {
+    TableLoader
+}
+import java.nio.file {
+    JPaths = Paths
+}
+import util {
+    Warning,
+    SingletonRandom
+}
+import java.util.stream {
+    Stream
 }
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
@@ -366,5 +391,46 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         } else {
             startDriver(cli, options, ExplorationModel(model));
         }
+    }
+}
+MapReaderAdapter mapReader = MapReaderAdapter();
+"A class to non-interactively generate a tile's contents."
+todo("Figure out how to run the Ceylon version repeatedly on a single JVM")
+class TileContentsGenerator(IMapNG map) {
+    ExplorationRunner runner = ExplorationRunner();
+    TableLoader.loadAllTables("tables", runner);
+    shared void generateTileContents(Point point,
+            TileType terrain = map.getBaseTerrain(point)) {
+        Integer reps = SingletonRandom.random.nextInt(4) + 1;
+        for (i in 0..reps) {
+            process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
+                Stream.empty<TileFixture>(), map.dimensions()));
+        }
+    }
+}
+todo("What's the Ceylon equivalent of Collections.synchronizedMap()?")
+MutableMap<String, TileContentsGenerator> tileContentsInstances =
+        HashMap<String, TileContentsGenerator>();
+TileContentsGenerator tileContentsInstance(String filename) {
+    if (exists retval = tileContentsInstances.get(filename)) {
+        return retval;
+    } else {
+        TileContentsGenerator retval =
+                TileContentsGenerator(mapReader.readMap(JPaths.get(filename),
+                    Warning.default));
+        tileContentsInstances.put(filename, retval);
+        return retval;
+    }
+}
+shared void tileContentsGenerator() {
+    // FIXME: Does process.arguments get reset properly when called from NailGun or equiv?
+    String[] args = process.arguments;
+    if (exists filename = args[0], exists second = args[1],
+            is Integer row = Integer.parse(second), exists third = args[2],
+            is Integer column = Integer.parse(third)) {
+        tileContentsInstance(filename).generateTileContents(
+            PointFactory.point(row, column));
+    } else {
+        process.writeErrorLine("Usage: tileContentsGenerator map_name.xml row col");
     }
 }
