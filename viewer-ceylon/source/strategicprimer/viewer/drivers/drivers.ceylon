@@ -120,7 +120,7 @@ Map<String, ISPDriver[2]> createCache() {
     choice(TrapModelDriver());
     // TODO: AppStarter went here
     // FIXME: Write stat-generating/stat-entering GUI
-    choice(StatGeneratingCLIDriver());
+    choice(statGeneratingCLI);
     // FIXME: Write GUI for map-expanding driver
     choice(expansionDriver);
     // TODO: Write GUI equivalent of Map Populator Driver
