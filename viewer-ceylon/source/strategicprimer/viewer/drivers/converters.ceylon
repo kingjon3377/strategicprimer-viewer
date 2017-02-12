@@ -24,7 +24,7 @@ import java.io {
     FileNotFoundException,
     IOException
 }
-import strategicprimer.viewer { log }
+import strategicprimer.viewer.drivers { log }
 import javax.xml.stream {
     XMLStreamException
 }

@@ -61,7 +61,7 @@ import java.awt.event {
 import java.nio.file {
     Path
 }
-import strategicprimer.viewer {
+import strategicprimer.viewer.drivers {
     advancementCLI,
     advancementGUI,
     drawHelperComparator
