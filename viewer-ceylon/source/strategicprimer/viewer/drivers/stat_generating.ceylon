@@ -37,13 +37,15 @@ import model.map {
 import model.map.fixtures.mobile {
     IUnit,
     IWorker,
-    Worker
+    Worker,
+    Unit
 }
 import ceylon.collection {
     ArrayList,
     Queue,
     MutableMap,
-    HashMap
+    HashMap,
+    MutableList
 }
 import ceylon.interop.java {
     CeylonIterable,
@@ -86,6 +88,9 @@ import util {
 }
 import java.util.stream {
     Stream
+}
+import model.map.fixtures.towns {
+    Village
 }
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
@@ -432,5 +437,134 @@ shared void tileContentsGenerator() {
             PointFactory.point(row, column));
     } else {
         process.writeErrorLine("Usage: tileContentsGenerator map_name.xml row col");
+    }
+}
+abstract class SimpleTerrain() of unforested | forested | ocean { }
+"Plains, desert, and mountains"
+object unforested extends SimpleTerrain() { }
+"Temperate forest, boreal forest, and steppe"
+object forested extends SimpleTerrain() { }
+"Ocean."
+object ocean extends SimpleTerrain() { }
+"""A hackish driver to fix TODOs (missing content) in the map, namely units with "TODO"
+   for their "kind" and aquatic villages with non-aquatic races."""
+todo("Write tests of this functionality")
+object todoFixerCLI satisfies SimpleCLIDriver {
+    "A list of unit kinds (jobs) for plains etc."
+    MutableList<String> plainsList = ArrayList<String>();
+    "A list of unit kinds (jobs) for forest and jungle."
+    MutableList<String> forestList = ArrayList<String>();
+    "A list of unit kinds (jobs) for ocean."
+    MutableList<String> oceanList = ArrayList<String>();
+    "A map from village IDs to races."
+    MutableMap<Integer, String> raceMap = HashMap<Integer, String>();
+    "A list of aqautic races."
+    MutableList<String> raceList = ArrayList<String>();
+    "How many units we've fixed."
+    variable Integer count = -1;
+    IDriverUsage usageObject = DriverUsage(false, "-o", "--fix-todos",
+        ParamCount.atLeastOne, "Fix TODOs in maps",
+        "Fix TODOs in unit kinds and aquatic villages with non-aquatic races");
+    shared actual IDriverUsage usage() => usageObject;
+    "Get the simplified-terrain-model instance covering the map's terrain at the given
+     location."
+    todo("Just use TileType now we have union types available")
+    SimpleTerrain getTerrain(IMapNG map, Point location) {
+        switch (map.getBaseTerrain(location))
+        case (TileType.jungle|TileType.borealForest|TileType.steppe|
+                TileType.temperateForest) { return forested; }
+        case (TileType.desert|TileType.mountain|TileType.tundra|TileType.notVisible) {
+            return unforested; }
+        case (TileType.ocean) { return ocean; }
+        case (TileType.plains) {
+            if (map.isMountainous(location)) {
+                return unforested;
+            } else if (map.getForest(location) exists) {
+                return forested;
+            } else {
+                return unforested;
+            }
+        }
+    }
+    "Search for and fix aquatic villages with non-aquatic races."
+    void fixAllVillages(IMapNG map, ICLIHelper cli) {
+        Village[] villages = [ for (point in map.locations())
+            if (map.getBaseTerrain(point) == TileType.ocean)
+                for (fixture in map.getOtherFixtures(point))
+                    if (is Village fixture, landRaces.contains(fixture.race))
+                        fixture ];
+        if (nonempty villages) {
+            if (raceList.empty) {
+                while (exists race = cli.inputString("Next aquatic race: "),
+                        !race.trimmed.empty) {
+                    raceList.add(race.trimmed);
+                }
+            }
+            for (village in villages) {
+                if (exists race = raceMap.get(village.id)) {
+                    village.race = race;
+                } else {
+                    Random rng = Random(village.id);
+                    String race = raceList.get(rng.nextInt(raceList.size)) else nothing;
+                    village.race = race;
+                    raceMap.put(village.id, race);
+                }
+            }
+        }
+    }
+    "Fix a stubbed-out kind for a unit."
+    void fixUnit(Unit unit, SimpleTerrain terrain, ICLIHelper cli) {
+        Random rng = Random(unit.id);
+        count++;
+        MutableList<String> jobList;
+        String description;
+        switch (terrain)
+        case (unforested) {
+            jobList = plainsList;
+            description = "plains, desert, or mountains";
+        }
+        case (forested) {
+            jobList = forestList;
+            description = "forest or jungle";
+        }
+        case (ocean) {
+            jobList = oceanList;
+            description = "ocean";
+        }
+        for (job in jobList) {
+            if (rng.nextBoolean()) {
+                cli.println("Setting unit with ID #``
+                    unit.id`` (``count`` / 5328) to kind ``job``");
+                unit.kind = job;
+                return;
+            }
+        }
+        String kind = cli.inputString(
+            "What's the next possible kind for ``description``? ");
+        unit.kind = kind;
+        jobList.add(kind);
+    }
+    "Search for and fix units with kinds missing."
+    void fixAllUnits(IMapNG map, ICLIHelper cli) {
+        for (point in map.locations()) {
+            SimpleTerrain terrain = getTerrain(map, point);
+            for (fixture in map.getOtherFixtures(point)) {
+                if (is Unit fixture, "TODO" == fixture.kind) {
+                    fixUnit(fixture, terrain, cli);
+                }
+            }
+        }
+    }
+    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        if (is IMultiMapModel model) {
+            for (pair in model.allMaps) {
+                fixAllUnits(pair.first(), cli);
+                fixAllVillages(pair.first(), cli);
+            }
+        } else {
+            fixAllUnits(model.map, cli);
+            fixAllVillages(model.map, cli);
+        }
     }
 }
