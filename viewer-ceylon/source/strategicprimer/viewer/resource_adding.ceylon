@@ -4,7 +4,8 @@ import controller.map.drivers {
     ParamCount,
     IDriverUsage,
     SPOptions,
-    DriverFailedException
+    DriverFailedException,
+    SimpleDriver
 }
 import ceylon.collection {
     HashMap,
@@ -16,7 +17,9 @@ import ceylon.collection {
 import controller.map.misc {
     ICLIHelper,
     IDFactoryFiller,
-    IDRegistrar
+    IDRegistrar,
+    PlayerChangeMenuListener,
+    MenuBroker
 }
 import model.misc {
     IDriverModel
@@ -47,6 +50,12 @@ import util {
 }
 import java.lang {
     JString=String
+}
+import javax.swing {
+    SwingUtilities
+}
+import view.resources {
+    ResourceAddingFrame
 }
 "A driver to le the user enter a player's resources and equipment."
 object resourceAddingCLI satisfies SimpleCLIDriver {
@@ -155,6 +164,26 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
             } catch (IOException except) {
                 throw DriverFailedException("I/O error interacting with user", except);
             }
+        } else {
+            startDriver(cli, options, ResourceManagementDriver(model));
+        }
+    }
+}
+object resourceAddingGUI satisfies SimpleDriver {
+    DriverUsage usageObject = DriverUsage(true, "-d", "--add-resource",
+        ParamCount.atLeastOne, "Add resources to maps", "Add resources for players to maps");
+    usageObject.addSupportedOption("--current-turn=NN");
+    shared actual IDriverUsage usage() => usageObject;
+    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+        if (is ResourceManagementDriver model) {
+            PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
+            MenuBroker menuHandler = MenuBroker();
+            menuHandler.register(pcml, "change current player");
+            SwingUtilities.invokeLater(() {
+                ResourceAddingFrame frame = ResourceAddingFrame(model, menuHandler);
+                pcml.addPlayerChangeListener(frame);
+                frame.setVisible(true);
+            });
         } else {
             startDriver(cli, options, ResourceManagementDriver(model));
         }
