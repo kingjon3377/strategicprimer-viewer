@@ -110,7 +110,7 @@ Map<String, ISPDriver[2]> createCache() {
     choices(explorationCLI, explorationGUI);
     choices(readerComparator, drawHelperComparator);
     choices(mapCheckerCLI, mapCheckerGUI);
-    choices(subsetCLI, SubsetGUIDriver());
+    choices(subsetCLI, subsetGUI);
     // FIXME: Write GUI equivalent of query CLI
     choice(queryCLI);
     choice(echoDriver);
