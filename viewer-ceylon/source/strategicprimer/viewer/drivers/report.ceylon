@@ -3,7 +3,8 @@ import controller.map.drivers {
     ParamCount,
     IDriverUsage,
     SPOptions,
-    SimpleDriver
+    SimpleDriver,
+    DriverFailedException
 }
 import controller.map.misc {
     ICLIHelper
@@ -26,7 +27,10 @@ import ceylon.interop.java {
     CeylonIterable
 }
 import java.io {
-    BufferedWriter
+    BufferedWriter,
+    OutputStream,
+    IOException,
+    IOError
 }
 import ceylon.file {
     parsePath,
@@ -34,6 +38,9 @@ import ceylon.file {
 }
 import controller.map.report {
     ReportGenerator
+}
+import controller.map.report.tabular {
+    TableReportGenerator
 }
 "A driver to produce a report of the contents of a map."
 object reportCLI satisfies SimpleDriver {
@@ -88,6 +95,40 @@ object reportCLI satisfies SimpleDriver {
             }
         } else {
             writeReport(model.mapFile, model.map);
+        }
+    }
+}
+"A driver to produce tabular (CSV) reports of the contents of a player's map."
+object tabularReportCLI satisfies SimpleDriver {
+    IDriverUsage usageObject = DriverUsage(false, "-b", "--tabular",
+        ParamCount.atLeastOne, "Tabular Report Generator",
+        "Produce CSV reports of the contents of a map.");
+    shared actual IDriverUsage usage() => usageObject;
+    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        OutputStream(String) filenameFunction(JPath base) {
+            return (String string) =>
+                JFiles.newOutputStream(
+                    base.resolveSibling("``base.fileName``.``string``.csv"));
+        }
+        void createReports(IMapNG map, JOptional<JPath> file) {
+            if (file.present) {
+                JPath mapFile = file.get();
+                try {
+                    TableReportGenerator.createReports(map, filenameFunction(mapFile));
+                } catch (IOException|IOError except) {
+                    throw DriverFailedException(except);
+                }
+            } else {
+                log.error("Asked to create reports from map with no filename");
+            }
+        }
+        if (is IMultiMapModel model) {
+            for (pair in model.allMaps) {
+                createReports(pair.first(), pair.second());
+            }
+        } else {
+            createReports(model.map, model.mapFile);
         }
     }
 }
