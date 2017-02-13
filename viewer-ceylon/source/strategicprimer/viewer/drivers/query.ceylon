@@ -3,8 +3,7 @@ import controller.map.drivers {
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    SPOptions,
-    TrapModelDriver
+    SPOptions
 }
 import controller.map.misc {
     ICLIHelper
@@ -28,7 +27,8 @@ import model.map {
     FixtureIterable,
     MapDimensions,
     TileType,
-    DistanceComparator
+    DistanceComparator,
+    HasName
 }
 import ceylon.interop.java {
     JavaList,
@@ -44,7 +44,8 @@ import ceylon.collection {
 }
 import java.lang {
     JIterable = Iterable,
-    JDouble = Double
+    JDouble = Double,
+    JString = String
 }
 import model.map.fixtures.mobile {
     IWorker
@@ -64,6 +65,9 @@ import model.map.fixtures {
 }
 import model.map.fixtures.terrain {
     Forest
+}
+import java.util {
+    JList=List
 }
 "Models of (game statistics for) herding."
 interface HerdModel of PoultryModel | MammalModel {
@@ -401,7 +405,7 @@ object queryCLI satisfies SimpleDriver {
         case ('g') { gather(huntModel, cli.inputPoint("Location to gather? "), cli,
             hunterHours * hourlyEncounters); }
         case ('e') { herd(cli, huntModel); }
-        case ('t') { TrapModelDriver().startDriver(cli, options, model); }
+        case ('t') { trappingCLI.startDriver(cli, options, model); }
         case ('d') { printDistance(model.mapDimensions, cli); }
         case ('c') { countWorkers(model.map, cli, *CeylonIterable(model.map.players())); }
         case ('u') {
@@ -426,6 +430,81 @@ object queryCLI satisfies SimpleDriver {
             }
         } catch (IOException except) {
             log.error("I/O error", except);
+        }
+    }
+}
+"A driver to run a player's trapping activity."
+todo("Tests")
+object trappingCLI satisfies SimpleDriver {
+    static Integer minutesPerHour = 60;
+    static abstract class TrapperCommand(name) of setTrap | check | move | easyReset | quit
+            satisfies HasName {
+        shared actual String name;
+    }
+    static object setTrap extends TrapperCommand("Set or reset a trap") {}
+    static object check extends TrapperCommand("Check a trap") {}
+    static object move extends TrapperCommand("Move to another trap") {}
+    static object easyReset extends TrapperCommand("Reset a foothold trap, e.g.") {}
+    static object quit extends TrapperCommand("Quit") {}
+    static List<TrapperCommand> commands = ArrayList{setTrap, check, move, easyReset, quit};
+    IDriverUsage usageObject = DriverUsage(false, "-r", "--trap", ParamCount.one,
+        "Run a player's trapping", "Determine the results a player's trapper finds.");
+    shared actual IDriverUsage usage() => usageObject;
+    String inHours(Integer minutes) {
+        if (minutes < minutesPerHour) {
+            return "``minutes`` minutes";
+        } else {
+            return "``minutes / minutesPerHour`` hours, ``
+                minutes % minutesPerHour`` minutes";
+        }
+    }
+    "Handle a command. Returns how long it took to execute the command."
+    Integer handleCommand(
+            "The animals generated from the tile and the surrounding tiles."
+            JList<JString> fixtures, ICLIHelper cli,
+            "The command to handle"
+            TrapperCommand command,
+            "If true, we're dealing with *fish* traps, which have different costs"
+            Boolean fishing) {
+        switch (command)
+        case (check){
+            String top = fixtures.remove(0).string;
+            if (HuntingModel.nothing == top) {
+                cli.println("Nothing in the trap");
+                return (fishing) then 5 else 10;
+            } else {
+                cli.println("Found either ``top`` or evidence of it escaping.");
+                return cli.inputNumber("How long to check and deal with the animal? ");
+            }
+        }
+        case (easyReset) { return (fishing) then 20 else 5; }
+        case (move) { return 2; }
+        case (quit) { return 0; }
+        case (setTrap) { return (fishing) then 30 else 45; }
+    }
+    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        Boolean fishing = cli.inputBooleanInSeries(
+            "Is this a fisherman trapping fish rather than a trapper? ");
+        String name = (fishing) then "fisherman" else "trapper";
+        variable Integer minutes = cli
+            .inputNumber("How many hours will the ``name`` work? ") * minutesPerHour;
+        Point point = cli.inputPoint("Where is the ``name`` working? ");
+        HuntingModel huntModel = HuntingModel(model.map);
+        JList<JString> fixtures = (fishing) then huntModel.fish(point, minutes) else
+            huntModel.hunt(point, minutes);
+        variable Integer input = -1;
+        while (minutes > 0, input < commands.size) {
+            if (exists command = commands[input]) {
+                minutes -= handleCommand(fixtures, cli, command, fishing);
+                cli.println("``inHours(minutes)`` remaining");
+                if (command == quit) {
+                    break;
+                }
+            }
+            input = cli.chooseFromList(JavaList(commands),
+                "What should the ``name`` do next?", "Oops! No commands",
+                "Next action: ", false);
         }
     }
 }

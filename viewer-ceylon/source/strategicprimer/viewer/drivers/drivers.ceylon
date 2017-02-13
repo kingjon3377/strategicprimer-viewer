@@ -117,7 +117,7 @@ Map<String, ISPDriver[2]> createCache() {
     // FIXME: Write GUI for the duplicate fixture remover
     choice(duplicateFixtureRemoverCLI);
     // FIXME: Write trapping (and hunting, etc.) GUI
-    choice(TrapModelDriver());
+    choice(trappingCLI);
     // TODO: AppStarter went here
     // FIXME: Write stat-generating/stat-entering GUI
     choice(statGeneratingCLI);
