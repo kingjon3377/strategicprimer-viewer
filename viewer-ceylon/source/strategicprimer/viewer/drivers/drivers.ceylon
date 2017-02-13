@@ -104,7 +104,7 @@ Map<String, ISPDriver[2]> createCache() {
         cache.put(usage.shortOption, [driver, driver]);
         cache.put(usage.longOption, [driver, driver]);
     }
-    choices(WorkerReportDriver(), viewerGUI);
+    choices(reportCLI, viewerGUI);
     choices(advancementCLI, advancementGUI);
     choices(strategyExportCLI, workerGUI);
     choices(explorationCLI, explorationGUI);
