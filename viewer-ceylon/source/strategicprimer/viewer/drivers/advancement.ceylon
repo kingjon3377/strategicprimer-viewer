@@ -11,8 +11,7 @@ import controller.map.misc {
     ICLIHelper,
     MenuBroker,
     PlayerChangeMenuListener,
-    WindowCloser,
-    IOHandler
+    WindowCloser
 }
 import model.misc {
     IDriverModel

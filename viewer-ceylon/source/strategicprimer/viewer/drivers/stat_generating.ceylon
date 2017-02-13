@@ -354,7 +354,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
                 "There are no units owned by that player.", "Unit selection: ",
                 false), "Choose another unit? ", (JList<out IUnit> list, clh) {
             Point point = clh.inputPoint("Where to put new unit? ");
-            IUnit temp = UnitConstructor.unit(player, clh.inputString("Kind of unit: "),
+            IUnit temp = ConstructorWrapper.unit(player, clh.inputString("Kind of unit: "),
                 clh.inputString("Unit name: "), idf.createID());
             for (pair in model.allMaps) {
                 pair.first().addFixture(point, temp);

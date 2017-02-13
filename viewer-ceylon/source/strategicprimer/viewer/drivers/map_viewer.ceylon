@@ -8,7 +8,6 @@ import controller.map.drivers {
 import controller.map.misc {
     ICLIHelper,
     MenuBroker,
-    IOHandler,
     WindowCloser,
     FindHandler
 }

@@ -1,12 +1,16 @@
 package strategicprimer.viewer.drivers;
 
+import model.map.IMutableMapNG;
+import model.map.IMutablePlayerCollection;
+import model.map.MapDimensions;
 import model.map.Player;
+import model.map.SPMapNG;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 
 /**
- * A wrapper around the Unit class's constructor, since the Ceylon compiler in the
- * IntelliJ plugin says it doesn't have a default constructor.
+ * A wrapper around the constructors of classes thatthe Ceylon compiler in the
+ * IntelliJ plugin erroneously says don't have a default constructor.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -22,7 +26,7 @@ import model.map.fixtures.mobile.Unit;
  * @deprecated this is a hack
  */
 @Deprecated
-public class UnitConstructor {
+public class ConstructorWrapper {
 	/**
 	 * Instantiate a unit.
 	 * @param owner the unit's owner
@@ -33,5 +37,16 @@ public class UnitConstructor {
 	public static IUnit unit(final Player owner, final String kind, final String name,
 							 final int id) {
 		return new Unit(owner, kind, name, id);
+	}
+	/**
+	 * Instantiate a map.
+	 * @param dimensions its dimensions
+	 * @param players the players in it
+	 * @param currentTurn its current turn
+	 */
+	public static IMutableMapNG map(final MapDimensions dimensions,
+									final IMutablePlayerCollection players,
+									final int currentTurn) {
+		return new SPMapNG(dimensions, players, currentTurn);
 	}
 }
