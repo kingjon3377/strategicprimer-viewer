@@ -3,13 +3,15 @@ import controller.map.drivers {
     DriverUsage,
     ParamCount,
     IDriverUsage,
-    SPOptions
+    SPOptions,
+    DriverFailedException
 }
 import controller.map.misc {
     ICLIHelper,
     MenuBroker,
     PlayerChangeMenuListener,
-    WindowCloser
+    WindowCloser,
+    StrategyExporter
 }
 import model.misc {
     IDriverModel
@@ -26,6 +28,18 @@ import view.worker {
 }
 import view.util {
     AboutDialog
+}
+import java.nio.file {
+    JPaths = Paths
+}
+import ceylon.interop.java {
+    JavaIterable
+}
+import model.map.fixtures {
+    UnitMember
+}
+import java.lang {
+    IllegalStateException
 }
 "A driver to start the worker management GUI."
 object workerGUI satisfies SimpleDriver {
@@ -56,6 +70,31 @@ object workerGUI satisfies SimpleDriver {
                     AboutDialog(frame, frame.windowName).setVisible(true), "about");
                 frame.setVisible(true);
             });
+        } else {
+            startDriver(cli, options, WorkerModel(model));
+        }
+    }
+}
+"A command-line program to export a proto-strategy for a player from orders in a map."
+object strategyExportCLI satisfies SimpleDriver {
+    DriverUsage usageObject = DriverUsage(false, "-w", "--worker", ParamCount.one,
+        "Export a proto-strategy",
+        "Create a proto-strategy using orders stored in the map");
+    usageObject.addSupportedOption("--current-turn=NN");
+    usageObject.addSupportedOption("--print-empty");
+    usageObject.addSupportedOption("--export=filename.txt");
+    shared actual IDriverUsage usage() => usageObject;
+    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        if (is IWorkerModel model) {
+            if (options.hasOption("--export")) {
+                StrategyExporter(model).writeStrategy(JPaths.get(
+                        options.getArgument("--export")), options,
+                    JavaIterable<UnitMember>({}));
+            } else {
+                throw DriverFailedException("--export option is required",
+                    IllegalStateException("--export option is required"));
+            }
         } else {
             startDriver(cli, options, WorkerModel(model));
         }
