@@ -104,7 +104,7 @@ Map<String, ISPDriver[2]> createCache() {
         cache.put(usage.shortOption, [driver, driver]);
         cache.put(usage.longOption, [driver, driver]);
     }
-    choices(WorkerReportDriver(), ViewerStart());
+    choices(WorkerReportDriver(), viewerGUI);
     choices(advancementCLI, advancementGUI);
     choices(StrategyExportDriver(), WorkerStart());
     choices(explorationCLI, explorationGUI);
@@ -330,7 +330,7 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         return retval;
     }
     JPanel buttonPanel = JPanel(GridLayout(0, 1));
-    buttonPanel.add(button("Map Viewer", ViewerStart));
+    buttonPanel.add(button("Map Viewer", () => viewerGUI));
     buttonPanel.add(button("Worker Skill Advancement", () => advancementGUI));
     buttonPanel.add(button("Unit Orders and Worker Management", WorkerStart));
     buttonPanel.add(button("Exploration", () => explorationGUI));
