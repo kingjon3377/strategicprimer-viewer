@@ -98,7 +98,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         "Enter worker stats or generate new workers.",
         "Enter stats for existing workers or generate new workers randomly.");
     usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     "The units in the given collection that have workers without stats."
     {IUnit*} removeStattedUnits(IUnit* units) {
         return units.filter((unit) {
@@ -384,7 +384,8 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
                 }
             });
     }
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         if (is IExplorationModel model) {
             if (cli.inputBooleanInSeries(
                     "Enter pregenerated stats for existing workers?")) {
@@ -393,7 +394,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
                 createWorkers(model, IDFactoryFiller.createFactory(model), cli);
             }
         } else {
-            startDriver(cli, options, ExplorationModel(model));
+            startDriverOnModel(cli, options, ExplorationModel(model));
         }
     }
 }
@@ -464,7 +465,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     IDriverUsage usageObject = DriverUsage(false, "-o", "--fix-todos",
         ParamCount.atLeastOne, "Fix TODOs in maps",
         "Fix TODOs in unit kinds and aquatic villages with non-aquatic races");
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     "Get the simplified-terrain-model instance covering the map's terrain at the given
      location."
     todo("Just use TileType now we have union types available")
@@ -554,7 +555,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
             }
         }
     }
-    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
             for (pair in model.allMaps) {

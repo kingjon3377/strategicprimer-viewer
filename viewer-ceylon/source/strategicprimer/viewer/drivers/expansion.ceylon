@@ -62,8 +62,8 @@ object expansionDriver satisfies SimpleCLIDriver {
         "Expand a player's map.",
         "Ensure a player's map covers all terrain allied villages can see.");
     usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
             IMapNG master = model.map;
@@ -128,7 +128,7 @@ object expansionDriver satisfies SimpleCLIDriver {
             }
         } else {
             log.warn("Expansion on a master map with no subordinate maps does nothing");
-            startDriver(cli, options, SimpleMultiMapModel(model));
+            startDriverOnModel(cli, options, SimpleMultiMapModel(model));
         }
     }
 }
@@ -140,7 +140,7 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
         "Add missing fixtures to a map",
         "Add specified kinds of fixtures to suitable points throughout a map");
     usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     variable Integer suitableCount = 0;
     variable Integer changedCount = 0;
     "The first method to customize for each use: whether a point is suitable for the
@@ -174,7 +174,8 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
             }
         }
     }
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         populate(model.map);
         cli.println(
             "``changedCount`` out of ``suitableCount`` suitable locations were changed");

@@ -3,7 +3,6 @@ import controller.map.drivers {
     ParamCount,
     IDriverUsage,
     SPOptions,
-    SimpleDriver,
     DriverFailedException
 }
 import controller.map.misc {
@@ -145,9 +144,10 @@ class ConverterDriver(
         "Convert a map. At present, this means reducing its resolution.");
     tempUsage.addSupportedOption("--current-turn=NN");
     "The usage object."
-    shared actual IDriverUsage usage() => tempUsage;
+    shared actual IDriverUsage usage = tempUsage;
     "Run the driver."
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, String?* args) {
+    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
+            String* args) {
         if (nonempty arguments = args.coalesced.sequence()) {
             MapReaderAdapter reader = MapReaderAdapter();
             for (filename in arguments) {
@@ -191,7 +191,7 @@ object oneToTwoConverter satisfies SimpleDriver {
     usageObject.addSupportedOption("--current-turn=NN");
     usageObject.firstParamDesc = "mainMap.xml";
     usageObject.subsequentParamDesc = "playerMap.xml";
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     "The next turn, to use when creating [[TextFixture]]s."
     Integer nextTurn = 15;
     "The factor by which to expand the map on each axis."
@@ -429,7 +429,8 @@ object oneToTwoConverter satisfies SimpleDriver {
                 "I/O error writing to ``old.fileName``.converted.xml", except);
         }
     }
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         IMapNG oldMain = model.map;
         JPath oldMainPath = model.mapFile.orElseThrow(() =>
             DriverFailedException("No path for main map",

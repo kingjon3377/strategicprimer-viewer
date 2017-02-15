@@ -223,9 +223,9 @@ object drawHelperComparator satisfies SimpleCLIDriver {
         "Test drawing performance.",
         """Test the performance of the TileDrawHelper classes---which do the heavy lifting
            of rendering the map in the viewer---using a variety of automated tests.""");
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     "Run the tests."
-    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         Boolean() random = Random().nextBoolean;
         void runTestProcedure(ICLIHelper cli, IMapNG map, Optional<Path> filename,

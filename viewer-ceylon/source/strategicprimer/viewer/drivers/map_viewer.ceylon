@@ -2,8 +2,7 @@ import controller.map.drivers {
     DriverUsage,
     ParamCount,
     IDriverUsage,
-    SPOptions,
-    SimpleDriver
+    SPOptions
 }
 import controller.map.misc {
     ICLIHelper,
@@ -35,8 +34,8 @@ object viewerGUI satisfies SimpleDriver {
     DriverUsage usageObject = DriverUsage(true, "-m", "--map", ParamCount.one,
         "Map viewer", "Look at the map visually. This is probably the app you want.");
     usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IViewerModel model) {
             MenuBroker menuHandler = MenuBroker();
@@ -60,10 +59,10 @@ object viewerGUI satisfies SimpleDriver {
             });
         } else if (is IMultiMapModel model) {
             for (map in model.allMaps) {
-                startDriver(cli, options.copy(), ViewerModel(map));
+                startDriverOnModel(cli, options.copy(), ViewerModel(map));
             }
         } else {
-            startDriver(cli, options, ViewerModel(model.map, model.mapFile));
+            startDriverOnModel(cli, options, ViewerModel(model.map, model.mapFile));
         }
     }
 }

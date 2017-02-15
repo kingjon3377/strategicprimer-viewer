@@ -3,7 +3,6 @@ import controller.map.drivers {
     ParamCount,
     IDriverUsage,
     SPOptions,
-    SimpleDriver,
     DriverFailedException
 }
 import controller.map.misc {
@@ -51,8 +50,8 @@ object reportCLI satisfies SimpleDriver {
         usageObject.addSupportedOption("--out=/path/to/output.html");
     }
     usageObject.addSupportedOption("--player=NN");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         void writeReport(JOptional<JPath> maybeFilename, IMapNG map) {
             if (maybeFilename.present) {
@@ -102,8 +101,8 @@ object tabularReportCLI satisfies SimpleDriver {
     IDriverUsage usageObject = DriverUsage(false, "-b", "--tabular",
         ParamCount.atLeastOne, "Tabular Report Generator",
         "Produce CSV reports of the contents of a map.");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         OutputStream(String) filenameFunction(JPath base) {
             return (String string) =>

@@ -135,7 +135,7 @@ object suspiciousSkillCheck satisfies Checker {
 object mapCheckerCLI satisfies UtilityDriver {
     IDriverUsage usageObject = DriverUsage(false, "-k", "--check", ParamCount.atLeastOne,
         "Check map for errors", "Check a map file for errors, deprecated syntax, etc.");
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
             IFixture* list) {
         for (fixture in list) {
@@ -184,7 +184,8 @@ object mapCheckerCLI satisfies UtilityDriver {
             }
         }
     }
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, String?* args) {
+    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
+            String* args) {
         String[] filenames = args.coalesced.sequence();
         if (nonempty filenames) {
             for (filename in filenames) {
@@ -225,8 +226,9 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker",
 object mapCheckerGUI satisfies UtilityDriver {
     IDriverUsage usageObject = DriverUsage(true, "-k", "--check", ParamCount.atLeastOne,
         "Check map for errors", "Check a map file for errors, deprecated syntax, etc.");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, String?* args) {
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
+            String* args) {
         MapCheckerFrame window = MapCheckerFrame();
         window.setVisible(true);
         for (arg in args.coalesced) {

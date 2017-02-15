@@ -39,9 +39,10 @@ object readerComparator satisfies UtilityDriver {
     IDriverUsage usageObject = DriverUsage(false, "-t", "--test", ParamCount.atLeastOne,
         "Test map readers",
         "Test map-reading implementations by comparing their results on the same file.");
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     "Compare the two readers' performance on the given files."
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, String?* args) {
+    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
+            String* args) {
         IMapReader one = SPFluidReader();
         IMapReader two = YAXMLReader();
         Warning warner = Warning.ignore;

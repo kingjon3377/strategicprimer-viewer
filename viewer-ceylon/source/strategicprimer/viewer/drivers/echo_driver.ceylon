@@ -54,10 +54,11 @@ object echoDriver satisfies UtilityDriver {
     usageObject.addSupportedOption("--current-turn=NN");
     usageObject.firstParamDesc = "input.xml";
     usageObject.subsequentParamDesc = "output.xml";
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     """Run the driver: read the map, then write it, correcting deprecated syntax and
        forest and Ground IDs."""
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, String?* args) {
+    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
+            String* args) {
         if (exists inArg = args.first, exists outArg = args.rest.first, args.size == 2) {
             MapReaderAdapter reader = MapReaderAdapter();
             IMutableMapNG map;
@@ -114,7 +115,7 @@ object forestFixerDriver satisfies SimpleCLIDriver {
     IDriverUsage usageObject = DriverUsage(false, "-f", "--fix-forest",
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map");
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     {Forest*} extractForests(IMapNG map, Point location) {
         {Forest*} retval = { for (fixture in map.getOtherFixtures(location))
         if (is Forest fixture) fixture };
@@ -133,7 +134,7 @@ object forestFixerDriver satisfies SimpleCLIDriver {
             return retval;
         }
     }
-    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         assert (is IMultiMapModel model);
         IMutableMapNG mainMap = model.map;

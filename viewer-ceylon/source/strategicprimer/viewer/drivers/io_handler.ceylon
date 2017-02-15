@@ -121,7 +121,7 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             });
         }
         case ("new") {
-            viewerGUI.startDriver(cli, options, ViewerModel(ConstructorWrapper.map(
+            viewerGUI.startDriverOnModel(cli, options, ViewerModel(ConstructorWrapper.map(
                     mapModel.mapDimensions, PlayerCollection(), mapModel.map.currentTurn),
                 JOptional.empty<JPath>()));
         }
@@ -165,12 +165,12 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             }
         }
         case ("open in map viewer") {
-            viewerGUI.startDriver(cli, options, ViewerModel(mapModel));
+            viewerGUI.startDriverOnModel(cli, options, ViewerModel(mapModel));
         }
         case ("open secondary map in map viewer") {
             if (is IMultiMapModel mapModel,
                     exists mapPair = CeylonIterable(mapModel.subordinateMaps).first) {
-                viewerGUI.startDriver(cli, options, ViewerModel(mapPair));
+                viewerGUI.startDriverOnModel(cli, options, ViewerModel(mapPair));
             }
         }
         else {

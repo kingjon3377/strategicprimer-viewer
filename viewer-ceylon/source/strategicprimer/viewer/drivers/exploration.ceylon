@@ -3,8 +3,7 @@ import controller.map.drivers {
     ParamCount,
     IDriverUsage,
     SPOptions,
-    DriverFailedException,
-    SimpleDriver
+    DriverFailedException
 }
 import controller.map.misc {
     ICLIHelper,
@@ -55,8 +54,8 @@ object explorationCLI satisfies SimpleCLIDriver {
         "Run exploration.",
         "Move a unit around the map, updating the player's map with what it sees.");
     usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
         IExplorationModel explorationModel;
         if (is IExplorationModel model) {
             explorationModel = model;
@@ -80,8 +79,9 @@ object explorationGUI satisfies SimpleDriver {
         "Run exploration.",
         "Move a unit around the map, updating the player's map with what it sees.");
     usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         IExplorationModel explorationModel;
         if (is IExplorationModel model) {
             explorationModel = model;
@@ -110,10 +110,10 @@ object tableDebugger satisfies SimpleCLIDriver {
         "See whether old-model encounter tables refer to a nonexistent table");
     ExplorationRunner runner = ExplorationRunner();
     TableLoader.loadAllTables("tables", runner);
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
         log.warn("tableDebugger doesn't need a driver model");
-        startDriver();
+        startDriverNoArgs();
     }
     "Print all possible results from a table."
     void debugSingleTable(
@@ -151,7 +151,7 @@ object tableDebugger satisfies SimpleCLIDriver {
         set.remove(table);
     }
     todo("If a CLIHelper was passed in, write to it")
-    shared actual void startDriver() {
+    shared actual void startDriverNoArgs() {
         runner.verboseRecursiveCheck(SystemOut.sysOut);
         EncounterTable mainTable = runner.getTable("main");
         debugSingleTable("", "", mainTable, "main",

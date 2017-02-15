@@ -37,8 +37,9 @@ object miningCLI satisfies UtilityDriver {
     usageObject.addSupportedOption("--seed=NN");
     usageObject.firstParamDesc = "output.csv";
     usageObject.subsequentParamDesc = "status";
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, String?* args) {
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
+            String* args) {
         if (exists filename = args.first, exists second = args.rest.first,
                 is Integer statusIndex = Integer.parse(second), args.size == 2) {
             Integer seed;

@@ -3,8 +3,7 @@ import controller.map.drivers {
     ParamCount,
     IDriverUsage,
     SPOptions,
-    DriverFailedException,
-    SimpleDriver
+    DriverFailedException
 }
 import ceylon.collection {
     HashMap,
@@ -62,7 +61,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
         ParamCount.atLeastOne, "Add resources to maps",
         "Add resources for players to maps.");
     usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     MutableSet<String> resourceKinds = HashSet<String>();
     MutableMap<String, MutableSet<String>> resourceContents =
             HashMap<String, MutableSet<String>>();
@@ -140,7 +139,8 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
         model.addResource(Implement(cli.inputString("Kind of equipment: "),
             idf.createID()), player);
     }
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         if (is ResourceManagementDriver model) {
             JList<Player> players =
                     JavaList(ArrayList(0, 1.0, CeylonIterable(model.players)));
@@ -164,7 +164,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
                 throw DriverFailedException("I/O error interacting with user", except);
             }
         } else {
-            startDriver(cli, options, ResourceManagementDriver(model));
+            startDriverOnModel(cli, options, ResourceManagementDriver(model));
         }
     }
 }
@@ -172,8 +172,9 @@ object resourceAddingGUI satisfies SimpleDriver {
     DriverUsage usageObject = DriverUsage(true, "-d", "--add-resource",
         ParamCount.atLeastOne, "Add resources to maps", "Add resources for players to maps");
     usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         if (is ResourceManagementDriver model) {
             PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
             MenuBroker menuHandler = MenuBroker();
@@ -184,7 +185,7 @@ object resourceAddingGUI satisfies SimpleDriver {
                 frame.setVisible(true);
             });
         } else {
-            startDriver(cli, options, ResourceManagementDriver(model));
+            startDriverOnModel(cli, options, ResourceManagementDriver(model));
         }
     }
 }

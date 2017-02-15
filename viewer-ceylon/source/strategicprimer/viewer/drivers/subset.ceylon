@@ -1,10 +1,8 @@
 import controller.map.drivers {
-    SimpleDriver,
     IDriverUsage,
     DriverUsage,
     ParamCount,
     SPOptions,
-    ISPDriver,
     IncorrectUsageException,
     DriverFailedException
 }
@@ -64,8 +62,9 @@ object subsetCLI satisfies SimpleDriver {
         "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         if (is IMultiMapModel model) {
             for (pair in model.subordinateMaps) {
                 String filename = pair.second().map(JPath.string)
@@ -80,7 +79,7 @@ object subsetCLI satisfies SimpleDriver {
             }
         } else {
             log.warn("Subset checking does nothing with no subordinate maps");
-            startDriver(cli, options, SimpleMultiMapModel(model));
+            startDriverOnModel(cli, options, SimpleMultiMapModel(model));
         }
     }
 }
@@ -92,8 +91,9 @@ object subsetGUI satisfies ISPDriver {
         "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         if (is IMultiMapModel model) {
             SubsetFrame frame = SubsetFrame();
             SwingUtilities.invokeLater(() => frame.setVisible(true));
@@ -106,7 +106,8 @@ object subsetGUI satisfies ISPDriver {
                 "The subset driver doesn't make sense on a non-multi-map driver");
         }
     }
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, String?* args) {
+    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
+            String* args) {
         if (args.size < 2) {
             throw IncorrectUsageException(usageObject);
         }

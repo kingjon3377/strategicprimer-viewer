@@ -1,4 +1,3 @@
-import controller.map.drivers { ... }
 import ceylon.collection {
     MutableMap,
     HashMap,
@@ -66,6 +65,15 @@ import strategicprimer.viewer.drivers {
     advancementGUI,
     drawHelperComparator
 }
+import controller.map.drivers {
+    SPOptions,
+    SPOptionsImpl,
+    ParamCount,
+    IDriverUsage,
+    DriverUsage,
+    DriverFailedException,
+    IncorrectUsageException
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."
@@ -82,8 +90,8 @@ Map<String, ISPDriver[2]> createCache() {
     MutableMap<String, [ISPDriver, ISPDriver]> cache =
             HashMap<String, [ISPDriver, ISPDriver]>();
     void choices(ISPDriver cliDriver, ISPDriver guiDriver) {
-        IDriverUsage cliUsage = cliDriver.usage();
-        IDriverUsage guiUsage = guiDriver.usage();
+        IDriverUsage cliUsage = cliDriver.usage;
+        IDriverUsage guiUsage = guiDriver.usage;
         if (cliUsage.graphical) {
             log.warn("``cliUsage.shortDescription`` is GUI but passed as CLI");
         }
@@ -100,7 +108,7 @@ Map<String, ISPDriver[2]> createCache() {
         cache.put(cliUsage.longOption, [cliDriver, guiDriver]);
     }
     void choice(ISPDriver driver) {
-        IDriverUsage usage = driver.usage();
+        IDriverUsage usage = driver.usage;
         cache.put(usage.shortOption, [driver, driver]);
         cache.put(usage.longOption, [driver, driver]);
     }
@@ -181,7 +189,11 @@ shared void run() {
     SPOptionsImpl options = SPOptionsImpl();
     Map<String, ISPDriver[2]> driverCache = createCache();
     object appStarter satisfies ISPDriver {
-        shared actual void startDriver(ICLIHelper cli, SPOptions options, String?* args) {
+        shared actual IDriverUsage usage = DriverUsage(true, "-p", "--app-starter",
+            ParamCount.anyNumber, "App Chooser",
+            "Let the user choose an app to start, or handle options.");
+        shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
+                String* args) {
             log.info("Inside appStarter.startDriver()");
             variable Boolean gui = !GraphicsEnvironment.headless;
             variable SPOptionsImpl currentOptions = SPOptionsImpl(options);
@@ -217,10 +229,11 @@ shared void run() {
                         if (gui) {
                             // TODO: catch and log a DriverFailedException inside the lambda
                             SwingUtilities.invokeLater(() =>
-                            temp.rest.first.startDriver(cli, currentOptionsTyped,
-                            *others));
+                                temp.rest.first.startDriverOnArguments(cli,
+                                    currentOptionsTyped, *others));
                         } else {
-                            temp.first.startDriver(cli, currentOptionsTyped, *others);
+                            temp.first.startDriverOnArguments(cli, currentOptionsTyped,
+                                *others);
                         }
                     }
                     currentDrivers = driverCache.get(arg.lowercased);
@@ -234,12 +247,12 @@ shared void run() {
                 IDriverUsage tempUsage;
                 if (exists drivers = currentDrivers) {
                     if (gui) {
-                        tempUsage = drivers.rest.first.usage();
+                        tempUsage = drivers.rest.first.usage;
                     } else {
-                        tempUsage = drivers.first.usage();
+                        tempUsage = drivers.first.usage;
                     }
                 } else {
-                    tempUsage = usage();
+                    tempUsage = usage;
                 }
                 usageMessage(tempUsage, options.getArgument("--verbose") == "true");
             } else if (exists drivers = currentDrivers) {
@@ -247,10 +260,11 @@ shared void run() {
                 if (gui) {
                     // TODO: catch and log a DriverFailedException inside the lambda
                     SwingUtilities.invokeLater(() =>
-                    drivers.rest.first.startDriver(cli, currentOptionsTyped,
-                    *others));
+                        drivers.rest.first.startDriverOnArguments(cli, currentOptionsTyped,
+                            *others));
                 } else {
-                    drivers.first.startDriver(cli, currentOptionsTyped, *others);
+                    drivers.first.startDriverOnArguments(cli, currentOptionsTyped,
+                        *others);
                 }
             } else {
                 SPOptions currentOptionsTyped = currentOptions;
@@ -268,13 +282,14 @@ shared void run() {
                     Integer choice = cli.chooseFromList(driversList,
                         "CLI apps available:", "No applications available", "App to start: ", true);
                     if (choice >= 0 && choice < driversList.size()) {
-                        driversList.get(choice).startDriver(cli, options, *others);
+                        driversList.get(choice).startDriverOnArguments(cli, options, *others);
                     }
                 }
             }
         }
 
-        shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel driverModel) {
+        shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+                IDriverModel driverModel) {
             // TODO: what about -c?
             if (GraphicsEnvironment.headless) {
                 List<ISPDriver> cliDrivers = ArrayList<ISPDriver>(driverCache.size,
@@ -284,7 +299,7 @@ shared void run() {
                     if (exists driver = cliDrivers.get(cli.chooseFromList(JavaList(cliDrivers),
                         "CLI apps available:", "No applications available", "App to start: ",
                         true))) {
-                        driver.startDriver(cli, options, driverModel);
+                        driver.startDriverOnModel(cli, options, driverModel);
                     }
                 } catch (IOException except) {
                     log.error("I/O error prompting user for app to start", except);
@@ -296,7 +311,7 @@ shared void run() {
         }
     }
     try {
-        appStarter.startDriver(options, *process.arguments);
+        appStarter.startDriverOnArgumentsNoCLI(options, *process.arguments);
     } catch (IncorrectUsageException except) {
         IDriverUsage usage = except.correctUsage;
         process.writeErrorLine(usageMessage(usage, options.hasOption("--verbose")));
@@ -315,9 +330,9 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         object retval extends JButton(desc) satisfies ActionListener&Runnable {
             shared actual void actionPerformed(ActionEvent event) {
                 if (is IDriverModel finalArg) {
-                    target().startDriver(cli, options, finalArg);
+                    target().startDriverOnModel(cli, options, finalArg);
                 } else {
-                    target().startDriver(cli, options, *finalArg);
+                    target().startDriverOnArguments(cli, options, *finalArg);
                 }
                 SwingUtilities.invokeLater(this);
             }
@@ -347,9 +362,10 @@ object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
         "Remove duplicate fixtures (identical except ID# and on the same tile) from a map."
     );
     usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     "Run the driver"
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         try {
             if (is IMultiMapModel model) {
                 for (pair in model.allMaps) {

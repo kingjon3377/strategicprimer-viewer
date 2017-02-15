@@ -3,8 +3,7 @@ import controller.map.drivers {
     DriverFailedException,
     ParamCount,
     DriverUsage,
-    IDriverUsage,
-    SimpleDriver
+    IDriverUsage
 }
 import controller.map.misc {
     ICLIHelper,
@@ -202,7 +201,8 @@ void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli) {
 "The worker-advancement CLI driver."
 object advancementCLI satisfies SimpleCLIDriver {
     "Let the user choose a player to run worker advancement for."
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         IWorkerModel workerModel;
         if (is IWorkerModel model) {
             workerModel = model;
@@ -225,7 +225,7 @@ object advancementCLI satisfies SimpleCLIDriver {
         """View a player's units, the workers in those units, each worker's Jobs, and his
            or her level in each Skill in each Job.""");
     usageTemp.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage() => usageTemp;
+    shared actual IDriverUsage usage = usageTemp;
 }
 "The worker-advancement GUI driver."
 object advancementGUI satisfies SimpleDriver {
@@ -234,8 +234,9 @@ object advancementGUI satisfies SimpleDriver {
         """View a player's units, the workers in those units, each worker's Jobs, and his
            or her level in each Skill in each Job.""");
     usageTemp.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage() => usageTemp;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual IDriverUsage usage = usageTemp;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         IWorkerModel workerModel;
         if (is IWorkerModel model) {
             workerModel = model;

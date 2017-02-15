@@ -1,5 +1,6 @@
 package strategicprimer.viewer.drivers;
 
+import controller.map.misc.CLIHelper;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.MapDimensions;
@@ -48,5 +49,11 @@ public class ConstructorWrapper {
 									final IMutablePlayerCollection players,
 									final int currentTurn) {
 		return new SPMapNG(dimensions, players, currentTurn);
+	}
+	/**
+	 * Instantiate a CLIHelper.
+	 */
+	public static CLIHelper cliHelper() {
+		return new CLIHelper();
 	}
 }

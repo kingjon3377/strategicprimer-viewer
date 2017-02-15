@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    SimpleDriver,
     DriverUsage,
     ParamCount,
     IDriverUsage,
@@ -48,8 +47,8 @@ object workerGUI satisfies SimpleDriver {
         "Organize the members of a player's units.");
     usageObject.addSupportedOption("--current-turn=NN");
     usageObject.addSupportedOption("--print-empty");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IWorkerModel model) {
             MenuBroker menuHandler = MenuBroker();
@@ -71,7 +70,7 @@ object workerGUI satisfies SimpleDriver {
                 frame.setVisible(true);
             });
         } else {
-            startDriver(cli, options, WorkerModel(model));
+            startDriverOnModel(cli, options, WorkerModel(model));
         }
     }
 }
@@ -83,8 +82,8 @@ object strategyExportCLI satisfies SimpleDriver {
     usageObject.addSupportedOption("--current-turn=NN");
     usageObject.addSupportedOption("--print-empty");
     usageObject.addSupportedOption("--export=filename.txt");
-    shared actual IDriverUsage usage() => usageObject;
-    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+    shared actual IDriverUsage usage = usageObject;
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IWorkerModel model) {
             if (options.hasOption("--export")) {
@@ -96,7 +95,7 @@ object strategyExportCLI satisfies SimpleDriver {
                     IllegalStateException("--export option is required"));
             }
         } else {
-            startDriver(cli, options, WorkerModel(model));
+            startDriverOnModel(cli, options, WorkerModel(model));
         }
     }
 }

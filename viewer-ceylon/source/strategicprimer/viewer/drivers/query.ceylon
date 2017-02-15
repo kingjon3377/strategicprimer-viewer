@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    SimpleDriver,
     IDriverUsage,
     DriverUsage,
     ParamCount,
@@ -152,7 +151,7 @@ object queryCLI satisfies SimpleDriver {
     IDriverUsage usageObject = DriverUsage(false, "-q", "--query", ParamCount.one,
         "Answer questions about a map.",
         "Look a tiles on a map. Or run hunting, gathering, or fishing.");
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     "How many hours we assume a working day is for a hunter or such."
     Integer hunterHours = 10;
     "How many encounters per hour for a hunter or such."
@@ -405,7 +404,7 @@ object queryCLI satisfies SimpleDriver {
         case ('g') { gather(huntModel, cli.inputPoint("Location to gather? "), cli,
             hunterHours * hourlyEncounters); }
         case ('e') { herd(cli, huntModel); }
-        case ('t') { trappingCLI.startDriver(cli, options, model); }
+        case ('t') { trappingCLI.startDriverOnModel(cli, options, model); }
         case ('d') { printDistance(model.mapDimensions, cli); }
         case ('c') { countWorkers(model.map, cli, *CeylonIterable(model.map.players())); }
         case ('u') {
@@ -421,7 +420,8 @@ object queryCLI satisfies SimpleDriver {
         else { cli.println("Unknown command."); }
     }
     "Accept and respond to commands."
-    shared actual void startDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         HuntingModel huntModel = HuntingModel(model.map);
         try {
             while (exists input = cli.inputString("Command: "),
@@ -449,7 +449,7 @@ object trappingCLI satisfies SimpleDriver {
     static List<TrapperCommand> commands = ArrayList{setTrap, check, move, easyReset, quit};
     IDriverUsage usageObject = DriverUsage(false, "-r", "--trap", ParamCount.one,
         "Run a player's trapping", "Determine the results a player's trapper finds.");
-    shared actual IDriverUsage usage() => usageObject;
+    shared actual IDriverUsage usage = usageObject;
     String inHours(Integer minutes) {
         if (minutes < minutesPerHour) {
             return "``minutes`` minutes";
@@ -482,7 +482,7 @@ object trappingCLI satisfies SimpleDriver {
         case (quit) { return 0; }
         case (setTrap) { return (fishing) then 30 else 45; }
     }
-    shared actual void startDriver(ICLIHelper cli, SPOptions options,
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         Boolean fishing = cli.inputBooleanInSeries(
             "Is this a fisherman trapping fish rather than a trapper? ");
