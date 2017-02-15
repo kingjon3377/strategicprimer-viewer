@@ -1,7 +1,6 @@
 import controller.map.drivers {
     SPOptions,
-    DriverFailedException,
-    ParamCount
+    DriverFailedException
 }
 import controller.map.misc {
     ICLIHelper,

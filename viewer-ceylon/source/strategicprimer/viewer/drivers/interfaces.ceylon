@@ -1,12 +1,10 @@
 import controller.map.drivers {
     SPOptions,
-    DriverFailedException,
-    ParamCount
+    DriverFailedException
 }
 import java.lang {
     IllegalStateException,
-    IllegalArgumentException,
-    JIterable=Iterable, JString=String
+    IllegalArgumentException
 }
 import model.misc {
     IDriverModel,
@@ -35,10 +33,6 @@ import java.io {
 }
 import lovelace.util.common {
     todo
-}
-import ceylon.interop.java {
-    JavaIterable,
-    javaString
 }
 """An interface to allow utility drivers, which operate on files rather than a map model,
    to be a "functional" (single-method-to-implement) interface"""
@@ -264,10 +258,25 @@ class IncorrectUsageException(correctUsage)
     """The "usage object" for the driver, describing its correct usage."""
     shared IDriverUsage correctUsage;
 }
+"Possible numbers of (non-option?) parameters a driver might want."
+class ParamCount of none | one | two | atLeastOne | atLeastTwo | anyNumber {
+    "None at all."
+    shared new none { }
+    "Exactly one."
+    shared new one { }
+    "Exactly two."
+    shared new two { }
+    "One or more."
+    shared new atLeastOne { }
+    "Two or more."
+    shared new atLeastTwo { }
+    "Zero or more."
+    shared new anyNumber { }
+}
 "An interface for objects representing usage information for drivers, for use in the app
  starter and in help text."
-todo("Make shared once ParamCount is ported?")
-/* shared */ interface IDriverUsage {
+todo("Make shared?")
+interface IDriverUsage {
     "Whether the driver is a GUI."
     shared formal Boolean graphical;
     "The short option to select this driver."

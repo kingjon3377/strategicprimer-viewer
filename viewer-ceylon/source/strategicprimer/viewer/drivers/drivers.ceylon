@@ -68,7 +68,6 @@ import strategicprimer.viewer.drivers {
 import controller.map.drivers {
     SPOptions,
     SPOptionsImpl,
-    ParamCount,
     DriverFailedException
 }
 "A logger."

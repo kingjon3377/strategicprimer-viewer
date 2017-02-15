@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    ParamCount,
     SPOptions
 }
 import controller.map.iointerfaces {
