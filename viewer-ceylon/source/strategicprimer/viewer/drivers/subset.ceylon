@@ -3,7 +3,6 @@ import controller.map.drivers {
     DriverUsage,
     ParamCount,
     SPOptions,
-    IncorrectUsageException,
     DriverFailedException
 }
 import controller.map.misc {

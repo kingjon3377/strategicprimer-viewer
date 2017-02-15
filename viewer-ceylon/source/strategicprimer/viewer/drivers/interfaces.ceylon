@@ -2,11 +2,11 @@ import controller.map.drivers {
     SPOptions,
     DriverFailedException,
     ParamCount,
-    IncorrectUsageException,
     IDriverUsage
 }
 import java.lang {
-    IllegalStateException
+    IllegalStateException,
+    IllegalArgumentException
 }
 import model.misc {
     IDriverModel,
@@ -252,4 +252,11 @@ interface SimpleCLIDriver satisfies SimpleDriver {
         startDriverOnModel(cli, options, model);
         reader.writeModel(model);
     }
+}
+"An exception to throw when a driver fails because the user tried to use it improperly."
+class IncorrectUsageException(correctUsage)
+        extends DriverFailedException("Incorrect usage",
+            IllegalArgumentException("Incorrect usage")) {
+    """The "usage object" for the driver, describing its correct usage."""
+    shared IDriverUsage correctUsage;
 }

@@ -71,8 +71,7 @@ import controller.map.drivers {
     ParamCount,
     IDriverUsage,
     DriverUsage,
-    DriverFailedException,
-    IncorrectUsageException
+    DriverFailedException
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
