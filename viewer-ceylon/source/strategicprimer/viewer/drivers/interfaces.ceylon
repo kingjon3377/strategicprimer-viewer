@@ -1,8 +1,7 @@
 import controller.map.drivers {
     SPOptions,
     DriverFailedException,
-    ParamCount,
-    IDriverUsage
+    ParamCount
 }
 import java.lang {
     IllegalStateException,
@@ -265,6 +264,30 @@ class IncorrectUsageException(correctUsage)
     """The "usage object" for the driver, describing its correct usage."""
     shared IDriverUsage correctUsage;
 }
+"An interface for objects representing usage information for drivers, for use in the app
+ starter and in help text."
+todo("Make shared once ParamCount is ported?")
+/* shared */ interface IDriverUsage {
+    "Whether the driver is a GUI."
+    shared formal Boolean graphical;
+    "The short option to select this driver."
+    shared formal String shortOption;
+    "The long option to select this driver."
+    shared formal String longOption;
+    "How many non-option parameters this driver wants."
+    shared formal ParamCount paramsWanted;
+    "A short (one-line at most) description of the driver."
+    shared formal String shortDescription;
+    "A long(er) description of the driver."
+    shared formal String longDescription;
+    "A description of the first parameter for use in a usage statement."
+    shared formal String firstParamDescription;
+    "A description of parameters other than the first for use in a usage statement."
+    shared formal String subsequentParamDescription;
+    """Options this driver supports. (To show the user, so "=NN" to mean a numeric option
+       is reasonable."""
+    shared formal {String*} supportedOptions;
+}
 class DriverUsage(
     "Whether this driver is graphical or not."
     shared actual Boolean graphical,
@@ -280,17 +303,13 @@ class DriverUsage(
     "A longer description of the driver"
     shared actual String longDescription,
     "A description of the first (non-option) parameter, for use in a usage statement."
-    shared String firstParamDescription = "filename.xml",
+    shared actual String firstParamDescription = "filename.xml",
     "A description of a later parameter, for use in a usage statement. (We assume that all
      parameters after the first should be described similarly.)"
-    shared String subsequentParamDescription = "filename.xml",
+    shared actual String subsequentParamDescription = "filename.xml",
     "The options this driver supports."
     String* supportedOptionsTemp
 ) satisfies IDriverUsage {
-    // FIXME: Just make supportedOptionsTemp be 'shared {String*} supportedOptions
-    shared actual JIterable<JString> supportedOptions =
-            JavaIterable(supportedOptionsTemp.map(javaString));
-    // TODO: drop from interface
-    shared actual String firstParamDesc = firstParamDescription;
-    shared actual String subsequentParamDesc = subsequentParamDescription;
+    shared actual {String*} supportedOptions =
+            supportedOptionsTemp;
 }

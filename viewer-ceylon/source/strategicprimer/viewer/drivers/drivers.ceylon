@@ -69,7 +69,6 @@ import controller.map.drivers {
     SPOptions,
     SPOptionsImpl,
     ParamCount,
-    IDriverUsage,
     DriverFailedException
 }
 "A logger."
@@ -155,19 +154,22 @@ String usageMessage(IDriverUsage usage, Boolean verbose) {
     }
     switch (usage.paramsWanted)
     case (ParamCount.none) {}
-    case (ParamCount.one) { builder.append(" ``usage.firstParamDesc``"); }
+    case (ParamCount.one) { builder.append(" ``usage.firstParamDescription``"); }
     case (ParamCount.atLeastOne) {
-        builder.append(" ``usage.firstParamDesc`` [``usage.subsequentParamDesc`` ...]");
+        builder.append(" ``usage.firstParamDescription`` [``
+            usage.subsequentParamDescription`` ...]");
     }
     case (ParamCount.two) {
-        builder.append(" ``usage.firstParamDesc`` ``usage.subsequentParamDesc``");
+        builder.append(" ``usage.firstParamDescription`` ``
+            usage.subsequentParamDescription``");
     }
     case (ParamCount.atLeastTwo) {
-        builder.append(" ``usage.firstParamDesc`` ``
-        usage.subsequentParamDesc`` [``usage.subsequentParamDesc`` ...]");
+        builder.append(" ``usage.firstParamDescription`` ``
+            usage.subsequentParamDescription`` [``
+            usage.subsequentParamDescription`` ...]");
     }
     case (ParamCount.anyNumber) {
-        builder.append(" [``usage.subsequentParamDesc`` ...]");
+        builder.append(" [``usage.subsequentParamDescription`` ...]");
     }
     builder.appendNewline();
     if (verbose) {

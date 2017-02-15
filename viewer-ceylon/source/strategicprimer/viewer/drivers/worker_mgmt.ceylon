@@ -1,6 +1,5 @@
 import controller.map.drivers {
     ParamCount,
-    IDriverUsage,
     SPOptions,
     DriverFailedException
 }
