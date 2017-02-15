@@ -1,6 +1,5 @@
 import controller.map.drivers {
     ParamCount,
-    DriverUsage,
     IDriverUsage,
     SPOptions
 }
@@ -133,9 +132,8 @@ object suspiciousSkillCheck satisfies Checker {
 {Checker+} extraChecks = { lateriteChecker, aquaticVillageChecker, suspiciousSkillCheck };
 "A driver to check every map file in a list for errors."
 object mapCheckerCLI satisfies UtilityDriver {
-    IDriverUsage usageObject = DriverUsage(false, "-k", "--check", ParamCount.atLeastOne,
+    shared actual IDriverUsage usage = DriverUsage(false, "-k", "--check", ParamCount.atLeastOne,
         "Check map for errors", "Check a map file for errors, deprecated syntax, etc.");
-    shared actual IDriverUsage usage = usageObject;
     void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
             IFixture* list) {
         for (fixture in list) {
@@ -224,9 +222,8 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker",
 "A driver to check every map file in a list for errors and report the results in a
  window."
 object mapCheckerGUI satisfies UtilityDriver {
-    IDriverUsage usageObject = DriverUsage(true, "-k", "--check", ParamCount.atLeastOne,
+    shared actual IDriverUsage usage = DriverUsage(true, "-k", "--check", ParamCount.atLeastOne,
         "Check map for errors", "Check a map file for errors, deprecated syntax, etc.");
-    shared actual IDriverUsage usage = usageObject;
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         MapCheckerFrame window = MapCheckerFrame();

@@ -1,6 +1,5 @@
 import controller.map.drivers {
     ParamCount,
-    DriverUsage,
     IDriverUsage,
     SPOptions
 }
@@ -219,11 +218,10 @@ void runAllTests(ICLIHelper cli, IMapNG map, Integer repetitions) {
 }
 "A driver to compare the performance of TileDrawHelpers."
 object drawHelperComparator satisfies SimpleCLIDriver {
-    IDriverUsage usageObject = DriverUsage(true, "-t", "--test", ParamCount.atLeastOne,
+    shared actual IDriverUsage usage = DriverUsage(true, "-t", "--test", ParamCount.atLeastOne,
         "Test drawing performance.",
         """Test the performance of the TileDrawHelper classes---which do the heavy lifting
            of rendering the map in the viewer---using a variety of automated tests.""");
-    shared actual IDriverUsage usage = usageObject;
     "Run the tests."
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {

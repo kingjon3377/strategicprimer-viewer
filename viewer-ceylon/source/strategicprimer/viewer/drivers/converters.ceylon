@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    DriverUsage,
     ParamCount,
     IDriverUsage,
     SPOptions,
@@ -139,12 +138,16 @@ class ConverterDriver(
     """Set to true when the provided [[ICLIHelper]] is connected to a graphical window
        instead of standard output."""
     Boolean gui = false) satisfies UtilityDriver {
-    DriverUsage tempUsage = DriverUsage(gui, "-v", "--convert", ParamCount.one,
-        "Convert a map's format",
-        "Convert a map. At present, this means reducing its resolution.");
-    tempUsage.addSupportedOption("--current-turn=NN");
     "The usage object."
-    shared actual IDriverUsage usage = tempUsage;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = gui;
+        shortOption = "-v";
+        longOption = "--convert";
+        paramsWanted = ParamCount.one;
+        shortDescription = "Convert a map's format";
+        longDescription = "Convert a map. At present, this means reducing its resolution.";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     "Run the driver."
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
@@ -185,13 +188,17 @@ class ConverterDriver(
 }
 "A class to convert a version-1 map to a version-2 map with greater resolution."
 object oneToTwoConverter satisfies SimpleDriver {
-    DriverUsage usageObject = DriverUsage(false, "-12", "--one-to-two",
-        ParamCount.atLeastOne, "Convert a map's format from version 1 to 2",
-        "Convert a map from format version 1 to format version 2");
-    usageObject.addSupportedOption("--current-turn=NN");
-    usageObject.firstParamDesc = "mainMap.xml";
-    usageObject.subsequentParamDesc = "playerMap.xml";
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-12";
+        longOption = "--one-to-two";
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "Convert a map's format from version 1 to 2";
+        longDescription = "Convert a map from format version 1 to format version 2";
+        firstParamDescription = "mainMap.xml";
+        subsequentParamDescription = "playerMap.xml";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     "The next turn, to use when creating [[TextFixture]]s."
     Integer nextTurn = 15;
     "The factor by which to expand the map on each axis."

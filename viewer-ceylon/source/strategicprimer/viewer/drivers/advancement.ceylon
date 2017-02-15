@@ -2,7 +2,6 @@ import controller.map.drivers {
     SPOptions,
     DriverFailedException,
     ParamCount,
-    DriverUsage,
     IDriverUsage
 }
 import controller.map.misc {
@@ -220,21 +219,29 @@ object advancementCLI satisfies SimpleCLIDriver {
             throw DriverFailedException("I/O error interacting with user", except);
         }
     }
-    DriverUsage usageTemp = DriverUsage(false, "-a", "--adv", ParamCount.atLeastOne,
-        "View a player's workers and manage their advancement",
-        """View a player's units, the workers in those units, each worker's Jobs, and his
-           or her level in each Skill in each Job.""");
-    usageTemp.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage = usageTemp;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-a";
+        longOption = "--adv";
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "View a player's workers and manage their advancement";
+        longDescription = """View a player's units, the workers in those units, each
+                             worker's Jobs, and his or her level in each Skill in each Job.""";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
 }
 "The worker-advancement GUI driver."
 object advancementGUI satisfies SimpleDriver {
-    DriverUsage usageTemp = DriverUsage(true, "-a", "--adv", ParamCount.atLeastOne,
-        "View a player's workers and manage their advancement",
-        """View a player's units, the workers in those units, each worker's Jobs, and his
-           or her level in each Skill in each Job.""");
-    usageTemp.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage = usageTemp;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = true;
+        shortOption = "-a";
+        longOption = "--adv";
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "View a player's workers and manage their advancement";
+        longDescription = """View a player's units, the workers in those units, each
+                             worker's Jobs, and his or her level in each Skill in each Job.""";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         IWorkerModel workerModel;

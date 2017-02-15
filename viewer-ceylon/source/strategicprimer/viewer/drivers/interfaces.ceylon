@@ -6,7 +6,8 @@ import controller.map.drivers {
 }
 import java.lang {
     IllegalStateException,
-    IllegalArgumentException
+    IllegalArgumentException,
+    JIterable=Iterable, JString=String
 }
 import model.misc {
     IDriverModel,
@@ -35,6 +36,10 @@ import java.io {
 }
 import lovelace.util.common {
     todo
+}
+import ceylon.interop.java {
+    JavaIterable,
+    javaString
 }
 """An interface to allow utility drivers, which operate on files rather than a map model,
    to be a "functional" (single-method-to-implement) interface"""
@@ -259,4 +264,33 @@ class IncorrectUsageException(correctUsage)
             IllegalArgumentException("Incorrect usage")) {
     """The "usage object" for the driver, describing its correct usage."""
     shared IDriverUsage correctUsage;
+}
+class DriverUsage(
+    "Whether this driver is graphical or not."
+    shared actual Boolean graphical,
+    "The short (generally one character) option to give to the app-starter to get this
+     driver."
+    shared actual String shortOption,
+    "The long option to give to the app-starter to get this driver."
+    shared actual String longOption,
+    "How many parameters this driver wants."
+    shared actual ParamCount paramsWanted,
+    "A short description of the driver"
+    shared actual String shortDescription,
+    "A longer description of the driver"
+    shared actual String longDescription,
+    "A description of the first (non-option) parameter, for use in a usage statement."
+    shared String firstParamDescription = "filename.xml",
+    "A description of a later parameter, for use in a usage statement. (We assume that all
+     parameters after the first should be described similarly.)"
+    shared String subsequentParamDescription = "filename.xml",
+    "The options this driver supports."
+    String* supportedOptionsTemp
+) satisfies IDriverUsage {
+    // FIXME: Just make supportedOptionsTemp be 'shared {String*} supportedOptions
+    shared actual JIterable<JString> supportedOptions =
+            JavaIterable(supportedOptionsTemp.map(javaString));
+    // TODO: drop from interface
+    shared actual String firstParamDesc = firstParamDescription;
+    shared actual String subsequentParamDesc = subsequentParamDescription;
 }

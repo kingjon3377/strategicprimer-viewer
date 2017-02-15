@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    DriverUsage,
     ParamCount,
     IDriverUsage,
     SPOptions,
@@ -57,11 +56,15 @@ import view.resources {
 }
 "A driver to le the user enter a player's resources and equipment."
 object resourceAddingCLI satisfies SimpleCLIDriver {
-    DriverUsage usageObject = DriverUsage(false, "-d", "--add-resource",
-        ParamCount.atLeastOne, "Add resources to maps",
-        "Add resources for players to maps.");
-    usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-d";
+        longOption = "--add-resource";
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "Add resources to maps";
+        longDescription = "Add resources for players to maps.";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     MutableSet<String> resourceKinds = HashSet<String>();
     MutableMap<String, MutableSet<String>> resourceContents =
             HashMap<String, MutableSet<String>>();
@@ -169,10 +172,15 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     }
 }
 object resourceAddingGUI satisfies SimpleDriver {
-    DriverUsage usageObject = DriverUsage(true, "-d", "--add-resource",
-        ParamCount.atLeastOne, "Add resources to maps", "Add resources for players to maps");
-    usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = true;
+        shortOption = "-d";
+        longOption = "--add-resource";
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "Add resources to maps";
+        longDescription = "Add resources for players to maps";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is ResourceManagementDriver model) {

@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    DriverUsage,
     ParamCount,
     IDriverUsage,
     SPOptions
@@ -94,11 +93,15 @@ import model.map.fixtures.towns {
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
 object statGeneratingCLI satisfies SimpleCLIDriver {
-    DriverUsage usageObject = DriverUsage(false, "-t", "--stats", ParamCount.atLeastOne,
-        "Enter worker stats or generate new workers.",
-        "Enter stats for existing workers or generate new workers randomly.");
-    usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-t";
+        longOption = "--stats";
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "Enter worker stats or generate new workers.";
+        longDescription = "Enter stats for existing workers or generate new workers randomly.";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     "The units in the given collection that have workers without stats."
     {IUnit*} removeStattedUnits(IUnit* units) {
         return units.filter((unit) {
@@ -462,10 +465,9 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     MutableList<String> raceList = ArrayList<String>();
     "How many units we've fixed."
     variable Integer count = -1;
-    IDriverUsage usageObject = DriverUsage(false, "-o", "--fix-todos",
+    shared actual IDriverUsage usage = DriverUsage(false, "-o", "--fix-todos",
         ParamCount.atLeastOne, "Fix TODOs in maps",
         "Fix TODOs in unit kinds and aquatic villages with non-aquatic races");
-    shared actual IDriverUsage usage = usageObject;
     "Get the simplified-terrain-model instance covering the map's terrain at the given
      location."
     todo("Just use TileType now we have union types available")

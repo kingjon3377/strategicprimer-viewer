@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    DriverUsage,
     ParamCount,
     IDriverUsage,
     SPOptions,
@@ -50,11 +49,15 @@ import java.lang {
 }
 "A CLI to help running exploration."
 object explorationCLI satisfies SimpleCLIDriver {
-    DriverUsage usageObject = DriverUsage(false, "-x", "--explore", ParamCount.atLeastOne,
-        "Run exploration.",
-        "Move a unit around the map, updating the player's map with what it sees.");
-    usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-x";
+        longOption = "--explore";
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "Run exploration.";
+        longDescription = "Move a unit around the map, updating the player's map with what it sees.";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
         IExplorationModel explorationModel;
         if (is IExplorationModel model) {
@@ -75,11 +78,15 @@ object explorationCLI satisfies SimpleCLIDriver {
 }
 "An object to start the exploration GUI."
 object explorationGUI satisfies SimpleDriver {
-    DriverUsage usageObject = DriverUsage(true, "-x", "--explore", ParamCount.atLeastOne,
-        "Run exploration.",
-        "Move a unit around the map, updating the player's map with what it sees.");
-    usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = true;
+        shortOption = "-x";
+        longOption = "--explore";
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "Run exploration.";
+        longDescription = "Move a unit around the map, updating the player's map with what it sees.";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         IExplorationModel explorationModel;
@@ -105,12 +112,11 @@ object explorationGUI satisfies SimpleDriver {
 """A driver to help debug "exploration tables", which were the second "exploration results" framework
    I implemented."""
 object tableDebugger satisfies SimpleCLIDriver {
-    IDriverUsage usageObject = DriverUsage(false, "-T", "--table-debug", ParamCount.none,
-        "Debug old-model encounter tables",
-        "See whether old-model encounter tables refer to a nonexistent table");
     ExplorationRunner runner = ExplorationRunner();
     TableLoader.loadAllTables("tables", runner);
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage(false, "-T", "--table-debug", ParamCount.none,
+        "Debug old-model encounter tables",
+        "See whether old-model encounter tables refer to a nonexistent table");
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
         log.warn("tableDebugger doesn't need a driver model");
         startDriverNoArgs();

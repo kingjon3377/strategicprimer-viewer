@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    DriverUsage,
     ParamCount,
     IDriverUsage,
     SPOptions
@@ -58,11 +57,15 @@ IUnit mockUnit(Player player) {
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""
 object expansionDriver satisfies SimpleCLIDriver {
-    DriverUsage usageObject = DriverUsage(false, "-n", "--expand", ParamCount.atLeastTwo,
-        "Expand a player's map.",
-        "Ensure a player's map covers all terrain allied villages can see.");
-    usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-n";
+        longOption = "--expand";
+        paramsWanted = ParamCount.atLeastTwo;
+        shortDescription = "Expand a player's map.";
+        longDescription = "Ensure a player's map covers all terrain allied villages can see.";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
@@ -136,11 +139,15 @@ object expansionDriver satisfies SimpleCLIDriver {
    isSuitable(), chance(), and create() before each use."""
 todo("Make this an interface for objects to satisfy instead?")
 object mapPopulatorDriver satisfies SimpleCLIDriver {
-    DriverUsage usageObject = DriverUsage(false, "-l", "--populate", ParamCount.one,
-        "Add missing fixtures to a map",
-        "Add specified kinds of fixtures to suitable points throughout a map");
-    usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-l";
+        longOption = "--populate";
+        paramsWanted = ParamCount.one;
+        shortDescription = "Add missing fixtures to a map";
+        longDescription = "Add specified kinds of fixtures to suitable points throughout a map";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     variable Integer suitableCount = 0;
     variable Integer changedCount = 0;
     "The first method to customize for each use: whether a point is suitable for the

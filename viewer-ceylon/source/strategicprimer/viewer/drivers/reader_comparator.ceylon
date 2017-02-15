@@ -1,7 +1,6 @@
 import controller.map.drivers {
     IDriverUsage,
     ParamCount,
-    DriverUsage,
     SPOptions
 }
 import controller.map.iointerfaces {
@@ -36,10 +35,9 @@ import java.nio.file {
 }
 "A driver for comparing map readers."
 object readerComparator satisfies UtilityDriver {
-    IDriverUsage usageObject = DriverUsage(false, "-t", "--test", ParamCount.atLeastOne,
+    shared actual IDriverUsage usage = DriverUsage(false, "-t", "--test", ParamCount.atLeastOne,
         "Test map readers",
         "Test map-reading implementations by comparing their results on the same file.");
-    shared actual IDriverUsage usage = usageObject;
     "Compare the two readers' performance on the given files."
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {

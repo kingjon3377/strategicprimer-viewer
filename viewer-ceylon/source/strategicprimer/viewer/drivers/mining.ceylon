@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    DriverUsage,
     ParamCount,
     IDriverUsage,
     SPOptions,
@@ -30,13 +29,17 @@ import java.io {
    file to write the CSV to and the value at the top center (as an index into the
    LodeStatus values array).""""
 object miningCLI satisfies UtilityDriver {
-    DriverUsage usageObject = DriverUsage(false, "-i", "--mining", ParamCount.two,
-        "Create a model of a mine",
-        "Create a CSV spreadsheet representing a mine's area");
-    usageObject.addSupportedOption("--seed=NN");
-    usageObject.firstParamDesc = "output.csv";
-    usageObject.subsequentParamDesc = "status";
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-i";
+        longOption = "--mining";
+        paramsWanted = ParamCount.two;
+        shortDescription = "Create a model of a mine";
+        longDescription = "Create a CSV spreadsheet representing a mine's area";
+        firstParamDescription = "output.csv";
+        subsequentParamDescription = "status";
+        supportedOptionsTemp = [ "--seed=NN" ];
+    };
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         if (exists filename = args.first, exists second = args.rest.first,
@@ -85,7 +88,7 @@ object miningCLI satisfies UtilityDriver {
                     "Output file ``filename`` already exists"));
             }
         } else {
-            throw IncorrectUsageException(usageObject);
+            throw IncorrectUsageException(usage);
         }
     }
 }

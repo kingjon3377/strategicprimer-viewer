@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    DriverUsage,
     ParamCount,
     IDriverUsage,
     SPOptions
@@ -31,10 +30,15 @@ import view.util {
 }
 "A driver to start the map viewer."
 object viewerGUI satisfies SimpleDriver {
-    DriverUsage usageObject = DriverUsage(true, "-m", "--map", ParamCount.one,
-        "Map viewer", "Look at the map visually. This is probably the app you want.");
-    usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = true;
+        shortOption = "-m";
+        longOption = "--map";
+        paramsWanted = ParamCount.one;
+        shortDescription = "Map viewer";
+        longDescription = "Look at the map visually. This is probably the app you want.";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IViewerModel model) {

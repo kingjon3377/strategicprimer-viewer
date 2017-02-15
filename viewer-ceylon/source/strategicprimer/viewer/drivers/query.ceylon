@@ -1,6 +1,5 @@
 import controller.map.drivers {
     IDriverUsage,
-    DriverUsage,
     ParamCount,
     SPOptions
 }
@@ -148,10 +147,9 @@ object turkeys extends PoultryModel(0.75, 0.25, 2, 2) { }
 object pigeons extends PoultryModel(0.5, 0.035, 1, 4) { }
 "A driver for 'querying' the driver model about various things."
 object queryCLI satisfies SimpleDriver {
-    IDriverUsage usageObject = DriverUsage(false, "-q", "--query", ParamCount.one,
+    shared actual IDriverUsage usage = DriverUsage(false, "-q", "--query", ParamCount.one,
         "Answer questions about a map.",
         "Look a tiles on a map. Or run hunting, gathering, or fishing.");
-    shared actual IDriverUsage usage = usageObject;
     "How many hours we assume a working day is for a hunter or such."
     Integer hunterHours = 10;
     "How many encounters per hour for a hunter or such."
@@ -447,9 +445,8 @@ object trappingCLI satisfies SimpleDriver {
     static object easyReset extends TrapperCommand("Reset a foothold trap, e.g.") {}
     static object quit extends TrapperCommand("Quit") {}
     static List<TrapperCommand> commands = ArrayList{setTrap, check, move, easyReset, quit};
-    IDriverUsage usageObject = DriverUsage(false, "-r", "--trap", ParamCount.one,
+    shared actual IDriverUsage usage = DriverUsage(false, "-r", "--trap", ParamCount.one,
         "Run a player's trapping", "Determine the results a player's trapper finds.");
-    shared actual IDriverUsage usage = usageObject;
     String inHours(Integer minutes) {
         if (minutes < minutesPerHour) {
             return "``minutes`` minutes";

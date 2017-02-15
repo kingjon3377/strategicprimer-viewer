@@ -1,6 +1,5 @@
 import controller.map.drivers {
     IDriverUsage,
-    DriverUsage,
     ParamCount,
     SPOptions,
     DriverFailedException
@@ -57,11 +56,10 @@ class AppendableHelper(ICLIHelper wrapped) satisfies Appendable {
 }
 "A driver to check whether player maps are subsets of the main map."
 object subsetCLI satisfies SimpleDriver {
-    IDriverUsage usageObject = DriverUsage(false, "-s", "--subset", ParamCount.atLeastTwo,
+    shared actual IDriverUsage usage = DriverUsage(false, "-s", "--subset", ParamCount.atLeastTwo,
         "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.");
-    shared actual IDriverUsage usage = usageObject;
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
@@ -86,11 +84,10 @@ object subsetCLI satisfies SimpleDriver {
  results graphically."
 todo("Unify with subsetCLI")
 object subsetGUI satisfies ISPDriver {
-    IDriverUsage usageObject = DriverUsage(true, "-s", "--subset", ParamCount.atLeastTwo,
+    shared actual IDriverUsage usage = DriverUsage(true, "-s", "--subset", ParamCount.atLeastTwo,
         "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.");
-    shared actual IDriverUsage usage = usageObject;
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
@@ -108,7 +105,7 @@ object subsetGUI satisfies ISPDriver {
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         if (args.size < 2) {
-            throw IncorrectUsageException(usageObject);
+            throw IncorrectUsageException(usage);
         }
         SubsetFrame frame = SubsetFrame();
         SwingUtilities.invokeLater(() => frame.setVisible(true));

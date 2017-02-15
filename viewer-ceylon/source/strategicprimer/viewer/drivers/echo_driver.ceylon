@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    DriverUsage,
     ParamCount,
     IDriverUsage,
     SPOptions,
@@ -48,12 +47,9 @@ import model.misc {
    sure that the map format is properly read, but is also useful for correcting deprecated
    syntax. (Because of that usage, warnings are disabled.)"""
 object echoDriver satisfies UtilityDriver {
-    DriverUsage usageObject = DriverUsage(false, "-e", "--echo", ParamCount.two,
-        "Read, then write a map.", "Read and write a map, correcting deprecated syntax.");
-    usageObject.addSupportedOption("--current-turn=NN");
-    usageObject.firstParamDesc = "input.xml";
-    usageObject.subsequentParamDesc = "output.xml";
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage(false, "-e", "--echo", ParamCount.two,
+        "Read, then write a map.", "Read and write a map, correcting deprecated syntax.",
+        "input.xml", "output.xml", "--current-turn=NN");
     """Run the driver: read the map, then write it, correcting deprecated syntax and
        forest and Ground IDs."""
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
@@ -105,16 +101,15 @@ object echoDriver satisfies UtilityDriver {
                 throw DriverFailedException("I/O error writing ``outArg``", except);
             }
         } else {
-            throw IncorrectUsageException(usageObject);
+            throw IncorrectUsageException(usage);
         }
     }
 }
 "A driver to fix ID mismatches between forests and Ground in the main and player maps."
 object forestFixerDriver satisfies SimpleCLIDriver {
-    IDriverUsage usageObject = DriverUsage(false, "-f", "--fix-forest",
+    shared actual IDriverUsage usage = DriverUsage(false, "-f", "--fix-forest",
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map");
-    shared actual IDriverUsage usage = usageObject;
     {Forest*} extractForests(IMapNG map, Point location) {
         {Forest*} retval = { for (fixture in map.getOtherFixtures(location))
         if (is Forest fixture) fixture };

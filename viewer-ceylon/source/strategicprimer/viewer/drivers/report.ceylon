@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    DriverUsage,
     ParamCount,
     IDriverUsage,
     SPOptions,
@@ -42,15 +41,20 @@ import controller.map.report.tabular {
 }
 "A driver to produce a report of the contents of a map."
 object reportCLI satisfies SimpleDriver {
-    DriverUsage usageObject = DriverUsage(false, "-m", "--map", ParamCount.one,
-        "Report Generator", "Produce HTML report of the contents of a map");
-    if ("\\" == operatingSystem.fileSeparator) {
-        usageObject.addSupportedOption("--out=C:\\path\\to\\output.html");
-    } else {
-        usageObject.addSupportedOption("--out=/path/to/output.html");
-    }
-    usageObject.addSupportedOption("--player=NN");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-m";
+        longOption = "--map";
+        paramsWanted = ParamCount.one;
+        shortDescription = "Report Generator";
+        longDescription = "Produce HTML report of the contents of a map";
+        supportedOptionsTemp = [
+            ("\\" == operatingSystem.fileSeparator) then
+                "--out=C:\\path\\to\\output.html"
+                else "--out=/path/to/output.html",
+            "--player=NN"
+        ];
+    };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         void writeReport(JOptional<JPath> maybeFilename, IMapNG map) {
@@ -98,10 +102,9 @@ object reportCLI satisfies SimpleDriver {
 }
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
 object tabularReportCLI satisfies SimpleDriver {
-    IDriverUsage usageObject = DriverUsage(false, "-b", "--tabular",
+    shared actual IDriverUsage usage = DriverUsage(false, "-b", "--tabular",
         ParamCount.atLeastOne, "Tabular Report Generator",
         "Produce CSV reports of the contents of a map.");
-    shared actual IDriverUsage usage = usageObject;
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         OutputStream(String) filenameFunction(JPath base) {

@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    DriverUsage,
     ParamCount,
     IDriverUsage,
     SPOptions,
@@ -42,12 +41,15 @@ import java.lang {
 }
 "A driver to start the worker management GUI."
 object workerGUI satisfies SimpleDriver {
-    DriverUsage usageObject = DriverUsage(true, "-w", "--worker", ParamCount.atLeastOne,
-        "Manage a player's workers in units",
-        "Organize the members of a player's units.");
-    usageObject.addSupportedOption("--current-turn=NN");
-    usageObject.addSupportedOption("--print-empty");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = true;
+        shortOption = "-w";
+        longOption = "--worker";
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "Manage a player's workers in units";
+        longDescription = "Organize the members of a player's units.";
+        supportedOptionsTemp = [ "--current-turn=NN", "--print-empty" ];
+    };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IWorkerModel model) {
@@ -76,13 +78,15 @@ object workerGUI satisfies SimpleDriver {
 }
 "A command-line program to export a proto-strategy for a player from orders in a map."
 object strategyExportCLI satisfies SimpleDriver {
-    DriverUsage usageObject = DriverUsage(false, "-w", "--worker", ParamCount.one,
-        "Export a proto-strategy",
-        "Create a proto-strategy using orders stored in the map");
-    usageObject.addSupportedOption("--current-turn=NN");
-    usageObject.addSupportedOption("--print-empty");
-    usageObject.addSupportedOption("--export=filename.txt");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-w";
+        longOption = "--worker";
+        paramsWanted = ParamCount.one;
+        shortDescription = "Export a proto-strategy";
+        longDescription = "Create a proto-strategy using orders stored in the map";
+        supportedOptionsTemp = [ "--current-turn=NN", "--print-empty", "--export=filename.txt" ];
+    };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IWorkerModel model) {

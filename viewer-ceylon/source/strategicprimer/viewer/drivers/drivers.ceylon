@@ -70,7 +70,6 @@ import controller.map.drivers {
     SPOptionsImpl,
     ParamCount,
     IDriverUsage,
-    DriverUsage,
     DriverFailedException
 }
 "A logger."
@@ -356,12 +355,15 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
 """A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
    takes up on disk and the memory and CPU it takes to deal with it)."""
 object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
-    DriverUsage usageObject = DriverUsage(false, "-u", "--duplicates", ParamCount.one,
-        "Remove duplicate fixtures",
-        "Remove duplicate fixtures (identical except ID# and on the same tile) from a map."
-    );
-    usageObject.addSupportedOption("--current-turn=NN");
-    shared actual IDriverUsage usage = usageObject;
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-u";
+        longOption = "--duplicates";
+        paramsWanted = ParamCount.one;
+        shortDescription = "Remove duplicate fixtures";
+        longDescription = "Remove duplicate fixtures (identical except ID# and on the same tile) from a map.";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
     "Run the driver"
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
