@@ -2,7 +2,6 @@ import controller.map.drivers {
     ParamCount,
     DriverUsage,
     IDriverUsage,
-    SimpleCLIDriver,
     SPOptions
 }
 import controller.map.misc {

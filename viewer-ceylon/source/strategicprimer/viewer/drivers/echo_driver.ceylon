@@ -4,8 +4,7 @@ import controller.map.drivers {
     IDriverUsage,
     SPOptions,
     IncorrectUsageException,
-    DriverFailedException,
-    SimpleCLIDriver
+    DriverFailedException
 }
 import controller.map.misc {
     ICLIHelper,

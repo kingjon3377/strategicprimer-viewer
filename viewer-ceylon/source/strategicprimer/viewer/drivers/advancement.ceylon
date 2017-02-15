@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    SimpleCLIDriver,
     SPOptions,
     DriverFailedException,
     ParamCount,

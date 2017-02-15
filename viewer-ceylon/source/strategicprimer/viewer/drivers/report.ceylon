@@ -27,7 +27,6 @@ import ceylon.interop.java {
     CeylonIterable
 }
 import java.io {
-    BufferedWriter,
     OutputStream,
     IOException,
     IOError

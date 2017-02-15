@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    SimpleCLIDriver,
     DriverUsage,
     ParamCount,
     IDriverUsage,
