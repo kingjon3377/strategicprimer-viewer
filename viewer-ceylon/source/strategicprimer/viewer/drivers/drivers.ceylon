@@ -43,7 +43,8 @@ import java.awt {
     GridLayout
 }
 import ceylon.interop.java {
-    JavaList
+    JavaList,
+    CeylonIterable
 }
 import ceylon.language.meta.declaration {
     Package,
@@ -67,7 +68,6 @@ import strategicprimer.viewer.drivers {
 }
 import controller.map.drivers {
     SPOptions,
-    SPOptionsImpl,
     DriverFailedException
 }
 "A logger."
@@ -195,33 +195,36 @@ shared void run() {
                 String* args) {
             log.info("Inside appStarter.startDriver()");
             variable Boolean gui = !GraphicsEnvironment.headless;
-            variable SPOptionsImpl currentOptions = SPOptionsImpl(options);
+            variable SPOptionsImpl currentOptions = SPOptionsImpl(
+                CeylonIterable(options).map(
+                    (pair) => pair.first().string -> pair.second().string));
             if (!currentOptions.hasOption("--gui")) {
-                currentOptions.setOption("--gui", gui.string);
+                currentOptions.addOption("--gui", gui.string);
             }
             MutableList<String> others = ArrayList<String>();
             variable [ISPDriver, ISPDriver]? currentDrivers = null;
             for (arg in args.coalesced) {
                 if (arg == "-g" || arg == "--gui") {
-                    currentOptions.setOption("--gui", "true");
+                    currentOptions.addOption("--gui");
                     gui = true;
                 } else if (arg == "-c" || arg == "--cli") {
-                    currentOptions.setOption("--gui", "false");
+                    currentOptions.addOption("--gui", "false");
                     gui = false;
                 } else if (arg.startsWith("--gui=")) {
                     String tempString = arg.substring(6);
                     value tempBool = Boolean.parse(tempString);
                     if (is Boolean tempBool) {
-                        currentOptions.setOption("--gui", tempString);
+                        currentOptions.addOption("--gui", tempString);
                         gui = tempBool;
                     } else {
                         throw DriverFailedException("--gui=nonBoolean", tempBool);
                     }
                 } else if (arg.startsWith("-") && arg.contains("=")) {
                     {String+} broken = arg.split('='.equals, true, false);
-                    currentOptions.setOption(broken.first, broken.rest.reduce<String>(
+                    currentOptions.addOption(broken.first, broken.rest.reduce<String>(
                         (String partial, String element) =>
-                        if (partial.empty) then element else "``partial``=``element``"));
+                        if (partial.empty) then element else "``partial``=``element``")
+                        else "");
                 } else if (driverCache.defines(arg.lowercased)) {
                     if (exists temp = currentDrivers) {
                         SPOptions currentOptionsTyped = currentOptions;
