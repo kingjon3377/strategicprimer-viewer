@@ -1,6 +1,7 @@
 package strategicprimer.viewer.drivers;
 
 import controller.map.misc.CLIHelper;
+import controller.map.misc.IDRegistrar;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.MapDimensions;
@@ -8,6 +9,7 @@ import model.map.Player;
 import model.map.SPMapNG;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
+import view.worker.NewUnitDialog;
 
 /**
  * A wrapper around the constructors of classes thatthe Ceylon compiler in the
@@ -55,5 +57,13 @@ public class ConstructorWrapper {
 	 */
 	public static CLIHelper cliHelper() {
 		return new CLIHelper();
+	}
+	/**
+	 * Instantiate a NewUnitDialog.
+	 * @param player the current player
+	 * @param idf the ID factory to use
+	 */
+	public static NewUnitDialog newUnitDialog(final Player player, final IDRegistrar idf) {
+		return new NewUnitDialog(player, idf);
 	}
 }
