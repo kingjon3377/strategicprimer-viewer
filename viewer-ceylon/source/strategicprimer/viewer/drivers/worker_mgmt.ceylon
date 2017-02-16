@@ -40,7 +40,6 @@ import view.worker {
     WorkerMenu
 }
 import view.util {
-    AboutDialog,
     SPFrame,
     HotKeyCreator,
     FocusRequester,
@@ -148,6 +147,9 @@ import ceylon.collection {
 }
 import model.map.fixtures.mobile.worker {
     IJob
+}
+import strategicprimer.viewer.about {
+    aboutDialog
 }
 "A panel for the user to enter a unit's orders or read a unit's results."
 JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel(
@@ -539,7 +541,7 @@ object workerGUI satisfies SimpleDriver {
                     "reload tree");
                 menuHandler.register(WindowCloser(frame), "close");
                 menuHandler.register((event) =>
-                    AboutDialog(frame, frame.windowName).setVisible(true), "about");
+                    aboutDialog(frame, frame.windowName).setVisible(true), "about");
                 frame.setVisible(true);
             });
         } else {

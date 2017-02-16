@@ -24,7 +24,6 @@ import javax.swing {
     SwingUtilities
 }
 import view.util {
-    AboutDialog,
     SystemOut
 }
 import model.exploration.old {
@@ -43,6 +42,9 @@ import ceylon.collection {
 }
 import java.lang {
     ObjectArray, JString=String
+}
+import strategicprimer.viewer.about {
+    aboutDialog
 }
 "A CLI to help running exploration."
 object explorationCLI satisfies SimpleCLIDriver {
@@ -101,7 +103,7 @@ object explorationGUI satisfies SimpleDriver {
             ExplorationFrame frame = ExplorationFrame(explorationModel, menuHandler);
             menuHandler.register(WindowCloser(frame), "close");
             menuHandler.register((event) =>
-                AboutDialog(frame, frame.windowName).setVisible(true), "about");
+                aboutDialog(frame, frame.windowName).setVisible(true), "about");
             frame.setVisible(true);
         });
     }

@@ -20,8 +20,8 @@ import view.map.main {
 import javax.swing {
     SwingUtilities
 }
-import view.util {
-    AboutDialog
+import strategicprimer.viewer.about {
+    aboutDialog
 }
 "A driver to start the map viewer."
 object viewerGUI satisfies SimpleDriver {
@@ -53,7 +53,7 @@ object viewerGUI satisfies SimpleDriver {
                 menuHandler.register(FindHandler(frame, model), "find a fixture",
                     "find next");
                 menuHandler.register((event) =>
-                    AboutDialog(frame, frame.windowName).setVisible(true), "about");
+                    aboutDialog(frame, frame.windowName).setVisible(true), "about");
                 frame.setVisible(true);
             });
         } else if (is IMultiMapModel model) {

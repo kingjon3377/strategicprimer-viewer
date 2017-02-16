@@ -54,8 +54,10 @@ import view.worker {
     AdvancementFrame
 }
 import view.util {
-    AboutDialog,
     DriverQuit
+}
+import strategicprimer.viewer.about {
+    aboutDialog
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
@@ -262,7 +264,7 @@ object advancementGUI satisfies SimpleDriver {
                 "reload tree");
             menuHandler.register(WindowCloser(frame), "close");
             menuHandler.register((event) =>
-                    AboutDialog(frame, frame.windowName).setVisible(true), "about");
+                    aboutDialog(frame, frame.windowName).setVisible(true), "about");
             frame.setVisible(true);
         });
     }
