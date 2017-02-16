@@ -34,6 +34,9 @@ import java.io {
 import lovelace.util.common {
     todo
 }
+import ceylon.interop.java {
+    javaString
+}
 """An interface to allow utility drivers, which operate on files rather than a map model,
    to be a "functional" (single-method-to-implement) interface"""
 interface UtilityDriver satisfies ISPDriver {
@@ -119,9 +122,12 @@ interface SimpleDriver satisfies ISPDriver {
             startDriverOnModel(cli, options, mapModel);
         } else {
             assert (exists firstArg = args.first);
-            IMultiMapModel mapModel = MapReaderAdapter()
-                .readMultiMapModel(Warning.default, JPaths.get(firstArg),
-                    *MapReaderAdapter.namesToFiles(false, *args.rest));
+            assert (nonempty temp = args.map(javaString).sequence());
+            IMultiMapModel mapModel = MapModelMaker.readMapModelHacked(MapReaderAdapter(),
+                Warning.default, temp);
+//            IMultiMapModel mapModel = MapReaderAdapter()
+//                .readMultiMapModel(Warning.default, JPaths.get(firstArg),
+//                    *MapReaderAdapter.namesToFiles(false, *args.rest));
             for (pair in mapModel.allMaps) {
                 turnFixer(pair.first());
             }
@@ -233,10 +239,13 @@ interface SimpleCLIDriver satisfies SimpleDriver {
         }
         MapReaderAdapter reader = MapReaderAdapter();
         assert (exists firstArg = args.first);
+        assert (nonempty temp = args.map(javaString).sequence());
         // We declare this as IMultiMapModel so we can correct the current turn in all
         // maps if needed.
-        IMultiMapModel model = reader.readMultiMapModel(Warning.ignore,
-            JPaths.get(firstArg), *MapReaderAdapter.namesToFiles(false, *args.rest));
+        IMultiMapModel model = MapModelMaker.readMapModelHacked(reader, Warning.ignore,
+            temp);
+//        IMultiMapModel model = reader.readMultiMapModel(Warning.ignore,
+//            JPaths.get(firstArg), *MapReaderAdapter.namesToFiles(false, *args.rest));
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {
