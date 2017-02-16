@@ -1,11 +1,9 @@
 import controller.map.drivers {
-    SPOptions,
     DriverFailedException
 }
 import java.lang {
     IllegalStateException,
-    IllegalArgumentException,
-    JString=String
+    IllegalArgumentException
 }
 import model.misc {
     IDriverModel,
@@ -17,8 +15,7 @@ import controller.map.misc {
     FileChooser
 }
 import util {
-    Warning,
-    Pair
+    Warning
 }
 import java.nio.file {
     JPaths = Paths, JPath = Path
@@ -28,9 +25,7 @@ import model.map {
     HasName
 }
 import java.util {
-    JOptional = Optional,
-    JIterator=Iterator,
-    NoSuchElementException
+    JOptional = Optional
 }
 import java.io {
     IOException
@@ -39,12 +34,24 @@ import lovelace.util.common {
     todo
 }
 import ceylon.interop.java {
-    javaString,
-    JavaIterator
+    javaString
 }
 import ceylon.collection {
     MutableMap,
     HashMap
+}
+"""An interface for the command-line options passed by the user. At this point we
+   assume that if any option is passed to an app more than once, the subsequent option
+   overrides the previous, and any option passed without argument has an implied argument
+   of "true"."""
+interface SPOptions satisfies Iterable<String->String> {
+    "Whether the specified option was given, with or without an argument."
+    shared formal Boolean hasOption(String option);
+    """Get the argument provided for the given argument ("true" if given without one,
+       "false" if not given by the user)."""
+    shared formal String getArgument(String option);
+    "Clone the object."
+    shared formal SPOptions copy();
 }
 """The command-line options passed by the user. At this point we assume that if any option
    is passed to an app more than once, the subsequent option overrides the previous, and
@@ -74,9 +81,7 @@ class SPOptionsImpl({<String->String>*} existing = {}) satisfies SPOptions {
         }
         return builder.string;
     }
-    shared actual JIterator<Pair<JString,JString>> iterator() =>
-            JavaIterator(options.map((key->item) => Pair.\iof(javaString(key),
-                javaString(item))).iterator());
+    shared actual Iterator<String->String> iterator() => options.iterator();
 
 }
 """An interface to allow utility drivers, which operate on files rather than a map model,

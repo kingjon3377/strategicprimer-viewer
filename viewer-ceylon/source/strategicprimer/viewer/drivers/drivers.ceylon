@@ -67,7 +67,6 @@ import strategicprimer.viewer.drivers {
     drawHelperComparator
 }
 import controller.map.drivers {
-    SPOptions,
     DriverFailedException
 }
 "A logger."
@@ -195,9 +194,7 @@ shared void run() {
                 String* args) {
             log.info("Inside appStarter.startDriver()");
             variable Boolean gui = !GraphicsEnvironment.headless;
-            variable SPOptionsImpl currentOptions = SPOptionsImpl(
-                CeylonIterable(options).map(
-                    (pair) => pair.first().string -> pair.second().string));
+            variable SPOptionsImpl currentOptions = SPOptionsImpl(options);
             if (!currentOptions.hasOption("--gui")) {
                 currentOptions.addOption("--gui", gui.string);
             }

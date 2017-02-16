@@ -1,6 +1,3 @@
-import controller.map.drivers {
-    SPOptions
-}
 import controller.map.iointerfaces {
     IMapReader
 }

@@ -10,9 +10,6 @@ import controller.map.misc {
     FileChooser,
     MapReaderAdapter
 }
-import controller.map.drivers {
-    SPOptions
-}
 import lovelace.util.common {
     todo
 }

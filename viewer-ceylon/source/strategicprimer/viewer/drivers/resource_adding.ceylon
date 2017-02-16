@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    SPOptions,
     DriverFailedException
 }
 import ceylon.collection {

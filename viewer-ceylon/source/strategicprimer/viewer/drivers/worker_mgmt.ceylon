@@ -1,5 +1,4 @@
 import controller.map.drivers {
-    SPOptions,
     DriverFailedException
 }
 import controller.map.misc {
@@ -55,10 +54,9 @@ import view.util {
     BoxPanel
 }
 import java.nio.file {
-    JPaths = Paths, JPath=Path
+    JPath=Path
 }
 import ceylon.interop.java {
-    JavaIterable,
     CeylonIterable
 }
 import model.map.fixtures {
@@ -102,7 +100,6 @@ import javax.swing.tree {
     DefaultTreeModel,
     DefaultMutableTreeNode,
     TreePath,
-    TreeCellRenderer,
     DefaultTreeCellRenderer
 }
 import model.report {
