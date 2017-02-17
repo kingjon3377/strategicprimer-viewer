@@ -1,6 +1,5 @@
 package controller.map.converter;
 
-import java.util.regex.Pattern;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensionsImpl;
@@ -45,29 +44,7 @@ import static org.junit.Assert.fail;
  * @author Jonathan Lovelace
  */
 public final class TestConverter {
-	/**
-	 * Extracted constant: the type of rock used in the test-data tables.
-	 */
-	private static final String ROCK_TYPE = "rock1";
-	/**
-	 * Extracted constant: the type of tree used for boreal forests in the test-data
-	 * tables.
-	 */
-	private static final String BOREAL_TREE = "btree1";
-	/**
-	 * Extracted constant: the type of field used in the test-data tables.
-	 */
-	private static final String FIELD_TYPE = "grain1";
-	/**
-	 * Extracted constant: the type of tree used for temperate forests in the test-data
-	 * tables.
-	 */
-	private static final String TEMP_TREE = "ttree1";
-	/**
-	 * A pattern to match all positive IDs in XML.
-	 */
-	private static final Pattern POSITIVE_IDS =
-			Pattern.compile("id=\"[0-9]*\"");
+
 	/**
 	 * Initialize a point in the map with its terrain and a list of fixtures.
 	 * @param map a map
