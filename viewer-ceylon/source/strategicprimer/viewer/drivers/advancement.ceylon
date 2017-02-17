@@ -70,7 +70,6 @@ import view.worker {
     WorkerMenu
 }
 import view.util {
-    DriverQuit,
     ItemAdditionPanel,
     SPFrame,
     BorderedPanel,
@@ -411,7 +410,7 @@ object advancementGUI satisfies SimpleDriver {
             "open secondary map in map viewer");
         PlayerChangeMenuListener pcml = PlayerChangeMenuListener(workerModel);
         menuHandler.register(pcml, "change current player");
-        menuHandler.register((event) => DriverQuit.quit(0), "quit");
+        menuHandler.register((event) => process.exit(0), "quit");
         SwingUtilities.invokeLater(() {
             SPFrame&PlayerChangeListener frame = advancementFrame(workerModel, menuHandler);
             pcml.addPlayerChangeListener(frame);
