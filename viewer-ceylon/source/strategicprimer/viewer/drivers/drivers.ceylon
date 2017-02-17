@@ -43,8 +43,7 @@ import java.awt {
     GridLayout
 }
 import ceylon.interop.java {
-    JavaList,
-    CeylonIterable
+    JavaList
 }
 import ceylon.language.meta.declaration {
     Package,
