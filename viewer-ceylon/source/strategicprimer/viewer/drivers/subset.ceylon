@@ -2,8 +2,7 @@ import controller.map.drivers {
     DriverFailedException
 }
 import controller.map.misc {
-    ICLIHelper,
-    MapReaderAdapter
+    ICLIHelper
 }
 
 import java.lang {
@@ -63,6 +62,9 @@ import util {
 import ceylon.regex {
     Regex,
     regex
+}
+import strategicprimer.viewer.xmlio {
+    readMap
 }
 class AppendableHelper(ICLIHelper wrapped) satisfies Appendable {
     shared actual Appendable append(CharSequence csq) {
@@ -128,11 +130,10 @@ class SubsetFrame() extends SPFrame("Subset Tester", JOptional.empty<JPath>(),
         label.repaint();
     }
     variable IMapNG mainMap = SPMapNG(MapDimensionsImpl(0, 0, 2), PlayerCollection(), -1);
-    MapReaderAdapter reader = MapReaderAdapter();
     shared void loadMain(IMapNG|JPath arg) {
         if (is JPath path = arg) {
             try {
-                mainMap = reader.readMap(path, Warning.ignore);
+                mainMap = readMap(path, Warning.ignore);
             } catch (FileNotFoundException|NoSuchFileException except) {
                 printParagraph("File ``path`` not found", StreamingLabel.LabelTextColor.red);
                 throw except;
@@ -188,7 +189,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", JOptional.empty<JPath>(),
         printParagraph("Testing ``path`` ...");
         IMapNG map;
         try {
-            map = reader.readMap(path, Warning.ignore);
+            map = readMap(path, Warning.ignore);
         } catch (FileNotFoundException|NoSuchFileException except) {
             printParagraph("FAIL: File not found", StreamingLabel.LabelTextColor.red);
             log.error("``path`` not found", except);

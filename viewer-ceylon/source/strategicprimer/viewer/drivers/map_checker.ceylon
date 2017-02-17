@@ -1,6 +1,5 @@
 import controller.map.misc {
-    ICLIHelper,
-    MapReaderAdapter
+    ICLIHelper
 }
 
 import java.awt {
@@ -61,6 +60,9 @@ import controller.map.formatexceptions {
 }
 import ceylon.interop.java {
     CeylonIterable
+}
+import strategicprimer.viewer.xmlio {
+    readMap
 }
 """An interface for checks of a map's *contents* that we don't want the XML-*reading*
    code to do."""
@@ -142,10 +144,9 @@ object mapCheckerCLI satisfies UtilityDriver {
         outStream("Starting ``file``");
 // TODO: take Warning instead of using Warning.Custom and assuming callers have set it up
         Warning warner = Warning.custom;
-        MapReaderAdapter reader = MapReaderAdapter();
         IMapNG map;
         try {
-            map = reader.readMap(file, warner);
+            map = readMap(file, warner);
         } catch (FileNotFoundException|NoSuchFileException except) {
             err("``file`` not found");
             log.error("``file`` not found", except);

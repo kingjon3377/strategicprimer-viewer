@@ -177,7 +177,6 @@
             todir="${junit.output.dir}" />
       <test name="model.exploration.TestDirection" todir="${junit.output.dir}" />
       <test name="controller.map.misc.TestTownComparator" todir="${junit.output.dir}" />
-      <test name="controller.map.misc.TestFileHandling" todir="${junit.output.dir}" />
       <classpath refid="viewer.classpath" />
     </junit>
     <fail if="junit.failure" message="Unit test(s) failed. See reports." />
@@ -385,7 +384,6 @@
                    todir="${junit.output.dir}" />
              <test name="model.exploration.TestDirection" todir="${junit.output.dir}" />
              <test name="controller.map.misc.TestTownComparator" todir="${junit.output.dir}" />
-             <test name="controller.map.misc.TestFileHandling" todir="${junit.output.dir}" />
              <classpath refid="viewer.classpath" />
           </junit>
       </jacoco:coverage>

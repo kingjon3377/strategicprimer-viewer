@@ -11,7 +11,6 @@ import model.misc {
 }
 import controller.map.misc {
     ICLIHelper,
-    MapReaderAdapter,
     FileChooser
 }
 import util {
@@ -39,6 +38,11 @@ import ceylon.interop.java {
 import ceylon.collection {
     MutableMap,
     HashMap
+}
+import strategicprimer.viewer.xmlio {
+    readMultiMapModel,
+    namesToFiles,
+    writeModel
 }
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option
@@ -141,15 +145,16 @@ interface SimpleDriver satisfies ISPDriver {
             } else if ({ ParamCount.two, ParamCount.atLeastTwo }.contains(desiderata)) {
                 JPath masterPath = askUserForFile();
                 JPath subordinatePath = askUserForFile();
-                IMultiMapModel mapModel = MapReaderAdapter()
-                    .readMultiMapModel(Warning.default, masterPath, subordinatePath);
+                IMultiMapModel mapModel = readMultiMapModel(Warning.default, masterPath,
+                    subordinatePath);
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first());
                 }
                 startDriverOnModel(cli, options, mapModel);
             } else {
-                IMultiMapModel mapModel = MapReaderAdapter()
-                    .readMultiMapModel(Warning.default, askUserForFile());
+                // TODO: Maybe just use readMapModel() here?
+                IMultiMapModel mapModel = readMultiMapModel(Warning.default,
+                    askUserForFile());
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first());
                 }
@@ -160,9 +165,8 @@ interface SimpleDriver satisfies ISPDriver {
         } else if (args.size == 1,
                 {ParamCount.two, ParamCount.atLeastTwo}.contains(desiderata)) {
             assert (exists firstArg = args.first);
-            IMultiMapModel mapModel = MapReaderAdapter()
-                .readMultiMapModel(Warning.default, JPaths.get(firstArg),
-                    askUserForFile());
+            IMultiMapModel mapModel = readMultiMapModel(Warning.default,
+                JPaths.get(firstArg), askUserForFile());
             for (pair in mapModel.allMaps) {
                 turnFixer(pair.first());
             }
@@ -170,11 +174,8 @@ interface SimpleDriver satisfies ISPDriver {
         } else {
             assert (exists firstArg = args.first);
             assert (nonempty temp = args.map(javaString).sequence());
-            IMultiMapModel mapModel = MapModelMaker.readMapModelHacked(MapReaderAdapter(),
-                Warning.default, temp);
-//            IMultiMapModel mapModel = MapReaderAdapter()
-//                .readMultiMapModel(Warning.default, JPaths.get(firstArg),
-//                    *MapReaderAdapter.namesToFiles(false, *args.rest));
+            IMultiMapModel mapModel = readMultiMapModel(Warning.default, JPaths.get(firstArg),
+                *namesToFiles(false, *args.rest));
             for (pair in mapModel.allMaps) {
                 turnFixer(pair.first());
             }
@@ -284,15 +285,12 @@ interface SimpleCLIDriver satisfies SimpleDriver {
                 throw IncorrectUsageException(usage);
             }
         }
-        MapReaderAdapter reader = MapReaderAdapter();
         assert (exists firstArg = args.first);
         assert (nonempty temp = args.map(javaString).sequence());
         // We declare this as IMultiMapModel so we can correct the current turn in all
         // maps if needed.
-        IMultiMapModel model = MapModelMaker.readMapModelHacked(reader, Warning.ignore,
-            temp);
-//        IMultiMapModel model = reader.readMultiMapModel(Warning.ignore,
-//            JPaths.get(firstArg), *MapReaderAdapter.namesToFiles(false, *args.rest));
+        IMultiMapModel model = readMultiMapModel(Warning.ignore, JPaths.get(firstArg),
+            *namesToFiles(false, *args.rest));
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {
@@ -304,7 +302,7 @@ interface SimpleCLIDriver satisfies SimpleDriver {
             }
         }
         startDriverOnModel(cli, options, model);
-        reader.writeModel(model);
+        writeModel(model);
     }
 }
 "An exception to throw when a driver fails because the user tried to use it improperly."

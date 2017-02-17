@@ -3,7 +3,6 @@ import controller.map.drivers {
 }
 import controller.map.misc {
     ICLIHelper,
-    MapReaderAdapter,
     IDRegistrar,
     IDFactoryFiller
 }
@@ -40,6 +39,10 @@ import model.misc {
     IDriverModel,
     IMultiMapModel
 }
+import strategicprimer.viewer.xmlio {
+    readMap,
+    writeMap
+}
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated
    syntax. (Because of that usage, warnings are disabled.)"""
@@ -52,10 +55,9 @@ object echoDriver satisfies UtilityDriver {
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         if (exists inArg = args.first, exists outArg = args.rest.first, args.size == 2) {
-            MapReaderAdapter reader = MapReaderAdapter();
             IMutableMapNG map;
             try {
-                map = reader.readMap(JPaths.get(inArg), Warning.ignore);
+                map = readMap(JPaths.get(inArg), Warning.ignore);
             } catch (IOException except) {
                 throw DriverFailedException("I/O error reading file ``inArg``", except);
             } catch (XMLStreamException except) {
@@ -93,7 +95,7 @@ object echoDriver satisfies UtilityDriver {
                 }
             }
             try {
-                reader.write(JPaths.get(outArg), map);
+                writeMap(JPaths.get(outArg), map);
             } catch (IOException except) {
                 throw DriverFailedException("I/O error writing ``outArg``", except);
             }

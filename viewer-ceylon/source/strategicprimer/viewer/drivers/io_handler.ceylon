@@ -7,8 +7,7 @@ import model.misc {
 }
 import controller.map.misc {
     ICLIHelper,
-    FileChooser,
-    MapReaderAdapter
+    FileChooser
 }
 import lovelace.util.common {
     todo
@@ -52,6 +51,10 @@ import model.map {
 import ceylon.interop.java {
     CeylonIterable
 }
+import strategicprimer.viewer.xmlio {
+    readMap,
+    writeMap
+}
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
 class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
@@ -84,7 +87,7 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         case ("load") {
             FileChooser(JOptional.empty<JPath>()).call((path) {
                 try {
-                    mapModel.setMap(MapReaderAdapter().readMap(path, Warning.default),
+                    mapModel.setMap(readMap(path, Warning.default),
                         JOptional.\iof<JPath>(path));
                 } catch (IOException|SPFormatException|XMLStreamException except) {
                     handleError(except, path.string);
@@ -95,7 +98,7 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             JOptional<JPath> givenFile = mapModel.mapFile;
             if (givenFile.present) {
                 try {
-                    MapReaderAdapter().write(givenFile.get(), mapModel.map);
+                    writeMap(givenFile.get(), mapModel.map);
                 } catch (IOException except) {
                     ErrorShower.showErrorDialog(source,
                         "I/O error writing to ``givenFile.get()``");
@@ -110,7 +113,7 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             FileChooser(JOptional.empty<JPath>(), fileChooser,
                     FileChooser.FileChooserOperation.save).call((path) {
                 try {
-                    MapReaderAdapter().write(path, mapModel.map);
+                    writeMap(path, mapModel.map);
                 } catch (IOException except) {
                     ErrorShower.showErrorDialog(source, "I/O error writing to ``path``");
                     log.error("I/O error writing XML", except);
@@ -126,8 +129,8 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             if (is IMultiMapModel mapModel) {
                 FileChooser(JOptional.empty<JPath>()).call((path) {
                     try {
-                        mapModel.addSubordinateMap(MapReaderAdapter().readMap(path,
-                            Warning.default), JOptional.\iof<JPath>(path));
+                        mapModel.addSubordinateMap(readMap(path, Warning.default),
+                            JOptional.\iof<JPath>(path));
                     } catch (IOException|SPFormatException|XMLStreamException except) {
                         handleError(except, path.string);
                     }
@@ -136,12 +139,11 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         }
         case ("save all") {
             if (is IMultiMapModel mapModel) {
-                MapReaderAdapter reader = MapReaderAdapter();
                 for (pair in mapModel.allMaps) {
                     JOptional<JPath> file = pair.second();
                     if (file.present) {
                         try {
-                            reader.write(file.get(), pair.first());
+                            writeMap(file.get(), pair.first());
                         } catch (IOException except) {
                             ErrorShower.showErrorDialog(source,
                                 "I/O error writing to ``file.get()``");
@@ -153,7 +155,7 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
                 FileChooser(JOptional.empty<JPath>(), fileChooser,
                     FileChooser.FileChooserOperation.save).call((path) {
                     try {
-                        MapReaderAdapter().write(path, mapModel.map);
+                        writeMap(path, mapModel.map);
                     } catch (IOException except) {
                         ErrorShower.showErrorDialog(source, "I/O error writing to ``path``");
                         log.error("I/O error writing XML", except);

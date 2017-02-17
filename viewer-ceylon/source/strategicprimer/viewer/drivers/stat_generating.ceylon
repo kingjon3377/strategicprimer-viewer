@@ -1,8 +1,7 @@
 import controller.map.misc {
     ICLIHelper,
     IDFactoryFiller,
-    IDRegistrar,
-    MapReaderAdapter
+    IDRegistrar
 }
 import model.misc {
     IDriverModel,
@@ -84,6 +83,9 @@ import java.util.stream {
 }
 import model.map.fixtures.towns {
     Village
+}
+import strategicprimer.viewer.xmlio {
+    readMap
 }
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
@@ -396,7 +398,6 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         }
     }
 }
-MapReaderAdapter mapReader = MapReaderAdapter();
 "A class to non-interactively generate a tile's contents."
 todo("Figure out how to run the Ceylon version repeatedly on a single JVM")
 class TileContentsGenerator(IMapNG map) {
@@ -419,8 +420,7 @@ TileContentsGenerator tileContentsInstance(String filename) {
         return retval;
     } else {
         TileContentsGenerator retval =
-                TileContentsGenerator(mapReader.readMap(JPaths.get(filename),
-                    Warning.default));
+                TileContentsGenerator(readMap(JPaths.get(filename), Warning.default));
         tileContentsInstances.put(filename, retval);
         return retval;
     }

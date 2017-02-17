@@ -3,7 +3,6 @@ import controller.map.drivers {
 }
 import controller.map.misc {
     ICLIHelper,
-    MapReaderAdapter,
     IDFactoryFiller,
     IDRegistrar,
     IDFactory
@@ -158,6 +157,10 @@ import javax.xml {
 import view.util {
     SystemOut
 }
+import strategicprimer.viewer.xmlio {
+    readMap,
+    writeMap
+}
 "A driver to convert maps: at present, halving their resolution."
 class ConverterDriver(
     """Set to true when the provided [[ICLIHelper]] is connected to a graphical window
@@ -177,12 +180,10 @@ class ConverterDriver(
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         if (nonempty arguments = args.coalesced.sequence()) {
-            MapReaderAdapter reader = MapReaderAdapter();
             for (filename in arguments) {
                 cli.print("Reading ``filename ``... ");
                 try {
-                    IMutableMapNG old = reader.readMap(Paths.get(filename),
-                        Warning.default);
+                    IMutableMapNG old = readMap(Paths.get(filename), Warning.default);
                     if (options.hasOption("--current-turn")) {
                         value currentTurn =
                                 Integer.parse(options.getArgument("--current-turn"));
@@ -197,7 +198,7 @@ class ConverterDriver(
                     cli.println(" ... Converting ... ");
                     IMapNG map = ResolutionDecreaseConverter.convert(old);
                     cli.println("About to write ``filename``.new.xml");
-                    reader.write(Paths.get(filename + ".new.xml"), map);
+                    writeMap(Paths.get(filename + ".new.xml"), map);
                 } catch (FileNotFoundException|NoSuchFileException except) {
                     log.error("``filename`` not found", except);
                 } catch (IOException except) {
@@ -454,8 +455,7 @@ object oneToTwoConverter satisfies SimpleDriver {
     }
     void writeConvertedMap(JPath old, IMapNG map) {
         try {
-            MapReaderAdapter().write(old.resolveSibling("``old.fileName``.converted.xml"),
-                map);
+            writeMap(old.resolveSibling("``old.fileName``.converted.xml"), map);
         } catch (IOException except) {
             throw DriverFailedException(
                 "I/O error writing to ``old.fileName``.converted.xml", except);
@@ -490,8 +490,7 @@ void assertModuloID(IMapNG map, String serialized, Formatter err) {
     Regex matcher = regex("id=\"[0-9]*\"", true);
     try (inStream = StringReader(matcher.replace(serialized, "id=\"-1\""))) {
         assertTrue(
-            map.isSubset(MapReaderAdapter().readMapFromStream(inStream,
-                Warning.ignore), err, ""),
+            map.isSubset(readMap(inStream, Warning.ignore), err, ""),
             "Actual is at least subset of expected converted, modulo IDs");
     }
 }
@@ -1231,7 +1230,7 @@ void testZeroToOneConversion() {
     StringWriter actualXML = StringWriter();
     SPWriter writer = TestReaderFactory.createOldWriter();
     writer.writeSPObject(actualXML,
-        MapReaderAdapter().readMapFromStream(StringReader(ostream.string), Warning.ignore));
+        readMap(StringReader(ostream.string), Warning.ignore));
     IMutableMapNG expected = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
     Player player = PlayerImpl(0, "Test Player");
     expected.addPlayer(player);
@@ -1247,7 +1246,7 @@ void testZeroToOneConversion() {
     writer.writeSPObject(expectedXML, expected);
     assertEquals(actualXML.string, expectedXML.string,
         "Converted map's serialized form was as expected");
-    assertEquals(MapReaderAdapter().readMapFromStream(StringReader(ostream.string),
+    assertEquals(readMap(StringReader(ostream.string),
         Warning.ignore), expected, "Converted map was as expected");
 }
 "Convert files provided on command line; prints results to standard output."
