@@ -1,20 +1,9 @@
 package controller.map.converter;
 
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.iointerfaces.ISPReader;
-import controller.map.iointerfaces.SPWriter;
-import controller.map.iointerfaces.TestReaderFactory;
-import controller.map.misc.MapReaderAdapter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.regex.Pattern;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensionsImpl;
-import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.PlayerImpl;
 import model.map.Point;
@@ -24,20 +13,14 @@ import model.map.SPMapNG;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
-import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
-import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
-import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
-import model.map.fixtures.towns.TownStatus;
 import org.junit.Test;
-import util.IteratorWrapper;
-import util.Warning;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -192,65 +175,6 @@ public final class TestConverter {
 		ResolutionDecreaseConverter.convert(
 				new SPMapNG(new MapDimensionsImpl(3, 3, 2), new PlayerCollection(), -1));
 		fail("Shouldn't accept non-even dimensions");
-	}
-
-	/**
-	 * Test version-0 to version-1 conversion.
-	 *
-	 * @throws IOException        on I/O error causing test failure
-	 * @throws XMLStreamException on malformed XML in tests
-	 * @throws SPFormatException  on malformed SP XML in tests
-	 */
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testZeroToOneConversion()
-			throws XMLStreamException, IOException, SPFormatException {
-		// FIXME: Include tile fixtures beyond those implicit in events
-		final String orig = "<map xmlns:sp=\"" + ISPReader.NAMESPACE +
-									"\" version='0' rows='2' columns='2'><player " +
-									"number='0' code_name='Test Player' /><row " +
-									"index='0'><tile row='0' column='0' type='tundra' " +
-									"event='0'>Random event here</tile><tile row='0' " +
-									"column='1' type='boreal_forest' " +
-									"event='183'></tile></row><row index='1'><sp:tile " +
-									"row='1' column='0' type='mountain' " +
-									"event='229'><sp:fortress name='HQ' owner='0' " +
-									"id='15'/></sp:tile><tile row='1' column='1' " +
-									"type='temperate_forest' " +
-									"event='219'></tile></row></map>";
-		final StringWriter out = new StringWriter();
-		//noinspection unchecked
-		ZeroToOneConverter.convert(new IteratorWrapper<>(
-				XMLInputFactory.newInstance().createXMLEventReader(
-						new StringReader(orig))), out);
-		final StringWriter actualXML = new StringWriter();
-		final SPWriter writer = TestReaderFactory.createOldWriter();
-		writer.writeSPObject(actualXML, new MapReaderAdapter()
-												.readMapFromStream(
-														new StringReader(out.toString()),
-														Warning.Ignore));
-		final IMutableMapNG expected =
-				new SPMapNG(new MapDimensionsImpl(2, 2, 1), new PlayerCollection(), 0);
-		final Player player = new PlayerImpl(0, "Test Player");
-		expected.addPlayer(player);
-		initialize(expected, PointFactory.point(0, 0), TileType.Tundra,
-				new TextFixture("Random event here", -1));
-		initialize(expected, PointFactory.point(0, 1), TileType.BorealForest);
-		initialize(expected, PointFactory.point(1, 0), TileType.Mountain,
-				new Town(TownStatus.Burned, TownSize.Small, 0, "", 0,
-								new PlayerImpl(-1, "Independent")),
-				new Fortress(player, "HQ", 15, TownSize.Small));
-		initialize(expected, PointFactory.point(1, 1), TileType.TemperateForest,
-				new MineralVein("coal", true, 0, 1));
-
-		final StringWriter expectedXML = new StringWriter();
-		writer.writeSPObject(expectedXML, expected);
-		assertThat("Converted map's serialized form was as expected",
-				actualXML.toString(), equalTo(expectedXML.toString()));
-		assertThat("Converted map was as expected",
-				new MapReaderAdapter()
-						.readMapFromStream(new StringReader(out.toString()),
-								Warning.Ignore), equalTo(expected));
 	}
 
 	/**

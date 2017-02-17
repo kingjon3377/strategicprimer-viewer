@@ -28,17 +28,19 @@ import java.nio.file {
     NoSuchFileException
 }
 import util {
-    Warning
+    Warning,
+    LineEnd
 }
 import java.io {
     FileNotFoundException,
     IOException,
     StringWriter,
-    StringReader
+    StringReader, JFileReader = FileReader
 }
 import strategicprimer.viewer.drivers { log }
 import javax.xml.stream {
-    XMLStreamException
+    XMLStreamException,
+    XMLInputFactory
 }
 import controller.map.formatexceptions {
     SPFormatException
@@ -58,7 +60,8 @@ import model.misc {
     IMultiMapModel
 }
 import java.lang {
-    IllegalStateException
+    IllegalStateException,
+    Appendable
 }
 import java.util {
     JOptional=Optional,
@@ -74,16 +77,21 @@ import ceylon.interop.java {
 import ceylon.collection {
     MutableList,
     LinkedList,
-    Queue
+    Queue,
+    MutableMap,
+    HashMap
 }
-import lovelace.util.jvm { shuffle }
+import lovelace.util.jvm { shuffle,
+    ConvertingIterable }
 import model.map.fixtures.towns {
     Village,
     ITownFixture,
     TownStatus,
     TownSize,
     Fortification,
-    City
+    City,
+    Fortress,
+    Town
 }
 import model.workermgmt {
     RaceFactory
@@ -104,7 +112,8 @@ import model.map.fixtures.resources {
     Shrub,
     Mine,
     StoneDeposit,
-    StoneKind
+    StoneKind,
+    MineralVein
 }
 import ceylon.test {
     test,
@@ -113,7 +122,8 @@ import ceylon.test {
 }
 import controller.map.iointerfaces {
     SPWriter,
-    TestReaderFactory
+    TestReaderFactory,
+    ISPReader
 }
 import ceylon.regex {
     Regex,
@@ -129,6 +139,24 @@ import model.map.fixtures.mobile {
 }
 import model.map.fixtures.explorable {
     AdventureFixture
+}
+import javax.xml.stream.events {
+    EndDocument,
+    StartDocument,
+    EndElement,
+    Characters,
+    StartElement,
+    XMLEvent,
+    Attribute
+}
+import javax.xml.namespace {
+    QName
+}
+import javax.xml {
+    XMLConstants
+}
+import view.util {
+    SystemOut
 }
 "A driver to convert maps: at present, halving their resolution."
 class ConverterDriver(
@@ -1049,5 +1077,192 @@ shared void testFourthOneToTwoConversion() {
         assertTrue(
             converted.isSubset(oneToTwoConverter.convert(original, true), outStream, ""),
             "Actual is at least subset of expected converted");
+    }
+}
+object zeroToOneConverter {
+    MutableMap<Integer, String> equivalents = HashMap<Integer, String>();
+    void addXML(String xml, Integer* numbers) {
+        for (number in numbers) {
+            equivalents.put(number, xml);
+        }
+    }
+    addXML("""<mineral kind="iron" exposed="true" dc="0" />""", 200, 206);
+    addXML("""<mineral kind="iron" exposed="false" dc="0" />""", 201, 202, 207, 208);
+    addXML("""<mineral kind="copper" exposed="true" dc="0" />""", 203, 209);
+    addXML("""<mineral kind="copper" exposed="false" dc="0" />""", 204, 205, 210, 211);
+    addXML("""<mineral kind="gold" exposed="true" dc="0" />""", 212);
+    addXML("""<mineral kind="gold" exposed="true" dc="0" />""", 213);
+    addXML("""<mineral kind="silver" exposed="false" dc="0" />""", 214);
+    addXML("""<mineral kind="silver" exposed="false" dc="0" />""", 215);
+    addXML("""<mineral kind="coal" exposed="true" dc="0" />""", 216, 219);
+    addXML("""<mineral kind="coal" exposed="false" dc="0" />""", 217, 218, 220, 221);
+    addXML("""<town status="active" size="small" dc="0" />""", 222);
+    addXML("""<town status="abandoned" size="small" dc="0" />""", 223, 227, 231);
+    addXML("""<fortification status="abandoned" size="small" dc="0" />""", 224, 228, 232);
+    addXML("""<town status="burned" size="small" dc="0" />""", 225, 229, 233);
+    addXML("""<fortification status="burned" size="small" dc="0" />""", 226, 230, 234);
+    addXML("""<battlefield dc="0" />""", *(235..241));
+    addXML("""<city status="ruined" size="medium" dc="0" />""", 241, 243);
+    addXML("""<fortification status="ruined" size="medium" dc="0" />""", 242, 244);
+    addXML("""<city status="ruined" size="large" dc="0" />""", 245);
+    addXML("""<fortification status="ruined" size="large" dc="0" />""", 246);
+    addXML("""<stone kind="limestone" dc="0" />""", 247, 248, 249);
+    addXML("""<stone kind="marble" dc="0" />""", 250, 251, 252);
+    addXML("""<cave dc="0" />""", 253, 254, 255);
+    Boolean isSpecifiedTag(QName tag, String desired) {
+        return tag == QName(ISPReader.namespace, desired) || tag == QName(desired);
+    }
+    void printAttribute(Appendable ostream, Attribute attribute) {
+        // TODO: namespace
+        ostream.append(" ``attribute.name.localPart``=``attribute.\ivalue``");
+    }
+    "Convert the version attribute of the map"
+    void convertMap(Appendable ostream, StartElement element, {Attribute*} attributes) {
+        ostream.append('<');
+        if (XMLConstants.defaultNsPrefix != element.name.namespaceURI) {
+            ostream.append("``element.name.prefix``:");
+        }
+        ostream.append(element.name.localPart);
+        for (namespace in ConvertingIterable(element.namespaces)) {
+            ostream.append(" ``namespace``");
+        }
+        for (attribute in attributes) {
+            if ("version" == attribute.name.localPart.lowercased) {
+                ostream.append(" version=\"1\"");
+            } else {
+                printAttribute(ostream, attribute);
+            }
+        }
+        ostream.append('>');
+    }
+    void printEvent(Appendable ostream, Integer number) {
+        if (exists val = equivalents.get(number)) {
+            ostream.append(val);
+        }
+    }
+    void printEndElement(Appendable ostream, EndElement element) {
+        if (XMLConstants.defaultNsPrefix == element.name.namespaceURI) {
+            ostream.append("</``element.name.localPart``>");
+        } else {
+            ostream.append("</``element.name.prefix``:``element.name.localPart``>");
+        }
+    }
+    void printStartElement(Appendable ostream, StartElement element) {
+        ostream.append('<');
+        if (XMLConstants.defaultNsPrefix != element.name.namespaceURI) {
+            ostream.append("``element.name.prefix``:");
+        }
+        ostream.append(element.name.localPart);
+        for (attribute in ConvertingIterable(element.attributes)) {
+            printAttribute(ostream, attribute);
+        }
+        ostream.append('>');
+    }
+    void convertTile(Appendable ostream, StartElement element, {Attribute*} attributes) {
+        ostream.append('<');
+        if (XMLConstants.defaultNsPrefix != element.name.namespaceURI) {
+            ostream.append("``element.name.prefix``:");
+        }
+        ostream.append(element.name.localPart);
+        Queue<Integer> events = LinkedList<Integer>();
+        for (attribute in attributes) {
+            if ("event" == attribute.name.localPart.lowercased) {
+                value number = Integer.parse(attribute.\ivalue);
+                if (is Integer number) {
+                    events.offer(number);
+                } else {
+                    log.error("Non-numeric 'event' in line ``element.location
+                            .lineNumber``",
+                        number);
+                }
+            } else {
+                printAttribute(ostream, attribute);
+            }
+        }
+        ostream.append('>');
+        while (exists event = events.accept()) {
+            ostream.append(LineEnd.lineSep);
+            printEvent(ostream, event);
+        }
+    }
+    "Read version-0 XML from the input stream and write version-1 equivalent XML to the
+     output stream."
+    todo("Convert to ceylon.io and/or ceylon.file, at least for output")
+    shared void convert({XMLEvent*} stream, Appendable ostream) {
+        for (event in stream) {
+            if (is StartElement event) {
+                if (isSpecifiedTag(event.name, "tile")) {
+                    convertTile(ostream, event, ConvertingIterable(event.attributes));
+                } else if (isSpecifiedTag(event.name, "map")) {
+                    convertMap(ostream, event, ConvertingIterable(event.attributes));
+                } else {
+                    printStartElement(ostream, event);
+                }
+            } else if (is Characters event) {
+                ostream.append(event.data.trimmed);
+            } else if (is EndElement event) {
+                printEndElement(ostream, event);
+            } else if (is StartDocument event) {
+                ostream.append("""<?xml version="1.0"?>""");
+                ostream.append(LineEnd.lineSep);
+            } else if (is EndDocument event) {
+                break;
+            } else {
+                log.warn("Unhandled element type ``event.eventType``");
+            }
+        }
+        ostream.append(LineEnd.lineSep);
+    }
+}
+test
+void testZeroToOneConversion() {
+    // FIXME: Include tile fixtures beyond those implicit in events
+    String orig = "<map xmlns:sp=\"``ISPReader.namespace``\" version='0' rows='2'
+                   columns='2'><player number='0' code_name='Test Player' />
+                   <row index='0'><tile row='0' column='0' type='tundra' event='0'>
+                   Random event here</tile><tile row='0' column='1' type='boreal_forest'
+                   event='183'></tile></row><row index='1'><sp:tile row='1' column='0'
+                   type='mountain' event='229'><sp:fortress name='HQ' owner='0' id='15'
+                   /></sp:tile><tile row='1'column='1' type='temperate_forest'
+                   event='219'></tile></row></map>";
+    StringWriter ostream = StringWriter();
+    zeroToOneConverter.convert(ConvertingIterable(
+        ConstructorWrapper.xmlEventReader(StringReader(orig))), ostream);
+    StringWriter actualXML = StringWriter();
+    SPWriter writer = TestReaderFactory.createOldWriter();
+    writer.writeSPObject(actualXML,
+        MapReaderAdapter().readMapFromStream(StringReader(ostream.string), Warning.ignore));
+    IMutableMapNG expected = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
+    Player player = PlayerImpl(0, "Test Player");
+    expected.addPlayer(player);
+    initialize(expected, PointFactory.point(0, 0), TileType.tundra,
+        TextFixture("Random event here", -1));
+    initialize(expected, PointFactory.point(0, 1), TileType.borealForest);
+    initialize(expected, PointFactory.point(1, 0), TileType.mountain,
+        Town(TownStatus.burned, TownSize.small, 0, "", 0, PlayerImpl(-1, "Independent")),
+        Fortress(player, "HQ", 15, TownSize.small));
+    initialize(expected, PointFactory.point(1, 1), TileType.temperateForest,
+        MineralVein("coal", true, 0, 1));
+    StringWriter expectedXML = StringWriter();
+    writer.writeSPObject(expectedXML, expected);
+    assertEquals(actualXML.string, expectedXML.string,
+        "Converted map's serialized form was as expected");
+    assertEquals(MapReaderAdapter().readMapFromStream(StringReader(ostream.string),
+        Warning.ignore), expected, "Converted map was as expected");
+}
+"Convert files provided on command line; prints results to standard output."
+todo("Write results to file")
+shared void convertZeroToOne() {
+    for (argument in process.arguments) {
+        try (reader = JFileReader(argument)) {
+            zeroToOneConverter.convert(ConvertingIterable<XMLEvent>(ConstructorWrapper
+                .xmlEventReader(reader)), SystemOut.sysOut);
+        } catch (FileNotFoundException|NoSuchFileException except) {
+            log.error("File ``argument`` not found", except);
+        } catch (XMLStreamException except) {
+            log.error("Malformed XML in ``argument``", except);
+        } catch (IOException except) {
+            log.error("I/O error dealing with file ``argument``", except);
+        }
     }
 }

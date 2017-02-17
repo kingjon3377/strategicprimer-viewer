@@ -2,6 +2,10 @@ package strategicprimer.viewer.drivers;
 
 import controller.map.misc.CLIHelper;
 import controller.map.misc.IDRegistrar;
+import java.io.Reader;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.MapDimensions;
@@ -65,5 +69,15 @@ public class ConstructorWrapper {
 	 */
 	public static NewUnitDialog newUnitDialog(final Player player, final IDRegistrar idf) {
 		return new NewUnitDialog(player, idf);
+	}
+	/**
+	 * XMLInputFactory.newInstance() isn't visible in Ceylon, for some reason; nor is
+	 * XMLInputFactory.createXMLEventReader.
+	 * @param reader the reader to wrap
+	 * @return an XMLEventReader instance reading from that reader.
+	 */
+	public static XMLEventReader xmlEventReader(Reader reader)
+			throws XMLStreamException {
+		return XMLInputFactory.newInstance().createXMLEventReader(reader);
 	}
 }
