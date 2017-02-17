@@ -5,20 +5,25 @@ import controller.map.misc {
     ICLIHelper,
     MenuBroker,
     PlayerChangeMenuListener,
-    WindowCloser
+    WindowCloser,
+    IDFactoryFiller
 }
 import model.misc {
     IDriverModel
 }
 import model.workermgmt {
     WorkerModel,
-    IWorkerModel
+    IWorkerModel,
+    WorkerTreeModelAlt,
+    IWorkerTreeModel,
+    JobTreeModel
 }
 import java.io {
     IOException
 }
 import model.map {
-    Player
+    Player,
+    IMapNG
 }
 import java.util {
     JList = List
@@ -48,16 +53,37 @@ import util {
     SingletonRandom { singletonRandom = random }
 }
 import javax.swing {
-    SwingUtilities
+    SwingUtilities,
+    JLabel,
+    JScrollPane
 }
 import view.worker {
-    AdvancementFrame
+    WorkerTree,
+    WorkerCreationListener,
+    LevelListener,
+    JobsTree,
+    SkillAdvancementPanel,
+    TreeExpansionHandler,
+    WorkerMenu
 }
 import view.util {
-    DriverQuit
+    DriverQuit,
+    ItemAdditionPanel,
+    SPFrame,
+    BorderedPanel,
+    SplitWithWeights,
+    ListenedButton,
+    FormattedLabel,
+    TreeExpansionOrderListener
 }
 import strategicprimer.viewer.about {
     aboutDialog
+}
+import model.listeners {
+    PlayerChangeListener
+}
+import java.awt {
+    Dimension
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
@@ -229,6 +255,63 @@ object advancementCLI satisfies SimpleCLIDriver {
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
 }
+"A GUI to let a user manage workers."
+SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker menuHandler) {
+    IMapNG map = model.map;
+    IWorkerTreeModel treeModel = WorkerTreeModelAlt(map.currentPlayer, model);
+    WorkerTree tree = WorkerTree.factory(treeModel, map.players().iterator,
+        () => model.map.currentTurn, false);
+    WorkerCreationListener newWorkerListener = WorkerCreationListener(treeModel,
+        IDFactoryFiller.createFactory(map));
+    tree.addUnitSelectionListener(newWorkerListener);
+    JobTreeModel jobsTreeModel = JobTreeModel();
+    tree.addUnitMemberListener(jobsTreeModel);
+    ItemAdditionPanel jobAdditionPanel = ItemAdditionPanel("job");
+    jobAdditionPanel.addAddRemoveListener(jobsTreeModel);
+    ItemAdditionPanel skillAdditionPanel = ItemAdditionPanel("skill");
+    skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
+    LevelListener levelListener = LevelListener();
+    JobsTree jobsTree = JobsTree(jobsTreeModel);
+    jobsTree.addSkillSelectionListener(levelListener);
+    SkillAdvancementPanel skillAdvancementPanel = SkillAdvancementPanel();
+    jobsTree.addSkillSelectionListener(skillAdvancementPanel);
+    skillAdvancementPanel.addLevelGainListener(levelListener);
+    TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
+    menuHandler.register((event) => expander.expandAll(), "expand all");
+    menuHandler.register((event) => expander.collapseAll(), "collapse all");
+    menuHandler.register((event) => expander.expandSome(2), "expand unit kinds");
+    expander.expandAll();
+    FormattedLabel playerLabel = FormattedLabel("%s's Units:", "");
+    object retval
+            extends SPFrame("Worker Advancement", model.mapFile, Dimension(640, 480))
+            satisfies PlayerChangeListener{
+        shared actual void playerChanged(Player? old, Player newPlayer) {
+            playerLabel.setArgs(newPlayer.name);
+            treeModel.playerChanged(old, newPlayer);
+        }
+        shared actual String windowName = "Worker Advancement";
+    }
+    retval.contentPane = SplitWithWeights.horizontalSplit(0.5, 0.5,
+        BorderedPanel.verticalPanel(playerLabel,
+            JScrollPane(tree), ListenedButton("Add worker to selected unit ...",
+                newWorkerListener)),
+        SplitWithWeights.verticalSplit(0.5, 0.3,
+            BorderedPanel.verticalPanel(
+                JLabel("<html><p align=\"left\">Worker's Jobs and Skills:</p></html>"),
+                JScrollPane(jobsTree), null),
+            BorderedPanel.verticalPanel(null,
+                BorderedPanel.verticalPanel(
+                    BorderedPanel.verticalPanel(
+                        JLabel("<html><p align=\"left\">Add a job to the worker:</p></html>"), null,
+                        jobAdditionPanel), null,
+                    BorderedPanel.verticalPanel(
+                        JLabel("<html><p align=\"left\">Add a Skill to the selected Job:</p></html>"),
+                        null, skillAdditionPanel)), skillAdvancementPanel)));
+    retval.playerChanged(null, map.currentPlayer);
+    retval.jMenuBar = WorkerMenu(menuHandler, retval, model);
+    retval.pack();
+    return retval;
+}
 "The worker-advancement GUI driver."
 object advancementGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -257,7 +340,7 @@ object advancementGUI satisfies SimpleDriver {
         menuHandler.register(pcml, "change current player");
         menuHandler.register((event) => DriverQuit.quit(0), "quit");
         SwingUtilities.invokeLater(() {
-            AdvancementFrame frame = AdvancementFrame(workerModel, menuHandler);
+            SPFrame&PlayerChangeListener frame = advancementFrame(workerModel, menuHandler);
             pcml.addPlayerChangeListener(frame);
             menuHandler.register((event) =>
                     frame.playerChanged(model.map.currentPlayer, model.map.currentPlayer),
