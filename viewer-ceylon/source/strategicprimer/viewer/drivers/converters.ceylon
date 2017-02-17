@@ -1,6 +1,3 @@
-import controller.map.drivers {
-    DriverFailedException
-}
 import controller.map.misc {
     ICLIHelper,
     IDFactoryFiller,
@@ -456,16 +453,16 @@ object oneToTwoConverter satisfies SimpleDriver {
         try {
             writeMap(old.resolveSibling("``old.fileName``.converted.xml"), map);
         } catch (IOException except) {
-            throw DriverFailedException(
-                "I/O error writing to ``old.fileName``.converted.xml", except);
+            throw DriverFailedException(except,
+                "I/O error writing to ``old.fileName``.converted.xml");
         }
     }
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         IMapNG oldMain = model.map;
         JPath oldMainPath = model.mapFile.orElseThrow(() =>
-            DriverFailedException("No path for main map",
-                IllegalStateException("No path for main map")));
+            DriverFailedException(IllegalStateException("No path for main map"),
+                "No path for main map"));
         IMapNG newMain = convert(oldMain, true);
         writeConvertedMap(oldMainPath, newMain);
         if (is IMultiMapModel model) {

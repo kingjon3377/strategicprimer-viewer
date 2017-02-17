@@ -1,6 +1,3 @@
-import controller.map.drivers {
-    DriverFailedException
-}
 import java.lang {
     IllegalStateException,
     IllegalArgumentException
@@ -103,8 +100,9 @@ interface SimpleDriver satisfies ISPDriver {
      override this default method to support that; otherwise, this will throw,
      because nearly all drivers do need arguments."
     shared default void startDriverNoArgs() {
-        throw DriverFailedException("Driver does not support no-arg operation",
-            IllegalStateException("Driver does not support no-arg operation"));
+        throw DriverFailedException(
+            IllegalStateException("Driver does not support no-arg operation"),
+            "Driver does not support no-arg operation");
     }
     "The one method that satisfying classes have to implement."
     shared actual formal void startDriverOnModel(ICLIHelper cli, SPOptions options,
@@ -114,8 +112,8 @@ interface SimpleDriver satisfies ISPDriver {
         try {
             return FileChooser(JOptional.empty<JPath>()).file;
         } catch (FileChooser.ChoiceInterruptedException except) {
-            throw DriverFailedException("Choice interrupted or user didn't choose",
-                except);
+            throw DriverFailedException(except,
+                "Choice interrupted or user didn't choose");
         }
     }
     """Run the driver. If the driver is a GUI driver, this should use
@@ -196,7 +194,7 @@ interface ISPDriver satisfies HasName {
         try (ICLIHelper cli = ConstructorWrapper.cliHelper()) {
             startDriverOnArguments(cli, options, *args);
         } catch (IOException except) { // TODO: what will a Ceylon ICLIHelper throw?
-            throw DriverFailedException("I/O error interacting with user", except);
+            throw DriverFailedException(except, "I/O error interacting with user");
         }
     }
     "Run the driver. If the driver is a GUI driver, this should use
@@ -216,7 +214,7 @@ interface ISPDriver satisfies HasName {
         try (ICLIHelper cli = ConstructorWrapper.cliHelper()) {
             startDriverOnModel(cli, options, model);
         } catch (IOException except) { // TODO: what will a Ceylon ICLIHelper throw?
-            throw DriverFailedException("I/O error interacting with user", except);
+            throw DriverFailedException(except, "I/O error interacting with user");
         }
     }
     "Run the driver on a driver model."
@@ -305,10 +303,16 @@ interface SimpleCLIDriver satisfies SimpleDriver {
         writeModel(model);
     }
 }
+"An exception to throw whenever a driver fails, so drivers only have to directly handle
+ one exception class."
+todo("Is this really necessary any more?")
+shared class DriverFailedException(Throwable cause,
+        String message = "The driver could not start because of an exception:")
+        extends Exception(message, cause) { }
 "An exception to throw when a driver fails because the user tried to use it improperly."
 class IncorrectUsageException(correctUsage)
-        extends DriverFailedException("Incorrect usage",
-            IllegalArgumentException("Incorrect usage")) {
+        extends DriverFailedException(IllegalArgumentException("Incorrect usage"),
+    "Incorrect usage") {
     """The "usage object" for the driver, describing its correct usage."""
     shared IDriverUsage correctUsage;
 }

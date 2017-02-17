@@ -29,9 +29,6 @@ import java.util {
 import model.viewer {
     ViewerModel
 }
-import controller.map.drivers {
-    DriverFailedException
-}
 import javax.xml.stream {
     XMLStreamException
 }
@@ -50,6 +47,9 @@ import ceylon.logging {
 import ceylon.test {
     test,
     assertEquals
+}
+import strategicprimer.viewer.drivers {
+    DriverFailedException
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -85,11 +85,11 @@ shared IDriverModel readMapModel(JPath|JReader file, Warning warner) {
             return ViewerModel(readMap(file, warner), JOptional.\iof(file));
         }
     } catch (IOException except) {
-        throw DriverFailedException("I/O error while reading", except);
+        throw DriverFailedException(except, "I/O error while reading");
     } catch (XMLStreamException except) {
-        throw DriverFailedException("Malformed XML", except);
+        throw DriverFailedException(except, "Malformed XML");
     } catch (SPFormatException except) {
-        throw DriverFailedException("SP map format error", except);
+        throw DriverFailedException(except, "SP map format error");
     }
 }
 "Read several maps into a driver model, wrapping any errors in a DriverFailedException to
@@ -106,11 +106,11 @@ shared IMultiMapModel readMultiMapModel(Warning warner, JPath master, JPath* fil
         }
         return retval;
     } catch (IOException except) {
-        throw DriverFailedException("I/O error reading from file ``current``", except);
+        throw DriverFailedException(except, "I/O error reading from file ``current``");
     } catch (XMLStreamException except) {
-        throw DriverFailedException("Malformed XML in ``current``", except);
+        throw DriverFailedException(except, "Malformed XML in ``current``");
     } catch (SPFormatException except) {
-        throw DriverFailedException("SP map format error in ``current``", except);
+        throw DriverFailedException(except, "SP map format error in ``current``");
     }
 }
 "Write a map to file."
@@ -123,7 +123,7 @@ shared void writeModel(IDriverModel model) {
         try {
             writer.write(mainFile, model.map);
         } catch (IOException except) {
-            throw DriverFailedException("I/O error writing to ``mainFile``", except);
+            throw DriverFailedException(except, "I/O error writing to ``mainFile``");
         }
     } else {
         log.error("Model didn't contain filename for main map, so didn't write it");
@@ -134,8 +134,8 @@ shared void writeModel(IDriverModel model) {
                 try {
                     writer.write(filename, pair.first());
                 } catch (IOException except) {
-                    throw DriverFailedException("I/O error writing to ``filename``",
-                        except);
+                    throw DriverFailedException(except,
+                        "I/O error writing to ``filename``");
                 }
             } else {
                 log.error("A map didn't have a filename, and so wasn't written.");

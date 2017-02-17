@@ -1,6 +1,3 @@
-import controller.map.drivers {
-    DriverFailedException
-}
 import controller.map.misc {
     ICLIHelper
 }
@@ -250,11 +247,11 @@ object subsetGUI satisfies ISPDriver {
         try {
             frame.loadMain(JPaths.get(first));
         } catch (IOException except) {
-            throw DriverFailedException("I/O error loading main map ``first``", except);
+            throw DriverFailedException(except, "I/O error loading main map ``first``");
         } catch (XMLStreamException except) {
-            throw DriverFailedException("Malformed XML in main map ``first``", except);
+            throw DriverFailedException(except, "Malformed XML in main map ``first``");
         } catch (SPFormatException except) {
-            throw DriverFailedException("Invalid SP XML in main  map ``first``", except);
+            throw DriverFailedException(except, "Invalid SP XML in main  map ``first``");
         }
         for (arg in args.rest) {
             frame.testFile(JPaths.get(arg));

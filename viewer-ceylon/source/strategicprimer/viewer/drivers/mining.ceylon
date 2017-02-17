@@ -1,6 +1,3 @@
-import controller.map.drivers {
-    DriverFailedException
-}
 import controller.map.misc {
     ICLIHelper
 }
@@ -47,7 +44,7 @@ object miningCLI satisfies UtilityDriver {
                 if (is Integer temp) {
                     seed = temp;
                 } else {
-                    throw DriverFailedException("Seed must be numeric", temp);
+                    throw DriverFailedException(temp, "Seed must be numeric");
                 }
             } else {
                 seed = system.milliseconds;

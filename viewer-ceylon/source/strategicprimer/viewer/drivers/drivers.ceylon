@@ -65,9 +65,6 @@ import strategicprimer.viewer.drivers {
     advancementGUI,
     drawHelperComparator
 }
-import controller.map.drivers {
-    DriverFailedException
-}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."
@@ -213,7 +210,7 @@ shared void run() {
                         currentOptions.addOption("--gui", tempString);
                         gui = tempBool;
                     } else {
-                        throw DriverFailedException("--gui=nonBoolean", tempBool);
+                        throw DriverFailedException(tempBool, "--gui=nonBoolean");
                     }
                 } else if (arg.startsWith("-") && arg.contains("=")) {
                     {String+} broken = arg.split('='.equals, true, false);
@@ -376,7 +373,7 @@ object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 DuplicateFixtureRemover.filter(model.map, cli);
             }
         } catch (IOException except) {
-            throw DriverFailedException("I/O error interacting with user", except);
+            throw DriverFailedException(except, "I/O error interacting with user");
         }
     }
 }

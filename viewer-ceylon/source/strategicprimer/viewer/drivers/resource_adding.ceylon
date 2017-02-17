@@ -1,6 +1,3 @@
-import controller.map.drivers {
-    DriverFailedException
-}
 import ceylon.collection {
     HashMap,
     MutableSet,
@@ -191,7 +188,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
                         }
                     });
             } catch (IOException except) {
-                throw DriverFailedException("I/O error interacting with user", except);
+                throw DriverFailedException(except, "I/O error interacting with user");
             }
         } else {
             startDriverOnModel(cli, options, ResourceManagementDriver(model));

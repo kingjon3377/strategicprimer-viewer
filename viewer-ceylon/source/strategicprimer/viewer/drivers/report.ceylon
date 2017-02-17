@@ -1,6 +1,3 @@
-import controller.map.drivers {
-    DriverFailedException
-}
 import controller.map.misc {
     ICLIHelper
 }

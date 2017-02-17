@@ -1,6 +1,3 @@
-import controller.map.drivers {
-    DriverFailedException
-}
 import controller.map.misc {
     ICLIHelper,
     IDRegistrar,
@@ -59,11 +56,11 @@ object echoDriver satisfies UtilityDriver {
             try {
                 map = readMap(JPaths.get(inArg), Warning.ignore);
             } catch (IOException except) {
-                throw DriverFailedException("I/O error reading file ``inArg``", except);
+                throw DriverFailedException(except, "I/O error reading file ``inArg``");
             } catch (XMLStreamException except) {
-                throw DriverFailedException("Malformed XML in ``inArg``", except);
+                throw DriverFailedException(except, "Malformed XML in ``inArg``");
             } catch (SPFormatException except) {
-                throw DriverFailedException("SP map format error in ``inArg``", except);
+                throw DriverFailedException(except, "SP map format error in ``inArg``");
             }
             IDRegistrar idFactory = IDFactoryFiller.createFactory(map);
             for (location in map.locations()) {
@@ -97,7 +94,7 @@ object echoDriver satisfies UtilityDriver {
             try {
                 writeMap(JPaths.get(outArg), map);
             } catch (IOException except) {
-                throw DriverFailedException("I/O error writing ``outArg``", except);
+                throw DriverFailedException(except, "I/O error writing ``outArg``");
             }
         } else {
             throw IncorrectUsageException(usage);

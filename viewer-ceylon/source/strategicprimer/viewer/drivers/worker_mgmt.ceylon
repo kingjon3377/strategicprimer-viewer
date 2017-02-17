@@ -1,6 +1,3 @@
-import controller.map.drivers {
-    DriverFailedException
-}
 import controller.map.misc {
     ICLIHelper,
     MenuBroker,
@@ -567,8 +564,9 @@ object strategyExportCLI satisfies SimpleDriver {
                 StrategyExporter(model, options).writeStrategy(parsePath(
                         options.getArgument("--export")).resource, {});
             } else {
-                throw DriverFailedException("--export option is required",
-                    IllegalStateException("--export option is required"));
+                throw DriverFailedException(
+                    IllegalStateException("--export option is required"),
+                    "--export option is required");
             }
         } else {
             startDriverOnModel(cli, options, WorkerModel(model));

@@ -1,6 +1,3 @@
-import controller.map.drivers {
-    DriverFailedException
-}
 import controller.map.misc {
     ICLIHelper,
     MenuBroker,
@@ -262,7 +259,7 @@ object advancementCLI satisfies SimpleCLIDriver {
                 "Select another player? ",
                 (Player player, clh) => advanceWorkers(workerModel, player, clh));
         } catch (IOException except) {
-            throw DriverFailedException("I/O error interacting with user", except);
+            throw DriverFailedException(except, "I/O error interacting with user");
         }
     }
     shared actual IDriverUsage usage = DriverUsage {
