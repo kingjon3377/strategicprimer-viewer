@@ -5,13 +5,9 @@ import java.awt {
     Dimension
 }
 import view.util {
-    SPFrame,
     SPDialog,
     BoxPanel,
     ListenedButton
-}
-import ceylon.math.float {
-    asin
 }
 import lovelace.util.common {
     todo

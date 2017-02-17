@@ -6,7 +6,8 @@ import controller.map.misc {
     MenuBroker,
     PlayerChangeMenuListener,
     WindowCloser,
-    IDFactoryFiller
+    IDFactoryFiller,
+    IDRegistrar
 }
 import model.misc {
     IDriverModel
@@ -30,7 +31,8 @@ import java.util {
 }
 import model.map.fixtures.mobile {
     IUnit,
-    IWorker
+    IWorker,
+    Worker
 }
 import ceylon.interop.java {
     JavaList,
@@ -63,11 +65,11 @@ import javax.swing {
 }
 import view.worker {
     WorkerTree,
-    WorkerCreationListener,
     LevelListener,
     JobsTree,
     TreeExpansionHandler,
-    WorkerMenu
+    WorkerMenu,
+    WorkerConstructionFrame
 }
 import view.util {
     ItemAdditionPanel,
@@ -87,14 +89,17 @@ import model.listeners {
     PlayerChangeListener,
     LevelGainSource,
     SkillSelectionListener,
-    LevelGainListener
+    LevelGainListener,
+    UnitSelectionListener,
+    NewWorkerListener
 }
 import java.awt {
     Dimension,
     FlowLayout
 }
 import java.awt.event {
-    ActionEvent
+    ActionEvent,
+    ActionListener
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
@@ -326,6 +331,33 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
     retval.preferredSize = Dimension(220, 60);
     retval.maximumSize = Dimension(240, 60);
     return retval;
+}
+"A listener to keep track of the currently selected unit and listen for new-worker
+ notifications, then pass this information on to the tree model."
+class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
+        satisfies ActionListener&UnitSelectionListener&NewWorkerListener {
+    "The currently selected unit"
+    variable IUnit? selectedUnit = null;
+    shared actual void addNewWorker(Worker worker) {
+        if (exists local = selectedUnit) {
+            model.addUnitMember(local, worker);
+        } else {
+            log.warn("New worker created when no unit selected");
+            ErrorShower.showErrorDialog(null,
+                "As no unit was selected, the new worker wasn't added to a unit.");
+        }
+    }
+    shared actual void actionPerformed(ActionEvent event) {
+        if (event.actionCommand.lowercased.startsWith("add worker")) {
+            WorkerConstructionFrame frame = WorkerConstructionFrame(factory);
+            frame.addNewWorkerListener(addNewWorker);
+            frame.setVisible(true);
+        }
+    }
+    "Update our currently-selected-unit reference."
+    shared actual void selectUnit(IUnit? unit) {
+        selectedUnit = unit;
+    }
 }
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker menuHandler) {
