@@ -45,9 +45,6 @@ import model.exploration.old {
     ExplorationRunner,
     MissingTableException
 }
-import controller.exploration {
-    TableLoader
-}
 import model.misc {
     IDriverModel,
     IMultiMapModel
@@ -163,6 +160,10 @@ import strategicprimer.viewer.xmlio {
     readMap,
     writeMap
 }
+import ceylon.file {
+    Directory,
+    parsePath
+}
 "A driver to convert maps: at present, halving their resolution."
 class ConverterDriver(
     """Set to true when the provided [[ICLIHelper]] is connected to a graphical window
@@ -241,7 +242,11 @@ object oneToTwoConverter satisfies SimpleDriver {
     Float addForestProbability = 0.1;
     "Source for forest and ground types"
     ExplorationRunner runner = ExplorationRunner();
-    TableLoader.loadAllTables("tables", runner);
+    if (is Directory directory = parsePath("tables").resource) {
+        loadAllTables(directory, runner);
+    } else {
+        throw IllegalStateException("1-to-2 converter requires a tables directory");
+    }
     "Convert a version-1 map to a higher-resolution version-2 map."
     shared IMapNG convert(
             "The version-1 map to convert"

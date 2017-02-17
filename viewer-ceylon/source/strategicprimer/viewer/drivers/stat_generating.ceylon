@@ -50,7 +50,8 @@ import model.map.fixtures.mobile.worker {
     Job
 }
 import java.lang {
-    JIterable = Iterable
+    JIterable = Iterable,
+    IllegalStateException
 }
 import model.workermgmt {
     RaceFactory
@@ -60,16 +61,14 @@ import ceylon.math.float {
 }
 import ceylon.file {
     File,
-    parsePath
+    parsePath,
+    Directory
 }
 import lovelace.util.common {
     todo
 }
 import model.exploration.old {
     ExplorationRunner
-}
-import controller.exploration {
-    TableLoader
 }
 import java.nio.file {
     JPaths = Paths
@@ -402,7 +401,12 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
 todo("Figure out how to run the Ceylon version repeatedly on a single JVM")
 class TileContentsGenerator(IMapNG map) {
     ExplorationRunner runner = ExplorationRunner();
-    TableLoader.loadAllTables("tables", runner);
+    if (is Directory directory = parsePath("tables").resource) {
+        loadAllTables(directory, runner);
+    } else {
+        throw IllegalStateException(
+            "Tile-contents generator requires a tables directory");
+    }
     shared void generateTileContents(Point point,
             TileType terrain = map.getBaseTerrain(point)) {
         Integer reps = SingletonRandom.random.nextInt(4) + 1;
