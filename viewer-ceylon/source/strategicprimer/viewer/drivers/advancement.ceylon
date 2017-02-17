@@ -39,7 +39,8 @@ import ceylon.interop.java {
 import ceylon.collection {
     ArrayList,
     HashMap,
-    MutableMap
+    MutableMap,
+    MutableList
 }
 import model.map.fixtures.mobile.worker {
     ProxyWorker,
@@ -50,19 +51,21 @@ import model.map.fixtures.mobile.worker {
     ProxyJob
 }
 import util {
-    SingletonRandom { singletonRandom = random }
+    SingletonRandom { singletonRandom = random },
+    OnMac
 }
 import javax.swing {
     SwingUtilities,
     JLabel,
-    JScrollPane
+    JScrollPane,
+    JTextField,
+    JPanel
 }
 import view.worker {
     WorkerTree,
     WorkerCreationListener,
     LevelListener,
     JobsTree,
-    SkillAdvancementPanel,
     TreeExpansionHandler,
     WorkerMenu
 }
@@ -74,16 +77,25 @@ import view.util {
     SplitWithWeights,
     ListenedButton,
     FormattedLabel,
-    TreeExpansionOrderListener
+    TreeExpansionOrderListener,
+    ErrorShower,
+    BoxPanel
 }
 import strategicprimer.viewer.about {
     aboutDialog
 }
 import model.listeners {
-    PlayerChangeListener
+    PlayerChangeListener,
+    LevelGainSource,
+    SkillSelectionListener,
+    LevelGainListener
 }
 import java.awt {
-    Dimension
+    Dimension,
+    FlowLayout
+}
+import java.awt.event {
+    ActionEvent
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
@@ -255,6 +267,67 @@ object advancementCLI satisfies SimpleCLIDriver {
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
 }
+"A panel to let a user add hours of experience to a Skill."
+JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
+    JTextField hours = JTextField(3);
+    JPanel firstPanel = JPanel(FlowLayout());
+    firstPanel.add(JLabel("Add "));
+    firstPanel.add(hours);
+    firstPanel.add(JLabel(" hours to skill?"));
+    variable ISkill? skill = null;
+    MutableList<LevelGainListener> listeners = ArrayList<LevelGainListener>();
+    Anything(ActionEvent) okListener = (ActionEvent event) {
+        if (exists local = skill) {
+            Integer level = local.level;
+            if (is Integer number = Integer.parse(hours.text)) {
+                local.addHours(number, singletonRandom.nextInt(100));
+            } else {
+                ErrorShower.showErrorDialog(hours, "Hours to add must be a number");
+                return;
+            }
+            Integer newLevel = local.level;
+            if (newLevel != level) {
+                for (listener in listeners) {
+                    listener.level();
+                }
+            }
+        }
+        // Clear if OK and no skill selected, on Cancel, and after successfully adding skill
+        hours.text = "";
+    };
+    ListenedButton okButton = ListenedButton("OK", okListener);
+    hours.setActionCommand("OK");
+    hours.addActionListener(okListener);
+    ListenedButton cancelButton = ListenedButton("Cancel", (event) => hours.text = "");
+    OnMac.makeButtonsSegmented(okButton, cancelButton);
+    JPanel secondPanel;
+    if (OnMac.systemIsMac) {
+        secondPanel = BoxPanel.centeredHorizBox(okButton, cancelButton);
+    } else {
+        secondPanel = JPanel(FlowLayout());
+        secondPanel.add(okButton);
+        secondPanel.add(cancelButton);
+    }
+    object retval extends BoxPanel(false)
+            satisfies SkillSelectionListener&LevelGainSource {
+        shared actual void selectSkill(ISkill? selectedSkill) {
+            skill = selectedSkill;
+            if (selectedSkill exists) {
+                hours.requestFocusInWindow();
+            }
+        }
+        shared actual void addLevelGainListener(LevelGainListener listener)
+                => listeners.add(listener);
+        shared actual void removeLevelGainListener(LevelGainListener listener)
+                => listeners.remove(listener);
+    }
+    retval.add(firstPanel);
+    retval.add(secondPanel);
+    retval.minimumSize = Dimension(200, 40);
+    retval.preferredSize = Dimension(220, 60);
+    retval.maximumSize = Dimension(240, 60);
+    return retval;
+}
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker menuHandler) {
     IMapNG map = model.map;
@@ -273,9 +346,9 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
     LevelListener levelListener = LevelListener();
     JobsTree jobsTree = JobsTree(jobsTreeModel);
     jobsTree.addSkillSelectionListener(levelListener);
-    SkillAdvancementPanel skillAdvancementPanel = SkillAdvancementPanel();
-    jobsTree.addSkillSelectionListener(skillAdvancementPanel);
-    skillAdvancementPanel.addLevelGainListener(levelListener);
+    value hoursAdditionPanel = skillAdvancementPanel();
+    jobsTree.addSkillSelectionListener(hoursAdditionPanel);
+    hoursAdditionPanel.addLevelGainListener(levelListener);
     TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
     menuHandler.register((event) => expander.expandAll(), "expand all");
     menuHandler.register((event) => expander.collapseAll(), "collapse all");
@@ -306,7 +379,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
                         jobAdditionPanel), null,
                     BorderedPanel.verticalPanel(
                         JLabel("<html><p align=\"left\">Add a Skill to the selected Job:</p></html>"),
-                        null, skillAdditionPanel)), skillAdvancementPanel)));
+                        null, skillAdditionPanel)), hoursAdditionPanel)));
     retval.playerChanged(null, map.currentPlayer);
     retval.jMenuBar = WorkerMenu(menuHandler, retval, model);
     retval.pack();
