@@ -95,8 +95,7 @@ import model.listeners {
     SkillSelectionListener,
     LevelGainListener,
     UnitSelectionListener,
-    NewWorkerListener,
-    NewWorkerSource
+    NewWorkerListener
 }
 import java.awt {
     Dimension,

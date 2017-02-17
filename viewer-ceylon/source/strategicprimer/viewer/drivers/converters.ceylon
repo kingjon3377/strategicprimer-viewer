@@ -38,8 +38,7 @@ import java.io {
 }
 import strategicprimer.viewer.drivers { log }
 import javax.xml.stream {
-    XMLStreamException,
-    XMLInputFactory
+    XMLStreamException
 }
 import controller.map.formatexceptions {
     SPFormatException

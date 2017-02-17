@@ -47,7 +47,7 @@ import util {
     OnMac
 }
 import java.lang {
-    JInteger = Integer, JIterable = Iterable
+    JIterable = Iterable
 }
 import model.map {
     Point,
