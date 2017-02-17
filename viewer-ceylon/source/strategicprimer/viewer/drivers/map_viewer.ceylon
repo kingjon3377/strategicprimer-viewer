@@ -1,8 +1,7 @@
 import controller.map.misc {
     ICLIHelper,
     MenuBroker,
-    WindowCloser,
-    FindHandler
+    WindowCloser
 }
 import model.misc {
     IDriverModel,
@@ -15,7 +14,8 @@ import model.viewer {
 import view.map.main {
     ZoomListener,
     ViewerFrame,
-    SelectTileDialog
+    SelectTileDialog,
+    FindDialog
 }
 import javax.swing {
     SwingUtilities
@@ -50,8 +50,19 @@ object viewerGUI satisfies SimpleDriver {
                 menuHandler.register(WindowCloser(frame), "close");
                 menuHandler.register((event) =>
                     SelectTileDialog(frame, model).setVisible(true), "go to tile");
-                menuHandler.register(FindHandler(frame, model), "find a fixture",
-                    "find next");
+                variable FindDialog? finder = null;
+                FindDialog getFindDialog() {
+                    if (exists temp = finder) {
+                        return temp;
+                    } else {
+                        FindDialog local = FindDialog(frame, model);
+                        finder = local;
+                        return local;
+                    }
+                }
+                menuHandler.register((event) => getFindDialog().setVisible(true),
+                    "find a fixture");
+                menuHandler.register((event) => getFindDialog().search(), "find next");
                 menuHandler.register((event) =>
                     aboutDialog(frame, frame.windowName).setVisible(true), "about");
                 frame.setVisible(true);
