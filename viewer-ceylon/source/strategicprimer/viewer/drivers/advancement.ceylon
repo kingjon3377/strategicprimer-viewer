@@ -17,7 +17,8 @@ import model.workermgmt {
     IWorkerModel,
     WorkerTreeModelAlt,
     IWorkerTreeModel,
-    JobTreeModel
+    JobTreeModel,
+    RaceFactory
 }
 import java.io {
     IOException
@@ -50,7 +51,8 @@ import model.map.fixtures.mobile.worker {
     Job,
     ISkill,
     Skill,
-    ProxyJob
+    ProxyJob,
+    WorkerStats
 }
 import util {
     SingletonRandom { singletonRandom = random },
@@ -61,15 +63,17 @@ import javax.swing {
     JLabel,
     JScrollPane,
     JTextField,
-    JPanel
+    JPanel,
+    JFrame,
+    WindowConstants,
+    JComponent
 }
 import view.worker {
     WorkerTree,
     LevelListener,
     JobsTree,
     TreeExpansionHandler,
-    WorkerMenu,
-    WorkerConstructionFrame
+    WorkerMenu
 }
 import view.util {
     ItemAdditionPanel,
@@ -91,11 +95,13 @@ import model.listeners {
     SkillSelectionListener,
     LevelGainListener,
     UnitSelectionListener,
-    NewWorkerListener
+    NewWorkerListener,
+    NewWorkerSource
 }
 import java.awt {
     Dimension,
-    FlowLayout
+    FlowLayout,
+    GridLayout
 }
 import java.awt.event {
     ActionEvent,
@@ -349,8 +355,93 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
     }
     shared actual void actionPerformed(ActionEvent event) {
         if (event.actionCommand.lowercased.startsWith("add worker")) {
-            WorkerConstructionFrame frame = WorkerConstructionFrame(factory);
-            frame.addNewWorkerListener(addNewWorker);
+            object frame extends JFrame("Create Worker") {
+                defaultCloseOperation = WindowConstants.disposeOnClose;
+                JTextField name = JTextField();
+                JTextField race = JTextField(RaceFactory.race);
+                JTextField hpBox = JTextField();
+                JTextField maxHP = JTextField();
+                JTextField strength = JTextField();
+                JTextField dexterity = JTextField();
+                JTextField constitution = JTextField();
+                JTextField intelligence = JTextField();
+                JTextField wisdom = JTextField();
+                JTextField charisma = JTextField();
+                JPanel textPanel = JPanel(GridLayout(0, 2));
+                void addLabeledField(JPanel panel, String text, JComponent field) {
+                    panel.add(JLabel(text));
+                    panel.add(field);
+                }
+                addLabeledField(textPanel, "Worker Name:", name);
+                addLabeledField(textPanel, "Worker Race", race);
+                JPanel buttonPanel = JPanel(GridLayout(0, 2));
+                ListenedButton addButton = ListenedButton("Add Worker", (event) {
+                    String nameText = name.text.trimmed;
+                    String raceText = race.text.trimmed;
+                    value hpValue = Integer.parse(hpBox.text.trimmed);
+                    value maxHPValue = Integer.parse(maxHP.text.trimmed);
+                    value strValue = Integer.parse(strength.text.trimmed);
+                    value dexValue = Integer.parse(dexterity.text.trimmed);
+                    value conValue = Integer.parse(constitution.text.trimmed);
+                    value intValue = Integer.parse(intelligence.text.trimmed);
+                    value wisValue = Integer.parse(wisdom.text.trimmed);
+                    value chaValue = Integer.parse(charisma.text.trimmed);
+                    if (!nameText.empty, raceText.empty, is Integer hpValue,
+                            is Integer maxHPValue, is Integer strValue,
+                            is Integer dexValue, is Integer conValue,
+                            is Integer intValue, is Integer wisValue,
+                            is Integer chaValue) {
+                        Worker retval = Worker(nameText, raceText, factory.createID());
+                        retval.stats = WorkerStats(hpValue, maxHPValue, strValue,
+                            dexValue, conValue, intValue, wisValue, chaValue);
+                        addNewWorker(retval);
+                        setVisible(false);
+                        dispose();
+                    } else {
+                        StringBuilder builder = StringBuilder();
+                        if (nameText.empty) {
+                            builder.append("Worker needs a name.");
+                            builder.appendNewline();
+                        }
+                        if (raceText.empty) {
+                            builder.append("Worker needs a race.");
+                            builder.appendNewline();
+                        }
+                        for ([stat, val] in {["HP", hpValue],
+                                ["Max HP", maxHPValue], ["Strength", strValue],
+                                ["Dexterity", dexValue], ["Constitution", conValue],
+                                ["Intelligence", intValue], ["Wisdom", wisValue],
+                                ["Charisma", chaValue]}) {
+                            if (is ParseException val) {
+                                builder.append("``stat`` must be a number.");
+                                builder.appendNewline();
+                            }
+                        }
+                        ErrorShower.showErrorDialog(null, builder.string);
+                    }
+                });
+                buttonPanel.add(addButton);
+                ListenedButton cancelButton = ListenedButton("Cancel",
+                    (event) => dispose());
+                buttonPanel.add(cancelButton);
+                OnMac.makeButtonsSegmented(addButton, cancelButton);
+                JPanel statsPanel = JPanel(GridLayout(0, 4));
+                hpBox.text = "8";
+                addLabeledField(statsPanel, "HP:", hpBox);
+                maxHP.text = "8";
+                addLabeledField(statsPanel, "Max HP:", maxHP);
+                for ([stat, box] in {["Strength:", strength],
+                        ["Intelligence:", intelligence], ["Dexterity:", dexterity],
+                        ["Wisdom:", wisdom], ["Constitution:", constitution],
+                        ["Charisma:", charisma]}) {
+                    box.text = (singletonRandom.nextInt(6) + singletonRandom.nextInt(6) +
+                        singletonRandom.nextInt(6) + 3).string;
+                    addLabeledField(statsPanel, stat, box);
+                }
+                contentPane = BorderedPanel.verticalPanel(textPanel, statsPanel, buttonPanel);
+                setMinimumSize(Dimension(320, 240));
+                pack();
+            }
             frame.setVisible(true);
         }
     }
