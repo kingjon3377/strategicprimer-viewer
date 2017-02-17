@@ -2,7 +2,8 @@ import controller.map.drivers {
     DriverFailedException
 }
 import controller.map.misc {
-    ICLIHelper
+    ICLIHelper,
+    MapReaderAdapter
 }
 
 import java.lang {
@@ -10,10 +11,11 @@ import java.lang {
     CharSequence
 }
 import java.nio.file {
-    JPath=Path, JPaths = Paths
+    JPath=Path, JPaths = Paths,
+    NoSuchFileException
 }
 import java.util {
-    Formatter
+    Formatter, JOptional=Optional
 }
 
 import model.misc {
@@ -24,23 +26,43 @@ import model.misc {
 import lovelace.util.common {
     todo
 }
-import view.map.misc {
-    SubsetFrame
-}
 import view.util {
-    ErrorShower
+    ErrorShower,
+    SPFrame,
+    StreamingLabel
 }
 import javax.swing {
-    SwingUtilities
+    SwingUtilities,
+    JScrollPane
 }
 import java.io {
-    IOException
+    IOException,
+    FileNotFoundException,
+    FilterWriter,
+    JWriter=Writer
 }
 import javax.xml.stream {
     XMLStreamException
 }
 import controller.map.formatexceptions {
     SPFormatException
+}
+import java.awt {
+    Dimension
+}
+import model.map {
+    IMapNG,
+    SPMapNG,
+    MapDimensionsImpl,
+    PlayerCollection
+}
+import util {
+    Warning,
+    LineEnd
+}
+import ceylon.regex {
+    Regex,
+    regex
 }
 class AppendableHelper(ICLIHelper wrapped) satisfies Appendable {
     shared actual Appendable append(CharSequence csq) {
@@ -77,6 +99,123 @@ object subsetCLI satisfies SimpleDriver {
         }
     }
 }
+"A window to show the result of running subset tests."
+class SubsetFrame() extends SPFrame("Subset Tester", JOptional.empty<JPath>(),
+        Dimension(640, 320)) {
+    shared actual String windowName = "Subset Tester";
+    StreamingLabel label = StreamingLabel();
+    object htmlWriter extends FilterWriter(label.writer) {
+        variable Boolean lineStart = true;
+        Regex matcher = regex(LineEnd.lineSep, true);
+        shared actual JWriter append(CharSequence csq) {
+            String local = csq.string;
+            if (lineStart) {
+                super.append("<p style=\"color:white\">");
+            }
+            super.append(matcher.replace(local, "</p><p style=\"color:white\">"));
+            lineStart = false;
+            return this;
+        }
+    }
+    contentPane = JScrollPane(label);
+    void printParagraph(String paragraph,
+            StreamingLabel.LabelTextColor color = StreamingLabel.LabelTextColor.white) {
+        // This is safe because StringWriter's close() is a no-op
+        try (writer = label.writer) {
+            writer.println("<p style=\"color:``color``\">``paragraph``</p>");
+        }
+        // At one time we called updateText on the label.
+        label.repaint();
+    }
+    variable IMapNG mainMap = SPMapNG(MapDimensionsImpl(0, 0, 2), PlayerCollection(), -1);
+    MapReaderAdapter reader = MapReaderAdapter();
+    shared void loadMain(IMapNG|JPath arg) {
+        if (is JPath path = arg) {
+            try {
+                mainMap = reader.readMap(path, Warning.ignore);
+            } catch (FileNotFoundException|NoSuchFileException except) {
+                printParagraph("File ``path`` not found", StreamingLabel.LabelTextColor.red);
+                throw except;
+            } catch (XMLStreamException except) {
+                printParagraph("ERROR: Malformed XML in ``path
+                ``; see following error message for details",
+                    StreamingLabel.LabelTextColor.red);
+                printParagraph(except.message, StreamingLabel.LabelTextColor.red);
+                throw except;
+            } catch (SPFormatException except) {
+                printParagraph("ERROR: SP map format error at line ``except.line`` in file ``
+                path``; see following error message for details",
+                    StreamingLabel.LabelTextColor.red);
+                printParagraph(except.message, StreamingLabel.LabelTextColor.red);
+                throw except;
+            } catch (IOException except) {
+                printParagraph("ERROR: I/O error reading file ``path``",
+                    StreamingLabel.LabelTextColor.red);
+                throw except;
+            }
+        } else {
+            assert (is IMapNG arg);
+            mainMap = arg;
+        }
+        printParagraph("""<span style="color:green">OK</span> if strict subset,
+                          <span style="color:yellow">WARN</span> if apparently not (but
+                          check by hand), <span style="color:red">FAIL</span> if error in
+                          reading""");
+    }
+    "Test a map against the main map, to see if it's a strict subset of it."
+    shared void testMap(IMapNG map, JPath? file) {
+        String filename;
+        if (exists file) {
+            filename = file.string;
+        } else {
+            log.warn("Given a map with no filename");
+            printParagraph("Given a map with no filename",
+                StreamingLabel.LabelTextColor.yellow);
+            filename = "an unnamed file";
+        }
+        printParagraph("Testing ``filename`` ...");
+        try (formatter = Formatter(htmlWriter)) {
+            if (mainMap.isSubset(map, formatter, "``filename``: ")) {
+                printParagraph("OK", StreamingLabel.LabelTextColor.green);
+            } else {
+                printParagraph("WARN", StreamingLabel.LabelTextColor.yellow);
+            }
+        }
+    }
+    """Read a map from file and test it against the main map to see if it's a strict subset.
+       This method "eats" (but logs) all (anticipated) errors in reading the file."""
+    shared void testFile(JPath path) {
+        printParagraph("Testing ``path`` ...");
+        IMapNG map;
+        try {
+            map = reader.readMap(path, Warning.ignore);
+        } catch (FileNotFoundException|NoSuchFileException except) {
+            printParagraph("FAIL: File not found", StreamingLabel.LabelTextColor.red);
+            log.error("``path`` not found", except);
+            return;
+        } catch (IOException except) {
+            printParagraph("FAIL: I/O error reading file",
+                StreamingLabel.LabelTextColor.red);
+            log.error("I/O error reading ``path``", except);
+            return;
+        } catch (XMLStreamException except) {
+            printParagraph(
+                "FAIL: Malformed XML in the file; see following error message for details",
+                StreamingLabel.LabelTextColor.red);
+            printParagraph(except.message, StreamingLabel.LabelTextColor.red);
+            log.error("Malformed XML in file ``path``", except);
+            return;
+        } catch (SPFormatException except) {
+            printParagraph("FAIL: SP map format error at line ``
+                    except.line``; see following error message for details",
+                StreamingLabel.LabelTextColor.red);
+            printParagraph(except.message, StreamingLabel.LabelTextColor.red);
+            log.error("SP map format error reading``path``", except);
+            return;
+        }
+        testMap(map, path);
+    }
+}
 "A driver to check whether player maps are subsets of the main map and display the
  results graphically."
 todo("Unify with subsetCLI")
@@ -92,7 +231,7 @@ object subsetGUI satisfies ISPDriver {
             SwingUtilities.invokeLater(() => frame.setVisible(true));
             frame.loadMain(model.map);
             for (pair in model.subordinateMaps) {
-                frame.test(pair.first(), pair.second());
+                frame.testMap(pair.first(), pair.second().orElse(null));
             }
         } else {
             ErrorShower.showErrorDialog(null,
@@ -117,7 +256,7 @@ object subsetGUI satisfies ISPDriver {
             throw DriverFailedException("Invalid SP XML in main  map ``first``", except);
         }
         for (arg in args.rest) {
-            frame.test(JPaths.get(arg));
+            frame.testFile(JPaths.get(arg));
         }
     }
 }
