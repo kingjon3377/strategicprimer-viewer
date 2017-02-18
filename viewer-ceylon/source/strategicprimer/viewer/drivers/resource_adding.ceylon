@@ -9,7 +9,6 @@ import controller.map.misc {
     ICLIHelper,
     IDFactoryFiller,
     IDRegistrar,
-    PlayerChangeMenuListener,
     MenuBroker
 }
 import model.misc {

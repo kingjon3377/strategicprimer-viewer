@@ -1,7 +1,6 @@
 import controller.map.misc {
     ICLIHelper,
     MenuBroker,
-    PlayerChangeMenuListener,
     WindowCloser,
     IDFactoryFiller,
     IDRegistrar
