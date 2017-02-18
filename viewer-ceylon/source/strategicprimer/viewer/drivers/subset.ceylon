@@ -3,7 +3,6 @@ import controller.map.misc {
 }
 
 import java.lang {
-    Appendable,
     CharSequence
 }
 import java.nio.file {
@@ -63,14 +62,8 @@ import ceylon.regex {
 import strategicprimer.viewer.xmlio {
     readMap
 }
-class AppendableHelper(ICLIHelper wrapped) satisfies Appendable {
-    shared actual Appendable append(CharSequence csq) {
-        wrapped.print(csq.string);
-        return this;
-    }
-    shared actual Appendable append(CharSequence csq, Integer start, Integer end) =>
-            append(csq.subSequence(start, end));
-    shared actual Appendable append(Character c) => append(c.string);
+import lovelace.util.jvm {
+    AppendableHelper
 }
 "A driver to check whether player maps are subsets of the main map."
 object subsetCLI satisfies SimpleDriver {
@@ -85,8 +78,8 @@ object subsetCLI satisfies SimpleDriver {
                 String filename = pair.second().map(JPath.string)
                     .orElse("map without a filename");
                 cli.print("``filename``\t...\t\t");
-                if (model.map.isSubset(pair.first(), Formatter(AppendableHelper(cli)),
-                        "In ``filename``:")) {
+                if (model.map.isSubset(pair.first(),
+                        Formatter(AppendableHelper(cli.print)), "In ``filename``:")) {
                     cli.println("OK");
                 } else {
                     cli.println("WARN");

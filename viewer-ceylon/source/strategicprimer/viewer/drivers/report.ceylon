@@ -27,11 +27,11 @@ import ceylon.file {
     parsePath,
     Nil
 }
-import controller.map.report {
-    ReportGenerator
-}
 import controller.map.report.tabular {
     TableReportGenerator
+}
+import strategicprimer.viewer.report {
+    createReport
 }
 "A driver to produce a report of the contents of a map."
 object reportCLI satisfies SimpleDriver {
@@ -78,7 +78,7 @@ object reportCLI satisfies SimpleDriver {
                 if (is Nil loc = outPathCeylon.resource) {
                     value file = loc.createFile();
                     try (writer = file.Overwriter()) {
-                        writer.write(ReportGenerator.createReport(map, player));
+                        writer.write(createReport(map, player));
                     }
                 }
             } else {

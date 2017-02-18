@@ -101,9 +101,6 @@ import java.lang {
     Thread,
     IllegalStateException
 }
-import controller.map.report {
-    ReportGenerator
-}
 import model.map.fixtures.towns {
     Fortress
 }
@@ -139,6 +136,9 @@ import model.map.fixtures.mobile.worker {
 }
 import strategicprimer.viewer.about {
     aboutDialog
+}
+import strategicprimer.viewer.report {
+    createAbbreviatedReportIR
 }
 "A panel for the user to enter a unit's orders or read a unit's results."
 JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel(
@@ -445,7 +445,7 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
             "Please wait, loading report ..."));
         Anything() reportGeneratorThread = () {
             log.info("About to generate report");
-            IReportNode report = ReportGenerator.createAbbreviatedReportIR(mainMap,
+            IReportNode report = createAbbreviatedReportIR(mainMap,
                 mainMap.currentPlayer);
             log.info("Finished generating report");
             SwingUtilities.invokeLater(() => reportModel.setRoot(report));
