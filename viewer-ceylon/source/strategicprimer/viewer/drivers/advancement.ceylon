@@ -62,12 +62,12 @@ import javax.swing {
     JPanel,
     JFrame,
     WindowConstants,
-    JComponent
+    JComponent,
+    JTree
 }
 import view.worker {
     WorkerTree,
     LevelListener,
-    JobsTree,
     TreeExpansionHandler,
     WorkerMenu
 }
@@ -91,7 +91,8 @@ import model.listeners {
     SkillSelectionListener,
     LevelGainListener,
     UnitSelectionListener,
-    NewWorkerListener
+    NewWorkerListener,
+    SkillSelectionSource
 }
 import java.awt {
     Dimension,
@@ -101,6 +102,10 @@ import java.awt {
 import java.awt.event {
     ActionEvent,
     ActionListener
+}
+import javax.swing.event {
+    TreeModelEvent,
+    TreeModelListener
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
@@ -445,6 +450,55 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         selectedUnit = unit;
     }
 }
+"A tree representing a worker's Jobs and Skills."
+JTree&SkillSelectionSource jobsTree(JobTreeModel jtModel) {
+    object retval extends JTree(jtModel) satisfies SkillSelectionSource {
+        MutableList<SkillSelectionListener> listeners =
+                ArrayList<SkillSelectionListener>();
+        shared actual void addSkillSelectionListener(SkillSelectionListener listener) =>
+            listeners.add(listener);
+        shared actual void removeSkillSelectionListener(SkillSelectionListener listener) =>
+            listeners.remove(listener);
+        jtModel.setSelectionModel(selectionModel);
+        rootVisible = false;
+        variable Integer i = 0;
+        while (i < rowCount) {
+            expandRow(i);
+        }
+        showsRootHandles = true;
+        selectionModel.addTreeSelectionListener((event) {
+            ISkill? retval;
+            if (exists selectionPath = event.newLeadSelectionPath,
+                    is ISkill component = selectionPath.lastPathComponent) {
+                retval = component;
+            } else {
+                retval = null;
+            }
+            for (listener in listeners) {
+                listener.selectSkill(retval);
+            }
+        });
+    }
+    object treeModelListener satisfies TreeModelListener {
+        shared actual void treeStructureChanged(TreeModelEvent event) {
+            retval.expandPath(event.treePath.parentPath);
+            variable Integer i = 0;
+            while (i < retval.rowCount) {
+                retval.expandRow(i);
+                i++;
+            }
+        }
+        shared actual void treeNodesRemoved(TreeModelEvent event) { }
+        shared actual void treeNodesInserted(TreeModelEvent event) {
+            retval.expandPath(event.treePath);
+            retval.expandPath(event.treePath.parentPath);
+        }
+        shared actual void treeNodesChanged(TreeModelEvent event) =>
+                retval.expandPath(event.treePath.parentPath);
+    }
+    jtModel.addTreeModelListener(treeModelListener);
+    return retval;
+}
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker menuHandler) {
     IMapNG map = model.map;
@@ -461,10 +515,10 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
     ItemAdditionPanel skillAdditionPanel = ItemAdditionPanel("skill");
     skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
     LevelListener levelListener = LevelListener();
-    JobsTree jobsTree = JobsTree(jobsTreeModel);
-    jobsTree.addSkillSelectionListener(levelListener);
+    value jobsTreeObject = jobsTree(jobsTreeModel);
+    jobsTreeObject.addSkillSelectionListener(levelListener);
     value hoursAdditionPanel = skillAdvancementPanel();
-    jobsTree.addSkillSelectionListener(hoursAdditionPanel);
+    jobsTreeObject.addSkillSelectionListener(hoursAdditionPanel);
     hoursAdditionPanel.addLevelGainListener(levelListener);
     TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
     menuHandler.register((event) => expander.expandAll(), "expand all");
@@ -488,7 +542,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
         SplitWithWeights.verticalSplit(0.5, 0.3,
             BorderedPanel.verticalPanel(
                 JLabel("<html><p align=\"left\">Worker's Jobs and Skills:</p></html>"),
-                JScrollPane(jobsTree), null),
+                JScrollPane(jobsTreeObject), null),
             BorderedPanel.verticalPanel(null,
                 BorderedPanel.verticalPanel(
                     BorderedPanel.verticalPanel(
