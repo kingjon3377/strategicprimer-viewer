@@ -1,9 +1,7 @@
 import controller.map.misc {
     ICLIHelper,
     MenuBroker,
-    WindowCloser,
-    IDRegistrar,
-    IDFactoryFiller
+    WindowCloser
 }
 import model.misc {
     IDriverModel

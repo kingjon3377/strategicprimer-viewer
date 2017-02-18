@@ -2,8 +2,7 @@ import controller.map.misc {
     ICLIHelper,
     MenuBroker,
     WindowCloser,
-    IDFactoryFiller,
-    FileChooser
+    IDFactoryFiller
 }
 import model.misc {
     IDriverModel
@@ -47,9 +46,6 @@ import view.util {
     Revertible,
     Applyable,
     BoxPanel
-}
-import java.nio.file {
-    JPath=Path
 }
 import ceylon.interop.java {
     CeylonIterable
@@ -104,9 +100,6 @@ import model.report {
 import java.lang {
     Thread,
     IllegalStateException
-}
-import java.util {
-    JOptional=Optional
 }
 import controller.map.report {
     ReportGenerator
@@ -467,9 +460,8 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
         BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
             ListenedButton("Add New Unit", (event) => newUnitFrame.setVisible(true)),
             ordersPanelObj, ListenedButton("Export a proto-strategy",
-                (ActionEvent event) => FileChooser(JOptional.empty<JPath>(),
-                    JFileChooser(".", null), FileChooser.FileChooserOperation.save).call(
-                    (file) => strategyExporter.writeStrategy(
+                (ActionEvent event) => FileChooser.save(null, JFileChooser(".", null))
+                    .call((file) => strategyExporter.writeStrategy(
                         parsePath(file.string).resource,
                         CeylonIterable(treeModel.dismissed())))));
         contentPane = SplitWithWeights.horizontalSplit(0.5, 0.5,

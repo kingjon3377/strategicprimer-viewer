@@ -7,8 +7,7 @@ import model.misc {
     IMultiMapModel
 }
 import controller.map.misc {
-    ICLIHelper,
-    FileChooser
+    ICLIHelper
 }
 import util {
     Warning
@@ -19,9 +18,6 @@ import java.nio.file {
 import model.map {
     IMutableMapNG,
     HasName
-}
-import java.util {
-    JOptional = Optional
 }
 import java.io {
     IOException
@@ -110,7 +106,7 @@ interface SimpleDriver satisfies ISPDriver {
     "Ask the user to choose a file."
     JPath askUserForFile() {
         try {
-            return FileChooser(JOptional.empty<JPath>()).file;
+            return FileChooser.open(null).file;
         } catch (FileChooser.ChoiceInterruptedException except) {
             throw DriverFailedException(except,
                 "Choice interrupted or user didn't choose");

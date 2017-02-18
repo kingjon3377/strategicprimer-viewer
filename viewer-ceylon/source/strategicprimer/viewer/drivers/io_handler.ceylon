@@ -1,13 +1,13 @@
 import javax.swing {
-    JFileChooser
+    JFileChooser,
+    SwingUtilities
 }
 import model.misc {
     IDriverModel,
     IMultiMapModel
 }
 import controller.map.misc {
-    ICLIHelper,
-    FileChooser
+    ICLIHelper
 }
 import lovelace.util.common {
     todo
@@ -55,6 +55,15 @@ import strategicprimer.viewer.xmlio {
     readMap,
     writeMap
 }
+import java.lang.reflect {
+    InvocationTargetException
+}
+import ceylon.language.meta.model {
+    InvocationException
+}
+import java.lang {
+    InterruptedException
+}
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
 class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
@@ -85,7 +94,7 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         }
         switch (event.actionCommand.lowercased)
         case ("load") {
-            FileChooser(JOptional.empty<JPath>()).call((path) {
+            FileChooser.open(null).call((path) {
                 try {
                     mapModel.setMap(readMap(path, Warning.default),
                         JOptional.\iof<JPath>(path));
@@ -110,8 +119,7 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             }
         }
         case ("save as") {
-            FileChooser(JOptional.empty<JPath>(), fileChooser,
-                    FileChooser.FileChooserOperation.save).call((path) {
+            FileChooser.save(null, fileChooser).call((path) {
                 try {
                     writeMap(path, mapModel.map);
                 } catch (IOException except) {
@@ -127,7 +135,7 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         }
         case ("load secondary") {
             if (is IMultiMapModel mapModel) {
-                FileChooser(JOptional.empty<JPath>()).call((path) {
+                FileChooser.open(null).call((path) {
                     try {
                         mapModel.addSubordinateMap(readMap(path, Warning.default),
                             JOptional.\iof<JPath>(path));
@@ -152,8 +160,7 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
                     }
                 }
             } else {
-                FileChooser(JOptional.empty<JPath>(), fileChooser,
-                    FileChooser.FileChooserOperation.save).call((path) {
+                FileChooser.save(null, fileChooser).call((path) {
                     try {
                         writeMap(path, mapModel.map);
                     } catch (IOException except) {
@@ -174,6 +181,89 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         }
         else {
             log.info("Unhandled command ``event.actionCommand`` in IOHandler");
+        }
+    }
+}
+class FileChooser {
+    shared static class ChoiceInterruptedException(Throwable? cause = null)
+            extends Exception(
+                (cause exists) then "Choice of a file was iterrupted by an exception:"
+                else "No file was selected", cause) { }
+    Integer(Component?) chooserFunction;
+    variable JPath? storedFile;
+    JFileChooser chooser;
+    shared new open(JPath? loc = null,
+            JFileChooser fileChooser = FilteredFileChooser()) {
+        chooserFunction = fileChooser.showOpenDialog;
+        storedFile = loc;
+        chooser = fileChooser;
+    }
+    shared new save(JPath? loc, JFileChooser fileChooser = FilteredFileChooser()) {
+        chooserFunction = fileChooser.showSaveDialog;
+        storedFile = loc;
+        chooser = fileChooser;
+    }
+    shared new custom(JPath? loc, String approveText,
+            JFileChooser fileChooser = FilteredFileChooser()) {
+        chooserFunction = (Component? component) =>
+                fileChooser.showDialog(component, approveText);
+        storedFile = loc;
+        chooser = fileChooser;
+    }
+    void invoke(Anything() runnable) {
+        try {
+            SwingUtilities.invokeAndWait(runnable);
+        } catch (InvocationTargetException|InvocationException except) {
+            if (exists cause = except.cause) {
+                throw ChoiceInterruptedException(cause);
+            } else {
+                throw ChoiceInterruptedException(except);
+            }
+        } catch (InterruptedException except) {
+            throw ChoiceInterruptedException(except);
+        }
+    }
+    "If a valid filename was passed in to the constructor, return it; otherwise,
+     show a dialog for the user to select one and return the filename the user selected.
+     Throws an exception if the choice is interrupted or the user declines to choose."
+    shared JPath file {
+        if (exists temp = storedFile) {
+            return temp;
+        } else if (SwingUtilities.eventDispatchThread) {
+            Integer status = chooserFunction(null);
+            if (status == JFileChooser.approveOption) {
+                assert (exists temp = chooser.selectedFile);
+                return temp.toPath();
+            } else {
+                log.info("Chooser function returned ``status``");
+            }
+        } else {
+            invoke(() {
+                Integer status = chooserFunction(null);
+                if (status == JFileChooser.approveOption) {
+                    assert (exists temp = chooser.selectedFile);
+                    storedFile = temp.toPath();
+                } else {
+                    log.info("Chooser function returned ``status``");
+                }
+            });
+        }
+        if (exists temp = storedFile) {
+            return temp;
+        } else {
+            throw ChoiceInterruptedException();
+        }
+    }
+    assign file {
+        storedFile = file;
+    }
+    "Allow the user to choose a file, if necessary, and pass that file to the given
+     consumer. If the operation is canceled, do nothing."
+    shared void call(Anything(JPath) consumer) {
+        try {
+            consumer(file);
+        } catch (ChoiceInterruptedException exception) {
+            log.info("Choice interrupted or user failed to choose", exception);
         }
     }
 }
