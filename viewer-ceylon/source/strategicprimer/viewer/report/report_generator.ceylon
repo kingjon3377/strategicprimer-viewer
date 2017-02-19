@@ -25,11 +25,6 @@ import java.util {
     Formatter
 }
 import controller.map.report {
-    FortressMemberReportGenerator,
-    FortressReportGenerator,
-    UnitReportGenerator,
-    TownReportGenerator,
-    AnimalReportGenerator,
     ExplorableReportGenerator,
     ImmortalsReportGenerator,
     VillageReportGenerator,
