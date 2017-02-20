@@ -210,9 +210,8 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
     shared actual void produce(PatientMap<JInteger,Pair<Point,IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Formatter ostream) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values()) };
-// FIXME: Here & elsewhere: values.sort() is *not* an in-place sort; it *returns* Element[]
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         MutableMap<String, JCollection<Point>> items =
                 HashMap<String, JCollection<Point>>();
         for (pair in values) {
@@ -275,8 +274,8 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
             PatientMap<JInteger,Pair<Point,IFixture>> fixtures, IMapNG map,
             Player currentPlayer) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         MutableMap<String, IReportNode> items = HashMap<String, IReportNode>();
         for (pair in values) {
             if (is Animal animal = pair.second()) {
@@ -667,8 +666,8 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp)
         MutableMap<Fortress, Point> ours = HashMap<Fortress, Point>();
         MutableMap<Fortress, Point> others = HashMap<Fortress, Point>();
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList<Pair<Point, IFixture>>{*CeylonCollection(fixtures.values())};
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         for (pair in values) {
             if (is Fortress fort = pair.second()) {
                 if (currentPlayer == fort.owner) {
@@ -743,8 +742,8 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp)
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList<Pair<Point, IFixture>>{*CeylonCollection(fixtures.values())};
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         IReportNode foreign = SectionReportNode(4, "Foreign fortresses in the map:");
         IReportNode ours = SectionReportNode(4, "Your fortresses in the map:");
         for (pair in values) {
@@ -1013,8 +1012,8 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp)
     shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Formatter ostream) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList { *CeylonIterable(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         HeadedMap<IUnit, Point> foreign =
                 HeadedMapImplTemp<IUnit, Point>("<h5>Foreign Units</h5>");
         HeadedMap<IUnit, Point> ours =
@@ -1049,8 +1048,8 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp)
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList { *CeylonIterable(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         IReportNode theirs = SectionListReportNode(5, "Foreign Units");
         IReportNode ours = SectionListReportNode(5, "Your Units");
         for (pair in values) {
@@ -1125,8 +1124,8 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
     shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Formatter ostream) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList { *CeylonIterable(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         HeadedMap<Implement, Point> equipment =
             HeadedMapImplTemp<Implement, Point>("<li>Equipment:",
                 javaComparator(comparing(byIncreasing(Implement.kind),
@@ -1222,8 +1221,8 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList { *CeylonIterable(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         MutableMap<String, IReportNode> resourceKinds = HashMap<String, IReportNode>();
         IReportNode equipment = ListReportNode("Equipment:");
         for (pair in values) {
@@ -1329,8 +1328,8 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
     shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Formatter ostream) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList { *CeylonIterable(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         JList<Point> portals = PointListTemp("Portals to other worlds: ");
         JList<Point> battles = PointListTemp(
             "Signs of long-ago battles on the following tiles:");
@@ -1412,8 +1411,8 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList { *CeylonIterable(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         IReportNode portals = ListReportNode("Portals");
         IReportNode battles = ListReportNode("Battlefields");
         IReportNode caves = ListReportNode("Caves");
@@ -1531,8 +1530,8 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
     shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Formatter ostream) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList { *CeylonIterable(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         MutableMap<String, JCollection<Point>> stone =
                 HashMap<String, JCollection<Point>>();
         MutableMap<String, JCollection<Point>> shrubs =
@@ -1674,8 +1673,8 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
     PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
     Player currentPlayer) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList { *CeylonIterable(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         MutableMap<String, IReportNode> stone = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> shrubs = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> minerals = HashMap<String, IReportNode>();
@@ -1772,8 +1771,8 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp)
     shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Formatter ostream) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         value villageComparator = comparing(byIncreasing(Village.name),
             byIncreasing(Village.race), byIncreasing(Village.id));
         // TODO: sort by distance somehow?
@@ -1843,8 +1842,8 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp)
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         IReportNode own = SectionListReportNode(5, "Villages pledged to your service:");
         IReportNode independents =
                 SectionListReportNode(5, "Villages you think are independent:");
@@ -1893,8 +1892,8 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
     shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Formatter ostream) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         MutableMap<Type<IFixture>, Anything(String, Point)> meta =
                 HashMap<Type<IFixture>, Anything(String, Point)>();
         MutableMap<SimpleImmortal.SimpleImmortalKind, HeadedList<Point>> simples =
@@ -1960,8 +1959,8 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer) {
         MutableList<Pair<Point, IFixture>> values =
-                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values()) };
-        values.sort(ceylonComparator(pairComparator));
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
+                    .sort(ceylonComparator(pairComparator)) };
         MutableMap<SimpleImmortal.SimpleImmortalKind, IReportNode> simples =
                 HashMap<SimpleImmortal.SimpleImmortalKind, IReportNode>();
         MutableMap<String, IReportNode> centaurs = HashMap<String, IReportNode>();
