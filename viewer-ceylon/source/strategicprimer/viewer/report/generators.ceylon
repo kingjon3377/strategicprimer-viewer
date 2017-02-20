@@ -20,7 +20,6 @@ import model.map.fixtures {
     UnitMember
 }
 import java.lang {
-    JInteger = Integer,
     IllegalStateException,
     IllegalArgumentException
 }
@@ -131,7 +130,7 @@ interface IReportGenerator<T> given T satisfies IFixture {
      be removed from the set before returning."
     shared formal void produce(
         "The set of fixtures in the map."
-        PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+        PatientMap<Integer, Pair<Point, IFixture>> fixtures,
         "The map. (Needed to get terrain type for some reports.)"
         IMapNG map,
         "The player for whom the report is being produced."
@@ -147,7 +146,7 @@ interface IReportGenerator<T> given T satisfies IFixture {
      set before returning."
     shared formal IReportNode produceRIR(
         "The set of fixtures in the map."
-        PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+        PatientMap<Integer, Pair<Point, IFixture>> fixtures,
         "The map. (Needed to get terrain type for some reports.)"
         IMapNG map,
         "The player for whom the report is being produced."
@@ -311,7 +310,7 @@ class TextReportGenerator(PairComparator<Point, IFixture> comp)
     "Produce the part of the report dealing with arbitrary-text notes. If an individual
      note is specified, this does *not* remove it from the collection, because this
      method doesn't know the synthetic ID # that was assigned to it."
-    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+    shared actual void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Anything(String) ostream,
             [TextFixture, Point]? entry) {
         if (exists entry) {
@@ -354,7 +353,7 @@ class TextReportGenerator(PairComparator<Point, IFixture> comp)
      *not* remove it from the collection, because this method doesn't know the synthetic
      ID # that was assigned to it."
     shared actual IReportNode produceRIR(
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer, [TextFixture, Point]? entry) {
         if (exists entry) {
             TextFixture item = entry.first;
@@ -388,7 +387,7 @@ todo("Ensure that animal-tracks' synthetic IDs are used to remove them")
 class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
         extends AbstractReportGenerator<Animal>(comp) {
     "Produce the sub-report about animals or an individual Animal."
-    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+    shared actual void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Anything(String) ostream,
             [Animal, Point]? entry) {
         if (exists entry) {
@@ -426,7 +425,7 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
                     }
                     list.add(pair.first());
                     if (animal.id > 0) {
-                        fixtures.remove(JInteger(animal.id));
+                        fixtures.remove(animal.id);
                     } else {
                         for (inner in fixtures.entrySet()) {
                             if (inner.\ivalue == pair) {
@@ -451,7 +450,7 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
     }
     "Produce the sub-report about animals or an individual Animal."
     shared actual IReportNode produceRIR(
-            PatientMap<JInteger,Pair<Point,IFixture>> fixtures, IMapNG map,
+            PatientMap<Integer,Pair<Point,IFixture>> fixtures, IMapNG map,
             Player currentPlayer, [Animal, Point]? entry) {
         if (exists entry) {
             Animal item = entry.first;
@@ -483,7 +482,7 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
                     node.add(produceRIR(fixtures, map, currentPlayer, [animal,
                         pair.first()]));
                     if (animal.id > 0) {
-                        fixtures.remove(JInteger(animal.id));
+                        fixtures.remove(animal.id);
                     } else {
                         for (inner in fixtures.entrySet()) {
                             if (inner.\ivalue == pair) {
@@ -534,7 +533,7 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp)
      in, handling it is delegated to its dedicated report-generating classes. The
      all-towns report omits fortresses and villages, and is sorted in a way that I hope
      is helpful. We remove the town(s) from the set of fixtures."
-    shared actual void produce(PatientMap<JInteger,Pair<Point,IFixture>> fixtures,
+    shared actual void produce(PatientMap<Integer,Pair<Point,IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Anything(String) ostream,
             [ITownFixture, Point]? entry) {
         if (exists entry) {
@@ -547,7 +546,7 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp)
                 FortressReportGenerator(comp)
                     .produce(fixtures, map, currentPlayer, ostream, [item, loc]);
             } else if (is AbstractTown item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 ostream("At ``loc``: ``item.name``, ");
                 if (item.owner.independent) {
                     ostream(
@@ -598,7 +597,7 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp)
      [[entry]] is delegated to their dedicated report-generating classes. We remove the
      town from the set of fixtures."
     shared actual IReportNode produceRIR(
-            PatientMap<JInteger,Pair<Point,IFixture>> fixtures, IMapNG map,
+            PatientMap<Integer,Pair<Point,IFixture>> fixtures, IMapNG map,
             Player currentPlayer, [ITownFixture, Point]? entry) {
         if (exists entry) {
             ITownFixture item = entry.first;
@@ -610,7 +609,7 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp)
                 return FortressReportGenerator(comp)
                     .produceRIR(fixtures, map, currentPlayer, [item, loc]);
             } else if (is AbstractTown item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 if (item.owner.independent) {
                     return SimpleReportNode(loc,
                         "At ``loc``: ``item.name``, an independent ``item.size()`` ``item
@@ -659,14 +658,14 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp)
     IReportGenerator<FortressMember> memberReportGenerator =
             FortressMemberReportGenerator(comp);
     String terrain(IMapNG map, Point point,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures) {
+            PatientMap<Integer, Pair<Point, IFixture>> fixtures) {
         StringBuilder builder = StringBuilder();
         builder.append("Surrounding terrain: ``map.getBaseTerrain(point).toXML()
             .replace("_", " ")``");
         variable Boolean unforested = true;
         if (exists forest = map.getForest(point)) {
             builder.append(", forested with ``forest.kind``");
-            fixtures.remove(JInteger(forest.id));
+            fixtures.remove(forest.id);
             unforested = false;
         }
         if (map.isMountainous(point)) {
@@ -676,13 +675,13 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp)
             if (unforested, is Forest fixture) {
                 unforested = false;
                 builder.append(", forested with ``fixture.kind``");
-                fixtures.remove(JInteger(fixture.id));
+                fixtures.remove(fixture.id);
             } else if (is Hill fixture) {
                 builder.append(", hilly");
-                fixtures.remove(JInteger(fixture.id));
+                fixtures.remove(fixture.id);
             } else if (is Oasis fixture) {
                 builder.append(", with a nearby oasis");
-                fixtures.remove(JInteger(fixture.id));
+                fixtures.remove(fixture.id);
             }
         }
         return builder.string;
@@ -724,7 +723,7 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp)
     }
     "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
      this report are removed from the collection."
-    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+    shared actual void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Anything(String) ostream,
             [Fortress, Point]? entry) {
         if (exists entry) {
@@ -759,7 +758,7 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp)
                 } else {
                     contents.add(member);
                 }
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
             }
             if (!units.empty) {
                 ostream("""Units on the tile:<ul>
@@ -820,7 +819,7 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp)
                 ostream("""</ul>
                            """);
             }
-            fixtures.remove(JInteger(item.id));
+            fixtures.remove(item.id);
         } else {
             MutableMap<Fortress, Point> ours = HashMap<Fortress, Point>();
             MutableMap<Fortress, Point> others = HashMap<Fortress, Point>();
@@ -855,7 +854,7 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp)
     "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
      this report are removed from the collection."
     shared actual IReportNode produceRIR(
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer, [Fortress, Point]? entry) {
         if (exists entry) {
             Fortress item = entry.first;
@@ -896,7 +895,7 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp)
                 resources.addIfNonEmpty(node);
             }
             retval.addIfNonEmpty(units, resources, equipment, contents);
-            fixtures.remove(JInteger(item.id));
+            fixtures.remove(item.id);
             return retval;
         } else {
             MutableList<Pair<Point, IFixture>> values =
@@ -1044,7 +1043,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp)
     "Produce a sub-sub-report on a unit (we assume we're already in the middle of a
      paragraph or bullet point), or the part of the report on all units not covered
      as part of fortresses."
-    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+    shared actual void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Anything(String) ostream,
             [IUnit, Point]? entry) {
         if (exists entry) {
@@ -1091,7 +1090,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp)
                             generator(member);
                             ostream("""</li>
                                        """);
-                            fixtures.remove(JInteger(member.id));
+                            fixtures.remove(member.id);
                         }
                         ostream("""</ul>
                                    </li>
@@ -1111,7 +1110,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp)
                            """);
             }
             produceOrders(item, ostream);
-            fixtures.remove(JInteger(item.id));
+            fixtures.remove(item.id);
         } else {
             MutableList<Pair<Point, IFixture>> values =
                     ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
@@ -1149,7 +1148,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp)
      paragraph or bullet point), or the part of the report dealing with all units not
      already covered."
     shared actual IReportNode produceRIR(
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer, [IUnit, Point]? entry) {
         if (exists entry) {
             IUnit item = entry.first;
@@ -1162,7 +1161,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp)
                 base = "Unit of type ``item.kind``, named ``item.name``, owned by ``
                     playerNameOrYou(item.owner)``.";
             }
-            fixtures.remove(JInteger(item.id));
+            fixtures.remove(item.id);
             ListReportNode workers = ListReportNode("Workers:");
             ListReportNode animals = ListReportNode("Animals:");
             ListReportNode equipment = ListReportNode("Equipment:");
@@ -1184,7 +1183,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp)
                 } else {
                     others.add(SimpleReportNode(loc, member.string));
                 }
-                fixtures.remove(JInteger(member.id));
+                fixtures.remove(member.id);
             }
             retval.addIfNonEmpty(workers, animals, equipment, resources, others);
             ListReportNode ordersNode = ListReportNode("Orders and Results:");
@@ -1257,7 +1256,7 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
      This method should probably never actually be called and do anything without an
      [[entry]], since nearly all resources will be in fortresses and should be reported
      as such, but we'll handle this properly anyway."
-    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+    shared actual void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player  currentPlayer, Anything(String) ostream,
             [FortressMember, Point]? entry) {
         if (exists entry) {
@@ -1267,7 +1266,7 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
                 UnitReportGenerator(pairComparator).produce(fixtures, map, currentPlayer,
                     ostream, [item, loc]);
             } else if (is ResourcePile item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 if (item.quantity.units.empty) {
                     ostream("A pile of ``item.quantity`` ``item.contents`` (``item.kind``)");
                 } else {
@@ -1278,7 +1277,7 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
                     ostream(" from turn ``item.created``");
                 }
             } else if (is Implement item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 ostream("Equipment: ``item.kind``");
             } else {
                 throw IllegalArgumentException("Unexpected FortressMember type");
@@ -1310,10 +1309,10 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
                         resources.put(resource.kind, pileMap);
                     }
                     pileMap.put(resource, pair.first());
-                    fixtures.remove(JInteger(resource.id));
+                    fixtures.remove(resource.id);
                 } else if (is Implement implement = pair.second()) {
                     equipment.put(implement, pair.first());
-                    fixtures.remove(JInteger(implement.id));
+                    fixtures.remove(implement.id);
                 }
             }
             if (!equipment.empty || !resources.empty) {
@@ -1350,7 +1349,7 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
      [[entry]], since nearly all resources will be in fortresses and should be reported
      as such, but we'll handle this properly anyway."
     shared actual IReportNode produceRIR(
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer, [FortressMember, Point]? entry) {
         if (exists entry) {
             FortressMember item = entry.first;
@@ -1359,7 +1358,7 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
                 return UnitReportGenerator(pairComparator)
                     .produceRIR(fixtures, map, currentPlayer, [item, loc]);
             } else if (is ResourcePile item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 String age;
                 if (item.created < 0) {
                     age = "";
@@ -1376,7 +1375,7 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
                             .kind``)``age``");
                 }
             } else if (is Implement item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 return SimpleReportNode("Equipment: ``item.kind``");
             } else {
                 throw IllegalArgumentException("Unexpected FortressMember type");
@@ -1424,21 +1423,21 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
         extends AbstractReportGenerator<ExplorableFixture>(comp) {
     "Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
      hook, or the report on all such."
-    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+    shared actual void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Anything(String) ostream,
             [ExplorableFixture, Point]? entry) {
         if (exists entry) {
             ExplorableFixture item = entry.first;
             Point loc = entry.rest.first;
             if (is Cave item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 ostream("Caves beneath ``loc````distCalculator.distanceString(loc)``");
             } else if (is Battlefield item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 ostream("Signs of a long-ago battle on ``loc````distCalculator
                     .distanceString(loc)``");
             } else if (is AdventureFixture item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 ostream("``item.briefDescription`` at ``loc``: ``item
                     .fullDescription`` ``distCalculator.distanceString(loc)``");
                 if (!item.owner.independent) {
@@ -1451,7 +1450,7 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
                     ostream(" (already investigated by ``player``)");
                 }
             } else if (is Portal item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 ostream("A portal to another world at ``loc`` ``distCalculator
                     .distanceString(loc)``");
             } else {
@@ -1484,7 +1483,7 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
             for (pair in values) {
                 if (exists collector = collectors.get(type(pair.second()))) {
                     collector(pair);
-                    fixtures.remove(JInteger(pair.second().id));
+                    fixtures.remove(pair.second().id);
                 }
             }
             if (!caves.empty || !battles.empty || !portals.empty) {
@@ -1501,22 +1500,22 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
     "Produces a more verbose sub-report on a cave or battlefield, or the report section on
      all such."
     shared actual IReportNode produceRIR(
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer, [ExplorableFixture, Point]? entry) {
         if (exists entry) {
             ExplorableFixture item = entry.first;
             Point loc = entry.rest.first;
             if (is Cave item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 return SimpleReportNode(loc,
                     "Caves beneath ``loc`` ``distCalculator.distanceString(loc)``");
             } else if (is Battlefield item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 return SimpleReportNode(loc,
                     "Signs of a long-ago battle on ``loc`` ``distCalculator
                         .distanceString(loc)``");
             } else if (is AdventureFixture item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 if (item.owner.independent) {
                     return SimpleReportNode(loc,
                         "``item.briefDescription`` at ``loc``: ``item
@@ -1533,7 +1532,7 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
                             .distanceString(loc)`` (already investigated by another player)");
                 }
             } else if (is Portal item) {
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
                 return SimpleReportNode(loc,
                     "A portal to another world at ``loc`` ``distCalculator
                         .distanceString(loc)``");
@@ -1589,7 +1588,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
     """Produce the sub-report(s) dealing with "harvestable" fixture(s). All fixtures referred
        to in this report are to be removed from the collection. Caves and battlefields,
        though HarvestableFixtures, are presumed to have been handled already.""""
-    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+    shared actual void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Anything(String) ostream,
             [HarvestableFixture, Point]? entry) {
         if (exists entry) {
@@ -1669,7 +1668,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                         minerals.put(item.shortDesc(), coll);
                         coll.add(point);
                     }
-                    fixtures.remove(JInteger(item.id));
+                    fixtures.remove(item.id);
                 } else if (is Shrub item) {
                     if (exists coll = shrubs.get(item.kind)) {
                         coll.add(point);
@@ -1678,7 +1677,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                         shrubs.put(item.kind, coll);
                         coll.add(point);
                     }
-                    fixtures.remove(JInteger(item.id));
+                    fixtures.remove(item.id);
                 } else if (is StoneDeposit item) {
                     if (exists coll = stone.get(item.kind)) {
                         coll.add(point);
@@ -1687,7 +1686,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                         stone.put(item.kind, coll);
                         coll.add(point);
                     }
-                    fixtures.remove(JInteger(item.id));
+                    fixtures.remove(item.id);
                 }
             }
             // TODO: make sure that mapToList() returns a sorted list
@@ -1729,7 +1728,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
     """Produce the sub-report(s) dealing with "harvestable" fixture(s). All fixtures
        referred to in this report are to be removed from the collection."""
     shared actual IReportNode produceRIR(
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer, [HarvestableFixture, Point]? entry) {
         if (exists entry) {
             HarvestableFixture item = entry.first;
@@ -1764,7 +1763,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
             } else {
                 throw IllegalArgumentException("Unexpected HarvestableFixture type");
             }
-            fixtures.remove(JInteger(item.id));
+            fixtures.remove(item.id);
             return retval;
         } else {
             MutableList<Pair<Point, IFixture>> values =
@@ -1849,13 +1848,13 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp)
     "Produce the (very brief) report for a particular village (we're probably in the
      middle of a bulleted list, but we don't assume that), or the report on all known
      villages."
-    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+    shared actual void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Anything(String) ostream,
             [Village, Point]? entry) {
         if (exists entry) {
             Village item = entry.first;
             Point loc = entry.rest.first;
-            fixtures.remove(JInteger(item.id));
+            fixtures.remove(item.id);
             ostream("At ``loc``: ``item.name``, a(n) ``item.race`` village, ");
             if (item.owner.independent) {
                 ostream("independent");
@@ -1919,12 +1918,12 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp)
     "Produce the (very brief) report for a particular village, or the report on all
      known villages."
     shared actual IReportNode produceRIR(
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer, [Village, Point]? entry) {
         if (exists entry) {
             Village item = entry.first;
             Point loc = entry.rest.first;
-            fixtures.remove(JInteger(item.id));
+            fixtures.remove(item.id);
             if (item.owner.independent) {
                 return SimpleReportNode(loc, "At ``loc``: ``item.name``, a(n) ``item
                     .race`` village, independent ``distCalculator.distanceString(loc)``");
@@ -1978,13 +1977,13 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp)
 class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
         extends AbstractReportGenerator<Immortal>(comp) {
     "Produce a report on an individual immortal, or on all immortals."
-    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+    shared actual void produce(PatientMap<Integer, Pair<Point, IFixture>> fixtures,
             IMapNG map, Player currentPlayer, Anything(String) ostream,
             [Immortal, Point]? entry) {
         if (exists entry) {
             Immortal item = entry.first;
             Point loc = entry.rest.first;
-            fixtures.remove(JInteger(item.id));
+            fixtures.remove(item.id);
             ostream("At ``loc``: A(n) ``item`` ``distCalculator
                 .distanceString(loc)``");
         } else {
@@ -2028,7 +2027,7 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
                 IFixture immortal = pair.second();
                 if (exists func = meta.get(type(immortal))) {
                     func(immortal.string, point);
-                    fixtures.remove(JInteger(immortal.id));
+                    fixtures.remove(immortal.id);
                 }
             }
             if (!centaurs.empty || !giants.empty, !fairies.empty || !dragons.empty ||
@@ -2047,12 +2046,12 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
     "Produce a report node on an individual immortal, or the intermediate-representation
      report on all immortals."
     shared actual IReportNode produceRIR(
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
             Player currentPlayer, [Immortal, Point]? entry) {
         if (exists entry) {
             Immortal item = entry.first;
             Point loc = entry.rest.first;
-            fixtures.remove(JInteger(item.id));
+            fixtures.remove(item.id);
             return SimpleReportNode(loc, "At ``loc``: A(n) ``item`` ``distCalculator
                 .distanceString(loc)``");
         } else {
@@ -2110,8 +2109,9 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
                 retval.addIfNonEmpty(*mapping.items);
                 return retval;
             }
-            retval.addIfNonEmpty(coalesce("Dragons", dragons), coalesce("Fairies", fairies),
-                coalesce("Giants", giants), coalesce("Centaurs", centaurs));
+            retval.addIfNonEmpty(coalesce("Dragons", dragons),
+                coalesce("Fairies", fairies), coalesce("Giants", giants),
+                coalesce("Centaurs", centaurs));
             if (retval.childCount == 0) {
                 return EmptyReportNode.nullNode;
             } else {

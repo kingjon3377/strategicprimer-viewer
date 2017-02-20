@@ -6,8 +6,7 @@ import util {
     PatientMap,
     Pair,
     PairComparatorImpl,
-    PairComparator,
-    IntMap
+    PairComparator
 }
 import model.map {
     IMapNG,
@@ -30,7 +29,7 @@ import lovelace.util.common {
     todo
 }
 import java.lang {
-    JInteger=Integer, JIterable=Iterable
+    JIterable=Iterable
 }
 import model.map.fixtures.mobile {
     IUnit
@@ -68,19 +67,19 @@ Point findHQ(IMapNG map, Player player) {
 }
 "Create a mapping from ID numbers to Pairs of fixtures and their location for all fixtures
  in the map."
-PatientMap<JInteger, Pair<Point, IFixture>> getFixtures(IMapNG map) {
-    PatientMap<JInteger, Pair<Point, IFixture>> retval = IntMap<Pair<Point, IFixture>>();
+PatientMap<Integer, Pair<Point, IFixture>> getFixtures(IMapNG map) {
+    PatientMap<Integer, Pair<Point, IFixture>> retval = IntMap<Pair<Point, IFixture>>();
     IDRegistrar idf = IDFactoryFiller.createFactory(map);
-    JInteger checkID(IFixture fixture) {
+    Integer checkID(IFixture fixture) {
         if (fixture.id < 0) {
-            return JInteger(idf.createID());
+            return idf.createID();
         } else {
-            return JInteger(fixture.id);
+            return fixture.id;
         }
     }
     void addToMap(Point location, IFixture fixture) {
         if (fixture is TileFixture || fixture.id >= 0) {
-            JInteger key = checkID(fixture);
+            Integer key = checkID(fixture);
             value val = Pair.\iof(location, fixture);
             if (exists existing = retval.put(key, val)) {
                 log.warn("Duplicate key, ``key``, for Pairs ``
@@ -105,7 +104,7 @@ PatientMap<JInteger, Pair<Point, IFixture>> getFixtures(IMapNG map) {
 "Produces sub-reports, appending them to the buffer and calling coalesce() on the fixtures
  collection after each."
 void createSubReports(StringBuilder builder,
-        PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map, Player player,
+        PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map, Player player,
         IReportGenerator<out Object>* generators) {
     for (generator in generators) {
         generator.produce(fixtures, map, player, builder.append);
@@ -122,7 +121,7 @@ shared String createReport(IMapNG map, Player player = map.currentPlayer) {
                       <body>
                       """);
     // TODO: Use Tuple instead of Pair
-    PatientMap<JInteger, Pair<Point, IFixture>> fixtures = getFixtures(map);
+    PatientMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
         DistanceComparator(findHQ(map, player)), JComparator.comparingInt(IFixture.hash));
     createSubReports(builder, fixtures, map, player, FortressReportGenerator(comparator),
@@ -155,7 +154,7 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
             <body>
             """);
     // TODO: Use Tuple instead of Pair
-    PatientMap<JInteger, Pair<Point, IFixture>> fixtures = getFixtures(map);
+    PatientMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
         DistanceComparator(findHQ(map, player)), JComparator.comparingInt(IFixture.hash));
     for (pair in fixtures.values()) {
@@ -188,7 +187,7 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
 "Produce sub-reports in report-intermediate-representation, adding them to the root node
  and calling coalesce() on the fixtures collection after each."
 void createSubReportsIR(IReportNode root,
-        PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map, Player player,
+        PatientMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map, Player player,
         IReportGenerator<out Object>* generators) {
     for (generator in generators) {
         root.add(generator.produceRIR(fixtures, map, player));
@@ -199,7 +198,7 @@ void createSubReportsIR(IReportNode root,
 shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer) {
     IReportNode retval = RootReportNode("Strategic Primer map summary report");
     // TODO: Use Tuple instead of Pair
-    PatientMap<JInteger, Pair<Point, IFixture>> fixtures = getFixtures(map);
+    PatientMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
         DistanceComparator(findHQ(map, player)), JComparator.comparingInt(IFixture.hash));
     createSubReportsIR(retval, fixtures, map, player, FortressReportGenerator(comparator),
@@ -215,7 +214,7 @@ shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer)
 shared IReportNode createAbbreviatedReportIR(IMapNG map,
         Player player = map.currentPlayer) {
     // TODO: Use Tuple instead of Pair
-    PatientMap<JInteger, Pair<Point, IFixture>> fixtures = getFixtures(map);
+    PatientMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
         DistanceComparator(findHQ(map, player)), JComparator.comparingInt(IFixture.hash));
     for (pair in fixtures.values()) {
