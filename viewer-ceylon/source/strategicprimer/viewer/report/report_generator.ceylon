@@ -25,8 +25,6 @@ import java.util {
     Formatter
 }
 import controller.map.report {
-    ImmortalsReportGenerator,
-    VillageReportGenerator,
     IReportGenerator
 }
 import model.map.fixtures.towns {

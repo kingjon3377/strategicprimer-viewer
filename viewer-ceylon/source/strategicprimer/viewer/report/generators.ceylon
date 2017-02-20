@@ -12,8 +12,7 @@ import model.map {
 }
 import controller.map.report {
     AbstractReportGenerator,
-    IReportGenerator,
-    VillageReportGenerator
+    IReportGenerator
 }
 import model.map.fixtures {
     TextFixture,
@@ -57,7 +56,13 @@ import model.report {
 import model.map.fixtures.mobile {
     Animal,
     IUnit,
-    IWorker
+    IWorker,
+    Immortal,
+    SimpleImmortal,
+    Fairy,
+    Centaur,
+    Giant,
+    Dragon
 }
 import model.map.fixtures.mobile.worker {
     WorkerStats { modifierString=getModifierString },
@@ -1251,6 +1256,8 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
         }
     }
 }
+"""A list of Points that produces a comma-separated list in its `string` and has a
+   "header"."""
 class PointListTemp(shared actual String header) extends JArrayList<Point>()
         satisfies IReportGenerator.HeadedList<Point> {
     shared actual String string {
@@ -1734,6 +1741,280 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
         SectionReportNode retval = SectionReportNode(4, "Resource Sources");
         retval.addIfNonEmpty(caches, groves, meadows, mines, mineralsNode, stoneNode,
             shrubsNode);
+        if (retval.childCount == 0) {
+            return EmptyReportNode.nullNode;
+        } else {
+            return retval;
+        }
+    }
+}
+"A report generator for Villages."
+class VillageReportGenerator(PairComparator<Point, IFixture> comp)
+        extends AbstractReportGenerator<Village>(comp) {
+    "Produce the (very brief) report for a particular village. We're probably in the
+     middle of a bulleted list, but we don't assume that."
+    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            IMapNG map, Player currentPlayer, Village item, Point loc,
+            Formatter ostream) {
+        fixtures.remove(JInteger(item.id));
+        ostream.format("At ``loc``: ``item.name``, a(n) ``item.race`` village, ");
+        if (item.owner.independent) {
+            ostream.format("independent");
+        } else if (item.owner == currentPlayer) {
+            ostream.format("sworn to you");
+        } else {
+            ostream.format("sworn to ``item.owner.name``");
+        }
+        ostream.format(" ``distCalculator.distanceString(loc)``");
+    }
+    "Produce the report on all villages. All fixtures referred to in this report are
+     removed from the collection."
+    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            IMapNG map, Player currentPlayer, Formatter ostream) {
+        MutableList<Pair<Point, IFixture>> values =
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values()) };
+        values.sort(ceylonComparator(pairComparator));
+        value villageComparator = comparing(byIncreasing(Village.name),
+            byIncreasing(Village.race), byIncreasing(Village.id));
+        // TODO: sort by distance somehow?
+        HeadedMap<Village, Point> own = HeadedMapImplTemp<Village, Point>(
+            "<h4>Villages pledged to your service:</h4>",
+            javaComparator(villageComparator));
+        HeadedMap<Village, Point> independents = HeadedMapImplTemp<Village, Point>(
+            "<h4>Villages you think are independent:</h4>",
+            javaComparator(villageComparator));
+        MutableMap<Player, HeadedMap<Village, Point>> others =
+                HashMap<Player, HeadedMap<Village, Point>>();
+        for (pair in values) {
+            if (is Village village = pair.second()) {
+                if (village.owner == currentPlayer) {
+                    own.put(village, pair.first());
+                } else if (village.owner.independent) {
+                    independents.put(village, pair.first());
+                } else {
+                    HeadedMap<Village, Point> mapping;
+                    if (exists temp = others.get(village.owner)) {
+                        mapping = temp;
+                    } else {
+                        mapping = HeadedMapImplTemp<Village, Point>(
+                            "<h5>Villages sworn to ``village.owner.name``</h5>
+                             <ul>
+                             ", javaComparator(villageComparator));
+                        others.put(village.owner, mapping);
+                    }
+                    mapping.put(village, pair.first());
+                }
+            }
+        }
+        Anything(JMap.Entry<Village, Point>, Formatter) writer =
+                (JMap.Entry<Village, Point> entry, Formatter formatter) =>
+                    produce(fixtures, map, currentPlayer, entry.key, entry.\ivalue,
+                        formatter);
+        writeMap(ostream, own, writer);
+        writeMap(ostream, independents, writer);
+        if (!others.empty) {
+            ostream.format("""<h4>Other villages you know about:</h4>
+                                  """);
+            for (mapping in others.items) {
+                writeMap(ostream, mapping, writer);
+            }
+        }
+    }
+    "Produce the (very brief) report for a particular village."
+    shared actual IReportNode produceRIR(
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            Player currentPlayer, Village item, Point loc) {
+        fixtures.remove(JInteger(item.id));
+        if (item.owner.independent) {
+            return SimpleReportNode(loc, "At ``loc``: ``item.name``, a(n) ``item
+                .race`` village, independent ``distCalculator.distanceString(loc)``");
+        } else if (item.owner == currentPlayer) {
+            return SimpleReportNode(loc, "At ``loc``: ``item.name``, a(n) ``item
+                .race`` village, sworn to you ``distCalculator.distanceString(loc)``");
+        } else {
+            return SimpleReportNode(loc, "At ``loc``: ``item.name``, a(n) ``item
+                .race`` village, sworn to ``item.owner`` ``distCalculator
+                .distanceString(loc)``");
+        }
+    }
+    "Produce the report on all villages. All fixtures referred to in this report are
+     removed from the collection."
+    shared actual IReportNode produceRIR(
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            Player currentPlayer) {
+        MutableList<Pair<Point, IFixture>> values =
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values()) };
+        values.sort(ceylonComparator(pairComparator));
+        IReportNode own = SectionListReportNode(5, "Villages pledged to your service:");
+        IReportNode independents =
+                SectionListReportNode(5, "Villages you think are independent:");
+        MutableMap<Player, IReportNode> othersMap = HashMap<Player, IReportNode>();
+        for (pair in values) {
+            if (is Village village = pair.second()) {
+                Player owner = village.owner;
+                IReportNode parent;
+                if (owner == currentPlayer) {
+                    parent = own;
+                } else if (owner.independent) {
+                    parent = independents;
+                } else if (exists temp = othersMap.get(owner)) {
+                    parent = temp;
+                } else {
+                    parent = SectionListReportNode(6, "Villages sworn to ``owner``");
+                    othersMap.put(owner, parent);
+                }
+                parent.add(produceRIR(fixtures, map, currentPlayer, village,
+                    pair.first()));
+            }
+        }
+        IReportNode others = SectionListReportNode(5, "Other villages you know about:");
+        others.addIfNonEmpty(*othersMap.items);
+        IReportNode retval = SectionReportNode(4, "Villages:");
+        retval.addIfNonEmpty(own, independents, others);
+        if (retval.childCount == 0) {
+            return EmptyReportNode.nullNode;
+        } else {
+            return retval;
+        }
+    }
+}
+"""A report generator for "immortals"---dragons, fairies, centaurs, and such."""
+class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
+        extends AbstractReportGenerator<Immortal>(comp) {
+    "Produce a report on an individual immortal."
+    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            IMapNG map, Player currentPlayer, Immortal item, Point loc,
+            Formatter ostream) {
+        fixtures.remove(JInteger(item.id));
+        ostream.format("At ``loc``: A(n) ``item`` ``distCalculator
+            .distanceString(loc)``");
+    }
+    """Produce the sub-report dealing with "immortals"."""
+    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            IMapNG map, Player currentPlayer, Formatter ostream) {
+        MutableList<Pair<Point, IFixture>> values =
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values()) };
+        values.sort(ceylonComparator(pairComparator));
+        MutableMap<Type<IFixture>, Anything(String, Point)> meta =
+                HashMap<Type<IFixture>, Anything(String, Point)>();
+        MutableMap<SimpleImmortal.SimpleImmortalKind, HeadedList<Point>> simples =
+                HashMap<SimpleImmortal.SimpleImmortalKind, HeadedList<Point>>();
+        for (kind in `SimpleImmortal.SimpleImmortalKind`.caseValues) {
+            simples.put(kind, PointListTemp("``kind.plural()`` at: "));
+        }
+        meta.put(`SimpleImmortal`,(kind, point) {
+            if (exists list =
+                    simples.get(SimpleImmortal.SimpleImmortalKind.parse(kind))) {
+                list.add(point);
+            }
+        });
+        MutableMap<String, JCollection<Point>> handleComplex(Type<Immortal> type,
+                String plural = "(s)") {
+            MutableMap<String, JCollection<Point>> retval =
+                    HashMap<String, JCollection<Point>>();
+            meta.put(type, (kind, point) {
+                if (exists list = retval.get(kind)) {
+                    list.add(point);
+                } else {
+                    value list = PointListTemp("``kind````plural`` at ");
+                    retval.put(kind, list);
+                    list.add(point);
+                }
+            });
+            return retval;
+        }
+        MutableMap<String, JCollection<Point>> centaurs = handleComplex(`Centaur`);
+        MutableMap<String, JCollection<Point>> giants = handleComplex(`Giant`);
+        MutableMap<String, JCollection<Point>> fairies = handleComplex(`Fairy`, "");
+        MutableMap<String, JCollection<Point>> dragons = handleComplex(`Dragon`);
+        for (pair in values) {
+            Point point = pair.first();
+            IFixture immortal = pair.second();
+            if (exists func = meta.get(type(immortal))) {
+                func(immortal.string, point);
+                fixtures.remove(JInteger(immortal.id));
+            }
+        }
+        if (!centaurs.empty || !giants.empty, !fairies.empty || !dragons.empty ||
+                !simples.empty) {
+            ostream.format("""<h4>Immortals</h4>
+                              """);
+            for (coll in {centaurs.items, giants.items, fairies.items, dragons.items,
+                    simples.items}) {
+                for (inner in coll) {
+                    ostream.format(inner.string);
+                }
+            }
+        }
+    }
+    "Produce a report node on an individual fixture."
+    shared actual IReportNode produceRIR(
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            Player currentPlayer, Immortal item, Point loc) {
+        fixtures.remove(JInteger(item.id));
+        return SimpleReportNode(loc, "At ``loc``: A(n) ``item`` ``distCalculator
+            .distanceString(loc)``");
+    }
+    """Produce the sub-report dealing with "immortals"."""
+    shared actual IReportNode produceRIR(
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            Player currentPlayer) {
+        MutableList<Pair<Point, IFixture>> values =
+                ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values()) };
+        values.sort(ceylonComparator(pairComparator));
+        MutableMap<SimpleImmortal.SimpleImmortalKind, IReportNode> simples =
+                HashMap<SimpleImmortal.SimpleImmortalKind, IReportNode>();
+        MutableMap<String, IReportNode> centaurs = HashMap<String, IReportNode>();
+        MutableMap<String, IReportNode> giants = HashMap<String, IReportNode>();
+        MutableMap<String, IReportNode> fairies = HashMap<String, IReportNode>();
+        MutableMap<String, IReportNode> dragons = HashMap<String, IReportNode>();
+        IReportNode separateByKind(MutableMap<String, IReportNode> mapping, Immortal item) {
+            // For the classes we deal with here, we don't want just the kind, we want the
+            // full `string`, so we use that instead of specifying HasKind and using
+            // `kind`.
+            if (exists node = mapping.get(item.string)) {
+                return node;
+            } else {
+                IReportNode node = ListReportNode(item.string);
+                mapping.put(item.string, node);
+                return node;
+            }
+        }
+        for (pair in values) {
+            Point point = pair.first();
+            IFixture immortal = pair.second();
+            if (is Dragon immortal) {
+                separateByKind(dragons, immortal)
+                    .add(produceRIR(fixtures, map, currentPlayer, immortal, point));
+            } else if (is Fairy immortal) {
+                separateByKind(fairies, immortal)
+                    .add(produceRIR(fixtures, map, currentPlayer, immortal, point));
+            } else if (is SimpleImmortal immortal) {
+                IReportNode node;
+                if (exists temp = simples.get(immortal.kind())) {
+                    node = temp;
+                } else {
+                    node = ListReportNode(immortal.kind().plural());
+                    simples.put(immortal.kind(), node);
+                }
+                node.add(produceRIR(fixtures, map, currentPlayer, immortal, point));
+            } else if (is Giant immortal) {
+                separateByKind(giants, immortal)
+                    .add(produceRIR(fixtures, map, currentPlayer, immortal, point));
+            } else if (is Centaur immortal) {
+                separateByKind(centaurs, immortal)
+                    .add(produceRIR(fixtures, map, currentPlayer, immortal, point));
+            }
+        }
+        IReportNode retval = SectionListReportNode(4, "Immortals");
+        retval.addIfNonEmpty(*simples.items);
+        IReportNode coalesce(String header, Map<String, IReportNode> mapping) {
+            IReportNode retval = ListReportNode(header);
+            retval.addIfNonEmpty(*mapping.items);
+            return retval;
+        }
+        retval.addIfNonEmpty(coalesce("Dragons", dragons), coalesce("Fairies", fairies),
+            coalesce("Giants", giants), coalesce("Centaurs", centaurs));
         if (retval.childCount == 0) {
             return EmptyReportNode.nullNode;
         } else {
