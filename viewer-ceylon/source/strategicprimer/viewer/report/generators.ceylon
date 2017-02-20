@@ -115,8 +115,7 @@ import model.map.fixtures.resources {
 "An interface for report generators."
 interface IReportGenerator<T> given T satisfies IFixture {
     "A list that knows what its title should be when its contents are written to HTML."
-    todo("Satisfy Ceylon interface instead of Java")
-    shared /* static */ interface HeadedList<Element> satisfies JList<Element> {
+    shared /* static */ interface HeadedList<Element> satisfies List<Element> {
         "The header text."
         shared formal String header;
     }
@@ -202,17 +201,8 @@ abstract class AbstractReportGenerator<T>(
     }
     "A list that produces HTML in its [[string]] attribute."
     shared class HtmlList(shared actual String header, {String*} initial = {})
-            extends JArrayList<String>() satisfies IReportGenerator<T>.HeadedList<String> {
-        shared actual Boolean add(String element) {
-            if (!element.empty) {
-                return super.add(element);
-            } else {
-                return false;
-            }
-        }
-        for (item in initial) {
-            add(item);
-        }
+            extends ArrayList<String>(0, 1.5, initial)
+            satisfies IReportGenerator<T>.HeadedList<String> {
         "If there's nothing in the list, return the empty string, but otherwise produce an
          HTML list of our contents."
         shared actual String string {
@@ -232,28 +222,22 @@ abstract class AbstractReportGenerator<T>(
                 return builder.string;
             }
         }
-        shared actual void add(Integer index, String element) {
-            if (!element.empty) {
-                super.add(index, element);
-            }
-        }
     }
     """A list of Points that produces a comma-separated list in its `string` and has a
        "header"."""
-    shared class PointList(shared actual String header) extends JArrayList<Point>()
+    shared class PointList(shared actual String header) extends ArrayList<Point>()
             satisfies IReportGenerator<T>.HeadedList<Point> {
         shared actual String string {
             if (empty) {
                 return "";
             } else {
-                CeylonIterable<Point> iter = CeylonIterable(this);
                 StringBuilder builder = StringBuilder();
                 builder.append(header);
                 builder.append(" ");
-                assert (exists first = iter.first);
-                builder.append(first.string);
-                if (exists third = iter.rest.rest.first) {
-                    variable {Point*} temp = iter.rest;
+                assert (exists firstItem = first);
+                builder.append(firstItem.string);
+                if (exists third = rest.rest.first) {
+                    variable {Point*} temp = rest;
                     while (exists current = temp.first) {
                         if (temp.rest.first exists) {
                             builder.append(", ``current``");
@@ -262,14 +246,14 @@ abstract class AbstractReportGenerator<T>(
                         }
                         temp = temp.rest;
                     }
-                } else if (exists second = iter.rest.first) {
+                } else if (exists second = rest.first) {
                     builder.append(" and ``second``");
                 }
                 return builder.string;
             }
         }
     }
-    deprecated shared JCollection<Point> pointsListAt(String desc) =>
+    deprecated shared MutableList<Point> pointsListAt(String desc) =>
             PointList("``desc``: at ");
     "An implementation of HeadedMap."
     todo("Switch to Ceylon collections interfaces")
@@ -404,8 +388,8 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
             MutableList<Pair<Point, IFixture>> values =
                     ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
                         .sort(ceylonComparator(pairComparator)) };
-            MutableMap<String, JCollection<Point>> items =
-                    HashMap<String, JCollection<Point>>();
+            MutableMap<String, MutableList<Point>> items =
+                    HashMap<String, MutableList<Point>>();
             for (pair in values) {
                 if (is Animal animal = pair.second()) {
                     String desc;
@@ -416,7 +400,7 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
                     } else {
                         desc = animal.kind;
                     }
-                    JCollection<Point> list;
+                    MutableList<Point> list;
                     if (exists temp = items.get(desc)) {
                         list = temp;
                     } else {
@@ -1460,10 +1444,10 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
             MutableList<Pair<Point, IFixture>> values =
                     ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
                         .sort(ceylonComparator(pairComparator)) };
-            JList<Point> portals = PointList("Portals to other worlds: ");
-            JList<Point> battles = PointList(
+            MutableList<Point> portals = PointList("Portals to other worlds: ");
+            MutableList<Point> battles = PointList(
                 "Signs of long-ago battles on the following tiles:");
-            JList<Point> caves = PointList("Caves beneath the following tiles: ");
+            MutableList<Point> caves = PointList("Caves beneath the following tiles: ");
             HeadedMap<AdventureFixture, Point> adventures =
                     HeadedMapImpl<AdventureFixture, Point>(
                         "<h4>Possible Adventures</h4>");
@@ -1582,7 +1566,8 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
 class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
         extends AbstractReportGenerator<HarvestableFixture>(comp) {
     "Convert a Map from kinds to Points to a HtmlList."
-    HeadedList<String> mapToList(Map<String, JCollection<Point>> map, String heading) {
+    HeadedList<String>&MutableList<String> mapToList(Map<String, MutableList<Point>> map,
+            String heading) {
         return HtmlList(heading, map.items.map(Object.string).sort(increasing));
     }
     """Produce the sub-report(s) dealing with "harvestable" fixture(s). All fixtures referred
@@ -1626,12 +1611,12 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
             MutableList<Pair<Point, IFixture>> values =
                     ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
                         .sort(ceylonComparator(pairComparator)) };
-            MutableMap<String, JCollection<Point>> stone =
-                    HashMap<String, JCollection<Point>>();
-            MutableMap<String, JCollection<Point>> shrubs =
-                    HashMap<String, JCollection<Point>>();
-            MutableMap<String, JCollection<Point>> minerals =
-                    HashMap<String, JCollection<Point>>();
+            MutableMap<String, MutableList<Point>> stone =
+                    HashMap<String, MutableList<Point>>();
+            MutableMap<String, MutableList<Point>> shrubs =
+                    HashMap<String, MutableList<Point>>();
+            MutableMap<String, MutableList<Point>> minerals =
+                    HashMap<String, MutableList<Point>>();
             HeadedMap<Mine, Point> mines = HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
                 javaComparator<Mine>(comparing(byIncreasing(Mine.kind),
                     byIncreasing((Mine mine) => mine.status.ordinal()), byIncreasing(Mine.id))));
@@ -1695,7 +1680,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                 mapToList(shrubs, "<h5>Shrubs, Small Trees, etc.</h5>") };
             // TODO: When HeadedMap is a Ceylon interface, use { ... }.every()?
             if (!caches.empty || !groves.empty || !meadows.empty || !mines.empty ||
-            !all.every(HeadedList.empty)) {
+                    !all.every(HeadedList.empty)) {
                 ostream("""<h4>Resource Sources</h4>
                        """);
                 for (HeadedMap<out HarvestableFixture, Point> mapping in {caches, groves,
@@ -1992,8 +1977,10 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
                         .sort(ceylonComparator(pairComparator)) };
             MutableMap<Type<IFixture>, Anything(String, Point)> meta =
                     HashMap<Type<IFixture>, Anything(String, Point)>();
-            MutableMap<SimpleImmortal.SimpleImmortalKind, HeadedList<Point>> simples =
-                    HashMap<SimpleImmortal.SimpleImmortalKind, HeadedList<Point>>();
+            MutableMap<SimpleImmortal.SimpleImmortalKind,
+                        HeadedList<Point>&MutableList<Point>> simples =
+                    HashMap<SimpleImmortal.SimpleImmortalKind,
+                        HeadedList<Point>&MutableList<Point>>();
             for (kind in `SimpleImmortal.SimpleImmortalKind`.caseValues) {
                 simples.put(kind, PointList("``kind.plural()`` at: "));
             }
@@ -2003,10 +1990,10 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
                     list.add(point);
                 }
             });
-            MutableMap<String, JCollection<Point>> handleComplex(Type<Immortal> type,
-            String plural = "(s)") {
-                MutableMap<String, JCollection<Point>> retval =
-                        HashMap<String, JCollection<Point>>();
+            MutableMap<String, MutableList<Point>> handleComplex(Type<Immortal> type,
+                    String plural = "(s)") {
+                MutableMap<String, MutableList<Point>> retval =
+                        HashMap<String, MutableList<Point>>();
                 meta.put(type, (kind, point) {
                     if (exists list = retval.get(kind)) {
                         list.add(point);
@@ -2018,10 +2005,10 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
                 });
                 return retval;
             }
-            MutableMap<String, JCollection<Point>> centaurs = handleComplex(`Centaur`);
-            MutableMap<String, JCollection<Point>> giants = handleComplex(`Giant`);
-            MutableMap<String, JCollection<Point>> fairies = handleComplex(`Fairy`, "");
-            MutableMap<String, JCollection<Point>> dragons = handleComplex(`Dragon`);
+            MutableMap<String, MutableList<Point>> centaurs = handleComplex(`Centaur`);
+            MutableMap<String, MutableList<Point>> giants = handleComplex(`Giant`);
+            MutableMap<String, MutableList<Point>> fairies = handleComplex(`Fairy`, "");
+            MutableMap<String, MutableList<Point>> dragons = handleComplex(`Dragon`);
             for (pair in values) {
                 Point point = pair.first();
                 IFixture immortal = pair.second();
