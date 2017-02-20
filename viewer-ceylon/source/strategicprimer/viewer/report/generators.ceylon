@@ -24,20 +24,14 @@ import java.lang {
     IllegalArgumentException
 }
 import java.util {
-    JCollection=Collection,
-    JMap=Map,
-    JTreeMap=TreeMap,
-    JHashMap=HashMap,
-    JComparator=Comparator,
-    JSet=Set,
-    JList=List,
-    JArrayList=ArrayList
+    JCollection=Collection
 }
 import ceylon.collection {
     MutableList,
     ArrayList,
     MutableMap,
-    HashMap
+    HashMap,
+    TreeMap
 }
 import model.report {
     IReportNode,
@@ -71,8 +65,7 @@ import ceylon.interop.java {
     CeylonSet
 }
 import lovelace.util.jvm {
-    ceylonComparator,
-    javaComparator
+    ceylonComparator
 }
 import lovelace.util.common {
     todo
@@ -120,8 +113,8 @@ interface IReportGenerator<T> given T satisfies IFixture {
         shared formal String header;
     }
     "A Map that knows what its title should be when its contents are written to HTML."
-    todo("Satisfy Ceylon interface instead of Java")
-    shared /* static */ interface HeadedMap<Key, Value> satisfies JMap<Key, Value> {
+    shared /* static */ interface HeadedMap<Key, Value> satisfies Map<Key, Value>
+            given Key satisfies Object{
         "The header text."
         shared formal String header;
     }
@@ -162,12 +155,12 @@ interface IReportGenerator<T> given T satisfies IFixture {
             "The map to write. Has to be a [[HeadedMap]] so we can get its heading."
             HeadedMap<Key, Point> map,
             "The method to write each item."
-            Anything(JMap.Entry<Key, Point>, Anything(String)) lambda) {
+            Anything(Key->Point, Anything(String)) lambda) given Key satisfies Object {
         if (!map.empty) {
             ostream("``map.header``
                      <ul>
                      ");
-            for (entry in map.entrySet()) {
+            for (entry in map) {
                 ostream("<li>");
                 lambda(entry, ostream);
                 ostream("""</li>
@@ -257,35 +250,34 @@ abstract class AbstractReportGenerator<T>(
             PointList("``desc``: at ");
     "An implementation of HeadedMap."
     todo("Switch to Ceylon collections interfaces")
-    shared class HeadedMapImpl<K, V>(shared actual String header,
-            JComparator<K>? comparator = null)
-            satisfies IReportGenerator<T>.HeadedMap<K, V> {
-        JMap<K, V> wrapped;
+    shared class HeadedMapImpl<Key, Value>(shared actual String header,
+            Comparison(Key, Key)? comparator = null, {<Key->Value>*} initial = {})
+            satisfies IReportGenerator<T>.HeadedMap<Key, Value>&MutableMap<Key, Value>
+            given Key satisfies Object {
+        MutableMap<Key, Value> wrapped;
         if (exists comparator) {
-            wrapped = JTreeMap<K, V>(comparator);
+            wrapped = TreeMap<Key, Value>(comparator, initial);
         } else {
-            wrapped = JHashMap<K, V>();
+            wrapped = HashMap<Key, Value> { entries = initial; };
         }
-        shared actual Integer size() => wrapped.size();
+        shared actual Integer size => wrapped.size;
         shared actual Boolean empty => wrapped.empty;
-        shared actual Boolean containsKey(Object key) => wrapped.containsKey(key);
-        shared actual Boolean containsValue(Object val) => wrapped.containsValue(val);
-        shared actual V? get(Object key) => wrapped.get(key);
-        shared actual V? put(K? key, V? val) => wrapped.put(key, val);
-        shared actual V? remove(Object key) => wrapped.remove(key);
-        shared actual void putAll(JMap<out K, out V> map) => wrapped.putAll(map);
-        shared actual void clear() => wrapped.clear();
-        shared actual JSet<K> keySet() => wrapped.keySet();
-        shared actual JCollection<V> values() => wrapped.values();
-        shared actual JSet<JMap.Entry<K, V>> entrySet() => wrapped.entrySet();
         shared actual Integer hash => wrapped.hash;
         shared actual Boolean equals(Object that) {
-            if (is JMap<out Anything, out Anything> that) {
-                return that.entrySet() == entrySet();
+            if (is Map<Key, Value> that) {
+                return that.containsEvery(this) && containsEvery(that);
             } else {
                 return false;
             }
         }
+        shared actual void clear() => wrapped.clear();
+        shared actual MutableMap<Key,Value> clone() => HeadedMapImpl<Key, Value>(header,
+            comparator, initial);
+        shared actual Boolean defines(Object key) => wrapped.defines(key);
+        shared actual Value? get(Object key) => wrapped.get(key);
+        shared actual Iterator<Key->Value> iterator() => wrapped.iterator();
+        shared actual Value? put(Key key, Value item) => wrapped.put(key, item);
+        shared actual Value? remove(Key key) => wrapped.remove(key);
     }
 }
 "A report generator for arbitrary-text notes."
@@ -545,23 +537,23 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp)
                 throw IllegalStateException("Unhandled ITownFixture subclass");
             }
         } else {
-            HeadedMap<ITownFixture, Point> abandoned =
+            HeadedMap<ITownFixture, Point>&MutableMap<ITownFixture, Point> abandoned =
                     HeadedMapImpl<ITownFixture, Point>("<h5>Abandoned Communities</h5>");
-            HeadedMap<ITownFixture, Point> active =
+            HeadedMap<ITownFixture, Point>&MutableMap<ITownFixture, Point> active =
                     HeadedMapImpl<ITownFixture, Point>("<h5>Active Communities</h5>");
-            HeadedMap<ITownFixture, Point> burned =
+            HeadedMap<ITownFixture, Point>&MutableMap<ITownFixture, Point> burned =
                     HeadedMapImpl<ITownFixture, Point>("<h5>Burned-Out Communities</h5>");
-            HeadedMap<ITownFixture, Point> ruined =
+            HeadedMap<ITownFixture, Point>&MutableMap<ITownFixture, Point> ruined =
                     HeadedMapImpl<ITownFixture, Point>("<h5>Ruined Communities</h5>");
-            Map<TownStatus, JMap<ITownFixture, Point>> separated =
-                    HashMap<TownStatus, JMap<ITownFixture, Point>> {
+            Map<TownStatus, MutableMap<ITownFixture, Point>> separated =
+                    HashMap<TownStatus, MutableMap<ITownFixture, Point>> {
                             *{ TownStatus.abandoned->abandoned, TownStatus.active->active,
                                 TownStatus.burned->burned, TownStatus.ruined->ruined }
                     };
             // separateByStatus() sorts using pairComparator, which should be by distance
             // from HQ
             separateByStatus(separated, fixtures.values(),
-                (JMap<ITownFixture, Point> mapping, pair) {
+                (MutableMap<ITownFixture, Point> mapping, pair) {
                     assert (is ITownFixture town = pair.second());
                     mapping.put(town, pair.first());
                 });
@@ -570,9 +562,9 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp)
                        """);
                 for (mapping in {abandoned, active, burned, ruined}) {
                     writeMap(ostream, mapping,
-                        (JMap.Entry<ITownFixture, Point> entry, formatter) =>
+                        (ITownFixture key->Point val, formatter) =>
                         produce(fixtures, map, currentPlayer, formatter,
-                            [entry.key, entry.\ivalue]));
+                            [key, val]));
                 }
             }
         }
@@ -1099,9 +1091,9 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp)
             MutableList<Pair<Point, IFixture>> values =
                     ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
                         .sort(ceylonComparator(pairComparator)) };
-            HeadedMap<IUnit, Point> foreign =
+            HeadedMap<IUnit, Point>&MutableMap<IUnit, Point> foreign =
                     HeadedMapImpl<IUnit, Point>("<h5>Foreign Units</h5>");
-            HeadedMap<IUnit, Point> ours =
+            HeadedMap<IUnit, Point>&MutableMap<IUnit, Point> ours =
                     HeadedMapImpl<IUnit, Point>("<h5>Your units</h5>");
             for (pair in values) {
                 if (is IUnit unit = pair.second()) {
@@ -1116,12 +1108,12 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp)
                 ostream("""<h4>Units in the map</h4>
                            <p>(Any units listed above are not described again.)</p>
                            """);
-                Anything(JMap<IUnit, Point>.Entry<IUnit, Point>, Anything(String)) unitFormatter =
-                        (JMap<IUnit, Point>.Entry<IUnit, Point> inner, Anything(String) formatter) {
-                            formatter("At ``inner.\ivalue````distCalculator
-                                .distanceString(inner.\ivalue)``");
+                Anything(IUnit->Point, Anything(String)) unitFormatter =
+                        (IUnit key->Point val, Anything(String) formatter) {
+                            formatter("At ``val````distCalculator
+                                .distanceString(val)``");
                             produce(fixtures, map, currentPlayer, formatter,
-                                [inner.key, inner.\ivalue]);
+                                [key, val]);
                         };
                 writeMap(ostream, ours, unitFormatter);
                 writeMap(ostream, foreign, unitFormatter);
@@ -1270,26 +1262,28 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
             MutableList<Pair<Point, IFixture>> values =
                     ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
                         .sort(ceylonComparator(pairComparator)) };
-            HeadedMap<Implement, Point> equipment =
+            HeadedMap<Implement, Point>&MutableMap<Implement, Point> equipment =
                     HeadedMapImpl<Implement, Point>("<li>Equipment:",
-                        javaComparator(comparing(byIncreasing(Implement.kind),
-                            byIncreasing(Implement.id))));
-            MutableMap<String, HeadedMap<ResourcePile, Point>> resources =
-                    HashMap<String, HeadedMap<ResourcePile, Point>>();
+                        comparing(byIncreasing(Implement.kind),
+                            byIncreasing(Implement.id)));
+            MutableMap<String, HeadedMap<ResourcePile, Point>&
+                        MutableMap<ResourcePile, Point>> resources =
+                    HashMap<String, HeadedMap<ResourcePile, Point>
+                        &MutableMap<ResourcePile, Point>>();
             for (pair in values) {
                 if (is ResourcePile resource = pair.second()) {
-                    HeadedMap<ResourcePile, Point> pileMap;
+                    HeadedMap<ResourcePile, Point>&MutableMap<ResourcePile, Point> pileMap;
                     if (exists temp = resources.get(resource.kind)) {
                         pileMap = temp;
                     } else {
                         pileMap = HeadedMapImpl<ResourcePile, Point>(
                             "<li>``resource.kind``:",
-                            javaComparator(comparing(byIncreasing(ResourcePile.kind),
+                            comparing(byIncreasing(ResourcePile.kind),
                                 byIncreasing(ResourcePile.contents),
                             // TODO: do full comparison of Quantities, as in Java version
                                 byDecreasing((ResourcePile pile) => pile.quantity.units),
                                 byIncreasing(ResourcePile.created),
-                                byIncreasing(ResourcePile.id))));
+                                byIncreasing(ResourcePile.id)));
                         resources.put(resource.kind, pileMap);
                     }
                     pileMap.put(resource, pair.first());
@@ -1304,17 +1298,17 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
                            <ul>
                            """);
                 writeMap(ostream, equipment,
-                    (JMap.Entry<Implement, Point> entry, formatter) =>
+                    (Implement key->Point val, formatter) =>
                     produce(fixtures, map, currentPlayer, formatter,
-                        [entry.key, entry.\ivalue]));
+                        [key, val]));
                 if (!resources.empty) {
                     ostream("""<li>Resources:<ul>
                                 """);
                     for (kind->mapping in resources) {
                         writeMap(ostream, mapping,
-                            (JMap.Entry<ResourcePile, Point> entry, formatter) =>
-                            produce(fixtures, map, currentPlayer, formatter, [entry.key,
-                                entry.\ivalue]));
+                            (ResourcePile key->Point val, formatter) =>
+                            produce(fixtures, map, currentPlayer, formatter, [key,
+                                val]));
                         ostream("""</li>
                                """);
                     }
@@ -1448,7 +1442,7 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
             MutableList<Point> battles = PointList(
                 "Signs of long-ago battles on the following tiles:");
             MutableList<Point> caves = PointList("Caves beneath the following tiles: ");
-            HeadedMap<AdventureFixture, Point> adventures =
+            HeadedMap<AdventureFixture, Point>&MutableMap<AdventureFixture, Point> adventures =
                     HeadedMapImpl<AdventureFixture, Point>(
                         "<h4>Possible Adventures</h4>");
             Map<Type<IFixture>, Anything(Pair<Point, IFixture>)> collectors =
@@ -1477,8 +1471,8 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
                          ");
             }
             writeMap(ostream, adventures,
-                (JMap.Entry<AdventureFixture, Point> inner, formatter) => produce(fixtures,
-                    map, currentPlayer, formatter, [inner.key, inner.\ivalue]));
+                (AdventureFixture key->Point val, formatter) => produce(fixtures,
+                    map, currentPlayer, formatter, [key, val]));
         }
     }
     "Produces a more verbose sub-report on a cave or battlefield, or the report section on
@@ -1617,20 +1611,20 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                     HashMap<String, MutableList<Point>>();
             MutableMap<String, MutableList<Point>> minerals =
                     HashMap<String, MutableList<Point>>();
-            HeadedMap<Mine, Point> mines = HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
-                javaComparator<Mine>(comparing(byIncreasing(Mine.kind),
-                    byIncreasing((Mine mine) => mine.status.ordinal()), byIncreasing(Mine.id))));
-            HeadedMap<Meadow, Point> meadows = HeadedMapImpl<Meadow, Point>(
-                "<h5>Meadows and Fields</h5>", javaComparator<Meadow>(comparing(
-                    byIncreasing(Meadow.kind), byIncreasing((Meadow meadow) => meadow.status.ordinal()),
-                    byIncreasing(Meadow.id))));
-            HeadedMap<Grove, Point> groves = HeadedMapImpl<Grove, Point>(
-                "<h5>Groves and Orchards</h5>", javaComparator<Grove>(comparing(
-                    byIncreasing(Grove.kind), byIncreasing(Grove.id))));
-            HeadedMap<CacheFixture, Point> caches = HeadedMapImpl<CacheFixture, Point>(
+            HeadedMap<Mine, Point>&MutableMap<Mine, Point> mines = HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
+                comparing(byIncreasing(Mine.kind),
+                    byIncreasing((Mine mine) => mine.status.ordinal()), byIncreasing(Mine.id)));
+            HeadedMap<Meadow, Point>&MutableMap<Meadow, Point> meadows = HeadedMapImpl<Meadow, Point>(
+                "<h5>Meadows and Fields</h5>", comparing(byIncreasing(Meadow.kind),
+                    byIncreasing((Meadow meadow) => meadow.status.ordinal()),
+                    byIncreasing(Meadow.id)));
+            HeadedMap<Grove, Point>&MutableMap<Grove, Point> groves = HeadedMapImpl<Grove, Point>(
+                "<h5>Groves and Orchards</h5>", comparing(byIncreasing(Grove.kind),
+                    byIncreasing(Grove.id)));
+            HeadedMap<CacheFixture, Point>&MutableMap<CacheFixture, Point> caches = HeadedMapImpl<CacheFixture, Point>(
                 "<h5>Caches collected by your explorers and workers:</h5>",
-                javaComparator<CacheFixture>(comparing(byIncreasing(CacheFixture.kind),
-                    byIncreasing(CacheFixture.contents), byIncreasing(CacheFixture.id))));
+                comparing(byIncreasing(CacheFixture.kind),
+                    byIncreasing(CacheFixture.contents), byIncreasing(CacheFixture.id)));
             for (pair in values) {
                 Point point = pair.first();
                 IFixture item = pair.second();
@@ -1685,14 +1679,15 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                        """);
                 for (HeadedMap<out HarvestableFixture, Point> mapping in {caches, groves,
                     meadows, mines}) {
+                    // TODO: use writeMap(), as in commented-out code
                     if (!mapping.empty) {
                         ostream("``mapping.header``
                                  <ul>
                                  ");
-                        for (inner in mapping.entrySet()) {
+                        for (key->val in mapping) {
                             ostream("<li>");
                             produce(fixtures, map, currentPlayer, ostream,
-                                [inner.key, inner.\ivalue]);
+                                [key, val]);
                             ostream("""</li>
                                    """);
                         }
@@ -1856,14 +1851,14 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp)
             value villageComparator = comparing(byIncreasing(Village.name),
                 byIncreasing(Village.race), byIncreasing(Village.id));
             // TODO: sort by distance somehow?
-            HeadedMap<Village, Point> own = HeadedMapImpl<Village, Point>(
-                "<h4>Villages pledged to your service:</h4>",
-                javaComparator(villageComparator));
-            HeadedMap<Village, Point> independents = HeadedMapImpl<Village, Point>(
-                "<h4>Villages you think are independent:</h4>",
-                javaComparator(villageComparator));
-            MutableMap<Player, HeadedMap<Village, Point>> others =
-                    HashMap<Player, HeadedMap<Village, Point>>();
+            HeadedMap<Village, Point>&MutableMap<Village, Point> own = HeadedMapImpl<Village, Point>(
+                "<h4>Villages pledged to your service:</h4>", villageComparator);
+            HeadedMap<Village, Point>&MutableMap<Village, Point> independents = HeadedMapImpl<Village, Point>(
+                "<h4>Villages you think are independent:</h4>", villageComparator);
+            MutableMap<Player, HeadedMap<Village, Point>
+                        &MutableMap<Village, Point>> others =
+                    HashMap<Player, HeadedMap<Village, Point>
+                        &MutableMap<Village, Point>>();
             for (pair in values) {
                 if (is Village village = pair.second()) {
                     if (village.owner == currentPlayer) {
@@ -1871,24 +1866,24 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp)
                     } else if (village.owner.independent) {
                         independents.put(village, pair.first());
                     } else {
-                        HeadedMap<Village, Point> mapping;
+                        HeadedMap<Village, Point>&MutableMap<Village, Point> mapping;
                         if (exists temp = others.get(village.owner)) {
                             mapping = temp;
                         } else {
                             mapping = HeadedMapImpl<Village, Point>(
                                 "<h5>Villages sworn to ``village.owner.name``</h5>
                                  <ul>
-                                 ", javaComparator(villageComparator));
+                                 ", villageComparator);
                             others.put(village.owner, mapping);
                         }
                         mapping.put(village, pair.first());
                     }
                 }
             }
-            Anything(JMap.Entry<Village, Point>, Anything(String)) writer =
-                    (JMap.Entry<Village, Point> entry, Anything(String) formatter) =>
+            Anything(Village->Point, Anything(String)) writer =
+                    (Village key->Point val, Anything(String) formatter) =>
                     produce(fixtures, map, currentPlayer, formatter,
-                        [entry.key, entry.\ivalue]);
+                        [key, val]);
             writeMap(ostream, own, writer);
             writeMap(ostream, independents, writer);
             if (!others.empty) {
