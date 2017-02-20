@@ -8,10 +8,11 @@ import model.map {
     IFixture,
     IMapNG,
     Player,
-    River
+    River,
+    DistanceComparator,
+    PointFactory
 }
 import controller.map.report {
-    AbstractReportGenerator,
     IReportGenerator
 }
 import model.map.fixtures {
@@ -115,6 +116,131 @@ import model.map.fixtures.resources {
     MineralVein,
     Shrub,
     StoneDeposit
+}
+"An abstract superclass for classes that generate reports for particular kinds of SP
+ objects. It's mostly interface and helper methods, but contains a couple of bits of
+ shared state."
+todo("Take current player as constructor parameter instead of method parameter",
+    "Make as many methods static as possible")
+abstract class AbstractReportGenerator<T>(
+        shared PairComparator<Point, IFixture> pairComparator)
+        satisfies IReportGenerator<T> {
+    shared DistanceComparator distCalculator;
+    if (is DistanceComparator temp = pairComparator.first()) {
+        distCalculator = temp;
+    } else {
+        distCalculator = DistanceComparator(PointFactory.invalidPoint);
+    }
+    deprecated shared String playerNameOrYou(Player player) {
+        if (player.current) {
+            return "you";
+        } else {
+            return player.string;
+        }
+    }
+    "A list that produces HTML in its [[string]] attribute."
+    shared class HtmlList(shared actual String header, {String*} initial = {})
+            extends JArrayList<String>() satisfies IReportGenerator.HeadedList<String> {
+        shared actual Boolean add(String element) {
+            if (!element.empty) {
+                return super.add(element);
+            } else {
+                return false;
+            }
+        }
+        for (item in initial) {
+            add(item);
+        }
+        "If there's nothing in the list, return the empty string, but otherwise produce an
+         HTML list of our contents."
+        shared actual String string {
+            if (empty) {
+                return "";
+            } else {
+                StringBuilder builder = StringBuilder();
+                builder.append("``header``
+                                <ul>
+                                ");
+                for (item in this) {
+                    builder.append("<li>``item``</li>
+                                    ");
+                }
+                builder.append("""</ul>
+                                  """);
+                return builder.string;
+            }
+        }
+        shared actual void add(Integer index, String element) {
+            if (!element.empty) {
+                super.add(index, element);
+            }
+        }
+    }
+    """A list of Points that produces a comma-separated list in its `string` and has a
+       "header"."""
+    shared class PointList(shared actual String header) extends JArrayList<Point>()
+            satisfies IReportGenerator.HeadedList<Point> {
+        shared actual String string {
+            if (empty) {
+                return "";
+            } else {
+                CeylonIterable<Point> iter = CeylonIterable(this);
+                StringBuilder builder = StringBuilder();
+                builder.append(header);
+                builder.append(" ");
+                assert (exists first = iter.first);
+                builder.append(first.string);
+                if (exists third = iter.rest.rest.first) {
+                    variable {Point*} temp = iter.rest;
+                    while (exists current = temp.first) {
+                        if (temp.rest.first exists) {
+                            builder.append(", ``current``");
+                        } else {
+                            builder.append(", and ``current``");
+                        }
+                        temp = temp.rest;
+                    }
+                } else if (exists second = iter.rest.first) {
+                    builder.append(" and ``second``");
+                }
+                return builder.string;
+            }
+        }
+    }
+    deprecated shared JCollection<Point> pointsListAt(String desc) =>
+            PointList("``desc``: at ");
+    "An implementation of HeadedMap."
+    todo("Switch to Ceylon collections interfaces")
+    shared class HeadedMapImplTemp<K, V>(shared actual String header,
+            JComparator<K>? comparator = null)
+            satisfies IReportGenerator.HeadedMap<K, V> {
+        JMap<K, V> wrapped;
+        if (exists comparator) {
+            wrapped = JTreeMap<K, V>(comparator);
+        } else {
+            wrapped = JHashMap<K, V>();
+        }
+        shared actual Integer size() => wrapped.size();
+        shared actual Boolean empty => wrapped.empty;
+        shared actual Boolean containsKey(Object key) => wrapped.containsKey(key);
+        shared actual Boolean containsValue(Object val) => wrapped.containsValue(val);
+        shared actual V? get(Object key) => wrapped.get(key);
+        shared actual V? put(K? key, V? val) => wrapped.put(key, val);
+        shared actual V? remove(Object key) => wrapped.remove(key);
+        shared actual void putAll(JMap<out K, out V> map) => wrapped.putAll(map);
+        shared actual void clear() => wrapped.clear();
+        shared actual JSet<K> keySet() => wrapped.keySet();
+        shared actual JCollection<V> values() => wrapped.values();
+        shared actual JSet<JMap.Entry<K, V>> entrySet() => wrapped.entrySet();
+        shared actual Integer hash => wrapped.hash;
+        shared actual Boolean equals(Object that) {
+            if (is JMap<out Anything, out Anything> that) {
+                return that.entrySet() == entrySet();
+            } else {
+                return false;
+            }
+        }
+    }
 }
 "A report generator for arbitrary-text notes."
 class TextReportGenerator(PairComparator<Point, IFixture> comp)
@@ -307,38 +433,6 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
                 retval.add(node);
             }
             return retval;
-        }
-    }
-}
-"An implementation of HeadedMap."
-todo("Switch to Ceylon collections interfaces")
-class HeadedMapImplTemp<K, V>(shared actual String header,
-            JComparator<K>? comparator = null)
-        satisfies IReportGenerator.HeadedMap<K, V> {
-    JMap<K, V> wrapped;
-    if (exists comparator) {
-        wrapped = JTreeMap<K, V>(comparator);
-    } else {
-        wrapped = JHashMap<K, V>();
-    }
-    shared actual Integer size() => wrapped.size();
-    shared actual Boolean empty => wrapped.empty;
-    shared actual Boolean containsKey(Object key) => wrapped.containsKey(key);
-    shared actual Boolean containsValue(Object val) => wrapped.containsValue(val);
-    shared actual V? get(Object key) => wrapped.get(key);
-    shared actual V? put(K? key, V? val) => wrapped.put(key, val);
-    shared actual V? remove(Object key) => wrapped.remove(key);
-    shared actual void putAll(JMap<out K, out V> map) => wrapped.putAll(map);
-    shared actual void clear() => wrapped.clear();
-    shared actual JSet<K> keySet() => wrapped.keySet();
-    shared actual JCollection<V> values() => wrapped.values();
-    shared actual JSet<JMap.Entry<K, V>> entrySet() => wrapped.entrySet();
-    shared actual Integer hash => wrapped.hash;
-    shared actual Boolean equals(Object that) {
-        if (is JMap<out Anything, out Anything> that) {
-            return that.entrySet() == entrySet();
-        } else {
-            return false;
         }
     }
 }
@@ -1255,37 +1349,6 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
         }
     }
 }
-"""A list of Points that produces a comma-separated list in its `string` and has a
-   "header"."""
-class PointListTemp(shared actual String header) extends JArrayList<Point>()
-        satisfies IReportGenerator.HeadedList<Point> {
-    shared actual String string {
-        if (empty) {
-            return "";
-        } else {
-            CeylonIterable<Point> iter = CeylonIterable(this);
-            StringBuilder builder = StringBuilder();
-            builder.append(header);
-            builder.append(" ");
-            assert (exists first = iter.first);
-            builder.append(first.string);
-            if (exists third = iter.rest.rest.first) {
-                variable {Point*} temp = iter.rest;
-                while (exists current = temp.first) {
-                    if (temp.rest.first exists) {
-                        builder.append(", ``current``");
-                    } else {
-                        builder.append(", and ``current``");
-                    }
-                    temp = temp.rest;
-                }
-            } else if (exists second = iter.rest.first) {
-                builder.append(" and ``second``");
-            }
-            return builder.string;
-        }
-    }
-}
 "A report generator for caves, battlefields, adventure hooks, and portals."
 todo("Use union type instead of interface, here and elsewhere")
 class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
@@ -1330,10 +1393,10 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
         MutableList<Pair<Point, IFixture>> values =
                 ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values())
                     .sort(ceylonComparator(pairComparator)) };
-        JList<Point> portals = PointListTemp("Portals to other worlds: ");
-        JList<Point> battles = PointListTemp(
+        JList<Point> portals = PointList("Portals to other worlds: ");
+        JList<Point> battles = PointList(
             "Signs of long-ago battles on the following tiles:");
-        JList<Point> caves = PointListTemp("Caves beneath the following tiles: ");
+        JList<Point> caves = PointList("Caves beneath the following tiles: ");
         HeadedMap<AdventureFixture, Point> adventures =
                 HeadedMapImplTemp<AdventureFixture, Point>(
                     "<h4>Possible Adventures</h4>");
@@ -1445,44 +1508,6 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
         }
     }
 }
-"A list that produces HTML in its [[string]] attribute."
-class HtmlListTemp(shared actual String header, {String*} initial = {})
-        extends JArrayList<String>() satisfies IReportGenerator.HeadedList<String> {
-    shared actual Boolean add(String element) {
-        if (!element.empty) {
-            return super.add(element);
-        } else {
-            return false;
-        }
-    }
-    for (item in initial) {
-        add(item);
-    }
-    "If there's nothing in the list, return the empty string, but otherwise produce an
-     HTML list of our contents."
-    shared actual String string {
-        if (empty) {
-            return "";
-        } else {
-            StringBuilder builder = StringBuilder();
-            builder.append("``header``
-                            <ul>
-                            ");
-            for (item in this) {
-                builder.append("<li>``item``</li>
-                                ");
-            }
-            builder.append("""</ul>
-                              """);
-            return builder.string;
-        }
-    }
-    shared actual void add(Integer index, String element) {
-        if (!element.empty) {
-            super.add(index, element);
-        }
-    }
-}
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
 class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
@@ -1522,7 +1547,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
     }
     "Convert a Map from kinds to Points to a HtmlList."
     HeadedList<String> mapToList(Map<String, JCollection<Point>> map, String heading) {
-        return HtmlListTemp(heading, map.items.map(Object.string).sort(increasing));
+        return HtmlList(heading, map.items.map(Object.string).sort(increasing));
     }
     """Produce the sub-reports dealing with "harvestable" fixtures. All fixtures referred
        to in this report are to be removed from the collection. Caves and battlefields,
@@ -1899,7 +1924,7 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
         MutableMap<SimpleImmortal.SimpleImmortalKind, HeadedList<Point>> simples =
                 HashMap<SimpleImmortal.SimpleImmortalKind, HeadedList<Point>>();
         for (kind in `SimpleImmortal.SimpleImmortalKind`.caseValues) {
-            simples.put(kind, PointListTemp("``kind.plural()`` at: "));
+            simples.put(kind, PointList("``kind.plural()`` at: "));
         }
         meta.put(`SimpleImmortal`,(kind, point) {
             if (exists list =
@@ -1915,7 +1940,7 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
                 if (exists list = retval.get(kind)) {
                     list.add(point);
                 } else {
-                    value list = PointListTemp("``kind````plural`` at ");
+                    value list = PointList("``kind````plural`` at ");
                     retval.put(kind, list);
                     list.add(point);
                 }
