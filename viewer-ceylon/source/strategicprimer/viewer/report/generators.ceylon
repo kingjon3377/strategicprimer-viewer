@@ -8,8 +8,7 @@ import model.map {
     IFixture,
     IMapNG,
     Player,
-    River,
-    HasOwner
+    River
 }
 import controller.map.report {
     AbstractReportGenerator,
@@ -35,7 +34,9 @@ import java.util {
     JTreeMap=TreeMap,
     JHashMap=HashMap,
     JComparator=Comparator,
-    JSet=Set
+    JSet=Set,
+    JList=List,
+    JArrayList=ArrayList
 }
 import ceylon.collection {
     MutableList,
@@ -50,7 +51,8 @@ import model.report {
     EmptyReportNode,
     ListReportNode,
     SectionReportNode,
-    ComplexReportNode
+    ComplexReportNode,
+    SortedSectionListReportNode
 }
 import model.map.fixtures.mobile {
     Animal,
@@ -63,7 +65,6 @@ import model.map.fixtures.mobile.worker {
     IJob
 }
 import ceylon.interop.java {
-    CeylonList,
     CeylonCollection,
     CeylonIterable,
     CeylonSet
@@ -87,8 +88,28 @@ import model.map.fixtures.terrain {
     Hill,
     Oasis
 }
-import javax.swing.tree {
-    MutableTreeNode
+import model.map.fixtures.explorable {
+    Portal,
+    ExplorableFixture,
+    Battlefield,
+    Cave,
+    AdventureFixture
+}
+import ceylon.language.meta.model {
+    Type
+}
+import ceylon.language.meta {
+    type
+}
+import model.map.fixtures.resources {
+    HarvestableFixture,
+    Grove,
+    CacheFixture,
+    Meadow,
+    Mine,
+    MineralVein,
+    Shrub,
+    StoneDeposit
 }
 "A report generator for arbitrary-text notes."
 class TextReportGenerator(PairComparator<Point, IFixture> comp)
@@ -185,6 +206,7 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
             IMapNG map, Player currentPlayer, Formatter ostream) {
         MutableList<Pair<Point, IFixture>> values =
                 ArrayList<Pair<Point, IFixture>> { *CeylonCollection(fixtures.values()) };
+// FIXME: Here & elsewhere: values.sort() is *not* an in-place sort; it *returns* Element[]
         values.sort(ceylonComparator(pairComparator));
         MutableMap<String, JCollection<Point>> items =
                 HashMap<String, JCollection<Point>>();
@@ -422,7 +444,8 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp)
             if (item.owner.independent) {
                 return SimpleReportNode(loc,
                     "At ``loc``: ``item.name``, an independent ``item.size()`` ``item
-                        .status()`` ``item.kind()`` ``distCalculator.distanceString(loc)``");
+                        .status()`` ``item.kind()`` ``distCalculator
+                        .distanceString(loc)``");
             } else {
                 return SimpleReportNode(loc,
                     "At ``loc``: ``item.name``, a ``item.size()`` ``item.status()`` ``item
@@ -1069,8 +1092,8 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
             IMapNG map, Player  currentPlayer, FortressMember item, Point loc,
             Formatter ostream) {
         if (is IUnit item) {
-            UnitReportGenerator(pairComparator).produce(fixtures, map, currentPlayer, item,
-                loc, ostream);
+            UnitReportGenerator(pairComparator).produce(fixtures, map, currentPlayer,
+                item, loc, ostream);
         } else if (is ResourcePile item) {
             fixtures.remove(JInteger(item.id));
             if (item.quantity.units.empty) {
@@ -1221,6 +1244,496 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp)
         }
         IReportNode retval = SectionListReportNode(4, "Resources and Equipment:");
         retval.addIfNonEmpty(resources, equipment);
+        if (retval.childCount == 0) {
+            return EmptyReportNode.nullNode;
+        } else {
+            return retval;
+        }
+    }
+}
+class PointListTemp(shared actual String header) extends JArrayList<Point>()
+        satisfies IReportGenerator.HeadedList<Point> {
+    shared actual String string {
+        if (empty) {
+            return "";
+        } else {
+            CeylonIterable<Point> iter = CeylonIterable(this);
+            StringBuilder builder = StringBuilder();
+            builder.append(header);
+            builder.append(" ");
+            assert (exists first = iter.first);
+            builder.append(first.string);
+            if (exists third = iter.rest.rest.first) {
+                variable {Point*} temp = iter.rest;
+                while (exists current = temp.first) {
+                    if (temp.rest.first exists) {
+                        builder.append(", ``current``");
+                    } else {
+                        builder.append(", and ``current``");
+                    }
+                    temp = temp.rest;
+                }
+            } else if (exists second = iter.rest.first) {
+                builder.append(" and ``second``");
+            }
+            return builder.string;
+        }
+    }
+}
+"A report generator for caves, battlefields, adventure hooks, and portals."
+todo("Use union type instead of interface, here and elsewhere")
+class ExplorableReportGenerator(PairComparator<Point, IFixture> comp)
+        extends AbstractReportGenerator<ExplorableFixture>(comp) {
+    "Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
+     hook."
+    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            IMapNG map, Player currentPlayer, ExplorableFixture item, Point loc,
+            Formatter ostream) {
+        if (is Cave item) {
+            fixtures.remove(JInteger(item.id));
+            ostream.format("Caves beneath ``loc````distCalculator.distanceString(loc)``");
+        } else if (is Battlefield item) {
+            fixtures.remove(JInteger(item.id));
+            ostream.format("Signs of a long-ago battle on ``loc````distCalculator
+                .distanceString(loc)``");
+        } else if (is AdventureFixture item) {
+            fixtures.remove(JInteger(item.id));
+            ostream.format("``item.briefDescription`` at ``loc``: ``item
+                .fullDescription`` ``distCalculator.distanceString(loc)``");
+            if (!item.owner.independent) {
+                String player;
+                if (item.owner == currentPlayer) {
+                    player = "you";
+                } else {
+                    player = "another player";
+                }
+                ostream.format(" (already investigated by ``player``)");
+            }
+        } else if (is Portal item) {
+            fixtures.remove(JInteger(item.id));
+            ostream.format("A portal to another world at ``loc`` ``distCalculator
+                .distanceString(loc)``");
+        } else {
+            throw IllegalArgumentException("Unexpected ExplorableFixture type");
+        }
+    }
+    "Produce the sub-report on non-town things that can be explored. All fixtures
+     referred to in this report are removed from the collection."
+    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            IMapNG map, Player currentPlayer, Formatter ostream) {
+        MutableList<Pair<Point, IFixture>> values =
+                ArrayList { *CeylonIterable(fixtures.values()) };
+        values.sort(ceylonComparator(pairComparator));
+        JList<Point> portals = PointListTemp("Portals to other worlds: ");
+        JList<Point> battles = PointListTemp(
+            "Signs of long-ago battles on the following tiles:");
+        JList<Point> caves = PointListTemp("Caves beneath the following tiles: ");
+        HeadedMap<AdventureFixture, Point> adventures =
+                HeadedMapImplTemp<AdventureFixture, Point>(
+                    "<h4>Possible Adventures</h4>");
+        Map<Type<IFixture>, Anything(Pair<Point, IFixture>)> collectors =
+                HashMap<Type<IFixture>, Anything(Pair<Point, IFixture>)> {
+                    entries = { `Portal`->((Pair<Point, IFixture> pair) =>
+                            portals.add(pair.first())),
+                        `Battlefield`->((Pair<Point, IFixture> pair) =>
+                            battles.add(pair.first())),
+                        `Cave`->((Pair<Point, IFixture> pair) =>
+                            caves.add(pair.first())),
+                        `AdventureFixture`->((Pair<Point, IFixture> pair) {
+                            assert (is AdventureFixture fixture = pair.second());
+                            adventures.put(fixture, pair.first());
+                        })};
+                };
+        for (pair in values) {
+            if (exists collector = collectors.get(type(pair.second()))) {
+                collector(pair);
+                fixtures.remove(JInteger(pair.second().id));
+            }
+        }
+        if (!caves.empty || !battles.empty || !portals.empty) {
+            ostream.format("<h4>Caves, Battlefields, and Portals</h4>
+                            <ul>
+                            ``caves````battles````portals``</ul>
+                            ");
+        }
+        writeMap(ostream, adventures,
+            (JMap.Entry<AdventureFixture, Point> entry, formatter) => produce(fixtures,
+                map, currentPlayer, entry.key, entry.\ivalue, formatter));
+    }
+    "Produces a more verbose sub-report on a cave or battlefield."
+    shared actual IReportNode produceRIR(
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            Player currentPlayer, ExplorableFixture item, Point loc) {
+        if (is Cave item) {
+            fixtures.remove(JInteger(item.id));
+            return SimpleReportNode(loc,
+                "Caves beneath ``loc`` ``distCalculator.distanceString(loc)``");
+        } else if (is Battlefield item) {
+            fixtures.remove(JInteger(item.id));
+            return SimpleReportNode(loc,
+                "Signs of a long-ago battle on ``loc`` ``distCalculator
+                    .distanceString(loc)``");
+        } else if (is AdventureFixture item) {
+            fixtures.remove(JInteger(item.id));
+            if (item.owner.independent) {
+                return SimpleReportNode(loc,
+                    "``item.briefDescription`` at ``loc``: ``item
+                        .fullDescription`` ``distCalculator.distanceString(loc)``");
+            } else if (currentPlayer == item.owner) {
+                return SimpleReportNode(loc,
+                    "``item.briefDescription`` at ``loc``: ``item
+                        .fullDescription`` ``distCalculator
+                        .distanceString(loc)`` (already investigated by you)");
+            } else {
+                return SimpleReportNode(loc,
+                    "``item.briefDescription`` at ``loc``: ``item
+                        .fullDescription`` ``distCalculator
+                        .distanceString(loc)`` (already investigated by another player)");
+            }
+        } else if (is Portal item) {
+            fixtures.remove(JInteger(item.id));
+            return SimpleReportNode(loc,
+                "A portal to another world at ``loc`` ``distCalculator
+                    .distanceString(loc)``");
+        } else {
+            throw IllegalArgumentException("Unexpected ExplorableFixture type");
+        }
+    }
+    "Produce the sub-report on non-town things that can be explored. All fixtures
+     referred to in this report are removed from the collection."
+    shared actual IReportNode produceRIR(
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            Player currentPlayer) {
+        MutableList<Pair<Point, IFixture>> values =
+                ArrayList { *CeylonIterable(fixtures.values()) };
+        values.sort(ceylonComparator(pairComparator));
+        IReportNode portals = ListReportNode("Portals");
+        IReportNode battles = ListReportNode("Battlefields");
+        IReportNode caves = ListReportNode("Caves");
+        IReportNode adventures = SectionListReportNode(4, "Possible Adventures");
+        Map<Type<IFixture>, IReportNode> nodes = HashMap<Type<IFixture>, IReportNode> {
+            entries = { `Portal`->portals, `Battlefield`->battles, `Cave`->caves,
+                `AdventureFixture`->adventures };
+        };
+        for (pair in values) {
+            if (is ExplorableFixture fixture = pair.second(),
+                    exists node = nodes.get(type(fixture))) {
+                node.add(produceRIR(fixtures, map, currentPlayer, fixture, pair.first()));
+            }
+        }
+        IReportNode retval = SectionListReportNode(4, "Caves, Battlefields, and Portals");
+        retval.addIfNonEmpty(caves, battles, portals);
+        if (retval.childCount == 0) {
+            if (adventures.childCount == 0) {
+                return EmptyReportNode.nullNode;
+            } else {
+                return adventures;
+            }
+        } else if (adventures.childCount == 0) {
+            return retval;
+        } else {
+            IReportNode real = ComplexReportNode();
+            real.add(retval);
+            real.add(adventures);
+            return real;
+        }
+    }
+}
+"A list that produces HTML in its [[string]] attribute."
+class HtmlListTemp(shared actual String header, {String*} initial = {})
+        extends JArrayList<String>() satisfies IReportGenerator.HeadedList<String> {
+    shared actual Boolean add(String element) {
+        if (!element.empty) {
+            return super.add(element);
+        } else {
+            return false;
+        }
+    }
+    for (item in initial) {
+        add(item);
+    }
+    "If there's nothing in the list, return the empty string, but otherwise produce an
+     HTML list of our contents."
+    shared actual String string {
+        if (empty) {
+            return "";
+        } else {
+            StringBuilder builder = StringBuilder();
+            builder.append("``header``
+                            <ul>
+                            ");
+            for (item in this) {
+                builder.append("<li>``item``</li>
+                                ");
+            }
+            builder.append("""</ul>
+                              """);
+            return builder.string;
+        }
+    }
+    shared actual void add(Integer index, String element) {
+        if (!element.empty) {
+            super.add(index, element);
+        }
+    }
+}
+"A report generator for harvestable fixtures (other than caves and battlefields, which
+ aren't really)."
+class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
+        extends AbstractReportGenerator<HarvestableFixture>(comp) {
+    "Produce the sub-sub-report dealing with a harvestable fixture."
+    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            IMapNG map, Player currentPlayer, HarvestableFixture item, Point loc,
+            Formatter ostream) {
+        // TODO: convert to switch statement?
+        if (is CacheFixture item) {
+            ostream.format("At ``loc``: ``distCalculator
+                .distanceString(loc)``A cache of ``item.kind``, containing ``item
+                .contents``");
+        } else if (is Grove item) {
+            ostream.format("At ``loc``: ``(item.cultivated) then "cultivated" else
+                "wild"`` ``item.kind`` ``(item.orchard) then "orchard" else
+                "grove"`` ``distCalculator.distanceString(loc)``");
+        } else if (is Meadow item) {
+            ostream.format("At ``loc``: ``item.status`` ``(item.cultivated) then
+                "cultivated" else "wild or abandoned"`` ``item.kind`` ``(item.field) then
+                "field" else "meadow"`` ``distCalculator.distanceString(loc)``");
+        } else if (is Mine item) {
+            ostream.format("At ``loc``: ``item`` ``distCalculator.distanceString(loc)``");
+        } else if (is MineralVein item) {
+            ostream.format("At ``loc``: An ``(item.exposed) then
+                "exposed" else "unexposed"`` vein of ``item.kind`` ``distCalculator
+                .distanceString(loc)``");
+        } else if (is Shrub item) {
+            ostream.format("At ``loc``: ``item.kind`` ``distCalculator
+                .distanceString(loc)``");
+        } else if (is StoneDeposit item) {
+            ostream.format("At ``loc``: An exposed ``item.kind`` deposit ``distCalculator
+                .distanceString(loc)``");
+        } else {
+            throw IllegalArgumentException("Unexpected HarvestableFixture type");
+        }
+    }
+    "Convert a Map from kinds to Points to a HtmlList."
+    HeadedList<String> mapToList(Map<String, JCollection<Point>> map, String heading) {
+        return HtmlListTemp(heading, map.items.map(Object.string).sort(increasing));
+    }
+    """Produce the sub-reports dealing with "harvestable" fixtures. All fixtures referred
+       to in this report are to be removed from the collection. Caves and battlefields,
+       though HarvestableFixtures, are presumed to have been handled already.""""
+    shared actual void produce(PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            IMapNG map, Player currentPlayer, Formatter ostream) {
+        MutableList<Pair<Point, IFixture>> values =
+                ArrayList { *CeylonIterable(fixtures.values()) };
+        values.sort(ceylonComparator(pairComparator));
+        MutableMap<String, JCollection<Point>> stone =
+                HashMap<String, JCollection<Point>>();
+        MutableMap<String, JCollection<Point>> shrubs =
+                HashMap<String, JCollection<Point>>();
+        MutableMap<String, JCollection<Point>> minerals =
+                HashMap<String, JCollection<Point>>();
+        HeadedMap<Mine, Point> mines = HeadedMapImplTemp<Mine, Point>("<h5>Mines</h5>",
+            javaComparator<Mine>(comparing(byIncreasing(Mine.kind),
+                byIncreasing((Mine mine) => mine.status.ordinal()), byIncreasing(Mine.id))));
+        HeadedMap<Meadow, Point> meadows = HeadedMapImplTemp<Meadow, Point>(
+            "<h5>Meadows and Fields</h5>", javaComparator<Meadow>(comparing(
+                byIncreasing(Meadow.kind), byIncreasing((Meadow meadow) => meadow.status.ordinal()),
+                byIncreasing(Meadow.id))));
+        HeadedMap<Grove, Point> groves = HeadedMapImplTemp<Grove, Point>(
+            "<h5>Groves and Orchards</h5>", javaComparator<Grove>(comparing(
+                byIncreasing(Grove.kind), byIncreasing(Grove.id))));
+        HeadedMap<CacheFixture, Point> caches = HeadedMapImplTemp<CacheFixture, Point>(
+            "<h5>Caches collected by your explorers and workers:</h5>",
+            javaComparator<CacheFixture>(comparing(byIncreasing(CacheFixture.kind),
+                byIncreasing(CacheFixture.contents), byIncreasing(CacheFixture.id))));
+        for (pair in values) {
+            Point point = pair.first();
+            IFixture item = pair.second();
+            // TODO: Use a Map by type (or at least a switch); now we have reified
+            // generics we can even handle differently based on whether a List or Map
+            // is in the Map!
+            if (is CacheFixture item) {
+                caches.put(item, point);
+            } else if (is Grove item) {
+                groves.put(item, point);
+            } else if (is Meadow item) {
+                meadows.put(item, point);
+            } else if (is Mine item) {
+                mines.put(item, point);
+            } else if (is MineralVein item) {
+                if (exists coll = minerals.get(item.shortDesc())) {
+                    coll.add(point);
+                } else {
+                    value coll = pointsListAt(item.shortDesc());
+                    minerals.put(item.shortDesc(), coll);
+                    coll.add(point);
+                }
+                fixtures.remove(JInteger(item.id));
+            } else if (is Shrub item) {
+                if (exists coll = shrubs.get(item.kind)) {
+                    coll.add(point);
+                } else {
+                    value coll = pointsListAt(item.kind);
+                    shrubs.put(item.kind, coll);
+                    coll.add(point);
+                }
+                fixtures.remove(JInteger(item.id));
+            } else if (is StoneDeposit item) {
+                if (exists coll = stone.get(item.kind)) {
+                    coll.add(point);
+                } else {
+                    value coll = pointsListAt(item.kind);
+                    stone.put(item.kind, coll);
+                    coll.add(point);
+                }
+                fixtures.remove(JInteger(item.id));
+            }
+        }
+        // TODO: make sure that mapToList() returns a sorted list
+        {HeadedList<String>+} all = {mapToList(minerals, "<h5>Mineral Deposits</h5>"),
+            mapToList(stone, "<h5>Exposed Stone Deposits</h5>"),
+            mapToList(shrubs, "<h5>Shrubs, Small Trees, etc.</h5>") };
+        // TODO: When HeadedMap is a Ceylon interface, use { ... }.every()?
+        if (!caches.empty || !groves.empty || !meadows.empty || !mines.empty ||
+                !all.every(HeadedList.empty)) {
+            ostream.format("""<h4>Resource Sources</h4>
+                              """);
+            for (HeadedMap<out HarvestableFixture, Point> mapping in {caches, groves,
+                    meadows, mines}) {
+                if (!mapping.empty) {
+                    ostream.format("``mapping.header``
+                                    <ul>
+                                    ");
+                    for (entry in mapping.entrySet()) {
+                        ostream.format("<li>");
+                        produce(fixtures, map, currentPlayer, entry.key, entry.\ivalue,
+                            ostream);
+                        ostream.format("""</li>
+                                          """);
+                    }
+                    ostream.format("""</ul>
+                                      """);
+                }
+//                writeMap(ostream, mapping,
+//                    (JMap.Entry<out HarvestableFixture, Point> entry, formatter) =>
+//                        produce(fixtures, map, currentPlayer, entry.key, entry.\ivalue,
+//                            formatter));
+            }
+            for (list in all) {
+                ostream.format(list.string);
+            }
+        }
+    }
+    "Produce the sub-sub-report dealing with a harvestable fixture."
+    shared actual IReportNode produceRIR(
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+            Player currentPlayer, HarvestableFixture item, Point loc) {
+        SimpleReportNode retval;
+        if (is CacheFixture item) {
+            retval = SimpleReportNode(loc, "At ``loc``: ``distCalculator
+                .distanceString(loc)`` A cache of ``item.kind``, containing ``item
+                .contents``");
+        } else if (is Grove item) {
+            retval = SimpleReportNode(loc, "At ``loc``: A ``(item.cultivated) then
+                "cultivated" else "wild"`` ``item.kind`` ``(item.orchard) then "orchard"
+                else "grove"`` ``distCalculator.distanceString(loc)``");
+        } else if (is Meadow item) {
+            retval = SimpleReportNode(loc, "At ``loc``: A ``item.status`` ``(item
+                .cultivated) then "cultivated" else "wild or abandoned"`` ``item
+                .kind`` ``(item.field) then "field" else "meadow"`` ``distCalculator
+                .distanceString(loc)``");
+        } else if (is Mine item) {
+            retval = SimpleReportNode(loc, "At ``loc``: ``item`` ``distCalculator
+                .distanceString(loc)``");
+        } else if (is MineralVein item) {
+            retval = SimpleReportNode(loc, "At ``loc``: An ``(item.exposed) then "exposed"
+                else "unexposed"`` vein of ``item.kind`` ``distCalculator
+                .distanceString(loc)``");
+        } else if (is Shrub item) {
+            retval = SimpleReportNode(loc, "At ``loc``: ``item.kind`` ``distCalculator
+                .distanceString(loc)``");
+        } else if (is StoneDeposit item) {
+            retval = SimpleReportNode(loc, "At ``loc``: An exposed ``item
+                .kind`` deposit ``distCalculator.distanceString(loc)``");
+        } else {
+            throw IllegalArgumentException("Unexpected HarvestableFixture type");
+        }
+        fixtures.remove(JInteger(item.id));
+        return retval;
+    }
+    """Produce the sub-reports dealing with "harvestable" fixtures. All fixtures
+       referred to in this report are to be removed from the collection."""
+    shared actual IReportNode produceRIR(
+    PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map,
+    Player currentPlayer) {
+        MutableList<Pair<Point, IFixture>> values =
+                ArrayList { *CeylonIterable(fixtures.values()) };
+        values.sort(ceylonComparator(pairComparator));
+        MutableMap<String, IReportNode> stone = HashMap<String, IReportNode>();
+        MutableMap<String, IReportNode> shrubs = HashMap<String, IReportNode>();
+        MutableMap<String, IReportNode> minerals = HashMap<String, IReportNode>();
+        IReportNode mines = SortedSectionListReportNode(5, "Mines");
+        IReportNode meadows = SortedSectionListReportNode(5, "Meadows and Fields");
+        IReportNode groves = SortedSectionListReportNode(5, "Groves and Orchards");
+        IReportNode caches = SortedSectionListReportNode(5,
+            "Caches collected by your explorers and workers:");
+        for (pair in values) {
+            if (is HarvestableFixture item = pair.second()) {
+                Point loc = pair.first();
+                if (is CacheFixture item) {
+                    caches.add(produceRIR(fixtures, map, currentPlayer, item, loc));
+                } else if (is Grove item) {
+                    groves.add(produceRIR(fixtures, map, currentPlayer, item, loc));
+                } else if (is Meadow item) {
+                    meadows.add(produceRIR(fixtures, map, currentPlayer, item, loc));
+                } else if (is Mine item) {
+                    mines.add(produceRIR(fixtures, map, currentPlayer, item, loc));
+                } else if (is MineralVein item) {
+                    IReportNode node;
+                    if (exists temp = minerals.get(item.shortDesc())) {
+                        node = temp;
+                    } else {
+                        node = ListReportNode(item.shortDesc());
+                        minerals.put(item.shortDesc(), node);
+                    }
+                    node.add(produceRIR(fixtures, map, currentPlayer, item, loc));
+                } else if (is Shrub item) {
+                    IReportNode node;
+                    if (exists temp = shrubs.get(item.shortDesc())) {
+                        node = temp;
+                    } else {
+                        node = ListReportNode(item.shortDesc());
+                        shrubs.put(item.shortDesc(), node);
+                    }
+                    node.add(produceRIR(fixtures, map, currentPlayer, item, loc));
+                } else if (is StoneDeposit item) {
+                    IReportNode node;
+                    if (exists temp = stone.get(item.kind)) {
+                        node = temp;
+                    } else {
+                        node = ListReportNode(item.kind);
+                        stone.put(item.kind, node);
+                    }
+                    node.add(produceRIR(fixtures, map, currentPlayer, item, loc));
+                }
+            }
+        }
+        IReportNode shrubsNode = SortedSectionListReportNode(5,
+            "Shrubs, Small Trees, etc.");
+        for (node in shrubs.items) {
+            shrubsNode.add(node);
+        }
+        IReportNode mineralsNode = SortedSectionListReportNode(5, "Mineral Deposits");
+        for (node in minerals.items) {
+            mineralsNode.add(node);
+        }
+        IReportNode stoneNode = SortedSectionListReportNode(5, "Exposed Stone Deposits");
+        for (node in stone.items) {
+            stoneNode.add(node);
+        }
+        SectionReportNode retval = SectionReportNode(4, "Resource Sources");
+        retval.addIfNonEmpty(caches, groves, meadows, mines, mineralsNode, stoneNode,
+            shrubsNode);
         if (retval.childCount == 0) {
             return EmptyReportNode.nullNode;
         } else {
