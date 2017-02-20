@@ -21,20 +21,13 @@ import model.map {
     FixtureIterable
 }
 import java.util {
-    JComparator=Comparator,
-    Formatter
-}
-import controller.map.report {
-    IReportGenerator
+    JComparator=Comparator
 }
 import model.map.fixtures.towns {
     Fortress
 }
 import lovelace.util.common {
     todo
-}
-import lovelace.util.jvm {
-    AppendableHelper
 }
 import java.lang {
     JInteger=Integer, JIterable=Iterable
@@ -114,14 +107,14 @@ PatientMap<JInteger, Pair<Point, IFixture>> getFixtures(IMapNG map) {
 void createSubReports(StringBuilder builder,
         PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IMapNG map, Player player,
         IReportGenerator<out Object>* generators) {
-    try (ostream = Formatter(AppendableHelper(builder.append))) {
-        for (generator in generators) {
-            generator.produce(fixtures, map, player, ostream);
-            fixtures.coalesce();
-        }
+    for (generator in generators) {
+        generator.produce(fixtures, map, player, builder.append);
+        fixtures.coalesce();
     }
 }
 "Create the report for the given player based on the given map."
+todo("Consider generating Markdown instead of HTML. OTOH, we'd have to keep a list nesting
+      level parameter or something.")
 shared String createReport(IMapNG map, Player player = map.currentPlayer) {
     StringBuilder builder = StringBuilder();
     builder.append("""<html>
