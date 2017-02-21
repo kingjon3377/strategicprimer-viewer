@@ -921,13 +921,17 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
         }
     }
 }
-"A report generator for units."
-todo("Extract a WorkerReportGenerator class?")
-class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPlayer)
-        extends AbstractReportGenerator<IUnit>(comp) {
-    IReportGenerator<FortressMember> memberReportGenerator =
-            FortressMemberReportGenerator(comp, currentPlayer);
-    IReportGenerator<Animal> animalReportGenerator = AnimalReportGenerator(comp);
+class WorkerReportGenerator(PairComparator<Point, IFixture> comp, Boolean details)
+        extends AbstractReportGenerator<IWorker>(comp) {
+    "Produce the sub-sub-report on a worker's stats."
+    String statsString(WorkerStats stats) {
+        return "He or she has the following stats: ``stats.hitPoints`` / ``stats
+            .maxHitPoints`` Hit Points, Strength ``modifierString(stats.strength)
+        ``, Dexterity ``modifierString(stats.dexterity)``, Constitution ``
+        modifierString(stats.constitution)``, Intelligence ``modifierString(stats
+            .intelligence)``, Wisdom ``modifierString(stats.wisdom)``, Charisma ``
+        modifierString(stats.charisma)``";
+    }
     "Produce text describing the given Skills."
     String skills(ISkill* job) {
         StringBuilder builder = StringBuilder();
@@ -940,69 +944,128 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
         }
         return builder.string;
     }
-    "Produce the sub-sub-report on a worker's stats."
-    String statsString(WorkerStats stats) {
-        return "He or she has the following stats: ``stats.hitPoints`` / ``stats
-            .maxHitPoints`` Hit Points, Strength ``modifierString(stats.strength)
-        ``, Dexterity ``modifierString(stats.dexterity)``, Constitution ``
-        modifierString(stats.constitution)``, Intelligence ``modifierString(stats
-            .intelligence)``, Wisdom ``modifierString(stats.wisdom)``, Charisma ``
-        modifierString(stats.charisma)``";
-    }
-    "Write the report on a Worker."
-    void workerReport(IWorker worker,
-            "Whether we should give details of the worker's stats and experience---true
-             iff the current player owns the worker."
-            Boolean details, Anything(String) ostream) {
-        ostream("``worker.name``, a ``worker.race``.");
-        if (details, exists stats = worker.stats) {
-            ostream(
-                "
-                 <p>``statsString(stats)``</p>
-                 ");
-        }
-        if (details, !CeylonIterable(worker).empty) {
-            ostream(
-                """(S)he has training or experience in the following Jobs (Skills):
-                    <ul>
-                    """);
-            for (job in worker) {
-                ostream("<li>``job.level`` levels in ``job
-                    .name`` ``skills(*job)``</li>
-                    ");
-            }
-            ostream("""</ul>
-                       """);
-        }
-    }
     "Produce the report-intermediate-representation sub-sub-report on a Job."
     IReportNode produceJobRIR(IJob job, Point loc) {
         return SimpleReportNode(loc,
             "``job.level`` levels in ``job.name`` ``skills(*job)``");
     }
-    "Produce the report-intermediate-representation sub-report on a worker."
-    IReportNode produceWorkerRIR(Point loc, IWorker worker,
-            "Whether we should give details of the worker's stats and experience---true
-             only if the current player owns the worker"
-            Boolean details) {
-        if (details) {
-            IReportNode retval = ComplexReportNode(loc,
-                "``worker.name``, a ``worker.race``");
-            if (exists stats = worker.stats) {
-                retval.add(SimpleReportNode(statsString(stats)));
+    "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
+     paragraph or bullet point), or on all workers (should never be called, but we'll
+     implement properly anyway)."
+    shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, [IWorker, Point]? entry) {
+        if (exists entry) {
+            IWorker worker = entry.first;
+            ostream("``worker.name``, a ``worker.race``.");
+            if (details, exists stats = worker.stats) {
+                ostream(
+                    "
+                     <p>``statsString(stats)``</p>
+                 ");
             }
-            if (!CeylonIterable(worker).empty) {
-                IReportNode jobs = ListReportNode(loc,
-                    "(S)he has training or experience in the following Jobs (Skills):");
+            if (details, !CeylonIterable(worker).empty) {
+                ostream(
+                    """(S)he has training or experience in the following Jobs (Skills):
+                        <ul>
+                        """);
                 for (job in worker) {
-                    jobs.add(produceJobRIR(job, loc));
+                    ostream("<li>``job.level`` levels in ``job
+                        .name`` ``skills(*job)``</li>
+                    ");
                 }
-                retval.add(jobs);
+                ostream("""</ul>
+                       """);
             }
-            return retval;
         } else {
-            return SimpleReportNode(loc, "``worker.name``, a ``worker.race``");
+            MutableList<[Point, IFixture]> values =
+                    ArrayList<[Point, IFixture]> { *fixtures.items
+                        .sort(pairComparator.compare) };
+            MutableList<[IWorker, Point]> workers = ArrayList<[IWorker, Point]>();
+            for (tuple in values) {
+                if (is IWorker worker = tuple.rest.first) {
+                    workers.add([worker, tuple.first]);
+                }
+            }
+            if (!workers.empty) {
+                ostream("""<h5>Workers</h5>
+                           <ul>
+                           """);
+                for (tuple in workers) {
+                    ostream("<li>");
+                    produce(fixtures, map, ostream, tuple);
+                    ostream("""</li>
+                               """);
+                }
+                ostream("""</ul>
+                           """);
+            }
         }
+    }
+    "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
+     paragraph or bullet point), or on all workers (not that this'll ever be called like
+     that, but we'll implement it properly anyway)."
+    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, [IWorker, Point]? entry) {
+        if (exists entry) {
+            IWorker worker = entry.first;
+            Point loc = entry.rest.first;
+            if (details) {
+                IReportNode retval = ComplexReportNode(loc,
+                    "``worker.name``, a ``worker.race``");
+                if (exists stats = worker.stats) {
+                    retval.add(SimpleReportNode(statsString(stats)));
+                }
+                if (!CeylonIterable(worker).empty) {
+                    IReportNode jobs = ListReportNode(loc,
+                        "(S)he has training or experience in the following Jobs (Skills):");
+                    for (job in worker) {
+                        jobs.add(produceJobRIR(job, loc));
+                    }
+                    retval.add(jobs);
+                }
+                return retval;
+            } else {
+                return SimpleReportNode(loc, "``worker.name``, a ``worker.race``");
+            }
+        } else {
+            MutableList<[Point, IFixture]> values =
+                    ArrayList<[Point, IFixture]> { *fixtures.items
+                        .sort(pairComparator.compare) };
+            IReportNode retval = SectionListReportNode(5, "Workers");
+            for (tuple in values) {
+                if (is IWorker worker = tuple.rest.first) {
+                    retval.add(produceRIR(fixtures, map, [worker, tuple.first]));
+                }
+            }
+            if (retval.childCount == 0) {
+                return EmptyReportNode.nullNode;
+            } else {
+                return retval;
+            }
+        }
+    }
+}
+"A report generator for units."
+class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPlayer)
+        extends AbstractReportGenerator<IUnit>(comp) {
+    IReportGenerator<FortressMember> memberReportGenerator =
+            FortressMemberReportGenerator(comp, currentPlayer);
+    IReportGenerator<Animal> animalReportGenerator = AnimalReportGenerator(comp);
+    IReportGenerator<IWorker> ourWorkerReportGenerator = WorkerReportGenerator(comp,
+        true);
+    IReportGenerator<IWorker> otherWorkerReportGenerator = WorkerReportGenerator(comp,
+        false);
+    "Produce text describing the given Skills."
+    String skills(ISkill* job) {
+        StringBuilder builder = StringBuilder();
+        if (exists first = job.first) {
+            builder.append(" ``first.name`` ``first.level``");
+            for (skill in job.rest) {
+                builder.append(", ``skill.name`` ``skill.level``");
+            }
+            builder.append(")");
+        }
+        return builder.string;
     }
     "Produce the sub-sub-report about a unit's orders and results."
     void produceOrders(IUnit item, Anything(String) formatter) {
@@ -1087,8 +1150,14 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                                    """);
                     }
                 }
-                produceInner<IWorker>("Workers", workers, (worker) => workerReport(worker,
-                    item.owner == currentPlayer, ostream));
+                IReportGenerator<IWorker> workerReportGenerator;
+                if (item.owner == currentPlayer) {
+                    workerReportGenerator = ourWorkerReportGenerator;
+                } else {
+                    workerReportGenerator = otherWorkerReportGenerator;
+                }
+                produceInner<IWorker>("Workers", workers, (worker) =>
+                    workerReportGenerator.produce(fixtures, map, ostream, [worker, loc]));
                 produceInner<Animal>("Animals", animals, (animal) => animalReportGenerator
                     .produce(fixtures, map, ostream, [animal, loc]));
                 produceInner<Implement>("Equipment", equipment, (member) =>
@@ -1156,10 +1225,16 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
             ListReportNode resources = ListReportNode("Resources:");
             ListReportNode others = ListReportNode("Others:");
             IReportNode retval = ListReportNode(loc, "``base`` Members of the unit:");
+            IReportGenerator<IWorker> workerReportGenerator;
+            if (item.owner == currentPlayer) {
+                workerReportGenerator = ourWorkerReportGenerator;
+            } else {
+                workerReportGenerator = otherWorkerReportGenerator;
+            }
             for (member in item) {
                 if (is IWorker member) {
-                    workers.add(produceWorkerRIR(loc, member,
-                        currentPlayer == item.owner));
+                    workers.add(workerReportGenerator.produceRIR(fixtures, map, [member,
+                        loc]));
                 } else if (is Animal member) {
                     animals.add(animalReportGenerator
                         .produceRIR(fixtures, map, [member, loc]));
