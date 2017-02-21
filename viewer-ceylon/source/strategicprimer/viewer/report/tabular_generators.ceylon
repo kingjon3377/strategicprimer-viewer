@@ -27,7 +27,8 @@ import ceylon.interop.java {
     javaClass
 }
 import model.map.fixtures.mobile {
-    IWorker
+    IWorker,
+    Animal
 }
 import model.map.fixtures.mobile.worker {
     WorkerStats
@@ -55,7 +56,15 @@ import ceylon.language.meta {
 }
 import model.map.fixtures {
     MineralFixture,
-    Ground
+    Ground,
+    TextFixture
+}
+import model.map.fixtures.explorable {
+    ExplorableFixture,
+    Battlefield,
+    Portal,
+    Cave,
+    AdventureFixture
 }
 "A tabular report generator for fortresses."
 class FortressTabularReportGenerator(Player player, Point hq)
@@ -315,4 +324,142 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
     shared actual JClass<MineralFixture> type() => javaClass<MineralFixture>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "minerals";
+}
+"A report generator for sightings of animals."
+class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
+    "Produce a single line of the tabular report on animals."
+    shared actual Boolean produce(JAppendable ostream,
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            Animal item, Point loc) {
+        writeDelimitedField(ostream, distanceString(loc, hq));
+        writeDelimitedField(ostream, loc.string);
+        if (item.traces) {
+            writeField(ostream, "tracks or traces of ``item.kind``");
+        } else if (item.talking) {
+            writeField(ostream, "talking ``item.kind``");
+        } else if ("wild" != item.status) {
+            writeField(ostream, "``item.status`` ``item.kind``");
+        } else {
+            writeField(ostream, item.kind);
+        }
+        ostream.append(rowDelimiter);
+        return true;
+    }
+    "The header row for the table."
+    shared actual String headerRow() => "Distance,Location,Kind";
+    "Whether we can accept the given object."
+    shared actual Boolean applies(IFixture obj) => obj is Animal;
+    "Compare two pairs of Animals and locations."
+    shared actual Integer comparePairs(Pair<Point, Animal> one, Pair<Point, Animal> two) {
+        Integer cmp = DistanceComparator(hq).compare(one.first(), two.first());
+        if (cmp == 0) {
+            Comparison(Animal, Animal) compareBools(Boolean(Animal) func) {
+                Comparison retval(Boolean first, Boolean second) {
+                    if (first == second) {
+                        return equal;
+                    } else if (first) {
+                        return larger;
+                    } else {
+                        return smaller;
+                    }
+                }
+                return (Animal first, Animal second) => retval(func(first), func(second));
+            }
+            return javaComparator(comparing(compareBools(Animal.talking),
+                    compareBools((animal) => !animal.traces), byIncreasing(Animal.kind)))
+                .compare(one.second(), two.second());
+        } else {
+            return cmp;
+        }
+    }
+    "The type of objects we accept."
+    shared actual JClass<Animal> type() => javaClass<Animal>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "animals";
+}
+"A tabular report generator for things that can be explored and are not covered elsewhere:
+  caves, battlefields, adventure hooks, and portals."
+class ExplorableTabularReportGenerator(Player player, Point hq)
+        satisfies ITableGenerator<ExplorableFixture|TextFixture> {
+    "Produce a report line about the given fixture."
+    shared actual Boolean produce(JAppendable ostream,
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            ExplorableFixture|TextFixture item, Point loc) {
+        String brief;
+        String owner;
+        String longDesc;
+        switch (item)
+        case (is TextFixture) {
+            if (item.turn >= 0) {
+                brief = "Text Note (``item.turn``)";
+            } else {
+                brief = "Text Note";
+            }
+            owner = "---";
+            longDesc = item.text;
+        }
+        case (is Battlefield) {
+            brief = "ancient battlefield";
+            owner = "---";
+            longDesc = "";
+        }
+        case (is Cave) {
+            brief = "caves nearby";
+            owner = "---";
+            longDesc = "";
+        }
+        case (is Portal) {
+            if (item.destinationCoordinates.valid) {
+                brief = "portal to world ``item.destinationWorld``";
+            } else {
+                brief = "portal to another world";
+            }
+            owner = "---"; // TODO: report owner?
+            longDesc = "";
+        }
+        case (is AdventureFixture) {
+            brief = item.briefDescription;
+            if (player == item.owner) {
+                owner = "You";
+            } else if (item.owner.independent) {
+                owner = "No-one";
+            } else {
+                owner = getOwnerString(player, item.owner);
+            }
+            longDesc = item.fullDescription;
+        }
+        else {
+            return false;
+        }
+        writeDelimitedField(ostream, distanceString(loc, hq));
+        writeDelimitedField(ostream, loc.string);
+        writeDelimitedField(ostream, brief);
+        writeDelimitedField(ostream, owner);
+        writeField(ostream, longDesc);
+        ostream.append(rowDelimiter);
+        return true;
+    }
+    "The header row for the table."
+    shared actual String headerRow() =>
+            """Distance,Location,"Brief Description","Claimed By","Long Description" """;
+    "Compare two Point-fixture pairs."
+    shared actual Integer comparePairs(Pair<Point, ExplorableFixture|TextFixture> one,
+            Pair<Point, ExplorableFixture|TextFixture> two) {
+        Integer cmp = DistanceComparator(hq).compare(one.first(), two.first());
+        if (cmp == 0) {
+            switch (one.second().string.compare(two.second().string))
+            case (equal) { return 0; }
+            case (smaller) { return -1; }
+            case (larger) { return 1; }
+        } else {
+            return cmp;
+        }
+    }
+    "Whether we can handle the given fixture."
+    shared actual Boolean applies(IFixture obj) => obj is ExplorableFixture|TextFixture;
+    "The types of objects we accept."
+    shared actual JClass<ExplorableFixture|TextFixture> type() =>
+            javaClass<ExplorableFixture|TextFixture>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "explorables";
 }

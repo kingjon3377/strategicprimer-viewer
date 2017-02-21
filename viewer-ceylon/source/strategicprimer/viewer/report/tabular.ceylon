@@ -19,12 +19,10 @@ import java.lang {
 import controller.map.report.tabular {
     ITableGenerator,
     UnitTabularReportGenerator,
-    AnimalTabularReportGenerator,
     VillageTabularReportGenerator,
     TownTabularReportGenerator,
     ResourceTabularReportGenerator,
-    ImmortalsTabularReportGenerator,
-    ExplorableTabularReportGenerator
+    ImmortalsTabularReportGenerator
 }
 "A method to produce tabular reports based on a map for a player."
 shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
