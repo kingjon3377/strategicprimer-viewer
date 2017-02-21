@@ -41,10 +41,10 @@ shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
     Player player = map.currentPlayer;
     Point hq = findHQ(map, player);
     /*{ITableGenerator<out Object>*}*/ value generators = {
-        ConstructorWrapper.fortressTabularReportGenerator(player, hq),
+        FortressTabularReportGenerator(player, hq),
         UnitTabularReportGenerator(player, hq),
         AnimalTabularReportGenerator(hq),
-        ConstructorWrapper.workerTabularReportGenerator(hq),
+        WorkerTabularReportGenerator(hq),
         VillageTabularReportGenerator(player, hq),
         TownTabularReportGenerator(player, hq),
         ConstructorWrapper.cropTabularReportGenerator(hq),

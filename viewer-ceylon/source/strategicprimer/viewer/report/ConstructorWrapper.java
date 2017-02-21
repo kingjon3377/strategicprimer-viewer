@@ -2,9 +2,6 @@ package strategicprimer.viewer.report;
 
 import controller.map.report.tabular.CropTabularReportGenerator;
 import controller.map.report.tabular.DiggableTabularReportGenerator;
-import controller.map.report.tabular.FortressTabularReportGenerator;
-import controller.map.report.tabular.WorkerTabularReportGenerator;
-import model.map.Player;
 import model.map.Point;
 
 /**
@@ -25,22 +22,6 @@ import model.map.Point;
  */
 @Deprecated
 public class ConstructorWrapper {
-	/**
-	 * Ceylon compiler thinks that FortressTabularReportGenerator doesn't have a public
-	 * constructor.
-	 */
-	public static FortressTabularReportGenerator fortressTabularReportGenerator(
-			final Player player, final Point hq) {
-		return new FortressTabularReportGenerator(player, hq);
-	}
-	/**
-	 * Ceylon compiler thinks that WorkerTabularReportGenerator doesn't have a public
-	 * constructor.
-	 */
-	public static WorkerTabularReportGenerator workerTabularReportGenerator(
-			final Point hq) {
-		return new WorkerTabularReportGenerator(hq);
-	}
 	/**
 	 * Ceylon compiler thinks that CropTabularReportGenerator doesn't have a public
 	 * constructor.
