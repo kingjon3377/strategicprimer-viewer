@@ -24,7 +24,9 @@ import model.map.fixtures.towns {
     Fortress
 }
 import lovelace.util.common {
-    todo
+    todo,
+    DelayedRemovalMap,
+    IntMap
 }
 import java.lang {
     JIterable=Iterable
@@ -69,8 +71,8 @@ Point findHQ(IMapNG map, Player player) {
 }
 "Create a mapping from ID numbers to Pairs of fixtures and their location for all fixtures
  in the map."
-PatientMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
-    PatientMap<Integer, [Point, IFixture]> retval = IntMap<[Point, IFixture]>();
+DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
+    DelayedRemovalMap<Integer, [Point, IFixture]> retval = IntMap<[Point, IFixture]>();
     IDRegistrar idf = IDFactoryFiller.createFactory(map);
     Integer checkID(IFixture fixture) {
         if (fixture.id < 0) {
@@ -106,7 +108,7 @@ PatientMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
 "Produces sub-reports, appending them to the buffer and calling coalesce() on the fixtures
  collection after each."
 void createSubReports(StringBuilder builder,
-        PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Player player,
+        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Player player,
         IReportGenerator<out Object>* generators) {
     for (generator in generators) {
         generator.produce(fixtures, map, builder.append);
@@ -122,7 +124,7 @@ shared String createReport(IMapNG map, Player player = map.currentPlayer) {
                       <head><title>Strategic Primer map summary report</title></head>
                       <body>
                       """);
-    PatientMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
+    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
         DistanceComparator(findHQ(map, player)),
         javaComparator(byIncreasing(IFixture.hash)));
@@ -139,7 +141,7 @@ shared String createReport(IMapNG map, Player player = map.currentPlayer) {
     builder.append("""</body>
                       </html>
                       """);
-    for ([loc, fixture] in fixtures.values()) {
+    for ([loc, fixture] in fixtures.items) {
         if (fixture.id < 0) {
             continue;
         } else if (is TerrainFixture fixture) {
@@ -158,11 +160,11 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
             <head><title>Strategic Primer map summary abridged report</title></head>
             <body>
             """);
-    PatientMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
+    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
         DistanceComparator(findHQ(map, player)),
         javaComparator(byIncreasing(IFixture.hash)));
-    for ([loc, fixture] in fixtures.values()) {
+    for ([loc, fixture] in fixtures.items) {
         if (is IUnit|Fortress fixture, fixture.owner == player) {
             fixtures.remove(fixture.id);
         }
@@ -181,7 +183,7 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
     builder.append("""</body>
                       </html>
                       """);
-    for ([loc, fixture] in fixtures.values()) {
+    for ([loc, fixture] in fixtures.items) {
         if (fixture.id < 0) {
             continue;
         } else if (is TerrainFixture fixture) {
@@ -195,7 +197,7 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
 "Produce sub-reports in report-intermediate-representation, adding them to the root node
  and calling coalesce() on the fixtures collection after each."
 void createSubReportsIR(IReportNode root,
-        PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Player player,
+        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Player player,
         IReportGenerator<out Object>* generators) {
     for (generator in generators) {
         root.add(generator.produceRIR(fixtures, map));
@@ -205,7 +207,7 @@ void createSubReportsIR(IReportNode root,
 "Create the report, in report-intermediate-representation, based on the given map."
 shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer) {
     IReportNode retval = RootReportNode("Strategic Primer map summary report");
-    PatientMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
+    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
         DistanceComparator(findHQ(map, player)),
         javaComparator(byIncreasing(IFixture.hash)));
@@ -225,11 +227,11 @@ shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer)
  intermediate representation."
 shared IReportNode createAbbreviatedReportIR(IMapNG map,
         Player player = map.currentPlayer) {
-    PatientMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
+    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
         DistanceComparator(findHQ(map, player)),
         javaComparator(byIncreasing(IFixture.hash)));
-    for ([loc, fixture] in fixtures.values()) {
+    for ([loc, fixture] in fixtures.items) {
         if (is IUnit|Fortress fixture, fixture.owner == player) {
             fixtures.remove(fixture.id);
         }

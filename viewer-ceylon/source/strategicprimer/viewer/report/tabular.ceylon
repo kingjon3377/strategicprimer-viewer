@@ -34,9 +34,9 @@ import controller.map.report.tabular {
 shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
     // TODO: Use Ceylon Integer and Tuples
     PatientMap<JInteger, Pair<Point, IFixture>> fixtures = IntMap<Pair<Point, IFixture>>();
-    for (entry in getFixtures(map).entrySet()) {
-        fixtures.put(JInteger(entry.key), Pair.\iof<Point, IFixture>(entry.\ivalue.first,
-            entry.\ivalue.rest.first));
+    for (key->val in getFixtures(map)) {
+        fixtures.put(JInteger(key), Pair.\iof<Point, IFixture>(val.first,
+            val.rest.first));
     }
     Player player = map.currentPlayer;
     Point hq = findHQ(map, player);
