@@ -27,11 +27,9 @@ import ceylon.file {
     parsePath,
     Nil
 }
-import controller.map.report.tabular {
-    TableReportGenerator
-}
 import strategicprimer.viewer.report {
-    createReport
+    createReport,
+    createTabularReports
 }
 "A driver to produce a report of the contents of a map."
 object reportCLI satisfies SimpleDriver {
@@ -110,7 +108,7 @@ object tabularReportCLI satisfies SimpleDriver {
             if (file.present) {
                 JPath mapFile = file.get();
                 try {
-                    TableReportGenerator.createReports(map, filenameFunction(mapFile));
+                    createTabularReports(map, filenameFunction(mapFile));
                 } catch (IOException|IOError except) {
                     throw DriverFailedException(except);
                 }

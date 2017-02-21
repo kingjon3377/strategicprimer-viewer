@@ -1,0 +1,70 @@
+import java.io {
+    JOutputStream=OutputStream, JPrintStream=PrintStream
+}
+import model.map {
+    IMapNG,
+    Point,
+    IFixture,
+    Player,
+    TerrainFixture
+}
+import util {
+    PatientMap,
+    Pair,
+    IntMap
+}
+import java.lang {
+    JInteger=Integer
+}
+import controller.map.report.tabular {
+    ITableGenerator,
+    FortressTabularReportGenerator,
+    UnitTabularReportGenerator,
+    AnimalTabularReportGenerator,
+    WorkerTabularReportGenerator,
+    VillageTabularReportGenerator,
+    TownTabularReportGenerator,
+    CropTabularReportGenerator,
+    DiggableTabularReportGenerator,
+    ResourceTabularReportGenerator,
+    ImmortalsTabularReportGenerator,
+    ExplorableTabularReportGenerator
+}
+"A method to produce tabular reports based on a map for a player."
+shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
+    // TODO: Use Ceylon Integer and Tuples
+    PatientMap<JInteger, Pair<Point, IFixture>> fixtures = IntMap<Pair<Point, IFixture>>();
+    for (entry in getFixtures(map).entrySet()) {
+        fixtures.put(JInteger(entry.key), Pair.\iof<Point, IFixture>(entry.\ivalue.first,
+            entry.\ivalue.rest.first));
+    }
+    Player player = map.currentPlayer;
+    Point hq = findHQ(map, player);
+    /*{ITableGenerator<out Object>*}*/ value generators = {
+        ConstructorWrapper.fortressTabularReportGenerator(player, hq),
+        UnitTabularReportGenerator(player, hq),
+        AnimalTabularReportGenerator(hq),
+        ConstructorWrapper.workerTabularReportGenerator(hq),
+        VillageTabularReportGenerator(player, hq),
+        TownTabularReportGenerator(player, hq),
+        ConstructorWrapper.cropTabularReportGenerator(hq),
+        ConstructorWrapper.diggableTabularReportGenerator(hq),
+        ResourceTabularReportGenerator(),
+        ImmortalsTabularReportGenerator(hq),
+        ExplorableTabularReportGenerator(player, hq)
+    };
+    for (generator in generators) {
+        assert (is ITableGenerator<out Object> generator);
+        try (ostream = JPrintStream(source(generator.tableName))) {
+            generator.produce(ostream, fixtures);
+        }
+        for (pair in fixtures.values()) {
+            IFixture fixture = pair.second();
+            if (is TerrainFixture fixture) {
+                fixtures.remove(JInteger(fixture.id));
+            } else {
+                process.writeLine("Unhandled fixture:   ``fixture``");
+            }
+        }
+    }
+}
