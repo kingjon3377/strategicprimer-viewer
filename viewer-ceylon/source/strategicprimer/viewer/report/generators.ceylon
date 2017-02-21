@@ -308,7 +308,8 @@ class TextReportGenerator(PairComparator<Point, IFixture> comp)
     "Produce the part of the report dealing with arbitrary-text notes. If an individual
      note is specified, this does *not* remove it from the collection, because this
      method doesn't know the synthetic ID # that was assigned to it."
-    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Anything(String) ostream, [TextFixture, Point]? entry) {
+    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, [TextFixture, Point]? entry) {
         if (exists entry) {
             TextFixture item = entry.first;
             Point loc = entry.rest.first;
@@ -350,15 +351,18 @@ class TextReportGenerator(PairComparator<Point, IFixture> comp)
      report intermediate representation. If an individual note is specified, this does
      *not* remove it from the collection, because this method doesn't know the synthetic
      ID # that was assigned to it."
-    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, [TextFixture, Point]? entry) {
+    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, [TextFixture, Point]? entry) {
         if (exists entry) {
             TextFixture item = entry.first;
             Point loc = entry.rest.first;
             if (item.turn>=0) {
-                return SimpleReportNode("At ``loc`` ``distCalculator.distanceString(loc)`` On turn ``item
+                return SimpleReportNode("At ``loc`` ``distCalculator
+                    .distanceString(loc)`` On turn ``item
                     .turn``: ``item.text``");
             } else {
-                return SimpleReportNode("At ``loc`` ``distCalculator.distanceString(loc)``: ``item.text``");
+                return SimpleReportNode("At ``loc`` ``distCalculator
+                    .distanceString(loc)``: ``item.text``");
             }
         } else {
             IReportNode retval = SectionListReportNode(4, "Miscellaneous Notes");
@@ -385,7 +389,8 @@ todo("Ensure that animal-tracks' synthetic IDs are used to remove them")
 class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
         extends AbstractReportGenerator<Animal>(comp) {
     "Produce the sub-report about animals or an individual Animal."
-    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Anything(String) ostream, [Animal, Point]? entry) {
+    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, [Animal, Point]? entry) {
         if (exists entry) {
             Animal item = entry.first;
             Point loc = entry.rest.first;
@@ -445,7 +450,8 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
         }
     }
     "Produce the sub-report about animals or an individual Animal."
-    shared actual IReportNode produceRIR(PatientMap<Integer,[Point,IFixture]> fixtures, IMapNG map, [Animal, Point]? entry) {
+    shared actual IReportNode produceRIR(PatientMap<Integer,[Point,IFixture]> fixtures,
+            IMapNG map, [Animal, Point]? entry) {
         if (exists entry) {
             Animal item = entry.first;
             Point loc = entry.rest.first;
@@ -524,7 +530,8 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
      in, handling it is delegated to its dedicated report-generating classes. The
      all-towns report omits fortresses and villages, and is sorted in a way that I hope
      is helpful. We remove the town(s) from the set of fixtures."
-    shared actual void produce(PatientMap<Integer,[Point, IFixture]> fixtures, IMapNG map, Anything(String) ostream, [ITownFixture, Point]? entry) {
+    shared actual void produce(PatientMap<Integer,[Point, IFixture]> fixtures, IMapNG map,
+            Anything(String) ostream, [ITownFixture, Point]? entry) {
         if (exists entry) {
             ITownFixture item = entry.first;
             Point loc = entry.rest.first;
@@ -538,11 +545,11 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                 fixtures.remove(item.id);
                 ostream("At ``loc``: ``item.name``, ");
                 if (item.owner.independent) {
-                    ostream(
-                        "an independent ``item.size()`` ``item.status()`` ``item.kind()``");
+                    ostream("an independent ``item.size()`` ``item.status()`` ``item
+                            .kind()``");
                 } else {
-                    ostream(
-                        "a ``item.size()`` ``item.status()`` allied with ``playerNameOrYou(
+                    ostream("a ``item.size()`` ``item
+                            .status()`` allied with ``playerNameOrYou(
                             item.owner)``");
                 }
                 ostream(" ``distCalculator.distanceString(loc)``");
@@ -584,7 +591,8 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
     "Produce a report for a town or towns. Handling of fortresses and villages passed as
      [[entry]] is delegated to their dedicated report-generating classes. We remove the
      town from the set of fixtures."
-    shared actual IReportNode produceRIR(PatientMap<Integer,[Point, IFixture]> fixtures, IMapNG map, [ITownFixture, Point]? entry) {
+    shared actual IReportNode produceRIR(PatientMap<Integer,[Point, IFixture]> fixtures,
+            IMapNG map, [ITownFixture, Point]? entry) {
         if (exists entry) {
             ITownFixture item = entry.first;
             Point loc = entry.rest.first;
@@ -603,19 +611,22 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                             .distanceString(loc)``");
                 } else {
                     return SimpleReportNode(loc,
-                        "At ``loc``: ``item.name``, a ``item.size()`` ``item.status()`` ``item
-                            .kind()`` allied with ``playerNameOrYou(item.owner)`` ``
-                            distCalculator.distanceString(loc)``");
+                        "At ``loc``: ``item.name``, a ``item.size()`` ``item
+                            .status()`` ``item.kind()`` allied with ``playerNameOrYou(
+                            item.owner)`` ``distCalculator.distanceString(loc)``");
                 }
             } else {
                 throw IllegalStateException("Unhandled ITownFixture subclass");
             }
         } else {
             Map<TownStatus, IReportNode> separated = HashMap<TownStatus, IReportNode> {
-                    *{TownStatus.abandoned -> SectionListReportNode(5, "Abandoned Communities"),
+                    *{TownStatus.abandoned -> SectionListReportNode(5,
+                            "Abandoned Communities"),
                         TownStatus.active->SectionListReportNode(5, "Active Communities"),
-                        TownStatus.burned->SectionListReportNode(5, "Burned-Out Communities"),
-                        TownStatus.ruined->SectionListReportNode(5, "Ruined Communities") }
+                        TownStatus.burned->SectionListReportNode(5,
+                            "Burned-Out Communities"),
+                        TownStatus.ruined->SectionListReportNode(5,
+                            "Ruined Communities") }
             };
             separateByStatus(separated, fixtures.values(),
                 (IReportNode node, pair) {
@@ -680,8 +691,8 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
         }
         value temp = rivers.filter((river) => river != River.lake);
         if (exists first = temp.first) {
-            formatter(
-                "<li>There is a river on the tile, flowing through the following borders: ");
+            formatter("<li>There is a river on the tile, ");
+            formatter("flowing through the following borders: ");
             formatter(first.description);
             for (river in temp.rest) {
                 formatter(", ``river.description``");
@@ -709,7 +720,8 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
     }
     "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
      this report are removed from the collection."
-    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Anything(String) ostream, [Fortress, Point]? entry) {
+    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, [Fortress, Point]? entry) {
         if (exists entry) {
             Fortress item = entry.first;
             Point loc = entry.rest.first;
@@ -761,7 +773,8 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
                            """);
                 for (implement in equipment) {
                     ostream("<li>");
-                    memberReportGenerator.produce(fixtures, map, ostream, [implement, loc]);
+                    memberReportGenerator.produce(fixtures, map, ostream, [implement,
+                        loc]);
                     ostream("""</li>
                                """);
                 }
@@ -777,7 +790,8 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
                              ");
                     for (pile in list) {
                         ostream("<li>");
-                        memberReportGenerator.produce(fixtures, map, ostream, [pile, loc]);
+                        memberReportGenerator.produce(fixtures, map, ostream, [pile,
+                            loc]);
                         ostream("""</li>
                                    """);
                     }
@@ -834,7 +848,8 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
     }
     "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
      this report are removed from the collection."
-    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, [Fortress, Point]? entry) {
+    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, [Fortress, Point]? entry) {
         if (exists entry) {
             Fortress item = entry.first;
             Point loc = entry.rest.first;
@@ -853,7 +868,8 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
                 if (is IUnit member) {
                     units.add(urg.produceRIR(fixtures, map, [member, loc]));
                 } else if (is Implement member) {
-                    equipment.add(memberReportGenerator.produceRIR(fixtures, map, [member, loc]));
+                    equipment.add(memberReportGenerator.produceRIR(fixtures, map, [member,
+                        loc]));
                 } else if (is ResourcePile member) {
                     IReportNode node;
                     if (exists temp = resourceKinds.get(member.kind)) {
@@ -862,9 +878,11 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
                         node = ListReportNode("``member.kind``:");
                         resourceKinds.put(member.kind, node);
                     }
-                    node.add(memberReportGenerator.produceRIR(fixtures, map, [member, loc]));
+                    node.add(memberReportGenerator.produceRIR(fixtures, map, [member,
+                        loc]));
                 } else {
-                    contents.add(memberReportGenerator.produceRIR(fixtures, map, [member, loc]));
+                    contents.add(memberReportGenerator.produceRIR(fixtures, map, [member,
+                        loc]));
                 }
             }
             for (node in resourceKinds.items) {
@@ -996,7 +1014,8 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
             formatter("""Orders and Results:<ul>
                          """);
             for (turn in CeylonSet(item.allOrders.keySet())
-                    .union(CeylonSet(item.allResults.keySet())).map((val) => val.intValue())
+                    .union(CeylonSet(item.allResults.keySet())).map((val) =>
+                        val.intValue())
                     .sort((x, y) => x <=> y)) {
                 formatter("<li>Turn ``turn``:<ul>
                            ");
@@ -1019,7 +1038,8 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
     "Produce a sub-sub-report on a unit (we assume we're already in the middle of a
      paragraph or bullet point), or the part of the report on all units not covered
      as part of fortresses."
-    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Anything(String) ostream, [IUnit, Point]? entry) {
+    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, [IUnit, Point]? entry) {
         if (exists entry) {
             IUnit item = entry.first;
             Point loc = entry.rest.first;
@@ -1034,7 +1054,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                 MutableList<Implement> equipment = ArrayList<Implement>();
                 // TODO: separate out by kind?
                 MutableList<ResourcePile> resources = ArrayList<ResourcePile>();
-                // TODO: condense like animals somehow ("2 tame donkeys, 3 wild sheep, etc.")
+                // TODO: condense like animals somehow ("2 tame donkeys, 3 wild sheep")
                 MutableList<Animal> animals = ArrayList<Animal>();
                 MutableList<UnitMember> others = ArrayList<UnitMember>();
                 for (member in item) {
@@ -1053,8 +1073,8 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                 ostream(""". Members of the unit:
                            <ul>
                            """);
-                void produceInner<T>(String heading, List<T> collection, Anything(T) generator)
-                        given T satisfies UnitMember {
+                void produceInner<T>(String heading, List<T> collection,
+                        Anything(T) generator) given T satisfies UnitMember {
                     if (!collection.empty) {
                         ostream("<li>``heading``:
                                  <ul>
@@ -1075,10 +1095,10 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                     item.owner == currentPlayer, ostream));
                 produceInner<Animal>("Animals", animals, (animal) => animalReportGenerator
                     .produce(fixtures, map, ostream, [animal, loc]));
-                produceInner<Implement>("Equipment", equipment, (member) => memberReportGenerator
-                    .produce(fixtures, map, ostream, [member, loc]));
-                produceInner<ResourcePile>("Resources", resources, (member) => memberReportGenerator
-                    .produce(fixtures, map, ostream, [member, loc]));
+                produceInner<Implement>("Equipment", equipment, (member) =>
+                    memberReportGenerator.produce(fixtures, map, ostream, [member, loc]));
+                produceInner<ResourcePile>("Resources", resources, (member) =>
+                    memberReportGenerator.produce(fixtures, map, ostream, [member, loc]));
                 produceInner<UnitMember>("Others", others, (obj) => ostream(obj.string));
                 ostream("""</ul>
                            """);
@@ -1120,7 +1140,8 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
     "Produce a sub-sub-report on a unit (we assume we're already in the middle of a
      paragraph or bullet point), or the part of the report dealing with all units not
      already covered."
-    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, [IUnit, Point]? entry) {
+    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, [IUnit, Point]? entry) {
         if (exists entry) {
             IUnit item = entry.first;
             Point loc = entry.rest.first;
@@ -1141,14 +1162,17 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
             IReportNode retval = ListReportNode(loc, "``base`` Members of the unit:");
             for (member in item) {
                 if (is IWorker member) {
-                    workers.add(produceWorkerRIR(loc, member, currentPlayer == item.owner));
+                    workers.add(produceWorkerRIR(loc, member,
+                        currentPlayer == item.owner));
                 } else if (is Animal member) {
                     animals.add(animalReportGenerator
                         .produceRIR(fixtures, map, [member, loc]));
                 } else if (is Implement member) {
-                    equipment.add(memberReportGenerator.produceRIR(fixtures, map, [member, loc]));
+                    equipment.add(memberReportGenerator.produceRIR(fixtures, map, [member,
+                        loc]));
                 } else if (is ResourcePile member) {
-                    resources.add(memberReportGenerator.produceRIR(fixtures, map, [member, loc]));
+                    resources.add(memberReportGenerator.produceRIR(fixtures, map, [member,
+                        loc]));
                 } else {
                     others.add(SimpleReportNode(loc, member.string));
                 }
@@ -1157,7 +1181,8 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
             retval.addIfNonEmpty(workers, animals, equipment, resources, others);
             ListReportNode ordersNode = ListReportNode("Orders and Results:");
             for (turn in CeylonSet(item.allOrders.keySet())
-                    .union(CeylonSet(item.allResults.keySet())).map((val) => val.intValue())
+                    .union(CeylonSet(item.allResults.keySet())).map((val) =>
+                        val.intValue())
                     .sort((x, y) => x <=> y)) {
                 ListReportNode current = ListReportNode("Turn ``turn``:");
                 if (exists orders = item.getOrders(turn)) {
@@ -1218,26 +1243,30 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
     }
 }
 "A report generator for equipment and resources."
-class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp, Player currentPlayer)
-        extends AbstractReportGenerator<FortressMember>(comp) {
+class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp,
+        Player currentPlayer) extends AbstractReportGenerator<FortressMember>(comp) {
     "Produces a sub-report on a resource or piece of equipment, or on all fortress
      members. All fixtures referred to in this report are removed from the collection.
      This method should probably never actually be called and do anything without an
      [[entry]], since nearly all resources will be in fortresses and should be reported
      as such, but we'll handle this properly anyway."
-    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Anything(String) ostream, [FortressMember, Point]? entry) {
+    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, [FortressMember, Point]? entry) {
         if (exists entry) {
             FortressMember item = entry.first;
             Point loc = entry.rest.first;
             if (is IUnit item) {
-                UnitReportGenerator(pairComparator, currentPlayer).produce(fixtures, map, ostream, [item, loc]);
+                UnitReportGenerator(pairComparator, currentPlayer).produce(fixtures, map,
+                    ostream, [item, loc]);
             } else if (is ResourcePile item) {
                 fixtures.remove(item.id);
                 if (item.quantity.units.empty) {
-                    ostream("A pile of ``item.quantity`` ``item.contents`` (``item.kind``)");
+                    ostream("A pile of ``item.quantity`` ``item.contents`` (``item
+                        .kind``)");
                 } else {
                     ostream(
-                        "A pile of ``item.quantity`` of ``item.contents`` (``item.kind``)");
+                        "A pile of ``item.quantity`` of ``item.contents`` (``item
+                            .kind``)");
                 }
                 if (item.created >= 0) {
                     ostream(" from turn ``item.created``");
@@ -1262,7 +1291,8 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp, Player
                         &MutableMap<ResourcePile, Point>>();
             for ([loc, item] in values) {
                 if (is ResourcePile resource = item) {
-                    HeadedMap<ResourcePile, Point>&MutableMap<ResourcePile, Point> pileMap;
+                    HeadedMap<ResourcePile, Point>&
+                        MutableMap<ResourcePile, Point> pileMap;
                     if (exists temp = resources.get(resource.kind)) {
                         pileMap = temp;
                     } else {
@@ -1315,7 +1345,8 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp, Player
      This method should probably never actually be called and do anything without an
      [[entry]], since nearly all resources will be in fortresses and should be reported
      as such, but we'll handle this properly anyway."
-    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, [FortressMember, Point]? entry) {
+    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, [FortressMember, Point]? entry) {
         if (exists entry) {
             FortressMember item = entry.first;
             Point loc = entry.rest.first;
@@ -1349,7 +1380,8 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp, Player
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *CeylonCollection(fixtures.values())
                         .sort(pairComparator.compare) };
-            MutableMap<String, IReportNode> resourceKinds = HashMap<String, IReportNode>();
+            MutableMap<String, IReportNode> resourceKinds =
+                    HashMap<String, IReportNode>();
             IReportNode equipment = ListReportNode("Equipment:");
             for ([loc, item] in values) {
                 if (is ResourcePile resource = item) {
@@ -1384,11 +1416,13 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp, Player
 }
 "A report generator for caves, battlefields, adventure hooks, and portals."
 todo("Use union type instead of interface, here and elsewhere")
-class ExplorableReportGenerator(PairComparator<Point, IFixture> comp, Player currentPlayer)
+class ExplorableReportGenerator(PairComparator<Point, IFixture> comp,
+        Player currentPlayer)
         extends AbstractReportGenerator<ExplorableFixture>(comp) {
     "Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
      hook, or the report on all such."
-    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Anything(String) ostream, [ExplorableFixture, Point]? entry) {
+    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, [ExplorableFixture, Point]? entry) {
         if (exists entry) {
             ExplorableFixture item = entry.first;
             Point loc = entry.rest.first;
@@ -1427,7 +1461,8 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp, Player cur
             MutableList<Point> battles = PointList(
                 "Signs of long-ago battles on the following tiles:");
             MutableList<Point> caves = PointList("Caves beneath the following tiles: ");
-            HeadedMap<AdventureFixture, Point>&MutableMap<AdventureFixture, Point> adventures =
+            HeadedMap<AdventureFixture, Point>&
+                MutableMap<AdventureFixture, Point> adventures =
                     HeadedMapImpl<AdventureFixture, Point>(
                         "<h4>Possible Adventures</h4>");
             Map<Type<IFixture>, Anything([Point, IFixture])> collectors =
@@ -1456,12 +1491,14 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp, Player cur
                          ");
             }
             writeMap(ostream, adventures,
-                (AdventureFixture key->Point val, formatter) => produce(fixtures, map, formatter, [key, val]));
+                (AdventureFixture key->Point val, formatter) => produce(fixtures, map,
+                    formatter, [key, val]));
         }
     }
     "Produces a more verbose sub-report on a cave or battlefield, or the report section on
      all such."
-    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, [ExplorableFixture, Point]? entry) {
+    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, [ExplorableFixture, Point]? entry) {
         if (exists entry) {
             ExplorableFixture item = entry.first;
             Point loc = entry.rest.first;
@@ -1489,7 +1526,8 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp, Player cur
                     return SimpleReportNode(loc,
                         "``item.briefDescription`` at ``loc``: ``item
                             .fullDescription`` ``distCalculator
-                            .distanceString(loc)`` (already investigated by another player)");
+                            .distanceString(
+                            loc)`` (already investigated by another player)");
                 }
             } else if (is Portal item) {
                 fixtures.remove(item.id);
@@ -1507,7 +1545,8 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp, Player cur
             IReportNode battles = ListReportNode("Battlefields");
             IReportNode caves = ListReportNode("Caves");
             IReportNode adventures = SectionListReportNode(4, "Possible Adventures");
-            Map<Type<IFixture>, IReportNode> nodes = HashMap<Type<IFixture>, IReportNode> {
+            Map<Type<IFixture>, IReportNode> nodes =
+                    HashMap<Type<IFixture>, IReportNode> {
                 entries = { `Portal`->portals, `Battlefield`->battles, `Cave`->caves,
                     `AdventureFixture`->adventures };
             };
@@ -1517,7 +1556,8 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp, Player cur
                     node.add(produceRIR(fixtures, map, [fixture, loc]));
                 }
             }
-            IReportNode retval = SectionListReportNode(4, "Caves, Battlefields, and Portals");
+            IReportNode retval = SectionListReportNode(4,
+                "Caves, Battlefields, and Portals");
             retval.addIfNonEmpty(caves, battles, portals);
             if (retval.childCount == 0) {
                 if (adventures.childCount == 0) {
@@ -1545,40 +1585,45 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
             String heading) {
         return HtmlList(heading, map.items.map(Object.string).sort(increasing));
     }
-    """Produce the sub-report(s) dealing with "harvestable" fixture(s). All fixtures referred
-       to in this report are to be removed from the collection. Caves and battlefields,
-       though HarvestableFixtures, are presumed to have been handled already.""""
-    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Anything(String) ostream, [HarvestableFixture, Point]? entry) {
+    """Produce the sub-report(s) dealing with "harvestable" fixture(s). All fixtures
+       referred to in this report are to be removed from the collection. Caves and
+       battlefields, though HarvestableFixtures, are presumed to have been handled
+       already.""""
+    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, [HarvestableFixture, Point]? entry) {
         if (exists entry) {
             HarvestableFixture item = entry.first;
             Point loc = entry.rest.first;
             // TODO: convert to switch statement?
             if (is CacheFixture item) {
                         ostream("At ``loc``: ``distCalculator
-                            .distanceString(loc)``A cache of ``item.kind``, containing ``item
-                            .contents``");
+                            .distanceString(loc)``A cache of ``item
+                            .kind``, containing ``item.contents``");
                     } else if (is Grove item) {
                         ostream("At ``loc``: ``(item.cultivated) then "cultivated" else
                             "wild"`` ``item.kind`` ``(item.orchard) then "orchard" else
                             "grove"`` ``distCalculator.distanceString(loc)``");
                     } else if (is Meadow item) {
                         ostream("At ``loc``: ``item.status`` ``(item.cultivated) then
-                            "cultivated" else "wild or abandoned"`` ``item.kind`` ``(item.field) then
-                            "field" else "meadow"`` ``distCalculator.distanceString(loc)``");
+                            "cultivated" else "wild or abandoned"`` ``item.kind`` ``(item
+                            .field) then "field" else "meadow"`` ``distCalculator
+                            .distanceString(loc)``");
                     } else if (is Mine item) {
-                        ostream("At ``loc``: ``item`` ``distCalculator.distanceString(loc)``");
+                        ostream("At ``loc``: ``item`` ``distCalculator
+                            .distanceString(loc)``");
                     } else if (is MineralVein item) {
                         ostream("At ``loc``: An ``(item.exposed) then
-                            "exposed" else "unexposed"`` vein of ``item.kind`` ``distCalculator
-                            .distanceString(loc)``");
+                            "exposed" else "unexposed"`` vein of ``item
+                            .kind`` ``distCalculator.distanceString(loc)``");
                     } else if (is Shrub item) {
                         ostream("At ``loc``: ``item.kind`` ``distCalculator
                             .distanceString(loc)``");
                     } else if (is StoneDeposit item) {
-                        ostream("At ``loc``: An exposed ``item.kind`` deposit ``distCalculator
-                            .distanceString(loc)``");
+                        ostream("At ``loc``: An exposed ``item
+                            .kind`` deposit ``distCalculator.distanceString(loc)``");
                     } else {
-                        throw IllegalArgumentException("Unexpected HarvestableFixture type");
+                        throw IllegalArgumentException(
+                            "Unexpected HarvestableFixture type");
                     }
         } else {
             MutableList<[Point, IFixture]> values =
@@ -1590,17 +1635,21 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                     HashMap<String, MutableList<Point>>();
             MutableMap<String, MutableList<Point>> minerals =
                     HashMap<String, MutableList<Point>>();
-            HeadedMap<Mine, Point>&MutableMap<Mine, Point> mines = HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
+            HeadedMap<Mine, Point>&MutableMap<Mine, Point> mines =
+                    HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
                 comparing(byIncreasing(Mine.kind),
-                    byIncreasing((Mine mine) => mine.status.ordinal()), byIncreasing(Mine.id)));
-            HeadedMap<Meadow, Point>&MutableMap<Meadow, Point> meadows = HeadedMapImpl<Meadow, Point>(
+                    byIncreasing((Mine mine) => mine.status.ordinal()),
+                    byIncreasing(Mine.id)));
+            HeadedMap<Meadow, Point>&MutableMap<Meadow, Point> meadows =
+                    HeadedMapImpl<Meadow, Point>(
                 "<h5>Meadows and Fields</h5>", comparing(byIncreasing(Meadow.kind),
                     byIncreasing((Meadow meadow) => meadow.status.ordinal()),
                     byIncreasing(Meadow.id)));
-            HeadedMap<Grove, Point>&MutableMap<Grove, Point> groves = HeadedMapImpl<Grove, Point>(
-                "<h5>Groves and Orchards</h5>", comparing(byIncreasing(Grove.kind),
-                    byIncreasing(Grove.id)));
-            HeadedMap<CacheFixture, Point>&MutableMap<CacheFixture, Point> caches = HeadedMapImpl<CacheFixture, Point>(
+            HeadedMap<Grove, Point>&MutableMap<Grove, Point> groves =
+                    HeadedMapImpl<Grove, Point>("<h5>Groves and Orchards</h5>",
+                        comparing(byIncreasing(Grove.kind), byIncreasing(Grove.id)));
+            HeadedMap<CacheFixture, Point>&MutableMap<CacheFixture, Point> caches =
+                    HeadedMapImpl<CacheFixture, Point>(
                 "<h5>Caches collected by your explorers and workers:</h5>",
                 comparing(byIncreasing(CacheFixture.kind),
                     byIncreasing(CacheFixture.contents), byIncreasing(CacheFixture.id)));
@@ -1670,10 +1719,10 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                         ostream("""</ul>
                                """);
                     }
-                    //                writeMap(ostream, mapping,
-                    //                    (JMap.Entry<out HarvestableFixture, Point> entry, formatter) =>
-                    //                        produce(fixtures, map, currentPlayer, entry.key, entry.\ivalue,
-                    //                            formatter));
+                    //writeMap(ostream, mapping,
+                    //  (JMap.Entry<out HarvestableFixture, Point> entry, formatter) =>
+                    //     produce(fixtures, map, currentPlayer, entry.key, entry.\ivalue,
+                    //          formatter));
                 }
                 for (list in all) {
                     ostream(list.string);
@@ -1683,7 +1732,8 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
     }
     """Produce the sub-report(s) dealing with "harvestable" fixture(s). All fixtures
        referred to in this report are to be removed from the collection."""
-    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, [HarvestableFixture, Point]? entry) {
+    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, [HarvestableFixture, Point]? entry) {
         if (exists entry) {
             HarvestableFixture item = entry.first;
             Point loc = entry.rest.first;
@@ -1694,8 +1744,9 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                     .contents``");
             } else if (is Grove item) {
                 retval = SimpleReportNode(loc, "At ``loc``: A ``(item.cultivated) then
-                    "cultivated" else "wild"`` ``item.kind`` ``(item.orchard) then "orchard"
-                    else "grove"`` ``distCalculator.distanceString(loc)``");
+                    "cultivated" else "wild"`` ``item.kind`` ``(item
+                    .orchard) then "orchard" else "grove"`` ``distCalculator
+                    .distanceString(loc)``");
             } else if (is Meadow item) {
                 retval = SimpleReportNode(loc, "At ``loc``: A ``item.status`` ``(item
                     .cultivated) then "cultivated" else "wild or abandoned"`` ``item
@@ -1705,9 +1756,9 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                 retval = SimpleReportNode(loc, "At ``loc``: ``item`` ``distCalculator
                     .distanceString(loc)``");
             } else if (is MineralVein item) {
-                retval = SimpleReportNode(loc, "At ``loc``: An ``(item.exposed) then "exposed"
-                    else "unexposed"`` vein of ``item.kind`` ``distCalculator
-                    .distanceString(loc)``");
+                retval = SimpleReportNode(loc, "At ``loc``: An ``(item
+                    .exposed) then "exposed" else "unexposed"`` vein of ``item
+                    .kind`` ``distCalculator.distanceString(loc)``");
             } else if (is Shrub item) {
                 retval = SimpleReportNode(loc, "At ``loc``: ``item.kind`` ``distCalculator
                     .distanceString(loc)``");
@@ -1780,7 +1831,8 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
             for (node in minerals.items) {
                 mineralsNode.add(node);
             }
-            IReportNode stoneNode = SortedSectionListReportNode(5, "Exposed Stone Deposits");
+            IReportNode stoneNode = SortedSectionListReportNode(5,
+                "Exposed Stone Deposits");
             for (node in stone.items) {
                 stoneNode.add(node);
             }
@@ -1801,7 +1853,8 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
     "Produce the (very brief) report for a particular village (we're probably in the
      middle of a bulleted list, but we don't assume that), or the report on all known
      villages."
-    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Anything(String) ostream, [Village, Point]? entry) {
+    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, [Village, Point]? entry) {
         if (exists entry) {
             Village item = entry.first;
             Point loc = entry.rest.first;
@@ -1822,9 +1875,11 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
             value villageComparator = comparing(byIncreasing(Village.name),
                 byIncreasing(Village.race), byIncreasing(Village.id));
             // TODO: sort by distance somehow?
-            HeadedMap<Village, Point>&MutableMap<Village, Point> own = HeadedMapImpl<Village, Point>(
+            HeadedMap<Village, Point>&MutableMap<Village, Point> own =
+                    HeadedMapImpl<Village, Point>(
                 "<h4>Villages pledged to your service:</h4>", villageComparator);
-            HeadedMap<Village, Point>&MutableMap<Village, Point> independents = HeadedMapImpl<Village, Point>(
+            HeadedMap<Village, Point>&MutableMap<Village, Point> independents =
+                    HeadedMapImpl<Village, Point>(
                 "<h4>Villages you think are independent:</h4>", villageComparator);
             MutableMap<Player, HeadedMap<Village, Point>
                         &MutableMap<Village, Point>> others =
@@ -1867,7 +1922,8 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
     }
     "Produce the (very brief) report for a particular village, or the report on all
      known villages."
-    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, [Village, Point]? entry) {
+    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, [Village, Point]? entry) {
         if (exists entry) {
             Village item = entry.first;
             Point loc = entry.rest.first;
@@ -1877,7 +1933,8 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
                     .race`` village, independent ``distCalculator.distanceString(loc)``");
             } else if (item.owner == currentPlayer) {
                 return SimpleReportNode(loc, "At ``loc``: ``item.name``, a(n) ``item
-                    .race`` village, sworn to you ``distCalculator.distanceString(loc)``");
+                    .race`` village, sworn to you ``distCalculator
+                    .distanceString(loc)``");
             } else {
                 return SimpleReportNode(loc, "At ``loc``: ``item.name``, a(n) ``item
                     .race`` village, sworn to ``item.owner`` ``distCalculator
@@ -1887,7 +1944,8 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *CeylonCollection(fixtures.values())
                         .sort(pairComparator.compare) };
-            IReportNode own = SectionListReportNode(5, "Villages pledged to your service:");
+            IReportNode own = SectionListReportNode(5,
+                "Villages pledged to your service:");
             IReportNode independents =
                     SectionListReportNode(5, "Villages you think are independent:");
             MutableMap<Player, IReportNode> othersMap = HashMap<Player, IReportNode>();
@@ -1908,7 +1966,8 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
                     parent.add(produceRIR(fixtures, map, [village, loc]));
                 }
             }
-            IReportNode others = SectionListReportNode(5, "Other villages you know about:");
+            IReportNode others = SectionListReportNode(5,
+                "Other villages you know about:");
             others.addIfNonEmpty(*othersMap.items);
             IReportNode retval = SectionReportNode(4, "Villages:");
             retval.addIfNonEmpty(own, independents, others);
@@ -1924,7 +1983,8 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
 class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
         extends AbstractReportGenerator<Immortal>(comp) {
     "Produce a report on an individual immortal, or on all immortals."
-    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Anything(String) ostream, [Immortal, Point]? entry) {
+    shared actual void produce(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, [Immortal, Point]? entry) {
         if (exists entry) {
             Immortal item = entry.first;
             Point loc = entry.rest.first;
@@ -1990,7 +2050,8 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
     }
     "Produce a report node on an individual immortal, or the intermediate-representation
      report on all immortals."
-    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, [Immortal, Point]? entry) {
+    shared actual IReportNode produceRIR(PatientMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, [Immortal, Point]? entry) {
         if (exists entry) {
             Immortal item = entry.first;
             Point loc = entry.rest.first;
@@ -2007,10 +2068,11 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
             MutableMap<String, IReportNode> giants = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> fairies = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> dragons = HashMap<String, IReportNode>();
-            IReportNode separateByKind(MutableMap<String, IReportNode> mapping, Immortal item) {
-                // For the classes we deal with here, we don't want just the kind, we want the
-                // full `string`, so we use that instead of specifying HasKind and using
-                // `kind`.
+            IReportNode separateByKind(MutableMap<String, IReportNode> mapping,
+                    Immortal item) {
+                // For the classes we deal with here, we don't want just the kind, we want
+                // the full `string`, so we use that instead of specifying HasKind and
+                // using `kind`.
                 if (exists node = mapping.get(item.string)) {
                     return node;
                 } else {
