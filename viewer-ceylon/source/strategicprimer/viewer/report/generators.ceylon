@@ -196,8 +196,7 @@ interface IReportGenerator<T> given T satisfies IFixture {
 "An abstract superclass for classes that generate reports for particular kinds of SP
  objects. It's mostly interface and helper methods, but contains a couple of bits of
  shared state."
-todo("Take current player as constructor parameter instead of method parameter",
-    "Make as many methods static as possible")
+todo("Make as many methods static as possible")
 abstract class AbstractReportGenerator<T>(
         shared PairComparator<Point, IFixture> pairComparator)
         satisfies IReportGenerator<T> given T satisfies IFixture {
@@ -271,7 +270,6 @@ abstract class AbstractReportGenerator<T>(
     deprecated shared MutableList<Point> pointsListAt(String desc) =>
             PointList("``desc``: at ");
     "An implementation of HeadedMap."
-    todo("Switch to Ceylon collections interfaces")
     shared class HeadedMapImpl<Key, Value>(shared actual String header,
             Comparison(Key, Key)? comparator = null, {<Key->Value>*} initial = {})
             satisfies IReportGenerator<T>.HeadedMap<Key, Value>&MutableMap<Key, Value>
