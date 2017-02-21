@@ -8,10 +8,13 @@ import model.map {
     Player,
     Point,
     IFixture,
-    DistanceComparator
+    DistanceComparator,
+    TileFixture,
+    HasKind
 }
 import java.lang {
-    JAppendable=Appendable, JInteger=Integer, JClass=Class
+    JAppendable=Appendable, JInteger=Integer, JClass=Class,
+    IllegalArgumentException
 }
 import util {
     PatientMap,
@@ -28,6 +31,31 @@ import model.map.fixtures.mobile {
 }
 import model.map.fixtures.mobile.worker {
     WorkerStats
+}
+import lovelace.util.common {
+    todo
+}
+import model.map.fixtures.resources {
+    Grove,
+    Meadow,
+    Shrub,
+    Mine,
+    StoneDeposit,
+    MineralVein
+}
+import model.map.fixtures.terrain {
+    Forest
+}
+import lovelace.util.jvm {
+    javaComparator,
+    ceylonComparator
+}
+import ceylon.language.meta {
+    typeOf=type
+}
+import model.map.fixtures {
+    MineralFixture,
+    Ground
 }
 "A tabular report generator for fortresses."
 class FortressTabularReportGenerator(Player player, Point hq)
@@ -86,6 +114,8 @@ class FortressTabularReportGenerator(Player player, Point hq)
     shared actual JClass<Fortress> type() => javaClass<Fortress>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "fortresses";
+    "Whether we can handle the given fixture."
+    shared actual Boolean applies(IFixture obj) => obj is Fortress;
 }
 "A report generator for workers. We do not cover Jobs or Skills; see the main report for
  that."
@@ -137,4 +167,152 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
     shared actual JClass<IWorker> type() => javaClass<IWorker>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "workers";
+    "Whether we can handle the given fixture."
+    shared actual Boolean applies(IFixture obj) => obj is IWorker;
+}
+"A tabular report generator for crops---forests, groves, orchards, fields, meadows, and
+ shrubs"
+todo("Take a union type instead of the too-broad supertype")
+class CropTabularReportGenerator(Point hq) satisfies ITableGenerator<TileFixture> {
+    "Whether we can handle the given fixture."
+    shared actual Boolean applies(IFixture obj) => obj is Forest|Shrub|Meadow|Grove;
+    "Produce the report line for a fixture."
+    shared actual Boolean produce(JAppendable ostream,
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, TileFixture item,
+            Point loc) {
+        String kind;
+        String cultivation;
+        String status;
+        String crop; // TODO: Once we use a union type, assign this here
+        if (is Forest item) {
+            kind = (item.rows) then "rows" else "forest";
+            cultivation = "---";
+            status = "---";
+            crop = item.kind;
+        } else if (is Shrub item) {
+            kind = "shrub";
+            cultivation = "---";
+            status = "---";
+            crop = item.kind;
+        } else if (is Meadow item) {
+            kind = (item.field) then "field" else "meadow";
+            cultivation = (item.cultivated) then "cultivated" else "wild";
+            status = item.status.string;
+            crop = item.kind;
+        } else if (is Grove item) {
+            kind = (item.orchard) then "orchard" else "grove";
+            cultivation = (item.cultivated) then "cultivated" else "wild";
+            status = "---";
+            crop = item.kind;
+        } else {
+            return false;
+        }
+        writeDelimitedField(ostream, distanceString(loc, hq));
+        writeDelimitedField(ostream, loc.string);
+        writeDelimitedField(ostream, kind);
+        writeDelimitedField(ostream, cultivation);
+        writeDelimitedField(ostream, status);
+        writeField(ostream, crop);
+        ostream.append(rowDelimiter);
+        return true;
+    }
+    "The header row for the table."
+    shared actual String headerRow() => "Distance,Location,Kind,Cultivation,Status,Crop";
+    "Compare two Point-fixture pairs."
+    shared actual Integer comparePairs(Pair<Point, TileFixture> one,
+            Pair<Point, TileFixture> two) {
+        TileFixture first = one.second();
+        TileFixture second = two.second();
+        if (!applies(first) || !applies(second)) { // TODO: omit once union type parameter
+            throw IllegalArgumentException("Unhandleable argument");
+        }
+        assert (is HasKind first, is HasKind second);
+        Comparison cropCmp = first.kind.compare(second.kind);
+        switch (cropCmp)
+        case (equal) {
+            Integer cmp = DistanceComparator(hq).compare(one.first(), two.first());
+            if (cmp == 0) {
+                return javaComparator(comparing(byIncreasing<TileFixture, Integer>(
+                        (fix) => typeOf(fix).hash), byIncreasing(TileFixture.hash)))
+                    .compare(first, second);
+            } else {
+                return cmp;
+            }
+        }
+        case (larger) { return 1; }
+        case (smaller) { return -1; }
+    }
+    "The type of objects we accept."
+    shared actual JClass<TileFixture> type() => javaClass<TileFixture>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "crops";
+}
+"A tabular report generator for resources that can be mined---mines, mineral veins, stone
+ deposits, and Ground."
+class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<MineralFixture> {
+    "Whether we can handle the given fixture."
+    shared actual Boolean applies(IFixture obj) => obj is MineralFixture;
+    "Produce the report line for a fixture."
+    shared actual Boolean produce(JAppendable ostream,
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, MineralFixture item,
+            Point loc) {
+        String classField;
+        String statusField;
+        switch (item)
+        case (is Ground) {
+            classField = "ground";
+            statusField = (item.exposed) then "exposed" else "not exposed";
+        }
+        case (is Mine) {
+            classField = "mine";
+            statusField = item.status.string;
+        }
+        case (is StoneDeposit ) {
+            classField = "deposit";
+            statusField = "exposed";
+        }
+        case (is MineralVein) {
+            classField = "vein";
+            statusField = (item.exposed) then "exposed" else "not exposed";
+        }
+        else {
+            return false;
+        }
+        writeDelimitedField(ostream, distanceString(loc, hq));
+        writeDelimitedField(ostream, loc.string);
+        writeDelimitedField(ostream, classField);
+        writeDelimitedField(ostream, item.kind);
+        writeField(ostream, statusField);
+        ostream.append(rowDelimiter);
+        return true;
+    }
+    "The header row for the table."
+    shared actual String headerRow() => "Distance,Location,Kind,Product,Status";
+    "Compare two Point-fixture pairs."
+    shared actual Integer comparePairs(Pair<Point, MineralFixture> one,
+            Pair<Point, MineralFixture> two) {
+        JComparator<Point> distComparator = DistanceComparator(hq);
+        Comparison distCompare(Pair<Point, MineralFixture> first, Pair<Point, MineralFixture> second) {
+            Integer temp = distComparator.compare(first.first(), second.first());
+            if (temp < 0) {
+                return smaller;
+            } else if (temp == 0) {
+                return equal;
+            } else {
+                return larger;
+            }
+        }
+        String kindExtractor(Pair<Point, MineralFixture> pair) {
+            return pair.second().kind;
+        }
+        Integer hashExtractor(Pair<Point, MineralFixture> pair) {
+            return pair.second().hash;
+        }
+        return javaComparator(comparing(byIncreasing(kindExtractor), distCompare,
+            byIncreasing(hashExtractor))).compare(one, two);
+    }
+    "The type of objects we accept."
+    shared actual JClass<MineralFixture> type() => javaClass<MineralFixture>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "minerals";
 }

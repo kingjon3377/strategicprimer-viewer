@@ -18,14 +18,10 @@ import java.lang {
 }
 import controller.map.report.tabular {
     ITableGenerator,
-    FortressTabularReportGenerator,
     UnitTabularReportGenerator,
     AnimalTabularReportGenerator,
-    WorkerTabularReportGenerator,
     VillageTabularReportGenerator,
     TownTabularReportGenerator,
-    CropTabularReportGenerator,
-    DiggableTabularReportGenerator,
     ResourceTabularReportGenerator,
     ImmortalsTabularReportGenerator,
     ExplorableTabularReportGenerator
@@ -47,8 +43,8 @@ shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
         WorkerTabularReportGenerator(hq),
         VillageTabularReportGenerator(player, hq),
         TownTabularReportGenerator(player, hq),
-        ConstructorWrapper.cropTabularReportGenerator(hq),
-        ConstructorWrapper.diggableTabularReportGenerator(hq),
+        CropTabularReportGenerator(hq),
+        DiggableTabularReportGenerator(hq),
         ResourceTabularReportGenerator(),
         ImmortalsTabularReportGenerator(hq),
         ExplorableTabularReportGenerator(player, hq)
