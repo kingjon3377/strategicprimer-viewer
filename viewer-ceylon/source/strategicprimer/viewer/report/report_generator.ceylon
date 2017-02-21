@@ -109,7 +109,7 @@ void createSubReports(StringBuilder builder,
         PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Player player,
         IReportGenerator<out Object>* generators) {
     for (generator in generators) {
-        generator.produce(fixtures, map, player, builder.append);
+        generator.produce(fixtures, map, builder.append);
         fixtures.coalesce();
     }
 }
@@ -126,11 +126,15 @@ shared String createReport(IMapNG map, Player player = map.currentPlayer) {
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
         DistanceComparator(findHQ(map, player)),
         javaComparator(byIncreasing(IFixture.hash)));
-    createSubReports(builder, fixtures, map, player, FortressReportGenerator(comparator),
-        UnitReportGenerator(comparator), TextReportGenerator(comparator),
-        TownReportGenerator(comparator), FortressMemberReportGenerator(comparator),
-        ExplorableReportGenerator(comparator), HarvestableReportGenerator(comparator),
-        AnimalReportGenerator(comparator), VillageReportGenerator(comparator),
+    createSubReports(builder, fixtures, map, player,
+        FortressReportGenerator(comparator, player),
+        UnitReportGenerator(comparator, player), TextReportGenerator(comparator),
+        TownReportGenerator(comparator, player),
+        FortressMemberReportGenerator(comparator, player),
+        ExplorableReportGenerator(comparator, player),
+        HarvestableReportGenerator(comparator),
+        AnimalReportGenerator(comparator),
+        VillageReportGenerator(comparator, player),
         ImmortalsReportGenerator(comparator));
     builder.append("""</body>
                       </html>
@@ -165,11 +169,15 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
     }
     fixtures.coalesce();
     createSubReports(builder, fixtures, map, player,
-        FortressMemberReportGenerator(comparator), FortressReportGenerator(comparator),
-        UnitReportGenerator(comparator), TextReportGenerator(comparator),
-        TownReportGenerator(comparator), ExplorableReportGenerator(comparator),
-        HarvestableReportGenerator(comparator), AnimalReportGenerator(comparator),
-        VillageReportGenerator(comparator), ImmortalsReportGenerator(comparator));
+        FortressMemberReportGenerator(comparator, player),
+        FortressReportGenerator(comparator, player),
+        UnitReportGenerator(comparator, player), TextReportGenerator(comparator),
+        TownReportGenerator(comparator, player),
+        ExplorableReportGenerator(comparator, player),
+        HarvestableReportGenerator(comparator),
+        AnimalReportGenerator(comparator),
+        VillageReportGenerator(comparator, player),
+        ImmortalsReportGenerator(comparator));
     builder.append("""</body>
                       </html>
                       """);
@@ -190,7 +198,7 @@ void createSubReportsIR(IReportNode root,
         PatientMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Player player,
         IReportGenerator<out Object>* generators) {
     for (generator in generators) {
-        root.add(generator.produceRIR(fixtures, map, player));
+        root.add(generator.produceRIR(fixtures, map));
         fixtures.coalesce();
     }
 }
@@ -201,11 +209,15 @@ shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer)
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
         DistanceComparator(findHQ(map, player)),
         javaComparator(byIncreasing(IFixture.hash)));
-    createSubReportsIR(retval, fixtures, map, player, FortressReportGenerator(comparator),
-        UnitReportGenerator(comparator), TextReportGenerator(comparator),
-        TownReportGenerator(comparator), ExplorableReportGenerator(comparator),
-        HarvestableReportGenerator(comparator), FortressMemberReportGenerator(comparator),
-        AnimalReportGenerator(comparator), VillageReportGenerator(comparator),
+    createSubReportsIR(retval, fixtures, map, player,
+        FortressReportGenerator(comparator, player),
+        UnitReportGenerator(comparator, player), TextReportGenerator(comparator),
+        TownReportGenerator(comparator, player),
+        ExplorableReportGenerator(comparator, player),
+        HarvestableReportGenerator(comparator),
+        FortressMemberReportGenerator(comparator, player),
+        AnimalReportGenerator(comparator),
+        VillageReportGenerator(comparator, player),
         ImmortalsReportGenerator(comparator));
     return retval;
 }
@@ -225,11 +237,16 @@ shared IReportNode createAbbreviatedReportIR(IMapNG map,
     fixtures.coalesce();
     IReportNode retval = RootReportNode(
         "Strategic Primer map summary abbreviated report");
-    createSubReportsIR(retval, fixtures, map, player, FortressMemberReportGenerator(comparator),
-        FortressReportGenerator(comparator), UnitReportGenerator(comparator),
-        TextReportGenerator(comparator), TownReportGenerator(comparator),
-        ExplorableReportGenerator(comparator), HarvestableReportGenerator(comparator),
-        AnimalReportGenerator(comparator), VillageReportGenerator(comparator),
+    createSubReportsIR(retval, fixtures, map, player,
+        FortressMemberReportGenerator(comparator, player),
+        FortressReportGenerator(comparator, player),
+        UnitReportGenerator(comparator, player),
+        TextReportGenerator(comparator),
+        TownReportGenerator(comparator, player),
+        ExplorableReportGenerator(comparator, player),
+        HarvestableReportGenerator(comparator),
+        AnimalReportGenerator(comparator),
+        VillageReportGenerator(comparator, player),
         ImmortalsReportGenerator(comparator));
     return retval;
 }
