@@ -24,11 +24,13 @@ import java.util {
     JComparator=Comparator
 }
 import ceylon.interop.java {
-    javaClass
+    javaClass,
+    CeylonMap
 }
 import model.map.fixtures.mobile {
     IWorker,
-    Animal
+    Animal,
+    Immortal
 }
 import model.map.fixtures.mobile.worker {
     WorkerStats
@@ -42,7 +44,8 @@ import model.map.fixtures.resources {
     Shrub,
     Mine,
     StoneDeposit,
-    MineralVein
+    MineralVein,
+    CacheFixture
 }
 import model.map.fixtures.terrain {
     Forest
@@ -57,7 +60,9 @@ import ceylon.language.meta {
 import model.map.fixtures {
     MineralFixture,
     Ground,
-    TextFixture
+    TextFixture,
+    ResourcePile,
+    Implement
 }
 import model.map.fixtures.explorable {
     ExplorableFixture,
@@ -65,6 +70,10 @@ import model.map.fixtures.explorable {
     Portal,
     Cave,
     AdventureFixture
+}
+import ceylon.collection {
+    MutableMap,
+    HashMap
 }
 "A tabular report generator for fortresses."
 class FortressTabularReportGenerator(Player player, Point hq)
@@ -301,7 +310,8 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
     shared actual Integer comparePairs(Pair<Point, MineralFixture> one,
             Pair<Point, MineralFixture> two) {
         JComparator<Point> distComparator = DistanceComparator(hq);
-        Comparison distCompare(Pair<Point, MineralFixture> first, Pair<Point, MineralFixture> second) {
+        Comparison distCompare(Pair<Point, MineralFixture> first,
+                Pair<Point, MineralFixture> second) {
             Integer temp = distComparator.compare(first.first(), second.first());
             if (temp < 0) {
                 return smaller;
@@ -462,4 +472,172 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
             javaClass<ExplorableFixture|TextFixture>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "explorables";
+}
+"""A tabular report generator for "immortals.""""
+class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immortal> {
+    "Whether we can handle the given object."
+    shared actual Boolean applies(IFixture obj) => obj is Immortal;
+    "Produce a table row for the given fixture."
+    shared actual Boolean produce(JAppendable ostream,
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, Immortal item,
+            Point loc) {
+        writeDelimitedField(ostream, distanceString(loc, hq));
+        writeDelimitedField(ostream, loc.string);
+        writeField(ostream, item.string);
+        ostream.append(rowDelimiter);
+        return true;
+    }
+    "The header row for this table."
+    shared actual String headerRow() => "Distance,Location,Immortal";
+    "Compare two Point-fixture pairs."
+    shared actual Integer comparePairs(Pair<Point, Immortal> one,
+            Pair<Point, Immortal> two) {
+        Comparison(BaseType, BaseType) comparingOn<BaseType, FieldType>(
+                FieldType(BaseType) extractor,
+                Comparison(FieldType, FieldType) comparator) {
+            return (BaseType first, BaseType second) =>
+                comparator(extractor(first), extractor(second));
+        }
+        return javaComparator(comparing(comparingOn(
+                (Pair<Point, Immortal> pair) => pair.first(),
+                ceylonComparator(DistanceComparator(hq))),
+            comparingOn<Pair<Point, Immortal>, Integer>(
+                (Pair<Point, Immortal> pair) => pair.second().hash, increasing),
+            comparingOn<Pair<Point, Immortal>, Integer>((pair) => pair.second().hash,
+                increasing)))
+            .compare(one, two);
+    }
+    "The type of objects we accept."
+    shared actual JClass<Immortal> type() => javaClass<Immortal>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "immortals";
+}
+"A tabular report generator for resources, including caches, resource piles, and
+ implements (equipment)."
+class ResourceTabularReportGenerator()
+        satisfies ITableGenerator<Implement|CacheFixture|ResourcePile> {
+    "Whether we can handle a given object."
+    shared actual Boolean applies(IFixture obj) =>
+            obj is CacheFixture|ResourcePile|Implement;
+    "Write a table row based on the given fixture."
+    shared actual Boolean produce(JAppendable ostream,
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            Implement|CacheFixture|ResourcePile item, Point loc) {
+        String kind;
+        String quantity;
+        String specifics;
+        switch (item)
+        case (is ResourcePile) {
+            kind = item.kind;
+            quantity = item.quantity.string;
+            specifics = item.contents;
+        }
+        case (is Implement) {
+            kind = "equipment";
+            quantity = "1";
+            specifics = item.kind;
+        }
+        case (is CacheFixture) {
+            kind = item.kind;
+            quantity = "---";
+            specifics = item.contents;
+        }
+        writeDelimitedField(ostream, kind);
+        writeDelimitedField(ostream, quantity);
+        writeField(ostream, specifics);
+        ostream.append(rowDelimiter);
+        return true;
+    }
+    "The header row for this table."
+    shared actual String headerRow() => "Kind,Quantity,Specifics";
+    "Compare two Point-fixture pairs."
+    shared actual Integer comparePairs(
+            Pair<Point, Implement|CacheFixture|ResourcePile> one,
+            Pair<Point, Implement|CacheFixture|ResourcePile> two) {
+        value first = one.second();
+        value second = two.second();
+        switch (first)
+        case (is ResourcePile) {
+            if (is ResourcePile second) {
+                return javaComparator(comparing(byIncreasing(ResourcePile.kind),
+                    byIncreasing(ResourcePile.contents),
+                    byDecreasing((ResourcePile pile)
+                        => pile.quantity.number.doubleValue()))).compare(first, second);
+            } else {
+                return -1;
+            }
+        }
+        case (is Implement) {
+            if (is Implement second) {
+                return javaComparator(byIncreasing(Implement.kind))
+                    .compare(first, second);
+            } else if (is ResourcePile second) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+        case (is CacheFixture) {
+            if (is CacheFixture second) {
+                return javaComparator(comparing(byIncreasing(CacheFixture.kind),
+                    byIncreasing(CacheFixture.contents))).compare(first, second);
+            } else {
+                return 1;
+            }
+        }
+    }
+    "Write rows for equipment, counting multiple identical Implements in one line."
+    shared actual void produce(JAppendable ostream,
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures) {
+        object comparator
+                satisfies Identifiable&JComparator<Pair<JInteger,
+                    Pair<Point, CacheFixture|Implement|ResourcePile>>> {
+            shared actual Integer compare(Pair<JInteger,
+                    Pair<Point, CacheFixture|Implement|ResourcePile>> one,
+                Pair<JInteger, Pair<Point, CacheFixture|Implement|ResourcePile>> two) =>
+                    comparePairs(one.second(), two.second());
+            shared actual Boolean equals(Object that) {
+                if (is Identifiable that, this === that) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        value values = { for (key->item in CeylonMap(fixtures))
+            if (is CacheFixture|Implement|ResourcePile resource = item.second())
+                Pair<Integer, Pair<Point, IFixture>>.\iof(key,
+                    Pair<Point, CacheFixture|Implement|ResourcePile>.\iof(item.first(),
+                    resource))}.sort(ceylonComparator(comparator));
+        ostream.append(headerRow());
+        ostream.append(rowDelimiter);
+        MutableMap<String, Integer> implementCounts = HashMap<String, Integer>();
+        for (pair in values) {
+            Pair<Point, Implement|CacheFixture|ResourcePile> inner = pair.second();
+            if (is Implement fixture = inner.second()) {
+                Integer num;
+                if (exists temp = implementCounts.get(fixture.kind)) {
+                    num = temp;
+                } else {
+                    num = 0;
+                }
+                implementCounts.put(fixture.kind, num + 1);
+                fixtures.remove(pair.first());
+            } else if (produce(ostream, fixtures, inner.second(), inner.first())) {
+                fixtures.remove(pair.first());
+            }
+        }
+        for (key->count in implementCounts) {
+            writeDelimitedField(ostream, "equipment");
+            writeDelimitedField(ostream, count.string);
+            writeField(ostream, key);
+            ostream.append(rowDelimiter);
+        }
+        fixtures.coalesce();
+    }
+    "The type of objects we accept."
+    shared actual JClass<Implement|CacheFixture|ResourcePile> type() =>
+            javaClass<Implement|CacheFixture|ResourcePile>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "resources";
 }

@@ -20,9 +20,7 @@ import controller.map.report.tabular {
     ITableGenerator,
     UnitTabularReportGenerator,
     VillageTabularReportGenerator,
-    TownTabularReportGenerator,
-    ResourceTabularReportGenerator,
-    ImmortalsTabularReportGenerator
+    TownTabularReportGenerator
 }
 "A method to produce tabular reports based on a map for a player."
 shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
