@@ -4,9 +4,7 @@ import ceylon.logging {
 }
 import util {
     PatientMap,
-    Pair,
-    PairComparatorImpl,
-    PairComparator
+    Pair
 }
 import model.map {
     IMapNG,
@@ -44,6 +42,10 @@ import controller.map.misc {
 }
 import ceylon.interop.java {
     CeylonIterable
+}
+import lovelace.util.jvm {
+    ceylonComparator,
+    javaComparator
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -123,7 +125,8 @@ shared String createReport(IMapNG map, Player player = map.currentPlayer) {
     // TODO: Use Tuple instead of Pair
     PatientMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
-        DistanceComparator(findHQ(map, player)), JComparator.comparingInt(IFixture.hash));
+        DistanceComparator(findHQ(map, player)),
+        javaComparator(byIncreasing(IFixture.hash)));
     createSubReports(builder, fixtures, map, player, FortressReportGenerator(comparator),
         UnitReportGenerator(comparator), TextReportGenerator(comparator),
         TownReportGenerator(comparator), FortressMemberReportGenerator(comparator),
@@ -156,7 +159,8 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
     // TODO: Use Tuple instead of Pair
     PatientMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
-        DistanceComparator(findHQ(map, player)), JComparator.comparingInt(IFixture.hash));
+        DistanceComparator(findHQ(map, player)),
+        javaComparator(byIncreasing(IFixture.hash)));
     for (pair in fixtures.values()) {
         if (is IUnit|Fortress fixture = pair.second(), fixture.owner == player) {
             fixtures.remove(fixture.id);
@@ -200,7 +204,8 @@ shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer)
     // TODO: Use Tuple instead of Pair
     PatientMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
-        DistanceComparator(findHQ(map, player)), JComparator.comparingInt(IFixture.hash));
+        DistanceComparator(findHQ(map, player)),
+        javaComparator(byIncreasing(IFixture.hash)));
     createSubReportsIR(retval, fixtures, map, player, FortressReportGenerator(comparator),
         UnitReportGenerator(comparator), TextReportGenerator(comparator),
         TownReportGenerator(comparator), ExplorableReportGenerator(comparator),
@@ -216,7 +221,8 @@ shared IReportNode createAbbreviatedReportIR(IMapNG map,
     // TODO: Use Tuple instead of Pair
     PatientMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
     PairComparator<Point, IFixture> comparator = PairComparatorImpl(
-        DistanceComparator(findHQ(map, player)), JComparator.comparingInt(IFixture.hash));
+        DistanceComparator(findHQ(map, player)),
+        javaComparator(byIncreasing(IFixture.hash)));
     for (pair in fixtures.values()) {
         if (is IUnit|Fortress fixture = pair.second(), fixture.owner == player) {
             fixtures.remove(fixture.id);
