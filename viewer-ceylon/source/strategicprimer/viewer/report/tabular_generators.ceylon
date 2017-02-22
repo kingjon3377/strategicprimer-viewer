@@ -97,7 +97,6 @@ interface ITableGenerator<T> given T satisfies IFixture {
       all fixtures covered in the table from the collection."
     shared default void produceTable(Anything(String) ostream, PatientMap<JInteger,
             Pair<Point, IFixture>> fixtures) {
-        JClass<T> classType = type();
         MutableList<Pair<JInteger, Pair<Point, T>>> temp =
                 ArrayList<Pair<JInteger, Pair<Point, T>>>();
         for (entry in fixtures.entrySet()) {
@@ -185,10 +184,6 @@ interface ITableGenerator<T> given T satisfies IFixture {
         writeField(ostream, field);
         ostream(fieldDelimiter.string);
     }
-    "The type of objects we accept."
-    todo("Do we need this in the presence of reified generics?",
-        "If so, convert to Ceylon metamodel")
-    shared default JClass<T> type() => javaClass<T>();
     "The file-name to (by default) write this table to."
     shared formal String tableName;
 }
@@ -197,10 +192,6 @@ class FortressTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<Fortress> {
     "The header fields are Distance, Location, Owner, and Name."
     shared actual String headerRow() => "Distance,Location,Owner,Name";
-    "The type of objects we accept. Needed so the default ITableGenerator.produce(
-     Appendable, PatientMap) can call the typesafe single-row produce() without
-     causing class-cast exceptions or taking a type-object as a parameter."
-    shared actual JClass<Fortress> type() => javaClass<Fortress>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "fortresses";
     "Write a table row representing the fortress."
@@ -255,8 +246,6 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
     "The header row of the table."
     shared actual String headerRow() =>
             """Distance,Location,HP,"Max HP",Str,Dex,Con,Int,Wis,Cha""";
-    "The type of the objects we accept."
-    shared actual JClass<IWorker> type() => javaClass<IWorker>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "workers";
     "Produce a table line representing a worker."
@@ -304,9 +293,6 @@ class CropTabularReportGenerator(Point hq)
         satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
     "The header row for the table."
     shared actual String headerRow() => "Distance,Location,Kind,Cultivation,Status,Crop";
-    "The type of objects we accept."
-    shared actual JClass<Forest|Shrub|Meadow|Grove> type() =>
-            javaClass<Forest|Shrub|Meadow|Grove>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "crops";
     "Produce the report line for a fixture."
@@ -371,8 +357,6 @@ class CropTabularReportGenerator(Point hq)
 class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<MineralFixture> {
     "The header row for the table."
     shared actual String headerRow() => "Distance,Location,Kind,Product,Status";
-    "The type of objects we accept."
-    shared actual JClass<MineralFixture> type() => javaClass<MineralFixture>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "minerals";
     "Produce the report line for a fixture."
@@ -424,8 +408,6 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
 class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
     "The header row for the table."
     shared actual String headerRow() => "Distance,Location,Kind";
-    "The type of objects we accept."
-    shared actual JClass<Animal> type() => javaClass<Animal>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "animals";
     "Produce a single line of the tabular report on animals."
@@ -478,9 +460,6 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
     "The header row for the table."
     shared actual String headerRow() =>
             """Distance,Location,"Brief Description","Claimed By","Long Description" """;
-    "The types of objects we accept."
-    shared actual JClass<ExplorableFixture|TextFixture> type() =>
-            javaClass<ExplorableFixture|TextFixture>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "explorables";
     "Produce a report line about the given fixture."
@@ -567,8 +546,6 @@ Comparison(BaseType, BaseType) comparingOn<BaseType, FieldType>(
 class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immortal> {
     "The header row for this table."
     shared actual String headerRow() => "Distance,Location,Immortal";
-    "The type of objects we accept."
-    shared actual JClass<Immortal> type() => javaClass<Immortal>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "immortals";
     "Produce a table row for the given fixture."
@@ -597,9 +574,6 @@ class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immort
  implements (equipment)."
 class ResourceTabularReportGenerator()
         satisfies ITableGenerator<Implement|CacheFixture|ResourcePile> {
-    "The type of objects we accept."
-    shared actual JClass<Implement|CacheFixture|ResourcePile> type() =>
-            javaClass<Implement|CacheFixture|ResourcePile>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "resources";
     "Write a table row based on the given fixture."
@@ -710,8 +684,6 @@ class ResourceTabularReportGenerator()
 "A tabular report generator for towns."
 class TownTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<AbstractTown> {
-    "The type of objects we accept."
-    shared actual JClass<AbstractTown> type() => javaClass<AbstractTown>();
     "The file-name to (by default) write this table to"
     shared actual String tableName = "towns";
     Comparison(Pair<Point, AbstractTown>, Pair<Point, AbstractTown>) comparator =
@@ -755,8 +727,6 @@ class UnitTabularReportGenerator(Player player, Point hq)
     "The header row for this table."
     shared actual String headerRow() =>
             "Distance,Location,Owner,Kind/Category,Name,Orders";
-    "The type of objects we accept."
-    shared actual JClass<IUnit> type() => javaClass<IUnit>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "units";
     "Write a table row representing a unit."
@@ -802,8 +772,6 @@ class VillageTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<Village> {
     "The header of this table."
     shared actual String headerRow() => "Distance,Location,Owner,Name";
-    "The type of objects we accept."
-    shared actual JClass<Village> type() => javaClass<Village>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "villages";
     shared actual Boolean produce(Anything(String) ostream,
