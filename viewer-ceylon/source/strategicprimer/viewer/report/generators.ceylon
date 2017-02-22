@@ -1053,18 +1053,6 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
         true);
     IReportGenerator<IWorker> otherWorkerReportGenerator = WorkerReportGenerator(comp,
         false);
-    "Produce text describing the given Skills."
-    String skills(ISkill* job) {
-        StringBuilder builder = StringBuilder();
-        if (exists first = job.first) {
-            builder.append(" ``first.name`` ``first.level``");
-            for (skill in job.rest) {
-                builder.append(", ``skill.name`` ``skill.level``");
-            }
-            builder.append(")");
-        }
-        return builder.string;
-    }
     "Produce the sub-sub-report about a unit's orders and results."
     void produceOrders(IUnit item, Anything(String) formatter) {
         if (!item.allOrders.empty || !item.allResults.empty) {
