@@ -101,7 +101,7 @@ interface ITableGenerator<T> given T satisfies IFixture {
         MutableList<Pair<JInteger, Pair<Point, T>>> temp =
                 ArrayList<Pair<JInteger, Pair<Point, T>>>();
         for (entry in fixtures.entrySet()) {
-            if (is T fixture = entry.\ivalue.second(), applies(fixture)) {
+            if (is T fixture = entry.\ivalue.second()) {
                 temp.add(Pair<JInteger, Pair<Point, T>>
                     .\iof(entry.key, Pair<Point, T>
                     .\iof(entry.\ivalue.first(), fixture)));
@@ -185,11 +185,6 @@ interface ITableGenerator<T> given T satisfies IFixture {
         writeField(ostream, field);
         ostream(fieldDelimiter.string);
     }
-    "Whether this generator can handle an object. Unlike the original Java implementation,
-     the default implementation in Ceylon returns true if the object is within the type
-     parameter, not invariably true."
-    todo("Is this method necessary since Ceylon has reified generics?")
-    shared default Boolean applies(IFixture obj) => obj is T;
     "The type of objects we accept."
     todo("Do we need this in the presence of reified generics?",
         "If so, convert to Ceylon metamodel")
@@ -208,8 +203,6 @@ class FortressTabularReportGenerator(Player player, Point hq)
     shared actual JClass<Fortress> type() => javaClass<Fortress>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "fortresses";
-    "Whether we can handle the given fixture."
-    shared actual Boolean applies(IFixture obj) => obj is Fortress;
     "Write a table row representing the fortress."
     shared actual Boolean produce(Anything(String) ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
@@ -266,8 +259,6 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
     shared actual JClass<IWorker> type() => javaClass<IWorker>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "workers";
-    "Whether we can handle the given fixture."
-    shared actual Boolean applies(IFixture obj) => obj is IWorker;
     "Produce a table line representing a worker."
     shared actual Boolean produce(Anything(String) ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IWorker item,
@@ -313,8 +304,6 @@ class CropTabularReportGenerator(Point hq)
         satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
     "The header row for the table."
     shared actual String headerRow() => "Distance,Location,Kind,Cultivation,Status,Crop";
-    "Whether we can handle the given fixture."
-    shared actual Boolean applies(IFixture obj) => obj is Forest|Shrub|Meadow|Grove;
     "The type of objects we accept."
     shared actual JClass<Forest|Shrub|Meadow|Grove> type() =>
             javaClass<Forest|Shrub|Meadow|Grove>();
@@ -380,8 +369,6 @@ class CropTabularReportGenerator(Point hq)
 "A tabular report generator for resources that can be mined---mines, mineral veins, stone
  deposits, and Ground."
 class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<MineralFixture> {
-    "Whether we can handle the given fixture."
-    shared actual Boolean applies(IFixture obj) => obj is MineralFixture;
     "The header row for the table."
     shared actual String headerRow() => "Distance,Location,Kind,Product,Status";
     "The type of objects we accept."
@@ -437,8 +424,6 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
 class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
     "The header row for the table."
     shared actual String headerRow() => "Distance,Location,Kind";
-    "Whether we can accept the given object."
-    shared actual Boolean applies(IFixture obj) => obj is Animal;
     "The type of objects we accept."
     shared actual JClass<Animal> type() => javaClass<Animal>();
     "The file-name to (by default) write this table to."
@@ -493,8 +478,6 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
     "The header row for the table."
     shared actual String headerRow() =>
             """Distance,Location,"Brief Description","Claimed By","Long Description" """;
-    "Whether we can handle the given fixture."
-    shared actual Boolean applies(IFixture obj) => obj is ExplorableFixture|TextFixture;
     "The types of objects we accept."
     shared actual JClass<ExplorableFixture|TextFixture> type() =>
             javaClass<ExplorableFixture|TextFixture>();
@@ -582,8 +565,6 @@ Comparison(BaseType, BaseType) comparingOn<BaseType, FieldType>(
 }
 """A tabular report generator for "immortals.""""
 class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immortal> {
-    "Whether we can handle the given object."
-    shared actual Boolean applies(IFixture obj) => obj is Immortal;
     "The header row for this table."
     shared actual String headerRow() => "Distance,Location,Immortal";
     "The type of objects we accept."
@@ -621,9 +602,6 @@ class ResourceTabularReportGenerator()
             javaClass<Implement|CacheFixture|ResourcePile>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "resources";
-    "Whether we can handle a given object."
-    shared actual Boolean applies(IFixture obj) =>
-            obj is CacheFixture|ResourcePile|Implement;
     "Write a table row based on the given fixture."
     shared actual Boolean produce(Anything(String) ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
