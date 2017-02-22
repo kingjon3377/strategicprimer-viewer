@@ -15,13 +15,16 @@ import java.io {
     IOException
 }
 import view.exploration {
-    ExplorationFrame
+    ExplorerSelectingPanel,
+    ExplorationPanel,
+    ExplorationMenu
 }
 import javax.swing {
     SwingUtilities
 }
 import view.util {
-    SystemOut
+    SystemOut,
+    SPFrame
 }
 import model.exploration.old {
     ExplorationRunner,
@@ -96,7 +99,8 @@ import model.map.fixtures.mobile {
 }
 import model.listeners {
     MovementCostSource,
-    MovementCostListener
+    MovementCostListener,
+    CompletionListener
 }
 import model.map.fixtures {
     Ground
@@ -106,6 +110,14 @@ import model.map.fixtures.terrain {
 }
 import model.map.fixtures.resources {
     CacheFixture
+}
+import java.awt.event {
+    ActionListener
+}
+import java.awt {
+    Dimension,
+    CardLayout,
+    Component
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -317,6 +329,42 @@ object explorationCLI satisfies SimpleCLIDriver {
         }
     }
 }
+"The main window for the exploration GUI."
+SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
+    object retval extends SPFrame("Exploration", model.mapFile, Dimension(768, 480)) {
+        shared actual String windowName = "Exploration";
+        CardLayout layoutObj = CardLayout();
+        setLayout(layoutObj);
+        ExplorerSelectingPanel esp = ExplorerSelectingPanel(model);
+        ExplorationPanel explorationPanel = ExplorationPanel(model, esp.mpDocument,
+            esp.speedModel);
+        model.addMovementCostListener(explorationPanel);
+        model.addSelectionChangeListener(explorationPanel);
+        object swapper satisfies CompletionListener {
+            "Whether we're *on* the first panel. If so, go 'next'; if not, go 'first'."
+            variable Boolean first = true;
+            shared actual void finished() {
+                explorationPanel.validate();
+                esp.validate();
+                if (first) {
+                    layoutObj.next(contentPane);
+                    first = false;
+                } else {
+                    layoutObj.first(contentPane);
+                    first = true;
+                }
+            }
+        }
+        esp.addCompletionListener(swapper);
+        explorationPanel.addCompletionListener(swapper);
+        add(esp);
+        add(explorationPanel);
+    }
+    (retval of Component).preferredSize = Dimension(1024, 640);
+    retval.jMenuBar = ExplorationMenu(menuHandler, model, retval);
+    retval.pack();
+    return retval;
+}
 "An object to start the exploration GUI."
 object explorationGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -342,7 +390,7 @@ object explorationGUI satisfies SimpleDriver {
             "open secondary map in map viewer");
         menuHandler.register((event) => process.exit(0), "quit");
         SwingUtilities.invokeLater(() {
-            ExplorationFrame frame = ExplorationFrame(explorationModel, menuHandler);
+            SPFrame frame = explorationFrame(explorationModel, menuHandler);
             menuHandler.register(WindowCloser(frame), "close");
             menuHandler.register((event) =>
                 aboutDialog(frame, frame.windowName).setVisible(true), "about");
