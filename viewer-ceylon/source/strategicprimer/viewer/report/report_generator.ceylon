@@ -39,7 +39,6 @@ import ceylon.interop.java {
     CeylonIterable
 }
 import lovelace.util.jvm {
-    ceylonComparator,
     javaComparator
 }
 "A logger."

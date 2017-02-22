@@ -11,7 +11,6 @@ import model.map {
     TileFixture
 }
 import util {
-    Pair,
     LineEnd
 }
 import model.map.fixtures.mobile {
@@ -40,7 +39,6 @@ import model.map.fixtures.terrain {
     Forest
 }
 import lovelace.util.jvm {
-    javaComparator,
     ceylonComparator
 }
 import ceylon.language.meta {
@@ -84,24 +82,22 @@ interface ITableGenerator<T> given T satisfies IFixture {
     "Produce a tabular report on a particular category of fixtures in the map, and remove
       all fixtures covered in the table from the collection."
     shared default void produceTable(Anything(String) ostream, DelayedRemovalMap<Integer,
-            Pair<Point, IFixture>> fixtures) {
-        MutableList<Pair<Integer, Pair<Point, T>>> temp =
-                ArrayList<Pair<Integer, Pair<Point, T>>>();
+            [Point, IFixture]> fixtures) {
+        MutableList<[Integer, [Point, T]]> temp =
+                ArrayList<[Integer, [Point, T]]>();
         for (key->val in fixtures) {
-            if (is T fixture = val.second()) {
-                temp.add(Pair<Integer, Pair<Point, T>>
-                    .\iof(key, Pair<Point, T>
-                    .\iof(val.first(), fixture)));
+            if (is T fixture = val.rest.first) {
+                temp.add([key, [val.first, fixture]]);
             }
         }
-        {Pair<Integer, Pair<Point, T>>*} values = temp
-            .sort(comparingOn((Pair<Integer, Pair<Point, T>> pair) => pair.second(),
+        {[Integer, [Point, T]]*} values = temp
+            .sort(comparingOn(([Integer, [Point, T]] pair) => pair.rest.first,
             comparePairs));
         writeRow(ostream, headerRow.first, *headerRow.rest);
-        for (pair in values) {
-            if (produce(ostream, fixtures, pair.second().second(),
-                    pair.second().first())) {
-                fixtures.remove(pair.first());
+        for ([num, [loc, item]] in values) {
+            if (produce(ostream, fixtures, item,
+                    loc)) {
+                fixtures.remove(num);
             }
         }
         fixtures.coalesce();
@@ -112,7 +108,7 @@ interface ITableGenerator<T> given T satisfies IFixture {
         "The stream to write the row to."
         Anything(String) ostream,
         "The set of fixtures."
-        DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
         "The item to base this line on."
         T item,
         "The location of this item in the map."
@@ -132,8 +128,7 @@ interface ITableGenerator<T> given T satisfies IFixture {
     "The CSV header row to print at the top of the report, not including the newline."
     shared formal [String+] headerRow;
     "Compare two Point-fixture pairs."
-    // TODO: take Tuples throughout
-    shared formal Comparison comparePairs(Pair<Point, T> one, Pair<Point, T> two);
+    shared formal Comparison comparePairs([Point, T] one, [Point, T] two);
     """"A String representing the owner of a fixture: "You" if equal to currentPlayer,
        "Independent" if an independent player, or otherwise the player's name."""
     shared default String ownerString(Player currentPlayer, Player owner) {
@@ -183,7 +178,7 @@ class FortressTabularReportGenerator(Player player, Point hq)
     shared actual String tableName = "fortresses";
     "Write a table row representing the fortress."
     shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Fortress item, Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
             ownerString(player, item.owner), item.name);
@@ -197,12 +192,12 @@ class FortressTabularReportGenerator(Player player, Point hq)
         return true;
     }
     "Compare two Point-Fortress pairs."
-    shared actual Comparison comparePairs(Pair<Point, Fortress> one,
-            Pair<Point, Fortress> two) {
+    shared actual Comparison comparePairs([Point, Fortress] one,
+            [Point, Fortress] two) {
         Comparison(Point, Point) comparator = ceylonComparator(DistanceComparator(hq));
-        Fortress first = one.second();
-        Fortress second = two.second();
-        Comparison cmp = comparator(one.first(), two.first());
+        Fortress first = one.rest.first;
+        Fortress second = two.rest.first;
+        Comparison cmp = comparator(one.first, two.first);
         if (player == first.owner, player != second.owner) {
             return smaller;
         } else if (player != first.owner, player == second.owner) {
@@ -234,7 +229,7 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
     shared actual String tableName = "workers";
     "Produce a table line representing a worker."
     shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IWorker item,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IWorker item,
             Point loc) {
         if (exists stats = item.stats) {
             writeRow(ostream, distanceString(loc, hq), loc.string, item.name,
@@ -249,12 +244,12 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
         return true;
     }
     "Compare two worker-location pairs."
-    shared actual Comparison comparePairs(Pair<Point, IWorker> one,
-            Pair<Point, IWorker> two) {
+    shared actual Comparison comparePairs([Point, IWorker] one,
+            [Point, IWorker] two) {
         Comparison(Point, Point) comparator = ceylonComparator(DistanceComparator(hq));
-        IWorker first = one.second();
-        IWorker second = two.second();
-        Comparison cmp = comparator(one.first(), two.first());
+        IWorker first = one.rest.first;
+        IWorker second = two.rest.first;
+        Comparison cmp = comparator(one.first, two.first);
         if (cmp == equal) {
             return (first.name.compare(second.name));
         } else {
@@ -273,7 +268,7 @@ class CropTabularReportGenerator(Point hq)
     shared actual String tableName = "crops";
     "Produce the report line for a fixture."
     shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Forest|Shrub|Meadow|Grove item, Point loc) {
         String kind;
         String cultivation;
@@ -303,14 +298,14 @@ class CropTabularReportGenerator(Point hq)
         return true;
     }
     "Compare two Point-fixture pairs."
-    shared actual Comparison comparePairs(Pair<Point, Forest|Shrub|Meadow|Grove> one,
-            Pair<Point, Forest|Shrub|Meadow|Grove> two) {
-        Forest|Shrub|Meadow|Grove first = one.second();
-        Forest|Shrub|Meadow|Grove second = two.second();
+    shared actual Comparison comparePairs([Point, Forest|Shrub|Meadow|Grove] one,
+            [Point, Forest|Shrub|Meadow|Grove] two) {
+        Forest|Shrub|Meadow|Grove first = one.rest.first;
+        Forest|Shrub|Meadow|Grove second = two.rest.first;
         Comparison cropCmp = first.kind.compare(second.kind);
         if (cropCmp == equal) {
             Comparison cmp = ceylonComparator(DistanceComparator(hq))(
-                one.first(), two.first());
+                one.first, two.first);
             if (cmp == equal) {
                 return comparing(byIncreasing<TileFixture, Integer>(
                         (fix) => typeOf(fix).hash), byIncreasing(TileFixture.hash))(
@@ -333,7 +328,7 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
     shared actual String tableName = "minerals";
     "Produce the report line for a fixture."
     shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, MineralFixture item,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, MineralFixture item,
             Point loc) {
         String classField;
         String statusField;
@@ -362,13 +357,13 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
         return true;
     }
     "Compare two Point-fixture pairs."
-    shared actual Comparison comparePairs(Pair<Point, MineralFixture> one,
-            Pair<Point, MineralFixture> two) {
+    shared actual Comparison comparePairs([Point, MineralFixture] one,
+            [Point, MineralFixture] two) {
         return comparing(
-            byIncreasing((Pair<Point, MineralFixture> pair) => pair.second().kind),
-            (Pair<Point, MineralFixture> first, Pair<Point, MineralFixture> second) =>
-                ceylonComparator(DistanceComparator(hq))(first.first(), second.first()),
-            byIncreasing((Pair<Point, MineralFixture> pair) => pair.second().hash))
+            byIncreasing(([Point, MineralFixture] pair) => pair.rest.first.kind),
+            ([Point, MineralFixture] first, [Point, MineralFixture] second) =>
+                ceylonComparator(DistanceComparator(hq))(first.first, second.first),
+            byIncreasing(([Point, MineralFixture] pair) => pair.rest.first.hash))
             (one, two);
     }
 }
@@ -380,7 +375,7 @@ class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
     shared actual String tableName = "animals";
     "Produce a single line of the tabular report on animals."
     shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Animal item, Point loc) {
         String kind;
         if (item.traces) {
@@ -396,9 +391,8 @@ class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
         return true;
     }
     "Compare two pairs of Animals and locations."
-    shared actual Comparison comparePairs(Pair<Point, Animal> one, Pair<Point, Animal> two) {
-        Comparison cmp = ceylonComparator(DistanceComparator(hq))(
-            one.first(), two.first());
+    shared actual Comparison comparePairs([Point, Animal] one, [Point, Animal] two) {
+        Comparison cmp = ceylonComparator(DistanceComparator(hq))(one.first, two.first);
         if (cmp == equal) {
             Comparison(Animal, Animal) compareBools(Boolean(Animal) func) {
                 Comparison retval(Boolean first, Boolean second) {
@@ -414,7 +408,7 @@ class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
             }
             return comparing(compareBools(Animal.talking),
                     compareBools((animal) => !animal.traces), byIncreasing(Animal.kind))(
-                one.second(), two.second());
+                one.rest.first, two.rest.first);
         } else {
             return cmp;
         }
@@ -431,7 +425,7 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
     shared actual String tableName = "explorables";
     "Produce a report line about the given fixture."
     shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             ExplorableFixture|TextFixture item, Point loc) {
         String brief;
         String owner;
@@ -483,12 +477,11 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
         return true;
     }
     "Compare two Point-fixture pairs."
-    shared actual Comparison comparePairs(Pair<Point, ExplorableFixture|TextFixture> one,
-            Pair<Point, ExplorableFixture|TextFixture> two) {
-        Comparison cmp = ceylonComparator(DistanceComparator(hq))(one.first(),
-            two.first());
+    shared actual Comparison comparePairs([Point, ExplorableFixture|TextFixture] one,
+            [Point, ExplorableFixture|TextFixture] two) {
+        Comparison cmp = ceylonComparator(DistanceComparator(hq))(one.first, two.first);
         if (cmp == equal) {
-            return one.second().string.compare(two.second().string);
+            return one.rest.first.string.compare(two.rest.first.string);
         } else {
             return cmp;
         }
@@ -512,20 +505,20 @@ class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immort
     shared actual String tableName = "immortals";
     "Produce a table row for the given fixture."
     shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, Immortal item,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Immortal item,
             Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string, item.string);
         return true;
     }
     "Compare two Point-fixture pairs."
-    shared actual Comparison comparePairs(Pair<Point, Immortal> one,
-            Pair<Point, Immortal> two) {
+    shared actual Comparison comparePairs([Point, Immortal] one,
+            [Point, Immortal] two) {
         return comparing(comparingOn(
-                (Pair<Point, Immortal> pair) => pair.first(),
+                ([Point, Immortal] pair) => pair.first,
                 ceylonComparator(DistanceComparator(hq))),
-            comparingOn<Pair<Point, Immortal>, Integer>(
-                (Pair<Point, Immortal> pair) => pair.second().hash, increasing),
-            comparingOn<Pair<Point, Immortal>, Integer>((pair) => pair.second().hash,
+            comparingOn<[Point, Immortal], Integer>(
+                ([Point, Immortal] pair) => pair.rest.first.hash, increasing),
+            comparingOn<[Point, Immortal], Integer>((pair) => pair.rest.first.hash,
                 increasing))(one, two);
     }
 }
@@ -539,7 +532,7 @@ class ResourceTabularReportGenerator()
     shared actual [String+] headerRow = ["Kind", "Quantity", "Specifics"];
     "Write a table row based on the given fixture."
     shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Implement|CacheFixture|ResourcePile item, Point loc) {
         String kind;
         String quantity;
@@ -565,10 +558,10 @@ class ResourceTabularReportGenerator()
     }
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs(
-            Pair<Point, Implement|CacheFixture|ResourcePile> one,
-            Pair<Point, Implement|CacheFixture|ResourcePile> two) {
-        value first = one.second();
-        value second = two.second();
+            [Point, Implement|CacheFixture|ResourcePile] one,
+            [Point, Implement|CacheFixture|ResourcePile] two) {
+        value first = one.rest.first;
+        value second = two.rest.first;
         switch (first)
         case (is ResourcePile) {
             if (is ResourcePile second) {
@@ -601,20 +594,17 @@ class ResourceTabularReportGenerator()
     }
     "Write rows for equipment, counting multiple identical Implements in one line."
     shared actual void produceTable(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
         value values = { for (key->item in fixtures)
-            if (is CacheFixture|Implement|ResourcePile resource = item.second())
-                Pair<Integer, Pair<Point, IFixture>>.\iof(key,
-                    Pair<Point, CacheFixture|Implement|ResourcePile>.\iof(item.first(),
-                    resource))}
+            if (is CacheFixture|Implement|ResourcePile resource = item.rest.first)
+                [key, [item.first, resource]]}
             .sort(comparingOn(
-                (Pair<Integer, Pair<Point, CacheFixture|Implement|ResourcePile>> pair) =>
-                    pair.second(), comparePairs));
+                ([Integer, [Point, CacheFixture|Implement|ResourcePile]] pair) =>
+                    pair.rest.first, comparePairs));
         writeRow(ostream, headerRow.first, *headerRow.rest);
         MutableMap<String, Integer> implementCounts = HashMap<String, Integer>();
-        for (pair in values) {
-            Pair<Point, Implement|CacheFixture|ResourcePile> inner = pair.second();
-            if (is Implement fixture = inner.second()) {
+        for ([key, [loc, fixture]] in values) {
+            if (is Implement fixture) {
                 Integer num;
                 if (exists temp = implementCounts.get(fixture.kind)) {
                     num = temp;
@@ -622,9 +612,9 @@ class ResourceTabularReportGenerator()
                     num = 0;
                 }
                 implementCounts.put(fixture.kind, num + 1);
-                fixtures.remove(pair.first());
-            } else if (produce(ostream, fixtures, inner.second(), inner.first())) {
-                fixtures.remove(pair.first());
+                fixtures.remove(key);
+            } else if (produce(ostream, fixtures, fixture, loc)) {
+                fixtures.remove(key);
             }
         }
         for (key->count in implementCounts) {
@@ -638,24 +628,24 @@ class TownTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<AbstractTown> {
     "The file-name to (by default) write this table to"
     shared actual String tableName = "towns";
-    Comparison(Pair<Point, AbstractTown>, Pair<Point, AbstractTown>) comparator =
+    Comparison([Point, AbstractTown], [Point, AbstractTown]) comparator =
             comparing(
-                comparingOn((Pair<Point, AbstractTown> pair) => pair.second(),
+                comparingOn(([Point, AbstractTown] pair) => pair.rest.first,
                     ceylonComparator(TownComparator.compareTownKind)),
-                comparingOn((Pair<Point, AbstractTown> pair) => pair.first(),
+                comparingOn(([Point, AbstractTown] pair) => pair.first,
                     ceylonComparator(DistanceComparator(hq))),
-                comparingOn((Pair<Point, AbstractTown> pair) => pair.second().size(),
+                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.size(),
                     ceylonComparator(TownComparator.compareTownSize)),
-                comparingOn((Pair<Point, AbstractTown> pair) => pair.second().status(),
+                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.status(),
                     ceylonComparator(TownComparator.compareTownStatus)),
-                comparingOn((Pair<Point, AbstractTown> pair) => pair.second().name,
+                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.name,
                     increasing<String>));
     "The header row for this table."
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Kind", "Size",
         "Status", "Name"];
     "Produce a table line representing a town."
     shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             AbstractTown item, Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
             ownerString(player, item.owner), item.kind(), item.size().string,
@@ -663,8 +653,8 @@ class TownTabularReportGenerator(Player player, Point hq)
         return true;
     }
     "Compare two location-town pairs."
-    shared actual Comparison comparePairs(Pair<Point, AbstractTown> one,
-            Pair<Point, AbstractTown> two) {
+    shared actual Comparison comparePairs([Point, AbstractTown] one,
+            [Point, AbstractTown] two) {
         return comparator(one, two);
     }
 }
@@ -678,7 +668,7 @@ class UnitTabularReportGenerator(Player player, Point hq)
     shared actual String tableName = "units";
     "Write a table row representing a unit."
     shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IUnit item,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IUnit item,
             Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
             ownerString(player, item.owner), item.kind, item.name,
@@ -697,16 +687,16 @@ class UnitTabularReportGenerator(Player player, Point hq)
         return true;
     }
     "Compare two location-unit pairs."
-    shared actual Comparison comparePairs(Pair<Point, IUnit> one, Pair<Point, IUnit> two) {
+    shared actual Comparison comparePairs([Point, IUnit] one, [Point, IUnit] two) {
         return comparing(
-            comparingOn((Pair<Point, IUnit> pair) => pair.first(),
+            comparingOn(([Point, IUnit] pair) => pair.first,
                 ceylonComparator(DistanceComparator(hq))),
-            comparingOn((Pair<Point, IUnit> pair) =>
-                pair.second().owner, ceylonComparator((Player first, Player second) =>
+            comparingOn(([Point, IUnit] pair) =>
+                pair.rest.first.owner, ceylonComparator((Player first, Player second) =>
                     first.compareTo(second))),
-            comparingOn((Pair<Point, IUnit> pair) => pair.second().kind,
+            comparingOn(([Point, IUnit] pair) => pair.rest.first.kind,
                 increasing<String>),
-            comparingOn((Pair<Point, IUnit> pair) => pair.second().name,
+            comparingOn(([Point, IUnit] pair) => pair.rest.first.name,
                 increasing<String>))(one, two);
     }
 }
@@ -718,22 +708,22 @@ class VillageTabularReportGenerator(Player player, Point hq)
     "The file-name to (by default) write this table to."
     shared actual String tableName = "villages";
     shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, Village item,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Village item,
             Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
             ownerString(player, item.owner), item.name);
         return true;
     }
     "Compare two location-and-village pairs."
-    shared actual Comparison comparePairs(Pair<Point, Village> one,
-            Pair<Point, Village> two) {
+    shared actual Comparison comparePairs([Point, Village] one,
+            [Point, Village] two) {
         return comparing(
-            comparingOn((Pair<Point, Village> pair) => pair.first(),
+            comparingOn(([Point, Village] pair) => pair.first,
                 ceylonComparator(DistanceComparator(hq))),
-            comparingOn((Pair<Point, Village> pair) => pair.second().owner,
+            comparingOn(([Point, Village] pair) => pair.rest.first.owner,
                 ceylonComparator((Player first, Player second) =>
                 first.compareTo(second))),
-            comparingOn((Pair<Point, Village> pair) => pair.second().name,
+            comparingOn(([Point, Village] pair) => pair.rest.first.name,
                 increasing<String>))(one, two);
     }
 }

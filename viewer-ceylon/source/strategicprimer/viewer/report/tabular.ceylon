@@ -8,21 +8,12 @@ import model.map {
     Player,
     TerrainFixture
 }
-import util {
-    Pair
-}
 import lovelace.util.common {
-    DelayedRemovalMap,
-    IntMap
+    DelayedRemovalMap
 }
 "A method to produce tabular reports based on a map for a player."
 shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
-    // TODO: Use Ceylon Integer and Tuples
-    DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = IntMap<Pair<Point, IFixture>>();
-    for (key->val in getFixtures(map)) {
-        fixtures.put(key, Pair.\iof<Point, IFixture>(val.first,
-            val.rest.first));
-    }
+    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     Player player = map.currentPlayer;
     Point hq = findHQ(map, player);
     /*{ITableGenerator<out Object>*}*/ value generators = {
@@ -43,8 +34,7 @@ shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
         try (ostream = JPrintStream(source(generator.tableName))) {
             generator.produceTable((String string) => ostream.print(string), fixtures);
         }
-        for (pair in fixtures.items) {
-            IFixture fixture = pair.second();
+        for ([loc, fixture] in fixtures.items) {
             if (is TerrainFixture fixture) {
                 fixtures.remove(fixture.id);
             } else {
