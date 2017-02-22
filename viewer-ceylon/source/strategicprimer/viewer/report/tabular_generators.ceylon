@@ -274,24 +274,26 @@ class CropTabularReportGenerator(Point hq)
         String cultivation;
         String status;
         String crop = item.kind;
-        if (is Forest item) {
+        switch (item)
+        case (is Forest) {
             kind = (item.rows) then "rows" else "forest";
             cultivation = "---";
             status = "---";
-        } else if (is Shrub item) {
+        }
+        case (is Shrub) {
             kind = "shrub";
             cultivation = "---";
             status = "---";
-        } else if (is Meadow item) {
+        }
+        case (is Meadow) {
             kind = (item.field) then "field" else "meadow";
             cultivation = (item.cultivated) then "cultivated" else "wild";
             status = item.status.string;
-        } else if (is Grove item) {
+        }
+        case (is Grove) {
             kind = (item.orchard) then "orchard" else "grove";
             cultivation = (item.cultivated) then "cultivated" else "wild";
             status = "---";
-        } else {
-            return false;
         }
         writeRow(ostream, distanceString(loc, hq), loc.string, kind, cultivation, status,
             crop);
