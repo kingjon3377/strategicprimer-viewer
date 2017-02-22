@@ -288,7 +288,6 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
 }
 "A tabular report generator for crops---forests, groves, orchards, fields, meadows, and
  shrubs"
-todo("Take a union type instead of the too-broad supertype")
 class CropTabularReportGenerator(Point hq)
         satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
     "The header row for the table."
