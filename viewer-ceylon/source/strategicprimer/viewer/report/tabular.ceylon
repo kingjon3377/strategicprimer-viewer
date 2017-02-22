@@ -39,7 +39,6 @@ shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
         ExplorableTabularReportGenerator(player, hq)
     };
     for (generator in generators) {
-        assert (is ITableGenerator<out Object> generator);
         // TODO: Use ceylon.file / ceylon.io for file output
         try (ostream = JPrintStream(source(generator.tableName))) {
             generator.produceTable((String string) => ostream.print(string), fixtures);
