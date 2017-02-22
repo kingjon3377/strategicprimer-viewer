@@ -168,21 +168,25 @@ interface ITableGenerator<T> given T satisfies IFixture {
     """The row delimiter; used to limit "magic character" warnings and allow us to change
        it."""
     shared default String rowDelimiter => LineEnd.lineSep;
-    "Write a field to a stream, quoting it if necessary."
-    todo("Take multiple fields in one call")
-    shared default void writeField(Anything(String) ostream, String field) {
-        String quotesQuoted = quotePattern.replace(field, "\"\"");
-        if ({"\"", fieldDelimiter.string, rowDelimiter, " "}.any(quotesQuoted.contains)) {
-            ostream("\"``quotesQuoted``\"");
-        } else {
-            ostream(quotesQuoted);
+    "Write multiple fields to a row, quoting as necessary, separated by the field
+     delimiter, with the last field followed by the row delimiter."
+    shared default void writeRow(Anything(String) ostream, String firstField,
+            String* fields) {
+        void writeField(Anything(String) ostream, String field) {
+            String quotesQuoted = quotePattern.replace(field, "\"\"");
+            if ({"\"", fieldDelimiter.string, rowDelimiter, " "}
+                    .any(quotesQuoted.contains)) {
+                ostream("\"``quotesQuoted``\"");
+            } else {
+                ostream(quotesQuoted);
+            }
         }
-    }
-    "Write a field to a stream, quoting it if necessary, and then write the field
-     delimiter."
-    shared default void writeDelimitedField(Anything(String) ostream, String field) {
-        writeField(ostream, field);
-        ostream(fieldDelimiter.string);
+        writeField(ostream, firstField);
+        for (field in fields) {
+            ostream(fieldDelimiter.string);
+            writeField(ostream, field);
+        }
+        ostream(rowDelimiter);
     }
     "The file-name to (by default) write this table to."
     shared formal String tableName;
@@ -198,10 +202,8 @@ class FortressTabularReportGenerator(Player player, Point hq)
     shared actual Boolean produce(Anything(String) ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
             Fortress item, Point loc) {
-        writeDelimitedField(ostream, distanceString(loc, hq));
-        writeDelimitedField(ostream, loc.string);
-        writeDelimitedField(ostream, getOwnerString(player, item.owner));
-        writeField(ostream, item.name);
+        writeRow(ostream, distanceString(loc, hq), loc.string,
+            getOwnerString(player, item.owner), item.name);
         // Players shouldn't be able to see the contents of others' fortresses
         // in other tables.
         if (player != item.owner) {
@@ -209,7 +211,6 @@ class FortressTabularReportGenerator(Player player, Point hq)
                 fixtures.remove(JInteger(member.id));
             }
         }
-        ostream(rowDelimiter);
         return true;
     }
     "Compare two Point-Fortress pairs."
@@ -252,24 +253,16 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
     shared actual Boolean produce(Anything(String) ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IWorker item,
             Point loc) {
-        writeDelimitedField(ostream, distanceString(loc, hq));
-        writeDelimitedField(ostream, loc.string);
-        writeDelimitedField(ostream, item.name);
         if (exists stats = item.stats) {
-            writeDelimitedField(ostream, stats.hitPoints.string);
-            writeDelimitedField(ostream, stats.maxHitPoints.string);
-            for (field in { stats.strength, stats.dexterity, stats.constitution,
-                    stats.intelligence, stats.wisdom }) {
-                writeDelimitedField(ostream, WorkerStats.getModifierString(field));
-            }
-            writeField(ostream, WorkerStats.getModifierString(stats.charisma));
+            writeRow(ostream, distanceString(loc, hq), loc.string, item.name,
+                stats.hitPoints.string, stats.maxHitPoints.string,
+                 for (stat in { stats.strength, stats.dexterity, stats.constitution,
+                    stats.intelligence, stats.wisdom, stats.charisma })
+                        WorkerStats.getModifierString(stat) );
         } else {
-            for (field in 0..8) {
-                writeDelimitedField(ostream, "---");
-            }
-            writeField(ostream, "---");
+            writeRow(ostream, distanceString(loc, hq), loc.string, item.name,
+                *(0..9).map((num) => "---"));
         }
-        ostream(rowDelimiter);
         return true;
     }
     "Compare two worker-location pairs."
@@ -321,13 +314,8 @@ class CropTabularReportGenerator(Point hq)
         } else {
             return false;
         }
-        writeDelimitedField(ostream, distanceString(loc, hq));
-        writeDelimitedField(ostream, loc.string);
-        writeDelimitedField(ostream, kind);
-        writeDelimitedField(ostream, cultivation);
-        writeDelimitedField(ostream, status);
-        writeField(ostream, crop);
-        ostream(rowDelimiter);
+        writeRow(ostream, distanceString(loc, hq), loc.string, kind, cultivation, status,
+            crop);
         return true;
     }
     "Compare two Point-fixture pairs."
@@ -384,12 +372,8 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
         else {
             return false;
         }
-        writeDelimitedField(ostream, distanceString(loc, hq));
-        writeDelimitedField(ostream, loc.string);
-        writeDelimitedField(ostream, classField);
-        writeDelimitedField(ostream, item.kind);
-        writeField(ostream, statusField);
-        ostream(rowDelimiter);
+        writeRow(ostream, distanceString(loc, hq), loc.string, classField, item.kind,
+            statusField);
         return true;
     }
     "Compare two Point-fixture pairs."
@@ -413,18 +397,17 @@ class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
     shared actual Boolean produce(Anything(String) ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
             Animal item, Point loc) {
-        writeDelimitedField(ostream, distanceString(loc, hq));
-        writeDelimitedField(ostream, loc.string);
+        String kind;
         if (item.traces) {
-            writeField(ostream, "tracks or traces of ``item.kind``");
+            kind = "tracks or traces of ``item.kind``";
         } else if (item.talking) {
-            writeField(ostream, "talking ``item.kind``");
+            kind = "talking ``item.kind``";
         } else if ("wild" != item.status) {
-            writeField(ostream, "``item.status`` ``item.kind``");
+            kind = "``item.status`` ``item.kind``";
         } else {
-            writeField(ostream, item.kind);
+            kind = item.kind;
         }
-        ostream(rowDelimiter);
+        writeRow(ostream, distanceString(loc, hq), loc.string, kind);
         return true;
     }
     "Compare two pairs of Animals and locations."
@@ -511,12 +494,7 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
         else {
             return false;
         }
-        writeDelimitedField(ostream, distanceString(loc, hq));
-        writeDelimitedField(ostream, loc.string);
-        writeDelimitedField(ostream, brief);
-        writeDelimitedField(ostream, owner);
-        writeField(ostream, longDesc);
-        ostream(rowDelimiter);
+        writeRow(ostream, distanceString(loc, hq), loc.string, brief, owner, longDesc);
         return true;
     }
     "Compare two Point-fixture pairs."
@@ -551,10 +529,7 @@ class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immort
     shared actual Boolean produce(Anything(String) ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, Immortal item,
             Point loc) {
-        writeDelimitedField(ostream, distanceString(loc, hq));
-        writeDelimitedField(ostream, loc.string);
-        writeField(ostream, item.string);
-        ostream(rowDelimiter);
+        writeRow(ostream, distanceString(loc, hq), loc.string, item.string);
         return true;
     }
     "Compare two Point-fixture pairs."
@@ -598,10 +573,7 @@ class ResourceTabularReportGenerator()
             quantity = "---";
             specifics = item.contents;
         }
-        writeDelimitedField(ostream, kind);
-        writeDelimitedField(ostream, quantity);
-        writeField(ostream, specifics);
-        ostream(rowDelimiter);
+        writeRow(ostream, kind, quantity, specifics);
         return true;
     }
     "The header row for this table."
@@ -672,10 +644,7 @@ class ResourceTabularReportGenerator()
             }
         }
         for (key->count in implementCounts) {
-            writeDelimitedField(ostream, "equipment");
-            writeDelimitedField(ostream, count.string);
-            writeField(ostream, key);
-            ostream(rowDelimiter);
+            writeRow(ostream, "equipment", count.string, key);
         }
         fixtures.coalesce();
     }
@@ -704,14 +673,9 @@ class TownTabularReportGenerator(Player player, Point hq)
     shared actual Boolean produce(Anything(String) ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
             AbstractTown item, Point loc) {
-        writeDelimitedField(ostream, distanceString(loc, hq));
-        writeDelimitedField(ostream, loc.string);
-        writeDelimitedField(ostream, getOwnerString(player, item.owner));
-        writeDelimitedField(ostream, item.kind());
-        writeDelimitedField(ostream, item.size().string);
-        writeDelimitedField(ostream, item.status().string);
-        writeField(ostream, item.name);
-        ostream(rowDelimiter);
+        writeRow(ostream, distanceString(loc, hq), loc.string,
+            getOwnerString(player, item.owner), item.kind(), item.size().string,
+            item.status().string, item.name);
         return true;
     }
     "Compare two location-town pairs."
@@ -732,13 +696,9 @@ class UnitTabularReportGenerator(Player player, Point hq)
     shared actual Boolean produce(Anything(String) ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IUnit item,
             Point loc) {
-        writeDelimitedField(ostream, distanceString(loc, hq));
-        writeDelimitedField(ostream, loc.string);
-        writeDelimitedField(ostream, getOwnerString(player, item.owner));
-        writeDelimitedField(ostream, item.kind);
-        writeDelimitedField(ostream, item.name);
-        writeField(ostream, item.allOrders.lastEntry().\ivalue.string else "");
-        ostream(rowDelimiter);
+        writeRow(ostream, distanceString(loc, hq), loc.string,
+            getOwnerString(player, item.owner), item.kind, item.name,
+            item.allOrders.lastEntry().\ivalue.string else "");
         for (member in item) {
             if (is Animal item) {
                 // We don't want animals inside a unit showing up in the wild-animal
@@ -776,11 +736,8 @@ class VillageTabularReportGenerator(Player player, Point hq)
     shared actual Boolean produce(Anything(String) ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, Village item,
             Point loc) {
-        writeDelimitedField(ostream, distanceString(loc, hq));
-        writeDelimitedField(ostream, loc.string);
-        writeDelimitedField(ostream, getOwnerString(player, item.owner));
-        writeField(ostream, item.name);
-        ostream(rowDelimiter);
+        writeRow(ostream, distanceString(loc, hq), loc.string,
+            getOwnerString(player, item.owner), item.name);
         return true;
     }
     "Compare two location-and-village pairs."
