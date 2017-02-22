@@ -2,9 +2,16 @@ import java.util {
     JComparator = Comparator
 }
 "Convert a Java Comparator to a Ceylon comparator."
-shared Comparison(Type, Type) ceylonComparator<Type>(JComparator<Type> comparator) {
+shared Comparison(Type, Type) ceylonComparator<Type>(
+        Integer(Type?, Type?)|Integer(Type, Type)|JComparator<Type> comparator) {
     return (Type x, Type y) {
-        value temp = comparator.compare(x, y);
+        Integer temp;
+        if (is JComparator<out Anything> comparator) {
+            assert (is JComparator<Type> comparator);
+            temp = comparator.compare(x, y);
+        } else {
+            temp = comparator(x, y);
+        }
         if (temp < 0) {
             return smaller;
         } else if (temp == 0) {

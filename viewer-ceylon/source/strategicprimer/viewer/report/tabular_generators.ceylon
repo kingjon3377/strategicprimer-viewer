@@ -2,7 +2,9 @@ import controller.map.report.tabular {
     ITableGenerator
 }
 import model.map.fixtures.towns {
-    Fortress
+    Fortress,
+    AbstractTown,
+    Village
 }
 import model.map {
     Player,
@@ -25,12 +27,14 @@ import java.util {
 }
 import ceylon.interop.java {
     javaClass,
-    CeylonMap
+    CeylonMap,
+    javaString
 }
 import model.map.fixtures.mobile {
     IWorker,
     Animal,
-    Immortal
+    Immortal,
+    IUnit
 }
 import model.map.fixtures.mobile.worker {
     WorkerStats
@@ -74,6 +78,9 @@ import model.map.fixtures.explorable {
 import ceylon.collection {
     MutableMap,
     HashMap
+}
+import controller.map.misc {
+    TownComparator
 }
 "A tabular report generator for fortresses."
 class FortressTabularReportGenerator(Player player, Point hq)
@@ -473,6 +480,16 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
     "The file-name to (by default) write this table to."
     shared actual String tableName = "explorables";
 }
+"Compare an object with another object based on one field in particular."
+todo("Move to lovelace.util")
+Comparison(BaseType, BaseType) comparingOn<BaseType, FieldType>(
+        "The field as a function of the object."
+        FieldType(BaseType) extractor,
+        "How to compare the corresponding field instances"
+        Comparison(FieldType, FieldType) comparator) {
+    return (BaseType first, BaseType second) =>
+        comparator(extractor(first), extractor(second));
+}
 """A tabular report generator for "immortals.""""
 class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immortal> {
     "Whether we can handle the given object."
@@ -492,12 +509,6 @@ class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immort
     "Compare two Point-fixture pairs."
     shared actual Integer comparePairs(Pair<Point, Immortal> one,
             Pair<Point, Immortal> two) {
-        Comparison(BaseType, BaseType) comparingOn<BaseType, FieldType>(
-                FieldType(BaseType) extractor,
-                Comparison(FieldType, FieldType) comparator) {
-            return (BaseType first, BaseType second) =>
-                comparator(extractor(first), extractor(second));
-        }
         return javaComparator(comparing(comparingOn(
                 (Pair<Point, Immortal> pair) => pair.first(),
                 ceylonComparator(DistanceComparator(hq))),
@@ -589,26 +600,14 @@ class ResourceTabularReportGenerator()
     "Write rows for equipment, counting multiple identical Implements in one line."
     shared actual void produce(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures) {
-        object comparator
-                satisfies Identifiable&JComparator<Pair<JInteger,
-                    Pair<Point, CacheFixture|Implement|ResourcePile>>> {
-            shared actual Integer compare(Pair<JInteger,
-                    Pair<Point, CacheFixture|Implement|ResourcePile>> one,
-                Pair<JInteger, Pair<Point, CacheFixture|Implement|ResourcePile>> two) =>
-                    comparePairs(one.second(), two.second());
-            shared actual Boolean equals(Object that) {
-                if (is Identifiable that, this === that) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
         value values = { for (key->item in CeylonMap(fixtures))
             if (is CacheFixture|Implement|ResourcePile resource = item.second())
-                Pair<Integer, Pair<Point, IFixture>>.\iof(key,
+                Pair<Integer, Pair<Point, IFixture>>.\iof(key.intValue(),
                     Pair<Point, CacheFixture|Implement|ResourcePile>.\iof(item.first(),
-                    resource))}.sort(ceylonComparator(comparator));
+                    resource))}
+            .sort(comparingOn(
+                (Pair<Integer, Pair<Point, CacheFixture|Implement|ResourcePile>> pair) =>
+                    pair.second(), ceylonComparator(comparePairs)));
         ostream.append(headerRow());
         ostream.append(rowDelimiter);
         MutableMap<String, Integer> implementCounts = HashMap<String, Integer>();
@@ -640,4 +639,124 @@ class ResourceTabularReportGenerator()
             javaClass<Implement|CacheFixture|ResourcePile>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "resources";
+}
+"A tabular report generator for towns."
+class TownTabularReportGenerator(Player player, Point hq)
+        satisfies ITableGenerator<AbstractTown> {
+    Comparison(Pair<Point, AbstractTown>, Pair<Point, AbstractTown>) comparator =
+            comparing(
+                comparingOn((Pair<Point, AbstractTown> pair) => pair.second(),
+                    ceylonComparator(TownComparator.compareTownKind)),
+                comparingOn((Pair<Point, AbstractTown> pair) => pair.first(),
+                    ceylonComparator(DistanceComparator(hq))),
+                comparingOn((Pair<Point, AbstractTown> pair) => pair.second().size(),
+                    ceylonComparator(TownComparator.compareTownSize)),
+                comparingOn((Pair<Point, AbstractTown> pair) => pair.second().status(),
+                    ceylonComparator(TownComparator.compareTownStatus)),
+                comparingOn((Pair<Point, AbstractTown> pair) => pair.second().name,
+                    increasing<String>));
+    "Produce a table line representing a town."
+    shared actual Boolean produce(JAppendable ostream,
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            AbstractTown item, Point loc) {
+        writeDelimitedField(ostream, distanceString(loc, hq));
+        writeDelimitedField(ostream, loc.string);
+        writeDelimitedField(ostream, getOwnerString(player, item.owner));
+        writeDelimitedField(ostream, item.kind());
+        writeDelimitedField(ostream, item.size().string);
+        writeDelimitedField(ostream, item.status().string);
+        writeField(ostream, item.name);
+        ostream.append(rowDelimiter);
+        return true;
+    }
+    "The header row for this table."
+    shared actual String headerRow() =>
+            "Distance,Location,Owner,Kind,Size,Status,Name";
+    "Compare two location-town pairs."
+    shared actual Integer comparePairs(Pair<Point, AbstractTown> one,
+            Pair<Point, AbstractTown> two) {
+        return javaComparator(comparator).compare(one, two);
+    }
+    "The type of objects we accept."
+    shared actual JClass<AbstractTown> type() => javaClass<AbstractTown>();
+    "The file-name to (by default) write this table to"
+    shared actual String tableName = "towns";
+}
+"A tabular report generator for units."
+class UnitTabularReportGenerator(Player player, Point hq)
+        satisfies ITableGenerator<IUnit> {
+    "Write a table row representing a unit."
+    shared actual Boolean produce(JAppendable ostream,
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IUnit item,
+            Point loc) {
+        writeDelimitedField(ostream, distanceString(loc, hq));
+        writeDelimitedField(ostream, loc.string);
+        writeDelimitedField(ostream, getOwnerString(player, item.owner));
+        writeDelimitedField(ostream, item.kind);
+        writeDelimitedField(ostream, item.name);
+        writeField(ostream, item.allOrders.lastEntry().\ivalue.string else "");
+        ostream.append(rowDelimiter);
+        for (member in item) {
+            if (is Animal item) {
+                // We don't want animals inside a unit showing up in the wild-animal
+                // report
+                fixtures.remove(JInteger(item.id));
+            } else if (player != item.owner) {
+                // A player shouldn't be able to see the details of another player's
+                // units.
+                fixtures.remove(JInteger(item.id));
+            }
+        }
+        return true;
+    }
+    "The header row for this table."
+    shared actual String headerRow() =>
+            "Distance,Location,Owner,Kind/Category,Name,Orders";
+    "Compare two location-unit pairs."
+    shared actual Integer comparePairs(Pair<Point, IUnit> one, Pair<Point, IUnit> two) {
+        return javaComparator(comparing(
+            comparingOn((Pair<Point, IUnit> pair) => pair.first(),
+                ceylonComparator(DistanceComparator(hq))),
+            comparingOn((Pair<Point, IUnit> pair) =>
+                pair.second().owner, ceylonComparator((Player first, Player second) =>
+                    first.compareTo(second))),
+            comparingOn((Pair<Point, IUnit> pair) => pair.second().kind, increasing<String>),
+            comparingOn((Pair<Point, IUnit> pair) => pair.second().name, increasing<String>)))
+            .compare(one, two);
+    }
+    "The type of objects we accept."
+    shared actual JClass<IUnit> type() => javaClass<IUnit>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "units";
+}
+"A tabular report generator for villages."
+class VillageTabularReportGenerator(Player player, Point hq)
+        satisfies ITableGenerator<Village> {
+    shared actual Boolean produce(JAppendable ostream,
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, Village item,
+            Point loc) {
+        writeDelimitedField(ostream, distanceString(loc, hq));
+        writeDelimitedField(ostream, loc.string);
+        writeDelimitedField(ostream, getOwnerString(player, item.owner));
+        writeField(ostream, item.name);
+        ostream.append(rowDelimiter);
+        return true;
+    }
+    "The header of this table."
+    shared actual String headerRow() => "Distance,Location,Owner,Name";
+    "Compare two location-and-village pairs."
+    shared actual Integer comparePairs(Pair<Point, Village> one, Pair<Point, Village> two) {
+        return javaComparator(comparing(
+            comparingOn((Pair<Point, Village> pair) => pair.first(),
+                ceylonComparator(DistanceComparator(hq))),
+            comparingOn((Pair<Point, Village> pair) => pair.second().owner,
+                ceylonComparator((Player first, Player second) =>
+                first.compareTo(second))),
+            comparingOn((Pair<Point, Village> pair) => pair.second().name,
+                increasing<String>))).compare(one, two);
+    }
+    "The type of objects we accept."
+    shared actual JClass<Village> type() => javaClass<Village>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "villages";
 }
