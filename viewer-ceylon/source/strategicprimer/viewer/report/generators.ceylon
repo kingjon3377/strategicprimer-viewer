@@ -22,7 +22,6 @@ import java.lang {
     IllegalArgumentException
 }
 import java.util {
-    JCollection=Collection,
     JComparator=Comparator
 }
 import ceylon.collection {
@@ -59,7 +58,6 @@ import model.map.fixtures.mobile.worker {
     IJob
 }
 import ceylon.interop.java {
-    CeylonCollection,
     CeylonIterable,
     CeylonSet
 }

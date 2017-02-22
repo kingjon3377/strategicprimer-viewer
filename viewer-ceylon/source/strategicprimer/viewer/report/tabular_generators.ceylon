@@ -8,20 +8,11 @@ import model.map {
     Point,
     IFixture,
     DistanceComparator,
-    TileFixture,
-    HasKind
+    TileFixture
 }
 import util {
-    PatientMap,
     Pair,
     LineEnd
-}
-import java.util {
-    JComparator=Comparator
-}
-import ceylon.interop.java {
-    javaClass,
-    CeylonMap
 }
 import model.map.fixtures.mobile {
     IWorker,

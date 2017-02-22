@@ -11,9 +11,6 @@ import model.map {
 import util {
     Pair
 }
-import java.lang {
-    JInteger=Integer
-}
 import lovelace.util.common {
     DelayedRemovalMap,
     IntMap

@@ -2,10 +2,6 @@ import ceylon.logging {
     logger,
     Logger
 }
-import util {
-    PatientMap,
-    Pair
-}
 import model.map {
     IMapNG,
     Player,
@@ -16,9 +12,6 @@ import model.map {
     PointFactory,
     TileFixture,
     FixtureIterable
-}
-import java.util {
-    JComparator=Comparator
 }
 import model.map.fixtures.towns {
     Fortress
