@@ -109,7 +109,7 @@ interface ITableGenerator<T> given T satisfies IFixture {
         }
         {Pair<JInteger, Pair<Point, T>>*} values = temp
             .sort(comparingOn((Pair<JInteger, Pair<Point, T>> pair) => pair.second(),
-            ceylonComparator(comparePairs)));
+            comparePairs));
         if (!headerRow().empty) {
             ostream.append(headerRow());
             ostream.append(rowDelimiter);
@@ -149,8 +149,8 @@ interface ITableGenerator<T> given T satisfies IFixture {
     todo("Suppot alternate field delimiters")
     shared formal String headerRow(); // TODO: make an attribute
     "Compare two Point-fixture pairs."
-    todo("Make a Ceylon comparator") // TODO: take Tuples throughout
-    shared formal Integer comparePairs(Pair<Point, T> one, Pair<Point, T> two);
+    // TODO: take Tuples throughout
+    shared formal Comparison comparePairs(Pair<Point, T> one, Pair<Point, T> two);
     """"A String representing the owner of a fixture: "You" if equal to currentPlayer,
        "Independent" if an independent player, or otherwise the player's name."""
     todo("Rename to ownerString()")
@@ -234,28 +234,27 @@ class FortressTabularReportGenerator(Player player, Point hq)
         return true;
     }
     "Compare two Point-Fortress pairs."
-    shared actual Integer comparePairs(Pair<Point, Fortress> one,
+    shared actual Comparison comparePairs(Pair<Point, Fortress> one,
             Pair<Point, Fortress> two) {
-        JComparator<Point> comparator = DistanceComparator(hq);
+        Comparison(Point, Point) comparator = ceylonComparator(DistanceComparator(hq));
         Fortress first = one.second();
         Fortress second = two.second();
-        Integer cmp = comparator.compare(one.first(), two.first());
+        Comparison cmp = comparator(one.first(), two.first());
         if (player == first.owner, player != second.owner) {
-            return -1;
+            return smaller;
         } else if (player != first.owner, player == second.owner) {
-            return 1;
-        } else if (cmp == 0) {
+            return larger;
+        } else if (cmp == equal) {
             Comparison nameCmp = first.name.compare(second.name);
             if ("HQ" == first.name, "HQ" != second.name) {
-                return -1;
+                return smaller;
             } else if ("HQ" != first.name, "HQ" == second.name) {
-                return 1;
+                return larger;
             } else if (nameCmp == equal) {
-                return first.owner.compareTo(second.owner);
-            } else if (nameCmp == larger) {
-                return 1;
+                return ceylonComparator((Player one, Player two) => one.compareTo(two))
+                    (first.owner, second.owner);
             } else {
-                return -1;
+                return nameCmp;
             }
         } else {
             return cmp;
@@ -299,17 +298,14 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
         return true;
     }
     "Compare two worker-location pairs."
-    shared actual Integer comparePairs(Pair<Point, IWorker> one,
+    shared actual Comparison comparePairs(Pair<Point, IWorker> one,
             Pair<Point, IWorker> two) {
-        JComparator<Point> comparator = DistanceComparator(hq);
+        Comparison(Point, Point) comparator = ceylonComparator(DistanceComparator(hq));
         IWorker first = one.second();
         IWorker second = two.second();
-        Integer cmp = comparator.compare(one.first(), two.first());
-        if (cmp == 0) {
-            switch (first.name.compare(second.name))
-            case (equal) { return 0; }
-            case (larger) { return 1; }
-            case (smaller) { return -1; }
+        Comparison cmp = comparator(one.first(), two.first());
+        if (cmp == equal) {
+            return (first.name.compare(second.name));
         } else {
             return cmp;
         }
@@ -368,7 +364,7 @@ class CropTabularReportGenerator(Point hq) satisfies ITableGenerator<TileFixture
         return true;
     }
     "Compare two Point-fixture pairs."
-    shared actual Integer comparePairs(Pair<Point, TileFixture> one,
+    shared actual Comparison comparePairs(Pair<Point, TileFixture> one,
             Pair<Point, TileFixture> two) {
         TileFixture first = one.second();
         TileFixture second = two.second();
@@ -377,19 +373,19 @@ class CropTabularReportGenerator(Point hq) satisfies ITableGenerator<TileFixture
         }
         assert (is HasKind first, is HasKind second);
         Comparison cropCmp = first.kind.compare(second.kind);
-        switch (cropCmp)
-        case (equal) {
-            Integer cmp = DistanceComparator(hq).compare(one.first(), two.first());
-            if (cmp == 0) {
-                return javaComparator(comparing(byIncreasing<TileFixture, Integer>(
-                        (fix) => typeOf(fix).hash), byIncreasing(TileFixture.hash)))
-                    .compare(first, second);
+        if (cropCmp == equal) {
+            Comparison cmp = ceylonComparator(DistanceComparator(hq))(
+                one.first(), two.first());
+            if (cmp == equal) {
+                return comparing(byIncreasing<TileFixture, Integer>(
+                        (fix) => typeOf(fix).hash), byIncreasing(TileFixture.hash))(
+                    first, second);
             } else {
                 return cmp;
             }
+        } else {
+            return cropCmp;
         }
-        case (larger) { return 1; }
-        case (smaller) { return -1; }
     }
 }
 "A tabular report generator for resources that can be mined---mines, mineral veins, stone
@@ -438,28 +434,14 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
         return true;
     }
     "Compare two Point-fixture pairs."
-    shared actual Integer comparePairs(Pair<Point, MineralFixture> one,
+    shared actual Comparison comparePairs(Pair<Point, MineralFixture> one,
             Pair<Point, MineralFixture> two) {
-        JComparator<Point> distComparator = DistanceComparator(hq);
-        Comparison distCompare(Pair<Point, MineralFixture> first,
-                Pair<Point, MineralFixture> second) {
-            Integer temp = distComparator.compare(first.first(), second.first());
-            if (temp < 0) {
-                return smaller;
-            } else if (temp == 0) {
-                return equal;
-            } else {
-                return larger;
-            }
-        }
-        String kindExtractor(Pair<Point, MineralFixture> pair) {
-            return pair.second().kind;
-        }
-        Integer hashExtractor(Pair<Point, MineralFixture> pair) {
-            return pair.second().hash;
-        }
-        return javaComparator(comparing(byIncreasing(kindExtractor), distCompare,
-            byIncreasing(hashExtractor))).compare(one, two);
+        return comparing(
+            byIncreasing((Pair<Point, MineralFixture> pair) => pair.second().kind),
+            (Pair<Point, MineralFixture> first, Pair<Point, MineralFixture> second) =>
+                ceylonComparator(DistanceComparator(hq))(first.first(), second.first()),
+            byIncreasing((Pair<Point, MineralFixture> pair) => pair.second().hash))
+            (one, two);
     }
 }
 "A report generator for sightings of animals."
@@ -491,9 +473,10 @@ class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
         return true;
     }
     "Compare two pairs of Animals and locations."
-    shared actual Integer comparePairs(Pair<Point, Animal> one, Pair<Point, Animal> two) {
-        Integer cmp = DistanceComparator(hq).compare(one.first(), two.first());
-        if (cmp == 0) {
+    shared actual Comparison comparePairs(Pair<Point, Animal> one, Pair<Point, Animal> two) {
+        Comparison cmp = ceylonComparator(DistanceComparator(hq))(
+            one.first(), two.first());
+        if (cmp == equal) {
             Comparison(Animal, Animal) compareBools(Boolean(Animal) func) {
                 Comparison retval(Boolean first, Boolean second) {
                     if (first == second) {
@@ -506,9 +489,9 @@ class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
                 }
                 return (Animal first, Animal second) => retval(func(first), func(second));
             }
-            return javaComparator(comparing(compareBools(Animal.talking),
-                    compareBools((animal) => !animal.traces), byIncreasing(Animal.kind)))
-                .compare(one.second(), two.second());
+            return comparing(compareBools(Animal.talking),
+                    compareBools((animal) => !animal.traces), byIncreasing(Animal.kind))(
+                one.second(), two.second());
         } else {
             return cmp;
         }
@@ -587,14 +570,12 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
         return true;
     }
     "Compare two Point-fixture pairs."
-    shared actual Integer comparePairs(Pair<Point, ExplorableFixture|TextFixture> one,
+    shared actual Comparison comparePairs(Pair<Point, ExplorableFixture|TextFixture> one,
             Pair<Point, ExplorableFixture|TextFixture> two) {
-        Integer cmp = DistanceComparator(hq).compare(one.first(), two.first());
-        if (cmp == 0) {
-            switch (one.second().string.compare(two.second().string))
-            case (equal) { return 0; }
-            case (smaller) { return -1; }
-            case (larger) { return 1; }
+        Comparison cmp = ceylonComparator(DistanceComparator(hq))(one.first(),
+            two.first());
+        if (cmp == equal) {
+            return one.second().string.compare(two.second().string);
         } else {
             return cmp;
         }
@@ -631,16 +612,15 @@ class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immort
         return true;
     }
     "Compare two Point-fixture pairs."
-    shared actual Integer comparePairs(Pair<Point, Immortal> one,
+    shared actual Comparison comparePairs(Pair<Point, Immortal> one,
             Pair<Point, Immortal> two) {
-        return javaComparator(comparing(comparingOn(
+        return comparing(comparingOn(
                 (Pair<Point, Immortal> pair) => pair.first(),
                 ceylonComparator(DistanceComparator(hq))),
             comparingOn<Pair<Point, Immortal>, Integer>(
                 (Pair<Point, Immortal> pair) => pair.second().hash, increasing),
             comparingOn<Pair<Point, Immortal>, Integer>((pair) => pair.second().hash,
-                increasing)))
-            .compare(one, two);
+                increasing))(one, two);
     }
 }
 "A tabular report generator for resources, including caches, resource piles, and
@@ -687,7 +667,7 @@ class ResourceTabularReportGenerator()
     "The header row for this table."
     shared actual String headerRow() => "Kind,Quantity,Specifics";
     "Compare two Point-fixture pairs."
-    shared actual Integer comparePairs(
+    shared actual Comparison comparePairs(
             Pair<Point, Implement|CacheFixture|ResourcePile> one,
             Pair<Point, Implement|CacheFixture|ResourcePile> two) {
         value first = one.second();
@@ -695,30 +675,30 @@ class ResourceTabularReportGenerator()
         switch (first)
         case (is ResourcePile) {
             if (is ResourcePile second) {
-                return javaComparator(comparing(byIncreasing(ResourcePile.kind),
+                return comparing(byIncreasing(ResourcePile.kind),
                     byIncreasing(ResourcePile.contents),
+                    // TODO: Total comparison of Quantity, as in Java compareTo().
                     byDecreasing((ResourcePile pile)
-                        => pile.quantity.number.doubleValue()))).compare(first, second);
+                        => pile.quantity.number.doubleValue()))(first, second);
             } else {
-                return -1;
+                return smaller;
             }
         }
         case (is Implement) {
             if (is Implement second) {
-                return javaComparator(byIncreasing(Implement.kind))
-                    .compare(first, second);
+                return first.kind<=>second.kind;
             } else if (is ResourcePile second) {
-                return 1;
+                return larger;
             } else {
-                return -1;
+                return smaller;
             }
         }
         case (is CacheFixture) {
             if (is CacheFixture second) {
-                return javaComparator(comparing(byIncreasing(CacheFixture.kind),
-                    byIncreasing(CacheFixture.contents))).compare(first, second);
+                return comparing(byIncreasing(CacheFixture.kind),
+                    byIncreasing(CacheFixture.contents))(first, second);
             } else {
-                return 1;
+                return larger;
             }
         }
     }
@@ -732,7 +712,7 @@ class ResourceTabularReportGenerator()
                     resource))}
             .sort(comparingOn(
                 (Pair<Integer, Pair<Point, CacheFixture|Implement|ResourcePile>> pair) =>
-                    pair.second(), ceylonComparator(comparePairs)));
+                    pair.second(), comparePairs));
         ostream.append(headerRow());
         ostream.append(rowDelimiter);
         MutableMap<String, Integer> implementCounts = HashMap<String, Integer>();
@@ -797,9 +777,9 @@ class TownTabularReportGenerator(Player player, Point hq)
         return true;
     }
     "Compare two location-town pairs."
-    shared actual Integer comparePairs(Pair<Point, AbstractTown> one,
+    shared actual Comparison comparePairs(Pair<Point, AbstractTown> one,
             Pair<Point, AbstractTown> two) {
-        return javaComparator(comparator).compare(one, two);
+        return comparator(one, two);
     }
 }
 "A tabular report generator for units."
@@ -837,8 +817,8 @@ class UnitTabularReportGenerator(Player player, Point hq)
         return true;
     }
     "Compare two location-unit pairs."
-    shared actual Integer comparePairs(Pair<Point, IUnit> one, Pair<Point, IUnit> two) {
-        return javaComparator(comparing(
+    shared actual Comparison comparePairs(Pair<Point, IUnit> one, Pair<Point, IUnit> two) {
+        return comparing(
             comparingOn((Pair<Point, IUnit> pair) => pair.first(),
                 ceylonComparator(DistanceComparator(hq))),
             comparingOn((Pair<Point, IUnit> pair) =>
@@ -847,8 +827,7 @@ class UnitTabularReportGenerator(Player player, Point hq)
             comparingOn((Pair<Point, IUnit> pair) => pair.second().kind,
                 increasing<String>),
             comparingOn((Pair<Point, IUnit> pair) => pair.second().name,
-                increasing<String>)))
-            .compare(one, two);
+                increasing<String>))(one, two);
     }
 }
 "A tabular report generator for villages."
@@ -871,15 +850,15 @@ class VillageTabularReportGenerator(Player player, Point hq)
         return true;
     }
     "Compare two location-and-village pairs."
-    shared actual Integer comparePairs(Pair<Point, Village> one,
+    shared actual Comparison comparePairs(Pair<Point, Village> one,
             Pair<Point, Village> two) {
-        return javaComparator(comparing(
+        return comparing(
             comparingOn((Pair<Point, Village> pair) => pair.first(),
                 ceylonComparator(DistanceComparator(hq))),
             comparingOn((Pair<Point, Village> pair) => pair.second().owner,
                 ceylonComparator((Player first, Player second) =>
                 first.compareTo(second))),
             comparingOn((Pair<Point, Village> pair) => pair.second().name,
-                increasing<String>))).compare(one, two);
+                increasing<String>))(one, two);
     }
 }
