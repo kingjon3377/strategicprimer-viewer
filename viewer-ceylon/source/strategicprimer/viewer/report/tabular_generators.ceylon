@@ -166,11 +166,6 @@ interface ITableGenerator<T> given T satisfies IFixture {
     """"The field delimiter; provided to limit "magic character" warnings and allow us to
        change it."""
     shared default Character fieldDelimiter => ',';
-    "Write the field delimiter to a stream."
-    todo("Is this really necessary in Ceylon?")
-    shared default void writeFieldDelimiter(Anything(String) ostream) {
-        ostream(fieldDelimiter.string);
-    }
     """The row delimiter; used to limit "magic character" warnings and allow us to change
        it."""
     shared default String rowDelimiter => LineEnd.lineSep;
@@ -188,7 +183,7 @@ interface ITableGenerator<T> given T satisfies IFixture {
      delimiter."
     shared default void writeDelimitedField(Anything(String) ostream, String field) {
         writeField(ostream, field);
-        writeFieldDelimiter(ostream);
+        ostream(fieldDelimiter.string);
     }
     "Whether this generator can handle an object. Unlike the original Java implementation,
      the default implementation in Ceylon returns true if the object is within the type
