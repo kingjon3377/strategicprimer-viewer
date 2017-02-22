@@ -9,19 +9,21 @@ import model.map {
     TerrainFixture
 }
 import util {
-    PatientMap,
-    Pair,
-    IntMap
+    Pair
 }
 import java.lang {
     JInteger=Integer
 }
+import lovelace.util.common {
+    DelayedRemovalMap,
+    IntMap
+}
 "A method to produce tabular reports based on a map for a player."
 shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
     // TODO: Use Ceylon Integer and Tuples
-    PatientMap<JInteger, Pair<Point, IFixture>> fixtures = IntMap<Pair<Point, IFixture>>();
+    DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = IntMap<Pair<Point, IFixture>>();
     for (key->val in getFixtures(map)) {
-        fixtures.put(JInteger(key), Pair.\iof<Point, IFixture>(val.first,
+        fixtures.put(key, Pair.\iof<Point, IFixture>(val.first,
             val.rest.first));
     }
     Player player = map.currentPlayer;
@@ -45,10 +47,10 @@ shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
         try (ostream = JPrintStream(source(generator.tableName))) {
             generator.produceTable((String string) => ostream.print(string), fixtures);
         }
-        for (pair in fixtures.values()) {
+        for (pair in fixtures.items) {
             IFixture fixture = pair.second();
             if (is TerrainFixture fixture) {
-                fixtures.remove(JInteger(fixture.id));
+                fixtures.remove(fixture.id);
             } else {
                 process.writeLine("Unhandled fixture:   ``fixture``");
             }

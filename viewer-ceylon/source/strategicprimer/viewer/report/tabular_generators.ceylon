@@ -11,10 +11,6 @@ import model.map {
     TileFixture,
     HasKind
 }
-import java.lang {
-    JInteger=Integer, JClass=Class,
-    IllegalArgumentException
-}
 import util {
     PatientMap,
     Pair,
@@ -37,7 +33,8 @@ import model.map.fixtures.mobile.worker {
     WorkerStats
 }
 import lovelace.util.common {
-    todo
+    todo,
+    DelayedRemovalMap
 }
 import model.map.fixtures.resources {
     Grove,
@@ -95,19 +92,19 @@ Regex quotePattern = regex("\"", true);
 interface ITableGenerator<T> given T satisfies IFixture {
     "Produce a tabular report on a particular category of fixtures in the map, and remove
       all fixtures covered in the table from the collection."
-    shared default void produceTable(Anything(String) ostream, PatientMap<JInteger,
+    shared default void produceTable(Anything(String) ostream, DelayedRemovalMap<Integer,
             Pair<Point, IFixture>> fixtures) {
-        MutableList<Pair<JInteger, Pair<Point, T>>> temp =
-                ArrayList<Pair<JInteger, Pair<Point, T>>>();
-        for (entry in fixtures.entrySet()) {
-            if (is T fixture = entry.\ivalue.second()) {
-                temp.add(Pair<JInteger, Pair<Point, T>>
-                    .\iof(entry.key, Pair<Point, T>
-                    .\iof(entry.\ivalue.first(), fixture)));
+        MutableList<Pair<Integer, Pair<Point, T>>> temp =
+                ArrayList<Pair<Integer, Pair<Point, T>>>();
+        for (key->val in fixtures) {
+            if (is T fixture = val.second()) {
+                temp.add(Pair<Integer, Pair<Point, T>>
+                    .\iof(key, Pair<Point, T>
+                    .\iof(val.first(), fixture)));
             }
         }
-        {Pair<JInteger, Pair<Point, T>>*} values = temp
-            .sort(comparingOn((Pair<JInteger, Pair<Point, T>> pair) => pair.second(),
+        {Pair<Integer, Pair<Point, T>>*} values = temp
+            .sort(comparingOn((Pair<Integer, Pair<Point, T>> pair) => pair.second(),
             comparePairs));
         writeRow(ostream, headerRow.first, *headerRow.rest);
         for (pair in values) {
@@ -124,7 +121,7 @@ interface ITableGenerator<T> given T satisfies IFixture {
         "The stream to write the row to."
         Anything(String) ostream,
         "The set of fixtures."
-        PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+        DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
         "The item to base this line on."
         T item,
         "The location of this item in the map."
@@ -195,7 +192,7 @@ class FortressTabularReportGenerator(Player player, Point hq)
     shared actual String tableName = "fortresses";
     "Write a table row representing the fortress."
     shared actual Boolean produce(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
             Fortress item, Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
             ownerString(player, item.owner), item.name);
@@ -203,7 +200,7 @@ class FortressTabularReportGenerator(Player player, Point hq)
         // in other tables.
         if (player != item.owner) {
             for (member in item) {
-                fixtures.remove(JInteger(member.id));
+                fixtures.remove(member.id);
             }
         }
         return true;
@@ -246,7 +243,7 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
     shared actual String tableName = "workers";
     "Produce a table line representing a worker."
     shared actual Boolean produce(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IWorker item,
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IWorker item,
             Point loc) {
         if (exists stats = item.stats) {
             writeRow(ostream, distanceString(loc, hq), loc.string, item.name,
@@ -285,7 +282,7 @@ class CropTabularReportGenerator(Point hq)
     shared actual String tableName = "crops";
     "Produce the report line for a fixture."
     shared actual Boolean produce(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
             Forest|Shrub|Meadow|Grove item, Point loc) {
         String kind;
         String cultivation;
@@ -345,7 +342,7 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
     shared actual String tableName = "minerals";
     "Produce the report line for a fixture."
     shared actual Boolean produce(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, MineralFixture item,
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, MineralFixture item,
             Point loc) {
         String classField;
         String statusField;
@@ -392,7 +389,7 @@ class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
     shared actual String tableName = "animals";
     "Produce a single line of the tabular report on animals."
     shared actual Boolean produce(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
             Animal item, Point loc) {
         String kind;
         if (item.traces) {
@@ -443,7 +440,7 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
     shared actual String tableName = "explorables";
     "Produce a report line about the given fixture."
     shared actual Boolean produce(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
             ExplorableFixture|TextFixture item, Point loc) {
         String brief;
         String owner;
@@ -524,7 +521,7 @@ class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immort
     shared actual String tableName = "immortals";
     "Produce a table row for the given fixture."
     shared actual Boolean produce(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, Immortal item,
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, Immortal item,
             Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string, item.string);
         return true;
@@ -551,7 +548,7 @@ class ResourceTabularReportGenerator()
     shared actual [String+] headerRow = ["Kind", "Quantity", "Specifics"];
     "Write a table row based on the given fixture."
     shared actual Boolean produce(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
             Implement|CacheFixture|ResourcePile item, Point loc) {
         String kind;
         String quantity;
@@ -613,10 +610,10 @@ class ResourceTabularReportGenerator()
     }
     "Write rows for equipment, counting multiple identical Implements in one line."
     shared actual void produceTable(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures) {
-        value values = { for (key->item in CeylonMap(fixtures))
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
+        value values = { for (key->item in fixtures)
             if (is CacheFixture|Implement|ResourcePile resource = item.second())
-                Pair<Integer, Pair<Point, IFixture>>.\iof(key.intValue(),
+                Pair<Integer, Pair<Point, IFixture>>.\iof(key,
                     Pair<Point, CacheFixture|Implement|ResourcePile>.\iof(item.first(),
                     resource))}
             .sort(comparingOn(
@@ -667,7 +664,7 @@ class TownTabularReportGenerator(Player player, Point hq)
         "Status", "Name"];
     "Produce a table line representing a town."
     shared actual Boolean produce(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
             AbstractTown item, Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
             ownerString(player, item.owner), item.kind(), item.size().string,
@@ -690,7 +687,7 @@ class UnitTabularReportGenerator(Player player, Point hq)
     shared actual String tableName = "units";
     "Write a table row representing a unit."
     shared actual Boolean produce(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IUnit item,
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IUnit item,
             Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
             ownerString(player, item.owner), item.kind, item.name,
@@ -699,11 +696,11 @@ class UnitTabularReportGenerator(Player player, Point hq)
             if (is Animal item) {
                 // We don't want animals inside a unit showing up in the wild-animal
                 // report
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
             } else if (player != item.owner) {
                 // A player shouldn't be able to see the details of another player's
                 // units.
-                fixtures.remove(JInteger(item.id));
+                fixtures.remove(item.id);
             }
         }
         return true;
@@ -730,7 +727,7 @@ class VillageTabularReportGenerator(Player player, Point hq)
     "The file-name to (by default) write this table to."
     shared actual String tableName = "villages";
     shared actual Boolean produce(Anything(String) ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, Village item,
+            DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, Village item,
             Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
             ownerString(player, item.owner), item.name);
