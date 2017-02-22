@@ -41,8 +41,9 @@ shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
     };
     for (generator in generators) {
         assert (is ITableGenerator<out Object> generator);
+        // TODO: Use ceylon.file / ceylon.io for file output
         try (ostream = JPrintStream(source(generator.tableName))) {
-            generator.produceTable(ostream, fixtures);
+            generator.produceTable((String string) => ostream.print(string), fixtures);
         }
         for (pair in fixtures.values()) {
             IFixture fixture = pair.second();
