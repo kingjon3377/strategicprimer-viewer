@@ -148,8 +148,7 @@ interface ITableGenerator<T> given T satisfies IFixture {
     shared formal Comparison comparePairs(Pair<Point, T> one, Pair<Point, T> two);
     """"A String representing the owner of a fixture: "You" if equal to currentPlayer,
        "Independent" if an independent player, or otherwise the player's name."""
-    todo("Rename to ownerString()")
-    shared default String getOwnerString(Player currentPlayer, Player owner) {
+    shared default String ownerString(Player currentPlayer, Player owner) {
         if (currentPlayer == owner) {
             return "You";
         } else if (owner.independent) {
@@ -199,7 +198,7 @@ class FortressTabularReportGenerator(Player player, Point hq)
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
             Fortress item, Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
-            getOwnerString(player, item.owner), item.name);
+            ownerString(player, item.owner), item.name);
         // Players shouldn't be able to see the contents of others' fortresses
         // in other tables.
         if (player != item.owner) {
@@ -485,7 +484,7 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
             } else if (item.owner.independent) {
                 owner = "No-one";
             } else {
-                owner = getOwnerString(player, item.owner);
+                owner = ownerString(player, item.owner);
             }
             longDesc = item.fullDescription;
         }
@@ -671,7 +670,7 @@ class TownTabularReportGenerator(Player player, Point hq)
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
             AbstractTown item, Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
-            getOwnerString(player, item.owner), item.kind(), item.size().string,
+            ownerString(player, item.owner), item.kind(), item.size().string,
             item.status().string, item.name);
         return true;
     }
@@ -694,7 +693,7 @@ class UnitTabularReportGenerator(Player player, Point hq)
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IUnit item,
             Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
-            getOwnerString(player, item.owner), item.kind, item.name,
+            ownerString(player, item.owner), item.kind, item.name,
             item.allOrders.lastEntry().\ivalue.string else "");
         for (member in item) {
             if (is Animal item) {
@@ -734,7 +733,7 @@ class VillageTabularReportGenerator(Player player, Point hq)
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, Village item,
             Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
-            getOwnerString(player, item.owner), item.name);
+            ownerString(player, item.owner), item.name);
         return true;
     }
     "Compare two location-and-village pairs."
