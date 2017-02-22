@@ -16,10 +16,6 @@ import util {
 import java.lang {
     JInteger=Integer
 }
-import controller.map.report.tabular {
-    ITableGenerator,
-    VillageTabularReportGenerator
-}
 "A method to produce tabular reports based on a map for a player."
 shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
     // TODO: Use Ceylon Integer and Tuples
@@ -46,7 +42,7 @@ shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
     for (generator in generators) {
         assert (is ITableGenerator<out Object> generator);
         try (ostream = JPrintStream(source(generator.tableName))) {
-            generator.produce(ostream, fixtures);
+            generator.produceTable(ostream, fixtures);
         }
         for (pair in fixtures.values()) {
             IFixture fixture = pair.second();

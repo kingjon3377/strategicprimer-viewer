@@ -1,6 +1,3 @@
-import controller.map.report.tabular {
-    ITableGenerator
-}
 import model.map.fixtures.towns {
     Fortress,
     AbstractTown,
@@ -20,15 +17,15 @@ import java.lang {
 }
 import util {
     PatientMap,
-    Pair
+    Pair,
+    LineEnd
 }
 import java.util {
     JComparator=Comparator
 }
 import ceylon.interop.java {
     javaClass,
-    CeylonMap,
-    javaString
+    CeylonMap
 }
 import model.map.fixtures.mobile {
     IWorker,
@@ -77,14 +74,147 @@ import model.map.fixtures.explorable {
 }
 import ceylon.collection {
     MutableMap,
-    HashMap
+    HashMap,
+    MutableList,
+    ArrayList
 }
 import controller.map.misc {
     TownComparator
 }
+import ceylon.regex {
+    Regex,
+    regex
+}
+import ceylon.math.float {
+    sqrt
+}
+"A regular expression to mtch quote characters."
+Regex quotePattern = regex("\"", true);
+"An interface for tabular-report generators. It's expected that implementers will take the
+ current player and the location of his or her HQ as constructor parameters."
+interface ITableGenerator<T> given T satisfies IFixture {
+    "Produce a tabular report on a particular category of fixtures in the map, and remove
+      all fixtures covered in the table from the collection."
+    shared default void produceTable(JAppendable ostream, PatientMap<JInteger,
+            Pair<Point, IFixture>> fixtures) {
+        JClass<T> classType = type();
+        MutableList<Pair<JInteger, Pair<Point, T>>> temp =
+                ArrayList<Pair<JInteger, Pair<Point, T>>>();
+        for (entry in fixtures.entrySet()) {
+            if (is T fixture = entry.\ivalue.second(), applies(fixture)) {
+                temp.add(Pair<JInteger, Pair<Point, T>>
+                    .\iof(entry.key, Pair<Point, T>
+                    .\iof(entry.\ivalue.first(), fixture)));
+            }
+        }
+        {Pair<JInteger, Pair<Point, T>>*} values = temp
+            .sort(comparingOn((Pair<JInteger, Pair<Point, T>> pair) => pair.second(),
+            ceylonComparator(comparePairs)));
+        if (!headerRow().empty) {
+            ostream.append(headerRow());
+            ostream.append(rowDelimiter);
+        }
+        for (pair in values) {
+            if (produce(ostream, fixtures, pair.second().second(),
+                    pair.second().first())) {
+                fixtures.remove(pair.first());
+            }
+        }
+        fixtures.coalesce();
+    }
+    "Produce a single line of the tabular report. Return whether to remove this item from
+     the collection."
+    shared formal Boolean produce(
+        "The stream to write the row to."
+        JAppendable ostream,
+        "The set of fixtures."
+        PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+        "The item to base this line on."
+        T item,
+        "The location of this item in the map."
+        Point loc);
+    "Given two points, return a number sufficiently proportional to the distance between
+     them for ordering points based on distance from a base. The default implementation
+     returns the *square* of the distance, for efficiency."
+    todo("Reflect the toroidal topology of the map")
+    shared default Integer distance(Point first, Point second) =>
+            ((first.col - second.col) * (first.col - second.col)) +
+            ((first.row - second.row) * (first.row - second.row));
+    "A String showing the distance between two points, suitable to be displayed, rounded
+     to a tenth of a tile. This default implementation just takes the square root of
+     [[distance]] and formats it."
+    shared default String distanceString(Point first, Point second) =>
+            Float.format(sqrt(distance(first, second).float), 1, 1);
+    "The CSV header row to print at the top of the report, not including the newline."
+    todo("Suppot alternate field delimiters")
+    shared formal String headerRow(); // TODO: make an attribute
+    "Compare two Point-fixture pairs."
+    todo("Make a Ceylon comparator") // TODO: take Tuples throughout
+    shared formal Integer comparePairs(Pair<Point, T> one, Pair<Point, T> two);
+    """"A String representing the owner of a fixture: "You" if equal to currentPlayer,
+       "Independent" if an independent player, or otherwise the player's name."""
+    todo("Rename to ownerString()")
+    shared default String getOwnerString(Player currentPlayer, Player owner) {
+        if (currentPlayer == owner) {
+            return "You";
+        } else if (owner.independent) {
+            return "Independent";
+        } else {
+            return owner.name;
+        }
+    }
+    """"The field delimiter; provided to limit "magic character" warnings and allow us to
+       change it."""
+    shared default Character fieldDelimiter => ',';
+    "Write the field delimiter to a stream."
+    todo("Is this really necessary in Ceylon?")
+    shared default void writeFieldDelimiter(JAppendable ostream) {
+        ostream.append(fieldDelimiter);
+    }
+    """The row delimiter; used to limit "magic character" warnings and allow us to change
+       it."""
+    shared default String rowDelimiter => LineEnd.lineSep;
+    "Write a field to a stream, quoting it if necessary."
+    todo("Take multiple fields in one call")
+    shared default void writeField(JAppendable ostream, String field) {
+        String quotesQuoted = quotePattern.replace(field, "\"\"");
+        if ({"\"", fieldDelimiter.string, rowDelimiter, " "}.any(quotesQuoted.contains)) {
+            ostream.append("\"``quotesQuoted``\"");
+        } else {
+            ostream.append(quotesQuoted);
+        }
+    }
+    "Write a field to a stream, quoting it if necessary, and then write the field
+     delimiter."
+    shared default void writeDelimitedField(JAppendable ostream, String field) {
+        writeField(ostream, field);
+        writeFieldDelimiter(ostream);
+    }
+    "Whether this generator can handle an object. Unlike the original Java implementation,
+     the default implementation in Ceylon returns true if the object is within the type
+     parameter, not invariably true."
+    todo("Is this method necessary since Ceylon has reified generics?")
+    shared default Boolean applies(IFixture obj) => obj is T;
+    "The type of objects we accept."
+    todo("Do we need this in the presence of reified generics?",
+        "If so, convert to Ceylon metamodel")
+    shared default JClass<T> type() => javaClass<T>();
+    "The file-name to (by default) write this table to."
+    shared formal String tableName;
+}
 "A tabular report generator for fortresses."
 class FortressTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<Fortress> {
+    "The header fields are Distance, Location, Owner, and Name."
+    shared actual String headerRow() => "Distance,Location,Owner,Name";
+    "The type of objects we accept. Needed so the default ITableGenerator.produce(
+     Appendable, PatientMap) can call the typesafe single-row produce() without
+     causing class-cast exceptions or taking a type-object as a parameter."
+    shared actual JClass<Fortress> type() => javaClass<Fortress>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "fortresses";
+    "Whether we can handle the given fixture."
+    shared actual Boolean applies(IFixture obj) => obj is Fortress;
     "Write a table row representing the fortress."
     shared actual Boolean produce(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
@@ -103,8 +233,6 @@ class FortressTabularReportGenerator(Player player, Point hq)
         ostream.append(rowDelimiter);
         return true;
     }
-    "The header fields are Distance, Location, Owner, and Name."
-    shared actual String headerRow() => "Distance,Location,Owner,Name";
     "Compare two Point-Fortress pairs."
     shared actual Integer comparePairs(Pair<Point, Fortress> one,
             Pair<Point, Fortress> two) {
@@ -133,18 +261,19 @@ class FortressTabularReportGenerator(Player player, Point hq)
             return cmp;
         }
     }
-    "The type of objects we accept. Needed so the default ITableGenerator.produce(
-     Appendable, PatientMap) can call the typesafe single-row produce() without
-     causing class-cast exceptions or taking a type-object as a parameter."
-    shared actual JClass<Fortress> type() => javaClass<Fortress>();
-    "The file-name to (by default) write this table to."
-    shared actual String tableName = "fortresses";
-    "Whether we can handle the given fixture."
-    shared actual Boolean applies(IFixture obj) => obj is Fortress;
 }
 "A report generator for workers. We do not cover Jobs or Skills; see the main report for
  that."
 class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> {
+    "The header row of the table."
+    shared actual String headerRow() =>
+            """Distance,Location,HP,"Max HP",Str,Dex,Con,Int,Wis,Cha""";
+    "The type of the objects we accept."
+    shared actual JClass<IWorker> type() => javaClass<IWorker>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "workers";
+    "Whether we can handle the given fixture."
+    shared actual Boolean applies(IFixture obj) => obj is IWorker;
     "Produce a table line representing a worker."
     shared actual Boolean produce(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IWorker item,
@@ -169,9 +298,6 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
         ostream.append(rowDelimiter);
         return true;
     }
-    "The header row of the table."
-    shared actual String headerRow() =>
-            """Distance,Location,HP,"Max HP",Str,Dex,Con,Int,Wis,Cha""";
     "Compare two worker-location pairs."
     shared actual Integer comparePairs(Pair<Point, IWorker> one,
             Pair<Point, IWorker> two) {
@@ -188,19 +314,19 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
             return cmp;
         }
     }
-    "The type of the objects we accept."
-    shared actual JClass<IWorker> type() => javaClass<IWorker>();
-    "The file-name to (by default) write this table to."
-    shared actual String tableName = "workers";
-    "Whether we can handle the given fixture."
-    shared actual Boolean applies(IFixture obj) => obj is IWorker;
 }
 "A tabular report generator for crops---forests, groves, orchards, fields, meadows, and
  shrubs"
 todo("Take a union type instead of the too-broad supertype")
 class CropTabularReportGenerator(Point hq) satisfies ITableGenerator<TileFixture> {
+    "The header row for the table."
+    shared actual String headerRow() => "Distance,Location,Kind,Cultivation,Status,Crop";
     "Whether we can handle the given fixture."
     shared actual Boolean applies(IFixture obj) => obj is Forest|Shrub|Meadow|Grove;
+    "The type of objects we accept."
+    shared actual JClass<TileFixture> type() => javaClass<TileFixture>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "crops";
     "Produce the report line for a fixture."
     shared actual Boolean produce(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, TileFixture item,
@@ -241,8 +367,6 @@ class CropTabularReportGenerator(Point hq) satisfies ITableGenerator<TileFixture
         ostream.append(rowDelimiter);
         return true;
     }
-    "The header row for the table."
-    shared actual String headerRow() => "Distance,Location,Kind,Cultivation,Status,Crop";
     "Compare two Point-fixture pairs."
     shared actual Integer comparePairs(Pair<Point, TileFixture> one,
             Pair<Point, TileFixture> two) {
@@ -267,16 +391,18 @@ class CropTabularReportGenerator(Point hq) satisfies ITableGenerator<TileFixture
         case (larger) { return 1; }
         case (smaller) { return -1; }
     }
-    "The type of objects we accept."
-    shared actual JClass<TileFixture> type() => javaClass<TileFixture>();
-    "The file-name to (by default) write this table to."
-    shared actual String tableName = "crops";
 }
 "A tabular report generator for resources that can be mined---mines, mineral veins, stone
  deposits, and Ground."
 class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<MineralFixture> {
     "Whether we can handle the given fixture."
     shared actual Boolean applies(IFixture obj) => obj is MineralFixture;
+    "The header row for the table."
+    shared actual String headerRow() => "Distance,Location,Kind,Product,Status";
+    "The type of objects we accept."
+    shared actual JClass<MineralFixture> type() => javaClass<MineralFixture>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "minerals";
     "Produce the report line for a fixture."
     shared actual Boolean produce(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, MineralFixture item,
@@ -311,8 +437,6 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
         ostream.append(rowDelimiter);
         return true;
     }
-    "The header row for the table."
-    shared actual String headerRow() => "Distance,Location,Kind,Product,Status";
     "Compare two Point-fixture pairs."
     shared actual Integer comparePairs(Pair<Point, MineralFixture> one,
             Pair<Point, MineralFixture> two) {
@@ -337,13 +461,17 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
         return javaComparator(comparing(byIncreasing(kindExtractor), distCompare,
             byIncreasing(hashExtractor))).compare(one, two);
     }
-    "The type of objects we accept."
-    shared actual JClass<MineralFixture> type() => javaClass<MineralFixture>();
-    "The file-name to (by default) write this table to."
-    shared actual String tableName = "minerals";
 }
 "A report generator for sightings of animals."
 class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
+    "The header row for the table."
+    shared actual String headerRow() => "Distance,Location,Kind";
+    "Whether we can accept the given object."
+    shared actual Boolean applies(IFixture obj) => obj is Animal;
+    "The type of objects we accept."
+    shared actual JClass<Animal> type() => javaClass<Animal>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "animals";
     "Produce a single line of the tabular report on animals."
     shared actual Boolean produce(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
@@ -362,10 +490,6 @@ class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
         ostream.append(rowDelimiter);
         return true;
     }
-    "The header row for the table."
-    shared actual String headerRow() => "Distance,Location,Kind";
-    "Whether we can accept the given object."
-    shared actual Boolean applies(IFixture obj) => obj is Animal;
     "Compare two pairs of Animals and locations."
     shared actual Integer comparePairs(Pair<Point, Animal> one, Pair<Point, Animal> two) {
         Integer cmp = DistanceComparator(hq).compare(one.first(), two.first());
@@ -389,15 +513,21 @@ class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
             return cmp;
         }
     }
-    "The type of objects we accept."
-    shared actual JClass<Animal> type() => javaClass<Animal>();
-    "The file-name to (by default) write this table to."
-    shared actual String tableName = "animals";
 }
 "A tabular report generator for things that can be explored and are not covered elsewhere:
   caves, battlefields, adventure hooks, and portals."
 class ExplorableTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<ExplorableFixture|TextFixture> {
+    "The header row for the table."
+    shared actual String headerRow() =>
+            """Distance,Location,"Brief Description","Claimed By","Long Description" """;
+    "Whether we can handle the given fixture."
+    shared actual Boolean applies(IFixture obj) => obj is ExplorableFixture|TextFixture;
+    "The types of objects we accept."
+    shared actual JClass<ExplorableFixture|TextFixture> type() =>
+            javaClass<ExplorableFixture|TextFixture>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "explorables";
     "Produce a report line about the given fixture."
     shared actual Boolean produce(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
@@ -456,9 +586,6 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
         ostream.append(rowDelimiter);
         return true;
     }
-    "The header row for the table."
-    shared actual String headerRow() =>
-            """Distance,Location,"Brief Description","Claimed By","Long Description" """;
     "Compare two Point-fixture pairs."
     shared actual Integer comparePairs(Pair<Point, ExplorableFixture|TextFixture> one,
             Pair<Point, ExplorableFixture|TextFixture> two) {
@@ -472,13 +599,6 @@ class ExplorableTabularReportGenerator(Player player, Point hq)
             return cmp;
         }
     }
-    "Whether we can handle the given fixture."
-    shared actual Boolean applies(IFixture obj) => obj is ExplorableFixture|TextFixture;
-    "The types of objects we accept."
-    shared actual JClass<ExplorableFixture|TextFixture> type() =>
-            javaClass<ExplorableFixture|TextFixture>();
-    "The file-name to (by default) write this table to."
-    shared actual String tableName = "explorables";
 }
 "Compare an object with another object based on one field in particular."
 todo("Move to lovelace.util")
@@ -494,6 +614,12 @@ Comparison(BaseType, BaseType) comparingOn<BaseType, FieldType>(
 class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immortal> {
     "Whether we can handle the given object."
     shared actual Boolean applies(IFixture obj) => obj is Immortal;
+    "The header row for this table."
+    shared actual String headerRow() => "Distance,Location,Immortal";
+    "The type of objects we accept."
+    shared actual JClass<Immortal> type() => javaClass<Immortal>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "immortals";
     "Produce a table row for the given fixture."
     shared actual Boolean produce(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, Immortal item,
@@ -504,8 +630,6 @@ class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immort
         ostream.append(rowDelimiter);
         return true;
     }
-    "The header row for this table."
-    shared actual String headerRow() => "Distance,Location,Immortal";
     "Compare two Point-fixture pairs."
     shared actual Integer comparePairs(Pair<Point, Immortal> one,
             Pair<Point, Immortal> two) {
@@ -518,15 +642,16 @@ class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immort
                 increasing)))
             .compare(one, two);
     }
-    "The type of objects we accept."
-    shared actual JClass<Immortal> type() => javaClass<Immortal>();
-    "The file-name to (by default) write this table to."
-    shared actual String tableName = "immortals";
 }
 "A tabular report generator for resources, including caches, resource piles, and
  implements (equipment)."
 class ResourceTabularReportGenerator()
         satisfies ITableGenerator<Implement|CacheFixture|ResourcePile> {
+    "The type of objects we accept."
+    shared actual JClass<Implement|CacheFixture|ResourcePile> type() =>
+            javaClass<Implement|CacheFixture|ResourcePile>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "resources";
     "Whether we can handle a given object."
     shared actual Boolean applies(IFixture obj) =>
             obj is CacheFixture|ResourcePile|Implement;
@@ -598,7 +723,7 @@ class ResourceTabularReportGenerator()
         }
     }
     "Write rows for equipment, counting multiple identical Implements in one line."
-    shared actual void produce(JAppendable ostream,
+    shared actual void produceTable(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures) {
         value values = { for (key->item in CeylonMap(fixtures))
             if (is CacheFixture|Implement|ResourcePile resource = item.second())
@@ -634,15 +759,14 @@ class ResourceTabularReportGenerator()
         }
         fixtures.coalesce();
     }
-    "The type of objects we accept."
-    shared actual JClass<Implement|CacheFixture|ResourcePile> type() =>
-            javaClass<Implement|CacheFixture|ResourcePile>();
-    "The file-name to (by default) write this table to."
-    shared actual String tableName = "resources";
 }
 "A tabular report generator for towns."
 class TownTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<AbstractTown> {
+    "The type of objects we accept."
+    shared actual JClass<AbstractTown> type() => javaClass<AbstractTown>();
+    "The file-name to (by default) write this table to"
+    shared actual String tableName = "towns";
     Comparison(Pair<Point, AbstractTown>, Pair<Point, AbstractTown>) comparator =
             comparing(
                 comparingOn((Pair<Point, AbstractTown> pair) => pair.second(),
@@ -655,6 +779,9 @@ class TownTabularReportGenerator(Player player, Point hq)
                     ceylonComparator(TownComparator.compareTownStatus)),
                 comparingOn((Pair<Point, AbstractTown> pair) => pair.second().name,
                     increasing<String>));
+    "The header row for this table."
+    shared actual String headerRow() =>
+            "Distance,Location,Owner,Kind,Size,Status,Name";
     "Produce a table line representing a town."
     shared actual Boolean produce(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
@@ -669,22 +796,22 @@ class TownTabularReportGenerator(Player player, Point hq)
         ostream.append(rowDelimiter);
         return true;
     }
-    "The header row for this table."
-    shared actual String headerRow() =>
-            "Distance,Location,Owner,Kind,Size,Status,Name";
     "Compare two location-town pairs."
     shared actual Integer comparePairs(Pair<Point, AbstractTown> one,
             Pair<Point, AbstractTown> two) {
         return javaComparator(comparator).compare(one, two);
     }
-    "The type of objects we accept."
-    shared actual JClass<AbstractTown> type() => javaClass<AbstractTown>();
-    "The file-name to (by default) write this table to"
-    shared actual String tableName = "towns";
 }
 "A tabular report generator for units."
 class UnitTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<IUnit> {
+    "The header row for this table."
+    shared actual String headerRow() =>
+            "Distance,Location,Owner,Kind/Category,Name,Orders";
+    "The type of objects we accept."
+    shared actual JClass<IUnit> type() => javaClass<IUnit>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "units";
     "Write a table row representing a unit."
     shared actual Boolean produce(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, IUnit item,
@@ -709,9 +836,6 @@ class UnitTabularReportGenerator(Player player, Point hq)
         }
         return true;
     }
-    "The header row for this table."
-    shared actual String headerRow() =>
-            "Distance,Location,Owner,Kind/Category,Name,Orders";
     "Compare two location-unit pairs."
     shared actual Integer comparePairs(Pair<Point, IUnit> one, Pair<Point, IUnit> two) {
         return javaComparator(comparing(
@@ -720,18 +844,22 @@ class UnitTabularReportGenerator(Player player, Point hq)
             comparingOn((Pair<Point, IUnit> pair) =>
                 pair.second().owner, ceylonComparator((Player first, Player second) =>
                     first.compareTo(second))),
-            comparingOn((Pair<Point, IUnit> pair) => pair.second().kind, increasing<String>),
-            comparingOn((Pair<Point, IUnit> pair) => pair.second().name, increasing<String>)))
+            comparingOn((Pair<Point, IUnit> pair) => pair.second().kind,
+                increasing<String>),
+            comparingOn((Pair<Point, IUnit> pair) => pair.second().name,
+                increasing<String>)))
             .compare(one, two);
     }
-    "The type of objects we accept."
-    shared actual JClass<IUnit> type() => javaClass<IUnit>();
-    "The file-name to (by default) write this table to."
-    shared actual String tableName = "units";
 }
 "A tabular report generator for villages."
 class VillageTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<Village> {
+    "The header of this table."
+    shared actual String headerRow() => "Distance,Location,Owner,Name";
+    "The type of objects we accept."
+    shared actual JClass<Village> type() => javaClass<Village>();
+    "The file-name to (by default) write this table to."
+    shared actual String tableName = "villages";
     shared actual Boolean produce(JAppendable ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures, Village item,
             Point loc) {
@@ -742,10 +870,9 @@ class VillageTabularReportGenerator(Player player, Point hq)
         ostream.append(rowDelimiter);
         return true;
     }
-    "The header of this table."
-    shared actual String headerRow() => "Distance,Location,Owner,Name";
     "Compare two location-and-village pairs."
-    shared actual Integer comparePairs(Pair<Point, Village> one, Pair<Point, Village> two) {
+    shared actual Integer comparePairs(Pair<Point, Village> one,
+            Pair<Point, Village> two) {
         return javaComparator(comparing(
             comparingOn((Pair<Point, Village> pair) => pair.first(),
                 ceylonComparator(DistanceComparator(hq))),
@@ -755,8 +882,4 @@ class VillageTabularReportGenerator(Player player, Point hq)
             comparingOn((Pair<Point, Village> pair) => pair.second().name,
                 increasing<String>))).compare(one, two);
     }
-    "The type of objects we accept."
-    shared actual JClass<Village> type() => javaClass<Village>();
-    "The file-name to (by default) write this table to."
-    shared actual String tableName = "villages";
 }
