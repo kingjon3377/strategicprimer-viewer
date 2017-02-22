@@ -109,8 +109,8 @@ interface ITableGenerator<T> given T satisfies IFixture {
         {Pair<JInteger, Pair<Point, T>>*} values = temp
             .sort(comparingOn((Pair<JInteger, Pair<Point, T>> pair) => pair.second(),
             comparePairs));
-        if (!headerRow().empty) {
-            ostream(headerRow());
+        if (!headerRow.empty) {
+            ostream(headerRow);
             ostream(rowDelimiter);
         }
         for (pair in values) {
@@ -146,7 +146,7 @@ interface ITableGenerator<T> given T satisfies IFixture {
             Float.format(sqrt(distance(first, second).float), 1, 1);
     "The CSV header row to print at the top of the report, not including the newline."
     todo("Suppot alternate field delimiters")
-    shared formal String headerRow(); // TODO: make an attribute
+    shared formal String headerRow; // TODO: make an attribute
     "Compare two Point-fixture pairs."
     // TODO: take Tuples throughout
     shared formal Comparison comparePairs(Pair<Point, T> one, Pair<Point, T> two);
@@ -195,7 +195,7 @@ interface ITableGenerator<T> given T satisfies IFixture {
 class FortressTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<Fortress> {
     "The header fields are Distance, Location, Owner, and Name."
-    shared actual String headerRow() => "Distance,Location,Owner,Name";
+    shared actual String headerRow = "Distance,Location,Owner,Name";
     "The file-name to (by default) write this table to."
     shared actual String tableName = "fortresses";
     "Write a table row representing the fortress."
@@ -245,7 +245,7 @@ class FortressTabularReportGenerator(Player player, Point hq)
  that."
 class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> {
     "The header row of the table."
-    shared actual String headerRow() =>
+    shared actual String headerRow =
             """Distance,Location,HP,"Max HP",Str,Dex,Con,Int,Wis,Cha""";
     "The file-name to (by default) write this table to."
     shared actual String tableName = "workers";
@@ -284,7 +284,7 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
 class CropTabularReportGenerator(Point hq)
         satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
     "The header row for the table."
-    shared actual String headerRow() => "Distance,Location,Kind,Cultivation,Status,Crop";
+    shared actual String headerRow = "Distance,Location,Kind,Cultivation,Status,Crop";
     "The file-name to (by default) write this table to."
     shared actual String tableName = "crops";
     "Produce the report line for a fixture."
@@ -343,7 +343,7 @@ class CropTabularReportGenerator(Point hq)
  deposits, and Ground."
 class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<MineralFixture> {
     "The header row for the table."
-    shared actual String headerRow() => "Distance,Location,Kind,Product,Status";
+    shared actual String headerRow = "Distance,Location,Kind,Product,Status";
     "The file-name to (by default) write this table to."
     shared actual String tableName = "minerals";
     "Produce the report line for a fixture."
@@ -390,7 +390,7 @@ class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<Mineral
 "A report generator for sightings of animals."
 class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
     "The header row for the table."
-    shared actual String headerRow() => "Distance,Location,Kind";
+    shared actual String headerRow = "Distance,Location,Kind";
     "The file-name to (by default) write this table to."
     shared actual String tableName = "animals";
     "Produce a single line of the tabular report on animals."
@@ -440,7 +440,7 @@ class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
 class ExplorableTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<ExplorableFixture|TextFixture> {
     "The header row for the table."
-    shared actual String headerRow() =>
+    shared actual String headerRow =
             """Distance,Location,"Brief Description","Claimed By","Long Description" """;
     "The file-name to (by default) write this table to."
     shared actual String tableName = "explorables";
@@ -522,7 +522,7 @@ Comparison(BaseType, BaseType) comparingOn<BaseType, FieldType>(
 """A tabular report generator for "immortals.""""
 class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immortal> {
     "The header row for this table."
-    shared actual String headerRow() => "Distance,Location,Immortal";
+    shared actual String headerRow = "Distance,Location,Immortal";
     "The file-name to (by default) write this table to."
     shared actual String tableName = "immortals";
     "Produce a table row for the given fixture."
@@ -550,6 +550,8 @@ class ResourceTabularReportGenerator()
         satisfies ITableGenerator<Implement|CacheFixture|ResourcePile> {
     "The file-name to (by default) write this table to."
     shared actual String tableName = "resources";
+    "The header row for this table."
+    shared actual String headerRow = "Kind,Quantity,Specifics";
     "Write a table row based on the given fixture."
     shared actual Boolean produce(Anything(String) ostream,
             PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
@@ -576,8 +578,6 @@ class ResourceTabularReportGenerator()
         writeRow(ostream, kind, quantity, specifics);
         return true;
     }
-    "The header row for this table."
-    shared actual String headerRow() => "Kind,Quantity,Specifics";
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs(
             Pair<Point, Implement|CacheFixture|ResourcePile> one,
@@ -625,7 +625,7 @@ class ResourceTabularReportGenerator()
             .sort(comparingOn(
                 (Pair<Integer, Pair<Point, CacheFixture|Implement|ResourcePile>> pair) =>
                     pair.second(), comparePairs));
-        ostream(headerRow());
+        ostream(headerRow);
         ostream(rowDelimiter);
         MutableMap<String, Integer> implementCounts = HashMap<String, Integer>();
         for (pair in values) {
@@ -667,7 +667,7 @@ class TownTabularReportGenerator(Player player, Point hq)
                 comparingOn((Pair<Point, AbstractTown> pair) => pair.second().name,
                     increasing<String>));
     "The header row for this table."
-    shared actual String headerRow() =>
+    shared actual String headerRow =
             "Distance,Location,Owner,Kind,Size,Status,Name";
     "Produce a table line representing a town."
     shared actual Boolean produce(Anything(String) ostream,
@@ -688,7 +688,7 @@ class TownTabularReportGenerator(Player player, Point hq)
 class UnitTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<IUnit> {
     "The header row for this table."
-    shared actual String headerRow() =>
+    shared actual String headerRow =
             "Distance,Location,Owner,Kind/Category,Name,Orders";
     "The file-name to (by default) write this table to."
     shared actual String tableName = "units";
@@ -730,7 +730,7 @@ class UnitTabularReportGenerator(Player player, Point hq)
 class VillageTabularReportGenerator(Player player, Point hq)
         satisfies ITableGenerator<Village> {
     "The header of this table."
-    shared actual String headerRow() => "Distance,Location,Owner,Name";
+    shared actual String headerRow = "Distance,Location,Owner,Name";
     "The file-name to (by default) write this table to."
     shared actual String tableName = "villages";
     shared actual Boolean produce(Anything(String) ostream,
