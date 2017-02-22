@@ -314,43 +314,41 @@ class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IWorker> 
 "A tabular report generator for crops---forests, groves, orchards, fields, meadows, and
  shrubs"
 todo("Take a union type instead of the too-broad supertype")
-class CropTabularReportGenerator(Point hq) satisfies ITableGenerator<TileFixture> {
+class CropTabularReportGenerator(Point hq)
+        satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
     "The header row for the table."
     shared actual String headerRow() => "Distance,Location,Kind,Cultivation,Status,Crop";
     "Whether we can handle the given fixture."
     shared actual Boolean applies(IFixture obj) => obj is Forest|Shrub|Meadow|Grove;
     "The type of objects we accept."
-    shared actual JClass<TileFixture> type() => javaClass<TileFixture>();
+    shared actual JClass<Forest|Shrub|Meadow|Grove> type() =>
+            javaClass<Forest|Shrub|Meadow|Grove>();
     "The file-name to (by default) write this table to."
     shared actual String tableName = "crops";
     "Produce the report line for a fixture."
     shared actual Boolean produce(JAppendable ostream,
-            PatientMap<JInteger, Pair<Point, IFixture>> fixtures, TileFixture item,
-            Point loc) {
+            PatientMap<JInteger, Pair<Point, IFixture>> fixtures,
+            Forest|Shrub|Meadow|Grove item, Point loc) {
         String kind;
         String cultivation;
         String status;
-        String crop; // TODO: Once we use a union type, assign this here
+        String crop = item.kind;
         if (is Forest item) {
             kind = (item.rows) then "rows" else "forest";
             cultivation = "---";
             status = "---";
-            crop = item.kind;
         } else if (is Shrub item) {
             kind = "shrub";
             cultivation = "---";
             status = "---";
-            crop = item.kind;
         } else if (is Meadow item) {
             kind = (item.field) then "field" else "meadow";
             cultivation = (item.cultivated) then "cultivated" else "wild";
             status = item.status.string;
-            crop = item.kind;
         } else if (is Grove item) {
             kind = (item.orchard) then "orchard" else "grove";
             cultivation = (item.cultivated) then "cultivated" else "wild";
             status = "---";
-            crop = item.kind;
         } else {
             return false;
         }
@@ -364,14 +362,10 @@ class CropTabularReportGenerator(Point hq) satisfies ITableGenerator<TileFixture
         return true;
     }
     "Compare two Point-fixture pairs."
-    shared actual Comparison comparePairs(Pair<Point, TileFixture> one,
-            Pair<Point, TileFixture> two) {
-        TileFixture first = one.second();
-        TileFixture second = two.second();
-        if (!applies(first) || !applies(second)) { // TODO: omit once union type parameter
-            throw IllegalArgumentException("Unhandleable argument");
-        }
-        assert (is HasKind first, is HasKind second);
+    shared actual Comparison comparePairs(Pair<Point, Forest|Shrub|Meadow|Grove> one,
+            Pair<Point, Forest|Shrub|Meadow|Grove> two) {
+        Forest|Shrub|Meadow|Grove first = one.second();
+        Forest|Shrub|Meadow|Grove second = two.second();
         Comparison cropCmp = first.kind.compare(second.kind);
         if (cropCmp == equal) {
             Comparison cmp = ceylonComparator(DistanceComparator(hq))(
