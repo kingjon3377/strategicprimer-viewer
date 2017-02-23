@@ -56,7 +56,6 @@ import view.util {
     SPFrame,
     BoxPanel,
     FormattedLabel,
-    ListenedButton,
     StreamingLabel,
     ImprovedComboBox,
     SplitWithWeights
@@ -76,6 +75,9 @@ import view.worker {
 }
 import ceylon.language.meta {
     classDeclaration
+}
+import lovelace.util.jvm {
+    listenedButton
 }
 "A driver to le the user enter a player's resources and equipment."
 object resourceAddingCLI satisfies SimpleCLIDriver {
@@ -312,7 +314,7 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriver model,
         resourceQuantityModel.\ivalue = 0;
     };
     resourcePanel.add(PairPanel(JLabel(""),
-        ListenedButton("Add Resource", resourceListener)));
+        listenedButton("Add Resource", resourceListener)));
     resourceUnitsBox.addSubmitListener(resourceListener);
     mainPanel.add(resourcePanel);
 
@@ -341,7 +343,7 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriver model,
     };
     implementKindBox.addSubmitListener(implementListener);
     mainPanel.add(BoxPanel.centeredHorizBox(implementQuantityField,
-        implementKindBox, ListenedButton("Add Equipment", implementListener)));
+        implementKindBox, listenedButton("Add Equipment", implementListener)));
     mainPanel.addGlue();
     JScrollPane scrolledLog = JScrollPane(logLabel);
     scrolledLog.minimumSize = logLabel.minimumSize;

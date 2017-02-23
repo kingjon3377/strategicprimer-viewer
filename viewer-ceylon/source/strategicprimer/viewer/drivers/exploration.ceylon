@@ -42,7 +42,6 @@ import view.util {
     BorderedPanel,
     HotKeyCreator,
     BoxPanel,
-    ListenedButton,
     FormattedLabel,
     SplitWithWeights
 }
@@ -168,6 +167,9 @@ import javax.swing.text {
 }
 import javax.swing.event {
     ListSelectionEvent
+}
+import lovelace.util.jvm {
+    listenedButton
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -478,7 +480,7 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                         BorderedPanel.horizontalPanel(JLabel("Unit's Relative Speed"),
                             null, ConstructorWrapper.comboBox<IExplorationModel.Speed>(
                                 speedModel)),
-                        ListenedButton("Start exploring!", buttonListener)))));
+                        listenedButton("Start exploring!", buttonListener)))));
         }
         object explorationPanel extends BorderedPanel()
                 satisfies SelectionChangeListener&CompletionSource&MovementCostListener&
@@ -542,12 +544,12 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
             shared actual void removeCompletionListener(CompletionListener listener) =>
                     completionListeners.remove(listener);
             JPanel headerPanel = BoxPanel(true);
-            headerPanel.add(ListenedButton("Select a different explorer"),
+            headerPanel.add(listenedButton("Select a different explorer",
                 (ActionEvent event) {
                     for (listener in completionListeners) {
                         listener.finished();
                     }
-                });
+                }));
             headerPanel.add(locLabel);
             headerPanel.add(JLabel("Remaining Movement Points:"));
             JTextField mpField = JTextField(explorerSelectingPanel.mpDocument, null, 5);

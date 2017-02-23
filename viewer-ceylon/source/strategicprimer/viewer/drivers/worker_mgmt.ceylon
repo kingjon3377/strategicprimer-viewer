@@ -25,7 +25,8 @@ import javax.swing {
     SpinnerNumberModel,
     JPanel,
     JSpinner,
-    JTextArea
+    JTextArea,
+    JButton
 }
 import view.worker {
     WorkerTree,
@@ -39,7 +40,6 @@ import view.util {
     FocusRequester,
     FormattedLabel,
     BorderedPanel,
-    ListenedButton,
     SplitWithWeights,
     TreeExpansionOrderListener,
     Revertible,
@@ -138,6 +138,9 @@ import strategicprimer.viewer.about {
 import strategicprimer.viewer.report {
     createAbbreviatedReportIR
 }
+import lovelace.util.jvm {
+    listenedButton
+}
 "A panel for the user to enter a unit's orders or read a unit's results."
 JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel(
         Integer currentTurn, variable Player currentPlayer,
@@ -171,11 +174,14 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
             }
         }
         if (exists ordersConsumer) {
-            ListenedButton applyButton = ListenedButton("Apply", (event) => apply());
-            ListenedButton revertButton = ListenedButton("Revert", (event) => revert());
+            JButton applyButton = listenedButton("Apply",
+                (ActionEvent event) => apply());
+            JButton revertButton = listenedButton("Revert",
+                (ActionEvent event) => revert());
             OnMac.makeButtonsSegmented(applyButton, revertButton);
             JPanel buttonPanel = (OnMac.systemIsMac) then
-            BoxPanel.centeredHorizBox(applyButton, revertButton) else horizontalPanel(applyButton, null, revertButton);
+                BoxPanel.centeredHorizBox(applyButton, revertButton)
+                else horizontalPanel(applyButton, null, revertButton);
             String prefix = OnMac.shortcutDesc;
             setPageStart(horizontalPanel(JLabel("Orders for current selection, if a unit: (``prefix``D)"), null,
                 horizontalPanel(null, JLabel("Turn "), JSpinner(spinnerModel))));
@@ -457,8 +463,8 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
         MemberDetailPanel mdp = MemberDetailPanel(resultsPanel);
         StrategyExporter strategyExporter = StrategyExporter(model, options);
         BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
-            ListenedButton("Add New Unit", (event) => newUnitFrame.setVisible(true)),
-            ordersPanelObj, ListenedButton("Export a proto-strategy",
+            listenedButton("Add New Unit", (event) => newUnitFrame.setVisible(true)),
+            ordersPanelObj, listenedButton("Export a proto-strategy",
                 (ActionEvent event) => FileChooser.save(null, JFileChooser(".", null))
                     .call((file) => strategyExporter.writeStrategy(
                         parsePath(file.string).resource,

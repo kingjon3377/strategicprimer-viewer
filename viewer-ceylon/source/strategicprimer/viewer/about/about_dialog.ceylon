@@ -6,8 +6,7 @@ import java.awt {
 }
 import view.util {
     SPDialog,
-    BoxPanel,
-    ListenedButton
+    BoxPanel
 }
 import lovelace.util.common {
     todo
@@ -24,6 +23,9 @@ import javax.swing {
 }
 import controller.map.misc {
     WindowCloser
+}
+import lovelace.util.jvm {
+    listenedButton
 }
 Frame? asFrame(Component? parent) {
     if (is Frame parent) {
@@ -51,7 +53,7 @@ shared JDialog aboutDialog(Component? parentComponent, String? app) {
     scrollPane.minimumSize =Dimension(300, 400);
     scrollPane.preferredSize =Dimension(400, 500);
     retval.add(scrollPane, BorderLayout.center);
-    retval.add(BoxPanel.centeredHorizBox(ListenedButton("Close", WindowCloser(retval))),
+    retval.add(BoxPanel.centeredHorizBox(listenedButton("Close", WindowCloser(retval))),
         BorderLayout.pageEnd);
     retval.pack();
     return retval;

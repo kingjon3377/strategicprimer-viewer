@@ -63,7 +63,8 @@ import javax.swing {
     JFrame,
     WindowConstants,
     JComponent,
-    JTree
+    JTree,
+    JButton
 }
 import view.worker {
     WorkerTree,
@@ -75,7 +76,6 @@ import view.util {
     SPFrame,
     BorderedPanel,
     SplitWithWeights,
-    ListenedButton,
     FormattedLabel,
     TreeExpansionOrderListener,
     ErrorShower,
@@ -111,6 +111,9 @@ import javax.swing.event {
 }
 import lovelace.util.common {
     todo
+}
+import lovelace.util.jvm {
+    listenedButton
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
@@ -310,10 +313,11 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
         // Clear if OK and no skill selected, on Cancel, and after successfully adding skill
         hours.text = "";
     };
-    ListenedButton okButton = ListenedButton("OK", okListener);
+    JButton okButton = listenedButton("OK", okListener);
     hours.setActionCommand("OK");
     hours.addActionListener(okListener);
-    ListenedButton cancelButton = ListenedButton("Cancel", (event) => hours.text = "");
+    JButton cancelButton = listenedButton("Cancel",
+        (ActionEvent event) => hours.text = "");
     OnMac.makeButtonsSegmented(okButton, cancelButton);
     JPanel secondPanel;
     if (OnMac.systemIsMac) {
@@ -380,7 +384,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                 addLabeledField(textPanel, "Worker Name:", name);
                 addLabeledField(textPanel, "Worker Race", race);
                 JPanel buttonPanel = JPanel(GridLayout(0, 2));
-                ListenedButton addButton = ListenedButton("Add Worker", (event) {
+                JButton addButton = listenedButton("Add Worker", (ActionEvent event) {
                     String nameText = name.text.trimmed;
                     String raceText = race.text.trimmed;
                     value hpValue = Integer.parse(hpBox.text.trimmed);
@@ -426,8 +430,8 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                     }
                 });
                 buttonPanel.add(addButton);
-                ListenedButton cancelButton = ListenedButton("Cancel",
-                    (event) => dispose());
+                JButton cancelButton = listenedButton("Cancel",
+                    (ActionEvent event) => dispose());
                 buttonPanel.add(cancelButton);
                 OnMac.makeButtonsSegmented(addButton, cancelButton);
                 JPanel statsPanel = JPanel(GridLayout(0, 4));
@@ -523,7 +527,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     }
     setPanelSizes(retval);
     JPanel first = BoxPanel(true);
-    first.add(ListenedButton("+"), (ActionEvent event) {
+    first.add(listenedButton("+"), (ActionEvent event) {
         layoutObj.next(retval);
         field.requestFocusInWindow();
     });
@@ -542,9 +546,9 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     field.addActionListener(okListener);
     field.setActionCommand("OK");
     JPanel okPanel = BoxPanel(true);
-    ListenedButton okButton = ListenedButton("OK", okListener);
+    JButton okButton = listenedButton("OK", okListener);
     okPanel.add(okButton);
-    ListenedButton cancelButton = ListenedButton("Cancel", (ActionEvent event) {
+    JButton cancelButton = listenedButton("Cancel", (ActionEvent event) {
         layoutObj.first(retval);
         field.text = "";
     });
@@ -593,7 +597,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
     }
     retval.contentPane = SplitWithWeights.horizontalSplit(0.5, 0.5,
         BorderedPanel.verticalPanel(playerLabel,
-            JScrollPane(tree), ListenedButton("Add worker to selected unit ...",
+            JScrollPane(tree), listenedButton("Add worker to selected unit ...",
                 newWorkerListener)),
         SplitWithWeights.verticalSplit(0.5, 0.3,
             BorderedPanel.verticalPanel(

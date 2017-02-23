@@ -73,7 +73,6 @@ import java.awt.event {
 import view.util {
     SPDialog,
     BoxPanel,
-    ListenedButton,
     SplitWithWeights,
     BorderedPanel,
     SPFrame
@@ -146,7 +145,8 @@ import ceylon.collection {
     MutableList
 }
 import lovelace.util.jvm {
-    ceylonComparator
+    ceylonComparator,
+    listenedButton
 }
 import model.map.fixtures.mobile {
     IUnit,
@@ -281,8 +281,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     contentPanel.add(caseSensitive);
     BoxPanel buttonPanel = BoxPanel(true);
     buttonPanel.addGlue();
-    ListenedButton okButton = ListenedButton("OK", okListener);
-    ListenedButton cancelButton = ListenedButton("Cancel", (event) {
+    JButton okButton = listenedButton("OK", okListener);
+    JButton cancelButton = listenedButton("Cancel", (ActionEvent event) {
         setVisible(false);
         parent.requestFocus();
         dispose();
@@ -415,8 +415,8 @@ SPDialog selectTileDialog(Frame? parentFrame, IViewerModel model) {
     errorLabel.alignmentY = Component.topAlignment;
     BoxPanel buttonPanel = BoxPanel(true);
     buttonPanel.addGlue();
-    ListenedButton okButton = ListenedButton("OK", handleOK);
-    ListenedButton cancelButton = ListenedButton("Cancel", (ActionEvent event) {
+    JButton okButton = listenedButton("OK", handleOK);
+    JButton cancelButton = listenedButton("Cancel", (ActionEvent event) {
         retval.setVisible(false);
         rowField.text = "-1";
         columnField.text = "-1";
@@ -493,9 +493,9 @@ SPDialog&NewUnitSource&PlayerChangeListener newUnitDialog(variable Player player
     retval.add(JLabel("ID #: "));
     idField.columns = 10;
     setupField(idField);
-    ListenedButton okButton = ListenedButton("OK", okListener);
+    JButton okButton = listenedButton("OK", okListener);
     retval.add(okButton);
-    ListenedButton cancelButton = ListenedButton("Cancel", (ActionEvent event) {
+    JButton cancelButton = listenedButton("Cancel", (ActionEvent event) {
         nameField.text = "";
         kindField.text = "";
         retval.setVisible(false);
@@ -863,13 +863,13 @@ SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandle
         table.preferredScrollableViewportSize = table.preferredSize;
         table.fillsViewportHeight = true;
         table.autoResizeMode = JTable.autoResizeLastColumn;
-        JButton allButton = ListenedButton("Display All", (ActionEvent event) {
+        JButton allButton = listenedButton("Display All", (ActionEvent event) {
             for (matcher in tableModel) {
                 matcher.displayed = true;
             }
             tableModel.fireTableRowsUpdated(0, tableModel.rowCount);
         });
-        JButton noneButton = ListenedButton("Display None", (ActionEvent event) {
+        JButton noneButton = listenedButton("Display None", (ActionEvent event) {
             for (matcher in tableModel) {
                 matcher.displayed = false;
             }
