@@ -1,7 +1,8 @@
 import controller.map.misc {
     ICLIHelper,
     MenuBroker,
-    WindowCloser
+    WindowCloser,
+    IDFactoryFiller
 }
 import model.misc {
     IDriverModel,
@@ -27,8 +28,7 @@ import view.map.main {
     TileDrawHelper,
     TileDrawHelperFactory,
     DirectionSelectionChanger,
-    ArrowKeyListener,
-    TerrainChangingMenu
+    ArrowKeyListener
 }
 import javax.swing {
     SwingUtilities,
@@ -43,7 +43,8 @@ import javax.swing {
     ListSelectionModel,
     JButton,
     JComponent,
-    JPopupMenu
+    JPopupMenu,
+    JMenuItem
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -93,7 +94,8 @@ import model.map {
     MapDimensions,
     PointFactory,
     IMapNG,
-    TerrainFixture
+    TerrainFixture,
+    TileType
 }
 import java.util.stream {
     Stream
@@ -124,7 +126,10 @@ import model.listeners {
     SelectionChangeListener,
     GraphicalParamsListener,
     SelectionChangeSource,
-    VersionChangeListener
+    VersionChangeListener,
+    SelectionChangeSupport,
+    NewUnitSource,
+    PlayerChangeListener
 }
 import java.awt.image {
     ImageObserver
@@ -138,6 +143,12 @@ import ceylon.collection {
 }
 import lovelace.util.jvm {
     ceylonComparator
+}
+import view.worker {
+    NewUnitDialog
+}
+import model.map.fixtures.mobile {
+    IUnit
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -421,6 +432,56 @@ SPDialog selectTileDialog(Frame? parentFrame, IViewerModel model) {
     retval.pack();
     return retval;
 }
+"A popup menu to let the user change a tile's terrain type, or add a unit."
+JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener
+        terrainChangingMenu(Integer mapVersion, IViewerModel model) {
+    SPDialog&NewUnitSource&PlayerChangeListener nuDialog =
+            NewUnitDialog(model.map.currentPlayer,
+                IDFactoryFiller.createFactory(model.map));
+    SelectionChangeSupport scs = SelectionChangeSupport();
+    JMenuItem newUnitItem = JMenuItem("Add New Unit");
+    variable Point point = PointFactory.invalidPoint;
+    nuDialog.addNewUnitListener((IUnit unit) {
+        model.map.addFixture(point, unit);
+        model.setSelection(point);
+        scs.fireChanges(null, point);
+    });
+    object retval extends JPopupMenu() satisfies VersionChangeListener&
+            SelectionChangeListener&SelectionChangeSource {
+        void updateForVersion(Integer version) {
+            removeAll();
+            for (type in TileType.valuesForVersion(version)) {
+                JMenuItem item = JMenuItem(type.string);
+                add(item);
+                item.addActionListener((ActionEvent event) {
+                    model.map.setBaseTerrain(point, type);
+                    scs.fireChanges(null, point);
+                });
+            }
+            addSeparator();
+            add(newUnitItem);
+        }
+        shared actual void changeVersion(Integer old, Integer newVersion) =>
+                updateForVersion(newVersion);
+        shared actual void addSelectionChangeListener(SelectionChangeListener listener) =>
+                scs.addSelectionChangeListener(listener);
+        shared actual void removeSelectionChangeListener(SelectionChangeListener listener)
+                => scs.removeSelectionChangeListener(listener);
+        shared actual void selectedPointChanged(Point? old, Point newPoint) {
+            point = newPoint;
+            if (newPoint.valid,
+                    TileType.notVisible != model.map.getBaseTerrain(newPoint)) {
+                newUnitItem.enabled = true;
+            } else {
+                newUnitItem.enabled = false;
+            }
+        }
+        updateForVersion(mapVersion);
+    }
+    newUnitItem.addActionListener((ActionEvent event) => nuDialog.setVisible(true));
+    nuDialog.dispose();
+    return retval;
+}
 "An interface for the method to get the tool-tip message for the location the mouse
  cursor is over."
 interface ToolTipSource {
@@ -431,7 +492,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
         IViewerModel model, ZOrderFilter zof,
         Comparison(TileFixture, TileFixture) comparator) {
     JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener menu =
-            TerrainChangingMenu(model.mapDimensions.version, model);
+            terrainChangingMenu(model.mapDimensions.version, model);
     model.addSelectionChangeListener(menu);
     model.addVersionChangeListener(menu);
     String terrainFixturesAndTop(Point point) {
