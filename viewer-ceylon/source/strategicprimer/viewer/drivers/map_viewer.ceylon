@@ -2,7 +2,8 @@ import controller.map.misc {
     ICLIHelper,
     MenuBroker,
     WindowCloser,
-    IDFactoryFiller
+    IDFactoryFiller,
+    IDRegistrar
 }
 import model.misc {
     IDriverModel,
@@ -44,7 +45,8 @@ import javax.swing {
     JButton,
     JComponent,
     JPopupMenu,
-    JMenuItem
+    JMenuItem,
+    JFormattedTextField
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -77,7 +79,8 @@ import view.util {
     SPFrame
 }
 import util {
-    OnMac
+    OnMac,
+    IsNumeric
 }
 import java.lang {
     JIterable = Iterable
@@ -129,7 +132,8 @@ import model.listeners {
     VersionChangeListener,
     SelectionChangeSupport,
     NewUnitSource,
-    PlayerChangeListener
+    PlayerChangeListener,
+    NewUnitListener
 }
 import java.awt.image {
     ImageObserver
@@ -144,11 +148,9 @@ import ceylon.collection {
 import lovelace.util.jvm {
     ceylonComparator
 }
-import view.worker {
-    NewUnitDialog
-}
 import model.map.fixtures.mobile {
-    IUnit
+    IUnit,
+    Unit
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -432,11 +434,86 @@ SPDialog selectTileDialog(Frame? parentFrame, IViewerModel model) {
     retval.pack();
     return retval;
 }
+"A dialog to let the user add a new unit."
+SPDialog&NewUnitSource&PlayerChangeListener newUnitDialog(variable Player player,
+        IDRegistrar idf) {
+    MutableList<NewUnitListener> listeners = ArrayList<NewUnitListener>();
+    JTextField nameField = JTextField(10);
+    JTextField kindField = JTextField(10);
+    JFormattedTextField idField = JFormattedTextField(NumberFormat.integerInstance);
+    object retval extends SPDialog(null, "Add a New Unit")
+            satisfies NewUnitSource&PlayerChangeListener {
+        shared actual void playerChanged(Player? old, Player newPlayer) =>
+                player = newPlayer;
+        shared actual void addNewUnitListener(NewUnitListener listener) =>
+                listeners.add(listener);
+        shared actual void removeNewUnitListener(NewUnitListener listener) =>
+                listeners.remove(listener);
+    }
+    void okListener(ActionEvent event) {
+        String name = nameField.text.trimmed;
+        String kind = kindField.text.trimmed;
+        if (name.empty) {
+            nameField.requestFocusInWindow();
+        } else if (kind.empty) {
+            kindField.requestFocusInWindow();
+        } else {
+            String reqId = idField.text.trimmed;
+            variable Integer idNum;
+            if (IsNumeric.isNumeric(reqId)) {
+                try {
+                    idNum = NumberFormat.integerInstance.parse(reqId).intValue();
+                    idf.register(idNum);
+                } catch (ParseException except) {
+                    log.info("Parse error parsing user-specified ID", except);
+                    idNum = idf.createID();
+                }
+            } else {
+                idNum = idf.createID();
+            }
+            IUnit unit = Unit(player, kind, name, idNum);
+            for (listener in listeners) {
+                listener.addNewUnit(unit);
+            }
+            kindField.text = "";
+            nameField.text = "";
+            retval.setVisible(false);
+            retval.dispose();
+        }
+    }
+    retval.add(JLabel("<html><b>Unit Name:&nbsp;</b></html>"));
+    void setupField(JTextField field) {
+        field.setActionCommand("OK");
+        field.addActionListener(okListener);
+        retval.add(field);
+    }
+    setupField(nameField);
+    retval.add(JLabel("<html><b>Kind of Unit:&nbsp;</b></html>"));
+    setupField(kindField);
+    retval.add(JLabel("ID #: "));
+    idField.columns = 10;
+    setupField(idField);
+    ListenedButton okButton = ListenedButton("OK", okListener);
+    retval.add(okButton);
+    ListenedButton cancelButton = ListenedButton("Cancel", (ActionEvent event) {
+        nameField.text = "";
+        kindField.text = "";
+        retval.setVisible(false);
+        retval.dispose();
+    });
+    OnMac.makeButtonsSegmented(okButton, cancelButton);
+    retval.add(cancelButton);
+    retval.setMinimumSize(Dimension(150, 80));
+    (retval of Component).preferredSize = Dimension(200, 90);
+    (retval of Component).maximumSize = Dimension(300, 90);
+    retval.pack();
+    return retval;
+}
 "A popup menu to let the user change a tile's terrain type, or add a unit."
 JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener
         terrainChangingMenu(Integer mapVersion, IViewerModel model) {
     SPDialog&NewUnitSource&PlayerChangeListener nuDialog =
-            NewUnitDialog(model.map.currentPlayer,
+            newUnitDialog(model.map.currentPlayer,
                 IDFactoryFiller.createFactory(model.map));
     SelectionChangeSupport scs = SelectionChangeSupport();
     JMenuItem newUnitItem = JMenuItem("Add New Unit");

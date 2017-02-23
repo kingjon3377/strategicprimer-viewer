@@ -28,7 +28,6 @@ import javax.swing {
     JTextArea
 }
 import view.worker {
-    NewUnitDialog,
     WorkerTree,
     MemberDetailPanel,
     TreeExpansionHandler,
@@ -45,7 +44,8 @@ import view.util {
     TreeExpansionOrderListener,
     Revertible,
     Applyable,
-    BoxPanel
+    BoxPanel,
+    SPDialog
 }
 import ceylon.interop.java {
     CeylonIterable
@@ -54,7 +54,8 @@ import model.map.fixtures {
     UnitMember
 }
 import model.listeners {
-    PlayerChangeListener
+    PlayerChangeListener,
+    NewUnitSource
 }
 import java.awt {
     Dimension,
@@ -422,8 +423,9 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
     object retval extends SPFrame("Worker Management", model.mapFile, Dimension(640, 480))
             satisfies PlayerChangeListener&HotKeyCreator {
         IMapNG mainMap = model.map;
-        NewUnitDialog newUnitFrame = ConstructorWrapper.newUnitDialog(mainMap.currentPlayer,
-            IDFactoryFiller.createFactory(mainMap));
+        SPDialog&NewUnitSource&PlayerChangeListener newUnitFrame =
+                newUnitDialog(mainMap.currentPlayer,
+                    IDFactoryFiller.createFactory(mainMap));
         IWorkerTreeModel treeModel = WorkerTreeModelAlt(mainMap.currentPlayer, model);
         WorkerTree tree = WorkerTree.factory(treeModel, mainMap.players().iterator,
             () => mainMap.currentTurn, true);

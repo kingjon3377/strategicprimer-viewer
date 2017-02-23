@@ -1,9 +1,11 @@
 package strategicprimer.viewer.drivers;
 
 import controller.map.misc.CLIHelper;
-import controller.map.misc.IDRegistrar;
 import java.io.Reader;
-import javax.swing.*;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.ListModel;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -14,7 +16,6 @@ import model.map.Player;
 import model.map.SPMapNG;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
-import view.worker.NewUnitDialog;
 
 /**
  * A wrapper around the constructors of classes thatthe Ceylon compiler in the
@@ -63,14 +64,7 @@ public class ConstructorWrapper {
 	public static CLIHelper cliHelper() {
 		return new CLIHelper();
 	}
-	/**
-	 * Instantiate a NewUnitDialog.
-	 * @param player the current player
-	 * @param idf the ID factory to use
-	 */
-	public static NewUnitDialog newUnitDialog(final Player player, final IDRegistrar idf) {
-		return new NewUnitDialog(player, idf);
-	}
+
 	/**
 	 * XMLInputFactory.newInstance() isn't visible in Ceylon, for some reason; nor is
 	 * XMLInputFactory.createXMLEventReader.
