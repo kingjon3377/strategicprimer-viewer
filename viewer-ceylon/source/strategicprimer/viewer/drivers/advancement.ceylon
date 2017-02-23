@@ -72,7 +72,6 @@ import view.worker {
     WorkerMenu
 }
 import view.util {
-    ItemAdditionPanel,
     SPFrame,
     BorderedPanel,
     SplitWithWeights,
@@ -80,7 +79,8 @@ import view.util {
     FormattedLabel,
     TreeExpansionOrderListener,
     ErrorShower,
-    BoxPanel
+    BoxPanel,
+    AddRemoveSource
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -92,12 +92,14 @@ import model.listeners {
     LevelGainListener,
     UnitSelectionListener,
     NewWorkerListener,
-    SkillSelectionSource
+    SkillSelectionSource,
+    AddRemoveListener
 }
 import java.awt {
     Dimension,
-    FlowLayout,
-    GridLayout
+    GridLayout,
+    CardLayout,
+    FlowLayout
 }
 import java.awt.event {
     ActionEvent,
@@ -106,6 +108,9 @@ import java.awt.event {
 import javax.swing.event {
     TreeModelEvent,
     TreeModelListener
+}
+import lovelace.util.common {
+    todo
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
@@ -499,6 +504,57 @@ JTree&SkillSelectionSource jobsTree(JobTreeModel jtModel) {
     jtModel.addTreeModelListener(treeModelListener);
     return retval;
 }
+"A panel to be the GUI to add items to a list."
+todo("Move to lovelace.util?")
+JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
+    CardLayout layoutObj = CardLayout();
+    MutableList<AddRemoveListener> listeners = ArrayList<AddRemoveListener>();
+    JTextField field = JTextField(10);
+    object retval extends JPanel(layoutObj) satisfies AddRemoveSource {
+        shared actual void addAddRemoveListener(AddRemoveListener listener) =>
+                listeners.add(listener);
+        shared actual void removeAddRemoveListener(AddRemoveListener listener) =>
+                listeners.remove(listener);
+    }
+    void setPanelSizes(JPanel panel) {
+        panel.minimumSize = Dimension(60, 40);
+        panel.preferredSize = Dimension(80, 50);
+        panel.maximumSize = Dimension(90, 50);
+    }
+    setPanelSizes(retval);
+    JPanel first = BoxPanel(true);
+    first.add(ListenedButton("+"), (ActionEvent event) {
+        layoutObj.next(retval);
+        field.requestFocusInWindow();
+    });
+    setPanelSizes(first);
+    retval.add(first);
+    JPanel second = BoxPanel(false);
+    second.add(field);
+    void okListener(ActionEvent event) {
+        String text = field.text;
+        for (listener in listeners) {
+            listener.add(what, text);
+        }
+        layoutObj.first(retval);
+        field.text = "";
+    }
+    field.addActionListener(okListener);
+    field.setActionCommand("OK");
+    JPanel okPanel = BoxPanel(true);
+    ListenedButton okButton = ListenedButton("OK", okListener);
+    okPanel.add(okButton);
+    ListenedButton cancelButton = ListenedButton("Cancel", (ActionEvent event) {
+        layoutObj.first(retval);
+        field.text = "";
+    });
+    OnMac.makeButtonsSegmented(okButton, cancelButton);
+    okPanel.add(cancelButton);
+    second.add(okPanel);
+    setPanelSizes(second);
+    retval.add(second);
+    return retval;
+}
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker menuHandler) {
     IMapNG map = model.map;
@@ -510,9 +566,9 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
     tree.addUnitSelectionListener(newWorkerListener);
     JobTreeModel jobsTreeModel = JobTreeModel();
     tree.addUnitMemberListener(jobsTreeModel);
-    ItemAdditionPanel jobAdditionPanel = ItemAdditionPanel("job");
+    JPanel&AddRemoveSource jobAdditionPanel = itemAdditionPanel("job");
     jobAdditionPanel.addAddRemoveListener(jobsTreeModel);
-    ItemAdditionPanel skillAdditionPanel = ItemAdditionPanel("skill");
+    JPanel&AddRemoveSource skillAdditionPanel = itemAdditionPanel("skill");
     skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
     LevelListener levelListener = LevelListener();
     value jobsTreeObject = jobsTree(jobsTreeModel);
