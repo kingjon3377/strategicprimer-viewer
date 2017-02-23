@@ -15,7 +15,6 @@ import model.viewer {
 import view.map.main {
     ZoomListener,
     ViewerFrame,
-    SelectTileDialog,
     FixtureFilterList
 }
 import javax.swing {
@@ -31,7 +30,9 @@ import strategicprimer.viewer.about {
     aboutDialog
 }
 import java.awt {
-    Frame
+    Frame,
+    Component,
+    Dimension
 }
 import java.awt.event {
     ActionEvent
@@ -57,7 +58,9 @@ import model.map {
     HasName,
     HasKind,
     HasOwner,
-    Player
+    Player,
+    MapDimensions,
+    PointFactory
 }
 import java.util.stream {
     Stream
@@ -67,6 +70,9 @@ import ceylon.interop.java {
 }
 import model.map.fixtures {
     RiverFixture
+}
+import java.text {
+    NumberFormat
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -240,6 +246,116 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
                 ScrollPaneConstants.horizontalScrollbarAsNeeded), null));
     pack();
 }
+class NumberState of valid|nonNumeric|negative|overflow {
+    shared new valid { }
+    shared new nonNumeric { }
+    shared new negative { }
+    shared new overflow { }
+}
+"A dialog to let the user select a tile by coordinates."
+SPDialog selectTileDialog(Frame? parentFrame, IViewerModel model) {
+    object retval extends SPDialog(parentFrame, "Go To ...") {}
+    JLabel mainLabel = JLabel("Coordinates of tile to select:");
+    mainLabel.alignmentX = Component.centerAlignment;
+    mainLabel.alignmentY = Component.topAlignment;
+    NumberFormat numParser = NumberFormat.integerInstance;
+    JTextField rowField = JTextField("-1", 4);
+    JTextField columnField = JTextField("-1", 4);
+    JLabel errorLabel = JLabel(
+        "This text should vanish from this label before it appears.");
+    NumberState checkNumber(String text, Integer bound) {
+        try {
+            Integer number = numParser.parse(text).intValue();
+            if (number < 0) {
+                return NumberState.negative;
+            } else if (number > bound) {
+                return NumberState.overflow;
+            } else {
+                return NumberState.valid;
+            }
+        } catch (ParseException except) {
+            log.debug("Non-numeric input", except);
+            return NumberState.nonNumeric;
+        }
+    }
+    String getErrorMessage(NumberState state, Integer bound) {
+        switch (state)
+        case (NumberState.valid) { return ""; }
+        case (NumberState.nonNumeric) { return "must be a whole number. "; }
+        case (NumberState.negative) { return "must be positive. "; }
+        case (NumberState.overflow) { return "must be less than ``bound``."; }
+    }
+    void handleOK(ActionEvent ignored) {
+        String rowText = rowField.text;
+        String columnText = columnField.text;
+        errorLabel.text = "";
+        MapDimensions dimensions = model.mapDimensions;
+        NumberState columnState = checkNumber(columnText, dimensions.columns - 1);
+        if (columnState != NumberState.valid) {
+            errorLabel.text += "Column ``getErrorMessage(columnState,
+                dimensions.columns)``";
+            columnField.text = "-1";
+            columnField.selectAll();
+        }
+        NumberState rowState = checkNumber(rowText, dimensions.rows - 1);
+        if (rowState != NumberState.valid) {
+            errorLabel.text += "Row ``getErrorMessage(rowState, dimensions.rows)``";
+            rowField.text = "-1";
+            rowField.selectAll();
+        }
+        if (rowState == NumberState.valid, columnState == NumberState.valid) {
+            try {
+                model.setSelection(PointFactory.point(numParser.parse(rowText).intValue(),
+                    numParser.parse(columnText).intValue()));
+            } catch (ParseException except) {
+                log.error("Parse failure after we checked input was numeric", except);
+            }
+            retval.setVisible(false);
+            retval.dispose();
+        } else {
+            retval.pack();
+        }
+    }
+    JPanel contentPane = BoxPanel(false);
+    contentPane.add(mainLabel);
+    BoxPanel boxPanel = BoxPanel(true);
+    boxPanel.add(JLabel("Row: "));
+    boxPanel.add(rowField);
+    rowField.setActionCommand("OK");
+    rowField.addActionListener(handleOK);
+    boxPanel.addGlue();
+    boxPanel.add(JLabel("Column:"));
+    boxPanel.add(columnField);
+    columnField.setActionCommand("OK");
+    columnField.addActionListener(handleOK);
+    boxPanel.addGlue();
+    contentPane.add(boxPanel);
+    contentPane.add(errorLabel);
+    errorLabel.text = "";
+    errorLabel.minimumSize = Dimension(200, 15);
+    errorLabel.alignmentX = Component.centerAlignment;
+    errorLabel.alignmentY = Component.topAlignment;
+    BoxPanel buttonPanel = BoxPanel(true);
+    buttonPanel.addGlue();
+    ListenedButton okButton = ListenedButton("OK", handleOK);
+    ListenedButton cancelButton = ListenedButton("Cancel", (ActionEvent event) {
+        retval.setVisible(false);
+        rowField.text = "-1";
+        columnField.text = "-1";
+        retval.dispose();
+    });
+    OnMac.makeButtonsSegmented(okButton, cancelButton);
+    buttonPanel.add(okButton);
+    if (!OnMac.systemIsMac) {
+        buttonPanel.addGlue();
+    }
+    buttonPanel.add(cancelButton);
+    buttonPanel.addGlue();
+    contentPane.add(buttonPanel);
+    retval.contentPane = contentPane;
+    retval.pack();
+    return retval;
+}
 "A driver to start the map viewer."
 object viewerGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -266,7 +382,7 @@ object viewerGUI satisfies SimpleDriver {
                 ViewerFrame frame = ViewerFrame(model, menuHandler);
                 menuHandler.register(WindowCloser(frame), "close");
                 menuHandler.register((event) =>
-                    SelectTileDialog(frame, model).setVisible(true), "go to tile");
+                    selectTileDialog(frame, model).setVisible(true), "go to tile");
                 variable FindDialog? finder = null;
                 FindDialog getFindDialog() {
                     if (exists temp = finder) {
