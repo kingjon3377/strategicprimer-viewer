@@ -11,16 +11,24 @@ import model.viewer {
     IViewerModel,
     ViewerModel,
     PointIterator,
-    FixtureFilterTableModel
+    FixtureFilterTableModel,
+    ZOrderFilter,
+    TileViewSize,
+    VisibleDimensions
 }
 import view.map.main {
     ZoomListener,
     FixtureFilterList,
-    MapComponent,
     ScrollListener,
     MapWindowSizeListener,
     FixtureFilterTransferHandler,
-    ViewerMenu
+    ViewerMenu,
+    MapGUI,
+    TileDrawHelper,
+    TileDrawHelperFactory,
+    ComponentMouseListener,
+    DirectionSelectionChanger,
+    ArrowKeyListener
 }
 import javax.swing {
     SwingUtilities,
@@ -43,11 +51,18 @@ import java.awt {
     Frame,
     Component,
     Dimension,
-    Window
+    Window,
+    Image,
+    Graphics,
+    Rectangle,
+    Color
 }
 import java.awt.event {
     ActionEvent,
-    WindowAdapter
+    WindowAdapter,
+    MouseMotionAdapter,
+    MouseEvent,
+    ComponentEvent
 }
 import view.util {
     SPDialog,
@@ -98,6 +113,17 @@ import view.map.details {
 }
 import lovelace.util.common {
     todo
+}
+import model.listeners {
+    MapChangeListener,
+    SelectionChangeListener,
+    GraphicalParamsListener
+}
+import java.awt.image {
+    ImageObserver
+}
+import ceylon.math.float {
+    halfEven
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -381,6 +407,180 @@ SPDialog selectTileDialog(Frame? parentFrame, IViewerModel model) {
     retval.pack();
     return retval;
 }
+"A component to display the map, even a large one, without the performance problems that
+ came from drawing the entire map every time and letting Java manage the scrolling or,
+ worse, instantiating a GUITile object for every visible tile every time the map was
+ scrolled (or, yet worse again, a GUITile for every tile in the map, and removing them all
+ and adding the visible tiles back in every time the map was scrolled)."
+JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
+        mapComponent(IViewerModel model, ZOrderFilter zof,
+        FixtureFilterTableModel matchers) {
+    object iobs satisfies ImageObserver {
+        shared late ImageObserver wrapped;
+        shared actual Boolean imageUpdate(Image? img, Integer infoflags, Integer x,
+        Integer y, Integer width, Integer height) => wrapped.imageUpdate(img,
+            infoflags, x, y, width, height);
+    }
+    variable TileDrawHelper helper = TileDrawHelperFactory.instance.factory(
+        model.mapDimensions.version, iobs, zof, matchers);
+    ComponentMouseListener cml = ComponentMouseListener(model, zof, matchers);
+    DirectionSelectionChanger dsl = DirectionSelectionChanger(model);
+    Rectangle boundsCheck(Rectangle? rect) {
+        if (exists rect) {
+            return rect;
+        } else {
+            Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
+                model.mapDimensions.version);
+            VisibleDimensions dimensions = model.dimensions;
+            return Rectangle(0, 0,
+                (dimensions.maximumCol - dimensions.minimumCol) * tileSize,
+                (dimensions.maximumRow - dimensions.minimumRow) * tileSize);
+        }
+    }
+    void paintTile(Graphics pen, Point point, Integer row, Integer column,
+            Boolean selected) {
+        Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
+            model.mapDimensions.version);
+        helper.drawTile(pen, model.map, point, PointFactory.coordinate(column * tileSize,
+            row * tileSize), PointFactory.coordinate(tileSize, tileSize));
+        if (selected) {
+            Graphics context = pen.create();
+            try {
+                context.color = Color.black;
+                context.drawRect((column * tileSize) + 1, (row * tileSize) + 1,
+                    tileSize - 2, tileSize - 2);
+            } finally {
+                context.dispose();
+            }
+        }
+    }
+    void fixVisibility() {
+        Point selectedPoint = model.selectedPoint;
+        Integer selectedRow = largest(selectedPoint.row, 0);
+        Integer selectedColumn = largest(selectedPoint.col, 0);
+        VisibleDimensions visibleDimensions = model.dimensions;
+        variable Integer minimumRow = visibleDimensions.minimumRow;
+        variable Integer maximumRow = visibleDimensions.maximumRow;
+        variable Integer minimumColumn = visibleDimensions.minimumCol;
+        variable Integer maximumColumn = visibleDimensions.maximumCol;
+        if (selectedRow < minimumRow) {
+            Integer difference = minimumRow - selectedRow;
+            minimumRow -= difference;
+            maximumRow -= difference;
+        } else if (selectedRow > maximumRow) {
+            Integer difference = selectedRow - maximumRow;
+            minimumRow += difference;
+            maximumRow += difference;
+        }
+        if (selectedColumn < minimumColumn) {
+            Integer difference = minimumColumn - selectedColumn;
+            minimumColumn -= difference;
+            maximumColumn -= difference;
+        } else if (selectedColumn > maximumColumn) {
+            Integer difference = selectedColumn - maximumColumn;
+            minimumColumn += difference;
+            maximumColumn += difference;
+        }
+        model.dimensions = VisibleDimensions(minimumRow, maximumRow, minimumColumn,
+            maximumColumn);
+    }
+    object retval extends JComponent() satisfies MapGUI&MapChangeListener&
+            SelectionChangeListener&GraphicalParamsListener {
+        doubleBuffered = true;
+        shared actual IViewerModel mapModel = model;
+        shared actual String? getToolTipText(MouseEvent event) =>
+                cml.getToolTipText(event);
+        shared actual void dimensionsChanged(VisibleDimensions oldDim,
+            VisibleDimensions newDim) => repaint();
+        shared actual void tileSizeChanged(Integer olSize, Integer newSize) {
+            ComponentEvent event = ComponentEvent(this, ComponentEvent.componentResized);
+            for (listener in componentListeners) {
+                listener.componentResized(event);
+            }
+            repaint();
+        }
+        Boolean selectionVisible {
+            Point selectedPoint = model.selectedPoint;
+            Integer selectedRow = largest(selectedPoint.row, 0);
+            Integer selectedColumn = largest(selectedPoint.col, 0);
+            VisibleDimensions visibleDimensions = model.dimensions;
+            Integer minimumRow = visibleDimensions.minimumRow;
+            Integer maximumRow = visibleDimensions.maximumRow + 1;
+            Integer minimumColumn = visibleDimensions.minimumCol;
+            Integer maximumColumn = visibleDimensions.maximumCol +1;
+            if ((minimumRow..maximumRow).contains(selectedRow),
+                    (minimumColumn..maximumColumn).contains(selectedColumn)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        shared actual void selectedPointChanged(Point? old, Point newPoint) {
+            SwingUtilities.invokeLater(() => requestFocusInWindow());
+            if (!selectionVisible) {
+                fixVisibility();
+            }
+            repaint();
+        }
+        shared actual void mapChanged() {
+            helper = TileDrawHelperFactory.instance.factory(model.mapDimensions.version,
+                iobs, zof, matchers);
+        }
+        shared actual void paint(Graphics pen) {
+            Graphics context = pen.create();
+            try {
+                context.color = Color.white;
+                context.fillRect(0, 0, width, height);
+                Rectangle bounds = boundsCheck(context.clipBounds);
+                MapDimensions mapDimensions = model.mapDimensions;
+                Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
+                    mapDimensions.version);
+                void drawMapPortion(Integer minX, Integer minY, Integer maxX, Integer maxY) {
+                    Integer minRow = model.dimensions.minimumRow;
+                    Integer maxRow = model.dimensions.maximumRow;
+                    Integer minCol = model.dimensions.minimumCol;
+                    Integer maxCol = model.dimensions.maximumCol;
+                    for (i in minY .. maxY) {
+                        if ((i + minRow)>=(maxRow + 1)) {
+                            break;
+                        }
+                        for (j in minX..maxX) {
+                            if ((j + minCol) >= (maxCol + 1)) {
+                                break;
+                            }
+                            Point location = PointFactory.point(i + minRow, j + minCol);
+                            paintTile(context, location, i, j,
+                                model.selectedPoint == location);
+                        }
+                    }
+                }
+                drawMapPortion(halfEven(bounds.minX / tileSize).plus(0.1).integer,
+                    halfEven(bounds.minY / tileSize).plus(0.1).integer,
+                    smallest(halfEven(bounds.maxX / tileSize).plus(1.1).integer,
+                        mapDimensions.columns),
+                    smallest(halfEven(bounds.maxY / tileSize).plus(1.1).integer,
+                        mapDimensions.rows));
+            } finally {
+                context.dispose();
+            }
+            super.paint(pen);
+        }
+    }
+    iobs.wrapped = retval;
+    cml.addSelectionChangeListener(retval);
+    retval.addMouseListener(cml);
+    retval.addMouseWheelListener(dsl);
+    assert (exists actionMap = retval.actionMap,
+        exists inputMap = retval.getInputMap(JComponent.whenAncestorOfFocusedComponent));
+    ArrowKeyListener.setUpListeners(dsl, inputMap, actionMap);
+    retval.toolTipText = "";
+    object mouseMotionListener extends MouseMotionAdapter() {
+        shared actual void mouseMoved(MouseEvent event) => retval.repaint();
+    }
+    retval.addMouseMotionListener(mouseMotionListener);
+    retval.requestFocusEnabled = true;
+    return retval;
+}
 "An interface for the map viewer main window, to hold the method needed by the worker
  management app."
 todo("Merge into ISPWindow (with a broader return type)?")
@@ -394,7 +594,8 @@ SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandle
         shared actual String windowName = "Map Viewer";
     }
     FixtureFilterTableModel tableModel = FixtureFilterTableModel();
-    MapComponent mapPanel = MapComponent(driverModel, tableModel, tableModel);
+    JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
+        mapPanel = mapComponent(driverModel, tableModel, tableModel);
     tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint());
     driverModel.addGraphicalParamsListener(mapPanel);
     driverModel.addMapChangeListener(mapPanel);
