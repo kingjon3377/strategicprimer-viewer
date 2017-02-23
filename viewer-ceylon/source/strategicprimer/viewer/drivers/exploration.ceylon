@@ -16,15 +16,29 @@ import java.io {
 }
 import view.exploration {
     ExplorerSelectingPanel,
-    ExplorationPanel,
-    ExplorationMenu
+    ExplorationMenu,
+    DualTileButton,
+    ExplorationClickListener,
+    ExplorationListListener
 }
 import javax.swing {
-    SwingUtilities
+    SwingUtilities,
+    JPanel,
+    KeyStroke,
+    JLabel,
+    JTextField,
+    JScrollPane,
+    JComponent
 }
 import view.util {
     SystemOut,
-    SPFrame
+    SPFrame,
+    BorderedPanel,
+    HotKeyCreator,
+    BoxPanel,
+    ListenedButton,
+    FormattedLabel,
+    SplitWithWeights
 }
 import model.exploration.old {
     ExplorationRunner,
@@ -44,7 +58,9 @@ import ceylon.collection {
     MutableList,
     LinkedList,
     ArrayList,
-    Queue
+    Queue,
+    MutableMap,
+    HashMap
 }
 import java.lang {
     ObjectArray, JString=String,
@@ -64,11 +80,13 @@ import ceylon.interop.java {
     JavaList,
     javaString,
     CeylonList,
-    CeylonIterable
+    CeylonIterable,
+    JavaIterable
 }
 import util {
     ComparablePair,
-    Pair
+    Pair,
+    IsNumeric
 }
 import model.map {
     TileType,
@@ -100,7 +118,10 @@ import model.map.fixtures.mobile {
 import model.listeners {
     MovementCostSource,
     MovementCostListener,
-    CompletionListener
+    CompletionListener,
+    CompletionSource,
+    SelectionChangeListener,
+    SelectionChangeSupport
 }
 import model.map.fixtures {
     Ground
@@ -112,12 +133,30 @@ import model.map.fixtures.resources {
     CacheFixture
 }
 import java.awt.event {
-    ActionListener
+    ActionListener,
+    KeyEvent,
+    ActionEvent
 }
 import java.awt {
     Dimension,
     CardLayout,
-    Component
+    Component,
+    GridLayout
+}
+import java.text {
+    NumberFormat
+}
+import model.viewer {
+    FixtureMatcher,
+    FixtureFilterTableModel,
+    FixtureListModel
+}
+import view.map.details {
+    FixtureList
+}
+import javax.swing.text {
+    BadLocationException,
+    Document
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -331,13 +370,160 @@ object explorationCLI satisfies SimpleCLIDriver {
 }
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
+    Map<IExplorationModel.Direction, KeyStroke> arrowKeys = HashMap {
+        IExplorationModel.Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkUp, 0),
+        IExplorationModel.Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkDown, 0),
+        IExplorationModel.Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkLeft, 0),
+        IExplorationModel.Direction.east->KeyStroke.getKeyStroke(KeyEvent.vkRight, 0)
+    };
+    Map<IExplorationModel.Direction, KeyStroke> numKeys = HashMap {
+        IExplorationModel.Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkNumpad8, 0),
+        IExplorationModel.Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkNumpad2, 0),
+        IExplorationModel.Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkNumpad4, 0),
+        IExplorationModel.Direction.east->KeyStroke.getKeyStroke(KeyEvent.vkNumpad6, 0),
+        IExplorationModel.Direction.northeast->KeyStroke.getKeyStroke(KeyEvent.vkNumpad9,
+            0),
+        IExplorationModel.Direction.northwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad7,
+            0),
+        IExplorationModel.Direction.southeast->KeyStroke.getKeyStroke(KeyEvent.vkNumpad3,
+            0),
+        IExplorationModel.Direction.southwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad1,
+            0),
+        IExplorationModel.Direction.nowhere->KeyStroke.getKeyStroke(KeyEvent.vkNumpad5, 0)
+    };
     object retval extends SPFrame("Exploration", model.mapFile, Dimension(768, 480)) {
         shared actual String windowName = "Exploration";
         CardLayout layoutObj = CardLayout();
         setLayout(layoutObj);
         ExplorerSelectingPanel esp = ExplorerSelectingPanel(model);
-        ExplorationPanel explorationPanel = ExplorationPanel(model, esp.mpDocument,
-            esp.speedModel);
+        object explorationPanel extends BorderedPanel()
+                satisfies SelectionChangeListener&CompletionSource&MovementCostListener&
+                HotKeyCreator {
+            Document mpDocument = esp.mpDocument;
+            NumberFormat numParser = NumberFormat.integerInstance;
+            shared actual void deduct(Integer cost) {
+                String mpText;
+                try {
+                    mpText = mpDocument.getText(0, mpDocument.length).trimmed;
+                } catch (BadLocationException except) {
+                    log.error("Exception trying to update MP counter", except);
+                    return;
+                }
+                if (IsNumeric.isNumeric(mpText)) {
+                    variable Integer movePoints;
+                    try {
+                        movePoints = numParser.parse(mpText).intValue();
+                    } catch (ParseException except) {
+                        log.error("Non-numeric data in movement-points field", except);
+                        return;
+                    }
+                    movePoints -= cost;
+                    try {
+                        mpDocument.remove(0, mpDocument.length);
+                        mpDocument.insertString(0, movePoints.string, null);
+                    } catch (BadLocationException except) {
+                        log.error("Exception trying to update MP counter", except);
+                    }
+                }
+            }
+            FormattedLabel locLabel = FormattedLabel(
+                "<html><body>Currently exploring (%d, %d); click a tile to explore it.
+                 Selected fixtures in its left-hand list will be 'discovered'.
+                 </body></html>", JInteger(-1), JInteger(-1));
+            MutableMap<IExplorationModel.Direction, SelectionChangeSupport> mains =
+                    HashMap<IExplorationModel.Direction, SelectionChangeSupport>();
+            MutableMap<IExplorationModel.Direction, SelectionChangeSupport> seconds =
+                    HashMap<IExplorationModel.Direction, SelectionChangeSupport>();
+            MutableMap<IExplorationModel.Direction, DualTileButton> buttons =
+                    HashMap<IExplorationModel.Direction, DualTileButton>();
+            {FixtureMatcher*} matchers = CeylonIterable(FixtureFilterTableModel());
+            shared actual void selectedPointChanged(Point? old, Point newPoint) {
+                // TODO: use the provided old point instead?
+                Point selPoint = model.selectedUnitLocation;
+                for (direction in `IExplorationModel.Direction`.caseValues) {
+                    Point point = model.getDestination(selPoint, direction);
+                    mains.get(direction)?.fireChanges(selPoint, point);
+                    seconds.get(direction)?.fireChanges(selPoint, point);
+                    if (exists button = buttons.get(direction)) {
+                        button.setPoint(point);
+                        button.repaint();
+                    }
+                }
+                locLabel.setArgs(JInteger(selPoint.row), JInteger(selPoint.col));
+            }
+            MutableList<CompletionListener> completionListeners =
+                    ArrayList<CompletionListener>();
+            shared actual void addCompletionListener(CompletionListener listener) =>
+                    completionListeners.add(listener);
+            shared actual void removeCompletionListener(CompletionListener listener) =>
+                    completionListeners.remove(listener);
+            JPanel headerPanel = BoxPanel(true);
+            headerPanel.add(ListenedButton("Select a different explorer"),
+                (ActionEvent event) {
+                    for (listener in completionListeners) {
+                        listener.finished();
+                    }
+                });
+            headerPanel.add(locLabel);
+            headerPanel.add(JLabel("Remaining Movement Points:"));
+            JTextField mpField = JTextField(esp.mpDocument, null, 5);
+            mpField.maximumSize = Dimension(JInteger.maxValue,
+                mpField.preferredSize.height.integer);
+            headerPanel.add(mpField);
+            headerPanel.add(JLabel("Current relative speed:"));
+            IExplorationModel.Speed() speedSource = () {
+                assert (is IExplorationModel.Speed retval = esp.speedModel.selectedItem);
+                return retval;
+            };
+            headerPanel.add(ConstructorWrapper.comboBox<IExplorationModel.Speed>(
+                esp.speedModel));
+            JPanel tilesPanel = JPanel(GridLayout(3, 12, 2, 2));
+            IMutableMapNG secondMap;
+            if (exists pair = CeylonIterable(model.subordinateMaps).first) {
+                secondMap = pair.first();
+            } else {
+                secondMap = model.map;
+            }
+            for (direction in {IExplorationModel.Direction.northwest,
+                    IExplorationModel.Direction.north,
+                    IExplorationModel.Direction.northeast,
+                    IExplorationModel.Direction.west, IExplorationModel.Direction.nowhere,
+                    IExplorationModel.Direction.east,
+                    IExplorationModel.Direction.southwest,
+                    IExplorationModel.Direction.south,
+                    IExplorationModel.Direction.southeast}) {
+                SelectionChangeSupport mainPCS = SelectionChangeSupport();
+                FixtureList mainList = FixtureList(tilesPanel,
+                    FixtureListModel(model.map, true), model.map.players());
+                mainPCS.addSelectionChangeListener(mainList);
+                tilesPanel.add(JScrollPane(mainList));
+                DualTileButton dtb = DualTileButton(model.map, secondMap,
+                    JavaIterable(matchers));
+                // At some point we tried wrapping the button in a JScrollPane.
+                tilesPanel.add(dtb);
+                ExplorationClickListener ecl = ExplorationClickListener(model, direction,
+                    mainList, speedSource);
+                createHotKey(dtb, direction.string, ecl, JComponent.whenInFocusedWindow,
+                    *{arrowKeys.get(direction), numKeys.get(direction)}.coalesced);
+                dtb.addActionListener(ecl);
+                ecl.addSelectionChangeListener(selectedPointChanged);
+                ecl.addMovementCostListener(deduct);
+                SelectionChangeListener ell = ExplorationListListener(model, mainList, speedSource);
+                // mainList.model.addListDataListener(ell);
+                model.addSelectionChangeListener(ell);
+                ecl.addSelectionChangeListener(ell);
+                FixtureList secList = FixtureList(tilesPanel,
+                    FixtureListModel(secondMap, false), secondMap.players());
+                SelectionChangeSupport secPCS = SelectionChangeSupport();
+                secPCS.addSelectionChangeListener(secList);
+                tilesPanel.add(JScrollPane(secList));
+                mains.put(direction, mainPCS);
+                buttons.put(direction, dtb);
+                seconds.put(direction, secPCS);
+                ell.selectedPointChanged(null, model.selectedUnitLocation);
+            }
+            setCenter(SplitWithWeights.verticalSplit(0.5, 0.5, headerPanel, tilesPanel));
+        }
         model.addMovementCostListener(explorationPanel);
         model.addSelectionChangeListener(explorationPanel);
         object swapper satisfies CompletionListener {
