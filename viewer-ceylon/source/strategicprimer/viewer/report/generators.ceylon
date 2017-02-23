@@ -943,7 +943,7 @@ class WorkerReportGenerator(PairComparator<Point, IFixture> comp, Boolean detail
     "Produce the report-intermediate-representation sub-sub-report on a Job."
     IReportNode produceJobRIR(IJob job, Point loc) {
         return SimpleReportNode(loc,
-            "``job.level`` levels in ``job.name`` ``skills(*job)``");
+            "``job.level`` levels in ``job.name`` ``skills(*CeylonIterable(job))``");
     }
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
      paragraph or bullet point), or on all workers (should never be called, but we'll
@@ -966,7 +966,7 @@ class WorkerReportGenerator(PairComparator<Point, IFixture> comp, Boolean detail
                         """);
                 for (job in worker) {
                     ostream("<li>``job.level`` levels in ``job
-                        .name`` ``skills(*job)``</li>
+                        .name`` ``skills(*CeylonIterable(job))``</li>
                     ");
                 }
                 ostream("""</ul>
