@@ -26,9 +26,9 @@ import view.map.main {
     MapGUI,
     TileDrawHelper,
     TileDrawHelperFactory,
-    ComponentMouseListener,
     DirectionSelectionChanger,
-    ArrowKeyListener
+    ArrowKeyListener,
+    TerrainChangingMenu
 }
 import javax.swing {
     SwingUtilities,
@@ -42,7 +42,8 @@ import javax.swing {
     JTable,
     ListSelectionModel,
     JButton,
-    JComponent
+    JComponent,
+    JPopupMenu
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -62,7 +63,9 @@ import java.awt.event {
     WindowAdapter,
     MouseMotionAdapter,
     MouseEvent,
-    ComponentEvent
+    ComponentEvent,
+    MouseListener,
+    MouseAdapter
 }
 import view.util {
     SPDialog,
@@ -88,7 +91,9 @@ import model.map {
     HasOwner,
     Player,
     MapDimensions,
-    PointFactory
+    PointFactory,
+    IMapNG,
+    TerrainFixture
 }
 import java.util.stream {
     Stream
@@ -117,13 +122,22 @@ import lovelace.util.common {
 import model.listeners {
     MapChangeListener,
     SelectionChangeListener,
-    GraphicalParamsListener
+    GraphicalParamsListener,
+    SelectionChangeSource,
+    VersionChangeListener
 }
 import java.awt.image {
     ImageObserver
 }
 import ceylon.math.float {
     halfEven
+}
+import ceylon.collection {
+    ArrayList,
+    MutableList
+}
+import lovelace.util.jvm {
+    ceylonComparator
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -407,6 +421,100 @@ SPDialog selectTileDialog(Frame? parentFrame, IViewerModel model) {
     retval.pack();
     return retval;
 }
+"An interface for the method to get the tool-tip message for the location the mouse
+ cursor is over."
+interface ToolTipSource {
+    shared formal String? getToolTipText(MouseEvent event);
+}
+"A mouse listener for the map panel, to show the terrain-changing menu as needed."
+MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
+        IViewerModel model, ZOrderFilter zof,
+        Comparison(TileFixture, TileFixture) comparator) {
+    JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener menu =
+            TerrainChangingMenu(model.mapDimensions.version, model);
+    model.addSelectionChangeListener(menu);
+    model.addVersionChangeListener(menu);
+    String terrainFixturesAndTop(Point point) {
+        IMapNG map = model.map;
+        StringBuilder builder = StringBuilder();
+        void accept(TileFixture fixture) {
+            if (!builder.empty) {
+                builder.append("<br />");
+            }
+            builder.append(fixture.string);
+        }
+        {TileFixture*} stream = {map.getGround(point), map.getForest(point), *map.getOtherFixtures(point)}
+            .filter(zof.shouldDisplay).coalesced.sort(comparator);
+        if (exists top = stream.first) {
+            accept(top);
+        }
+        for (fixture in stream) {
+            if (is TerrainFixture fixture) {
+                accept(fixture);
+            }
+        }
+        return builder.string;
+    }
+    object retval extends MouseAdapter() satisfies SelectionChangeSource&ToolTipSource {
+        shared actual String? getToolTipText(MouseEvent event) {
+            value eventPoint = event.point;
+            MapDimensions mapDimensions = model.mapDimensions;
+            Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
+                mapDimensions.version);
+            VisibleDimensions visibleDimensions = model.dimensions;
+            Point point = PointFactory.point(
+                halfEven((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
+                    .plus(0.1).integer,
+                halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumCol)
+                    .plus(0.1).integer);
+            if (point.valid, point.row < mapDimensions.rows,
+                    point.col < mapDimensions.columns) {
+                String mountainString = (model.map.isMountainous(point))
+                    then ", mountainous" else "";
+                return "<html><body>``point``: ``model.map
+                    .getBaseTerrain(point)````mountainString``<br />``
+                    terrainFixturesAndTop(point)``</body></html>";
+            } else {
+                return null;
+            }
+        }
+        shared actual void mouseClicked(MouseEvent event) {
+            event.component.requestFocusInWindow();
+            value eventPoint = event.point;
+            VisibleDimensions visibleDimensions = model.dimensions;
+            MapDimensions mapDimensions = model.mapDimensions;
+            Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
+                mapDimensions.version);
+            Point point = PointFactory.point(
+                halfEven((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
+                    .plus(0.1).integer,
+                halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumCol)
+                    .plus(0.1).integer);
+            if (point.valid, point.row < mapDimensions.rows,
+                    point.col < mapDimensions.columns) {
+                model.setSelection(point);
+                if (event.popupTrigger) {
+                    menu.show(event.component, event.x, event.y);
+                }
+            }
+        }
+        shared actual void mousePressed(MouseEvent event) {
+            if (event.popupTrigger) {
+                menu.show(event.component, event.x, event.y);
+            }
+        }
+        shared actual void mouseReleased(MouseEvent event) {
+            if (event.popupTrigger) {
+                menu.show(event.component, event.x, event.y);
+            }
+        }
+        shared actual void addSelectionChangeListener(SelectionChangeListener listener) =>
+                menu.addSelectionChangeListener(listener);
+        shared actual void removeSelectionChangeListener(SelectionChangeListener listener)
+                => menu.removeSelectionChangeListener(listener);
+    }
+    return retval;
+}
 "A component to display the map, even a large one, without the performance problems that
  came from drawing the entire map every time and letting Java manage the scrolling or,
  worse, instantiating a GUITile object for every visible tile every time the map was
@@ -423,7 +531,8 @@ JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListe
     }
     variable TileDrawHelper helper = TileDrawHelperFactory.instance.factory(
         model.mapDimensions.version, iobs, zof, matchers);
-    ComponentMouseListener cml = ComponentMouseListener(model, zof, matchers);
+    MouseListener&ToolTipSource&SelectionChangeSource cml =
+            componentMouseListener(model, zof, ceylonComparator(matchers));
     DirectionSelectionChanger dsl = DirectionSelectionChanger(model);
     Rectangle boundsCheck(Rectangle? rect) {
         if (exists rect) {
