@@ -10,12 +10,17 @@ import model.misc {
 import model.viewer {
     IViewerModel,
     ViewerModel,
-    PointIterator
+    PointIterator,
+    FixtureFilterTableModel
 }
 import view.map.main {
     ZoomListener,
-    ViewerFrame,
-    FixtureFilterList
+    FixtureFilterList,
+    MapComponent,
+    ScrollListener,
+    MapWindowSizeListener,
+    FixtureFilterTransferHandler,
+    ViewerMenu
 }
 import javax.swing {
     SwingUtilities,
@@ -24,7 +29,12 @@ import javax.swing {
     JPanel,
     ScrollPaneConstants,
     JLabel,
-    JScrollPane
+    JScrollPane,
+    DropMode,
+    JTable,
+    ListSelectionModel,
+    JButton,
+    JComponent
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -32,17 +42,20 @@ import strategicprimer.viewer.about {
 import java.awt {
     Frame,
     Component,
-    Dimension
+    Dimension,
+    Window
 }
 import java.awt.event {
-    ActionEvent
+    ActionEvent,
+    WindowAdapter
 }
 import view.util {
     SPDialog,
     BoxPanel,
     ListenedButton,
     SplitWithWeights,
-    BorderedPanel
+    BorderedPanel,
+    SPFrame
 }
 import util {
     OnMac
@@ -73,6 +86,18 @@ import model.map.fixtures {
 }
 import java.text {
     NumberFormat
+}
+import javax.swing.event {
+    TableModelEvent
+}
+import javax.swing.table {
+    TableColumn
+}
+import view.map.details {
+    DetailPanelNG
+}
+import lovelace.util.common {
+    todo
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -356,6 +381,74 @@ SPDialog selectTileDialog(Frame? parentFrame, IViewerModel model) {
     retval.pack();
     return retval;
 }
+"An interface for the map viewer main window, to hold the method needed by the worker
+ management app."
+todo("Merge into ISPWindow (with a broader return type)?")
+interface IViewerFrame {
+    shared formal IViewerModel model;
+}
+"The main window for the map viewer app."
+SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandler) {
+    object retval extends SPFrame("Map Viewer", driverModel.mapFile) satisfies IViewerFrame {
+        shared actual IViewerModel model = driverModel;
+        shared actual String windowName = "Map Viewer";
+    }
+    FixtureFilterTableModel tableModel = FixtureFilterTableModel();
+    MapComponent mapPanel = MapComponent(driverModel, tableModel, tableModel);
+    tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint());
+    driverModel.addGraphicalParamsListener(mapPanel);
+    driverModel.addMapChangeListener(mapPanel);
+    driverModel.addSelectionChangeListener(mapPanel);
+    DetailPanelNG detailPanel = DetailPanelNG(driverModel.mapDimensions.version,
+        driverModel);
+    driverModel.addVersionChangeListener(detailPanel);
+    driverModel.addSelectionChangeListener(detailPanel);
+    JComponent createFilterPanel() {
+        JTable table = JTable(tableModel);
+        table.dragEnabled = true;
+        table.dropMode = DropMode.insertRows;
+        table.transferHandler = FixtureFilterTransferHandler();
+        table.setSelectionMode(ListSelectionModel.singleSelection);
+        TableColumn firstColumn = table.columnModel.getColumn(0);
+        firstColumn.minWidth = 30;
+        firstColumn.maxWidth = 50;
+        table.preferredScrollableViewportSize = table.preferredSize;
+        table.fillsViewportHeight = true;
+        table.autoResizeMode = JTable.autoResizeLastColumn;
+        JButton allButton = ListenedButton("Display All", (ActionEvent event) {
+            for (matcher in tableModel) {
+                matcher.displayed = true;
+            }
+            tableModel.fireTableRowsUpdated(0, tableModel.rowCount);
+        });
+        JButton noneButton = ListenedButton("Display None", (ActionEvent event) {
+            for (matcher in tableModel) {
+                matcher.displayed = false;
+            }
+            tableModel.fireTableRowsUpdated(0, tableModel.rowCount);
+        });
+        OnMac.makeButtonsSegmented(allButton, noneButton);
+        JPanel buttonPanel = (OnMac.systemIsMac) then
+            BoxPanel.centeredHorizBox(allButton, noneButton)
+            else BorderedPanel.horizontalPanel(allButton, null, noneButton);
+        return BorderedPanel.verticalPanel(JLabel("Display ..."), JScrollPane(table),
+            buttonPanel);
+    }
+    retval.contentPane = SplitWithWeights.verticalSplit(0.9, 0.9,
+        SplitWithWeights.horizontalSplit(0.95, 0.95,
+            ScrollListener.mapScrollPanel(driverModel, mapPanel),
+            createFilterPanel()), detailPanel);
+    (retval of Component).preferredSize = Dimension(800, 600);
+    retval.setSize(800, 600);
+    retval.setMinimumSize(Dimension(800, 600));
+    retval.pack();
+    mapPanel.requestFocusInWindow();
+    WindowAdapter windowSizeListener = MapWindowSizeListener(mapPanel);
+    retval.addWindowListener(windowSizeListener);
+    retval.addWindowStateListener(windowSizeListener);
+    retval.jMenuBar = ViewerMenu(menuHandler, retval, driverModel);
+    return retval;
+}
 "A driver to start the map viewer."
 object viewerGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -379,7 +472,7 @@ object viewerGUI satisfies SimpleDriver {
             menuHandler.register((event) => model.zoomOut(), "zoom out");
             menuHandler.register(ZoomListener(model), "center");
             SwingUtilities.invokeLater(() {
-                ViewerFrame frame = ViewerFrame(model, menuHandler);
+                SPFrame&IViewerFrame frame = viewerFrame(model, menuHandler);
                 menuHandler.register(WindowCloser(frame), "close");
                 menuHandler.register((event) =>
                     selectTileDialog(frame, model).setVisible(true), "go to tile");

@@ -111,9 +111,6 @@ import model.viewer {
 import com.bric.window {
     WindowList
 }
-import view.map.main {
-    ViewerFrame
-}
 import javax.swing.event {
         TreeSelectionListener,
     TreeSelectionEvent
@@ -364,7 +361,7 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
     }
     IViewerModel getViewerModel() {
         for (frame in WindowList.getFrames(false, true, true)) {
-            if (is ViewerFrame frame, frame.model.mapFile == model.mapFile) {
+            if (is IViewerFrame frame, frame.model.mapFile == model.mapFile) {
                 frame.toFront();
                 if (frame.extendedState == Frame.iconified) {
                     frame.extendedState = Frame.normal;
@@ -372,7 +369,7 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
                 return frame.model;
             }
         } else {
-            ViewerFrame frame = ViewerFrame(ViewerModel(model.map, model.mapFile),
+            SPFrame&IViewerFrame frame = viewerFrame(ViewerModel(model.map, model.mapFile),
                 menuHandler);
             SwingUtilities.invokeLater(() => frame.setVisible(true));
             return frame.model;
