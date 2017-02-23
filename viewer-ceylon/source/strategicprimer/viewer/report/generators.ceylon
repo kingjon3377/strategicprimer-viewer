@@ -265,8 +265,6 @@ abstract class AbstractReportGenerator<T>(
             }
         }
     }
-    deprecated shared MutableList<Point> pointsListAt(String desc) =>
-            PointList("``desc``: at ");
     "An implementation of HeadedMap."
     shared class HeadedMapImpl<Key, Value>(shared actual String header,
             Comparison(Key, Key)? comparator = null, {<Key->Value>*} initial = {})
@@ -415,7 +413,7 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
                     if (exists temp = items.get(desc)) {
                         list = temp;
                     } else {
-                        list = pointsListAt(desc);
+                        list = PointList("``desc``: at ");
                         items.put(desc, list);
                     }
                     list.add(loc);
@@ -1726,7 +1724,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                     if (exists coll = minerals.get(item.shortDesc())) {
                         coll.add(point);
                     } else {
-                        value coll = pointsListAt(item.shortDesc());
+                        value coll = PointList("``item.shortDesc()``: at ");
                         minerals.put(item.shortDesc(), coll);
                         coll.add(point);
                     }
@@ -1735,7 +1733,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                     if (exists coll = shrubs.get(item.kind)) {
                         coll.add(point);
                     } else {
-                        value coll = pointsListAt(item.kind);
+                        value coll = PointList("``item.kind``: at ");
                         shrubs.put(item.kind, coll);
                         coll.add(point);
                     }
@@ -1744,7 +1742,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                     if (exists coll = stone.get(item.kind)) {
                         coll.add(point);
                     } else {
-                        value coll = pointsListAt(item.kind);
+                        value coll = PointList("``item.kind``: at ");
                         stone.put(item.kind, coll);
                         coll.add(point);
                     }
