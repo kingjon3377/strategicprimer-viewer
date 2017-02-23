@@ -448,13 +448,13 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
         tree.addTreeSelectionListener(ordersPanelObj);
         DefaultTreeModel reportModel = DefaultTreeModel(SimpleReportNode(
             "Please wait, loading report ..."));
-        Anything() reportGeneratorThread = () {
+        void reportGeneratorThread() {
             log.info("About to generate report");
             IReportNode report = createAbbreviatedReportIR(mainMap,
                 mainMap.currentPlayer);
             log.info("Finished generating report");
             SwingUtilities.invokeLater(() => reportModel.setRoot(report));
-        };
+        }
         Thread(reportGeneratorThread).start();
         value resultsPanel = ordersPanel(mainMap.currentTurn, mainMap.currentPlayer,
             (Player player, String kind) => CeylonIterable(model.getUnits(player, kind)),
