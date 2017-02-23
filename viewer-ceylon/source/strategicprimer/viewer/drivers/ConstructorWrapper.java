@@ -90,4 +90,11 @@ public class ConstructorWrapper {
 	public static <T> JComboBox<T> comboBox(ComboBoxModel<T> model) {
 		return new JComboBox<>(model);
 	}
+	/**
+	 * Compiler erroneously claims there isn't a JList constructor taking a ListModel.
+	 * @param model the list model
+	 */
+	public static <T> JList<T> jlist(final ListModel<T> model) {
+		return new JList<>(model);
+	}
 }
