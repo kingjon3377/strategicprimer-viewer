@@ -67,8 +67,7 @@ import javax.swing {
     JButton
 }
 import view.worker {
-    LevelListener,
-    WorkerMenu
+    LevelListener
 }
 import view.util {
     SPFrame,
@@ -612,7 +611,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
                         JLabel("<html><p align=\"left\">Add a Skill to the selected Job:</p></html>"),
                         null, skillAdditionPanel)), hoursAdditionPanel)));
     retval.playerChanged(null, map.currentPlayer);
-    retval.jMenuBar = WorkerMenu(menuHandler, retval, model);
+    retval.jMenuBar = workerMenu(menuHandler, retval, model);
     retval.pack();
     return retval;
 }

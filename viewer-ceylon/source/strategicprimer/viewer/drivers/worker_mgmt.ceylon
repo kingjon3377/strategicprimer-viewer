@@ -30,11 +30,12 @@ import javax.swing {
     JButton,
     TransferHandler,
     Icon,
-    ImageIcon
+    ImageIcon,
+    JFrame,
+    JMenuBar
 }
 import view.worker {
-    MemberDetailPanel,
-    WorkerMenu
+    MemberDetailPanel
 }
 import view.util {
     SPFrame,
@@ -47,7 +48,8 @@ import view.util {
     Revertible,
     Applyable,
     BoxPanel,
-    SPDialog
+    SPDialog,
+    SPMenu
 }
 import ceylon.interop.java {
     CeylonIterable,
@@ -94,7 +96,8 @@ import java.awt.event {
     WindowAdapter,
     MouseAdapter,
     MouseEvent,
-    KeyAdapter
+    KeyAdapter,
+    ActionListener
 }
 import model.map.fixtures.mobile {
     IUnit,
@@ -125,7 +128,8 @@ import model.viewer {
     ViewerModel
 }
 import com.bric.window {
-    WindowList
+    WindowList,
+    WindowMenu
 }
 import javax.swing.event {
         TreeSelectionListener,
@@ -733,6 +737,22 @@ class StrategyExporter(IWorkerModel model, SPOptions options) satisfies PlayerCh
         }
     }
 }
+"A set of menus for the worker GUI (and other related apps)."
+JMenuBar workerMenu(
+        "The broker that handles menu items, or arranges for them to be handled"
+        ActionListener handler,
+        """The window this is to be attached to, whic should close on "Close"."""
+        JFrame parentFrame,
+        "The current driver model."
+        IDriverModel model) {
+    object retval extends SPMenu() {
+        add(createFileMenu(handler, model));
+        addDisabled(createMapMenu(handler, model));
+        add(createViewMenu(handler, model));
+        add(WindowMenu(parentFrame));
+    }
+    return retval;
+}
 """A class to handle "expand all," "collapse all," etc."""
 class TreeExpansionHandler(JTree tree) satisfies TreeExpansionOrderListener {
     "Expand all rows of the tree."
@@ -919,7 +939,7 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
         }
         shared actual String windowName = "Worker Management";
     }
-    retval.jMenuBar = WorkerMenu(menuHandler, retval, model);
+    retval.jMenuBar = workerMenu(menuHandler, retval, model);
     retval.pack();
     return retval;
 }

@@ -70,9 +70,6 @@ import java.awt {
 import java.awt.event {
     ActionEvent
 }
-import view.worker {
-    WorkerMenu
-}
 import ceylon.language.meta {
     classDeclaration
 }
@@ -358,7 +355,7 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriver model,
         }
     }
     retval.add(SplitWithWeights.verticalSplit(0.2, 0.1, mainPanel, scrolledLog));
-    retval.jMenuBar = WorkerMenu(menuHandler, retval, model);
+    retval.jMenuBar = workerMenu(menuHandler, retval, model);
     retval.pack();
     logLabel.minimumSize = Dimension(retval.width - 20, 50);
     JComponent temp = logLabel;
