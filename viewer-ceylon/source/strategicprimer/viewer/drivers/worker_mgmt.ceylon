@@ -11,7 +11,8 @@ import model.workermgmt {
     IWorkerModel,
     WorkerModel,
     IWorkerTreeModel,
-    WorkerTreeModelAlt
+    WorkerTreeModelAlt,
+    UnitMemberTransferable
 }
 import javax.swing {
     SwingUtilities,
@@ -26,13 +27,14 @@ import javax.swing {
     JPanel,
     JSpinner,
     JTextArea,
-    JButton
+    JButton,
+    TransferHandler
 }
 import view.worker {
-    WorkerTree,
     MemberDetailPanel,
     TreeExpansionHandler,
-    WorkerMenu
+    WorkerMenu,
+    UnitMemberCellRenderer
 }
 import view.util {
     SPFrame,
@@ -48,14 +50,19 @@ import view.util {
     SPDialog
 }
 import ceylon.interop.java {
-    CeylonIterable
+    CeylonIterable,
+    JavaList
 }
 import model.map.fixtures {
     UnitMember
 }
 import model.listeners {
     PlayerChangeListener,
-    NewUnitSource
+    NewUnitSource,
+    UnitMemberSelectionSource,
+    UnitSelectionSource,
+    UnitSelectionListener,
+    UnitMemberListener
 }
 import java.awt {
     Dimension,
@@ -68,11 +75,13 @@ import model.map {
     DistanceComparator,
     Point,
     PointFactory,
-    HasName
+    HasName,
+    IFixture
 }
 import util {
     OnMac,
-    ActionWrapper
+    ActionWrapper,
+    Pair
 }
 import java.awt.event {
     KeyEvent,
@@ -100,7 +109,8 @@ import model.report {
 }
 import java.lang {
     Thread,
-    IllegalStateException
+    IllegalStateException,
+    JIterable=Iterable
 }
 import model.map.fixtures.towns {
     Fortress
@@ -114,7 +124,9 @@ import com.bric.window {
 }
 import javax.swing.event {
         TreeSelectionListener,
-    TreeSelectionEvent
+    TreeSelectionEvent,
+    TreeModelEvent,
+    TreeModelListener
 }
 import ceylon.file {
     Resource,
@@ -130,7 +142,9 @@ import ceylon.collection {
     MutableList
 }
 import model.map.fixtures.mobile.worker {
-    IJob
+    IJob,
+    ProxyWorker,
+    WorkerStats
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -140,6 +154,239 @@ import strategicprimer.viewer.report {
 }
 import lovelace.util.jvm {
     listenedButton
+}
+import view.map.details {
+    FixtureEditMenu
+}
+import java.awt.datatransfer {
+    Transferable,
+    UnsupportedFlavorException
+}
+import java.io {
+    IOException
+}
+"A tree of a player's units."
+JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
+        "The tree model"
+        IWorkerTreeModel wtModel,
+        "The players in the map"
+        JIterable<Player> players,
+        "How to get the current turn"
+        Integer() turnSource,
+        """Whether we should visually warn if orders contain substrings indicating remaining
+           work or if a unit named "unassigned" is nonempty"""
+        Boolean orderCheck) {
+    object retval extends JTree() satisfies UnitMemberSelectionSource&UnitSelectionSource {
+        model = wtModel;
+        rootVisible = false;
+        dragEnabled = true;
+        showsRootHandles = true;
+        object workerTreeTransferHandler extends TransferHandler() {
+            "Unit members can only be moved, not copied or linked."
+            shared actual Integer getSourceActions(JComponent component) =>
+                    TransferHandler.move;
+            "Create a transferable representing the selected node(s)."
+            shared actual UnitMemberTransferable? createTransferable(JComponent component) {
+                value paths = selectionModel.selectionPaths;
+                // TODO: use Tuples instead of Pairs
+                MutableList<Pair<UnitMember, IUnit>> toTransfer =
+                        ArrayList<Pair<UnitMember, IUnit>>();
+                for (path in paths) {
+                    if (exists last = path.lastPathComponent,
+                            exists parentPath = path.parentPath,
+                            exists parentObj = parentPath.lastPathComponent) {
+                        if (is IUnit parent = wtModel.getModelObject(parentObj),
+                                is UnitMember selection = wtModel.getModelObject(last)) {
+                            toTransfer.add(Pair<UnitMember, IUnit>.\iof(selection, parent));
+                        } else {
+                            log.info("Selection included non-UnitMember");
+                        }
+                    }
+                }
+                if (toTransfer.empty) {
+                    return null;
+                } else {
+                    return UnitMemberTransferable(JavaList(toTransfer));
+                }
+            }
+            "Whether a drag here is possible."
+            shared actual Boolean canImport(TransferSupport support) {
+                if (support.isDataFlavorSupported(UnitMemberTransferable.flavor),
+                        is JTree.DropLocation dropLocation = support.dropLocation,
+                        exists path = dropLocation.path,
+                        exists last = path.lastPathComponent,
+                        is IUnit|UnitMember lastObj = wtModel.getModelObject(last)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            "Handle a drop."
+            shared actual Boolean importData(TransferSupport support) {
+                if (canImport(support),
+                        is JTree.DropLocation dropLocation = support.dropLocation,
+                        exists path = dropLocation.path,
+                        exists pathLast = path.lastPathComponent,
+                        exists local = wtModel.getModelObject(pathLast)) {
+                    Object tempTarget;
+                    if (is UnitMember local) {
+                        TreePath pathParent = path.parentPath;
+                        tempTarget = wtModel.getModelObject(pathParent.lastPathComponent);
+                    } else {
+                        tempTarget = local;
+                    }
+                    if (is IUnit tempTarget) {
+                        try {
+                            Transferable trans = support.transferable;
+                            assert (is JIterable<Pair<UnitMember, IUnit>> list =
+                                trans.getTransferData(UnitMemberTransferable.flavor));
+                            for (pair in CeylonIterable(list)) {
+                                wtModel.moveMember(pair.first(), pair.second(), tempTarget);
+                            }
+                            return true;
+                        } catch (UnsupportedFlavorException except) {
+                            log.error("Impossible unsupported data flavor", except);
+                            return false;
+                        } catch (IOException except) {
+                            log.error("I/O error in transfer after we checked", except);
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+        transferHandler = workerTreeTransferHandler;
+        cellRenderer = UnitMemberCellRenderer(turnSource, orderCheck);
+        shared actual String? getToolTipText(MouseEvent event) {
+            if (getRowForLocation(event.x, event.y) == -1) {
+                return null;
+            }
+            if (exists path = getPathForLocation(event.x, event.y),
+                    exists pathLast = path.lastPathComponent) {
+                if (is IWorker localNode = wtModel.getModelObject(pathLast)) {
+                    if (exists stats = localNode.stats) {
+                        StringBuilder temp = StringBuilder();
+                        temp.append("<html><p>");
+                        for ([desc, func] in {["Str", WorkerStats.strength],
+                                ["Dex", WorkerStats.dexterity],
+                                ["Con", WorkerStats.constitution],
+                                ["Int", WorkerStats.intelligence],
+                                ["Wis", WorkerStats.wisdom],
+                                ["Cha", WorkerStats.charisma]}) {
+                            temp.append(desc);
+                            temp.append(" ");
+                            temp.append(WorkerStats.getModifierString(func(stats)));
+                            if ("Cha" != desc) {
+                                temp.append(", ");
+                            }
+                        }
+                        temp.append("</p></html>");
+                        return temp.string;
+                    } else {
+                        return null;
+                    }
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+        MutableList<UnitSelectionListener> selectionListeners =
+                ArrayList<UnitSelectionListener>();
+        MutableList<UnitMemberListener> memberListeners =
+                ArrayList<UnitMemberListener>();
+        shared actual void addUnitMemberListener(UnitMemberListener listener) =>
+                memberListeners.add(listener);
+        shared actual void addUnitSelectionListener(UnitSelectionListener listener)
+                => selectionListeners.add(listener);
+        shared actual void removeUnitMemberListener(UnitMemberListener listener) =>
+                memberListeners.remove(listener);
+        shared actual void removeUnitSelectionListener(UnitSelectionListener listener)
+                => selectionListeners.remove(listener);
+        object tsl satisfies TreeSelectionListener {
+            shared actual void valueChanged(TreeSelectionEvent event) {
+                if (exists path = event.newLeadSelectionPath,
+                        exists pathLast = path.lastPathComponent) {
+                    Object? sel = wtModel.getModelObject(pathLast);
+                    if (is UnitMember? sel) {
+                        for (listener in memberListeners) {
+                            listener.memberSelected(null, sel);
+                        }
+                    }
+                    if (is IUnit sel) {
+                        for (listener in selectionListeners) {
+                            listener.selectUnit(sel);
+                        }
+                        for (listener in memberListeners) {
+                            listener.memberSelected(null, ProxyWorker(sel));
+                        }
+                    } else if (!sel exists) {
+                        for (listener in selectionListeners) {
+                            listener.selectUnit(null);
+                        }
+                    }
+                }
+            }
+        }
+        addTreeSelectionListener(tsl);
+        variable Integer i = 0;
+        while (i < rowCount) {
+            expandRow(i);
+            i++;
+        }
+    }
+    object tml satisfies TreeModelListener {
+        shared actual void treeStructureChanged(TreeModelEvent event) {
+            if (exists path = event.treePath, exists parent = path.parentPath) {
+                retval.expandPath(parent);
+            }
+            variable Integer i = 0;
+            while (i < retval.rowCount) {
+                retval.expandRow(i);
+                i++;
+            }
+            retval.updateUI();
+        }
+        shared actual void treeNodesRemoved(TreeModelEvent event) => retval.updateUI();
+        shared actual void treeNodesInserted(TreeModelEvent event) {
+            if (exists path = event.treePath) {
+                retval.expandPath(path);
+                if (exists parent = path.parentPath) {
+                    retval.expandPath(parent);
+                }
+            }
+            retval.updateUI();
+        }
+        shared actual void treeNodesChanged(TreeModelEvent event) {
+            if (exists path = event.treePath, exists parent = path.parentPath) {
+                retval.expandPath(parent);
+            }
+            retval.updateUI();
+        }
+    }
+    wtModel.addTreeModelListener(tml);
+    ToolTipManager.sharedInstance().registerComponent(retval);
+    object treeMouseListener extends MouseAdapter() {
+        void handleMouseEvent(MouseEvent event) {
+            if (event.popupTrigger, event.clickCount == 1,
+                    exists path = retval.getClosestPathForLocation(event.x, event.y),
+                    exists pathEnd = path.lastPathComponent,
+                    is IFixture obj = wtModel.getModelObject(pathEnd)) {
+                FixtureEditMenu(obj, players, wtModel).show(event.component, event.x,
+                    event.y);
+            }
+        }
+        shared actual void mouseClicked(MouseEvent event) => handleMouseEvent(event);
+        shared actual void mousePressed(MouseEvent event) => handleMouseEvent(event);
+        shared actual void mouseReleased(MouseEvent event) => handleMouseEvent(event);
+    }
+    retval.addMouseListener(treeMouseListener);
+    return retval;
 }
 "A panel for the user to enter a unit's orders or read a unit's results."
 JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel(
@@ -433,7 +680,7 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
                 newUnitDialog(mainMap.currentPlayer,
                     IDFactoryFiller.createFactory(mainMap));
         IWorkerTreeModel treeModel = WorkerTreeModelAlt(mainMap.currentPlayer, model);
-        WorkerTree tree = WorkerTree.factory(treeModel, mainMap.players().iterator,
+        JTree tree = workerTree(treeModel, mainMap.players(),
             () => mainMap.currentTurn, true);
         newUnitFrame.addNewUnitListener(treeModel);
         Integer keyMask = OnMac.shortcutMask;

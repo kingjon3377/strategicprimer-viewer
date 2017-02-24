@@ -67,7 +67,6 @@ import javax.swing {
     JButton
 }
 import view.worker {
-    WorkerTree,
     LevelListener,
     TreeExpansionHandler,
     WorkerMenu
@@ -93,7 +92,9 @@ import model.listeners {
     UnitSelectionListener,
     NewWorkerListener,
     SkillSelectionSource,
-    AddRemoveListener
+    AddRemoveListener,
+    UnitMemberSelectionSource,
+    UnitSelectionSource
 }
 import java.awt {
     Dimension,
@@ -563,8 +564,8 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker menuHandler) {
     IMapNG map = model.map;
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(map.currentPlayer, model);
-    WorkerTree tree = WorkerTree.factory(treeModel, map.players().iterator,
-        () => model.map.currentTurn, false);
+    JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
+        map.players(), () => model.map.currentTurn, false);
     WorkerCreationListener newWorkerListener = WorkerCreationListener(treeModel,
         IDFactoryFiller.createFactory(map));
     tree.addUnitSelectionListener(newWorkerListener);
