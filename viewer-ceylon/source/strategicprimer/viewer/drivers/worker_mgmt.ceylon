@@ -109,8 +109,7 @@ import javax.swing.tree {
     DefaultTreeModel,
     DefaultMutableTreeNode,
     TreePath,
-    DefaultTreeCellRenderer,
-    TreeCellRenderer
+    DefaultTreeCellRenderer
 }
 import model.report {
     SimpleReportNode,
