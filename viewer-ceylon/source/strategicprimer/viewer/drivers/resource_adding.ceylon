@@ -12,13 +12,11 @@ import controller.map.misc {
     MenuBroker
 }
 import model.misc {
-    IDriverModel
-}
-import model.resources {
-    ResourceManagementDriver
+    IDriverModel,
+    SimpleMultiMapModel
 }
 import java.util {
-    JList = List
+    JList = List, JOptional=Optional
 }
 import ceylon.interop.java {
     JavaList,
@@ -27,17 +25,21 @@ import ceylon.interop.java {
 }
 import model.map {
     Player,
-    PlayerImpl
+    PlayerImpl,
+    IMutableMapNG,
+    IMapNG
 }
 import java.io {
     IOException
 }
 import model.map.fixtures {
     ResourcePile,
-    Implement
+    Implement,
+    FortressMember
 }
 import util {
-    Quantity
+    Quantity,
+    Pair
 }
 import java.lang {
     JString=String, JInteger=Integer
@@ -74,6 +76,50 @@ import lovelace.util.jvm {
     listenedButton,
     ImprovedComboBox,
     StreamingLabel
+}
+import lovelace.util.common {
+    todo
+}
+import java.nio.file {
+    JPath=Path
+}
+import model.map.fixtures.towns {
+    Fortress
+}
+"A driver model for resource-entering drivers."
+class ResourceManagementDriverModel extends SimpleMultiMapModel {
+    shared new fromMap(IMutableMapNG map, JPath? file) extends
+        SimpleMultiMapModel(map, JOptional.ofNullable<JPath>(file)) { }
+    shared new fromDriverModel(IDriverModel driverModel) extends
+        SimpleMultiMapModel(driverModel) { }
+    "All the players in all the maps."
+    shared {Player*} players => CeylonIterable(allMaps)
+        .map((pair) => pair.first())
+        .flatMap((IMutableMapNG temp) => CeylonIterable(temp.players())).distinct;
+    "Add a resource to a player's HQ."
+    shared void addResource(FortressMember resource, Player player) {
+        for (pair in allMaps) {
+            IMutableMapNG map = pair.first();
+            Player mapPlayer = map.currentPlayer;
+            if (mapPlayer.independent || mapPlayer.playerId < 0 ||
+                    mapPlayer.playerId == player.playerId) {
+                addResourceToMap(resource.copy(false), map, player);
+            }
+        }
+    }
+    "Add a resource to a player's HQ in a particular map."
+    shared void addResourceToMap(FortressMember resource, IMapNG map, Player player) {
+        for (location in map.locations()) {
+            for (fixture in map.getOtherFixtures(location)) {
+                if (is Fortress fixture, "HQ" == fixture.name,
+                        player.playerId == fixture.owner.playerId) {
+                    fixture.addMember(resource);
+                }
+            }
+        }
+    }
+    "Get the current player. If none is current, returns null."
+    shared Player? currentPlayer => players.find(Player.current);
 }
 "A driver to le the user enter a player's resources and equipment."
 object resourceAddingCLI satisfies SimpleCLIDriver {
@@ -142,7 +188,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
         }
     }
     "Ask the user to enter a resource."
-    void enterResource(IDRegistrar idf, ResourceManagementDriver model, ICLIHelper cli,
+    void enterResource(IDRegistrar idf, ResourceManagementDriverModel model, ICLIHelper cli,
             Player player) {
         String kind = getResourceKind(cli);
         String origContents = getResourceContents(kind, cli);
@@ -158,16 +204,16 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
             cli.inputDecimal("Quantity in ``units``?"), units)), player);
     }
     "Ask the user to enter an Implement (a piece of equipment)"
-    void enterImplement(IDRegistrar idf, ResourceManagementDriver model,
+    void enterImplement(IDRegistrar idf, ResourceManagementDriverModel model,
             ICLIHelper cli, Player player) {
         model.addResource(Implement(cli.inputString("Kind of equipment: "),
             idf.createID()), player);
     }
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        if (is ResourceManagementDriver model) {
+        if (is ResourceManagementDriverModel model) {
             JList<Player> players =
-                    JavaList(ArrayList(0, 1.0, CeylonIterable(model.players)));
+                    JavaList(ArrayList(0, 1.0, model.players));
             IDRegistrar idf = IDFactoryFiller.createFactory(model);
             try {
                 cli.loopOnList(players,
@@ -188,12 +234,13 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
                 throw DriverFailedException(except, "I/O error interacting with user");
             }
         } else {
-            startDriverOnModel(cli, options, ResourceManagementDriver(model));
+            startDriverOnModel(cli, options,
+                ResourceManagementDriverModel.fromDriverModel(model));
         }
     }
 }
 "A window to let the user enter resources etc. Note that this is not a dialog to enter one resource and close."
-SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriver model,
+SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
         MenuBroker menuHandler) {
     IDRegistrar idf = IDFactoryFiller.createFactory(model);
     variable Player currentPlayer = PlayerImpl(-1, "");
@@ -373,7 +420,7 @@ object resourceAddingGUI satisfies SimpleDriver {
     };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        if (is ResourceManagementDriver model) {
+        if (is ResourceManagementDriverModel model) {
             PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
             MenuBroker menuHandler = MenuBroker();
             menuHandler.register(pcml, "change current player");
@@ -383,7 +430,8 @@ object resourceAddingGUI satisfies SimpleDriver {
                 frame.setVisible(true);
             });
         } else {
-            startDriverOnModel(cli, options, ResourceManagementDriver(model));
+            startDriverOnModel(cli, options,
+                ResourceManagementDriverModel.fromDriverModel(model));
         }
     }
 }
