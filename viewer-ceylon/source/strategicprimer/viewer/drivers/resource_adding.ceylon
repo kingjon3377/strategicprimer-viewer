@@ -55,7 +55,6 @@ import javax.swing {
 import view.util {
     BoxPanel,
     FormattedLabel,
-    StreamingLabel,
     SplitWithWeights
 }
 import model.listeners {
@@ -73,7 +72,8 @@ import ceylon.language.meta {
 }
 import lovelace.util.jvm {
     listenedButton,
-    ImprovedComboBox
+    ImprovedComboBox,
+    StreamingLabel
 }
 "A driver to le the user enter a player's resources and equipment."
 object resourceAddingCLI satisfies SimpleCLIDriver {
@@ -211,11 +211,9 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriver model,
     JPanel resourcePanel = BoxPanel(true);
     StreamingLabel logLabel = StreamingLabel();
     void logAddition(String addend) {
-        try (writer = logLabel.writer) {
-            writer.println(
+        logLabel.append(
                 "<p style=\"color:white; margin-bottom: 0.5em; margin-top: 0.5em;\">Added ``
                 addend`` for ``currentPlayer.name``");
-        }
     }
     "Extends [[ImprovedComboBox]] to keep a running collection of values."
     class UpdatedComboBox() extends ImprovedComboBox<String>() {
@@ -256,11 +254,8 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriver model,
             if (is JTextField inner) {
                 inner.addActionListener(listener);
             } else {
-                // logLabel.writer is a PrintWriter whose close() is a no-op.
-                try (logger = logLabel.writer) {
-                    logger.println("Editor wasn't a text field, but a ``
+                logLabel.append("Editor wasn't a text field, but a ``
                         classDeclaration(inner)``");
-                }
             }
         }
     }

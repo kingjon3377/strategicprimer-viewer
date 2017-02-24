@@ -35,9 +35,6 @@ import util {
     Warning
 }
 
-import view.util {
-    StreamingLabel
-}
 import model.map.fixtures.towns {
     Village
 }
@@ -62,6 +59,9 @@ import ceylon.interop.java {
 }
 import strategicprimer.viewer.xmlio {
     readMap
+}
+import lovelace.util.jvm {
+    StreamingLabel
 }
 """An interface for checks of a map's *contents* that we don't want the XML-*reading*
    code to do."""
@@ -194,10 +194,7 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
     StreamingLabel label = StreamingLabel();
     void printParagraph(String paragraph,
             StreamingLabel.LabelTextColor color = StreamingLabel.LabelTextColor.white) {
-        try (writer = label.writer) {
-            writer.println("<p style=\"color:``color``\">``paragraph``</p>");
-        }
-        label.repaint();
+        label.append("<p style=\"color:``color``\">``paragraph``</p>");
     }
     Warning.custom.setCustomPrinter(Warning.wrapHandler(
         (string) => printParagraph(string, StreamingLabel.LabelTextColor.yellow)));

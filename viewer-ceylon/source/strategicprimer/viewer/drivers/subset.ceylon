@@ -3,7 +3,9 @@ import controller.map.misc {
 }
 
 import java.lang {
-    CharSequence
+    CharSequence,
+    Appendable,
+    CharArray
 }
 import java.nio.file {
     JPath=Path, JPaths = Paths,
@@ -20,9 +22,6 @@ import model.misc {
 }
 import lovelace.util.common {
     todo
-}
-import view.util {
-    StreamingLabel
 }
 import javax.swing {
     SwingUtilities,
@@ -62,7 +61,8 @@ import strategicprimer.viewer.xmlio {
 }
 import lovelace.util.jvm {
     AppendableHelper,
-    showErrorDialog
+    showErrorDialog,
+    StreamingLabel
 }
 "A driver to check whether player maps are subsets of the main map."
 object subsetCLI satisfies SimpleDriver {
@@ -94,7 +94,7 @@ object subsetCLI satisfies SimpleDriver {
 class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) {
     shared actual String windowName = "Subset Tester";
     StreamingLabel label = StreamingLabel();
-    object htmlWriter extends FilterWriter(label.writer) {
+    object htmlWriter extends JWriter() {
         variable Boolean lineStart = true;
         Regex matcher = regex(LineEnd.lineSep, true);
         shared actual JWriter append(CharSequence csq) {
@@ -106,16 +106,25 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
             lineStart = false;
             return this;
         }
+        shared actual JWriter append(CharSequence csq, Integer start, Integer end) =>
+                append(csq.subSequence(start, end));
+        shared actual JWriter append(Character c) => append(c.string);
+        shared actual void close() {}
+        shared actual void flush() {}
+        shared actual void write(CharArray cbuf, Integer off, Integer len) {
+            variable Integer i = 0;
+            while (i < cbuf.size) {
+                if (i >= off, (i - off) < len) {
+                    append(cbuf[i]);
+                }
+            }
+        }
+
     }
     contentPane = JScrollPane(label);
     void printParagraph(String paragraph,
             StreamingLabel.LabelTextColor color = StreamingLabel.LabelTextColor.white) {
-        // This is safe because StringWriter's close() is a no-op
-        try (writer = label.writer) {
-            writer.println("<p style=\"color:``color``\">``paragraph``</p>");
-        }
-        // At one time we called updateText on the label.
-        label.repaint();
+        label.append("<p style=\"color:``color``\">``paragraph``</p>");
     }
     variable IMapNG mainMap = SPMapNG(MapDimensionsImpl(0, 0, 2), PlayerCollection(), -1);
     shared void loadMain(IMapNG|JPath arg) {
