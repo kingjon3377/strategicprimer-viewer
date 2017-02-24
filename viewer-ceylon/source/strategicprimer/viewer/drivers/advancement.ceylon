@@ -74,8 +74,7 @@ import view.util {
     FormattedLabel,
     TreeExpansionOrderListener,
     ErrorShower,
-    BoxPanel,
-    AddRemoveSource
+    BoxPanel
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -508,6 +507,14 @@ JTree&SkillSelectionSource jobsTree(JobTreeModel jtModel) {
     }
     jtModel.addTreeModelListener(treeModelListener);
     return retval;
+}
+"An interface for UIs (etc.) for adding and removing items in lists."
+todo("Combine with other 'source' interfaces now we have reified generics & union types")
+interface AddRemoveSource {
+    "Add a listener."
+    shared formal void addAddRemoveListener(AddRemoveListener listener);
+    "Remove a listener."
+    shared formal void removeAddRemoveListener(AddRemoveListener listener);
 }
 "A panel to be the GUI to add items to a list."
 todo("Move to lovelace.util?")
