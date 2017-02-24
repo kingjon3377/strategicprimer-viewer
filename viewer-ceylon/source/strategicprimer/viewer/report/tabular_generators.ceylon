@@ -597,7 +597,8 @@ class ResourceTabularReportGenerator()
     "Write rows for equipment, counting multiple identical Implements in one line."
     shared actual void produceTable(Anything(String) ostream,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
-        value values = { for (key->item in fixtures)
+        {[Integer, [Point, CacheFixture|Implement|ResourcePile]]*} values =
+                { for (key->item in fixtures)
             if (is CacheFixture|Implement|ResourcePile resource = item.rest.first)
                 [key, [item.first, resource]]}
             .sort(comparingOn(
@@ -606,7 +607,8 @@ class ResourceTabularReportGenerator()
         writeRow(ostream, headerRow.first, *headerRow.rest);
         MutableMap<String, Integer> implementCounts = HashMap<String, Integer>();
         for ([key, [loc, fixture]] in values) {
-            if (is Implement fixture) {
+            switch (fixture)
+            case (is Implement) {
                 Integer num;
                 if (exists temp = implementCounts.get(fixture.kind)) {
                     num = temp;
@@ -615,8 +617,15 @@ class ResourceTabularReportGenerator()
                 }
                 implementCounts.put(fixture.kind, num + 1);
                 fixtures.remove(key);
-            } else if (produce(ostream, fixtures, fixture, loc)) {
-                fixtures.remove(key);
+            } case (is CacheFixture) {
+                // FIXME: combine with ResourcePile case once compiler accepts it
+                if (produce(ostream, fixtures, fixture, loc)) {
+                    fixtures.remove(key);
+                }
+            } case (is ResourcePile) {
+                if (produce(ostream, fixtures, fixture, loc)) {
+                    fixtures.remove(key);
+                }
             }
         }
         for (key->count in implementCounts) {
