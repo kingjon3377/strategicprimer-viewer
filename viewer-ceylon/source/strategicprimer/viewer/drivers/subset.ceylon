@@ -22,7 +22,6 @@ import lovelace.util.common {
     todo
 }
 import view.util {
-    SPFrame,
     StreamingLabel
 }
 import javax.swing {
@@ -92,8 +91,7 @@ object subsetCLI satisfies SimpleDriver {
     }
 }
 "A window to show the result of running subset tests."
-class SubsetFrame() extends SPFrame("Subset Tester", JOptional.empty<JPath>(),
-        Dimension(640, 320)) {
+class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) {
     shared actual String windowName = "Subset Tester";
     StreamingLabel label = StreamingLabel();
     object htmlWriter extends FilterWriter(label.writer) {

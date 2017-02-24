@@ -30,7 +30,6 @@ import controller.map.misc {
     DuplicateFixtureRemover
 }
 import view.util {
-    SPFrame,
     BorderedPanel
 }
 import model.misc {
@@ -321,7 +320,7 @@ shared void run() {
 }
 SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
-    object frame extends SPFrame("SP App Chooser", Optional.empty<Path>()) {
+    object frame extends SPFrame("SP App Chooser", null) {
         shared actual String windowName = "SP App Chooser";
     }
     JButton button(String desc, ISPDriver() target) {

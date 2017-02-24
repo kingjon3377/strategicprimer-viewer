@@ -37,6 +37,13 @@ import strategicprimer.viewer.xmlio {
     namesToFiles,
     writeModel
 }
+import javax.swing {
+    JFrame,
+    WindowConstants
+}
+import java.awt {
+    Dimension
+}
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option
    overrides the previous, and any option passed without argument has an implied argument
@@ -375,4 +382,24 @@ class DriverUsage(
 ) satisfies IDriverUsage {
     shared actual {String*} supportedOptions =
             supportedOptionsTemp;
+}
+"An interface for top-level windows in assistive programs."
+interface ISPWindow {
+    """The name of this window. This method should *not* return a string including the
+       loaded file, since it is used only in the About dialog to "personalize" it for the
+       particular app."""
+    shared formal String windowName;
+}
+"An intermediate subclass of JFrame to take care of some common setup things that can't be
+ done in an interface."
+abstract class SPFrame(String windowTitle, JPath? file, Dimension? minSize = null)
+        extends JFrame(windowTitle) satisfies ISPWindow {
+    if (exists file) {
+        title = "``file`` | ``windowTitle``";
+        rootPane.putClientProperty("Window.documentFile", file.toFile());
+    }
+    defaultCloseOperation = WindowConstants.disposeOnClose;
+    if (exists minSize) {
+        setMinimumSize(minSize);
+    }
 }

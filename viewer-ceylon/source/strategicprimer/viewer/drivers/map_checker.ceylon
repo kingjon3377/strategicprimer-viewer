@@ -36,7 +36,6 @@ import util {
 }
 
 import view.util {
-    SPFrame,
     StreamingLabel
 }
 import model.map.fixtures.towns {
@@ -189,8 +188,8 @@ object mapCheckerCLI satisfies UtilityDriver {
     }
 }
 "The map-checker GUI window."
-class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker",
-        Optional.empty<JPath>(), Dimension(640, 320)) {
+class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
+        Dimension(640, 320)) {
     shared actual String windowName = "Map Checker";
     StreamingLabel label = StreamingLabel();
     void printParagraph(String paragraph,

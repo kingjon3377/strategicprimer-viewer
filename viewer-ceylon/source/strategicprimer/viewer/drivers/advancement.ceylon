@@ -68,7 +68,6 @@ import javax.swing {
     JButton
 }
 import view.util {
-    SPFrame,
     BorderedPanel,
     SplitWithWeights,
     FormattedLabel,
@@ -623,7 +622,8 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
     expander.expandAll();
     FormattedLabel playerLabel = FormattedLabel("%s's Units:", "");
     object retval
-            extends SPFrame("Worker Advancement", model.mapFile, Dimension(640, 480))
+            extends SPFrame("Worker Advancement", model.mapFile.orElse(null),
+                Dimension(640, 480))
             satisfies PlayerChangeListener{
         shared actual void playerChanged(Player? old, Player newPlayer) {
             playerLabel.setArgs(newPlayer.name);

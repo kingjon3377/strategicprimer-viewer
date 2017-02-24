@@ -53,7 +53,6 @@ import javax.swing {
     JComponent
 }
 import view.util {
-    SPFrame,
     BoxPanel,
     FormattedLabel,
     StreamingLabel,
@@ -345,7 +344,7 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriver model,
     JScrollPane scrolledLog = JScrollPane(logLabel);
     scrolledLog.minimumSize = logLabel.minimumSize;
 
-    object retval extends SPFrame("Resource Entry", model.mapFile)
+    object retval extends SPFrame("Resource Entry", model.mapFile.orElse(null))
             satisfies PlayerChangeListener {
         shared actual String windowName = "Resource Entry";
         shared actual void playerChanged(Player? old, Player newPlayer) {

@@ -38,7 +38,6 @@ import javax.swing {
 }
 import view.util {
     SystemOut,
-    SPFrame,
     BorderedPanel,
     HotKeyCreator,
     BoxPanel,
@@ -404,7 +403,8 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
             0),
         IExplorationModel.Direction.nowhere->KeyStroke.getKeyStroke(KeyEvent.vkNumpad5, 0)
     };
-    object retval extends SPFrame("Exploration", model.mapFile, Dimension(768, 480)) {
+    object retval extends SPFrame("Exploration", model.mapFile.orElse(null),
+            Dimension(768, 480)) {
         shared actual String windowName = "Exploration";
         CardLayout layoutObj = CardLayout();
         setLayout(layoutObj);

@@ -37,7 +37,6 @@ import javax.swing {
     SwingConstants
 }
 import view.util {
-    SPFrame,
     HotKeyCreator,
     FormattedLabel,
     BorderedPanel,
@@ -1068,7 +1067,8 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
         report.addMouseListener(reportMouseHandler);
         return report;
     }
-    object retval extends SPFrame("Worker Management", model.mapFile, Dimension(640, 480))
+    object retval extends SPFrame("Worker Management", model.mapFile.orElse(null),
+                Dimension(640, 480))
             satisfies PlayerChangeListener&HotKeyCreator {
         IMapNG mainMap = model.map;
         SPDialog&NewUnitSource&PlayerChangeListener newUnitFrame =

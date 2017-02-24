@@ -74,8 +74,7 @@ import view.util {
     SPDialog,
     BoxPanel,
     SplitWithWeights,
-    BorderedPanel,
-    SPFrame
+    BorderedPanel
 }
 import util {
     OnMac,
@@ -836,7 +835,8 @@ interface IViewerFrame {
 }
 "The main window for the map viewer app."
 SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandler) {
-    object retval extends SPFrame("Map Viewer", driverModel.mapFile) satisfies IViewerFrame {
+    object retval extends SPFrame("Map Viewer", driverModel.mapFile.orElse(null))
+            satisfies IViewerFrame {
         shared actual IViewerModel model = driverModel;
         shared actual String windowName = "Map Viewer";
     }
