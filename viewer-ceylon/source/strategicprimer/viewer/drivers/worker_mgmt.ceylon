@@ -41,7 +41,6 @@ import view.util {
     FormattedLabel,
     BorderedPanel,
     SplitWithWeights,
-    TreeExpansionOrderListener,
     BoxPanel,
     SPMenu
 }
@@ -773,6 +772,17 @@ JMenuBar workerMenu(
         add(WindowMenu(parentFrame));
     }
     return retval;
+}
+"An interface for classes listening for directives to expand or collapse trees."
+interface TreeExpansionOrderListener {
+    "Expand a tree entirely."
+    shared formal void expandAll();
+    "Collapse a tree entirely."
+    shared formal void collapseAll();
+    "Expand a tree to a certain level."
+    shared formal void expandSome(
+        "How many levels from the root, counting the root, to expand."
+        Integer levels);
 }
 """A class to handle "expand all," "collapse all," etc."""
 class TreeExpansionHandler(JTree tree) satisfies TreeExpansionOrderListener {

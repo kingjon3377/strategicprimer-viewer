@@ -71,7 +71,6 @@ import view.util {
     BorderedPanel,
     SplitWithWeights,
     FormattedLabel,
-    TreeExpansionOrderListener,
     BoxPanel
 }
 import strategicprimer.viewer.about {
