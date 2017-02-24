@@ -75,7 +75,6 @@ import java.awt.event {
     MouseAdapter
 }
 import view.util {
-    BoxPanel,
     SplitWithWeights,
     BorderedPanel,
     FormattedLabel
@@ -154,7 +153,11 @@ import ceylon.collection {
 }
 import lovelace.util.jvm {
     ceylonComparator,
-    listenedButton
+    listenedButton,
+    centeredHorizontalBox,
+    BoxPanel,
+    BoxAxis,
+    boxPanel
 }
 import model.map.fixtures.mobile {
     IUnit,
@@ -285,12 +288,12 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     searchField.setActionCommand("OK");
     JPanel searchBoxPane = JPanel();
     searchBoxPane.add(searchField);
-    JPanel contentPanel = BoxPanel(false);
+    JPanel contentPanel = boxPanel(BoxAxis.pageAxis);
     contentPanel.add(searchBoxPane);
     contentPanel.add(backwards);
     contentPanel.add(vertically);
     contentPanel.add(caseSensitive);
-    BoxPanel buttonPanel = BoxPanel(true);
+    JPanel&BoxPanel buttonPanel = boxPanel(BoxAxis.lineAxis);
     buttonPanel.addGlue();
     JButton okButton = listenedButton("OK", okListener);
     JButton cancelButton = listenedButton("Cancel", (ActionEvent event) {
@@ -405,26 +408,26 @@ SPDialog selectTileDialog(Frame? parentFrame, IViewerModel model) {
             retval.pack();
         }
     }
-    JPanel contentPane = BoxPanel(false);
+    JPanel contentPane = boxPanel(BoxAxis.pageAxis);
     contentPane.add(mainLabel);
-    BoxPanel boxPanel = BoxPanel(true);
-    boxPanel.add(JLabel("Row: "));
-    boxPanel.add(rowField);
+    JPanel&BoxPanel boxPanelObj = boxPanel(BoxAxis.lineAxis);
+    boxPanelObj.add(JLabel("Row: "));
+    boxPanelObj.add(rowField);
     rowField.setActionCommand("OK");
     rowField.addActionListener(handleOK);
-    boxPanel.addGlue();
-    boxPanel.add(JLabel("Column:"));
-    boxPanel.add(columnField);
+    boxPanelObj.addGlue();
+    boxPanelObj.add(JLabel("Column:"));
+    boxPanelObj.add(columnField);
     columnField.setActionCommand("OK");
     columnField.addActionListener(handleOK);
-    boxPanel.addGlue();
-    contentPane.add(boxPanel);
+    boxPanelObj.addGlue();
+    contentPane.add(boxPanelObj);
     contentPane.add(errorLabel);
     errorLabel.text = "";
     errorLabel.minimumSize = Dimension(200, 15);
     errorLabel.alignmentX = Component.centerAlignment;
     errorLabel.alignmentY = Component.topAlignment;
-    BoxPanel buttonPanel = BoxPanel(true);
+    JPanel&BoxPanel buttonPanel = boxPanel(BoxAxis.lineAxis);
     buttonPanel.addGlue();
     JButton okButton = listenedButton("OK", handleOK);
     JButton cancelButton = listenedButton("Cancel", (ActionEvent event) {
@@ -867,10 +870,10 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         variable Integer version, IDriverModel model) {
     TileUIHelper helper = TileUIHelper();
     JComponent keyElement(Integer version, TileType type) {
-        BoxPanel retval = BoxPanel(true);
+        JPanel&BoxPanel retval = boxPanel(BoxAxis.lineAxis);
         retval.addGlue();
         retval.addRigidArea(7);
-        BoxPanel panel = BoxPanel(false);
+        JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
         panel.addRigidArea(4);
         Integer tileSize = TileViewSize.scaleZoom(ViewerModel.defZoomLevel, version);
         panel.add(KeyElementComponent(helper.get(version, type), Dimension(4, 4),
@@ -992,7 +995,7 @@ SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandle
         });
         OnMac.makeButtonsSegmented(allButton, noneButton);
         JPanel buttonPanel = (OnMac.systemIsMac) then
-            BoxPanel.centeredHorizBox(allButton, noneButton)
+            centeredHorizontalBox(allButton, noneButton)
             else BorderedPanel.horizontalPanel(allButton, null, noneButton);
         return BorderedPanel.verticalPanel(JLabel("Display ..."), JScrollPane(table),
             buttonPanel);

@@ -41,7 +41,6 @@ import view.util {
     FormattedLabel,
     BorderedPanel,
     SplitWithWeights,
-    BoxPanel,
     SPMenu
 }
 import ceylon.interop.java {
@@ -164,7 +163,8 @@ import strategicprimer.viewer.report {
 }
 import lovelace.util.jvm {
     listenedButton,
-    FunctionalGroupLayout
+    FunctionalGroupLayout,
+    centeredHorizontalBox
 }
 import view.map.details {
     FixtureEditMenu
@@ -588,7 +588,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
                 (ActionEvent event) => revert());
             OnMac.makeButtonsSegmented(applyButton, revertButton);
             JPanel buttonPanel = (OnMac.systemIsMac) then
-                BoxPanel.centeredHorizBox(applyButton, revertButton)
+                centeredHorizontalBox(applyButton, revertButton)
                 else horizontalPanel(applyButton, null, revertButton);
             String prefix = OnMac.shortcutDesc;
             setPageStart(horizontalPanel(JLabel("Orders for current selection, if a unit: (``prefix``D)"), null,

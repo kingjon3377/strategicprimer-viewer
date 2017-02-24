@@ -40,7 +40,6 @@ import view.util {
     SystemOut,
     BorderedPanel,
     HotKeyCreator,
-    BoxPanel,
     FormattedLabel,
     SplitWithWeights
 }
@@ -169,7 +168,9 @@ import javax.swing.event {
 }
 import lovelace.util.jvm {
     listenedButton,
-    ImprovedComboBox
+    ImprovedComboBox,
+    boxPanel,
+    BoxAxis
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -544,7 +545,7 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                     completionListeners.add(listener);
             shared actual void removeCompletionListener(CompletionListener listener) =>
                     completionListeners.remove(listener);
-            JPanel headerPanel = BoxPanel(true);
+            JPanel headerPanel = boxPanel(BoxAxis.lineAxis);
             headerPanel.add(listenedButton("Select a different explorer",
                 (ActionEvent event) {
                     for (listener in completionListeners) {

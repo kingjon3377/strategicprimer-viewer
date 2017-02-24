@@ -9,15 +9,22 @@ import javax.swing {
     GroupLayout,
     JComboBox,
     JEditorPane,
-    ComboBoxModel
+    ComboBoxModel,
+    BoxLayout,
+    Box,
+    JPanel
 }
 import java.awt {
     Component,
     Container,
-    Color
+    Color,
+    Dimension
 }
 import lovelace.util.common {
     todo
+}
+import java.lang {
+    IllegalStateException
 }
 "A factory method to construct a button and add listeners to it in one step."
 shared JButton listenedButton("The text to put on the button" String text,
@@ -110,4 +117,54 @@ shared class StreamingLabel extends JEditorPane {
         text = "<html><body bgcolor=\"#000000\">``buffer``</body></html>";
         repaint();
     }
+}
+"The possible axes that a [[BoxLayout]] can be laid out on."
+shared class BoxAxis {
+    "The constant to pass to the [[BoxLayout]]."
+    shared Integer axis;
+    shared new lineAxis { axis = BoxLayout.lineAxis; }
+    shared new pageAxis { axis = BoxLayout.pageAxis; }
+}
+"An interface to provide helper methods for a panel laid out by a [[BoxLayout]]."
+shared sealed interface BoxPanel {
+    "Which direction the panel is laid out, for use in the helper methods."
+    shared formal BoxAxis axis;
+    """Add "glue" (elasticity) between components."""
+    shared default void addGlue() {
+        assert (is Container container = this);
+        switch (axis)
+        case (BoxAxis.lineAxis) { container.add(Box.createHorizontalGlue()); }
+        case (BoxAxis.pageAxis) { container.add(Box.createVerticalGlue()); }
+        else { throw IllegalStateException("Impossible axis case"); }
+    }
+    "Add a rigid (fixed-size) area between components."
+    shared default void addRigidArea(Integer dimension) {
+        Dimension dimensionObject;
+        switch (axis)
+        case (BoxAxis.lineAxis) { dimensionObject = Dimension(dimension, 0); }
+        case (BoxAxis.pageAxis) { dimensionObject = Dimension(0, dimension); }
+        else { throw IllegalStateException("Impossible axis case"); }
+        assert (is Container container = this);
+        container.add(Box.createRigidArea(dimensionObject));
+    }
+}
+class BoxPanelImpl(BoxAxis layoutAxis) extends JPanel() satisfies BoxPanel {
+    shared actual BoxAxis axis = layoutAxis;
+}
+"Create a panel laid out by a [[BoxLayout]]"
+shared JPanel&BoxPanel boxPanel(BoxAxis layoutAxis) => BoxPanelImpl(layoutAxis);
+"Create a panel laid out by a [[BoxLayout]] on the line axis, with glue at each end and a
+ small rigid area between each component."
+shared JPanel&BoxPanel centeredHorizontalBox(Component* items) {
+    JPanel&BoxPanel retval = BoxPanelImpl(BoxAxis.lineAxis);
+    retval.addGlue();
+    if (exists first = items.first) {
+        retval.add(first);
+    }
+    for (component in items) {
+        retval.addRigidArea(2);
+        retval.add(component);
+    }
+    retval.addGlue();
+    return retval;
 }

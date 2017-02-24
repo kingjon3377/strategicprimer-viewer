@@ -65,13 +65,13 @@ import javax.swing {
     WindowConstants,
     JComponent,
     JTree,
-    JButton
+    JButton,
+    BoxLayout
 }
 import view.util {
     BorderedPanel,
     SplitWithWeights,
-    FormattedLabel,
-    BoxPanel
+    FormattedLabel
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -93,7 +93,8 @@ import java.awt {
     Dimension,
     GridLayout,
     CardLayout,
-    FlowLayout
+    FlowLayout,
+    Container
 }
 import java.awt.event {
     ActionEvent,
@@ -108,7 +109,10 @@ import lovelace.util.common {
 }
 import lovelace.util.jvm {
     listenedButton,
-    showErrorDialog
+    showErrorDialog,
+    centeredHorizontalBox,
+    BoxAxis,
+    boxPanel
 }
 import model.map.fixtures {
     UnitMember
@@ -320,13 +324,13 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
     OnMac.makeButtonsSegmented(okButton, cancelButton);
     JPanel secondPanel;
     if (OnMac.systemIsMac) {
-        secondPanel = BoxPanel.centeredHorizBox(okButton, cancelButton);
+        secondPanel = centeredHorizontalBox(okButton, cancelButton);
     } else {
         secondPanel = JPanel(FlowLayout());
         secondPanel.add(okButton);
         secondPanel.add(cancelButton);
     }
-    object retval extends BoxPanel(false)
+    object retval extends JPanel()
             satisfies SkillSelectionListener&LevelGainSource {
         shared actual void selectSkill(ISkill? selectedSkill) {
             skill = selectedSkill;
@@ -339,6 +343,7 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
         shared actual void removeLevelGainListener(LevelGainListener listener)
                 => listeners.remove(listener);
     }
+    (retval of Container).layout = BoxLayout(retval, BoxAxis.pageAxis.axis);
     retval.add(firstPanel);
     retval.add(secondPanel);
     retval.minimumSize = Dimension(200, 40);
@@ -534,14 +539,14 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
         panel.maximumSize = Dimension(90, 50);
     }
     setPanelSizes(retval);
-    JPanel first = BoxPanel(true);
+    JPanel first = boxPanel(BoxAxis.lineAxis);
     first.add(listenedButton("+"), (ActionEvent event) {
         layoutObj.next(retval);
         field.requestFocusInWindow();
     });
     setPanelSizes(first);
     retval.add(first);
-    JPanel second = BoxPanel(false);
+    JPanel second = boxPanel(BoxAxis.pageAxis);
     second.add(field);
     void okListener(ActionEvent event) {
         String text = field.text;
@@ -553,7 +558,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     }
     field.addActionListener(okListener);
     field.setActionCommand("OK");
-    JPanel okPanel = BoxPanel(true);
+    JPanel okPanel = boxPanel(BoxAxis.lineAxis);
     JButton okButton = listenedButton("OK", okListener);
     okPanel.add(okButton);
     JButton cancelButton = listenedButton("Cancel", (ActionEvent event) {

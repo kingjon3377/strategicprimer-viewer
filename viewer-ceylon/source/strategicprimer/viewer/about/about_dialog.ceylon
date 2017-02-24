@@ -4,9 +4,6 @@ import java.awt {
     BorderLayout,
     Dimension
 }
-import view.util {
-    BoxPanel
-}
 import lovelace.util.common {
     todo
 }
@@ -24,7 +21,8 @@ import controller.map.misc {
     WindowCloser
 }
 import lovelace.util.jvm {
-    listenedButton
+    listenedButton,
+    centeredHorizontalBox
 }
 import strategicprimer.viewer.drivers {
     SPDialog
@@ -55,7 +53,7 @@ shared JDialog aboutDialog(Component? parentComponent, String? app) {
     scrollPane.minimumSize =Dimension(300, 400);
     scrollPane.preferredSize =Dimension(400, 500);
     retval.add(scrollPane, BorderLayout.center);
-    retval.add(BoxPanel.centeredHorizBox(listenedButton("Close", WindowCloser(retval))),
+    retval.add(centeredHorizontalBox(listenedButton("Close", WindowCloser(retval))),
         BorderLayout.pageEnd);
     retval.pack();
     return retval;

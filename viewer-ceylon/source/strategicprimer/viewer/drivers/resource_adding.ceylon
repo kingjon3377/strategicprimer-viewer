@@ -55,7 +55,6 @@ import javax.swing {
     JComponent
 }
 import view.util {
-    BoxPanel,
     FormattedLabel,
     SplitWithWeights
 }
@@ -75,7 +74,11 @@ import ceylon.language.meta {
 import lovelace.util.jvm {
     listenedButton,
     ImprovedComboBox,
-    StreamingLabel
+    StreamingLabel,
+    centeredHorizontalBox,
+    BoxAxis,
+    BoxPanel,
+    boxPanel
 }
 import lovelace.util.common {
     todo
@@ -244,18 +247,20 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
         MenuBroker menuHandler) {
     IDRegistrar idf = IDFactoryFiller.createFactory(model);
     variable Player currentPlayer = PlayerImpl(-1, "");
-    BoxPanel mainPanel = BoxPanel(false);
+    JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
     FormattedLabel resourceLabel = FormattedLabel("Add resource for %s:",
         currentPlayer.name);
     mainPanel.add(resourceLabel);
-    class PairPanel(Component first, Component second) extends BoxPanel(false) {
-        addGlue();
-        add(first);
-        addGlue();
-        add(second);
-        addGlue();
+    JPanel pairPanel(Component first, Component second) {
+        JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
+        panel.addGlue();
+        panel.add(first);
+        panel.addGlue();
+        panel.add(second);
+        panel.addGlue();
+        return panel;
     }
-    JPanel resourcePanel = BoxPanel(true);
+    JPanel resourcePanel = boxPanel(BoxAxis.lineAxis);
     StreamingLabel logLabel = StreamingLabel();
     void logAddition(String addend) {
         logLabel.append(
@@ -307,17 +312,17 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
         }
     }
     UpdatedComboBox resourceKindBox = UpdatedComboBox();
-    resourcePanel.add(PairPanel(JLabel("General Category"), resourceKindBox));
+    resourcePanel.add(pairPanel(JLabel("General Category"), resourceKindBox));
     // If we set the maximum high at this point, the fields would try to be unneccessarily
     // large. I'm not sure that setting it low at first helps, though.
     SpinnerNumberModel resourceCreatedModel = SpinnerNumberModel(-1, -1, 2000, 1);
-    resourcePanel.add(PairPanel(JLabel("Turn created"), JSpinner(resourceCreatedModel)));
+    resourcePanel.add(pairPanel(JLabel("Turn created"), JSpinner(resourceCreatedModel)));
     UpdatedComboBox resourceBox = UpdatedComboBox();
-    resourcePanel.add(PairPanel(JLabel("Specific Resource"), resourceBox));
+    resourcePanel.add(pairPanel(JLabel("Specific Resource"), resourceBox));
     SpinnerNumberModel resourceQuantityModel = SpinnerNumberModel(0, 0, 2000, 1);
-    resourcePanel.add(PairPanel(JLabel("Quantity"), JSpinner(resourceQuantityModel)));
+    resourcePanel.add(pairPanel(JLabel("Quantity"), JSpinner(resourceQuantityModel)));
     UpdatedComboBox resourceUnitsBox = UpdatedComboBox();
-    resourcePanel.add(PairPanel(JLabel("Units"), resourceUnitsBox));
+    resourcePanel.add(pairPanel(JLabel("Units"), resourceUnitsBox));
     variable Boolean playerIsDefault = true;
     void confirmPlayer() {
         if (playerIsDefault, currentPlayer.name.trimmed.empty) {
@@ -351,7 +356,7 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
         resourceCreatedModel.\ivalue = -1;
         resourceQuantityModel.\ivalue = 0;
     };
-    resourcePanel.add(PairPanel(JLabel(""),
+    resourcePanel.add(pairPanel(JLabel(""),
         listenedButton("Add Resource", resourceListener)));
     resourceUnitsBox.addSubmitListener(resourceListener);
     mainPanel.add(resourcePanel);
@@ -380,7 +385,7 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
         implementQuantityField.requestFocusInWindow();
     };
     implementKindBox.addSubmitListener(implementListener);
-    mainPanel.add(BoxPanel.centeredHorizBox(implementQuantityField,
+    mainPanel.add(centeredHorizontalBox(implementQuantityField,
         implementKindBox, listenedButton("Add Equipment", implementListener)));
     mainPanel.addGlue();
     JScrollPane scrolledLog = JScrollPane(logLabel);
