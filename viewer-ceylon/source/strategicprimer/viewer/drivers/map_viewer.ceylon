@@ -16,7 +16,8 @@ import model.viewer {
     FixtureFilterTableModel,
     ZOrderFilter,
     TileViewSize,
-    VisibleDimensions
+    VisibleDimensions,
+    FixtureListModel
 }
 import view.map.main {
     ZoomListener,
@@ -46,7 +47,8 @@ import javax.swing {
     JComponent,
     JPopupMenu,
     JMenuItem,
-    JFormattedTextField
+    JFormattedTextField,
+    JSplitPane
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -73,11 +75,13 @@ import java.awt.event {
 import view.util {
     BoxPanel,
     SplitWithWeights,
-    BorderedPanel
+    BorderedPanel,
+    FormattedLabel
 }
 import util {
     OnMac,
-    IsNumeric
+    IsNumeric,
+    ImageLoader
 }
 import java.lang {
     JIterable = Iterable
@@ -95,13 +99,15 @@ import model.map {
     PointFactory,
     IMapNG,
     TerrainFixture,
-    TileType
+    TileType,
+    HasPortrait
 }
 import java.util.stream {
     Stream
 }
 import ceylon.interop.java {
-    CeylonIterable
+    CeylonIterable,
+    CeylonList
 }
 import model.map.fixtures {
     RiverFixture
@@ -110,13 +116,15 @@ import java.text {
     NumberFormat
 }
 import javax.swing.event {
-    TableModelEvent
+    TableModelEvent,
+    ListSelectionEvent,
+    ListSelectionListener
 }
 import javax.swing.table {
     TableColumn
 }
 import view.map.details {
-    DetailPanelNG
+    FixtureList
 }
 import lovelace.util.common {
     todo
@@ -149,6 +157,12 @@ import lovelace.util.jvm {
 import model.map.fixtures.mobile {
     IUnit,
     Unit
+}
+import view.map.key {
+    KeyPanel
+}
+import java.io {
+    IOException
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -832,6 +846,60 @@ todo("Merge into ISPWindow (with a broader return type)?")
 interface IViewerFrame {
     shared formal IViewerModel model;
 }
+"A panel to show the details of a tile, using a list rather than sub-panels with chits
+ for its fixtures."
+JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
+        variable Integer version, IDriverModel model) {
+    KeyPanel keyPanel = KeyPanel(version);
+    FormattedLabel header = FormattedLabel(
+        "<html><body><p>Contents of the tile at (%d, %d):</p></body></html>", -1, -1);
+    object retval extends JSplitPane(JSplitPane.horizontalSplit, true)
+            satisfies VersionChangeListener&SelectionChangeListener {
+        shared late SelectionChangeListener delegate;
+        shared actual void changeVersion(Integer old, Integer newVersion) =>
+                keyPanel.changeVersion(old, newVersion);
+        shared actual void selectedPointChanged(Point? old, Point newPoint) {
+            delegate.selectedPointChanged(old, newPoint);
+            header.setArgs(newPoint.row, newPoint.col);
+        }
+    }
+    FixtureList fixtureList = FixtureList(retval, FixtureListModel(model.map, false),
+        model.map.players());
+    retval.delegate = fixtureList;
+    object portrait extends JComponent() satisfies ListSelectionListener {
+        ImageLoader loader = ImageLoader.loader;
+        variable Image? portrait = null;
+        shared actual void paintComponent(Graphics pen) {
+            super.paintComponent(pen);
+            if (exists local = portrait) {
+                pen.drawImage(local, 0, 0, width, height, this);
+            }
+        }
+        shared actual void valueChanged(ListSelectionEvent event) {
+            List<TileFixture> selections = CeylonList(fixtureList.selectedValuesList);
+            portrait = null;
+            if (!selections.empty, selections.size == 1) {
+                if (is HasPortrait selectedValue = selections.first) {
+                    String portraitName = selectedValue.portrait;
+                    if (!portraitName.empty) {
+                        try {
+                            portrait = loader.loadImage(portraitName);
+                        } catch (IOException except) {
+                            log.warn("I/O error loading portrait", except);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    fixtureList.addListSelectionListener(portrait);
+    JPanel listPanel = BorderedPanel.verticalPanel(header, JScrollPane(fixtureList), null);
+    retval.leftComponent = SplitWithWeights.horizontalSplit(0.5, 0.5, listPanel, portrait);
+    retval.rightComponent = keyPanel;
+    retval.resizeWeight = 0.9;
+    retval.setDividerLocation(0.9);
+    return retval;
+}
 "The main window for the map viewer app."
 SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandler) {
     object retval extends SPFrame("Map Viewer", driverModel.mapFile.orElse(null))
@@ -846,10 +914,10 @@ SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandle
     driverModel.addGraphicalParamsListener(mapPanel);
     driverModel.addMapChangeListener(mapPanel);
     driverModel.addSelectionChangeListener(mapPanel);
-    DetailPanelNG detailPanel = DetailPanelNG(driverModel.mapDimensions.version,
-        driverModel);
-    driverModel.addVersionChangeListener(detailPanel);
-    driverModel.addSelectionChangeListener(detailPanel);
+    JComponent&SelectionChangeListener&VersionChangeListener detailPane =
+            detailPanel(driverModel.mapDimensions.version, driverModel);
+    driverModel.addVersionChangeListener(detailPane);
+    driverModel.addSelectionChangeListener(detailPane);
     JComponent createFilterPanel() {
         JTable table = JTable(tableModel);
         table.dragEnabled = true;
@@ -884,7 +952,7 @@ SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandle
     retval.contentPane = SplitWithWeights.verticalSplit(0.9, 0.9,
         SplitWithWeights.horizontalSplit(0.95, 0.95,
             ScrollListener.mapScrollPanel(driverModel, mapPanel),
-            createFilterPanel()), detailPanel);
+            createFilterPanel()), detailPane);
     (retval of Component).preferredSize = Dimension(800, 600);
     retval.setSize(800, 600);
     retval.setMinimumSize(Dimension(800, 600));
