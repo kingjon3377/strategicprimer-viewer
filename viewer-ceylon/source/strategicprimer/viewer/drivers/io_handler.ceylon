@@ -16,9 +16,6 @@ import java.awt.event {
     ActionListener,
     ActionEvent
 }
-import view.util {
-    FilteredFileChooser
-}
 import java.awt {
     Component
 }
@@ -66,10 +63,27 @@ import java.lang {
 import lovelace.util.jvm {
     showErrorDialog
 }
+import javax.swing.filechooser {
+    FileNameExtensionFilter,
+    FileFilter
+}
+FileFilter mapExtensionsFilter = FileNameExtensionFilter(
+    "Strategic Primer world map files", "map", "xml");
+"A factory method for [[JFileChooser]] taking a [[FileFilter]] to apply in the same
+ operation."
+JFileChooser filteredFileChooser(
+        "The current directory."
+        String current = ".",
+        "The filter to apply."
+        FileFilter filter = mapExtensionsFilter) {
+    JFileChooser retval = JFileChooser(current);
+    retval.fileFilter = filter;
+    return retval;
+}
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
 class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
-        JFileChooser fileChooser = FilteredFileChooser()) satisfies ActionListener {
+        JFileChooser fileChooser = filteredFileChooser()) satisfies ActionListener {
     shared actual void actionPerformed(ActionEvent event) {
         value temp = event.source;
         Component? source;
@@ -198,18 +212,18 @@ class FileChooser {
     variable JPath? storedFile;
     JFileChooser chooser;
     shared new open(JPath? loc = null,
-            JFileChooser fileChooser = FilteredFileChooser()) {
+            JFileChooser fileChooser = filteredFileChooser()) {
         chooserFunction = fileChooser.showOpenDialog;
         storedFile = loc;
         chooser = fileChooser;
     }
-    shared new save(JPath? loc, JFileChooser fileChooser = FilteredFileChooser()) {
+    shared new save(JPath? loc, JFileChooser fileChooser = filteredFileChooser()) {
         chooserFunction = fileChooser.showSaveDialog;
         storedFile = loc;
         chooser = fileChooser;
     }
     shared new custom(JPath? loc, String approveText,
-            JFileChooser fileChooser = FilteredFileChooser()) {
+            JFileChooser fileChooser = filteredFileChooser()) {
         chooserFunction = (Component? component) =>
                 fileChooser.showDialog(component, approveText);
         storedFile = loc;
