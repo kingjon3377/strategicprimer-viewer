@@ -22,7 +22,6 @@ import lovelace.util.common {
     todo
 }
 import view.util {
-    ErrorShower,
     SPFrame,
     StreamingLabel
 }
@@ -63,7 +62,8 @@ import strategicprimer.viewer.xmlio {
     readMap
 }
 import lovelace.util.jvm {
-    AppendableHelper
+    AppendableHelper,
+    showErrorDialog
 }
 "A driver to check whether player maps are subsets of the main map."
 object subsetCLI satisfies SimpleDriver {
@@ -225,7 +225,7 @@ object subsetGUI satisfies ISPDriver {
                 frame.testMap(pair.first(), pair.second().orElse(null));
             }
         } else {
-            ErrorShower.showErrorDialog(null,
+            showErrorDialog(null, "Strategic Primer Assistive Programs",
                 "The subset driver doesn't make sense on a non-multi-map driver");
         }
     }

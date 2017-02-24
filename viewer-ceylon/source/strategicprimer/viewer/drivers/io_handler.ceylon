@@ -17,8 +17,7 @@ import java.awt.event {
     ActionEvent
 }
 import view.util {
-    FilteredFileChooser,
-    ErrorShower
+    FilteredFileChooser
 }
 import java.awt {
     Component
@@ -64,6 +63,9 @@ import ceylon.language.meta.model {
 import java.lang {
     InterruptedException
 }
+import lovelace.util.jvm {
+    showErrorDialog
+}
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
 class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
@@ -90,7 +92,8 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
                 message = except.message;
             }
             log.error(message, except);
-            ErrorShower.showErrorDialog(source, message);
+            // TODO: somehow make this more specific to the particular app
+            showErrorDialog(source, "Strategic Primer Assistive Programs", message);
         }
         switch (event.actionCommand.lowercased)
         case ("load") {
@@ -109,7 +112,7 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
                 try {
                     writeMap(givenFile.get(), mapModel.map);
                 } catch (IOException except) {
-                    ErrorShower.showErrorDialog(source,
+                    showErrorDialog(source, "Strategic Primer Assistive Programs",
                         "I/O error writing to ``givenFile.get()``");
                     log.error("I/O error writing XML", except);
                 }
@@ -123,7 +126,8 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
                 try {
                     writeMap(path, mapModel.map);
                 } catch (IOException except) {
-                    ErrorShower.showErrorDialog(source, "I/O error writing to ``path``");
+                    showErrorDialog(source, "Strategic Primer Assistive Programs",
+                        "I/O error writing to ``path``");
                     log.error("I/O error writing XML", except);
                 }
             });
@@ -153,7 +157,7 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
                         try {
                             writeMap(file.get(), pair.first());
                         } catch (IOException except) {
-                            ErrorShower.showErrorDialog(source,
+                            showErrorDialog(source, "Strategic Primer Assistive Programs",
                                 "I/O error writing to ``file.get()``");
                             log.error("I/O error writing XML", except);
                         }
@@ -164,7 +168,8 @@ class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
                     try {
                         writeMap(path, mapModel.map);
                     } catch (IOException except) {
-                        ErrorShower.showErrorDialog(source, "I/O error writing to ``path``");
+                        showErrorDialog(source, "Strategic Primer Assistive Programs",
+                            "I/O error writing to ``path``");
                         log.error("I/O error writing XML", except);
                     }
                 });

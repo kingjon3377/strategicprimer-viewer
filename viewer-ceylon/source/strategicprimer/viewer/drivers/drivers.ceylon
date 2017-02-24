@@ -30,7 +30,6 @@ import controller.map.misc {
     DuplicateFixtureRemover
 }
 import view.util {
-    ErrorShower,
     SPFrame,
     BorderedPanel
 }
@@ -64,6 +63,9 @@ import strategicprimer.viewer.drivers {
     advancementCLI,
     advancementGUI,
     drawHelperComparator
+}
+import lovelace.util.jvm {
+    showErrorDialog
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -269,7 +271,8 @@ shared void run() {
                             currentOptionsTyped, others).setVisible(true));
                     } catch (DriverFailedException except) {
                         log.fatal(except.message, except);
-                        SwingUtilities.invokeLater(() => ErrorShower.showErrorDialog(null, except.message));
+                        SwingUtilities.invokeLater(() => showErrorDialog(null,
+                            "Strategic Primer Assistive Programs", except.message));
                     }
                 } else {
                     JList<ISPDriver> driversList = JavaList(ArrayList(driverCache.size,

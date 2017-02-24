@@ -73,7 +73,6 @@ import view.util {
     SplitWithWeights,
     FormattedLabel,
     TreeExpansionOrderListener,
-    ErrorShower,
     BoxPanel
 }
 import strategicprimer.viewer.about {
@@ -110,7 +109,8 @@ import lovelace.util.common {
     todo
 }
 import lovelace.util.jvm {
-    listenedButton
+    listenedButton,
+    showErrorDialog
 }
 import model.map.fixtures {
     UnitMember
@@ -300,7 +300,8 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
             if (is Integer number = Integer.parse(hours.text)) {
                 local.addHours(number, singletonRandom.nextInt(100));
             } else {
-                ErrorShower.showErrorDialog(hours, "Hours to add must be a number");
+                showErrorDialog(hours, "Strategic Primer Worker Advancement",
+                    "Hours to add must be a number");
                 return;
             }
             Integer newLevel = local.level;
@@ -358,7 +359,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
             model.addUnitMember(local, worker);
         } else {
             log.warn("New worker created when no unit selected");
-            ErrorShower.showErrorDialog(null,
+            showErrorDialog(null, "Strategic Primer Worker Advancement",
                 "As no unit was selected, the new worker wasn't added to a unit.");
         }
     }
@@ -426,7 +427,8 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                                 builder.appendNewline();
                             }
                         }
-                        ErrorShower.showErrorDialog(null, builder.string);
+                        showErrorDialog(null, "Strategic Primer Worker Advancement",
+                            builder.string);
                     }
                 });
                 buttonPanel.add(addButton);
