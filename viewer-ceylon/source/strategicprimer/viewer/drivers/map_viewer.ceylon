@@ -30,7 +30,8 @@ import view.map.main {
     TileDrawHelper,
     TileDrawHelperFactory,
     DirectionSelectionChanger,
-    ArrowKeyListener
+    ArrowKeyListener,
+    TileUIHelper
 }
 import javax.swing {
     SwingUtilities,
@@ -61,7 +62,8 @@ import java.awt {
     Image,
     Graphics,
     Rectangle,
-    Color
+    Color,
+    GridLayout
 }
 import java.awt.event {
     ActionEvent,
@@ -157,9 +159,6 @@ import lovelace.util.jvm {
 import model.map.fixtures.mobile {
     IUnit,
     Unit
-}
-import view.map.key {
-    KeyPanel
 }
 import java.io {
     IOException
@@ -846,11 +845,60 @@ todo("Merge into ISPWindow (with a broader return type)?")
 interface IViewerFrame {
     shared formal IViewerModel model;
 }
+"The part of the key showing a tile's color."
+class KeyElementComponent(Color color, Dimension minimum, Dimension preferred,
+        Dimension maximum) extends JComponent() {
+    minimumSize = minimum;
+    preferredSize = preferred;
+    maximumSize = maximum;
+    shared actual void paint(Graphics pen) {
+        Graphics context = pen.create();
+        try {
+            context.color = color;
+            context.fillRect(0, 0, width, height);
+        } finally {
+            context.dispose();
+        }
+    }
+}
 "A panel to show the details of a tile, using a list rather than sub-panels with chits
  for its fixtures."
 JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         variable Integer version, IDriverModel model) {
-    KeyPanel keyPanel = KeyPanel(version);
+    TileUIHelper helper = TileUIHelper();
+    JComponent keyElement(Integer version, TileType type) {
+        BoxPanel retval = BoxPanel(true);
+        retval.addGlue();
+        retval.addRigidArea(7);
+        BoxPanel panel = BoxPanel(false);
+        panel.addRigidArea(4);
+        Integer tileSize = TileViewSize.scaleZoom(ViewerModel.defZoomLevel, version);
+        panel.add(KeyElementComponent(helper.get(version, type), Dimension(4, 4),
+            Dimension(8, 8), Dimension(tileSize, tileSize)));
+        panel.addRigidArea(4);
+        JLabel label = JLabel(helper.getDescription(type));
+        panel.add(label);
+        panel.addRigidArea(4);
+        retval.add(panel);
+        retval.addRigidArea(7);
+        retval.addGlue();
+        retval.minimumSize = Dimension(largest(4, label.minimumSize.width.integer) + 14,
+            16 + label.minimumSize.height.integer);
+        return retval;
+    }
+    object keyPanel extends JPanel(GridLayout(0, 4)) satisfies VersionChangeListener {
+        minimumSize = Dimension(
+            (keyElement(version, TileType.notVisible).minimumSize.width * 4).integer,
+            minimumSize.height.integer);
+        preferredSize = minimumSize;
+        shared actual void changeVersion(Integer old, Integer newVersion) {
+            removeAll();
+            for (type in TileType.valuesForVersion(newVersion)) {
+                add(keyElement(version, type));
+            }
+        }
+    }
+    keyPanel.changeVersion(-1, version);
     FormattedLabel header = FormattedLabel(
         "<html><body><p>Contents of the tile at (%d, %d):</p></body></html>", -1, -1);
     object retval extends JSplitPane(JSplitPane.horizontalSplit, true)
