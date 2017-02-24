@@ -2,10 +2,7 @@ package strategicprimer.viewer.drivers;
 
 import controller.map.misc.CLIHelper;
 import java.io.Reader;
-import javax.swing.ComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JList;
-import javax.swing.ListModel;
+import javax.swing.*;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -75,15 +72,7 @@ public class ConstructorWrapper {
 			throws XMLStreamException {
 		return XMLInputFactory.newInstance().createXMLEventReader(reader);
 	}
-	/**
-	 * Compiler erroneously claims there isn't a JComboBox public constructor taking a
-	 * ComboBoxModel.
-	 * @param <T> the type of things in the combo box.
-	 * @param model the model
-	 */
-	public static <T> JComboBox<T> comboBox(ComboBoxModel<T> model) {
-		return new JComboBox<>(model);
-	}
+
 	/**
 	 * Compiler erroneously claims there isn't a JList constructor taking a ListModel.
 	 * @param model the list model

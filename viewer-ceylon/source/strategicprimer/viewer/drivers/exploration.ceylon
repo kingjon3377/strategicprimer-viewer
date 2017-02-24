@@ -168,7 +168,8 @@ import javax.swing.event {
     ListSelectionEvent
 }
 import lovelace.util.jvm {
-    listenedButton
+    listenedButton,
+    ImprovedComboBox
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -478,7 +479,7 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                         BorderedPanel.horizontalPanel(JLabel("Unit's Movement Points"),
                             null, mpField),
                         BorderedPanel.horizontalPanel(JLabel("Unit's Relative Speed"),
-                            null, ConstructorWrapper.comboBox<IExplorationModel.Speed>(
+                            null, ImprovedComboBox<IExplorationModel.Speed>.withModel(
                                 speedModel)),
                         listenedButton("Start exploring!", buttonListener)))));
         }
@@ -561,7 +562,7 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                 assert (is IExplorationModel.Speed retval = explorerSelectingPanel.speedModel.selectedItem);
                 return retval;
             };
-            headerPanel.add(ConstructorWrapper.comboBox<IExplorationModel.Speed>(
+            headerPanel.add(ImprovedComboBox<IExplorationModel.Speed>.withModel(
                 explorerSelectingPanel.speedModel));
             JPanel tilesPanel = JPanel(GridLayout(3, 12, 2, 2));
             IMutableMapNG secondMap;

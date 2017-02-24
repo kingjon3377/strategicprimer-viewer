@@ -8,7 +8,8 @@ import javax.swing {
     JOptionPane,
     GroupLayout,
     JComboBox,
-    JEditorPane
+    JEditorPane,
+    ComboBoxModel
 }
 import java.awt {
     Component,
@@ -64,7 +65,9 @@ shared class FunctionalGroupLayout(Container host) extends GroupLayout(host) {
         initializeGroup(createSequentialGroup(), *components);
 }
 "An extension to [[JComboBox]] to improve it by making the Tab key do what one expects."
-shared class ImprovedComboBox<T>() extends JComboBox<T>() {
+shared class ImprovedComboBox<T> extends JComboBox<T> {
+    shared new () extends JComboBox<T>() { }
+    shared new withModel(ComboBoxModel<T> boxModel) extends JComboBox<T>(boxModel) { }
     editable = true;
     "Handle a key-press. If Tab is pressed when the pop-up list is visible, treat it like
      Enter."
