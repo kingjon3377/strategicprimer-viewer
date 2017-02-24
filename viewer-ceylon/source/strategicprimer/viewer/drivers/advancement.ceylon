@@ -21,7 +21,8 @@ import java.io {
 }
 import model.map {
     Player,
-    IMapNG
+    IMapNG,
+    HasName
 }
 import java.util {
     JList = List
@@ -66,9 +67,6 @@ import javax.swing {
     JTree,
     JButton
 }
-import view.worker {
-    LevelListener
-}
 import view.util {
     SPFrame,
     BorderedPanel,
@@ -92,7 +90,8 @@ import model.listeners {
     SkillSelectionSource,
     AddRemoveListener,
     UnitMemberSelectionSource,
-    UnitSelectionSource
+    UnitSelectionSource,
+    UnitMemberListener
 }
 import java.awt {
     Dimension,
@@ -113,6 +112,9 @@ import lovelace.util.common {
 }
 import lovelace.util.jvm {
     listenedButton
+}
+import model.map.fixtures {
+    UnitMember
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
@@ -558,6 +560,32 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     retval.add(second);
     return retval;
 }
+"A listener to print a line whenever a worker gains a level."
+object levelListener satisfies LevelGainListener&UnitMemberListener&SkillSelectionListener {
+    "The current worker."
+    variable UnitMember? worker = null;
+    "The current skill."
+    variable ISkill? skill = null;
+    shared actual void selectSkill(ISkill? selectedSkill) => skill = selectedSkill;
+    shared actual void memberSelected(UnitMember? old, UnitMember? selected) =>
+            worker = selected;
+    "Wrapper around [[HasName]].getName() that also handles non-HasName objects using their
+     `string` attribute."
+    String getName(Object named) {
+        if (is HasName named) {
+            return named.name;
+        } else {
+            return  named.string;
+        }
+    }
+    "Notify the user of a gained level."
+    shared actual void level() {
+        if (exists localWorker = worker, exists localSkill = skill) {
+            process.writeLine("``getName(localWorker)`` gained a level in ``getName(
+                localSkill)``");
+        }
+    }
+}
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker menuHandler) {
     IMapNG map = model.map;
@@ -573,7 +601,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
     jobAdditionPanel.addAddRemoveListener(jobsTreeModel);
     JPanel&AddRemoveSource skillAdditionPanel = itemAdditionPanel("skill");
     skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
-    LevelListener levelListener = LevelListener();
+    tree.addUnitMemberListener(levelListener);
     value jobsTreeObject = jobsTree(jobsTreeModel);
     jobsTreeObject.addSkillSelectionListener(levelListener);
     value hoursAdditionPanel = skillAdvancementPanel();
