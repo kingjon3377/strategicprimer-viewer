@@ -13,8 +13,8 @@ module strategicprimer.viewer "0.4.9900" {
     import ceylon.file "1.3.1";
     import ceylon.io "1.3.1";
     import com.bric.window.windowmenu "1.0";
-    import viewer "0.4";
-    import java.desktop "8";
+    shared import viewer "0.4";
+    shared import java.desktop "8";
     import lovelace.util.jvm "0.1.0";
     import ceylon.regex "1.3.1";
 }

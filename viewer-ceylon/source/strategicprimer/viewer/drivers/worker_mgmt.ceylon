@@ -43,7 +43,6 @@ import view.util {
     SplitWithWeights,
     TreeExpansionOrderListener,
     BoxPanel,
-    SPDialog,
     SPMenu
 }
 import ceylon.interop.java {

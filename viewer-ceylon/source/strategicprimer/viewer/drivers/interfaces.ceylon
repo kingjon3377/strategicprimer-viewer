@@ -10,7 +10,9 @@ import controller.map.misc {
     ICLIHelper
 }
 import util {
-    Warning
+    Warning,
+    ActionWrapper,
+    OnMac
 }
 import java.nio.file {
     JPaths = Paths, JPath = Path
@@ -39,10 +41,21 @@ import strategicprimer.viewer.xmlio {
 }
 import javax.swing {
     JFrame,
-    WindowConstants
+    WindowConstants,
+    JDialog,
+    JComponent,
+    KeyStroke
 }
 import java.awt {
-    Dimension
+    Dimension,
+    Frame
+}
+import java.awt.event {
+    ActionEvent,
+    KeyEvent
+}
+import view.util {
+    HotKeyCreator
 }
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option
@@ -402,4 +415,12 @@ abstract class SPFrame(String windowTitle, JPath? file, Dimension? minSize = nul
     if (exists minSize) {
         setMinimumSize(minSize);
     }
+}
+"A superclass to perform setup common to dialogs."
+shared class SPDialog(Frame? parentFrame, String title)
+        extends JDialog(parentFrame, title) satisfies HotKeyCreator {
+    defaultCloseOperation = WindowConstants.disposeOnClose;
+    createHotKey(rootPane, "close", ActionWrapper((ActionEvent event) => dispose()),
+        JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkW,
+            OnMac.shortcutMask), KeyStroke.getKeyStroke(KeyEvent.vkEscape, 0));
 }

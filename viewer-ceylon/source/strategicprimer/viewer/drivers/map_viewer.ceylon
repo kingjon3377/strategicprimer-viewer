@@ -71,7 +71,6 @@ import java.awt.event {
     MouseAdapter
 }
 import view.util {
-    SPDialog,
     BoxPanel,
     SplitWithWeights,
     BorderedPanel
