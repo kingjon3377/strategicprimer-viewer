@@ -28,13 +28,14 @@ import javax.swing {
     JSpinner,
     JTextArea,
     JButton,
-    TransferHandler
+    TransferHandler,
+    Icon,
+    ImageIcon
 }
 import view.worker {
     MemberDetailPanel,
     TreeExpansionHandler,
-    WorkerMenu,
-    UnitMemberCellRenderer
+    WorkerMenu
 }
 import view.util {
     SPFrame,
@@ -67,7 +68,9 @@ import model.listeners {
 import java.awt {
     Dimension,
     Component,
-    Frame
+    Frame,
+    Graphics2D,
+    Color
 }
 import model.map {
     IMapNG,
@@ -76,12 +79,14 @@ import model.map {
     Point,
     PointFactory,
     HasName,
-    IFixture
+    IFixture,
+    HasImage
 }
 import util {
     OnMac,
     ActionWrapper,
-    Pair
+    Pair,
+    ImageLoader
 }
 import java.awt.event {
     KeyEvent,
@@ -101,7 +106,8 @@ import javax.swing.tree {
     DefaultTreeModel,
     DefaultMutableTreeNode,
     TreePath,
-    DefaultTreeCellRenderer
+    DefaultTreeCellRenderer,
+    TreeCellRenderer
 }
 import model.report {
     SimpleReportNode,
@@ -163,7 +169,17 @@ import java.awt.datatransfer {
     UnsupportedFlavorException
 }
 import java.io {
-    IOException
+    IOException,
+    FileNotFoundException
+}
+import java.awt.image {
+    BufferedImage
+}
+import ceylon.math.float {
+    halfEven
+}
+import java.nio.file {
+    NoSuchFileException
 }
 "A tree of a player's units."
 JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
@@ -260,7 +276,130 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
         }
         transferHandler = workerTreeTransferHandler;
-        cellRenderer = UnitMemberCellRenderer(turnSource, orderCheck);
+        object unitMemberCellRenderer extends DefaultTreeCellRenderer() {
+            Icon createDefaultFixtureIcon() {
+                Integer imageSize = 24;
+                BufferedImage temp = BufferedImage(imageSize, imageSize,
+                    BufferedImage.typeIntArgb);
+                Graphics2D pen = temp.createGraphics();
+                Color saveColor = pen.color;
+                pen.color = Color.\iRED;
+                Float margin = 0.15;
+                Integer firstCorner = halfEven(imageSize * margin).integer + 1;
+                Integer firstDimension = halfEven(imageSize * (1.0 - (margin * 2.0))).integer;
+                Integer firstArcDimension = halfEven(imageSize * (margin / 2.0)).integer;
+                pen.fillRoundRect(firstCorner, firstCorner, firstDimension,
+                    firstDimension, firstArcDimension, firstArcDimension);
+                pen.color = saveColor;
+                Integer secondCorner = halfEven((imageSize / 2.0) - (imageSize * margin))
+                    .integer + 1;
+                Integer secondDimension = halfEven(imageSize * margin * 2.0).integer;
+                Integer secondArcDimension = halfEven((imageSize * margin) / 2.0).integer;
+                pen.fillRoundRect(secondCorner, secondCorner, secondDimension,
+                    secondDimension, secondArcDimension, secondArcDimension);
+                pen.dispose();
+                return ImageIcon(temp);
+            }
+            Icon defaultFixtureIcon = createDefaultFixtureIcon();
+            Icon? getIconForFile(String filename) {
+                try {
+                    return ImageLoader.loader.loadIcon(filename);
+                }  catch (FileNotFoundException|NoSuchFileException except) {
+                    log.error("Image file images/``filename`` not found`");
+                    log.debug("with stack trace", except);
+                    return null;
+                } catch (IOException except) {
+                    log.error("I/O error reading image", except);
+                    return null;
+                }
+            }
+            String jobCSL(IWorker worker) {
+                {IJob*} iter = CeylonIterable(worker);
+                StringBuilder builder = StringBuilder();
+                if (exists first = iter.first) {
+                    builder.append(" (```first.name`` ``first.level``");
+                    for (job in iter.rest) {
+                        builder.append(", ``job.name`` ``job.level``");
+                    }
+                    builder.append(")");
+                    return builder.string;
+                } else {
+                    return "";
+                }
+            }
+            Icon getIcon(HasImage obj) {
+                String image = obj.image;
+                if (!image.empty, exists icon = getIconForFile(image)) {
+                    return icon;
+                } else if (exists icon = getIconForFile(obj.defaultImage)) {
+                    return icon;
+                } else {
+                    return defaultFixtureIcon;
+                }
+            }
+            shared actual Component getTreeCellRendererComponent(JTree? tree,
+                    Object? item, Boolean selected, Boolean expanded, Boolean leaf,
+                    Integer row, Boolean hasFocus) {
+                assert (exists tree, exists item);
+                Component component = super.getTreeCellRendererComponent(tree, item,
+                    selected, expanded, leaf, row, hasFocus);
+                Object internal;
+                if (is DefaultMutableTreeNode item) {
+                    internal = item.userObject;
+                } else {
+                    internal = item;
+                }
+                if (is HasImage internal, is JLabel component) {
+                    component.icon = getIcon(internal);
+                }
+                if (is IWorker internal, is JLabel component) {
+                    if ("human" == internal.race) {
+                        component.text = "<html><p>``internal
+                            .name````jobCSL(internal)``</p></html>";
+                    } else {
+                        component.text = "<html><p>``internal.name``, a ``internal
+                            .race````jobCSL(internal)``</p></html>";
+                    }
+                } else if (is IUnit internal, is DefaultTreeCellRenderer component) {
+                    component.text = internal.name;
+                    String orders = internal.getLatestOrders(turnSource()).lowercased;
+                    if (orderCheck, orders.contains("fixme"),
+                            !CeylonIterable(internal).empty) {
+                        component.backgroundSelectionColor = Color.pink;
+                        component.backgroundNonSelectionColor = Color.pink;
+                    } else if (orderCheck, orders.contains("todo"),
+                            !CeylonIterable(internal).empty) {
+                        component.backgroundSelectionColor = Color.yellow;
+                        component.backgroundNonSelectionColor = Color.yellow;
+                    }
+                } else if (orderCheck, is WorkerTreeModelAlt.KindNode item) {
+                    Integer turn = turnSource();
+                    variable Boolean shouldWarn = false;
+                    for (child in CeylonIterable(item)) {
+                        if (is WorkerTreeModelAlt.UnitNode child) {
+                            if (exists unit = child.userObject, !CeylonIterable(unit).empty) {
+                                String orders = unit.getLatestOrders(turnSource()).lowercased;
+                                if (orders.contains("fixme"),
+                                        is DefaultTreeCellRenderer component) {
+                                    component.backgroundSelectionColor = Color.pink;
+                                    component.backgroundNonSelectionColor = Color.pink;
+                                    shouldWarn = false;
+                                    break;
+                                } else if (orders.contains("todo")) {
+                                    shouldWarn = true;
+                                }
+                            }
+                        }
+                    }
+                    if (shouldWarn, is DefaultTreeCellRenderer component) {
+                        component.backgroundSelectionColor = Color.yellow;
+                        component.backgroundNonSelectionColor = Color.yellow;
+                    }
+                }
+                return component;
+            }
+        }
+        cellRenderer = unitMemberCellRenderer;
         shared actual String? getToolTipText(MouseEvent event) {
             if (getRowForLocation(event.x, event.y) == -1) {
                 return null;
