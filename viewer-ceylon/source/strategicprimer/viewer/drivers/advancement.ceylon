@@ -68,7 +68,6 @@ import javax.swing {
 }
 import view.worker {
     LevelListener,
-    TreeExpansionHandler,
     WorkerMenu
 }
 import view.util {
