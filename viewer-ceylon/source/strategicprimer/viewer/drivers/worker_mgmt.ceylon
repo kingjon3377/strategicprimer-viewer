@@ -45,8 +45,7 @@ import view.util {
     TreeExpansionOrderListener,
     BoxPanel,
     SPDialog,
-    SPMenu,
-    FunctionalGroupLayout
+    SPMenu
 }
 import ceylon.interop.java {
     CeylonIterable,
@@ -168,7 +167,8 @@ import strategicprimer.viewer.report {
     createAbbreviatedReportIR
 }
 import lovelace.util.jvm {
-    listenedButton
+    listenedButton,
+    FunctionalGroupLayout
 }
 import view.map.details {
     FixtureEditMenu
