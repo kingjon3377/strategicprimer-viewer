@@ -39,7 +39,6 @@ import javax.swing {
 import view.util {
     SPFrame,
     HotKeyCreator,
-    FocusRequester,
     FormattedLabel,
     BorderedPanel,
     SplitWithWeights,
@@ -1080,7 +1079,9 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
             () => mainMap.currentTurn, true);
         newUnitFrame.addNewUnitListener(treeModel);
         Integer keyMask = OnMac.shortcutMask;
-        createHotKey(tree, "openUnits", FocusRequester(tree), JComponent.whenInFocusedWindow,
+        createHotKey(tree, "openUnits", ActionWrapper(
+            (ActionEvent event) => tree.requestFocusInWindow()),
+            JComponent.whenInFocusedWindow,
             KeyStroke.getKeyStroke(KeyEvent.vkU, keyMask));
         FormattedLabel playerLabel = FormattedLabel("Units belonging to %s: (%sU)",
             mainMap.currentPlayer.name, OnMac.shortcutDesc);
