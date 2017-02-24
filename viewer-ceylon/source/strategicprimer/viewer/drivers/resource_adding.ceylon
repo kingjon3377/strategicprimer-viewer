@@ -57,7 +57,6 @@ import view.util {
     BoxPanel,
     FormattedLabel,
     StreamingLabel,
-    ImprovedComboBox,
     SplitWithWeights
 }
 import model.listeners {
@@ -74,7 +73,8 @@ import ceylon.language.meta {
     classDeclaration
 }
 import lovelace.util.jvm {
-    listenedButton
+    listenedButton,
+    ImprovedComboBox
 }
 "A driver to le the user enter a player's resources and equipment."
 object resourceAddingCLI satisfies SimpleCLIDriver {
