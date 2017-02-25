@@ -385,7 +385,6 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         component.backgroundNonSelectionColor = Color.yellow;
                     }
                 } else if (orderCheck, is WorkerTreeModelAlt.KindNode item) {
-                    Integer turn = turnSource();
                     variable Boolean shouldWarn = false;
                     for (child in CeylonIterable(item)) {
                         if (is WorkerTreeModelAlt.UnitNode child) {
