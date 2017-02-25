@@ -57,7 +57,8 @@ import strategicprimer.viewer.xmlio {
     readMap
 }
 import lovelace.util.jvm {
-    StreamingLabel
+    StreamingLabel,
+    LabelTextColor
 }
 """An interface for checks of a map's *contents* that we don't want the XML-*reading*
    code to do."""
@@ -189,22 +190,22 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
     shared actual String windowName = "Map Checker";
     StreamingLabel label = StreamingLabel();
     void printParagraph(String paragraph,
-            StreamingLabel.LabelTextColor color = StreamingLabel.LabelTextColor.white) {
+            LabelTextColor color = LabelTextColor.white) {
         label.append("<p style=\"color:``color``\">``paragraph``</p>");
     }
     Warning.custom.setCustomPrinter(Warning.wrapHandler(
-        (string) => printParagraph(string, StreamingLabel.LabelTextColor.yellow)));
+        (string) => printParagraph(string, LabelTextColor.yellow)));
     setBackground(Color.black);
     contentPane = JScrollPane(label);
     contentPane.background = Color.black;
     shared void check(JPath filename) {
         mapCheckerCLI.check(filename, (text) {
             if (text.startsWith("No errors")) {
-                printParagraph(text, StreamingLabel.LabelTextColor.green);
+                printParagraph(text, LabelTextColor.green);
             } else {
                 printParagraph(text);
             }
-        }, (text) => printParagraph(text, StreamingLabel.LabelTextColor.red));
+        }, (text) => printParagraph(text, LabelTextColor.red));
     }
 }
 "A driver to check every map file in a list for errors and report the results in a

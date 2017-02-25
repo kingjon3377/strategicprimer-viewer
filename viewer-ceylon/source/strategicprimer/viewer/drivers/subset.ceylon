@@ -60,7 +60,8 @@ import strategicprimer.viewer.xmlio {
 import lovelace.util.jvm {
     AppendableHelper,
     showErrorDialog,
-    StreamingLabel
+    StreamingLabel,
+    LabelTextColor
 }
 "A driver to check whether player maps are subsets of the main map."
 object subsetCLI satisfies SimpleDriver {
@@ -121,7 +122,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
     }
     contentPane = JScrollPane(label);
     void printParagraph(String paragraph,
-            StreamingLabel.LabelTextColor color = StreamingLabel.LabelTextColor.white) {
+            LabelTextColor color = LabelTextColor.white) {
         label.append("<p style=\"color:``color``\">``paragraph``</p>");
     }
     variable IMapNG mainMap = SPMapNG(MapDimensionsImpl(0, 0, 2), PlayerCollection(), -1);
@@ -130,23 +131,23 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
             try {
                 mainMap = readMap(path, Warning.ignore);
             } catch (FileNotFoundException|NoSuchFileException except) {
-                printParagraph("File ``path`` not found", StreamingLabel.LabelTextColor.red);
+                printParagraph("File ``path`` not found", LabelTextColor.red);
                 throw except;
             } catch (XMLStreamException except) {
                 printParagraph("ERROR: Malformed XML in ``path
                 ``; see following error message for details",
-                    StreamingLabel.LabelTextColor.red);
-                printParagraph(except.message, StreamingLabel.LabelTextColor.red);
+                    LabelTextColor.red);
+                printParagraph(except.message, LabelTextColor.red);
                 throw except;
             } catch (SPFormatException except) {
                 printParagraph("ERROR: SP map format error at line ``except.line`` in file ``
                 path``; see following error message for details",
-                    StreamingLabel.LabelTextColor.red);
-                printParagraph(except.message, StreamingLabel.LabelTextColor.red);
+                    LabelTextColor.red);
+                printParagraph(except.message, LabelTextColor.red);
                 throw except;
             } catch (IOException except) {
                 printParagraph("ERROR: I/O error reading file ``path``",
-                    StreamingLabel.LabelTextColor.red);
+                    LabelTextColor.red);
                 throw except;
             }
         } else {
@@ -166,15 +167,15 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
         } else {
             log.warn("Given a map with no filename");
             printParagraph("Given a map with no filename",
-                StreamingLabel.LabelTextColor.yellow);
+                LabelTextColor.yellow);
             filename = "an unnamed file";
         }
         printParagraph("Testing ``filename`` ...");
         try (formatter = Formatter(htmlWriter)) {
             if (mainMap.isSubset(map, formatter, "``filename``: ")) {
-                printParagraph("OK", StreamingLabel.LabelTextColor.green);
+                printParagraph("OK", LabelTextColor.green);
             } else {
-                printParagraph("WARN", StreamingLabel.LabelTextColor.yellow);
+                printParagraph("WARN", LabelTextColor.yellow);
             }
         }
     }
@@ -186,26 +187,26 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
         try {
             map = readMap(path, Warning.ignore);
         } catch (FileNotFoundException|NoSuchFileException except) {
-            printParagraph("FAIL: File not found", StreamingLabel.LabelTextColor.red);
+            printParagraph("FAIL: File not found", LabelTextColor.red);
             log.error("``path`` not found", except);
             return;
         } catch (IOException except) {
             printParagraph("FAIL: I/O error reading file",
-                StreamingLabel.LabelTextColor.red);
+                LabelTextColor.red);
             log.error("I/O error reading ``path``", except);
             return;
         } catch (XMLStreamException except) {
             printParagraph(
                 "FAIL: Malformed XML in the file; see following error message for details",
-                StreamingLabel.LabelTextColor.red);
-            printParagraph(except.message, StreamingLabel.LabelTextColor.red);
+                LabelTextColor.red);
+            printParagraph(except.message, LabelTextColor.red);
             log.error("Malformed XML in file ``path``", except);
             return;
         } catch (SPFormatException except) {
             printParagraph("FAIL: SP map format error at line ``
                     except.line``; see following error message for details",
-                StreamingLabel.LabelTextColor.red);
-            printParagraph(except.message, StreamingLabel.LabelTextColor.red);
+                LabelTextColor.red);
+            printParagraph(except.message, LabelTextColor.red);
             log.error("SP map format error reading``path``", except);
             return;
         }

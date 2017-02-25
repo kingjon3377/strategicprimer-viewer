@@ -99,15 +99,16 @@ shared class ImprovedComboBox<T> extends JComboBox<T> {
         }
     }
 }
+"Possible colors for use by text in a [[StreamingLabel]]"
+shared class LabelTextColor {
+    shared actual String string;
+    shared new yellow { string = "yellow"; }
+    shared new white { string = "white"; }
+    shared new red { string = "red"; }
+    shared new green { string = "green"; }
+}
 "A label that can easily be written (appended) to."
 shared class StreamingLabel extends JEditorPane {
-    shared static class LabelTextColor {
-        shared actual String string;
-        shared new yellow { string = "yellow"; }
-        shared new white { string = "white"; }
-        shared new red { string = "red"; }
-        shared new green { string = "green"; }
-    }
     shared new () extends JEditorPane("text/html",
         """<html><body bgcolor="#000000"><p>&nbsp;</p></body></html>""") {}
     editable = false;
