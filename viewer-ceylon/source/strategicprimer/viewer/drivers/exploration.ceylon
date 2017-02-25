@@ -17,8 +17,7 @@ import java.io {
     IOException
 }
 import view.exploration {
-    ExplorationMenu,
-    ExplorationListListener
+    ExplorationMenu
 }
 import javax.swing {
     SwingList=JList,
@@ -181,7 +180,9 @@ import lovelace.util.jvm {
     BoxAxis,
     BorderedPanel,
     horizontalSplit,
-    verticalSplit
+    verticalSplit,
+    shuffle,
+    ListModelWrapper
 }
 import view.map.main {
     TileDrawHelperFactory,
@@ -747,7 +748,69 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                 dtb.addActionListener(ecl);
                 ecl.addSelectionChangeListener(selectedPointChanged);
                 ecl.addMovementCostListener(deduct);
-                SelectionChangeListener ell = ExplorationListListener(model, mainList, speedSource);
+                """A list-data-listener to select a random but suitable set of fixtures to
+                    be "discovered" if the tile is explored."""
+                object ell satisfies SelectionChangeListener {
+                    "A list of animal-tracks objects, which we want to remove from the
+                     main map whenever the list's target gets changed."
+                    MutableList<[Point, Animal]> tracks = ArrayList<[Point, Animal]>();
+                    """A "hunting model," to get the animals to have traces of."""
+                    HuntingModel huntingModel = HuntingModel(model.map);
+                    variable Boolean outsideCritical = true;
+                    shared actual void selectedPointChanged(Point? old, Point newPoint) {
+                        SwingUtilities.invokeLater(() {
+                            if (outsideCritical, exists selectedUnit =
+                                    model.selectedUnit) {
+                                outsideCritical = false;
+                                for ([location, animal] in tracks) {
+                                    model.map.removeFixture(location, animal);
+                                }
+                                tracks.clear();
+                                mainList.clearSelection();
+                                MutableList<[Integer, TileFixture]> constants =
+                                        ArrayList<[Integer, TileFixture]>();
+                                MutableList<[Integer, TileFixture]> possibles =
+                                        ArrayList<[Integer, TileFixture]>();
+                                for (index->fixture in ListModelWrapper(mainList.model).indexed) {
+                                    if (SimpleMovement.shouldAlwaysNotice(selectedUnit, fixture)) {
+                                        constants.add([index, fixture]);
+                                    } else if (SimpleMovement.shouldSometimesNotice(selectedUnit, speedSource(), fixture)) {
+                                        possibles.add([index, fixture]);
+                                    }
+                                }
+                                Point currentLocation = model.selectedUnitLocation;
+                                if (currentLocation.valid) {
+                                    String?(HuntingModel) tracksSource;
+                                    // FIXME: Once HuntingModel is ported, to produce Ceylon
+                                    // rather than Java list, move as much as possible out
+                                    // of lambdas.
+                                    if (TileType.ocean == model.map.getBaseTerrain(currentLocation)) {
+                                        tracksSource = (HuntingModel hmodel) => CeylonList(hmodel.fish(currentLocation, 1)).map(Object.string).first;
+                                    } else {
+                                        tracksSource = (HuntingModel hmodel) => CeylonList(hmodel.hunt(currentLocation, 1)).map(Object.string).first;
+                                    }
+                                    assert (exists possibleTracks = tracksSource(huntingModel));
+                                    if (HuntingModel.\inothing != possibleTracks) {
+                                        Animal animal = Animal(possibleTracks, true, false, "wild", -1);
+                                        assert (is FixtureListModel listModel = mainList.model);
+                                        Integer index = listModel.size;
+                                        listModel.addFixture(animal);
+                                        possibles.add([index, animal]);
+                                        tracks.add([currentLocation, animal]);
+                                    }
+                                }
+                                constants.addAll(CeylonList(SimpleMovement.selectNoticed(
+                                    JavaList(shuffle(possibles)),
+                                    ([Integer, TileFixture] tuple) => tuple.rest.first,
+                                    selectedUnit, speedSource())));
+                                IntArray indices = createJavaIntArray(
+                                    {for ([index, fixture] in constants) index});
+                                mainList.selectedIndices = indices;
+                                outsideCritical = true;
+                            }
+                        });
+                    }
+                }
                 // mainList.model.addListDataListener(ell);
                 model.addSelectionChangeListener(ell);
                 ecl.addSelectionChangeListener(ell);

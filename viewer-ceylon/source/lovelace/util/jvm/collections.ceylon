@@ -1,5 +1,6 @@
 import ceylon.collection {
-    ArrayList
+    ArrayList,
+    MutableList
 }
 import ceylon.math.float {
     random
@@ -8,7 +9,11 @@ import java.util {
     JIterator=Iterator
 }
 import java.lang {
-    JIterable=Iterable
+    JIterable=Iterable,
+    ArrayIndexOutOfBoundsException
+}
+import javax.swing {
+    ListModel
 }
 "Return the elements of a list (etc.) in random order, like Java's Collections.shuffle."
 by("gdejohn at https://stackoverflow.com/questions/20486670")
@@ -42,5 +47,31 @@ shared class ConvertingIterable<Element>(JIterator<out Object>|JIterable<out Obj
         iterator = () => ConvertingIterator<Element>(iter);
     } else {
         iterator = () => ConvertingIterator<Element>(iter.iterator());
+    }
+}
+"A class to adapt a [[ListModel]] to Ceylon's [[List]] interface."
+shared class ListModelWrapper<Element>(ListModel<Element> wrapped)
+        satisfies List<Element> {
+    shared actual Element? getFromFirst(Integer index) {
+        try {
+            return wrapped.getElementAt(index);
+        } catch (ArrayIndexOutOfBoundsException except) {
+            return null;
+        }
+    }
+    shared actual Integer? lastIndex {
+        if (wrapped.size == 0) {
+            return null;
+        } else {
+            return wrapped.size - 1;
+        }
+    }
+    shared actual Integer hash => wrapped.hash;
+    shared actual Boolean equals(Object that) {
+        if (is ListModelWrapper<out Anything> that) {
+            return wrapped==that.wrapped;
+        } else {
+            return false;
+        }
     }
 }
