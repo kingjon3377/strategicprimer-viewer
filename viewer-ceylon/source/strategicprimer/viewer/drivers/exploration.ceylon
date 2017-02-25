@@ -161,9 +161,6 @@ import model.viewer {
     FixtureListModel,
     TileTypeFixture
 }
-import view.map.details {
-    FixtureList
-}
 import javax.swing.text {
     BadLocationException,
     Document
@@ -623,8 +620,9 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                     IExplorationModel.Direction.south,
                     IExplorationModel.Direction.southeast}) {
                 SelectionChangeSupport mainPCS = SelectionChangeSupport();
-                FixtureList mainList = FixtureList(tilesPanel,
-                    FixtureListModel(model.map, true), model.map.players());
+                SwingList<TileFixture>&SelectionChangeListener mainList =
+                        fixtureList(tilesPanel, FixtureListModel(model.map, true),
+                            CeylonIterable(model.map.players()));
                 mainPCS.addSelectionChangeListener(mainList);
                 tilesPanel.add(JScrollPane(mainList));
                 DualTileButton dtb = DualTileButton(model.map, secondMap,
@@ -815,8 +813,9 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                 // mainList.model.addListDataListener(ell);
                 model.addSelectionChangeListener(ell);
                 ecl.addSelectionChangeListener(ell);
-                FixtureList secList = FixtureList(tilesPanel,
-                    FixtureListModel(secondMap, false), secondMap.players());
+                SwingList<TileFixture>&SelectionChangeListener secList =
+                        fixtureList(tilesPanel, FixtureListModel(secondMap, false),
+                            CeylonIterable(secondMap.players()));
                 SelectionChangeSupport secPCS = SelectionChangeSupport();
                 secPCS.addSelectionChangeListener(secList);
                 tilesPanel.add(JScrollPane(secList));

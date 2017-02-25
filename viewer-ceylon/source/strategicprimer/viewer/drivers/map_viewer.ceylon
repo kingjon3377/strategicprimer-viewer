@@ -17,7 +17,10 @@ import model.viewer {
     ZOrderFilter,
     TileViewSize,
     VisibleDimensions,
-    FixtureListModel
+    FixtureListModel,
+    FixtureTransferable,
+    CurriedFixtureTransferable,
+    FixtureListDropListener
 }
 import view.map.main {
     ZoomListener,
@@ -50,7 +53,9 @@ import javax.swing {
     JFormattedTextField,
     JSplitPane,
     JScrollBar,
-    InputVerifier
+    InputVerifier,
+    JList,
+    KeyStroke
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -75,15 +80,18 @@ import java.awt.event {
     ComponentEvent,
     MouseListener,
     MouseAdapter,
-    AdjustmentEvent
+    AdjustmentEvent,
+    KeyEvent
 }
 import view.util {
-    FormattedLabel
+    FormattedLabel,
+    HotKeyCreator
 }
 import util {
     OnMac,
     IsNumeric,
-    ImageLoader
+    ImageLoader,
+    ActionWrapper
 }
 import java.lang {
     JIterable = Iterable
@@ -109,7 +117,9 @@ import java.util.stream {
 }
 import ceylon.interop.java {
     CeylonIterable,
-    CeylonList
+    CeylonList,
+    JavaIterable,
+    JavaList
 }
 import model.map.fixtures {
     RiverFixture
@@ -126,7 +136,8 @@ import javax.swing.table {
     TableColumn
 }
 import view.map.details {
-    FixtureList
+    FixtureCellRenderer,
+    FixtureEditMenu
 }
 import lovelace.util.common {
     todo
@@ -169,6 +180,16 @@ import model.map.fixtures.mobile {
 }
 import java.io {
     IOException
+}
+import java.awt.dnd {
+    DragGestureListener,
+    DragGestureEvent,
+    DnDConstants,
+    DragSource,
+    DropTarget
+}
+import java.awt.datatransfer {
+    Transferable
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -868,6 +889,64 @@ class KeyElementComponent(Color color, Dimension minimum, Dimension preferred,
         }
     }
 }
+"A visual list-based representation of the contents of a tile."
+JList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
+        JComponent parentComponent, FixtureListModel listModel,
+        {Player*} players) {
+    object retval extends JList<TileFixture>(listModel)
+            satisfies DragGestureListener&SelectionChangeListener&HotKeyCreator {
+        cellRenderer = FixtureCellRenderer();
+        selectionMode = ListSelectionModel.multipleIntervalSelection;
+        shared actual void dragGestureRecognized(DragGestureEvent event) {
+            List<TileFixture> selection = CeylonList(selectedValuesList);
+            if (exists first = selection.first) {
+                Transferable payload;
+                value rest = selection.rest;
+                if (rest.empty) {
+                    payload = FixtureTransferable(first);
+                } else {
+                    payload = CurriedFixtureTransferable(JavaList(selection));
+                }
+                event.startDrag(null, payload);
+            }
+        }
+        shared actual Boolean equals(Object that) {
+            if (is JList<out Anything> that) {
+                return model == that.model;
+            } else {
+                return false;
+            }
+        }
+        shared actual Integer hash => listModel.hash;
+        shared actual void selectedPointChanged(Point? old, Point newPoint) =>
+                listModel.selectedPointChanged(old, newPoint);
+        object fixtureMouseListener extends MouseAdapter() {
+            void handleMouseEvent(MouseEvent event) {
+                if (event.popupTrigger, event.clickCount == 1) {
+                    Integer index = locationToIndex(event.point);
+                    if ((0..listModel.size).contains(index)) {
+                        FixtureEditMenu(listModel.elementAt(index), JavaIterable(players))
+                            .show(event.component, event.x, event.y);
+                    }
+                }
+            }
+            shared actual void mouseClicked(MouseEvent event) => handleMouseEvent(event);
+            shared actual void mousePressed(MouseEvent event) => handleMouseEvent(event);
+            shared actual void mouseReleased(MouseEvent event) => handleMouseEvent(event);
+        }
+    }
+    DragSource.defaultDragSource.createDefaultDragGestureRecognizer(retval,
+        DnDConstants.actionCopy, retval);
+    retval.dropTarget = DropTarget(retval, FixtureListDropListener(parentComponent,
+        listModel));
+    retval.createHotKey(retval, "delete",
+        ActionWrapper((ActionEvent event) => listModel.removeAll(
+            retval.selectedValuesList)),
+        JComponent.whenAncestorOfFocusedComponent,
+        KeyStroke.getKeyStroke(KeyEvent.vkDelete, 0),
+        KeyStroke.getKeyStroke(KeyEvent.vkBackSpace, 0));
+    return retval;
+}
 "A panel to show the details of a tile, using a list rather than sub-panels with chits
  for its fixtures."
 JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
@@ -918,9 +997,10 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
             header.setArgs(newPoint.row, newPoint.col);
         }
     }
-    FixtureList fixtureList = FixtureList(retval, FixtureListModel(model.map, false),
-        model.map.players());
-    retval.delegate = fixtureList;
+    JList<TileFixture>&SelectionChangeListener fixtureListObject =
+            fixtureList(retval, FixtureListModel(model.map, false),
+                CeylonIterable(model.map.players()));
+    retval.delegate = fixtureListObject;
     object portrait extends JComponent() satisfies ListSelectionListener {
         ImageLoader loader = ImageLoader.loader;
         variable Image? portrait = null;
@@ -931,7 +1011,8 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
             }
         }
         shared actual void valueChanged(ListSelectionEvent event) {
-            List<TileFixture> selections = CeylonList(fixtureList.selectedValuesList);
+            List<TileFixture> selections =
+                    CeylonList(fixtureListObject.selectedValuesList);
             portrait = null;
             if (!selections.empty, selections.size == 1) {
                 if (is HasPortrait selectedValue = selections.first) {
@@ -947,8 +1028,9 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
             }
         }
     }
-    fixtureList.addListSelectionListener(portrait);
-    JPanel listPanel = BorderedPanel.verticalPanel(header, JScrollPane(fixtureList), null);
+    fixtureListObject.addListSelectionListener(portrait);
+    JPanel listPanel = BorderedPanel.verticalPanel(header, JScrollPane(fixtureListObject),
+        null);
     retval.leftComponent = horizontalSplit(0.5, 0.5, listPanel, portrait);
     retval.rightComponent = keyPanel;
     retval.resizeWeight = 0.9;
