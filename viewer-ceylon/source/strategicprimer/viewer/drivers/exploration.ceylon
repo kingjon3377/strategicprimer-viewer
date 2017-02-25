@@ -18,7 +18,6 @@ import java.io {
 }
 import view.exploration {
     ExplorationMenu,
-    DualTileButton,
     ExplorationClickListener,
     ExplorationListListener
 }
@@ -34,7 +33,8 @@ import javax.swing {
     SwingUtilities,
     JPanel,
     KeyStroke,
-    JComponent
+    JComponent,
+    JButton
 }
 import view.util {
     SystemOut,
@@ -82,7 +82,8 @@ import ceylon.interop.java {
     javaString,
     CeylonList,
     CeylonIterable,
-    JavaIterable
+    JavaIterable,
+    createJavaIntArray
 }
 import util {
     ComparablePair,
@@ -98,7 +99,8 @@ import model.map {
     TileFixture,
     Player,
     IMutableMapNG,
-    HasOwner
+    HasOwner,
+    IMapNG
 }
 import ceylon.test {
     assertEquals,
@@ -144,7 +146,9 @@ import java.awt {
     Dimension,
     CardLayout,
     Component,
-    GridLayout
+    GridLayout,
+    Graphics,
+    Polygon
 }
 import java.text {
     NumberFormat
@@ -172,6 +176,10 @@ import lovelace.util.jvm {
     BorderedPanel,
     horizontalSplit,
     verticalSplit
+}
+import view.map.main {
+    TileDrawHelperFactory,
+    TileDrawHelper
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -352,6 +360,28 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         } else {
             cli.println("No unit is selected");
         }
+    }
+}
+"A button (visually) representing a tile in two maps."
+class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matchers)
+        extends JButton() {
+    Integer margin = 2;
+    variable Point localPoint = PointFactory.invalidPoint;
+    shared Point point => localPoint;
+    assign point {
+        localPoint = point;
+        repaint();
+    }
+    TileDrawHelper helper = TileDrawHelperFactory.instance.factory(2, super.imageUpdate,
+        (TileFixture fix) => true, JavaIterable(matchers).iterator);
+    shared actual void paintComponent(Graphics pen) {
+        super.paintComponent(pen);
+        pen.clip = Polygon(createJavaIntArray({width - margin, margin, margin}),
+            createJavaIntArray({margin, height - margin, margin}), 3);
+        helper.drawTileTranslated(pen, master, point, width, height);
+        pen.clip = Polygon(createJavaIntArray({width - margin, width - margin, margin}),
+            createJavaIntArray({margin, height - margin, height - margin}), 3);
+        helper.drawTileTranslated(pen, subordinate, point, width, height);
     }
 }
 "A CLI to help running exploration."
@@ -536,7 +566,7 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                     mains.get(direction)?.fireChanges(selPoint, point);
                     seconds.get(direction)?.fireChanges(selPoint, point);
                     if (exists button = buttons.get(direction)) {
-                        button.setPoint(point);
+                        button.point = point;
                         button.repaint();
                     }
                 }
@@ -587,7 +617,7 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                 mainPCS.addSelectionChangeListener(mainList);
                 tilesPanel.add(JScrollPane(mainList));
                 DualTileButton dtb = DualTileButton(model.map, secondMap,
-                    JavaIterable(matchers));
+                    matchers);
                 // At some point we tried wrapping the button in a JScrollPane.
                 tilesPanel.add(dtb);
                 ExplorationClickListener ecl = ExplorationClickListener(model, direction,
