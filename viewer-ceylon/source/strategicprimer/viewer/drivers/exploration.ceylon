@@ -16,9 +16,6 @@ import model.exploration {
 import java.io {
     IOException
 }
-import view.exploration {
-    ExplorationMenu
-}
 import javax.swing {
     SwingList=JList,
     DefaultListCellRenderer,
@@ -40,7 +37,8 @@ import javax.swing {
 import view.util {
     SystemOut,
     HotKeyCreator,
-    FormattedLabel
+    FormattedLabel,
+    SPMenu
 }
 import model.exploration.old {
     ExplorationRunner,
@@ -190,6 +188,9 @@ import view.map.main {
 }
 import model.map.fixtures.towns {
     Village
+}
+import com.bric.window {
+    WindowMenu
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -849,7 +850,13 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
         add(explorationPanel);
     }
     (retval of Component).preferredSize = Dimension(1024, 640);
-    retval.jMenuBar = ExplorationMenu(menuHandler, model, retval);
+    object menu extends SPMenu() {
+        add(createFileMenu(menuHandler, model));
+        addDisabled(createMapMenu(menuHandler, model));
+        add(createViewMenu(menuHandler, model));
+        add(WindowMenu(retval));
+    }
+    retval.jMenuBar = menu;
     retval.pack();
     return retval;
 }
