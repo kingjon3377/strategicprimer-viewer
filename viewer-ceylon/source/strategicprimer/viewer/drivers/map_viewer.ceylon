@@ -27,7 +27,6 @@ import view.map.main {
     FixtureFilterList,
     MapWindowSizeListener,
     FixtureFilterTransferHandler,
-    ViewerMenu,
     MapGUI,
     TileDrawHelper,
     TileDrawHelperFactory,
@@ -91,7 +90,8 @@ import java.awt.event {
     ActionListener
 }
 import view.util {
-    FormattedLabel
+    FormattedLabel,
+    SPMenu
 }
 import util {
     OnMac,
@@ -217,6 +217,9 @@ import javax.swing.text {
 }
 import java.nio.file {
     NoSuchFileException
+}
+import com.bric.window {
+    WindowMenu
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -1390,7 +1393,13 @@ SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandle
     WindowAdapter windowSizeListener = MapWindowSizeListener(mapPanel);
     retval.addWindowListener(windowSizeListener);
     retval.addWindowStateListener(windowSizeListener);
-    retval.jMenuBar = ViewerMenu(menuHandler, retval, driverModel);
+    object menu extends SPMenu() {
+        add(createFileMenu(menuHandler, driverModel));
+        add(createMapMenu(menuHandler, driverModel));
+        add(createViewMenu(menuHandler, driverModel));
+        add(WindowMenu(retval));
+    }
+    retval.jMenuBar = menu;
     return retval;
 }
 "A driver to start the map viewer."
