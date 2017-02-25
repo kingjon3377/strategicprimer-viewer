@@ -39,8 +39,7 @@ import javax.swing {
 import view.util {
     SystemOut,
     HotKeyCreator,
-    FormattedLabel,
-    SplitWithWeights
+    FormattedLabel
 }
 import model.exploration.old {
     ExplorationRunner,
@@ -170,7 +169,9 @@ import lovelace.util.jvm {
     ImprovedComboBox,
     boxPanel,
     BoxAxis,
-    BorderedPanel
+    BorderedPanel,
+    horizontalSplit,
+    verticalSplit
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -470,7 +471,7 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
             mpField.addActionListener(buttonListener);
             speedModel.selectedItem = IExplorationModel.Speed.normal;
         }
-        explorerSelectingPanel.center = SplitWithWeights.horizontalSplit(0.5, 0.5,
+        explorerSelectingPanel.center = horizontalSplit(0.5, 0.5,
             BorderedPanel.verticalPanel(JLabel("Players in all maps:"), playerList,
                 null),
             BorderedPanel.verticalPanel(JLabel(
@@ -611,8 +612,7 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                 ell.selectedPointChanged(null, model.selectedUnitLocation);
             }
         }
-        explorationPanel.center = SplitWithWeights.verticalSplit(0.5, 0.5,
-            headerPanel, tilesPanel);
+        explorationPanel.center = verticalSplit(0.5, 0.5, headerPanel, tilesPanel);
         model.addMovementCostListener(explorationPanel);
         model.addSelectionChangeListener(explorationPanel);
         object swapper satisfies CompletionListener {

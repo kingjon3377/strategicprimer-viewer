@@ -12,7 +12,8 @@ import javax.swing {
     ComboBoxModel,
     BoxLayout,
     Box,
-    JPanel
+    JPanel,
+    JSplitPane
 }
 import java.awt {
     Component,
@@ -227,4 +228,22 @@ shared class BorderedPanel extends JPanel {
     shared new horizontalPanel(Component? lineStart, Component? center,
             Component? lineEnd) extends BorderedPanel(center, null, null, lineEnd,
                 lineStart) { }
+}
+"Versions of [[JSplitPane]] that take the divider location and resize weight, as well as
+ other parameters, in the same operation, and don't require the caller to remember
+ whether 'true' means a horizontal or vertical split.."
+shared JSplitPane verticalSplit(Float dividerLocation, Float resizeWeight, Component top,
+        Component bottom) {
+    JSplitPane retval = JSplitPane(JSplitPane.verticalSplit, true, top, bottom);
+    retval.setDividerLocation(dividerLocation);
+    retval.resizeWeight = resizeWeight;
+    return retval;
+}
+see(`function verticalSplit`)
+shared JSplitPane horizontalSplit(Float dividerLocation, Float resizeWeight, Component left,
+        Component right) {
+    JSplitPane retval = JSplitPane(JSplitPane.horizontalSplit, true, left, right);
+    retval.setDividerLocation(dividerLocation);
+    retval.resizeWeight = resizeWeight;
+    return retval;
 }

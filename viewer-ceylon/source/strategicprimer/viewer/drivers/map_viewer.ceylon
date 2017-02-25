@@ -79,7 +79,6 @@ import java.awt.event {
     AdjustmentEvent
 }
 import view.util {
-    SplitWithWeights,
     FormattedLabel
 }
 import util {
@@ -161,7 +160,9 @@ import lovelace.util.jvm {
     BoxPanel,
     BoxAxis,
     boxPanel,
-    BorderedPanel
+    BorderedPanel,
+    horizontalSplit,
+    verticalSplit
 }
 import model.map.fixtures.mobile {
     IUnit,
@@ -336,7 +337,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             populate(model.map.streamAllFixtures(point));
         }
     });
-    contentPane = SplitWithWeights.horizontalSplit(0.6, 0.6, contentPanel,
+    contentPane = horizontalSplit(0.6, 0.6, contentPanel,
         BorderedPanel.verticalPanel(JLabel("Find only ..."),
             JScrollPane(filterList, ScrollPaneConstants.verticalScrollbarAsNeeded,
                 ScrollPaneConstants.horizontalScrollbarAsNeeded), null));
@@ -949,7 +950,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
     }
     fixtureList.addListSelectionListener(portrait);
     JPanel listPanel = BorderedPanel.verticalPanel(header, JScrollPane(fixtureList), null);
-    retval.leftComponent = SplitWithWeights.horizontalSplit(0.5, 0.5, listPanel, portrait);
+    retval.leftComponent = horizontalSplit(0.5, 0.5, listPanel, portrait);
     retval.rightComponent = keyPanel;
     retval.resizeWeight = 0.9;
     retval.setDividerLocation(0.9);
@@ -1113,10 +1114,8 @@ SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandle
         return BorderedPanel.verticalPanel(JLabel("Display ..."), JScrollPane(table),
             buttonPanel);
     }
-    retval.contentPane = SplitWithWeights.verticalSplit(0.9, 0.9,
-        SplitWithWeights.horizontalSplit(0.95, 0.95,
-            mapScrollPanel(driverModel, mapPanel),
-            createFilterPanel()), detailPane);
+    retval.contentPane = verticalSplit(0.9, 0.9, horizontalSplit(0.95, 0.95,
+            mapScrollPanel(driverModel, mapPanel), createFilterPanel()), detailPane);
     (retval of Component).preferredSize = Dimension(800, 600);
     retval.setSize(800, 600);
     retval.setMinimumSize(Dimension(800, 600));

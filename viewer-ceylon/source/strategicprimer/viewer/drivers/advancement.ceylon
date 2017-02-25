@@ -69,7 +69,6 @@ import javax.swing {
     BoxLayout
 }
 import view.util {
-    SplitWithWeights,
     FormattedLabel
 }
 import strategicprimer.viewer.about {
@@ -112,7 +111,9 @@ import lovelace.util.jvm {
     centeredHorizontalBox,
     BoxAxis,
     boxPanel,
-    BorderedPanel
+    BorderedPanel,
+    verticalSplit,
+    horizontalSplit
 }
 import model.map.fixtures {
     UnitMember
@@ -635,12 +636,11 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
         }
         shared actual String windowName = "Worker Advancement";
     }
-    retval.contentPane = SplitWithWeights.horizontalSplit(0.5, 0.5,
+    retval.contentPane = horizontalSplit(0.5, 0.5,
         BorderedPanel.verticalPanel(playerLabel,
             JScrollPane(tree), listenedButton("Add worker to selected unit ...",
                 newWorkerListener)),
-        SplitWithWeights.verticalSplit(0.5, 0.3,
-            BorderedPanel.verticalPanel(
+        verticalSplit(0.5, 0.3, BorderedPanel.verticalPanel(
                 JLabel("<html><p align=\"left\">Worker's Jobs and Skills:</p></html>"),
                 JScrollPane(jobsTreeObject), null),
             BorderedPanel.verticalPanel(null,

@@ -55,8 +55,7 @@ import javax.swing {
     JComponent
 }
 import view.util {
-    FormattedLabel,
-    SplitWithWeights
+    FormattedLabel
 }
 import model.listeners {
     PlayerChangeListener
@@ -78,7 +77,8 @@ import lovelace.util.jvm {
     centeredHorizontalBox,
     BoxAxis,
     BoxPanel,
-    boxPanel
+    boxPanel,
+    verticalSplit
 }
 import lovelace.util.common {
     todo
@@ -400,7 +400,7 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
             implementLabel.setArgs(currentPlayer.name);
         }
     }
-    retval.add(SplitWithWeights.verticalSplit(0.2, 0.1, mainPanel, scrolledLog));
+    retval.add(verticalSplit(0.2, 0.1, mainPanel, scrolledLog));
     retval.jMenuBar = workerMenu(menuHandler, retval, model);
     retval.pack();
     logLabel.minimumSize = Dimension(retval.width - 20, 50);

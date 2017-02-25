@@ -39,7 +39,6 @@ import javax.swing {
 import view.util {
     HotKeyCreator,
     FormattedLabel,
-    SplitWithWeights,
     SPMenu
 }
 import ceylon.interop.java {
@@ -164,7 +163,9 @@ import lovelace.util.jvm {
     listenedButton,
     FunctionalGroupLayout,
     centeredHorizontalBox,
-    BorderedPanel
+    BorderedPanel,
+    verticalSplit,
+    horizontalSplit
 }
 import view.map.details {
     FixtureEditMenu
@@ -898,9 +899,8 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             }
         }
     }
-    JComponent split = SplitWithWeights.verticalSplit(0.5, 0.5,
-        SplitWithWeights.horizontalSplit(0.6, 0.6, statPanel, portraitComponent),
-        resultsPanel);
+    JComponent split = verticalSplit(0.5, 0.5, horizontalSplit(0.6, 0.6, statPanel,
+        portraitComponent), resultsPanel);
     split.border = BorderFactory.createEmptyBorder();
     variable UnitMember? current = null;
     void recache() {
@@ -1125,11 +1125,9 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
                     .call((file) => strategyExporter.writeStrategy(
                         parsePath(file.string).resource,
                         CeylonIterable(treeModel.dismissed())))));
-        contentPane = SplitWithWeights.horizontalSplit(0.5, 0.5,
-            SplitWithWeights.verticalSplit(2.0 / 3.0, 2.0 / 3.0,
+        contentPane = horizontalSplit(0.5, 0.5, verticalSplit(2.0 / 3.0, 2.0 / 3.0,
                 BorderedPanel.verticalPanel(playerLabel, JScrollPane(tree), null), lowerLeft),
-            SplitWithWeights.verticalSplit(0.6, 0.6,
-                BorderedPanel.verticalPanel(
+            verticalSplit(0.6, 0.6, BorderedPanel.verticalPanel(
                     JLabel("The contents of the world you know about, for reference:"),
                     JScrollPane(createReportTree(reportModel)), null),
                 mdp));
