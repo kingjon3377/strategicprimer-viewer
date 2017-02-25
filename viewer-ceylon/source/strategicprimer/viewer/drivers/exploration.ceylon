@@ -36,7 +36,6 @@ import javax.swing {
 }
 import view.util {
     SystemOut,
-    HotKeyCreator,
     FormattedLabel,
     SPMenu
 }
@@ -177,7 +176,8 @@ import lovelace.util.jvm {
     horizontalSplit,
     verticalSplit,
     shuffle,
-    ListModelWrapper
+    ListModelWrapper,
+    createHotKey
 }
 import view.map.main {
     TileDrawHelperFactory,
@@ -527,8 +527,7 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
         JPanel tilesPanel = JPanel(GridLayout(3, 12, 2, 2));
         JPanel headerPanel = boxPanel(BoxAxis.lineAxis);
         object explorationPanel extends BorderedPanel()
-                satisfies SelectionChangeListener&CompletionSource&MovementCostListener&
-                HotKeyCreator {
+                satisfies SelectionChangeListener&CompletionSource&MovementCostListener {
             Document mpDocument = explorerSelectingPanel.mpDocument;
             NumberFormat numParser = NumberFormat.integerInstance;
             shared actual void deduct(Integer cost) {

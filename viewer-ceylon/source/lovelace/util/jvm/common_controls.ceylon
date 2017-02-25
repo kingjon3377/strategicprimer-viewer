@@ -13,7 +13,11 @@ import javax.swing {
     BoxLayout,
     Box,
     JPanel,
-    JSplitPane
+    JSplitPane,
+    KeyStroke,
+    Action,
+    JComponent,
+    InputMap
 }
 import java.awt {
     Component,
@@ -247,4 +251,24 @@ shared JSplitPane horizontalSplit(Float dividerLocation, Float resizeWeight, Com
     retval.setDividerLocation(dividerLocation);
     retval.resizeWeight = resizeWeight;
     return retval;
+}
+"Set up a hot-key for an action that doesn't call a *menu* item."
+shared void createHotKey(
+        "The component defining the action's context"
+        JComponent component,
+        "The String to use to identify the action"
+        String action,
+        "The listener that should handle the action"
+        todo("Now we have union types, take an [[ActionListener]] or equivalent lambda
+              as well and in that case wrap it in an [[ActionWrapper]].")
+        Action handler,
+        "See [[JComponent#getInputMap(Integer)]]."
+        Integer condition,
+        "The keys to use as hot-keys"
+        KeyStroke* keys) {
+    InputMap inputMap = component.getInputMap(condition);
+    for (key in keys) {
+        inputMap.put(key, action);
+    }
+    component.actionMap.put(action, handler);
 }

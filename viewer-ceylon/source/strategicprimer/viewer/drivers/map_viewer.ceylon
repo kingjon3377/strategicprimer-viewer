@@ -91,8 +91,7 @@ import java.awt.event {
     ActionListener
 }
 import view.util {
-    FormattedLabel,
-    HotKeyCreator
+    FormattedLabel
 }
 import util {
     OnMac,
@@ -186,7 +185,8 @@ import lovelace.util.jvm {
     boxPanel,
     BorderedPanel,
     horizontalSplit,
-    verticalSplit
+    verticalSplit,
+    createHotKey
 }
 import model.map.fixtures.mobile {
     IUnit,
@@ -1079,7 +1079,7 @@ SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
         JComponent parentComponent, FixtureListModel listModel,
         {Player*} players) {
     object retval extends SwingList<TileFixture>(listModel)
-            satisfies DragGestureListener&SelectionChangeListener&HotKeyCreator {
+            satisfies DragGestureListener&SelectionChangeListener {
         cellRenderer = FixtureCellRenderer();
         selectionMode = ListSelectionModel.multipleIntervalSelection;
         shared actual void dragGestureRecognized(DragGestureEvent event) {
@@ -1124,7 +1124,7 @@ SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
         DnDConstants.actionCopy, retval);
     retval.dropTarget = DropTarget(retval, FixtureListDropListener(parentComponent,
         listModel));
-    retval.createHotKey(retval, "delete",
+    createHotKey(retval, "delete",
         ActionWrapper((ActionEvent event) => listModel.removeAll(
             retval.selectedValuesList)),
         JComponent.whenAncestorOfFocusedComponent,

@@ -54,8 +54,8 @@ import java.awt.event {
     ActionEvent,
     KeyEvent
 }
-import view.util {
-    HotKeyCreator
+import lovelace.util.jvm {
+    createHotKey
 }
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option
@@ -418,7 +418,7 @@ abstract class SPFrame(String windowTitle, JPath? file, Dimension? minSize = nul
 }
 "A superclass to perform setup common to dialogs."
 shared class SPDialog(Frame? parentFrame, String title)
-        extends JDialog(parentFrame, title) satisfies HotKeyCreator {
+        extends JDialog(parentFrame, title) {
     defaultCloseOperation = WindowConstants.disposeOnClose;
     createHotKey(rootPane, "close", ActionWrapper((ActionEvent event) => dispose()),
         JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkW,

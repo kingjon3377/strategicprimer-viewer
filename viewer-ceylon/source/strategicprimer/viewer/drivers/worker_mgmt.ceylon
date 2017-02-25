@@ -37,7 +37,6 @@ import javax.swing {
     SwingConstants
 }
 import view.util {
-    HotKeyCreator,
     FormattedLabel,
     SPMenu
 }
@@ -165,7 +164,8 @@ import lovelace.util.jvm {
     centeredHorizontalBox,
     BorderedPanel,
     verticalSplit,
-    horizontalSplit
+    horizontalSplit,
+    createHotKey
 }
 import java.awt.datatransfer {
     Transferable,
@@ -558,7 +558,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
     SpinnerNumberModel spinnerModel = SpinnerNumberModel(currentTurn, minimumTurn,
         maximumTurn, 1);
     object retval extends BorderedPanel()
-            satisfies Applyable&Revertible&TreeSelectionListener&PlayerChangeListener&HotKeyCreator {
+            satisfies Applyable&Revertible&TreeSelectionListener&PlayerChangeListener {
         variable Anything selection = null;
         "If a unit is selected, change its orders to what the user wrote."
         shared actual void apply() {
@@ -638,7 +638,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
     }
     area.addKeyListener(modifiedEnterListener);
     Integer keyMask = OnMac.shortcutMask;
-    retval.createHotKey(retval, "openOrders", ActionWrapper((event) {
+    createHotKey(retval, "openOrders", ActionWrapper((event) {
         Boolean newlyGainingFocus = !area.focusOwner;
         area.requestFocusInWindow();
         if (newlyGainingFocus) {
@@ -998,7 +998,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     return retval;
 }
 "A window to let the player manage units."
-SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
+SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         IWorkerModel model, MenuBroker menuHandler) {
     Point findHQ() {
         variable Point retval = PointFactory.invalidPoint;
@@ -1077,7 +1077,7 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
     }
     object retval extends SPFrame("Worker Management", model.mapFile.orElse(null),
                 Dimension(640, 480))
-            satisfies PlayerChangeListener&HotKeyCreator {
+            satisfies PlayerChangeListener {
         IMapNG mainMap = model.map;
         SPDialog&NewUnitSource&PlayerChangeListener newUnitFrame =
                 newUnitDialog(mainMap.currentPlayer,
