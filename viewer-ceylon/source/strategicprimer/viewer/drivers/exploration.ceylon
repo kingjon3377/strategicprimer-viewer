@@ -18,7 +18,6 @@ import java.io {
 }
 import view.exploration {
     ExplorationMenu,
-    ExplorationClickListener,
     ExplorationListListener
 }
 import javax.swing {
@@ -34,7 +33,10 @@ import javax.swing {
     JPanel,
     KeyStroke,
     JComponent,
-    JButton
+    JButton,
+    AbstractAction,
+    JOptionPane,
+    ListModel
 }
 import view.util {
     SystemOut,
@@ -67,7 +69,8 @@ import java.lang {
     ObjectArray, JString=String,
     JInteger=Integer,
     IllegalArgumentException,
-    IllegalStateException
+    IllegalStateException,
+    IntArray
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -100,7 +103,8 @@ import model.map {
     Player,
     IMutableMapNG,
     HasOwner,
-    IMapNG
+    IMapNG,
+    PlayerImpl
 }
 import ceylon.test {
     assertEquals,
@@ -126,7 +130,8 @@ import model.listeners {
     SelectionChangeListener,
     SelectionChangeSupport,
     PlayerChangeSource,
-    PlayerChangeListener
+    PlayerChangeListener,
+    SelectionChangeSource
 }
 import model.map.fixtures {
     Ground
@@ -156,7 +161,8 @@ import java.text {
 import model.viewer {
     FixtureMatcher,
     FixtureFilterTableModel,
-    FixtureListModel
+    FixtureListModel,
+    TileTypeFixture
 }
 import view.map.details {
     FixtureList
@@ -180,6 +186,9 @@ import lovelace.util.jvm {
 import view.map.main {
     TileDrawHelperFactory,
     TileDrawHelper
+}
+import model.map.fixtures.towns {
+    Village
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -620,8 +629,119 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                     matchers);
                 // At some point we tried wrapping the button in a JScrollPane.
                 tilesPanel.add(dtb);
-                ExplorationClickListener ecl = ExplorationClickListener(model, direction,
-                    mainList, speedSource);
+                object ecl extends AbstractAction()
+                        satisfies MovementCostSource&SelectionChangeSource {
+                    MutableList<MovementCostListener> movementListeners =
+                            ArrayList<MovementCostListener>();
+                    MutableList<SelectionChangeListener> selectionListeners =
+                            ArrayList<SelectionChangeListener>();
+                    shared actual void addSelectionChangeListener(
+                        SelectionChangeListener listener) =>
+                            selectionListeners.add(listener);
+                    shared actual void removeSelectionChangeListener(
+                        SelectionChangeListener listener) =>
+                            selectionListeners.remove(listener);
+                    shared actual void addMovementCostListener(
+                        MovementCostListener listener) => movementListeners.add(listener);
+                    shared actual void removeMovementCostListener(
+                        MovementCostListener listener) =>
+                            movementListeners.remove(listener);
+                    MutableList<TileFixture> selectedValuesList {
+                        IntArray selections = mainList.selectedIndices;
+                        ListModel<TileFixture> listModel = mainList.model;
+                        MutableList<TileFixture> retval = ArrayList<TileFixture>();
+                        for (index in selections) {
+                            if (index < listModel.size) {
+                                assert (exists item = listModel.getElementAt(index));
+                                retval.add(item);
+                            } else {
+                                assert (exists item = listModel.getElementAt(
+                                    listModel.size - 1));
+                                retval.add(item);
+                            }
+                        }
+                        return retval;
+                    }
+                    "A list of things the explorer can do: pairs of explanations (in the
+                     form of questions to ask the user to see if the explorer does them)
+                     and references to methods for doing them."
+                    {[String, Anything()]*} explorerActions = {["Should the explorer swear any villages on this tile?", () {
+                        model.swearVillages();
+                        for (fixture in model.map.getOtherFixtures(model.selectedUnitLocation)) {
+                            if (is Village fixture) {
+                                selectedValuesList.add(fixture);
+                            }
+                        }
+                    }], ["Should the explorer dig to find what kind of ground is here?",
+                        model.dig]};
+                    shared actual void actionPerformed(ActionEvent event) =>
+                            SwingUtilities.invokeLater(() {
+                                try {
+                                    value fixtures = selectedValuesList;
+                                    if (IExplorationModel.Direction.nowhere == direction) {
+                                        for ([query, method] in explorerActions) {
+                                            Integer resp =
+                                                    JOptionPane.showConfirmDialog(null,
+                                                        query);
+                                            if (resp == JOptionPane.cancelOption) {
+                                                return;
+                                            } else if (resp == JOptionPane.yesOption) {
+                                                method();
+                                            }
+                                        }
+                                    }
+                                    model.move(direction, speedSource());
+                                    Point destPoint = model.selectedUnitLocation;
+                                    Player player = model.selectedUnit ?. owner else
+                                        PlayerImpl(- 1, "no-one");
+                                    MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
+                                    for (pair in model.subordinateMaps) {
+                                        IMutableMapNG map = pair.first();
+                                        map.setBaseTerrain(destPoint, model.map
+                                            .getBaseTerrain(destPoint));
+                                        for (fixture in fixtures) {
+                                            if (is TileTypeFixture fixture) {
+                                                // Skip it! It'll corrupt the output XML!
+                                                continue ;
+                                            } else if (is Ground fixture,
+                                                !map.getGround(destPoint) exists) {
+                                                map.setGround(destPoint, fixture.copy(false));
+                                            } else if (is Forest fixture,
+                                                !map.getForest(destPoint) exists) {
+                                                map.setForest(destPoint, fixture.copy(false));
+                                            } else if (map.streamAllFixtures(destPoint)
+                                                .noneMatch((that) => fixture == that)) {
+                                                Boolean zero;
+                                                if (is HasOwner fixture, fixture.owner != player) {
+                                                    zero = true;
+                                                } else {
+                                                    zero = false;
+                                                }
+                                                map.addFixture(destPoint,
+                                                    fixture.copy(zero));
+                                                if (is CacheFixture fixture) {
+                                                    caches.add(fixture);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    for (cache in caches) {
+                                        model.map.removeFixture(destPoint, cache);
+                                    }
+                                } catch (SimpleMovement.TraversalImpossibleException
+                                except) {
+                                    log.debug("Attempted movement to impassable destination",
+                                        except);
+                                    Point selection = model.selectedUnitLocation;
+                                    for (listener in selectionListeners) {
+                                        listener.selectedPointChanged(null, selection);
+                                    }
+                                    for (listener in movementListeners) {
+                                        listener.deduct(1);
+                                    }
+                                }
+                            });
+                }
                 createHotKey(dtb, direction.string, ecl, JComponent.whenInFocusedWindow,
                     *{arrowKeys.get(direction), numKeys.get(direction)}.coalesced);
                 dtb.addActionListener(ecl);
