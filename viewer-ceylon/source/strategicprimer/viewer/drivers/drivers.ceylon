@@ -45,15 +45,11 @@ import ceylon.language.meta.declaration {
     Module
 }
 import java.util {
-    JList = List,
-    Optional
+    JList = List
 }
 import java.awt.event {
     ActionListener,
     ActionEvent
-}
-import java.nio.file {
-    Path
 }
 import strategicprimer.viewer.drivers {
     advancementCLI,

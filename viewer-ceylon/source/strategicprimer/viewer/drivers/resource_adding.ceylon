@@ -38,8 +38,7 @@ import model.map.fixtures {
     FortressMember
 }
 import util {
-    Quantity,
-    Pair
+    Quantity
 }
 import java.lang {
     JString=String, JInteger=Integer
@@ -79,9 +78,6 @@ import lovelace.util.jvm {
     BoxPanel,
     boxPanel,
     verticalSplit
-}
-import lovelace.util.common {
-    todo
 }
 import java.nio.file {
     JPath=Path

@@ -59,7 +59,6 @@ import java.awt {
     Frame,
     Component,
     Dimension,
-    Window,
     Image,
     Graphics,
     Rectangle,

@@ -4,7 +4,6 @@ import controller.map.misc {
 
 import java.lang {
     CharSequence,
-    Appendable,
     CharArray
 }
 import java.nio.file {
@@ -12,7 +11,7 @@ import java.nio.file {
     NoSuchFileException
 }
 import java.util {
-    Formatter, JOptional=Optional
+    Formatter
 }
 
 import model.misc {
@@ -30,7 +29,6 @@ import javax.swing {
 import java.io {
     IOException,
     FileNotFoundException,
-    FilterWriter,
     JWriter=Writer
 }
 import javax.xml.stream {

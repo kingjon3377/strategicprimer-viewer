@@ -11,10 +11,6 @@ import java.nio.file {
     JPath=Path,
     NoSuchFileException
 }
-import java.util {
-    Optional
-}
-
 import javax.swing {
     JScrollPane
 }

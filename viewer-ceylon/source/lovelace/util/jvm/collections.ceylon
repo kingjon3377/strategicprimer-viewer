@@ -1,6 +1,5 @@
 import ceylon.collection {
-    ArrayList,
-    MutableList
+    ArrayList
 }
 import ceylon.math.float {
     random
