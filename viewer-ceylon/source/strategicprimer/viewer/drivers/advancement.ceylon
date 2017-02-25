@@ -34,7 +34,8 @@ import model.map.fixtures.mobile {
 }
 import ceylon.interop.java {
     JavaList,
-    CeylonCollection
+    CeylonCollection,
+    CeylonIterable
 }
 import ceylon.collection {
     ArrayList,
@@ -604,7 +605,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
     IMapNG map = model.map;
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(map.currentPlayer, model);
     JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
-        map.players(), () => model.map.currentTurn, false);
+        CeylonIterable(map.players()), () => model.map.currentTurn, false);
     WorkerCreationListener newWorkerListener = WorkerCreationListener(treeModel,
         IDFactoryFiller.createFactory(map));
     tree.addUnitSelectionListener(newWorkerListener);

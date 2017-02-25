@@ -55,7 +55,8 @@ import javax.swing {
     JScrollBar,
     InputVerifier,
     JList,
-    KeyStroke
+    KeyStroke,
+    JOptionPane
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -81,7 +82,8 @@ import java.awt.event {
     MouseListener,
     MouseAdapter,
     AdjustmentEvent,
-    KeyEvent
+    KeyEvent,
+    ActionListener
 }
 import view.util {
     FormattedLabel,
@@ -94,7 +96,7 @@ import util {
     ActionWrapper
 }
 import java.lang {
-    JIterable = Iterable
+    JIterable = Iterable, JString=String
 }
 import model.map {
     Point,
@@ -110,7 +112,10 @@ import model.map {
     IMapNG,
     TerrainFixture,
     TileType,
-    HasPortrait
+    HasPortrait,
+    HasMutableName,
+    HasMutableOwner,
+    HasMutableKind
 }
 import java.util.stream {
     Stream
@@ -119,10 +124,13 @@ import ceylon.interop.java {
     CeylonIterable,
     CeylonList,
     JavaIterable,
-    JavaList
+    JavaList,
+    javaString,
+    createJavaObjectArray
 }
 import model.map.fixtures {
-    RiverFixture
+    RiverFixture,
+    UnitMember
 }
 import java.text {
     NumberFormat
@@ -136,8 +144,7 @@ import javax.swing.table {
     TableColumn
 }
 import view.map.details {
-    FixtureCellRenderer,
-    FixtureEditMenu
+    FixtureCellRenderer
 }
 import lovelace.util.common {
     todo
@@ -190,6 +197,9 @@ import java.awt.dnd {
 }
 import java.awt.datatransfer {
     Transferable
+}
+import model.workermgmt {
+    IWorkerTreeModel
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -889,6 +899,86 @@ class KeyElementComponent(Color color, Dimension minimum, Dimension preferred,
         }
     }
 }
+"A pop-up menu to let the user edit a fixture."
+JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
+        IWorkerTreeModel* changeListeners) {
+    variable Boolean immutable = true;
+    JPopupMenu retval = JPopupMenu();
+    void addMenuItem(JMenuItem item, Anything(ActionEvent) listener) {
+        retval.add(item);
+        item.addActionListener(listener);
+    }
+    if (is HasMutableName fixture) {
+        addMenuItem(JMenuItem("Rename", KeyEvent.vkN), (ActionEvent event) {
+            String originalName = fixture.name;
+            if (exists result = JOptionPane.showInputDialog(retval,
+                    "Fixture's new name:", "Rename Fixture",
+                    JOptionPane.plainMessage, null, null, javaString(originalName))) {
+                String resultString = result.string.trimmed;
+                if (resultString != originalName.trimmed) {
+                    HasMutableName temp = fixture;
+                    temp.setName(resultString);
+                    for (listener in changeListeners) {
+                        listener.renameItem(fixture);
+                    }
+                }
+            }
+        });
+        immutable = false;
+    }
+    if (is HasMutableKind fixture) {
+        addMenuItem(JMenuItem("Change kind", KeyEvent.vkK), (ActionEvent event) {
+            String originalKind = fixture.kind;
+            if (exists result = JOptionPane.showInputDialog(retval,
+                "Fixture's new kind:", "Change Fixture Kind",
+                JOptionPane.plainMessage, null, null, javaString(originalKind))) {
+                String resultString = result.string.trimmed;
+                if (resultString != originalKind.trimmed) {
+                    HasMutableKind temp = fixture;
+                    temp.setKind(resultString);
+                    for (listener in changeListeners) {
+                        listener.moveItem(fixture);
+                    }
+                }
+            }
+        });
+        immutable = false;
+    }
+    if (is HasMutableOwner fixture) {
+        addMenuItem(JMenuItem("Change owner", KeyEvent.vkO), (ActionEvent event) {
+            if (is Player player = JOptionPane.showInputDialog(retval,
+                    "Fixture's new owner:", "Change Fixture Owner",
+                    JOptionPane.plainMessage, null, createJavaObjectArray(players),
+                    fixture.owner)) {
+                HasMutableOwner temp = fixture;
+                temp.setOwner(player);
+            }
+        });
+        immutable = false;
+    }
+    if (is UnitMember fixture) {
+        String name;
+        if (is HasName fixture) {
+            name = fixture.name;
+        } else {
+            name = "this ``fixture``";
+        }
+        addMenuItem(JMenuItem("Dismiss", KeyEvent.vkD), (ActionEvent event) {
+            Integer reply = JOptionPane.showConfirmDialog(retval,
+                "Are you sure you want to dismiss ``name``?",
+                "Confirm Dismissal", JOptionPane.yesNoOption);
+            if (reply == JOptionPane.yesOption) {
+                for (listener in changeListeners) {
+                    listener.dismissUnitMember(fixture);
+                }
+            }
+        });
+    }
+    if (immutable) {
+        retval.add(JLabel("Fixture is not mutable"));
+    }
+    return retval;
+}
 "A visual list-based representation of the contents of a tile."
 JList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
         JComponent parentComponent, FixtureListModel listModel,
@@ -925,7 +1015,7 @@ JList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
                 if (event.popupTrigger, event.clickCount == 1) {
                     Integer index = locationToIndex(event.point);
                     if ((0..listModel.size).contains(index)) {
-                        FixtureEditMenu(listModel.elementAt(index), JavaIterable(players))
+                        fixtureEditMenu(listModel.elementAt(index), players)
                             .show(event.component, event.x, event.y);
                     }
                 }

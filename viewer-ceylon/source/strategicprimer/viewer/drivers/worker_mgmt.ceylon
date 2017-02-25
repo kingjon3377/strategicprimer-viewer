@@ -167,9 +167,6 @@ import lovelace.util.jvm {
     verticalSplit,
     horizontalSplit
 }
-import view.map.details {
-    FixtureEditMenu
-}
 import java.awt.datatransfer {
     Transferable,
     UnsupportedFlavorException
@@ -198,7 +195,7 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         "The tree model"
         IWorkerTreeModel wtModel,
         "The players in the map"
-        JIterable<Player> players,
+        {Player*} players,
         "How to get the current turn"
         Integer() turnSource,
         """Whether we should visually warn if orders contain substrings indicating remaining
@@ -527,7 +524,7 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     exists path = retval.getClosestPathForLocation(event.x, event.y),
                     exists pathEnd = path.lastPathComponent,
                     is IFixture obj = wtModel.getModelObject(pathEnd)) {
-                FixtureEditMenu(obj, players, wtModel).show(event.component, event.x,
+                fixtureEditMenu(obj, players, wtModel).show(event.component, event.x,
                     event.y);
             }
         }
@@ -1086,7 +1083,7 @@ SPFrame&PlayerChangeListener&HotKeyCreator workerMgmtFrame(SPOptions options,
                 newUnitDialog(mainMap.currentPlayer,
                     IDFactoryFiller.createFactory(mainMap));
         IWorkerTreeModel treeModel = WorkerTreeModelAlt(mainMap.currentPlayer, model);
-        JTree tree = workerTree(treeModel, mainMap.players(),
+        JTree tree = workerTree(treeModel, CeylonIterable(mainMap.players()),
             () => mainMap.currentTurn, true);
         newUnitFrame.addNewUnitListener(treeModel);
         Integer keyMask = OnMac.shortcutMask;
