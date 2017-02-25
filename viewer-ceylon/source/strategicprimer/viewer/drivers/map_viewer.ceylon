@@ -80,7 +80,6 @@ import java.awt.event {
 }
 import view.util {
     SplitWithWeights,
-    BorderedPanel,
     FormattedLabel
 }
 import util {
@@ -161,7 +160,8 @@ import lovelace.util.jvm {
     centeredHorizontalBox,
     BoxPanel,
     BoxAxis,
-    boxPanel
+    boxPanel,
+    BorderedPanel
 }
 import model.map.fixtures.mobile {
     IUnit,

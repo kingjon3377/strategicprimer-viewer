@@ -18,7 +18,8 @@ import java.awt {
     Component,
     Container,
     Color,
-    Dimension
+    Dimension,
+    BorderLayout
 }
 import lovelace.util.common {
     todo
@@ -26,6 +27,7 @@ import lovelace.util.common {
 import java.lang {
     IllegalStateException
 }
+import ceylon.interop.java { javaString }
 "A factory method to construct a button and add listeners to it in one step."
 shared JButton listenedButton("The text to put on the button" String text,
         Anything(ActionEvent)|ActionListener* listeners) {
@@ -167,4 +169,62 @@ shared JPanel&BoxPanel centeredHorizontalBox(Component* items) {
     }
     retval.addGlue();
     return retval;
+}
+"A panel laid out by a BorderLayout, with helper methods/attributes to assign components
+ to its different sectors."
+shared class BorderedPanel extends JPanel {
+    variable Component? centerLocal = null;
+    shared Component? center => centerLocal;
+    assign center {
+        if (exists temp = center) {
+            add(temp, javaString(BorderLayout.center));
+        }
+        centerLocal = center;
+    }
+    variable Component? lineStartLocal = null;
+    shared Component? lineStart => lineStartLocal;
+    assign lineStart {
+        if (exists temp = lineStart) {
+            add(temp, javaString(BorderLayout.lineStart));
+        }
+        lineStartLocal = lineStart;
+    }
+    variable Component? lineEndLocal = null;
+    shared Component? lineEnd => lineEndLocal;
+    assign lineEnd {
+        if (exists temp = lineEnd) {
+            add(temp, javaString(BorderLayout.lineEnd));
+        }
+        lineEndLocal = lineEnd;
+    }
+    variable Component? pageStartLocal = null;
+    shared Component? pageStart => pageStartLocal;
+    assign pageStart {
+        if (exists temp = pageStart) {
+            add(temp, javaString(BorderLayout.pageStart));
+        }
+        pageStartLocal = pageStart;
+    }
+    variable Component? pageEndLocal = null;
+    shared Component? pageEnd => pageEndLocal;
+    assign pageEnd {
+        if (exists temp = pageEnd) {
+            add(temp, javaString(BorderLayout.pageEnd));
+        }
+        pageEndLocal = pageEnd;
+    }
+    shared new (Component? center = null, Component? pageStart = null,
+            Component? pageEnd = null, Component? lineEnd = null,
+            Component? lineStart = null) extends JPanel(BorderLayout()) {
+        this.center = center;
+        this.pageStart = pageStart;
+        this.pageEnd = pageEnd;
+        this.lineStart = lineStart;
+        this.lineEnd = lineEnd;
+    }
+    shared new verticalPanel(Component? pageStart, Component? center, Component? pageEnd)
+        extends BorderedPanel(center, pageStart, pageEnd) { }
+    shared new horizontalPanel(Component? lineStart, Component? center,
+            Component? lineEnd) extends BorderedPanel(center, null, null, lineEnd,
+                lineStart) { }
 }

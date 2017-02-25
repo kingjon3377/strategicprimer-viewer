@@ -29,9 +29,6 @@ import controller.map.misc {
     CLIHelper, ICLIHelper,
     DuplicateFixtureRemover
 }
-import view.util {
-    BorderedPanel
-}
 import model.misc {
     IDriverModel,
     IMultiMapModel
@@ -64,7 +61,8 @@ import strategicprimer.viewer.drivers {
     drawHelperComparator
 }
 import lovelace.util.jvm {
-    showErrorDialog
+    showErrorDialog,
+    BorderedPanel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -346,6 +344,7 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
     buttonPanel.add(button("Worker Skill Advancement", () => advancementGUI));
     buttonPanel.add(button("Unit Orders and Worker Management", () => workerGUI));
     buttonPanel.add(button("Exploration", () => explorationGUI));
+    // TODO: use a fewer-argument BorderedPanel constructor
     frame.contentPane = BorderedPanel(JScrollPane(buttonPanel),
         JLabel("Please choose one of the applications below"), null, null, null);
     frame.pack();

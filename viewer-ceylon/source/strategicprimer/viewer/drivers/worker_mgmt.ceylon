@@ -39,7 +39,6 @@ import javax.swing {
 import view.util {
     HotKeyCreator,
     FormattedLabel,
-    BorderedPanel,
     SplitWithWeights,
     SPMenu
 }
@@ -164,7 +163,8 @@ import strategicprimer.viewer.report {
 import lovelace.util.jvm {
     listenedButton,
     FunctionalGroupLayout,
-    centeredHorizontalBox
+    centeredHorizontalBox,
+    BorderedPanel
 }
 import view.map.details {
     FixtureEditMenu
@@ -581,35 +581,6 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
                 area.text = "";
             }
         }
-        if (exists ordersConsumer) {
-            JButton applyButton = listenedButton("Apply",
-                (ActionEvent event) => apply());
-            JButton revertButton = listenedButton("Revert",
-                (ActionEvent event) => revert());
-            OnMac.makeButtonsSegmented(applyButton, revertButton);
-            JPanel buttonPanel = (OnMac.systemIsMac) then
-                centeredHorizontalBox(applyButton, revertButton)
-                else horizontalPanel(applyButton, null, revertButton);
-            String prefix = OnMac.shortcutDesc;
-            setPageStart(horizontalPanel(JLabel("Orders for current selection, if a unit: (``prefix``D)"), null,
-                horizontalPanel(null, JLabel("Turn "), JSpinner(spinnerModel))));
-            setPageEnd(buttonPanel);
-        } else {
-            setPageStart(horizontalPanel(JLabel("Results for current selection, if a unit"), null,
-                horizontalPanel(null, JLabel("Turn "), JSpinner(spinnerModel))));
-        }
-        setCenter(JScrollPane(area));
-        area.lineWrap = true;
-        area.wrapStyleWord = true;
-        spinnerModel.addChangeListener((event) => revert());
-        object modifiedEnterListener extends KeyAdapter() {
-            shared actual void keyPressed(KeyEvent event) {
-                if (event.keyCode == KeyEvent.vkEnter, OnMac.isHotkeyPressed(event)) {
-                    apply();
-                }
-            }
-        }
-        area.addKeyListener(modifiedEnterListener);
         "Handle a changed value in the tree."
         shared actual void valueChanged(TreeSelectionEvent event) {
             if (exists selectedPath = event.newLeadSelectionPath) {
@@ -636,6 +607,39 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
             currentPlayer = newPlayer;
         }
     }
+    if (exists ordersConsumer) {
+        JButton applyButton = listenedButton("Apply",
+            (ActionEvent event) => retval.apply());
+        JButton revertButton = listenedButton("Revert",
+            (ActionEvent event) => retval.revert());
+        OnMac.makeButtonsSegmented(applyButton, revertButton);
+        JPanel buttonPanel = (OnMac.systemIsMac) then
+                centeredHorizontalBox(applyButton, revertButton)
+                else BorderedPanel.horizontalPanel(applyButton, null, revertButton);
+        String prefix = OnMac.shortcutDesc;
+        retval.pageStart = BorderedPanel.horizontalPanel(
+            JLabel("Orders for current selection, if a unit: (``prefix``D)"), null,
+            BorderedPanel.horizontalPanel(null, JLabel("Turn "),
+                JSpinner(spinnerModel)));
+        retval.pageEnd = buttonPanel;
+    } else {
+        retval.pageStart = BorderedPanel.horizontalPanel(
+            JLabel("Results for current selection, if a unit"), null,
+            BorderedPanel.horizontalPanel(null, JLabel("Turn "),
+                JSpinner(spinnerModel)));
+    }
+    retval.center = JScrollPane(area);
+    area.lineWrap = true;
+    area.wrapStyleWord = true;
+    spinnerModel.addChangeListener((event) => retval.revert());
+    object modifiedEnterListener extends KeyAdapter() {
+        shared actual void keyPressed(KeyEvent event) {
+            if (event.keyCode == KeyEvent.vkEnter, OnMac.isHotkeyPressed(event)) {
+                retval.apply();
+            }
+        }
+    }
+    area.addKeyListener(modifiedEnterListener);
     Integer keyMask = OnMac.shortcutMask;
     retval.createHotKey(retval, "openOrders", ActionWrapper((event) {
         Boolean newlyGainingFocus = !area.focusOwner;

@@ -6,4 +6,5 @@ module lovelace.util.jvm "0.1.0" {
     shared import java.base "8";
     shared import java.desktop "8";
     import lovelace.util.common "0.1.0";
+    import ceylon.interop.java "1.3.1";
 }

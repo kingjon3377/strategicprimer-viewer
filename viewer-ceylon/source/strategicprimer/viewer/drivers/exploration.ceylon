@@ -38,7 +38,6 @@ import javax.swing {
 }
 import view.util {
     SystemOut,
-    BorderedPanel,
     HotKeyCreator,
     FormattedLabel,
     SplitWithWeights
@@ -170,7 +169,8 @@ import lovelace.util.jvm {
     listenedButton,
     ImprovedComboBox,
     boxPanel,
-    BoxAxis
+    BoxAxis,
+    BorderedPanel
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -410,17 +410,30 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
         shared actual String windowName = "Exploration";
         CardLayout layoutObj = CardLayout();
         setLayout(layoutObj);
+        JTextField mpField = JTextField(5);
+        ExplorationUnitListModel unitListModel =
+                ExplorationUnitListModel(model);
+        SwingList<IUnit> unitList = ConstructorWrapper.jlist<IUnit>(unitListModel);
+        PlayerListModel playerListModel = PlayerListModel(model);
+        SwingList<Player> playerList = SwingList<Player>(playerListModel);
+        MutableList<CompletionListener> completionListeners =
+                ArrayList<CompletionListener>();
+        void buttonListener(ActionEvent event) {
+            if (exists selectedValue = unitList.selectedValue,
+                !unitList.selectionEmpty) {
+                model.selectUnit(selectedValue);
+                for (listener in completionListeners) {
+                    listener.finished();
+                }
+            }
+        }
+        shared ComboBoxModel<IExplorationModel.Speed> speedModel =
+                DefaultComboBoxModel<IExplorationModel.Speed>(
+                    IExplorationModel.Speed.values());
         object explorerSelectingPanel extends BorderedPanel()
                 satisfies PlayerChangeSource&CompletionSource {
-            MutableList<CompletionListener> completionListeners =
-                    ArrayList<CompletionListener>();
             MutableList<PlayerChangeListener> listeners =
                     ArrayList<PlayerChangeListener>();
-            PlayerListModel playerListModel = PlayerListModel(model);
-            JTextField mpField = JTextField(5);
-            shared ComboBoxModel<IExplorationModel.Speed> speedModel =
-                    DefaultComboBoxModel<IExplorationModel.Speed>(
-                        IExplorationModel.Speed.values());
             shared Document mpDocument => mpField.document;
             shared actual void addPlayerChangeListener(PlayerChangeListener listener) =>
                     listeners.add(listener);
@@ -431,7 +444,6 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
             shared actual void removeCompletionListener(CompletionListener listener) =>
                     completionListeners.remove(listener);
             model.addMapChangeListener(playerListModel);
-            SwingList<Player> playerList = SwingList<Player>(playerListModel);
             playerList.addListSelectionListener((ListSelectionEvent event) {
                 if (!playerList.selectionEmpty,
                         exists newPlayer = playerList.selectedValue) {
@@ -440,10 +452,7 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                     }
                 }
             });
-            ExplorationUnitListModel unitListModel =
-                    ExplorationUnitListModel(model);
             addPlayerChangeListener(unitListModel);
-            SwingList<IUnit> unitList = ConstructorWrapper.jlist<IUnit>(unitListModel);
             DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
             object renderer satisfies ListCellRenderer<IUnit> {
                 shared actual Component getListCellRendererComponent(
@@ -458,32 +467,25 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                 }
             }
             unitList.cellRenderer = renderer;
-            void buttonListener(ActionEvent event) {
-                if (exists selectedValue = unitList.selectedValue,
-                        !unitList.selectionEmpty) {
-                    model.selectUnit(selectedValue);
-                    for (listener in completionListeners) {
-                        listener.finished();
-                    }
-                }
-            }
             mpField.addActionListener(buttonListener);
             speedModel.selectedItem = IExplorationModel.Speed.normal;
-            setCenter(SplitWithWeights.horizontalSplit(0.5, 0.5,
-                BorderedPanel.verticalPanel(JLabel("Players in all maps:"), playerList,
-                    null),
-                BorderedPanel.verticalPanel(JLabel(
-                    """<html><body><p>Units belonging to that player:</p>
-                       <p>(Selected unit will be used for exploration.)</p>
-                       </body></html>"""),
-                    JScrollPane(unitList), BorderedPanel.verticalPanel(
-                        BorderedPanel.horizontalPanel(JLabel("Unit's Movement Points"),
-                            null, mpField),
-                        BorderedPanel.horizontalPanel(JLabel("Unit's Relative Speed"),
-                            null, ImprovedComboBox<IExplorationModel.Speed>.withModel(
-                                speedModel)),
-                        listenedButton("Start exploring!", buttonListener)))));
         }
+        explorerSelectingPanel.center = SplitWithWeights.horizontalSplit(0.5, 0.5,
+            BorderedPanel.verticalPanel(JLabel("Players in all maps:"), playerList,
+                null),
+            BorderedPanel.verticalPanel(JLabel(
+                """<html><body><p>Units belonging to that player:</p>
+                   <p>(Selected unit will be used for exploration.)</p>
+                   </body></html>"""),
+                JScrollPane(unitList), BorderedPanel.verticalPanel(
+                    BorderedPanel.horizontalPanel(JLabel("Unit's Movement Points"),
+                        null, mpField),
+                    BorderedPanel.horizontalPanel(JLabel("Unit's Relative Speed"),
+                        null, ImprovedComboBox<IExplorationModel.Speed>.withModel(
+                            speedModel)),
+                    listenedButton("Start exploring!", buttonListener))));
+        JPanel tilesPanel = JPanel(GridLayout(3, 12, 2, 2));
+        JPanel headerPanel = boxPanel(BoxAxis.lineAxis);
         object explorationPanel extends BorderedPanel()
                 satisfies SelectionChangeListener&CompletionSource&MovementCostListener&
                 HotKeyCreator {
@@ -545,7 +547,6 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                     completionListeners.add(listener);
             shared actual void removeCompletionListener(CompletionListener listener) =>
                     completionListeners.remove(listener);
-            JPanel headerPanel = boxPanel(BoxAxis.lineAxis);
             headerPanel.add(listenedButton("Select a different explorer",
                 (ActionEvent event) {
                     for (listener in completionListeners) {
@@ -560,12 +561,11 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
             headerPanel.add(mpField);
             headerPanel.add(JLabel("Current relative speed:"));
             IExplorationModel.Speed() speedSource = () {
-                assert (is IExplorationModel.Speed retval = explorerSelectingPanel.speedModel.selectedItem);
+                assert (is IExplorationModel.Speed retval = speedModel.selectedItem);
                 return retval;
             };
             headerPanel.add(ImprovedComboBox<IExplorationModel.Speed>.withModel(
-                explorerSelectingPanel.speedModel));
-            JPanel tilesPanel = JPanel(GridLayout(3, 12, 2, 2));
+                speedModel));
             IMutableMapNG secondMap;
             if (exists pair = CeylonIterable(model.subordinateMaps).first) {
                 secondMap = pair.first();
@@ -610,8 +610,9 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
                 seconds.put(direction, secPCS);
                 ell.selectedPointChanged(null, model.selectedUnitLocation);
             }
-            setCenter(SplitWithWeights.verticalSplit(0.5, 0.5, headerPanel, tilesPanel));
         }
+        explorationPanel.center = SplitWithWeights.verticalSplit(0.5, 0.5,
+            headerPanel, tilesPanel);
         model.addMovementCostListener(explorationPanel);
         model.addSelectionChangeListener(explorationPanel);
         object swapper satisfies CompletionListener {

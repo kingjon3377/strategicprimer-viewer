@@ -69,7 +69,6 @@ import javax.swing {
     BoxLayout
 }
 import view.util {
-    BorderedPanel,
     SplitWithWeights,
     FormattedLabel
 }
@@ -112,7 +111,8 @@ import lovelace.util.jvm {
     showErrorDialog,
     centeredHorizontalBox,
     BoxAxis,
-    boxPanel
+    boxPanel,
+    BorderedPanel
 }
 import model.map.fixtures {
     UnitMember
