@@ -226,7 +226,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     variable IExplorationModel.Speed speed = IExplorationModel.Speed.normal;
     "Let the user change the explorer's speed"
     void changeSpeed() {
-        IExplorationModel.Speed[] speeds = `IExplorationModel.Speed`.caseValues;
+//        IExplorationModel.Speed[] speeds = `IExplorationModel.Speed`.caseValues;
+        IExplorationModel.Speed[] speeds = [*IExplorationModel.Speed.values()];
         Integer newSpeed = cli.chooseFromList(
             JavaList(speeds),
             "Possible Speeds:", "No speeds available", "Chosen Speed: ", true);
@@ -569,7 +570,8 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
             shared actual void selectedPointChanged(Point? old, Point newPoint) {
                 // TODO: use the provided old point instead?
                 Point selPoint = model.selectedUnitLocation;
-                for (direction in `IExplorationModel.Direction`.caseValues) {
+//                for (direction in `IExplorationModel.Direction`.caseValues) {
+                for (direction in IExplorationModel.Direction.values()) {
                     Point point = model.getDestination(selPoint, direction);
                     mains.get(direction)?.fireChanges(selPoint, point);
                     seconds.get(direction)?.fireChanges(selPoint, point);

@@ -2056,7 +2056,8 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
                         HeadedList<Point>&MutableList<Point>> simples =
                     HashMap<SimpleImmortal.SimpleImmortalKind,
                         HeadedList<Point>&MutableList<Point>>();
-            for (kind in `SimpleImmortal.SimpleImmortalKind`.caseValues) {
+//            for (kind in `SimpleImmortal.SimpleImmortalKind`.caseValues) {
+            for (kind in SimpleImmortal.SimpleImmortalKind.values()) {
                 simples.put(kind, PointList("``kind.plural()`` at: "));
             }
             meta.put(`SimpleImmortal`,(kind, point) {
