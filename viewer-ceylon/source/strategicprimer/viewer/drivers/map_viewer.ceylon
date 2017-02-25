@@ -54,9 +54,13 @@ import javax.swing {
     JSplitPane,
     JScrollBar,
     InputVerifier,
-    JList,
+    SwingList=JList,
     KeyStroke,
-    JOptionPane
+    JOptionPane,
+    ListCellRenderer,
+    DefaultListCellRenderer,
+    Icon,
+    ImageIcon
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -71,7 +75,8 @@ import java.awt {
     Color,
     GridLayout,
     BorderLayout,
-    Adjustable
+    Adjustable,
+    Graphics2D
 }
 import java.awt.event {
     ActionEvent,
@@ -115,7 +120,8 @@ import model.map {
     HasPortrait,
     HasMutableName,
     HasMutableOwner,
-    HasMutableKind
+    HasMutableKind,
+    HasImage
 }
 import java.util.stream {
     Stream
@@ -143,9 +149,6 @@ import javax.swing.event {
 import javax.swing.table {
     TableColumn
 }
-import view.map.details {
-    FixtureCellRenderer
-}
 import lovelace.util.common {
     todo
 }
@@ -161,14 +164,18 @@ import model.listeners {
     NewUnitListener
 }
 import java.awt.image {
-    ImageObserver
+    ImageObserver,
+    BufferedImage
 }
 import ceylon.math.float {
-    halfEven
+    halfEven,
+    ceiling
 }
 import ceylon.collection {
     ArrayList,
-    MutableList
+    MutableList,
+    HashSet,
+    MutableSet
 }
 import lovelace.util.jvm {
     ceylonComparator,
@@ -186,7 +193,8 @@ import model.map.fixtures.mobile {
     Unit
 }
 import java.io {
-    IOException
+    IOException,
+    FileNotFoundException
 }
 import java.awt.dnd {
     DragGestureListener,
@@ -200,6 +208,15 @@ import java.awt.datatransfer {
 }
 import model.workermgmt {
     IWorkerTreeModel
+}
+import javax.swing.plaf.basic {
+    BasicHTML
+}
+import javax.swing.text {
+    View
+}
+import java.nio.file {
+    NoSuchFileException
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -979,11 +996,89 @@ JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
     }
     return retval;
 }
+"A cell renderer for tile-details GUIs."
+class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
+    static DefaultListCellRenderer defaultRenderer =
+            DefaultListCellRenderer();
+    static MutableSet<String> missingFilenames = HashSet<String>();
+    static Icon createDefaultFixtureIcon() {
+        Integer imageSize = 24;
+        BufferedImage temp = BufferedImage(imageSize, imageSize,
+            BufferedImage.typeIntArgb);
+        Graphics2D pen = temp.createGraphics();
+        Color saveColor = pen.color;
+        pen.color = Color.\iRED;
+        Float margin = 0.15;
+        Float pixelMargin = halfEven(imageSize * margin);
+        Float afterMargin = halfEven(imageSize * (1.0 - (margin * 2.0)));
+        Float cornerRounding = halfEven((imageSize * margin) / 2.0);
+        pen.fillRoundRect(pixelMargin.integer + 1, pixelMargin.integer + 1,
+            afterMargin.integer, afterMargin.integer, cornerRounding.integer,
+            cornerRounding.integer);
+        pen.color = saveColor;
+        Float newMargin = halfEven((imageSize / 2.0) - (imageSize * margin));
+        Float newAfterMargin = halfEven(imageSize * margin * 2.0);
+        Float newCorner = halfEven((imageSize * margin) / 2.0);
+        pen.fillRoundRect(newMargin.integer + 1, newMargin.integer + 1,
+            newAfterMargin.integer, newAfterMargin.integer, newCorner.integer,
+            newCorner.integer);
+        return ImageIcon(temp);
+    }
+    "Set a component's height given a fixed with."
+    by("http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/")
+    static void setComponentPreferredSize(JComponent component, Integer width) {
+        assert (is View view = component.getClientProperty(BasicHTML.propertyKey));
+        view.setSize(width.float, 0.0);
+        Integer wid = ceiling(view.getPreferredSpan(View.xAxis)).integer;
+        Integer height = ceiling(view.getPreferredSpan(view.yAxis)).integer;
+        component.preferredSize = Dimension(wid, height);
+    }
+    shared new () { }
+    Icon defaultFixtureIcon = createDefaultFixtureIcon(); // TODO: make static?
+    Icon getIcon(HasImage obj) {
+        String image = obj.image;
+        String actualImage;
+        if (image.empty || missingFilenames.contains(image)) {
+            actualImage = obj.defaultImage;
+        } else {
+            actualImage = image;
+        }
+        if (missingFilenames.contains(actualImage)) {
+            return defaultFixtureIcon;
+        }
+        try {
+            return ImageLoader.loader.loadIcon(actualImage);
+        } catch (FileNotFoundException|NoSuchFileException except) {
+            log.error("image file images/``actualImage`` not found");
+            log.debug("With stack trace", except);
+            missingFilenames.add(actualImage);
+            return defaultFixtureIcon;
+        } catch (IOException except) {
+            log.error("I/O error reading image", except);
+            return defaultFixtureIcon;
+        }
+    }
+    shared actual Component getListCellRendererComponent(SwingList<out TileFixture> list,
+            TileFixture val, Integer index, Boolean isSelected, Boolean cellHasFocus) {
+        assert (is JLabel component = defaultRenderer.getListCellRendererComponent(list,
+            val, index, isSelected, cellHasFocus));
+        component.text = "<html><p>``val``</p></html>";
+        if (is HasImage val) {
+            component.icon = getIcon(val);
+        } else {
+            component.icon = defaultFixtureIcon;
+        }
+        component.maximumSize = Dimension(component.maximumSize.width.integer,
+            (component.maximumSize.height * 2).integer);
+        setComponentPreferredSize(component, list.width);
+        return component;
+    }
+}
 "A visual list-based representation of the contents of a tile."
-JList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
+SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
         JComponent parentComponent, FixtureListModel listModel,
         {Player*} players) {
-    object retval extends JList<TileFixture>(listModel)
+    object retval extends SwingList<TileFixture>(listModel)
             satisfies DragGestureListener&SelectionChangeListener&HotKeyCreator {
         cellRenderer = FixtureCellRenderer();
         selectionMode = ListSelectionModel.multipleIntervalSelection;
@@ -1001,7 +1096,7 @@ JList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
             }
         }
         shared actual Boolean equals(Object that) {
-            if (is JList<out Anything> that) {
+            if (is SwingList<out Anything> that) {
                 return model == that.model;
             } else {
                 return false;
@@ -1087,7 +1182,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
             header.setArgs(newPoint.row, newPoint.col);
         }
     }
-    JList<TileFixture>&SelectionChangeListener fixtureListObject =
+    SwingList<TileFixture>&SelectionChangeListener fixtureListObject =
             fixtureList(retval, FixtureListModel(model.map, false),
                 CeylonIterable(model.map.players()));
     retval.delegate = fixtureListObject;
