@@ -90,8 +90,7 @@ import java.awt.event {
     ActionListener
 }
 import view.util {
-    FormattedLabel,
-    SPMenu
+    FormattedLabel
 }
 import util {
     OnMac,
@@ -1335,7 +1334,8 @@ BorderedPanel mapScrollPanel(IViewerModel model, JComponent component) {
     return retval;
 }
 "The main window for the map viewer app."
-SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandler) {
+SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel,
+        Anything(ActionEvent) menuHandler) {
     object retval extends SPFrame("Map Viewer", driverModel.mapFile.orElse(null))
             satisfies IViewerFrame {
         shared actual IViewerModel model = driverModel;
@@ -1393,12 +1393,11 @@ SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel, MenuBroker menuHandle
     WindowAdapter windowSizeListener = MapWindowSizeListener(mapPanel);
     retval.addWindowListener(windowSizeListener);
     retval.addWindowStateListener(windowSizeListener);
-    object menu extends SPMenu() {
-        add(createFileMenu(menuHandler, driverModel));
-        add(createMapMenu(menuHandler, driverModel));
-        add(createViewMenu(menuHandler, driverModel));
-        add(WindowMenu(retval));
-    }
+    SPMenu menu = SPMenu();
+    menu.add(menu.createFileMenu(menuHandler, driverModel));
+    menu.add(menu.createMapMenu(menuHandler, driverModel));
+    menu.add(menu.createViewMenu(menuHandler, driverModel));
+    menu.add(WindowMenu(retval));
     retval.jMenuBar = menu;
     return retval;
 }
@@ -1425,7 +1424,8 @@ object viewerGUI satisfies SimpleDriver {
             menuHandler.register((event) => model.zoomOut(), "zoom out");
             menuHandler.register(ZoomListener(model), "center");
             SwingUtilities.invokeLater(() {
-                SPFrame&IViewerFrame frame = viewerFrame(model, menuHandler);
+                SPFrame&IViewerFrame frame = viewerFrame(model,
+                    menuHandler.actionPerformed);
                 menuHandler.register(WindowCloser(frame), "close");
                 menuHandler.register((event) =>
                     selectTileDialog(frame, model).setVisible(true), "go to tile");

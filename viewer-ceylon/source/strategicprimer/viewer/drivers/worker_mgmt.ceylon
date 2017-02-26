@@ -37,8 +37,7 @@ import javax.swing {
     SwingConstants
 }
 import view.util {
-    FormattedLabel,
-    SPMenu
+    FormattedLabel
 }
 import ceylon.interop.java {
     CeylonIterable,
@@ -760,17 +759,16 @@ class StrategyExporter(IWorkerModel model, SPOptions options) satisfies PlayerCh
 "A set of menus for the worker GUI (and other related apps)."
 JMenuBar workerMenu(
         "The broker that handles menu items, or arranges for them to be handled"
-        ActionListener handler,
+        Anything(ActionEvent) handler,
         """The window this is to be attached to, whic should close on "Close"."""
         JFrame parentFrame,
         "The current driver model."
         IDriverModel model) {
-    object retval extends SPMenu() {
-        add(createFileMenu(handler, model));
-        addDisabled(createMapMenu(handler, model));
-        add(createViewMenu(handler, model));
-        add(WindowMenu(parentFrame));
-    }
+    SPMenu retval = SPMenu();
+    retval.add(retval.createFileMenu(handler, model));
+    retval.addDisabled(retval.createMapMenu(handler, model));
+    retval.add(retval.createViewMenu(handler, model));
+    retval.add(WindowMenu(parentFrame));
     return retval;
 }
 "An interface for classes listening for directives to expand or collapse trees."
@@ -1026,7 +1024,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             }
         } else {
             SPFrame&IViewerFrame frame = viewerFrame(ViewerModel(model.map, model.mapFile),
-                menuHandler);
+                menuHandler.actionPerformed);
             SwingUtilities.invokeLater(() => frame.setVisible(true));
             return frame.model;
         }
@@ -1151,7 +1149,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         }
         shared actual String windowName = "Worker Management";
     }
-    retval.jMenuBar = workerMenu(menuHandler, retval, model);
+    retval.jMenuBar = workerMenu(menuHandler.actionPerformed, retval, model);
     retval.pack();
     return retval;
 }

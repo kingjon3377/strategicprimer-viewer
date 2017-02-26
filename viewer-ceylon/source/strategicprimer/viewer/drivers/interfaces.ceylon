@@ -1,6 +1,7 @@
 import java.lang {
     IllegalStateException,
-    IllegalArgumentException
+    IllegalArgumentException,
+    ObjectArray
 }
 import model.misc {
     IDriverModel,
@@ -32,7 +33,9 @@ import ceylon.interop.java {
 }
 import ceylon.collection {
     MutableMap,
-    HashMap
+    HashMap,
+    MutableList,
+    ArrayList
 }
 import strategicprimer.viewer.xmlio {
     readMultiMapModel,
@@ -44,18 +47,39 @@ import javax.swing {
     WindowConstants,
     JDialog,
     JComponent,
-    KeyStroke
+    KeyStroke,
+    JMenuBar,
+    JMenu,
+    JMenuItem,
+    InputMap
 }
 import java.awt {
     Dimension,
-    Frame
+    Frame,
+    Window
 }
 import java.awt.event {
     ActionEvent,
-    KeyEvent
+    KeyEvent,
+    ActionListener
 }
 import lovelace.util.jvm {
     createHotKey
+}
+import view.util {
+    MenuItemCreator
+}
+import model.viewer {
+    IViewerModel
+}
+import com.apple.eawt {
+    Application, AppEvent
+}
+import com.bric.window {
+    WindowList
+}
+import model.workermgmt {
+    IWorkerModel
 }
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option
@@ -423,4 +447,172 @@ shared class SPDialog(Frame? parentFrame, String title)
     createHotKey(rootPane, "close", ActionWrapper((ActionEvent event) => dispose()),
         JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkW,
             OnMac.shortcutMask), KeyStroke.getKeyStroke(KeyEvent.vkEscape, 0));
+}
+"A class to hold the logic for building our menus."
+todo("Make the methods static once MenuItemCreator has been ported.",
+    "Redesign so users just have to say which menus they want enabled instead of
+     instantiatng them one by one")
+class SPMenu() extends JMenuBar() satisfies MenuItemCreator {
+    "Create the file menu."
+    shared JMenu createFileMenu(/*ActionListener|*/Anything(ActionEvent) handler,
+            IDriverModel model) {
+        JMenu fileMenu = JMenu("File");
+        fileMenu.mnemonic = KeyEvent.vkF;
+        JMenuItem newItem = createMenuItem("New", KeyEvent.vkN,
+            createHotKey(KeyEvent.vkN),
+            "Create a new, empty map the same size as the current one", handler);
+        fileMenu.add(newItem);
+        if (!model is IViewerModel) {
+            newItem.enabled = false;
+        }
+        String loadCaption;
+        String saveCaption;
+        String saveAsCaption;
+        if (model is IMultiMapModel) { // TODO: use interpolation of "the main" instead
+            loadCaption = "Load the main map from file";
+            saveCaption = "Save the main map to the file it was loaded from";
+            saveAsCaption = "Save the main map to file";
+        } else {
+            loadCaption = "Load a map from file";
+            saveCaption = "Save the map to the file it was loaded from";
+            saveAsCaption = "Save the map to file";
+        }
+        fileMenu.add(createMenuItem("Load", KeyEvent.vkL, createHotKey(KeyEvent.vkO),
+            loadCaption, handler));
+        JMenuItem loadSecondaryItem = createMenuItem("Load secondary", KeyEvent.vkE,
+            createShiftHotKey(KeyEvent.vkO), "Load an additional secondary map from file",
+            handler);
+        fileMenu.add(loadSecondaryItem);
+        fileMenu.add(createMenuItem("Save", KeyEvent.vkS, createHotKey(KeyEvent.vkS),
+            saveCaption, handler));
+        fileMenu.add(createMenuItem("Save As", KeyEvent.vkA,
+            createShiftHotKey(KeyEvent.vkS), saveAsCaption, handler));
+        JMenuItem saveAllItem = createMenuItem("Save All", KeyEvent.vkV,
+            createHotKey(KeyEvent.vkL), "Save all maps to their files", handler);
+        fileMenu.add(saveAllItem);
+        if (!model is IMultiMapModel) {
+            loadSecondaryItem.enabled = false;
+            saveAllItem.enabled = false;
+        }
+        fileMenu.addSeparator();
+        JMenuItem openViewerItem = createMenuItem("Open in map viwer", KeyEvent.vkM,
+            createHotKey(KeyEvent.vkM),
+            "Open the main map in the map viewer for a broader view", handler);
+        fileMenu.add(openViewerItem);
+        if (model is IViewerModel) {
+            openViewerItem.enabled = false;
+        }
+        JMenuItem openSecondaryViewerItem = createMenuItem(
+            "Open secondary map in map viewer", KeyEvent.vkE, createHotKey(KeyEvent.vkE),
+            "Open the first secondary map in the map vieer for a broader view", handler);
+        fileMenu.add(openSecondaryViewerItem);
+        if (model is IViewerModel || !model is IMultiMapModel) {
+            openSecondaryViewerItem.enabled = false;
+        }
+        fileMenu.addSeparator();
+        if (OnMac.systemIsMac) {
+            Application.application.setAboutHandler((AppEvent.AboutEvent event) {
+                Object source = WindowList.getWindows(true, false).iterable.coalesced
+                    .sequence().reversed.first else event;
+                handler(ActionEvent(source, ActionEvent.actionFirst,
+                    "About"));
+            });
+        } else {
+            fileMenu.add(createMenuItem("About", KeyEvent.vkB, createHotKey(KeyEvent.vkB),
+                "Show development credits", handler));
+            fileMenu.addSeparator();
+            fileMenu.add(createMenuItem("Quit", KeyEvent.vkQ, createHotKey(KeyEvent.vkQ),
+                "Quit the application", handler));
+        }
+        return fileMenu;
+    }
+    """Create the "map" menu, including go-to-tile, find, and zooming functions."""
+    shared JMenu createMapMenu(Anything(ActionEvent) handler, IDriverModel model) {
+        JMenu retval = JMenu("Map");
+        retval.mnemonic = KeyEvent.vkM;
+        Integer findKey = KeyEvent.vkF;
+        KeyStroke findStroke = createHotKey(findKey);
+        KeyStroke nextStroke = createHotKey(KeyEvent.vkG);
+        JMenuItem gotoTileItem = createMenuItem("Go to tile", KeyEvent.vkT,
+            createHotKey(KeyEvent.vkT), "Go to a tile by coordinates", handler);
+        JMenuItem findItem = createMenuItem("Find a fixture", findKey, findStroke,
+            "Find a fixture by name, kind or ID #", handler);
+        Integer nextKey = KeyEvent.vkN;
+        JMenuItem nextItem = createMenuItem("Find next", nextKey, nextStroke,
+            "Find the next fixture matching the pattern", handler);
+        if (!model is IViewerModel) {
+            gotoTileItem.enabled = false;
+            findItem.enabled = false;
+            nextItem.enabled = false;
+        }
+        retval.add(gotoTileItem);
+        InputMap findInput = findItem.getInputMap(JComponent.whenInFocusedWindow);
+        findInput.put(KeyStroke.getKeyStroke(KeyEvent.vkSlash, 0),
+            findInput.get(findStroke));
+        retval.add(findItem);
+        InputMap nextInput = nextItem.getInputMap(JComponent.whenInFocusedWindow);
+        nextInput.put(KeyStroke.getKeyStroke(nextKey, 0), nextInput.get(nextStroke));
+        retval.add(nextItem);
+        retval.addSeparator();
+        // vkPlus only works on non-US keyboards, but we leave it as the primary hot-key
+        // because it's the best to *show* in the menu.
+        KeyStroke plusKey = createHotKey(KeyEvent.vkPlus);
+        JMenuItem zoomInItem = createMenuItem("Zoom in", KeyEvent.vkI, plusKey,
+            "Increase the visible size of each tile", handler);
+        InputMap zoomInInputMap = zoomInItem.getInputMap(JComponent.whenInFocusedWindow);
+        zoomInInputMap.put(createHotKey(KeyEvent.vkEquals), inputMap.get(plusKey));
+        zoomInInputMap.put(createShiftHotKey(KeyEvent.vkEquals), inputMap.get(plusKey));
+        zoomInInputMap.put(createHotKey(KeyEvent.vkAdd), inputMap.get(plusKey));
+        retval.add(zoomInItem);
+        retval.add(createMenuItem("Zoom out", KeyEvent.vkO,
+            createHotKey(KeyEvent.vkMinus), "Decrease the visible size of each tile",
+            handler));
+        // TODO: Shouldn't there be a "reset zoom" item?
+        retval.addSeparator();
+        retval.add(createMenuItem("Center", KeyEvent.vkC, createHotKey(KeyEvent.vkC),
+            "Center the view on the selected tile", handler));
+        return retval;
+    }
+    """Create the "view" menu."""
+    shared JMenu createViewMenu(Anything(ActionEvent) handler, IDriverModel model) {
+        JMenu viewMenu = JMenu("View");
+        viewMenu.mnemonic = KeyEvent.vkE;
+
+        // We *create* these items here (early) so that we can enable or disable them
+        // without an extra branch.
+        // TODO: create Ceylon Iterable instead of add()ing to a List
+        {JMenuItem*} treeItems = {
+            createMenuItem("Reload tree", KeyEvent.vkR,
+                createHotKey(KeyEvent.vkR), "Refresh the view of the workers", handler),
+            createMenuItem("Expand All", KeyEvent.vkX, null,
+                "Expand all nodes in the unit tree", handler),
+            createMenuItem("Expand Unit Kinds", KeyEvent.vkK, null,
+                "Expand all unit kinds to show the units", handler),
+            createMenuItem("Collapse All", KeyEvent.vkC, null,
+                "Collapse all nodes in the unit tree", handler)
+        };
+        JMenuItem currentPlayerItem;
+        if (is IWorkerModel model) {
+            currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
+                createHotKey(KeyEvent.vkP),
+                "Look at a different player's units and workers", handler);
+        } else {
+            currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
+                null, "Mark a player as the current player in the map", handler);
+            for (item in treeItems) {
+                item.enabled = false;
+            }
+        }
+        viewMenu.add(currentPlayerItem);
+        for (item in treeItems) {
+            viewMenu.add(item);
+        }
+        return viewMenu;
+    }
+    "Add a menu, but set it to disabled."
+    shared JMenu addDisabled(JMenu menu) {
+        add(menu);
+        menu.enabled = false;
+        return menu;
+    }
 }

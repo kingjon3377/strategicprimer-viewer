@@ -240,7 +240,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
 }
 "A window to let the user enter resources etc. Note that this is not a dialog to enter one resource and close."
 SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
-        MenuBroker menuHandler) {
+        Anything(ActionEvent) menuHandler) {
     IDRegistrar idf = IDFactoryFiller.createFactory(model);
     variable Player currentPlayer = PlayerImpl(-1, "");
     JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
@@ -322,7 +322,7 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
     variable Boolean playerIsDefault = true;
     void confirmPlayer() {
         if (playerIsDefault, currentPlayer.name.trimmed.empty) {
-            menuHandler.actionPerformed(ActionEvent(mainPanel, 1, "change current player"));
+            menuHandler(ActionEvent(mainPanel, 1, "change current player"));
         }
         playerIsDefault = false;
     }
@@ -426,7 +426,7 @@ object resourceAddingGUI satisfies SimpleDriver {
             MenuBroker menuHandler = MenuBroker();
             menuHandler.register(pcml, "change current player");
             SwingUtilities.invokeLater(() {
-                value frame = resourceAddingFrame(model, menuHandler);
+                value frame = resourceAddingFrame(model, menuHandler.actionPerformed);
                 pcml.addPlayerChangeListener(frame);
                 frame.setVisible(true);
             });

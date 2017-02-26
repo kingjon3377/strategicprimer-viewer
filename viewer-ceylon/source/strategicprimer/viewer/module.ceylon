@@ -17,4 +17,5 @@ module strategicprimer.viewer "0.4.9900" {
     shared import java.desktop "8";
     import lovelace.util.jvm "0.1.0";
     import ceylon.regex "1.3.1";
+    import maven:"com.massisframework:orange-extensions" "1.3.1";
 }

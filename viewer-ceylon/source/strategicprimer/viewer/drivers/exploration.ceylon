@@ -36,8 +36,7 @@ import javax.swing {
 }
 import view.util {
     SystemOut,
-    FormattedLabel,
-    SPMenu
+    FormattedLabel
 }
 import model.exploration.old {
     ExplorationRunner,
@@ -423,7 +422,8 @@ object explorationCLI satisfies SimpleCLIDriver {
     }
 }
 "The main window for the exploration GUI."
-SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
+SPFrame explorationFrame(IExplorationModel model,
+        Anything(ActionEvent) menuHandler) {
     Map<IExplorationModel.Direction, KeyStroke> arrowKeys = HashMap {
         IExplorationModel.Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkUp, 0),
         IExplorationModel.Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkDown, 0),
@@ -850,12 +850,11 @@ SPFrame explorationFrame(IExplorationModel model, ActionListener menuHandler) {
         add(explorationPanel);
     }
     (retval of Component).preferredSize = Dimension(1024, 640);
-    object menu extends SPMenu() {
-        add(createFileMenu(menuHandler, model));
-        addDisabled(createMapMenu(menuHandler, model));
-        add(createViewMenu(menuHandler, model));
-        add(WindowMenu(retval));
-    }
+    SPMenu menu = SPMenu();
+    menu.add(menu.createFileMenu(menuHandler, model));
+    menu.addDisabled(menu.createMapMenu(menuHandler, model));
+    menu.add(menu.createViewMenu(menuHandler, model));
+    menu.add(WindowMenu(retval));
     retval.jMenuBar = menu;
     retval.pack();
     return retval;
@@ -885,7 +884,8 @@ object explorationGUI satisfies SimpleDriver {
             "open secondary map in map viewer");
         menuHandler.register((event) => process.exit(0), "quit");
         SwingUtilities.invokeLater(() {
-            SPFrame frame = explorationFrame(explorationModel, menuHandler);
+            SPFrame frame = explorationFrame(explorationModel,
+                menuHandler.actionPerformed);
             menuHandler.register(WindowCloser(frame), "close");
             menuHandler.register((event) =>
                 aboutDialog(frame, frame.windowName).setVisible(true), "about");
