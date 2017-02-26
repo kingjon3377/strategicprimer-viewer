@@ -179,7 +179,6 @@ import lovelace.util.jvm {
     FormattedLabel
 }
 import view.map.main {
-    TileDrawHelperFactory,
     TileDrawHelper
 }
 import model.map.fixtures.towns {
@@ -380,8 +379,8 @@ class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matche
         localPoint = point;
         repaint();
     }
-    TileDrawHelper helper = TileDrawHelperFactory.instance.factory(2, super.imageUpdate,
-        (TileFixture fix) => true, JavaIterable(matchers).iterator);
+    TileDrawHelper helper = tileDrawHelperFactory(2, super.imageUpdate,
+        (TileFixture fix) => true, matchers);
     shared actual void paintComponent(Graphics pen) {
         super.paintComponent(pen);
         pen.clip = Polygon(createJavaIntArray({width - margin, margin, margin}),

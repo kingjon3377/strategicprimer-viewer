@@ -20,7 +20,8 @@ import model.viewer {
     FixtureListModel,
     FixtureTransferable,
     CurriedFixtureTransferable,
-    FixtureListDropListener
+    FixtureListDropListener,
+    FixtureMatcher
 }
 import view.map.main {
     FixtureFilterList,
@@ -28,10 +29,11 @@ import view.map.main {
     FixtureFilterTransferHandler,
     MapGUI,
     TileDrawHelper,
-    TileDrawHelperFactory,
     DirectionSelectionChanger,
     ArrowKeyListener,
-    TileUIHelper
+    TileUIHelper,
+    DirectTileDrawHelper,
+    Ver2TileDrawHelper
 }
 import javax.swing {
     SwingUtilities,
@@ -95,7 +97,8 @@ import util {
     ActionWrapper
 }
 import java.lang {
-    JIterable = Iterable, JString=String
+    JIterable = Iterable, JString=String,
+    IllegalArgumentException
 }
 import model.map {
     Point,
@@ -574,6 +577,29 @@ SPDialog&NewUnitSource&PlayerChangeListener newUnitDialog(variable Player player
     retval.pack();
     return retval;
 }
+"A version-1 tile-draw-helper."
+TileDrawHelper verOneHelper = DirectTileDrawHelper();
+"A factory method for [[TileDrawHelper]]s."
+todo("split so ver-1 omits ZOF etc. and ver-2 requires it as non-null?")
+TileDrawHelper tileDrawHelperFactory(
+        "The version of the map that is to be drawn."
+        Integer version,
+        "The object to arrange to be notified as images finish drawing. In Java it's the
+          [[ImageObserver]] interface, but we don't want to have to construct *objects*
+          for this when a lambda will do."
+        Boolean(Image, Integer, Integer, Integer, Integer, Integer) observer,
+        "The filter to tell a version-two helper which fixtures to draw."
+        Boolean(TileFixture)? zof,
+        "A series of matchers to tell a version-two helper which fixture is on top"
+        {FixtureMatcher*} matchers) {
+    switch (version)
+    case (1) { return verOneHelper; }
+    case (2) {
+        assert (exists zof);
+        return Ver2TileDrawHelper(observer, zof, JavaIterable(matchers).iterator);
+    }
+    else { throw IllegalArgumentException("Unsupported map version"); }
+}
 "A popup menu to let the user change a tile's terrain type, or add a unit."
 JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener
         terrainChangingMenu(Integer mapVersion, IViewerModel model) {
@@ -726,14 +752,13 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
 JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
         mapComponent(IViewerModel model, ZOrderFilter zof,
         FixtureFilterTableModel matchers) {
+    // FIXME: can't we drop this?
     object iobs satisfies ImageObserver {
         shared late ImageObserver wrapped;
         shared actual Boolean imageUpdate(Image? img, Integer infoflags, Integer x,
         Integer y, Integer width, Integer height) => wrapped.imageUpdate(img,
             infoflags, x, y, width, height);
     }
-    variable TileDrawHelper helper = TileDrawHelperFactory.instance.factory(
-        model.mapDimensions.version, iobs, zof, matchers);
     MouseListener&ToolTipSource&SelectionChangeSource cml =
             componentMouseListener(model, zof, ceylonComparator(matchers));
     DirectionSelectionChanger dsl = DirectionSelectionChanger(model);
@@ -747,23 +772,6 @@ JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListe
             return Rectangle(0, 0,
                 (dimensions.maximumCol - dimensions.minimumCol) * tileSize,
                 (dimensions.maximumRow - dimensions.minimumRow) * tileSize);
-        }
-    }
-    void paintTile(Graphics pen, Point point, Integer row, Integer column,
-            Boolean selected) {
-        Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
-            model.mapDimensions.version);
-        helper.drawTile(pen, model.map, point, PointFactory.coordinate(column * tileSize,
-            row * tileSize), PointFactory.coordinate(tileSize, tileSize));
-        if (selected) {
-            Graphics context = pen.create();
-            try {
-                context.color = Color.black;
-                context.drawRect((column * tileSize) + 1, (row * tileSize) + 1,
-                    tileSize - 2, tileSize - 2);
-            } finally {
-                context.dispose();
-            }
         }
     }
     void fixVisibility() {
@@ -798,12 +806,33 @@ JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListe
     }
     object retval extends JComponent() satisfies MapGUI&MapChangeListener&
             SelectionChangeListener&GraphicalParamsListener {
+        variable TileDrawHelper helper = tileDrawHelperFactory(
+            model.mapDimensions.version, imageUpdate, zof.shouldDisplay,
+            CeylonIterable(matchers));
         doubleBuffered = true;
         shared actual IViewerModel mapModel = model;
         shared actual String? getToolTipText(MouseEvent event) =>
                 cml.getToolTipText(event);
         shared actual void dimensionsChanged(VisibleDimensions oldDim,
             VisibleDimensions newDim) => repaint();
+        void paintTile(Graphics pen, Point point, Integer row, Integer column,
+                Boolean selected) {
+            Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
+                model.mapDimensions.version);
+            helper.drawTile(pen, model.map, point,
+                PointFactory.coordinate(column * tileSize, row * tileSize),
+                PointFactory.coordinate(tileSize, tileSize));
+            if (selected) {
+                Graphics context = pen.create();
+                try {
+                    context.color = Color.black;
+                    context.drawRect((column * tileSize) + 1, (row * tileSize) + 1,
+                        tileSize - 2, tileSize - 2);
+                } finally {
+                    context.dispose();
+                }
+            }
+        }
         shared actual void tileSizeChanged(Integer olSize, Integer newSize) {
             ComponentEvent event = ComponentEvent(this, ComponentEvent.componentResized);
             for (listener in componentListeners) {
@@ -835,8 +864,8 @@ JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListe
             repaint();
         }
         shared actual void mapChanged() {
-            helper = TileDrawHelperFactory.instance.factory(model.mapDimensions.version,
-                iobs, zof, matchers);
+            helper = tileDrawHelperFactory(model.mapDimensions.version,
+                imageUpdate, zof.shouldDisplay, CeylonIterable(matchers));
         }
         shared actual void paint(Graphics pen) {
             Graphics context = pen.create();
