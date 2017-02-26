@@ -23,7 +23,6 @@ import model.viewer {
     FixtureListDropListener
 }
 import view.map.main {
-    ZoomListener,
     FixtureFilterList,
     MapWindowSizeListener,
     FixtureFilterTransferHandler,
@@ -1420,7 +1419,32 @@ object viewerGUI satisfies SimpleDriver {
             menuHandler.register((event) => process.exit(0), "quit");
             menuHandler.register((event) => model.zoomIn(), "zoom in");
             menuHandler.register((event) => model.zoomOut(), "zoom out");
-            menuHandler.register(ZoomListener(model), "center");
+            menuHandler.register((event) {
+                Point selection = model.selectedPoint;
+                MapDimensions dimensions = model.mapDimensions;
+                VisibleDimensions visible = model.dimensions;
+                Integer topRow;
+                if (selection.row - (visible.height / 2) <= 0) {
+                    topRow = 0;
+                } else if (selection.row + (visible.height / 2) >= dimensions.rows) {
+                    topRow = dimensions.rows - visible.height;
+                } else {
+                    topRow = selection.row - (visible.height / 2);
+                }
+                Integer leftColumn;
+                if (selection.col - (visible.width / 2) <= 0) {
+                    leftColumn = 0;
+                } else if (selection.col + (visible.width / 2) >= dimensions.columns) {
+                    leftColumn = dimensions.columns - visible.width;
+                } else {
+                    leftColumn = selection.col - (visible.width / 2);
+                }
+                // Java version had topRow + dimensions.rows and
+                // leftColumn + dimensions.columns as max row and column; this seems
+                // plainly wrong.
+                model.dimensions = VisibleDimensions(topRow, topRow + visible.height,
+                    leftColumn, leftColumn + visible.width);
+            }, "center");
             SwingUtilities.invokeLater(() {
                 SPFrame&IViewerFrame frame = viewerFrame(model,
                     menuHandler.actionPerformed);
