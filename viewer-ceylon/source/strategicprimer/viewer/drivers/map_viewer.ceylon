@@ -90,6 +90,7 @@ import java.awt.event {
     AdjustmentEvent,
     KeyEvent,
     ActionListener,
+    ComponentAdapter,
     WindowEvent
 }
 import util {
@@ -1173,6 +1174,47 @@ JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListe
     assert (exists actionMap = retval.actionMap,
         exists inputMap = retval.getInputMap(JComponent.whenAncestorOfFocusedComponent));
     ArrowKeyListener.setUpListeners(dsl, inputMap, actionMap);
+    object mapSizeListener extends ComponentAdapter() {
+        shared actual void componentResized(ComponentEvent event) {
+            Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
+                model.mapDimensions.version);
+            Integer visibleColumns = event.component.width / tileSize;
+            Integer visibleRows = event.component.height / tileSize;
+            variable Integer minimumColumn = model.dimensions.minimumCol;
+            variable Integer maximumColumn = model.dimensions.maximumCol;
+            variable Integer minimumRow = model.dimensions.minimumRow;
+            variable Integer maximumRow = model.dimensions.maximumRow;
+            MapDimensions mapDimensions = model.mapDimensions;
+            if (visibleColumns != (maximumColumn - minimumColumn) ||
+                    visibleRows != (maximumRow - minimumRow)) {
+                Integer totalColumns = mapDimensions.columns;
+                if (visibleColumns >= totalColumns) {
+                    minimumColumn = 0;
+                    maximumColumn = totalColumns - 1;
+                } else if (minimumColumn + visibleColumns >= totalColumns) {
+                    maximumColumn = totalColumns - 1;
+                    minimumColumn = totalColumns - visibleColumns - 2;
+                } else {
+                    maximumColumn = (minimumColumn + visibleColumns) - 1;
+                }
+                Integer totalRows = mapDimensions.rows;
+                if (visibleRows >= totalRows) {
+                    minimumRow = 0;
+                    maximumRow = totalRows - 1;
+                } else if ((minimumRow + visibleRows) >= totalRows) {
+                    maximumRow = totalRows - 1;
+                    minimumRow = totalRows - visibleRows - 2;
+                } else {
+                    maximumRow = minimumRow + visibleRows - 1;
+                }
+                model.dimensions = VisibleDimensions(minimumRow, maximumRow,
+                    minimumColumn, maximumColumn);
+            }
+        }
+        shared actual void componentShown(ComponentEvent event) =>
+                componentResized(event);
+    }
+    retval.addComponentListener(mapSizeListener);
     retval.toolTipText = "";
     object mouseMotionListener extends MouseMotionAdapter() {
         shared actual void mouseMoved(MouseEvent event) => retval.repaint();
