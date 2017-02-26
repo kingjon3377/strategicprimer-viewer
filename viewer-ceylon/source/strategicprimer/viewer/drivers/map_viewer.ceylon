@@ -26,7 +26,6 @@ import model.viewer {
 import view.map.main {
     FixtureFilterList,
     FixtureFilterTransferHandler,
-    MapGUI,
     TileDrawHelper,
     DirectionSelectionChanger,
     ArrowKeyListener,
@@ -1003,6 +1002,12 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
                 => menu.removeSelectionChangeListener(listener);
     }
     return retval;
+}
+"An interface for a UI representing a map."
+todo("Is this needed anymore?")
+interface MapGUI {
+    "The driver model the GUI represents."
+    shared formal IViewerModel mapModel;
 }
 "A component to display the map, even a large one, without the performance problems that
  came from drawing the entire map every time and letting Java manage the scrolling or,
