@@ -25,7 +25,6 @@ import model.viewer {
 }
 import view.map.main {
     FixtureFilterList,
-    MapWindowSizeListener,
     FixtureFilterTransferHandler,
     MapGUI,
     TileDrawHelper,
@@ -90,7 +89,8 @@ import java.awt.event {
     MouseAdapter,
     AdjustmentEvent,
     KeyEvent,
-    ActionListener
+    ActionListener,
+    WindowEvent
 }
 import util {
     OnMac,
@@ -1675,7 +1675,19 @@ SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel,
     retval.setMinimumSize(Dimension(800, 600));
     retval.pack();
     mapPanel.requestFocusInWindow();
-    WindowAdapter windowSizeListener = MapWindowSizeListener(mapPanel);
+    "When the window is maximized, restored, or de-iconified, force the listener that is
+     listening for *resize* events to adjust the number of tiles displayed properly."
+    object windowSizeListener extends WindowAdapter() {
+        "Whether we should add or subtract 1 to force recalculation this time."
+        variable Boolean add = false;
+        void recalculate() {
+            Integer addend = (add) then 1 else -1;
+            add = !add;
+            mapPanel.setSize(mapPanel.width + addend, mapPanel.height + addend);
+        }
+        shared actual void windowDeiconified(WindowEvent event) => recalculate();
+        shared actual void windowStateChanged(WindowEvent event) => recalculate();
+    }
     retval.addWindowListener(windowSizeListener);
     retval.addWindowStateListener(windowSizeListener);
     SPMenu menu = SPMenu();
