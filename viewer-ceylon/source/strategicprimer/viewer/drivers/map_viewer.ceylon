@@ -32,8 +32,8 @@ import view.map.main {
     DirectionSelectionChanger,
     ArrowKeyListener,
     TileUIHelper,
-    DirectTileDrawHelper,
-    Ver2TileDrawHelper
+    Ver2TileDrawHelper,
+    AbstractTileDrawHelper
 }
 import javax.swing {
     SwingUtilities,
@@ -76,7 +76,9 @@ import java.awt {
     GridLayout,
     BorderLayout,
     Adjustable,
-    Graphics2D
+    Graphics2D,
+    Shape,
+    Polygon
 }
 import java.awt.event {
     ActionEvent,
@@ -118,7 +120,8 @@ import model.map {
     HasMutableName,
     HasMutableOwner,
     HasMutableKind,
-    HasImage
+    HasImage,
+    River
 }
 import java.util.stream {
     Stream
@@ -129,7 +132,8 @@ import ceylon.interop.java {
     JavaIterable,
     JavaList,
     javaString,
-    createJavaObjectArray
+    createJavaObjectArray,
+    createJavaIntArray
 }
 import model.map.fixtures {
     RiverFixture,
@@ -172,7 +176,9 @@ import ceylon.collection {
     ArrayList,
     MutableList,
     HashSet,
-    MutableSet
+    MutableSet,
+    MutableMap,
+    HashMap
 }
 import lovelace.util.jvm {
     ceylonComparator,
@@ -219,6 +225,14 @@ import java.nio.file {
 }
 import com.bric.window {
     WindowMenu
+}
+import java.awt.geom {
+    Line2D,
+    Rectangle2D,
+    Ellipse2D
+}
+import view.util {
+    Coordinate
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -577,8 +591,253 @@ SPDialog&NewUnitSource&PlayerChangeListener newUnitDialog(variable Player player
     retval.pack();
     return retval;
 }
+"A class to hold numeric constants useful for drawing tiles' contents."
+class DrawingNumericConstants {
+    "The part of a tile's width or height that a river's short dimension should occupy."
+    shared static Float riverShortDimension = 1.0 / 8.0;
+    "Where the short side of a river starts, along the edge of the tile."
+    shared static Float riverShortStart = 7.0 / 16.0;
+    "The part of a tile's width or height its long dimension should occupy."
+    shared static Float riverLongDimension = 1.0 / 2.0;
+    "The coordinates in an 'event' other than [[eventStart]], 0, and 100%."
+    shared static Float eventOther = 1.0 / 2.0;
+    "How far along a tile's dimension a lake should start."
+    shared static Float lakeStart = 1.0 / 4.0;
+    "How big a unit should be. Also its starting position (?)."
+    shared static Float unitSize = 1.0 / 4.0;
+    "How wide and tall a fortress should be."
+    shared static Float fortSize = 1.0 / 3.0;
+    "Where a fortress should start."
+    shared static Float fortStart = 2.0 / 3.0;
+    """Where an "event" should start."""
+    shared static Float eventStart = 3.0 / 4.0;
+    shared new () { }
+}
+"A class to do the drawing of a tile, whether on a component representing a single tile or
+ a single-component map, using cached [[Shape]]s. Note that this is limited to version-1
+ maps."
+class CachingTileDrawHelper extends AbstractTileDrawHelper {
+    static Float approximatelyZero = 0.000001;
+    static Boolean areFloatsDifferent(Float first, Float second) =>
+            (first - second).magnitude > approximatelyZero;
+    shared new () extends AbstractTileDrawHelper() {}
+    "Shapes representing the rivers on the tile."
+    MutableMap<River, Shape> rivers = HashMap<River, Shape>();
+    "A cached copy of the background."
+    variable Rectangle backgroundShape = Rectangle(0, 0, 1, 1);
+    "Shape representing an event, or relative text, associated with the tile."
+    variable Shape event = Line2D.Double();
+    "Shape representing the fortress that might be on the tile."
+    variable Shape fortress = event;
+    "Shape representing the unit that might be on the tile."
+    variable Shape unit = event;
+    "Check, and possibly regenerate, the cache: regenerate if the width and height have
+     changed."
+    void updateCache(Integer width, Integer height) {
+        if (areFloatsDifferent(backgroundShape.width, width.float) ||
+                areFloatsDifferent(backgroundShape.height, height.float)) {
+            backgroundShape = Rectangle(0, 0, width, height);
+            rivers.clear();
+            rivers.put(River.east, Rectangle2D.Double(
+                width * DrawingNumericConstants.riverLongDimension,
+                height * DrawingNumericConstants.riverShortStart,
+                width * DrawingNumericConstants.riverLongDimension,
+                height * DrawingNumericConstants.riverShortDimension));
+            rivers.put(River.lake, Ellipse2D.Double(
+                width * DrawingNumericConstants.lakeStart,
+                height * DrawingNumericConstants.lakeStart,
+                width * DrawingNumericConstants.riverLongDimension,
+                height * DrawingNumericConstants.riverLongDimension));
+            rivers.put(River.north, Rectangle2D.Double(
+                width * DrawingNumericConstants.riverShortStart, 0.0,
+                width * DrawingNumericConstants.riverShortDimension,
+                height * DrawingNumericConstants.riverLongDimension));
+            rivers.put(River.south, Rectangle2D.Double(
+                width * DrawingNumericConstants.riverShortStart,
+                height * DrawingNumericConstants.riverLongDimension,
+                width * DrawingNumericConstants.riverShortDimension,
+                height * DrawingNumericConstants.riverLongDimension));
+            rivers.put(River.west, Rectangle2D.Double(0.0,
+                height * DrawingNumericConstants.riverShortStart,
+                width * DrawingNumericConstants.riverLongDimension,
+                height * DrawingNumericConstants.riverShortDimension));
+            fortress = Rectangle2D.Double(
+                (width * DrawingNumericConstants.fortStart) - 1.0,
+                (height * DrawingNumericConstants.fortStart) - 1.0,
+                width * DrawingNumericConstants.fortSize,
+                height * DrawingNumericConstants.fortSize);
+            unit = Ellipse2D.Double(width * DrawingNumericConstants.unitSize,
+                height * DrawingNumericConstants.unitSize,
+                width * DrawingNumericConstants.unitSize,
+                height * DrawingNumericConstants.unitSize);
+            event = Polygon(
+                createJavaIntArray({
+                    halfEven(width * DrawingNumericConstants.eventStart)
+                        .plus(approximatelyZero).integer,
+                    halfEven(width * DrawingNumericConstants.eventOther)
+                        .plus(approximatelyZero).integer, width}),
+                createJavaIntArray({0,
+                    halfEven(height * DrawingNumericConstants.eventOther)
+                        .plus(approximatelyZero).integer,
+                    halfEven(height * DrawingNumericConstants.eventOther)
+                        .plus(approximatelyZero).integer}), 3);
+        }
+    }
+    updateCache(2, 2);
+    shared actual void drawTileTranslated(Graphics pen, IMapNG map, Point location,
+            Integer width, Integer height) {
+        assert (is Graphics2D pen);
+        TileType terrain = map.getBaseTerrain(location);
+        pen.color = getTileColor(map.dimensions().version, terrain);
+        pen.fill(backgroundShape);
+        pen.color = Color.black;
+        pen.draw(backgroundShape);
+        if (TileType.notVisible != terrain) {
+            pen.color = Color.\iBLUE;
+            for (river in map.getRivers(location)) {
+                if (exists shape = rivers.get(river)) {
+                    pen.fill(shape);
+                }
+                if (hasAnyForts(map, location)) {
+                    pen.color = fortColor;
+                    pen.fill(fortress);
+                }
+                if (hasAnyUnits(map, location)) {
+                    pen.color = unitColor;
+                    pen.fill(unit);
+                }
+                if (hasEvent(map, location)) {
+                    pen.color = eventColor;
+                    pen.fill(event);
+                }
+            }
+        }
+    }
+    shared actual void drawTile(Graphics pen, IMapNG map, Point location,
+            Coordinate coordinates, Coordinate dimensions) {
+        Graphics context = pen.create(coordinates.x, coordinates.y, dimensions.x,
+            dimensions.y);
+        try {
+            drawTileTranslated(context, map, location, dimensions.x, dimensions.y);
+        } finally {
+            context.dispose();
+        }
+    }
+}
+"A [[TileDrawHelper]] for version-1 maps that draws directly instead of creating Shapes,
+ which proves more efficent in practice."
+class DirectTileDrawHelper() extends AbstractTileDrawHelper() {
+    void drawRiver(Graphics pen, River river, Integer xCoordinate,
+            Integer yCoordinate, Integer width, Integer height) {
+        // TODO: Add some small number to floats before .integer?
+        switch (river)
+        case (River.east) {
+            pen.fillRect(
+                halfEven(width * DrawingNumericConstants.riverLongDimension)
+                    .integer + xCoordinate,
+                halfEven(height * DrawingNumericConstants.riverShortStart)
+                    .integer + yCoordinate,
+                halfEven(width * DrawingNumericConstants.riverLongDimension)
+                    .integer,
+                halfEven(height * DrawingNumericConstants.riverShortDimension)
+                    .integer);
+        }
+        case (River.lake) {
+            pen.fillOval(
+                halfEven(width * DrawingNumericConstants.lakeStart).integer + xCoordinate,
+                halfEven(height * DrawingNumericConstants.lakeStart).integer
+                    + yCoordinate,
+                halfEven(width * DrawingNumericConstants.riverLongDimension).integer,
+                halfEven(height * DrawingNumericConstants.riverLongDimension).integer);
+        }
+        case (River.north) {
+            pen.fillRect(
+                halfEven(width * DrawingNumericConstants.riverShortStart).integer
+                    + xCoordinate, yCoordinate,
+                halfEven(width * DrawingNumericConstants.riverShortDimension).integer,
+                halfEven(height * DrawingNumericConstants.riverLongDimension).integer);
+        }
+        case (River.south) {
+            pen.fillRect(
+                halfEven(width * DrawingNumericConstants.riverShortStart).integer
+                    + xCoordinate,
+                halfEven(height * DrawingNumericConstants.riverLongDimension).integer +
+                    yCoordinate,
+                halfEven(width * DrawingNumericConstants.riverShortDimension).integer,
+                halfEven(height * DrawingNumericConstants.riverLongDimension).integer);
+        }
+        case (River.west) {
+            pen.fillRect(xCoordinate,
+                halfEven(height * DrawingNumericConstants.riverShortStart).integer +
+                    yCoordinate,
+                halfEven(width * DrawingNumericConstants.riverLongDimension).integer,
+                halfEven(height * DrawingNumericConstants.riverShortDimension).integer);
+        }
+    }
+    shared actual void drawTile(Graphics pen, IMapNG map, Point location,
+            Coordinate coordinates, Coordinate dimensions) {
+        Graphics context = pen.create();
+        try {
+            context.color = getTileColor(map.dimensions().version,
+                map.getBaseTerrain(location));
+            context.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
+            context.color = Color.black;
+            context.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
+            if (TileType.notVisible == map.getBaseTerrain(location)) {
+                return;
+            }
+            context.color = Color.\iBLUE;
+            for (river in map.getRivers(location)) {
+                drawRiver(context, river, coordinates.x, coordinates.y, dimensions.x,
+                    dimensions.y);
+            }
+            if (hasAnyForts(map, location)) {
+                context.color = fortColor;
+                context.fillRect(
+                    halfEven(dimensions.x * DrawingNumericConstants.fortStart - 1.0)
+                        .integer + coordinates.x,
+                    halfEven(dimensions.y * DrawingNumericConstants.fortStart - 1.0)
+                        .integer + coordinates.y,
+                    halfEven(dimensions.x * DrawingNumericConstants.fortSize).integer,
+                    halfEven(dimensions.y * DrawingNumericConstants.fortSize).integer);
+            }
+            if (hasAnyUnits(map, location)) {
+                context.color = unitColor;
+                context.fillOval(
+                    halfEven(dimensions.x * DrawingNumericConstants.unitSize).integer +
+                        coordinates.x,
+                    halfEven(dimensions.y * DrawingNumericConstants.unitSize).integer +
+                        coordinates.y,
+                    halfEven(dimensions.x * DrawingNumericConstants.unitSize).integer,
+                    halfEven(dimensions.y * DrawingNumericConstants.unitSize).integer);
+            } // Java version had else-if here, not just if
+            if (hasEvent(map, location)) {
+                context.color = eventColor;
+                context.fillPolygon(
+                    createJavaIntArray({
+                        halfEven(dimensions.x *
+                            DrawingNumericConstants.eventStart).integer + coordinates.x,
+                        halfEven(dimensions.x *
+                            DrawingNumericConstants.eventOther).integer + coordinates.x,
+                        dimensions.x + coordinates.x}),
+                    createJavaIntArray({coordinates.y,
+                        halfEven(dimensions.y *
+                            DrawingNumericConstants.eventOther).integer + coordinates.y,
+                        halfEven(dimensions.y *
+                            DrawingNumericConstants.eventOther).integer + coordinates.y}),
+                    3);
+            }
+        } finally {
+            context.dispose();
+        }
+    }
+    shared actual void drawTileTranslated(Graphics pen, IMapNG map,
+            Point location, Integer width, Integer height) =>
+        drawTile(pen, map, location, PointFactory.coordinate(0, 0),
+            PointFactory.coordinate(width, height));
+}
 "A version-1 tile-draw-helper."
-TileDrawHelper verOneHelper = DirectTileDrawHelper();
+TileDrawHelper verOneHelper = DirectTileDrawHelper(); // CachingTileDrawHelper();
 "A factory method for [[TileDrawHelper]]s."
 todo("split so ver-1 omits ZOF etc. and ver-2 requires it as non-null?")
 TileDrawHelper tileDrawHelperFactory(

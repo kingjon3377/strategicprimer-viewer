@@ -41,8 +41,6 @@ import model.viewer {
 
 import view.map.main {
     TileDrawHelper,
-    CachingTileDrawHelper,
-    DirectTileDrawHelper,
     Ver2TileDrawHelper
 }
 import view.util {
