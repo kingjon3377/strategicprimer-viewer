@@ -17,14 +17,16 @@ import javax.swing {
     KeyStroke,
     Action,
     JComponent,
-    InputMap
+    InputMap,
+    JMenuItem
 }
 import java.awt {
     Component,
     Container,
     Color,
     Dimension,
-    BorderLayout
+    BorderLayout,
+    Toolkit
 }
 import lovelace.util.common {
     todo
@@ -271,4 +273,42 @@ shared void createHotKey(
         inputMap.put(key, action);
     }
     component.actionMap.put(action, handler);
+}
+"An enumeration of possible modifiers to hot-keys."
+shared class HotKeyModifier {
+    "The mask to OR with the default mask when creating the hot-key."
+    shared Integer mask;
+    shared new shift { mask = InputEvent.shiftDownMask; }
+    shared new ctrl { mask = InputEvent.ctrlDownMask; }
+    shared new meta { mask = InputEvent.metaDownMask; }
+}
+"Create a key-stroke representing a hot-key accelerator."
+shared KeyStroke createAccelerator(Integer key, HotKeyModifier* modifiers) {
+    variable Integer mask = Toolkit.defaultToolkit.menuShortcutKeyMask;
+    for (modifier in modifiers) {
+        mask = mask.or(modifier.mask);
+    }
+    return KeyStroke.getKeyStroke(key, mask);
+}
+"Create a menu item."
+todo("Take accelerators as a sequenced parameter at the end, to simplify callers who want
+      more than one, and when multiple provided handle them properly.")
+shared JMenuItem createMenuItem(
+        "The text of the item"
+        String item,
+        "The mnemonic key"
+        Integer mnemonic,
+        "The keyboard accelerator (hot-key), if one is wanted"
+        KeyStroke? accelerator,
+        "The description to show to accessibility software."
+        String description,
+        "The listener to handle when the item is selected."
+        Anything(ActionEvent) listener) {
+    JMenuItem menuItem = JMenuItem(item, mnemonic);
+    menuItem.accelerator = accelerator;
+    menuItem.accessibleContext.accessibleDescription = description;
+    menuItem.addActionListener(listener);
+    menuItem.getInputMap(JComponent.whenInFocusedWindow).put(accelerator,
+        menuItem.action);
+    return menuItem;
 }
