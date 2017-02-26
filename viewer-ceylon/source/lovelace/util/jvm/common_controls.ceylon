@@ -18,7 +18,8 @@ import javax.swing {
     Action,
     JComponent,
     InputMap,
-    JMenuItem
+    JMenuItem,
+    JLabel
 }
 import java.awt {
     Component,
@@ -32,7 +33,10 @@ import lovelace.util.common {
     todo
 }
 import java.lang {
-    IllegalStateException
+    IllegalStateException,
+    JDouble=Double,
+    JInteger=Integer,
+    JString=String
 }
 import ceylon.interop.java { javaString }
 "A factory method to construct a button and add listeners to it in one step."
@@ -311,4 +315,22 @@ shared JMenuItem createMenuItem(
     menuItem.getInputMap(JComponent.whenInFocusedWindow).put(accelerator,
         menuItem.action);
     return menuItem;
+}
+String formatter(String format, Object* args) {
+    Object mapper(Object arg) {
+        switch (arg)
+        case (is Integer) { return JInteger(arg); }
+        case (is String) { return javaString(arg); }
+        case (is Float) { return JDouble(arg); }
+        else { return arg; }
+    }
+    return JString.format(format, *args.map(mapper));
+}
+"Combines JLabel with [[JString.format()]]"
+todo("Find an equivalent text-formatting API in the Ceylon SDK, if there is one.")
+shared class FormattedLabel(String format, Object* args)
+        extends JLabel(formatter(format, *args)) {
+    shared void setArgs(Object* newArgs) {
+        text = formatter(format, *newArgs);
+    }
 }

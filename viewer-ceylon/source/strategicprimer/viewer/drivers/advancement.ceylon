@@ -69,9 +69,6 @@ import javax.swing {
     JButton,
     BoxLayout
 }
-import view.util {
-    FormattedLabel
-}
 import strategicprimer.viewer.about {
     aboutDialog
 }
@@ -114,7 +111,8 @@ import lovelace.util.jvm {
     boxPanel,
     BorderedPanel,
     verticalSplit,
-    horizontalSplit
+    horizontalSplit,
+    FormattedLabel
 }
 import model.map.fixtures {
     UnitMember

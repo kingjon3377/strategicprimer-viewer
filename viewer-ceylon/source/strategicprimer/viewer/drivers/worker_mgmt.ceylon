@@ -36,9 +36,6 @@ import javax.swing {
     BorderFactory,
     SwingConstants
 }
-import view.util {
-    FormattedLabel
-}
 import ceylon.interop.java {
     CeylonIterable,
     JavaList
@@ -164,7 +161,8 @@ import lovelace.util.jvm {
     BorderedPanel,
     verticalSplit,
     horizontalSplit,
-    createHotKey
+    createHotKey,
+    FormattedLabel
 }
 import java.awt.datatransfer {
     Transferable,

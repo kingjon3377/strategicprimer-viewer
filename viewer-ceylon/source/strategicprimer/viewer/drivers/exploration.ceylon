@@ -35,8 +35,7 @@ import javax.swing {
     ListModel
 }
 import view.util {
-    SystemOut,
-    FormattedLabel
+    SystemOut
 }
 import model.exploration.old {
     ExplorationRunner,
@@ -176,7 +175,8 @@ import lovelace.util.jvm {
     verticalSplit,
     shuffle,
     ListModelWrapper,
-    createHotKey
+    createHotKey,
+    FormattedLabel
 }
 import view.map.main {
     TileDrawHelperFactory,
@@ -579,7 +579,7 @@ SPFrame explorationFrame(IExplorationModel model,
                         button.repaint();
                     }
                 }
-                locLabel.setArgs(JInteger(selPoint.row), JInteger(selPoint.col));
+                locLabel.setArgs(selPoint.row, selPoint.col);
             }
             MutableList<CompletionListener> completionListeners =
                     ArrayList<CompletionListener>();

@@ -53,9 +53,6 @@ import javax.swing {
     JScrollPane,
     JComponent
 }
-import view.util {
-    FormattedLabel
-}
 import model.listeners {
     PlayerChangeListener
 }
@@ -77,7 +74,8 @@ import lovelace.util.jvm {
     BoxAxis,
     BoxPanel,
     boxPanel,
-    verticalSplit
+    verticalSplit,
+    FormattedLabel
 }
 import java.nio.file {
     JPath=Path

@@ -1,7 +1,7 @@
 import java.lang {
     IllegalStateException,
     IllegalArgumentException,
-    ObjectArray
+    JString=String, JInteger=Integer,JDouble=Double
 }
 import model.misc {
     IDriverModel,
@@ -51,7 +51,8 @@ import javax.swing {
     JMenuBar,
     JMenu,
     JMenuItem,
-    InputMap
+    InputMap,
+    JLabel
 }
 import java.awt {
     Dimension,

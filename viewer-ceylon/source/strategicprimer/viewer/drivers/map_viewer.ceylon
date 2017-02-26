@@ -89,9 +89,6 @@ import java.awt.event {
     KeyEvent,
     ActionListener
 }
-import view.util {
-    FormattedLabel
-}
 import util {
     OnMac,
     IsNumeric,
@@ -185,7 +182,8 @@ import lovelace.util.jvm {
     BorderedPanel,
     horizontalSplit,
     verticalSplit,
-    createHotKey
+    createHotKey,
+    FormattedLabel
 }
 import model.map.fixtures.mobile {
     IUnit,
