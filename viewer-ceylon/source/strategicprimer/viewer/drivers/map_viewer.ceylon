@@ -29,8 +29,7 @@ import view.map.main {
     FixtureFilterTransferHandler,
     TileDrawHelper,
     DirectionSelectionChanger,
-    TileUIHelper,
-    AbstractTileDrawHelper
+    TileUIHelper
 }
 import javax.swing {
     SwingUtilities,
@@ -615,14 +614,20 @@ class DrawingNumericConstants {
     shared static Float eventStart = 3.0 / 4.0;
     shared new () { }
 }
+"A fortress is drawn in brown."
+Color fortColor = Color(160, 82, 45);
+"Units are drawn in purple."
+Color unitColor = Color(148, 0, 211);
+"Events are drawn in pink."
+Color eventColor = Color.pink;
 "A class to do the drawing of a tile, whether on a component representing a single tile or
  a single-component map, using cached [[Shape]]s. Note that this is limited to version-1
  maps."
-class CachingTileDrawHelper extends AbstractTileDrawHelper {
+class CachingTileDrawHelper satisfies TileDrawHelper {
     static Float approximatelyZero = 0.000001;
     static Boolean areFloatsDifferent(Float first, Float second) =>
             (first - second).magnitude > approximatelyZero;
-    shared new () extends AbstractTileDrawHelper() {}
+    shared new () {}
     "Shapes representing the rivers on the tile."
     MutableMap<River, Shape> rivers = HashMap<River, Shape>();
     "A cached copy of the background."
@@ -633,6 +638,8 @@ class CachingTileDrawHelper extends AbstractTileDrawHelper {
     variable Shape fortress = event;
     "Shape representing the unit that might be on the tile."
     variable Shape unit = event;
+    "An object to help with colors."
+    TileUIHelper colorHelper = TileUIHelper();
     "Check, and possibly regenerate, the cache: regenerate if the width and height have
      changed."
     void updateCache(Integer width, Integer height) {
@@ -690,7 +697,7 @@ class CachingTileDrawHelper extends AbstractTileDrawHelper {
             Integer width, Integer height) {
         assert (is Graphics2D pen);
         TileType terrain = map.getBaseTerrain(location);
-        pen.color = getTileColor(map.dimensions().version, terrain);
+        pen.color = colorHelper.get(map.dimensions().version, terrain);
         pen.fill(backgroundShape);
         pen.color = Color.black;
         pen.draw(backgroundShape);
@@ -728,7 +735,9 @@ class CachingTileDrawHelper extends AbstractTileDrawHelper {
 }
 "A [[TileDrawHelper]] for version-1 maps that draws directly instead of creating Shapes,
  which proves more efficent in practice."
-class DirectTileDrawHelper() extends AbstractTileDrawHelper() {
+class DirectTileDrawHelper() satisfies TileDrawHelper {
+    "An object to help with colors."
+    TileUIHelper colorHelper = TileUIHelper();
     void drawRiver(Graphics pen, River river, Integer xCoordinate,
             Integer yCoordinate, Integer width, Integer height) {
         // TODO: Add some small number to floats before .integer?
@@ -780,7 +789,7 @@ class DirectTileDrawHelper() extends AbstractTileDrawHelper() {
             Coordinate coordinates, Coordinate dimensions) {
         Graphics context = pen.create();
         try {
-            context.color = getTileColor(map.dimensions().version,
+            context.color = colorHelper.get(map.dimensions().version,
                 map.getBaseTerrain(location));
             context.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
             context.color = Color.black;
@@ -849,7 +858,7 @@ class Ver2TileDrawHelper(
         "The object to query about whether to display a fixture."
         Boolean(TileFixture) filter,
         "A series of matchers to use to determine what's on top."
-        {FixtureMatcher*} matchers) extends AbstractTileDrawHelper() {
+        {FixtureMatcher*} matchers) satisfies TileDrawHelper {
     "A comparator to put fixtures in order by the order of the first fixture that matches
      them."
     Comparison compareFixtures(TileFixture one, TileFixture two) {
@@ -870,6 +879,8 @@ class Ver2TileDrawHelper(
     ImageLoader loader = ImageLoader.loader;
     "Images we've already determined aren't there."
     MutableSet<String> missingFiles = HashSet<String>();
+    "An object to help with colors."
+    TileUIHelper colorHelper = TileUIHelper();
     "A mapping from river-sets to filenames."
     Map<Set<River>, String> riverFiles = HashMap<Set<River>, String> {
         HashSet<River> { }->"riv00.png", HashSet { River.north }->"riv01.png",
@@ -944,12 +955,12 @@ class Ver2TileDrawHelper(
                     .filter((fixture) => fixture != top)
                     .filter((fixture) => fixture is TerrainFixture)) {
                 assert (is TerrainFixture topTerrain);
-                return helper.getFeatureColor(topTerrain);
+                return colorHelper.getFeatureColor(topTerrain);
             } else if (map.isMountainous(location)) {
                 return TileUIHelper.mountainColor;
             }
         }
-        return getTileColor(map.dimensions().version,
+        return colorHelper.get(map.dimensions().version,
             map.getBaseTerrain(location));
     }
     "Return either a loaded image or, if the specified image fails to load, the generic
@@ -993,7 +1004,7 @@ class Ver2TileDrawHelper(
         if (needsFixtureColor(map, location)) {
             pen.color = getFixtureColor(map, location);
         } else {
-            pen.color = getTileColor(map.dimensions().version,
+            pen.color = colorHelper.get(map.dimensions().version,
                 map.getBaseTerrain(location));
         }
         pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
