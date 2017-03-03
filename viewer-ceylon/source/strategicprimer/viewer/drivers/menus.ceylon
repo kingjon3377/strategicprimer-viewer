@@ -8,7 +8,9 @@ import model.listeners {
 }
 import ceylon.collection {
     MutableList,
-    ArrayList
+    ArrayList,
+    MutableMap,
+    HashMap
 }
 import model.misc {
     IDriverModel
@@ -18,7 +20,8 @@ import model.map {
 }
 import javax.swing {
     JOptionPane,
-    JPopupMenu
+    JPopupMenu,
+    SwingUtilities
 }
 import ceylon.interop.java {
     CeylonIterable,
@@ -67,6 +70,35 @@ class PlayerChangeMenuListener(IDriverModel model)
             for (listener in listeners) {
                 listener.playerChanged(currentPlayer, retval);
             }
+        }
+    }
+}
+"A class to match menu item selections to the listeners to handle them. Note that at
+ most one listener will be notified of any given action-command; subsequent registrations
+ override previous ones."
+class MenuBroker() satisfies ActionListener {
+    """The mapping from "actions" to listeners to handle them."""
+    MutableMap<String, Anything(ActionEvent)> mapping = HashMap<String, Anything(ActionEvent)>();
+    "Rgister a listener for a series of action commands."
+    shared void register(ActionListener|Anything(ActionEvent) listener, String* actions) {
+        Anything(ActionEvent) actual;
+        if (is ActionListener listener) {
+            actual = listener.actionPerformed;
+        } else {
+            actual = listener;
+        }
+        for (action in actions) {
+            mapping.put(action.lowercased, actual);
+        }
+    }
+    "Handle an event by passing it to the listener that's registered to handle its action
+     command. If none is registered, log a warning."
+    shared actual void actionPerformed(ActionEvent event) {
+        String action = event.actionCommand;
+        if (exists listener = mapping.get(action.lowercased)) {
+            SwingUtilities.invokeLater(() => listener(event));
+        } else {
+            log.warn("Unhandled action: ``action``");
         }
     }
 }

@@ -8,8 +8,7 @@ import ceylon.collection {
 import controller.map.misc {
     ICLIHelper,
     IDFactoryFiller,
-    IDRegistrar,
-    MenuBroker
+    IDRegistrar
 }
 import model.misc {
     IDriverModel,

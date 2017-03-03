@@ -1,6 +1,5 @@
 import controller.map.misc {
     ICLIHelper,
-    MenuBroker,
     WindowCloser
 }
 import model.misc {
