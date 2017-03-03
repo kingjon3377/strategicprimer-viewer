@@ -11,8 +11,7 @@ import controller.map.misc {
     ICLIHelper
 }
 import util {
-    Warning,
-    ActionWrapper
+    Warning
 }
 import java.nio.file {
     JPaths = Paths, JPath = Path
@@ -68,7 +67,8 @@ import lovelace.util.jvm {
     HotKeyModifier,
     createAccelerator,
     createMenuItem,
-    platform
+    platform,
+    ActionWrapper
 }
 import model.viewer {
     IViewerModel

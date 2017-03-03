@@ -73,7 +73,6 @@ import model.map {
     HasPortrait
 }
 import util {
-    ActionWrapper,
     Pair
 }
 import java.awt.event {
@@ -160,7 +159,8 @@ import lovelace.util.jvm {
     horizontalSplit,
     createHotKey,
     FormattedLabel,
-    platform
+    platform,
+    ActionWrapper
 }
 import java.awt.datatransfer {
     Transferable,

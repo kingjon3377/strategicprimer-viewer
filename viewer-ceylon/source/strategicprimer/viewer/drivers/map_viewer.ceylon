@@ -92,7 +92,6 @@ import java.awt.event {
 }
 import util {
     IsNumeric,
-    ActionWrapper,
     ResourceInputStream,
     ReorderableListModel,
     IntTransferable,
@@ -197,7 +196,8 @@ import lovelace.util.jvm {
     verticalSplit,
     createHotKey,
     FormattedLabel,
-    platform
+    platform,
+    ActionWrapper
 }
 import model.map.fixtures.mobile {
     IUnit,
