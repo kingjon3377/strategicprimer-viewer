@@ -27,8 +27,7 @@ import model.viewer {
 import view.map.main {
     FixtureFilterList,
     FixtureFilterTransferHandler,
-    DirectionSelectionChanger,
-    TileUIHelper
+    DirectionSelectionChanger
 }
 import javax.swing {
     SwingUtilities,
@@ -95,8 +94,8 @@ import java.awt.event {
 import util {
     OnMac,
     IsNumeric,
-    ImageLoader,
-    ActionWrapper
+    ActionWrapper,
+    ResourceInputStream
 }
 import java.lang {
     JIterable = Iterable, JString=String,
@@ -237,6 +236,22 @@ import view.util {
 }
 import model.map.fixtures.towns {
     Fortress
+}
+import model.map.fixtures.terrain {
+    Forest,
+    Oasis,
+    Sandbar,
+    Hill
+}
+import ceylon.language.meta {
+    type
+}
+import ceylon.language.meta.model {
+    ClassModel,
+    ClassOrInterface
+}
+import javax.imageio {
+    ImageIO
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
@@ -637,6 +652,150 @@ interface TileDrawHelper {
     shared default Boolean hasEvent(IMapNG map, Point location) =>
             map.streamAllFixtures(location).anyMatch((fixture) => fixture is IEvent);
 }
+"An object encapsulating the mapping from tile-types to colors."
+object colorHelper {
+    String wrap(String wrapped) => "<html<p>``wrapped``</p></html>";
+    "Descriptions of the types."
+    Map<TileType, String> descriptions = HashMap {
+        TileType.borealForest->wrap("Boreal Forest"),
+        TileType.desert->wrap("Desert"),
+        TileType.jungle->wrap("Jungle"),
+        TileType.mountain->wrap("Mountains"),
+        TileType.notVisible->wrap("Unknown"),
+        TileType.ocean->wrap("Ocean"),
+        TileType.plains->wrap("Plains"),
+        TileType.temperateForest->wrap("Temperate Forest"),
+        TileType.tundra->wrap("Tundra"),
+        TileType.steppe->wrap("Steppe")
+    };
+    "A map from types of features to the colors they can make the tile be. Used to
+      show that a tile is forested, e.g., even when that is normally represented by
+       an icon and there's a higher icon on the tile."
+    Map<ClassOrInterface<TileFixture>, Color> featureColors = HashMap {
+        `Forest`->Color(0, 117, 0),
+        `Oasis`->Color(72, 218, 164),
+        `Sandbar`->Color(249, 233, 28),
+        `Hill`->Color(141, 182, 0)
+    };
+    "A map from map versions to maps from tile-types to colors."
+    Map<Integer, Map<TileType, Color>> colors = HashMap {
+        1->HashMap {
+            TileType.borealForest->Color(72, 218, 164),
+            TileType.desert->Color(249, 233, 28),
+            TileType.jungle->Color(229, 46, 46),
+            TileType.mountain->Color(249, 137, 28),
+            TileType.notVisible->Color.white,
+            TileType.ocean->Color.\iBLUE,
+            TileType.plains->Color(0, 117, 0),
+            TileType.temperateForest->Color(72, 250, 72),
+            TileType.tundra->Color(153, 153, 153)
+        },
+        2->HashMap {
+            TileType.desert->Color(249, 233, 28),
+            TileType.jungle->Color(229, 46, 46),
+            TileType.notVisible->Color.white,
+            TileType.ocean->Color.\iBLUE,
+            TileType.plains->Color(72, 218, 164),
+            TileType.tundra->Color(153, 153, 153),
+            TileType.steppe->Color(72, 100, 72)
+        }
+    };
+    "Whether the given map version supports the given tile type."
+    shared Boolean supportsType(Integer version, TileType type) {
+        if (exists map = colors.get(version), exists color = map.get(type)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    "Get the color to use for the given tile type in the given map version. Throws
+     if the given version does not support that tile type."
+    todo("Return null instead?")
+    shared Color get(Integer version, TileType type) {
+        if (exists map = colors.get(version)) {
+            if (exists color = map.get(type)) {
+                return color;
+            } else {
+                throw IllegalArgumentException(
+                    "``type`` is not a terrain type version ``version`` can handle");
+            }
+        } else {
+            throw IllegalArgumentException("Not a supported version");
+        }
+    }
+    "Get a String (HTML) representation of the given terrain type."
+    todo("Return null instead of throwing on unhandled types?")
+    shared String getDescription(TileType type) {
+        if (exists retval = descriptions.get(type)) {
+            return retval;
+        } else {
+            throw IllegalArgumentException("No description for that type found");
+        }
+    }
+    "Get the color that a fixture should turn the tile if it's not on top."
+    todo("Return null instead of throwing on unhandled fixtures?")
+    shared Color getFeatureColor(TileFixture fixture) {
+        if (exists color = featureColors.get(type(fixture))) {
+            return color;
+        } else {
+            throw IllegalArgumentException("Not a kind of fixture we can handle");
+        }
+    }
+    "The color to use for background mountains."
+    shared Color mountainColor = Color(249, 137, 28);
+}
+"The size of fixture icons."
+Integer fixtureIconSize = 28;
+"Create a very simple background icon for a terrain type"
+Icon createTerrainIcon(TileType tileType) {
+    BufferedImage retval = BufferedImage(fixtureIconSize, fixtureIconSize,
+        BufferedImage.typeIntArgb);
+    Graphics pen = retval.createGraphics();
+    if (colorHelper.supportsType(2, tileType)) {
+        pen.color = colorHelper.get(2, tileType);
+    }
+    pen.fillRect(0, 0, retval.width, retval.height);
+    pen.dispose();
+    return ImageIcon(retval);
+}
+"An icon cache."
+MutableMap<String, Icon> iconCache = HashMap<String, Icon> {
+    for (tileType in TileType.values())
+        "``tileType.toXML()``.png"->createTerrainIcon(tileType)
+};
+"A cache of loaded images."
+MutableMap<String, Image> imageCache = HashMap<String, Image>();
+"Load an image from the cache, or if not in it, from file (and add it to the cache)"
+Image loadImage(String file) {
+    if (exists cached = imageCache.get(file)) {
+        return cached;
+    } else {
+        try (res = ResourceInputStream("images/``file``")) {
+            if (exists image = ImageIO.read(res)) {
+                imageCache.put(file, image);
+                return image;
+            } else {
+                throw IOException("No reader could read the images/``file``");
+            }
+        }
+    }
+}
+"Load an icon from cache, or if not in the cache from file (adding it to the cache)"
+Icon loadIcon(String file) {
+    if (exists cached = iconCache.get(file)) {
+        return cached;
+    } else {
+        Image orig = loadImage(file);
+        BufferedImage temp = BufferedImage(fixtureIconSize, fixtureIconSize,
+            BufferedImage.typeIntArgb);
+        Graphics pen = temp.graphics;
+        pen.drawImage(temp, 0, 0, temp.width, temp.height);
+        pen.dispose();
+        Icon icon = ImageIcon(temp);
+        iconCache.put(file, icon);
+        return icon;
+    }
+}
 "A class to hold numeric constants useful for drawing tiles' contents."
 class DrawingNumericConstants {
     "The part of a tile's width or height that a river's short dimension should occupy."
@@ -683,8 +842,6 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
     variable Shape fortress = event;
     "Shape representing the unit that might be on the tile."
     variable Shape unit = event;
-    "An object to help with colors."
-    TileUIHelper colorHelper = TileUIHelper();
     "Check, and possibly regenerate, the cache: regenerate if the width and height have
      changed."
     void updateCache(Integer width, Integer height) {
@@ -781,8 +938,6 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
 "A [[TileDrawHelper]] for version-1 maps that draws directly instead of creating Shapes,
  which proves more efficent in practice."
 class DirectTileDrawHelper() satisfies TileDrawHelper {
-    "An object to help with colors."
-    TileUIHelper colorHelper = TileUIHelper();
     void drawRiver(Graphics pen, River river, Integer xCoordinate,
             Integer yCoordinate, Integer width, Integer height) {
         // TODO: Add some small number to floats before .integer?
@@ -920,12 +1075,8 @@ class Ver2TileDrawHelper(
         }
         return equal;
     }
-    "Image cache."
-    ImageLoader loader = ImageLoader.loader;
     "Images we've already determined aren't there."
     MutableSet<String> missingFiles = HashSet<String>();
-    "An object to help with colors."
-    TileUIHelper colorHelper = TileUIHelper();
     "A mapping from river-sets to filenames."
     Map<Set<River>, String> riverFiles = HashMap<Set<River>, String> {
         HashSet<River> { }->"riv00.png", HashSet { River.north }->"riv01.png",
@@ -977,7 +1128,7 @@ class Ver2TileDrawHelper(
     }
     for (file in {"trees.png", "mountain.png"}) {
         try {
-            loader.loadImage(file);
+            loadImage(file);
         } catch (IOException except) {
             logLoadingError(except, file, false);
         }
@@ -985,7 +1136,7 @@ class Ver2TileDrawHelper(
     "Create the fallback image---made a method so the object reference can be immutable"
     Image createFallbackImage() {
         try {
-            return loader.loadImage("event_fallback.png");
+            return loadImage("event_fallback.png");
         } catch (IOException except) {
             logLoadingError(except, "event_fallback.png", true);
             return BufferedImage(1, 1, BufferedImage.typeIntArgb);
@@ -1002,7 +1153,7 @@ class Ver2TileDrawHelper(
                 assert (is TerrainFixture topTerrain);
                 return colorHelper.getFeatureColor(topTerrain);
             } else if (map.isMountainous(location)) {
-                return TileUIHelper.mountainColor;
+                return colorHelper.mountainColor;
             }
         }
         return colorHelper.get(map.dimensions().version,
@@ -1012,7 +1163,7 @@ class Ver2TileDrawHelper(
      one."
     Image getImage(String filename) {
         try {
-            return loader.loadImage(filename);
+            return loadImage(filename);
         } catch (FileNotFoundException|NoSuchFileException except) {
             if (!missingFiles.contains(filename)) {
                 log.error("images/``filename`` not found");
@@ -1770,7 +1921,7 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
             return defaultFixtureIcon;
         }
         try {
-            return ImageLoader.loader.loadIcon(actualImage);
+            return loadIcon(actualImage);
         } catch (FileNotFoundException|NoSuchFileException except) {
             log.error("image file images/``actualImage`` not found");
             log.debug("With stack trace", except);
@@ -1859,7 +2010,6 @@ SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
  for its fixtures."
 JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         variable Integer version, IDriverModel model) {
-    TileUIHelper helper = TileUIHelper();
     JComponent keyElement(Integer version, TileType type) {
         JPanel&BoxPanel retval = boxPanel(BoxAxis.lineAxis);
         retval.addGlue();
@@ -1867,10 +2017,10 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
         panel.addRigidArea(4);
         Integer tileSize = TileViewSize.scaleZoom(ViewerModel.defZoomLevel, version);
-        panel.add(KeyElementComponent(helper.get(version, type), Dimension(4, 4),
+        panel.add(KeyElementComponent(colorHelper.get(version, type), Dimension(4, 4),
             Dimension(8, 8), Dimension(tileSize, tileSize)));
         panel.addRigidArea(4);
-        JLabel label = JLabel(helper.getDescription(type));
+        JLabel label = JLabel(colorHelper.getDescription(type));
         panel.add(label);
         panel.addRigidArea(4);
         retval.add(panel);
@@ -1910,7 +2060,6 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                 CeylonIterable(model.map.players()));
     retval.delegate = fixtureListObject;
     object portrait extends JComponent() satisfies ListSelectionListener {
-        ImageLoader loader = ImageLoader.loader;
         variable Image? portrait = null;
         shared actual void paintComponent(Graphics pen) {
             super.paintComponent(pen);
@@ -1927,7 +2076,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                     String portraitName = selectedValue.portrait;
                     if (!portraitName.empty) {
                         try {
-                            portrait = loader.loadImage(portraitName);
+                            portrait = loadImage(portraitName);
                         } catch (IOException except) {
                             log.warn("I/O error loading portrait", except);
                         }

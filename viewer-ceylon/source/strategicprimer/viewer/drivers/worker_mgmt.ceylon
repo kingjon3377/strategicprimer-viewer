@@ -76,8 +76,7 @@ import model.map {
 import util {
     OnMac,
     ActionWrapper,
-    Pair,
-    ImageLoader
+    Pair
 }
 import java.awt.event {
     KeyEvent,
@@ -309,7 +308,7 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             Icon defaultFixtureIcon = createDefaultFixtureIcon();
             Icon? getIconForFile(String filename) {
                 try {
-                    return ImageLoader.loader.loadIcon(filename);
+                    return loadIcon(filename);
                 }  catch (FileNotFoundException|NoSuchFileException except) {
                     log.error("Image file images/``filename`` not found`");
                     log.debug("with stack trace", except);
@@ -952,8 +951,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             String portraitName = local.portrait;
             if (!portraitName.empty) {
                 try {
-                    portraitComponent.portrait = ImageLoader.loader
-                        .loadImage(portraitName);
+                    portraitComponent.portrait = loadImage(portraitName);
                 } catch (IOException except) {
                     log.warn("Failed to load portrait", except);
                 }
