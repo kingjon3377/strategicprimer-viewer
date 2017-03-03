@@ -25,7 +25,6 @@ import model.viewer {
     TileTypeFixture
 }
 import view.map.main {
-    FixtureFilterList,
     FixtureFilterTransferHandler,
     DirectionSelectionChanger
 }
@@ -56,7 +55,9 @@ import javax.swing {
     Icon,
     ImageIcon,
     InputMap,
-    ActionMap
+    ActionMap,
+    ListModel,
+    DefaultListModel
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -95,7 +96,8 @@ import util {
     OnMac,
     IsNumeric,
     ActionWrapper,
-    ResourceInputStream
+    ResourceInputStream,
+    ReorderableListModel
 }
 import java.lang {
     JIterable = Iterable, JString=String,
@@ -133,11 +135,14 @@ import ceylon.interop.java {
     JavaList,
     javaString,
     createJavaObjectArray,
-    createJavaIntArray
+    createJavaIntArray,
+    javaClass,
+    javaClassFromInstance
 }
 import model.map.fixtures {
     RiverFixture,
-    UnitMember
+    UnitMember,
+    Ground
 }
 import java.text {
     NumberFormat
@@ -253,13 +258,71 @@ import ceylon.language.meta.model {
 import javax.imageio {
     ImageIO
 }
+import model.map.fixtures.resources {
+    Grove,
+    Meadow
+}
+"A list to let the user select which fixtures ought to be searched."
+SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
+    DefaultListModel<FixtureMatcher> matcherListModel = ReorderableListModel<FixtureMatcher>();
+    for (matcher in {FixtureMatcher.simpleMatcher<Ground>(`Ground`, Ground.exposed, "Ground (exposed)"),
+            FixtureMatcher.simpleMatcher<Ground>(`Ground`, (Ground ground) => !ground.exposed, "Ground"),
+            FixtureMatcher.simpleMatcher<Grove>(`Grove`, Grove.orchard, "Orchards"),
+            FixtureMatcher.simpleMatcher<Grove>(`Grove`, (Grove grove) => !grove.orchard, "Groves"),
+            FixtureMatcher.simpleMatcher<Meadow>(`Meadow`, Meadow.field, "Fields"),
+            FixtureMatcher.simpleMatcher<Meadow>(`Meadow`, (Meadow meadow) => !meadow.field, "Meadows")}) {
+        matcherListModel.addElement(matcher);
+    }
+    object retval extends SwingList<FixtureMatcher>(matcherListModel)
+            satisfies ZOrderFilter {
+        shared actual Boolean shouldDisplay(TileFixture fixture) {
+            for (i in 0..matcherListModel.size) {
+                FixtureMatcher matcher = matcherListModel.getElementAt(i);
+                if (matcher.matches(fixture)) {
+                    return matcher.displayed;
+                }
+            }
+            value cls = type(fixture);
+            matcherListModel.addElement(
+                FixtureMatcher((TileFixture fix) => cls.typeOf(fix), fixture.plural()));
+            Integer size = matcherListModel.size;
+            selectionModel.addSelectionInterval(size - 1, size - 1);
+            return true;
+        }
+    }
+    ListSelectionModel selectionModel = retval.selectionModel;
+    selectionModel.selectionMode = ListSelectionModel.multipleIntervalSelection;
+    selectionModel.addListSelectionListener((ListSelectionEvent event) {
+        for (i in 0.. matcherListModel.size) {
+            matcherListModel.getElementAt(i).displayed = selectionModel.isSelectedIndex(i);
+        }
+    });
+    DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
+    object renderer satisfies ListCellRenderer<FixtureMatcher> {
+        shared actual Component getListCellRendererComponent(
+                SwingList<out FixtureMatcher> list, FixtureMatcher item,
+                Integer index, Boolean isSelected, Boolean cellHasFocus) {
+            value retval = defaultRenderer.getListCellRendererComponent(list, item,
+                index, isSelected, cellHasFocus);
+            if (is JLabel retval) {
+                retval.text = item.description;
+            }
+            return retval;
+        }
+    }
+    retval.cellRenderer = renderer;
+    retval.transferHandler = FixtureFilterTransferHandler();
+    retval.dropMode = DropMode.insert;
+    retval.dragEnabled = true;
+    return retval;
+}
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
     JTextField searchField = JTextField("", 20);
     JCheckBox backwards = JCheckBox("Search backwards");
     JCheckBox vertically = JCheckBox("Search vertically then horizontally");
     JCheckBox caseSensitive = JCheckBox("Case-sensitive search");
-    FixtureFilterList filterList = FixtureFilterList();
+    Component&ZOrderFilter filterList = fixtureFilterList();
     "Whether the fixture has a name matching the given pattern."
     Boolean matchesName(String pattern, IFixture fixture, Boolean caseSensitivity) {
         if (is HasName fixture) {
