@@ -52,8 +52,7 @@ import model.map.fixtures.mobile.worker {
     WorkerStats
 }
 import util {
-    SingletonRandom { singletonRandom = random },
-    OnMac
+    SingletonRandom { singletonRandom = random }
 }
 import javax.swing {
     SwingUtilities,
@@ -111,7 +110,8 @@ import lovelace.util.jvm {
     BorderedPanel,
     verticalSplit,
     horizontalSplit,
-    FormattedLabel
+    FormattedLabel,
+    platform
 }
 import model.map.fixtures {
     UnitMember
@@ -320,9 +320,9 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
     hours.addActionListener(okListener);
     JButton cancelButton = listenedButton("Cancel",
         (ActionEvent event) => hours.text = "");
-    OnMac.makeButtonsSegmented(okButton, cancelButton);
+    platform.makeButtonsSegmented(okButton, cancelButton);
     JPanel secondPanel;
-    if (OnMac.systemIsMac) {
+    if (platform.systemIsMac) {
         secondPanel = centeredHorizontalBox(okButton, cancelButton);
     } else {
         secondPanel = JPanel(FlowLayout());
@@ -437,7 +437,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                 JButton cancelButton = listenedButton("Cancel",
                     (ActionEvent event) => dispose());
                 buttonPanel.add(cancelButton);
-                OnMac.makeButtonsSegmented(addButton, cancelButton);
+                platform.makeButtonsSegmented(addButton, cancelButton);
                 JPanel statsPanel = JPanel(GridLayout(0, 4));
                 hpBox.text = "8";
                 addLabeledField(statsPanel, "HP:", hpBox);
@@ -564,7 +564,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
         layoutObj.first(retval);
         field.text = "";
     });
-    OnMac.makeButtonsSegmented(okButton, cancelButton);
+    platform.makeButtonsSegmented(okButton, cancelButton);
     okPanel.add(cancelButton);
     second.add(okPanel);
     setPanelSizes(second);

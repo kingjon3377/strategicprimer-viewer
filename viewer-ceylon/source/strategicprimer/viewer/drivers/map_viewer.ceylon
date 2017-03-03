@@ -91,7 +91,6 @@ import java.awt.event {
     MouseWheelEvent
 }
 import util {
-    OnMac,
     IsNumeric,
     ActionWrapper,
     ResourceInputStream,
@@ -197,7 +196,8 @@ import lovelace.util.jvm {
     horizontalSplit,
     verticalSplit,
     createHotKey,
-    FormattedLabel
+    FormattedLabel,
+    platform
 }
 import model.map.fixtures.mobile {
     IUnit,
@@ -344,7 +344,7 @@ class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener
     }
     "Scroll when the user scrolls the mouse wheel."
     shared actual void mouseWheelMoved(MouseWheelEvent event) {
-        if (OnMac.isHotkeyPressed(event)) {
+        if (platform.hotKeyPressed(event)) {
             // Zoom if Command-scroll/Control-scroll
             Integer count = event.wheelRotation;
             if (count < 0) {
@@ -632,9 +632,9 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         parent.requestFocus();
         dispose();
     });
-    OnMac.makeButtonsSegmented(okButton, cancelButton);
+    platform.makeButtonsSegmented(okButton, cancelButton);
     buttonPanel.add(okButton);
-    if (OnMac.systemIsMac) {
+    if (platform.systemIsMac) {
         searchField.putClientProperty("JTextField.variant", "search");
         searchField.putClientProperty("JTextField.Search.FindAction", okListener);
         searchField.putClientProperty("JTextField.Search.CancelAction",
@@ -767,9 +767,9 @@ SPDialog selectTileDialog(Frame? parentFrame, IViewerModel model) {
         columnField.text = "-1";
         retval.dispose();
     });
-    OnMac.makeButtonsSegmented(okButton, cancelButton);
+    platform.makeButtonsSegmented(okButton, cancelButton);
     buttonPanel.add(okButton);
-    if (!OnMac.systemIsMac) {
+    if (!platform.systemIsMac) {
         buttonPanel.addGlue();
     }
     buttonPanel.add(cancelButton);
@@ -846,7 +846,7 @@ SPDialog&NewUnitSource&PlayerChangeListener newUnitDialog(variable Player player
         retval.setVisible(false);
         retval.dispose();
     });
-    OnMac.makeButtonsSegmented(okButton, cancelButton);
+    platform.makeButtonsSegmented(okButton, cancelButton);
     retval.add(cancelButton);
     retval.setMinimumSize(Dimension(150, 80));
     (retval of Component).preferredSize = Dimension(200, 90);
@@ -1732,7 +1732,7 @@ Iterable<Entry<Integer, String>> maybe(Boolean condition,
    for "jumping," to the Strings we'll use to represent them."""
 Map<Integer, String> jumpInputs = HashMap<Integer, String> {
     KeyEvent.vkHome->"ctrl-home", KeyEvent.vkEnd->"ctrl-end",
-    *maybe(OnMac.systemIsMac, {
+    *maybe(platform.systemIsMac, {
         KeyEvent.vkUp->"home", KeyEvent.vkKpUp->"home", KeyEvent.vkNumpad8->"home",
         KeyEvent.vkDown->"end", KeyEvent.vkKpDown->"end", KeyEvent.vkNumpad2->"end",
         KeyEvent.vkLeft->"caret",KeyEvent.vkKpLeft->"caret", KeyEvent.vkNumpad4->"caret",
@@ -1761,7 +1761,7 @@ void setUpArrowListeners(DirectionSelectionChanger selListener, InputMap inputMa
         ActionMap actionMap) {
     class DirectionListener(Anything() action, Integer num = 1)
             extends ActionWrapper((ActionEvent event) => repeatVoid(action, num)) { }
-    Integer fiveMask = (OnMac.systemIsMac) then InputEvent.altDownMask
+    Integer fiveMask = (platform.systemIsMac) then InputEvent.altDownMask
         else InputEvent.ctrlDownMask;
     for (stroke->action in arrowInputs) {
         inputMap.put(KeyStroke.getKeyStroke(stroke, 0), action);
@@ -1771,7 +1771,7 @@ void setUpArrowListeners(DirectionSelectionChanger selListener, InputMap inputMa
         actionMap.put(action, DirectionListener(() => consumer(selListener)));
         actionMap.put(action, DirectionListener(() => consumer(selListener), 5));
     }
-    Integer jumpModifier = OnMac.shortcutMask;
+    Integer jumpModifier = platform.shortcutMask;
     for (stroke->action in jumpInputs) {
         inputMap.put(KeyStroke.getKeyStroke(stroke, jumpModifier), action);
     }
@@ -2495,8 +2495,8 @@ SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel,
             }
             tableModel.fireTableRowsUpdated(0, tableModel.rowCount);
         });
-        OnMac.makeButtonsSegmented(allButton, noneButton);
-        JPanel buttonPanel = (OnMac.systemIsMac) then
+        platform.makeButtonsSegmented(allButton, noneButton);
+        JPanel buttonPanel = (platform.systemIsMac) then
             centeredHorizontalBox(allButton, noneButton)
             else BorderedPanel.horizontalPanel(allButton, null, noneButton);
         return BorderedPanel.verticalPanel(JLabel("Display ..."), JScrollPane(table),

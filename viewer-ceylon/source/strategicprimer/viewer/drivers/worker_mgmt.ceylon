@@ -73,7 +73,6 @@ import model.map {
     HasPortrait
 }
 import util {
-    OnMac,
     ActionWrapper,
     Pair
 }
@@ -160,7 +159,8 @@ import lovelace.util.jvm {
     verticalSplit,
     horizontalSplit,
     createHotKey,
-    FormattedLabel
+    FormattedLabel,
+    platform
 }
 import java.awt.datatransfer {
     Transferable,
@@ -604,11 +604,11 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
             (ActionEvent event) => retval.apply());
         JButton revertButton = listenedButton("Revert",
             (ActionEvent event) => retval.revert());
-        OnMac.makeButtonsSegmented(applyButton, revertButton);
-        JPanel buttonPanel = (OnMac.systemIsMac) then
+        platform.makeButtonsSegmented(applyButton, revertButton);
+        JPanel buttonPanel = (platform.systemIsMac) then
                 centeredHorizontalBox(applyButton, revertButton)
                 else BorderedPanel.horizontalPanel(applyButton, null, revertButton);
-        String prefix = OnMac.shortcutDesc;
+        String prefix = platform.shortcutDescription;
         retval.pageStart = BorderedPanel.horizontalPanel(
             JLabel("Orders for current selection, if a unit: (``prefix``D)"), null,
             BorderedPanel.horizontalPanel(null, JLabel("Turn "),
@@ -626,13 +626,13 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
     spinnerModel.addChangeListener((event) => retval.revert());
     object modifiedEnterListener extends KeyAdapter() {
         shared actual void keyPressed(KeyEvent event) {
-            if (event.keyCode == KeyEvent.vkEnter, OnMac.isHotkeyPressed(event)) {
+            if (event.keyCode == KeyEvent.vkEnter, platform.hotKeyPressed(event)) {
                 retval.apply();
             }
         }
     }
     area.addKeyListener(modifiedEnterListener);
-    Integer keyMask = OnMac.shortcutMask;
+    Integer keyMask = platform.shortcutMask;
     createHotKey(retval, "openOrders", ActionWrapper((event) {
         Boolean newlyGainingFocus = !area.focusOwner;
         area.requestFocusInWindow();
@@ -1054,7 +1054,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             shared actual void mousePressed(MouseEvent event) {
                 if (exists selPath = report.getPathForLocation(event.x, event.y)) {
                     value node = selPath.lastPathComponent;
-                    if (OnMac.isHotkeyPressed(event), is IReportNode node) {
+                    if (platform.hotKeyPressed(event), is IReportNode node) {
                         Point point = node.point;
                         if (point.valid) {
                             IViewerModel viewerModel = getViewerModel();
@@ -1079,13 +1079,13 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         JTree tree = workerTree(treeModel, CeylonIterable(mainMap.players()),
             () => mainMap.currentTurn, true);
         newUnitFrame.addNewUnitListener(treeModel);
-        Integer keyMask = OnMac.shortcutMask;
+        Integer keyMask = platform.shortcutMask;
         createHotKey(tree, "openUnits", ActionWrapper(
             (ActionEvent event) => tree.requestFocusInWindow()),
             JComponent.whenInFocusedWindow,
             KeyStroke.getKeyStroke(KeyEvent.vkU, keyMask));
         FormattedLabel playerLabel = FormattedLabel("Units belonging to %s: (%sU)",
-            mainMap.currentPlayer.name, OnMac.shortcutDesc);
+            mainMap.currentPlayer.name, platform.shortcutDescription);
         value ordersPanelObj = ordersPanel(mainMap.currentTurn, mainMap.currentPlayer,
             (Player player, String kind) => CeylonIterable(model.getUnits(player, kind)),
             (IUnit unit, Integer turn) => unit.getLatestOrders(turn),
@@ -1140,7 +1140,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             for (listener in pcListeners) {
                 listener.playerChanged(old, newPlayer);
             }
-            playerLabel.setArgs(newPlayer.name, OnMac.shortcutDesc);
+            playerLabel.setArgs(newPlayer.name, platform.shortcutDescription);
         }
         shared actual String windowName = "Worker Management";
     }

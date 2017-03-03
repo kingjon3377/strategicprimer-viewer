@@ -12,8 +12,7 @@ import controller.map.misc {
 }
 import util {
     Warning,
-    ActionWrapper,
-    OnMac
+    ActionWrapper
 }
 import java.nio.file {
     JPaths = Paths, JPath = Path
@@ -68,7 +67,8 @@ import lovelace.util.jvm {
     createHotKey,
     HotKeyModifier,
     createAccelerator,
-    createMenuItem
+    createMenuItem,
+    platform
 }
 import model.viewer {
     IViewerModel
@@ -447,7 +447,7 @@ shared class SPDialog(Frame? parentFrame, String title)
     defaultCloseOperation = WindowConstants.disposeOnClose;
     createHotKey(rootPane, "close", ActionWrapper((ActionEvent event) => dispose()),
         JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkW,
-            OnMac.shortcutMask), KeyStroke.getKeyStroke(KeyEvent.vkEscape, 0));
+            platform.shortcutMask), KeyStroke.getKeyStroke(KeyEvent.vkEscape, 0));
 }
 "A class to hold the logic for building our menus."
 todo("Make the methods static once MenuItemCreator has been ported.",
@@ -513,7 +513,7 @@ class SPMenu() extends JMenuBar() {
             openSecondaryViewerItem.enabled = false;
         }
         fileMenu.addSeparator();
-        if (OnMac.systemIsMac) {
+        if (platform.systemIsMac) {
             Application.application.setAboutHandler((AppEvent.AboutEvent event) {
                 Object source = WindowList.getWindows(true, false).iterable.coalesced
                     .sequence().reversed.first else event;
