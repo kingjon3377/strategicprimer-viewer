@@ -178,9 +178,6 @@ import lovelace.util.jvm {
     createHotKey,
     FormattedLabel
 }
-import view.map.main {
-    TileDrawHelper
-}
 import model.map.fixtures.towns {
     Village
 }

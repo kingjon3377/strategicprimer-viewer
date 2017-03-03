@@ -39,10 +39,6 @@ import model.viewer {
     ViewerModel
 }
 
-import view.map.main {
-    TileDrawHelper,
-    Ver2TileDrawHelper
-}
 import view.util {
     Coordinate
 }
@@ -169,14 +165,11 @@ class Accumulator() {
     shared Integer storedValue => accumulatedValue;
     shared void add(Integer addend) { accumulatedValue = accumulatedValue + addend; }
 }
-object dummyObserver satisfies ImageObserver {
-    shared actual Boolean imageUpdate(Image? image, Integer infoflags,
+Boolean dummyObserver(Image? image, Integer infoflags,
         Integer xCoordinate, Integer yCoordinate, Integer width, Integer height) =>
             false;
-}
-object dummyFilter satisfies ZOrderFilter {
-    shared actual Boolean shouldDisplay(TileFixture? fix) => true;
-}
+
+Boolean dummyFilter(TileFixture? fix) => true;
 object dummyPredicate satisfies Predicate<TileFixture> {
     shared actual Boolean test(TileFixture? t) => true;
 }
@@ -184,7 +177,7 @@ object dummyPredicate satisfies Predicate<TileFixture> {
     [CachingTileDrawHelper(), "Caching:", Accumulator()],
     [DirectTileDrawHelper(), "Direct:", Accumulator()],
     [Ver2TileDrawHelper(dummyObserver, dummyFilter,
-        JCollections.singleton(FixtureMatcher(dummyPredicate, "test"))),
+        {FixtureMatcher(dummyPredicate, "test")}),
         "Ver. 2:", Accumulator()]
 };
 "Run all the tests on the specified map."
