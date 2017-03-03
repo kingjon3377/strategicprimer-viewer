@@ -84,7 +84,7 @@ DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
         }
         if (is FixtureIterable<out Object> fixture) {
             assert (is JIterable<out IFixture> fixture);
-            for (inner in CeylonIterable(fixture)) {
+            for (inner in fixture) {
                 addToMap(location, inner);
             }
         }

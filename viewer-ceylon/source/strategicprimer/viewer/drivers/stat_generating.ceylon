@@ -121,7 +121,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
                 return fixture;
             } else if (is FixtureIterable<out Object> fixture) {
                 assert (is JIterable<out IFixture> fixture);
-                if (exists result = findInIterable(id, *CeylonIterable(fixture))) {
+                if (exists result = findInIterable(id, *fixture)) {
                     return result;
                 }
             }
@@ -137,7 +137,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
                 return ground;
             }
             else if (exists result = findInIterable(id,
-                    *CeylonIterable(map.getOtherFixtures(location)))) {
+                    *map.getOtherFixtures(location))) {
                 return result;
             }
         }
@@ -175,7 +175,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
      particular player."
     void enterStatsForPlayer(IExplorationModel model, Player player, ICLIHelper cli) {
         JList<IUnit> units = JavaList<IUnit>(ArrayList(0, 1.0,
-            removeStattedUnits(*CeylonIterable(model.getUnits(player)))));
+            removeStattedUnits(*model.getUnits(player))));
         cli.loopOnList(units, (clh) =>
             clh.chooseFromList(units, "Which unit contains the worker in question?",
                 "All that player's units already have stats.", "Unit selection: ", false),
@@ -346,7 +346,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     void createWorkersForPlayer(IExplorationModel model, IDRegistrar idf, Player player,
             ICLIHelper cli) {
         JList<IUnit> units = JavaList<IUnit>(ArrayList(0, 1.0,
-            removeStattedUnits(*CeylonIterable(model.getUnits(player)))));
+            removeStattedUnits(*model.getUnits(player))));
         cli.loopOnMutableList(units, (clh) => clh.chooseFromList(units,
                 "Which unit contains the worker in question? (Select -1 to create new.)",
                 "There are no units owned by that player.", "Unit selection: ",

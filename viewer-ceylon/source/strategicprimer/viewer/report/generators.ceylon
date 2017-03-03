@@ -723,7 +723,7 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
                      <li>Located at ``loc`` ``distCalculator.distanceString(loc)``</li>
                      <li>``terrain(map, loc, fixtures)``</li>
                      ");
-            riversToString(ostream, *CeylonIterable(map.getRivers(loc)));
+            riversToString(ostream, *map.getRivers(loc));
             MutableList<IUnit> units = ArrayList<IUnit>();
             MutableList<Implement> equipment = ArrayList<Implement>();
             MutableMap<String, MutableList<ResourcePile>> resources =

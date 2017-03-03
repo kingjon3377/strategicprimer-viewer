@@ -131,7 +131,7 @@ object mapCheckerCLI satisfies UtilityDriver {
             IFixture* list) {
         for (fixture in list) {
             if (is FixtureIterable<out IFixture> fixture) {
-                contentCheck(checker, terrain, context, warner, *CeylonIterable(fixture));
+                contentCheck(checker, terrain, context, warner, *fixture);
             }
             checker.check(terrain, context, fixture, warner);
         }
@@ -170,7 +170,7 @@ object mapCheckerCLI satisfies UtilityDriver {
                     contentCheck(checker, terrain, location, warner, ground);
                 }
                 contentCheck(checker, terrain, location, warner,
-                    *CeylonIterable(map.getOtherFixtures(location)));
+                    *map.getOtherFixtures(location));
             }
         }
     }

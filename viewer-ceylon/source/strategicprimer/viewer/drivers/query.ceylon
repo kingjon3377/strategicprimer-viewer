@@ -399,7 +399,7 @@ object queryCLI satisfies SimpleDriver {
         case ('e') { herd(cli, huntModel); }
         case ('t') { trappingCLI.startDriverOnModel(cli, options, model); }
         case ('d') { printDistance(model.mapDimensions, cli); }
-        case ('c') { countWorkers(model.map, cli, *CeylonIterable(model.map.players())); }
+        case ('c') { countWorkers(model.map, cli, *model.map.players()); }
         case ('u') {
             Point base = cli.inputPoint("Starting point? ");
             if (exists unexplored = findUnexplored(model.map, base)) {
@@ -426,20 +426,22 @@ object queryCLI satisfies SimpleDriver {
         }
     }
 }
+"Possible actions in the trapping CLI; top-level so we can switch on the cases,
+ since the other alternative, `static`, isn't possible in an `object` anymore."
+abstract class TrapperCommand(name) of setTrap | check | move | easyReset | quit
+        satisfies HasName {
+    shared actual String name;
+}
+object setTrap extends TrapperCommand("Set or reset a trap") {}
+object check extends TrapperCommand("Check a trap") {}
+object move extends TrapperCommand("Move to another trap") {}
+object easyReset extends TrapperCommand("Reset a foothold trap, e.g.") {}
+object quit extends TrapperCommand("Quit") {}
 "A driver to run a player's trapping activity."
 todo("Tests")
 object trappingCLI satisfies SimpleDriver {
-    static Integer minutesPerHour = 60;
-    static abstract class TrapperCommand(name) of setTrap | check | move | easyReset | quit
-            satisfies HasName {
-        shared actual String name;
-    }
-    static object setTrap extends TrapperCommand("Set or reset a trap") {}
-    static object check extends TrapperCommand("Check a trap") {}
-    static object move extends TrapperCommand("Move to another trap") {}
-    static object easyReset extends TrapperCommand("Reset a foothold trap, e.g.") {}
-    static object quit extends TrapperCommand("Quit") {}
-    static List<TrapperCommand> commands = ArrayList{setTrap, check, move, easyReset, quit};
+    Integer minutesPerHour = 60;
+    List<TrapperCommand> commands = ArrayList{setTrap, check, move, easyReset, quit};
     shared actual IDriverUsage usage = DriverUsage(false, "-r", "--trap", ParamCount.one,
         "Run a player's trapping", "Determine the results a player's trapper finds.");
     String inHours(Integer minutes) {

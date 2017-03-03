@@ -33,10 +33,10 @@ get_maven_url org/jacoco org.jacoco.report ${jacoco_ver} jacocoreport
 get_maven_url org/ow2/asm asm-debug-all 5.0.3 asm-debug-all
 wget https://ceylon-lang.org/download/dist/1_3_1 --output-document=ceylon.zip
 unzip ceylon.zip
-ceylon-1.3.1/bin/ceylon import-jar --cwd=viewer-ceylon org.hamcrest/1.3 \
+ceylon-1.3.2/bin/ceylon import-jar --cwd=viewer-ceylon org.hamcrest/1.3 \
     /usr/share/java/hamcrest-core-1.3.jar
 echo '+org.hamcrest=1.3' > /tmp/junit.properties
-ceylon-1.3.1/bin/ceylon import-jar --cwd=viewer-ceylon --descriptor=/tmp/junit.properties \
+ceylon-1.3.2/bin/ceylon import-jar --cwd=viewer-ceylon --descriptor=/tmp/junit.properties \
     org.junit/4.12 /usr/share/java/junit4.jar
-ceylon-1.3.1/bin/ceylon import-jar --cwd=viewer-ceylon com.bric.window.windowmenu/1.0 \
+ceylon-1.3.2/bin/ceylon import-jar --cwd=viewer-ceylon com.bric.window.windowmenu/1.0 \
     "${PWD}/"WindowMenu.jar

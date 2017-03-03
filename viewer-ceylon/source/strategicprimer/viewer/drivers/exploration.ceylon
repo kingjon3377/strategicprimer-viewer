@@ -285,7 +285,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         IMutableMapNG map = model.map;
         MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
         for (fixture in {map.getGround(destPoint), map.getForest(destPoint),
-                *CeylonIterable(map.getOtherFixtures(destPoint))}.coalesced) {
+                *map.getOtherFixtures(destPoint)}.coalesced) {
             if (SimpleMovement.shouldAlwaysNotice(mover, fixture)) {
                 constants.add(fixture);
             } else if (SimpleMovement.shouldSometimesNotice(mover, speed, fixture)) {
