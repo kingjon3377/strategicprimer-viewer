@@ -852,7 +852,7 @@ Icon loadIcon(String file) {
         BufferedImage temp = BufferedImage(fixtureIconSize, fixtureIconSize,
             BufferedImage.typeIntArgb);
         Graphics pen = temp.graphics;
-        pen.drawImage(temp, 0, 0, temp.width, temp.height);
+        pen.drawImage(temp, 0, 0, temp.width, temp.height, null);
         pen.dispose();
         Icon icon = ImageIcon(temp);
         iconCache.put(file, icon);
@@ -1255,6 +1255,11 @@ class Ver2TileDrawHelper(
             return fallbackImage;
         }
     }
+    object observerWrapper satisfies ImageObserver {
+        shared actual Boolean imageUpdate(Image img, Integer infoflags, Integer x,
+            Integer y, Integer width, Integer height) =>
+                observer(img, infoflags, x, y, width, height);
+    }
     "Draw a tile at the specified coordinates. Because this is at present only called in
      a loop that's the last thing before the graphics context is disposed, we alter the
      state freely and don't restore it."
@@ -1269,14 +1274,14 @@ class Ver2TileDrawHelper(
         pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
         if (!CeylonIterable(map.getRivers(location)).empty) {
             pen.drawImage(getRiverImage(CeylonIterable(map.getRivers(location))), coordinates.x,
-                coordinates.y, dimensions.x, dimensions.y, observer);
+                coordinates.y, dimensions.x, dimensions.y, observerWrapper);
         }
         if (exists top = getTopFixture(map, location)) {
             pen.drawImage(getImageForFixture(top), coordinates.x, coordinates.y,
-                dimensions.x, dimensions.y, observer);
+                dimensions.x, dimensions.y, observerWrapper);
         } else if (map.isMountainous(location)) {
             pen.drawImage(getImage("mountain.png"), coordinates.x, coordinates.y,
-                dimensions.x, dimensions.y, observer);
+                dimensions.x, dimensions.y, observerWrapper);
         }
         pen.color = Color.black;
         pen.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
