@@ -251,7 +251,7 @@
       <arg value="icon_16px.png" />
     </exec>
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
-      outfile="${release}/${basename}.exe" jar="${release}/${basename}.jar" />
+      outfile="${release}/${basename}.exe" jar="${release}/${basename}.ceylon.jar" />
   </target>
   <target name="app" depends="jar,jar-ceylon,icon">
       <exec executable="${png2icns.path}" dir="${basedir}">
@@ -263,7 +263,7 @@
       <arg value="icon_32px.png" />
       <arg value="icon_16px.png" />
     </exec>
-    <copy file="${release}/${basename}.jar" tofile="${release}/${shortname}.jar" />
+    <copy file="${release}/${basename}.ceylon.jar" tofile="${release}/${shortname}.jar" />
     <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
       jar="${release}/${shortname}.jar" version="${version-number}"
       shortname="SPHelpers" stubfile="${stub-script-path}"
