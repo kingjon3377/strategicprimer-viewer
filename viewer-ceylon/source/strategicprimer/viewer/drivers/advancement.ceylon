@@ -12,7 +12,6 @@ import model.workermgmt {
     IWorkerModel,
     WorkerTreeModelAlt,
     IWorkerTreeModel,
-    JobTreeModel,
     RaceFactory
 }
 import java.io {
@@ -34,7 +33,9 @@ import model.map.fixtures.mobile {
 import ceylon.interop.java {
     JavaList,
     CeylonCollection,
-    CeylonIterable
+    CeylonIterable,
+    createJavaIntArray,
+    createJavaObjectArray
 }
 import ceylon.collection {
     ArrayList,
@@ -115,6 +116,15 @@ import lovelace.util.jvm {
 }
 import model.map.fixtures {
     UnitMember
+}
+import javax.swing.tree {
+    TreeModel,
+    TreeSelectionModel,
+    TreePath
+}
+import java.lang {
+    ArrayIndexOutOfBoundsException,
+    IllegalArgumentException
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
@@ -463,6 +473,94 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         selectedUnit = unit;
     }
 }
+"A model for a tree of a worker's Jobs and Skills."
+class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
+    MutableList<TreeModelListener> listeners = ArrayList<TreeModelListener>();
+    "The worker whom the Jobs and Skills describe."
+    variable IWorker? localRoot = null;
+    shared late TreeSelectionModel selectionModel;
+    shared actual IWorker? root => localRoot;
+    shared actual HasName getChild(Object parent, Integer index) {
+        if (index >= 0, is IWorker parent,
+                exists child = CeylonIterable(parent).getFromFirst(index)) {
+            return child;
+        } else if (index >= 0, is IJob parent,
+                exists child = CeylonIterable(parent).getFromFirst(index)) {
+            return child;
+        } else {
+            throw ArrayIndexOutOfBoundsException("Parent does not have that child");
+        }
+    }
+    shared actual Integer getChildCount(Object parent) {
+        if (is IWorker|IJob parent) {
+            return CeylonIterable(parent).count((elem) => true);
+        } else if (is ISkill parent) {
+            return 0;
+        } else {
+            throw IllegalArgumentException("Not a possible member of the tree");
+        }
+    }
+    shared actual Boolean isLeaf(Object node) => !node is IWorker|IJob;
+    "Handling changed values is not yet implemented."
+    todo("Implement if necessary")
+    shared actual void valueForPathChanged(TreePath path, Object newValue) =>
+            log.error("valueForPathChanged needs to be implemented");
+    shared actual Integer getIndexOfChild(Object parent, Object child) {
+        if (is IWorker|IJob parent,
+                exists index->ignored = CeylonIterable(parent)
+                    .locate(child.equals)) {
+            return index;
+        } else {
+            return -1;
+        }
+    }
+    shared actual void addTreeModelListener(TreeModelListener listener) =>
+            listeners.add(listener);
+    shared actual void removeTreeModelListener(TreeModelListener listener) =>
+            listeners.remove(listener);
+    void fireTreeNodesInserted(TreeModelEvent event) {
+        for (listener in listeners) {
+            listener.treeNodesInserted(event);
+        }
+    }
+    void fireTreeStructureChanged(TreeModelEvent event) {
+        for (listener in listeners) {
+            listener.treeStructureChanged(event);
+        }
+    }
+    "Add a new Job"
+    shared actual void add(String category, String addendum) {
+        if ("job" == category, exists currentRoot = localRoot) {
+            IJob job = Job(addendum, 0);
+            Integer childCount = getChildCount(currentRoot);
+            currentRoot.addJob(job);
+            fireTreeNodesInserted(TreeModelEvent(this, TreePath(currentRoot),
+                createJavaIntArray({childCount}), createJavaObjectArray({job})));
+        } else if ("skill" == category) {
+            if (exists selectionPath = selectionModel.selectionPath,
+                    is IJob job = selectionPath.lastPathComponent) {
+                ISkill skill = Skill(addendum, 0, 0);
+                Integer childCount = getChildCount(job);
+                job.addSkill(skill);
+                fireTreeNodesInserted(TreeModelEvent(this,
+                    TreePath(createJavaObjectArray({localRoot, job})),
+                        createJavaIntArray({childCount}),
+                        createJavaObjectArray({skill})));
+            }
+        }
+    }
+    "Change what unit member is currently selected"
+    shared actual void memberSelected(UnitMember? old, UnitMember? selected) {
+        if (is IWorker selected) {
+            localRoot = selected;
+            fireTreeStructureChanged(TreeModelEvent(this,
+                TreePath(selected)));
+        } else {
+            localRoot = null;
+            fireTreeStructureChanged(TreeModelEvent(this, null of TreePath?));
+        }
+    }
+}
 "A tree representing a worker's Jobs and Skills."
 JTree&SkillSelectionSource jobsTree(JobTreeModel jtModel) {
     object retval extends JTree(jtModel) satisfies SkillSelectionSource {
@@ -472,7 +570,7 @@ JTree&SkillSelectionSource jobsTree(JobTreeModel jtModel) {
             listeners.add(listener);
         shared actual void removeSkillSelectionListener(SkillSelectionListener listener) =>
             listeners.remove(listener);
-        jtModel.setSelectionModel(selectionModel);
+        jtModel.selectionModel = selectionModel;
         rootVisible = false;
         variable Integer i = 0;
         while (i < rowCount) {
