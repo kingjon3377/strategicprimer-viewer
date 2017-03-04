@@ -493,7 +493,7 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     }
     shared actual Integer getChildCount(Object parent) {
         if (is IWorker|IJob parent) {
-            return CeylonIterable(parent).count((elem) => true);
+            return CeylonIterable(parent).size;
         } else if (is ISkill parent) {
             return 0;
         } else {
