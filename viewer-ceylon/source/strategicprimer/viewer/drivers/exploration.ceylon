@@ -8,8 +8,7 @@ import model.misc {
 import model.exploration {
     IExplorationModel,
     ExplorationModel,
-    HuntingModel,
-    PlayerListModel
+    HuntingModel
 }
 import java.io {
     IOException
@@ -124,7 +123,8 @@ import model.listeners {
     SelectionChangeSupport,
     PlayerChangeSource,
     PlayerChangeListener,
-    SelectionChangeSource
+    SelectionChangeSource,
+    MapChangeListener
 }
 import model.map.fixtures {
     Ground
@@ -383,6 +383,19 @@ class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matche
         pen.clip = Polygon(createJavaIntArray({width - margin, width - margin, margin}),
             createJavaIntArray({margin, height - margin, height - margin}), 3);
         helper.drawTileTranslated(pen, subordinate, point, width, height);
+    }
+}
+"A list model for players in the exploration GUI."
+class PlayerListModel(IExplorationModel model) extends DefaultListModel<Player>()
+        satisfies MapChangeListener {
+    for (player in model.playerChoices) {
+        addElement(player);
+    }
+    shared actual void mapChanged() {
+        clear();
+        for (player in model.playerChoices) {
+            addElement(player);
+        }
     }
 }
 "A CLI to help running exploration."
