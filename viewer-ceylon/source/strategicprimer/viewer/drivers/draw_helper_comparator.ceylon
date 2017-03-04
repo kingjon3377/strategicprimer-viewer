@@ -34,7 +34,6 @@ import model.misc {
 }
 import model.viewer {
     ZOrderFilter,
-    FixtureMatcher,
     TileViewSize,
     ViewerModel
 }
@@ -177,7 +176,7 @@ object dummyPredicate satisfies Predicate<TileFixture> {
     [CachingTileDrawHelper(), "Caching:", Accumulator()],
     [DirectTileDrawHelper(), "Direct:", Accumulator()],
     [Ver2TileDrawHelper(dummyObserver, dummyFilter,
-        {FixtureMatcher(dummyPredicate, "test")}),
+        {FixtureMatcher(dummyFilter, "test")}),
         "Ver. 2:", Accumulator()]
 };
 "Run all the tests on the specified map."

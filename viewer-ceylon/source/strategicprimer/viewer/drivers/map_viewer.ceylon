@@ -12,7 +12,6 @@ import model.viewer {
     IViewerModel,
     ViewerModel,
     PointIterator,
-    FixtureFilterTableModel,
     ZOrderFilter,
     TileViewSize,
     VisibleDimensions,
@@ -20,7 +19,6 @@ import model.viewer {
     FixtureTransferable,
     CurriedFixtureTransferable,
     FixtureListDropListener,
-    FixtureMatcher,
     TileTypeFixture
 }
 import javax.swing {
@@ -100,7 +98,7 @@ import util {
 import java.lang {
     JIterable = Iterable, JString=String,
     IllegalArgumentException,
-    IllegalStateException
+    IllegalStateException, JBoolean=Boolean, JClass=Class
 }
 import model.map {
     Point,
@@ -124,6 +122,9 @@ import model.map {
     River,
     IEvent
 }
+import java.util {
+    JComparator=Comparator
+}
 import java.util.stream {
     Stream
 }
@@ -141,7 +142,8 @@ import ceylon.interop.java {
 import model.map.fixtures {
     RiverFixture,
     UnitMember,
-    Ground
+    Ground,
+    TextFixture
 }
 import java.text {
     NumberFormat
@@ -152,10 +154,12 @@ import javax.swing.event {
     ListSelectionListener
 }
 import javax.swing.table {
-    TableColumn
+    TableColumn,
+    TableModel,
+    AbstractTableModel
 }
 import lovelace.util.common {
-    todo
+    todo, Comparator
 }
 import model.listeners {
     MapChangeListener,
@@ -201,7 +205,13 @@ import lovelace.util.jvm {
 }
 import model.map.fixtures.mobile {
     IUnit,
-    Unit
+    Unit,
+    SimpleImmortal,
+    Giant,
+    Dragon,
+    Centaur,
+    Fairy,
+    Animal
 }
 import java.io {
     IOException,
@@ -243,7 +253,9 @@ import view.util {
     Coordinate
 }
 import model.map.fixtures.towns {
-    Fortress
+    Fortress,
+    AbstractTown,
+    Village
 }
 import model.map.fixtures.terrain {
     Forest,
@@ -263,7 +275,18 @@ import javax.imageio {
 }
 import model.map.fixtures.resources {
     Grove,
-    Meadow
+    Meadow,
+    StoneDeposit,
+    MineralVein,
+    Mine,
+    Shrub,
+    CacheFixture
+}
+import model.map.fixtures.explorable {
+    Battlefield,
+    Cave,
+    Portal,
+    AdventureFixture
 }
 "A class for moving the cursor around the single-component map UI, including scrolling
  using a mouse wheel."
@@ -446,12 +469,12 @@ object fixtureFilterTransferHandler extends TransferHandler() {
 "A list to let the user select which fixtures ought to be searched."
 SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
     DefaultListModel<FixtureMatcher> matcherListModel = ReorderableListModel<FixtureMatcher>();
-    for (matcher in {FixtureMatcher.simpleMatcher<Ground>(`Ground`, Ground.exposed, "Ground (exposed)"),
-            FixtureMatcher.simpleMatcher<Ground>(`Ground`, (Ground ground) => !ground.exposed, "Ground"),
-            FixtureMatcher.simpleMatcher<Grove>(`Grove`, Grove.orchard, "Orchards"),
-            FixtureMatcher.simpleMatcher<Grove>(`Grove`, (Grove grove) => !grove.orchard, "Groves"),
-            FixtureMatcher.simpleMatcher<Meadow>(`Meadow`, Meadow.field, "Fields"),
-            FixtureMatcher.simpleMatcher<Meadow>(`Meadow`, (Meadow meadow) => !meadow.field, "Meadows")}) {
+    for (matcher in {simpleMatcher<Ground>(Ground.exposed, "Ground (exposed)"),
+            simpleMatcher<Ground>((Ground ground) => !ground.exposed, "Ground"),
+            simpleMatcher<Grove>(Grove.orchard, "Orchards"),
+            simpleMatcher<Grove>((Grove grove) => !grove.orchard, "Groves"),
+            simpleMatcher<Meadow>(Meadow.field, "Fields"),
+            simpleMatcher<Meadow>((Meadow meadow) => !meadow.field, "Meadows")}) {
         matcherListModel.addElement(matcher);
     }
     object retval extends SwingList<FixtureMatcher>(matcherListModel)
@@ -1594,7 +1617,7 @@ interface ToolTipSource {
 }
 "A mouse listener for the map panel, to show the terrain-changing menu as needed."
 MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
-        IViewerModel model, ZOrderFilter zof,
+        IViewerModel model, Boolean(TileFixture) zof,
         Comparison(TileFixture, TileFixture) comparator) {
     JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener menu =
             terrainChangingMenu(model.mapDimensions.version, model);
@@ -1610,7 +1633,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             builder.append(fixture.string);
         }
         {TileFixture*} stream = {map.getGround(point), map.getForest(point), *map.getOtherFixtures(point)}
-            .filter(zof.shouldDisplay).coalesced.sort(comparator);
+            .coalesced.filter(zof).sort(comparator);
         if (exists top = stream.first) {
             accept(top);
         }
@@ -1798,14 +1821,183 @@ void setUpArrowListeners(DirectionSelectionChanger selListener, InputMap inputMa
     actionMap.put("caret", DirectionListener(() => selListener.jumpLeft()));
     actionMap.put("dollar", DirectionListener(() => selListener.jumpRight()));
 }
+"A wrapper around `Boolean(TileFixture)`, used to determine Z-order of fixtures."
+class FixtureMatcher {
+    shared Boolean matches(TileFixture fixture);
+    shared variable Boolean displayed = true;
+    shared String description;
+    shared new (Boolean(TileFixture) predicate, String desc) {
+        matches = predicate;
+        description = desc;
+    }
+    shared actual String string = "Matcher for ``description``";
+}
+FixtureMatcher simpleMatcher<T>(Boolean(T) method, String description) {
+    Boolean predicate(TileFixture fixture) {
+        if (is T fixture, method(fixture)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return FixtureMatcher(predicate, description);
+}
+"A class to allow the Z-order of fixtures to be represented as a table."
+AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&Comparator<TileFixture> fixtureFilterTableModel() {
+    FixtureMatcher trivialMatcher(ClassModel<TileFixture> type,
+            String description = "``type.declaration.name``s") {
+        return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
+    }
+    FixtureMatcher immortalMatcher(SimpleImmortal.SimpleImmortalKind kind) {
+        return FixtureMatcher((TileFixture fixture) {
+            if (is SimpleImmortal fixture) {
+                return fixture.kind() == kind;
+            } else {
+                return false;
+            }
+        }, kind.plural());
+    }
+    {FixtureMatcher*} complements<out T>(Boolean(T) method,
+            String firstDescription, String secondDescription)
+            given T satisfies TileFixture {
+        return {simpleMatcher<T>(method, firstDescription),
+            simpleMatcher<T>((T fixture) => !method(fixture),
+                secondDescription)};
+    }
+    MutableList<FixtureMatcher> list = ArrayList<FixtureMatcher>();
+    // Can't use our preferred initialization form because an Iterable can only be spread
+    // as the *last* argument.
+    for (arg in {
+        // TODO: Maybe units should be broken up by owner?
+        trivialMatcher(`Unit`), trivialMatcher(`Fortress`, "Fortresses"),
+        // TODO: Towns should be broken up by kind or size, and maybe by status or owner
+        trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
+        // TODO: Village through Centaur were all 45, so their ordering happened by chance
+        trivialMatcher(`Village`),
+        immortalMatcher(SimpleImmortal.SimpleImmortalKind.troll),
+        immortalMatcher(SimpleImmortal.SimpleImmortalKind.simurgh),
+        immortalMatcher(SimpleImmortal.SimpleImmortalKind.ogre),
+        immortalMatcher(SimpleImmortal.SimpleImmortalKind.minotaur),
+        trivialMatcher(`Mine`),
+        immortalMatcher(SimpleImmortal.SimpleImmortalKind.griffin),
+        immortalMatcher(SimpleImmortal.SimpleImmortalKind.sphinx),
+        immortalMatcher(SimpleImmortal.SimpleImmortalKind.phoenix),
+        immortalMatcher(SimpleImmortal.SimpleImmortalKind.djinn),
+        trivialMatcher(`Centaur`),
+        // TODO: StoneDeposit through Animal were all 40; they too should be reviewed
+        trivialMatcher(`StoneDeposit`, "Stone Deposits"),
+        trivialMatcher(`MineralVein`, "Mineral Veins"),
+        trivialMatcher(`Fairy`, "Fairies"), trivialMatcher(`Giant`),
+        trivialMatcher(`Dragon`), trivialMatcher(`Cave`), trivialMatcher(`Battlefield`),
+        complements<Animal>((Animal animal) => !animal.traces, "Animals", "Animal tracks"),
+        complements<Grove>(Grove.orchard, "Orchards", "Groves"),
+        // TODO: Rivers are usually handled specially, so should this really be included?
+        trivialMatcher(`RiverFixture`, "Rivers"),
+        // TODO: TextFixture thru AdventureFixture were all 25, and should be considered
+        trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"),
+        trivialMatcher(`Portal`), trivialMatcher(`Oasis`, "Oases"),
+        trivialMatcher(`AdventureFixture`, "Adventures"),
+        trivialMatcher(`CacheFixture`, "Caches"), trivialMatcher(`Forest`),
+        // TODO: Shrub and Meadow were both 15; consider
+        trivialMatcher(`Shrub`), complements<Meadow>(Meadow.field, "Fields", "Meadows"),
+        // TODO: Sandbar and Hill were both 5; consider
+        trivialMatcher(`Sandbar`), trivialMatcher(`Hill`),
+        complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
+    }) {
+        if (is Iterable<FixtureMatcher> arg) {
+            list.addAll(arg);
+        } else {
+            list.add(arg);
+        }
+    }
+    object retval extends AbstractTableModel() satisfies Reorderable&ZOrderFilter&
+            Iterable<FixtureMatcher>&Comparator<TileFixture> {
+        shared actual Integer rowCount => list.size;
+        shared actual Integer columnCount => 2;
+        shared actual Object getValueAt(Integer rowIndex, Integer columnIndex) {
+            if (exists matcher = list[rowIndex]) {
+                switch (columnIndex)
+                case (0) { return matcher.displayed; }
+                case (1) { return matcher.description; }
+                else { throw IllegalArgumentException("Only two columns"); }
+            } else {
+                throw IllegalArgumentException("Row out of bounds");
+            }
+        }
+        shared actual String getColumnName(Integer column) {
+            switch (column)
+            case (0) { return "Visible"; }
+            case (1) { return "Category"; }
+            else { return super.getColumnName(column); }
+        }
+        shared actual JClass<out Object> getColumnClass(Integer columnIndex) {
+            switch (columnIndex)
+            case (0) { return javaClass<JBoolean>(); }
+            case (1) { return javaClass<JString>(); }
+            else { return javaClass<Object>(); }
+        }
+        shared actual Boolean isCellEditable(Integer rowIndex, Integer columnIndex) =>
+                columnIndex == 0;
+        shared actual void setValueAt(Object val, Integer rowIndex, Integer columnIndex) {
+            if (columnIndex == 0, exists matcher = list[rowIndex]) {
+                if (is Boolean val) {
+                    matcher.displayed = val;
+                    fireTableCellUpdated(rowIndex, 0);
+                } else if (is JBoolean val) {
+                    matcher.displayed = val.booleanValue();
+                    fireTableCellUpdated(rowIndex, 0);
+                }
+            }
+        }
+        shared actual void reorder(Integer fromIndex, Integer toIndex) {
+            if (fromIndex != toIndex) {
+                list.move(fromIndex, toIndex);
+                fireTableRowsDeleted(fromIndex, fromIndex);
+                fireTableRowsInserted(toIndex, toIndex);
+            }
+        }
+        shared actual Boolean shouldDisplay(TileFixture fixture) {
+            for (matcher in list) {
+                if (matcher.matches(fixture)) {
+                    return matcher.displayed;
+                }
+            }
+            ClassModel<TileFixture> cls = type(fixture);
+            list.add(trivialMatcher(cls, fixture.plural()));
+            Integer size = list.size;
+            fireTableRowsInserted(size - 1, size - 1);
+            return true;
+        }
+        shared actual Iterator<FixtureMatcher> iterator() => list.iterator();
+        shared actual Comparison compare(TileFixture first, TileFixture second) {
+            for (matcher in list) {
+                if (!matcher.displayed) {
+                    continue;
+                }
+                if (matcher.matches(first)) {
+                    if (matcher.matches(second)) {
+                        return equal;
+                    } else {
+                        return smaller;
+                    }
+                } else if (matcher.matches(second)) {
+                    return larger;
+                }
+            }
+            return equal;
+        }
+        shared actual Boolean equals(Object that) => (this of Identifiable).equals(that);
+    }
+    return retval;
+}
 "A component to display the map, even a large one, without the performance problems that
  came from drawing the entire map every time and letting Java manage the scrolling or,
  worse, instantiating a GUITile object for every visible tile every time the map was
  scrolled (or, yet worse again, a GUITile for every tile in the map, and removing them all
  and adding the visible tiles back in every time the map was scrolled)."
 JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
-        mapComponent(IViewerModel model, ZOrderFilter zof,
-        FixtureFilterTableModel matchers) {
+        mapComponent(IViewerModel model, Boolean(TileFixture) zof,
+        Iterable<FixtureMatcher>&Comparator<TileFixture> matchers) {
     // FIXME: can't we drop this?
     object iobs satisfies ImageObserver {
         shared late ImageObserver wrapped;
@@ -1814,7 +2006,7 @@ JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListe
             infoflags, x, y, width, height);
     }
     MouseListener&ToolTipSource&SelectionChangeSource cml =
-            componentMouseListener(model, zof, ceylonComparator(matchers));
+            componentMouseListener(model, zof, matchers.compare);
     DirectionSelectionChanger dsl = DirectionSelectionChanger(model);
     Rectangle boundsCheck(Rectangle? rect) {
         if (exists rect) {
@@ -1861,8 +2053,8 @@ JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListe
     object retval extends JComponent() satisfies MapGUI&MapChangeListener&
             SelectionChangeListener&GraphicalParamsListener {
         variable TileDrawHelper helper = tileDrawHelperFactory(
-            model.mapDimensions.version, imageUpdate, zof.shouldDisplay,
-            CeylonIterable(matchers));
+            model.mapDimensions.version, imageUpdate, zof,
+            matchers);
         doubleBuffered = true;
         shared actual IViewerModel mapModel = model;
         shared actual String? getToolTipText(MouseEvent event) =>
@@ -1919,7 +2111,7 @@ JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListe
         }
         shared actual void mapChanged() {
             helper = tileDrawHelperFactory(model.mapDimensions.version,
-                imageUpdate, zof.shouldDisplay, CeylonIterable(matchers));
+                imageUpdate, zof, matchers);
         }
         shared actual void paint(Graphics pen) {
             Graphics context = pen.create();
@@ -2460,9 +2652,9 @@ SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel,
         shared actual IViewerModel model = driverModel;
         shared actual String windowName = "Map Viewer";
     }
-    FixtureFilterTableModel tableModel = FixtureFilterTableModel();
+    AbstractTableModel&{FixtureMatcher*}&ZOrderFilter&Comparator<TileFixture> tableModel = fixtureFilterTableModel();
     JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
-        mapPanel = mapComponent(driverModel, tableModel, tableModel);
+        mapPanel = mapComponent(driverModel, tableModel.shouldDisplay, tableModel);
     tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint());
     driverModel.addGraphicalParamsListener(mapPanel);
     driverModel.addMapChangeListener(mapPanel);

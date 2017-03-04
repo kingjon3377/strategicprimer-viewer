@@ -66,3 +66,7 @@ shared {T*} filterDuplicates<T>({T*} iter) {
         return iter;
     }
 }
+"An interface for objects providing a comparison function"
+shared interface Comparator<T> {
+    shared formal Comparison compare(T one, T two);
+}

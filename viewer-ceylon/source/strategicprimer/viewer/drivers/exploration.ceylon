@@ -152,8 +152,6 @@ import java.text {
     NumberFormat
 }
 import model.viewer {
-    FixtureMatcher,
-    FixtureFilterTableModel,
     FixtureListModel,
     TileTypeFixture
 }
@@ -560,7 +558,7 @@ SPFrame explorationFrame(IExplorationModel model,
                     HashMap<IExplorationModel.Direction, SelectionChangeSupport>();
             MutableMap<IExplorationModel.Direction, DualTileButton> buttons =
                     HashMap<IExplorationModel.Direction, DualTileButton>();
-            {FixtureMatcher*} matchers = CeylonIterable(FixtureFilterTableModel());
+            {FixtureMatcher*} matchers = fixtureFilterTableModel();
             shared actual void selectedPointChanged(Point? old, Point newPoint) {
                 // TODO: use the provided old point instead?
                 Point selPoint = model.selectedUnitLocation;
