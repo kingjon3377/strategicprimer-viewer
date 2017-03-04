@@ -20,7 +20,8 @@ import javax.swing {
     InputMap,
     JMenuItem,
     JLabel,
-    AbstractAction
+    AbstractAction,
+    DefaultListModel
 }
 import java.awt {
     Component,
@@ -31,7 +32,8 @@ import java.awt {
     Toolkit
 }
 import lovelace.util.common {
-    todo
+    todo,
+    Reorderable
 }
 import java.lang {
     IllegalStateException,
@@ -347,4 +349,18 @@ shared class ActionWrapper(Anything(ActionEvent)|ActionListener wrappedListener)
         wrapped = wrappedListener;
     }
     shared actual void actionPerformed(ActionEvent event) => wrapped(event);
+}
+"Adds an implementation of the [[Reorderable]] interface to the [[DefaultListModel]]
+ class."
+shared class ReorderableListModel<T>() extends DefaultListModel<T>()
+        satisfies Reorderable {
+    shared actual void reorder(Integer fromIndex, Integer toIndex) {
+        if (fromIndex != toIndex) {
+            if (fromIndex > toIndex) {
+                add(toIndex, remove(fromIndex));
+            } else {
+                add(toIndex - 1, remove(fromIndex));
+            }
+        }
+    }
 }

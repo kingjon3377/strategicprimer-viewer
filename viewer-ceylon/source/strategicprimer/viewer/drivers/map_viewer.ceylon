@@ -91,9 +91,7 @@ import java.awt.event {
 import util {
     IsNumeric,
     ResourceInputStream,
-    ReorderableListModel,
-    IntTransferable,
-    Reorderable
+    IntTransferable
 }
 import java.lang {
     JIterable = Iterable, JString=String,
@@ -159,7 +157,7 @@ import javax.swing.table {
     AbstractTableModel
 }
 import lovelace.util.common {
-    todo, Comparator
+    todo, Comparator, Reorderable
 }
 import model.listeners {
     MapChangeListener,
@@ -201,7 +199,8 @@ import lovelace.util.jvm {
     createHotKey,
     FormattedLabel,
     platform,
-    ActionWrapper
+    ActionWrapper,
+    ReorderableListModel
 }
 import model.map.fixtures.mobile {
     IUnit,
