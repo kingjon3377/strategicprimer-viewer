@@ -9,8 +9,7 @@ import model.exploration {
     IExplorationModel,
     ExplorationModel,
     HuntingModel,
-    PlayerListModel,
-    ExplorationUnitListModel
+    PlayerListModel
 }
 import java.io {
     IOException
@@ -31,7 +30,8 @@ import javax.swing {
     JButton,
     AbstractAction,
     JOptionPane,
-    ListModel
+    ListModel,
+    DefaultListModel
 }
 import view.util {
     SystemOut
@@ -444,8 +444,15 @@ SPFrame explorationFrame(IExplorationModel model,
         CardLayout layoutObj = CardLayout();
         setLayout(layoutObj);
         JTextField mpField = JTextField(5);
-        ExplorationUnitListModel unitListModel =
-                ExplorationUnitListModel(model);
+        object unitListModel extends DefaultListModel<IUnit>()
+                satisfies PlayerChangeListener {
+            shared actual void playerChanged(Player? old, Player newPlayer) {
+                clear();
+                for (unit in model.getUnits(newPlayer)) {
+                    addElement(unit);
+                }
+            }
+        }
         SwingList<IUnit> unitList = ConstructorWrapper.jlist<IUnit>(unitListModel);
         PlayerListModel playerListModel = PlayerListModel(model);
         SwingList<Player> playerList = SwingList<Player>(playerListModel);
