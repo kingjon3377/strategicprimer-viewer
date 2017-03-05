@@ -88,8 +88,7 @@ import java.awt.event {
 }
 import util {
     IsNumeric,
-    ResourceInputStream,
-    IntTransferable
+    ResourceInputStream
 }
 import java.lang {
     JIterable = Iterable, JString=String,
@@ -187,6 +186,7 @@ import ceylon.collection {
     HashMap
 }
 import lovelace.util.jvm {
+    IntTransferable,
     ceylonComparator,
     listenedButton,
     centeredHorizontalBox,
