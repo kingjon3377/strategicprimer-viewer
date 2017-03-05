@@ -1415,7 +1415,8 @@ class Ver2TileDrawHelper(
         if (exists top = getTopFixture(map, location)) {
             if (exists topTerrain = getDrawableFixtures(map, location)
                     .filter((fixture) => fixture != top)
-                    .filter((fixture) => fixture is TerrainFixture)) {
+                    .filter((fixture) => fixture is TerrainFixture)
+                    .first) {
                 assert (is TerrainFixture topTerrain);
                 return colorHelper.getFeatureColor(topTerrain);
             } else if (map.isMountainous(location)) {
