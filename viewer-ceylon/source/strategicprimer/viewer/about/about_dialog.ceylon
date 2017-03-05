@@ -17,9 +17,6 @@ import javax.swing {
     JScrollPane,
     JDialog
 }
-import controller.map.misc {
-    WindowCloser
-}
 import lovelace.util.jvm {
     listenedButton,
     centeredHorizontalBox
@@ -53,8 +50,8 @@ shared JDialog aboutDialog(Component? parentComponent, String? app) {
     scrollPane.minimumSize =Dimension(300, 400);
     scrollPane.preferredSize =Dimension(400, 500);
     retval.add(scrollPane, BorderLayout.center);
-    retval.add(centeredHorizontalBox(listenedButton("Close", WindowCloser(retval))),
-        BorderLayout.pageEnd);
+    retval.add(centeredHorizontalBox(listenedButton("Close",
+                (event) => retval.dispose())), BorderLayout.pageEnd);
     retval.pack();
     return retval;
 }

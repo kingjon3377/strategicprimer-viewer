@@ -1,6 +1,5 @@
 import controller.map.misc {
     ICLIHelper,
-    WindowCloser,
     IDFactoryFiller,
     IDRegistrar
 }
@@ -2935,7 +2934,7 @@ object viewerGUI satisfies SimpleDriver {
             SwingUtilities.invokeLater(() {
                 SPFrame&IViewerFrame frame = viewerFrame(model,
                     menuHandler.actionPerformed);
-                menuHandler.register(WindowCloser(frame), "close");
+                menuHandler.register((event) => frame.dispose(), "close");
                 menuHandler.register((event) =>
                     selectTileDialog(frame, model).setVisible(true), "go to tile");
                 variable FindDialog? finder = null;

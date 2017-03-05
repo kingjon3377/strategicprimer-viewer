@@ -1,6 +1,5 @@
 import controller.map.misc {
-    ICLIHelper,
-    WindowCloser
+    ICLIHelper
 }
 import model.misc {
     IDriverModel
@@ -898,7 +897,7 @@ object explorationGUI satisfies SimpleDriver {
         SwingUtilities.invokeLater(() {
             SPFrame frame = explorationFrame(explorationModel,
                 menuHandler.actionPerformed);
-            menuHandler.register(WindowCloser(frame), "close");
+            menuHandler.register((event) => frame.dispose(), "close");
             menuHandler.register((event) =>
                 aboutDialog(frame, frame.windowName).setVisible(true), "about");
             frame.setVisible(true);

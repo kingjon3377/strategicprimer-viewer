@@ -1,6 +1,5 @@
 import controller.map.misc {
     ICLIHelper,
-    WindowCloser,
     IDFactoryFiller,
     IDRegistrar
 }
@@ -783,7 +782,7 @@ object advancementGUI satisfies SimpleDriver {
             menuHandler.register((event) =>
                     frame.playerChanged(model.map.currentPlayer, model.map.currentPlayer),
                 "reload tree");
-            menuHandler.register(WindowCloser(frame), "close");
+            menuHandler.register((event) => frame.dispose(), "close");
             menuHandler.register((event) =>
                     aboutDialog(frame, frame.windowName).setVisible(true), "about");
             frame.setVisible(true);
