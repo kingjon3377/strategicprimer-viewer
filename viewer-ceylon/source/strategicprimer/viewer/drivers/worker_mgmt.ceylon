@@ -909,10 +909,11 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         component.backgroundSelectionColor = Color.yellow;
                         component.backgroundNonSelectionColor = Color.yellow;
                     }
-                } else if (orderCheck, is WorkerTreeModelAlt.KindNode item) {
+                } else if (orderCheck,
+                        is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
                     variable Boolean shouldWarn = false;
                     for (child in item) {
-                        if (is WorkerTreeModelAlt.UnitNode child) {
+                        if (is WorkerTreeModelAlt.WorkerTreeNode<IUnit> child) {
                             if (exists unit = child.userObjectNarrowed, !CeylonIterable(unit).empty) {
                                 String orders = unit.getLatestOrders(turnSource()).lowercased;
                                 if (orders.contains("fixme"),

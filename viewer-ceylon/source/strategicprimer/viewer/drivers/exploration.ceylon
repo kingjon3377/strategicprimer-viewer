@@ -152,7 +152,6 @@ import java.text {
     NumberFormat
 }
 import model.viewer {
-    FixtureListModel,
     TileTypeFixture
 }
 import javax.swing.text {
