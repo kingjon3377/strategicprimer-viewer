@@ -9,7 +9,6 @@ import model.misc {
 import model.workermgmt {
     IWorkerModel,
     WorkerModel,
-    IWorkerTreeModel,
     UnitMemberTransferable
 }
 import javax.swing {
@@ -51,7 +50,9 @@ import model.listeners {
     UnitMemberSelectionSource,
     UnitSelectionSource,
     UnitSelectionListener,
-    UnitMemberListener
+    UnitMemberListener,
+    NewUnitListener,
+    MapChangeListener
 }
 import java.awt {
     Dimension,
@@ -105,7 +106,8 @@ import javax.swing.tree {
     TreePath,
     DefaultTreeCellRenderer,
     MutableTreeNode,
-    TreeNode
+    TreeNode,
+    TreeModel
 }
 import model.report {
     SimpleReportNode,
@@ -386,7 +388,43 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
             }
         }
     }
-    shared actual JIterable<UnitMember> dismissed() => JavaIterable(dismissedMembers);
+    shared actual {UnitMember*} dismissed => dismissedMembers;
+}
+"An interface for worker tree-models, adding methods to the [[TreeModel]] interface."
+interface IWorkerTreeModel
+        satisfies TreeModel&NewUnitListener&PlayerChangeListener&MapChangeListener {
+    "Move a member between units."
+    shared formal void moveMember(
+        "The member to move."
+        UnitMember member,
+        "Its prior owner"
+        IUnit old,
+        "Its new owner"
+        IUnit newOwner);
+    "Add a new unit, and also handle adding it to the map (via the driver model)."
+    shared formal void addUnit(
+        "The unit to add"
+        IUnit unit);
+    "If the parameter is a node in the tree (and this implementation is one using nodes
+     rather than model objects directly), return the model object it represents;
+     otherwise, returns the parameter."
+    todo("Drop now-unnecessary implementations in the two subclasses")
+    shared formal Object getModelObject(Object obj);
+    "Add a new member to a unit."
+    shared formal void addUnitMember(
+        "The unit that should own the member"
+        IUnit unit,
+        "The member to add to the unit"
+        UnitMember member);
+    "Update the tree to reflect the fact that something's name has changed."
+    shared formal void renameItem(HasMutableName item);
+    "Update the tree to reflect a change in something's kind. If a unit, this means it
+     has moved in the tree, since units' kinds are their parent nodes now."
+    shared formal void moveItem(HasKind kind);
+    "Dismiss a unit member from a unit and from the player's service."
+    shared formal void dismissUnitMember(UnitMember member);
+    "The unit members that have been dismissed during this session."
+    shared formal {UnitMember*} dismissed;
 }
 "An alternative implementation of the worker tree model."
 class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
@@ -678,7 +716,7 @@ class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
             parentNode.userObjectNarrowed.removeMember(member);
         }
     }
-    shared actual JIterable<UnitMember> dismissed() => JavaIterable(dismissedMembers);
+    shared actual {UnitMember*} dismissed => dismissedMembers;
 }
 "A tree of a player's units."
 JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
@@ -1607,8 +1645,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             ordersPanelObj, listenedButton("Export a proto-strategy",
                 (ActionEvent event) => FileChooser.save(null, JFileChooser(".", null))
                     .call((file) => strategyExporter.writeStrategy(
-                        parsePath(file.string).resource,
-                        CeylonIterable(treeModel.dismissed())))));
+                        parsePath(file.string).resource, treeModel.dismissed))));
         contentPane = horizontalSplit(0.5, 0.5, verticalSplit(2.0 / 3.0, 2.0 / 3.0,
                 BorderedPanel.verticalPanel(playerLabel, JScrollPane(tree), null), lowerLeft),
             verticalSplit(0.6, 0.6, BorderedPanel.verticalPanel(

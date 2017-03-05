@@ -228,9 +228,6 @@ import java.awt.datatransfer {
     DataFlavor,
     UnsupportedFlavorException
 }
-import model.workermgmt {
-    IWorkerTreeModel
-}
 import javax.swing.plaf.basic {
     BasicHTML
 }
