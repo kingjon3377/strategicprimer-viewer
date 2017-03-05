@@ -10,7 +10,6 @@ import model.misc {
 import model.workermgmt {
     WorkerModel,
     IWorkerModel,
-    WorkerTreeModelAlt,
     IWorkerTreeModel,
     RaceFactory
 }
