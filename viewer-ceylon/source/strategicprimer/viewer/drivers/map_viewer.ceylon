@@ -18,7 +18,6 @@ import model.viewer {
     FixtureListModel,
     FixtureTransferable,
     CurriedFixtureTransferable,
-    FixtureListDropListener,
     TileTypeFixture
 }
 import javax.swing {
@@ -221,7 +220,11 @@ import java.awt.dnd {
     DragGestureEvent,
     DnDConstants,
     DragSource,
-    DropTarget
+    DropTarget,
+    DropTargetAdapter,
+    DropTargetDropEvent,
+    DropTargetDragEvent,
+    DropTargetEvent
 }
 import java.awt.datatransfer {
     Transferable,
@@ -2434,8 +2437,76 @@ SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
     }
     DragSource.defaultDragSource.createDefaultDragGestureRecognizer(retval,
         DnDConstants.actionCopy, retval);
-    retval.dropTarget = DropTarget(retval, FixtureListDropListener(parentComponent,
-        listModel));
+    object dropListener extends DropTargetAdapter() {
+        todo("Figure out how to skip all this (return true) on non-local drags")
+        Boolean isXfrFromOutside(DropTargetEvent dtde) {
+            if (is Component source = dtde.source,
+                    parentComponent.isAncestorOf(source)) {
+                    return false;
+            } else {
+                return true;
+            }
+        }
+        void handleDrag(DropTargetDragEvent dtde) {
+            if (dtde.dropAction.and(DnDConstants.actionCopy) != 0,
+                (dtde.currentDataFlavorsAsList.contains(FixtureTransferable.flavor) ||
+                    dtde.currentDataFlavorsAsList.contains(
+                        CurriedFixtureTransferable.flavor)), isXfrFromOutside(dtde)) {
+                dtde.acceptDrag(dtde.dropAction);
+            } else {
+                dtde.rejectDrag();
+            }
+        }
+        shared actual void dragEnter(DropTargetDragEvent dtde) => handleDrag(dtde);
+        shared actual void dragOver(DropTargetDragEvent dtde) => handleDrag(dtde);
+        shared actual void dropActionChanged(DropTargetDragEvent dtde) => handleDrag(dtde);
+        void handleDrop(Transferable trans) {
+            ObjectArray<DataFlavor>? flavors = trans.transferDataFlavors;
+            if (exists flavors) {
+                for (flavor in flavors) {
+                    if (flavor == FixtureTransferable.flavor) {
+                        if (is TileFixture transferData = trans.getTransferData(flavor)) {
+                            listModel.addFixture(transferData);
+                        }
+                    } else if (flavor == CurriedFixtureTransferable.flavor) {
+                        assert (is JIterable<Transferable> curried =
+                                trans.getTransferData(flavor));
+                        for (item in curried) {
+                            handleDrop(item);
+                        }
+                    } else {
+                        throw UnsupportedFlavorException(
+                            trans.transferDataFlavors.array.first);
+                    }
+                }
+            } else {
+                throw UnsupportedFlavorException(DataFlavor(`DataFlavor`, "null"));
+            }
+        }
+        shared actual void drop(DropTargetDropEvent dtde) {
+            if (isXfrFromOutside(dtde)) {
+                for (flavor in dtde.currentDataFlavorsAsList) {
+                    if ({FixtureTransferable.flavor,
+                            CurriedFixtureTransferable.flavor}.contains(flavor)) {
+                        try {
+                            dtde.acceptDrop(dtde.dropAction);
+                            if (exists trans = dtde.transferable) {
+                                handleDrop(trans);
+                            }
+                            return;
+                        } catch (UnsupportedFlavorException except) {
+                            log.error("Unsupported flavor when it said it was supported",
+                                except);
+                        } catch (IOException except) {
+                            log.error("I/O error getting the data", except);
+                        }
+                    }
+                }
+                dtde.rejectDrop();
+            }
+        }
+    }
+    retval.dropTarget = DropTarget(retval, dropListener);
     createHotKey(retval, "delete",
         ActionWrapper((ActionEvent event) => listModel.removeAll(
             retval.selectedValuesList)),
