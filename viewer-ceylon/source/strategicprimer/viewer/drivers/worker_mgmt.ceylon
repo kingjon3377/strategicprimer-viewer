@@ -7,8 +7,7 @@ import model.misc {
 }
 import model.workermgmt {
     IWorkerModel,
-    WorkerModel,
-    UnitMemberTransferable
+    WorkerModel
 }
 import javax.swing {
     SwingUtilities,
@@ -178,7 +177,8 @@ import lovelace.util.jvm {
 }
 import java.awt.datatransfer {
     Transferable,
-    UnsupportedFlavorException
+    UnsupportedFlavorException,
+    DataFlavor
 }
 import java.io {
     IOException,
@@ -715,6 +715,34 @@ class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
     }
     shared actual {UnitMember*} dismissed => dismissedMembers;
 }
+"A class to transfer a UnitMember via drag-and-drop."
+class UnitMemberTransferable satisfies Transferable {
+    shared static DataFlavor flavor =
+            DataFlavor(`Iterable<[UnitMember, IUnit]>`, "List<UnitMember>");
+    {[UnitMember, IUnit]*} payload;
+    shared new ([UnitMember, IUnit]* data) { payload = data; }
+    shared actual ObjectArray<DataFlavor> transferDataFlavors =>
+            createJavaObjectArray({flavor});
+    shared actual Boolean isDataFlavorSupported(DataFlavor candidate) =>
+            flavor == candidate;
+    shared actual {[UnitMember, IUnit]*} getTransferData(DataFlavor candidate) {
+        if (flavor == candidate) {
+            return payload;
+        } else {
+            throw UnsupportedFlavorException(candidate);
+        }
+    }
+    shared actual String string =>
+            "UnitMemberTransferable conveying ``payload.size`` member(s)";
+    shared actual Boolean equals(Object that) {
+        if (is UnitMemberTransferable that) {
+            return payload == that.payload;
+        } else {
+            return false;
+        }
+    }
+    shared actual Integer hash => payload.hash;
+}
 "A tree of a player's units."
 JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         "The tree model"
@@ -739,15 +767,15 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             shared actual UnitMemberTransferable? createTransferable(JComponent component) {
                 value paths = selectionModel.selectionPaths;
                 // TODO: use Tuples instead of Pairs
-                MutableList<Pair<UnitMember, IUnit>> toTransfer =
-                        ArrayList<Pair<UnitMember, IUnit>>();
+                MutableList<[UnitMember, IUnit]> toTransfer =
+                        ArrayList<[UnitMember, IUnit]>();
                 for (path in paths) {
                     if (exists last = path.lastPathComponent,
                             exists parentPath = path.parentPath,
                             exists parentObj = parentPath.lastPathComponent) {
                         if (is IUnit parent = wtModel.getModelObject(parentObj),
                                 is UnitMember selection = wtModel.getModelObject(last)) {
-                            toTransfer.add(Pair<UnitMember, IUnit>.\iof(selection, parent));
+                            toTransfer.add([selection, parent]);
                         } else {
                             log.info("Selection included non-UnitMember");
                         }
@@ -756,7 +784,7 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 if (toTransfer.empty) {
                     return null;
                 } else {
-                    return UnitMemberTransferable(JavaList(toTransfer));
+                    return UnitMemberTransferable(*toTransfer);
                 }
             }
             "Whether a drag here is possible."
