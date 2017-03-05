@@ -27,10 +27,6 @@ import java.lang {
 import model.map.fixtures.mobile {
     IUnit
 }
-import model.report {
-    IReportNode,
-    RootReportNode
-}
 import controller.map.misc {
     IDFactoryFiller,
     IDRegistrar
@@ -192,7 +188,7 @@ void createSubReportsIR(IReportNode root,
         DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Player player,
         IReportGenerator<out Object>* generators) {
     for (generator in generators) {
-        root.add(generator.produceRIR(fixtures, map));
+        root.appendNode(generator.produceRIR(fixtures, map));
         fixtures.coalesce();
     }
 }

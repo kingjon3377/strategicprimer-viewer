@@ -109,10 +109,6 @@ import javax.swing.tree {
     TreeNode,
     TreeModel
 }
-import model.report {
-    SimpleReportNode,
-    IReportNode
-}
 import java.lang {
     Thread,
     IllegalStateException,
@@ -164,7 +160,9 @@ import strategicprimer.viewer.about {
     aboutDialog
 }
 import strategicprimer.viewer.report {
-    createAbbreviatedReportIR
+    createAbbreviatedReportIR,
+    IReportNode,
+    SimpleReportNode
 }
 import lovelace.util.jvm {
     listenedButton,

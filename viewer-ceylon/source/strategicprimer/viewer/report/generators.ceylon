@@ -31,16 +31,6 @@ import ceylon.collection {
     HashMap,
     TreeMap
 }
-import model.report {
-    IReportNode,
-    SectionListReportNode,
-    SimpleReportNode,
-    EmptyReportNode,
-    ListReportNode,
-    SectionReportNode,
-    ComplexReportNode,
-    SortedSectionListReportNode
-}
 import model.map.fixtures.mobile {
     Animal,
     IUnit,
@@ -363,7 +353,7 @@ class TextReportGenerator(PairComparator<Point, IFixture> comp)
                 Point loc = tuple.first;
                 IFixture item = tuple.rest.first;
                 if (is TextFixture fixture = item) {
-                    retval.add(produceRIR(fixtures, map, [fixture,
+                    retval.appendNode(produceRIR(fixtures, map, [fixture,
                         loc]));
                     fixtures.remove(key);
                 }
@@ -371,7 +361,7 @@ class TextReportGenerator(PairComparator<Point, IFixture> comp)
             if (retval.childCount > 0) {
                 return retval;
             } else {
-                return EmptyReportNode.nullNode;
+                return emptyReportNode;
             }
         }
     }
@@ -448,14 +438,14 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
             Animal item = entry.first;
             Point loc = entry.rest.first;
             if (item.traces) {
-                return SimpleReportNode(loc, "At ``loc``: tracks or traces of ``item
-                    .kind`` ``distCalculator.distanceString(loc)``");
+                return SimpleReportNode("At ``loc``: tracks or traces of ``item
+                    .kind`` ``distCalculator.distanceString(loc)``", loc);
             } else if (item.talking) {
-                return SimpleReportNode(loc, "At ``loc``: talking ``item
-                    .kind`` ``distCalculator.distanceString(loc)``");
+                return SimpleReportNode("At ``loc``: talking ``item
+                    .kind`` ``distCalculator.distanceString(loc)``", loc);
             } else {
-                return SimpleReportNode(loc, "At ``loc``: ``item.kind`` ``distCalculator
-                    .distanceString(loc)``");
+                return SimpleReportNode("At ``loc``: ``item.kind`` ``distCalculator
+                    .distanceString(loc)``", loc);
             }
         } else {
             MutableList<[Point, IFixture]> values =
@@ -471,7 +461,7 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
                         node = ListReportNode(animal.kind);
                         items.put(animal.kind, node);
                     }
-                    node.add(produceRIR(fixtures, map, [animal, loc]));
+                    node.appendNode(produceRIR(fixtures, map, [animal, loc]));
                     if (animal.id > 0) {
                         fixtures.remove(animal.id);
                     } else {
@@ -484,12 +474,12 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
                 }
             }
             if (items.empty) {
-                return EmptyReportNode.nullNode;
+                return emptyReportNode;
             } else {
                 IReportNode retval = SectionListReportNode(4,
                     "Animal sightings or encounters");
                 for (node in items.items) {
-                    retval.add(node);
+                    retval.appendNode(node);
                 }
                 return retval;
             }
@@ -597,15 +587,15 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
             } else if (is AbstractTown item) {
                 fixtures.remove(item.id);
                 if (item.owner.independent) {
-                    return SimpleReportNode(loc,
-                        "At ``loc``: ``item.name``, an independent ``item.size()`` ``item
-                            .status()`` ``item.kind()`` ``distCalculator
-                            .distanceString(loc)``");
+                    return SimpleReportNode("At ``loc``: ``item.name``, an independent ``item.size()`` ``item
+                        .status()`` ``item.kind()`` ``distCalculator
+                        .distanceString(loc)``",
+                        loc);
                 } else {
-                    return SimpleReportNode(loc,
-                        "At ``loc``: ``item.name``, a ``item.size()`` ``item
-                            .status()`` ``item.kind()`` allied with ``playerNameOrYou(
-                            item.owner)`` ``distCalculator.distanceString(loc)``");
+                    return SimpleReportNode("At ``loc``: ``item.name``, a ``item.size()`` ``item
+                        .status()`` ``item.kind()`` allied with ``playerNameOrYou(
+                        item.owner)`` ``distCalculator.distanceString(loc)``",
+                        loc);
                 }
             } else {
                 throw IllegalStateException("Unhandled ITownFixture subclass");
@@ -623,7 +613,7 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
             separateByStatus(separated, fixtures.items,
                 (IReportNode node, pair) {
                     assert (is ITownFixture town = pair.rest.first);
-                    node.add(produceRIR(fixtures, map, [town, pair.first]));
+                    node.appendNode(produceRIR(fixtures, map, [town, pair.first]));
                 });
             IReportNode retval = SectionListReportNode(4,
                 "Cities, towns, and/or fortifications you know about:");
@@ -633,7 +623,7 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                 }
             }
             if (retval.childCount == 0) {
-                return EmptyReportNode.nullNode;
+                return emptyReportNode;
             } else {
                 return retval;
             }
@@ -696,7 +686,7 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
     "Add nodes representing rivers to a parent."
     void riversToNode(Point loc, IReportNode parent, River* rivers) {
         if (rivers.contains(River.lake)) {
-            parent.add(SimpleReportNode(loc,"There is a nearby lake."));
+            parent.appendNode(SimpleReportNode("There is a nearby lake.", loc));
         }
         value temp = rivers.filter((river) => river != River.lake);
         if (exists first = temp.first) {
@@ -707,7 +697,7 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
             for (river in temp.rest) {
                 builder.append(", ``river.description``");
             }
-            parent.add(SimpleReportNode(loc, builder.string));
+            parent.appendNode(SimpleReportNode(builder.string, loc));
         }
     }
     "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
@@ -845,22 +835,23 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
         if (exists entry) {
             Fortress item = entry.first;
             Point loc = entry.rest.first;
-            IReportNode retval = SectionListReportNode(loc, 5,
-                "Fortress ``item.name`` belonging to ``playerNameOrYou(item.owner)``");
-            retval.add(SimpleReportNode(loc, "Located at ``loc`` ``distCalculator
-                .distanceString(loc)``"));
+            IReportNode retval = SectionListReportNode(5,
+                "Fortress ``item.name`` belonging to ``playerNameOrYou(item.owner)``",
+                loc);
+            retval.appendNode(SimpleReportNode("Located at ``loc`` ``distCalculator
+                .distanceString(loc)``", loc));
             // This is a no-op if no rivers, so avoid an if
             riversToNode(loc, retval, *CeylonIterable(map.getRivers(loc)));
             IReportNode units = ListReportNode("Units on the tile:");
-            IReportNode resources = ListReportNode(loc, "Resources:");
+            IReportNode resources = ListReportNode("Resources:", loc);
             MutableMap<String,IReportNode> resourceKinds = HashMap<String,IReportNode>();
-            IReportNode equipment = ListReportNode(loc, "Equipment:");
-            IReportNode contents = ListReportNode(loc, "Other Contents of Fortress:");
+            IReportNode equipment = ListReportNode("Equipment:", loc);
+            IReportNode contents = ListReportNode("Other Contents of Fortress:", loc);
             for (member in item) {
                 if (is IUnit member) {
-                    units.add(urg.produceRIR(fixtures, map, [member, loc]));
+                    units.appendNode(urg.produceRIR(fixtures, map, [member, loc]));
                 } else if (is Implement member) {
-                    equipment.add(memberReportGenerator.produceRIR(fixtures, map, [member,
+                    equipment.appendNode(memberReportGenerator.produceRIR(fixtures, map, [member,
                         loc]));
                 } else if (is ResourcePile member) {
                     IReportNode node;
@@ -870,10 +861,10 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
                         node = ListReportNode("``member.kind``:");
                         resourceKinds.put(member.kind, node);
                     }
-                    node.add(memberReportGenerator.produceRIR(fixtures, map, [member,
+                    node.appendNode(memberReportGenerator.produceRIR(fixtures, map, [member,
                         loc]));
                 } else {
-                    contents.add(memberReportGenerator.produceRIR(fixtures, map, [member,
+                    contents.appendNode(memberReportGenerator.produceRIR(fixtures, map, [member,
                         loc]));
                 }
             }
@@ -892,17 +883,17 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
             for ([loc, item] in values) {
                 if (is Fortress fort = item) {
                     if (currentPlayer == fort.owner) {
-                        ours.add(produceRIR(fixtures, map, [fort,
+                        ours.appendNode(produceRIR(fixtures, map, [fort,
                             loc]));
                     } else {
-                        foreign.add(produceRIR(fixtures, map, [fort,
+                        foreign.appendNode(produceRIR(fixtures, map, [fort,
                             loc]));
                     }
                 }
             }
             if (ours.childCount == 0) {
                 if (foreign.childCount == 0) {
-                    return EmptyReportNode.nullNode;
+                    return emptyReportNode;
                 } else {
                     return foreign;
                 }
@@ -910,8 +901,8 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
                 return ours;
             } else {
                 IReportNode retval = ComplexReportNode();
-                retval.add(ours);
-                retval.add(foreign);
+                retval.appendNode(ours);
+                retval.appendNode(foreign);
                 return retval;
             }
         }
@@ -942,8 +933,8 @@ class WorkerReportGenerator(PairComparator<Point, IFixture> comp, Boolean detail
     }
     "Produce the report-intermediate-representation sub-sub-report on a Job."
     IReportNode produceJobRIR(IJob job, Point loc) {
-        return SimpleReportNode(loc,
-            "``job.level`` levels in ``job.name`` ``skills(*CeylonIterable(job))``");
+        return SimpleReportNode("``job.level`` levels in ``job.name`` ``skills(*CeylonIterable(job))``",
+            loc);
     }
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
      paragraph or bullet point), or on all workers (should never be called, but we'll
@@ -1006,22 +997,23 @@ class WorkerReportGenerator(PairComparator<Point, IFixture> comp, Boolean detail
             IWorker worker = entry.first;
             Point loc = entry.rest.first;
             if (details) {
-                IReportNode retval = ComplexReportNode(loc,
-                    "``worker.name``, a ``worker.race``");
+                IReportNode retval = ComplexReportNode("``worker.name``, a ``worker.race``",
+                    loc);
                 if (exists stats = worker.stats) {
-                    retval.add(SimpleReportNode(statsString(stats)));
+                    retval.appendNode(SimpleReportNode(statsString(stats)));
                 }
                 if (!CeylonIterable(worker).empty) {
-                    IReportNode jobs = ListReportNode(loc,
-                        "(S)he has training or experience in the following Jobs (Skills):");
+                    IReportNode jobs = ListReportNode(
+                        "(S)he has training or experience in the following Jobs (Skills):",
+                        loc);
                     for (job in worker) {
-                        jobs.add(produceJobRIR(job, loc));
+                        jobs.appendNode(produceJobRIR(job, loc));
                     }
-                    retval.add(jobs);
+                    retval.appendNode(jobs);
                 }
                 return retval;
             } else {
-                return SimpleReportNode(loc, "``worker.name``, a ``worker.race``");
+                return SimpleReportNode("``worker.name``, a ``worker.race``", loc);
             }
         } else {
             MutableList<[Point, IFixture]> values =
@@ -1030,11 +1022,11 @@ class WorkerReportGenerator(PairComparator<Point, IFixture> comp, Boolean detail
             IReportNode retval = SectionListReportNode(5, "Workers");
             for (tuple in values) {
                 if (is IWorker worker = tuple.rest.first) {
-                    retval.add(produceRIR(fixtures, map, [worker, tuple.first]));
+                    retval.appendNode(produceRIR(fixtures, map, [worker, tuple.first]));
                 }
             }
             if (retval.childCount == 0) {
-                return EmptyReportNode.nullNode;
+                return emptyReportNode;
             } else {
                 return retval;
             }
@@ -1208,7 +1200,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
             ListReportNode equipment = ListReportNode("Equipment:");
             ListReportNode resources = ListReportNode("Resources:");
             ListReportNode others = ListReportNode("Others:");
-            IReportNode retval = ListReportNode(loc, "``base`` Members of the unit:");
+            IReportNode retval = ListReportNode("``base`` Members of the unit:", loc);
             IReportGenerator<IWorker> workerReportGenerator;
             if (item.owner == currentPlayer) {
                 workerReportGenerator = ourWorkerReportGenerator;
@@ -1229,7 +1221,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                     resources.add(memberReportGenerator.produceRIR(fixtures, map, [member,
                         loc]));
                 } else {
-                    others.add(SimpleReportNode(loc, member.string));
+                    others.add(SimpleReportNode(member.string, loc));
                 }
                 fixtures.remove(member.id);
             }
@@ -1250,7 +1242,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
             }
             retval.addIfNonEmpty(ordersNode);
             if (retval.childCount == 0) {
-                return SimpleReportNode(loc, base);
+                return SimpleReportNode(base, loc);
             } else {
                 return retval;
             }
@@ -1267,9 +1259,9 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                     unitNode.text = "At ``loc``: ``unitNode.text`` ``distCalculator
                         .distanceString(loc)``";
                     if (currentPlayer == unit.owner) {
-                        ours.add(unitNode);
+                        ours.appendNode(unitNode);
                     } else {
-                        theirs.add(unitNode);
+                        theirs.appendNode(unitNode);
                     }
                 }
             }
@@ -1277,7 +1269,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                 "(Any units reported above are not described again.)");
             if (ours.childCount == 0) {
                 if (theirs.childCount == 0) {
-                    return EmptyReportNode.nullNode;
+                    return emptyReportNode;
                 } else {
                     theirs.addAsFirst(textNode);
                     theirs.text = "Foreign units in the map:";
@@ -1289,9 +1281,9 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                 return ours;
             } else {
                 IReportNode retval = SectionReportNode(4, "Units in the map:");
-                retval.add(textNode);
-                retval.add(ours);
-                retval.add(theirs);
+                retval.appendNode(textNode);
+                retval.appendNode(ours);
+                retval.appendNode(theirs);
                 return retval;
             }
         }
@@ -1448,10 +1440,10 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp,
                         node = ListReportNode("``kind``:");
                         resourceKinds.put(kind, node);
                     }
-                    node.add(produceRIR(fixtures, map, [resource,
+                    node.appendNode(produceRIR(fixtures, map, [resource,
                         loc]));
                 } else if (is Implement implement = item) {
-                    equipment.add(produceRIR(fixtures, map, [implement,
+                    equipment.appendNode(produceRIR(fixtures, map, [implement,
                         loc]));
                 }
             }
@@ -1462,7 +1454,7 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp,
             IReportNode retval = SectionListReportNode(4, "Resources and Equipment:");
             retval.addIfNonEmpty(resources, equipment);
             if (retval.childCount == 0) {
-                return EmptyReportNode.nullNode;
+                return emptyReportNode;
             } else {
                 return retval;
             }
@@ -1559,36 +1551,36 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp,
             Point loc = entry.rest.first;
             if (is Cave item) {
                 fixtures.remove(item.id);
-                return SimpleReportNode(loc,
-                    "Caves beneath ``loc`` ``distCalculator.distanceString(loc)``");
+                return SimpleReportNode("Caves beneath ``loc`` ``distCalculator.distanceString(loc)``",
+                    loc);
             } else if (is Battlefield item) {
                 fixtures.remove(item.id);
-                return SimpleReportNode(loc,
+                return SimpleReportNode(
                     "Signs of a long-ago battle on ``loc`` ``distCalculator
-                        .distanceString(loc)``");
+                    .distanceString(loc)``", loc);
             } else if (is AdventureFixture item) {
                 fixtures.remove(item.id);
                 if (item.owner.independent) {
-                    return SimpleReportNode(loc,
-                        "``item.briefDescription`` at ``loc``: ``item
-                            .fullDescription`` ``distCalculator.distanceString(loc)``");
+                    return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
+                        .fullDescription`` ``distCalculator.distanceString(loc)``",
+                        loc);
                 } else if (currentPlayer == item.owner) {
-                    return SimpleReportNode(loc,
-                        "``item.briefDescription`` at ``loc``: ``item
-                            .fullDescription`` ``distCalculator
-                            .distanceString(loc)`` (already investigated by you)");
+                    return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
+                        .fullDescription`` ``distCalculator
+                        .distanceString(loc)`` (already investigated by you)",
+                        loc);
                 } else {
-                    return SimpleReportNode(loc,
-                        "``item.briefDescription`` at ``loc``: ``item
-                            .fullDescription`` ``distCalculator
-                            .distanceString(
-                            loc)`` (already investigated by another player)");
+                    return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
+                        .fullDescription`` ``distCalculator
+                        .distanceString(
+                        loc)`` (already investigated by another player)",
+                        loc);
                 }
             } else if (is Portal item) {
                 fixtures.remove(item.id);
-                return SimpleReportNode(loc,
-                    "A portal to another world at ``loc`` ``distCalculator
-                        .distanceString(loc)``");
+                return SimpleReportNode("A portal to another world at ``loc`` ``distCalculator
+                    .distanceString(loc)``",
+                    loc);
             } else {
                 throw IllegalArgumentException("Unexpected ExplorableFixture type");
             }
@@ -1608,7 +1600,7 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp,
             for ([loc, item] in values) {
                 if (is ExplorableFixture fixture = item,
                     exists node = nodes.get(type(fixture))) {
-                    node.add(produceRIR(fixtures, map, [fixture, loc]));
+                    node.appendNode(produceRIR(fixtures, map, [fixture, loc]));
                 }
             }
             IReportNode retval = SectionListReportNode(4,
@@ -1616,7 +1608,7 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp,
             retval.addIfNonEmpty(caves, battles, portals);
             if (retval.childCount == 0) {
                 if (adventures.childCount == 0) {
-                    return EmptyReportNode.nullNode;
+                    return emptyReportNode;
                 } else {
                     return adventures;
                 }
@@ -1624,8 +1616,8 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp,
                 return retval;
             } else {
                 IReportNode real = ComplexReportNode();
-                real.add(retval);
-                real.add(adventures);
+                real.appendNode(retval);
+                real.appendNode(adventures);
                 return real;
             }
         }
@@ -1794,32 +1786,32 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
             Point loc = entry.rest.first;
             SimpleReportNode retval;
             if (is CacheFixture item) {
-                retval = SimpleReportNode(loc, "At ``loc``: ``distCalculator
+                retval = SimpleReportNode("At ``loc``: ``distCalculator
                     .distanceString(loc)`` A cache of ``item.kind``, containing ``item
-                    .contents``");
+                    .contents``", loc);
             } else if (is Grove item) {
-                retval = SimpleReportNode(loc, "At ``loc``: A ``(item.cultivated) then
+                retval = SimpleReportNode("At ``loc``: A ``(item.cultivated) then
                     "cultivated" else "wild"`` ``item.kind`` ``(item
                     .orchard) then "orchard" else "grove"`` ``distCalculator
-                    .distanceString(loc)``");
+                    .distanceString(loc)``", loc);
             } else if (is Meadow item) {
-                retval = SimpleReportNode(loc, "At ``loc``: A ``item.status`` ``(item
+                retval = SimpleReportNode("At ``loc``: A ``item.status`` ``(item
                     .cultivated) then "cultivated" else "wild or abandoned"`` ``item
                     .kind`` ``(item.field) then "field" else "meadow"`` ``distCalculator
-                    .distanceString(loc)``");
+                    .distanceString(loc)``", loc);
             } else if (is Mine item) {
-                retval = SimpleReportNode(loc, "At ``loc``: ``item`` ``distCalculator
-                    .distanceString(loc)``");
+                retval = SimpleReportNode("At ``loc``: ``item`` ``distCalculator
+                    .distanceString(loc)``", loc);
             } else if (is MineralVein item) {
-                retval = SimpleReportNode(loc, "At ``loc``: An ``(item
+                retval = SimpleReportNode("At ``loc``: An ``(item
                     .exposed) then "exposed" else "unexposed"`` vein of ``item
-                    .kind`` ``distCalculator.distanceString(loc)``");
+                    .kind`` ``distCalculator.distanceString(loc)``", loc);
             } else if (is Shrub item) {
-                retval = SimpleReportNode(loc, "At ``loc``: ``item.kind`` ``distCalculator
-                    .distanceString(loc)``");
+                retval = SimpleReportNode("At ``loc``: ``item.kind`` ``distCalculator
+                    .distanceString(loc)``", loc);
             } else if (is StoneDeposit item) {
-                retval = SimpleReportNode(loc, "At ``loc``: An exposed ``item
-                    .kind`` deposit ``distCalculator.distanceString(loc)``");
+                retval = SimpleReportNode("At ``loc``: An exposed ``item
+                    .kind`` deposit ``distCalculator.distanceString(loc)``", loc);
             } else {
                 throw IllegalArgumentException("Unexpected HarvestableFixture type");
             }
@@ -1840,13 +1832,13 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
             for ([loc, item] in values) {
                 if (is HarvestableFixture item) {
                     if (is CacheFixture item) {
-                        caches.add(produceRIR(fixtures, map, [item, loc]));
+                        caches.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is Grove item) {
-                        groves.add(produceRIR(fixtures, map, [item, loc]));
+                        groves.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is Meadow item) {
-                        meadows.add(produceRIR(fixtures, map, [item, loc]));
+                        meadows.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is Mine item) {
-                        mines.add(produceRIR(fixtures, map, [item, loc]));
+                        mines.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is MineralVein item) {
                         IReportNode node;
                         if (exists temp = minerals.get(item.shortDesc())) {
@@ -1855,7 +1847,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                             node = ListReportNode(item.shortDesc());
                             minerals.put(item.shortDesc(), node);
                         }
-                        node.add(produceRIR(fixtures, map, [item, loc]));
+                        node.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is Shrub item) {
                         IReportNode node;
                         if (exists temp = shrubs.get(item.shortDesc())) {
@@ -1864,7 +1856,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                             node = ListReportNode(item.shortDesc());
                             shrubs.put(item.shortDesc(), node);
                         }
-                        node.add(produceRIR(fixtures, map, [item, loc]));
+                        node.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is StoneDeposit item) {
                         IReportNode node;
                         if (exists temp = stone.get(item.kind)) {
@@ -1873,29 +1865,29 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
                             node = ListReportNode(item.kind);
                             stone.put(item.kind, node);
                         }
-                        node.add(produceRIR(fixtures, map, [item, loc]));
+                        node.appendNode(produceRIR(fixtures, map, [item, loc]));
                     }
                 }
             }
             IReportNode shrubsNode = SortedSectionListReportNode(5,
                 "Shrubs, Small Trees, etc.");
             for (node in shrubs.items) {
-                shrubsNode.add(node);
+                shrubsNode.appendNode(node);
             }
             IReportNode mineralsNode = SortedSectionListReportNode(5, "Mineral Deposits");
             for (node in minerals.items) {
-                mineralsNode.add(node);
+                mineralsNode.appendNode(node);
             }
             IReportNode stoneNode = SortedSectionListReportNode(5,
                 "Exposed Stone Deposits");
             for (node in stone.items) {
-                stoneNode.add(node);
+                stoneNode.appendNode(node);
             }
             SectionReportNode retval = SectionReportNode(4, "Resource Sources");
             retval.addIfNonEmpty(caches, groves, meadows, mines, mineralsNode, stoneNode,
                 shrubsNode);
             if (retval.childCount == 0) {
-                return EmptyReportNode.nullNode;
+                return emptyReportNode;
             } else {
                 return retval;
             }
@@ -1984,16 +1976,16 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
             Point loc = entry.rest.first;
             fixtures.remove(item.id);
             if (item.owner.independent) {
-                return SimpleReportNode(loc, "At ``loc``: ``item.name``, a(n) ``item
-                    .race`` village, independent ``distCalculator.distanceString(loc)``");
+                return SimpleReportNode("At ``loc``: ``item.name``, a(n) ``item
+                    .race`` village, independent ``distCalculator.distanceString(loc)``", loc);
             } else if (item.owner == currentPlayer) {
-                return SimpleReportNode(loc, "At ``loc``: ``item.name``, a(n) ``item
+                return SimpleReportNode("At ``loc``: ``item.name``, a(n) ``item
                     .race`` village, sworn to you ``distCalculator
-                    .distanceString(loc)``");
+                    .distanceString(loc)``", loc);
             } else {
-                return SimpleReportNode(loc, "At ``loc``: ``item.name``, a(n) ``item
+                return SimpleReportNode("At ``loc``: ``item.name``, a(n) ``item
                     .race`` village, sworn to ``item.owner`` ``distCalculator
-                    .distanceString(loc)``");
+                    .distanceString(loc)``", loc);
             }
         } else {
             MutableList<[Point, IFixture]> values =
@@ -2018,7 +2010,7 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
                         parent = SectionListReportNode(6, "Villages sworn to ``owner``");
                         othersMap.put(owner, parent);
                     }
-                    parent.add(produceRIR(fixtures, map, [village, loc]));
+                    parent.appendNode(produceRIR(fixtures, map, [village, loc]));
                 }
             }
             IReportNode others = SectionListReportNode(5,
@@ -2027,7 +2019,7 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
             IReportNode retval = SectionReportNode(4, "Villages:");
             retval.addIfNonEmpty(own, independents, others);
             if (retval.childCount == 0) {
-                return EmptyReportNode.nullNode;
+                return emptyReportNode;
             } else {
                 return retval;
             }
@@ -2112,8 +2104,8 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
             Immortal item = entry.first;
             Point loc = entry.rest.first;
             fixtures.remove(item.id);
-            return SimpleReportNode(loc, "At ``loc``: A(n) ``item`` ``distCalculator
-                .distanceString(loc)``");
+            return SimpleReportNode("At ``loc``: A(n) ``item`` ``distCalculator
+                .distanceString(loc)``", loc);
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
@@ -2141,10 +2133,10 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
                 IFixture immortal = item;
                 if (is Dragon immortal) {
                     separateByKind(dragons, immortal)
-                        .add(produceRIR(fixtures, map, [immortal, point]));
+                        .appendNode(produceRIR(fixtures, map, [immortal, point]));
                 } else if (is Fairy immortal) {
                     separateByKind(fairies, immortal)
-                        .add(produceRIR(fixtures, map, [immortal, point]));
+                        .appendNode(produceRIR(fixtures, map, [immortal, point]));
                 } else if (is SimpleImmortal immortal) {
                     IReportNode node;
                     if (exists temp = simples.get(immortal.kind())) {
@@ -2153,13 +2145,13 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
                         node = ListReportNode(immortal.kind().plural());
                         simples.put(immortal.kind(), node);
                     }
-                    node.add(produceRIR(fixtures, map, [immortal, point]));
+                    node.appendNode(produceRIR(fixtures, map, [immortal, point]));
                 } else if (is Giant immortal) {
                     separateByKind(giants, immortal)
-                        .add(produceRIR(fixtures, map, [immortal, point]));
+                        .appendNode(produceRIR(fixtures, map, [immortal, point]));
                 } else if (is Centaur immortal) {
                     separateByKind(centaurs, immortal)
-                        .add(produceRIR(fixtures, map, [immortal, point]));
+                        .appendNode(produceRIR(fixtures, map, [immortal, point]));
                 }
             }
             IReportNode retval = SectionListReportNode(4, "Immortals");
@@ -2173,7 +2165,7 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
                 coalesce("Fairies", fairies), coalesce("Giants", giants),
                 coalesce("Centaurs", centaurs));
             if (retval.childCount == 0) {
-                return EmptyReportNode.nullNode;
+                return emptyReportNode;
             } else {
                 return retval;
             }
