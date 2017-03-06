@@ -35,6 +35,20 @@ import lovelace.util.jvm {
     javaComparator,
     ceylonComparator
 }
+import strategicprimer.viewer.report.generators {
+    pairComparator,
+    AnimalReportGenerator,
+    VillageReportGenerator,
+    FortressReportGenerator,
+    HarvestableReportGenerator,
+    UnitReportGenerator,
+    IReportGenerator,
+    FortressMemberReportGenerator,
+    TownReportGenerator,
+    ExplorableReportGenerator,
+    ImmortalsReportGenerator,
+    TextReportGenerator
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "Find the location of the given player's HQ in the given map."

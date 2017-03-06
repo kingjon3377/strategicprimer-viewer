@@ -109,7 +109,7 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&I
 }
 "A node for a section consisting only of a list. This is a common case, which would
  otherwise be represented by a section node containing only a list."
-class SectionListReportNode(Integer level, variable String header,
+shared class SectionListReportNode(Integer level, variable String header,
         shared actual variable Point? localPoint = null)
         extends DefaultMutableTreeNode(header) satisfies IReportNode {
     Integer minimumBoilerPlate = "<h1></h1><p></p><ul></ul>".size + 4;
@@ -169,7 +169,7 @@ class SectionListReportNode(Integer level, variable String header,
     shared actual void setUserObject(Object obj) => super.userObject = obj;
 }
 "A [[SectionListReportNode]] that sorts itself after every addition."
-class SortedSectionListReportNode(Integer level, String text)
+shared class SortedSectionListReportNode(Integer level, String text)
         extends SectionListReportNode(level, text) {
     shared actual void appendNode(MutableTreeNode newChild) {
         super.appendNode(newChild);
@@ -214,7 +214,7 @@ shared class SimpleReportNode(variable String nodeText, shared actual variable P
 }
 "A node for cases where a [[SimpleReportNode]] is not enough, because we *can* have
  children, but there isn't a *header*, and children shouldn't be wrapped in a list."
-class ComplexReportNode(String textArg = "", Point? pointArg = null) extends SimpleReportNode(textArg, pointArg) {
+shared class ComplexReportNode(String textArg = "", Point? pointArg = null) extends SimpleReportNode(textArg, pointArg) {
     shared actual default void produce(Anything(String) stream) {
         stream(text);
         for (node in this) {
@@ -245,7 +245,7 @@ class ComplexReportNode(String textArg = "", Point? pointArg = null) extends Sim
     // TODO: refine `string` to reflect children?
 }
 "A node representing a section, with a header."
-class SectionReportNode(Integer level, variable String header,
+shared class SectionReportNode(Integer level, variable String header,
             shared actual variable Point? localPoint = null)
         extends DefaultMutableTreeNode(header) satisfies IReportNode {
     shared actual void appendNode(MutableTreeNode node) {
@@ -292,7 +292,7 @@ class SectionReportNode(Integer level, variable String header,
     shared actual String string => text;
 }
 "A node representing a list."
-class ListReportNode(variable String initialText,
+shared class ListReportNode(variable String initialText,
             shared actual variable Point? localPoint = null)
         extends DefaultMutableTreeNode(initialText) satisfies IReportNode {
     Integer boilerPlateLength = "<ul></ul>".size + 3;
@@ -389,7 +389,7 @@ class RootReportNode(variable String title)
 }
 todo("Is this missing any methods that could be used to modify it?",
     "Consider dropping this in favor of using [[IReportNode?]] everywhere")
-object emptyReportNode extends DefaultMutableTreeNode() satisfies IReportNode {
+shared object emptyReportNode extends DefaultMutableTreeNode() satisfies IReportNode {
     // TODO: log if mutator methods called
     shared actual void appendNode(MutableTreeNode node) {}
     shared actual void add(MutableTreeNode node) { }
