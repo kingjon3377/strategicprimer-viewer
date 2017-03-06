@@ -93,33 +93,18 @@ import model.map.fixtures.resources {
     Shrub,
     StoneDeposit
 }
-"An interface for a class that is both a Pair of Comparators and a Comparator of
- two-element Tuples."
-todo("Figure out some way to get the compiler to accept `Comparable(T,T)` and
-      `Comparable(U, U)` instead of `JComparator` as arguments.")
-interface PairComparator<T, U>
-        satisfies Pair<JComparator<T>, JComparator<U>>
-        given T satisfies Object {
-    shared formal Comparison compare([T, U] first, [T, U] second);
-}
-"A comparator for Pairs that uses provided comparators to compare first the first item in
- the pair, then the second."
-class PairComparatorImpl<T, U>(JComparator<T> firstItem, JComparator<U> secondItem)
-        satisfies PairComparator<T, U> given T satisfies Object {
-    Comparison(T, T) firstComparator = ceylonComparator(firstItem);
-    Comparison(U, U) secondComparator = ceylonComparator(secondItem);
-    shared actual Comparison compare([T, U] first, [T, U] second) {
-        Comparison firstResult = firstComparator(first.first, second.first);
-        if (firstResult == equal) {
-            return secondComparator(first.rest.first, second.rest.first);
+"Given comparators of the tuple's types, produce a comparator function that compares
+ tuples using the first and then the second element."
+Comparison([T, U], [T, U]) pairComparator<T, U>(Comparison(T, T) first, Comparison(U, U) second) {
+    Comparison retval([T, U] one, [T, U] two) {
+        Comparison comparison = first(one.first, two.first);
+        if (comparison == equal) {
+            return second(one.rest.first, two.rest.first);
         } else {
-            return firstResult;
+            return comparison;
         }
     }
-    shared actual JComparator<T> first() => firstItem;
-
-    shared actual JComparator<U> second() => secondItem;
-
+    return retval;
 }
 "An interface for report generators."
 interface IReportGenerator<T> given T satisfies IFixture {
@@ -186,14 +171,10 @@ interface IReportGenerator<T> given T satisfies IFixture {
  shared state."
 todo("Make as many methods static as possible")
 abstract class AbstractReportGenerator<T>(
-        shared PairComparator<Point, IFixture> pairComparator)
+        shared Comparison([Point, IFixture], [Point, IFixture]) pairComparator,
+        shared DistanceComparator distCalculator =
+                DistanceComparator(PointFactory.invalidPoint))
         satisfies IReportGenerator<T> given T satisfies IFixture {
-    shared DistanceComparator distCalculator;
-    if (is DistanceComparator temp = pairComparator.first()) {
-        distCalculator = temp;
-    } else {
-        distCalculator = DistanceComparator(PointFactory.invalidPoint);
-    }
     deprecated shared String playerNameOrYou(Player player) {
         if (player.current) {
             return "you";
@@ -287,8 +268,8 @@ abstract class AbstractReportGenerator<T>(
     }
 }
 "A report generator for arbitrary-text notes."
-class TextReportGenerator(PairComparator<Point, IFixture> comp)
-        extends AbstractReportGenerator<TextFixture>(comp) {
+class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = PointFactory.invalidPoint)
+        extends AbstractReportGenerator<TextFixture>(comp, DistanceComparator(hq)) {
     "Produce the part of the report dealing with arbitrary-text notes. If an individual
      note is specified, this does *not* remove it from the collection, because this
      method doesn't know the synthetic ID # that was assigned to it."
@@ -368,8 +349,8 @@ class TextReportGenerator(PairComparator<Point, IFixture> comp)
 }
 "A report generator for sightings of animals."
 todo("Ensure that animal-tracks' synthetic IDs are used to remove them")
-class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
-        extends AbstractReportGenerator<Animal>(comp) {
+class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = PointFactory.invalidPoint)
+        extends AbstractReportGenerator<Animal>(comp, DistanceComparator(hq)) {
     "Produce the sub-report about animals or an individual Animal."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, [Animal, Point]? entry) {
@@ -386,7 +367,7 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             MutableMap<String, MutableList<Point>> items =
                     HashMap<String, MutableList<Point>>();
             for ([loc, item] in values) {
@@ -450,7 +431,7 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             MutableMap<String, IReportNode> items = HashMap<String, IReportNode>();
             for ([loc, item] in values) {
                 if (is Animal animal = item) {
@@ -488,8 +469,9 @@ class AnimalReportGenerator(PairComparator<Point, IFixture> comp)
 }
 "A report generator for towns."
 todo("Figure out some way to report what was found at any of the towns.")
-class TownReportGenerator(PairComparator<Point, IFixture> comp, Player currentPlayer)
-        extends AbstractReportGenerator<ITownFixture>(comp) {
+class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
+            Player currentPlayer, Point hq = PointFactory.invalidPoint)
+        extends AbstractReportGenerator<ITownFixture>(comp, DistanceComparator(hq)) {
     {TownStatus+} statuses = {TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
         TownStatus.burned};
     "Separate towns by status."
@@ -502,7 +484,7 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
                 list.add(pair);
             }
         }
-        for ([loc, item] in list.sort(pairComparator.compare)) {
+        for ([loc, item] in list.sort(pairComparator)) {
             if (is ITownFixture item, exists result = mapping.get(item.status)) {
                 func(result, [loc, item]);
             }
@@ -631,11 +613,11 @@ class TownReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
     }
 }
 "A report generator for fortresses."
-class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player currentPlayer)
-        extends AbstractReportGenerator<Fortress>(comp) {
-    IReportGenerator<IUnit> urg = UnitReportGenerator(comp, currentPlayer);
+class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer, Point hq = PointFactory.invalidPoint)
+        extends AbstractReportGenerator<Fortress>(comp, DistanceComparator(hq)) {
+    IReportGenerator<IUnit> urg = UnitReportGenerator(comp, currentPlayer, hq);
     IReportGenerator<FortressMember> memberReportGenerator =
-            FortressMemberReportGenerator(comp, currentPlayer);
+            FortressMemberReportGenerator(comp, currentPlayer, hq);
     String terrain(IMapNG map, Point point,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
         StringBuilder builder = StringBuilder();
@@ -802,7 +784,7 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
             MutableMap<Fortress, Point> others = HashMap<Fortress, Point>();
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             for ([loc, item] in values) {
                 if (is Fortress fort = item) {
                     if (currentPlayer == fort.owner) {
@@ -877,7 +859,7 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             IReportNode foreign = SectionReportNode(4, "Foreign fortresses in the map:");
             IReportNode ours = SectionReportNode(4, "Your fortresses in the map:");
             for ([loc, item] in values) {
@@ -908,8 +890,8 @@ class FortressReportGenerator(PairComparator<Point, IFixture> comp, Player curre
         }
     }
 }
-class WorkerReportGenerator(PairComparator<Point, IFixture> comp, Boolean details)
-        extends AbstractReportGenerator<IWorker>(comp) {
+class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Boolean details, Point hq = PointFactory.invalidPoint)
+        extends AbstractReportGenerator<IWorker>(comp, DistanceComparator(hq)) {
     "Produce the sub-sub-report on a worker's stats."
     String statsString(WorkerStats stats) {
         return "He or she has the following stats: ``stats.hitPoints`` / ``stats
@@ -966,7 +948,7 @@ class WorkerReportGenerator(PairComparator<Point, IFixture> comp, Boolean detail
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             MutableList<[IWorker, Point]> workers = ArrayList<[IWorker, Point]>();
             for (tuple in values) {
                 if (is IWorker worker = tuple.rest.first) {
@@ -1018,7 +1000,7 @@ class WorkerReportGenerator(PairComparator<Point, IFixture> comp, Boolean detail
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             IReportNode retval = SectionListReportNode(5, "Workers");
             for (tuple in values) {
                 if (is IWorker worker = tuple.rest.first) {
@@ -1034,15 +1016,16 @@ class WorkerReportGenerator(PairComparator<Point, IFixture> comp, Boolean detail
     }
 }
 "A report generator for units."
-class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPlayer)
-        extends AbstractReportGenerator<IUnit>(comp) {
+class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
+            Player currentPlayer, Point hq = PointFactory.invalidPoint)
+        extends AbstractReportGenerator<IUnit>(comp, DistanceComparator(hq)) {
     IReportGenerator<FortressMember> memberReportGenerator =
             FortressMemberReportGenerator(comp, currentPlayer);
-    IReportGenerator<Animal> animalReportGenerator = AnimalReportGenerator(comp);
+    IReportGenerator<Animal> animalReportGenerator = AnimalReportGenerator(comp, hq);
     IReportGenerator<IWorker> ourWorkerReportGenerator = WorkerReportGenerator(comp,
-        true);
+        true, hq);
     IReportGenerator<IWorker> otherWorkerReportGenerator = WorkerReportGenerator(comp,
-        false);
+        false, hq);
     "Produce the sub-sub-report about a unit's orders and results."
     void produceOrders(IUnit item, Anything(String) formatter) {
         if (!item.allOrders.empty || !item.allResults.empty) {
@@ -1149,7 +1132,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             HeadedMap<IUnit, Point>&MutableMap<IUnit, Point> foreign =
                     HeadedMapImpl<IUnit, Point>("<h5>Foreign Units</h5>");
             HeadedMap<IUnit, Point>&MutableMap<IUnit, Point> ours =
@@ -1249,7 +1232,7 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             IReportNode theirs = SectionListReportNode(5, "Foreign Units");
             IReportNode ours = SectionListReportNode(5, "Your Units");
             for ([loc, item] in values) {
@@ -1290,8 +1273,9 @@ class UnitReportGenerator(PairComparator<Point, IFixture> comp, Player currentPl
     }
 }
 "A report generator for equipment and resources."
-class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp,
-        Player currentPlayer) extends AbstractReportGenerator<FortressMember>(comp) {
+class FortressMemberReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
+            Player currentPlayer, Point hq = PointFactory.invalidPoint)
+        extends AbstractReportGenerator<FortressMember>(comp, DistanceComparator(hq)) {
     "Produces a sub-report on a resource or piece of equipment, or on all fortress
      members. All fixtures referred to in this report are removed from the collection.
      This method should probably never actually be called and do anything without an
@@ -1303,7 +1287,7 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp,
             FortressMember item = entry.first;
             Point loc = entry.rest.first;
             if (is IUnit item) {
-                UnitReportGenerator(pairComparator, currentPlayer).produce(fixtures, map,
+                UnitReportGenerator(pairComparator, currentPlayer, hq).produce(fixtures, map,
                     ostream, [item, loc]);
             } else if (is ResourcePile item) {
                 fixtures.remove(item.id);
@@ -1327,7 +1311,7 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp,
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             HeadedMap<Implement, Point>&MutableMap<Implement, Point> equipment =
                     HeadedMapImpl<Implement, Point>("<li>Equipment:",
                         comparing(byIncreasing(Implement.kind),
@@ -1398,7 +1382,7 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp,
             FortressMember item = entry.first;
             Point loc = entry.rest.first;
             if (is IUnit item) {
-                return UnitReportGenerator(pairComparator, currentPlayer)
+                return UnitReportGenerator(pairComparator, currentPlayer, hq)
                     .produceRIR(fixtures, map, [item, loc]);
             } else if (is ResourcePile item) {
                 fixtures.remove(item.id);
@@ -1426,7 +1410,7 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp,
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             MutableMap<String, IReportNode> resourceKinds =
                     HashMap<String, IReportNode>();
             IReportNode equipment = ListReportNode("Equipment:");
@@ -1463,9 +1447,9 @@ class FortressMemberReportGenerator(PairComparator<Point, IFixture> comp,
 }
 "A report generator for caves, battlefields, adventure hooks, and portals."
 todo("Use union type instead of interface, here and elsewhere")
-class ExplorableReportGenerator(PairComparator<Point, IFixture> comp,
-        Player currentPlayer)
-        extends AbstractReportGenerator<ExplorableFixture>(comp) {
+class ExplorableReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
+            Player currentPlayer, Point hq = PointFactory.invalidPoint)
+        extends AbstractReportGenerator<ExplorableFixture>(comp, DistanceComparator(hq)) {
     "Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
      hook, or the report on all such."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
@@ -1503,7 +1487,7 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp,
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             MutableList<Point> portals = PointList("Portals to other worlds: ");
             MutableList<Point> battles = PointList(
                 "Signs of long-ago battles on the following tiles:");
@@ -1587,7 +1571,7 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp,
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             IReportNode portals = ListReportNode("Portals");
             IReportNode battles = ListReportNode("Battlefields");
             IReportNode caves = ListReportNode("Caves");
@@ -1625,8 +1609,9 @@ class ExplorableReportGenerator(PairComparator<Point, IFixture> comp,
 }
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
-class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
-        extends AbstractReportGenerator<HarvestableFixture>(comp) {
+class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
+            Point hq = PointFactory.invalidPoint)
+        extends AbstractReportGenerator<HarvestableFixture>(comp, DistanceComparator(hq)) {
     "Convert a Map from kinds to Points to a HtmlList."
     HeadedList<String>&MutableList<String> mapToList(Map<String, MutableList<Point>> map,
             String heading) {
@@ -1675,7 +1660,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             MutableMap<String, MutableList<Point>> stone =
                     HashMap<String, MutableList<Point>>();
             MutableMap<String, MutableList<Point>> shrubs =
@@ -1820,7 +1805,7 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             MutableMap<String, IReportNode> stone = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> shrubs = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> minerals = HashMap<String, IReportNode>();
@@ -1895,8 +1880,8 @@ class HarvestableReportGenerator(PairComparator<Point, IFixture> comp)
     }
 }
 "A report generator for Villages."
-class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player currentPlayer)
-        extends AbstractReportGenerator<Village>(comp) {
+class VillageReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer, Point hq = PointFactory.invalidPoint)
+        extends AbstractReportGenerator<Village>(comp, DistanceComparator(hq)) {
     "Produce the (very brief) report for a particular village (we're probably in the
      middle of a bulleted list, but we don't assume that), or the report on all known
      villages."
@@ -1918,7 +1903,7 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             value villageComparator = comparing(byIncreasing(Village.name),
                 byIncreasing(Village.race), byIncreasing(Village.id));
             // TODO: sort by distance somehow?
@@ -1990,7 +1975,7 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             IReportNode own = SectionListReportNode(5,
                 "Villages pledged to your service:");
             IReportNode independents =
@@ -2027,8 +2012,8 @@ class VillageReportGenerator(PairComparator<Point, IFixture> comp, Player curren
     }
 }
 """A report generator for "immortals"---dragons, fairies, centaurs, and such."""
-class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
-        extends AbstractReportGenerator<Immortal>(comp) {
+class ImmortalsReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = PointFactory.invalidPoint)
+        extends AbstractReportGenerator<Immortal>(comp, DistanceComparator(hq)) {
     "Produce a report on an individual immortal, or on all immortals."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, [Immortal, Point]? entry) {
@@ -2041,7 +2026,7 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             MutableMap<Type<IFixture>, Anything(String, Point)> meta =
                     HashMap<Type<IFixture>, Anything(String, Point)>();
             MutableMap<SimpleImmortal.SimpleImmortalKind,
@@ -2109,7 +2094,7 @@ class ImmortalsReportGenerator(PairComparator<Point, IFixture> comp)
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator.compare) };
+                        .sort(pairComparator) };
             MutableMap<SimpleImmortal.SimpleImmortalKind, IReportNode> simples =
                     HashMap<SimpleImmortal.SimpleImmortalKind, IReportNode>();
             MutableMap<String, IReportNode> centaurs = HashMap<String, IReportNode>();
