@@ -1,6 +1,12 @@
 import java.io {
-    JOutputStream=OutputStream, JPrintStream=PrintStream
+    JOutputStream=OutputStream,
+    JPrintStream=PrintStream
 }
+
+import lovelace.util.common {
+    DelayedRemovalMap
+}
+
 import model.map {
     IMapNG,
     Point,
@@ -8,8 +14,18 @@ import model.map {
     Player,
     TerrainFixture
 }
-import lovelace.util.common {
-    DelayedRemovalMap
+import strategicprimer.viewer.report.generators.tabular {
+    UnitTabularReportGenerator,
+    FortressTabularReportGenerator,
+    AnimalTabularReportGenerator,
+    WorkerTabularReportGenerator,
+    VillageTabularReportGenerator,
+    TownTabularReportGenerator,
+    CropTabularReportGenerator,
+    DiggableTabularReportGenerator,
+    ResourceTabularReportGenerator,
+    ImmortalsTabularReportGenerator,
+    ExplorableTabularReportGenerator
 }
 "A method to produce tabular reports based on a map for a player."
 shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
