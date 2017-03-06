@@ -1044,7 +1044,7 @@ Icon loadIcon(String file) {
         BufferedImage temp = BufferedImage(fixtureIconSize, fixtureIconSize,
             BufferedImage.typeIntArgb);
         Graphics pen = temp.graphics;
-        pen.drawImage(temp, 0, 0, temp.width, temp.height, null);
+        pen.drawImage(orig, 0, 0, temp.width, temp.height, null);
         pen.dispose();
         Icon icon = ImageIcon(temp);
         iconCache.put(file, icon);
