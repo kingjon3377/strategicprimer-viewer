@@ -2339,7 +2339,7 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
         assert (is View view = component.getClientProperty(javaString(BasicHTML.propertyKey)));
         view.setSize(width.float, 0.0);
         Integer wid = ceiling(view.getPreferredSpan(View.xAxis)).integer;
-        Integer height = ceiling(view.getPreferredSpan(view.yAxis)).integer;
+        Integer height = ceiling(view.getPreferredSpan(View.yAxis)).integer;
         component.preferredSize = Dimension(wid, height);
     }
     shared new () { }
