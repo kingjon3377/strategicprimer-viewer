@@ -164,6 +164,9 @@ import ceylon.file {
     Directory,
     parsePath
 }
+import strategicprimer.viewer.drivers.exploration {
+    loadAllTables
+}
 "A driver to convert maps: at present, halving their resolution."
 class ConverterDriver(
     """Set to true when the provided [[ICLIHelper]] is connected to a graphical window

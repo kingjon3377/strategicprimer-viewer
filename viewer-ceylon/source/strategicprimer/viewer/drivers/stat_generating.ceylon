@@ -1,20 +1,56 @@
+import ceylon.collection {
+    ArrayList,
+    Queue,
+    MutableMap,
+    HashMap,
+    MutableList
+}
+import ceylon.file {
+    File,
+    parsePath,
+    Directory
+}
+import ceylon.interop.java {
+    JavaList,
+    toIntegerArray,
+    javaString
+}
+import ceylon.math.float {
+    random
+}
+
 import controller.map.misc {
     ICLIHelper,
     IDFactoryFiller,
     IDRegistrar
 }
-import model.misc {
-    IDriverModel,
-    IMultiMapModel
+
+import java.lang {
+    JIterable=Iterable,
+    IllegalStateException
 }
+import java.nio.file {
+    JPaths=Paths
+}
+import java.util {
+    JList=List,
+    JOptional=Optional,
+    Random
+}
+import java.util.stream {
+    Stream
+}
+
+import lovelace.util.common {
+    todo
+}
+
 import model.exploration {
     IExplorationModel,
     ExplorationModel
 }
-import java.util {
-    JList = List,
-    JOptional = Optional,
-    Random
+import model.exploration.old {
+    ExplorationRunner
 }
 import model.map {
     Player,
@@ -32,58 +68,31 @@ import model.map.fixtures.mobile {
     Worker,
     Unit
 }
-import ceylon.collection {
-    ArrayList,
-    Queue,
-    MutableMap,
-    HashMap,
-    MutableList
-}
-import ceylon.interop.java {
-    JavaList,
-    toIntegerArray,
-    javaString
-}
 import model.map.fixtures.mobile.worker {
     WorkerStats,
     Job
 }
-import java.lang {
-    JIterable = Iterable,
-    IllegalStateException
+import model.map.fixtures.towns {
+    Village
+}
+import model.misc {
+    IDriverModel,
+    IMultiMapModel
 }
 import model.workermgmt {
     RaceFactory
 }
-import ceylon.math.float {
-    random
-}
-import ceylon.file {
-    File,
-    parsePath,
-    Directory
-}
-import lovelace.util.common {
-    todo
-}
-import model.exploration.old {
-    ExplorationRunner
-}
-import java.nio.file {
-    JPaths = Paths
-}
-import util {
-    Warning,
-    SingletonRandom
-}
-import java.util.stream {
-    Stream
-}
-import model.map.fixtures.towns {
-    Village
+
+import strategicprimer.viewer.drivers.exploration {
+    loadAllTables
 }
 import strategicprimer.viewer.xmlio {
     readMap
+}
+
+import util {
+    Warning,
+    SingletonRandom
 }
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."

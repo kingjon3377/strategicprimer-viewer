@@ -70,6 +70,10 @@ import strategicprimer.viewer.drivers.map_viewer {
     viewerGUI,
     drawHelperComparator
 }
+import strategicprimer.viewer.drivers.exploration {
+    explorationGUI,
+    explorationCLI
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."
