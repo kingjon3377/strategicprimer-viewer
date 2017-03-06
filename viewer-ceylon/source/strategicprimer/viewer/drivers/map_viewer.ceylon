@@ -2410,7 +2410,7 @@ class FixtureListModel(IMutableMapNG map,
             if (is TileFixture rivers) {
                 addElement(rivers);
             } else {
-                addElement(RiverFixture(*rivers));
+                addElement(RiverFixture(*CeylonIterable(rivers)));
             }
         }
         for (fixture in {map.getGround(newPoint), map.getForest(newPoint),
@@ -2458,7 +2458,7 @@ class FixtureListModel(IMutableMapNG map,
                 }
             } else if (is RiverFixture fixture) {
                 if (removeElement(fixture)) {
-                    map.removeRivers(point, *fixture);
+                    map.removeRivers(point, *CeylonIterable(fixture));
                 }
             } else if (filterTracks, is Animal fixture, currentTracks.contains(fixture)) {
                 if (removeElement(fixture)) {
