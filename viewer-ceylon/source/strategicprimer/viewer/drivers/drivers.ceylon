@@ -4,16 +4,45 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
+import ceylon.interop.java {
+    JavaList
+}
+import ceylon.language.meta.declaration {
+    Package,
+    Module
+}
 import ceylon.logging {
     Logger,
     logger,
     addLogWriter,
     Priority
 }
+
+import controller.map.misc {
+    CLIHelper,
+    ICLIHelper,
+    DuplicateFixtureRemover
+}
+
+import java.awt {
+    GraphicsEnvironment,
+    GridLayout
+}
+import java.awt.event {
+    ActionListener,
+    ActionEvent
+}
+import java.io {
+    IOException
+}
 import java.lang {
     System,
     Runnable
 }
+import java.util {
+    JList=List
+}
+
 import javax.swing {
     UIManager,
     SwingUtilities,
@@ -22,43 +51,24 @@ import javax.swing {
     JScrollPane,
     JLabel
 }
-import java.io {
-    IOException
+
+import lovelace.util.jvm {
+    showErrorDialog,
+    BorderedPanel
 }
-import controller.map.misc {
-    CLIHelper, ICLIHelper,
-    DuplicateFixtureRemover
-}
+
 import model.misc {
     IDriverModel,
     IMultiMapModel
 }
-import java.awt {
-    GraphicsEnvironment,
-    GridLayout
-}
-import ceylon.interop.java {
-    JavaList
-}
-import ceylon.language.meta.declaration {
-    Package,
-    Module
-}
-import java.util {
-    JList = List
-}
-import java.awt.event {
-    ActionListener,
-    ActionEvent
-}
+
 import strategicprimer.viewer.drivers {
     advancementCLI,
-    advancementGUI,
-    drawHelperComparator
+    advancementGUI
 }
-import lovelace.util.jvm {
-    showErrorDialog,
-    BorderedPanel
+import strategicprimer.viewer.drivers.map_viewer {
+    viewerGUI,
+    drawHelperComparator
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

@@ -1,17 +1,72 @@
+import ceylon.collection {
+    HashSet,
+    MutableSet,
+    MutableList,
+    LinkedList,
+    ArrayList,
+    Queue,
+    MutableMap,
+    HashMap
+}
+import ceylon.file {
+    File,
+    Directory,
+    parsePath
+}
+import ceylon.interop.java {
+    JavaList,
+    javaString,
+    CeylonList,
+    CeylonIterable,
+    createJavaIntArray
+}
+import ceylon.test {
+    assertEquals,
+    test,
+    assertThatException
+}
+
+import com.bric.window {
+    WindowMenu
+}
+
 import controller.map.misc {
     ICLIHelper
 }
-import model.misc {
-    IDriverModel
+
+import java.awt {
+    Dimension,
+    CardLayout,
+    Component,
+    GridLayout,
+    Graphics,
+    Polygon
 }
-import model.exploration {
-    IExplorationModel,
-    ExplorationModel,
-    HuntingModel
+import java.awt.event {
+    KeyEvent,
+    ActionEvent
 }
 import java.io {
     IOException
 }
+import java.lang {
+    ObjectArray,
+    JString=String,
+    JInteger=Integer,
+    IllegalArgumentException,
+    IllegalStateException,
+    IntArray
+}
+import java.text {
+    NumberFormat
+}
+import java.util {
+    JList=List
+}
+import java.util.stream {
+    Stream
+}
+
 import javax.swing {
     SwingList=JList,
     DefaultListCellRenderer,
@@ -31,132 +86,16 @@ import javax.swing {
     ListModel,
     DefaultListModel
 }
-import view.util {
-    SystemOut
-}
-import model.exploration.old {
-    ExplorationRunner,
-    EncounterTable,
-    QuadrantTable,
-    RandomTable,
-    TerrainTable,
-    LegacyTable,
-    ConstantTable
-}
-import lovelace.util.common {
-    todo
-}
-import ceylon.collection {
-    HashSet,
-    MutableSet,
-    MutableList,
-    LinkedList,
-    ArrayList,
-    Queue,
-    MutableMap,
-    HashMap
-}
-import java.lang {
-    ObjectArray, JString=String,
-    JInteger=Integer,
-    IllegalArgumentException,
-    IllegalStateException,
-    IntArray
-}
-import strategicprimer.viewer.about {
-    aboutDialog
-}
-import ceylon.file {
-    File,
-    Directory,
-    parsePath
-}
-import ceylon.interop.java {
-    JavaList,
-    javaString,
-    CeylonList,
-    CeylonIterable,
-    createJavaIntArray
-}
-import util {
-    ComparablePair,
-    Pair,
-    IsNumeric
-}
-import model.map {
-    TileType,
-    MapDimensions,
-    MapDimensionsImpl,
-    PointFactory,
-    Point,
-    TileFixture,
-    Player,
-    IMutableMapNG,
-    HasOwner,
-    IMapNG,
-    PlayerImpl
-}
-import ceylon.test {
-    assertEquals,
-    test,
-    assertThatException
-}
-import java.util.stream {
-    Stream
-}
-import java.util {
-    JList=List
-}
-import model.map.fixtures.mobile {
-    IUnit,
-    SimpleMovement,
-    Animal
-}
-import model.listeners {
-    MovementCostSource,
-    MovementCostListener,
-    CompletionListener,
-    CompletionSource,
-    SelectionChangeListener,
-    SelectionChangeSupport,
-    PlayerChangeSource,
-    PlayerChangeListener,
-    SelectionChangeSource,
-    MapChangeListener
-}
-import model.map.fixtures {
-    Ground
-}
-import model.map.fixtures.terrain {
-    Forest
-}
-import model.map.fixtures.resources {
-    CacheFixture
-}
-import java.awt.event {
-    KeyEvent,
-    ActionEvent
-}
-import java.awt {
-    Dimension,
-    CardLayout,
-    Component,
-    GridLayout,
-    Graphics,
-    Polygon
-}
-import java.text {
-    NumberFormat
-}
-import model.viewer {
-    TileTypeFixture
+import javax.swing.event {
+    ListSelectionEvent
 }
 import javax.swing.text {
     BadLocationException,
     Document
 }
-import javax.swing.event {
-    ListSelectionEvent
+
+import lovelace.util.common {
+    todo
 }
 import lovelace.util.jvm {
     listenedButton,
@@ -171,11 +110,90 @@ import lovelace.util.jvm {
     createHotKey,
     FormattedLabel
 }
+
+import model.exploration {
+    IExplorationModel,
+    ExplorationModel,
+    HuntingModel
+}
+import model.exploration.old {
+    ExplorationRunner,
+    EncounterTable,
+    QuadrantTable,
+    RandomTable,
+    TerrainTable,
+    LegacyTable,
+    ConstantTable
+}
+import model.listeners {
+    MovementCostSource,
+    MovementCostListener,
+    CompletionListener,
+    CompletionSource,
+    SelectionChangeListener,
+    SelectionChangeSupport,
+    PlayerChangeSource,
+    PlayerChangeListener,
+    SelectionChangeSource,
+    MapChangeListener
+}
+import model.map {
+    TileType,
+    MapDimensions,
+    MapDimensionsImpl,
+    PointFactory,
+    Point,
+    TileFixture,
+    Player,
+    IMutableMapNG,
+    HasOwner,
+    IMapNG,
+    PlayerImpl
+}
+import model.map.fixtures {
+    Ground
+}
+import model.map.fixtures.mobile {
+    IUnit,
+    SimpleMovement,
+    Animal
+}
+import model.map.fixtures.resources {
+    CacheFixture
+}
+import model.map.fixtures.terrain {
+    Forest
+}
 import model.map.fixtures.towns {
     Village
 }
-import com.bric.window {
-    WindowMenu
+import model.misc {
+    IDriverModel
+}
+import model.viewer {
+    TileTypeFixture
+}
+
+import strategicprimer.viewer.about {
+    aboutDialog
+}
+
+import util {
+    ComparablePair,
+    Pair,
+    IsNumeric
+}
+
+import view.util {
+    SystemOut
+}
+import strategicprimer.viewer.drivers.map_viewer {
+    FixtureMatcher,
+    fixtureFilterTableModel,
+    FixtureListModel,
+    fixtureList,
+    TileDrawHelper,
+    tileDrawHelperFactory
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)

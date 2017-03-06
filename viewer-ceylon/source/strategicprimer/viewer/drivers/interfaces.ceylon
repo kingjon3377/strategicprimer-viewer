@@ -80,7 +80,7 @@ import model.workermgmt {
    assume that if any option is passed to an app more than once, the subsequent option
    overrides the previous, and any option passed without argument has an implied argument
    of "true"."""
-interface SPOptions satisfies Iterable<String->String> {
+shared interface SPOptions satisfies Iterable<String->String> {
     "Whether the specified option was given, with or without an argument."
     shared formal Boolean hasOption(String option);
     """Get the argument provided for the given argument ("true" if given without one,
@@ -130,7 +130,7 @@ interface UtilityDriver satisfies ISPDriver {
     }
 }
 "An interface for drivers which operate on a map model of some kind."
-interface SimpleDriver satisfies ISPDriver {
+shared interface SimpleDriver satisfies ISPDriver {
     "(Try to) run the driver. If the driver does not need arguments, it should
      override this default method to support that; otherwise, this will throw,
      because nearly all drivers do need arguments."
@@ -218,7 +218,7 @@ interface SimpleDriver satisfies ISPDriver {
 }
 "An interface for drivers, so one main() method can start different drivers based on
  options."
-interface ISPDriver satisfies HasName {
+shared interface ISPDriver satisfies HasName {
     // In the Java implementation, these were overloads; Ceylon doesn't allow that,
     // which is in general better but a pain here.
     "Run the driver. If the driver is a GUI driver, this should use
@@ -272,7 +272,7 @@ interface ISPDriver satisfies HasName {
 }
 "An interface for drivers which operate on a map model of some kind and want to write it
  out again to file when they finish."
-interface SimpleCLIDriver satisfies SimpleDriver {
+shared interface SimpleCLIDriver satisfies SimpleDriver {
     "Run the driver. This is the one method that implementations must implement."
     shared actual formal void startDriverOnModel(ICLIHelper cli, SPOptions options,
         IDriverModel model);
@@ -351,8 +351,8 @@ class IncorrectUsageException(correctUsage)
     """The "usage object" for the driver, describing its correct usage."""
     shared IDriverUsage correctUsage;
 }
-"Possible numbers of (non-option?) parameters a driver might want."
-class ParamCount of none | one | two | atLeastOne | atLeastTwo | anyNumber {
+"Possible numbers of (non-option?) parameters a driver might shared want."
+shared class ParamCount of none | one | two | atLeastOne | atLeastTwo | anyNumber {
     "None at all."
     shared new none { }
     "Exactly one."
@@ -368,8 +368,8 @@ class ParamCount of none | one | two | atLeastOne | atLeastTwo | anyNumber {
 }
 "An interface for objects representing usage information for drivers, for use in the app
  starter and in help text."
-todo("Make shared?")
-interface IDriverUsage {
+todo("Make shashared shared red?")
+shared interface IDriverUsage {
     "Whether the driver is a GUI."
     shared formal Boolean graphical;
     "The short option to select this driver."
@@ -390,7 +390,7 @@ interface IDriverUsage {
        is reasonable."""
     shared formal {String*} supportedOptions;
 }
-class DriverUsage(
+shared class DriverUsage(
     "Whether this driver is graphical or not."
     shared actual Boolean graphical,
     "The short (generally one character) option to give to the app-starter to get this
@@ -416,7 +416,7 @@ class DriverUsage(
             supportedOptionsTemp;
 }
 "An interface for top-level windows in assistive programs."
-interface ISPWindow {
+shared interface ISPWindow {
     """The name of this window. This method should *not* return a string including the
        loaded file, since it is used only in the About dialog to "personalize" it for the
        particular app."""
@@ -424,7 +424,7 @@ interface ISPWindow {
 }
 "An intermediate subclass of JFrame to take care of some common setup things that can't be
  done in an interface."
-abstract class SPFrame(String windowTitle, JPath? file, Dimension? minSize = null)
+shared abstract class SPFrame(String windowTitle, JPath? file, Dimension? minSize = null)
         extends JFrame(windowTitle) satisfies ISPWindow {
     if (exists file) {
         title = "``file`` | ``windowTitle``";
@@ -447,7 +447,7 @@ shared class SPDialog(Frame? parentFrame, String title)
 todo("Make the methods static once MenuItemCreator has been ported.",
     "Redesign so users just have to say which menus they want enabled instead of
      instantiatng them one by one")
-class SPMenu() extends JMenuBar() {
+shared class SPMenu() extends JMenuBar() {
     "Create the file menu."
     shared JMenu createFileMenu(/*ActionListener|*/Anything(ActionEvent) handler,
             IDriverModel model) {

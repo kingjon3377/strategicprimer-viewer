@@ -67,6 +67,9 @@ import javax.swing.filechooser {
     FileNameExtensionFilter,
     FileFilter
 }
+import strategicprimer.viewer.drivers.map_viewer {
+    viewerGUI
+}
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(
     "Strategic Primer world map files", "map", "xml");
 "A factory method for [[JFileChooser]] taking a [[FileFilter]] to apply in the same
@@ -82,7 +85,7 @@ JFileChooser filteredFileChooser(
 }
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
-class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
+shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         JFileChooser fileChooser = filteredFileChooser()) satisfies ActionListener {
     shared actual void actionPerformed(ActionEvent event) {
         value temp = event.source;

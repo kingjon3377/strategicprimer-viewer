@@ -35,6 +35,19 @@ import model.viewer {
     ViewerModel
 }
 
+import strategicprimer.viewer.drivers {
+    SPOptions,
+    IDriverUsage,
+    DriverUsage,
+    ParamCount,
+    SimpleCLIDriver
+}
+import strategicprimer.viewer.drivers.map_viewer {
+    CachingTileDrawHelper,
+    DirectTileDrawHelper,
+    Ver2TileDrawHelper
+}
+
 import view.util {
     Coordinate
 }
@@ -199,7 +212,7 @@ void runAllTests(ICLIHelper cli, IMapNG map, Integer repetitions) {
     cli.println("");
 }
 "A driver to compare the performance of TileDrawHelpers."
-object drawHelperComparator satisfies SimpleCLIDriver {
+shared object drawHelperComparator satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage(true, "-t", "--test", ParamCount.atLeastOne,
         "Test drawing performance.",
         """Test the performance of the TileDrawHelper classes---which do the heavy lifting

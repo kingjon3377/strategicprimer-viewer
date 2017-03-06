@@ -198,6 +198,14 @@ import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode
 }
+import strategicprimer.viewer.drivers.map_viewer {
+    IViewerFrame,
+    viewerFrame,
+    fixtureEditMenu,
+    loadIcon,
+    newUnitDialog,
+    loadImage
+}
 "A TreeModel implementation for a player's units and workers."
 class WorkerTreeModel(variable Player player, IWorkerModel model)
         satisfies IWorkerTreeModel {
@@ -387,7 +395,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
     shared actual {UnitMember*} dismissed => dismissedMembers;
 }
 "An interface for worker tree-models, adding methods to the [[TreeModel]] interface."
-interface IWorkerTreeModel
+shared interface IWorkerTreeModel
         satisfies TreeModel&NewUnitListener&PlayerChangeListener&MapChangeListener {
     "Move a member between units."
     shared formal void moveMember(

@@ -76,7 +76,7 @@ class PlayerChangeMenuListener(IDriverModel model)
 "A class to match menu item selections to the listeners to handle them. Note that at
  most one listener will be notified of any given action-command; subsequent registrations
  override previous ones."
-class MenuBroker() satisfies ActionListener {
+shared class MenuBroker() satisfies ActionListener {
     """The mapping from "actions" to listeners to handle them."""
     MutableMap<String, Anything(ActionEvent)> mapping = HashMap<String, Anything(ActionEvent)>();
     "Rgister a listener for a series of action commands."
