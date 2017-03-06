@@ -2509,8 +2509,10 @@ todo("Generalize, rename to CurriedTransferable, move to lovelace.util.jvm")
 class CurriedFixtureTransferable satisfies Transferable {
     shared static DataFlavor flavor =
             DataFlavor(`CurriedFixtureTransferable`, "CurriedTransferable");
-    {Transferable*} payload;
-    shared new (TileFixture* list) { payload = list.map(`FixtureTransferable`); }
+    Transferable[] payload;
+    shared new (TileFixture* list) {
+        payload = list.map(`FixtureTransferable`).sequence();
+    }
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>
             createJavaObjectArray({flavor});
     shared actual Boolean isDataFlavorSupported(DataFlavor candidate) =>

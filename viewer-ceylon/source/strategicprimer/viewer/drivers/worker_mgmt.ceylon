@@ -713,8 +713,8 @@ class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
 class UnitMemberTransferable satisfies Transferable {
     shared static DataFlavor flavor =
             DataFlavor(`Iterable<[UnitMember, IUnit]>`, "List<UnitMember>");
-    {[UnitMember, IUnit]*} payload;
-    shared new ([UnitMember, IUnit]* data) { payload = data; }
+    [UnitMember, IUnit][] payload;
+    shared new ([UnitMember, IUnit]* data) { payload = data.sequence(); }
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>
             createJavaObjectArray({flavor});
     shared actual Boolean isDataFlavorSupported(DataFlavor candidate) =>
@@ -810,7 +810,7 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     if (is IUnit tempTarget) {
                         try {
                             Transferable trans = support.transferable;
-                            assert (is JIterable<Pair<UnitMember, IUnit>> list =
+                            assert (is  JIterable<Pair<UnitMember, IUnit>> list =
                                 trans.getTransferData(UnitMemberTransferable.flavor));
                             for (pair in CeylonIterable(list)) {
                                 wtModel.moveMember(pair.first(), pair.second(), tempTarget);
