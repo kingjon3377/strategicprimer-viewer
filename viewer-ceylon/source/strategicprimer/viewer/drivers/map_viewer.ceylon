@@ -2804,8 +2804,8 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     shared new createScrollBars(IViewerModel mapModel, BorderedPanel component)
             extends ScrollListener(mapModel, JScrollBar(Adjustable.horizontal),
                 JScrollBar(Adjustable.vertical)) {
-        component.add(horizontalBar, BorderLayout.pageEnd);
-        component.add(verticalBar, BorderLayout.lineEnd);
+        component.add(horizontalBar, javaString(BorderLayout.pageEnd));
+        component.add(verticalBar, javaString(BorderLayout.lineEnd));
     }
     "Handle a change in visible dimensions."
     shared actual void dimensionsChanged(VisibleDimensions oldDimensions,
