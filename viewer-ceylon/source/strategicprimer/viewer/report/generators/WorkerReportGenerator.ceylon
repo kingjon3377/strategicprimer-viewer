@@ -22,17 +22,19 @@ import model.map.fixtures.mobile {
 }
 import model.map.fixtures.mobile.worker {
     ISkill,
-    WorkerStats { modifierString = getModifierString },
+    WorkerStats {
+        modifierString=getModifierString
+    },
     IJob
 }
 
-import strategicprimer.viewer.report {
+import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
+    ComplexReportNode,
     ListReportNode,
     SectionListReportNode,
-    emptyReportNode,
-    ComplexReportNode
+    emptyReportNode
 }
 "A report generator for Workers."
 class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Boolean details, Point hq = PointFactory.invalidPoint)

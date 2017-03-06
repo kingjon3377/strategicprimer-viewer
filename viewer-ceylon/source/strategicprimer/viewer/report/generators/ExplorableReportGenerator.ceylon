@@ -1,21 +1,25 @@
-import java.lang {
-    IllegalArgumentException
-}
-import lovelace.util.common {
-    todo,
-    DelayedRemovalMap
+import ceylon.collection {
+    ArrayList,
+    MutableMap,
+    MutableList,
+    HashMap
 }
 import ceylon.language.meta {
     type
 }
-import strategicprimer.viewer.report {
-    ListReportNode,
-    SimpleReportNode,
-    IReportNode,
-    ComplexReportNode,
-    emptyReportNode,
-    SectionListReportNode
+import ceylon.language.meta.model {
+    Type
 }
+
+import java.lang {
+    IllegalArgumentException
+}
+
+import lovelace.util.common {
+    todo,
+    DelayedRemovalMap
+}
+
 import model.map {
     PointFactory,
     DistanceComparator,
@@ -24,21 +28,21 @@ import model.map {
     IMapNG,
     IFixture
 }
-import ceylon.collection {
-    ArrayList,
-    MutableMap,
-    MutableList,
-    HashMap
-}
-import ceylon.language.meta.model {
-    Type
-}
 import model.map.fixtures.explorable {
     Portal,
     ExplorableFixture,
     Cave,
     Battlefield,
     AdventureFixture
+}
+
+import strategicprimer.viewer.report.nodes {
+    IReportNode,
+    SimpleReportNode,
+    ListReportNode,
+    SectionListReportNode,
+    emptyReportNode,
+    ComplexReportNode
 }
 "A report generator for caves, battlefields, adventure hooks, and portals."
 todo("Use union type instead of interface, here and elsewhere")

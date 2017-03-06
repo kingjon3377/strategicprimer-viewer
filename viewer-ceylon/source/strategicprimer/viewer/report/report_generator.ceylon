@@ -2,6 +2,25 @@ import ceylon.logging {
     logger,
     Logger
 }
+
+import controller.map.misc {
+    IDFactoryFiller,
+    IDRegistrar
+}
+
+import java.lang {
+    JIterable=Iterable
+}
+
+import lovelace.util.common {
+    todo,
+    DelayedRemovalMap,
+    IntMap
+}
+import lovelace.util.jvm {
+    ceylonComparator
+}
+
 import model.map {
     IMapNG,
     Player,
@@ -13,28 +32,13 @@ import model.map {
     TileFixture,
     FixtureIterable
 }
-import model.map.fixtures.towns {
-    Fortress
-}
-import lovelace.util.common {
-    todo,
-    DelayedRemovalMap,
-    IntMap
-}
-import java.lang {
-    JIterable=Iterable
-}
 import model.map.fixtures.mobile {
     IUnit
 }
-import controller.map.misc {
-    IDFactoryFiller,
-    IDRegistrar
+import model.map.fixtures.towns {
+    Fortress
 }
-import lovelace.util.jvm {
-    javaComparator,
-    ceylonComparator
-}
+
 import strategicprimer.viewer.report.generators {
     pairComparator,
     AnimalReportGenerator,
@@ -48,6 +52,10 @@ import strategicprimer.viewer.report.generators {
     ExplorableReportGenerator,
     ImmortalsReportGenerator,
     TextReportGenerator
+}
+import strategicprimer.viewer.report.nodes {
+    IReportNode,
+    RootReportNode
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

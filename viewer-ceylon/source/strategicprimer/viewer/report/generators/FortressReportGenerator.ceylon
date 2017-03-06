@@ -38,14 +38,14 @@ import model.map.fixtures.towns {
     Fortress
 }
 
-import strategicprimer.viewer.report {
-    SimpleReportNode,
+import strategicprimer.viewer.report.nodes {
     IReportNode,
+    SimpleReportNode,
     SectionListReportNode,
     ListReportNode,
-    ComplexReportNode,
     SectionReportNode,
-    emptyReportNode
+    emptyReportNode,
+    ComplexReportNode
 }
 "A report generator for fortresses."
 shared class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer, Point hq = PointFactory.invalidPoint)

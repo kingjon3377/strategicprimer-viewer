@@ -21,12 +21,12 @@ import model.map.fixtures.towns {
     Village
 }
 
-import strategicprimer.viewer.report {
+import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
     SectionListReportNode,
-    emptyReportNode,
-    SectionReportNode
+    SectionReportNode,
+    emptyReportNode
 }
 "A report generator for Villages."
 shared class VillageReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer, Point hq = PointFactory.invalidPoint)

@@ -1,21 +1,18 @@
-import lovelace.util.common {
-    DelayedRemovalMap
+import ceylon.collection {
+    ArrayList,
+    MutableMap,
+    MutableList,
+    HashMap
 }
+
 import java.lang {
     IllegalArgumentException
 }
-import model.map.fixtures {
-    Implement,
-    ResourcePile,
-    FortressMember
+
+import lovelace.util.common {
+    DelayedRemovalMap
 }
-import strategicprimer.viewer.report {
-    ListReportNode,
-    SimpleReportNode,
-    IReportNode,
-    emptyReportNode,
-    SectionListReportNode
-}
+
 import model.map {
     PointFactory,
     DistanceComparator,
@@ -24,14 +21,21 @@ import model.map {
     IMapNG,
     IFixture
 }
-import ceylon.collection {
-    ArrayList,
-    MutableMap,
-    MutableList,
-    HashMap
+import model.map.fixtures {
+    Implement,
+    ResourcePile,
+    FortressMember
 }
 import model.map.fixtures.mobile {
     IUnit
+}
+
+import strategicprimer.viewer.report.nodes {
+    IReportNode,
+    SimpleReportNode,
+    ListReportNode,
+    SectionListReportNode,
+    emptyReportNode
 }
 "A report generator for equipment and resources."
 shared class FortressMemberReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,

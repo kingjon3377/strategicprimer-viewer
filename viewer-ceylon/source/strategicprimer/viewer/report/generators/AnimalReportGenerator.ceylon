@@ -21,7 +21,7 @@ import model.map.fixtures.mobile {
     Animal
 }
 
-import strategicprimer.viewer.report {
+import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
     ListReportNode,

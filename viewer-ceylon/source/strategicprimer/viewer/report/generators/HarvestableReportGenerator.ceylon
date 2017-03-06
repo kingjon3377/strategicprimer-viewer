@@ -1,29 +1,24 @@
-import lovelace.util.common {
-    DelayedRemovalMap
+import ceylon.collection {
+    ArrayList,
+    MutableMap,
+    MutableList,
+    HashMap
 }
+
 import java.lang {
     IllegalArgumentException
 }
+
+import lovelace.util.common {
+    DelayedRemovalMap
+}
+
 import model.map {
     PointFactory,
     DistanceComparator,
     Point,
     IMapNG,
     IFixture
-}
-import strategicprimer.viewer.report {
-    SortedSectionListReportNode,
-    ListReportNode,
-    SimpleReportNode,
-    IReportNode,
-    emptyReportNode,
-    SectionReportNode
-}
-import ceylon.collection {
-    ArrayList,
-    MutableMap,
-    MutableList,
-    HashMap
 }
 import model.map.fixtures.resources {
     Meadow,
@@ -34,6 +29,15 @@ import model.map.fixtures.resources {
     Mine,
     Grove,
     MineralVein
+}
+
+import strategicprimer.viewer.report.nodes {
+    IReportNode,
+    SimpleReportNode,
+    SortedSectionListReportNode,
+    ListReportNode,
+    SectionReportNode,
+    emptyReportNode
 }
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."

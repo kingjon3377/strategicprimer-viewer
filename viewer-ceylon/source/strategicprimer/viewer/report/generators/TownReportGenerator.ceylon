@@ -30,7 +30,7 @@ import model.map.fixtures.towns {
     Fortress
 }
 
-import strategicprimer.viewer.report {
+import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
     SectionListReportNode,

@@ -1,14 +1,84 @@
+import ceylon.collection {
+    HashMap,
+    ArrayList,
+    MutableMap,
+    MutableList,
+    Queue,
+    LinkedList
+}
+import ceylon.file {
+    Resource,
+    File,
+    Nil,
+    Writer,
+    parsePath
+}
+import ceylon.interop.java {
+    CeylonIterable,
+    createJavaIntArray,
+    createJavaObjectArray
+}
+import ceylon.language.meta {
+    type
+}
+import ceylon.math.float {
+    halfEven
+}
+
+import com.bric.window {
+    WindowList,
+    WindowMenu
+}
+
 import controller.map.misc {
     ICLIHelper,
     IDFactoryFiller
 }
-import model.misc {
-    IDriverModel
+
+import java.awt {
+    Dimension,
+    Component,
+    Frame,
+    Graphics2D,
+    Color,
+    BorderLayout,
+    GridLayout,
+    Image,
+    Graphics
 }
-import model.workermgmt {
-    IWorkerModel,
-    WorkerModel
+import java.awt.datatransfer {
+    Transferable,
+    UnsupportedFlavorException,
+    DataFlavor
 }
+import java.awt.event {
+    KeyEvent,
+    ActionEvent,
+    WindowEvent,
+    WindowAdapter,
+    MouseAdapter,
+    MouseEvent,
+    KeyAdapter
+}
+import java.awt.image {
+    BufferedImage
+}
+import java.io {
+    IOException,
+    FileNotFoundException
+}
+import java.lang {
+    Thread,
+    IllegalStateException,
+    ArrayIndexOutOfBoundsException,
+    IllegalArgumentException,
+    IntArray,
+    ObjectArray
+}
+import java.nio.file {
+    NoSuchFileException
+}
+
 import javax.swing {
     SwingUtilities,
     JComponent,
@@ -31,14 +101,38 @@ import javax.swing {
     BorderFactory,
     SwingConstants
 }
-import ceylon.interop.java {
-    CeylonIterable,
-    createJavaIntArray,
-    createJavaObjectArray
+import javax.swing.event {
+    TreeSelectionListener,
+    TreeSelectionEvent,
+    TreeModelEvent,
+    TreeModelListener
 }
-import model.map.fixtures {
-    UnitMember
+import javax.swing.tree {
+    DefaultTreeModel,
+    DefaultMutableTreeNode,
+    TreePath,
+    DefaultTreeCellRenderer,
+    MutableTreeNode,
+    TreeNode,
+    TreeModel
 }
+
+import lovelace.util.common {
+    todo
+}
+import lovelace.util.jvm {
+    listenedButton,
+    FunctionalGroupLayout,
+    centeredHorizontalBox,
+    BorderedPanel,
+    verticalSplit,
+    horizontalSplit,
+    createHotKey,
+    FormattedLabel,
+    platform,
+    ActionWrapper
+}
+
 import model.listeners {
     PlayerChangeListener,
     NewUnitSource,
@@ -48,17 +142,6 @@ import model.listeners {
     UnitMemberListener,
     NewUnitListener,
     MapChangeListener
-}
-import java.awt {
-    Dimension,
-    Component,
-    Frame,
-    Graphics2D,
-    Color,
-    BorderLayout,
-    GridLayout,
-    Image,
-    Graphics
 }
 import model.map {
     IMapNG,
@@ -73,17 +156,8 @@ import model.map {
     HasMutableName,
     HasKind
 }
-import util {
-    Pair
-}
-import java.awt.event {
-    KeyEvent,
-    ActionEvent,
-    WindowEvent,
-    WindowAdapter,
-    MouseAdapter,
-    MouseEvent,
-    KeyAdapter
+import model.map.fixtures {
+    UnitMember
 }
 import model.map.fixtures.mobile {
     IUnit,
@@ -93,105 +167,36 @@ import model.map.fixtures.mobile {
     Animal,
     Worker
 }
-import javax.swing.tree {
-    DefaultTreeModel,
-    DefaultMutableTreeNode,
-    TreePath,
-    DefaultTreeCellRenderer,
-    MutableTreeNode,
-    TreeNode,
-    TreeModel
-}
-import java.lang {
-    Thread,
-    IllegalStateException,
-    JIterable=Iterable,
-    ArrayIndexOutOfBoundsException,
-    IllegalArgumentException,
-    IntArray,
-    ObjectArray
-}
-import model.map.fixtures.towns {
-    Fortress
-}
-import model.viewer {
-    IViewerModel,
-    ViewerModel
-}
-import com.bric.window {
-    WindowList,
-    WindowMenu
-}
-import javax.swing.event {
-        TreeSelectionListener,
-    TreeSelectionEvent,
-    TreeModelEvent,
-    TreeModelListener
-}
-import ceylon.file {
-    Resource,
-    File,
-    Nil,
-    Writer,
-    parsePath
-}
-import ceylon.collection {
-    HashMap,
-    ArrayList,
-    MutableMap,
-    MutableList,
-    Queue,
-    LinkedList
-}
 import model.map.fixtures.mobile.worker {
     IJob,
     ProxyWorker,
     WorkerStats,
     ISkill
 }
+import model.map.fixtures.towns {
+    Fortress
+}
+import model.misc {
+    IDriverModel
+}
+import model.viewer {
+    IViewerModel,
+    ViewerModel
+}
+import model.workermgmt {
+    IWorkerModel,
+    WorkerModel
+}
+
 import strategicprimer.viewer.about {
     aboutDialog
 }
 import strategicprimer.viewer.report {
-    createAbbreviatedReportIR,
+    createAbbreviatedReportIR
+}
+import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode
-}
-import lovelace.util.jvm {
-    listenedButton,
-    FunctionalGroupLayout,
-    centeredHorizontalBox,
-    BorderedPanel,
-    verticalSplit,
-    horizontalSplit,
-    createHotKey,
-    FormattedLabel,
-    platform,
-    ActionWrapper
-}
-import java.awt.datatransfer {
-    Transferable,
-    UnsupportedFlavorException,
-    DataFlavor
-}
-import java.io {
-    IOException,
-    FileNotFoundException
-}
-import java.awt.image {
-    BufferedImage
-}
-import ceylon.math.float {
-    halfEven
-}
-import java.nio.file {
-    NoSuchFileException
-}
-import ceylon.language.meta {
-    type
-}
-import lovelace.util.common {
-    todo
 }
 "A TreeModel implementation for a player's units and workers."
 class WorkerTreeModel(variable Player player, IWorkerModel model)

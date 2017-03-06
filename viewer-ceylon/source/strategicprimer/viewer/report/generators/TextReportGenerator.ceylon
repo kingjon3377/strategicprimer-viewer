@@ -18,7 +18,7 @@ import model.map.fixtures {
     TextFixture
 }
 
-import strategicprimer.viewer.report {
+import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
     SectionListReportNode,

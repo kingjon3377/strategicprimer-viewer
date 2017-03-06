@@ -31,7 +31,7 @@ import model.map.fixtures.mobile {
     Dragon
 }
 
-import strategicprimer.viewer.report {
+import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
     ListReportNode,

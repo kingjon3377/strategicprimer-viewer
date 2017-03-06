@@ -8,7 +8,7 @@ import model.map {
     Point
 }
 
-import strategicprimer.viewer.report {
+import strategicprimer.viewer.report.nodes {
     IReportNode
 }
 "An interface for report generators."
