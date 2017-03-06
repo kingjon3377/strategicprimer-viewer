@@ -64,9 +64,6 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import controller.map.misc {
-    TownComparator
-}
 import ceylon.regex {
     Regex,
     regex
@@ -642,13 +639,13 @@ class TownTabularReportGenerator(Player player, Point hq)
     Comparison([Point, AbstractTown], [Point, AbstractTown]) comparator =
             comparing(
                 comparingOn(([Point, AbstractTown] pair) => pair.rest.first,
-                    ceylonComparator(TownComparator.compareTownKind)),
+                    compareTownKind),
                 comparingOn(([Point, AbstractTown] pair) => pair.first,
                     ceylonComparator(DistanceComparator(hq))),
                 comparingOn(([Point, AbstractTown] pair) => pair.rest.first.size(),
-                    ceylonComparator(TownComparator.compareTownSize)),
+                    compareTownSize),
                 comparingOn(([Point, AbstractTown] pair) => pair.rest.first.status(),
-                    ceylonComparator(TownComparator.compareTownStatus)),
+                    compareTownStatus),
                 comparingOn(([Point, AbstractTown] pair) => pair.rest.first.name,
                     increasing<String>));
     "The header row for this table."
