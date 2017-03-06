@@ -31,9 +31,6 @@ import controller.map.misc {
     IDFactoryFiller,
     IDRegistrar
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 import lovelace.util.jvm {
     javaComparator
 }

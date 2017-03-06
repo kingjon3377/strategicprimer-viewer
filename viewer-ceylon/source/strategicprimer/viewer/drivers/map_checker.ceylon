@@ -50,9 +50,6 @@ import javax.xml.stream {
 import controller.map.formatexceptions {
     SPFormatException
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 import strategicprimer.viewer.xmlio {
     readMap
 }

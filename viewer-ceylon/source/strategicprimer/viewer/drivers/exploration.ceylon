@@ -76,7 +76,6 @@ import ceylon.interop.java {
     javaString,
     CeylonList,
     CeylonIterable,
-    JavaIterable,
     createJavaIntArray
 }
 import util {
@@ -135,7 +134,6 @@ import model.map.fixtures.resources {
     CacheFixture
 }
 import java.awt.event {
-    ActionListener,
     KeyEvent,
     ActionEvent
 }

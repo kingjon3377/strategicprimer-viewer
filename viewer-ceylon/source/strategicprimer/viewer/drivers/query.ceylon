@@ -24,8 +24,7 @@ import model.map {
     HasName
 }
 import ceylon.interop.java {
-    JavaList,
-    CeylonIterable
+    JavaList
 }
 import ceylon.collection {
     ArrayList,

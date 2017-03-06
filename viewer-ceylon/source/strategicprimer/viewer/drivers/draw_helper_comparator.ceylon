@@ -7,14 +7,12 @@ import java.awt {
     Graphics
 }
 import java.awt.image {
-    ImageObserver,
     BufferedImage
 }
 import java.nio.file {
     Path
 }
 import java.util {
-    JCollections=Collections,
     Optional,
     Random
 }
@@ -33,7 +31,6 @@ import model.misc {
     IDriverModel
 }
 import model.viewer {
-    ZOrderFilter,
     TileViewSize,
     ViewerModel
 }

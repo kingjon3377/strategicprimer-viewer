@@ -33,11 +33,8 @@ import javax.swing {
 }
 import ceylon.interop.java {
     CeylonIterable,
-    JavaList,
     createJavaIntArray,
-    createJavaObjectArray,
-    JavaIterable,
-    CeylonIterator
+    createJavaObjectArray
 }
 import model.map.fixtures {
     UnitMember
@@ -77,8 +74,7 @@ import model.map {
     HasKind
 }
 import util {
-    Pair,
-    EnumerationWrapper
+    Pair
 }
 import java.awt.event {
     KeyEvent,
@@ -87,8 +83,7 @@ import java.awt.event {
     WindowAdapter,
     MouseAdapter,
     MouseEvent,
-    KeyAdapter,
-    ActionListener
+    KeyAdapter
 }
 import model.map.fixtures.mobile {
     IUnit,
@@ -172,8 +167,7 @@ import lovelace.util.jvm {
     createHotKey,
     FormattedLabel,
     platform,
-    ActionWrapper,
-    ConvertingIterable
+    ActionWrapper
 }
 import java.awt.datatransfer {
     Transferable,

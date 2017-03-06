@@ -44,7 +44,6 @@ import javax.swing {
     ImageIcon,
     InputMap,
     ActionMap,
-    ListModel,
     DefaultListModel,
     TransferHandler
 }
@@ -76,7 +75,6 @@ import java.awt.event {
     MouseAdapter,
     AdjustmentEvent,
     KeyEvent,
-    ActionListener,
     ComponentAdapter,
     WindowEvent,
     InputEvent,
@@ -116,22 +114,16 @@ import model.map {
     IEvent,
     IMutableMapNG
 }
-import java.util {
-    JComparator=Comparator
-}
 import java.util.stream {
     Stream
 }
 import ceylon.interop.java {
     CeylonIterable,
     CeylonList,
-    JavaIterable,
-    JavaList,
     javaString,
     createJavaObjectArray,
     createJavaIntArray,
-    javaClass,
-    javaClassFromInstance
+    javaClass
 }
 import model.map.fixtures {
     RiverFixture,
@@ -149,7 +141,6 @@ import javax.swing.event {
 }
 import javax.swing.table {
     TableColumn,
-    TableModel,
     AbstractTableModel
 }
 import lovelace.util.common {

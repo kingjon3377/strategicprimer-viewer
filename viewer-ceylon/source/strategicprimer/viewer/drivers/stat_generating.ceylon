@@ -40,7 +40,6 @@ import ceylon.collection {
     MutableList
 }
 import ceylon.interop.java {
-    CeylonIterable,
     JavaList,
     toIntegerArray,
     javaString

@@ -1,7 +1,6 @@
 import java.lang {
     IllegalStateException,
-    IllegalArgumentException,
-    JString=String, JInteger=Integer,JDouble=Double
+    IllegalArgumentException
 }
 import model.misc {
     IDriverModel,
@@ -31,9 +30,7 @@ import ceylon.interop.java {
 }
 import ceylon.collection {
     MutableMap,
-    HashMap,
-    MutableList,
-    ArrayList
+    HashMap
 }
 import strategicprimer.viewer.xmlio {
     readMultiMapModel,
@@ -49,18 +46,15 @@ import javax.swing {
     JMenuBar,
     JMenu,
     JMenuItem,
-    InputMap,
-    JLabel
+    InputMap
 }
 import java.awt {
     Dimension,
-    Frame,
-    Window
+    Frame
 }
 import java.awt.event {
     ActionEvent,
-    KeyEvent,
-    ActionListener
+    KeyEvent
 }
 import lovelace.util.jvm {
     createHotKey,
