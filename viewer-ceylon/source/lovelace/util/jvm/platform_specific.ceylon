@@ -5,8 +5,16 @@ import java.awt.event {
     InputEvent
 }
 import javax.swing {
-    JButton
+    JButton,
+    JComponent
 }
+import ceylon.interop.java {
+    javaString
+}
+"Set a String/String property pair in a way that won't blow up at runtime due to
+ the difference between Ceylon and Java strings."
+void setStringProperty(JComponent component, String key, String val) =>
+        component.putClientProperty(javaString(key), javaString(val));
 "An object encapsulating utility constants and functions that differ between Mac and
  non-Mac platforms."
 shared object platform {
@@ -32,13 +40,13 @@ shared object platform {
      Mac."
     shared void makeButtonsSegmented(JButton* buttons) {
         if (systemIsMac, exists first = buttons.first, buttons.rest.first exists) {
-            first.putClientProperty("JButton.buttonType", "segmented");
-            first.putClientProperty("JButton.segmentPosition", "first");
+            setStringProperty(first, "JButton.buttonType", "segmented");
+            setStringProperty(first, "JButton.segmentPosition", "first");
             variable {JButton*} temp = buttons.rest;
             while (exists button = temp.first) {
-                button.putClientProperty("JButton.buttonType", "segmented");
+                setStringProperty(button, "JButton.buttonType", "segmented");
                 if (!temp.rest.first exists) {
-                    button.putClientProperty("JButton.segmentPosition", "last");
+                    setStringProperty(button, "JButton.segmentPosition", "last");
                 }
                 temp = temp.rest;
             }
