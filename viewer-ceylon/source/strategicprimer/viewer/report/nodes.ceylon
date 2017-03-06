@@ -51,7 +51,7 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&I
         }
     }
     "Add a node as a child."
-    todo("Allow null instead of having [[EmptyReportNode]]?")
+    todo("Allow null instead of having [[emptyReportNode]]?")
     shared formal void appendNode(MutableTreeNode node);
     "Add a node as our first child."
     shared default void addAsFirst(MutableTreeNode node) {
