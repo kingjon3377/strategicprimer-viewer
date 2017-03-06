@@ -798,9 +798,9 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 if (canImport(support),
                         is JTree.DropLocation dropLocation = support.dropLocation,
                         exists path = dropLocation.path,
-                        exists pathLast = path.lastPathComponent,
-                        exists local = wtModel.getModelObject(pathLast)) {
+                        exists pathLast = path.lastPathComponent) {
                     Object tempTarget;
+                    Object local = wtModel.getModelObject(pathLast);
                     if (is UnitMember local) {
                         TreePath pathParent = path.parentPath;
                         tempTarget = wtModel.getModelObject(pathParent.lastPathComponent);
@@ -933,7 +933,8 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     variable Boolean shouldWarn = false;
                     for (child in item) {
                         if (is WorkerTreeModelAlt.WorkerTreeNode<IUnit> child) {
-                            if (exists unit = child.userObjectNarrowed, !CeylonIterable(unit).empty) {
+                            IUnit unit = child.userObjectNarrowed;
+                            if (!CeylonIterable(unit).empty) {
                                 String orders = unit.getLatestOrders(turnSource()).lowercased;
                                 if (orders.contains("fixme"),
                                         is DefaultTreeCellRenderer component) {
