@@ -2608,7 +2608,7 @@ SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
                             listModel.addFixture(transferData);
                         }
                     } else if (flavor == CurriedFixtureTransferable.flavor) {
-                        assert (is JIterable<Transferable> curried =
+                        assert (is Transferable[] curried =
                                 trans.getTransferData(flavor));
                         for (item in curried) {
                             handleDrop(item);

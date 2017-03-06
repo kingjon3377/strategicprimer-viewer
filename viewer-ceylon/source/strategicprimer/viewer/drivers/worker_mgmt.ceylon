@@ -810,10 +810,10 @@ JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     if (is IUnit tempTarget) {
                         try {
                             Transferable trans = support.transferable;
-                            assert (is  JIterable<Pair<UnitMember, IUnit>> list =
+                            assert (is  [UnitMember, IUnit][] list =
                                 trans.getTransferData(UnitMemberTransferable.flavor));
-                            for (pair in CeylonIterable(list)) {
-                                wtModel.moveMember(pair.first(), pair.second(), tempTarget);
+                            for (pair in list) {
+                                wtModel.moveMember(pair.first, pair.rest.first, tempTarget);
                             }
                             return true;
                         } catch (UnsupportedFlavorException except) {
