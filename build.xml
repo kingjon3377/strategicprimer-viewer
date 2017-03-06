@@ -219,14 +219,15 @@
       <zipfileset excludes="META-INF/**/*" src="${windowmenu.jar.path}" />
       <resources refid="apple.extensions.fileset" />
     </jar>
-    <!-- there isn't a ceylon-fatjar Ant task (yet) -->
   </target>
-  <target name="jar-ceylon" depends="test,get-builder">
-    <exec executable="${ceylon.executable}">
-        <arg value="fatjar" />
+  <target name="jar-ceylon" depends="test,get-builder,build-ceylon">
+    <!-- there isn't a ceylon-fat-jar Ant task (yet) -->
+    <exec executable="${ceylon.executable}" failOnError="true">
+        <arg value="fat-jar" />
         <arg value="--cwd=${ceylon.root}" />
         <arg value="--out=${release}/${basename}.ceylon.jar" />
-        <!-- <arg value="name.of.module" /> -->
+        <arg value="--run=${ceylon-main-run}" />
+        <arg value="${main-module}" />
     </exec>
   </target>
   <target name="icon">
