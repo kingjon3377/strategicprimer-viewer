@@ -1039,7 +1039,7 @@ Image loadImage(String file) {
                 imageCache.put(file, image);
                 return image;
             } else {
-                throw IOException("No reader could read the images/``file``");
+                throw IOException("No reader could read the file images/``file``");
             }
         }
     }
@@ -1342,36 +1342,36 @@ class Ver2TileDrawHelper(
     "Images we've already determined aren't there."
     MutableSet<String> missingFiles = HashSet<String>();
     "A mapping from river-sets to filenames."
-    Map<Set<River>, String> riverFiles = HashMap<Set<River>, String> {
-        HashSet<River> { }->"riv00.png", HashSet { River.north }->"riv01.png",
-        HashSet { River.east }->"riv02.png", HashSet {River.south}->"riv03.png",
-        HashSet {River.west}->"riv04.png", HashSet {River.lake}->"riv05.png",
-        HashSet{River.north, River.east}->"riv06.png",
-        HashSet{River.north,River.south}->"riv07.png",
-        HashSet{River.north,River.west}->"riv08.png",
-        HashSet{River.north,River.lake}->"riv09.png",
-        HashSet{River.east,River.south}->"riv10.png",
-        HashSet{River.east,River.west}->"riv11.png",
-        HashSet{River.east,River.lake}->"riv12.png",
-        HashSet{River.south,River.west}->"riv13.png",
-        HashSet{River.south,River.lake}->"riv14.png",
-        HashSet{River.west,River.lake}->"riv15.png",
-        HashSet{River.north,River.east,River.south}->"riv16.png",
-        HashSet{River.north,River.east,River.west}->"riv17.png",
-        HashSet{River.north,River.east,River.lake}->"riv18.png",
-        HashSet{River.north,River.south,River.west}->"riv19.png",
-        HashSet{River.north,River.south,River.lake}->"riv20.png",
-        HashSet{River.north,River.west,River.lake}->"riv21.png",
-        HashSet{River.east,River.south,River.west}->"riv22.png",
-        HashSet{River.east,River.south,River.lake}->"riv23.png",
-        HashSet{River.east,River.west,River.lake}->"riv24.png",
-        HashSet{River.south,River.west,River.lake}->"riv25.png",
-        HashSet{River.north,River.east,River.south,River.west}->"riv26.png",
-        HashSet{River.north,River.south,River.west,River.lake}->"riv27.png",
-        HashSet{River.north,River.east,River.west,River.lake}->"riv28.png",
-        HashSet{River.north,River.east,River.south,River.lake}->"riv29.png",
-        HashSet{River.east,River.south,River.west,River.lake}->"riv30.png",
-        HashSet{River.north,River.east,River.south,River.west,River.lake}->"riv31.png"
+    Map<Set<River>, String> riverFiles = map {
+        set<River> { }->"riv00.png", set { River.north }->"riv01.png",
+        set { River.east }->"riv02.png", set {River.south}->"riv03.png",
+        set {River.west}->"riv04.png", set {River.lake}->"riv05.png",
+        set {River.north, River.east}->"riv06.png",
+        set {River.north,River.south}->"riv07.png",
+        set {River.north,River.west}->"riv08.png",
+        set {River.north,River.lake}->"riv09.png",
+        set {River.east,River.south}->"riv10.png",
+        set {River.east,River.west}->"riv11.png",
+        set {River.east,River.lake}->"riv12.png",
+        set {River.south,River.west}->"riv13.png",
+        set {River.south,River.lake}->"riv14.png",
+        set {River.west,River.lake}->"riv15.png",
+        set {River.north,River.east,River.south}->"riv16.png",
+        set {River.north,River.east,River.west}->"riv17.png",
+        set {River.north,River.east,River.lake}->"riv18.png",
+        set {River.north,River.south,River.west}->"riv19.png",
+        set {River.north,River.south,River.lake}->"riv20.png",
+        set {River.north,River.west,River.lake}->"riv21.png",
+        set {River.east,River.south,River.west}->"riv22.png",
+        set {River.east,River.south,River.lake}->"riv23.png",
+        set {River.east,River.west,River.lake}->"riv24.png",
+        set {River.south,River.west,River.lake}->"riv25.png",
+        set {River.north,River.east,River.south,River.west}->"riv26.png",
+        set {River.north,River.south,River.west,River.lake}->"riv27.png",
+        set {River.north,River.east,River.west,River.lake}->"riv28.png",
+        set {River.north,River.east,River.south,River.lake}->"riv29.png",
+        set {River.east,River.south,River.west,River.lake}->"riv30.png",
+        set {River.north,River.east,River.south,River.west,River.lake}->"riv31.png"
     };
     "Log, but otherwise ignore, file-not-found or other I/O error from loading an image."
     todo("Essentially inline this")
@@ -1495,8 +1495,11 @@ class Ver2TileDrawHelper(
             PointFactory.coordinate(width, height));
     "The drawable fixtures at the given location."
     {TileFixture*} getDrawableFixtures(IMapNG map, Point location) {
-        return {map.getGround(location), map.getForest(location),
-            *map.getOtherFixtures(location)}.coalesced
+        Ground? ground = map.getGround(location);
+        Forest? forest = map.getForest(location);
+        {TileFixture?*} allFixtures = {ground, forest,
+            *map.getOtherFixtures(location)};
+        return allFixtures.coalesced
             .filter((fixture) => !fixture is TileTypeFixture).filter(filter)
             .sort(compareFixtures);
     }
@@ -1505,7 +1508,7 @@ class Ver2TileDrawHelper(
         if (is Set<River> rivers) {
             return getImage(riverFiles.get(rivers) else "");
         } else {
-            return getImage(riverFiles.get(HashSet{rivers}) else "");
+            return getImage(riverFiles.get(set {*rivers}) else "");
         }
     }
     """Get the "top" fixture at the given location"""
@@ -1630,7 +1633,9 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             }
             builder.append(fixture.string);
         }
-        {TileFixture*} stream = {map.getGround(point), map.getForest(point), *map.getOtherFixtures(point)}
+        Ground? ground = map.getGround(point);
+        Forest? forest = map.getForest(point);
+        {TileFixture*} stream = {ground, forest, *map.getOtherFixtures(point)}
             .coalesced.filter(zof).sort(comparator);
         if (exists top = stream.first) {
             accept(top);
@@ -1915,7 +1920,7 @@ AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&Comparator<
         shared actual Object getValueAt(Integer rowIndex, Integer columnIndex) {
             if (exists matcher = list[rowIndex]) {
                 switch (columnIndex)
-                case (0) { return matcher.displayed; }
+                case (0) { return JBoolean(matcher.displayed); }
                 case (1) { return matcher.description; }
                 else { throw IllegalArgumentException("Only two columns"); }
             } else {
@@ -2340,7 +2345,7 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
     "Set a component's height given a fixed with."
     by("http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/")
     static void setComponentPreferredSize(JComponent component, Integer width) {
-        assert (is View view = component.getClientProperty(BasicHTML.propertyKey));
+        assert (is View view = component.getClientProperty(javaString(BasicHTML.propertyKey)));
         view.setSize(width.float, 0.0);
         Integer wid = ceiling(view.getPreferredSpan(View.xAxis)).integer;
         Integer height = ceiling(view.getPreferredSpan(view.yAxis)).integer;
@@ -2413,7 +2418,9 @@ class FixtureListModel(IMutableMapNG map,
                 addElement(RiverFixture(*CeylonIterable(rivers)));
             }
         }
-        for (fixture in {map.getGround(newPoint), map.getForest(newPoint),
+        Ground? ground = map.getGround(newPoint);
+        Forest? forest = map.getForest(newPoint);
+        for (fixture in {ground, forest,
                 *map.getOtherFixtures(newPoint)}.coalesced) {
             addElement(fixture);
         }
