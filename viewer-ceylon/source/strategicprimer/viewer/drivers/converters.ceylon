@@ -42,7 +42,6 @@ import controller.map.formatexceptions {
     SPFormatException
 }
 import model.exploration.old {
-    ExplorationRunner,
     MissingTableException
 }
 import model.misc {
@@ -165,7 +164,8 @@ import ceylon.file {
     parsePath
 }
 import strategicprimer.viewer.drivers.exploration {
-    loadAllTables
+    loadAllTables,
+    ExplorationRunner
 }
 "A driver to convert maps: at present, halving their resolution."
 class ConverterDriver(
@@ -300,14 +300,20 @@ object oneToTwoConverter satisfies SimpleDriver {
                         .find((element) => element is Forest) exists,
                     (TileType.temperateForest == originalTerrain ||
                         TileType.borealForest == originalTerrain)) {
+                Ground? tempGround = retval.getGround(point);
+                Forest? tempForest = retval.getForest(point);
                 retval.setForest(point, Forest(runner.getPrimaryTree(point,
-                    originalTerrain, retval.streamAllFixtures(point),
+                    originalTerrain, {tempGround, tempForest,
+                        *retval.getOtherFixtures(point)}.coalesced,
                     retval.dimensions()), false, idFactory.createID()));
             }
             retval.setBaseTerrain(point, equivalentTerrain(originalTerrain));
+            Ground? tempGround = retval.getGround(point);
+            Forest? tempForest = retval.getForest(point);
             addFixture(point, Ground(idFactory.createID(),
                 runner.getPrimaryRock(point, retval.getBaseTerrain(point),
-                    retval.streamAllFixtures(point), retval.dimensions()), false));
+                    {tempGround, tempForest, *retval.getOtherFixtures(point)}.coalesced,
+                    retval.dimensions()), false));
         }
         "Convert a single version-1 tile to the equivalent version-2 tiles."
         {Point*} convertTile(Point point) {
@@ -426,15 +432,22 @@ object oneToTwoConverter satisfies SimpleDriver {
                     if (adjacentToTown(), rng.nextDouble() < 0.6) {
                         Integer id = idFactory.createID();
                             if (rng.nextBoolean()) {
+                                Ground? tempGround = retval.getGround(point);
+                                Forest? tempForest = retval.getForest(point);
                                 addFixture(point, Meadow(runner.recursiveConsultTable("grain",
                                     point, retval.getBaseTerrain(point),
-                                    retval.streamAllFixtures(point), retval.dimensions()), true,
+                                    {tempGround, tempForest,
+                                        *retval.getOtherFixtures(point)}.coalesced,
+                                    retval.dimensions()), true,
                                     true, id, FieldStatus.random(id)));
                             } else {
+                                Ground? tempGround = retval.getGround(point);
+                                Forest? tempForest = retval.getForest(point);
                                 addFixture(point, Grove(true, true,
                                     runner.recursiveConsultTable("fruit_trees", point,
                                         retval.getBaseTerrain(point),
-                                        retval.streamAllFixtures(point),
+                                        {tempGround, tempForest,
+                                            *retval.getOtherFixtures(point)}.coalesced,
                                         retval.dimensions()), id));
                             }
                     } else if (TileType.desert == retval.getBaseTerrain(point)) {
@@ -445,9 +458,13 @@ object oneToTwoConverter satisfies SimpleDriver {
                             retval.setBaseTerrain(point, TileType.plains);
                         }
                     } else if (rng.nextDouble() < addForestProbability) {
+                        Ground? tempGround = retval.getGround(point);
+                        Forest? tempForest = retval.getForest(point);
                         String forestType = runner.recursiveConsultTable(
                             "temperate_major_tree", point, retval.getBaseTerrain(point),
-                            retval.streamAllFixtures(point), retval.dimensions());
+                            {tempGround, tempForest,
+                                *retval.getOtherFixtures(point)}.coalesced,
+                            retval.dimensions());
                         Forest? existingForest = retval.getForest(point);
                         if (exists existingForest, forestType == existingForest.kind) {
                             // do nothing

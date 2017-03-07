@@ -49,9 +49,6 @@ import model.exploration {
     IExplorationModel,
     ExplorationModel
 }
-import model.exploration.old {
-    ExplorationRunner
-}
 import model.map {
     Player,
     IMapNG,
@@ -84,7 +81,8 @@ import model.workermgmt {
 }
 
 import strategicprimer.viewer.drivers.exploration {
-    loadAllTables
+    loadAllTables,
+    ExplorationRunner
 }
 import strategicprimer.viewer.xmlio {
     readMap
@@ -420,7 +418,7 @@ class TileContentsGenerator(IMapNG map) {
         Integer reps = SingletonRandom.random.nextInt(4) + 1;
         for (i in 0..reps) {
             process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
-                Stream.empty<TileFixture>(), map.dimensions()));
+                {}, map.dimensions()));
         }
     }
 }

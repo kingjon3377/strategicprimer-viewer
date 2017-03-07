@@ -153,8 +153,6 @@
       <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
       <!-- We can do this once ant 1.9.3 is in our CI; see
           http://stackoverflow.com/a/25148876 -->
-      <test name="model.exploration.old.TestExplorationRunner"
-            todir="${junit.output.dir}" />
       <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
       <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
       <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />
@@ -357,8 +355,6 @@
              <!-- We can do this once ant 1.9.3 is in our CI; see
                  http://stackoverflow.com/a/25148876 -->
       <!--
-             <test name="model.exploration.old.TestExplorationRunner"
-                   todir="${junit.output.dir}" />
              <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
              <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
              <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />

@@ -21,7 +21,6 @@ import lovelace.util.common {
 }
 
 import model.exploration.old {
-    ExplorationRunner,
     EncounterTable
 }
 import model.misc {
@@ -92,7 +91,7 @@ object tableDebugger satisfies SimpleCLIDriver {
     }
     todo("If a CLIHelper was passed in, write to it")
     shared actual void startDriverNoArgs() {
-        runner.verboseRecursiveCheck(SystemOut.sysOut);
+        runner.verboseGlobalRecursiveCheck((String line) => process.writeLine(line));
         EncounterTable mainTable = runner.getTable("main");
         debugSingleTable("", "", mainTable, "main",
                     (string) => SystemOut.sysOut.println(string), HashSet<EncounterTable>());

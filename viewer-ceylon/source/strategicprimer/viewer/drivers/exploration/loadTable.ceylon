@@ -31,7 +31,6 @@ import java.util.stream {
 }
 
 import model.exploration.old {
-    ExplorationRunner,
     EncounterTable,
     QuadrantTable,
     RandomTable,

@@ -1,5 +1,7 @@
 "Assistive programs for players and Judges of
  [Strategic Primer](https://shinecycle.wordpress.com/archives/strategic-primer)"
+// FIXME: add license() annotations throughout
+// TODO: add tagged() annotations throughout
 native("jvm")
 module strategicprimer.viewer "0.4.9900" {
     shared import java.base "8";
