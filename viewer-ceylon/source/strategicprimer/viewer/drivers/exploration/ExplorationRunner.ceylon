@@ -8,9 +8,7 @@ import ceylon.collection {
     HashSet
 }
 import model.exploration.old {
-    EncounterTable,
-    ConstantTable,
-    QuadrantTable
+    EncounterTable
 }
 import model.map {
     Point,
@@ -346,9 +344,8 @@ void testRecursiveCheck() {
     assertFalse(runner.recursiveCheck("existent_table"), "base case of existing table");
     runner.loadTable("referent_one", ConstantTable("#existent_table#"));
     runner.loadTable("referent_two", ConstantTable("( #existent_table# )"));
-    runner.loadTable("referent_three", QuadrantTable(1,
-        JavaList(ArrayList {
-            *{"#referent_one#", "#referent_two#"}.map(javaString)})));
+    runner.loadTable("referent_three", QuadrantTable(1, "#referent_one#",
+        "#referent_two#"));
     assertFalse(runner.recursiveCheck("referent_three"), "recursive case to exercise cache-hits");
     runner.loadTable("false_referent", ConstantTable("#nonexistent#"));
     assertTrue(runner.recursiveCheck("false_referent"), "reference to nonexistent table");

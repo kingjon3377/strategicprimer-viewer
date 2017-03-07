@@ -31,10 +31,7 @@ import java.util.stream {
 }
 
 import model.exploration.old {
-    EncounterTable,
-    QuadrantTable,
-    ConstantTable,
-    LegacyTable
+    EncounterTable
 }
 import model.map {
     PointFactory,
@@ -64,11 +61,11 @@ EncounterTable loadTable(String?()|File argument) {
                 if (exists firstLine = argument()) {
                     value rows = Integer.parse(firstLine);
                     if (is Integer rows) {
-                        MutableList<JString> items = LinkedList<JString>();
+                        MutableList<String> items = LinkedList<String>();
                         while (exists tableLine = argument()) {
-                            items.add(javaString(tableLine));
+                            items.add(tableLine);
                         }
-                        return QuadrantTable(rows, JavaList(items));
+                        return QuadrantTable(rows, *items);
                     } else {
                         throw IOException(
                             "File doesn't start with number of rows of quadrants", rows);
