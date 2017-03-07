@@ -33,10 +33,8 @@ import java.util.stream {
 import model.exploration.old {
     EncounterTable,
     QuadrantTable,
-    RandomTable,
     ConstantTable,
-    LegacyTable,
-    TerrainTable
+    LegacyTable
 }
 import model.map {
     PointFactory,
@@ -82,8 +80,8 @@ EncounterTable loadTable(String?()|File argument) {
             }
             case ('r'|'R') {
                 // TODO: Use Tuples once RandomTable is ported to Ceylon.
-                MutableList<ComparablePair<JInteger, JString>> list =
-                        ArrayList<ComparablePair<JInteger, JString>>();
+                MutableList<[Integer, String]> list =
+                        ArrayList<[Integer, String]>();
                 while (exists tableLine = argument()) {
                     value splitted = tableLine.split(" ".equals, true, false);
                     if (splitted.size < 2) {
@@ -94,14 +92,13 @@ EncounterTable loadTable(String?()|File argument) {
                                     (String partial, element) => "``partial`` ``element``"));
                         value leftNum = Integer.parse(left);
                         if (is Integer leftNum) {
-                            list.add(ComparablePair.\iof(JInteger(leftNum),
-                                javaString(right)));
+                            list.add([leftNum, right]);
                         } else {
                             throw IOException("Non-numeric data", leftNum);
                         }
                     }
                 }
-                return RandomTable(JavaList(list));
+                return RandomTable(*list);
             }
             case ('c'|'C') {
                 if (exists tableLine = argument()) {
@@ -113,8 +110,8 @@ EncounterTable loadTable(String?()|File argument) {
             case ('l'|'L') { return LegacyTable(); }
             case ('t'|'T') {
                 // TODO: Use Tuples once RandomTable is ported to Ceylon.
-                MutableList<Pair<TileType, JString>> list =
-                        ArrayList<Pair<TileType, JString>>();
+                MutableList<TileType->String> list =
+                        ArrayList<TileType->String>();
                 while (exists tableLine = argument()) {
                     value splitted = tableLine.split(" ".equals, true, false);
                     if (splitted.size < 2) {
@@ -124,10 +121,10 @@ EncounterTable loadTable(String?()|File argument) {
                         assert (exists right = splitted.rest.reduce(
                                     (String partial, element) => "``partial`` ``element``"));
                         value leftVal = TileType.getTileType(left);
-                        list.add(Pair.\iof(leftVal, javaString(right)));
+                        list.add(leftVal->right);
                     }
                 }
-                return TerrainTable(JavaList(list));
+                return TerrainTable(*list);
             }
             else { throw IllegalArgumentException("unknown table type"); }
         } else {
