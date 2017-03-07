@@ -41,9 +41,6 @@ import javax.xml.stream {
 import controller.map.formatexceptions {
     SPFormatException
 }
-import model.exploration.old {
-    MissingTableException
-}
 import model.misc {
     IDriverModel,
     IMultiMapModel
@@ -165,7 +162,8 @@ import ceylon.file {
 }
 import strategicprimer.viewer.drivers.exploration {
     loadAllTables,
-    ExplorationRunner
+    ExplorationRunner,
+    MissingTableException
 }
 "A driver to convert maps: at present, halving their resolution."
 class ConverterDriver(

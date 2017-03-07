@@ -10,8 +10,7 @@ import ceylon.collection {
 import model.exploration.old {
     EncounterTable,
     ConstantTable,
-    QuadrantTable,
-    MissingTableException
+    QuadrantTable
 }
 import model.map {
     Point,
