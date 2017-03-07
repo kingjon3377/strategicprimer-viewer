@@ -6,23 +6,19 @@ import ceylon.file {
     Directory,
     parsePath
 }
+
 import controller.map.misc {
     ICLIHelper
 }
 
 import java.lang {
-    IllegalStateException,
-    ObjectArray,
-    JString=String
+    IllegalStateException
 }
 
 import lovelace.util.common {
     todo
 }
 
-import model.exploration.old {
-    EncounterTable
-}
 import model.misc {
     IDriverModel
 }
@@ -75,13 +71,14 @@ object tableDebugger satisfies SimpleCLIDriver {
             return;
         }
         set.add(table);
-        for (item in table.allEvents()) {
+        for (item in table.allEvents) {
             if (item.contains("#")) {
                 // FIXME: This relies on java.lang.String.split(), not ceylon.lang.String
-                ObjectArray<JString> parsed = item.split("#", 3);
-                String callee = (parsed[1] else nothing).string;
-                debugSingleTable("``before````parsed[0] else ""``",
-                    "``parsed[2] else ""````after``", runner.getTable(callee), callee,
+                {String+} parsed = item.split('#'.equals, true, false, 3);
+                assert (exists callee = parsed.rest.first);
+                debugSingleTable("``before````parsed.first``",
+                    "``parsed.rest.rest.first else ""````after``",
+                    runner.getTable(callee), callee,
                     ostream, set);
             } else {
                 ostream("``before````item````after``");

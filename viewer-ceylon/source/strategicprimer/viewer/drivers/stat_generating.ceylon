@@ -37,9 +37,6 @@ import java.util {
     JOptional=Optional,
     Random
 }
-import java.util.stream {
-    Stream
-}
 
 import lovelace.util.common {
     todo
@@ -56,7 +53,6 @@ import model.map {
     FixtureIterable,
     Point,
     TileType,
-    TileFixture,
     PointFactory
 }
 import model.map.fixtures.mobile {

@@ -2,25 +2,7 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import ceylon.interop.java {
-    CeylonIterator,
-    JavaSet,
-    javaString
-}
 
-import java.lang {
-    JString=String
-}
-import java.util {
-    JSet=Set
-}
-import java.util.stream {
-    Stream
-}
-
-import model.exploration.old {
-    EncounterTable
-}
 import model.map {
     IEvent,
     TileFixture,
@@ -83,18 +65,13 @@ class LegacyTable() satisfies EncounterTable {
     }
     {String*} data = createEvents().map(IEvent.text);
     shared actual String generateEvent(Point point, TileType terrain,
-            Stream<TileFixture> fixtures, MapDimensions mapDimensions) {
-        object temp satisfies Iterable<TileFixture> {
-            shared actual Iterator<TileFixture> iterator() =>
-                    CeylonIterator(fixtures.iterator());
-        }
-        for (fixture in temp) {
+            {TileFixture*} fixtures, MapDimensions mapDimensions) {
+        for (fixture in fixtures) {
             if (is IEvent fixture) {
                 return fixture.text;
             }
         }
         return "Nothing interesting here ...";
     }
-    shared actual JSet<JString> allEvents() =>
-            JavaSet(set { *data.map(javaString) });
+    shared actual Set<String> allEvents => set { *data };
 }

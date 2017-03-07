@@ -1,33 +1,10 @@
 import ceylon.collection {
     Queue,
     LinkedList,
-    ArrayList,
     MutableMap,
     HashMap,
     MutableSet,
     HashSet
-}
-import model.exploration.old {
-    EncounterTable
-}
-import model.map {
-    Point,
-    TileType,
-    TileFixture,
-    MapDimensions,
-    PointFactory,
-    MapDimensionsImpl
-}
-import java.util.stream {
-    Stream
-}
-import java.util {
-    JSet=Set
-}
-import java.lang {
-    JString=String,
-    UnsupportedOperationException,
-    IllegalArgumentException
 }
 import ceylon.test {
     assertEquals,
@@ -36,12 +13,23 @@ import ceylon.test {
     assertFalse,
     test
 }
-import ceylon.interop.java {
-    JavaList,
-    javaString
+
+import java.lang {
+    UnsupportedOperationException,
+    IllegalArgumentException
 }
+
 import lovelace.util.common {
     todo
+}
+
+import model.map {
+    Point,
+    TileType,
+    TileFixture,
+    MapDimensions,
+    PointFactory,
+    MapDimensionsImpl
 }
 
 """A class to create exploration results. The initial implementation is a bit hackish, and
@@ -95,10 +83,9 @@ shared class ExplorationRunner() {
         state.add(table);
         if (tables.defines(table)) {
             try {
-                for (string in getTable(table).allEvents()) {
-                    // TODO: Drop .string when EncounterTable interface is ported
+                for (string in getTable(table).allEvents) {
                     if (string.contains("#"), recursiveCheck(
-                            string.string.split('#'.equals, true,
+                            string.split('#'.equals, true,
                                 false, 3).rest.first else "",
                             state)) {
                         return true;
@@ -130,11 +117,10 @@ shared class ExplorationRunner() {
             state.add(table);
             if (tables.defines(table)) {
                 try {
-                    for (string in getTable(table).allEvents()) {
-                        // TODO: Drop .string when EncounterTable interface is ported
+                    for (string in getTable(table).allEvents) {
                         if (string.contains("#")) {
                             verboseRecursiveCheck(
-                                string.string.split('#'.equals, true,
+                                string.split('#'.equals, true,
                                     false, 3).rest.first else "",
                                     ostream, state);
                         }
@@ -168,8 +154,8 @@ shared class ExplorationRunner() {
             {TileFixture*} fixtures,
             "The dimensions of the map"
             MapDimensions mapDimensions) {
-        return getTable(table).generateEvent(location, terrain,
-            JavaList(ArrayList{*fixtures}).stream(), mapDimensions);
+        return getTable(table).generateEvent(location, terrain, fixtures,
+            mapDimensions);
     }
     "Get the primary rock at the given location."
     shared String getPrimaryRock(
@@ -233,11 +219,11 @@ shared class ExplorationRunner() {
 class MockTable(String* values) satisfies EncounterTable {
     Queue<String> queue = LinkedList<String> { *values };
     shared actual String generateEvent(Point point, TileType terrain,
-            Stream<TileFixture> fixtures, MapDimensions mapDimensions) {
+            {TileFixture*} fixtures, MapDimensions mapDimensions) {
         assert (exists retval = queue.accept());
         return retval;
     }
-    shared actual JSet<JString> allEvents() {
+    shared actual Set<String> allEvents {
         throw UnsupportedOperationException("mock object");
     }
 }

@@ -1,16 +1,8 @@
-import model.exploration.old {
-    EncounterTable
-}
-import java.lang {
-    JString=String
-}
-import java.util {
-    JSet=Set
-}
 import ceylon.collection {
     MutableMap,
     HashMap
 }
+
 import model.map {
     MapDimensions,
     Point,
@@ -18,13 +10,6 @@ import model.map {
     PointFactory,
     TileType,
     TileFixture
-}
-import java.util.stream {
-    Stream
-}
-import ceylon.interop.java {
-    JavaSet,
-    javaString
 }
 "An [[EncounterTable]] where results are by quadrant of the map."
 class QuadrantTable satisfies EncounterTable {
@@ -93,10 +78,9 @@ class QuadrantTable satisfies EncounterTable {
         }
     }
     shared actual String generateEvent(Point point, TileType terrain,
-            Stream<TileFixture> fixtures, MapDimensions mapDimensions) =>
+            {TileFixture*} fixtures, MapDimensions mapDimensions) =>
                 getQuadrantValue(point.row, point.col, mapDimensions);
-    shared actual JSet<JString> allEvents() =>
-            JavaSet(set { *possibleResults.map(javaString) });
+    shared actual Set<String> allEvents => set { *possibleResults };
     shared actual String string =>
             "QuadrantTable in ``quadrantRows`` rows of quadrants";
 }

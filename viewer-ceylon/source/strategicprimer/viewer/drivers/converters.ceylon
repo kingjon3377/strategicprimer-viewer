@@ -1,9 +1,96 @@
+import ceylon.collection {
+    MutableList,
+    LinkedList,
+    Queue,
+    MutableMap,
+    HashMap,
+    HashSet,
+    MutableSet
+}
+import ceylon.file {
+    Directory,
+    parsePath
+}
+import ceylon.interop.java {
+    CeylonIterable,
+    javaClass
+}
+import ceylon.regex {
+    Regex,
+    regex
+}
+import ceylon.test {
+    test,
+    assertEquals,
+    assertTrue,
+    assertThatException
+}
+
+import controller.map.formatexceptions {
+    SPFormatException
+}
+import controller.map.iointerfaces {
+    SPWriter,
+    TestReaderFactory,
+    ISPReader
+}
 import controller.map.misc {
     ICLIHelper,
     IDFactoryFiller,
     IDRegistrar,
     IDFactory
 }
+
+import java.io {
+    FileNotFoundException,
+    IOException,
+    StringWriter,
+    StringReader,
+    JFileReader=FileReader
+}
+import java.lang {
+    IllegalStateException,
+    Appendable,
+    IllegalArgumentException
+}
+import java.nio.file {
+    Paths,
+    JPath=Path,
+    NoSuchFileException
+}
+import java.util {
+    JOptional=Optional,
+    Random,
+    Formatter
+}
+
+import javax.xml {
+    XMLConstants
+}
+import javax.xml.namespace {
+    QName
+}
+import javax.xml.stream {
+    XMLStreamException
+}
+import javax.xml.stream.events {
+    EndDocument,
+    StartDocument,
+    EndElement,
+    Characters,
+    StartElement,
+    XMLEvent,
+    Attribute
+}
+
+import lovelace.util.common {
+    todo
+}
+import lovelace.util.jvm {
+    shuffle,
+    ConvertingIterable
+}
+
 import model.map {
     IMutableMapNG,
     IMapNG,
@@ -19,81 +106,22 @@ import model.map {
     TileType,
     River
 }
-import java.nio.file {
-    Paths, JPath = Path,
-    NoSuchFileException
-}
-import util {
-    Warning,
-    LineEnd,
-    EnumCounter
-}
-import java.io {
-    FileNotFoundException,
-    IOException,
-    StringWriter,
-    StringReader, JFileReader = FileReader
-}
-import strategicprimer.viewer.drivers { log }
-import javax.xml.stream {
-    XMLStreamException
-}
-import controller.map.formatexceptions {
-    SPFormatException
-}
-import model.misc {
-    IDriverModel,
-    IMultiMapModel
-}
-import java.lang {
-    IllegalStateException,
-    Appendable,
-    IllegalArgumentException
-}
-import java.util {
-    JOptional=Optional,
-    Random,
-    Formatter
-}
-import lovelace.util.common {
-    todo
-}
-import ceylon.interop.java {
-    CeylonIterable,
-    javaClass
-}
-import ceylon.collection {
-    MutableList,
-    LinkedList,
-    Queue,
-    MutableMap,
-    HashMap,
-    HashSet,
-    MutableSet
-}
-import lovelace.util.jvm { shuffle,
-    ConvertingIterable }
-import model.map.fixtures.towns {
-    Village,
-    ITownFixture,
-    TownStatus,
-    TownSize,
-    Fortification,
-    City,
-    Fortress,
-    Town
-}
-import model.workermgmt {
-    RaceFactory
-}
 import model.map.fixtures {
     TextFixture,
     Ground
 }
-import model.map.fixtures.terrain {
-    Forest,
-    Sandbar,
-    Hill
+import model.map.fixtures.explorable {
+    AdventureFixture
+}
+import model.map.fixtures.mobile {
+    Fairy,
+    Dragon,
+    SimpleImmortal,
+    Giant,
+    Centaur,
+    Animal,
+    IUnit,
+    Unit
 }
 import model.map.fixtures.resources {
     Meadow,
@@ -106,64 +134,50 @@ import model.map.fixtures.resources {
     MineralVein,
     CacheFixture
 }
-import ceylon.test {
-    test,
-    assertEquals,
-    assertTrue,
-    assertThatException
+import model.map.fixtures.terrain {
+    Forest,
+    Sandbar,
+    Hill
 }
-import controller.map.iointerfaces {
-    SPWriter,
-    TestReaderFactory,
-    ISPReader
+import model.map.fixtures.towns {
+    Village,
+    ITownFixture,
+    TownStatus,
+    TownSize,
+    Fortification,
+    City,
+    Fortress,
+    Town
 }
-import ceylon.regex {
-    Regex,
-    regex
+import model.misc {
+    IDriverModel,
+    IMultiMapModel
 }
-import model.map.fixtures.mobile {
-    Fairy,
-    Dragon,
-    SimpleImmortal,
-    Giant,
-    Centaur,
-    Animal,
-    IUnit,
-    Unit
+import model.workermgmt {
+    RaceFactory
 }
-import model.map.fixtures.explorable {
-    AdventureFixture
-}
-import javax.xml.stream.events {
-    EndDocument,
-    StartDocument,
-    EndElement,
-    Characters,
-    StartElement,
-    XMLEvent,
-    Attribute
-}
-import javax.xml.namespace {
-    QName
-}
-import javax.xml {
-    XMLConstants
-}
-import view.util {
-    SystemOut
-}
-import strategicprimer.viewer.xmlio {
-    readMap,
-    writeMap
-}
-import ceylon.file {
-    Directory,
-    parsePath
+
+import strategicprimer.viewer.drivers {
+    log
 }
 import strategicprimer.viewer.drivers.exploration {
     loadAllTables,
     ExplorationRunner,
     MissingTableException
+}
+import strategicprimer.viewer.xmlio {
+    readMap,
+    writeMap
+}
+
+import util {
+    Warning,
+    LineEnd,
+    EnumCounter
+}
+
+import view.util {
+    SystemOut
 }
 "A driver to convert maps: at present, halving their resolution."
 class ConverterDriver(

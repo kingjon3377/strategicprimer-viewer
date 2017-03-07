@@ -8,10 +8,6 @@ import ceylon.file {
     Directory,
     File
 }
-import ceylon.interop.java {
-    javaString,
-    JavaList
-}
 import ceylon.test {
     assertEquals,
     test,
@@ -22,30 +18,17 @@ import java.io {
     IOException
 }
 import java.lang {
-    IllegalArgumentException,
-    JString=String,
-    JInteger=Integer
-}
-import java.util.stream {
-    Stream
+    IllegalArgumentException
 }
 
-import model.exploration.old {
-    EncounterTable
-}
 import model.map {
     PointFactory,
     TileType,
-    TileFixture,
     MapDimensionsImpl,
     MapDimensions,
     Point
 }
 
-import util {
-    ComparablePair,
-    Pair
-}
 EncounterTable loadTable(String?()|File argument) {
     if (is File argument) {
         try (reader = argument.Reader()) {
@@ -148,15 +131,14 @@ void testLoadQuadrantTable() {
     Point point = PointFactory.point(0, 0);
     MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
     assertEquals("one",result.generateEvent(point, TileType.tundra,
-        Stream.empty<TileFixture>(), dimensions), "loading quadrant table");
+        {}, dimensions), "loading quadrant table");
     Point pointTwo = PointFactory.point(36, 30);
     assertEquals("one",result.generateEvent(point, TileType.ocean,
-        Stream.empty<TileFixture>(), dimensions), "quadrant table isn't a terrain table");
+        {}, dimensions), "quadrant table isn't a terrain table");
     assertEquals(result.generateEvent(pointTwo, TileType.tundra,
-        Stream.empty<TileFixture>(), dimensions), "five",
-        "quadrant table isn't a constant table");
+        {}, dimensions), "five", "quadrant table isn't a constant table");
     assertEquals(result.generateEvent(pointTwo, TileType.tundra,
-        Stream.empty<TileFixture>(), MapDimensionsImpl(35, 32, 2)), "six",
+        {}, MapDimensionsImpl(35, 32, 2)), "six",
         "quadrant table can use alternate dimensions");
     assertThatException(() => loadTable(LinkedList({"quadrant"}).accept));
 }
@@ -172,7 +154,7 @@ object mockPoint satisfies Point {
 test
 void testLoadRandomTable() {
     EncounterTable result = loadTable(LinkedList({"random", "0 one", "99 two"}).accept);
-    assertEquals(result.generateEvent(mockPoint, TileType.tundra, Stream.empty<TileFixture>(),
+    assertEquals(result.generateEvent(mockPoint, TileType.tundra, {},
         mockDimensions), "one", "loading random table");
 }
 test
@@ -180,20 +162,19 @@ void testLoadTerrainTable() {
     EncounterTable result = loadTable(LinkedList({"terrain", "tundra one",
         "plains two", "ocean three"}).accept);
     assertEquals(result.generateEvent(mockPoint, TileType.tundra,
-        Stream.empty<TileFixture>(), mockDimensions), "one",
+        {}, mockDimensions), "one",
         "loading terrain table: tundra");
     assertEquals(result.generateEvent(mockPoint, TileType.plains,
-        Stream.empty<TileFixture>(), mockDimensions), "two",
-        "loading terrain table: plains");
+        {}, mockDimensions), "two", "loading terrain table: plains");
     assertEquals(result.generateEvent(mockPoint, TileType.ocean,
-        Stream.empty<TileFixture>(), mockDimensions), "three",
+        {}, mockDimensions), "three",
         "loading terrain table: ocean");
 }
 test
 void testLoadConstantTable() {
     EncounterTable result = loadTable(LinkedList({"constant", "one"}).accept);
     assertEquals(result.generateEvent(mockPoint, TileType.plains,
-        Stream.empty<TileFixture>(), mockDimensions), "one");
+        {}, mockDimensions), "one");
 }
 test
 void testTableLoadingInvalidInput() {

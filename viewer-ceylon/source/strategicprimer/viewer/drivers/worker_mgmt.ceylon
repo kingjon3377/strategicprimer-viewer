@@ -191,13 +191,6 @@ import model.workermgmt {
 import strategicprimer.viewer.about {
     aboutDialog
 }
-import strategicprimer.viewer.report {
-    createAbbreviatedReportIR
-}
-import strategicprimer.viewer.report.nodes {
-    IReportNode,
-    SimpleReportNode
-}
 import strategicprimer.viewer.drivers.map_viewer {
     IViewerFrame,
     viewerFrame,
@@ -205,6 +198,13 @@ import strategicprimer.viewer.drivers.map_viewer {
     loadIcon,
     newUnitDialog,
     loadImage
+}
+import strategicprimer.viewer.report {
+    createAbbreviatedReportIR
+}
+import strategicprimer.viewer.report.nodes {
+    IReportNode,
+    SimpleReportNode
 }
 "A TreeModel implementation for a player's units and workers."
 class WorkerTreeModel(variable Player player, IWorkerModel model)
