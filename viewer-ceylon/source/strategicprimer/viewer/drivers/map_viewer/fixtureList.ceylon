@@ -98,6 +98,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
             shared actual void mousePressed(MouseEvent event) => handleMouseEvent(event);
             shared actual void mouseReleased(MouseEvent event) => handleMouseEvent(event);
         }
+        addMouseListener(fixtureMouseListener);
     }
     DragSource.defaultDragSource.createDefaultDragGestureRecognizer(retval,
         DnDConstants.actionCopy, retval);
