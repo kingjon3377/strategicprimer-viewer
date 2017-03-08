@@ -131,13 +131,6 @@ shared interface ICLIHelper satisfies Closeable {
             """The prompt (or other key) to compare to others to define "similar"
                questions."""
             String key = prompt);
-    "Print a formatted string."
-    deprecated todo("Remove given Ceylon's interpolation features")
-    shared formal void printf(
-            "The format string."
-            String format,
-            "Format arguments."
-            Object* args);
     "Print the specified string, then a newline."
     shared formal void println(
             "The line to print"
@@ -345,11 +338,6 @@ class CLIHelper satisfies ICLIHelper {
             String none, String prompt, Boolean auto) {
         return chooseFromListImpl<String>(items, description, none, prompt, auto,
                     (String x) => x);
-    }
-    "Print a formatted string."
-    shared actual void printf(String format, Object* args) {
-        ostream.printf(format, *args);
-        ostream.flush();
     }
     "Print the specified string, then a newline."
     shared actual void println(String line) {
@@ -674,7 +662,6 @@ void testPrinting() {
         "print() prints string");
     assertHelper((cli) => cli.println("test two"), """test two
                                                       """, "println() adds newline");
-    assertHelper((cli) => cli.printf("test %s", "three"), "test three", "printf() works");
 }
 
 "Test inputPoint()"
