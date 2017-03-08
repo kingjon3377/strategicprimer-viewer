@@ -31,8 +31,7 @@ import com.bric.window {
 }
 
 import controller.map.misc {
-    ICLIHelper,
-    IDFactoryFiller
+    ICLIHelper
 }
 
 import java.awt {
@@ -1641,7 +1640,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         IMapNG mainMap = model.map;
         SPDialog&NewUnitSource&PlayerChangeListener newUnitFrame =
                 newUnitDialog(mainMap.currentPlayer,
-                    IDFactoryFiller.createFactory(mainMap));
+                    createIDFactory(mainMap));
         IWorkerTreeModel treeModel = WorkerTreeModelAlt(mainMap.currentPlayer, model);
         JTree tree = workerTree(treeModel, CeylonIterable(mainMap.players()),
             () => mainMap.currentTurn, true);

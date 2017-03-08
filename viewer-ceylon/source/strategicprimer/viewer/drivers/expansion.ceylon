@@ -1,7 +1,6 @@
 import controller.map.misc {
     ICLIHelper,
-    IDRegistrar,
-    IDFactoryFiller
+    IDRegistrar
 }
 import model.misc {
     IDriverModel,
@@ -169,7 +168,7 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
     }
     "Populate the map. You shouldn't need to customize this."
     void populate(IMutableMapNG map) {
-        IDRegistrar idf = IDFactoryFiller.createFactory(map);
+        IDRegistrar idf = createIDFactory(map);
         for (location in map.locations()) {
             if (isSuitable(map, location) && random() < chance) {
                 create(location, map, idf);

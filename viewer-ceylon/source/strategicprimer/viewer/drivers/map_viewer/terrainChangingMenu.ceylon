@@ -1,8 +1,6 @@
-import controller.map.misc {
-    IDFactoryFiller
-}
 import strategicprimer.viewer.drivers {
-    SPDialog
+    SPDialog,
+    createIDFactory
 }
 import model.map {
     PointFactory,
@@ -35,7 +33,7 @@ JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener
 terrainChangingMenu(Integer mapVersion, IViewerModel model) {
     SPDialog&NewUnitSource&PlayerChangeListener nuDialog =
             newUnitDialog(model.map.currentPlayer,
-                IDFactoryFiller.createFactory(model.map));
+                createIDFactory(model.map));
     SelectionChangeSupport scs = SelectionChangeSupport();
     JMenuItem newUnitItem = JMenuItem("Add New Unit");
     variable Point point = PointFactory.invalidPoint;

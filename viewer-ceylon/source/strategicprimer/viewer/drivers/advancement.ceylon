@@ -1,6 +1,5 @@
 import controller.map.misc {
     ICLIHelper,
-    IDFactoryFiller,
     IDRegistrar
 }
 import model.misc {
@@ -699,7 +698,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
     JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
         CeylonIterable(map.players()), () => model.map.currentTurn, false);
     WorkerCreationListener newWorkerListener = WorkerCreationListener(treeModel,
-        IDFactoryFiller.createFactory(map));
+        createIDFactory(map));
     tree.addUnitSelectionListener(newWorkerListener);
     JobTreeModel jobsTreeModel = JobTreeModel();
     tree.addUnitMemberListener(jobsTreeModel);

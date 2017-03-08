@@ -21,7 +21,6 @@ import ceylon.math.float {
 
 import controller.map.misc {
     ICLIHelper,
-    IDFactoryFiller,
     IDRegistrar
 }
 
@@ -392,7 +391,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
                     "Enter pregenerated stats for existing workers?")) {
                 enterStats(model, cli);
             } else {
-                createWorkers(model, IDFactoryFiller.createFactory(model), cli);
+                createWorkers(model, createIDFactory(model), cli);
             }
         } else {
             startDriverOnModel(cli, options, ExplorationModel(model));

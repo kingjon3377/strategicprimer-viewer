@@ -1,7 +1,6 @@
 import controller.map.misc {
     ICLIHelper,
-    IDRegistrar,
-    IDFactoryFiller
+    IDRegistrar
 }
 import model.map {
     IMutableMapNG,
@@ -62,7 +61,7 @@ object echoDriver satisfies UtilityDriver {
             } catch (SPFormatException except) {
                 throw DriverFailedException(except, "SP map format error in ``inArg``");
             }
-            IDRegistrar idFactory = IDFactoryFiller.createFactory(map);
+            IDRegistrar idFactory = createIDFactory(map);
             for (location in map.locations()) {
                 if (exists mainForest = map.getForest(location), mainForest.id < 0) {
                     Integer id = 1147200 + location.row * 176 + location.col;

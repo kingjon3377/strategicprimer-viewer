@@ -4,7 +4,6 @@ import ceylon.logging {
 }
 
 import controller.map.misc {
-    IDFactoryFiller,
     IDRegistrar
 }
 
@@ -57,6 +56,9 @@ import strategicprimer.viewer.report.nodes {
     IReportNode,
     RootReportNode
 }
+import strategicprimer.viewer.drivers {
+    createIDFactory
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "Find the location of the given player's HQ in the given map."
@@ -81,7 +83,7 @@ Point findHQ(IMapNG map, Player player) {
  in the map."
 DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
     DelayedRemovalMap<Integer, [Point, IFixture]> retval = IntMap<[Point, IFixture]>();
-    IDRegistrar idf = IDFactoryFiller.createFactory(map);
+    IDRegistrar idf = createIDFactory(map);
     Integer checkID(IFixture fixture) {
         if (fixture.id < 0) {
             return idf.createID();

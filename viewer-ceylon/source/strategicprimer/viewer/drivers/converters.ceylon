@@ -36,7 +36,6 @@ import controller.map.iointerfaces {
 }
 import controller.map.misc {
     ICLIHelper,
-    IDFactoryFiller,
     IDRegistrar,
     IDFactory
 }
@@ -281,7 +280,7 @@ object oneToTwoConverter satisfies SimpleDriver {
             retval.addPlayer(player);
         }
         MutableList<Point> converted = LinkedList<Point>();
-        IDRegistrar idFactory = IDFactoryFiller.createFactory(old);
+        IDRegistrar idFactory = createIDFactory(old);
         IMapNG oldCopy = old.copy(false, null);
         TileType equivalentTerrain(TileType original) {
             switch (original)

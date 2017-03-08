@@ -7,7 +7,6 @@ import ceylon.collection {
 }
 import controller.map.misc {
     ICLIHelper,
-    IDFactoryFiller,
     IDRegistrar
 }
 import model.misc {
@@ -210,7 +209,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
         if (is ResourceManagementDriverModel model) {
             JList<Player> players =
                     JavaList(ArrayList(0, 1.0, model.players));
-            IDRegistrar idf = IDFactoryFiller.createFactory(model);
+            IDRegistrar idf = createIDFactory(model);
             try {
                 cli.loopOnList(players,
                     (clh) => clh.chooseFromList(players, "Players in the maps:",
@@ -238,7 +237,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
 "A window to let the user enter resources etc. Note that this is not a dialog to enter one resource and close."
 SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
         Anything(ActionEvent) menuHandler) {
-    IDRegistrar idf = IDFactoryFiller.createFactory(model);
+    IDRegistrar idf = createIDFactory(model);
     variable Player currentPlayer = PlayerImpl(-1, "");
     JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
     FormattedLabel resourceLabel = FormattedLabel("Add resource for %s:",
