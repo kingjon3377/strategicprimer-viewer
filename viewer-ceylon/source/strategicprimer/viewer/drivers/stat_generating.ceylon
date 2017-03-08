@@ -20,7 +20,6 @@ import ceylon.math.float {
 }
 
 import controller.map.misc {
-    ICLIHelper,
     IDRegistrar
 }
 
@@ -230,7 +229,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         else { // treat undefined as human
             Integer chosenBonus = cli.chooseStringFromList(JavaList(ArrayList(7, 1.0,
                 {"Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom",
-                    "Charisma", "Lowest"}.map(javaString))),
+                    "Charisma", "Lowest"})),
                 "Character is a ``race``; which stat should get a +2 bonus?", "",
                 "Stat for bonus:", false);
             Integer bonusStat;

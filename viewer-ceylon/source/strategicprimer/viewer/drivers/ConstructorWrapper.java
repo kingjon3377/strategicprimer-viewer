@@ -1,8 +1,8 @@
 package strategicprimer.viewer.drivers;
 
-import controller.map.misc.CLIHelper;
 import java.io.Reader;
-import javax.swing.*;
+import javax.swing.JList;
+import javax.swing.ListModel;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -55,13 +55,6 @@ public class ConstructorWrapper {
 									final int currentTurn) {
 		return new SPMapNG(dimensions, players, currentTurn);
 	}
-	/**
-	 * Instantiate a CLIHelper.
-	 */
-	public static CLIHelper cliHelper() {
-		return new CLIHelper();
-	}
-
 	/**
 	 * XMLInputFactory.newInstance() isn't visible in Ceylon, for some reason; nor is
 	 * XMLInputFactory.createXMLEventReader.

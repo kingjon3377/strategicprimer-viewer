@@ -1,9 +1,6 @@
 import model.misc {
     IDriverModel
 }
-import controller.map.misc {
-    ICLIHelper
-}
 import java.io {
     IOException
 }
@@ -13,7 +10,8 @@ import strategicprimer.viewer.drivers {
     ParamCount,
     SimpleCLIDriver,
     IDriverUsage,
-    SPOptions
+    SPOptions,
+    ICLIHelper
 }
 import model.exploration {
     IExplorationModel,

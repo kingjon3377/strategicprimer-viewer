@@ -6,9 +6,6 @@ import model.misc {
     IDriverModel,
     IMultiMapModel
 }
-import controller.map.misc {
-    ICLIHelper
-}
 import lovelace.util.common {
     todo
 }

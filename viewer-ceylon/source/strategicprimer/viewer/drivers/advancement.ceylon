@@ -1,5 +1,4 @@
 import controller.map.misc {
-    ICLIHelper,
     IDRegistrar
 }
 import model.misc {

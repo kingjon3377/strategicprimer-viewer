@@ -6,9 +6,6 @@ import model.misc {
     IDriverModel,
     IMultiMapModel
 }
-import controller.map.misc {
-    ICLIHelper
-}
 import util {
     Warning
 }
@@ -226,7 +223,7 @@ shared interface ISPDriver satisfies HasName {
      This form should only be used if the caller doesn't have an ICLIHelper to pass in."
     todo("Return exception instead of throwing?")
     shared default void startDriverOnArgumentsNoCLI(SPOptions options, String* args) {
-        try (ICLIHelper cli = ConstructorWrapper.cliHelper()) {
+        try (ICLIHelper cli = CLIHelper()) {
             startDriverOnArguments(cli, options, *args);
         } catch (IOException except) { // TODO: what will a Ceylon ICLIHelper throw?
             throw DriverFailedException(except, "I/O error interacting with user");
@@ -246,7 +243,7 @@ shared interface ISPDriver satisfies HasName {
     "Run the driver on a driver model.
      This form should only be used if the caller doesn't have an ICLIHelper to pass in."
     shared default void startDriverOnModelNoCLI(SPOptions options, IDriverModel model) {
-        try (ICLIHelper cli = ConstructorWrapper.cliHelper()) {
+        try (ICLIHelper cli = CLIHelper()) {
             startDriverOnModel(cli, options, model);
         } catch (IOException except) { // TODO: what will a Ceylon ICLIHelper throw?
             throw DriverFailedException(except, "I/O error interacting with user");

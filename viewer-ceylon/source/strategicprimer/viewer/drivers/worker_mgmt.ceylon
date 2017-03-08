@@ -30,10 +30,6 @@ import com.bric.window {
     WindowMenu
 }
 
-import controller.map.misc {
-    ICLIHelper
-}
-
 import java.awt {
     Dimension,
     Component,

@@ -18,11 +18,6 @@ import ceylon.logging {
     Priority
 }
 
-import controller.map.misc {
-    CLIHelper,
-    ICLIHelper
-}
-
 import java.awt {
     GraphicsEnvironment,
     GridLayout

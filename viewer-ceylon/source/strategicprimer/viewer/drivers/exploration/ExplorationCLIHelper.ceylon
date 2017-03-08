@@ -8,9 +8,6 @@ import model.listeners {
 import model.map.fixtures.terrain {
     Forest
 }
-import controller.map.misc {
-    ICLIHelper
-}
 import java.util {
     JList=List
 }
@@ -48,6 +45,9 @@ import model.map.fixtures.mobile {
 import model.exploration {
     IExplorationModel,
     HuntingModel
+}
+import strategicprimer.viewer.drivers {
+    ICLIHelper
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)

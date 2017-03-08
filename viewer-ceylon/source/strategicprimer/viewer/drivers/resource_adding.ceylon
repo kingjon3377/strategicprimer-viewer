@@ -6,7 +6,6 @@ import ceylon.collection {
     HashSet
 }
 import controller.map.misc {
-    ICLIHelper,
     IDRegistrar
 }
 import model.misc {
@@ -133,14 +132,14 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     MutableMap<String, String> resourceUnits = HashMap<String, String>();
     "Ask the user to choose or enter a resource kind."
     String getResourceKind(ICLIHelper cli) {
-        List<JString> list = ArrayList(resourceKinds.size, 1.0,
-            resourceKinds.map(javaString));
-        JList<JString> temp = JavaList(list);
+        // TODO: here and below, use named-argument-ish syntax.
+        List<String> list = ArrayList(resourceKinds.size, 1.0,
+            resourceKinds);
+        JList<String> temp = JavaList(list);
         Integer num = cli.chooseStringFromList(temp, "Possible kinds of resources:",
             "No resource kinds entered yet", "Chosen kind: ", false);
         if (exists retval = list.get(num)) {
-            // TODO: drop .string once CLIHelper is ported
-            return retval.string;
+            return retval;
         } else {
             String retval = cli.inputString("Resource kind to use: ");
             resourceKinds.add(retval);
@@ -156,14 +155,13 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
             set = HashSet<String>();
             resourceContents.put(kind, set);
         }
-        List<JString> list = ArrayList(set.size, 1.0, set.map(javaString));
-        JList<JString> temp = JavaList(list);
+        List<String> list = ArrayList(set.size, 1.0, set);
+        JList<String> temp = JavaList(list);
         Integer num = cli.chooseStringFromList(temp,
             "Possible resources in the ``kind`` category`", "No resources entered yet",
             "Choose resource: ", false);
         if (exists retval = list.get(num)) {
-            // TODO: drop .string once CLIHelper is ported
-            return retval.string;
+            return retval;
         } else {
             String retval = cli.inputString("Resource to use: ");
             set.add(retval);

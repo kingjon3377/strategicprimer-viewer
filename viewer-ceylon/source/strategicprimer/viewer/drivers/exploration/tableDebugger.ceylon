@@ -7,10 +7,6 @@ import ceylon.file {
     parsePath
 }
 
-import controller.map.misc {
-    ICLIHelper
-}
-
 import java.lang {
     IllegalStateException
 }
@@ -28,7 +24,8 @@ import strategicprimer.viewer.drivers {
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    SPOptions
+    SPOptions,
+    ICLIHelper
 }
 
 import view.util {

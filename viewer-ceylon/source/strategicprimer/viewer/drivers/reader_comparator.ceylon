@@ -7,9 +7,6 @@ import controller.map.fluidxml {
 import controller.map.yaxml {
     YAXMLReader
 }
-import controller.map.misc {
-    ICLIHelper
-}
 import model.map {
     IMapNG
 }

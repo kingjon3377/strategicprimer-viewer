@@ -35,7 +35,6 @@ import controller.map.iointerfaces {
     ISPReader
 }
 import controller.map.misc {
-    ICLIHelper,
     IDRegistrar,
     IDFactory
 }

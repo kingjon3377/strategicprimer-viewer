@@ -1,6 +1,3 @@
-import controller.map.misc {
-    ICLIHelper
-}
 import model.mining {
     MiningModel,
     LodeStatus

@@ -1,43 +1,390 @@
-import controller.map.misc {
-    CLIHelper,
-    ICLIHelper
-}
-import java.io {
-    StringWriter,
-    StringReader,
-    OutputStreamWriter,
-    IOException
-}
-import java.lang {
-    JString=String
+import ceylon.collection {
+    ArrayList,
+    MutableMap,
+    HashMap
 }
 import ceylon.interop.java {
     JavaList,
-    javaString
+    javaString,
+    CeylonList,
+    CeylonIterable
 }
 import ceylon.test {
     assertEquals,
     test,
     assertThatException
 }
-import ceylon.collection {
-    ArrayList
+
+import java.io {
+    StringWriter,
+    StringReader,
+    OutputStreamWriter,
+    IOException,
+    BufferedReader,
+    PrintWriter,
+    JReader=Reader,
+    JWriter=Writer,
+    InputStreamReader,
+    Closeable
 }
+import java.lang {
+    JString=String,
+    NumberFormatException
+}
+import java.math {
+    BigDecimal,
+    MathContext
+}
+import java.text {
+    NumberFormat
+}
+import java.util {
+    JCollections=Collections,
+    JList=List,
+    JOptional=Optional
+}
+
+import lovelace.util.common {
+    todo
+}
+
 import model.map {
     PlayerImpl,
     HasName,
-    PointFactory
+    PointFactory,
+    Point
 }
-import java.util {
-    JCollections = Collections
-}
-import java.math {
-    BigDecimal
-}
+
 import util {
-    NullStream
+    NullStream,
+    IsNumeric
 }
-// ICLIHelper and CLIHelper will eventually go here, but we start with the tests.
+
+import view.util {
+    SystemIn,
+    SystemOut
+}
+"""An interface for the "CLI helper," which encapsulates input and output streams,
+   allowing automated testing of CLIs and GUI wrappers around CLIs."""
+shared interface ICLIHelper satisfies Closeable {
+    todo("Use Element? instead of Optional",
+        "Take MutableList instead of JList")
+    shared alias ListAmendment<Element> => JOptional<Element>(JList<Element>, ICLIHelper);
+    "Ask the user to choose an item from the list, and if he does carry out an
+     operation on it and then ask if he wants to do another."
+    todo("Take Element[] instead of JList<Element>") // FIXME
+    shared formal void loopOnList<Element>(
+            "The list."
+            JList<Element> list,
+            "How to ask the user to choose an item from the list."
+            Integer(ICLIHelper) choice,
+            "The prompt to use to ask if the user wants to continue."
+            String prompt,
+            "What to do with the chosen item in the list."
+            Anything(Element, ICLIHelper) operation) given Element satisfies Object;
+    "Ask the user to choose an item from the list, and if he does carry out an
+     operation on it and then ask if he wants to do another."
+    todo("Take Element[] instead of JList<Element>") // FIXME
+    shared formal void loopOnMutableList<Element>(
+            "The list."
+            JList<Element> list,
+            "How to ask the user to choose an item from the list."
+            Integer(ICLIHelper) choice,
+            "The prompt to use to ask if the user wants to continue."
+            String prompt,
+            """What to do if the user chooses "add a new one"."""
+            ListAmendment<Element> addition,
+            "What to do with the chosen item in the list."
+            Anything(Element, ICLIHelper) operation) given Element satisfies Object;
+    "Have the user choose an item from a list. Returns the index."
+    todo("Return Entry, as in Iterable.indexed?",
+        "Take Element[] instead of JList") // FIXME
+    shared formal Integer chooseFromList<Element>(
+            "The list of items to choose from."
+            JList<out Element> items,
+            "The description to give before printing the list."
+            String description,
+            "What to print if there are none."
+            String none,
+            "What to prompt the user with."
+            String prompt,
+            "Whether to automatically choose if there's only one choice."
+            Boolean auto) given Element satisfies Object&HasName;
+    "Have the user choose an item from a list."
+    todo("Return Entry, as in Iterable.indexed?",
+        "Take Element[] instead of JList") // FIXME
+    shared formal Integer chooseStringFromList(
+            "The list of items to choose from."
+            JList<String> items,
+            "The description to give before printing the list."
+            String description,
+            "What to print if there are none."
+            String none,
+            "What to prompt the user with."
+            String prompt,
+            "Whether to automatically choose if there's only one choice."
+            Boolean auto);
+    "Read from the input stream until a non-negative integer is entered, then return it."
+    shared formal Integer inputNumber(
+            "The prompt to prompt the user with."
+            String prompt);
+    "Read from the input stream repeatedly until a valid non-negative decimal number is
+     entered, then return it."
+    shared formal BigDecimal inputDecimal(
+            "The prompt to prompt the user with."
+            String prompt);
+    "Read a line of input. It is trimmed of leading and trailing whitespace."
+    shared formal String inputString(
+            "The prompt to prompt the user with."
+            String prompt);
+    "Ask the user a yes-or-no question."
+    shared formal Boolean inputBoolean(
+            "The prompt to prompt the user with."
+            String prompt);
+    """Ask the user a yes-or-no question, allowing "yes to all" or "no to all" to
+       forestall further similar questions."""
+    shared formal Boolean inputBooleanInSeries(
+            "The prompt to prompt the user with." String prompt,
+            """The prompt (or other key) to compare to others to define "similar"
+               questions."""
+            String key = prompt);
+    "Print a formatted string."
+    deprecated todo("Remove given Ceylon's interpolation features")
+    shared formal void printf(
+            "The format string."
+            String format,
+            "Format arguments."
+            Object* args);
+    "Print the specified string, then a newline."
+    shared formal void println(
+            "The line to print"
+            String line);
+    "Print the specified string."
+    shared formal void print(
+            "The string to print."
+            String text);
+    "Get a [[Point]] from the user. This is a convenience wrapper around [[inputNumber]]."
+    shared default Point inputPoint(
+            "The prompt to use to prompt the user."
+            String prompt) {
+        print(prompt);
+        return PointFactory.point(inputNumber("Row: "), inputNumber("Column: "));
+    }
+}
+"A helper class to let help CLIs interact with the user, encapsulating input and output
+ streams."
+todo("Port to ceylon.io or equivalent")
+class CLIHelper satisfies ICLIHelper {
+    // We use NumberFormat rather than ceylon.lang.Integer.parse because
+    // we want to allow the user to use commas.
+    static NumberFormat numParser = NumberFormat.integerInstance;
+    BufferedReader istream;
+    PrintWriter ostream;
+    "The current state of the yes-to-all/no-to-all possibility. Absent if not set,
+     present if set, and the boolean value is what to return."
+    MutableMap<String, Boolean> seriesState = HashMap<String, Boolean>();
+    shared new (JReader inStream = InputStreamReader(SystemIn.sysIn),
+            JWriter outStream = OutputStreamWriter(SystemOut.sysOut)) {
+        istream = BufferedReader(inStream);
+        ostream = PrintWriter(outStream);
+    }
+    "Ask the user a yes-or-no question."
+    shared actual Boolean inputBoolean(String prompt) {
+        while (true) {
+            String input = inputString(prompt).lowercased;
+            switch(input)
+            case ("yes"|"true"|"y"|"t") { return true; }
+            case ("no"|"false"|"n"|"f") { return false; }
+            else {
+                ostream.println("""Please enter "yes", "no", "true", or "false",
+                                   or the first character of any of those.""");
+            }
+        }
+    }
+    "Ask the user to choose an item from the list, and if he does carry out an
+     operation on it and then ask if he wants to do another."
+    shared actual void loopOnList<Element>(JList<Element> list,
+            Integer(ICLIHelper) choice, String prompt,
+            Anything(Element, ICLIHelper) operation)
+            given Element satisfies Object{
+        variable Integer number = choice(this);
+        while (number >= 0, number < list.size()) {
+            assert (exists item = list.remove(number));
+            operation(item, this);
+            if (list.empty || !inputBoolean(prompt)) {
+                break;
+            }
+            number = choice(this);
+        }
+    }
+    "Ask the user to choose an item from the list, and if he does carry out an
+     operation on it and then ask if he wants to do another."
+    shared actual void loopOnMutableList<Element>(JList<Element> list,
+            Integer(ICLIHelper) choice, String prompt, ListAmendment<Element> addition,
+            Anything(Element, ICLIHelper) operation) given Element satisfies Object {
+        variable Integer number = choice(this);
+        while (number <= list.size()) {
+            Element item;
+            if (number < 0 || number == list.size()) {
+                JOptional<Element> temp = addition(list, this);
+                if (temp.present) {
+                    item = temp.get();
+                } else {
+                    println("Select the new item at the next prompt.");
+                    continue;
+                }
+            } else {
+                item = list.get(number);
+            }
+            operation(item, this);
+            if (!inputBoolean(prompt)) {
+                break;
+            }
+        }
+    }
+    "Print a list of things by name and number."
+    void printList<out Element>({Element*} list, String(Element) func) {
+        for (index->item in list.indexed) {
+            ostream.println("``index``: ``func(item)``");
+        }
+        ostream.flush();
+    }
+    "Implementation of chooseFromList() and chooseStringFromList()."
+    Integer chooseFromListImpl<Element>({Element*} items, String description,
+            String none, String prompt, Boolean auto, String(Element) func)
+            given Element satisfies Object {
+        if (items.empty) {
+            ostream.println(none);
+            ostream.flush();
+            return -1;
+        }
+        ostream.println(description);
+        if (auto, !items.rest.first exists) {
+            assert (exists first = items.first);
+            ostream.println("Automatically choosing only item, ``func(first)``.");
+            ostream.flush();
+            return 0;
+        } else {
+            printList(items, func);
+            return inputNumber(prompt);
+        }
+    }
+    "Have the user choose an item from a list."
+    shared actual Integer chooseFromList<Element>(JList<out Element> list,
+            String description, String none, String prompt, Boolean auto)
+            given Element satisfies HasName&Object {
+        return chooseFromListImpl<Element>(CeylonList(list), description, none, prompt,
+            auto, HasName.name);
+    }
+    "Read input from the input stream repeatedly until a non-negative integer is entered,
+     then return it."
+    shared actual Integer inputNumber(String prompt) {
+        variable Integer retval = -1;
+        while (retval < 0) {
+            ostream.print(prompt);
+            ostream.flush();
+            if (exists input = istream.readLine()) {
+                if (IsNumeric.isNumeric(input)) {
+                    // In Java we have to wrap this in a try-catch block and
+                    // handle ParseException; we don't here because IsNumeric
+                    // works to prevent non-numeric input from getting here.
+                    retval = numParser.parse(input).intValue();
+                }
+            } else {
+                throw IOException("Null line of input");
+            }
+        }
+        return retval;
+    }
+    "Read from the input stream repeatedly until a valid non-negative decimal number is
+     entered, then return it."
+    shared actual BigDecimal inputDecimal(String prompt) {
+        variable BigDecimal retval = BigDecimal.zero.subtract(BigDecimal.one);
+        while (retval.compareTo(BigDecimal.zero) < 0) {
+            ostream.print(prompt);
+            ostream.flush();
+            if (exists input = istream.readLine()) {
+                try {
+                    retval = BigDecimal(input.trimmed, MathContext.unlimited);
+                } catch (NumberFormatException except) {
+                    ostream.println("Invalid number.");
+                    log.debug("Invalid number", except);
+                }
+            } else {
+                throw IOException("Null line of input");
+            }
+        }
+        return retval;
+    }
+    "Read a line of input from the input stream. It is trimmed of leading and trailing
+     whitespace."
+    shared actual String inputString(String prompt) {
+        ostream.print(prompt);
+        ostream.flush();
+        if (exists line = istream.readLine()) {
+            return line.trimmed;
+        } else {
+            return "";
+        }
+    }
+    "Ask the user a yes-or-no question, allowing yes-to-all or no-to-all to skip further
+     questions."
+    shared actual Boolean inputBooleanInSeries(String prompt, String key) {
+        if (exists retval = seriesState.get(key)) {
+            ostream.print(prompt);
+            ostream.println((retval) then "yes" else "no");
+            return retval;
+        } else {
+            while (true) {
+                String input = inputString(prompt).lowercased;
+                switch(input)
+                case ("all"|"ya"|"ta"|"always") {
+                    seriesState.put(key, true);
+                    return true;
+                }
+                case ("none"|"na"|"fa"|"never") {
+                    seriesState.put(key, false);
+                    return false;
+                }
+                case ("yes"|"true"|"y"|"t") { return true; }
+                case ("no"|"false"|"n"|"f") { return false; }
+                else {
+                    ostream.println(
+                        """Please enter "yes", "no", "true", or "false", the first
+                           character of any of those, or "fall", "none", "always", or
+                           "never" to use the same answer for all further questions""");
+                }
+            }
+        }
+    }
+    "Have the user choose an item from a list."
+    shared actual Integer chooseStringFromList(JList<String> items, String description,
+            String none, String prompt, Boolean auto) {
+        return chooseFromListImpl<String>(CeylonIterable(items), description, none, prompt, auto,
+                    (String x) => x);
+    }
+    "Print a formatted string."
+    shared actual void printf(String format, Object* args) {
+        ostream.printf(format, *args);
+        ostream.flush();
+    }
+    "Print the specified string, then a newline."
+    shared actual void println(String line) {
+        ostream.println(line);
+        ostream.flush();
+    }
+    "Print the specified string."
+    shared actual void print(String text) {
+        ostream.print(text);
+        ostream.flush();
+    }
+    "Close I/O streams."
+    shared actual void close() {
+        istream.close();
+        ostream.close();
+    }
+}
+
 "A helper method to condense tests."
 void assertCLI<out T>(
         "The method under test, partially applied so all it lacks is the CLIHelper."
@@ -286,24 +633,24 @@ void testInputBooleanInSeries() {
 "Test of chooseStringFromList()"
 test
 void testChooseStringFromList() {
-    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{javaString("one"),
-            javaString("two")}), "test desc", "none present", "prompt", false), {"0"},
+    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{"one", "two"}),
+        "test desc", "none present", "prompt", false), {"0"},
         {"test desc", "0: one", "1: two", "prompt"}, 0,
         "chooseStringFromList chooses the one specified by the user",
         "chooseStringFromList prompts the user");
-    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{javaString("one"),
-            javaString("two"), javaString("three")}), "test desc", "none present",
+    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{"one",
+            "two", "three"}), "test desc", "none present",
             "prompt two", true), {"1"},
         {"test desc", "0: one", "1: two", "2: three", "prompt two"}, 1,
         "chooseStringFromList chooses the one specified by the user",
         "chooseStringFromList prompts the user");
     assertCLI((cli) => cli.chooseStringFromList(JCollections.singletonList(
-            javaString("one")), "test desc", "none present", "prompt", true), {},
+            "one"), "test desc", "none present", "prompt", true), {},
         {"test desc", "Automatically choosing only item, one", ""}, 0,
         "chooseStringFromList automatically chooses only choice when told to",
         "chooseStringFromList automatically chose only choice");
     assertCLI((cli) => cli.chooseStringFromList(JCollections.singletonList(
-            javaString("one")), "test desc", "none present", "prompt", false), {"0"},
+            "one"), "test desc", "none present", "prompt", false), {"0"},
         {"test desc", "0: one", "prompt"}, 0,
         "chooseStringFromList doesn't always auto-choose",
         "chooseStringFromList didn't automatically choose only choice");
@@ -312,22 +659,21 @@ void testChooseStringFromList() {
 test
 void testChooseStringFromListMore() {
     assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{
-            javaString("zero"), javaString("one"), javaString("two")}), "test desc",
-        "none present", "prompt", true), {"1"},
-        {"test desc", "0: zero", "1: one", "2: two", "prompt"}, 1,
+            "zero", "one", "two"}), "test desc", "none present", "prompt",
+        true), {"1"}, {"test desc", "0: zero", "1: one", "2: two", "prompt"}, 1,
         "chooseStringFromList doesn't auto-choose when more than one item",
         "chooseStringFromList doesn't auto-choose when more than one item");
-    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{javaString("one"),
-            javaString("two")}), "test desc", "none present", "prompt", false),
+    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{"one",
+            "two"}), "test desc", "none present", "prompt", false),
         {"-1", "0"}, {"test desc", "0: one", "1: two", "promptprompt"}, 0,
         "chooseStringFromList prompts again when negative index given",
         "chooseStringFromList prompts again when negative index given");
-    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{javaString("one"),
-            javaString("two")}), "test desc", "none present", "prompt", false), {"3"},
+    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{"one",
+            "two"}), "test desc", "none present", "prompt", false), {"3"},
         {"test desc", "0: one", "1: two", "prompt"}, 3,
         "chooseStringFromList allows too-large choice",
         "chooseStringFromList allows too-large choice");
-    assertCLI((cli) => cli.chooseStringFromList(JCollections.emptyList<JString>(),
+    assertCLI((cli) => cli.chooseStringFromList(JCollections.emptyList<String>(),
             "test desc", "none present", "prompt", false), {}, {"none present", ""}, -1,
         "chooseStringFromList handles empty list",
         "chooseStringFromList handles empty list");

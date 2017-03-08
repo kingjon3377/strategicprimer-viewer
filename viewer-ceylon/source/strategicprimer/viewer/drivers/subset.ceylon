@@ -1,7 +1,3 @@
-import controller.map.misc {
-    ICLIHelper
-}
-
 import java.lang {
     CharSequence,
     CharArray

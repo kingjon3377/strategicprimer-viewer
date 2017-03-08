@@ -1,7 +1,3 @@
-import controller.map.misc {
-    ICLIHelper
-}
-
 import java.awt {
     Image,
     Graphics
@@ -40,7 +36,8 @@ import strategicprimer.viewer.drivers {
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    SimpleCLIDriver
+    SimpleCLIDriver,
+    ICLIHelper
 }
 import strategicprimer.viewer.drivers.map_viewer {
     CachingTileDrawHelper,

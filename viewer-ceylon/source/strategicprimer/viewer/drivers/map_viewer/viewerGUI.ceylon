@@ -9,9 +9,6 @@ import model.misc {
     IDriverModel,
     IMultiMapModel
 }
-import controller.map.misc {
-    ICLIHelper
-}
 import strategicprimer.viewer.drivers {
     SPFrame,
     DriverUsage,
@@ -20,7 +17,8 @@ import strategicprimer.viewer.drivers {
     IDriverUsage,
     MenuBroker,
     SPOptions,
-    SimpleDriver
+    SimpleDriver,
+    ICLIHelper
 }
 import strategicprimer.viewer.about {
     aboutDialog
