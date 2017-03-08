@@ -123,18 +123,19 @@ import java.lang {
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
-    JList<ISkill> skills = JavaList(ArrayList(0, 1.0, { *job }));
-    cli.loopOnMutableList(skills, (clh) => clh.chooseFromList(skills, "Skills in Job:",
-            "No existing Skills.", "Skill to advance: ", false),
+    // TODO: switch to named-argument-ish syntax
+    MutableList<ISkill> skills = ArrayList(0, 1.0, { *job });
+    cli.loopOnMutableList<ISkill>(skills, (clh) => clh.chooseFromList(skills,
+            "Skills in Job:", "No existing Skills.", "Skill to advance: ", false),
         "Select another Skill in this Job? ",
-        (JList<ISkill> list, ICLIHelper clh) {
+        (MutableList<ISkill> list, ICLIHelper clh) {
             String skillName = clh.inputString("Name of new Skill: ");
             job.addSkill(Skill(skillName, 0, 0));
             list.clear();
             for (skill in job) {
                 list.add(skill);
             }
-            return list.stream().filter((item) => skillName == item.name).findAny();
+            return list.find((item) => skillName == item.name);
         }, (ISkill skill, clh) {
             Integer oldLevel = skill.level;
             skill.addHours(clh.inputNumber("Hours of experience to add: "),
@@ -146,18 +147,19 @@ void advanceJob(IJob job, ICLIHelper cli) {
 }
 "Let the user add experience to a worker."
 void advanceSingleWorker(IWorker worker, ICLIHelper cli) {
-    JList<IJob> jobs = JavaList(ArrayList(0, 1.0, { *worker }));
-    cli.loopOnMutableList(jobs, (clh) => clh.chooseFromList(jobs, "Jobs in worker:",
-            "No existing Jobs.", "Job to advance: ", false),
+    // TODO: switch to named-argument-ish syntax
+    MutableList<IJob> jobs = ArrayList(0, 1.0, { *worker });
+    cli.loopOnMutableList(jobs, (clh) => clh.chooseFromList(jobs,
+            "Jobs in worker:", "No existing Jobs.", "Job to advance: ", false),
         "Select another Job in this worker? ",
-        (JList<IJob> list, clh) {
+        (MutableList<IJob> list, clh) {
             String jobName = clh.inputString("Name of new Job: ");
             worker.addJob(Job(jobName, 0));
             list.clear();
             for (job in worker) {
                 list.add(job);
             }
-            return list.stream().filter((item) => jobName == item.name).findAny();
+            return list.find((item) => jobName == item.name);
         }, advanceJob);
 }
 "Ensure that there is a Job by the given name in each worker, and return a collection of
@@ -206,11 +208,12 @@ void advanceWorkersInSkill(String jobName, String skillName, ICLIHelper cli,
 "Let the user add experience in a given Job to all of a list of workers."
 void advanceWorkersInJob(String jobName, ICLIHelper cli, IWorker* workers) {
     {IJob*} jobs = getWorkerJobs(jobName, *workers);
-    JList<ISkill> skills = JavaList(ArrayList(0, 1.0, { for (skill in ProxyJob(jobName, false, *workers)) skill }));
-    cli.loopOnMutableList(skills, (clh) => clh.chooseFromList(skills, "Skills in Jobs:",
-            "No existing skills.", "Skill to advance: ", false),
+    // TODO: switch to named-argument-ish syntax
+    MutableList<ISkill> skills = ArrayList(0, 1.0, { for (skill in ProxyJob(jobName, false, *workers)) skill });
+    cli.loopOnMutableList(skills, (clh) => clh.chooseFromList(skills,
+            "Skills in Jobs:", "No existing skills.", "Skill to advance: ", false),
         "Select another Skill in this Job? ",
-        (JList<ISkill> list, clh) {
+        (MutableList<ISkill> list, clh) {
             String skillName = clh.inputString("Name of new Skill: ");
             for (job in jobs) {
                 job.addSkill(Skill(skillName, 0, 0));
@@ -219,25 +222,27 @@ void advanceWorkersInJob(String jobName, ICLIHelper cli, IWorker* workers) {
             for (skill in ProxyJob(jobName, false, *workers)) {
                 skills.add(skill);
             }
-            return skills.stream().filter((item) => skillName == item.name).findAny();
+            return skills.find((item) => skillName == item.name);
         }, (ISkill skill, clh) => advanceWorkersInSkill(jobName, skill.name, clh, *workers));
 }
 "Let the user add experience to a worker or workers in a unit."
 void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
-    JList<IWorker> workers = JavaList(ArrayList(0, 1.0,
-        {for (member in unit) if (is IWorker member) member}));
+    IWorker[] workers = [for (member in unit) if (is IWorker member) member];
     if (cli.inputBoolean("Add experience to workers individually? ")) {
-        cli.loopOnList(workers, (clh) => clh.chooseFromList(workers, "Workers in unit:",
-                "No unadvanced workers remain.", "Chosen worker: ", false),
+        cli.loopOnList(workers, (clh) => clh.chooseFromList(workers,
+                "Workers in unit:", "No unadvanced workers remain.", "Chosen worker: ",
+                false),
             "Choose another worker? ", advanceSingleWorker);
     } else if (workers.empty) {
         cli.println("No workers in unit.");
     } else {
-        JList<IJob> jobs = JavaList(ArrayList(0, 1.0, { *ProxyWorker(unit) }));
-        cli.loopOnMutableList(jobs, (ICLIHelper clh) => clh.chooseFromList(jobs, "Jobs in workers:",
-                "No existing jobs.", "Job to advance: ", false),
+        // TODO: Switch to named-argument-ish syntax
+        MutableList<IJob> jobs = ArrayList(0, 1.0, { *ProxyWorker(unit) });
+        cli.loopOnMutableList(jobs, (ICLIHelper clh) => clh.chooseFromList(
+                jobs, "Jobs in workers:", "No existing jobs.",
+                "Job to advance: ", false),
             "Select another Job in these workers? ",
-            (JList<IJob> list, ICLIHelper clh) {
+            (MutableList<IJob> list, ICLIHelper clh) {
                 String jobName = clh.inputString("Name of new Job: ");
                 for (worker in workers) {
                     worker.addJob(Job(jobName, 0));
@@ -246,16 +251,17 @@ void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
                 for (job in ProxyWorker(unit)) {
                     list.add(job);
                 }
-                return list.stream().filter((item) => jobName == item.name).findAny();
-            }, (IJob job, clh) => advanceWorkersInJob(job.name, clh, *CeylonCollection(workers)));
+                return list.find((item) => jobName == item.name);
+            }, (IJob job, clh) => advanceWorkersInJob(job.name, clh, *workers));
     }
 }
 "Let the user add experience to a player's workers."
 void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli) {
-    JList<IUnit> units = model.getUnits(player);
-    units.removeIf((unit) => !unit.iterator().hasNext());
-    cli.loopOnList(units, (clh) => clh.chooseFromList(units, "``player.name``'s units:",
-            "No unadvanced units remain.", "Chosen unit: ", false),
+    IUnit[] units = [*CeylonIterable(model.getUnits(player))
+            .filter((unit) => unit.iterator().hasNext())];
+    cli.loopOnList(units, (clh) => clh.chooseFromList(units,
+            "``player.name``'s units:", "No unadvanced units remain.",
+            "Chosen unit: ", false),
         "Choose another unit? ", advanceWorkersInUnit);
 }
 "The worker-advancement CLI driver."
@@ -269,7 +275,7 @@ object advancementCLI satisfies SimpleCLIDriver {
         } else {
             workerModel = WorkerModel(model);
         }
-        JList<Player> playerList = workerModel.players;
+        Player[] playerList = [*workerModel.players];
         try {
             cli.loopOnList(playerList,
                 (clh) => clh.chooseFromList(playerList, "Available players:",

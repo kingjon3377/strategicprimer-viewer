@@ -69,18 +69,20 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     }
     "Have the user choose a player."
     shared Player? choosePlayer() {
-        JList<Player> players = model.playerChoices;
+        Player[] players = [*model.playerChoices];
         Integer playerNum = cli.chooseFromList(players,
             "Players shared by all the maps:", "No players shared by all the maps:",
             "Chosen player: ", true);
-        return CeylonList(players).get(playerNum);
+        assert (exists retval = players[playerNum]);
+        return retval;
     }
     "Have the user choose a unit belonging to that player."
     shared IUnit? chooseUnit(Player player) {
-        JList<IUnit> units = model.getUnits(player);
+        IUnit[] units = [*model.getUnits(player)];
         Integer unitNum = cli.chooseFromList(units, "Player's units:",
             "That player has no units in the master map", "Chosen unit: ", true);
-        return CeylonList(units).get(unitNum);
+        assert (exists retval = units[unitNum]);
+        return retval;
     }
     "The explorer's current movement speed."
     variable IExplorationModel.Speed speed = IExplorationModel.Speed.normal;
@@ -88,8 +90,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     void changeSpeed() {
 //        IExplorationModel.Speed[] speeds = `IExplorationModel.Speed`.caseValues;
         IExplorationModel.Speed[] speeds = [*IExplorationModel.Speed.values()];
-        Integer newSpeed = cli.chooseFromList(
-            JavaList(speeds),
+        Integer newSpeed = cli.chooseFromList(speeds,
             "Possible Speeds:", "No speeds available", "Chosen Speed: ", true);
         if (exists temp = speeds[newSpeed]) {
             speed = temp;

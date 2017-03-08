@@ -276,12 +276,12 @@ shared void run() {
                             "Strategic Primer Assistive Programs", except.message));
                     }
                 } else {
-                    JList<ISPDriver> driversList = JavaList(ArrayList(driverCache.size,
-                        1.0, driverCache.items.map(Tuple.first)));
+                    // TODO: switch to named-argument-ish syntax
+                    ISPDriver[] driversList = [*driverCache.items.map(Tuple.first)];
                     Integer choice = cli.chooseFromList(driversList,
                         "CLI apps available:", "No applications available", "App to start: ", true);
-                    if (choice >= 0 && choice < driversList.size()) {
-                        driversList.get(choice).startDriverOnArguments(cli, options, *others);
+                    if (exists chosenDriver = driversList.get(choice)) {
+                        chosenDriver.startDriverOnArguments(cli, options, *others);
                     }
                 }
             }
@@ -291,13 +291,13 @@ shared void run() {
                 IDriverModel driverModel) {
             // TODO: what about -c?
             if (GraphicsEnvironment.headless) {
-                List<ISPDriver> cliDrivers = ArrayList<ISPDriver>(driverCache.size,
-                    1.5, driverCache.items.map((element) => element.first));
+                ISPDriver[] cliDrivers = [*driverCache.items.map(
+                            (element) => element.first)];
                 try {
                     assert (is CLIHelper cli);
-                    if (exists driver = cliDrivers.get(cli.chooseFromList(JavaList(cliDrivers),
-                        "CLI apps available:", "No applications available", "App to start: ",
-                        true))) {
+                    if (exists driver = cliDrivers.get(cli.chooseFromList(
+                            cliDrivers, "CLI apps available:",
+                            "No applications available", "App to start: ", true))) {
                         driver.startDriverOnModel(cli, options, driverModel);
                     }
                 } catch (IOException except) {

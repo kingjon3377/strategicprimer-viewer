@@ -133,10 +133,8 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     "Ask the user to choose or enter a resource kind."
     String getResourceKind(ICLIHelper cli) {
         // TODO: here and below, use named-argument-ish syntax.
-        List<String> list = ArrayList(resourceKinds.size, 1.0,
-            resourceKinds);
-        JList<String> temp = JavaList(list);
-        Integer num = cli.chooseStringFromList(temp, "Possible kinds of resources:",
+        String[] list = [*resourceKinds];
+        Integer num = cli.chooseStringFromList(list, "Possible kinds of resources:",
             "No resource kinds entered yet", "Chosen kind: ", false);
         if (exists retval = list.get(num)) {
             return retval;
@@ -155,9 +153,8 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
             set = HashSet<String>();
             resourceContents.put(kind, set);
         }
-        List<String> list = ArrayList(set.size, 1.0, set);
-        JList<String> temp = JavaList(list);
-        Integer num = cli.chooseStringFromList(temp,
+        String[] list = [*set];
+        Integer num = cli.chooseStringFromList(list,
             "Possible resources in the ``kind`` category`", "No resources entered yet",
             "Choose resource: ", false);
         if (exists retval = list.get(num)) {
@@ -205,13 +202,13 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
-            JList<Player> players =
-                    JavaList(ArrayList(0, 1.0, model.players));
+            Player[] players = [*model.players];
             IDRegistrar idf = createIDFactory(model);
             try {
                 cli.loopOnList(players,
-                    (clh) => clh.chooseFromList(players, "Players in the maps:",
-                        "No players found.", "Player to add resources for: ", false),
+                    (clh) => clh.chooseFromList(players,
+                        "Players in the maps:", "No players found.",
+                        "Player to add resources for: ", false),
                 "Choose another player?", (Player player, clh) {
                         while (clh.inputBoolean("Keep going? ")) {
                             if (clh.inputBooleanInSeries(

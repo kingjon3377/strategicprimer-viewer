@@ -13,7 +13,8 @@ import ceylon.file {
 import ceylon.interop.java {
     JavaList,
     toIntegerArray,
-    javaString
+    javaString,
+    CeylonList
 }
 import ceylon.math.float {
     random
@@ -163,8 +164,9 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for workers already in the maps that are part of one
      particular unit."
     void enterStatsInUnit(IMultiMapModel model, IUnit unit, ICLIHelper cli) {
-        JList<Worker> workers = JavaList(ArrayList(0, 1.0,
-            { for (member in unit) if (is Worker member, !member.stats exists) member}));
+        Worker[] workers = [
+            for (member in unit)
+                if (is Worker member, !member.stats exists) member ];
         cli.loopOnList(workers, (clh) => clh.chooseFromList(workers,
                 "Which worker do you want to enter stats for?",
                 "There are no workers without stats in that unit.",
@@ -174,8 +176,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for workers already in the maps that belong to one
      particular player."
     void enterStatsForPlayer(IExplorationModel model, Player player, ICLIHelper cli) {
-        JList<IUnit> units = JavaList<IUnit>(ArrayList(0, 1.0,
-            removeStattedUnits(*model.getUnits(player))));
+        IUnit[] units = [*removeStattedUnits(*model.getUnits(player))];
         cli.loopOnList(units, (clh) =>
             clh.chooseFromList(units, "Which unit contains the worker in question?",
                 "All that player's units already have stats.", "Unit selection: ", false),
@@ -184,7 +185,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Let the user enter stats for workers already in the maps."
     void enterStats(IExplorationModel model, ICLIHelper cli) {
-        JList<Player> players = model.playerChoices;
+        Player[] players = [*CeylonList(model.playerChoices)];
         cli.loopOnList(players, (clh) => clh.chooseFromList(players,
                 "Which player owns the worker in question?",
                 "There are no players shared by all the maps.", "Player selection: ",
@@ -227,9 +228,9 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         case ("half-elf") { racialBonus = WorkerStats.factory(0, 1, 0, 1, 0, 0); }
         case ("Danan") { racialBonus = WorkerStats.factory(-2, 1, 1, 1, -2, 1); }
         else { // treat undefined as human
-            Integer chosenBonus = cli.chooseStringFromList(JavaList(ArrayList(7, 1.0,
-                {"Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom",
-                    "Charisma", "Lowest"})),
+            // TODO: switch ArrayList constructor to named-argument-ish syntax
+            Integer chosenBonus = cli.chooseStringFromList(["Strength", "Dexterity",
+                    "Constitution", "Intelligence", "Wisdom", "Charisma", "Lowest"],
                 "Character is a ``race``; which stat should get a +2 bonus?", "",
                 "Stat for bonus:", false);
             Integer bonusStat;
@@ -345,12 +346,13 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
      player."
     void createWorkersForPlayer(IExplorationModel model, IDRegistrar idf, Player player,
             ICLIHelper cli) {
-        JList<IUnit> units = JavaList<IUnit>(ArrayList(0, 1.0,
-            removeStattedUnits(*model.getUnits(player))));
+        // TODO: convert to named-argument-ish syntax
+        MutableList<IUnit> units = ArrayList(0, 1.0,
+            removeStattedUnits(*model.getUnits(player)));
         cli.loopOnMutableList(units, (clh) => clh.chooseFromList(units,
                 "Which unit contains the worker in question? (Select -1 to create new.)",
                 "There are no units owned by that player.", "Unit selection: ",
-                false), "Choose another unit? ", (JList<out IUnit> list, clh) {
+                false), "Choose another unit? ", (MutableList<out IUnit> list, clh) {
             Point point = clh.inputPoint("Where to put new unit? ");
             IUnit temp = ConstructorWrapper.unit(player, clh.inputString("Kind of unit: "),
                 clh.inputString("Unit name: "), idf.createID());
@@ -358,7 +360,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
                 pair.first().addFixture(point, temp);
             }
             units.add(temp);
-            return JOptional.\iof(temp);
+            return temp;
         }, (IUnit unit, clh) {
             if (clh.inputBooleanInSeries(
                     "Load names from file and use randomly generated stats?")) {
@@ -370,7 +372,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Allow the user to create randomly-generated workers."
     void createWorkers(IExplorationModel model, IDRegistrar idf, ICLIHelper cli) {
-        JList<Player> players = model.playerChoices;
+        Player[] players = [*CeylonList(model.playerChoices)];
         cli.loopOnList(players, (clh) => clh.chooseFromList(players,
                 "Which player owns the new worker(s)?",
                 "There are no players shared by all the maps.",

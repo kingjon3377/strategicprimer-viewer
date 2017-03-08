@@ -1,13 +1,8 @@
 import ceylon.collection {
     ArrayList,
     MutableMap,
-    HashMap
-}
-import ceylon.interop.java {
-    JavaList,
-    javaString,
-    CeylonList,
-    CeylonIterable
+    HashMap,
+    MutableList
 }
 import ceylon.test {
     assertEquals,
@@ -28,7 +23,6 @@ import java.io {
     Closeable
 }
 import java.lang {
-    JString=String,
     NumberFormatException
 }
 import java.math {
@@ -37,11 +31,6 @@ import java.math {
 }
 import java.text {
     NumberFormat
-}
-import java.util {
-    JCollections=Collections,
-    JList=List,
-    JOptional=Optional
 }
 
 import lovelace.util.common {
@@ -67,15 +56,12 @@ import view.util {
 """An interface for the "CLI helper," which encapsulates input and output streams,
    allowing automated testing of CLIs and GUI wrappers around CLIs."""
 shared interface ICLIHelper satisfies Closeable {
-    todo("Use Element? instead of Optional",
-        "Take MutableList instead of JList")
-    shared alias ListAmendment<Element> => JOptional<Element>(JList<Element>, ICLIHelper);
+    shared alias ListAmendment<Element> => Element?(MutableList<Element>, ICLIHelper);
     "Ask the user to choose an item from the list, and if he does carry out an
      operation on it and then ask if he wants to do another."
-    todo("Take Element[] instead of JList<Element>") // FIXME
-    shared formal void loopOnList<Element>(
+    shared formal void loopOnList<out Element>(
             "The list."
-            JList<Element> list,
+            Element[] list,
             "How to ask the user to choose an item from the list."
             Integer(ICLIHelper) choice,
             "The prompt to use to ask if the user wants to continue."
@@ -84,10 +70,9 @@ shared interface ICLIHelper satisfies Closeable {
             Anything(Element, ICLIHelper) operation) given Element satisfies Object;
     "Ask the user to choose an item from the list, and if he does carry out an
      operation on it and then ask if he wants to do another."
-    todo("Take Element[] instead of JList<Element>") // FIXME
-    shared formal void loopOnMutableList<Element>(
+    shared formal void loopOnMutableList<out Element>(
             "The list."
-            JList<Element> list,
+            MutableList<Element> list,
             "How to ask the user to choose an item from the list."
             Integer(ICLIHelper) choice,
             "The prompt to use to ask if the user wants to continue."
@@ -97,11 +82,10 @@ shared interface ICLIHelper satisfies Closeable {
             "What to do with the chosen item in the list."
             Anything(Element, ICLIHelper) operation) given Element satisfies Object;
     "Have the user choose an item from a list. Returns the index."
-    todo("Return Entry, as in Iterable.indexed?",
-        "Take Element[] instead of JList") // FIXME
+    todo("Return Entry, as in Iterable.indexed?")
     shared formal Integer chooseFromList<Element>(
             "The list of items to choose from."
-            JList<out Element> items,
+            Element[]|List<Element> items,
             "The description to give before printing the list."
             String description,
             "What to print if there are none."
@@ -111,11 +95,10 @@ shared interface ICLIHelper satisfies Closeable {
             "Whether to automatically choose if there's only one choice."
             Boolean auto) given Element satisfies Object&HasName;
     "Have the user choose an item from a list."
-    todo("Return Entry, as in Iterable.indexed?",
-        "Take Element[] instead of JList") // FIXME
+    todo("Return Entry, as in Iterable.indexed?")
     shared formal Integer chooseStringFromList(
             "The list of items to choose from."
-            JList<String> items,
+            String[] items,
             "The description to give before printing the list."
             String description,
             "What to print if there are none."
@@ -203,15 +186,16 @@ class CLIHelper satisfies ICLIHelper {
     }
     "Ask the user to choose an item from the list, and if he does carry out an
      operation on it and then ask if he wants to do another."
-    shared actual void loopOnList<Element>(JList<Element> list,
+    shared actual void loopOnList<Element>(Element[] list,
             Integer(ICLIHelper) choice, String prompt,
             Anything(Element, ICLIHelper) operation)
-            given Element satisfies Object{
+            given Element satisfies Object {
+        MutableList<Element> temp = ArrayList { *list };
         variable Integer number = choice(this);
-        while (number >= 0, number < list.size()) {
-            assert (exists item = list.remove(number));
+        while (number >= 0, number < temp.size) {
+            assert (exists item = temp.delete(number));
             operation(item, this);
-            if (list.empty || !inputBoolean(prompt)) {
+            if (temp.empty || !inputBoolean(prompt)) {
                 break;
             }
             number = choice(this);
@@ -219,22 +203,21 @@ class CLIHelper satisfies ICLIHelper {
     }
     "Ask the user to choose an item from the list, and if he does carry out an
      operation on it and then ask if he wants to do another."
-    shared actual void loopOnMutableList<Element>(JList<Element> list,
+    shared actual void loopOnMutableList<Element>(MutableList<Element> list,
             Integer(ICLIHelper) choice, String prompt, ListAmendment<Element> addition,
             Anything(Element, ICLIHelper) operation) given Element satisfies Object {
         variable Integer number = choice(this);
-        while (number <= list.size()) {
+        while (number <= list.size) {
             Element item;
-            if (number < 0 || number == list.size()) {
-                JOptional<Element> temp = addition(list, this);
-                if (temp.present) {
-                    item = temp.get();
+            if (exists temp = list.get(number)) {
+                item = temp;
+            } else {
+                if (exists temp = addition(list, this)) {
+                    item = temp;
                 } else {
                     println("Select the new item at the next prompt.");
                     continue;
                 }
-            } else {
-                item = list.get(number);
             }
             operation(item, this);
             if (!inputBoolean(prompt)) {
@@ -270,10 +253,10 @@ class CLIHelper satisfies ICLIHelper {
         }
     }
     "Have the user choose an item from a list."
-    shared actual Integer chooseFromList<Element>(JList<out Element> list,
-            String description, String none, String prompt, Boolean auto)
-            given Element satisfies HasName&Object {
-        return chooseFromListImpl<Element>(CeylonList(list), description, none, prompt,
+    shared actual Integer chooseFromList<out Element>(
+            Element[]|List<Element> list, String description, String none,
+            String prompt, Boolean auto) given Element satisfies HasName&Object {
+        return chooseFromListImpl<Element>(list, description, none, prompt,
             auto, HasName.name);
     }
     "Read input from the input stream repeatedly until a non-negative integer is entered,
@@ -358,9 +341,9 @@ class CLIHelper satisfies ICLIHelper {
         }
     }
     "Have the user choose an item from a list."
-    shared actual Integer chooseStringFromList(JList<String> items, String description,
+    shared actual Integer chooseStringFromList(String[] items, String description,
             String none, String prompt, Boolean auto) {
-        return chooseFromListImpl<String>(CeylonIterable(items), description, none, prompt, auto,
+        return chooseFromListImpl<String>(items, description, none, prompt, auto,
                     (String x) => x);
     }
     "Print a formatted string."
@@ -431,23 +414,23 @@ void assertCLI<out T>(
 "Test chooseFromList()."
 test
 void testChooseFromList() {
-    assertCLI((cli) => cli.chooseFromList(JavaList(ArrayList { PlayerImpl(1, "one"),
-            PlayerImpl(2, "two") }), "test desc", "none present", "prompt", false), {"0"},
+    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
+            PlayerImpl(2, "two")], "test desc", "none present", "prompt", false), {"0"},
         {"test desc", "0: one", "1: two", "prompt"}, 0,
         "chooseFromList chooses the one specified by the user",
         "chooseFromList prompted the user");
-    assertCLI((cli) => cli.chooseFromList(JavaList(ArrayList { PlayerImpl(1, "one"),
-            PlayerImpl(2, "two") }), "test desc", "none present", "prompt", true), {"1"},
+    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
+            PlayerImpl(2, "two")], "test desc", "none present", "prompt", true), {"1"},
         {"test desc", "0: one", "1: two", "prompt"}, 1,
         "chooseFromList chooses the one specified by the user",
         "chooseFromList prompted the user");
-    assertCLI((cli) => cli.chooseFromList(JCollections.singletonList(
-            PlayerImpl(1, "one")), "test desc", "none present", "prompt", true),
-        {}, {"test desc", "Automatically choosing only item, one", ""}, 0,
+    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one")],
+        "test desc", "none present", "prompt", true), {},
+        {"test desc", "Automatically choosing only item, one", ""}, 0,
         "chooseFromList chooses only choice when this is specified",
         "chooseFromList automatically chose only choice");
-    assertCLI((cli) => cli.chooseFromList(JCollections.singletonList(
-            PlayerImpl(1, "one")), "test desc", "none present", "prompt", false), {"0"},
+    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one")],
+            "test desc", "none present", "prompt", false), {"0"},
         {"test desc", "0: one", "prompt"}, 0,
         "chooseFromList doesn't always auto-choose only choice",
         "chooseFromList didn't automatically choose only choice");
@@ -455,23 +438,23 @@ void testChooseFromList() {
 "A second test of chooseFromList"
 test
 void testChooseFromListMore() {
-    assertCLI((cli) => cli.chooseFromList(JavaList(ArrayList { PlayerImpl(1, "one"),
-            PlayerImpl(2, "two") }), "test desc", "none present", "prompt ", false),
+    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
+            PlayerImpl(2, "two")], "test desc", "none present", "prompt ", false),
         {"-1", "0"}, {"test desc", "0: one", "1: two", "prompt prompt "}, 0,
         "chooseFromList prompts again when negative index given",
         "chooseFromList prompts again when negative index given");
-    assertCLI((cli) => cli.chooseFromList(JavaList(ArrayList { PlayerImpl(1, "one"),
-            PlayerImpl(2, "two") }), "test desc", "none present", "prompt", false), {"3"},
+    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
+            PlayerImpl(2, "two")], "test desc", "none present", "prompt", false), {"3"},
         {"test desc", "0: one", "1: two", "prompt"}, 3,
         "chooseFromList allows too-large choice",
         "chooseFromList allows too-large choice");
-    assertCLI((cli) => cli.chooseFromList(JavaList(ArrayList { PlayerImpl(1, "one"),
-            PlayerImpl(2, "two") }), "test desc", "none present", "prompt", true), {"0"},
+    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
+            PlayerImpl(2, "two")], "test desc", "none present", "prompt", true), {"0"},
         {"test desc", "0: one", "1: two", "prompt"}, 0,
         "chooseFromList asks even if 'auto' when multiple items",
         "chooseFromList prompted the user");
-    assertCLI((cli) => cli.chooseFromList(JCollections.emptyList<HasName>(),
-            "test desc", "none present", "prompt", false), {}, {"none present", ""}, -1,
+    assertCLI((cli) => cli.chooseFromList([], "test desc", "none present",
+            "prompt", false), {}, {"none present", ""}, -1,
         "chooseFromList handles no-item case", "chooseFromList didn't prompt the user");
 }
 "Test inputNumber"
@@ -633,48 +616,46 @@ void testInputBooleanInSeries() {
 "Test of chooseStringFromList()"
 test
 void testChooseStringFromList() {
-    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{"one", "two"}),
+    assertCLI((cli) => cli.chooseStringFromList(["one", "two"],
         "test desc", "none present", "prompt", false), {"0"},
         {"test desc", "0: one", "1: two", "prompt"}, 0,
         "chooseStringFromList chooses the one specified by the user",
         "chooseStringFromList prompts the user");
-    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{"one",
-            "two", "three"}), "test desc", "none present",
+    assertCLI((cli) => cli.chooseStringFromList(["one",
+            "two", "three"], "test desc", "none present",
             "prompt two", true), {"1"},
         {"test desc", "0: one", "1: two", "2: three", "prompt two"}, 1,
         "chooseStringFromList chooses the one specified by the user",
         "chooseStringFromList prompts the user");
-    assertCLI((cli) => cli.chooseStringFromList(JCollections.singletonList(
-            "one"), "test desc", "none present", "prompt", true), {},
-        {"test desc", "Automatically choosing only item, one", ""}, 0,
-        "chooseStringFromList automatically chooses only choice when told to",
+    assertCLI((cli) => cli.chooseStringFromList(["one"], "test desc", "none present",
+        "prompt", true), {}, {"test desc", "Automatically choosing only item, one", ""},
+        0, "chooseStringFromList automatically chooses only choice when told to",
         "chooseStringFromList automatically chose only choice");
-    assertCLI((cli) => cli.chooseStringFromList(JCollections.singletonList(
-            "one"), "test desc", "none present", "prompt", false), {"0"},
-        {"test desc", "0: one", "prompt"}, 0,
+    assertCLI((cli) => cli.chooseStringFromList(["one"], "test desc", "none present",
+            "prompt", false), {"0"}, {"test desc", "0: one", "prompt"}, 0,
         "chooseStringFromList doesn't always auto-choose",
         "chooseStringFromList didn't automatically choose only choice");
 }
 "A second test of chooseStringFromList"
 test
 void testChooseStringFromListMore() {
-    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{
-            "zero", "one", "two"}), "test desc", "none present", "prompt",
-        true), {"1"}, {"test desc", "0: zero", "1: one", "2: two", "prompt"}, 1,
+    assertCLI((cli) => cli.chooseStringFromList(["zero", "one", "two"],
+            "test desc", "none present", "prompt", true), {"1"},
+        {"test desc", "0: zero", "1: one", "2: two", "prompt"}, 1,
         "chooseStringFromList doesn't auto-choose when more than one item",
         "chooseStringFromList doesn't auto-choose when more than one item");
-    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{"one",
-            "two"}), "test desc", "none present", "prompt", false),
+    assertCLI((cli) => cli.chooseStringFromList(["one", "two"],
+            "test desc", "none present", "prompt", false),
         {"-1", "0"}, {"test desc", "0: one", "1: two", "promptprompt"}, 0,
         "chooseStringFromList prompts again when negative index given",
         "chooseStringFromList prompts again when negative index given");
-    assertCLI((cli) => cli.chooseStringFromList(JavaList(ArrayList{"one",
-            "two"}), "test desc", "none present", "prompt", false), {"3"},
+    assertCLI((cli) => cli.chooseStringFromList(["one",
+            "two"], "test desc", "none present", "prompt", false), {"3"},
         {"test desc", "0: one", "1: two", "prompt"}, 3,
         "chooseStringFromList allows too-large choice",
         "chooseStringFromList allows too-large choice");
-    assertCLI((cli) => cli.chooseStringFromList(JCollections.emptyList<String>(),
-            "test desc", "none present", "prompt", false), {}, {"none present", ""}, -1,
+    assertCLI((cli) => cli.chooseStringFromList([], "test desc", "none present",
+            "prompt", false), {}, {"none present", ""}, -1,
         "chooseStringFromList handles empty list",
         "chooseStringFromList handles empty list");
 }

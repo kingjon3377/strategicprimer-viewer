@@ -160,11 +160,11 @@ object queryCLI satisfies SimpleDriver {
     }
     "Count the workers belonging to a player."
     void countWorkers(IMapNG map, ICLIHelper cli, Player* players) {
-        List<Player> playerList = ArrayList(players.size, 1.0, players);
-        Integer playerNum = cli.chooseFromList(JavaList(playerList),
+        Player[] playerList = [*players];
+        Integer playerNum = cli.chooseFromList(playerList,
             "Players in the map:", "Map contains no players",
             "Owner of workers to count: ", true);
-        if (exists player = playerList.get(playerNum)) {
+        if (exists player = playerList[playerNum]) {
             Integer count = sum { 0, for (location in map.locations())
                 countWorkersInIterable(player, map.getOtherFixtures(location)) };
             cli.println("``player.name`` has ``count`` workers");
@@ -437,7 +437,7 @@ object quit extends TrapperCommand("Quit") {}
 todo("Tests")
 object trappingCLI satisfies SimpleDriver {
     Integer minutesPerHour = 60;
-    List<TrapperCommand> commands = ArrayList{setTrap, check, move, easyReset, quit};
+    TrapperCommand[] commands = [setTrap, check, move, easyReset, quit];
     shared actual IDriverUsage usage = DriverUsage(false, "-r", "--trap", ParamCount.one,
         "Run a player's trapping", "Determine the results a player's trapper finds.");
     String inHours(Integer minutes) {
@@ -492,7 +492,7 @@ object trappingCLI satisfies SimpleDriver {
                     break;
                 }
             }
-            input = cli.chooseFromList(JavaList(commands),
+            input = cli.chooseFromList(commands,
                 "What should the ``name`` do next?", "Oops! No commands",
                 "Next action: ", false);
         }
