@@ -20,8 +20,7 @@ import ceylon.logging {
 
 import controller.map.misc {
     CLIHelper,
-    ICLIHelper,
-    DuplicateFixtureRemover
+    ICLIHelper
 }
 
 import java.awt {
@@ -378,10 +377,10 @@ object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
         try {
             if (is IMultiMapModel model) {
                 for (pair in model.allMaps) {
-                    DuplicateFixtureRemover.filter(pair.first(), cli);
+                    removeDuplicateFixtures(pair.first(), cli);
                 }
             } else {
-                DuplicateFixtureRemover.filter(model.map, cli);
+                removeDuplicateFixtures(model.map, cli);
             }
         } catch (IOException except) {
             throw DriverFailedException(except, "I/O error interacting with user");
