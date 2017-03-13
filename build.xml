@@ -153,19 +153,7 @@
       <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
       <!-- We can do this once ant 1.9.3 is in our CI; see
           http://stackoverflow.com/a/25148876 -->
-      <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
       <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
-      <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.towns.TestTownSerialization"
-            todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.towns.TestVillageSerialization"
-            todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.resources.TestStoneSerialization"
-            todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.TestFixtureSerialization"
-            todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.TestMoreFixtureSerialization"
-            todir="${junit.output.dir}" />
       <test name="model.viewer.PointIteratorTest" todir="${junit.output.dir}" />
       <test name="model.workermgmt.TestWorkerModel" todir="${junit.output.dir}" />
       <test name="model.map.fixtures.mobile.worker.TestProxyWorker"
@@ -355,19 +343,7 @@
              <!-- We can do this once ant 1.9.3 is in our CI; see
                  http://stackoverflow.com/a/25148876 -->
       <!--
-             <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
              <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
-             <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />
-             <test name="model.map.fixtures.towns.TestTownSerialization"
-                   todir="${junit.output.dir}" />
-             <test name="model.map.fixtures.towns.TestVillageSerialization"
-                   todir="${junit.output.dir}" />
-             <test name="model.map.fixtures.resources.TestStoneSerialization"
-                   todir="${junit.output.dir}" />
-             <test name="model.map.fixtures.TestFixtureSerialization"
-                   todir="${junit.output.dir}" />
-             <test name="model.map.fixtures.TestMoreFixtureSerialization"
-                   todir="${junit.output.dir}" />
              <test name="model.viewer.PointIteratorTest" todir="${junit.output.dir}" />
              <test name="model.workermgmt.TestWorkerModel" todir="${junit.output.dir}" />
              <test name="model.map.fixtures.mobile.worker.TestProxyWorker"
