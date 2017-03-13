@@ -31,7 +31,6 @@ import controller.map.formatexceptions {
 }
 import controller.map.iointerfaces {
     SPWriter,
-    TestReaderFactory,
     ISPReader
 }
 import controller.map.misc {
@@ -165,7 +164,8 @@ import strategicprimer.viewer.drivers.exploration {
 }
 import strategicprimer.viewer.xmlio {
     readMap,
-    writeMap
+    writeMap,
+    testReaderFactory
 }
 
 import util {
@@ -545,6 +545,10 @@ void initialize(IMutableMapNG map, Point point, TileType? terrain, TileFixture* 
         }
     }
 }
+ISPReader oldReader = testReaderFactory.oldReader;
+ISPReader newReader = testReaderFactory.newReader;
+SPWriter oldWriter = testReaderFactory.oldWriter;
+SPWriter newWriter = testReaderFactory.newWriter;
 test
 shared void testOneToTwoConversion() {
     IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
@@ -643,7 +647,7 @@ shared void testOneToTwoConversion() {
     }
 
     try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = TestReaderFactory.createNewWriter();
+        SPWriter writer = newWriter;
         writer.write(outOne, converted);
         writer.write(outTwo, oneToTwoConverter.convert(original, true));
         Regex matcher = regex("id=\"[0-9]*\"", true);
@@ -651,7 +655,7 @@ shared void testOneToTwoConversion() {
             "Produces expected result");
     }
     try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = TestReaderFactory.createOldWriter();
+        SPWriter writer = oldWriter;
         writer.write(outOne, converted);
         writer.write(outTwo, oneToTwoConverter.convert(original, true));
         Regex matcher = regex("id=\"[0-9]*\"", true);
@@ -667,7 +671,7 @@ shared void testOneToTwoConversion() {
             "Two runs produce identical results");
     }
     try (outStream = StringWriter(), errStream = Formatter()) {
-        SPWriter writer = TestReaderFactory.createNewWriter();
+        SPWriter writer = newWriter;
         writer.writeSPObject(outStream, oneToTwoConverter.convert(original, true));
         assertModuloID(converted, outStream.string, errStream);
     }
@@ -778,7 +782,7 @@ shared void testMoreOneToTwoConversion() {
         converted.setMountainous(loc, true);
     }
     try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = TestReaderFactory.createNewWriter();
+        SPWriter writer = newWriter;
         writer.write(outOne, converted);
         writer.write(outTwo, oneToTwoConverter.convert(original, true));
         Regex matcher = regex("id=\"[0-9]*\"", true);
@@ -786,7 +790,7 @@ shared void testMoreOneToTwoConversion() {
             "Produces expected result");
     }
     try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = TestReaderFactory.createOldWriter();
+        SPWriter writer = oldWriter;
         writer.write(outOne, converted);
         writer.write(outTwo, oneToTwoConverter.convert(original, true));
         Regex matcher = regex("id=\"[0-9]*\"", true);
@@ -802,7 +806,7 @@ shared void testMoreOneToTwoConversion() {
             "Two runs produce identical results");
     }
     try (outStream = StringWriter(), errStream = Formatter()) {
-        SPWriter writer = TestReaderFactory.createNewWriter();
+        SPWriter writer = newWriter;
         writer.writeSPObject(outStream, oneToTwoConverter.convert(original, true));
         assertModuloID(converted, outStream.string, errStream);
     }
@@ -958,7 +962,7 @@ shared void testThirdOneToTwoConversion() {
     converted.addRivers(PointFactory.point(6, 5), River.east, River.west);
     converted.addRivers(PointFactory.point(6, 6), River.north, River.west);
     try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = TestReaderFactory.createNewWriter();
+        SPWriter writer = newWriter;
         writer.write(outOne, converted);
         writer.write(outTwo, oneToTwoConverter.convert(original, true));
         Regex matcher = regex("id=\"[0-9]*\"", true);
@@ -966,7 +970,7 @@ shared void testThirdOneToTwoConversion() {
             "Produces expected result");
     }
     try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = TestReaderFactory.createOldWriter();
+        SPWriter writer = oldWriter;
         writer.write(outOne, converted);
         writer.write(outTwo, oneToTwoConverter.convert(original, true));
         Regex matcher = regex("id=\"[0-9]*\"", true);
@@ -982,7 +986,7 @@ shared void testThirdOneToTwoConversion() {
             "Two runs produce identical results");
     }
     try (outStream = StringWriter(), errStream = Formatter()) {
-        SPWriter writer = TestReaderFactory.createNewWriter();
+        SPWriter writer = newWriter;
         writer.writeSPObject(outStream, oneToTwoConverter.convert(original, true));
         assertModuloID(converted, outStream.string, errStream);
     }
@@ -1090,13 +1094,13 @@ shared void testFourthOneToTwoConversion() {
     }
 
     try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = TestReaderFactory.createNewWriter();
+        SPWriter writer = newWriter;
         writer.write(outOne, converted);
         writer.write(outTwo, oneToTwoConverter.convert(original, true));
         assertEquals(outTwo.string, outOne.string, "Produces expected result");
     }
     try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = TestReaderFactory.createOldWriter();
+        SPWriter writer = oldWriter;
         writer.write(outOne, converted);
         writer.write(outTwo, oneToTwoConverter.convert(original, true));
         assertEquals(outTwo.string, outOne.string, "Deprecated I/O produces expected result");
@@ -1265,7 +1269,7 @@ void testZeroToOneConversion() {
     zeroToOneConverter.convert(ConvertingIterable(
         ConstructorWrapper.xmlEventReader(StringReader(orig))), ostream);
     StringWriter actualXML = StringWriter();
-    SPWriter writer = TestReaderFactory.createOldWriter();
+    SPWriter writer = oldWriter;
     writer.writeSPObject(actualXML,
         readMap(StringReader(ostream.string), Warning.ignore));
     IMutableMapNG expected = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);

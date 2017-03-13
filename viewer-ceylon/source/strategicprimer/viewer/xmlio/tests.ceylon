@@ -25,7 +25,6 @@ import controller.map.formatexceptions {
 }
 import controller.map.iointerfaces {
     ISPReader,
-    TestReaderFactory,
     IMapReader
 }
 import controller.map.misc {
@@ -137,14 +136,18 @@ import model.workermgmt {
     RaceFactory
 }
 
+import strategicprimer.viewer.xmlio {
+    testReaderFactory
+}
+
 import util {
     Warning,
     FatalWarningException,
     Quantity
 }
 JPath fakeFilename = JPaths.get("");
-ISPReader oldReader = TestReaderFactory.createOldReader();
-ISPReader newReader = TestReaderFactory.createNewReader();
+ISPReader oldReader = testReaderFactory.oldReader;
+ISPReader newReader = testReaderFactory.newReader;
 // TODO: In various methods, instead of taking "Boolean warning", take `Desideratum?`,
 // either what the XML should deserialize to or null to indicate the error is fatal.
 
@@ -249,9 +252,9 @@ String createSerializedForm(
         Boolean deprecated) {
     StringWriter writer = StringWriter();
     if (deprecated) {
-        TestReaderFactory.createOldWriter().writeSPObject(writer, obj);
+        testReaderFactory.oldWriter.writeSPObject(writer, obj);
     } else {
-        TestReaderFactory.createNewWriter().writeSPObject(writer, obj);
+        testReaderFactory.newWriter.writeSPObject(writer, obj);
     }
     return writer.string;
 }
