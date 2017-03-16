@@ -2,44 +2,39 @@ import ceylon.collection {
     HashMap,
     MutableSet,
     MutableMap,
-    ArrayList,
     HashSet
 }
+import ceylon.interop.java {
+    CeylonIterable
+}
+import ceylon.language.meta {
+    classDeclaration
+}
+
 import controller.map.misc {
     IDRegistrar
 }
-import model.misc {
-    IDriverModel,
-    SimpleMultiMapModel
+
+import java.awt {
+    Component,
+    Dimension
 }
-import java.util {
-    JList = List, JOptional=Optional
-}
-import ceylon.interop.java {
-    JavaList,
-    CeylonIterable,
-    javaString
-}
-import model.map {
-    Player,
-    PlayerImpl,
-    IMutableMapNG,
-    IMapNG
+import java.awt.event {
+    ActionEvent
 }
 import java.io {
     IOException
 }
-import model.map.fixtures {
-    ResourcePile,
-    Implement,
-    FortressMember
-}
-import util {
-    Quantity
-}
 import java.lang {
-    JString=String, JInteger=Integer
+    JInteger=Integer
 }
+import java.nio.file {
+    JPath=Path
+}
+import java.util {
+    JOptional=Optional
+}
+
 import javax.swing {
     SwingUtilities,
     SpinnerNumberModel,
@@ -50,19 +45,7 @@ import javax.swing {
     JScrollPane,
     JComponent
 }
-import model.listeners {
-    PlayerChangeListener
-}
-import java.awt {
-    Component,
-    Dimension
-}
-import java.awt.event {
-    ActionEvent
-}
-import ceylon.language.meta {
-    classDeclaration
-}
+
 import lovelace.util.jvm {
     listenedButton,
     ImprovedComboBox,
@@ -74,11 +57,34 @@ import lovelace.util.jvm {
     verticalSplit,
     FormattedLabel
 }
-import java.nio.file {
-    JPath=Path
+
+import model.listeners {
+    PlayerChangeListener
+}
+import model.map {
+    Player,
+    PlayerImpl,
+    IMutableMapNG,
+    IMapNG
+}
+import model.map.fixtures {
+    ResourcePile,
+    Implement,
+    FortressMember
 }
 import model.map.fixtures.towns {
     Fortress
+}
+import model.misc {
+    IDriverModel,
+    SimpleMultiMapModel
+}
+
+import util {
+    Quantity
+}
+import strategicprimer.viewer.drivers.worker_mgmt {
+    workerMenu
 }
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {

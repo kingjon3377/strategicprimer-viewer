@@ -4,9 +4,6 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import ceylon.interop.java {
-    JavaList
-}
 import ceylon.language.meta.declaration {
     Package,
     Module
@@ -33,9 +30,6 @@ import java.lang {
     System,
     Runnable
 }
-import java.util {
-    JList=List
-}
 
 import javax.swing {
     UIManager,
@@ -60,13 +54,17 @@ import strategicprimer.viewer.drivers {
     advancementCLI,
     advancementGUI
 }
+import strategicprimer.viewer.drivers.exploration {
+    explorationGUI,
+    explorationCLI
+}
 import strategicprimer.viewer.drivers.map_viewer {
     viewerGUI,
     drawHelperComparator
 }
-import strategicprimer.viewer.drivers.exploration {
-    explorationGUI,
-    explorationCLI
+import strategicprimer.viewer.drivers.worker_mgmt {
+    workerGUI,
+    strategyExportCLI
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

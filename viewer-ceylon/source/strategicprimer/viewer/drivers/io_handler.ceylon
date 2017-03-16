@@ -203,7 +203,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         }
     }
 }
-class FileChooser {
+shared class FileChooser {
     shared static class ChoiceInterruptedException(Throwable? cause = null)
             extends Exception(
                 (cause exists) then "Choice of a file was iterrupted by an exception:"

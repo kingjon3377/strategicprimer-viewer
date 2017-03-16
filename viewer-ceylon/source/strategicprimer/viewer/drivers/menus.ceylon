@@ -32,7 +32,7 @@ import java.awt {
     Frame
 }
 """A class to respond to "change current player" menu items."""
-class PlayerChangeMenuListener(IDriverModel model)
+shared class PlayerChangeMenuListener(IDriverModel model)
         satisfies ActionListener&PlayerChangeSource {
     MutableList<PlayerChangeListener> listeners = ArrayList<PlayerChangeListener>();
     shared actual void addPlayerChangeListener(PlayerChangeListener listener) =>

@@ -1,55 +1,38 @@
-import controller.map.misc {
-    IDRegistrar
-}
-import model.misc {
-    IDriverModel
-}
-import model.workermgmt {
-    WorkerModel,
-    IWorkerModel,
-    RaceFactory
-}
-import java.io {
-    IOException
-}
-import model.map {
-    Player,
-    IMapNG,
-    HasName
-}
-import java.util {
-    JList = List
-}
-import model.map.fixtures.mobile {
-    IUnit,
-    IWorker,
-    Worker
-}
-import ceylon.interop.java {
-    JavaList,
-    CeylonCollection,
-    CeylonIterable,
-    createJavaIntArray,
-    createJavaObjectArray
-}
 import ceylon.collection {
     ArrayList,
     HashMap,
     MutableMap,
     MutableList
 }
-import model.map.fixtures.mobile.worker {
-    ProxyWorker,
-    IJob,
-    Job,
-    ISkill,
-    Skill,
-    ProxyJob,
-    WorkerStats
+import ceylon.interop.java {
+    CeylonIterable,
+    createJavaIntArray,
+    createJavaObjectArray
 }
-import util {
-    SingletonRandom { singletonRandom = random }
+
+import controller.map.misc {
+    IDRegistrar
 }
+
+import java.awt {
+    Dimension,
+    GridLayout,
+    CardLayout,
+    FlowLayout,
+    Container
+}
+import java.awt.event {
+    ActionEvent,
+    ActionListener
+}
+import java.io {
+    IOException
+}
+import java.lang {
+    ArrayIndexOutOfBoundsException,
+    IllegalArgumentException
+}
+
 import javax.swing {
     SwingUtilities,
     JLabel,
@@ -63,37 +46,16 @@ import javax.swing {
     JButton,
     BoxLayout
 }
-import strategicprimer.viewer.about {
-    aboutDialog
-}
-import model.listeners {
-    PlayerChangeListener,
-    LevelGainSource,
-    SkillSelectionListener,
-    LevelGainListener,
-    UnitSelectionListener,
-    NewWorkerListener,
-    SkillSelectionSource,
-    AddRemoveListener,
-    UnitMemberSelectionSource,
-    UnitSelectionSource,
-    UnitMemberListener
-}
-import java.awt {
-    Dimension,
-    GridLayout,
-    CardLayout,
-    FlowLayout,
-    Container
-}
-import java.awt.event {
-    ActionEvent,
-    ActionListener
-}
 import javax.swing.event {
     TreeModelEvent,
     TreeModelListener
 }
+import javax.swing.tree {
+    TreeModel,
+    TreeSelectionModel,
+    TreePath
+}
+
 import lovelace.util.common {
     todo
 }
@@ -109,17 +71,67 @@ import lovelace.util.jvm {
     FormattedLabel,
     platform
 }
+
+import model.listeners {
+    PlayerChangeListener,
+    LevelGainSource,
+    SkillSelectionListener,
+    LevelGainListener,
+    UnitSelectionListener,
+    NewWorkerListener,
+    SkillSelectionSource,
+    AddRemoveListener,
+    UnitMemberSelectionSource,
+    UnitSelectionSource,
+    UnitMemberListener
+}
+import model.map {
+    Player,
+    IMapNG,
+    HasName
+}
 import model.map.fixtures {
     UnitMember
 }
-import javax.swing.tree {
-    TreeModel,
-    TreeSelectionModel,
-    TreePath
+import model.map.fixtures.mobile {
+    IUnit,
+    IWorker,
+    Worker
 }
-import java.lang {
-    ArrayIndexOutOfBoundsException,
-    IllegalArgumentException
+import model.map.fixtures.mobile.worker {
+    ProxyWorker,
+    IJob,
+    Job,
+    ISkill,
+    Skill,
+    ProxyJob,
+    WorkerStats
+}
+import model.misc {
+    IDriverModel
+}
+import model.workermgmt {
+    WorkerModel,
+    IWorkerModel,
+    RaceFactory
+}
+
+import strategicprimer.viewer.about {
+    aboutDialog
+}
+import strategicprimer.viewer.drivers.worker_mgmt {
+    IWorkerTreeModel,
+    TreeExpansionOrderListener,
+    TreeExpansionHandler,
+    workerTree,
+    WorkerTreeModelAlt,
+    workerMenu
+}
+
+import util {
+    SingletonRandom {
+        singletonRandom=random
+    }
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {

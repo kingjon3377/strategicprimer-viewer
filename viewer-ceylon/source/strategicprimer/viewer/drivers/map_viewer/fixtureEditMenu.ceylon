@@ -26,7 +26,8 @@ import model.map {
 import model.map.fixtures {
     UnitMember
 }
-import strategicprimer.viewer.drivers {
+
+import strategicprimer.viewer.drivers.worker_mgmt {
     IWorkerTreeModel
 }
 "A pop-up menu to let the user edit a fixture."
