@@ -1,7 +1,7 @@
 import controller.map.iointerfaces {
     IMapReader
 }
-import controller.map.fluidxml {
+import strategicprimer.viewer.xmlio.fluidxml {
     SPFluidReader
 }
 import controller.map.yaxml {

@@ -1,5 +1,4 @@
 import controller.map.fluidxml {
-    SPFluidReader,
     SPFluidWriter
 }
 import controller.map.iointerfaces {
@@ -9,6 +8,9 @@ import controller.map.iointerfaces {
 import controller.map.yaxml {
     YAXMLReader,
     YAXMLWriter
+}
+import strategicprimer.viewer.xmlio.fluidxml {
+    SPFluidReader
 }
 "A factory to produce instances of the current and old map readers, to test against. (So
  we don't have to ignore *all* deprecation warnings in the test class, and we only have to
