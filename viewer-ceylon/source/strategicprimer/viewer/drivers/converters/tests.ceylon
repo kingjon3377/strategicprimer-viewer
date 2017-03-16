@@ -1,527 +1,143 @@
-import ceylon.collection {
-    MutableList,
-    LinkedList,
-    Queue,
-    MutableMap,
-    HashMap,
-    HashSet,
-    MutableSet
+import model.map.fixtures.explorable {
+    AdventureFixture
 }
-import ceylon.file {
-    Directory,
-    parsePath
+import lovelace.util.jvm {
+    shuffle,
+    ConvertingIterable
 }
-import ceylon.interop.java {
-    CeylonIterable,
-    javaClass
-}
-import ceylon.regex {
-    Regex,
-    regex
-}
-import ceylon.test {
-    test,
-    assertEquals,
-    assertTrue,
-    assertThatException
-}
-
-import controller.map.formatexceptions {
-    SPFormatException
-}
-import controller.map.iointerfaces {
-    SPWriter,
-    ISPReader
-}
-import controller.map.misc {
-    IDRegistrar,
-    IDFactory
-}
-
-import java.io {
-    FileNotFoundException,
-    IOException,
-    StringWriter,
-    StringReader,
-    JFileReader=FileReader
-}
-import java.lang {
-    IllegalStateException,
-    Appendable,
-    IllegalArgumentException
-}
-import java.nio.file {
-    Paths,
-    JPath=Path,
-    NoSuchFileException
-}
-import java.util {
-    JOptional=Optional,
-    Random,
-    Formatter
-}
-
 import javax.xml {
     XMLConstants
 }
 import javax.xml.namespace {
     QName
 }
+import java.util {
+    Formatter
+}
+import controller.map.misc {
+    IDRegistrar,
+    IDFactory
+}
+import ceylon.interop.java {
+    CeylonIterable,
+    javaClass
+}
 import javax.xml.stream {
     XMLStreamException
 }
-import javax.xml.stream.events {
-    EndDocument,
-    StartDocument,
-    EndElement,
-    Characters,
-    StartElement,
-    XMLEvent,
-    Attribute
+import java.nio.file {
+    NoSuchFileException
 }
-
-import lovelace.util.common {
-    todo
+import strategicprimer.viewer.drivers {
+    ConstructorWrapper
 }
-import lovelace.util.jvm {
-    shuffle,
-    ConvertingIterable
-}
-
-import model.map {
-    IMutableMapNG,
-    IMapNG,
-    MapDimensionsImpl,
-    MapDimensions,
-    SPMapNG,
-    PlayerCollection,
-    Player,
-    PlayerImpl,
-    Point,
-    PointFactory,
-    TileFixture,
-    TileType,
-    River
+import java.lang {
+    Appendable,
+    IllegalArgumentException
 }
 import model.map.fixtures {
     TextFixture,
     Ground
 }
-import model.map.fixtures.explorable {
-    AdventureFixture
-}
-import model.map.fixtures.mobile {
-    Fairy,
-    Dragon,
-    SimpleImmortal,
-    Giant,
-    Centaur,
-    Animal,
-    IUnit,
-    Unit
-}
-import model.map.fixtures.resources {
-    Meadow,
-    FieldStatus,
-    Grove,
-    Shrub,
-    Mine,
-    StoneDeposit,
-    StoneKind,
-    MineralVein,
-    CacheFixture
-}
-import model.map.fixtures.terrain {
-    Forest,
-    Sandbar,
-    Hill
-}
-import model.map.fixtures.towns {
-    Village,
-    ITownFixture,
-    TownStatus,
-    TownSize,
-    Fortification,
-    City,
-    Fortress,
-    Town
-}
-import model.misc {
-    IDriverModel,
-    IMultiMapModel
-}
-import model.workermgmt {
-    RaceFactory
-}
-
-import strategicprimer.viewer.drivers {
-    log
-}
-import strategicprimer.viewer.drivers.exploration {
-    loadAllTables,
-    ExplorationRunner,
-    MissingTableException
-}
-import strategicprimer.viewer.xmlio {
-    readMap,
-    writeMap,
-    testReaderFactory
-}
-
-import util {
-    Warning,
-    LineEnd,
-    EnumCounter
-}
-
 import view.util {
     SystemOut
 }
-"A driver to convert maps: at present, halving their resolution."
-class ConverterDriver(
-    """Set to true when the provided [[ICLIHelper]] is connected to a graphical window
-       instead of standard output."""
-    Boolean gui = false) satisfies UtilityDriver {
-    "The usage object."
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = gui;
-        shortOption = "-v";
-        longOption = "--convert";
-        paramsWanted = ParamCount.one;
-        shortDescription = "Convert a map's format";
-        longDescription = "Convert a map. At present, this means reducing its resolution.";
-        supportedOptionsTemp = [ "--current-turn=NN" ];
-    };
-    "Run the driver."
-    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
-            String* args) {
-        if (nonempty arguments = args.coalesced.sequence()) {
-            for (filename in arguments) {
-                cli.print("Reading ``filename ``... ");
-                try {
-                    IMutableMapNG old = readMap(Paths.get(filename), Warning.default);
-                    if (options.hasOption("--current-turn")) {
-                        value currentTurn =
-                                Integer.parse(options.getArgument("--current-turn"));
-                        if (is Integer currentTurn) {
-                            old.setCurrentTurn(currentTurn);
-                        } else {
-                            log.error(
-                                "Current turn passed on the command line must be an integer",
-                                currentTurn);
-                        }
-                    }
-                    cli.println(" ... Converting ... ");
-                    IMapNG map = decreaseResolution(old);
-                    cli.println("About to write ``filename``.new.xml");
-                    writeMap(Paths.get(filename + ".new.xml"), map);
-                } catch (FileNotFoundException|NoSuchFileException except) {
-                    log.error("``filename`` not found", except);
-                } catch (IOException except) {
-                    log.error("I/O error processing ``filename``", except);
-                } catch (XMLStreamException except) {
-                    log.error("XML stream error reading ``filename``", except);
-                } catch (SPFormatException except) {
-                    log.error("SP map format error in ``filename``", except);
-                }
-            }
-        }
-    }
+import controller.map.iointerfaces {
+    ISPReader,
+    SPWriter
 }
-"A class to convert a version-1 map to a version-2 map with greater resolution."
-object oneToTwoConverter satisfies SimpleDriver {
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = false;
-        shortOption = "-12";
-        longOption = "--one-to-two";
-        paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "Convert a map's format from version 1 to 2";
-        longDescription = "Convert a map from format version 1 to format version 2";
-        firstParamDescription = "mainMap.xml";
-        subsequentParamDescription = "playerMap.xml";
-        supportedOptionsTemp = [ "--current-turn=NN" ];
-    };
-    "The next turn, to use when creating [[TextFixture]]s."
-    Integer nextTurn = 15;
-    "The factor by which to expand the map on each axis."
-    Integer expansionFactor = 4;
-    "The maximum number of iterations per tile."
-    Integer maxIterations = 100;
-    shared String maxIterationsWarning = "FIXME: A fixture here was force-added after ``
-        maxIterations`` iterations";
-    "Probability of turning a watered desert to plains."
-    Float desertToPlains = 0.4;
-    "Probability of adding a forest to a tile."
-    Float addForestProbability = 0.1;
-    "Source for forest and ground types"
-    ExplorationRunner runner = ExplorationRunner();
-    if (is Directory directory = parsePath("tables").resource) {
-        loadAllTables(directory, runner);
-    } else {
-        throw IllegalStateException("1-to-2 converter requires a tables directory");
-    }
-    "Convert a version-1 map to a higher-resolution version-2 map."
-    shared IMapNG convert(
-            "The version-1 map to convert"
-            todo("Skip this if it's already version 2?")
-            IMapNG old,
-            "Whether the map is the main map (new encounter-type fixtures don't go on
-             players' maps)"
-            Boolean main) {
-        MapDimensions oldDimensions = old.dimensions();
-        IMutableMapNG retval = SPMapNG(MapDimensionsImpl(
-            oldDimensions.rows * expansionFactor,
-            oldDimensions.columns * expansionFactor, 2), PlayerCollection(), nextTurn);
-        Player independent = CeylonIterable(old.players()).find(Player.independent)
-            else PlayerImpl(-1, "independent");
-        retval.addPlayer(independent);
-        for (player in old.players()) {
-            retval.addPlayer(player);
-        }
-        MutableList<Point> converted = LinkedList<Point>();
-        IDRegistrar idFactory = createIDFactory(old);
-        IMapNG oldCopy = old.copy(false, null);
-        TileType equivalentTerrain(TileType original) {
-            switch (original)
-            case (TileType.mountain|TileType.temperateForest) { return TileType.plains; }
-            case (TileType.borealForest) { return TileType.steppe; }
-            else { return original; }
-        }
-        "Add a fixture to a tile if this is the main map."
-        void addFixture(Point point, TileFixture fixture) {
-            if (main) {
-                if (is Ground fixture, !retval.getGround(point) exists) {
-                    retval.setGround(point, fixture);
-                } else if (is Forest fixture, !retval.getForest(point) exists) {
-                    retval.setForest(point, fixture);
-                } else {
-                    retval.addFixture(point, fixture);
-                }
-            }
-        }
-        "Convert a tile. That is, change it from a forest or mountain type to the proper
-         replacement type plus the proper fixture, and also add the proper Ground."
-        void convertSubTile(Point point) {
-            TileType originalTerrain = retval.getBaseTerrain(point);
-            if (TileType.mountain == originalTerrain) {
-                retval.setMountainous(point, true);
-            } else if (!retval.getForest(point) exists,
-                    !CeylonIterable(retval.getOtherFixtures(point))
-                        .find((element) => element is Forest) exists,
-                    (TileType.temperateForest == originalTerrain ||
-                        TileType.borealForest == originalTerrain)) {
-                Ground? tempGround = retval.getGround(point);
-                Forest? tempForest = retval.getForest(point);
-                retval.setForest(point, Forest(runner.getPrimaryTree(point,
-                    originalTerrain, {tempGround, tempForest,
-                        *retval.getOtherFixtures(point)}.coalesced,
-                    retval.dimensions()), false, idFactory.createID()));
-            }
-            retval.setBaseTerrain(point, equivalentTerrain(originalTerrain));
-            Ground? tempGround = retval.getGround(point);
-            Forest? tempForest = retval.getForest(point);
-            addFixture(point, Ground(idFactory.createID(),
-                runner.getPrimaryRock(point, retval.getBaseTerrain(point),
-                    {tempGround, tempForest, *retval.getOtherFixtures(point)}.coalesced,
-                    retval.dimensions()), false));
-        }
-        "Convert a single version-1 tile to the equivalent version-2 tiles."
-        {Point*} convertTile(Point point) {
-            Point[] initial = [ for (i in 0..expansionFactor)
-                for (j in 0..expansionFactor)
-                    PointFactory.point(point.row * expansionFactor + i,
-                        point.col * expansionFactor + j) ];
-            for (subtile in initial) {
-                retval.setBaseTerrain(subtile, oldCopy.getBaseTerrain(point));
-                convertSubTile(subtile);
-            }
-            if (!oldCopy.isLocationEmpty(point)) {
-                Integer idNum = idFactory.createID();
-                if (is IMutableMapNG oldCopy) {
-                    oldCopy.addFixture(point, Village(TownStatus.active, "", idNum,
-                        independent, RaceFactory.getRace(Random(idNum))));
-                }
-                {TileFixture*} fixtures = {oldCopy.getGround(point),
-                    oldCopy.getForest(point), *oldCopy.getOtherFixtures(point)}.coalesced;
-                for (river in oldCopy.getRivers(point)) {
-                    assert (expansionFactor == 4); // the river-dispersion algorithm is tuned
-                    switch (river)
-                    case (River.east) {
-                        retval.addRivers(initial[10], River.east);
-                        retval.addRivers(initial[11], River.east, River.west);
-                    }
-                    case (River.lake) { retval.addRivers(initial[10], River.lake); }
-                    case (River.north) {
-                        retval.addRivers(initial[2], River.north, River.south);
-                        retval.addRivers(initial[6], River.north, River.south);
-                        retval.addRivers(initial[10], River.north);
-                    }
-                    case (River.south) {
-                        retval.addRivers(initial[10], River.south);
-                        retval.addRivers(initial[14], River.south, River.north);
-                    }
-                    case (River.west) {
-                        retval.addRivers(initial[8], River.west, River.east);
-                        retval.addRivers(initial[9], River.west, River.east);
-                        retval.addRivers(initial[10], River.west);
-                    }
-                }
-                Random rng = Random((point.col.leftLogicalShift(32)) + point.row);
-                Queue<Point> shuffledInitial = LinkedList(shuffle(initial,
-                    rng.nextDouble));
-                Queue<TileFixture> shuffledFixtures = LinkedList(shuffle(fixtures,
-                    rng.nextDouble));
-                for (iteration in 0..maxIterations) {
-                    if (!shuffledFixtures.front exists) {
-                        break;
-                    } else if (exists currentSubtile = shuffledInitial.accept()) {
-                        if (CeylonIterable(retval.getOtherFixtures(point)).every(
-                                (fixture) =>
-                                    fixture is Forest|Ground|Sandbar|Shrub|Meadow|Hill),
-                                exists fixture = shuffledFixtures.accept()) {
-                            if (is ITownFixture fixture) {
-                                {TileFixture*} toRemove = {
-                                    for (suspect in retval.getOtherFixtures(point))
-                                        if (is Forest suspect) suspect };
-                                for (suspect in toRemove) {
-                                    retval.removeFixture(point, suspect);
-                                }
-                                retval.setForest(point, null);
-                            }
-                            addFixture(currentSubtile, fixture);
-                        }
-                        shuffledInitial.offer(currentSubtile);
-                    }
-                } else {
-                    log.error("Maximum number of iterations reached on tile ``
-                        point``; forcing ...");
-                    while (exists fixture = shuffledFixtures.accept()) {
-                        assert (exists subtile = shuffledInitial.accept());
-                        addFixture(subtile, fixture);
-                        retval.addFixture(subtile,
-                            TextFixture(maxIterationsWarning, nextTurn));
-                    }
-                }
-            }
-            return initial;
-        }
-        for (row in 0..oldDimensions.rows) {
-            for (column in 0..oldDimensions.columns) {
-                converted.addAll(convertTile(PointFactory.point(row, column)));
-            }
-        }
-        Random rng = Random(maxIterations);
-        for (point in shuffle(converted, rng.nextDouble)) {
-            // TODO: wrap around edges of map
-            {Point*} neighbors = { for (row in (point.row - 1)..(point.row + 1))
-                for (column in (point.col - 1)..(point.col + 1))
-                    PointFactory.point(row, column) }.filter((element) => point != element);
-            Boolean adjacentToTown() {
-                for (neighbor in neighbors) {
-                    for (fixture in retval.getOtherFixtures(neighbor)) {
-                        if (is ITownFixture fixture) {
-                            return true;
-                        }
-                    }
-                } else {
-                    return false;
-                }
-            }
-            Boolean adjacentWater() {
-                for (neighbor in neighbors) {
-                    if (retval.getBaseTerrain(neighbor) == TileType.ocean ||
-                            CeylonIterable(retval.getRivers(neighbor)).first exists) {
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
-            }
-            try {
-                if (TileType.ocean != retval.getBaseTerrain(point)) {
-                    if (adjacentToTown(), rng.nextDouble() < 0.6) {
-                        Integer id = idFactory.createID();
-                            if (rng.nextBoolean()) {
-                                Ground? tempGround = retval.getGround(point);
-                                Forest? tempForest = retval.getForest(point);
-                                addFixture(point, Meadow(runner.recursiveConsultTable("grain",
-                                    point, retval.getBaseTerrain(point),
-                                    {tempGround, tempForest,
-                                        *retval.getOtherFixtures(point)}.coalesced,
-                                    retval.dimensions()), true,
-                                    true, id, FieldStatus.random(id)));
-                            } else {
-                                Ground? tempGround = retval.getGround(point);
-                                Forest? tempForest = retval.getForest(point);
-                                addFixture(point, Grove(true, true,
-                                    runner.recursiveConsultTable("fruit_trees", point,
-                                        retval.getBaseTerrain(point),
-                                        {tempGround, tempForest,
-                                            *retval.getOtherFixtures(point)}.coalesced,
-                                        retval.dimensions()), id));
-                            }
-                    } else if (TileType.desert == retval.getBaseTerrain(point)) {
-                        Boolean watered = adjacentWater();
-                        if ((watered && rng.nextDouble() < desertToPlains) ||
-                            CeylonIterable(retval.getRivers(point)).first exists &&
-                                rng.nextDouble() < 0.6) {
-                            retval.setBaseTerrain(point, TileType.plains);
-                        }
-                    } else if (rng.nextDouble() < addForestProbability) {
-                        Ground? tempGround = retval.getGround(point);
-                        Forest? tempForest = retval.getForest(point);
-                        String forestType = runner.recursiveConsultTable(
-                            "temperate_major_tree", point, retval.getBaseTerrain(point),
-                            {tempGround, tempForest,
-                                *retval.getOtherFixtures(point)}.coalesced,
-                            retval.dimensions());
-                        Forest? existingForest = retval.getForest(point);
-                        if (exists existingForest, forestType == existingForest.kind) {
-                            // do nothing
-                        } else {
-                            addFixture(point, Forest(forestType, false,
-                                idFactory.createID()));
-                        }
-                    }
-                }
-            } catch (MissingTableException except) {
-                log.warn("Missing encounter table", except);
-            }
-        }
-        return retval;
-    }
-    void writeConvertedMap(JPath old, IMapNG map) {
-        try {
-            writeMap(old.resolveSibling("``old.fileName``.converted.xml"), map);
-        } catch (IOException except) {
-            throw DriverFailedException(except,
-                "I/O error writing to ``old.fileName``.converted.xml");
-        }
-    }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        IMapNG oldMain = model.map;
-        JPath oldMainPath = model.mapFile.orElseThrow(() =>
-            DriverFailedException(IllegalStateException("No path for main map"),
-                "No path for main map"));
-        IMapNG newMain = convert(oldMain, true);
-        writeConvertedMap(oldMainPath, newMain);
-        if (is IMultiMapModel model) {
-            for (pair in model.subordinateMaps) {
-                IMapNG map = pair.first();
-                JOptional<JPath> temp = pair.second();
-                JPath path;
-                if (temp.present) {
-                    path = temp.get();
-                } else {
-                    log.warn("No file path associated with map, skipping ...");
-                    continue;
-                }
-                IMapNG newMap = convert(map, false);
-                writeConvertedMap(path, newMap);
-            }
-        }
-    }
+import model.map.fixtures.resources {
+    FieldStatus,
+    StoneKind,
+    MineralVein,
+    CacheFixture,
+    Meadow,
+    StoneDeposit,
+    Grove,
+    Mine
+}
+import model.map.fixtures.towns {
+    Fortress,
+    Village,
+    Fortification,
+    TownStatus,
+    Town,
+    TownSize,
+    City
+}
+import lovelace.util.common {
+    todo
+}
+import ceylon.regex {
+    Regex,
+    regex
+}
+import ceylon.collection {
+    HashSet,
+    HashMap,
+    MutableSet,
+    LinkedList,
+    Queue,
+    MutableMap
+}
+import util {
+    Warning,
+    EnumCounter,
+    LineEnd
+}
+import model.map.fixtures.terrain {
+    Forest,
+    Hill
+}
+import ceylon.test {
+    test,
+    assertEquals,
+    assertThatException,
+    assertTrue
+}
+import model.map.fixtures.mobile {
+    Dragon,
+    Fairy,
+    Unit,
+    Centaur,
+    IUnit,
+    Giant,
+    SimpleImmortal,
+    Animal
+}
+import strategicprimer.viewer.xmlio {
+    readMap,
+    testReaderFactory
+}
+import model.map {
+    River,
+    Player,
+    MapDimensionsImpl,
+    SPMapNG,
+    IMapNG,
+    Point,
+    PointFactory,
+    TileType,
+    PlayerCollection,
+    IMutableMapNG,
+    TileFixture,
+    PlayerImpl
+}
+import java.io {
+    StringWriter,
+    IOException,
+    JFileReader=FileReader,
+    FileNotFoundException,
+    StringReader
+}
+import javax.xml.stream.events {
+    Attribute,
+    EndElement,
+    XMLEvent,
+    StartElement,
+    Characters,
+    StartDocument,
+    EndDocument
 }
 void assertModuloID(IMapNG map, String serialized, Formatter err) {
     Regex matcher = regex("id=\"[0-9]*\"", true);
@@ -570,7 +186,7 @@ shared void testOneToTwoConversion() {
             Village(TownStatus.active, "", -1, independent, race);
     Forest forest(String kind) => Forest(kind, false, -1);
     Meadow field(FieldStatus status, String kind = "grain1") =>
-        Meadow(kind, true, true, -1, status);
+            Meadow(kind, true, true, -1, status);
     Grove orchard(String kind = "fruit1") => Grove(true, true, kind, -1);
     initialize(converted, PointFactory.point(0, 0), TileType.steppe, groundOne(),
         village("human"));
@@ -613,36 +229,36 @@ shared void testOneToTwoConversion() {
     initialize(converted, PointFactory.point(7, 7), TileType.plains, groundTwo(),
         orchard("fruit4"));
     for (loc in { PointFactory.point(0, 2), PointFactory.point(0, 3),
-            PointFactory.point(1, 2), PointFactory.point(1, 3),
-            PointFactory.point(2, 0), PointFactory.point(2, 2),
-            PointFactory.point(2, 3), PointFactory.point(3, 1),
-            PointFactory.point(3, 2), PointFactory.point(3, 3) }) {
+        PointFactory.point(1, 2), PointFactory.point(1, 3),
+        PointFactory.point(2, 0), PointFactory.point(2, 2),
+        PointFactory.point(2, 3), PointFactory.point(3, 1),
+        PointFactory.point(3, 2), PointFactory.point(3, 3) }) {
         initialize(converted, loc, TileType.steppe, groundOne(), forest("btree1"));
     }
     for (loc in { PointFactory.point(0, 4), PointFactory.point(0, 5),
-            PointFactory.point(0, 6), PointFactory.point(0, 7),
-            PointFactory.point(1, 4), PointFactory.point(1, 5),
-            PointFactory.point(1, 6), PointFactory.point(1, 7),
-            PointFactory.point(2, 4), PointFactory.point(2, 5),
-            PointFactory.point(2, 7), PointFactory.point(3, 4),
-            PointFactory.point(3, 5) }) {
+        PointFactory.point(0, 6), PointFactory.point(0, 7),
+        PointFactory.point(1, 4), PointFactory.point(1, 5),
+        PointFactory.point(1, 6), PointFactory.point(1, 7),
+        PointFactory.point(2, 4), PointFactory.point(2, 5),
+        PointFactory.point(2, 7), PointFactory.point(3, 4),
+        PointFactory.point(3, 5) }) {
         initialize(converted, loc, TileType.plains, groundOne(), forest("ttree1"));
     }
     for (loc in { PointFactory.point(4, 2), PointFactory.point(5, 1),
-            PointFactory.point(5, 2), PointFactory.point(6, 0),
-            PointFactory.point(6, 1), PointFactory.point(6, 3),
-            PointFactory.point(7, 0), PointFactory.point(7, 2) }) {
+        PointFactory.point(5, 2), PointFactory.point(6, 0),
+        PointFactory.point(6, 1), PointFactory.point(6, 3),
+        PointFactory.point(7, 0), PointFactory.point(7, 2) }) {
         initialize(converted, loc, TileType.desert, groundOne());
     }
     for (loc in { PointFactory.point(4, 3), PointFactory.point(5, 3),
-            PointFactory.point(6, 2), PointFactory.point(7, 1),
-            PointFactory.point(7, 3) }) {
+        PointFactory.point(6, 2), PointFactory.point(7, 1),
+        PointFactory.point(7, 3) }) {
         initialize(converted, loc, TileType.plains, groundOne());
     }
     for (loc in { PointFactory.point(4, 4), PointFactory.point(4, 5),
-            PointFactory.point(5, 4), PointFactory.point(5, 5),
-            PointFactory.point(5, 6), PointFactory.point(6, 4),
-            PointFactory.point(7, 4), PointFactory.point(7, 5) }) {
+        PointFactory.point(5, 4), PointFactory.point(5, 5),
+        PointFactory.point(5, 6), PointFactory.point(6, 4),
+        PointFactory.point(7, 4), PointFactory.point(7, 5) }) {
         initialize(converted, loc, TileType.plains, groundTwo());
     }
 
@@ -680,7 +296,7 @@ test
 shared void testMoreOneToTwoConversion() {
     IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
     initialize(original, PointFactory.point(0, 0), TileType.jungle);
-    initialize(original, PointFactory.point(0, 1), TileType.temperateForest, 
+    initialize(original, PointFactory.point(0, 1), TileType.temperateForest,
         Forest("ttree1", false, 1));
     initialize(original, PointFactory.point(1, 0), TileType.mountain);
     initialize(original, PointFactory.point(1, 1), TileType.tundra,
@@ -740,35 +356,35 @@ shared void testMoreOneToTwoConversion() {
     initialize(converted, PointFactory.point(7, 6), TileType.tundra, groundTwo(),
         forest("ttree4"), village("dwarf"));
     for (loc in { PointFactory.point(0, 2), PointFactory.point(0, 3),
-            PointFactory.point(1, 0), PointFactory.point(1, 1), PointFactory.point(1, 2),
-            PointFactory.point(1, 3), PointFactory.point(2, 0), PointFactory.point(2, 1),
-            PointFactory.point(2, 2), PointFactory.point(3, 2),
-            PointFactory.point(3, 3) }) {
+        PointFactory.point(1, 0), PointFactory.point(1, 1), PointFactory.point(1, 2),
+        PointFactory.point(1, 3), PointFactory.point(2, 0), PointFactory.point(2, 1),
+        PointFactory.point(2, 2), PointFactory.point(3, 2),
+        PointFactory.point(3, 3) }) {
         initialize(converted, loc, TileType.jungle, groundOne());
     }
     for (loc in { PointFactory.point(0, 4), PointFactory.point(0, 5),
-            PointFactory.point(0, 6), PointFactory.point(0, 7), PointFactory.point(1, 4),
-            PointFactory.point(1, 5), PointFactory.point(1, 6), PointFactory.point(1, 7),
-            PointFactory.point(2, 4), PointFactory.point(2, 6), PointFactory.point(2, 7),
-            PointFactory.point(3, 6), PointFactory.point(3, 7) }) {
+        PointFactory.point(0, 6), PointFactory.point(0, 7), PointFactory.point(1, 4),
+        PointFactory.point(1, 5), PointFactory.point(1, 6), PointFactory.point(1, 7),
+        PointFactory.point(2, 4), PointFactory.point(2, 6), PointFactory.point(2, 7),
+        PointFactory.point(3, 6), PointFactory.point(3, 7) }) {
         initialize(converted, loc, TileType.plains, groundOne(), forest("ttree1"));
     }
     for (loc in { PointFactory.point(4, 1), PointFactory.point(5, 2),
-            PointFactory.point(7, 1) }) {
+        PointFactory.point(7, 1) }) {
         initialize(converted, loc, TileType.plains, groundOne(), forest("ttree1"));
         converted.setMountainous(loc, true);
     }
     for (loc in { PointFactory.point(4, 2), PointFactory.point(5, 3),
-            PointFactory.point(6, 0), PointFactory.point(6, 1), PointFactory.point(6, 2),
-            PointFactory.point(6, 3), PointFactory.point(7, 0), PointFactory.point(7, 2),
-            PointFactory.point(7, 3) }) {
+        PointFactory.point(6, 0), PointFactory.point(6, 1), PointFactory.point(6, 2),
+        PointFactory.point(6, 3), PointFactory.point(7, 0), PointFactory.point(7, 2),
+        PointFactory.point(7, 3) }) {
         initialize(converted, loc, TileType.plains, groundOne());
         converted.setMountainous(loc, true);
     }
     for (loc in { PointFactory.point(4, 5), PointFactory.point(4, 6),
-            PointFactory.point(4, 7), PointFactory.point(5, 5), PointFactory.point(5, 7),
-            PointFactory.point(6, 4), PointFactory.point(6, 7), PointFactory.point(7, 4),
-            PointFactory.point(7, 7) }) {
+        PointFactory.point(4, 7), PointFactory.point(5, 5), PointFactory.point(5, 7),
+        PointFactory.point(6, 4), PointFactory.point(6, 7), PointFactory.point(7, 4),
+        PointFactory.point(7, 7) }) {
         initialize(converted, loc, TileType.tundra, groundTwo());
     }
     // The converter adds a second forest here, but trying to do the same gets it
@@ -778,7 +394,7 @@ shared void testMoreOneToTwoConversion() {
     converted.addFixture(PointFactory.point(3, 7), tempForest);
     tempForest.id = -1;
     for (loc in { PointFactory.point(4, 0), PointFactory.point(4, 3),
-            PointFactory.point(5, 0), PointFactory.point(5, 1) }) {
+        PointFactory.point(5, 0), PointFactory.point(5, 1) }) {
         converted.setMountainous(loc, true);
     }
     try (outOne = StringWriter(), outTwo = StringWriter()) {
@@ -917,16 +533,16 @@ shared void testThirdOneToTwoConversion() {
     initialize(converted, PointFactory.point(6, 1), TileType.plains, groundOne(),
         forest("ttree1"));
     for (loc in {PointFactory.point(6, 5), PointFactory.point(6, 7),
-            PointFactory.point(7, 5) }) {
+        PointFactory.point(7, 5) }) {
         initialize(converted, loc, TileType.tundra, groundTwo(),
             field(FieldStatus.growing, "grain4"));
     }
     initialize(converted, PointFactory.point(7, 6), TileType.tundra, groundTwo(),
         village("human"));
     for (loc in { PointFactory.point(0, 0), PointFactory.point(0, 1),
-            PointFactory.point(1, 1), PointFactory.point(1, 2), PointFactory.point(2, 0),
-            PointFactory.point(2, 1), PointFactory.point(3, 1), PointFactory.point(3, 2),
-            PointFactory.point(3, 3) }) {
+        PointFactory.point(1, 1), PointFactory.point(1, 2), PointFactory.point(2, 0),
+        PointFactory.point(2, 1), PointFactory.point(3, 1), PointFactory.point(3, 2),
+        PointFactory.point(3, 3) }) {
         initialize(converted, loc, TileType.notVisible, groundOne());
     }
     for (loc in { PointFactory.point(0, 2), PointFactory.point(0, 3) }) {
@@ -934,17 +550,17 @@ shared void testThirdOneToTwoConversion() {
             field(FieldStatus.growing));
     }
     for (loc in { PointFactory.point(4, 1), PointFactory.point(4, 2),
-            PointFactory.point(4, 3), PointFactory.point(5, 0), PointFactory.point(5, 2),
-            PointFactory.point(5, 3), PointFactory.point(6, 0), PointFactory.point(6, 2),
-            PointFactory.point(6, 3), PointFactory.point(7, 0), PointFactory.point(7, 1),
-            PointFactory.point(7, 2), PointFactory.point(7, 3) }) {
+        PointFactory.point(4, 3), PointFactory.point(5, 0), PointFactory.point(5, 2),
+        PointFactory.point(5, 3), PointFactory.point(6, 0), PointFactory.point(6, 2),
+        PointFactory.point(6, 3), PointFactory.point(7, 0), PointFactory.point(7, 1),
+        PointFactory.point(7, 2), PointFactory.point(7, 3) }) {
         initialize(converted, loc, TileType.plains, groundOne());
         converted.setMountainous(loc, true);
     }
     for (loc in { PointFactory.point(4, 4), PointFactory.point(4, 5),
-            PointFactory.point(5, 4), PointFactory.point(5, 5), PointFactory.point(5, 6),
-            PointFactory.point(5, 7), PointFactory.point(6, 4), PointFactory.point(6, 6),
-            PointFactory.point(7, 4), PointFactory.point(7, 7) }) {
+        PointFactory.point(5, 4), PointFactory.point(5, 5), PointFactory.point(5, 6),
+        PointFactory.point(5, 7), PointFactory.point(6, 4), PointFactory.point(6, 6),
+        PointFactory.point(7, 4), PointFactory.point(7, 7) }) {
         initialize(converted, loc, TileType.tundra, groundTwo());
     }
     converted.addRivers(PointFactory.point(2, 6), River.lake, River.south);
@@ -997,7 +613,7 @@ shared void testFourthOneToTwoConversion() {
     IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
     initialize(original, PointFactory.point(0, 0), TileType.ocean);
     for (point in { PointFactory.point(0, 1), PointFactory.point(1, 0),
-            PointFactory.point(1, 1) }) {
+        PointFactory.point(1, 1) }) {
         initialize(original, point, TileType.desert);
     }
     Player player = PlayerImpl(1, "playerName");
@@ -1068,28 +684,28 @@ shared void testFourthOneToTwoConversion() {
     initialize(converted, PointFactory.point(4, 7), TileType.desert,
         register(Meadow("grain4", true, true, 70, FieldStatus.growing)));
     for (point in { PointFactory.point(0, 1), PointFactory.point(0, 2),
-            PointFactory.point(0, 3), PointFactory.point(1, 0), PointFactory.point(1, 1),
-            PointFactory.point(1, 2), PointFactory.point(1, 3), PointFactory.point(2, 0),
-            PointFactory.point(2, 1), PointFactory.point(2, 2), PointFactory.point(2, 3),
-            PointFactory.point(3, 0), PointFactory.point(3, 1), PointFactory.point(3, 2),
-            PointFactory.point(3, 3) }) {
+        PointFactory.point(0, 3), PointFactory.point(1, 0), PointFactory.point(1, 1),
+        PointFactory.point(1, 2), PointFactory.point(1, 3), PointFactory.point(2, 0),
+        PointFactory.point(2, 1), PointFactory.point(2, 2), PointFactory.point(2, 3),
+        PointFactory.point(3, 0), PointFactory.point(3, 1), PointFactory.point(3, 2),
+        PointFactory.point(3, 3) }) {
         initialize(converted, point, TileType.ocean);
     }
     for (point in { PointFactory.point(0, 4), PointFactory.point(0, 5),
-            PointFactory.point(1, 4), PointFactory.point(3, 5), PointFactory.point(4, 2),
-            PointFactory.point(4, 3), PointFactory.point(5, 0), PointFactory.point(5, 2),
-            PointFactory.point(6, 0), PointFactory.point(6, 1), PointFactory.point(7, 0),
-            PointFactory.point(7, 1), PointFactory.point(7, 3), PointFactory.point(4, 5),
-            PointFactory.point(5, 5), PointFactory.point(5, 7) }) {
+        PointFactory.point(1, 4), PointFactory.point(3, 5), PointFactory.point(4, 2),
+        PointFactory.point(4, 3), PointFactory.point(5, 0), PointFactory.point(5, 2),
+        PointFactory.point(6, 0), PointFactory.point(6, 1), PointFactory.point(7, 0),
+        PointFactory.point(7, 1), PointFactory.point(7, 3), PointFactory.point(4, 5),
+        PointFactory.point(5, 5), PointFactory.point(5, 7) }) {
         initialize(converted, point, TileType.desert);
     }
     for (point in { PointFactory.point(0, 6), PointFactory.point(0, 7),
-            PointFactory.point(1, 5), PointFactory.point(1, 6), PointFactory.point(1, 7),
-            PointFactory.point(2, 4), PointFactory.point(2, 5), PointFactory.point(3, 4),
-            PointFactory.point(5, 3), PointFactory.point(6, 2), PointFactory.point(6, 3),
-            PointFactory.point(7, 2), PointFactory.point(4, 4), PointFactory.point(5, 4),
-            PointFactory.point(5, 6), PointFactory.point(6, 4), PointFactory.point(7, 4),
-            PointFactory.point(7, 7) }) {
+        PointFactory.point(1, 5), PointFactory.point(1, 6), PointFactory.point(1, 7),
+        PointFactory.point(2, 4), PointFactory.point(2, 5), PointFactory.point(3, 4),
+        PointFactory.point(5, 3), PointFactory.point(6, 2), PointFactory.point(6, 3),
+        PointFactory.point(7, 2), PointFactory.point(4, 4), PointFactory.point(5, 4),
+        PointFactory.point(5, 6), PointFactory.point(6, 4), PointFactory.point(7, 4),
+        PointFactory.point(7, 7) }) {
         initialize(converted, point, TileType.plains);
     }
 
@@ -1212,7 +828,7 @@ object zeroToOneConverter {
                     events.offer(number);
                 } else {
                     log.error("Non-numeric 'event' in line ``element.location
-                            .lineNumber``",
+                        .lineNumber``",
                         number);
                 }
             } else {
@@ -1373,11 +989,11 @@ IMapNG decreaseResolution(IMapNG old) {
                 }
             }
             MutableSet<River> upperLeftRivers =HashSet<River> {
-                    *old.getRivers(subPoints[0]) };
+                *old.getRivers(subPoints[0]) };
             MutableSet<River> upperRightRivers = HashSet<River> {
-                    *old.getRivers(subPoints[1]) };
+                *old.getRivers(subPoints[1]) };
             MutableSet<River> lowerLeftRivers =HashSet<River> {
-                    *old.getRivers(subPoints[2]) };
+                *old.getRivers(subPoints[2]) };
             MutableSet<River> lowerRightRivers = HashSet<River> {
                 *old.getRivers(subPoints[3]) };
             upperLeftRivers.removeAll({River.east, River.south});
@@ -1386,7 +1002,7 @@ IMapNG decreaseResolution(IMapNG old) {
             lowerRightRivers.removeAll({River.west, River.north});
             retval.addRivers(point, *({ upperLeftRivers, upperRightRivers, lowerLeftRivers,
                 lowerRightRivers}.reduce((Set<River> partial, Set<River> element) =>
-                    partial.union(element))));
+            partial.union(element))));
         }
     }
     return retval;
@@ -1453,7 +1069,7 @@ void testMoreReduction() {
 test
 void testResolutionDecreaseRequirement() {
     assertThatException(
-        () => decreaseResolution(SPMapNG(MapDimensionsImpl(3, 3, 2),
+                () => decreaseResolution(SPMapNG(MapDimensionsImpl(3, 3, 2),
             PlayerCollection(), -1)))
         .hasType(`IllegalArgumentException`);
 }

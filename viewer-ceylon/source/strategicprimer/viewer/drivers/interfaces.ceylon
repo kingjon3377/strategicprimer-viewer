@@ -119,7 +119,7 @@ class SPOptionsImpl({<String->String>*} existing = {}) satisfies SPOptions {
 }
 """An interface to allow utility drivers, which operate on files rather than a map model,
    to be a "functional" (single-method-to-implement) interface"""
-interface UtilityDriver satisfies ISPDriver {
+shared interface UtilityDriver satisfies ISPDriver {
     shared actual default void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         throw DriverFailedException(IllegalStateException(
