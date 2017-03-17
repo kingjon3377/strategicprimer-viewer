@@ -8,8 +8,7 @@ import ceylon.interop.java {
 }
 
 import controller.map.fluidxml {
-    FluidXMLReader,
-    XMLHelper
+    FluidXMLReader
 }
 import controller.map.formatexceptions {
     MissingPropertyException,
@@ -127,9 +126,9 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
     String->LocalXMLReader simpleFixtureReader(String tag, Object(Integer) factory) {
         Object retval(StartElement element, QName parent, JIterable<XMLEvent> stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
-            XMLHelper.requireTag(element, parent, tag);
-            XMLHelper.spinUntilEnd(element.name, stream);
-            return XMLHelper.setImage(factory(XMLHelper.getOrGenerateID(element, warner,
+            requireTag(element, parent, tag);
+            spinUntilEnd(element.name, stream);
+            return setImage(factory(getOrGenerateID(element, warner,
                 idFactory)), element, warner);
         }
         return tag->retval;
@@ -138,10 +137,10 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
             HasKind(String, Integer) factory) {
         Object retval(StartElement element, QName parent, JIterable<XMLEvent> stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
-            XMLHelper.requireTag(element, parent, tag);
-            XMLHelper.spinUntilEnd(element.name, stream);
-            return XMLHelper.setImage(factory(XMLHelper.getAttribute(element, "kind"),
-                XMLHelper.getOrGenerateID(element, warner, idFactory)), element, warner);
+            requireTag(element, parent, tag);
+            spinUntilEnd(element.name, stream);
+            return setImage(factory(getAttribute(element, "kind"),
+                getOrGenerateID(element, warner, idFactory)), element, warner);
         }
         return tag->retval;
     }
@@ -151,7 +150,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
     };
     StartElement firstStartElement({XMLEvent*} stream, StartElement parent) {
         for (element in stream) {
-            if (is StartElement element, XMLHelper.isSPStartElement(element)) {
+            if (is StartElement element, isSPStartElement(element)) {
                 return element;
             }
         } else {
@@ -212,19 +211,19 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
     }
     void parseTile(IMutableMapNG map, StartElement element, JIterable<XMLEvent> stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
-        Point loc = PointFactory.point(XMLHelper.getIntegerAttribute(element, "row"),
-            XMLHelper.getIntegerAttribute(element, "column"));
+        Point loc = PointFactory.point(getIntegerAttribute(element, "row"),
+            getIntegerAttribute(element, "column"));
         // Tiles have been known to be *written* without "kind" and then fail to load, so
         // let's be liberal in what we accept here, since we can.
-        if (XMLHelper.hasAttribute(element, "kind") || XMLHelper.hasAttribute(element, "type")) {
+        if (hasAttribute(element, "kind") || hasAttribute(element, "type")) {
             map.setBaseTerrain(loc, TileType.getTileType(
-                XMLHelper.getAttrWithDeprecatedForm(element,
+                getAttrWithDeprecatedForm(element,
                     "kind", "tile", warner)));
         } else {
             warner.warn(MissingPropertyException(element, "kind"));
         }
         for (event in stream) {
-            if (is StartElement event, XMLHelper.isSPStartElement(event)) {
+            if (is StartElement event, isSPStartElement(event)) {
                 parseTileChild(map, element, stream, players, warner, idFactory, loc, event);
                 continue;
             } else if (is EndElement event, element.name == event.name) {
@@ -239,14 +238,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
     }
     IMutableMapNG readMapOrViewTag(StartElement element, QName parent, JIterable<XMLEvent> stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
-        XMLHelper.requireTag(element, parent, "map", "view");
+        requireTag(element, parent, "map", "view");
         Integer currentTurn;
         StartElement mapTag;
         String outerTag = element.name.localPart;
         if ("view" == outerTag.lowercased) {
-            currentTurn = XMLHelper.getIntegerAttribute(element, "current_turn");
+            currentTurn = getIntegerAttribute(element, "current_turn");
             mapTag = firstStartElement(CeylonIterable(stream), element);
-            XMLHelper.requireTag(mapTag, element.name, "map");
+            requireTag(mapTag, element.name, "map");
         } else if ("map" == outerTag.lowercased) {
             currentTurn = 0;
             mapTag = element;
@@ -254,16 +253,16 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
             throw UnwantedChildException(parent, element);
         }
         MapDimensions dimensions = MapDimensionsImpl(
-            XMLHelper.getIntegerAttribute(mapTag, "rows"),
-            XMLHelper.getIntegerAttribute(mapTag, "columns"),
-            XMLHelper.getIntegerAttribute(mapTag, "version"));
+            getIntegerAttribute(mapTag, "rows"),
+            getIntegerAttribute(mapTag, "columns"),
+            getIntegerAttribute(mapTag, "version"));
         Stack<QName> tagStack = LinkedList<QName>();
         tagStack.push(element.name);
         tagStack.push(mapTag.name);
         IMutableMapNG retval = SPMapNG(dimensions, players, currentTurn);
         for (event in stream) {
             QName? stackTop = tagStack.top;
-            if (is StartElement event, XMLHelper.isSPStartElement(event)) {
+            if (is StartElement event, isSPStartElement(event)) {
                 String type = event.name.localPart;
                 if ("row" == type || isFutureTag(event, warner)) {
                     tagStack.push(event.name);
@@ -294,40 +293,40 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
                     IllegalStateException("Random text outside any tile")));
             }
         }
-        if (XMLHelper.hasAttribute(mapTag, "current_player")) {
+        if (hasAttribute(mapTag, "current_player")) {
             retval.setCurrentPlayer(players.getPlayer(
-                XMLHelper.getIntegerAttribute(mapTag, "current_player")));
-        } else if (XMLHelper.hasAttribute(element, "current_player")) {
+                getIntegerAttribute(mapTag, "current_player")));
+        } else if (hasAttribute(element, "current_player")) {
             retval.setCurrentPlayer(players.getPlayer(
-                XMLHelper.getIntegerAttribute(element, "current_player")));
+                getIntegerAttribute(element, "current_player")));
         }
         return retval;
     }
     Player readPlayer(StartElement element, QName parent, JIterable<XMLEvent> stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
-        XMLHelper.requireTag(element, parent, "player");
-        XMLHelper.requireNonEmptyAttribute(element, "number", true, warner);
-        XMLHelper.requireNonEmptyAttribute(element, "code_name", true, warner);
-        XMLHelper.spinUntilEnd(element.name, stream);
-        return PlayerImpl(XMLHelper.getIntegerAttribute(element, "number"),
-            XMLHelper.getAttribute(element, "code_name"));
+        requireTag(element, parent, "player");
+        requireNonEmptyAttribute(element, "number", true, warner);
+        requireNonEmptyAttribute(element, "code_name", true, warner);
+        spinUntilEnd(element.name, stream);
+        return PlayerImpl(getIntegerAttribute(element, "number"),
+            getAttribute(element, "code_name"));
     }
     void parseOrders(StartElement element, IUnit unit, JIterable<XMLEvent> stream) {
-        Integer turn = XMLHelper.getIntegerAttribute(element, "turn", -1);
-        unit.setOrders(turn, XMLHelper.getTextUntil(element.name, stream));
+        Integer turn = getIntegerAttribute(element, "turn", -1);
+        unit.setOrders(turn, getTextUntil(element.name, stream));
     }
     void parseResults(StartElement element, IUnit unit, JIterable<XMLEvent> stream) {
-        Integer turn = XMLHelper.getIntegerAttribute(element, "turn", -1);
-        unit.setResults(turn, XMLHelper.getTextUntil(element.name, stream));
+        Integer turn = getIntegerAttribute(element, "turn", -1);
+        unit.setResults(turn, getTextUntil(element.name, stream));
     }
     IUnit readUnit(StartElement element, QName parent, JIterable<XMLEvent> stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
-        XMLHelper.requireTag(element, parent, "unit");
-        XMLHelper.requireNonEmptyAttribute(element, "name", false, warner);
-        XMLHelper.requireNonEmptyAttribute(element, "owner", false, warner);
+        requireTag(element, parent, "unit");
+        requireNonEmptyAttribute(element, "name", false, warner);
+        requireNonEmptyAttribute(element, "owner", false, warner);
         variable String? temp = null;
         try {
-            temp = XMLHelper.getAttrWithDeprecatedForm(element, "kind", "type", warner);
+            temp = getAttrWithDeprecatedForm(element, "kind", "type", warner);
         } catch (MissingPropertyException except) {
             warner.warn(except);
         }
@@ -335,14 +334,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
         if (kind.empty) {
             warner.warn(MissingPropertyException(element, "kind"));
         }
-        Unit retval = XMLHelper.setImage(Unit(
-            XMLHelper.getPlayerOrIndependent(element, warner, players), kind,
-            XMLHelper.getAttribute(element, "name", ""),
-            XMLHelper.getOrGenerateID(element, warner, idFactory)), element, warner);
-        retval.portrait = XMLHelper.getAttribute(element, "portrait", "");
+        Unit retval = setImage(Unit(
+            getPlayerOrIndependent(element, warner, players), kind,
+            getAttribute(element, "name", ""),
+            getOrGenerateID(element, warner, idFactory)), element, warner);
+        retval.portrait = getAttribute(element, "portrait", "");
         StringBuilder orders = StringBuilder();
         for (event in stream) {
-            if (is StartElement event, XMLHelper.isSPStartElement(event)) {
+            if (is StartElement event, isSPStartElement(event)) {
                 if ("orders" == event.name.localPart.lowercased) {
                     parseOrders(event, retval, stream);
                     continue;
@@ -370,16 +369,16 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
     }
     Fortress readFortress(StartElement element, QName parent, JIterable<XMLEvent> stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
-        XMLHelper.requireTag(element, parent, "fortress");
-        XMLHelper.requireNonEmptyAttribute(element, "owner", false, warner);
-        XMLHelper.requireNonEmptyAttribute(element, "name", false, warner);
+        requireTag(element, parent, "fortress");
+        requireNonEmptyAttribute(element, "owner", false, warner);
+        requireNonEmptyAttribute(element, "name", false, warner);
         Fortress retval = Fortress(
-            XMLHelper.getPlayerOrIndependent(element, warner, players),
-            XMLHelper.getAttribute(element, "name", ""),
-            XMLHelper.getOrGenerateID(element, warner, idFactory),
-            TownSize.parseTownSize(XMLHelper.getAttribute(element, "size", "small")));
+            getPlayerOrIndependent(element, warner, players),
+            getAttribute(element, "name", ""),
+            getOrGenerateID(element, warner, idFactory),
+            TownSize.parseTownSize(getAttribute(element, "size", "small")));
         for (event in stream) {
-            if (is StartElement event, XMLHelper.isSPStartElement(event)) {
+            if (is StartElement event, isSPStartElement(event)) {
                 if (is FortressMember child = readSPObject(event, element.name, stream,
                         players, warner, idFactory)) {
                     retval.addMember(child);
@@ -390,8 +389,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
                 break;
             }
         }
-        retval.portrait = XMLHelper.getAttribute(element, "portrait", "");
-        return XMLHelper.setImage(retval, element, warner);
+        retval.portrait = getAttribute(element, "portrait", "");
+        return setImage(retval, element, warner);
     }
     readers = map {
         "adventure"->readAdventure,
@@ -449,7 +448,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
         IMutablePlayerCollection players = PlayerCollection();
         IDRegistrar idFactory = IDFactory();
         for (event in eventReader) {
-            if (is StartElement event, XMLHelper.isSPStartElement(event)) {
+            if (is StartElement event, isSPStartElement(event)) {
                 Object retval = readSPObject(event, QName("root"), eventReader, players,
                     warner, idFactory);
 //                assert (is Type retval);

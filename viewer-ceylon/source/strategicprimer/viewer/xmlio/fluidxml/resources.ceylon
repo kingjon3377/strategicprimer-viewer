@@ -1,6 +1,3 @@
-import controller.map.fluidxml {
-    XMLHelper
-}
 import controller.map.formatexceptions {
     MissingPropertyException,
     DeprecatedPropertyException
@@ -57,9 +54,9 @@ import util {
 }
 ResourcePile readResource(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "resource");
-    XMLHelper.spinUntilEnd(element.name, stream);
-    String quantityStr = XMLHelper.getAttribute(element, "quantity");
+    requireTag(element, parent, "resource");
+    spinUntilEnd(element.name, stream);
+    String quantityStr = getAttribute(element, "quantity");
     JNumber quantity;
     if (quantityStr.contains(".")) {
         quantity = BigDecimal(quantityStr);
@@ -72,85 +69,85 @@ ResourcePile readResource(StartElement element, QName parent, JIterable<XMLEvent
         }
     }
     ResourcePile retval = ResourcePile(
-        XMLHelper.getOrGenerateID(element, warner, idFactory),
-        XMLHelper.getAttribute(element, "kind"),
-        XMLHelper.getAttribute(element, "contents"),
-        Quantity(quantity, XMLHelper.getAttribute(element, "unit", "")));
-    if (XMLHelper.hasAttribute(element, "created")) {
-        retval.created = XMLHelper.getIntegerAttribute(element, "created");
+        getOrGenerateID(element, warner, idFactory),
+        getAttribute(element, "kind"),
+        getAttribute(element, "contents"),
+        Quantity(quantity, getAttribute(element, "unit", "")));
+    if (hasAttribute(element, "created")) {
+        retval.created = getIntegerAttribute(element, "created");
     }
-    return XMLHelper.setImage(retval, element, warner);
+    return setImage(retval, element, warner);
 }
 
 CacheFixture readCache(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "cache");
-    XMLHelper.spinUntilEnd(element.name, stream);
-    return XMLHelper.setImage(
-        CacheFixture(XMLHelper.getAttribute(element, "kind"),
-            XMLHelper.getAttribute(element, "contents"),
-            XMLHelper.getOrGenerateID(element, warner, idFactory)),
+    requireTag(element, parent, "cache");
+    spinUntilEnd(element.name, stream);
+    return setImage(
+        CacheFixture(getAttribute(element, "kind"),
+            getAttribute(element, "contents"),
+            getOrGenerateID(element, warner, idFactory)),
         element, warner);
 }
 
 Grove readGrove(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "grove");
-    XMLHelper.spinUntilEnd(element.name, stream);
+    requireTag(element, parent, "grove");
+    spinUntilEnd(element.name, stream);
     Boolean cultivated;
-    if (XMLHelper.hasAttribute(element, "cultivated"),
-            is Boolean temp = Boolean.parse(XMLHelper.getAttribute(element, "cultivated"))) {
+    if (hasAttribute(element, "cultivated"),
+            is Boolean temp = Boolean.parse(getAttribute(element, "cultivated"))) {
         cultivated = temp;
-    } else if (XMLHelper.hasAttribute(element, "wild"),
-            is Boolean temp = Boolean.parse(XMLHelper.getAttribute(element, "wild"))) {
+    } else if (hasAttribute(element, "wild"),
+            is Boolean temp = Boolean.parse(getAttribute(element, "wild"))) {
         warner.warn(DeprecatedPropertyException(element, "wild", "cultivated"));
         cultivated = !temp;
     } else {
         throw MissingPropertyException(element, "cultivated");
     }
-    return XMLHelper.setImage(
+    return setImage(
         Grove(false, cultivated,
-            XMLHelper.getAttrWithDeprecatedForm(element, "kind", "tree", warner),
-            XMLHelper.getOrGenerateID(element, warner, idFactory)),
+            getAttrWithDeprecatedForm(element, "kind", "tree", warner),
+            getOrGenerateID(element, warner, idFactory)),
         element, warner);
 }
 
 Grove readOrchard(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "orchard");
-    XMLHelper.spinUntilEnd(element.name, stream);
+    requireTag(element, parent, "orchard");
+    spinUntilEnd(element.name, stream);
     Boolean cultivated;
-    if (XMLHelper.hasAttribute(element, "cultivated"),
-        is Boolean temp = Boolean.parse(XMLHelper.getAttribute(element, "cultivated"))) {
+    if (hasAttribute(element, "cultivated"),
+        is Boolean temp = Boolean.parse(getAttribute(element, "cultivated"))) {
         cultivated = temp;
-    } else if (XMLHelper.hasAttribute(element, "wild"),
-        is Boolean temp = Boolean.parse(XMLHelper.getAttribute(element, "wild"))) {
+    } else if (hasAttribute(element, "wild"),
+        is Boolean temp = Boolean.parse(getAttribute(element, "wild"))) {
         warner.warn(DeprecatedPropertyException(element, "wild", "cultivated"));
         cultivated = !temp;
     } else {
         throw MissingPropertyException(element, "cultivated");
     }
-    return XMLHelper.setImage(
+    return setImage(
         Grove(true, cultivated,
-            XMLHelper.getAttrWithDeprecatedForm(element, "kind", "tree", warner),
-            XMLHelper.getOrGenerateID(element, warner, idFactory)),
+            getAttrWithDeprecatedForm(element, "kind", "tree", warner),
+            getOrGenerateID(element, warner, idFactory)),
         element, warner);
 }
 
 Meadow readMeadow(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "meadow");
-    XMLHelper.spinUntilEnd(element.name, stream);
-    Integer id = XMLHelper.getOrGenerateID(element, warner, idFactory);
-    if (!XMLHelper.hasAttribute(element, "status")) {
+    requireTag(element, parent, "meadow");
+    spinUntilEnd(element.name, stream);
+    Integer id = getOrGenerateID(element, warner, idFactory);
+    if (!hasAttribute(element, "status")) {
         warner.warn(MissingPropertyException(element, "status"));
     }
-    value cultivated = Boolean.parse(XMLHelper.getAttribute(element, "cultivated"));
+    value cultivated = Boolean.parse(getAttribute(element, "cultivated"));
     if (is Boolean cultivated) {
-        return XMLHelper.setImage(
-            Meadow(XMLHelper.getAttribute(element, "kind"), false, cultivated,
+        return setImage(
+            Meadow(getAttribute(element, "kind"), false, cultivated,
                 id, FieldStatus.parse(
-                    XMLHelper.getAttribute(element, "status",
+                    getAttribute(element, "status",
                         FieldStatus.random(id).string))), element, warner);
     } else {
         throw MissingPropertyException(element, "cultivated", cultivated);
@@ -159,18 +156,18 @@ Meadow readMeadow(StartElement element, QName parent, JIterable<XMLEvent> stream
 
 Meadow readField(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "field");
-    XMLHelper.spinUntilEnd(element.name, stream);
-    Integer id = XMLHelper.getOrGenerateID(element, warner, idFactory);
-    if (!XMLHelper.hasAttribute(element, "status")) {
+    requireTag(element, parent, "field");
+    spinUntilEnd(element.name, stream);
+    Integer id = getOrGenerateID(element, warner, idFactory);
+    if (!hasAttribute(element, "status")) {
         warner.warn(MissingPropertyException(element, "status"));
     }
-    value cultivated = Boolean.parse(XMLHelper.getAttribute(element, "cultivated"));
+    value cultivated = Boolean.parse(getAttribute(element, "cultivated"));
     if (is Boolean cultivated) {
-        return XMLHelper.setImage(
-            Meadow(XMLHelper.getAttribute(element, "kind"), true, cultivated,
+        return setImage(
+            Meadow(getAttribute(element, "kind"), true, cultivated,
                 id, FieldStatus.parse(
-                    XMLHelper.getAttribute(element, "status",
+                    getAttribute(element, "status",
                         FieldStatus.random(id).string))), element, warner);
     } else {
         throw MissingPropertyException(element, "cultivated", cultivated);
@@ -179,26 +176,26 @@ Meadow readField(StartElement element, QName parent, JIterable<XMLEvent> stream,
 
 Mine readMine(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "mine");
-    XMLHelper.spinUntilEnd(element.name, stream);
-    return XMLHelper.setImage(
+    requireTag(element, parent, "mine");
+    spinUntilEnd(element.name, stream);
+    return setImage(
         Mine(
-            XMLHelper.getAttrWithDeprecatedForm(element, "kind", "product", warner),
-            TownStatus.parseTownStatus(XMLHelper.getAttribute(element, "status")),
-            XMLHelper.getOrGenerateID(element, warner, idFactory)), element, warner);
+            getAttrWithDeprecatedForm(element, "kind", "product", warner),
+            TownStatus.parseTownStatus(getAttribute(element, "status")),
+            getOrGenerateID(element, warner, idFactory)), element, warner);
 }
 
 MineralVein readMineral(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "mineral");
-    XMLHelper.spinUntilEnd(element.name, stream);
-    value exposed = Boolean.parse(XMLHelper.getAttribute(element, "exposed"));
+    requireTag(element, parent, "mineral");
+    spinUntilEnd(element.name, stream);
+    value exposed = Boolean.parse(getAttribute(element, "exposed"));
     if (is Boolean exposed) {
-        return XMLHelper.setImage(
+        return setImage(
             MineralVein(
-                XMLHelper.getAttrWithDeprecatedForm(element, "kind", "mineral", warner),
-                exposed, XMLHelper.getIntegerAttribute(element, "dc"),
-                XMLHelper.getOrGenerateID(element, warner, idFactory)), element, warner);
+                getAttrWithDeprecatedForm(element, "kind", "mineral", warner),
+                exposed, getIntegerAttribute(element, "dc"),
+                getOrGenerateID(element, warner, idFactory)), element, warner);
     } else {
         throw MissingPropertyException(element, "exposed", exposed);
     }
@@ -206,51 +203,51 @@ MineralVein readMineral(StartElement element, QName parent, JIterable<XMLEvent> 
 
 Shrub readShrub(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "shrub");
-    XMLHelper.spinUntilEnd(element.name, stream);
-    return XMLHelper.setImage(Shrub(
-        XMLHelper.getAttrWithDeprecatedForm(element, "kind", "shrub", warner),
-        XMLHelper.getOrGenerateID(element, warner, idFactory)),
+    requireTag(element, parent, "shrub");
+    spinUntilEnd(element.name, stream);
+    return setImage(Shrub(
+        getAttrWithDeprecatedForm(element, "kind", "shrub", warner),
+        getOrGenerateID(element, warner, idFactory)),
         element, warner);
 }
 
 StoneDeposit readStone(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "stone");
-    XMLHelper.spinUntilEnd(element.name, stream);
-    return XMLHelper.setImage(
+    requireTag(element, parent, "stone");
+    spinUntilEnd(element.name, stream);
+    return setImage(
         StoneDeposit(StoneKind.parseStoneKind(
-            XMLHelper.getAttrWithDeprecatedForm(element, "kind", "stone", warner)),
-            XMLHelper.getIntegerAttribute(element, "dc"),
-            XMLHelper.getOrGenerateID(element, warner, idFactory)),
+            getAttrWithDeprecatedForm(element, "kind", "stone", warner)),
+            getIntegerAttribute(element, "dc"),
+            getOrGenerateID(element, warner, idFactory)),
         element, warner);
 }
 
 void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is ResourcePile obj) {
-        XMLHelper.writeTag(ostream, "resource", indent, true);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeAttribute(ostream, "kind", obj.kind);
-        XMLHelper.writeAttribute(ostream, "contents", obj.contents);
+        writeTag(ostream, "resource", indent, true);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeAttribute(ostream, "kind", obj.kind);
+        writeAttribute(ostream, "contents", obj.contents);
         switch (quantity = obj.quantity.number)
         case (is JInteger) {
-            XMLHelper.writeIntegerAttribute(ostream, "quantity", quantity.intValue());
+            writeIntegerAttribute(ostream, "quantity", quantity.intValue());
         }
         case (is BigDecimal) {
             if (quantity.scale() > 0) {
-                XMLHelper.writeAttribute(ostream, "quantity", quantity.toPlainString());
+                writeAttribute(ostream, "quantity", quantity.toPlainString());
             } else {
-                XMLHelper.writeIntegerAttribute(ostream, "quantity", quantity.intValue());
+                writeIntegerAttribute(ostream, "quantity", quantity.intValue());
             }
         }
         else {
             throw IllegalArgumentException("ResourcePile with non-Integer, non-BigDecimal quantity");
         }
-        XMLHelper.writeAttribute(ostream, "unit", obj.quantity.units);
+        writeAttribute(ostream, "unit", obj.quantity.units);
         if (obj.created >= 0) {
-            XMLHelper.writeIntegerAttribute(ostream, "created", obj.created);
+            writeIntegerAttribute(ostream, "created", obj.created);
         }
-        XMLHelper.writeImage(ostream, obj);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write ResourcePiles");
     }
@@ -258,11 +255,11 @@ void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 void writeCache(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is CacheFixture obj) {
-        XMLHelper.writeTag(ostream, "cache", indent, true);
-        XMLHelper.writeAttribute(ostream, "kind", obj.kind);
-        XMLHelper.writeAttribute(ostream, "contents", obj.contents);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeImage(ostream, obj);
+        writeTag(ostream, "cache", indent, true);
+        writeAttribute(ostream, "kind", obj.kind);
+        writeAttribute(ostream, "contents", obj.contents);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write CacheFixtures");
     }
@@ -270,12 +267,12 @@ void writeCache(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 void writeMeadow(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Meadow obj) {
-        XMLHelper.writeTag(ostream, (obj.field) then "field" else "meadow", indent, true);
-        XMLHelper.writeAttribute(ostream, "kind", obj.kind);
-        XMLHelper.writeBooleanAttribute(ostream, "cultivated", obj.cultivated);
-        XMLHelper.writeAttribute(ostream, "status", obj.status.string);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeImage(ostream, obj);
+        writeTag(ostream, (obj.field) then "field" else "meadow", indent, true);
+        writeAttribute(ostream, "kind", obj.kind);
+        writeBooleanAttribute(ostream, "cultivated", obj.cultivated);
+        writeAttribute(ostream, "status", obj.status.string);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Meadows");
     }
@@ -283,11 +280,11 @@ void writeMeadow(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 void writeGrove(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Grove obj) {
-        XMLHelper.writeTag(ostream, (obj.orchard) then "orchard" else "grove", indent, true);
-        XMLHelper.writeBooleanAttribute(ostream, "cultivated", obj.cultivated);
-        XMLHelper.writeAttribute(ostream, "kind", obj.kind);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeImage(ostream, obj);
+        writeTag(ostream, (obj.orchard) then "orchard" else "grove", indent, true);
+        writeBooleanAttribute(ostream, "cultivated", obj.cultivated);
+        writeAttribute(ostream, "kind", obj.kind);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Groves");
     }
@@ -295,11 +292,11 @@ void writeGrove(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 void writeMine(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Mine obj) {
-        XMLHelper.writeTag(ostream, "mine", indent, true);
-        XMLHelper.writeAttribute(ostream, "kind", obj.kind);
-        XMLHelper.writeAttribute(ostream, "status", obj.status.string);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeImage(ostream, obj);
+        writeTag(ostream, "mine", indent, true);
+        writeAttribute(ostream, "kind", obj.kind);
+        writeAttribute(ostream, "status", obj.status.string);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Mines");
     }
@@ -307,12 +304,12 @@ void writeMine(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 void writeMineral(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is MineralVein obj) {
-        XMLHelper.writeTag(ostream, "mineral", indent, true);
-        XMLHelper.writeAttribute(ostream, "kind", obj.kind);
-        XMLHelper.writeBooleanAttribute(ostream, "exposed", obj.exposed);
-        XMLHelper.writeIntegerAttribute(ostream, "dc", obj.dc);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeImage(ostream, obj);
+        writeTag(ostream, "mineral", indent, true);
+        writeAttribute(ostream, "kind", obj.kind);
+        writeBooleanAttribute(ostream, "exposed", obj.exposed);
+        writeIntegerAttribute(ostream, "dc", obj.dc);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write MineralVeins");
     }
@@ -320,11 +317,11 @@ void writeMineral(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 void writeStone(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is StoneDeposit obj) {
-        XMLHelper.writeTag(ostream, "stone", indent, true);
-        XMLHelper.writeAttribute(ostream, "kind", obj.stone().string);
-        XMLHelper.writeIntegerAttribute(ostream, "dc", obj.dc);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeImage(ostream, obj);
+        writeTag(ostream, "stone", indent, true);
+        writeAttribute(ostream, "kind", obj.stone().string);
+        writeIntegerAttribute(ostream, "dc", obj.dc);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write StoneDeposits");
     }

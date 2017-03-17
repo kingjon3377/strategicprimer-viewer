@@ -1,6 +1,3 @@
-import controller.map.fluidxml {
-    XMLHelper
-}
 import controller.map.misc {
     IDRegistrar
 }
@@ -43,74 +40,74 @@ import util {
 AdventureFixture readAdventure(StartElement element, QName parent,
         JIterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "adventure");
+    requireTag(element, parent, "adventure");
     Player player;
-    if (XMLHelper.hasAttribute(element, "owner")) {
-        player = players.getPlayer(XMLHelper.getIntegerAttribute(element, "owner"));
+    if (hasAttribute(element, "owner")) {
+        player = players.getPlayer(getIntegerAttribute(element, "owner"));
     } else {
         player = players.independent;
     }
-    AdventureFixture retval = XMLHelper.setImage(AdventureFixture(player,
-        XMLHelper.getAttribute(element, "brief", ""),
-        XMLHelper.getAttribute(element, "full", ""),
-        XMLHelper.getOrGenerateID(element, warner, idFactory)), element, warner);
-    XMLHelper.spinUntilEnd(element.name, stream);
+    AdventureFixture retval = setImage(AdventureFixture(player,
+        getAttribute(element, "brief", ""),
+        getAttribute(element, "full", ""),
+        getOrGenerateID(element, warner, idFactory)), element, warner);
+    spinUntilEnd(element.name, stream);
     return retval;
 }
 
 Portal readPortal(StartElement element, QName parent,
         JIterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "portal");
-    Point location = PointFactory.point(XMLHelper.getIntegerAttribute(element, "row"),
-        XMLHelper.getIntegerAttribute(element, "column"));
-    Portal retval = XMLHelper.setImage(Portal(
-        XMLHelper.getAttribute(element, "world"), location,
-        XMLHelper.getOrGenerateID(element, warner, idFactory)),
+    requireTag(element, parent, "portal");
+    Point location = PointFactory.point(getIntegerAttribute(element, "row"),
+        getIntegerAttribute(element, "column"));
+    Portal retval = setImage(Portal(
+        getAttribute(element, "world"), location,
+        getOrGenerateID(element, warner, idFactory)),
         element, warner);
-    XMLHelper.spinUntilEnd(element.name, stream);
+    spinUntilEnd(element.name, stream);
     return retval;
 }
 
 Cave readCave(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "cave");
-    Integer idNum = XMLHelper.getOrGenerateID(element, warner, idFactory);
-    Cave retval = Cave(XMLHelper.getIntegerAttribute(element, "dc"), idNum);
-    XMLHelper.spinUntilEnd(element.name, stream);
-    return XMLHelper.setImage(retval, element, warner);
+    requireTag(element, parent, "cave");
+    Integer idNum = getOrGenerateID(element, warner, idFactory);
+    Cave retval = Cave(getIntegerAttribute(element, "dc"), idNum);
+    spinUntilEnd(element.name, stream);
+    return setImage(retval, element, warner);
 }
 
 Battlefield readBattlefield(StartElement element, QName parent,
         JIterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "battlefield");
-    Integer idNum = XMLHelper.getOrGenerateID(element, warner, idFactory);
-    Battlefield retval = Battlefield(XMLHelper.getIntegerAttribute(element, "dc"), idNum);
-    XMLHelper.spinUntilEnd(element.name, stream);
-    return XMLHelper.setImage(retval, element, warner);
+    requireTag(element, parent, "battlefield");
+    Integer idNum = getOrGenerateID(element, warner, idFactory);
+    Battlefield retval = Battlefield(getIntegerAttribute(element, "dc"), idNum);
+    spinUntilEnd(element.name, stream);
+    return setImage(retval, element, warner);
 }
 
 TextFixture readTextFixture(StartElement element, QName parent,
         JIterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "text");
-    return XMLHelper.setImage(TextFixture(XMLHelper.getTextUntil(element.name, stream),
-        XMLHelper.getIntegerAttribute(element, "turn", -1)),
+    requireTag(element, parent, "text");
+    return setImage(TextFixture(getTextUntil(element.name, stream),
+        getIntegerAttribute(element, "turn", -1)),
         element, warner);
 }
 
 void writeAdventure(XMLStreamWriter ostream, Object obj, Integer indent) {
     // TODO: Create helper method for this idiom, to allow us to condense these methods
     if (is AdventureFixture obj) {
-        XMLHelper.writeTag(ostream, "adventure", indent, true);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
+        writeTag(ostream, "adventure", indent, true);
+        writeIntegerAttribute(ostream, "id", obj.id);
         if (!obj.owner.independent) {
-            XMLHelper.writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
+            writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
         }
-        XMLHelper.writeNonEmptyAttribute(ostream, "brief", obj.briefDescription);
-        XMLHelper.writeNonEmptyAttribute(ostream, "full", obj.fullDescription);
-        XMLHelper.writeImage(ostream, obj);
+        writeNonEmptyAttribute(ostream, "brief", obj.briefDescription);
+        writeNonEmptyAttribute(ostream, "full", obj.fullDescription);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write AdventureFixtures");
     }
@@ -118,12 +115,12 @@ void writeAdventure(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 void writePortal(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Portal obj) {
-        XMLHelper.writeTag(ostream, "portal", indent, true);
-        XMLHelper.writeAttribute(ostream, "world", obj.destinationWorld);
-        XMLHelper.writeIntegerAttribute(ostream, "row", obj.destinationCoordinates.row);
-        XMLHelper.writeIntegerAttribute(ostream, "column", obj.destinationCoordinates.col);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeImage(ostream, obj);
+        writeTag(ostream, "portal", indent, true);
+        writeAttribute(ostream, "world", obj.destinationWorld);
+        writeIntegerAttribute(ostream, "row", obj.destinationCoordinates.row);
+        writeIntegerAttribute(ostream, "column", obj.destinationCoordinates.col);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Portals");
     }
@@ -131,10 +128,10 @@ void writePortal(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 void writeCave(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Cave obj) {
-        XMLHelper.writeTag(ostream, "cave", indent, true);
-        XMLHelper.writeIntegerAttribute(ostream, "dc", obj.dc);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeImage(ostream, obj);
+        writeTag(ostream, "cave", indent, true);
+        writeIntegerAttribute(ostream, "dc", obj.dc);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Caves");
     }
@@ -142,10 +139,10 @@ void writeCave(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 void writeBattlefield(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Battlefield obj) {
-        XMLHelper.writeTag(ostream, "battlefield", indent, true);
-        XMLHelper.writeIntegerAttribute(ostream, "dc", obj.dc);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeImage(ostream, obj);
+        writeTag(ostream, "battlefield", indent, true);
+        writeIntegerAttribute(ostream, "dc", obj.dc);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Battlefields");
     }
@@ -153,11 +150,11 @@ void writeBattlefield(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 void writeTextFixture(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is TextFixture obj) {
-        XMLHelper.writeTag(ostream, "text", indent, false);
+        writeTag(ostream, "text", indent, false);
         if (obj.turn != -1) {
-            XMLHelper.writeIntegerAttribute(ostream, "turn", obj.turn);
+            writeIntegerAttribute(ostream, "turn", obj.turn);
         }
-        XMLHelper.writeImage(ostream, obj);
+        writeImage(ostream, obj);
         ostream.writeCharacters(obj.text.trimmed);
         ostream.writeEndElement();
     } else {

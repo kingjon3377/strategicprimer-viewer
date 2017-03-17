@@ -2,9 +2,6 @@ import ceylon.interop.java {
     CeylonIterable
 }
 
-import controller.map.fluidxml {
-    XMLHelper
-}
 import controller.map.formatexceptions {
     UnwantedChildException,
     UnsupportedPropertyException,
@@ -54,15 +51,15 @@ import util {
 }
 Worker readWorker(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "worker");
-    Worker retval = XMLHelper.setImage(
-        Worker(XMLHelper.getAttribute(element, "name"),
-            XMLHelper.getAttribute(element, "race", "human"),
-            XMLHelper.getOrGenerateID(element, warner, idFactory)),
+    requireTag(element, parent, "worker");
+    Worker retval = setImage(
+        Worker(getAttribute(element, "name"),
+            getAttribute(element, "race", "human"),
+            getOrGenerateID(element, warner, idFactory)),
         element, warner);
-    retval.portrait = XMLHelper.getAttribute(element, "portrait", "");
+    retval.portrait = getAttribute(element, "portrait", "");
     for (event in stream) {
-        if (is StartElement event, XMLHelper.isSPStartElement(event)) {
+        if (is StartElement event, isSPStartElement(event)) {
             switch (event.name.localPart)
             case ("job") { retval.addJob(readJob(event, element.name, stream, players, warner, idFactory)); }
             case ("stats") { retval.stats = readStats(event, element.name, stream, players, warner, idFactory); }
@@ -76,14 +73,14 @@ Worker readWorker(StartElement element, QName parent, JIterable<XMLEvent> stream
 
 IJob readJob(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "job");
-    if (XMLHelper.hasAttribute(element, "hours")) {
+    requireTag(element, parent, "job");
+    if (hasAttribute(element, "hours")) {
         warner.warn(UnsupportedPropertyException(element, "hours"));
     }
-    IJob retval = Job(XMLHelper.getAttribute(element, "name"),
-        XMLHelper.getIntegerAttribute(element, "level"));
+    IJob retval = Job(getAttribute(element, "name"),
+        getIntegerAttribute(element, "level"));
     for (event in stream) {
-        if (is StartElement event, XMLHelper.isSPStartElement(event)) {
+        if (is StartElement event, isSPStartElement(event)) {
             if ("skill" == event.name.localPart) {
                 retval.addSkill(readSkill(event, element.name, stream, players, warner, idFactory));
             } else {
@@ -98,50 +95,50 @@ IJob readJob(StartElement element, QName parent, JIterable<XMLEvent> stream,
 
 ISkill readSkill(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "skill");
-    XMLHelper.requireNonEmptyAttribute(element, "name", true, warner);
-    XMLHelper.spinUntilEnd(element.name, stream);
-    return Skill(XMLHelper.getAttribute(element, "name"),
-        XMLHelper.getIntegerAttribute(element, "level"),
-        XMLHelper.getIntegerAttribute(element, "hours"));
+    requireTag(element, parent, "skill");
+    requireNonEmptyAttribute(element, "name", true, warner);
+    spinUntilEnd(element.name, stream);
+    return Skill(getAttribute(element, "name"),
+        getIntegerAttribute(element, "level"),
+        getIntegerAttribute(element, "hours"));
 }
 
 WorkerStats readStats(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "stats");
-    XMLHelper.spinUntilEnd(element.name, stream);
-    return WorkerStats(XMLHelper.getIntegerAttribute(element, "hp"),
-        XMLHelper.getIntegerAttribute(element, "max"),
-        XMLHelper.getIntegerAttribute(element, "str"),
-        XMLHelper.getIntegerAttribute(element, "dex"),
-        XMLHelper.getIntegerAttribute(element, "con"),
-        XMLHelper.getIntegerAttribute(element, "int"),
-        XMLHelper.getIntegerAttribute(element, "wis"),
-        XMLHelper.getIntegerAttribute(element, "cha"));
+    requireTag(element, parent, "stats");
+    spinUntilEnd(element.name, stream);
+    return WorkerStats(getIntegerAttribute(element, "hp"),
+        getIntegerAttribute(element, "max"),
+        getIntegerAttribute(element, "str"),
+        getIntegerAttribute(element, "dex"),
+        getIntegerAttribute(element, "con"),
+        getIntegerAttribute(element, "int"),
+        getIntegerAttribute(element, "wis"),
+        getIntegerAttribute(element, "cha"));
 }
 
-void writeWorker(XMLStreamWriter ostream, Object obj, Integer indent) {
+void writeWorker(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is IWorker obj) {
         WorkerStats? stats = obj.stats;
         Boolean hasJobs = !CeylonIterable(obj).empty;
-        XMLHelper.writeTag(ostream, "worker", indent, !hasJobs && !stats exists);
-        XMLHelper.writeAttribute(ostream, "name", obj.name);
+        writeTag(ostream, "worker", indentation, !hasJobs && !stats exists);
+        writeAttribute(ostream, "name", obj.name);
         if ("human" != obj.race) {
-            XMLHelper.writeAttribute(ostream, "race", obj.race);
+            writeAttribute(ostream, "race", obj.race);
         }
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeImage(ostream, obj);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeImage(ostream, obj);
         if (is HasPortrait obj) {
-            XMLHelper.writeNonEmptyAttribute(ostream, "portrait", obj.portrait);
+            writeNonEmptyAttribute(ostream, "portrait", obj.portrait);
         }
         if (exists stats) {
-            writeStats(ostream, stats, indent + 1);
+            writeStats(ostream, stats, indentation + 1);
         }
         for (job in obj) {
-            writeJob(ostream, job, indent + 1);
+            writeJob(ostream, job, indentation + 1);
         }
         if (hasJobs || stats exists) {
-            XMLHelper.indent(ostream, indent);
+            indent(ostream, indentation);
             ostream.writeEndElement();
         }
     } else {
@@ -149,36 +146,36 @@ void writeWorker(XMLStreamWriter ostream, Object obj, Integer indent) {
     }
 }
 
-void writeStats(XMLStreamWriter ostream, Object obj, Integer indent) {
+void writeStats(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is WorkerStats obj) {
-        XMLHelper.writeTag(ostream, "stats", indent, true);
-        XMLHelper.writeIntegerAttribute(ostream, "hp", obj.hitPoints);
-        XMLHelper.writeIntegerAttribute(ostream, "max", obj.maxHitPoints);
-        XMLHelper.writeIntegerAttribute(ostream, "str", obj.strength);
-        XMLHelper.writeIntegerAttribute(ostream, "dex", obj.dexterity);
-        XMLHelper.writeIntegerAttribute(ostream, "con", obj.constitution);
-        XMLHelper.writeIntegerAttribute(ostream, "int", obj.intelligence);
-        XMLHelper.writeIntegerAttribute(ostream, "wis", obj.wisdom);
-        XMLHelper.writeIntegerAttribute(ostream, "cha", obj.charisma);
+        writeTag(ostream, "stats", indentation, true);
+        writeIntegerAttribute(ostream, "hp", obj.hitPoints);
+        writeIntegerAttribute(ostream, "max", obj.maxHitPoints);
+        writeIntegerAttribute(ostream, "str", obj.strength);
+        writeIntegerAttribute(ostream, "dex", obj.dexterity);
+        writeIntegerAttribute(ostream, "con", obj.constitution);
+        writeIntegerAttribute(ostream, "int", obj.intelligence);
+        writeIntegerAttribute(ostream, "wis", obj.wisdom);
+        writeIntegerAttribute(ostream, "cha", obj.charisma);
     } else {
         throw IllegalArgumentException("Can only write WorkerStats");
     }
 }
 
-void writeJob(XMLStreamWriter ostream, Object obj, Integer indent) {
+void writeJob(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is IJob obj) {
         Boolean hasSkills = !CeylonIterable(obj).empty;
         if (obj.level <= 0, !hasSkills) {
             return;
         }
-        XMLHelper.writeTag(ostream, "job", indent, !hasSkills);
-        XMLHelper.writeAttribute(ostream, "name", obj.name);
-        XMLHelper.writeIntegerAttribute(ostream, "level", obj.level);
+        writeTag(ostream, "job", indentation, !hasSkills);
+        writeAttribute(ostream, "name", obj.name);
+        writeIntegerAttribute(ostream, "level", obj.level);
         for (skill in obj) {
-            writeSkill(ostream, skill, indent + 1);
+            writeSkill(ostream, skill, indentation + 1);
         }
         if (hasSkills) {
-            XMLHelper.indent(ostream, indent);
+            indent(ostream, indentation);
             ostream.writeEndElement();
         }
     } else {
@@ -186,13 +183,13 @@ void writeJob(XMLStreamWriter ostream, Object obj, Integer indent) {
     }
 }
 
-void writeSkill(XMLStreamWriter ostream, Object obj, Integer indent) {
+void writeSkill(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is ISkill obj) {
         if (!obj.empty) {
-            XMLHelper.writeTag(ostream, "skill", indent, true);
-            XMLHelper.writeAttribute(ostream, "name", obj.name);
-            XMLHelper.writeIntegerAttribute(ostream, "level", obj.level);
-            XMLHelper.writeIntegerAttribute(ostream, "hours", obj.hours);
+            writeTag(ostream, "skill", indentation, true);
+            writeAttribute(ostream, "name", obj.name);
+            writeIntegerAttribute(ostream, "level", obj.level);
+            writeIntegerAttribute(ostream, "hours", obj.hours);
         }
     } else {
         throw IllegalArgumentException("Can only write ISkills");
@@ -201,54 +198,54 @@ void writeSkill(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 Animal readAnimal(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
-    XMLHelper.requireTag(element, parent, "animal");
-    XMLHelper.spinUntilEnd(element.name, stream);
+    requireTag(element, parent, "animal");
+    spinUntilEnd(element.name, stream);
     // TODO: support """traces="false""""
-    Boolean traces = XMLHelper.hasAttribute(element, "traces");
+    Boolean traces = hasAttribute(element, "traces");
     Integer id;
-    if (traces, !XMLHelper.hasAttribute(element, "id")) {
+    if (traces, !hasAttribute(element, "id")) {
         id = -1;
     } else {
-        id = XMLHelper.getOrGenerateID(element, warner, idFactory);
+        id = getOrGenerateID(element, warner, idFactory);
     }
-    value talking = Boolean.parse(XMLHelper.getAttribute(element, "talking", "false"));
+    value talking = Boolean.parse(getAttribute(element, "talking", "false"));
     if (is Boolean talking) {
-        return XMLHelper.setImage(
-            Animal(XMLHelper.getAttribute(element, "kind"), traces,
-                talking, XMLHelper.getAttribute(element, "status", "wild"),
+        return setImage(
+            Animal(getAttribute(element, "kind"), traces,
+                talking, getAttribute(element, "status", "wild"),
                 id), element, warner);
     } else {
         throw MissingPropertyException(element, "talking", talking);
     }
 }
 
-void writeAnimal(XMLStreamWriter ostream, Object obj, Integer indent) {
+void writeAnimal(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is Animal obj) {
-        XMLHelper.writeTag(ostream, "animal", indent, true);
-        XMLHelper.writeAttribute(ostream, "kind", obj.kind);
+        writeTag(ostream, "animal", indentation, true);
+        writeAttribute(ostream, "kind", obj.kind);
         if (obj.traces) {
-            XMLHelper.writeAttribute(ostream, "traces", "");
+            writeAttribute(ostream, "traces", "");
         }
         if (obj.talking) {
-            XMLHelper.writeBooleanAttribute(ostream, "talking", true);
+            writeBooleanAttribute(ostream, "talking", true);
         }
         if ("wild" != obj.status) {
-            XMLHelper.writeAttribute(ostream, "status", obj.status);
+            writeAttribute(ostream, "status", obj.status);
         }
         if (!obj.traces) {
-            XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
+            writeIntegerAttribute(ostream, "id", obj.id);
         }
-        XMLHelper.writeImage(ostream, obj);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Animal");
     }
 }
 
-void writeSimpleImmortal(XMLStreamWriter ostream, Object obj, Integer indent) {
+void writeSimpleImmortal(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is SimpleImmortal obj) {
-        XMLHelper.writeTag(ostream, obj.kind, indent, true);
-        XMLHelper.writeIntegerAttribute(ostream, "id", obj.id);
-        XMLHelper.writeImage(ostream, obj);
+        writeTag(ostream, obj.kind, indentation, true);
+        writeIntegerAttribute(ostream, "id", obj.id);
+        writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write SimpleImmortals");
     }
