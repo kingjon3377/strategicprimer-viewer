@@ -9,8 +9,7 @@ import ceylon.interop.java {
 
 import controller.map.fluidxml {
     FluidXMLReader,
-    XMLHelper,
-    FluidUnitMemberHandler
+    XMLHelper
 }
 import controller.map.formatexceptions {
     MissingPropertyException,
@@ -404,7 +403,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
         simpleFixtureReader("hill", Hill),
         simpleFixtureReader("oasis", Oasis),
         simpleFixtureReader("sandbar", Sandbar),
-        "animal"->FluidUnitMemberHandler.readAnimal,
+        "animal"->readAnimal,
         simpleHasKindReader("centaur", Centaur),
         simpleHasKindReader("dragon", Dragon),
         simpleHasKindReader("fairy", Fairy),
@@ -421,10 +420,10 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
         "mineral"->readMineral,
         "shrub"->readShrub,
         "stone"->readStone,
-        "worker"->FluidUnitMemberHandler.readWorker,
-        "job"->FluidUnitMemberHandler.readJob,
-        "skill"->FluidUnitMemberHandler.readSkill,
-        "stats"->FluidUnitMemberHandler.readStats,
+        "worker"->readWorker,
+        "job"->readJob,
+        "skill"->readSkill,
+        "stats"->readStats,
         "unit"->readUnit,
         "fortress"->readFortress,
         "town"->readTown,

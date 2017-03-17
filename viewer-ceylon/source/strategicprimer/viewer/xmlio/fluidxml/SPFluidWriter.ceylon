@@ -11,7 +11,6 @@ import ceylon.regex {
 }
 
 import controller.map.fluidxml {
-    FluidUnitMemberHandler,
     XMLHelper
 }
 import controller.map.iointerfaces {
@@ -320,12 +319,12 @@ shared class SPFluidWriter() satisfies SPWriter {
         simpleFixtureWriter(`Hill`, "hill"),
         simpleFixtureWriter(`Oasis`, "oasis"),
         simpleFixtureWriter(`Sandbar`, "sandbar"),
-        `Animal`->FluidUnitMemberHandler.writeAnimal,
+        `Animal`->writeAnimal,
         simpleFixtureWriter(`Centaur`, "centaur"),
         simpleFixtureWriter(`Dragon`, "dragon"),
         simpleFixtureWriter(`Fairy`, "fairy"),
         simpleFixtureWriter(`Giant`, "giant"),
-        `SimpleImmortal`->FluidUnitMemberHandler.writeSimpleImmortal,
+        `SimpleImmortal`->writeSimpleImmortal,
         `TextFixture`->writeTextFixture,
         simpleFixtureWriter(`Implement`, "implement"),
         `ResourcePile`->writeResource,
@@ -336,10 +335,10 @@ shared class SPFluidWriter() satisfies SPWriter {
         `MineralVein`->writeMineral,
         simpleFixtureWriter(`Shrub`, "shrub"),
         `StoneDeposit`->writeStone,
-        `IWorker`->FluidUnitMemberHandler.writeWorker,
-        `IJob`->FluidUnitMemberHandler.writeJob,
-        `ISkill`->FluidUnitMemberHandler.writeSkill,
-        `WorkerStats`->FluidUnitMemberHandler.writeStats,
+        `IWorker`->writeWorker,
+        `IJob`->writeJob,
+        `ISkill`->writeSkill,
+        `WorkerStats`->writeStats,
         `IUnit`->writeUnit,
         `Fortress`->writeFortress,
         `Village`->writeVillage,
