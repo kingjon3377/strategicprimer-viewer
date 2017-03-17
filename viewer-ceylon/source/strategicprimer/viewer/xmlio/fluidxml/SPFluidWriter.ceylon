@@ -110,15 +110,13 @@ Regex snugEndTag = regex("([^ ])/>", true);
 shared class SPFluidWriter() satisfies SPWriter {
     alias LocalXMLWriter=>Anything(XMLStreamWriter, Object, Integer);
     late Map<ClassOrInterface<Anything>, LocalXMLWriter> writers;
-    void writeSPObjectImpl(XMLStreamWriter ostream, Anything obj, Integer indent) {
-        // FIXME: Find a way to implement ClassStream's algorithm using the Ceylon
-        // metamodel instead of iterating over keys in the map.
-        for (key->writer in writers) {
-            if (exists obj, key.typeOf(obj)) {
+    void writeSPObjectImpl(XMLStreamWriter ostream, Object obj, Integer indent) {
+        for (type in typeStream(obj)) {
+            if (exists writer = writers.get(type)) {
                 writer(ostream, obj, indent);
+                return;
             }
         }
-        throw IllegalArgumentException("Not an object we know how to write");
     }
     shared actual void writeSPObject(JAppendable ostream, Object obj) {
         XMLOutputFactory xof = XMLOutputFactory.newInstance();
