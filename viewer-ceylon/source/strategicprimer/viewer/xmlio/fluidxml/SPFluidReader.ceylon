@@ -7,9 +7,6 @@ import ceylon.interop.java {
     CeylonIterable
 }
 
-import controller.map.fluidxml {
-    FluidXMLReader
-}
 import controller.map.formatexceptions {
     MissingPropertyException,
     MissingChildException,
@@ -108,10 +105,10 @@ import util {
     IteratorWrapper
 }
 "The main reader-from-XML class in the 'fluid XML' implementation."
-shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
+shared class SPFluidReader() satisfies IMapReader&ISPReader {
     alias LocalXMLReader=>Object(StartElement, QName, JIterable<XMLEvent>, IMutablePlayerCollection, Warning, IDRegistrar);
     late Map<String, LocalXMLReader> readers;
-    shared actual Object readSPObject(StartElement element, QName parent,
+    Object readSPObject(StartElement element, QName parent,
             JIterable<XMLEvent> stream, IMutablePlayerCollection players, Warning warner,
             IDRegistrar idFactory) {
         String namespace = element.name.namespaceURI;
