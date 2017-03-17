@@ -1,12 +1,35 @@
-import model.misc {
-    IDriverModel
+import ceylon.collection {
+    ArrayList,
+    Queue,
+    LinkedList,
+    MutableSet,
+    HashSet,
+    MutableList
 }
+import ceylon.math.float {
+    sqrt,
+    ceiling
+}
+
+import java.io {
+    IOException
+}
+import java.lang {
+    JIterable=Iterable,
+    JDouble=Double,
+    JString=String
+}
+import java.util {
+    JList=List
+}
+
+import lovelace.util.common {
+    todo
+}
+
 import model.exploration {
     HuntingModel,
     SurroundingPointIterable
-}
-import java.io {
-    IOException
 }
 import model.map {
     Point,
@@ -20,43 +43,21 @@ import model.map {
     DistanceComparator,
     HasName
 }
-import ceylon.interop.java {
-    JavaList
-}
-import ceylon.collection {
-    ArrayList,
-    Queue,
-    LinkedList,
-    MutableSet,
-    HashSet,
-    MutableList
-}
-import java.lang {
-    JIterable = Iterable,
-    JDouble = Double,
-    JString = String
+import model.map.fixtures {
+    Ground
 }
 import model.map.fixtures.mobile {
     IWorker
 }
-import lovelace.util.common {
-    todo
-}
-import ceylon.math.float {
-    sqrt,
-    ceiling
-}
-import util {
-    Quantity
-}
-import model.map.fixtures {
-    Ground
-}
 import model.map.fixtures.terrain {
     Forest
 }
-import java.util {
-    JList=List
+import model.misc {
+    IDriverModel
+}
+
+import util {
+    Quantity
 }
 "Models of (game statistics for) herding."
 interface HerdModel of PoultryModel | MammalModel {

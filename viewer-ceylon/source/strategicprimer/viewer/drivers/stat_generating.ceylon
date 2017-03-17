@@ -11,9 +11,7 @@ import ceylon.file {
     Directory
 }
 import ceylon.interop.java {
-    JavaList,
     toIntegerArray,
-    javaString,
     CeylonList
 }
 import ceylon.math.float {
@@ -32,8 +30,6 @@ import java.nio.file {
     JPaths=Paths
 }
 import java.util {
-    JList=List,
-    JOptional=Optional,
     Random
 }
 

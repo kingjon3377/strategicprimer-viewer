@@ -1,18 +1,27 @@
+import ceylon.collection {
+    ArrayList,
+    MutableList
+}
+import ceylon.interop.java {
+    CeylonIterable,
+    JavaList
+}
+
+import java.lang {
+    JInteger=Integer
+}
+
 import lovelace.util.common {
     todo
+}
+
+import model.exploration {
+    IExplorationModel,
+    HuntingModel
 }
 import model.listeners {
     MovementCostListener,
     MovementCostSource
-}
-import model.map.fixtures.terrain {
-    Forest
-}
-import java.util {
-    JList=List
-}
-import model.map.fixtures {
-    Ground
 }
 import model.map {
     HasOwner,
@@ -22,30 +31,21 @@ import model.map {
     Player,
     Point
 }
-import java.lang {
-    JInteger=Integer
-}
-import ceylon.collection {
-    ArrayList,
-    MutableList
-}
-import model.map.fixtures.resources {
-    CacheFixture
-}
-import ceylon.interop.java {
-    CeylonIterable,
-    JavaList,
-    CeylonList
+import model.map.fixtures {
+    Ground
 }
 import model.map.fixtures.mobile {
     IUnit,
     SimpleMovement,
     Animal
 }
-import model.exploration {
-    IExplorationModel,
-    HuntingModel
+import model.map.fixtures.resources {
+    CacheFixture
 }
+import model.map.fixtures.terrain {
+    Forest
+}
+
 import strategicprimer.viewer.drivers {
     ICLIHelper
 }

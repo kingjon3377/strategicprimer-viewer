@@ -1,28 +1,13 @@
-import model.map {
-    IMutableMapNG,
-    TileFixture,
-    IFixture,
-    FixtureIterable
-}
 import ceylon.collection {
     MutableList,
     ArrayList,
     MutableMap,
     HashMap
 }
-import model.map.fixtures {
-    Ground,
-    ResourcePile
-}
-import model.map.fixtures.mobile {
-    IUnit
-}
-import model.map.fixtures.resources {
-    CacheFixture
-}
 import ceylon.language.meta {
     type
 }
+
 import java.lang {
     JIterable=Iterable,
     JNumber=Number,
@@ -31,18 +16,32 @@ import java.lang {
     JFloat=Float,
     JDouble=Double
 }
-import ceylon.interop.java {
-    CeylonIterable
+import java.math {
+    BigDecimal,
+    BigInteger
+}
+
+import model.map {
+    IMutableMapNG,
+    TileFixture,
+    IFixture,
+    FixtureIterable
+}
+import model.map.fixtures {
+    ResourcePile
+}
+import model.map.fixtures.mobile {
+    IUnit
+}
+import model.map.fixtures.resources {
+    CacheFixture
 }
 import model.map.fixtures.towns {
     Fortress
 }
+
 import util {
     Quantity
-}
-import java.math {
-    BigDecimal,
-    BigInteger
 }
 """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests, of the same
     kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile in a
