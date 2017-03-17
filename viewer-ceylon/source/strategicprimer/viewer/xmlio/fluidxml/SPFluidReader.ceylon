@@ -113,7 +113,6 @@ import util {
     Warning,
     IteratorWrapper
 }
-// FIXME: rename this file to match this class
 "The main reader-from-XML class in the 'fluid XML' implementation."
 shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
     alias LocalXMLReader=>Object(StartElement, QName, JIterable<XMLEvent>, IMutablePlayerCollection, Warning, IDRegistrar);
