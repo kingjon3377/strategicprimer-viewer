@@ -11,8 +11,6 @@ import ceylon.regex {
 }
 
 import controller.map.fluidxml {
-    FluidXMLWriter,
-    FluidTerrainHandler,
     FluidUnitMemberHandler,
     FluidTownHandler,
     XMLHelper
@@ -312,14 +310,14 @@ shared class SPFluidWriter() satisfies SPWriter {
         }
     }
     writers = map<ClassOrInterface<Anything>, LocalXMLWriter> {
-        `River`->FluidTerrainHandler.writeRivers,
-        `RiverFixture`->FluidTerrainHandler.writeRivers,
+        `River`->writeRivers,
+        `RiverFixture`->writeRivers,
         `AdventureFixture`->writeAdventure,
         `Portal`->writePortal,
         `Battlefield`->writeBattlefield,
         `Cave`->writeCave,
-        `Ground`->FluidTerrainHandler.writeGround,
-        `Forest`->FluidTerrainHandler.writeForest,
+        `Ground`->writeGround,
+        `Forest`->writeForest,
         simpleFixtureWriter(`Hill`, "hill"),
         simpleFixtureWriter(`Oasis`, "oasis"),
         simpleFixtureWriter(`Sandbar`, "sandbar"),

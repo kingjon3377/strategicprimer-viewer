@@ -10,7 +10,6 @@ import ceylon.interop.java {
 import controller.map.fluidxml {
     FluidXMLReader,
     XMLHelper,
-    FluidTerrainHandler,
     FluidUnitMemberHandler,
     FluidTownHandler
 }
@@ -401,8 +400,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
         "portal"->readPortal,
         "cave"->readCave,
         "battlefield"->readBattlefield,
-        "ground"->FluidTerrainHandler.readGround,
-        "forest"->FluidTerrainHandler.readForest,
+        "ground"->readGround,
+        "forest"->readForest,
         simpleFixtureReader("hill", Hill),
         simpleFixtureReader("oasis", Oasis),
         simpleFixtureReader("sandbar", Sandbar),
@@ -439,8 +438,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
         "view"->((StartElement element, QName parent, JIterable<XMLEvent> stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
             => readMapOrViewTag(element, parent, stream, players, warner, idFactory)),
-        "river"->FluidTerrainHandler.readRiver,
-        "lake"->FluidTerrainHandler.readLake,
+        "river"->readRiver,
+        "lake"->readLake,
         "player"->readPlayer,
         *simpleImmortalReaders
     };
