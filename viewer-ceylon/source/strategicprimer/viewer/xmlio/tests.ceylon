@@ -559,7 +559,6 @@ test
 parameters(`value stoneParameters`)
 void testOldStoneIdiom(StoneKind kind) {
     StoneDeposit thirdDeposit = StoneDeposit(kind, 10, 3);
-    String oldProperty = "stone";
     for (deprecated in {true, false}) {
         assertDeprecatedDeserialization<StoneDeposit>(
             "Deserialization of deprecated stone idiom", thirdDeposit,
