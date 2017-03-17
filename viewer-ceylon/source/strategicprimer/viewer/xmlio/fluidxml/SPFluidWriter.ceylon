@@ -12,7 +12,6 @@ import ceylon.regex {
 
 import controller.map.fluidxml {
     FluidUnitMemberHandler,
-    FluidTownHandler,
     XMLHelper
 }
 import controller.map.iointerfaces {
@@ -343,8 +342,8 @@ shared class SPFluidWriter() satisfies SPWriter {
         `WorkerStats`->FluidUnitMemberHandler.writeStats,
         `IUnit`->writeUnit,
         `Fortress`->writeFortress,
-        `Village`->FluidTownHandler.writeVillage,
-        `AbstractTown`->FluidTownHandler.writeTown,
+        `Village`->writeVillage,
+        `AbstractTown`->writeTown,
         `IMapNG`->writeMap,
         `Player`->writePlayer
     };

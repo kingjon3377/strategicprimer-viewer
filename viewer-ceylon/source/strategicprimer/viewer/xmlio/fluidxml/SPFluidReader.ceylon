@@ -10,8 +10,7 @@ import ceylon.interop.java {
 import controller.map.fluidxml {
     FluidXMLReader,
     XMLHelper,
-    FluidUnitMemberHandler,
-    FluidTownHandler
+    FluidUnitMemberHandler
 }
 import controller.map.formatexceptions {
     MissingPropertyException,
@@ -428,10 +427,10 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
         "stats"->FluidUnitMemberHandler.readStats,
         "unit"->readUnit,
         "fortress"->readFortress,
-        "town"->FluidTownHandler.readTown,
-        "city"->FluidTownHandler.readCity,
-        "fortification"->FluidTownHandler.readFortification,
-        "village"->FluidTownHandler.readVillage,
+        "town"->readTown,
+        "city"->readCity,
+        "fortification"->readFortification,
+        "village"->readVillage,
         "map"->((StartElement element, QName parent, JIterable<XMLEvent> stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
             => readMapOrViewTag(element, parent, stream, players, warner, idFactory)),
