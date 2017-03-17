@@ -9,7 +9,6 @@ import ceylon.interop.java {
 
 import controller.map.fluidxml {
     FluidXMLReader,
-    FluidExplorableHandler,
     FluidResourceHandler,
     XMLHelper,
     FluidTerrainHandler,
@@ -399,10 +398,10 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
         return XMLHelper.setImage(retval, element, warner);
     }
     readers = map {
-        "adventure"->FluidExplorableHandler.readAdventure,
-        "portal"->FluidExplorableHandler.readPortal,
-        "cave"->FluidExplorableHandler.readCave,
-        "battlefield"->FluidExplorableHandler.readBattlefield,
+        "adventure"->readAdventure,
+        "portal"->readPortal,
+        "cave"->readCave,
+        "battlefield"->readBattlefield,
         "ground"->FluidTerrainHandler.readGround,
         "forest"->FluidTerrainHandler.readForest,
         simpleFixtureReader("hill", Hill),
@@ -413,7 +412,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader&FluidXMLReader {
         simpleHasKindReader("dragon", Dragon),
         simpleHasKindReader("fairy", Fairy),
         simpleHasKindReader("giant", Giant),
-        "text"->FluidExplorableHandler.readTextFixture,
+        "text"->readTextFixture,
         simpleHasKindReader("implement", Implement),
         "resource"->FluidResourceHandler.readResource,
         "cache"->FluidResourceHandler.readCache,
