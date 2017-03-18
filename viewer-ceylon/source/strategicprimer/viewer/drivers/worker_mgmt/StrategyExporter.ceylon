@@ -1,6 +1,3 @@
-import model.workermgmt {
-    IWorkerModel
-}
 import strategicprimer.viewer.drivers {
     SPOptions
 }
@@ -71,8 +68,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options) satisfies PlayerCh
         try (writer = file.Overwriter()) {
             String playerName = currentPlayer.name;
             Integer turn = model.map.currentTurn;
-            {IUnit*} units = CeylonIterable(model.getUnits(currentPlayer))
-                .sequence();
+            {IUnit*} units = model.getUnits(currentPlayer);
             MutableMap<String, MutableList<IUnit>> unitsByKind =
                     HashMap<String, MutableList<IUnit>>();
             for (unit in units) {

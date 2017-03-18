@@ -70,7 +70,7 @@ import com.apple.eawt {
 import com.bric.window {
     WindowList
 }
-import model.workermgmt {
+import strategicprimer.viewer.drivers.worker_mgmt {
     IWorkerModel
 }
 """An interface for the command-line options passed by the user. At this point we

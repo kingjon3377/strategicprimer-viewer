@@ -1,6 +1,3 @@
-import model.workermgmt {
-    IWorkerModel
-}
 import model.map.fixtures.mobile {
     IUnit
 }
@@ -192,7 +189,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         FormattedLabel playerLabel = FormattedLabel("Units belonging to %s: (%sU)",
             mainMap.currentPlayer.name, platform.shortcutDescription);
         value ordersPanelObj = ordersPanel(mainMap.currentTurn, mainMap.currentPlayer,
-                    (Player player, String kind) => CeylonIterable(model.getUnits(player, kind)),
+                    (Player player, String kind) => model.getUnits(player, kind),
                     (IUnit unit, Integer turn) => unit.getLatestOrders(turn),
                     (IUnit unit, Integer turn, String orders) => unit.setOrders(turn, orders));
         tree.addTreeSelectionListener(ordersPanelObj);
@@ -207,7 +204,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         }
         Thread(reportGeneratorThread).start();
         value resultsPanel = ordersPanel(mainMap.currentTurn, mainMap.currentPlayer,
-                    (Player player, String kind) => CeylonIterable(model.getUnits(player, kind)),
+                    (Player player, String kind) => model.getUnits(player, kind),
                     (IUnit unit, Integer turn) => unit.getResults(turn), null);
         tree.addTreeSelectionListener(resultsPanel);
         JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel);

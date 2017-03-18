@@ -1,6 +1,3 @@
-import model.workermgmt {
-    IWorkerModel
-}
 import java.lang {
     ObjectArray,
     IllegalArgumentException
@@ -84,7 +81,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     }
     static class PlayerNode(Player player, IWorkerModel model)
             extends WorkerTreeNode<Player>(player) {
-        for (index->kind in CeylonIterable(model.getUnitKinds(player)).map(Object.string).indexed) {
+        for (index->kind in model.getUnitKinds(player).indexed) {
             insert(KindNode(kind, *model.getUnits(player, kind)), index);
         }
     }

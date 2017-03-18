@@ -18,9 +18,6 @@ import strategicprimer.viewer.drivers {
     SPOptions,
     SimpleDriver
 }
-import model.workermgmt {
-    IWorkerModel
-}
 import ceylon.logging {
     logger,
     Logger

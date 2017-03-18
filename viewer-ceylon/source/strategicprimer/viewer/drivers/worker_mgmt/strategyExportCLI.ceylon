@@ -7,9 +7,6 @@ import java.lang {
 import ceylon.file {
     parsePath
 }
-import model.workermgmt {
-    IWorkerModel
-}
 import strategicprimer.viewer.drivers {
     DriverFailedException,
     ICLIHelper,

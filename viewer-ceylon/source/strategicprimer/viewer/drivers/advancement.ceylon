@@ -111,7 +111,6 @@ import model.misc {
     IDriverModel
 }
 import model.workermgmt {
-    IWorkerModel,
     RaceFactory
 }
 
@@ -125,7 +124,8 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     workerTree,
     WorkerTreeModelAlt,
     workerMenu,
-    WorkerModel
+    WorkerModel,
+    IWorkerModel
 }
 
 import util {
@@ -269,8 +269,7 @@ void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
 }
 "Let the user add experience to a player's workers."
 void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli) {
-    IUnit[] units = [*CeylonIterable(model.getUnits(player))
-            .filter((unit) => unit.iterator().hasNext())];
+    IUnit[] units = [*model.getUnits(player).filter((unit) => unit.iterator().hasNext())];
     cli.loopOnList(units, (clh) => clh.chooseFromList(units,
             "``player.name``'s units:", "No unadvanced units remain.",
             "Chosen unit: ", false),

@@ -6,24 +6,18 @@ import ceylon.collection {
     TreeMap
 }
 import ceylon.interop.java {
-    CeylonIterable,
-    JavaList,
-    javaString
+    CeylonIterable
 }
 import ceylon.test {
     test,
     assertEquals
 }
 
-import java.lang {
-    JString=String
-}
 import java.nio.file {
     JPath=Path
 }
 import java.util {
-    JOptional=Optional,
-    JList=List
+    JOptional=Optional
 }
 
 import lovelace.util.common {
@@ -41,7 +35,6 @@ import model.map {
     SPMapNG,
     MapDimensionsImpl,
     PlayerCollection,
-    IMapNG,
     Point
 }
 import model.map.fixtures.mobile {
@@ -63,9 +56,6 @@ import model.map.fixtures.towns {
 import model.misc {
     SimpleMultiMapModel,
     IDriverModel
-}
-import model.workermgmt {
-    IWorkerModel
 }
 
 import util {
@@ -90,20 +80,20 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         return { for (item in temp) if (is IUnit item) if (item.owner == player) item };
     }
     "All the players in all the maps."
-    shared actual JList<Player> players {
-        return JavaList(ArrayList {
-            *CeylonIterable(allMaps).map((Pair<IMutableMapNG, JOptional<JPath>> pair) => pair.first())
-                .flatMap((IMutableMapNG map) => CeylonIterable(map.players())).distinct });
+    shared actual {Player*} players {
+        return CeylonIterable(allMaps).map((Pair<IMutableMapNG, JOptional<JPath>> pair) => pair.first())
+                .flatMap((IMutableMapNG map) => CeylonIterable(map.players())).distinct;
     }
-    "Get all the given player's units."
-    shared actual JList<IUnit> getUnits(Player player) {
-        if (CeylonIterable(subordinateMaps).empty) {
+    "Get all the given player's units, or only those of a specified kind."
+    shared actual {IUnit*} getUnits(Player player, String? kind) {
+        if (exists kind) {
+            return { *getUnits(player).filter((unit) => kind == unit.kind) };
+        } else if (CeylonIterable(subordinateMaps).empty) {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.
-            return JavaList(ArrayList {
-                *getUnitsImpl(CeylonIterable(map.locations())
-                    .flatMap((point) => CeylonIterable(map.getOtherFixtures(point))),
-                    player)});
+            return getUnitsImpl(CeylonIterable(map.locations())
+                .flatMap((point) => CeylonIterable(map.getOtherFixtures(point))),
+                    player);
         } else {
             value temp =
                 CeylonIterable(allMaps)
@@ -124,17 +114,12 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 }
                 proxy.addProxied(unit);
             }
-            return JavaList<IUnit>(ArrayList { *tempMap.items });
+            return tempMap.items;
         }
     }
     """All the "kinds" of units the given player has."""
-    shared actual JList<JString> getUnitKinds(Player player) =>
-            JavaList(ArrayList { *CeylonIterable(getUnits(player))
-                .map(IUnit.kind).distinct.map(javaString) });
-    "Get all the player's units of the given kind."
-    shared actual JList<IUnit> getUnits(Player player, String kind) =>
-            JavaList(ArrayList { *CeylonIterable(getUnits(player))
-                .filter((unit) => kind == unit.kind)});
+    shared actual {String*} getUnitKinds(Player player) =>
+            { *getUnits(player).map(IUnit.kind).distinct };
     "Add the given unit at the given location in all maps."
     void addUnitAtLocation(IUnit unit, Point location) {
         void impl(IMutableMapNG map) {
@@ -171,7 +156,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     }
     "Get a unit by its owner and ID."
     shared actual IUnit? getUnitByID(Player owner, Integer id) =>
-            CeylonIterable(getUnits(owner)).find((unit) => id == unit.id);
+            getUnits(owner).find((unit) => id == unit.id);
 }
 "Helper method: Flatten any proxies in the list by replacing them with what they are
  proxies for."
