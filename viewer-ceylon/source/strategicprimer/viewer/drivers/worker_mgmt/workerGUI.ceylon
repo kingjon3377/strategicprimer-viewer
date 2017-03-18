@@ -19,7 +19,6 @@ import strategicprimer.viewer.drivers {
     SimpleDriver
 }
 import model.workermgmt {
-    WorkerModel,
     IWorkerModel
 }
 import ceylon.logging {
@@ -61,7 +60,7 @@ shared object workerGUI satisfies SimpleDriver {
                 frame.setVisible(true);
             });
         } else {
-            startDriverOnModel(cli, options, WorkerModel(model));
+            startDriverOnModel(cli, options, WorkerModel.copyConstructor(model));
         }
     }
 }

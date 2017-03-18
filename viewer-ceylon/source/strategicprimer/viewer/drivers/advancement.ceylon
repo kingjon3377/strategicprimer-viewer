@@ -73,45 +73,44 @@ import lovelace.util.jvm {
 }
 
 import model.listeners {
-    PlayerChangeListener,
-    LevelGainSource,
     SkillSelectionListener,
+    LevelGainSource,
     LevelGainListener,
     UnitSelectionListener,
     NewWorkerListener,
-    SkillSelectionSource,
+    UnitMemberListener,
     AddRemoveListener,
+    SkillSelectionSource,
+    PlayerChangeListener,
     UnitMemberSelectionSource,
-    UnitSelectionSource,
-    UnitMemberListener
+    UnitSelectionSource
 }
 import model.map {
     Player,
-    IMapNG,
-    HasName
+    HasName,
+    IMapNG
 }
 import model.map.fixtures {
     UnitMember
 }
 import model.map.fixtures.mobile {
-    IUnit,
     IWorker,
+    IUnit,
     Worker
 }
 import model.map.fixtures.mobile.worker {
-    ProxyWorker,
     IJob,
-    Job,
     ISkill,
     Skill,
+    Job,
     ProxyJob,
+    ProxyWorker,
     WorkerStats
 }
 import model.misc {
     IDriverModel
 }
 import model.workermgmt {
-    WorkerModel,
     IWorkerModel,
     RaceFactory
 }
@@ -125,7 +124,8 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     TreeExpansionHandler,
     workerTree,
     WorkerTreeModelAlt,
-    workerMenu
+    workerMenu,
+    WorkerModel
 }
 
 import util {
@@ -285,7 +285,7 @@ object advancementCLI satisfies SimpleCLIDriver {
         if (is IWorkerModel model) {
             workerModel = model;
         } else {
-            workerModel = WorkerModel(model);
+            workerModel = WorkerModel.copyConstructor(model);
         }
         Player[] playerList = [*workerModel.players];
         try {
@@ -783,7 +783,7 @@ object advancementGUI satisfies SimpleDriver {
         if (is IWorkerModel model) {
             workerModel = model;
         } else {
-            workerModel = WorkerModel(model);
+            workerModel = WorkerModel.copyConstructor(model);
         }
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(workerModel, options, cli), "load", "save",

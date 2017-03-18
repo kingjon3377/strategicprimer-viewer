@@ -8,7 +8,6 @@ import ceylon.file {
     parsePath
 }
 import model.workermgmt {
-    WorkerModel,
     IWorkerModel
 }
 import strategicprimer.viewer.drivers {
@@ -43,7 +42,7 @@ shared object strategyExportCLI satisfies SimpleDriver {
                     "--export option is required");
             }
         } else {
-            startDriverOnModel(cli, options, WorkerModel(model));
+            startDriverOnModel(cli, options, WorkerModel.copyConstructor(model));
         }
     }
 }
