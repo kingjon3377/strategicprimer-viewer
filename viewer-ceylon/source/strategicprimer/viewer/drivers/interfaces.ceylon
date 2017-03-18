@@ -342,7 +342,7 @@ shared class DriverFailedException(Throwable cause,
         String message = "The driver could not start because of an exception:")
         extends Exception(message, cause) { }
 "An exception to throw when a driver fails because the user tried to use it improperly."
-class IncorrectUsageException(correctUsage)
+shared class IncorrectUsageException(correctUsage)
         extends DriverFailedException(IllegalArgumentException("Incorrect usage"),
     "Incorrect usage") {
     """The "usage object" for the driver, describing its correct usage."""

@@ -66,6 +66,10 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     workerGUI,
     strategyExportCLI
 }
+import strategicprimer.viewer.drivers.subset {
+    subsetCLI,
+    subsetGUI
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."

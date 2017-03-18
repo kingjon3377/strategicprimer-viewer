@@ -1,89 +1,61 @@
+import ceylon.regex {
+    regex,
+    Regex
+}
+
+import controller.map.formatexceptions {
+    SPFormatException
+}
+
+import java.awt {
+    Dimension
+}
+import java.io {
+    FileNotFoundException,
+    IOException,
+    JWriter=Writer
+}
 import java.lang {
-    CharSequence,
-    CharArray
+    CharArray,
+    CharSequence
 }
 import java.nio.file {
-    JPath=Path, JPaths = Paths,
-    NoSuchFileException
+    NoSuchFileException,
+    JPath=Path
 }
 import java.util {
     Formatter
 }
 
-import model.misc {
-    IDriverModel,
-    IMultiMapModel,
-    SimpleMultiMapModel
-}
-import lovelace.util.common {
-    todo
-}
 import javax.swing {
-    SwingUtilities,
     JScrollPane
-}
-import java.io {
-    IOException,
-    FileNotFoundException,
-    JWriter=Writer
 }
 import javax.xml.stream {
     XMLStreamException
 }
-import controller.map.formatexceptions {
-    SPFormatException
+
+import lovelace.util.jvm {
+    StreamingLabel,
+    LabelTextColor
 }
-import java.awt {
-    Dimension
-}
+
 import model.map {
-    IMapNG,
     SPMapNG,
+    PlayerCollection,
     MapDimensionsImpl,
-    PlayerCollection
+    IMapNG
 }
-import util {
-    Warning,
-    LineEnd
-}
-import ceylon.regex {
-    Regex,
-    regex
+
+import strategicprimer.viewer.drivers {
+    SPFrame
 }
 import strategicprimer.viewer.xmlio {
     readMap
 }
-import lovelace.util.jvm {
-    AppendableHelper,
-    showErrorDialog,
-    StreamingLabel,
-    LabelTextColor
-}
-"A driver to check whether player maps are subsets of the main map."
-object subsetCLI satisfies SimpleDriver {
-    shared actual IDriverUsage usage = DriverUsage(false, "-s", "--subset", ParamCount.atLeastTwo,
-        "Check players' maps against master",
-        "Check that subordinate maps are subsets of the main map, containing nothing that
-         it does not contain in the same place.");
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is IMultiMapModel model) {
-            for (pair in model.subordinateMaps) {
-                String filename = pair.second().map(JPath.string)
-                    .orElse("map without a filename");
-                cli.print("``filename``\t...\t\t");
-                if (model.map.isSubset(pair.first(),
-                        Formatter(AppendableHelper(cli.print)), "In ``filename``:")) {
-                    cli.println("OK");
-                } else {
-                    cli.println("WARN");
-                }
-            }
-        } else {
-            log.warn("Subset checking does nothing with no subordinate maps");
-            startDriverOnModel(cli, options, SimpleMultiMapModel(model));
-        }
-    }
+
+import util {
+    Warning,
+    LineEnd
 }
 "A window to show the result of running subset tests."
 class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) {
@@ -200,56 +172,12 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
             return;
         } catch (SPFormatException except) {
             printParagraph("FAIL: SP map format error at line ``
-                    except.line``; see following error message for details",
+            except.line``; see following error message for details",
                 LabelTextColor.red);
             printParagraph(except.message, LabelTextColor.red);
             log.error("SP map format error reading``path``", except);
             return;
         }
         testMap(map, path);
-    }
-}
-"A driver to check whether player maps are subsets of the main map and display the
- results graphically."
-todo("Unify with subsetCLI")
-object subsetGUI satisfies ISPDriver {
-    shared actual IDriverUsage usage = DriverUsage(true, "-s", "--subset", ParamCount.atLeastTwo,
-        "Check players' maps against master",
-        "Check that subordinate maps are subsets of the main map, containing nothing that
-         it does not contain in the same place.");
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is IMultiMapModel model) {
-            SubsetFrame frame = SubsetFrame();
-            SwingUtilities.invokeLater(() => frame.setVisible(true));
-            frame.loadMain(model.map);
-            for (pair in model.subordinateMaps) {
-                frame.testMap(pair.first(), pair.second().orElse(null));
-            }
-        } else {
-            showErrorDialog(null, "Strategic Primer Assistive Programs",
-                "The subset driver doesn't make sense on a non-multi-map driver");
-        }
-    }
-    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
-            String* args) {
-        if (args.size < 2) {
-            throw IncorrectUsageException(usage);
-        }
-        SubsetFrame frame = SubsetFrame();
-        SwingUtilities.invokeLater(() => frame.setVisible(true));
-        assert (exists first = args.first);
-        try {
-            frame.loadMain(JPaths.get(first));
-        } catch (IOException except) {
-            throw DriverFailedException(except, "I/O error loading main map ``first``");
-        } catch (XMLStreamException except) {
-            throw DriverFailedException(except, "Malformed XML in main map ``first``");
-        } catch (SPFormatException except) {
-            throw DriverFailedException(except, "Invalid SP XML in main  map ``first``");
-        }
-        for (arg in args.rest) {
-            frame.testFile(JPaths.get(arg));
-        }
     }
 }
