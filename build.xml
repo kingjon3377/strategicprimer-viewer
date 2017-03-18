@@ -155,7 +155,6 @@
           http://stackoverflow.com/a/25148876 -->
       <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
       <test name="model.viewer.PointIteratorTest" todir="${junit.output.dir}" />
-      <test name="model.workermgmt.TestWorkerModel" todir="${junit.output.dir}" />
       <test name="model.map.fixtures.mobile.worker.TestProxyWorker"
             todir="${junit.output.dir}" />
       <test name="model.exploration.TestDirection" todir="${junit.output.dir}" />
@@ -345,7 +344,6 @@
       <!--
              <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
              <test name="model.viewer.PointIteratorTest" todir="${junit.output.dir}" />
-             <test name="model.workermgmt.TestWorkerModel" todir="${junit.output.dir}" />
              <test name="model.map.fixtures.mobile.worker.TestProxyWorker"
                    todir="${junit.output.dir}" />
              <test name="model.exploration.TestDirection" todir="${junit.output.dir}" />
