@@ -2,8 +2,7 @@ import com.bric.window {
     WindowMenu
 }
 import model.viewer {
-    IViewerModel,
-    ZOrderFilter
+    IViewerModel
 }
 import lovelace.util.common {
     todo,

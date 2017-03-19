@@ -33,9 +33,6 @@ import model.map.fixtures.resources {
     Meadow,
     Grove
 }
-import model.viewer {
-    ZOrderFilter
-}
 "A list to let the user select which fixtures ought to be searched."
 SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
     DefaultListModel<FixtureMatcher> matcherListModel = ReorderableListModel<FixtureMatcher>();

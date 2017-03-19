@@ -42,8 +42,7 @@ import ceylon.interop.java {
 }
 import model.viewer {
     PointIterator,
-    IViewerModel,
-    ZOrderFilter
+    IViewerModel
 }
 import lovelace.util.jvm {
     platform,

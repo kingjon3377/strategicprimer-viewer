@@ -1,6 +1,3 @@
-import model.viewer {
-    ZOrderFilter
-}
 import ceylon.language.meta {
     type
 }
