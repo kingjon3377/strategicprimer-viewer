@@ -62,13 +62,16 @@ import strategicprimer.viewer.drivers.map_viewer {
     viewerGUI,
     drawHelperComparator
 }
+import strategicprimer.viewer.drivers.subset {
+    subsetCLI,
+    subsetGUI
+}
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerGUI,
     strategyExportCLI
 }
-import strategicprimer.viewer.drivers.subset {
-    subsetCLI,
-    subsetGUI
+import strategicprimer.viewer.drivers.mining {
+    miningCLI
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
