@@ -27,8 +27,7 @@ import model.misc {
     IDriverModel
 }
 import model.viewer {
-    TileViewSize,
-    ViewerModel
+    TileViewSize
 }
 
 import strategicprimer.viewer.drivers {
@@ -196,7 +195,7 @@ void runAllTests(ICLIHelper cli, IMapNG map, Integer repetitions) {
         cli.println("``testDesc``:");
         for ([testCase, caseDesc, accumulator] in helpers) {
             accumulator.add(printStats(caseDesc, test(testCase, map, repetitions,
-                TileViewSize.scaleZoom(ViewerModel.defZoomLevel,
+                TileViewSize.scaleZoom(ViewerModel.defaultZoomLevel,
                     map.dimensions().version)),
                 repetitions));
         }

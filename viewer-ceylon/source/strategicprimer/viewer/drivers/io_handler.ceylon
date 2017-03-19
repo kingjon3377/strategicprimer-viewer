@@ -35,9 +35,6 @@ import java.util {
 import util {
     Warning
 }
-import model.viewer {
-    ViewerModel
-}
 import model.map {
     PlayerCollection
 }
@@ -65,7 +62,8 @@ import javax.swing.filechooser {
     FileFilter
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    viewerGUI
+    viewerGUI,
+    ViewerModel
 }
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(
     "Strategic Primer world map files", "map", "xml");
@@ -190,12 +188,12 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             }
         }
         case ("open in map viewer") {
-            viewerGUI.startDriverOnModel(cli, options, ViewerModel(mapModel));
+            viewerGUI.startDriverOnModel(cli, options, ViewerModel.copyConstructor(mapModel));
         }
         case ("open secondary map in map viewer") {
             if (is IMultiMapModel mapModel,
                     exists mapPair = CeylonIterable(mapModel.subordinateMaps).first) {
-                viewerGUI.startDriverOnModel(cli, options, ViewerModel(mapPair));
+                viewerGUI.startDriverOnModel(cli, options, ViewerModel.fromPair(mapPair));
             }
         }
         else {

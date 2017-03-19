@@ -26,9 +26,6 @@ import java.io {
 import java.util {
     JOptional=Optional
 }
-import model.viewer {
-    ViewerModel
-}
 import javax.xml.stream {
     XMLStreamException
 }
@@ -50,6 +47,9 @@ import ceylon.test {
 }
 import strategicprimer.viewer.drivers {
     DriverFailedException
+}
+import strategicprimer.viewer.drivers.map_viewer {
+    ViewerModel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

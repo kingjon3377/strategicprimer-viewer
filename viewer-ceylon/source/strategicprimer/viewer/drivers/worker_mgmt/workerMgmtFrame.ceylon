@@ -2,7 +2,6 @@ import model.map.fixtures.mobile {
     IUnit
 }
 import model.viewer {
-    ViewerModel,
     IViewerModel
 }
 import model.map.fixtures.towns {
@@ -80,7 +79,8 @@ import com.bric.window {
 import strategicprimer.viewer.drivers.map_viewer {
     newUnitDialog,
     IViewerFrame,
-    viewerFrame
+    viewerFrame,
+    ViewerModel
 }
 import lovelace.util.jvm {
     platform,

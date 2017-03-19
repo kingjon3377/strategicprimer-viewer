@@ -2,8 +2,7 @@ import model.misc {
     IDriverModel
 }
 import model.viewer {
-    TileViewSize,
-    ViewerModel
+    TileViewSize
 }
 import javax.swing {
     JPanel,
@@ -58,7 +57,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         retval.addRigidArea(7);
         JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
         panel.addRigidArea(4);
-        Integer tileSize = TileViewSize.scaleZoom(ViewerModel.defZoomLevel, version);
+        Integer tileSize = TileViewSize.scaleZoom(ViewerModel.defaultZoomLevel, version);
         panel.add(KeyElementComponent(colorHelper.get(version, type), Dimension(4, 4),
             Dimension(8, 8), Dimension(tileSize, tileSize)));
         panel.addRigidArea(4);

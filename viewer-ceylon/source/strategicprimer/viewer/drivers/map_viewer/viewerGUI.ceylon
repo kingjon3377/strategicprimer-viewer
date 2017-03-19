@@ -25,8 +25,7 @@ import strategicprimer.viewer.about {
 }
 import model.viewer {
     IViewerModel,
-    VisibleDimensions,
-    ViewerModel
+    VisibleDimensions
 }
 import ceylon.logging {
     logger,
@@ -106,7 +105,7 @@ shared object viewerGUI satisfies SimpleDriver {
             });
         } else if (is IMultiMapModel model) {
             for (map in model.allMaps) {
-                startDriverOnModel(cli, options.copy(), ViewerModel(map));
+                startDriverOnModel(cli, options.copy(), ViewerModel.fromPair(map));
             }
         } else {
             startDriverOnModel(cli, options, ViewerModel(model.map, model.mapFile));
