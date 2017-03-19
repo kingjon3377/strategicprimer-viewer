@@ -23,9 +23,6 @@ import javax.swing.text {
 import com.bric.window {
     WindowMenu
 }
-import model.viewer {
-    TileTypeFixture
-}
 import model.map.fixtures.towns {
     Village
 }
@@ -45,7 +42,8 @@ import strategicprimer.viewer.drivers.map_viewer {
     fixtureFilterTableModel,
     FixtureMatcher,
     FixtureListModel,
-    fixtureList
+    fixtureList,
+    TileTypeFixture
 }
 import java.text {
     NumberFormat

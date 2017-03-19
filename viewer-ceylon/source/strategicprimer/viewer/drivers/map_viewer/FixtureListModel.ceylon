@@ -20,9 +20,6 @@ import model.map.fixtures {
     Ground,
     RiverFixture
 }
-import model.viewer {
-    TileTypeFixture
-}
 import ceylon.collection {
     ArrayList,
     MutableList

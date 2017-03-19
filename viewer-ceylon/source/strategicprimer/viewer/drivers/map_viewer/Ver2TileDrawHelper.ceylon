@@ -43,9 +43,6 @@ import model.map.fixtures {
 import model.map.fixtures.terrain {
     Forest
 }
-import model.viewer {
-    TileTypeFixture
-}
 
 import view.util {
     Coordinate
