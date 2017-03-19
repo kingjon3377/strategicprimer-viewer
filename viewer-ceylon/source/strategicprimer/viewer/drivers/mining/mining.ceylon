@@ -15,7 +15,6 @@ import model.map {
     PointFactory
 }
 import model.mining {
-    MiningModel,
     LodeStatus
 }
 
@@ -61,21 +60,22 @@ shared object miningCLI satisfies UtilityDriver {
                 seed = system.milliseconds;
             }
             Integer actualIndex;
-            MiningModel.MineKind mineKind;
+            MineKind mineKind;
             if (statusIndex >= 0) {
                 actualIndex = statusIndex;
-                mineKind = MiningModel.MineKind.normal;
+                mineKind = MineKind.normal;
             } else {
                 actualIndex = -statusIndex;
-                mineKind = MiningModel.MineKind.banded;
+                mineKind = MineKind.banded;
             }
             LodeStatus? initial = LodeStatus.values()[actualIndex];
             if (!initial exists) {
                 throw DriverFailedException(IllegalArgumentException(
                     "Status must be the valid index of a LodeStatus"));
             }
+            assert (exists initial);
             MiningModel model = MiningModel(initial, seed, mineKind);
-            Point lowerRight = model.maxPoint;
+            Point lowerRight = model.maximumPoint;
             value path = parsePath(filename);
             if (is Nil loc = path.resource) {
                 value file = loc.createFile();
