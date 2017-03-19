@@ -22,9 +22,6 @@ import java.awt {
     Dimension,
     Frame
 }
-import model.viewer {
-    IViewerModel
-}
 import lovelace.util.jvm {
     platform,
     BoxAxis,
@@ -91,8 +88,8 @@ SPDialog selectTileDialog(Frame? parentFrame, IViewerModel model) {
         }
         if (rowState == NumberState.valid, columnState == NumberState.valid) {
             try {
-                model.setSelection(PointFactory.point(numParser.parse(rowText).intValue(),
-                    numParser.parse(columnText).intValue()));
+                model.selection = PointFactory.point(numParser.parse(rowText).intValue(),
+                    numParser.parse(columnText).intValue());
             } catch (ParseException except) {
                 log.error("Parse failure after we checked input was numeric", except);
             }

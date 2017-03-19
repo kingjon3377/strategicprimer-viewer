@@ -6,9 +6,6 @@ import java.awt.event {
     MouseWheelListener,
     MouseWheelEvent
 }
-import model.viewer {
-    IViewerModel
-}
 import lovelace.util.jvm {
     platform
 }
@@ -17,58 +14,58 @@ import lovelace.util.jvm {
 class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener {
     "Move the cursor up a row."
     shared void up() {
-        Point old = model.selectedPoint;
+        Point old = model.selection;
         if (old.row > 0) {
-            model.setSelection(PointFactory.point(old.row - 1, old.col));
+            model.selection = PointFactory.point(old.row - 1, old.col);
         }
     }
     "Move the cursor left a column."
     shared void left() {
-        Point old = model.selectedPoint;
+        Point old = model.selection;
         if (old.col > 0) {
-            model.setSelection(PointFactory.point(old.row, old.col - 1));
+            model.selection = PointFactory.point(old.row, old.col - 1);
         }
     }
     "Move the cursor down a row."
     shared void down() {
-        Point old = model.selectedPoint;
+        Point old = model.selection;
         if (old.row < model.mapDimensions.rows) {
-            model.setSelection(PointFactory.point(old.row + 1, old.col));
+            model.selection = PointFactory.point(old.row + 1, old.col);
         }
     }
     "Move the cursor right a column."
     shared void right() {
-        Point old = model.selectedPoint;
+        Point old = model.selection;
         if (old.col<model.mapDimensions.columns) {
-            model.setSelection(PointFactory.point(old.row, old.col + 1));
+            model.selection = PointFactory.point(old.row, old.col + 1);
         }
     }
     "Move the cursor all the way to the top."
     shared void jumpUp() {
-        Point old = model.selectedPoint;
+        Point old = model.selection;
         if (old.row > 0) {
-            model.setSelection(PointFactory.point(0, old.col));
+            model.selection = PointFactory.point(0, old.col);
         }
     }
     "Move the cursor all the way to the bottom."
     shared void jumpDown() {
-        Point old = model.selectedPoint;
+        Point old = model.selection;
         if (old.row < model.mapDimensions.rows) {
-            model.setSelection(PointFactory.point(model.mapDimensions.rows - 1, old.col));
+            model.selection = PointFactory.point(model.mapDimensions.rows - 1, old.col);
         }
     }
     "Move the cursor all the way to the left."
     shared void jumpLeft() {
-        Point old = model.selectedPoint;
+        Point old = model.selection;
         if (old.col > 0) {
-            model.setSelection(PointFactory.point(old.row, 0));
+            model.selection = PointFactory.point(old.row, 0);
         }
     }
     "Move the cursor all the way to the right."
     shared void jumpRight() {
-        Point old = model.selectedPoint;
+        Point old = model.selection;
         if (old.col<model.mapDimensions.columns) {
-            model.setSelection(PointFactory.point(old.row, model.mapDimensions.columns - 1));
+            model.selection = PointFactory.point(old.row, model.mapDimensions.columns - 1);
         }
     }
     "Scroll."

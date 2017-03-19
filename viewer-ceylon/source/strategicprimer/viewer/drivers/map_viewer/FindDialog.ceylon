@@ -41,8 +41,7 @@ import ceylon.interop.java {
     CeylonIterable
 }
 import model.viewer {
-    PointIterator,
-    IViewerModel
+    PointIterator
 }
 import lovelace.util.jvm {
     platform,
@@ -155,14 +154,14 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         } else {
             idNum = null;
         }
-        Point? result = PointIterator(model.mapDimensions, model.selectedPoint,
+        Point? result = PointIterator(model.mapDimensions, model.selection,
             !backwards.selected, !vertically.selected).stream().filter(
                     (point) => model.map.streamAllFixtures(point).anyMatch(
                         (fixture) => matches(pattern, idNum, fixture, caseSensitivity)))
             .findFirst().orElse(null);
         if (exists result) {
             log.info("Found in point ``result``");
-            model.setSelection(result);
+            model.selection = result;
         }
     }
     Anything(ActionEvent) okListener = (ActionEvent event) {

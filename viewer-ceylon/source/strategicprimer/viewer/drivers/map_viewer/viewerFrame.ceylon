@@ -1,9 +1,6 @@
 import com.bric.window {
     WindowMenu
 }
-import model.viewer {
-    IViewerModel
-}
 import lovelace.util.common {
     todo,
     Comparator

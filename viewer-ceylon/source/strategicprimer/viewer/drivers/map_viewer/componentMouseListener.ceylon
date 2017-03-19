@@ -26,7 +26,6 @@ import model.listeners {
     SelectionChangeSource
 }
 import model.viewer {
-    IViewerModel,
     VisibleDimensions
 }
 import ceylon.math.float {
@@ -103,7 +102,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
                     .plus(0.1).integer);
             if (point.valid, point.row < mapDimensions.rows,
                 point.col < mapDimensions.columns) {
-                model.setSelection(point);
+                model.selection = point;
                 if (event.popupTrigger) {
                     menu.show(event.component, event.x, event.y);
                 }

@@ -42,7 +42,6 @@ import model.map {
     Point
 }
 import model.viewer {
-    IViewerModel,
     VisibleDimensions
 }
 "An interface for a UI representing a map."
@@ -82,7 +81,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
         }
     }
     void fixVisibility() {
-        Point selectedPoint = model.selectedPoint;
+        Point selectedPoint = model.selection;
         Integer selectedRow = largest(selectedPoint.row, 0);
         Integer selectedColumn = largest(selectedPoint.col, 0);
         VisibleDimensions visibleDimensions = model.dimensions;
@@ -148,7 +147,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             repaint();
         }
         Boolean selectionVisible {
-            Point selectedPoint = model.selectedPoint;
+            Point selectedPoint = model.selection;
             Integer selectedRow = largest(selectedPoint.row, 0);
             Integer selectedColumn = largest(selectedPoint.col, 0);
             VisibleDimensions visibleDimensions = model.dimensions;
@@ -197,7 +196,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                             }
                             Point location = PointFactory.point(i + minRow, j + minCol);
                             paintTile(context, location, i, j,
-                                model.selectedPoint == location);
+                                model.selection == location);
                         }
                     }
                 }

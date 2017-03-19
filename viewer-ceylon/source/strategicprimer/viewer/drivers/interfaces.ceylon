@@ -61,9 +61,6 @@ import lovelace.util.jvm {
     platform,
     ActionWrapper
 }
-import model.viewer {
-    IViewerModel
-}
 import com.apple.eawt {
     Application, AppEvent
 }
@@ -72,6 +69,9 @@ import com.bric.window {
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
     IWorkerModel
+}
+import strategicprimer.viewer.drivers.map_viewer {
+    IViewerModel
 }
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option

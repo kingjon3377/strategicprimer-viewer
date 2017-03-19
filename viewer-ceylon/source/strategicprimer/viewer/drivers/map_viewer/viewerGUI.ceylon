@@ -24,7 +24,6 @@ import strategicprimer.viewer.about {
     aboutDialog
 }
 import model.viewer {
-    IViewerModel,
     VisibleDimensions
 }
 import ceylon.logging {
@@ -55,7 +54,7 @@ shared object viewerGUI satisfies SimpleDriver {
             menuHandler.register((event) => model.zoomIn(), "zoom in");
             menuHandler.register((event) => model.zoomOut(), "zoom out");
             menuHandler.register((event) {
-                Point selection = model.selectedPoint;
+                Point selection = model.selection;
                 MapDimensions dimensions = model.mapDimensions;
                 VisibleDimensions visible = model.dimensions;
                 Integer topRow;

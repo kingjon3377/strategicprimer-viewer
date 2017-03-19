@@ -17,9 +17,6 @@ import javax.swing {
 import model.map.fixtures.mobile {
     IUnit
 }
-import model.viewer {
-    IViewerModel
-}
 import model.listeners {
     SelectionChangeSupport,
     VersionChangeListener,
@@ -39,7 +36,7 @@ terrainChangingMenu(Integer mapVersion, IViewerModel model) {
     variable Point point = PointFactory.invalidPoint;
     nuDialog.addNewUnitListener((IUnit unit) {
         model.map.addFixture(point, unit);
-        model.setSelection(point);
+        model.selection = point;
         scs.fireChanges(null, point);
     });
     object retval extends JPopupMenu() satisfies VersionChangeListener&

@@ -29,7 +29,6 @@ import ceylon.interop.java {
     javaString
 }
 import model.viewer {
-    IViewerModel,
     VisibleDimensions
 }
 "A class to change the visible area of the map based on the user's use of the scrollbars."
@@ -70,7 +69,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         model = mapModel;
         visibleDimensions = mapModel.dimensions;
         mapDimensions = mapModel.mapDimensions;
-        Point selectedPoint = mapModel.selectedPoint;
+        Point selectedPoint = mapModel.selection;
         horizontalBar = horizontal;
         horizontal.model.setRangeProperties(largest(selectedPoint.col, 0), 1, 0,
             mapDimensions.columns - visibleDimensions.width, false);
@@ -101,9 +100,9 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     shared actual void dimensionsChanged(VisibleDimensions oldDimensions,
             VisibleDimensions newDimensions) {
         visibleDimensions = newDimensions;
-        horizontalBar.model.setRangeProperties(largest(model.selectedPoint.col, 0), 1, 0,
+        horizontalBar.model.setRangeProperties(largest(model.selection.col, 0), 1, 0,
             mapDimensions.columns - newDimensions.width, false);
-        verticalBar.model.setRangeProperties(largest(model.selectedPoint.row, 0), 1, 0,
+        verticalBar.model.setRangeProperties(largest(model.selection.row, 0), 1, 0,
             mapDimensions.rows - newDimensions.height, false);
     }
     "Ignored."

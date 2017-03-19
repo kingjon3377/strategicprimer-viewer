@@ -1,9 +1,6 @@
 import model.map.fixtures.mobile {
     IUnit
 }
-import model.viewer {
-    IViewerModel
-}
 import model.map.fixtures.towns {
     Fortress
 }
@@ -80,7 +77,8 @@ import strategicprimer.viewer.drivers.map_viewer {
     newUnitDialog,
     IViewerFrame,
     viewerFrame,
-    ViewerModel
+    ViewerModel,
+    IViewerModel
 }
 import lovelace.util.jvm {
     platform,
@@ -161,7 +159,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
                         if (point.valid) {
                             IViewerModel viewerModel = getViewerModel();
                             SwingUtilities.invokeLater(() =>
-                            viewerModel.setSelection(point));
+                                viewerModel.selection = point);
                         }
                     }
                 }

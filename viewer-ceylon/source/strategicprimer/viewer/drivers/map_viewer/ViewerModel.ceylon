@@ -32,7 +32,6 @@ import model.misc {
     IDriverModel
 }
 import model.viewer {
-    IViewerModel,
     VisibleDimensions
 }
 
@@ -85,15 +84,14 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     variable Point selPoint = PointFactory.invalidPoint;
     "The currently selected point in the map."
     todo("Rename to `selection`")
-    shared actual Point selectedPoint => selPoint;
-    assign selectedPoint {
+    shared actual Point selection => selPoint;
+    assign selection {
         Point oldSel = selPoint;
-        selPoint = selectedPoint;
+        selPoint = selection;
         scs.fireChanges(oldSel, selPoint);
     }
-    shared actual void setSelection(Point point) => selectedPoint = point;
     "Clear the selection."
-    shared void clearSelection() => selectedPoint = PointFactory.invalidPoint;
+    shared void clearSelection() => selection = PointFactory.invalidPoint;
     "The visible dimensions of the map."
     variable VisibleDimensions visDimensions;
     shared actual String string =>
@@ -122,7 +120,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     shared new copyConstructor(IDriverModel model) extends SimpleDriverModel() {
         if (is IViewerModel model) {
             visDimensions = model.dimensions;
-            selPoint = model.selectedPoint;
+            selPoint = model.selection;
         } else {
             visDimensions = VisibleDimensions(0, model.mapDimensions.rows - 1,
                 0, model.mapDimensions.columns - 1);
