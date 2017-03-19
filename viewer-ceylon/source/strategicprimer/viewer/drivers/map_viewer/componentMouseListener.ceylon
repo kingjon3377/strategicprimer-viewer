@@ -27,7 +27,6 @@ import model.listeners {
 }
 import model.viewer {
     IViewerModel,
-    TileViewSize,
     VisibleDimensions
 }
 import ceylon.math.float {
@@ -73,8 +72,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
         shared actual String? getToolTipText(MouseEvent event) {
             value eventPoint = event.point;
             MapDimensions mapDimensions = model.mapDimensions;
-            Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
-                mapDimensions.version);
+            Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
             VisibleDimensions visibleDimensions = model.dimensions;
             Point point = PointFactory.point(
                 halfEven((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
@@ -97,8 +95,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             value eventPoint = event.point;
             VisibleDimensions visibleDimensions = model.dimensions;
             MapDimensions mapDimensions = model.mapDimensions;
-            Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
-                mapDimensions.version);
+            Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
             Point point = PointFactory.point(
                 halfEven((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
                     .plus(0.1).integer,

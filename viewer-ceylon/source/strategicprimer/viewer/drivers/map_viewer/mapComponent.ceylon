@@ -43,7 +43,6 @@ import model.map {
 }
 import model.viewer {
     IViewerModel,
-    TileViewSize,
     VisibleDimensions
 }
 "An interface for a UI representing a map."
@@ -74,7 +73,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
         if (exists rect) {
             return rect;
         } else {
-            Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
+            Integer tileSize = scaleZoom(model.zoomLevel,
                 model.mapDimensions.version);
             VisibleDimensions dimensions = model.dimensions;
             return Rectangle(0, 0,
@@ -125,7 +124,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                 VisibleDimensions newDim) => repaint();
         void paintTile(Graphics pen, Point point, Integer row, Integer column,
                 Boolean selected) {
-            Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
+            Integer tileSize = scaleZoom(model.zoomLevel,
                 model.mapDimensions.version);
             helper.drawTile(pen, model.map, point,
                 PointFactory.coordinate(column * tileSize, row * tileSize),
@@ -182,8 +181,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                 context.fillRect(0, 0, width, height);
                 Rectangle bounds = boundsCheck(context.clipBounds);
                 MapDimensions mapDimensions = model.mapDimensions;
-                Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
-                    mapDimensions.version);
+                Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
                 void drawMapPortion(Integer minX, Integer minY, Integer maxX, Integer maxY) {
                     Integer minRow = model.dimensions.minimumRow;
                     Integer maxRow = model.dimensions.maximumRow;
@@ -224,8 +222,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
     setUpArrowListeners(dsl, inputMap, actionMap);
     object mapSizeListener extends ComponentAdapter() {
         shared actual void componentResized(ComponentEvent event) {
-            Integer tileSize = TileViewSize.scaleZoom(model.zoomLevel,
-                model.mapDimensions.version);
+            Integer tileSize = scaleZoom(model.zoomLevel, model.mapDimensions.version);
             Integer visibleColumns = event.component.width / tileSize;
             Integer visibleRows = event.component.height / tileSize;
             variable Integer minimumColumn = model.dimensions.minimumCol;
