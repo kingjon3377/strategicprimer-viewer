@@ -35,7 +35,6 @@ import java.lang {
     IntArray
 }
 import model.exploration {
-    HuntingModel,
     IExplorationModel
 }
 import strategicprimer.viewer.drivers.map_viewer {
@@ -493,16 +492,14 @@ SPFrame explorationFrame(IExplorationModel model,
                                 Point currentLocation = model.selectedUnitLocation;
                                 if (currentLocation.valid) {
                                     String?(HuntingModel) tracksSource;
-                                    // FIXME: Once HuntingModel is ported, to produce Ceylon
-                                    // rather than Java list, move as much as possible out
-                                    // of lambdas.
+                                    // FIXME: Move as much as possible out of lambdas.
                                     if (TileType.ocean == model.map.getBaseTerrain(currentLocation)) {
-                                        tracksSource = (HuntingModel hmodel) => CeylonList(hmodel.fish(currentLocation, 1)).map(Object.string).first;
+                                        tracksSource = (HuntingModel hmodel) => hmodel.fish(currentLocation, 1).first;
                                     } else {
-                                        tracksSource = (HuntingModel hmodel) => CeylonList(hmodel.hunt(currentLocation, 1)).map(Object.string).first;
+                                        tracksSource = (HuntingModel hmodel) => hmodel.hunt(currentLocation, 1).first;
                                     }
                                     assert (exists possibleTracks = tracksSource(huntingModel));
-                                    if (HuntingModel.\inothing != possibleTracks) {
+                                    if (HuntingModel.noResults != possibleTracks) {
                                         Animal animal = Animal(possibleTracks, true, false, "wild", -1);
                                         assert (is FixtureListModel listModel = mainList.model);
                                         Integer index = listModel.size;

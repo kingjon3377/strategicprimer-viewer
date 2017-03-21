@@ -16,8 +16,7 @@ import lovelace.util.common {
 }
 
 import model.exploration {
-    IExplorationModel,
-    HuntingModel
+    IExplorationModel
 }
 import model.listeners {
     MovementCostListener,
@@ -161,11 +160,11 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         }
         String tracks;
         if (TileType.ocean == model.map.getBaseTerrain(destPoint)) {
-            tracks = huntingModel.fish(destPoint, 1).get(0).string;
+            tracks = huntingModel.fish(destPoint, 1).first else HuntingModel.noResults;
         } else {
-            tracks = huntingModel.hunt(destPoint, 1).get(0).string;
+            tracks = huntingModel.hunt(destPoint, 1).first else HuntingModel.noResults;
         }
-        if (HuntingModel.nothing != tracks) {
+        if (HuntingModel.noResults != tracks) {
             allFixtures.add(Animal(tracks, true, false, "wild", -1));
         }
         if (IExplorationModel.Direction.nowhere == direction) {

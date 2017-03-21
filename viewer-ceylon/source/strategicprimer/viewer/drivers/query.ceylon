@@ -17,7 +17,8 @@ import java.io {
 import java.lang {
     JIterable=Iterable,
     JDouble=Double,
-    JString=String
+    JString=String,
+    JInteger=Integer
 }
 import java.util {
     JList=List
@@ -28,7 +29,6 @@ import lovelace.util.common {
 }
 
 import model.exploration {
-    HuntingModel,
     SurroundingPointIterable
 }
 import model.map {
@@ -58,6 +58,9 @@ import model.misc {
 
 import util {
     Quantity
+}
+import strategicprimer.viewer.drivers.exploration {
+    HuntingModel
 }
 "Models of (game statistics for) herding."
 interface HerdModel of PoultryModel | MammalModel {
@@ -452,15 +455,20 @@ object trappingCLI satisfies SimpleDriver {
     "Handle a command. Returns how long it took to execute the command."
     Integer handleCommand(
             "The animals generated from the tile and the surrounding tiles."
-            JList<JString> fixtures, ICLIHelper cli,
+            Queue<String> fixtures, ICLIHelper cli,
             "The command to handle"
             TrapperCommand command,
             "If true, we're dealing with *fish* traps, which have different costs"
             Boolean fishing) {
         switch (command)
         case (check){
-            String top = fixtures.remove(0).string;
-            if (HuntingModel.nothing == top) {
+            String? top = fixtures.accept();
+            if (!top exists) {
+                cli.println("Ran out of results");
+                return JInteger.maxValue;
+            }
+            assert (exists top);
+            if (HuntingModel.noResults == top) {
                 cli.println("Nothing in the trap");
                 return (fishing) then 5 else 10;
             } else {
@@ -482,8 +490,12 @@ object trappingCLI satisfies SimpleDriver {
             .inputNumber("How many hours will the ``name`` work? ") * minutesPerHour;
         Point point = cli.inputPoint("Where is the ``name`` working? ");
         HuntingModel huntModel = HuntingModel(model.map);
-        JList<JString> fixtures = (fishing) then huntModel.fish(point, minutes) else
-            huntModel.hunt(point, minutes);
+        Queue<String> fixtures;
+        if (fishing) {
+            fixtures = LinkedList { *huntModel.fish(point, minutes)};
+        } else {
+            fixtures = LinkedList { *huntModel.hunt(point, minutes)};
+        }
         variable Integer input = -1;
         while (minutes > 0, input < commands.size) {
             if (exists command = commands[input]) {
