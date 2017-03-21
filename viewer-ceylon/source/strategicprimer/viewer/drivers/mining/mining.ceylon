@@ -14,9 +14,6 @@ import model.map {
     Point,
     PointFactory
 }
-import model.mining {
-    LodeStatus
-}
 
 import strategicprimer.viewer.drivers {
     DriverFailedException,
@@ -68,7 +65,7 @@ shared object miningCLI satisfies UtilityDriver {
                 actualIndex = -statusIndex;
                 mineKind = MineKind.banded;
             }
-            LodeStatus? initial = LodeStatus.values()[actualIndex];
+            LodeStatus? initial = `LodeStatus`.caseValues[actualIndex];
             if (!initial exists) {
                 throw DriverFailedException(IllegalArgumentException(
                     "Status must be the valid index of a LodeStatus"));

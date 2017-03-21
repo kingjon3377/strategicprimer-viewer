@@ -13,9 +13,6 @@ import model.map {
     Point,
     PointFactory
 }
-import model.mining {
-    LodeStatus
-}
 import java.util {
     JRandom=Random
 }
@@ -44,13 +41,12 @@ class MiningModel(initial, seed, kind) {
     LodeStatus(LodeStatus) horizontalGenerator;
     switch (kind)
     case (MineKind.normal) {
-        horizontalGenerator =
-                        (LodeStatus current) => LodeStatus.adjacent(current, rng);
+        horizontalGenerator = (LodeStatus current) => current.adjacent(rng.nextDouble);
     }
     case (MineKind.banded) {
-        horizontalGenerator = (LodeStatus current) => LodeStatus.bandedAdjacent(current, rng);
+        horizontalGenerator = (LodeStatus current) => current.bandedAdjacent(rng);
     }
-    LodeStatus verticalGenerator(LodeStatus current) => LodeStatus.adjacent(current, rng);
+    LodeStatus verticalGenerator(LodeStatus current) => current.adjacent(rng.nextDouble);
     variable Integer counter = 0;
     variable Integer pruneCounter = 0;
     void modelPoint(Point point) {

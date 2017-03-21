@@ -2,7 +2,7 @@ import lovelace.util.common {
     todo
 }
 import java.util {
-    JRandom
+    JRandom=Random
 }
 "The status of a vein of ore or deposit of stone at any given point."
 class LodeStatus of
@@ -16,7 +16,8 @@ class LodeStatus of
     Float notHigherProbability;
     "Delegating constructor."
     todo("Change default parameters to those that are more common")
-    new delegated(Integer qty, Float lowerChance = 1.0, Float notHigherChance = 1.0) {
+    abstract new delegated(Integer qty, Float lowerChance = 1.0,
+            Float notHigherChance = 1.0) {
         ratio = qty;
         lowerProbability = lowerChance;
         notHigherProbability = notHigherChance;
@@ -65,7 +66,7 @@ class LodeStatus of
     "Randomly choose a status of a location adjacent to one with this status."
     shared LodeStatus adjacent("The random-number generator to use" Float() rng) {
         Float rand = rng();
-        if (this is none) {
+        if (this == none) {
             return none;
         } else if (rand < lowerProbability) {
             return lower;
