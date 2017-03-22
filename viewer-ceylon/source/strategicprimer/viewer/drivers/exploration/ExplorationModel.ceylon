@@ -30,8 +30,7 @@ import lovelace.util.jvm {
 }
 
 import model.exploration {
-    IExplorationModel,
-    SurroundingPointIterable
+    IExplorationModel
 }
 import model.listeners {
     MovementCostListener,
@@ -90,7 +89,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
      from the watcher), print a message saying so to stdout."
     static void checkAllNearbyWatchers(IMapNG map, IUnit unit, Point dest) {
         MapDimensions dimensions = map.dimensions();
-        for (point in CeylonIterable(SurroundingPointIterable(dest, dimensions)).distinct) {
+        for (point in surroundingPointIterable(dest, dimensions).distinct) {
             for (fixture in map.getOtherFixtures(point)) {
                 if (is HasOwner fixture, !fixture.owner.independent, fixture.owner != unit.owner) {
                     process.writeLine("Motion to ``dest`` could be observed by ``fixture
@@ -355,8 +354,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     }
                 }
                 IMapNG mainMap = map;
-                SurroundingPointIterable surroundingPoints =
-                        SurroundingPointIterable(currentPoint, mapDimensions, 1);
+                {Point*} surroundingPoints =
+                        surroundingPointIterable(currentPoint, mapDimensions, 1);
                 for (point in surroundingPoints) {
                     for (pair in subordinateMaps) {
                         ensureTerrain(mainMap, pair.first(), point);
@@ -366,8 +365,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                         }
                     }
                 }
-                {[Point, TileFixture]*} surroundingFixtures =
-                        CeylonIterable(surroundingPoints)
+                {[Point, TileFixture]*} surroundingFixtures = surroundingPoints
                             .flatMap((point) => CeylonIterable(mainMap.getOtherFixtures(point))
                                 .map((fixture) => [point, fixture]));
                 [Point, TileFixture]? vegetation = surroundingFixtures

@@ -31,7 +31,6 @@ import ceylon.interop.java {
     CeylonIterable
 }
 import model.exploration {
-    SurroundingPointIterable,
     IExplorationModel
 }
 import model.map.fixtures.resources {
@@ -43,6 +42,9 @@ import lovelace.util.common {
 }
 import ceylon.math.float {
     random
+}
+import strategicprimer.viewer.drivers.exploration {
+    surroundingPointIterable
 }
 IUnit mockUnit(Player player) {
     return UnitProxyMaker.makeProxyFor(player);
@@ -85,7 +87,7 @@ object expansionDriver satisfies SimpleCLIDriver {
                 IUnit mock = mockUnit(currentPlayer);
                 for (point in map.locations()) {
                     if (containsSwornVillage(point)) {
-                        for (neighbor in SurroundingPointIterable(point,
+                        for (neighbor in surroundingPointIterable(point,
                                 map.dimensions())) {
                             if (map.getBaseTerrain(neighbor) == TileType.notVisible) {
                                 map.setBaseTerrain(neighbor,

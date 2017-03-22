@@ -28,9 +28,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.exploration {
-    SurroundingPointIterable
-}
 import model.map {
     Point,
     IMapNG,
@@ -60,7 +57,8 @@ import util {
     Quantity
 }
 import strategicprimer.viewer.drivers.exploration {
-    HuntingModel
+    HuntingModel,
+    surroundingPointIterable
 }
 "Models of (game statistics for) herding."
 interface HerdModel of PoultryModel | MammalModel {
@@ -344,7 +342,7 @@ object queryCLI satisfies SimpleDriver {
                 retval.add(current);
             } else if (currentTerrain != TileType.ocean) {
                 Float baseDistance = distance(base, current, dimensions);
-                for (neighbor in SurroundingPointIterable(current, dimensions, 1)) {
+                for (neighbor in surroundingPointIterable(current, dimensions, 1)) {
                     if (distance(base, neighbor, dimensions) >= baseDistance) {
                         queue.offer(neighbor);
                     }

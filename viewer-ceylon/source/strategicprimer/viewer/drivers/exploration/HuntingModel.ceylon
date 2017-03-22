@@ -5,9 +5,6 @@ import ceylon.collection {
     ArrayList
 }
 
-import model.exploration {
-    SurroundingPointIterable
-}
 import model.map {
     IMapNG,
     MapDimensions,
@@ -96,7 +93,7 @@ shared class HuntingModel {
             "Which map to look in"
             Map<Point, MutableList<String>> chosenMap) {
         variable {String*} choices = {
-            for (loc in SurroundingPointIterable(point, dimensions))
+            for (loc in surroundingPointIterable(point, dimensions))
                 if (exists list = chosenMap.get(loc))
                     for (item in list)
                         item
@@ -134,7 +131,7 @@ shared class HuntingModel {
             "How many items to limit the list to"
             Integer items) {
         variable {String*} choices = {
-            for (loc in SurroundingPointIterable(point, dimensions))
+            for (loc in surroundingPointIterable(point, dimensions))
                 if (exists list = plants.get(loc))
                     for (plant in list)
                         plant
