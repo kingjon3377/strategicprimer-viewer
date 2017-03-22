@@ -10,9 +10,6 @@ import java.util {
     JOptional=Optional
 }
 
-import model.exploration {
-    IExplorationModel
-}
 import model.map {
     SPMapNG,
     MapDimensionsImpl,
@@ -23,7 +20,7 @@ import model.map {
 // This file is tests that the movement code gets its most basic functionality, finding
 // adjacent tiles, right.
 
-void directionAssert(IExplorationModel model, IExplorationModel.Direction direction,
+void directionAssert(IExplorationModel model, Direction direction,
         Point source, Point destination, String extraMessage = "") {
     assertEquals(model.getDestination(source, direction), destination,
         "``direction`` of ``source````extraMessage`` is ``destination``");
@@ -34,8 +31,7 @@ void testEast() {
     IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), JOptional.empty<JPath>());
     void localAssert(Point source, Point destination, String extra = "") =>
-            directionAssert(model, IExplorationModel.Direction.east, source, destination,
-                extra);
+            directionAssert(model, Direction.east, source, destination, extra);
     localAssert(PointFactory.point(0, 0), PointFactory.point(0, 1));
     localAssert(PointFactory.point(1, 1), PointFactory.point(1, 2));
     localAssert(PointFactory.point(3, 4), PointFactory.point(3, 0),
@@ -48,7 +44,7 @@ void testNorth() {
     IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), JOptional.empty<JPath>());
     void localAssert(Point source, Point destination, String extra = "") =>
-            directionAssert(model, IExplorationModel.Direction.north, source, destination,
+            directionAssert(model, Direction.north, source, destination,
                extra);
     localAssert(PointFactory.point(0, 0), PointFactory.point(4, 0), " in a 5x5 map");
     localAssert(PointFactory.point(1, 1), PointFactory.point(0, 1));
@@ -61,7 +57,7 @@ void testSouth() {
     IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), JOptional.empty<JPath>());
     void localAssert(Point source, Point destination, String extra = "") =>
-            directionAssert(model, IExplorationModel.Direction.south, source, destination,
+            directionAssert(model, Direction.south, source, destination,
                 extra);
     localAssert(PointFactory.point(0, 0), PointFactory.point(1, 0));
     localAssert(PointFactory.point(1, 1), PointFactory.point(2, 1));
@@ -75,7 +71,7 @@ void testWest() {
     IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), JOptional.empty<JPath>());
     void localAssert(Point source, Point destination, String extra = "") =>
-            directionAssert(model, IExplorationModel.Direction.west, source, destination,
+            directionAssert(model, Direction.west, source, destination,
                 extra);
     localAssert(PointFactory.point(0, 0), PointFactory.point(0, 4),
         " in a 5x5 map");

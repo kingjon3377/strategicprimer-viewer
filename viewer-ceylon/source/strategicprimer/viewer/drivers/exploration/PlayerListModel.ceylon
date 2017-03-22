@@ -7,9 +7,6 @@ import model.map {
 import model.listeners {
     MapChangeListener
 }
-import model.exploration {
-    IExplorationModel
-}
 "A list model for players in the exploration GUI."
 class PlayerListModel(IExplorationModel model) extends DefaultListModel<Player>()
         satisfies MapChangeListener {

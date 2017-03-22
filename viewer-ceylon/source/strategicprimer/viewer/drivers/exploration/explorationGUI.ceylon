@@ -18,9 +18,6 @@ import strategicprimer.viewer.drivers {
 import strategicprimer.viewer.about {
     aboutDialog
 }
-import model.exploration {
-    IExplorationModel
-}
 "An object to start the exploration GUI."
 shared object explorationGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {

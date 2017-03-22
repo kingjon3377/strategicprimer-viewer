@@ -29,9 +29,6 @@ import lovelace.util.jvm {
     shuffle
 }
 
-import model.exploration {
-    IExplorationModel
-}
 import model.listeners {
     MovementCostListener,
     SelectionChangeListener
@@ -55,7 +52,6 @@ import model.map.fixtures {
 }
 import model.map.fixtures.mobile {
     IUnit,
-    SimpleMovement,
     Animal
 }
 import model.map.fixtures.resources {
@@ -174,16 +170,16 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel(model) {}
     "All the players shared by all the maps."
-    shared actual JList<Player> playerChoices {
+    shared actual {Player*} playerChoices {
         variable Set<Player> retval = set { *map.players() };
         for (pair in allMaps) {
             Set<Player> temp = set { *pair.first().players() };
             retval = retval.intersection(temp);
         }
-        return JavaList(ArrayList { *retval });
+        return { *retval };
     }
     "Collect all the units in the main map belonging to the specified player."
-    shared actual JList<IUnit> getUnits(Player player) {
+    shared actual {IUnit*} getUnits(Player player) {
         {Object*} temp = CeylonIterable(map.locations())
             .flatMap((point) => CeylonIterable(map.getOtherFixtures(point)))
             .flatMap((element) {
@@ -193,10 +189,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     return {element};
                 }
             });
-        value retval = {
+        return {
             for (item in temp) if (is IUnit item) if (item.owner == player) item
         };
-        return JavaList(ArrayList { *retval });
     }
     "Tell listeners that the selected point changed."
     void fireSelectionChange(Point old, Point newSelection) {
@@ -244,7 +239,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
      information showing that, then re-throw the exception; callers should deduct a
      minimal MP cost (though we notify listeners of that cost). We return the cost of the
      move in MP, which we also tell listeners about."
-    throws(`class SimpleMovement.TraversalImpossibleException`,
+    throws(`class TraversalImpossibleException`,
         "if movement in the specified direction is impossible")
     shared actual Integer move(
             "The direction to move"
@@ -259,15 +254,19 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
         assert (exists unit);
         Point dest = getDestination(point, direction);
-        if (SimpleMovement.isLandMovementPossible(map.getBaseTerrain(dest))) {
+        if (landMovementPossible(map.getBaseTerrain(dest))) {
             Integer base;
             if (dest == point) {
                 base = 1;
             } else {
-                base = SimpleMovement.getMovementCost(map.getBaseTerrain(dest),
+                Ground? ground = map.getGround(dest);
+                Forest? forest = map.getForest(dest);
+                {TileFixture*} fixtures =
+                        {ground, forest, *map.getOtherFixtures(dest)}.coalesced;
+                base = movementCost(map.getBaseTerrain(dest),
                     map.getForest(dest) exists, map.isMountainous(dest),
-                    SimpleMovement.doRiversApply(direction, map.getRivers(point),
-                        map.getRivers(dest)), () => map.streamAllFixtures(dest));
+                    riversSpeedTravel(direction, CeylonIterable(map.getRivers(point)),
+                        CeylonIterable(map.getRivers(dest))), fixtures);
             }
             Integer retval = (ceiling(base * speed.mpMultiplier) + 0.1).integer;
             removeImpl(map, point, unit);
@@ -290,7 +289,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 ensureTerrain(map, pair.first(), dest);
             }
             fireMovementCost(1);
-            throw SimpleMovement.TraversalImpossibleException();
+            throw TraversalImpossibleException();
         }
     }
     """Search the main map for the given fixture. Returns the first location found (search
@@ -308,15 +307,15 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     shared actual IUnit? selectedUnit => selection.rest.first;
     "Select the given unit."
     todo("Convert to setter of selectedUnit in interface")
-    shared actual void selectUnit(IUnit? unit) {
+    assign selectedUnit {
         Point oldLoc = selection.first;
         Point loc;
-        if (exists unit) {
-            loc = find(unit);
+        if (exists selectedUnit) {
+            loc = find(selectedUnit);
         } else {
             loc = PointFactory.invalidPoint;
         }
-        selection = [loc, unit];
+        selection = [loc, selectedUnit];
         fireSelectionChange(oldLoc, loc);
     }
     "The location of the currently selected unit."

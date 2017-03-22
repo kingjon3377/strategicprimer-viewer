@@ -14,7 +14,8 @@ import ceylon.interop.java {
     CeylonIterable,
     CeylonList,
     createJavaIntArray,
-    JavaList
+    JavaList,
+    createJavaObjectArray
 }
 import javax.swing.text {
     BadLocationException,
@@ -33,9 +34,6 @@ import java.awt.event {
 import java.lang {
     JInteger=Integer,
     IntArray
-}
-import model.exploration {
-    IExplorationModel
 }
 import strategicprimer.viewer.drivers.map_viewer {
     fixtureFilterTableModel,
@@ -110,7 +108,6 @@ import javax.swing {
     SwingUtilities
 }
 import model.map.fixtures.mobile {
-    SimpleMovement,
     IUnit,
     Animal
 }
@@ -128,26 +125,22 @@ import model.listeners {
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,
         Anything(ActionEvent) menuHandler) {
-    Map<IExplorationModel.Direction, KeyStroke> arrowKeys = HashMap {
-        IExplorationModel.Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkUp, 0),
-        IExplorationModel.Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkDown, 0),
-        IExplorationModel.Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkLeft, 0),
-        IExplorationModel.Direction.east->KeyStroke.getKeyStroke(KeyEvent.vkRight, 0)
+    Map<Direction, KeyStroke> arrowKeys = HashMap {
+        Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkUp, 0),
+        Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkDown, 0),
+        Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkLeft, 0),
+        Direction.east->KeyStroke.getKeyStroke(KeyEvent.vkRight, 0)
     };
-    Map<IExplorationModel.Direction, KeyStroke> numKeys = HashMap {
-        IExplorationModel.Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkNumpad8, 0),
-        IExplorationModel.Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkNumpad2, 0),
-        IExplorationModel.Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkNumpad4, 0),
-        IExplorationModel.Direction.east->KeyStroke.getKeyStroke(KeyEvent.vkNumpad6, 0),
-        IExplorationModel.Direction.northeast->KeyStroke.getKeyStroke(KeyEvent.vkNumpad9,
-            0),
-        IExplorationModel.Direction.northwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad7,
-            0),
-        IExplorationModel.Direction.southeast->KeyStroke.getKeyStroke(KeyEvent.vkNumpad3,
-            0),
-        IExplorationModel.Direction.southwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad1,
-            0),
-        IExplorationModel.Direction.nowhere->KeyStroke.getKeyStroke(KeyEvent.vkNumpad5, 0)
+    Map<Direction, KeyStroke> numKeys = HashMap {
+        Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkNumpad8, 0),
+        Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkNumpad2, 0),
+        Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkNumpad4, 0),
+        Direction.east->KeyStroke.getKeyStroke(KeyEvent.vkNumpad6, 0),
+        Direction.northeast->KeyStroke.getKeyStroke(KeyEvent.vkNumpad9, 0),
+        Direction.northwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad7, 0),
+        Direction.southeast->KeyStroke.getKeyStroke(KeyEvent.vkNumpad3, 0),
+        Direction.southwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad1, 0),
+        Direction.nowhere->KeyStroke.getKeyStroke(KeyEvent.vkNumpad5, 0)
     };
     object retval extends SPFrame("Exploration", model.mapFile.orElse(null),
         Dimension(768, 480)) {
@@ -171,16 +164,15 @@ SPFrame explorationFrame(IExplorationModel model,
                 ArrayList<CompletionListener>();
         void buttonListener(ActionEvent event) {
             if (exists selectedValue = unitList.selectedValue,
-                !unitList.selectionEmpty) {
-                model.selectUnit(selectedValue);
+                   !unitList.selectionEmpty) {
+                model.selectedUnit = selectedValue;
                 for (listener in completionListeners) {
                     listener.finished();
                 }
             }
         }
-        shared ComboBoxModel<IExplorationModel.Speed> speedModel =
-                DefaultComboBoxModel<IExplorationModel.Speed>(
-                    IExplorationModel.Speed.values());
+        shared ComboBoxModel<Speed> speedModel = DefaultComboBoxModel<Speed>(
+            createJavaObjectArray<Speed>(`Speed`.caseValues));
         object explorerSelectingPanel extends BorderedPanel()
                 satisfies PlayerChangeSource&CompletionSource {
             MutableList<PlayerChangeListener> listeners =
@@ -219,7 +211,7 @@ SPFrame explorationFrame(IExplorationModel model,
             }
             unitList.cellRenderer = renderer;
             mpField.addActionListener(buttonListener);
-            speedModel.selectedItem = IExplorationModel.Speed.normal;
+            speedModel.selectedItem = Speed.normal;
         }
         explorerSelectingPanel.center = horizontalSplit(0.5, 0.5,
             BorderedPanel.verticalPanel(JLabel("Players in all maps:"), playerList,
@@ -232,8 +224,7 @@ SPFrame explorationFrame(IExplorationModel model,
                     BorderedPanel.horizontalPanel(JLabel("Unit's Movement Points"),
                         null, mpField),
                     BorderedPanel.horizontalPanel(JLabel("Unit's Relative Speed"),
-                        null, ImprovedComboBox<IExplorationModel.Speed>.withModel(
-                            speedModel)),
+                        null, ImprovedComboBox<Speed>.withModel(speedModel)),
                     listenedButton("Start exploring!", buttonListener))));
         JPanel tilesPanel = JPanel(GridLayout(3, 12, 2, 2));
         JPanel headerPanel = boxPanel(BoxAxis.lineAxis);
@@ -270,18 +261,18 @@ SPFrame explorationFrame(IExplorationModel model,
                 "<html><body>Currently exploring (%d, %d); click a tile to explore it.
                  Selected fixtures in its left-hand list will be 'discovered'.
                  </body></html>", JInteger(-1), JInteger(-1));
-            MutableMap<IExplorationModel.Direction, SelectionChangeSupport> mains =
-                    HashMap<IExplorationModel.Direction, SelectionChangeSupport>();
-            MutableMap<IExplorationModel.Direction, SelectionChangeSupport> seconds =
-                    HashMap<IExplorationModel.Direction, SelectionChangeSupport>();
-            MutableMap<IExplorationModel.Direction, DualTileButton> buttons =
-                    HashMap<IExplorationModel.Direction, DualTileButton>();
+            MutableMap<Direction, SelectionChangeSupport> mains =
+                    HashMap<Direction, SelectionChangeSupport>();
+            MutableMap<Direction, SelectionChangeSupport> seconds =
+                    HashMap<Direction, SelectionChangeSupport>();
+            MutableMap<Direction, DualTileButton> buttons =
+                    HashMap<Direction, DualTileButton>();
             {FixtureMatcher*} matchers = fixtureFilterTableModel();
             shared actual void selectedPointChanged(Point? old, Point newPoint) {
                 // TODO: use the provided old point instead?
                 Point selPoint = model.selectedUnitLocation;
-//                for (direction in `IExplorationModel.Direction`.caseValues) {
-                for (direction in IExplorationModel.Direction.values()) {
+//                for (direction in `Direction`.caseValues) {
+                for (direction in `Direction`.caseValues) {
                     Point point = model.getDestination(selPoint, direction);
                     mains.get(direction)?.fireChanges(selPoint, point);
                     seconds.get(direction)?.fireChanges(selPoint, point);
@@ -311,26 +302,25 @@ SPFrame explorationFrame(IExplorationModel model,
                 mpField.preferredSize.height.integer);
             headerPanel.add(mpField);
             headerPanel.add(JLabel("Current relative speed:"));
-            IExplorationModel.Speed() speedSource = () {
-                assert (is IExplorationModel.Speed retval = speedModel.selectedItem);
+            Speed() speedSource = () {
+                assert (is Speed retval = speedModel.selectedItem);
                 return retval;
             };
-            headerPanel.add(ImprovedComboBox<IExplorationModel.Speed>.withModel(
-                speedModel));
+            headerPanel.add(ImprovedComboBox<Speed>.withModel(speedModel));
             IMutableMapNG secondMap;
             if (exists pair = CeylonIterable(model.subordinateMaps).first) {
                 secondMap = pair.first();
             } else {
                 secondMap = model.map;
             }
-            for (direction in {IExplorationModel.Direction.northwest,
-                IExplorationModel.Direction.north,
-                IExplorationModel.Direction.northeast,
-                IExplorationModel.Direction.west, IExplorationModel.Direction.nowhere,
-                IExplorationModel.Direction.east,
-                IExplorationModel.Direction.southwest,
-                IExplorationModel.Direction.south,
-                IExplorationModel.Direction.southeast}) {
+            for (direction in {Direction.northwest,
+                Direction.north,
+                Direction.northeast,
+                Direction.west, Direction.nowhere,
+                Direction.east,
+                Direction.southwest,
+                Direction.south,
+                Direction.southeast}) {
                 SelectionChangeSupport mainPCS = SelectionChangeSupport();
                 SwingList<TileFixture>&SelectionChangeListener mainList =
                         fixtureList(tilesPanel, FixtureListModel(model.map, true),
@@ -390,7 +380,7 @@ SPFrame explorationFrame(IExplorationModel model,
                             SwingUtilities.invokeLater(() {
                                 try {
                                     value fixtures = selectedValuesList;
-                                    if (IExplorationModel.Direction.nowhere == direction) {
+                                    if (Direction.nowhere == direction) {
                                         for ([query, method] in explorerActions) {
                                             Integer resp =
                                                     JOptionPane.showConfirmDialog(null,
@@ -440,8 +430,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                     for (cache in caches) {
                                         model.map.removeFixture(destPoint, cache);
                                     }
-                                } catch (SimpleMovement.TraversalImpossibleException
-                                except) {
+                                } catch (TraversalImpossibleException except) {
                                     log.debug("Attempted movement to impassable destination",
                                         except);
                                     Point selection = model.selectedUnitLocation;
@@ -483,9 +472,9 @@ SPFrame explorationFrame(IExplorationModel model,
                                 MutableList<[Integer, TileFixture]> possibles =
                                         ArrayList<[Integer, TileFixture]>();
                                 for (index->fixture in ListModelWrapper(mainList.model).indexed) {
-                                    if (SimpleMovement.shouldAlwaysNotice(selectedUnit, fixture)) {
+                                    if (shouldAlwaysNotice(selectedUnit, fixture)) {
                                         constants.add([index, fixture]);
-                                    } else if (SimpleMovement.shouldSometimesNotice(selectedUnit, speedSource(), fixture)) {
+                                    } else if (shouldSometimesNotice(selectedUnit, speedSource(), fixture)) {
                                         possibles.add([index, fixture]);
                                     }
                                 }
@@ -508,10 +497,9 @@ SPFrame explorationFrame(IExplorationModel model,
                                         tracks.add([currentLocation, animal]);
                                     }
                                 }
-                                constants.addAll(CeylonList(SimpleMovement.selectNoticed(
-                                    JavaList(shuffle(possibles)),
+                                constants.addAll(selectNoticed(shuffle(possibles),
                                             ([Integer, TileFixture] tuple) => tuple.rest.first,
-                                    selectedUnit, speedSource())));
+                                    selectedUnit, speedSource()));
                                 IntArray indices = createJavaIntArray(
                                     {for ([index, fixture] in constants) index});
                                 mainList.selectedIndices = indices;

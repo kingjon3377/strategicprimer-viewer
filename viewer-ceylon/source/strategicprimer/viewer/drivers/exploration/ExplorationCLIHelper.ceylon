@@ -15,9 +15,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.exploration {
-    IExplorationModel
-}
 import model.listeners {
     MovementCostListener,
     MovementCostSource
@@ -35,7 +32,6 @@ import model.map.fixtures {
 }
 import model.map.fixtures.mobile {
     IUnit,
-    SimpleMovement,
     Animal
 }
 import model.map.fixtures.resources {
@@ -84,11 +80,10 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         return retval;
     }
     "The explorer's current movement speed."
-    variable IExplorationModel.Speed speed = IExplorationModel.Speed.normal;
+    variable Speed speed = Speed.normal;
     "Let the user change the explorer's speed"
     void changeSpeed() {
-//        IExplorationModel.Speed[] speeds = `IExplorationModel.Speed`.caseValues;
-        IExplorationModel.Speed[] speeds = [*IExplorationModel.Speed.values()];
+        Speed[] speeds = `Speed`.caseValues;
         Integer newSpeed = cli.chooseFromList(speeds,
             "Possible Speeds:", "No speeds available", "Chosen Speed: ", true);
         if (exists temp = speeds[newSpeed]) {
@@ -136,12 +131,12 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         } else if (directionNum < 0) {
             return;
         }
-        assert (exists direction = IExplorationModel.Direction.values()[directionNum]);
+        assert (exists direction = `Direction`.caseValues[directionNum]);
         Point point = model.selectedUnitLocation;
         Point destPoint = model.getDestination(point, direction);
         try {
             model.move(direction, speed);
-        } catch (SimpleMovement.TraversalImpossibleException except) {
+        } catch (TraversalImpossibleException except) {
             log.debug("Attempted movement to impossible destination");
             cli.println("That direction is impassable; we've made sure all maps show that
                          at a cost of 1 MP");
@@ -152,9 +147,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
         for (fixture in {map.getGround(destPoint), map.getForest(destPoint),
             *map.getOtherFixtures(destPoint)}.coalesced) {
-            if (SimpleMovement.shouldAlwaysNotice(mover, fixture)) {
+            if (shouldAlwaysNotice(mover, fixture)) {
                 constants.add(fixture);
-            } else if (SimpleMovement.shouldSometimesNotice(mover, speed, fixture)) {
+            } else if (shouldSometimesNotice(mover, speed, fixture)) {
                 allFixtures.add(fixture);
             }
         }
@@ -167,7 +162,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         if (HuntingModel.noResults != tracks) {
             allFixtures.add(Animal(tracks, true, false, "wild", -1));
         }
-        if (IExplorationModel.Direction.nowhere == direction) {
+        if (Direction.nowhere == direction) {
             if (cli.inputBooleanInSeries(
                 "Should any village here swear to the player?  ")) {
                 model.swearVillages();
@@ -187,9 +182,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         }
         cli.println("The explorer comes to ``destPoint``, a ``mtn``tile with terrain ``
         map.getBaseTerrain(destPoint)``");
-        {TileFixture*} noticed = CeylonIterable(
-            SimpleMovement.selectNoticed(JavaList(allFixtures), identity<TileFixture>,
-                mover, speed));
+        {TileFixture*} noticed = selectNoticed(allFixtures, identity<TileFixture>,
+                mover, speed);
         if (noticed.empty) {
             cli.println("The following were automatically noticed:");
         } else if (noticed.size > 1) {

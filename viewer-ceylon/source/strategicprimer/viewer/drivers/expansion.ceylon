@@ -24,14 +24,10 @@ import ceylon.collection {
 }
 import model.map.fixtures.mobile {
     IUnit,
-    SimpleMovement,
     Animal
 }
 import ceylon.interop.java {
     CeylonIterable
-}
-import model.exploration {
-    IExplorationModel
 }
 import model.map.fixtures.resources {
     CacheFixture
@@ -44,7 +40,10 @@ import ceylon.math.float {
     random
 }
 import strategicprimer.viewer.drivers.exploration {
-    surroundingPointIterable
+    surroundingPointIterable,
+    shouldSometimesNotice,
+    shouldAlwaysNotice,
+    Speed
 }
 IUnit mockUnit(Player player) {
     return UnitProxyMaker.makeProxyFor(player);
@@ -109,11 +108,10 @@ object expansionDriver satisfies SimpleCLIDriver {
                                         CeylonIterable(map.getOtherFixtures(neighbor))
                                             .contains(fixture)) {
                                     continue;
-                                } else if (SimpleMovement.shouldAlwaysNotice(mock,
-                                        fixture)) {
+                                } else if (shouldAlwaysNotice(mock, fixture)) {
                                     safeAdd(neighbor, fixture);
-                                } else if (SimpleMovement.shouldSometimesNotice(mock,
-                                        IExplorationModel.Speed.careful, fixture)) {
+                                } else if (shouldSometimesNotice(mock, Speed.careful,
+                                        fixture)) {
                                     possibilities.add(fixture);
                                 }
                             }

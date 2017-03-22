@@ -37,9 +37,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.exploration {
-    IExplorationModel
-}
 import model.map {
     Player,
     IMapNG,
@@ -73,7 +70,8 @@ import model.workermgmt {
 import strategicprimer.viewer.drivers.exploration {
     loadAllTables,
     ExplorationRunner,
-    ExplorationModel
+    ExplorationModel,
+    IExplorationModel
 }
 import strategicprimer.viewer.xmlio {
     readMap
@@ -181,7 +179,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Let the user enter stats for workers already in the maps."
     void enterStats(IExplorationModel model, ICLIHelper cli) {
-        Player[] players = [*CeylonList(model.playerChoices)];
+        Player[] players = [*model.playerChoices];
         cli.loopOnList(players, (clh) => clh.chooseFromList(players,
                 "Which player owns the worker in question?",
                 "There are no players shared by all the maps.", "Player selection: ",
@@ -368,7 +366,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Allow the user to create randomly-generated workers."
     void createWorkers(IExplorationModel model, IDRegistrar idf, ICLIHelper cli) {
-        Player[] players = [*CeylonList(model.playerChoices)];
+        Player[] players = [*model.playerChoices];
         cli.loopOnList(players, (clh) => clh.chooseFromList(players,
                 "Which player owns the new worker(s)?",
                 "There are no players shared by all the maps.",

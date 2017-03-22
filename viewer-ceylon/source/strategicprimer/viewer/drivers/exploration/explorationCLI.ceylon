@@ -13,9 +13,6 @@ import strategicprimer.viewer.drivers {
     SPOptions,
     ICLIHelper
 }
-import model.exploration {
-    IExplorationModel
-}
 import ceylon.logging {
     logger,
     Logger
@@ -43,7 +40,7 @@ shared object explorationCLI satisfies SimpleCLIDriver {
         try {
             ExplorationCLIHelper eCLI = ExplorationCLIHelper(explorationModel, cli);
             if (exists player = eCLI.choosePlayer(), exists unit = eCLI.chooseUnit(player)) {
-                explorationModel.selectUnit(unit);
+                explorationModel.selectedUnit = unit;
                 eCLI.moveUntilDone();
             }
         } catch (IOException except) {
