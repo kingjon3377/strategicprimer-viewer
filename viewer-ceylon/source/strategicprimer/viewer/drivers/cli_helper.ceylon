@@ -50,8 +50,10 @@ import util {
 }
 
 import view.util {
-    SystemIn,
     SystemOut
+}
+import lovelace.util.jvm {
+    systemIn
 }
 """An interface for the "CLI helper," which encapsulates input and output streams,
    allowing automated testing of CLIs and GUI wrappers around CLIs."""
@@ -159,7 +161,7 @@ class CLIHelper satisfies ICLIHelper {
     "The current state of the yes-to-all/no-to-all possibility. Absent if not set,
      present if set, and the boolean value is what to return."
     MutableMap<String, Boolean> seriesState = HashMap<String, Boolean>();
-    shared new (JReader inStream = InputStreamReader(SystemIn.sysIn),
+    shared new (JReader inStream = InputStreamReader(systemIn),
             JWriter outStream = OutputStreamWriter(SystemOut.sysOut)) {
         istream = BufferedReader(inStream);
         ostream = PrintWriter(outStream);
