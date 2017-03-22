@@ -14,8 +14,7 @@ import strategicprimer.viewer.drivers {
     ICLIHelper
 }
 import model.exploration {
-    IExplorationModel,
-    ExplorationModel
+    IExplorationModel
 }
 import ceylon.logging {
     logger,
@@ -39,7 +38,7 @@ shared object explorationCLI satisfies SimpleCLIDriver {
         if (is IExplorationModel model) {
             explorationModel = model;
         } else {
-            explorationModel = ExplorationModel(model);
+            explorationModel = ExplorationModel.copyConstructor(model);
         }
         try {
             ExplorationCLIHelper eCLI = ExplorationCLIHelper(explorationModel, cli);

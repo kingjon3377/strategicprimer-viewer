@@ -19,8 +19,7 @@ import strategicprimer.viewer.about {
     aboutDialog
 }
 import model.exploration {
-    IExplorationModel,
-    ExplorationModel
+    IExplorationModel
 }
 "An object to start the exploration GUI."
 shared object explorationGUI satisfies SimpleDriver {
@@ -39,7 +38,7 @@ shared object explorationGUI satisfies SimpleDriver {
         if (is IExplorationModel model) {
             explorationModel = model;
         } else {
-            explorationModel = ExplorationModel(model);
+            explorationModel = ExplorationModel.copyConstructor(model);
         }
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(explorationModel, options, cli), "load", "save",

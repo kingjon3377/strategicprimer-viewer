@@ -11,8 +11,7 @@ import java.util {
 }
 
 import model.exploration {
-    IExplorationModel,
-    ExplorationModel
+    IExplorationModel
 }
 import model.map {
     SPMapNG,

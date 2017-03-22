@@ -38,8 +38,7 @@ import lovelace.util.common {
 }
 
 import model.exploration {
-    IExplorationModel,
-    ExplorationModel
+    IExplorationModel
 }
 import model.map {
     Player,
@@ -73,7 +72,8 @@ import model.workermgmt {
 
 import strategicprimer.viewer.drivers.exploration {
     loadAllTables,
-    ExplorationRunner
+    ExplorationRunner,
+    ExplorationModel
 }
 import strategicprimer.viewer.xmlio {
     readMap
@@ -391,7 +391,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
                 createWorkers(model, createIDFactory(model), cli);
             }
         } else {
-            startDriverOnModel(cli, options, ExplorationModel(model));
+            startDriverOnModel(cli, options, ExplorationModel.copyConstructor(model));
         }
     }
 }
