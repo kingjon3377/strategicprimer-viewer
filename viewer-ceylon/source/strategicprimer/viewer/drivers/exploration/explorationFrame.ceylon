@@ -142,7 +142,7 @@ SPFrame explorationFrame(IExplorationModel model,
         Direction.southwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad1, 0),
         Direction.nowhere->KeyStroke.getKeyStroke(KeyEvent.vkNumpad5, 0)
     };
-    object retval extends SPFrame("Exploration", model.mapFile.orElse(null),
+    object retval extends SPFrame("Exploration", model.mapFile,
         Dimension(768, 480)) {
         shared actual String windowName = "Exploration";
         CardLayout layoutObj = CardLayout();

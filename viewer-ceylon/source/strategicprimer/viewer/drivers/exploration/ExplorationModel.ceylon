@@ -67,11 +67,9 @@ import model.map.fixtures.towns {
     Fortress,
     Village
 }
-import model.misc {
-    IDriverModel
-}
 import strategicprimer.viewer.model {
-    SimpleMultiMapModel
+    SimpleMultiMapModel,
+    IDriverModel
 }
 "A model for exploration drivers."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
@@ -167,7 +165,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             ArrayList<SelectionChangeListener>();
     "The currently selected unit and its location."
     variable [Point, IUnit?] selection = [PointFactory.invalidPoint, null];
-    shared new (IMutableMapNG map, JOptional<JPath> file)
+    shared new (IMutableMapNG map, JPath? file)
             extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}

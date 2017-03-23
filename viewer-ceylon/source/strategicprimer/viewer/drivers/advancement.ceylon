@@ -55,7 +55,9 @@ import javax.swing.tree {
     TreeSelectionModel,
     TreePath
 }
-
+import strategicprimer.viewer.model {
+    IDriverModel
+}
 import lovelace.util.common {
     todo
 }
@@ -106,9 +108,6 @@ import model.map.fixtures.mobile.worker {
     ProxyJob,
     ProxyWorker,
     WorkerStats
-}
-import model.misc {
-    IDriverModel
 }
 import model.workermgmt {
     RaceFactory
@@ -735,8 +734,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
     expander.expandAll();
     FormattedLabel playerLabel = FormattedLabel("%s's Units:", "");
     object retval
-            extends SPFrame("Worker Advancement", model.mapFile.orElse(null),
-                Dimension(640, 480))
+            extends SPFrame("Worker Advancement", model.mapFile, Dimension(640, 480))
             satisfies PlayerChangeListener{
         shared actual void playerChanged(Player? old, Player newPlayer) {
             playerLabel.setArgs(newPlayer.name);

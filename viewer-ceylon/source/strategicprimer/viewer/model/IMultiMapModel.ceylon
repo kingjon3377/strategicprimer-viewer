@@ -10,9 +10,6 @@ import model.map {
     IMutableMapNG,
     IMapNG
 }
-import model.misc {
-    IDriverModel
-}
 """A driver-model for drivers that have a main map (like every driver) and any number of
    "subordinate" maps."""
 shared interface IMultiMapModel satisfies IDriverModel {

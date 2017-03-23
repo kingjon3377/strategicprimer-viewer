@@ -15,7 +15,7 @@ import lovelace.util.common {
     todo
 }
 
-import model.misc {
+import strategicprimer.viewer.model {
     IDriverModel
 }
 

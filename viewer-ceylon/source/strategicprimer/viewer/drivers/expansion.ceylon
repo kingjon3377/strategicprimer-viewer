@@ -1,9 +1,6 @@
 import controller.map.misc {
     IDRegistrar
 }
-import model.misc {
-    IDriverModel
-}
 import model.map {
     IMapNG,
     IMutableMapNG,
@@ -45,7 +42,8 @@ import strategicprimer.viewer.drivers.exploration {
 }
 import strategicprimer.viewer.model {
     SimpleMultiMapModel,
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
 }
 IUnit mockUnit(Player player) {
     return UnitProxyMaker.makeProxyFor(player);

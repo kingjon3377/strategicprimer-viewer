@@ -9,11 +9,11 @@ import model.listeners {
 import model.map {
     Point
 }
-import model.misc {
-    IDriverModel
-}
 import model.viewer {
     VisibleDimensions
+}
+import strategicprimer.viewer.model {
+    IDriverModel
 }
 "An interface for a model behind the map viewer, handling the selected tile and visible
  dimensions."

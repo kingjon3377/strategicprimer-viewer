@@ -32,9 +32,6 @@ import javax.xml.stream {
 import controller.map.formatexceptions {
     SPFormatException
 }
-import model.misc {
-    IDriverModel
-}
 import ceylon.logging {
     Logger,
     logger
@@ -82,9 +79,9 @@ todo("Return exceptions instead of throwing them")
 shared IDriverModel readMapModel(JPath|JReader file, Warning warner) {
     try {
         if (is JReader file) {
-            return ViewerModel(readMap(file, warner), JOptional.empty<JPath>());
+            return ViewerModel(readMap(file, warner), null);
         } else {
-            return ViewerModel(readMap(file, warner), JOptional.\iof(file));
+            return ViewerModel(readMap(file, warner), file);
         }
     } catch (IOException except) {
         throw DriverFailedException(except, "I/O error while reading");
@@ -101,7 +98,7 @@ shared IMultiMapModel readMultiMapModel(Warning warner, JPath master, JPath* fil
     variable String current = master.string;
     try {
         IMultiMapModel retval = SimpleMultiMapModel(readMap(master, warner),
-            JOptional.\iof(master));
+            master);
         for (file in files) {
             current = file.string;
             retval.addSubordinateMap(readMap(file, warner), file);
@@ -121,7 +118,7 @@ shared void writeMap(JPath file, IMapNG map) => writer.write(file, map);
  [[DriverFailedException]] to simplify callers."
 todo("Return exceptions instead of throwing them")
 shared void writeModel(IDriverModel model) {
-    if (exists mainFile = model.mapFile.orElse(null)) {
+    if (exists mainFile = model.mapFile) {
         try {
             writer.write(mainFile, model.map);
         } catch (IOException except) {

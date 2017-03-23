@@ -6,7 +6,8 @@ import ceylon.collection {
     MutableList
 }
 import strategicprimer.viewer.model {
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
 }
 import ceylon.file {
     File,
@@ -61,9 +62,6 @@ import model.map.fixtures.mobile.worker {
 }
 import model.map.fixtures.towns {
     Village
-}
-import model.misc {
-    IDriverModel
 }
 import model.workermgmt {
     RaceFactory

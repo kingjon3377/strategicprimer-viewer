@@ -1,6 +1,3 @@
-import model.misc {
-    IDriverModel
-}
 import java.lang {
     IllegalStateException
 }
@@ -15,6 +12,9 @@ import strategicprimer.viewer.drivers {
     IDriverUsage,
     SPOptions,
     SimpleDriver
+}
+import strategicprimer.viewer.model {
+    IDriverModel
 }
 "A command-line program to export a proto-strategy for a player from orders in a map."
 shared object strategyExportCLI satisfies SimpleDriver {

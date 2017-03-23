@@ -1,8 +1,6 @@
-import model.misc {
-    IDriverModel
-}
 import strategicprimer.viewer.model {
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
 }
 import java.nio.file {
     JPath=Path, JPaths=Paths, JFiles=Files
@@ -86,7 +84,7 @@ object reportCLI satisfies SimpleDriver {
                 writeReport(file, map);
             }
         } else {
-            writeReport(model.mapFile.orElse(null), model.map);
+            writeReport(model.mapFile, model.map);
         }
     }
 }
@@ -118,7 +116,7 @@ object tabularReportCLI satisfies SimpleDriver {
                 createReports(map, file);
             }
         } else {
-            createReports(model.map, model.mapFile.orElse(null));
+            createReports(model.map, model.mapFile);
         }
     }
 }

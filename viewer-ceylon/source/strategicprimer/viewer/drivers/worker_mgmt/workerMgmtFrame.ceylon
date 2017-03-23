@@ -108,9 +108,22 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         }
         return retval;
     }
+    Boolean anythingEqual(Anything one, Anything two) {
+        if (exists one) {
+            if (exists two) {
+                return one == two;
+            } else {
+                return false;
+            }
+        } else if (exists two) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     IViewerModel getViewerModel() {
         for (frame in WindowList.getFrames(false, true, true)) {
-            if (is IViewerFrame frame, frame.model.mapFile == model.mapFile) {
+            if (is IViewerFrame frame, anythingEqual(frame.model.mapFile, model.mapFile)) {
                 frame.toFront();
                 if (frame.extendedState == Frame.iconified) {
                     frame.extendedState = Frame.normal;
@@ -118,8 +131,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
                 return frame.model;
             }
         } else {
-            SPFrame&IViewerFrame frame = viewerFrame(ViewerModel(model.map, model.mapFile),
-                menuHandler.actionPerformed);
+            SPFrame&IViewerFrame frame = viewerFrame(ViewerModel(model.map,
+                model.mapFile), menuHandler.actionPerformed);
             SwingUtilities.invokeLater(() => frame.setVisible(true));
             return frame.model;
         }
@@ -168,7 +181,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         report.addMouseListener(reportMouseHandler);
         return report;
     }
-    object retval extends SPFrame("Worker Management", model.mapFile.orElse(null),
+    object retval extends SPFrame("Worker Management", model.mapFile,
         Dimension(640, 480))
             satisfies PlayerChangeListener {
         IMapNG mainMap = model.map;

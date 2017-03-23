@@ -2,7 +2,8 @@ import controller.map.formatexceptions {
     SPFormatException
 }
 import strategicprimer.viewer.model {
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
 }
 import java.io {
     IOException
@@ -25,9 +26,6 @@ import lovelace.util.jvm {
     showErrorDialog
 }
 
-import model.misc {
-    IDriverModel
-}
 
 import strategicprimer.viewer.drivers {
     DriverFailedException,

@@ -53,12 +53,10 @@ import model.map.fixtures.towns {
     Fortress,
     TownSize
 }
-import model.misc {
-    IDriverModel
-}
 
 import strategicprimer.viewer.model {
-    SimpleMultiMapModel
+    SimpleMultiMapModel,
+    IDriverModel
 }
 
 import util {
@@ -66,7 +64,7 @@ import util {
 }
 "A model to underlie the advancement GUI, etc."
 shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
-    shared new (IMutableMapNG map, JOptional<JPath> file)
+    shared new (IMutableMapNG map, JPath? file)
             extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
@@ -210,7 +208,7 @@ void testGetUnits() {
     for ([point, fixture] in zipPairs(CeylonIterable(map.locations()), shuffled)) {
         map.addFixture(point, fixture);
     }
-    IWorkerModel model = WorkerModel(map, JOptional.empty<JPath>());
+    IWorkerModel model = WorkerModel(map, null);
     Boolean iterableEquality<T>(Anything one, Anything two) given T satisfies Object {
         if (is {T*} one, is {T*} two) {
             return one.containsEvery(two) &&two.containsEvery(one);

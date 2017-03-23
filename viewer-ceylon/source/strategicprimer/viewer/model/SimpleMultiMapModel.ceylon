@@ -2,19 +2,9 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import ceylon.interop.java {
-    JavaIterable,
-    CeylonIterable
-}
 
-import java.lang {
-    JIterable=Iterable
-}
 import java.nio.file {
     JPath=Path
-}
-import java.util {
-    JOptional=Optional
 }
 
 import lovelace.util.common {
@@ -25,22 +15,13 @@ import model.map {
     IMutableMapNG,
     IMapNG
 }
-import model.misc {
-    SimpleDriverModel,
-    IDriverModel
-}
-
-import util {
-    Pair
-}
 "A superclass for implementations of interfaces inheriting from [[IMultiMapModel]]."
 shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapModel {
     "The collection of subordinate maps."
     MutableList<[IMutableMapNG, JPath?]> subordinateMapsList =
             ArrayList<[IMutableMapNG, JPath?]>();
-    shared new (IMutableMapNG map, JOptional<JPath> file) extends SimpleDriverModel() {
-        super.setMap(map, file);
-    }
+    shared new (IMutableMapNG map, JPath? file)
+            extends SimpleDriverModel(map, file) { }
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel(model.map, model.mapFile) {
         if (is IMultiMapModel model) {
@@ -59,5 +40,5 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
     shared actual {[IMutableMapNG, JPath?]*} subordinateMaps =>
             {*subordinateMapsList};
     shared actual {[IMutableMapNG, JPath?]*} allMaps =>
-            subordinateMaps.follow([map, mapFile.orElse(null)]);
+            subordinateMaps.follow([map, mapFile]);
 }

@@ -1,6 +1,3 @@
-import model.misc {
-    IDriverModel
-}
 import javax.swing {
     JPanel,
     JLabel,
@@ -43,6 +40,9 @@ import java.awt {
     Graphics,
     GridLayout,
     Dimension
+}
+import strategicprimer.viewer.model {
+    IDriverModel
 }
 "A panel to show the details of a tile, using a list rather than sub-panels with chits
  for its fixtures."

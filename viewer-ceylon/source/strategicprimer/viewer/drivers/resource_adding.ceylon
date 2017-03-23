@@ -75,9 +75,6 @@ import model.map.fixtures {
 import model.map.fixtures.towns {
     Fortress
 }
-import model.misc {
-    IDriverModel
-}
 
 import util {
     Quantity
@@ -86,12 +83,13 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu
 }
 import strategicprimer.viewer.model {
-    SimpleMultiMapModel
+    SimpleMultiMapModel,
+    IDriverModel
 }
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
     shared new fromMap(IMutableMapNG map, JPath? file) extends
-        SimpleMultiMapModel(map, JOptional.ofNullable<JPath>(file)) { }
+        SimpleMultiMapModel(map, file) { }
     shared new fromDriverModel(IDriverModel driverModel) extends
         SimpleMultiMapModel.copyConstructor(driverModel) { }
     "All the players in all the maps."
@@ -385,7 +383,7 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
     JScrollPane scrolledLog = JScrollPane(logLabel);
     scrolledLog.minimumSize = logLabel.minimumSize;
 
-    object retval extends SPFrame("Resource Entry", model.mapFile.orElse(null))
+    object retval extends SPFrame("Resource Entry", model.mapFile)
             satisfies PlayerChangeListener {
         shared actual String windowName = "Resource Entry";
         shared actual void playerChanged(Player? old, Player newPlayer) {

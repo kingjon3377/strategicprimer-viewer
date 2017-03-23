@@ -5,9 +5,6 @@ import model.map {
 import javax.swing {
     SwingUtilities
 }
-import model.misc {
-    IDriverModel
-}
 import strategicprimer.viewer.drivers {
     SPFrame,
     DriverUsage,
@@ -30,7 +27,8 @@ import ceylon.logging {
     Logger
 }
 import strategicprimer.viewer.model {
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -109,7 +107,8 @@ shared object viewerGUI satisfies SimpleDriver {
                 startDriverOnModel(cli, options.copy(), ViewerModel.fromPair(map));
             }
         } else {
-            startDriverOnModel(cli, options, ViewerModel(model.map, model.mapFile));
+            startDriverOnModel(cli, options, ViewerModel(model.map,
+                model.mapFile));
         }
     }
 }

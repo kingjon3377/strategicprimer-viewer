@@ -30,15 +30,13 @@ import model.map.fixtures.terrain {
 import model.map.fixtures {
     Ground
 }
-import model.misc {
-    IDriverModel
-}
 import strategicprimer.viewer.xmlio {
     readMap,
     writeMap
 }
 import strategicprimer.viewer.model {
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
 }
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated

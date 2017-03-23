@@ -12,9 +12,6 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import model.misc {
-    IDriverModel
-}
 import model.map {
     Player
 }
@@ -30,6 +27,9 @@ import ceylon.interop.java {
 import java.awt {
     Component,
     Frame
+}
+import strategicprimer.viewer.model {
+    IDriverModel
 }
 """A class to respond to "change current player" menu items."""
 shared class PlayerChangeMenuListener(IDriverModel model)

@@ -25,18 +25,16 @@ import model.listeners {
 import model.map {
     Point,
     IMutableMapNG,
-    PointFactory
-}
-import model.misc {
-    SimpleDriverModel,
-    IDriverModel
+    PointFactory,
+    IMapNG
 }
 import model.viewer {
     VisibleDimensions
 }
 
-import util {
-    Pair
+import strategicprimer.viewer.model {
+    SimpleDriverModel,
+    IDriverModel
 }
 "A class to encapsulate the various model-type things views need to do with maps."
 todo("Tests")
@@ -94,30 +92,24 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     shared void clearSelection() => selection = PointFactory.invalidPoint;
     "The visible dimensions of the map."
     variable VisibleDimensions visDimensions;
-    shared actual String string =>
-            mapFile.map((path) => "ViewerModel for ``path``")
-                .orElse("ViewerModel for an unsaved map");
-    "Set the map and its filename, and also clear the selection and reset the visible
-     dimensions and the zoom level."
-    shared actual void setMap(IMutableMapNG newMap, JOptional<JPath> origin) {
-        super.setMap(newMap, origin);
-        clearSelection();
-        visDimensions = VisibleDimensions(0, newMap.dimensions().rows - 1,
-            0, newMap.dimensions().columns - 1);
-        resetZoom();
-    }
     shared new ("The initial map" IMutableMapNG theMap,
-            "The file it was loaded from or should be saved to" JOptional<JPath> file)
-            extends SimpleDriverModel() {
+            "The file it was loaded from or should be saved to" JPath? file)
+            extends SimpleDriverModel(theMap, file) {
         visDimensions = VisibleDimensions(0, theMap.dimensions().rows - 1,
             0, theMap.dimensions().columns - 1);
-        setMap(theMap, file);
     }
     shared new fromPair(
             "A pair of the initial map and its filename"
             [IMutableMapNG, JPath?] pair)
-            extends ViewerModel(pair.first, JOptional.\iof<JPath>(pair.rest.first)) {}
-    shared new copyConstructor(IDriverModel model) extends SimpleDriverModel() {
+            extends ViewerModel(pair.first, pair.rest.first) {}
+    void postSetMap(IMapNG newMap) {
+        clearSelection();
+        visDimensions = VisibleDimensions(0, newMap.dimensions().rows - 1, 0,
+            newMap.dimensions().columns - 1);
+        resetZoom();
+    }
+    shared new copyConstructor(IDriverModel model)
+            extends SimpleDriverModel(model.map, model.mapFile) {
         if (is IViewerModel model) {
             visDimensions = model.dimensions;
             selPoint = model.selection;
@@ -125,7 +117,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
             visDimensions = VisibleDimensions(0, model.mapDimensions.rows - 1,
                 0, model.mapDimensions.columns - 1);
         }
-        setMap(model.map, model.mapFile);
+        resetZoom();
     }
     "The visible dimensions of the map."
     shared actual VisibleDimensions dimensions => visDimensions;
@@ -145,4 +137,17 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
             gpListeners.add(listener);
     shared actual void removeGraphicalParamsListener(GraphicalParamsListener listener) =>
             gpListeners.remove(listener);
+    shared actual String string {
+        if (exists path = mapFile) {
+            return "ViewerModel for ``path``";
+        } else {
+            return "ViewerModel for an unsaved map";
+        }
+    }
+    "Set the map and its filename, and also clear the selection and reset the visible
+     dimensions and the zoom level."
+    shared actual void setMap(IMutableMapNG newMap, JPath? origin) {
+        super.setMap(newMap, origin);
+        postSetMap(newMap);
+    }
 }

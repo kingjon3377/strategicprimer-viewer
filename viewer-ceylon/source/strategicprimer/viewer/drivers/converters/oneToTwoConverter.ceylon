@@ -1,8 +1,6 @@
-import model.misc {
-    IDriverModel
-}
 import strategicprimer.viewer.model {
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
 }
 import java.lang {
     IllegalStateException
@@ -367,9 +365,13 @@ object oneToTwoConverter satisfies SimpleDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         IMapNG oldMain = model.map;
-        JPath oldMainPath = model.mapFile.orElseThrow(() =>
-        DriverFailedException(IllegalStateException("No path for main map"),
-            "No path for main map"));
+        JPath oldMainPath;
+        if (exists temp = model.mapFile) {
+            oldMainPath = temp;
+        } else {
+            throw DriverFailedException(IllegalStateException("No path for main map"),
+                "No path for main map");
+        }
         IMapNG newMain = convert(oldMain, true);
         writeConvertedMap(oldMainPath, newMain);
         if (is IMultiMapModel model) {

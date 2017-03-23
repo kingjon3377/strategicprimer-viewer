@@ -1,9 +1,6 @@
 import javax.swing {
     SwingUtilities
 }
-import model.misc {
-    IDriverModel
-}
 import strategicprimer.viewer.drivers {
     SPFrame,
     DriverUsage,
@@ -14,6 +11,9 @@ import strategicprimer.viewer.drivers {
     SPOptions,
     SimpleDriver,
     ICLIHelper
+}
+import strategicprimer.viewer.model {
+    IDriverModel
 }
 import strategicprimer.viewer.about {
     aboutDialog

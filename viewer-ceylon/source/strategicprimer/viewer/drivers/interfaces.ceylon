@@ -2,9 +2,6 @@ import java.lang {
     IllegalStateException,
     IllegalArgumentException
 }
-import model.misc {
-    IDriverModel
-}
 import util {
     Warning
 }
@@ -73,7 +70,8 @@ import strategicprimer.viewer.drivers.map_viewer {
     IViewerModel
 }
 import strategicprimer.viewer.model {
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
 }
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option

@@ -3,7 +3,8 @@ import java.awt {
     Graphics
 }
 import strategicprimer.viewer.model {
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
 }
 import java.awt.image {
     BufferedImage
@@ -24,9 +25,6 @@ import model.map {
     TileFixture,
     PointFactory,
     MapDimensions
-}
-import model.misc {
-    IDriverModel
 }
 
 import strategicprimer.viewer.drivers {
@@ -236,7 +234,7 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
                 runTestProcedure(cli, map, file, random);
             }
         } else {
-            runTestProcedure(cli, model.map, model.mapFile.orElse(null), random);
+            runTestProcedure(cli, model.map, model.mapFile, random);
         }
     }
 }

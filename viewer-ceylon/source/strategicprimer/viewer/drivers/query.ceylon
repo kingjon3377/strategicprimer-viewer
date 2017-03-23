@@ -49,9 +49,6 @@ import model.map.fixtures.mobile {
 import model.map.fixtures.terrain {
     Forest
 }
-import model.misc {
-    IDriverModel
-}
 
 import util {
     Quantity
@@ -59,6 +56,9 @@ import util {
 import strategicprimer.viewer.drivers.exploration {
     HuntingModel,
     surroundingPointIterable
+}
+import strategicprimer.viewer.model {
+    IDriverModel
 }
 "Models of (game statistics for) herding."
 interface HerdModel of PoultryModel | MammalModel {

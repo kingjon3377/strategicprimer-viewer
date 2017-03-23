@@ -1,71 +1,74 @@
-import javax.swing {
-    JFileChooser,
-    SwingUtilities
+import ceylon.language.meta.model {
+    InvocationException
 }
-import model.misc {
-    IDriverModel
+
+import controller.map.formatexceptions {
+    SPFormatException
 }
-import lovelace.util.common {
-    todo
+
+import java.awt {
+    Component
 }
 import java.awt.event {
     ActionListener,
     ActionEvent
 }
-import java.awt {
-    Component
-}
-import javax.xml.stream {
-    XMLStreamException
-}
 import java.io {
     FileNotFoundException,
     IOException
 }
-import java.nio.file {
-    NoSuchFileException, JPath = Path
-}
-import controller.map.formatexceptions {
-    SPFormatException
-}
-import java.util {
-    JOptional = Optional
-}
-import util {
-    Warning
-}
-import model.map {
-    PlayerCollection
-}
-import ceylon.interop.java {
-    CeylonIterable
-}
-import strategicprimer.viewer.xmlio {
-    readMap,
-    writeMap
+import java.lang {
+    InterruptedException
 }
 import java.lang.reflect {
     InvocationTargetException
 }
-import ceylon.language.meta.model {
-    InvocationException
+import java.nio.file {
+    NoSuchFileException,
+    JPath=Path
 }
-import java.lang {
-    InterruptedException
+import java.util {
+    JOptional=Optional
 }
-import lovelace.util.jvm {
-    showErrorDialog
+
+import javax.swing {
+    JFileChooser,
+    SwingUtilities
 }
 import javax.swing.filechooser {
     FileNameExtensionFilter,
     FileFilter
 }
+import javax.xml.stream {
+    XMLStreamException
+}
+
+import lovelace.util.common {
+    todo
+}
+import lovelace.util.jvm {
+    showErrorDialog
+}
+
+import model.map {
+    PlayerCollection
+}
+
 import strategicprimer.viewer.drivers.map_viewer {
     viewerGUI,
     ViewerModel
 }
 import strategicprimer.viewer.model {
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
+}
+import strategicprimer.viewer.xmlio {
+    readMap,
+    writeMap
+}
+
+import util {
+    Warning
 }
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(
     "Strategic Primer world map files", "map", "xml");
@@ -113,21 +116,20 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         case ("load") {
             FileChooser.open(null).call((path) {
                 try {
-                    mapModel.setMap(readMap(path, Warning.default),
-                        JOptional.\iof<JPath>(path));
+                    mapModel.setMap(readMap(path, Warning.default), path);
                 } catch (IOException|SPFormatException|XMLStreamException except) {
                     handleError(except, path.string);
                 }
             });
         }
         case ("save") {
-            JOptional<JPath> givenFile = mapModel.mapFile;
-            if (givenFile.present) {
+            JPath? givenFile = mapModel.mapFile;
+            if (exists givenFile) {
                 try {
-                    writeMap(givenFile.get(), mapModel.map);
+                    writeMap(givenFile, mapModel.map);
                 } catch (IOException except) {
                     showErrorDialog(source, "Strategic Primer Assistive Programs",
-                        "I/O error writing to ``givenFile.get()``");
+                        "I/O error writing to ``givenFile``");
                     log.error("I/O error writing XML", except);
                 }
             } else {
@@ -149,7 +151,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         case ("new") {
             viewerGUI.startDriverOnModel(cli, options, ViewerModel(ConstructorWrapper.map(
                     mapModel.mapDimensions, PlayerCollection(), mapModel.map.currentTurn),
-                JOptional.empty<JPath>()));
+                null));
         }
         case ("load secondary") {
             if (is IMultiMapModel mapModel) {

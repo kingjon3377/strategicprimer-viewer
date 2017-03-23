@@ -1,6 +1,3 @@
-import model.misc {
-    IDriverModel
-}
 import java.io {
     IOException
 }
@@ -16,6 +13,9 @@ import strategicprimer.viewer.drivers {
 import ceylon.logging {
     logger,
     Logger
+}
+import strategicprimer.viewer.model {
+    IDriverModel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

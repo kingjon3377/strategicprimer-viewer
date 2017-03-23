@@ -15,7 +15,8 @@ import ceylon.logging {
     Priority
 }
 import strategicprimer.viewer.model {
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
 }
 import java.awt {
     GraphicsEnvironment,
@@ -47,9 +48,6 @@ import lovelace.util.jvm {
     BorderedPanel
 }
 
-import model.misc {
-    IDriverModel
-}
 
 import strategicprimer.viewer.drivers {
     advancementCLI,

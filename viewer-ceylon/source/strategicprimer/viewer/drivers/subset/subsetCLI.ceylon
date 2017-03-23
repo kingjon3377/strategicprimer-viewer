@@ -9,9 +9,6 @@ import lovelace.util.jvm {
     AppendableHelper
 }
 
-import model.misc {
-    IDriverModel
-}
 
 import strategicprimer.viewer.drivers {
     ICLIHelper,
@@ -27,7 +24,8 @@ import ceylon.logging {
 }
 import strategicprimer.viewer.model {
     SimpleMultiMapModel,
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

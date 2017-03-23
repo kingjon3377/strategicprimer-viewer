@@ -1,9 +1,6 @@
 import strategicprimer.viewer.drivers {
     SPMenu
 }
-import model.misc {
-    IDriverModel
-}
 import com.bric.window {
     WindowMenu
 }
@@ -13,6 +10,9 @@ import javax.swing {
 }
 import java.awt.event {
     ActionEvent
+}
+import strategicprimer.viewer.model {
+    IDriverModel
 }
 "A set of menus for the worker GUI (and other related apps)."
 shared JMenuBar workerMenu(
