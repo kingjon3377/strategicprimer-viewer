@@ -6,7 +6,6 @@ import controller.map.iointerfaces {
     SPWriter
 }
 import controller.map.yaxml {
-    YAXMLReader,
     YAXMLWriter
 }
 import lovelace.util.common {
@@ -48,11 +47,15 @@ import strategicprimer.viewer.drivers.map_viewer {
 }
 import strategicprimer.viewer.model {
     SimpleMultiMapModel,
-    IMultiMapModel
+    IMultiMapModel,
+    IDriverModel
+}
+import strategicprimer.viewer.xmlio.yaxml {
+    yaXMLReader
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
-IMapReader reader = YAXMLReader();
+IMapReader reader = yaXMLReader;
 SPWriter writer = YAXMLWriter();
 "Turn a series of Strings into a series of equvalent Paths, optionally omitting the
  first."

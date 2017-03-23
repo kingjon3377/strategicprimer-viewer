@@ -1,29 +1,35 @@
-import controller.map.iointerfaces {
-    IMapReader
-}
-import strategicprimer.viewer.xmlio.fluidxml {
-    SPFluidReader
-}
-import controller.map.yaxml {
-    YAXMLReader
-}
-import model.map {
-    IMapNG
-}
-import java.io {
-    StringReader
-}
 import ceylon.file {
     parsePath,
     File,
     Reader,
     Resource
 }
-import util {
-    Warning
+
+import controller.map.iointerfaces {
+    IMapReader
+}
+
+import java.io {
+    StringReader
 }
 import java.nio.file {
-    JPath = Path, JPaths = Paths
+    JPath=Path,
+    JPaths=Paths
+}
+
+import model.map {
+    IMapNG
+}
+
+import strategicprimer.viewer.xmlio.fluidxml {
+    SPFluidReader
+}
+import strategicprimer.viewer.xmlio.yaxml {
+    yaXMLReader
+}
+
+import util {
+    Warning
 }
 "A driver for comparing map readers."
 object readerComparator satisfies UtilityDriver {
@@ -34,7 +40,7 @@ object readerComparator satisfies UtilityDriver {
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         IMapReader one = SPFluidReader();
-        IMapReader two = YAXMLReader();
+        IMapReader two = yaXMLReader;
         Warning warner = Warning.ignore;
         for (arg in args.coalesced) {
             cli.println("``arg``:");
