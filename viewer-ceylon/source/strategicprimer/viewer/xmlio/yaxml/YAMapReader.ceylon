@@ -27,9 +27,7 @@ import controller.map.yaxml {
     YAMobileReader,
     YAResourceReader,
     YATerrainReader,
-    YATextReader,
-    YATownReader,
-    YAUnitReader
+    YATextReader
 }
 
 import java.lang {

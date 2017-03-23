@@ -25,8 +25,6 @@ import controller.map.yaxml {
     YAResourceReader,
     YATerrainReader,
     YATextReader,
-    YATownReader,
-    YAUnitReader,
     YAWorkerReader
 }
 
