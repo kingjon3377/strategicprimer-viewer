@@ -34,8 +34,7 @@ import controller.map.formatexceptions {
 }
 import model.misc {
     IDriverModel,
-    IMultiMapModel,
-    SimpleMultiMapModel
+    IMultiMapModel
 }
 import ceylon.logging {
     Logger,
@@ -50,6 +49,9 @@ import strategicprimer.viewer.drivers {
 }
 import strategicprimer.viewer.drivers.map_viewer {
     ViewerModel
+}
+import strategicprimer.viewer.model {
+    SimpleMultiMapModel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

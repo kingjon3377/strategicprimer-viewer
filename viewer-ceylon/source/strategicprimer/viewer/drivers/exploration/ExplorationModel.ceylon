@@ -68,8 +68,10 @@ import model.map.fixtures.towns {
     Village
 }
 import model.misc {
-    SimpleMultiMapModel,
     IDriverModel
+}
+import strategicprimer.viewer.model {
+    SimpleMultiMapModel
 }
 "A model for exploration drivers."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
@@ -168,7 +170,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     shared new (IMutableMapNG map, JOptional<JPath> file)
             extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)
-            extends SimpleMultiMapModel(model) {}
+            extends SimpleMultiMapModel.copyConstructor(model) {}
     "All the players shared by all the maps."
     shared actual {Player*} playerChoices {
         variable Set<Player> retval = set { *map.players() };

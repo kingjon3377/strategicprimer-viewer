@@ -76,8 +76,7 @@ import model.map.fixtures.towns {
     Fortress
 }
 import model.misc {
-    IDriverModel,
-    SimpleMultiMapModel
+    IDriverModel
 }
 
 import util {
@@ -86,12 +85,15 @@ import util {
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu
 }
+import strategicprimer.viewer.model {
+    SimpleMultiMapModel
+}
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
     shared new fromMap(IMutableMapNG map, JPath? file) extends
         SimpleMultiMapModel(map, JOptional.ofNullable<JPath>(file)) { }
     shared new fromDriverModel(IDriverModel driverModel) extends
-        SimpleMultiMapModel(driverModel) { }
+        SimpleMultiMapModel.copyConstructor(driverModel) { }
     "All the players in all the maps."
     shared {Player*} players => CeylonIterable(allMaps)
         .map((pair) => pair.first())

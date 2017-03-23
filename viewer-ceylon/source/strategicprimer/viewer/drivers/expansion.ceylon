@@ -3,8 +3,7 @@ import controller.map.misc {
 }
 import model.misc {
     IDriverModel,
-    IMultiMapModel,
-    SimpleMultiMapModel
+    IMultiMapModel
 }
 import model.map {
     IMapNG,
@@ -44,6 +43,9 @@ import strategicprimer.viewer.drivers.exploration {
     shouldSometimesNotice,
     shouldAlwaysNotice,
     Speed
+}
+import strategicprimer.viewer.model {
+    SimpleMultiMapModel
 }
 IUnit mockUnit(Player player) {
     return UnitProxyMaker.makeProxyFor(player);
@@ -124,7 +126,7 @@ object expansionDriver satisfies SimpleCLIDriver {
             }
         } else {
             log.warn("Expansion on a master map with no subordinate maps does nothing");
-            startDriverOnModel(cli, options, SimpleMultiMapModel(model));
+            startDriverOnModel(cli, options, SimpleMultiMapModel.copyConstructor(model));
         }
     }
 }

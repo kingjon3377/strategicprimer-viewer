@@ -54,8 +54,11 @@ import model.map.fixtures.towns {
     TownSize
 }
 import model.misc {
-    SimpleMultiMapModel,
     IDriverModel
+}
+
+import strategicprimer.viewer.model {
+    SimpleMultiMapModel
 }
 
 import util {
@@ -64,9 +67,9 @@ import util {
 "A model to underlie the advancement GUI, etc."
 shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     shared new (IMutableMapNG map, JOptional<JPath> file)
-            extends SimpleMultiMapModel(null, null) {}
+            extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)
-            extends SimpleMultiMapModel(model) {}
+            extends SimpleMultiMapModel.copyConstructor(model) {}
     "Flatten and filter the stream to include only units, and only those owned by the
      given player."
     {IUnit*} getUnitsImpl({Anything*} iter, Player player) {

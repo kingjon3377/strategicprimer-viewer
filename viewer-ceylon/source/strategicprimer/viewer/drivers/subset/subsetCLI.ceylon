@@ -10,7 +10,6 @@ import lovelace.util.jvm {
 }
 
 import model.misc {
-    SimpleMultiMapModel,
     IDriverModel,
     IMultiMapModel
 }
@@ -26,6 +25,9 @@ import strategicprimer.viewer.drivers {
 import ceylon.logging {
     logger,
     Logger
+}
+import strategicprimer.viewer.model {
+    SimpleMultiMapModel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -51,7 +53,7 @@ shared object subsetCLI satisfies SimpleDriver {
             }
         } else {
             log.warn("Subset checking does nothing with no subordinate maps");
-            startDriverOnModel(cli, options, SimpleMultiMapModel(model));
+            startDriverOnModel(cli, options, SimpleMultiMapModel.copyConstructor(model));
         }
     }
 }
