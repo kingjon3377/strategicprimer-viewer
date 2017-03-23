@@ -386,7 +386,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             IMutableMapNG mainMap = map;
             Ground? ground = mainMap.getGround(currentPoint);
             variable {TileFixture*} diggables =
-                    {ground, *mainMap.getOtherFixtures(currentPoint)}.coalesced;
+                    {ground, *mainMap.getOtherFixtures(currentPoint)}.coalesced
+                        .filter(isDiggable);
             if (diggables.empty) {
                 return;
             }
