@@ -1,36 +1,3 @@
-import java.nio.file {
-    JPath=Path, JPaths=Paths
-}
-import controller.map.iointerfaces {
-    IMapReader,
-    SPWriter
-}
-import controller.map.yaxml {
-    YAXMLWriter
-}
-import lovelace.util.common {
-    todo
-}
-import util {
-    Warning
-}
-import model.map {
-    IMutableMapNG,
-    IMapNG
-}
-import java.io {
-    JReader=Reader,
-    IOException
-}
-import java.util {
-    JOptional=Optional
-}
-import javax.xml.stream {
-    XMLStreamException
-}
-import controller.map.formatexceptions {
-    SPFormatException
-}
 import ceylon.logging {
     Logger,
     logger
@@ -39,6 +6,37 @@ import ceylon.test {
     test,
     assertEquals
 }
+
+import controller.map.formatexceptions {
+    SPFormatException
+}
+import controller.map.iointerfaces {
+    IMapReader,
+    SPWriter
+}
+
+import java.io {
+    JReader=Reader,
+    IOException
+}
+import java.nio.file {
+    JPath=Path,
+    JPaths=Paths
+}
+
+import javax.xml.stream {
+    XMLStreamException
+}
+
+import lovelace.util.common {
+    todo
+}
+
+import model.map {
+    IMutableMapNG,
+    IMapNG
+}
+
 import strategicprimer.viewer.drivers {
     DriverFailedException
 }
@@ -51,12 +49,17 @@ import strategicprimer.viewer.model {
     IDriverModel
 }
 import strategicprimer.viewer.xmlio.yaxml {
-    yaXMLReader
+    yaXMLReader,
+    yaXMLWriter
+}
+
+import util {
+    Warning
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 IMapReader reader = yaXMLReader;
-SPWriter writer = YAXMLWriter();
+SPWriter writer = yaXMLWriter;
 "Turn a series of Strings into a series of equvalent Paths, optionally omitting the
  first."
 todo("Do we really need dropFirst in Ceylon?")
