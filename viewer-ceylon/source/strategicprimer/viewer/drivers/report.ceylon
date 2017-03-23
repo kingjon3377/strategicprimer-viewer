@@ -1,5 +1,7 @@
 import model.misc {
-    IDriverModel,
+    IDriverModel
+}
+import strategicprimer.viewer.model {
     IMultiMapModel
 }
 import java.nio.file {
@@ -46,9 +48,8 @@ object reportCLI satisfies SimpleDriver {
     };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        void writeReport(JOptional<JPath> maybeFilename, IMapNG map) {
-            if (maybeFilename.present) {
-                JPath filename = maybeFilename.get();
+        void writeReport(JPath? filename, IMapNG map) {
+            if (exists filename) {
                 Player player;
                 // FIXME: If parsing fails or there isn't a matching player, log a warning
                 if (options.hasOption("--player"),
@@ -81,11 +82,11 @@ object reportCLI satisfies SimpleDriver {
             }
         }
         if (is IMultiMapModel model) {
-            for (pair in model.allMaps) {
-                writeReport(pair.second(), pair.first());
+            for ([map, file] in model.allMaps) {
+                writeReport(file, map);
             }
         } else {
-            writeReport(model.mapFile, model.map);
+            writeReport(model.mapFile.orElse(null), model.map);
         }
     }
 }
@@ -101,9 +102,8 @@ object tabularReportCLI satisfies SimpleDriver {
                 JFiles.newOutputStream(
                     base.resolveSibling("``base.fileName``.``string``.csv"));
         }
-        void createReports(IMapNG map, JOptional<JPath> file) {
-            if (file.present) {
-                JPath mapFile = file.get();
+        void createReports(IMapNG map, JPath? mapFile) {
+            if (exists mapFile) {
                 try {
                     createTabularReports(map, filenameFunction(mapFile));
                 } catch (IOException|IOError except) {
@@ -114,11 +114,11 @@ object tabularReportCLI satisfies SimpleDriver {
             }
         }
         if (is IMultiMapModel model) {
-            for (pair in model.allMaps) {
-                createReports(pair.first(), pair.second());
+            for ([map, file] in model.allMaps) {
+                createReports(map, file);
             }
         } else {
-            createReports(model.map, model.mapFile);
+            createReports(model.map, model.mapFile.orElse(null));
         }
     }
 }

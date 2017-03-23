@@ -1,5 +1,7 @@
 import model.misc {
-    IDriverModel,
+    IDriverModel
+}
+import strategicprimer.viewer.model {
     IMultiMapModel
 }
 import java.lang {
@@ -371,16 +373,12 @@ object oneToTwoConverter satisfies SimpleDriver {
         IMapNG newMain = convert(oldMain, true);
         writeConvertedMap(oldMainPath, newMain);
         if (is IMultiMapModel model) {
-            for (pair in model.subordinateMaps) {
-                IMapNG map = pair.first();
-                JOptional<JPath> temp = pair.second();
-                JPath path;
-                if (temp.present) {
-                    path = temp.get();
-                } else {
+            for ([map, path] in model.subordinateMaps) {
+                if (!path exists) {
                     log.warn("No file path associated with map, skipping ...");
                     continue;
                 }
+                assert (exists path);
                 IMapNG newMap = convert(map, false);
                 writeConvertedMap(path, newMap);
             }

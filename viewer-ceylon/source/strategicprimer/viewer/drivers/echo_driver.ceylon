@@ -31,12 +31,14 @@ import model.map.fixtures {
     Ground
 }
 import model.misc {
-    IDriverModel,
-    IMultiMapModel
+    IDriverModel
 }
 import strategicprimer.viewer.xmlio {
     readMap,
     writeMap
+}
+import strategicprimer.viewer.model {
+    IMultiMapModel
 }
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated
@@ -126,10 +128,9 @@ object forestFixerDriver satisfies SimpleCLIDriver {
             IDriverModel model) {
         assert (is IMultiMapModel model);
         IMutableMapNG mainMap = model.map;
-        for (pair in model.subordinateMaps) {
-            cli.println("Starting ``pair.second().map(Object.string)
-                .orElse("a map with no associated path")``");
-            IMutableMapNG map = pair.first();
+        for ([map, file] in model.subordinateMaps) {
+            cli.println("Starting ``file?.string
+                else "a map with no associated path"``");
             for (location in map.locations()) {
                 {Forest*} mainForests = extractForests(mainMap, location);
                 {Forest*} subForests = extractForests(map, location);

@@ -2,7 +2,9 @@ import controller.map.misc {
     IDRegistrar,
     IDFactory
 }
-
+import strategicprimer.viewer.model {
+    IMultiMapModel
+}
 import model.map {
     IFixture,
     IMapNG,
@@ -13,9 +15,6 @@ import model.map.fixtures {
 }
 import model.map.fixtures.terrain {
     Forest
-}
-import model.misc {
-    IMultiMapModel
 }
 import java.lang {
     JIterable=Iterable
@@ -40,7 +39,7 @@ void recursiveRegister(IDRegistrar factory, IMapNG|IMultiMapModel|{IFixture*} ar
         }
     } else if (is IMultiMapModel model = arg) {
         for (pair in model.allMaps) {
-            recursiveRegister(factory, pair.first());
+            recursiveRegister(factory, pair.first);
         }
     } else if (is {IFixture*} arg) {
         for (fixture in arg) {

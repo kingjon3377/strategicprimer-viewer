@@ -5,6 +5,9 @@ import ceylon.collection {
     HashMap,
     MutableList
 }
+import strategicprimer.viewer.model {
+    IMultiMapModel
+}
 import ceylon.file {
     File,
     parsePath,
@@ -60,8 +63,7 @@ import model.map.fixtures.towns {
     Village
 }
 import model.misc {
-    IDriverModel,
-    IMultiMapModel
+    IDriverModel
 }
 import model.workermgmt {
     RaceFactory
@@ -149,7 +151,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     void enterStatsForWorker(IMultiMapModel model, Integer id, ICLIHelper cli) {
         WorkerStats stats = enterStatsCollection(cli);
         for (pair in model.allMaps) {
-            IMapNG map = pair.first();
+            IMapNG map = pair.first;
             if (is Worker fixture = find(map, id), !fixture.stats exists) {
                 fixture.stats = stats;
             }
@@ -253,9 +255,9 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Add a worker to a unit in all maps."
     void addWorkerToUnit(IMultiMapModel model, IFixture unit, IWorker worker) {
         for (pair in model.allMaps) {
-            if (is IUnit fixture = find(pair.first(), unit.id)) {
+            if (is IUnit fixture = find(pair.first, unit.id)) {
                 fixture.addMember(worker.copy(false));
-                Integer turn = pair.first().currentTurn;
+                Integer turn = pair.first.currentTurn;
                 if (fixture.getOrders(turn).empty) {
                     fixture.setOrders(turn, "TODO: assign");
                 }
@@ -351,7 +353,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
             IUnit temp = ConstructorWrapper.unit(player, clh.inputString("Kind of unit: "),
                 clh.inputString("Unit name: "), idf.createID());
             for (pair in model.allMaps) {
-                pair.first().addFixture(point, temp);
+                pair.first.addFixture(point, temp);
             }
             units.add(temp);
             return temp;
@@ -556,8 +558,8 @@ object todoFixerCLI satisfies SimpleCLIDriver {
             IDriverModel model) {
         if (is IMultiMapModel model) {
             for (pair in model.allMaps) {
-                fixAllUnits(pair.first(), cli);
-                fixAllVillages(pair.first(), cli);
+                fixAllUnits(pair.first, cli);
+                fixAllVillages(pair.first, cli);
             }
         } else {
             fixAllUnits(model.map, cli);

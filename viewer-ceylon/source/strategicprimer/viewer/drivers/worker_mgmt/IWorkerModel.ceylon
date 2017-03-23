@@ -4,7 +4,7 @@ import model.map {
 import model.map.fixtures.mobile {
     IUnit
 }
-import model.misc {
+import strategicprimer.viewer.model {
     IMultiMapModel
 }
 shared interface IWorkerModel satisfies IMultiMapModel {

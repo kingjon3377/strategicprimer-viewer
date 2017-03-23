@@ -95,13 +95,12 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
     shared new fromDriverModel(IDriverModel driverModel) extends
         SimpleMultiMapModel.copyConstructor(driverModel) { }
     "All the players in all the maps."
-    shared {Player*} players => CeylonIterable(allMaps)
-        .map((pair) => pair.first())
+    shared {Player*} players => allMaps.map((pair) => pair.first)
         .flatMap((IMutableMapNG temp) => CeylonIterable(temp.players())).distinct;
     "Add a resource to a player's HQ."
     shared void addResource(FortressMember resource, Player player) {
         for (pair in allMaps) {
-            IMutableMapNG map = pair.first();
+            IMutableMapNG map = pair.first;
             Player mapPlayer = map.currentPlayer;
             if (mapPlayer.independent || mapPlayer.playerId < 0 ||
                     mapPlayer.playerId == player.playerId) {

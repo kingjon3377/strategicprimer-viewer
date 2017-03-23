@@ -3,8 +3,7 @@ import javax.swing {
     SwingUtilities
 }
 import model.misc {
-    IDriverModel,
-    IMultiMapModel
+    IDriverModel
 }
 import lovelace.util.common {
     todo
@@ -64,6 +63,9 @@ import javax.swing.filechooser {
 import strategicprimer.viewer.drivers.map_viewer {
     viewerGUI,
     ViewerModel
+}
+import strategicprimer.viewer.model {
+    IMultiMapModel
 }
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(
     "Strategic Primer world map files", "map", "xml");
@@ -153,8 +155,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             if (is IMultiMapModel mapModel) {
                 FileChooser.open(null).call((path) {
                     try {
-                        mapModel.addSubordinateMap(readMap(path, Warning.default),
-                            JOptional.\iof<JPath>(path));
+                        mapModel.addSubordinateMap(readMap(path, Warning.default), path);
                     } catch (IOException|SPFormatException|XMLStreamException except) {
                         handleError(except, path.string);
                     }
@@ -163,14 +164,13 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         }
         case ("save all") {
             if (is IMultiMapModel mapModel) {
-                for (pair in mapModel.allMaps) {
-                    JOptional<JPath> file = pair.second();
-                    if (file.present) {
+                for ([map, file] in mapModel.allMaps) {
+                    if (exists file) {
                         try {
-                            writeMap(file.get(), pair.first());
+                            writeMap(file, map);
                         } catch (IOException except) {
                             showErrorDialog(source, "Strategic Primer Assistive Programs",
-                                "I/O error writing to ``file.get()``");
+                                "I/O error writing to ``file``");
                             log.error("I/O error writing XML", except);
                         }
                     }
@@ -192,7 +192,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         }
         case ("open secondary map in map viewer") {
             if (is IMultiMapModel mapModel,
-                    exists mapPair = CeylonIterable(mapModel.subordinateMaps).first) {
+                    exists mapPair = mapModel.subordinateMaps.first) {
                 viewerGUI.startDriverOnModel(cli, options, ViewerModel.fromPair(mapPair));
             }
         }

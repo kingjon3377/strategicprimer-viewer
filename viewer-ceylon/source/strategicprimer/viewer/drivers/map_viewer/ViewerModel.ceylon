@@ -115,8 +115,8 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     }
     shared new fromPair(
             "A pair of the initial map and its filename"
-            Pair<IMutableMapNG, JOptional<JPath>> pair)
-            extends ViewerModel(pair.first(), pair.second()) {}
+            [IMutableMapNG, JPath?] pair)
+            extends ViewerModel(pair.first, JOptional.\iof<JPath>(pair.rest.first)) {}
     shared new copyConstructor(IDriverModel model) extends SimpleDriverModel() {
         if (is IViewerModel model) {
             visDimensions = model.dimensions;

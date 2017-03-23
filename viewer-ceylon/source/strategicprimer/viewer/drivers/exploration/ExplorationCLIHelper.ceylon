@@ -2,6 +2,9 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
+import strategicprimer.viewer.model {
+    IMultiMapModel
+}
 import ceylon.interop.java {
     CeylonIterable,
     JavaList
@@ -100,8 +103,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             } else {
                 zero = false;
             }
-            for (pair in model.subordinateMaps) {
-                IMutableMapNG map = pair.first();
+            for ([map, file] in model.subordinateMaps) {
                 if (is Ground fixture, !map.getGround(destPoint) exists) {
                     map.setGround(destPoint, fixture.copy(false));
                 } else if (is Forest fixture, !map.getForest(destPoint) exists) {
@@ -175,7 +177,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         if (map.isMountainous(destPoint)) {
             mtn = "mountainous ";
             for (pair in model.subordinateMaps) {
-                pair.first().setMountainous(destPoint, true);
+                pair.first.setMountainous(destPoint, true);
             }
         } else {
             mtn = "";

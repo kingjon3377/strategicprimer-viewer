@@ -308,8 +308,8 @@ SPFrame explorationFrame(IExplorationModel model,
             };
             headerPanel.add(ImprovedComboBox<Speed>.withModel(speedModel));
             IMutableMapNG secondMap;
-            if (exists pair = CeylonIterable(model.subordinateMaps).first) {
-                secondMap = pair.first();
+            if (exists pair = model.subordinateMaps.first) {
+                secondMap = pair.first;
             } else {
                 secondMap = model.map;
             }
@@ -397,8 +397,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                     Player player = model.selectedUnit ?. owner else
                                     PlayerImpl(- 1, "no-one");
                                     MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
-                                    for (pair in model.subordinateMaps) {
-                                        IMutableMapNG map = pair.first();
+                                    for ([map, file] in model.subordinateMaps) {
                                         map.setBaseTerrain(destPoint, model.map
                                             .getBaseTerrain(destPoint));
                                         for (fixture in fixtures) {

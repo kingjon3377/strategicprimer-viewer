@@ -11,7 +11,7 @@ import model.map {
 import model.map.fixtures.mobile {
     IUnit
 }
-import model.misc {
+import strategicprimer.viewer.model {
     IMultiMapModel
 }
 "An enumeration of directions of possible travel."

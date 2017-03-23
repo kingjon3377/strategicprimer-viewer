@@ -2,8 +2,7 @@ import controller.map.misc {
     IDRegistrar
 }
 import model.misc {
-    IDriverModel,
-    IMultiMapModel
+    IDriverModel
 }
 import model.map {
     IMapNG,
@@ -45,7 +44,8 @@ import strategicprimer.viewer.drivers.exploration {
     Speed
 }
 import strategicprimer.viewer.model {
-    SimpleMultiMapModel
+    SimpleMultiMapModel,
+    IMultiMapModel
 }
 IUnit mockUnit(Player player) {
     return UnitProxyMaker.makeProxyFor(player);
@@ -67,7 +67,7 @@ object expansionDriver satisfies SimpleCLIDriver {
         if (is IMultiMapModel model) {
             IMapNG master = model.map;
             for (pair in model.subordinateMaps) {
-                IMutableMapNG map = pair.first();
+                IMutableMapNG map = pair.first;
                 Player currentPlayer = map.currentPlayer;
                 Boolean containsSwornVillage(Point point) {
                     for (fixture in map.getOtherFixtures(point)) {

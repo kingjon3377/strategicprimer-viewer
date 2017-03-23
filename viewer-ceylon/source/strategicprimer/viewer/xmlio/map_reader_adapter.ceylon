@@ -33,8 +33,7 @@ import controller.map.formatexceptions {
     SPFormatException
 }
 import model.misc {
-    IDriverModel,
-    IMultiMapModel
+    IDriverModel
 }
 import ceylon.logging {
     Logger,
@@ -51,7 +50,8 @@ import strategicprimer.viewer.drivers.map_viewer {
     ViewerModel
 }
 import strategicprimer.viewer.model {
-    SimpleMultiMapModel
+    SimpleMultiMapModel,
+    IMultiMapModel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -104,7 +104,7 @@ shared IMultiMapModel readMultiMapModel(Warning warner, JPath master, JPath* fil
             JOptional.\iof(master));
         for (file in files) {
             current = file.string;
-            retval.addSubordinateMap(readMap(file, warner), JOptional.\iof(file));
+            retval.addSubordinateMap(readMap(file, warner), file);
         }
         return retval;
     } catch (IOException except) {
@@ -131,10 +131,10 @@ shared void writeModel(IDriverModel model) {
         log.error("Model didn't contain filename for main map, so didn't write it");
     }
     if (is IMultiMapModel model) {
-        for (pair in model.subordinateMaps) {
-            if (exists filename = pair.second().orElse(null)) {
+        for ([map, filename] in model.subordinateMaps) {
+            if (exists filename) {
                 try {
-                    writer.write(filename, pair.first());
+                    writer.write(filename, map);
                 } catch (IOException except) {
                     throw DriverFailedException(except,
                         "I/O error writing to ``filename``");

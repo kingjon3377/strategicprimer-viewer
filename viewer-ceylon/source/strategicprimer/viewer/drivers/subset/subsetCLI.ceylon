@@ -10,8 +10,7 @@ import lovelace.util.jvm {
 }
 
 import model.misc {
-    IDriverModel,
-    IMultiMapModel
+    IDriverModel
 }
 
 import strategicprimer.viewer.drivers {
@@ -27,7 +26,8 @@ import ceylon.logging {
     Logger
 }
 import strategicprimer.viewer.model {
-    SimpleMultiMapModel
+    SimpleMultiMapModel,
+    IMultiMapModel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -40,11 +40,10 @@ shared object subsetCLI satisfies SimpleDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
-            for (pair in model.subordinateMaps) {
-                String filename = pair.second().map(JPath.string)
-                    .orElse("map without a filename");
+            for ([map, file] in model.subordinateMaps) {
+                String filename = file?.string else "map without a filename";
                 cli.print("``filename``\t...\t\t");
-                if (model.map.isSubset(pair.first(),
+                if (model.map.isSubset(map,
                     Formatter(AppendableHelper(cli.print)), "In ``filename``:")) {
                     cli.println("OK");
                 } else {

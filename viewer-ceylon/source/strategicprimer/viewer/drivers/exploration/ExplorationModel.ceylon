@@ -175,7 +175,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     shared actual {Player*} playerChoices {
         variable Set<Player> retval = set { *map.players() };
         for (pair in allMaps) {
-            Set<Player> temp = set { *pair.first().players() };
+            Set<Player> temp = set { *pair.first.players() };
             retval = retval.intersection(temp);
         }
         return { *retval };
@@ -273,8 +273,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             Integer retval = (ceiling(base * speed.mpMultiplier) + 0.1).integer;
             removeImpl(map, point, unit);
             map.addFixture(dest, unit);
-            for (pair in subordinateMaps) {
-                IMutableMapNG subMap = pair.first();
+            for ([subMap, subFile] in subordinateMaps) {
                 if (doesLocationHaveFixture(subMap, point, unit)) {
                     ensureTerrain(map, subMap, dest);
                     removeImpl(subMap, point, unit);
@@ -288,7 +287,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             return retval;
         } else {
             for (pair in subordinateMaps) {
-                ensureTerrain(map, pair.first(), dest);
+                ensureTerrain(map, pair.first, dest);
             }
             fireMovementCost(1);
             throw TraversalImpossibleException();
@@ -343,7 +342,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             Player owner = unit.owner;
             {Village*} villages = {
                 for (pair in allMaps)
-                    for (fixture in pair.first().getOtherFixtures(currentPoint))
+                    for (fixture in pair.first.getOtherFixtures(currentPoint))
                             if (is Village fixture, fixture.owner.independent)
                                 fixture
             };
@@ -351,7 +350,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 for (village in villages) {
                     village.owner = owner;
                     for (pair in allMaps) {
-                        pair.first().addFixture(currentPoint, village);
+                        pair.first.addFixture(currentPoint, village);
                     }
                 }
                 IMapNG mainMap = map;
@@ -359,10 +358,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                         surroundingPointIterable(currentPoint, mapDimensions, 1);
                 for (point in surroundingPoints) {
                     for (pair in subordinateMaps) {
-                        ensureTerrain(mainMap, pair.first(), point);
-                        Forest? subForest = pair.first().getForest(point);
+                        ensureTerrain(mainMap, pair.first, point);
+                        Forest? subForest = pair.first.getForest(point);
                         if (exists forest = map.getForest(point), !subForest exists) {
-                            pair.first().setForest(point, forest);
+                            pair.first.setForest(point, forest);
                         }
                     }
                 }
@@ -375,10 +374,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     .filter(([loc, fixture]) => fixture is Animal).first;
                 for (pair in subordinateMaps) {
                     if (exists vegetation) {
-                        pair.first().addFixture(vegetation.first, vegetation.rest.first);
+                        pair.first.addFixture(vegetation.first, vegetation.rest.first);
                     }
                     if (exists animal) {
-                        pair.first().addFixture(animal.first, animal.rest.first);
+                        pair.first.addFixture(animal.first, animal.rest.first);
                     }
                 }
             }
@@ -444,12 +443,12 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             }
             if (eq(ground, oldFixture)) {
                 for (pair in allMaps) {
-                    addToMap(pair.first(), false);
+                    addToMap(pair.first, false);
                 }
             } else {
                 variable Boolean subsequent = false;
                 for (pair in allMaps) {
-                    addToMap(pair.first(), subsequent);
+                    addToMap(pair.first, subsequent);
                     subsequent = true;
                 }
             }

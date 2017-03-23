@@ -84,23 +84,22 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     }
     "All the players in all the maps."
     shared actual {Player*} players {
-        return CeylonIterable(allMaps).map((Pair<IMutableMapNG, JOptional<JPath>> pair) => pair.first())
+        return allMaps.map(([IMutableMapNG, JPath?] pair) => pair.first)
                 .flatMap((IMutableMapNG map) => CeylonIterable(map.players())).distinct;
     }
     "Get all the given player's units, or only those of a specified kind."
     shared actual {IUnit*} getUnits(Player player, String? kind) {
         if (exists kind) {
             return { *getUnits(player).filter((unit) => kind == unit.kind) };
-        } else if (CeylonIterable(subordinateMaps).empty) {
+        } else if (subordinateMaps.empty) {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.
             return getUnitsImpl(CeylonIterable(map.locations())
                 .flatMap((point) => CeylonIterable(map.getOtherFixtures(point))),
                     player);
         } else {
-            value temp =
-                CeylonIterable(allMaps)
-                    .map((Pair<IMutableMapNG, JOptional<JPath>> pair) => pair.first())
+            value temp = allMaps
+                    .map(([IMutableMapNG, JPath?] pair) => pair.first)
                     .flatMap((map) => CeylonIterable(map.locations()))
                     .flatMap((point) => getUnitsImpl(CeylonIterable(map.getOtherFixtures(point)), player));
             MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
@@ -135,11 +134,11 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 map.addFixture(location, unit.copy(false));
             }
         }
-        if (CeylonIterable(subordinateMaps).empty) {
+        if (subordinateMaps.empty) {
             impl(map);
         } else {
             for (pair in allMaps) {
-                impl(pair.first());
+                impl(pair.first);
             }
         }
     }

@@ -27,7 +27,6 @@ import model.map {
 }
 import model.misc {
     SimpleDriverModel,
-    IMultiMapModel,
     IDriverModel
 }
 
@@ -46,22 +45,19 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
             extends SimpleMultiMapModel(model.map, model.mapFile) {
         if (is IMultiMapModel model) {
             for (pair in model.subordinateMaps) {
-                subordinateMapsList.add([pair.first(), pair.second().orElse(null)]);
+                subordinateMapsList.add(pair);
             }
         }
     }
-    shared actual void addSubordinateMap(IMutableMapNG map, JOptional<JPath> file) =>
-            subordinateMapsList.add([map, file.orElse(null)]);
+    shared actual void addSubordinateMap(IMutableMapNG map, JPath? file) =>
+            subordinateMapsList.add([map, file]);
     todo(/*FIXME*/"Test this; I fixed the clearly-wrong implementation, but this might
                    cause [[ConcurrentModificationException]]")
     shared actual void removeSubordinateMap(IMapNG map) {
         subordinateMapsList.removeWhere(([localMap, file]) => localMap == map);
     }
-    shared actual JIterable<Pair<IMutableMapNG, JOptional<JPath>>> subordinateMaps =>
-            JavaIterable(subordinateMapsList
-                .map(([localMap, path]) => Pair.\iof<IMutableMapNG, JOptional<JPath>>(
-                    localMap, JOptional.ofNullable(path))));
-    shared actual JIterable<Pair<IMutableMapNG, JOptional<JPath>>> allMaps =>
-            JavaIterable(CeylonIterable(subordinateMaps)
-                .follow(Pair.\iof<IMutableMapNG, JOptional<JPath>>(map, mapFile)));
+    shared actual {[IMutableMapNG, JPath?]*} subordinateMaps =>
+            {*subordinateMapsList};
+    shared actual {[IMutableMapNG, JPath?]*} allMaps =>
+            subordinateMaps.follow([map, mapFile.orElse(null)]);
 }

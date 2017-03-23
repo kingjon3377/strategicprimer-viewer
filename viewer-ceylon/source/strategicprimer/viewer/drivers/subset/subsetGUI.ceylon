@@ -1,7 +1,9 @@
 import controller.map.formatexceptions {
     SPFormatException
 }
-
+import strategicprimer.viewer.model {
+    IMultiMapModel
+}
 import java.io {
     IOException
 }
@@ -24,8 +26,7 @@ import lovelace.util.jvm {
 }
 
 import model.misc {
-    IDriverModel,
-    IMultiMapModel
+    IDriverModel
 }
 
 import strategicprimer.viewer.drivers {
@@ -52,8 +53,8 @@ shared object subsetGUI satisfies ISPDriver {
             SubsetFrame frame = SubsetFrame();
             SwingUtilities.invokeLater(() => frame.setVisible(true));
             frame.loadMain(model.map);
-            for (pair in model.subordinateMaps) {
-                frame.testMap(pair.first(), pair.second().orElse(null));
+            for ([map, file] in model.subordinateMaps) {
+                frame.testMap(map, file);
             }
         } else {
             showErrorDialog(null, "Strategic Primer Assistive Programs",

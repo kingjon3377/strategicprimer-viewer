@@ -6,8 +6,7 @@ import javax.swing {
     SwingUtilities
 }
 import model.misc {
-    IDriverModel,
-    IMultiMapModel
+    IDriverModel
 }
 import strategicprimer.viewer.drivers {
     SPFrame,
@@ -29,6 +28,9 @@ import model.viewer {
 import ceylon.logging {
     logger,
     Logger
+}
+import strategicprimer.viewer.model {
+    IMultiMapModel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

@@ -3,8 +3,7 @@ import java.lang {
     IllegalArgumentException
 }
 import model.misc {
-    IDriverModel,
-    IMultiMapModel
+    IDriverModel
 }
 import util {
     Warning
@@ -72,6 +71,9 @@ import strategicprimer.viewer.drivers.worker_mgmt {
 }
 import strategicprimer.viewer.drivers.map_viewer {
     IViewerModel
+}
+import strategicprimer.viewer.model {
+    IMultiMapModel
 }
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option
@@ -178,7 +180,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                 IMultiMapModel mapModel = readMultiMapModel(Warning.default, masterPath,
                     subordinatePath);
                 for (pair in mapModel.allMaps) {
-                    turnFixer(pair.first());
+                    turnFixer(pair.first);
                 }
                 startDriverOnModel(cli, options, mapModel);
             } else {
@@ -186,7 +188,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                 IMultiMapModel mapModel = readMultiMapModel(Warning.default,
                     askUserForFile());
                 for (pair in mapModel.allMaps) {
-                    turnFixer(pair.first());
+                    turnFixer(pair.first);
                 }
                 startDriverOnModel(cli, options, mapModel);
             }
@@ -198,7 +200,7 @@ shared interface SimpleDriver satisfies ISPDriver {
             IMultiMapModel mapModel = readMultiMapModel(Warning.default,
                 JPaths.get(firstArg), askUserForFile());
             for (pair in mapModel.allMaps) {
-                turnFixer(pair.first());
+                turnFixer(pair.first);
             }
             startDriverOnModel(cli, options, mapModel);
         } else {
@@ -207,7 +209,7 @@ shared interface SimpleDriver satisfies ISPDriver {
             IMultiMapModel mapModel = readMultiMapModel(Warning.default, JPaths.get(firstArg),
                 *namesToFiles(false, *args.rest));
             for (pair in mapModel.allMaps) {
-                turnFixer(pair.first());
+                turnFixer(pair.first);
             }
             startDriverOnModel(cli, options, mapModel);
         }
@@ -325,7 +327,7 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {
                 for (pair in model.allMaps) {
-                    pair.first().setCurrentTurn(currentTurn);
+                    pair.first.setCurrentTurn(currentTurn);
                 }
             } else {
                 cli.println("--current-turn must be an integer");

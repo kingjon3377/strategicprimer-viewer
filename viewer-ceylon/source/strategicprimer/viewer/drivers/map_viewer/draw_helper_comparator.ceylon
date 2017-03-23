@@ -2,6 +2,9 @@ import java.awt {
     Image,
     Graphics
 }
+import strategicprimer.viewer.model {
+    IMultiMapModel
+}
 import java.awt.image {
     BufferedImage
 }
@@ -23,7 +26,6 @@ import model.map {
     MapDimensions
 }
 import model.misc {
-    IMultiMapModel,
     IDriverModel
 }
 
@@ -213,10 +215,9 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         Boolean() random = Random().nextBoolean;
-        void runTestProcedure(ICLIHelper cli, IMapNG map, Optional<Path> filename,
+        void runTestProcedure(ICLIHelper cli, IMapNG map, Path? filename,
                 Boolean() rng) {
-            cli.println("Testing using ``filename.map(Path.string).
-                orElse("an unsaved map")``");
+            cli.println("Testing using ``filename?.string else "an unsaved map"``");
             PointFactory.clearCache();
             Boolean startCaching = rng();
             PointFactory.shouldUseCache(startCaching);
@@ -231,11 +232,11 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
             runAllTests(cli, map, reps);
         }
         if (is IMultiMapModel model) {
-            for (pair in model.allMaps) {
-                runTestProcedure(cli, pair.first(), pair.second(), random);
+            for ([map, file] in model.allMaps) {
+                runTestProcedure(cli, map, file, random);
             }
         } else {
-            runTestProcedure(cli, model.map, model.mapFile, random);
+            runTestProcedure(cli, model.map, model.mapFile.orElse(null), random);
         }
     }
 }

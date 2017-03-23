@@ -14,7 +14,9 @@ import ceylon.logging {
     addLogWriter,
     Priority
 }
-
+import strategicprimer.viewer.model {
+    IMultiMapModel
+}
 import java.awt {
     GraphicsEnvironment,
     GridLayout
@@ -46,8 +48,7 @@ import lovelace.util.jvm {
 }
 
 import model.misc {
-    IDriverModel,
-    IMultiMapModel
+    IDriverModel
 }
 
 import strategicprimer.viewer.drivers {
@@ -377,7 +378,7 @@ object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
         try {
             if (is IMultiMapModel model) {
                 for (pair in model.allMaps) {
-                    removeDuplicateFixtures(pair.first(), cli);
+                    removeDuplicateFixtures(pair.first, cli);
                 }
             } else {
                 removeDuplicateFixtures(model.map, cli);
