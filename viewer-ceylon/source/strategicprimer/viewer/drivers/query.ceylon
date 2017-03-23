@@ -17,11 +17,7 @@ import java.io {
 import java.lang {
     JIterable=Iterable,
     JDouble=Double,
-    JString=String,
     JInteger=Integer
-}
-import java.util {
-    JList=List
 }
 
 import lovelace.util.common {

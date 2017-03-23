@@ -31,9 +31,6 @@ import java.lang {
 import java.nio.file {
     JPath=Path
 }
-import java.util {
-    JOptional=Optional
-}
 
 import javax.swing {
     SwingUtilities,

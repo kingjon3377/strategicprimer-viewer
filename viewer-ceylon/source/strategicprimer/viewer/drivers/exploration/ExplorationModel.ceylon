@@ -3,8 +3,7 @@ import ceylon.collection {
     MutableList
 }
 import ceylon.interop.java {
-    CeylonIterable,
-    JavaList
+    CeylonIterable
 }
 import ceylon.math.float {
     ceiling
@@ -16,10 +15,6 @@ import java.lang {
 }
 import java.nio.file {
     JPath=Path
-}
-import java.util {
-    JOptional=Optional,
-    JList=List
 }
 
 import lovelace.util.common {

@@ -43,8 +43,7 @@ import strategicprimer.viewer.drivers {
     SimpleDriver
 }
 import java.util {
-    Random,
-    JOptional=Optional
+    Random
 }
 import strategicprimer.viewer.xmlio {
     writeMap

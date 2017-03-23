@@ -1,6 +1,3 @@
-import java.nio.file {
-    JPath=Path
-}
 import java.util {
     Formatter
 }

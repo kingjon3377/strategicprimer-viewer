@@ -3,13 +3,6 @@ import ceylon.test {
     assertEquals
 }
 
-import java.nio.file {
-    JPath=Path
-}
-import java.util {
-    JOptional=Optional
-}
-
 import model.map {
     SPMapNG,
     MapDimensionsImpl,

@@ -9,9 +9,6 @@ import java.lang {
 import java.nio.file {
     JPath=Path
 }
-import java.util {
-    JOptional=Optional
-}
 
 import lovelace.util.common {
     todo

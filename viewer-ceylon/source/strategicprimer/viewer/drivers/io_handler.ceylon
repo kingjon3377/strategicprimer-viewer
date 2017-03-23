@@ -27,9 +27,6 @@ import java.nio.file {
     NoSuchFileException,
     JPath=Path
 }
-import java.util {
-    JOptional=Optional
-}
 
 import javax.swing {
     JFileChooser,

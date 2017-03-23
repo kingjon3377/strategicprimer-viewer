@@ -12,9 +12,7 @@ import util {
 }
 import ceylon.interop.java {
     CeylonIterable,
-    CeylonList,
     createJavaIntArray,
-    JavaList,
     createJavaObjectArray
 }
 import javax.swing.text {

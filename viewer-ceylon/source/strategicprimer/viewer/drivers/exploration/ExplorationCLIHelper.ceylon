@@ -2,13 +2,6 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.viewer.model {
-    IMultiMapModel
-}
-import ceylon.interop.java {
-    CeylonIterable,
-    JavaList
-}
 
 import java.lang {
     JInteger=Integer

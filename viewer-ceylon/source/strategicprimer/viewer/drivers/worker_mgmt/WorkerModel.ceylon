@@ -16,9 +16,6 @@ import ceylon.test {
 import java.nio.file {
     JPath=Path
 }
-import java.util {
-    JOptional=Optional
-}
 
 import lovelace.util.common {
     todo
@@ -57,10 +54,6 @@ import model.map.fixtures.towns {
 import strategicprimer.viewer.model {
     SimpleMultiMapModel,
     IDriverModel
-}
-
-import util {
-    Pair
 }
 "A model to underlie the advancement GUI, etc."
 shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {

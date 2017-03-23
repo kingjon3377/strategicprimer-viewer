@@ -6,10 +6,6 @@ import ceylon.collection {
 import java.nio.file {
     JPath=Path
 }
-import java.util {
-    JOptional=Optional
-}
-
 import model.listeners {
     MapChangeListener,
     VersionChangeListener

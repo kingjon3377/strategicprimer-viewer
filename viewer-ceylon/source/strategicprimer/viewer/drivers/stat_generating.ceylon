@@ -5,18 +5,13 @@ import ceylon.collection {
     HashMap,
     MutableList
 }
-import strategicprimer.viewer.model {
-    IMultiMapModel,
-    IDriverModel
-}
 import ceylon.file {
     File,
     parsePath,
     Directory
 }
 import ceylon.interop.java {
-    toIntegerArray,
-    CeylonList
+    toIntegerArray
 }
 import ceylon.math.float {
     random
@@ -72,6 +67,10 @@ import strategicprimer.viewer.drivers.exploration {
     ExplorationRunner,
     ExplorationModel,
     IExplorationModel
+}
+import strategicprimer.viewer.model {
+    IMultiMapModel,
+    IDriverModel
 }
 import strategicprimer.viewer.xmlio {
     readMap
