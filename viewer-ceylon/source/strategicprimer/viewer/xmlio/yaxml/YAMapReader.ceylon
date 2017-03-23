@@ -24,13 +24,11 @@ import controller.map.misc {
 import controller.map.yaxml {
     YAAbstractReader,
     YAReader,
-    YAPlayerReader,
     YAMobileReader,
     YAResourceReader,
     YATerrainReader,
     YATextReader,
     YATownReader,
-    YAPortalReader,
     YAUnitReader
 }
 

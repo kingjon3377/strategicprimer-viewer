@@ -21,8 +21,6 @@ import controller.map.yaxml {
     YAReader,
     YAImplementReader,
     YAMobileReader,
-    YAPlayerReader,
-    YAPortalReader,
     YAResourcePileReader,
     YAResourceReader,
     YATerrainReader,
