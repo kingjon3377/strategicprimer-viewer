@@ -17,10 +17,6 @@ import controller.map.misc {
     IDRegistrar,
     IDFactory
 }
-import controller.map.yaxml {
-    YAReaderAdapter
-}
-
 import java.io {
     JReader=Reader,
     IOException

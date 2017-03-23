@@ -1,10 +1,6 @@
 import controller.map.iointerfaces {
     SPWriter
 }
-import controller.map.yaxml {
-    YAReaderAdapter
-}
-
 import java.io {
     IOException
 }
