@@ -30,9 +30,7 @@ import controller.map.yaxml {
     YATerrainReader,
     YATextReader,
     YATownReader,
-    YAGroundReader,
     YAPortalReader,
-    YAExplorableReader,
     YAUnitReader
 }
 
