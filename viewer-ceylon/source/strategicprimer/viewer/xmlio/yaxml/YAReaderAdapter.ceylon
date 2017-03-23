@@ -18,7 +18,6 @@ import controller.map.misc {
     IDFactory
 }
 import controller.map.yaxml {
-    YAMapReader,
     YAReader,
     YAAdventureReader,
     YAExplorableReader,
@@ -120,7 +119,7 @@ class YAReaderAdapter(
     throws(`class IOException`, "on I/O error")
     void writeAllRivers(JAppendable ostream, {River*} rivers, Integer indent) {
         for (river in rivers) {
-            YAMapReader.writeRiver(ostream, river, indent);
+            mapReader.writeRiver(ostream, river, indent);
         }
     }
     "Write an object to XML."
@@ -130,7 +129,7 @@ class YAReaderAdapter(
             "The object to write" Object obj,
             "The current indentation level" Integer indent) {
         if (is River obj) {
-            YAMapReader.writeRiver(ostream, obj, indent);
+            mapReader.writeRiver(ostream, obj, indent);
         } else if (is RiverFixture obj) {
             writeAllRivers(ostream, CeylonIterable(obj), indent);
         } else if (is ProxyFor<out Anything> obj) {
