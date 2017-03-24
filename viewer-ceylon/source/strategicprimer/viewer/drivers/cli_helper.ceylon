@@ -45,15 +45,14 @@ import model.map {
 }
 
 import util {
-    NullStream,
-    IsNumeric
+    NullStream
 }
 
 import view.util {
     SystemOut
 }
 import lovelace.util.jvm {
-    systemIn
+    systemIn, isNumeric, parseInt
 }
 """An interface for the "CLI helper," which encapsulates input and output streams,
    allowing automated testing of CLIs and GUI wrappers around CLIs."""
@@ -262,11 +261,9 @@ class CLIHelper satisfies ICLIHelper {
             ostream.print(prompt);
             ostream.flush();
             if (exists input = istream.readLine()) {
-                if (IsNumeric.isNumeric(input)) {
-                    // In Java we have to wrap this in a try-catch block and
-                    // handle ParseException; we don't here because IsNumeric
-                    // works to prevent non-numeric input from getting here.
-                    retval = numParser.parse(input).intValue();
+                if (isNumeric(input)) {
+                    assert (exists temp = parseInt(input));
+                    retval = temp;
                 }
             } else {
                 throw IOException("Null line of input");

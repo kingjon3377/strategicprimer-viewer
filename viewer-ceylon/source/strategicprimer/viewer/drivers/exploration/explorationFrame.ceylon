@@ -7,9 +7,6 @@ import model.map.fixtures.resources {
 import javax.swing.event {
     ListSelectionEvent
 }
-import util {
-    IsNumeric
-}
 import ceylon.interop.java {
     CeylonIterable,
     createJavaIntArray,
@@ -63,7 +60,9 @@ import lovelace.util.jvm {
     shuffle,
     boxPanel,
     verticalSplit,
-    ImprovedComboBox
+    ImprovedComboBox,
+    parseInt,
+    isNumeric
 }
 import ceylon.collection {
     HashSet,
@@ -238,14 +237,9 @@ SPFrame explorationFrame(IExplorationModel model,
                     log.error("Exception trying to update MP counter", except);
                     return;
                 }
-                if (IsNumeric.isNumeric(mpText)) {
-                    variable Integer movePoints;
-                    try {
-                        movePoints = numParser.parse(mpText).intValue();
-                    } catch (ParseException except) {
-                        log.error("Non-numeric data in movement-points field", except);
-                        return;
-                    }
+                if (isNumeric(mpText)) {
+                    assert (exists temp = parseInt(mpText));
+                    variable Integer movePoints = temp;
                     movePoints -= cost;
                     try {
                         mpDocument.remove(0, mpDocument.length);

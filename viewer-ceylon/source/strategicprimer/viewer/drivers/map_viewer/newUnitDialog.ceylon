@@ -4,9 +4,6 @@ import java.text {
 import model.map {
     Player
 }
-import util {
-    IsNumeric
-}
 import strategicprimer.viewer.drivers {
     SPDialog
 }
@@ -41,7 +38,9 @@ import model.map.fixtures.mobile {
 }
 import lovelace.util.jvm {
     platform,
-    listenedButton
+    listenedButton,
+    isNumeric,
+    parseInt
 }
 "A dialog to let the user add a new unit."
 shared SPDialog&NewUnitSource&PlayerChangeListener newUnitDialog(variable Player player,
@@ -69,14 +68,9 @@ shared SPDialog&NewUnitSource&PlayerChangeListener newUnitDialog(variable Player
         } else {
             String reqId = idField.text.trimmed;
             variable Integer idNum;
-            if (IsNumeric.isNumeric(reqId)) {
-                try {
-                    idNum = NumberFormat.integerInstance.parse(reqId).intValue();
-                    idf.register(idNum);
-                } catch (ParseException except) {
-                    log.info("Parse error parsing user-specified ID", except);
-                    idNum = idf.createID();
-                }
+            if (isNumeric(reqId), exists temp = parseInt(reqId)) {
+                idNum = temp;
+                idf.register(idNum);
             } else {
                 idNum = idf.createID();
             }
