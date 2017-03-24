@@ -9,9 +9,6 @@ import controller.map.formatexceptions {
 import controller.map.misc {
     IDRegistrar
 }
-import controller.map.yaxml {
-    YAAbstractReader
-}
 
 import java.lang {
     JIterable=Iterable,

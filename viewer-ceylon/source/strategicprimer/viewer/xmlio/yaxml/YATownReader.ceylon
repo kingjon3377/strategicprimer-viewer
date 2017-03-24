@@ -13,7 +13,6 @@ import controller.map.misc {
     IDRegistrar
 }
 import controller.map.yaxml {
-    YAAbstractReader,
     YAReader
 }
 
@@ -135,8 +134,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         retval.portrait = getParameter(element, "portrait", "");
         return retval;
     }
-    void writeAbstractTown(JAppendable ostream, AbstractTown obj, Integer indent) {
-        writeTag(ostream, obj.kind(), indent);
+    void writeAbstractTown(JAppendable ostream, AbstractTown obj, Integer tabs) {
+        writeTag(ostream, obj.kind(), tabs);
         writeProperty(ostream, "status", obj.status().string);
         writeProperty(ostream, "size", obj.size().string);
         writeProperty(ostream, "dc", obj.dc);
@@ -159,11 +158,11 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         case ("fortress") { return parseFortress(element, stream); }
         else { return parseTown(element, stream); }
     }
-    shared actual void write(JAppendable ostream, ITownFixture obj, Integer indent) {
+    shared actual void write(JAppendable ostream, ITownFixture obj, Integer tabs) {
         if (is AbstractTown obj) {
-            writeAbstractTown(ostream, obj, indent);
+            writeAbstractTown(ostream, obj, tabs);
         } else if (is Village obj) {
-            writeTag(ostream, "village", indent);
+            writeTag(ostream, "village", tabs);
             writeProperty(ostream, "status", obj.status().string);
             writeNonemptyProperty(ostream, "name", obj.name);
             writeProperty(ostream, "id", obj.id);
@@ -173,7 +172,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             writeNonemptyProperty(ostream, "portrait", obj.portrait);
             closeLeafTag(ostream);
         } else if (is Fortress obj) {
-            writeTag(ostream, "fortress", indent);
+            writeTag(ostream, "fortress", tabs);
             writeProperty(ostream, "owner", obj.owner.playerId);
             writeNonemptyProperty(ostream, "name", obj.name);
             if (TownSize.small != obj.size()) {
@@ -187,13 +186,13 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 ostream.append(LineEnd.lineSep);
                 for (member in obj) {
                     if (exists reader = memberReaders.find((yar) => yar.canWrite(member))) {
-                        reader.writeRaw(ostream, member, indent + 1);
+                        reader.writeRaw(ostream, member, tabs + 1);
                     } else {
                         log.error("Unhanlded FortressMember type ``type(member)
                             .declaration.name``");
                     }
                 }
-                super.indent(ostream, indent);
+                indent(ostream, tabs);
             }
             ostream.append("</fortress>");
             ostream.append(LineEnd.lineSep);

@@ -22,7 +22,6 @@ import controller.map.misc {
     IDRegistrar
 }
 import controller.map.yaxml {
-    YAAbstractReader,
     YAReader
 }
 
@@ -255,10 +254,10 @@ class YAMapReader("The Warning instance to use" Warning warner,
         return retval;
     }
     "Write a child object"
-    void writeChild(JAppendable ostream, TileFixture child, Integer indent) {
+    void writeChild(JAppendable ostream, TileFixture child, Integer tabs) {
         for (reader in readers) {
             if (reader.canWrite(child)) {
-                reader.writeRaw(ostream, child, indent);
+                reader.writeRaw(ostream, child, tabs);
                 return;
             }
         } else {
@@ -268,19 +267,19 @@ class YAMapReader("The Warning instance to use" Warning warner,
         }
     }
     "Write a map."
-    shared actual void write(JAppendable ostream, IMapNG obj, Integer indent) {
-        writeTag(ostream, "view", indent);
+    shared actual void write(JAppendable ostream, IMapNG obj, Integer tabs) {
+        writeTag(ostream, "view", tabs);
         writeProperty(ostream, "current_player", obj.currentPlayer.playerId);
         writeProperty(ostream, "current_turn", obj.currentTurn);
         finishParentTag(ostream);
-        writeTag(ostream, "map", indent + 1);
+        writeTag(ostream, "map", tabs + 1);
         MapDimensions dimensions = obj.dimensions();
         writeProperty(ostream, "version", dimensions.version);
         writeProperty(ostream, "rows", dimensions.rows);
         writeProperty(ostream, "columns", dimensions.columns);
         finishParentTag(ostream);
         for (player in obj.players()) {
-            playerReader.write(ostream, player, indent + 2);
+            playerReader.write(ostream, player, tabs + 2);
         }
         for (i in 0..(dimensions.rows)) {
             variable Boolean rowEmpty = true;
@@ -290,11 +289,11 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 if (!obj.isLocationEmpty(loc)) {
                     if (rowEmpty) {
                         rowEmpty = false;
-                        writeTag(ostream, "row", indent + 2);
+                        writeTag(ostream, "row", tabs + 2);
                         writeProperty(ostream, "index", i);
                         finishParentTag(ostream);
                     }
-                    writeTag(ostream, "tile", indent + 3);
+                    writeTag(ostream, "tile", tabs + 3);
                     writeProperty(ostream, "row", i);
                     writeProperty(ostream, "column", j);
                     if (TileType.notVisible != terrain) {
@@ -305,41 +304,41 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     if (obj.isMountainous(loc)) {
                         eolIfNeeded(true, ostream);
                         needEol = false;
-                        writeTag(ostream, "mountain", indent + 4);
+                        writeTag(ostream, "mountain", tabs + 4);
                         closeLeafTag(ostream);
                     }
                     for (river in obj.getRivers(loc)) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
-                        writeRiver(ostream, river, indent + 4);
+                        writeRiver(ostream, river, tabs + 4);
                     }
                     if (exists ground = obj.getGround(loc)) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
-                        writeChild(ostream, ground, indent + 4);
+                        writeChild(ostream, ground, tabs + 4);
                     }
                     if (exists forest = obj.getForest(loc)) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
-                        writeChild(ostream, forest, indent + 4);
+                        writeChild(ostream, forest, tabs + 4);
                     }
                     for (fixture in obj.getOtherFixtures(loc)) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
-                        writeChild(ostream, fixture, indent + 4);
+                        writeChild(ostream, fixture, tabs + 4);
                     }
                     if (!needEol) {
-                        super.indent(ostream, indent + 3);
+                        indent(ostream, tabs + 3);
                     }
                     closeTag(ostream, 0, "tile");
                 }
             }
             if (!rowEmpty) {
-                closeTag(ostream, indent + 2, "row");
+                closeTag(ostream, tabs + 2, "row");
             }
         }
-        closeTag(ostream, indent + 1, "map");
-        closeTag(ostream, indent, "view");
+        closeTag(ostream, tabs + 1, "map");
+        closeTag(ostream, tabs, "view");
     }
     shared actual Boolean isSupportedTag(String tag) =>
             {"map", "view"}.contains(tag.lowercased);

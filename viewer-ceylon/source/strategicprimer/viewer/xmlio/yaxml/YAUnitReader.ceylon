@@ -14,7 +14,6 @@ import controller.map.misc {
     IDRegistrar
 }
 import controller.map.yaxml {
-    YAAbstractReader,
     YAReader
 }
 
