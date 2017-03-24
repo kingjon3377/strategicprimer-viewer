@@ -5,7 +5,8 @@ import ceylon.collection {
     HashMap
 }
 import ceylon.language.meta {
-    type
+    type,
+    classDeclaration
 }
 
 import java.lang {
@@ -49,10 +50,10 @@ import util {
 void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
     Boolean approveRemoval(TileFixture fixture, TileFixture matching) {
         return cli.inputBooleanInSeries(
-            "Remove '``fixture.shortDesc()``', of class '``type(fixture)
-                .declaration.name``', ID #``fixture.id``, which matches '``matching
-                .shortDesc()``', of class '``type(matching).declaration
-                .name``', ID #``matching.id``?", "duplicate");
+            "Remove '``fixture.shortDesc()``', of class '``classDeclaration(fixture)
+                .name``', ID #``fixture.id``, which matches '``matching
+                .shortDesc()``', of class '``classDeclaration(matching).name``', ID #``
+                matching.id``?", "duplicate");
     }
     for (location in map.locations()) {
         MutableList<TileFixture> fixtures = ArrayList<TileFixture>();

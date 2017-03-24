@@ -6,7 +6,7 @@ import ceylon.interop.java {
     CeylonIterable
 }
 import ceylon.language.meta {
-    type
+    classDeclaration
 }
 
 import controller.map.formatexceptions {
@@ -260,7 +260,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
             }
         } else {
             throw IllegalArgumentException("After checking ``readers
-                .size`` readers, don't know how to write a ``type(child).declaration
+                .size`` readers, don't know how to write a ``classDeclaration(child)
                 .name``");
         }
     }

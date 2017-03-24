@@ -2,7 +2,8 @@ import ceylon.interop.java {
     CeylonIterable
 }
 import ceylon.language.meta {
-    type
+    type,
+    classDeclaration
 }
 
 import controller.map.formatexceptions {
@@ -184,8 +185,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     if (exists reader = memberReaders.find((yar) => yar.canWrite(member))) {
                         reader.writeRaw(ostream, member, tabs + 1);
                     } else {
-                        log.error("Unhanlded FortressMember type ``type(member)
-                            .declaration.name``");
+                        log.error("Unhandled FortressMember type ``
+                            classDeclaration(member).name``");
                     }
                 }
                 indent(ostream, tabs);

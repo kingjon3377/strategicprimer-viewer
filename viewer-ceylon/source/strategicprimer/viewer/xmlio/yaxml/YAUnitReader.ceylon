@@ -3,7 +3,8 @@ import ceylon.interop.java {
     CeylonMap
 }
 import ceylon.language.meta {
-    type
+    type,
+    classDeclaration
 }
 
 import controller.map.formatexceptions {
@@ -167,8 +168,8 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             }
         } else {
             throw IllegalArgumentException("After checking ``readers
-                .size`` readers, don't know how to write a ``type(child)
-                .declaration.name``");
+                .size`` readers, don't know how to write a ``classDeclaration(child)
+                .name``");
         }
     }
     shared actual void write(JAppendable ostream, IUnit obj, Integer indent) {

@@ -1,20 +1,20 @@
-import strategicprimer.viewer.drivers.map_viewer {
-    loadImage
+import ceylon.interop.java {
+    CeylonIterable
 }
 import ceylon.language.meta {
-    type
+    classDeclaration
 }
-import model.listeners {
-    UnitMemberListener
+
+import java.awt {
+    Image,
+    Graphics,
+    GridLayout,
+    BorderLayout
 }
-import model.map.fixtures {
-    UnitMember
+import java.io {
+    IOException
 }
-import lovelace.util.jvm {
-    FunctionalGroupLayout,
-    verticalSplit,
-    horizontalSplit
-}
+
 import javax.swing {
     JPanel,
     JLabel,
@@ -22,29 +22,34 @@ import javax.swing {
     JComponent,
     BorderFactory
 }
+
+import lovelace.util.jvm {
+    FunctionalGroupLayout,
+    verticalSplit,
+    horizontalSplit
+}
+
+import model.listeners {
+    UnitMemberListener
+}
+import model.map {
+    HasPortrait
+}
+import model.map.fixtures {
+    UnitMember
+}
 import model.map.fixtures.mobile {
     ProxyFor,
     Worker,
     Animal
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
-import java.io {
-    IOException
-}
-import model.map {
-    HasPortrait
-}
 import model.map.fixtures.mobile.worker {
     ISkill,
     WorkerStats
 }
-import java.awt {
-    Image,
-    Graphics,
-    GridLayout,
-    BorderLayout
+
+import strategicprimer.viewer.drivers.map_viewer {
+    loadImage
 }
 "A panel to show the details of the currently selected unit-member."
 JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
@@ -166,7 +171,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
         } else if (exists local) {
             typeLabel.text = "Unknown";
             nameLabel.text = "";
-            kindLabel.text = type(local).declaration.name;
+            kindLabel.text = classDeclaration(local).name;
             for (label in statLabels) {
                 label.recache(null);
             }

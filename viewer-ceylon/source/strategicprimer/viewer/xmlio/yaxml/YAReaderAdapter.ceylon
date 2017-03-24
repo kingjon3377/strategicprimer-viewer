@@ -2,7 +2,8 @@ import ceylon.interop.java {
     CeylonIterable
 }
 import ceylon.language.meta {
-    type
+    type,
+    classDeclaration
 }
 import ceylon.logging {
     logger,
@@ -140,7 +141,7 @@ class YAReaderAdapter(
                 }
             } else {
                 throw IllegalArgumentException("After checking ``readers
-                    .size`` readers, don't know how to write a ``type(obj).declaration
+                    .size`` readers, don't know how to write a ``classDeclaration(obj)
                     .name``");
             }
         }

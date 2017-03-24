@@ -1,15 +1,21 @@
-import java.lang {
-    JSystem=System
+import ceylon.interop.java {
+    javaString
 }
+
 import java.awt.event {
     InputEvent
 }
+import java.lang {
+    JSystem=System
+}
+
 import javax.swing {
     JButton,
     JComponent
 }
-import ceylon.interop.java {
-    javaString
+
+import lovelace.util.common {
+    todo
 }
 "Set a String/String property pair in a way that won't blow up at runtime due to
  the difference between Ceylon and Java strings."
@@ -19,6 +25,7 @@ void setStringProperty(JComponent component, String key, String val) =>
  non-Mac platforms."
 shared object platform {
     "Whether this system is a Mac."
+    todo("Use `ceylon.language::operatingSystem` object instead")
     shared Boolean systemIsMac;
     if (exists temp = JSystem.getProperty("os.name")) {
         systemIsMac = temp.lowercased.startsWith("mac os x");
