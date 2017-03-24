@@ -121,7 +121,6 @@ import model.map.fixtures.terrain {
     Hill
 }
 import model.map.fixtures.towns {
-    Fortress,
     TownStatus,
     TownSize
 }
@@ -133,7 +132,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Village,
     City,
     Fortification,
-    Town
+    Town,
+    Fortress
 }
 import strategicprimer.viewer.xmlio {
     readMap,

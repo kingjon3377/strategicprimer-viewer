@@ -4,7 +4,7 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     ceylonComparator
 }
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 import model.map {

@@ -37,7 +37,7 @@ import model.map.fixtures.mobile {
 import model.map.fixtures.resources {
     CacheFixture
 }
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 

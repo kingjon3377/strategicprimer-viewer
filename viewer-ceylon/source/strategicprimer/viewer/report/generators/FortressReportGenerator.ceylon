@@ -34,7 +34,7 @@ import model.map.fixtures.terrain {
     Hill,
     Oasis
 }
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 

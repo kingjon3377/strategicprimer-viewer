@@ -34,7 +34,7 @@ import model.map {
 import model.map.fixtures.mobile {
     IUnit
 }
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 

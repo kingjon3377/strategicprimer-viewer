@@ -65,7 +65,7 @@ import model.map.fixtures {
     Implement,
     FortressMember
 }
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 

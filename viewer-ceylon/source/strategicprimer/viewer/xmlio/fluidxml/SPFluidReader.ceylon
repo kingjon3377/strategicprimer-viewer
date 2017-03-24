@@ -93,8 +93,10 @@ import model.map.fixtures.terrain {
     Sandbar,
     Forest
 }
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Fortress
+}
 import model.map.fixtures.towns {
-    Fortress,
     TownSize
 }
 

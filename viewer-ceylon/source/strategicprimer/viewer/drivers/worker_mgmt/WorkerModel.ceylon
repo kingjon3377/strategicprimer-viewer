@@ -46,8 +46,10 @@ import model.map.fixtures.terrain {
     Forest,
     Hill
 }
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Fortress
+}
 import model.map.fixtures.towns {
-    Fortress,
     TownSize
 }
 

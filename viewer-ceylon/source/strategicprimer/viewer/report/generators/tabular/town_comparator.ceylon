@@ -21,11 +21,11 @@ import model.map {
 import model.map.fixtures.towns {
     ITownFixture,
     TownStatus,
-    TownSize,
-    Fortress
+    TownSize
 }
 
 import strategicprimer.viewer.model.map.fixtures.towns {
+    Fortress,
     Village,
     City,
     Town,

@@ -58,16 +58,14 @@ import model.map.fixtures.resources {
 import model.map.fixtures.terrain {
     Forest
 }
-import model.map.fixtures.towns {
-    Fortress
-}
 
 import strategicprimer.viewer.model {
     SimpleMultiMapModel,
     IDriverModel
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
-    Village
+    Village,
+    Fortress
 }
 "A model for exploration drivers."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {

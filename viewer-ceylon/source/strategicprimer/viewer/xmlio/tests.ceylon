@@ -125,8 +125,7 @@ import model.map.fixtures.terrain {
 }
 import model.map.fixtures.towns {
     TownStatus,
-    TownSize,
-    Fortress
+    TownSize
 }
 
 import strategicprimer.viewer.drivers.advancement {
@@ -136,7 +135,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Village,
     Town,
     Fortification,
-    City
+    City,
+    Fortress
 }
 import strategicprimer.viewer.xmlio {
     testReaderFactory

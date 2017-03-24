@@ -66,13 +66,11 @@ import model.map.fixtures.terrain {
     Sandbar,
     Oasis
 }
-import model.map.fixtures.towns {
-    Fortress
-}
 
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village,
-    AbstractTown
+    AbstractTown,
+    Fortress
 }
 "A class to allow the Z-order of fixtures to be represented as a table."
 shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&Comparator<TileFixture> fixtureFilterTableModel() {

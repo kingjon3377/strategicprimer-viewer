@@ -92,13 +92,13 @@ import model.map.fixtures.terrain {
     Sandbar
 }
 import model.map.fixtures.towns {
-    Fortress,
     TownSize
 }
 
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village,
-    AbstractTown
+    AbstractTown,
+    Fortress
 }
 Regex snugEndTag = regex("([^ ])/>", true);
 """The main writer-to-XML class in the "fluid XML" implementation."""

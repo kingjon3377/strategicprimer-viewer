@@ -37,14 +37,14 @@ import model.map {
 import model.map.fixtures.towns {
     ITownFixture,
     TownStatus,
-    TownSize,
-    Fortress
+    TownSize
 }
 
 import strategicprimer.viewer.drivers.advancement {
     randomRace
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
+    Fortress,
     Village,
     AbstractTown,
     City,
@@ -128,7 +128,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 break;
             }
         }
-        retval.image = getParameter(element, "image", "");
+        retval.setImage(getParameter(element, "image", ""));
         retval.portrait = getParameter(element, "portrait", "");
         return retval;
     }

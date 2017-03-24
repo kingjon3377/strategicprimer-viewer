@@ -1,4 +1,4 @@
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 import lovelace.util.common {
