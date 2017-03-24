@@ -18,9 +18,7 @@ import controller.map.misc {
     IDFactory
 }
 import controller.map.yaxml {
-    YAReader,
-    YATextReader,
-    YAWorkerReader
+    YAReader
 }
 
 import java.io {

@@ -23,8 +23,7 @@ import controller.map.misc {
 }
 import controller.map.yaxml {
     YAAbstractReader,
-    YAReader,
-    YATextReader
+    YAReader
 }
 
 import java.lang {
