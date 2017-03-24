@@ -11,8 +11,7 @@ import controller.map.iointerfaces {
     ISPReader
 }
 import controller.map.misc {
-    MagicReader,
-    TypesafeXMLEventReader
+    MagicReader
 }
 
 import java.io {

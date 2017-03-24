@@ -12,12 +12,12 @@ import controller.map.iointerfaces {
     ISPReader
 }
 import controller.map.misc {
-    TypesafeXMLEventReader,
     IDRegistrar,
     IDFactory
 }
 import strategicprimer.viewer.xmlio {
-    IncludingIterator
+    IncludingIterator,
+    TypesafeXMLEventReader
 }
 import java.io {
     JReader=Reader,
