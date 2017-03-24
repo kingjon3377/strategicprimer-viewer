@@ -14,9 +14,7 @@ import controller.map.misc {
 }
 import controller.map.yaxml {
     YAAbstractReader,
-    YAReader,
-    YAResourcePileReader,
-    YAImplementReader
+    YAReader
 }
 
 import java.lang {

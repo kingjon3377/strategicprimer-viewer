@@ -19,9 +19,6 @@ import controller.map.misc {
 }
 import controller.map.yaxml {
     YAReader,
-    YAImplementReader,
-    YAMobileReader,
-    YAResourcePileReader,
     YAResourceReader,
     YATerrainReader,
     YATextReader,
