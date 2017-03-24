@@ -3,7 +3,8 @@ import model.map.fixtures.explorable {
 }
 import lovelace.util.jvm {
     shuffle,
-    ConvertingIterable
+    ConvertingIterable,
+    EnumCounter
 }
 import javax.xml {
     XMLConstants
@@ -82,7 +83,6 @@ import ceylon.collection {
 }
 import util {
     Warning,
-    EnumCounter,
     LineEnd
 }
 import model.map.fixtures.terrain {
@@ -940,7 +940,7 @@ IMapNG decreaseResolution(IMapNG old) {
         assert (is TileType[4] types); // the algorithm assumes only possible splits are
         // 4-0, 3-1, 2-2, 2-1-1, and 1-1-1-1
         // TODO: more Ceylonic algorithm/implementation
-        EnumCounter<TileType> counter = EnumCounter(javaClass<TileType>());
+        EnumCounter<TileType> counter = EnumCounter<TileType>();
         counter.countMany(*types);
         MutableSet<TileType> twos = HashSet<TileType>();
         for (type in TileType.values()) {
