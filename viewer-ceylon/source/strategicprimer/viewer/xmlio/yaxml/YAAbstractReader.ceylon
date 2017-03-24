@@ -51,14 +51,14 @@ import util {
     Warning,
     LineEnd
 }
+"A parser for numeric data, so integers can contain commas."
+NumberFormat numParser = NumberFormat.integerInstance;
+"Patterns to match XML metacharacters, and their qutoed forms."
+{[String, String]*} quoting = {["""&""", """&amp;"""], ["""<""", """&lt;"""],
+    [""">""", """&gt;"""], [""""""", """&quot;"""], ["""'""", """&apos;"""]};
 "A superclass for YAXML reader classes to provide helper methods."
 abstract class YAAbstractReader<Element>
         satisfies YAReader<Element> given Element satisfies Object {
-    "A parser for numeric data, so integers can contain commas."
-    static NumberFormat numParser = NumberFormat.integerInstance;
-    "Patterns to match XML metacharacters, and their qutoed forms."
-    static {[String, String]*} quoting = {["""&""", """&amp;"""], ["""<""", """&lt;"""],
-        [""">""", """&gt;"""], [""""""", """&quot;"""], ["""'""", """&apos;"""]};
     "Whether the given tag is in a namespace we support."
     static Boolean isSupportedNamespace(QName tag) =>
             {ISPReader.namespace, XMLConstants.nullNsUri}.contains(tag.namespaceURI);
