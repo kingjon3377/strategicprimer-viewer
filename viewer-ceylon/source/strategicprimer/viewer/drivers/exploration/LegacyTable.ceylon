@@ -25,7 +25,9 @@ import model.map.fixtures.resources {
 }
 import model.map.fixtures.towns {
     TownStatus,
-    TownSize,
+    TownSize
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
     City,
     Fortification,
     Town

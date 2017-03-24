@@ -122,18 +122,18 @@ import model.map.fixtures.terrain {
 }
 import model.map.fixtures.towns {
     Fortress,
-    Fortification,
     TownStatus,
-    Town,
-    TownSize,
-    City
+    TownSize
 }
 
 import strategicprimer.viewer.drivers {
     ConstructorWrapper
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
-    Village
+    Village,
+    City,
+    Fortification,
+    Town
 }
 import strategicprimer.viewer.xmlio {
     readMap,

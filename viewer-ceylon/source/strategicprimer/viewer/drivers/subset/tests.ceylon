@@ -44,11 +44,12 @@ import model.map.fixtures.terrain {
 import model.map.fixtures.towns {
     Fortress,
     TownSize,
-    TownStatus,
-    Fortification,
-    AbstractTown
+    TownStatus
 }
-
+import strategicprimer.viewer.model.map.fixtures.towns {
+    AbstractTown,
+    Fortification
+}
 import util {
     NullStream
 }

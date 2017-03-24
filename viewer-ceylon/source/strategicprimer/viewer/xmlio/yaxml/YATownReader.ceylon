@@ -38,10 +38,6 @@ import model.map.fixtures.towns {
     ITownFixture,
     TownStatus,
     TownSize,
-    AbstractTown,
-    Town,
-    City,
-    Fortification,
     Fortress
 }
 
@@ -49,7 +45,11 @@ import strategicprimer.viewer.drivers.advancement {
     randomRace
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
-    Village
+    Village,
+    AbstractTown,
+    City,
+    Fortification,
+    Town
 }
 
 import util {
@@ -105,7 +105,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             throw IllegalStateException("Unhandled town tag");
         }
         spinUntilEnd(element.name, stream);
-        retval.image = getParameter(element, "image", "");
+        retval.setImage(getParameter(element, "image", ""));
         retval.portrait = getParameter(element, "portrait", "");
         return retval;
     }

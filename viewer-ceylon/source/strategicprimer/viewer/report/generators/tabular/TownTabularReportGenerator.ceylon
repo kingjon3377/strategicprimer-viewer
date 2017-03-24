@@ -11,7 +11,7 @@ import model.map {
     Point,
     IFixture
 }
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.towns {
     AbstractTown
 }
 "A tabular report generator for towns."

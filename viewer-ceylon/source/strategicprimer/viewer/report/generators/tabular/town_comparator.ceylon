@@ -20,16 +20,16 @@ import model.map {
 }
 import model.map.fixtures.towns {
     ITownFixture,
-    City,
     TownStatus,
     TownSize,
-    Town,
-    Fortification,
     Fortress
 }
 
 import strategicprimer.viewer.model.map.fixtures.towns {
-    Village
+    Village,
+    City,
+    Town,
+    Fortification
 }
 import strategicprimer.viewer.report.generators.tabular {
     comparingOn

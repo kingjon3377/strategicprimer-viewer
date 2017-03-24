@@ -25,19 +25,19 @@ import model.map {
     IPlayerCollection
 }
 import model.map.fixtures.towns {
-    Town,
     TownStatus,
-    TownSize,
-    Fortification,
-    City,
-    AbstractTown
+    TownSize
 }
 
 import strategicprimer.viewer.drivers.advancement {
     randomRace
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
-    Village
+    Village,
+    AbstractTown,
+    City,
+    Town,
+    Fortification
 }
 
 import util {
