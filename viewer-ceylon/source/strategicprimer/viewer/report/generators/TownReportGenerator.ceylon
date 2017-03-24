@@ -26,10 +26,12 @@ import model.map.fixtures.towns {
     ITownFixture,
     TownStatus,
     AbstractTown,
-    Village,
     Fortress
 }
 
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Village
+}
 import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,

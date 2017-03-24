@@ -58,9 +58,6 @@ import model.map.fixtures.mobile.worker {
     WorkerStats,
     Job
 }
-import model.map.fixtures.towns {
-    Village
-}
 
 import strategicprimer.viewer.drivers.advancement {
     randomRace
@@ -74,6 +71,9 @@ import strategicprimer.viewer.drivers.exploration {
 import strategicprimer.viewer.model {
     IMultiMapModel,
     IDriverModel
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Village
 }
 import strategicprimer.viewer.xmlio {
     readMap

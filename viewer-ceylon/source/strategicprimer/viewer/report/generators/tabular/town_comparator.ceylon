@@ -25,8 +25,11 @@ import model.map.fixtures.towns {
     TownSize,
     Town,
     Fortification,
-    Village,
     Fortress
+}
+
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Village
 }
 import strategicprimer.viewer.report.generators.tabular {
     comparingOn

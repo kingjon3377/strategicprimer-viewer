@@ -67,7 +67,6 @@ import model.map.fixtures.terrain {
 }
 import model.map.fixtures.towns {
     ITownFixture,
-    Village,
     TownStatus
 }
 
@@ -92,6 +91,9 @@ import strategicprimer.viewer.drivers.exploration {
 import strategicprimer.viewer.model {
     IMultiMapModel,
     IDriverModel
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Village
 }
 import strategicprimer.viewer.xmlio {
     writeMap

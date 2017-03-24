@@ -1,43 +1,46 @@
-import ceylon.language.meta {
-    type
+import ceylon.collection {
+    ArrayList,
+    MutableList
 }
 import ceylon.interop.java {
     javaClass
 }
+import ceylon.language.meta {
+    type
+}
 import ceylon.language.meta.model {
     ClassModel
 }
-import model.map.fixtures {
-    RiverFixture,
-    Ground,
-    TextFixture
-}
+
 import java.lang {
     JString=String,
     JBoolean=Boolean,
     JClass=Class,
     IllegalArgumentException
 }
-import model.map.fixtures.towns {
-    Fortress,
-    AbstractTown,
-    Village
+
+import javax.swing.table {
+    AbstractTableModel
 }
-import model.map {
-    TileFixture
-}
+
 import lovelace.util.common {
     Reorderable,
     Comparator
 }
-import model.map.fixtures.terrain {
-    Forest,
-    Hill,
-    Sandbar,
-    Oasis
+
+import model.map {
+    TileFixture
 }
-import javax.swing.table {
-    AbstractTableModel
+import model.map.fixtures {
+    RiverFixture,
+    Ground,
+    TextFixture
+}
+import model.map.fixtures.explorable {
+    Portal,
+    Cave,
+    Battlefield,
+    AdventureFixture
 }
 import model.map.fixtures.mobile {
     Dragon,
@@ -57,15 +60,19 @@ import model.map.fixtures.resources {
     Grove,
     Mine
 }
-import ceylon.collection {
-    ArrayList,
-    MutableList
+import model.map.fixtures.terrain {
+    Forest,
+    Hill,
+    Sandbar,
+    Oasis
 }
-import model.map.fixtures.explorable {
-    Portal,
-    Cave,
-    Battlefield,
-    AdventureFixture
+import model.map.fixtures.towns {
+    Fortress,
+    AbstractTown
+}
+
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Village
 }
 "A class to allow the Z-order of fixtures to be represented as a table."
 shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&Comparator<TileFixture> fixtureFilterTableModel() {

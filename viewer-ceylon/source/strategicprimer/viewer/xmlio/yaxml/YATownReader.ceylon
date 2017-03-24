@@ -2,7 +2,6 @@ import ceylon.interop.java {
     CeylonIterable
 }
 import ceylon.language.meta {
-    type,
     classDeclaration
 }
 
@@ -37,7 +36,6 @@ import model.map {
 }
 import model.map.fixtures.towns {
     ITownFixture,
-    Village,
     TownStatus,
     TownSize,
     AbstractTown,
@@ -49,6 +47,9 @@ import model.map.fixtures.towns {
 
 import strategicprimer.viewer.drivers.advancement {
     randomRace
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Village
 }
 
 import util {

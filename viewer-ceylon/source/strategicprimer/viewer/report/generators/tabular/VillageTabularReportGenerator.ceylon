@@ -4,13 +4,15 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     ceylonComparator
 }
+
 import model.map {
     DistanceComparator,
     Player,
     Point,
     IFixture
 }
-import model.map.fixtures.towns {
+
+import strategicprimer.viewer.model.map.fixtures.towns {
     Village
 }
 "A tabular report generator for villages."

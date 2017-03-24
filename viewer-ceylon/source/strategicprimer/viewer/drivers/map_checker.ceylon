@@ -1,14 +1,31 @@
+import controller.map.formatexceptions {
+    SPFormatException
+}
+
 import java.awt {
     Dimension,
     Color
+}
+import java.io {
+    FileNotFoundException,
+    IOException
 }
 import java.nio.file {
     JPaths=Paths,
     JPath=Path,
     NoSuchFileException
 }
+
 import javax.swing {
     JScrollPane
+}
+import javax.xml.stream {
+    XMLStreamException
+}
+
+import lovelace.util.jvm {
+    StreamingLabel,
+    LabelTextColor
 }
 
 import model.map {
@@ -18,40 +35,26 @@ import model.map {
     IMapNG,
     FixtureIterable
 }
+import model.map.fixtures.mobile {
+    IWorker
+}
+import model.map.fixtures.mobile.worker {
+    IJob
+}
 import model.map.fixtures.resources {
     StoneDeposit,
     StoneKind
 }
 
-import util {
-    Warning
-}
-
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.towns {
     Village
-}
-import model.map.fixtures.mobile.worker {
-    IJob
-}
-import model.map.fixtures.mobile {
-    IWorker
-}
-import java.io {
-    FileNotFoundException,
-    IOException
-}
-import javax.xml.stream {
-    XMLStreamException
-}
-import controller.map.formatexceptions {
-    SPFormatException
 }
 import strategicprimer.viewer.xmlio {
     readMap
 }
-import lovelace.util.jvm {
-    StreamingLabel,
-    LabelTextColor
+
+import util {
+    Warning
 }
 """An interface for checks of a map's *contents* that we don't want the XML-*reading*
    code to do."""

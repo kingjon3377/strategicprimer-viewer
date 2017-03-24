@@ -1,26 +1,26 @@
-import model.map.fixtures {
-    Ground
-}
-import model.map.fixtures.resources {
-    CacheFixture
-}
-import javax.swing.event {
-    ListSelectionEvent
+import ceylon.collection {
+    HashSet,
+    HashMap,
+    MutableSet,
+    ArrayList,
+    MutableList,
+    MutableMap
 }
 import ceylon.interop.java {
     CeylonIterable,
     createJavaIntArray,
     createJavaObjectArray
 }
-import javax.swing.text {
-    BadLocationException,
-    Document
-}
+
 import com.bric.window {
     WindowMenu
 }
-import model.map.fixtures.towns {
-    Village
+
+import java.awt {
+    CardLayout,
+    Dimension,
+    Component,
+    GridLayout
 }
 import java.awt.event {
     KeyEvent,
@@ -30,62 +30,10 @@ import java.lang {
     JInteger=Integer,
     IntArray
 }
-import strategicprimer.viewer.drivers.map_viewer {
-    fixtureFilterTableModel,
-    FixtureMatcher,
-    FixtureListModel,
-    fixtureList,
-    TileTypeFixture
-}
 import java.text {
     NumberFormat
 }
-import model.map {
-    Player,
-    Point,
-    HasOwner,
-    TileType,
-    IMutableMapNG,
-    TileFixture,
-    PlayerImpl
-}
-import lovelace.util.jvm {
-    horizontalSplit,
-    ListModelWrapper,
-    BorderedPanel,
-    listenedButton,
-    createHotKey,
-    FormattedLabel,
-    BoxAxis,
-    shuffle,
-    boxPanel,
-    verticalSplit,
-    ImprovedComboBox,
-    parseInt,
-    isNumeric
-}
-import ceylon.collection {
-    HashSet,
-    HashMap,
-    MutableSet,
-    ArrayList,
-    MutableList,
-    MutableMap
-}
-import model.map.fixtures.terrain {
-    Forest
-}
-import java.awt {
-    CardLayout,
-    Dimension,
-    Component,
-    GridLayout
-}
-import strategicprimer.viewer.drivers {
-    SPFrame,
-    SPMenu,
-    ConstructorWrapper
-}
+
 import javax.swing {
     DefaultComboBoxModel,
     JTextField,
@@ -104,10 +52,30 @@ import javax.swing {
     ListCellRenderer,
     SwingUtilities
 }
-import model.map.fixtures.mobile {
-    IUnit,
-    Animal
+import javax.swing.event {
+    ListSelectionEvent
 }
+import javax.swing.text {
+    BadLocationException,
+    Document
+}
+
+import lovelace.util.jvm {
+    horizontalSplit,
+    ListModelWrapper,
+    BorderedPanel,
+    listenedButton,
+    createHotKey,
+    FormattedLabel,
+    BoxAxis,
+    shuffle,
+    boxPanel,
+    verticalSplit,
+    ImprovedComboBox,
+    parseInt,
+    isNumeric
+}
+
 import model.listeners {
     PlayerChangeListener,
     SelectionChangeListener,
@@ -118,6 +86,44 @@ import model.listeners {
     SelectionChangeSource,
     CompletionSource,
     MovementCostSource
+}
+import model.map {
+    Player,
+    Point,
+    HasOwner,
+    TileType,
+    IMutableMapNG,
+    TileFixture,
+    PlayerImpl
+}
+import model.map.fixtures {
+    Ground
+}
+import model.map.fixtures.mobile {
+    IUnit,
+    Animal
+}
+import model.map.fixtures.resources {
+    CacheFixture
+}
+import model.map.fixtures.terrain {
+    Forest
+}
+
+import strategicprimer.viewer.drivers {
+    SPFrame,
+    SPMenu,
+    ConstructorWrapper
+}
+import strategicprimer.viewer.drivers.map_viewer {
+    fixtureFilterTableModel,
+    FixtureMatcher,
+    FixtureListModel,
+    fixtureList,
+    TileTypeFixture
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Village
 }
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,

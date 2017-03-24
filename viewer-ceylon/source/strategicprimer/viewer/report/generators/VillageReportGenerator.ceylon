@@ -17,10 +17,10 @@ import model.map {
     Player,
     PointFactory
 }
-import model.map.fixtures.towns {
+
+import strategicprimer.viewer.model.map.fixtures.towns {
     Village
 }
-
 import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,

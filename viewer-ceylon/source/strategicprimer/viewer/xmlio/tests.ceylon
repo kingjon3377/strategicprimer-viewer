@@ -125,7 +125,6 @@ import model.map.fixtures.terrain {
 }
 import model.map.fixtures.towns {
     TownStatus,
-    Village,
     TownSize,
     City,
     Fortification,
@@ -135,6 +134,9 @@ import model.map.fixtures.towns {
 
 import strategicprimer.viewer.drivers.advancement {
     races
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Village
 }
 import strategicprimer.viewer.xmlio {
     testReaderFactory

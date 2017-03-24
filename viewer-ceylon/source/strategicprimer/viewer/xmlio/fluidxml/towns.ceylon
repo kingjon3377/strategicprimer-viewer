@@ -30,12 +30,14 @@ import model.map.fixtures.towns {
     TownSize,
     Fortification,
     City,
-    Village,
     AbstractTown
 }
 
 import strategicprimer.viewer.drivers.advancement {
     randomRace
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Village
 }
 
 import util {

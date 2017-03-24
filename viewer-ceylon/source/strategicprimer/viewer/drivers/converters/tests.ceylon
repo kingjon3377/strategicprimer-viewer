@@ -1,78 +1,3 @@
-import model.map.fixtures.explorable {
-    AdventureFixture
-}
-import lovelace.util.jvm {
-    shuffle,
-    ConvertingIterable,
-    EnumCounter
-}
-import javax.xml {
-    XMLConstants
-}
-import javax.xml.namespace {
-    QName
-}
-import java.util {
-    Formatter
-}
-import controller.map.misc {
-    IDRegistrar,
-    IDFactory
-}
-import ceylon.interop.java {
-    CeylonIterable,
-    javaClass
-}
-import javax.xml.stream {
-    XMLStreamException
-}
-import java.nio.file {
-    NoSuchFileException
-}
-import strategicprimer.viewer.drivers {
-    ConstructorWrapper
-}
-import java.lang {
-    Appendable,
-    IllegalArgumentException
-}
-import model.map.fixtures {
-    TextFixture,
-    Ground
-}
-import view.util {
-    SystemOut
-}
-import controller.map.iointerfaces {
-    ISPReader,
-    SPWriter
-}
-import model.map.fixtures.resources {
-    FieldStatus,
-    StoneKind,
-    MineralVein,
-    CacheFixture,
-    Meadow,
-    StoneDeposit,
-    Grove,
-    Mine
-}
-import model.map.fixtures.towns {
-    Fortress,
-    Village,
-    Fortification,
-    TownStatus,
-    Town,
-    TownSize,
-    City
-}
-import lovelace.util.common {
-    todo
-}
-import ceylon.regex {
-    Regex,
-    regex
-}
 import ceylon.collection {
     HashSet,
     HashMap,
@@ -81,13 +6,12 @@ import ceylon.collection {
     Queue,
     MutableMap
 }
-import util {
-    Warning,
-    LineEnd
+import ceylon.interop.java {
+    CeylonIterable
 }
-import model.map.fixtures.terrain {
-    Forest,
-    Hill
+import ceylon.regex {
+    Regex,
+    regex
 }
 import ceylon.test {
     test,
@@ -95,20 +19,62 @@ import ceylon.test {
     assertThatException,
     assertTrue
 }
-import model.map.fixtures.mobile {
-    Dragon,
-    Fairy,
-    Unit,
-    Centaur,
-    IUnit,
-    Giant,
-    SimpleImmortal,
-    Animal
+
+import controller.map.iointerfaces {
+    ISPReader,
+    SPWriter
 }
-import strategicprimer.viewer.xmlio {
-    readMap,
-    testReaderFactory
+import controller.map.misc {
+    IDRegistrar,
+    IDFactory
 }
+
+import java.io {
+    StringWriter,
+    IOException,
+    JFileReader=FileReader,
+    FileNotFoundException,
+    StringReader
+}
+import java.lang {
+    Appendable,
+    IllegalArgumentException
+}
+import java.nio.file {
+    NoSuchFileException
+}
+import java.util {
+    Formatter
+}
+
+import javax.xml {
+    XMLConstants
+}
+import javax.xml.namespace {
+    QName
+}
+import javax.xml.stream {
+    XMLStreamException
+}
+import javax.xml.stream.events {
+    Attribute,
+    EndElement,
+    XMLEvent,
+    StartElement,
+    Characters,
+    StartDocument,
+    EndDocument
+}
+
+import lovelace.util.common {
+    todo
+}
+import lovelace.util.jvm {
+    shuffle,
+    ConvertingIterable,
+    EnumCounter
+}
+
 import model.map {
     River,
     Player,
@@ -123,21 +89,64 @@ import model.map {
     TileFixture,
     PlayerImpl
 }
-import java.io {
-    StringWriter,
-    IOException,
-    JFileReader=FileReader,
-    FileNotFoundException,
-    StringReader
+import model.map.fixtures {
+    TextFixture,
+    Ground
 }
-import javax.xml.stream.events {
-    Attribute,
-    EndElement,
-    XMLEvent,
-    StartElement,
-    Characters,
-    StartDocument,
-    EndDocument
+import model.map.fixtures.explorable {
+    AdventureFixture
+}
+import model.map.fixtures.mobile {
+    Dragon,
+    Fairy,
+    Unit,
+    Centaur,
+    IUnit,
+    Giant,
+    SimpleImmortal,
+    Animal
+}
+import model.map.fixtures.resources {
+    FieldStatus,
+    StoneKind,
+    MineralVein,
+    CacheFixture,
+    Meadow,
+    StoneDeposit,
+    Grove,
+    Mine
+}
+import model.map.fixtures.terrain {
+    Forest,
+    Hill
+}
+import model.map.fixtures.towns {
+    Fortress,
+    Fortification,
+    TownStatus,
+    Town,
+    TownSize,
+    City
+}
+
+import strategicprimer.viewer.drivers {
+    ConstructorWrapper
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Village
+}
+import strategicprimer.viewer.xmlio {
+    readMap,
+    testReaderFactory
+}
+
+import util {
+    Warning,
+    LineEnd
+}
+
+import view.util {
+    SystemOut
 }
 void assertModuloID(IMapNG map, String serialized, Formatter err) {
     Regex matcher = regex("id=\"[0-9]*\"", true);
