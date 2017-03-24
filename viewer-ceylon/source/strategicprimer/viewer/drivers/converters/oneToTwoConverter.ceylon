@@ -1,6 +1,22 @@
-import strategicprimer.viewer.model {
-    IMultiMapModel,
-    IDriverModel
+import ceylon.collection {
+    LinkedList,
+    MutableList,
+    Queue
+}
+import ceylon.file {
+    parsePath,
+    Directory
+}
+import ceylon.interop.java {
+    CeylonIterable
+}
+
+import controller.map.misc {
+    IDRegistrar
+}
+
+import java.io {
+    IOException
 }
 import java.lang {
     IllegalStateException
@@ -8,71 +24,17 @@ import java.lang {
 import java.nio.file {
     JPath=Path
 }
-import lovelace.util.jvm {
-    shuffle
-}
-import model.map.fixtures {
-    Ground,
-    TextFixture
-}
-import lovelace.util.common {
-    todo
-}
-import strategicprimer.viewer.drivers.exploration {
-    MissingTableException,
-    ExplorationRunner,
-    loadAllTables
-}
-import model.map.fixtures.terrain {
-    Forest,
-    Hill,
-    Sandbar
-}
-import ceylon.file {
-    parsePath,
-    Directory
-}
-import strategicprimer.viewer.drivers {
-    DriverUsage,
-    ParamCount,
-    SPOptions,
-    createIDFactory,
-    DriverFailedException,
-    ICLIHelper,
-    IDriverUsage,
-    SimpleDriver
-}
 import java.util {
     Random
 }
-import strategicprimer.viewer.xmlio {
-    writeMap
+
+import lovelace.util.common {
+    todo
 }
-import model.map.fixtures.towns {
-    ITownFixture,
-    Village,
-    TownStatus
+import lovelace.util.jvm {
+    shuffle
 }
-import controller.map.misc {
-    IDRegistrar
-}
-import model.map.fixtures.resources {
-    Shrub,
-    FieldStatus,
-    Meadow,
-    Grove
-}
-import ceylon.collection {
-    LinkedList,
-    MutableList,
-    Queue
-}
-import java.io {
-    IOException
-}
-import ceylon.interop.java {
-    CeylonIterable
-}
+
 import model.map {
     River,
     PointFactory,
@@ -88,8 +50,51 @@ import model.map {
     IMapNG,
     Point
 }
-import model.workermgmt {
-    RaceFactory
+import model.map.fixtures {
+    Ground,
+    TextFixture
+}
+import model.map.fixtures.resources {
+    Shrub,
+    FieldStatus,
+    Meadow,
+    Grove
+}
+import model.map.fixtures.terrain {
+    Forest,
+    Hill,
+    Sandbar
+}
+import model.map.fixtures.towns {
+    ITownFixture,
+    Village,
+    TownStatus
+}
+
+import strategicprimer.viewer.drivers {
+    DriverUsage,
+    ParamCount,
+    SPOptions,
+    createIDFactory,
+    DriverFailedException,
+    ICLIHelper,
+    IDriverUsage,
+    SimpleDriver
+}
+import strategicprimer.viewer.drivers.advancement {
+    randomRace
+}
+import strategicprimer.viewer.drivers.exploration {
+    MissingTableException,
+    ExplorationRunner,
+    loadAllTables
+}
+import strategicprimer.viewer.model {
+    IMultiMapModel,
+    IDriverModel
+}
+import strategicprimer.viewer.xmlio {
+    writeMap
 }
 "A class to convert a version-1 map to a version-2 map with greater resolution."
 object oneToTwoConverter satisfies SimpleDriver {
@@ -201,8 +206,9 @@ object oneToTwoConverter satisfies SimpleDriver {
             if (!oldCopy.isLocationEmpty(point)) {
                 Integer idNum = idFactory.createID();
                 if (is IMutableMapNG oldCopy) {
+                    Random rng = Random(idNum);
                     oldCopy.addFixture(point, Village(TownStatus.active, "", idNum,
-                        independent, RaceFactory.getRace(Random(idNum))));
+                        independent, randomRace((bound) => rng.nextInt(bound))));
                 }
                 {TileFixture*} fixtures = {oldCopy.getGround(point),
                     oldCopy.getForest(point), *oldCopy.getOtherFixtures(point)}.coalesced;

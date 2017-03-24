@@ -33,8 +33,9 @@ import model.map.fixtures.towns {
     Village,
     AbstractTown
 }
-import model.workermgmt {
-    RaceFactory
+
+import strategicprimer.viewer.drivers.advancement {
+    randomRace
 }
 
 import util {
@@ -94,11 +95,12 @@ Village readVillage(StartElement element, QName parent, JIterable<XMLEvent> stre
     requireNonEmptyAttribute(element, "name", false, warner);
     spinUntilEnd(element.name, stream);
     Integer idNum = getOrGenerateID(element, warner, idFactory);
+    JRandom rng = JRandom(idNum);
     Village retval = Village(
         TownStatus.parseTownStatus(getAttribute(element, "status")),
         getAttribute(element, "name", ""), idNum,
         getPlayerOrIndependent(element, warner, players),
-        getAttribute(element, "race", RaceFactory.getRace(JRandom(idNum))));
+        getAttribute(element, "race", randomRace((bound) => rng.nextInt(bound))));
     retval.portrait = getAttribute(element, "portrait", "");
     return setImage(retval, element, warner);
 }

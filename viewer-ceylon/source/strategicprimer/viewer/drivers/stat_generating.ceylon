@@ -58,10 +58,10 @@ import model.map.fixtures.mobile.worker {
 import model.map.fixtures.towns {
     Village
 }
-import model.workermgmt {
-    RaceFactory
-}
 
+import strategicprimer.viewer.drivers.advancement {
+    randomRace
+}
 import strategicprimer.viewer.drivers.exploration {
     loadAllTables,
     ExplorationRunner,
@@ -266,7 +266,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
             ICLIHelper cli) {
         Integer count = cli.inputNumber("How many workers to generate? ");
         for (i in 0..count) {
-            String race = RaceFactory.race;
+            String race = randomRace();
             String name = cli.inputString("Worker is a ``race``. Worker name: ");
             Worker worker = Worker(name, race, idf.createID());
             Integer levels = {0, 1, 2}.count((int) => (random() * 20).integer == 0 );
@@ -312,7 +312,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
             } else {
                 name = cli.inputString("Next worker name: ");
             }
-            String race = RaceFactory.race;
+            String race = randomRace();
             cli.println("Worker ``name`` is a ``race``");
             Worker worker = Worker(name, race, idf.createID());
             Integer levels = {0, 1, 2}.count((int) => (random() * 20).integer == 0 );

@@ -132,10 +132,10 @@ import model.map.fixtures.towns {
     Town,
     Fortress
 }
-import model.workermgmt {
-    RaceFactory
-}
 
+import strategicprimer.viewer.drivers.advancement {
+    races
+}
 import strategicprimer.viewer.xmlio {
     testReaderFactory
 }
@@ -434,7 +434,7 @@ String encapsulateTileString(String str) {
 }
 
 {[TownStatus, String]*} villageParameters = { *TownStatus.values() }.product(set {
-    *{*RaceFactory.races}.map(Object.string) });
+    *races });
 
 test
 parameters(`value villageParameters`)

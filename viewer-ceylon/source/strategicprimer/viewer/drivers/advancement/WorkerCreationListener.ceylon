@@ -37,9 +37,6 @@ import model.map.fixtures.mobile {
     IUnit,
     Worker
 }
-import model.workermgmt {
-    RaceFactory
-}
 import lovelace.util.jvm {
     showErrorDialog,
     platform,
@@ -66,7 +63,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
             object frame extends JFrame("Create Worker") {
                 defaultCloseOperation = WindowConstants.disposeOnClose;
                 JTextField name = JTextField();
-                JTextField race = JTextField(RaceFactory.race);
+                JTextField race = JTextField(randomRace());
                 JTextField hpBox = JTextField();
                 JTextField maxHP = JTextField();
                 JTextField strength = JTextField();
