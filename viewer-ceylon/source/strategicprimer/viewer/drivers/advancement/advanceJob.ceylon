@@ -1,0 +1,41 @@
+import ceylon.collection {
+    ArrayList,
+    MutableList
+}
+import strategicprimer.viewer.drivers {
+    ICLIHelper
+}
+import model.map.fixtures.mobile.worker {
+    ISkill,
+    IJob,
+    Skill
+}
+import util {
+    SingletonRandom {
+        singletonRandom=random
+    }
+}
+"Let the user add hours to a Skill or Skills in a Job."
+void advanceJob(IJob job, ICLIHelper cli) {
+    // TODO: switch to named-argument-ish syntax
+    MutableList<ISkill> skills = ArrayList(0, 1.0, { *job });
+    cli.loopOnMutableList<ISkill>(skills, (clh) => clh.chooseFromList(skills,
+        "Skills in Job:", "No existing Skills.", "Skill to advance: ", false),
+        "Select another Skill in this Job? ",
+                (MutableList<ISkill> list, ICLIHelper clh) {
+            String skillName = clh.inputString("Name of new Skill: ");
+            job.addSkill(Skill(skillName, 0, 0));
+            list.clear();
+            for (skill in job) {
+                list.add(skill);
+            }
+            return list.find((item) => skillName == item.name);
+        }, (ISkill skill, clh) {
+            Integer oldLevel = skill.level;
+            skill.addHours(clh.inputNumber("Hours of experience to add: "),
+                singletonRandom.nextInt(100));
+            if (skill.level == oldLevel) {
+                clh.print("Worker(s) gained a level in ``skill.name``");
+            }
+        });
+}

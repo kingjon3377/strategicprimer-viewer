@@ -14,10 +14,7 @@ import ceylon.logging {
     addLogWriter,
     Priority
 }
-import strategicprimer.viewer.model {
-    IMultiMapModel,
-    IDriverModel
-}
+
 import java.awt {
     GraphicsEnvironment,
     GridLayout
@@ -48,8 +45,7 @@ import lovelace.util.jvm {
     BorderedPanel
 }
 
-
-import strategicprimer.viewer.drivers {
+import strategicprimer.viewer.drivers.advancement {
     advancementCLI,
     advancementGUI
 }
@@ -61,6 +57,9 @@ import strategicprimer.viewer.drivers.map_viewer {
     viewerGUI,
     drawHelperComparator
 }
+import strategicprimer.viewer.drivers.mining {
+    miningCLI
+}
 import strategicprimer.viewer.drivers.subset {
     subsetCLI,
     subsetGUI
@@ -69,8 +68,9 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     workerGUI,
     strategyExportCLI
 }
-import strategicprimer.viewer.drivers.mining {
-    miningCLI
+import strategicprimer.viewer.model {
+    IMultiMapModel,
+    IDriverModel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
