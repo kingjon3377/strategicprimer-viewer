@@ -9,7 +9,7 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import util {
+import lovelace.util.jvm {
     ResourceInputStream
 }
 import java.awt.image {
