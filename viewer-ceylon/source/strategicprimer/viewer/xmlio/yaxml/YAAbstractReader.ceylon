@@ -197,7 +197,7 @@ abstract class YAAbstractReader<Element>
     shared static void writeTag(JAppendable ostream, String tag, Integer tabs) {
         indent(ostream, tabs);
         ostream.append("<``simpleQuote(tag)``");
-        if (indent == 0) {
+        if (tabs == 0) {
             ostream.append(" xmlns=\"``ISPReader.namespace``\"");
         }
     }
