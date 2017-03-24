@@ -104,7 +104,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         } else if (is RiverFixture fixture) {
             // We shouldn't get here, since our parser doesn't use them, but I don't want
             // to lose data if I change that and forget to update its callers
-            map.addRivers(point, *fixture);
+            map.addRivers(point, *CeylonIterable(fixture));
         } else {
             map.addFixture(point, fixture);
         }
