@@ -233,7 +233,6 @@ SPFrame explorationFrame(IExplorationModel model,
         object explorationPanel extends BorderedPanel()
                 satisfies SelectionChangeListener&CompletionSource&MovementCostListener {
             Document mpDocument = explorerSelectingPanel.mpDocument;
-            NumberFormat numParser = NumberFormat.integerInstance;
             shared actual void deduct(Integer cost) {
                 String mpText;
                 try {

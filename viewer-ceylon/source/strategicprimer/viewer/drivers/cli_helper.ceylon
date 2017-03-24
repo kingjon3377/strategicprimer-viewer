@@ -152,9 +152,6 @@ shared interface ICLIHelper satisfies Closeable {
  streams."
 todo("Port to ceylon.io or equivalent")
 class CLIHelper satisfies ICLIHelper {
-    // We use NumberFormat rather than ceylon.lang.Integer.parse because
-    // we want to allow the user to use commas.
-    static NumberFormat numParser = NumberFormat.integerInstance;
     BufferedReader istream;
     PrintWriter ostream;
     "The current state of the yes-to-all/no-to-all possibility. Absent if not set,

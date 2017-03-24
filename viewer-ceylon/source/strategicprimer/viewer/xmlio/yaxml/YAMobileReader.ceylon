@@ -80,7 +80,6 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         requireTag(element, parent, *supportedTags);
         MobileFixture twoParam(MobileFixture(String, Integer) constr) =>
             constr(getParameter(element, "kind"), getOrGenerateID(element));
-        String kind() => getParameter(element, "kind");
         MobileFixture retval;
         switch (type = element.name.localPart.lowercased)
         case ("animal") { retval = createAnimal(element); }
