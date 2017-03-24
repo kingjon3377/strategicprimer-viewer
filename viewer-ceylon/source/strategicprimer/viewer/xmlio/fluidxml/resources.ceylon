@@ -38,13 +38,15 @@ import model.map.fixtures.resources {
     Grove,
     Meadow,
     FieldStatus,
-    Mine,
     MineralVein,
     Shrub,
     StoneDeposit,
     StoneKind
 }
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.resources {
+    Mine
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus
 }
 
@@ -178,11 +180,13 @@ Mine readMine(StartElement element, QName parent, JIterable<XMLEvent> stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "mine");
     spinUntilEnd(element.name, stream);
-    return setImage(
-        Mine(
-            getAttrWithDeprecatedForm(element, "kind", "product", warner),
-            TownStatus.parseTownStatus(getAttribute(element, "status")),
-            getOrGenerateID(element, warner, idFactory)), element, warner);
+    if (exists status = TownStatus.parse(getAttribute(element, "status"))) {
+        return setImage(
+            Mine(getAttrWithDeprecatedForm(element, "kind", "product", warner),
+                status, getOrGenerateID(element, warner, idFactory)), element, warner);
+    } else {
+        throw MissingPropertyException(element, "status");
+    }
 }
 
 MineralVein readMineral(StartElement element, QName parent, JIterable<XMLEvent> stream,

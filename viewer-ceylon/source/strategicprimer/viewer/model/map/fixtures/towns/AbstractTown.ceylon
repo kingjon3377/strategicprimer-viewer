@@ -8,9 +8,6 @@ import model.map {
     Player,
     IFixture
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 "An abstract superclass for towns etc."
 shared abstract class AbstractTown(status, size, name, townOwner, dc) satisfies IEvent&HasMutableImage&ITownFixture {
     "The status of the town, fortification, or city"

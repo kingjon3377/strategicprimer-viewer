@@ -4,9 +4,6 @@ import model.map {
     HasMutableOwner,
     HasPortrait
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 "An interface for towns and similar fixtures."
 shared interface ITownFixture satisfies TileFixture&HasName&HasMutableOwner&HasPortrait {
     "The status of the town."

@@ -57,7 +57,9 @@ import model.map.fixtures.resources {
     CacheFixture,
     Meadow,
     StoneDeposit,
-    Grove,
+    Grove
+}
+import strategicprimer.viewer.model.map.fixtures.resources {
     Mine
 }
 import model.map.fixtures.terrain {

@@ -1,9 +1,6 @@
 import model.map {
     Player
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 "An abandoned, ruined, or burned-out city."
 shared class City("The status of the city" TownStatus townStatus,
         "The size of the city" TownSize townSize,

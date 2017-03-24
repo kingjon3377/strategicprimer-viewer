@@ -33,9 +33,6 @@ import model.map.fixtures {
 import model.map.fixtures.mobile {
     IUnit
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 "A fortress on the map. A player can only have one fortress per tile, but multiple players
   may have fortresses on the same tile."
 todo("Enforce that only-one-per-player-per-tile restriction",

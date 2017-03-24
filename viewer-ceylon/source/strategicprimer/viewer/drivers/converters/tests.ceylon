@@ -113,21 +113,21 @@ import model.map.fixtures.resources {
     CacheFixture,
     Meadow,
     StoneDeposit,
-    Grove,
+    Grove
+}
+import strategicprimer.viewer.model.map.fixtures.resources {
     Mine
 }
 import model.map.fixtures.terrain {
     Forest,
     Hill
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 
 import strategicprimer.viewer.drivers {
     ConstructorWrapper
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
+    TownStatus,
     TownSize,
     Village,
     City,

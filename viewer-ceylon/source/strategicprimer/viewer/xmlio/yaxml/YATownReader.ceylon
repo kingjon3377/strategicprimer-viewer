@@ -34,14 +34,11 @@ import model.map {
     IPlayerCollection,
     Player
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
-
 import strategicprimer.viewer.drivers.advancement {
     randomRace
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
+    TownStatus,
     TownSize,
     ITownFixture,
     Fortress,
@@ -78,23 +75,29 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         spinUntilEnd(element.name, stream);
         Integer idNum = getOrGenerateID(element);
         JRandom rng = JRandom(idNum);
-        Village retval = Village(
-            TownStatus.parseTownStatus(getParameter(element, "status")),
-            getParameter(element, "name", ""), idNum, getOwnerOrIndependent(element),
-            getParameter(element, "race", randomRace((bound) => rng.nextInt(bound))));
-        retval.setImage(getParameter(element, "image", ""));
-        retval.portrait = getParameter(element, "portrait", "");
-        return retval;
+        if (exists status = TownStatus.parse(getParameter(element, "status"))) {
+            Village retval = Village(status, getParameter(element, "name", ""), idNum,
+                getOwnerOrIndependent(element), getParameter(element, "race",
+                    randomRace((bound) => rng.nextInt(bound))));
+            retval.setImage(getParameter(element, "image", ""));
+            retval.portrait =getParameter(element, "portrait", "");
+            return retval;
+        } else {
+            throw MissingPropertyException(element, "status");
+        }
     }
     ITownFixture parseTown(StartElement element, JIterable<XMLEvent> stream) {
         requireNonEmptyParameter(element, "name", false);
         String name = getParameter(element, "name", "");
-        TownStatus status = TownStatus.parseTownStatus(getParameter(element, "status"));
+        TownStatus? status = TownStatus.parse(getParameter(element, "status"));
         TownSize? size = TownSize.parse(getParameter(element, "size"));
         if (!size exists) {
             throw MissingPropertyException(element, "size");
         }
-        assert (exists size);
+        if (!status exists) {
+            throw MissingPropertyException(element, "status");
+        }
+        assert (exists size, exists status);
         Integer dc = getIntegerParameter(element, "dc");
         Integer id = getOrGenerateID(element);
         Player owner = getOwnerOrIndependent(element);

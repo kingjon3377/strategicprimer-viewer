@@ -22,11 +22,9 @@ import model.map {
     IMapNG,
     Point
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 
 import strategicprimer.viewer.model.map.fixtures.towns {
+    TownStatus,
     ITownFixture,
     Fortress,
     Village,

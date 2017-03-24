@@ -5,9 +5,6 @@ import lovelace.util.common {
 import model.map {
     Player
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 "An abandoned, ruined, or burned-out fortification."
 todo("FIXME: We want this to share a tag, and model code, with Fortress. Maybe an active
       Fortification is a Fortress, and a non-active Fortress is a Fortification?")

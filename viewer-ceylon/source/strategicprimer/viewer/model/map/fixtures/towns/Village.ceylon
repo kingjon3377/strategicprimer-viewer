@@ -12,9 +12,6 @@ import model.map {
     Player,
     IFixture
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 "A village in the map."
 shared class Village(status, name, id, tempOwner, race)
         satisfies ITownFixture&HasMutableImage&SubsettableFixture {

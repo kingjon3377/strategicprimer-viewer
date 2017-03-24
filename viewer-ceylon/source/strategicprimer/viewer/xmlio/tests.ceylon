@@ -112,10 +112,12 @@ import model.map.fixtures.resources {
     Grove,
     FieldStatus,
     Meadow,
-    Mine,
     Shrub,
     CacheFixture,
     MineralVein
+}
+import strategicprimer.viewer.model.map.fixtures.resources {
+    Mine
 }
 import model.map.fixtures.terrain {
     Forest,
@@ -123,14 +125,12 @@ import model.map.fixtures.terrain {
     Oasis,
     Sandbar
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 
 import strategicprimer.viewer.drivers.advancement {
     races
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
+    TownStatus,
     TownSize,
     Village,
     Town,
@@ -435,8 +435,8 @@ String encapsulateTileString(String str) {
             <tile row=\"1\" column=\"1\" kind=\"plains\">``str``</tile></map>";
 }
 
-{[TownStatus, String]*} villageParameters = { *TownStatus.values() }.product(set {
-    *races });
+// TODO: use Iterable.distinct instead of set().
+{[TownStatus, String]*} villageParameters = `TownStatus`.caseValues.product(set {*races});
 
 test
 parameters(`value villageParameters`)
@@ -463,8 +463,8 @@ void testVillageSerialization(TownStatus status, String race) {
     assertPortraitSerialization("Village portrait property is preserved", thirdVillage);
 }
 
-{[TownSize, TownStatus]*} townParameters = `TownSize`.caseValues.product(
-    {*TownStatus.values() });
+{[TownSize, TownStatus]*} townParameters =
+        `TownSize`.caseValues.product(`TownStatus`.caseValues);
 
 test
 parameters(`value townParameters`)
@@ -977,9 +977,10 @@ test
 void testMineSerialization() {
     variable Integer i = 0;
     variable String[] names = ["one", "two", "three", "four"];
-    for (status in TownStatus.values()) {
+    for (status in `TownStatus`.caseValues) {
+        assert (exists name = names.first);
         assertSerialization("Test of [[Mine]] serialization",
-            Mine(names.first, status, i++));
+            Mine(name, status, i++));
         names = names.rest;
     }
     Mine mine = Mine("four", TownStatus.ruined, 4);

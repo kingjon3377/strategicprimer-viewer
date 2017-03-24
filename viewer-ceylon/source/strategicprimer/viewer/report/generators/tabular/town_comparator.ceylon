@@ -18,11 +18,9 @@ import model.map {
     PlayerImpl,
     Player
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 
 import strategicprimer.viewer.model.map.fixtures.towns {
+    TownStatus,
     TownSize,
     ITownFixture,
     Fortress,
@@ -128,7 +126,7 @@ void testComparison() {
     MutableList<ITownFixture> input = ArrayList<ITownFixture>();
     variable Integer id = 0;
     Player owner = PlayerImpl(1, "player");
-    for (status in TownStatus.values()) {
+    for (status in `TownStatus`.caseValues) {
         for (size in `TownSize`.caseValues) {
             input.add(Town(status, size, -1, "inputTown", id++, owner));
             input.add(City(status, size, -1, "inputCity", id++, owner));

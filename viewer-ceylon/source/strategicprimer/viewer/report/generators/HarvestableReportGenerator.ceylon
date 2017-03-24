@@ -26,9 +26,11 @@ import model.map.fixtures.resources {
     Shrub,
     StoneDeposit,
     HarvestableFixture,
-    Mine,
     Grove,
     MineralVein
+}
+import strategicprimer.viewer.model.map.fixtures.resources {
+    Mine
 }
 
 import strategicprimer.viewer.report.nodes {
@@ -102,7 +104,7 @@ shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IF
             HeadedMap<Mine, Point>&MutableMap<Mine, Point> mines =
                     HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
                         comparing(byIncreasing(Mine.kind),
-                            byIncreasing((Mine mine) => mine.status.ordinal()),
+                            byIncreasing((Mine mine) => mine.status.ordinal),
                             byIncreasing(Mine.id)));
             HeadedMap<Meadow, Point>&MutableMap<Meadow, Point> meadows =
                     HeadedMapImpl<Meadow, Point>(

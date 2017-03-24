@@ -31,13 +31,15 @@ import model.map.fixtures.resources {
     FieldStatus,
     Grove,
     CacheFixture,
-    Mine,
     MineralVein,
     Shrub,
     StoneDeposit,
     StoneKind
 }
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.resources {
+    Mine
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus
 }
 
@@ -98,8 +100,12 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         case ("grove") { retval = createGrove(element, false, idNum); }
         case ("meadow") { retval = createMeadow(element, false, idNum); }
         case ("mine") {
-            retval = Mine(getParamWithDeprecatedForm(element, "kind", "product"),
-                TownStatus.parseTownStatus(getParameter(element, "status")), idNum);
+            if (exists status = TownStatus.parse(getParameter(element, "status"))) {
+                retval = Mine(getParamWithDeprecatedForm(element, "kind", "product"),
+                    status, idNum);
+            } else {
+                throw MissingPropertyException(element, "status");
+            }
         }
         case ("mineral") {
             value exposed = Boolean.parse(getParameter(element, "exposed"));

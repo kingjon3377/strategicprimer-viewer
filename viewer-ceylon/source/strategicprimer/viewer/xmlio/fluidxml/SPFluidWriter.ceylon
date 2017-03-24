@@ -80,10 +80,12 @@ import model.map.fixtures.resources {
     CacheFixture,
     Meadow,
     Grove,
-    Mine,
     MineralVein,
     Shrub,
     StoneDeposit
+}
+import strategicprimer.viewer.model.map.fixtures.resources {
+    Mine
 }
 import model.map.fixtures.terrain {
     Forest,

@@ -61,9 +61,6 @@ import model.map.fixtures.terrain {
     Hill,
     Sandbar
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 
 import strategicprimer.viewer.drivers {
     DriverUsage,
@@ -90,7 +87,8 @@ import strategicprimer.viewer.model {
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     ITownFixture,
-    Village
+    Village,
+    TownStatus
 }
 import strategicprimer.viewer.xmlio {
     writeMap

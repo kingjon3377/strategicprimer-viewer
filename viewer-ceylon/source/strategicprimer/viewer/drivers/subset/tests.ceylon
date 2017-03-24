@@ -41,13 +41,11 @@ import model.map.fixtures.resources {
 import model.map.fixtures.terrain {
     Forest
 }
-import model.map.fixtures.towns {
-    TownStatus
-}
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownSize,
     Fortress,
     AbstractTown,
+    TownStatus,
     Fortification
 }
 import util {
