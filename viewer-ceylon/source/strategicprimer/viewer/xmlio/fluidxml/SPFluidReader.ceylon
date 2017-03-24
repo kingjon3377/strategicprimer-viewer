@@ -18,7 +18,9 @@ import controller.map.iointerfaces {
     ISPReader
 }
 import controller.map.misc {
-    IDRegistrar,
+    IDRegistrar
+}
+import strategicprimer.viewer.model {
     IDFactory
 }
 
@@ -98,13 +100,14 @@ import model.map.fixtures.towns {
     TownSize
 }
 
-import util {
-    Warning,
-    IteratorWrapper
-}
 import strategicprimer.viewer.xmlio {
     IncludingIterator,
     TypesafeXMLEventReader
+}
+
+import util {
+    Warning,
+    IteratorWrapper
 }
 "The main reader-from-XML class in the 'fluid XML' implementation."
 shared class SPFluidReader() satisfies IMapReader&ISPReader {

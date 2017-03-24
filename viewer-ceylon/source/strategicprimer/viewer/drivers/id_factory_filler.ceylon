@@ -1,10 +1,15 @@
+import ceylon.interop.java {
+    CeylonIterable
+}
+
 import controller.map.misc {
-    IDRegistrar,
-    IDFactory
+    IDRegistrar
 }
-import strategicprimer.viewer.model {
-    IMultiMapModel
+
+import java.lang {
+    JIterable=Iterable
 }
+
 import model.map {
     IFixture,
     IMapNG,
@@ -16,11 +21,10 @@ import model.map.fixtures {
 import model.map.fixtures.terrain {
     Forest
 }
-import java.lang {
-    JIterable=Iterable
-}
-import ceylon.interop.java {
-    CeylonIterable
+
+import strategicprimer.viewer.model {
+    IMultiMapModel,
+    IDFactory
 }
 "Fill a new ID factory from the given map."
 shared IDRegistrar createIDFactory(IMapNG|IMultiMapModel|{IFixture*} arg) {

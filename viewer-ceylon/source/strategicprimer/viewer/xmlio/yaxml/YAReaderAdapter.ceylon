@@ -2,7 +2,6 @@ import ceylon.interop.java {
     CeylonIterable
 }
 import ceylon.language.meta {
-    type,
     classDeclaration
 }
 import ceylon.logging {
@@ -15,8 +14,7 @@ import controller.map.formatexceptions {
     UnwantedChildException
 }
 import controller.map.misc {
-    IDRegistrar,
-    IDFactory
+    IDRegistrar
 }
 
 import java.io {
@@ -59,6 +57,9 @@ import model.map.fixtures.mobile.worker {
 
 import util {
     Warning
+}
+import strategicprimer.viewer.model {
+    IDFactory
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

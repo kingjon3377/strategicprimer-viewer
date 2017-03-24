@@ -25,7 +25,9 @@ import controller.map.iointerfaces {
     SPWriter
 }
 import controller.map.misc {
-    IDRegistrar,
+    IDRegistrar
+}
+import strategicprimer.viewer.model {
     IDFactory
 }
 

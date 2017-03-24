@@ -12,13 +12,12 @@ import controller.map.iointerfaces {
     ISPReader
 }
 import controller.map.misc {
-    IDRegistrar,
+    IDRegistrar
+}
+import strategicprimer.viewer.model {
     IDFactory
 }
-import strategicprimer.viewer.xmlio {
-    IncludingIterator,
-    TypesafeXMLEventReader
-}
+
 import java.io {
     JReader=Reader,
     IOException
@@ -31,6 +30,9 @@ import java.lang {
 import java.nio.file {
     JPath=Path,
     JFiles=Files
+}
+import java.util {
+    JIterator=Iterator
 }
 
 import javax.xml.namespace {
@@ -48,12 +50,14 @@ import model.map {
     IMutableMapNG
 }
 
+import strategicprimer.viewer.xmlio {
+    IncludingIterator,
+    TypesafeXMLEventReader
+}
+
 import util {
     Warning,
     IteratorWrapper
-}
-import java.util {
-    JIterator=Iterator
 }
 "Sixth-generation SP XML reader."
 shared object yaXMLReader satisfies IMapReader&ISPReader {
