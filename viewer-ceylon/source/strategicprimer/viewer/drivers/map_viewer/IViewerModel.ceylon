@@ -3,8 +3,7 @@ import lovelace.util.common {
 }
 
 import model.listeners {
-    SelectionChangeSource,
-    GraphicalParamsSource
+    SelectionChangeSource
 }
 import model.map {
     Point

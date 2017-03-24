@@ -17,7 +17,6 @@ import lovelace.util.jvm {
 }
 import model.listeners {
     MapChangeListener,
-    GraphicalParamsListener,
     SelectionChangeListener
 }
 import javax.swing {

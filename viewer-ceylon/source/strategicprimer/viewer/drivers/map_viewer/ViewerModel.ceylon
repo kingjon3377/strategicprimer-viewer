@@ -15,7 +15,6 @@ import lovelace.util.common {
 }
 
 import model.listeners {
-    GraphicalParamsListener,
     SelectionChangeSupport,
     SelectionChangeListener
 }

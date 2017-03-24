@@ -41,7 +41,6 @@ import java.awt.event {
 import model.listeners {
     VersionChangeListener,
     MapChangeListener,
-    GraphicalParamsListener,
     SelectionChangeListener
 }
 import lovelace.util.jvm {

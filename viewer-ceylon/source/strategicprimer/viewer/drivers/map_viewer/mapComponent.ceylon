@@ -31,7 +31,6 @@ import lovelace.util.common {
 
 import model.listeners {
     MapChangeListener,
-    GraphicalParamsListener,
     SelectionChangeListener,
     SelectionChangeSource
 }
