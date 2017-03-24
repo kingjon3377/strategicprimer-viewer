@@ -25,9 +25,9 @@ shared class TownTabularReportGenerator(Player player, Point hq)
                     compareTownKind),
                 comparingOn(([Point, AbstractTown] pair) => pair.first,
                     ceylonComparator(DistanceComparator(hq))),
-                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.size(),
+                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.size,
                     compareTownSize),
-                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.status(),
+                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.status,
                     compareTownStatus),
                 comparingOn(([Point, AbstractTown] pair) => pair.rest.first.name,
                     increasing<String>));
@@ -39,8 +39,8 @@ shared class TownTabularReportGenerator(Player player, Point hq)
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             AbstractTown item, Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
-            ownerString(player, item.owner), item.kind(), item.size().string,
-            item.status().string, item.name);
+            ownerString(player, item.owner), item.kind, item.size.string,
+            item.status.string, item.name);
         return true;
     }
     "Compare two location-town pairs."

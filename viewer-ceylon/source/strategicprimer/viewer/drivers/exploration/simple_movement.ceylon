@@ -37,7 +37,7 @@ import model.map.fixtures.terrain {
     Forest,
     Hill
 }
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.towns {
     ITownFixture
 }
 "Whether land movement is possible on the given terrain."

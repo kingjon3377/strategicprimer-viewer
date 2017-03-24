@@ -62,7 +62,6 @@ import model.map.fixtures.terrain {
     Sandbar
 }
 import model.map.fixtures.towns {
-    ITownFixture,
     TownStatus
 }
 
@@ -90,6 +89,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
+    ITownFixture,
     Village
 }
 import strategicprimer.viewer.xmlio {

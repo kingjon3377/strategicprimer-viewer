@@ -23,11 +23,11 @@ import model.map {
     Point
 }
 import model.map.fixtures.towns {
-    ITownFixture,
     TownStatus
 }
 
 import strategicprimer.viewer.model.map.fixtures.towns {
+    ITownFixture,
     Fortress,
     Village,
     AbstractTown
@@ -80,12 +80,10 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 fixtures.remove(item.id);
                 ostream("At ``loc``: ``item.name``, ");
                 if (item.owner.independent) {
-                    ostream("an independent ``item.size()`` ``item.status()`` ``item
-                        .kind()``");
+                    ostream("an independent ``item.size`` ``item.status`` ``item.kind``");
                 } else {
-                    ostream("a ``item.size()`` ``item
-                        .status()`` allied with ``playerNameOrYou(
-                        item.owner)``");
+                    ostream("a ``item.size`` ``item.status`` allied with ``
+                        playerNameOrYou(item.owner)``");
                 }
                 ostream(" ``distCalculator.distanceString(loc)``");
             } else {
@@ -141,15 +139,13 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             } else if (is AbstractTown item) {
                 fixtures.remove(item.id);
                 if (item.owner.independent) {
-                    return SimpleReportNode("At ``loc``: ``item.name``, an independent ``item.size()`` ``item
-                        .status()`` ``item.kind()`` ``distCalculator
-                        .distanceString(loc)``",
-                        loc);
+                    return SimpleReportNode("At ``loc``: ``item.name``, an independent ``item.size`` ``item
+                        .status`` ``item.kind`` ``distCalculator
+                        .distanceString(loc)``", loc);
                 } else {
-                    return SimpleReportNode("At ``loc``: ``item.name``, a ``item.size()`` ``item
-                        .status()`` ``item.kind()`` allied with ``playerNameOrYou(
-                        item.owner)`` ``distCalculator.distanceString(loc)``",
-                        loc);
+                    return SimpleReportNode("At ``loc``: ``item.name``, a ``item.size`` ``item
+                        .status`` ``item.kind`` allied with ``playerNameOrYou(item.owner)
+                        `` ``distCalculator.distanceString(loc)``", loc);
                 }
             } else {
                 throw IllegalStateException("Unhandled ITownFixture subclass");

@@ -7,7 +7,7 @@ import model.map {
     TileType,
     HasOwner
 }
-import model.map.fixtures.towns {
+import strategicprimer.viewer.model.map.fixtures.towns {
     ITownFixture
 }
 import ceylon.collection {

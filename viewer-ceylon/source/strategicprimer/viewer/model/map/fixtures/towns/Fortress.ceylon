@@ -35,14 +35,13 @@ import model.map.fixtures.mobile {
 }
 import model.map.fixtures.towns {
     TownSize,
-    ITownFixture,
     TownStatus
 }
 "A fortress on the map. A player can only have one fortress per tile, but multiple players
   may have fortresses on the same tile."
 todo("Enforce that only-one-per-player-per-tile restriction",
     "FIXME: We need something about buildings yet")
-shared class Fortress(fortOwner, fortName, id, fortSize = TownSize.small)
+shared class Fortress(fortOwner, fortName, id, size = TownSize.small)
         satisfies HasMutableImage&ITownFixture&HasMutableName&
             FixtureIterable<FortressMember>&SubsettableFixture {
     "The player who owns the fortress."
@@ -52,7 +51,7 @@ shared class Fortress(fortOwner, fortName, id, fortSize = TownSize.small)
     "The ID number."
     shared actual Integer id;
     "The size of the fortress."
-    TownSize fortSize;
+    shared actual TownSize size;
     "The name of the fortress."
     shared actual String name => fortName;
     "Set the name of the fortress."
@@ -80,9 +79,9 @@ shared class Fortress(fortOwner, fortName, id, fortSize = TownSize.small)
     shared actual Fortress copy(Boolean zero) {
         Fortress retval;
         if (zero) {
-            retval = Fortress(fortOwner, "unknown", id, fortSize);
+            retval = Fortress(fortOwner, "unknown", id, size);
         } else {
-            retval = Fortress(fortOwner, fortName, id, fortSize);
+            retval = Fortress(fortOwner, fortName, id, size);
             for (member in members) {
                 retval.addMember(member.copy(false));
             }
@@ -183,9 +182,7 @@ shared class Fortress(fortOwner, fortName, id, fortSize = TownSize.small)
     todo("Add support for having a different status? (but leave 'active' the default) Or
           maybe a non-'active' fortress is a Fortification, and an active fortification is
           a Fortress.")
-    shared actual TownStatus status() => TownStatus.active;
-    "The size of the fortress."
-    shared actual TownSize size() => fortSize;
+    shared actual TownStatus status = TownStatus.active;
     shared actual String plural() => "Fortresses";
     shared actual String shortDesc() {
         if (owner.current) {
@@ -196,7 +193,7 @@ shared class Fortress(fortOwner, fortName, id, fortSize = TownSize.small)
             return "a fortress, ``name``, owned by ``owner.name``";
         }
     }
-    shared actual String kind() => "fortress";
+    shared actual String kind => "fortress";
     "The required Perception check for an explorer to find the fortress."
     todo("Should depend on size")
     shared actual Integer dc => min { *members.narrow<TileFixture>().map(TileFixture.dc) }

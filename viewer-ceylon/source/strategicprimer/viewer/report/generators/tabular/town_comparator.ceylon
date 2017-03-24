@@ -19,12 +19,12 @@ import model.map {
     Player
 }
 import model.map.fixtures.towns {
-    ITownFixture,
     TownStatus,
     TownSize
 }
 
 import strategicprimer.viewer.model.map.fixtures.towns {
+    ITownFixture,
     Fortress,
     Village,
     City,
@@ -115,9 +115,9 @@ Comparison compareTownKind(ITownFixture one, ITownFixture two) {
 "A total ordering for towns."
 Comparison compareTowns(ITownFixture one, ITownFixture two) {
     return comparing(comparingOn<ITownFixture, TownStatus>(
-                (fix) => fix.status(), compareTownStatus),
+                (fix) => fix.status, compareTownStatus),
         comparingOn<ITownFixture, TownSize>(
-                    (fix) => fix.size(), compareTownSize), compareTownKind,
+                    (fix) => fix.size, compareTownSize), compareTownKind,
         byIncreasing(ITownFixture.name))(one, two);
 }
 

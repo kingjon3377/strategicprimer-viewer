@@ -14,10 +14,10 @@ shared class Town("The status of the town" TownStatus townStatus,
         "The owner of the town" Player player)
         extends AbstractTown(townStatus, townSize, townName, player, discoverDC) {
     shared actual String plural() => "Towns";
-    shared actual String kind() => "town";
+    shared actual String kind => "town";
     shared actual String defaultImage = "town.png";
     shared actual Town copy(Boolean zero) {
-        Town retval = Town(super.status(), super.size(), (zero) then 0 else discoverDC, townName, id,
+        Town retval = Town(super.status, super.size, (zero) then 0 else discoverDC, townName, id,
             player);
         retval.setImage(image);
         return retval;

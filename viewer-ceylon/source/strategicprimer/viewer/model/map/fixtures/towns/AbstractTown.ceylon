@@ -1,3 +1,7 @@
+import lovelace.util.common {
+    todo
+}
+
 import model.map {
     IEvent,
     HasMutableImage,
@@ -5,17 +9,17 @@ import model.map {
     IFixture
 }
 import model.map.fixtures.towns {
-    ITownFixture,
     TownStatus,
     TownSize
 }
 "An abstract superclass for towns etc."
-shared abstract class AbstractTown(townStatus, townSize, name, townOwner, dc) satisfies IEvent&HasMutableImage&ITownFixture {
+shared abstract class AbstractTown(status, size, name, townOwner, dc) satisfies IEvent&HasMutableImage&ITownFixture {
     "The status of the town, fortification, or city"
-    TownStatus townStatus;
+    shared actual TownStatus status;
     "The size of the town, fortification, or city"
-    TownSize townSize;
+    shared actual TownSize size;
     "The name of the town, fortification, or city"
+    todo("Should this really be variable?")
     shared actual variable String name;
     "The player that owns the town, fortification, or city"
     variable Player townOwner;
@@ -27,18 +31,16 @@ shared abstract class AbstractTown(townStatus, townSize, name, townOwner, dc) sa
     shared actual void setImage(String image) => imageFilename = image;
     "The filename of an image to use as a portrait."
     shared actual variable String portrait = "";
-    shared actual TownStatus status() => townStatus;
-    shared actual TownSize size() => townSize;
     shared actual Player owner => townOwner;
     shared actual void setOwner(Player owner) => townOwner = owner;
     "Exploration-result text for the town."
-    shared actual String text => "There is a ``(townSize == TownSize.medium)
-            then "medium-size" else townSize.string`` ``(townStatus == TownStatus.burned)
-            then "burned-out" else townStatus.string`` ``kind()````name.empty then "" else
+    shared actual String text => "There is a ``(size == TownSize.medium) then
+            "medium-size" else size.string`` ``(status == TownStatus.burned) then
+            "burned-out" else status.string`` ``kind````name.empty then "" else
             ", ``name``,"`` here.";
     "A helper method for equals() that checks everything except the type of the object."
-    shared Boolean equalsContents(AbstractTown fixture) => fixture.size() == size() &&
-            fixture.name == name && fixture.status() == status() &&
+    shared Boolean equalsContents(AbstractTown fixture) => fixture.size == size &&
+            fixture.name == name && fixture.status == status &&
             fixture.owner == owner;
     shared actual default Boolean equals(Object obj) {
         if (is AbstractTown obj) {
@@ -57,23 +59,23 @@ shared abstract class AbstractTown(townStatus, townSize, name, townOwner, dc) sa
     shared actual Integer hash => id;
     shared actual String string {
         if (owner.independent) {
-            return "An independent ``townSize`` ``townStatus`` ``kind()`` of DC ``dc`` ``
+            return "An independent ``size`` ``status`` ``kind`` of DC ``dc`` ``
                 (name.empty) then "with no name" else "named ``name``"``";
         } else {
-            return "A ``townSize`` ``townStatus`` ``kind()`` of DC ``dc`` ``(name.empty)
-                then "with no name" else "named ``name``"``, owned by ``(owner.current)
-                then "you" else owner.name``";
+            return "A ``size`` ``status`` ``kind`` of DC ``dc`` ``(name.empty) then
+                "with no name" else "named ``name``"``, owned by ``(owner.current) then
+                "you" else owner.name``";
         }
     }
     shared actual formal String defaultImage;
     shared actual String shortDesc() {
         if (owner.independent) {
-            return "An independent ``townSize`` ``townStatus`` ``kind()`` ``(name.empty)
-                then "with no name" else "named ``name``"``";
+            return "An independent ``size`` ``status`` ``kind`` ``(name.empty) then
+                "with no name" else "named ``name``"``";
         } else {
-            return "A ``townSize`` ``townStatus`` ``kind()`` ``(name.empty) then
-                "with no name" else "named ``name``"``, owned by ``(owner.current) then
-                "you" else owner.name``";
+            return "A ``size`` ``status`` ``kind`` ``(name.empty) then "with no name" else
+                "named ``name``"``, owned by ``(owner.current) then "you" else
+                owner.name``";
         }
     }
 }

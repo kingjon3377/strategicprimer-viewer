@@ -13,17 +13,14 @@ import model.map {
     IFixture
 }
 import model.map.fixtures.towns {
-    ITownFixture,
     TownStatus,
     TownSize
 }
 "A village in the map."
-shared class Village(villageStatus, name, id, tempOwner, race)
+shared class Village(status, name, id, tempOwner, race)
         satisfies ITownFixture&HasMutableImage&SubsettableFixture {
     "The status of the village."
-    TownStatus villageStatus;
-    "The status of the village."
-    shared actual TownStatus status() => villageStatus;
+    shared actual TownStatus status;
     "The name of the village."
     shared actual String name;
     "The ID number."
@@ -46,7 +43,7 @@ shared class Village(villageStatus, name, id, tempOwner, race)
         if (owner.independent) {
             builder.append("Independent ");
         }
-        builder.append("``status().string`` village");
+        builder.append("``status.string`` village");
         if (!name.empty) {
             builder.append(" named ``name``");
         }
@@ -81,7 +78,7 @@ shared class Village(villageStatus, name, id, tempOwner, race)
         }
     }
     "All villages are small."
-    shared actual TownSize size() => TownSize.small;
+    shared actual TownSize size => TownSize.small;
     shared actual String plural() => "Villages";
     """A village is a "subset" of another if they are identical, or if the only difference
         is that the "subset" is independent and the "superset" owes allegiance to some
@@ -90,7 +87,7 @@ shared class Village(villageStatus, name, id, tempOwner, race)
         if (is Village obj) {
             if (id != obj.id) {
                 ostream.format("%s\tIds differ%n", context);
-            } else if (villageStatus != obj.villageStatus) {
+            } else if (status != obj.status) {
                 ostream.format("%s In village (ID #``id``):\tVillage status differs%n",
                     context);
             } else if (name != obj.name) {
@@ -111,13 +108,13 @@ shared class Village(villageStatus, name, id, tempOwner, race)
             return false;
         }
     }
-    shared actual String kind() => "village";
+    shared actual String kind => "village";
     "The required Perception check to find the village."
     shared actual Integer dc => (TownStatus.active == status) then 15 else 30;
     "Clone the object."
     todo("Omit portrait if `zero`?")
     shared actual Village copy(Boolean zero) {
-        Village retval = Village(status(), name, id, owner, race);
+        Village retval = Village(status, name, id, owner, race);
         retval.setImage(image);
         retval.portrait = portrait;
         return retval;

@@ -35,7 +35,6 @@ import model.map {
     Player
 }
 import model.map.fixtures.towns {
-    ITownFixture,
     TownStatus,
     TownSize
 }
@@ -44,6 +43,7 @@ import strategicprimer.viewer.drivers.advancement {
     randomRace
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
+    ITownFixture,
     Fortress,
     Village,
     AbstractTown,
@@ -133,9 +133,9 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         return retval;
     }
     void writeAbstractTown(JAppendable ostream, AbstractTown obj, Integer tabs) {
-        writeTag(ostream, obj.kind(), tabs);
-        writeProperty(ostream, "status", obj.status().string);
-        writeProperty(ostream, "size", obj.size().string);
+        writeTag(ostream, obj.kind, tabs);
+        writeProperty(ostream, "status", obj.status.string);
+        writeProperty(ostream, "size", obj.size.string);
         writeProperty(ostream, "dc", obj.dc);
         writeNonemptyProperty(ostream, "name", obj.name);
         writeProperty(ostream, "id", obj.id);
@@ -161,7 +161,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             writeAbstractTown(ostream, obj, tabs);
         } else if (is Village obj) {
             writeTag(ostream, "village", tabs);
-            writeProperty(ostream, "status", obj.status().string);
+            writeProperty(ostream, "status", obj.status.string);
             writeNonemptyProperty(ostream, "name", obj.name);
             writeProperty(ostream, "id", obj.id);
             writeProperty(ostream, "owner", obj.owner.playerId);
@@ -173,8 +173,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             writeTag(ostream, "fortress", tabs);
             writeProperty(ostream, "owner", obj.owner.playerId);
             writeNonemptyProperty(ostream, "name", obj.name);
-            if (TownSize.small != obj.size()) {
-                writeProperty(ostream, "size", obj.size().string);
+            if (TownSize.small != obj.size) {
+                writeProperty(ostream, "size", obj.size.string);
             }
             writeProperty(ostream, "id", obj.id);
             writeImageXML(ostream, obj);
