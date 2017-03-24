@@ -41,10 +41,12 @@ import model.map.fixtures.mobile {
     Unit,
     ProxyUnit
 }
-import model.map.fixtures.terrain {
+import strategicprimer.viewer.model.map.fixtures.terrain {
     Oasis,
-    Forest,
     Hill
+}
+import model.map.fixtures.terrain {
+    Forest
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownSize,

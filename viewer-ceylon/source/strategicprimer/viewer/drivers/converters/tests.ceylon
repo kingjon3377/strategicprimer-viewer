@@ -113,7 +113,9 @@ import model.map.fixtures.resources {
     Grove
 }
 import model.map.fixtures.terrain {
-    Forest,
+    Forest
+}
+import strategicprimer.viewer.model.map.fixtures.terrain {
     Hill
 }
 

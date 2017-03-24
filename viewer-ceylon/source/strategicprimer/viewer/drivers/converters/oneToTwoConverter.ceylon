@@ -57,9 +57,11 @@ import model.map.fixtures.resources {
     Grove
 }
 import model.map.fixtures.terrain {
-    Forest,
-    Hill,
-    Sandbar
+    Forest
+}
+import strategicprimer.viewer.model.map.fixtures.terrain {
+    Sandbar,
+    Hill
 }
 
 import strategicprimer.viewer.drivers {
