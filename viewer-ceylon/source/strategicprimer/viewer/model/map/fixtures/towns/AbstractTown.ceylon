@@ -9,8 +9,7 @@ import model.map {
     IFixture
 }
 import model.map.fixtures.towns {
-    TownStatus,
-    TownSize
+    TownStatus
 }
 "An abstract superclass for towns etc."
 shared abstract class AbstractTown(status, size, name, townOwner, dc) satisfies IEvent&HasMutableImage&ITownFixture {

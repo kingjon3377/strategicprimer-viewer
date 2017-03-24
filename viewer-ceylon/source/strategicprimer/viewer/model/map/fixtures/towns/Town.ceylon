@@ -2,7 +2,6 @@ import model.map {
     Player
 }
 import model.map.fixtures.towns {
-    TownSize,
     TownStatus
 }
 "An abandoned, ruined, or burned-out town."

@@ -6,8 +6,7 @@ import model.map {
     Player
 }
 import model.map.fixtures.towns {
-    TownStatus,
-    TownSize
+    TownStatus
 }
 "An abandoned, ruined, or burned-out fortification."
 todo("FIXME: We want this to share a tag, and model code, with Fortress. Maybe an active

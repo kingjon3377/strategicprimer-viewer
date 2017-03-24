@@ -94,9 +94,7 @@ import model.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
-    Fortress
-}
-import model.map.fixtures.towns {
+    Fortress,
     TownSize
 }
 
@@ -374,11 +372,15 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "fortress");
         requireNonEmptyAttribute(element, "owner", false, warner);
         requireNonEmptyAttribute(element, "name", false, warner);
-        Fortress retval = Fortress(
-            getPlayerOrIndependent(element, warner, players),
-            getAttribute(element, "name", ""),
-            getOrGenerateID(element, warner, idFactory),
-            TownSize.parseTownSize(getAttribute(element, "size", "small")));
+        Fortress retval;
+        if (exists size = TownSize.parse(getAttribute(element, "size", "small"))) {
+            retval = Fortress(
+                getPlayerOrIndependent(element, warner, players),
+                getAttribute(element, "name", ""),
+                getOrGenerateID(element, warner, idFactory), size);
+        } else {
+            throw MissingPropertyException(element, "size");
+        }
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
                 if (is FortressMember child = readSPObject(event, element.name, stream,

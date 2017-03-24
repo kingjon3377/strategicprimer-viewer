@@ -24,13 +24,13 @@ import model.map.fixtures.resources {
     StoneDeposit
 }
 import model.map.fixtures.towns {
-    TownStatus,
-    TownSize
+    TownStatus
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     City,
     Fortification,
-    Town
+    Town,
+    TownSize
 }
 """An [[EncounterTable]] for legacy "events"."""
 class LegacyTable() satisfies EncounterTable {
@@ -40,7 +40,7 @@ class LegacyTable() satisfies EncounterTable {
         retval.add(Battlefield(0, -1));
         retval.add(Cave(0, -1));
         for (status in TownStatus.values()) {
-            for (size in TownSize.values()) {
+            for (size in `TownSize`.caseValues) {
                 retval.add(City(status, size, 0, "", 0, player));
                 retval.add(Fortification(status, size, 0, "", 0, player));
                 retval.add(Town(status, size, 0, "", 0, player));

@@ -124,14 +124,14 @@ import model.map.fixtures.terrain {
     Sandbar
 }
 import model.map.fixtures.towns {
-    TownStatus,
-    TownSize
+    TownStatus
 }
 
 import strategicprimer.viewer.drivers.advancement {
     races
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
+    TownSize,
     Village,
     Town,
     Fortification,
@@ -463,7 +463,7 @@ void testVillageSerialization(TownStatus status, String race) {
     assertPortraitSerialization("Village portrait property is preserved", thirdVillage);
 }
 
-{[TownSize, TownStatus]*} townParameters = { *TownSize.values() }.product(
+{[TownSize, TownStatus]*} townParameters = `TownSize`.caseValues.product(
     {*TownStatus.values() });
 
 test

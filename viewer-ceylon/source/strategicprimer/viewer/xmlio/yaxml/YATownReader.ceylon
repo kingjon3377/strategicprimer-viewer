@@ -35,14 +35,14 @@ import model.map {
     Player
 }
 import model.map.fixtures.towns {
-    TownStatus,
-    TownSize
+    TownStatus
 }
 
 import strategicprimer.viewer.drivers.advancement {
     randomRace
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
+    TownSize,
     ITownFixture,
     Fortress,
     Village,
@@ -90,7 +90,11 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         requireNonEmptyParameter(element, "name", false);
         String name = getParameter(element, "name", "");
         TownStatus status = TownStatus.parseTownStatus(getParameter(element, "status"));
-        TownSize size = TownSize.parseTownSize(getParameter(element, "size"));
+        TownSize? size = TownSize.parse(getParameter(element, "size"));
+        if (!size exists) {
+            throw MissingPropertyException(element, "size");
+        }
+        assert (exists size);
         Integer dc = getIntegerParameter(element, "dc");
         Integer id = getOrGenerateID(element);
         Player owner = getOwnerOrIndependent(element);
@@ -112,9 +116,14 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     ITownFixture parseFortress(StartElement element, JIterable<XMLEvent> stream) {
         requireNonEmptyParameter(element, "owner", false);
         requireNonEmptyParameter(element, "name", false);
-        Fortress retval = Fortress(getOwnerOrIndependent(element),
-            getParameter(element, "name", ""), getOrGenerateID(element),
-            TownSize.parseTownSize(getParameter(element, "size", "small")));
+        Fortress retval;
+        if (exists size = TownSize.parse(getParameter(element, "size", "small"))) {
+            retval = Fortress(getOwnerOrIndependent(element),
+                getParameter(element, "name", ""), getOrGenerateID(element),
+                size);
+        } else {
+            throw MissingPropertyException(element, "size");
+        }
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
                 String memberTag = event.name.localPart.lowercased;

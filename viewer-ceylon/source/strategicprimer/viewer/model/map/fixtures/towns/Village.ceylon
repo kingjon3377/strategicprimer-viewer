@@ -13,8 +13,7 @@ import model.map {
     IFixture
 }
 import model.map.fixtures.towns {
-    TownStatus,
-    TownSize
+    TownStatus
 }
 "A village in the map."
 shared class Village(status, name, id, tempOwner, race)

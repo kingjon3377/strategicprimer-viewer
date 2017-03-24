@@ -121,14 +121,14 @@ import model.map.fixtures.terrain {
     Hill
 }
 import model.map.fixtures.towns {
-    TownStatus,
-    TownSize
+    TownStatus
 }
 
 import strategicprimer.viewer.drivers {
     ConstructorWrapper
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
+    TownSize,
     Village,
     City,
     Fortification,

@@ -1,5 +1,5 @@
-import strategicprimer.viewer.model {
-    IDRegistrar
+import controller.map.formatexceptions {
+    MissingPropertyException
 }
 
 import java.lang {
@@ -25,14 +25,17 @@ import model.map {
     IPlayerCollection
 }
 import model.map.fixtures.towns {
-    TownStatus,
-    TownSize
+    TownStatus
 }
 
 import strategicprimer.viewer.drivers.advancement {
     randomRace
 }
+import strategicprimer.viewer.model {
+    IDRegistrar
+}
 import strategicprimer.viewer.model.map.fixtures.towns {
+    TownSize,
     Village,
     AbstractTown,
     City,
@@ -48,15 +51,18 @@ Town readTown(StartElement element, QName parent, JIterable<XMLEvent> stream,
     requireTag(element, parent, "town");
     requireNonEmptyAttribute(element, "name", false, warner);
     spinUntilEnd(element.name, stream);
-    Town fix = Town(
-        TownStatus.parseTownStatus(getAttribute(element, "status")),
-        TownSize.parseTownSize(getAttribute(element, "size")),
-        getIntegerAttribute(element, "dc"),
-        getAttribute(element, "name", ""),
-        getOrGenerateID(element, warner, idFactory),
-        getPlayerOrIndependent(element, warner, players));
-    fix.portrait = getAttribute(element, "portrait", "");
-    return setImage(fix, element, warner);
+    if (exists size = TownSize.parse(getAttribute(element, "size"))) {
+        Town fix = Town(
+            TownStatus.parseTownStatus(getAttribute(element, "status")),
+            size, getIntegerAttribute(element, "dc"),
+            getAttribute(element, "name", ""),
+            getOrGenerateID(element, warner, idFactory),
+            getPlayerOrIndependent(element, warner, players));
+        fix.portrait =getAttribute(element, "portrait", "");
+        return setImage(fix, element, warner);
+    } else {
+        throw MissingPropertyException(element, "size");
+    }
 }
 
 Fortification readFortification(StartElement element, QName parent, JIterable<XMLEvent> stream,
@@ -64,15 +70,18 @@ Fortification readFortification(StartElement element, QName parent, JIterable<XM
     requireTag(element, parent, "fortification");
     requireNonEmptyAttribute(element, "name", false, warner);
     spinUntilEnd(element.name, stream);
-    Fortification fix = Fortification(
-        TownStatus.parseTownStatus(getAttribute(element, "status")),
-        TownSize.parseTownSize(getAttribute(element, "size")),
-        getIntegerAttribute(element, "dc"),
-        getAttribute(element, "name", ""),
-        getOrGenerateID(element, warner, idFactory),
-        getPlayerOrIndependent(element, warner, players));
-    fix.portrait = getAttribute(element, "portrait", "");
-    return setImage(fix, element, warner);
+    if (exists size = TownSize.parse(getAttribute(element, "size"))) {
+        Fortification fix = Fortification(
+            TownStatus.parseTownStatus(getAttribute(element, "status")),
+            size, getIntegerAttribute(element, "dc"),
+            getAttribute(element, "name", ""),
+            getOrGenerateID(element, warner, idFactory),
+            getPlayerOrIndependent(element, warner, players));
+        fix.portrait =getAttribute(element, "portrait", "");
+        return setImage(fix, element, warner);
+    } else {
+        throw MissingPropertyException(element, "size");
+    }
 }
 
 City readCity(StartElement element, QName parent, JIterable<XMLEvent> stream,
@@ -80,15 +89,18 @@ City readCity(StartElement element, QName parent, JIterable<XMLEvent> stream,
     requireTag(element, parent, "city");
     requireNonEmptyAttribute(element, "name", false, warner);
     spinUntilEnd(element.name, stream);
-    City fix = City(
-        TownStatus.parseTownStatus(getAttribute(element, "status")),
-        TownSize.parseTownSize(getAttribute(element, "size")),
-        getIntegerAttribute(element, "dc"),
-        getAttribute(element, "name", ""),
-        getOrGenerateID(element, warner, idFactory),
-        getPlayerOrIndependent(element, warner, players));
-    fix.portrait = getAttribute(element, "portrait", "");
-    return setImage(fix, element, warner);
+    if (exists size = TownSize.parse(getAttribute(element, "size"))) {
+        City fix = City(
+            TownStatus.parseTownStatus(getAttribute(element, "status")),
+            size, getIntegerAttribute(element, "dc"),
+            getAttribute(element, "name", ""),
+            getOrGenerateID(element, warner, idFactory),
+            getPlayerOrIndependent(element, warner, players));
+        fix.portrait =getAttribute(element, "portrait", "");
+        return setImage(fix, element, warner);
+    } else {
+        throw MissingPropertyException(element, "size");
+    }
 }
 
 Village readVillage(StartElement element, QName parent, JIterable<XMLEvent> stream,
