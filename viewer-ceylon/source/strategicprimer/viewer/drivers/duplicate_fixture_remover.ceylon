@@ -5,7 +5,6 @@ import ceylon.collection {
     HashMap
 }
 import ceylon.language.meta {
-    type,
     classDeclaration
 }
 

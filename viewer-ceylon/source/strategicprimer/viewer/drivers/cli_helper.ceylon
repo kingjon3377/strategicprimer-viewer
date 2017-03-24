@@ -29,9 +29,6 @@ import java.math {
     BigDecimal,
     MathContext
 }
-import java.text {
-    NumberFormat
-}
 
 import lovelace.util.common {
     todo

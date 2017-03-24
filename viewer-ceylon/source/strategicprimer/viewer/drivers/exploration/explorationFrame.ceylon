@@ -30,9 +30,6 @@ import java.lang {
     JInteger=Integer,
     IntArray
 }
-import java.text {
-    NumberFormat
-}
 
 import javax.swing {
     DefaultComboBoxModel,

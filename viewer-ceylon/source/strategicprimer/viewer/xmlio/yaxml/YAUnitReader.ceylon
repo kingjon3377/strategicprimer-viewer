@@ -3,7 +3,6 @@ import ceylon.interop.java {
     CeylonMap
 }
 import ceylon.language.meta {
-    type,
     classDeclaration
 }
 
@@ -32,7 +31,6 @@ import javax.xml.stream.events {
 
 import model.map {
     IPlayerCollection,
-    IFixture,
     HasPortrait
 }
 import model.map.fixtures {
