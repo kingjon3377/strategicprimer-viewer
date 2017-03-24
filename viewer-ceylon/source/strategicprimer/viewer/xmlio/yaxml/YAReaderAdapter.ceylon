@@ -17,9 +17,6 @@ import controller.map.misc {
     IDRegistrar,
     IDFactory
 }
-import controller.map.yaxml {
-    YAReader
-}
 
 import java.io {
     IOException
@@ -73,7 +70,7 @@ class YAReaderAdapter(
     "The map reader"
     YAMapReader mapReader = YAMapReader(warning, idFactory, players);
     "The set of readers."
-    {YAReader<out Object>*} readers = { YAAdventureReader(warning, idFactory, players),
+    value readers = { YAAdventureReader(warning, idFactory, players),
         YAExplorableReader(warning, idFactory), YAGroundReader(warning, idFactory),
         YAImplementReader(warning, idFactory), mapReader,
         YAMobileReader(warning, idFactory), YAPlayerReader(warning, idFactory),

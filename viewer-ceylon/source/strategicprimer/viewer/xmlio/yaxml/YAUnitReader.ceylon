@@ -13,9 +13,6 @@ import controller.map.formatexceptions {
 import controller.map.misc {
     IDRegistrar
 }
-import controller.map.yaxml {
-    YAReader
-}
 
 import java.lang {
     JIterable=Iterable,
@@ -52,7 +49,7 @@ import util {
 "A reader for units."
 class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players)
         extends YAAbstractReader<IUnit>(warner, idRegistrar) {
-    {YAReader<out IFixture>*} readers = { YAMobileReader(warner, idRegistrar),
+    value readers = { YAMobileReader(warner, idRegistrar),
         YAResourceReader(warner, idRegistrar), YATerrainReader(warner, idRegistrar),
         YATextReader(warner, idRegistrar), YAWorkerReader(warner, idRegistrar),
         YAResourcePileReader(warner, idRegistrar), YAImplementReader(warner, idRegistrar)

@@ -11,9 +11,6 @@ import controller.map.iointerfaces {
 import controller.map.misc {
     IDRegistrar
 }
-import controller.map.yaxml {
-    YAReader
-}
 
 import java.lang {
     IllegalArgumentException,

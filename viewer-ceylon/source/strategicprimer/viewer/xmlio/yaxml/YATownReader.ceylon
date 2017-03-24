@@ -12,9 +12,6 @@ import controller.map.formatexceptions {
 import controller.map.misc {
     IDRegistrar
 }
-import controller.map.yaxml {
-    YAReader
-}
 
 import java.lang {
     JIterable=Iterable,
@@ -62,7 +59,7 @@ import util {
 "A reader for fortresses, villages, and other towns."
 class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players)
         extends YAAbstractReader<ITownFixture>(warner, idRegistrar) {
-    {YAReader<out FortressMember>*} memberReaders = {
+    value memberReaders = {
         YAUnitReader(warner, idRegistrar, players),
         YAResourcePileReader(warner, idRegistrar), YAImplementReader(warner, idRegistrar)
     };

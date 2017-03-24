@@ -21,9 +21,6 @@ import controller.map.iointerfaces {
 import controller.map.misc {
     IDRegistrar
 }
-import controller.map.yaxml {
-    YAReader
-}
 
 import java.lang {
     JIterable=Iterable,
@@ -76,7 +73,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
     "The reader for players"
     YAReader<Player> playerReader = YAPlayerReader(warner, idRegistrar);
     "The readers we'll try sub-tags on"
-    {YAReader<out TileFixture>*} readers = {YAMobileReader(warner, idRegistrar),
+    value readers = {YAMobileReader(warner, idRegistrar),
         YAResourceReader(warner, idRegistrar), YATerrainReader(warner, idRegistrar),
         YATextReader(warner, idRegistrar), YATownReader(warner, idRegistrar, players),
         YAGroundReader(warner, idRegistrar),
@@ -191,7 +188,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
             if (is StartElement event, isSPStartElement(event)) {
                 String type = event.name.localPart.lowercased;
                 if ("player" == type) {
-                    retval.addPlayer(playerReader.read(event, tagStack.top, stream));
+                    assert (exists top = tagStack.top);
+                    retval.addPlayer(playerReader.read(event, top, stream));
                 } else if ("row" == type) {
                     tagStack.push(event.name);
                     // Deliberately ignore "row"
