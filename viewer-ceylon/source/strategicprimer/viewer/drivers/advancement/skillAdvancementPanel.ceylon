@@ -1,3 +1,8 @@
+import ceylon.collection {
+    ArrayList,
+    MutableList
+}
+
 import java.awt {
     FlowLayout,
     Container,
@@ -6,6 +11,7 @@ import java.awt {
 import java.awt.event {
     ActionEvent
 }
+
 import javax.swing {
     JButton,
     JTextField,
@@ -13,29 +19,23 @@ import javax.swing {
     JLabel,
     BoxLayout
 }
-import model.listeners {
-    LevelGainSource,
-    SkillSelectionListener,
-    LevelGainListener
-}
-import ceylon.collection {
-    ArrayList,
-    MutableList
-}
-import model.map.fixtures.mobile.worker {
-    ISkill
-}
+
 import lovelace.util.jvm {
     showErrorDialog,
     platform,
     centeredHorizontalBox,
     BoxAxis,
-    listenedButton
+    listenedButton,
+    singletonRandom
 }
-import util {
-    SingletonRandom {
-        singletonRandom=random
-    }
+
+import model.listeners {
+    LevelGainSource,
+    SkillSelectionListener,
+    LevelGainListener
+}
+import model.map.fixtures.mobile.worker {
+    ISkill
 }
 "A panel to let a user add hours of experience to a Skill."
 JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {

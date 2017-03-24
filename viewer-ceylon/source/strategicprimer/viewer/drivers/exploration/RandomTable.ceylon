@@ -1,3 +1,7 @@
+import lovelace.util.jvm {
+    singletonRandom
+}
+
 import model.map {
     Point,
     TileType,
@@ -5,9 +9,6 @@ import model.map {
     MapDimensions
 }
 
-import util {
-    SingletonRandom
-}
 "An [[EncounterTable]] where the event is selected at random."
 class RandomTable([Integer, String]* items) satisfies EncounterTable {
     [Integer, String][] table = items.sort(byIncreasing(
@@ -24,7 +25,7 @@ class RandomTable([Integer, String]* items) satisfies EncounterTable {
     }
     shared actual String generateEvent(Point point, TileType terrain,
             {TileFixture*} fixtures, MapDimensions dimensions) =>
-                lowestMatch(SingletonRandom.random.nextInt(100));
+                lowestMatch(singletonRandom.nextInt(100));
     shared actual Set<String> allEvents =>
             set {*table.map((tuple) => tuple.rest.first)};
     shared actual String string = "RandomTable of ``table.size`` items";

@@ -35,6 +35,9 @@ import java.util {
 import lovelace.util.common {
     todo
 }
+import lovelace.util.jvm {
+    singletonRandom
+}
 
 import model.map {
     Player,
@@ -77,8 +80,7 @@ import strategicprimer.viewer.xmlio {
 }
 
 import util {
-    Warning,
-    SingletonRandom
+    Warning
 }
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
@@ -404,7 +406,7 @@ class TileContentsGenerator(IMapNG map) {
     }
     shared void generateTileContents(Point point,
             TileType terrain = map.getBaseTerrain(point)) {
-        Integer reps = SingletonRandom.random.nextInt(4) + 1;
+        Integer reps = singletonRandom.nextInt(4) + 1;
         for (i in 0..reps) {
             process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
                 {}, map.dimensions()));

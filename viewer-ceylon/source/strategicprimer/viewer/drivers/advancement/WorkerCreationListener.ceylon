@@ -1,29 +1,16 @@
-import model.map.fixtures.mobile.worker {
-    WorkerStats
+import controller.map.misc {
+    IDRegistrar
 }
-import util {
-    SingletonRandom {
-        singletonRandom=random
-    }
-}
-import model.listeners {
-    NewWorkerListener,
-    UnitSelectionListener
+
+import java.awt {
+    GridLayout,
+    Dimension
 }
 import java.awt.event {
     ActionEvent,
     ActionListener
 }
-import java.awt {
-    GridLayout,
-    Dimension
-}
-import controller.map.misc {
-    IDRegistrar
-}
-import strategicprimer.viewer.drivers.worker_mgmt {
-    IWorkerTreeModel
-}
+
 import javax.swing {
     JButton,
     JTextField,
@@ -33,15 +20,29 @@ import javax.swing {
     JFrame,
     JComponent
 }
-import model.map.fixtures.mobile {
-    IUnit,
-    Worker
-}
+
 import lovelace.util.jvm {
     showErrorDialog,
     platform,
     listenedButton,
-    BorderedPanel
+    BorderedPanel,
+    singletonRandom
+}
+
+import model.listeners {
+    NewWorkerListener,
+    UnitSelectionListener
+}
+import model.map.fixtures.mobile {
+    IUnit,
+    Worker
+}
+import model.map.fixtures.mobile.worker {
+    WorkerStats
+}
+
+import strategicprimer.viewer.drivers.worker_mgmt {
+    IWorkerTreeModel
 }
 "A listener to keep track of the currently selected unit and listen for new-worker
  notifications, then pass this information on to the tree model."

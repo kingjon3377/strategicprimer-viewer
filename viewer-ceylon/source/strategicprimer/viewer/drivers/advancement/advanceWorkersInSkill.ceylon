@@ -1,8 +1,9 @@
+import lovelace.util.jvm {
+    singletonRandom
+}
+
 import model.map.fixtures.mobile {
     IWorker
-}
-import strategicprimer.viewer.drivers {
-    ICLIHelper
 }
 import model.map.fixtures.mobile.worker {
     ISkill,
@@ -10,10 +11,9 @@ import model.map.fixtures.mobile.worker {
     Job,
     Skill
 }
-import util {
-    SingletonRandom {
-        singletonRandom=random
-    }
+
+import strategicprimer.viewer.drivers {
+    ICLIHelper
 }
 "Let the user add experience in a single Skill to all of a list of workers."
 void advanceWorkersInSkill(String jobName, String skillName, ICLIHelper cli,

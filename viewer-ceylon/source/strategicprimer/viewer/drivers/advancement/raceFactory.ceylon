@@ -3,11 +3,10 @@ import ceylon.test {
     assertEquals
 }
 
-import util {
-    SingletonRandom {
-        singletonRandom=random
-    }
+import lovelace.util.jvm {
+    singletonRandom
 }
+
 """A list of races for use in the map. All of them are equally likely except
    human, which is more likely than the others put together."""
 shared String[] races = ["dwarf", "elf", "gnome", "half-elf", "Danan",

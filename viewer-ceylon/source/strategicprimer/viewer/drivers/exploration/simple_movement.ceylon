@@ -14,11 +14,10 @@ import lovelace.util.common {
     todo
 }
 import lovelace.util.jvm {
-    shuffle
+    shuffle,
+    singletonRandom
 }
-import util {
-    SingletonRandom { singletonRandom=random }
-}
+
 import model.map {
     TileType,
     River,

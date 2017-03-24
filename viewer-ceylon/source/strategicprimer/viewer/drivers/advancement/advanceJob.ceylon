@@ -2,18 +2,19 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.viewer.drivers {
-    ICLIHelper
+
+import lovelace.util.jvm {
+    singletonRandom
 }
+
 import model.map.fixtures.mobile.worker {
     ISkill,
     IJob,
     Skill
 }
-import util {
-    SingletonRandom {
-        singletonRandom=random
-    }
+
+import strategicprimer.viewer.drivers {
+    ICLIHelper
 }
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
