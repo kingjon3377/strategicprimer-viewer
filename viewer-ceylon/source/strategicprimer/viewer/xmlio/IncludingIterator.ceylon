@@ -10,9 +10,6 @@ import controller.map.formatexceptions {
 import controller.map.iointerfaces {
     ISPReader
 }
-import controller.map.misc {
-    MagicReader
-}
 
 import java.io {
     FileNotFoundException
