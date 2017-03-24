@@ -1,7 +1,7 @@
 import controller.map.formatexceptions {
     UnsupportedTagException
 }
-import controller.map.misc {
+import strategicprimer.viewer.model {
     IDRegistrar
 }
 

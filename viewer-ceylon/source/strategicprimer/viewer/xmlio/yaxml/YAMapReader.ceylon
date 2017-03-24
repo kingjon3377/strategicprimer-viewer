@@ -18,7 +18,7 @@ import controller.map.formatexceptions {
 import controller.map.iointerfaces {
     ISPReader
 }
-import controller.map.misc {
+import strategicprimer.viewer.model {
     IDRegistrar
 }
 

@@ -11,10 +11,6 @@ import ceylon.interop.java {
     CeylonIterable
 }
 
-import controller.map.misc {
-    IDRegistrar
-}
-
 import java.io {
     IOException
 }
@@ -90,7 +86,8 @@ import strategicprimer.viewer.drivers.exploration {
 }
 import strategicprimer.viewer.model {
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    IDRegistrar
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village

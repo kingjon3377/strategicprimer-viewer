@@ -17,10 +17,6 @@ import ceylon.math.float {
     random
 }
 
-import controller.map.misc {
-    IDRegistrar
-}
-
 import java.lang {
     JIterable=Iterable,
     IllegalStateException
@@ -70,7 +66,8 @@ import strategicprimer.viewer.drivers.exploration {
 }
 import strategicprimer.viewer.model {
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    IDRegistrar
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village

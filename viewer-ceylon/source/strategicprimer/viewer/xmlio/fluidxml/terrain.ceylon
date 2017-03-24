@@ -1,7 +1,7 @@
 import controller.map.formatexceptions {
     MissingPropertyException
 }
-import controller.map.misc {
+import strategicprimer.viewer.model {
     IDRegistrar
 }
 
@@ -41,7 +41,7 @@ Ground readGround(StartElement element, QName parent, JIterable<XMLEvent> stream
     requireTag(element, parent, "ground");
     Integer id = getIntegerAttribute(element, "id", -1);
     if (id >= 0) {
-        idFactory.register(warner, id);
+        idFactory.register(id, warner);
     }
     String kind = getAttrWithDeprecatedForm(element, "kind", "ground", warner);
     spinUntilEnd(element.name, stream);
@@ -58,7 +58,7 @@ Forest readForest(StartElement element, QName parent, JIterable<XMLEvent> stream
     requireTag(element, parent, "forest");
     Integer id = getIntegerAttribute(element, "id", -1);
     if (id >= 0) {
-        idFactory.register(warner, id);
+        idFactory.register(id, warner);
     }
     // TODO: support """rows="false""""
     Forest retval = Forest(getAttribute(element, "kind"),

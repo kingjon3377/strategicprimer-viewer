@@ -13,9 +13,6 @@ import controller.map.formatexceptions {
     SPFormatException,
     UnwantedChildException
 }
-import controller.map.misc {
-    IDRegistrar
-}
 
 import java.io {
     IOException
@@ -59,7 +56,8 @@ import util {
     Warning
 }
 import strategicprimer.viewer.model {
-    IDFactory
+    IDFactory,
+    IDRegistrar
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

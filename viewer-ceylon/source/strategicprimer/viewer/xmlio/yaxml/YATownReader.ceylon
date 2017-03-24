@@ -9,7 +9,7 @@ import controller.map.formatexceptions {
     MissingPropertyException,
     UnwantedChildException
 }
-import controller.map.misc {
+import strategicprimer.viewer.model {
     IDRegistrar
 }
 

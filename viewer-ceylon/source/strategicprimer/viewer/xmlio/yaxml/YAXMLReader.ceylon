@@ -11,11 +11,9 @@ import controller.map.iointerfaces {
     IMapReader,
     ISPReader
 }
-import controller.map.misc {
-    IDRegistrar
-}
 import strategicprimer.viewer.model {
-    IDFactory
+    IDFactory,
+    IDRegistrar
 }
 
 import java.io {

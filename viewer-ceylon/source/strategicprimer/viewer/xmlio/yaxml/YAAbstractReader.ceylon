@@ -8,7 +8,7 @@ import controller.map.formatexceptions {
 import controller.map.iointerfaces {
     ISPReader
 }
-import controller.map.misc {
+import strategicprimer.viewer.model {
     IDRegistrar
 }
 
@@ -241,7 +241,7 @@ abstract class YAAbstractReader<Element>
     }
     "Register the specified ID number, and return it."
     todo("Is the 'return it' feature ever used?")
-    shared Integer registerID(Integer id) => idf.register(warner, id);
+    shared Integer registerID(Integer id) => idf.register(id, warner);
     "If the specified tag has an ID as a property, return it; otherwise, warn about its
      absence and generate one."
     shared Integer getOrGenerateID(StartElement element) {

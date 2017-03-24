@@ -3,7 +3,6 @@ import ceylon.interop.java {
 }
 
 import controller.map.misc {
-    IDRegistrar,
     DuplicateIDException
 }
 
@@ -33,7 +32,7 @@ shared class IDFactory() satisfies IDRegistrar {
     shared actual Boolean isIDUnused(Integer id) => id >= 0 && !usedIDs.get(id);
     "Register, and return, the given ID, using the given Warning instance to report if it
      has already been registered."
-    shared actual Integer register(Warning warning, Integer id) {
+    shared actual Integer register(Integer id, Warning warning) {
         if (id >= 0) {
             if (usedIDs.get(id)) {
                 warning.warn(DuplicateIDException(id));
@@ -42,8 +41,6 @@ shared class IDFactory() satisfies IDRegistrar {
         }
         return id;
     }
-    "Register, and return, the given ID."
-    shared actual Integer register(Integer id) => register(Warning.default, id);
     "Generate and register an ID that hasn't been previously registered."
     shared actual Integer createID() {
         variable Integer retval = -1;

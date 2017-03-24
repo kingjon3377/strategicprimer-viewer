@@ -11,10 +11,6 @@ import ceylon.language.meta {
     classDeclaration
 }
 
-import controller.map.misc {
-    IDRegistrar
-}
-
 import java.awt {
     Component,
     Dimension
@@ -81,7 +77,8 @@ import strategicprimer.viewer.drivers.worker_mgmt {
 }
 import strategicprimer.viewer.model {
     SimpleMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    IDRegistrar
 }
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {

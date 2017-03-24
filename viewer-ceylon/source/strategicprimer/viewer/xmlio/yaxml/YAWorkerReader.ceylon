@@ -6,7 +6,7 @@ import controller.map.formatexceptions {
     UnsupportedPropertyException,
     UnwantedChildException
 }
-import controller.map.misc {
+import strategicprimer.viewer.model {
     IDRegistrar
 }
 

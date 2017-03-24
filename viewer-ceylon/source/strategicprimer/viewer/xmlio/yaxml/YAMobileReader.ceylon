@@ -8,7 +8,7 @@ import ceylon.language.meta.model {
 import controller.map.formatexceptions {
     MissingPropertyException
 }
-import controller.map.misc {
+import strategicprimer.viewer.model {
     IDRegistrar
 }
 import java.lang {

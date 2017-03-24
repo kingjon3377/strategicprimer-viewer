@@ -10,7 +10,7 @@ import strategicprimer.viewer.drivers {
 import java.awt.event {
     ActionEvent
 }
-import controller.map.misc {
+import strategicprimer.viewer.model {
     IDRegistrar
 }
 import javax.swing {

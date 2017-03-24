@@ -3,7 +3,7 @@ import ceylon.logging {
     Logger
 }
 
-import controller.map.misc {
+import strategicprimer.viewer.model {
     IDRegistrar
 }
 
