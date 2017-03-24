@@ -18,7 +18,7 @@ import model.map.fixtures.towns {
     TownSize
 }
 "A village in the map."
-shared class Village(villageStatus, name, id, owner, race)
+shared class Village(villageStatus, name, id, tempOwner, race)
         satisfies ITownFixture&HasMutableImage&SubsettableFixture {
     "The status of the village."
     TownStatus villageStatus;
@@ -28,12 +28,14 @@ shared class Village(villageStatus, name, id, owner, race)
     shared actual String name;
     "The ID number."
     shared actual Integer id;
-    "The player the village has pledged to serve and support, if any."
-    shared actual variable Player owner;
+    variable Player tempOwner;
     "The dominant race of the village."
     shared variable String race;
+    "The player the village has pledged to serve and support, if any."
+    shared actual Player owner => tempOwner;
+    variable String tempImage = "";
     "The per-instance icon filename."
-    shared actual variable String image = "";
+    shared actual String image => tempImage;
     "The default-icon filename."
     shared actual String defaultImage = "village.png";
     "A filename of an image to use as a portrait of the village."
@@ -116,11 +118,11 @@ shared class Village(villageStatus, name, id, owner, race)
     todo("Omit portrait if `zero`?")
     shared actual Village copy(Boolean zero) {
         Village retval = Village(status(), name, id, owner, race);
-        retval.image = image;
+        retval.setImage(image);
         retval.portrait = portrait;
         return retval;
     }
     // Until the 'mutable' interfaces are ported ...
-    shared actual void setImage(String img) => image = img;
-    shared actual void setOwner(Player player) => owner = player;
+    shared actual void setImage(String img) => tempImage = img;
+    shared actual void setOwner(Player player) => tempOwner = player;
 }

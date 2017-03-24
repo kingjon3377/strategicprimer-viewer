@@ -82,7 +82,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             TownStatus.parseTownStatus(getParameter(element, "status")),
             getParameter(element, "name", ""), idNum, getOwnerOrIndependent(element),
             getParameter(element, "race", randomRace((bound) => rng.nextInt(bound))));
-        retval.image = getParameter(element, "image", "");
+        retval.setImage(getParameter(element, "image", ""));
         retval.portrait = getParameter(element, "portrait", "");
         return retval;
     }
