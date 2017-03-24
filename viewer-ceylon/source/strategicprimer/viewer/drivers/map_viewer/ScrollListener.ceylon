@@ -27,9 +27,6 @@ import javax.swing {
 import ceylon.interop.java {
     javaString
 }
-import model.viewer {
-    VisibleDimensions
-}
 "A class to change the visible area of the map based on the user's use of the scrollbars."
 todo("Maybe keep track of visible dimensions and selected point directly instaed of
       through the model, so we can drop the reference to the model.")
@@ -113,7 +110,8 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
      switched to using the new value it was passed."
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         VisibleDimensions temp = model.dimensions;
-        if (!((temp.minimumCol)..(temp.maximumCol + 1)).contains(newPoint.col)) {
+        // FIXME: Per the Span docs, the +1 makes these off-by-one
+        if (!((temp.minimumColumn)..(temp.maximumColumn + 1)).contains(newPoint.col)) {
             horizontalBar.model.\ivalue = largest(newPoint.col, 0);
         }
         if (!((temp.minimumRow)..(temp.maximumRow + 1)).contains(newPoint.row)) {

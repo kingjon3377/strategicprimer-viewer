@@ -25,9 +25,6 @@ import model.listeners {
     SelectionChangeListener,
     SelectionChangeSource
 }
-import model.viewer {
-    VisibleDimensions
-}
 import ceylon.math.float {
     halfEven
 }
@@ -76,7 +73,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             Point point = PointFactory.point(
                 halfEven((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
                     .plus(0.1).integer,
-                halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumCol)
+                halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumColumn)
                     .plus(0.1).integer);
             if (point.valid, point.row < mapDimensions.rows,
                 point.col < mapDimensions.columns) {
@@ -98,7 +95,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             Point point = PointFactory.point(
                 halfEven((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
                     .plus(0.1).integer,
-                halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumCol)
+                halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumColumn)
                     .plus(0.1).integer);
             if (point.valid, point.row < mapDimensions.rows,
                 point.col < mapDimensions.columns) {

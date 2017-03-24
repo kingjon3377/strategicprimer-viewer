@@ -24,9 +24,6 @@ import model.map {
     PointFactory,
     IMapNG
 }
-import model.viewer {
-    VisibleDimensions
-}
 
 import strategicprimer.viewer.model {
     SimpleDriverModel,

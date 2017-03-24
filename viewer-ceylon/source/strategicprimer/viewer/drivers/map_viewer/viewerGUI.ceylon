@@ -19,9 +19,6 @@ import strategicprimer.viewer.drivers {
 import strategicprimer.viewer.about {
     aboutDialog
 }
-import model.viewer {
-    VisibleDimensions
-}
 import ceylon.logging {
     logger,
     Logger

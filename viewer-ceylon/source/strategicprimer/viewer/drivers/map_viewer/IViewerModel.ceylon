@@ -8,9 +8,6 @@ import model.listeners {
 import model.map {
     Point
 }
-import model.viewer {
-    VisibleDimensions
-}
 import strategicprimer.viewer.model {
     IDriverModel
 }

@@ -2,9 +2,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.viewer {
-    VisibleDimensions
-}
 import java.util {
     EventListener
 }
