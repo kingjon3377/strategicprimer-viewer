@@ -112,8 +112,7 @@ import model.map.fixtures.terrain {
 
 import strategicprimer.viewer.drivers {
     SPFrame,
-    SPMenu,
-    ConstructorWrapper
+    SPMenu
 }
 import strategicprimer.viewer.drivers.map_viewer {
     fixtureFilterTableModel,
@@ -160,7 +159,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 }
             }
         }
-        SwingList<IUnit> unitList = ConstructorWrapper.jlist<IUnit>(unitListModel);
+        SwingList<IUnit> unitList = SwingList<IUnit>(unitListModel);
         PlayerListModel playerListModel = PlayerListModel(model);
         SwingList<Player> playerList = SwingList<Player>(playerListModel);
         MutableList<CompletionListener> completionListeners =

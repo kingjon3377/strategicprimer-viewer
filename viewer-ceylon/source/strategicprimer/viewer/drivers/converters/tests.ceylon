@@ -24,10 +24,6 @@ import controller.map.iointerfaces {
     ISPReader,
     SPWriter
 }
-import strategicprimer.viewer.model {
-    IDFactory,
-    IDRegistrar
-}
 
 import java.io {
     StringWriter,
@@ -54,7 +50,8 @@ import javax.xml.namespace {
     QName
 }
 import javax.xml.stream {
-    XMLStreamException
+    XMLStreamException,
+    XMLInputFactory
 }
 import javax.xml.stream.events {
     Attribute,
@@ -115,16 +112,17 @@ import model.map.fixtures.resources {
     StoneDeposit,
     Grove
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
-    Mine
-}
 import model.map.fixtures.terrain {
     Forest,
     Hill
 }
 
-import strategicprimer.viewer.drivers {
-    ConstructorWrapper
+import strategicprimer.viewer.model {
+    IDFactory,
+    IDRegistrar
+}
+import strategicprimer.viewer.model.map.fixtures.resources {
+    Mine
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus,
@@ -137,12 +135,14 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 }
 import strategicprimer.viewer.xmlio {
     readMap,
-    testReaderFactory
+    testReaderFactory,
+    TypesafeXMLEventReader
 }
 
 import util {
     Warning,
-    LineEnd
+    LineEnd,
+    IteratorWrapper
 }
 
 import view.util {
@@ -891,8 +891,9 @@ void testZeroToOneConversion() {
                    /></sp:tile><tile row='1'column='1' type='temperate_forest'
                    event='219'></tile></row></map>";
     StringWriter ostream = StringWriter();
-    zeroToOneConverter.convert(ConvertingIterable(
-        ConstructorWrapper.xmlEventReader(StringReader(orig))), ostream);
+    zeroToOneConverter.convert(CeylonIterable(IteratorWrapper(TypesafeXMLEventReader(
+            XMLInputFactory.newInstance().createXMLEventReader(StringReader(orig))))),
+        ostream);
     StringWriter actualXML = StringWriter();
     SPWriter writer = oldWriter;
     writer.writeSPObject(actualXML,
@@ -920,8 +921,9 @@ todo("Write results to file")
 shared void convertZeroToOne() {
     for (argument in process.arguments) {
         try (reader = JFileReader(argument)) {
-            zeroToOneConverter.convert(ConvertingIterable<XMLEvent>(ConstructorWrapper
-                .xmlEventReader(reader)), SystemOut.sysOut);
+            zeroToOneConverter.convert(ConvertingIterable<XMLEvent>(
+                    XMLInputFactory.newInstance().createXMLEventReader(reader)),
+                SystemOut.sysOut);
         } catch (FileNotFoundException|NoSuchFileException except) {
             log.error("File ``argument`` not found", except);
         } catch (XMLStreamException except) {

@@ -48,7 +48,8 @@ import lovelace.util.jvm {
 }
 
 import model.map {
-    PlayerCollection
+    PlayerCollection,
+    SPMapNG
 }
 
 import strategicprimer.viewer.drivers.map_viewer {
@@ -146,7 +147,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             });
         }
         case ("new") {
-            viewerGUI.startDriverOnModel(cli, options, ViewerModel(ConstructorWrapper.map(
+            viewerGUI.startDriverOnModel(cli, options, ViewerModel(SPMapNG(
                     mapModel.mapDimensions, PlayerCollection(), mapModel.map.currentTurn),
                 null));
         }
