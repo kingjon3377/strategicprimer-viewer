@@ -43,9 +43,6 @@ import model.map.fixtures.mobile {
 import model.map.fixtures.terrain {
     Forest
 }
-import model.viewer {
-    PointIterator
-}
 
 import strategicprimer.viewer.model.map {
     IMutableMapNG,
@@ -101,8 +98,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     "A stream of the players known in the map"
     shared actual {Player*} players => CeylonIterable(playerCollection);
     "The locations in the map."
-    shared actual {Point*} locations =>
-            CeylonIterable(IteratorWrapper(PointIterator(dimensions, null, true, true)));
+    shared actual {Point*} locations => PointIterator(dimensions, true, true);
     "The base terrain at the given location."
     shared actual TileType getBaseTerrain(Point location) =>
             terrain.get(location) else TileType.notVisible;
