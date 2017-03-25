@@ -49,8 +49,10 @@ import model.map.fixtures {
     Ground,
     TextFixture
 }
+import strategicprimer.viewer.model.map.fixtures.resources {
+    Shrub
+}
 import model.map.fixtures.resources {
-    Shrub,
     FieldStatus,
     Meadow,
     Grove

@@ -13,7 +13,7 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import model.map.fixtures.resources {
+import strategicprimer.viewer.model.map.fixtures.resources {
     CacheFixture
 }
 "A tabular report generator for resources, including caches, resource piles, and

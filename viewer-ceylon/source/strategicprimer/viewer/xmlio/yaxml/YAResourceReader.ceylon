@@ -29,14 +29,14 @@ import model.map.fixtures.resources {
     Meadow,
     FieldStatus,
     Grove,
-    CacheFixture,
-    MineralVein,
-    Shrub
+    MineralVein
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    CacheFixture,
     Mine,
     StoneDeposit,
-    StoneKind
+    StoneKind,
+    Shrub
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus

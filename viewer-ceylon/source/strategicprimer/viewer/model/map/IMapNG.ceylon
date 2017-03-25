@@ -18,7 +18,7 @@ import model.map.fixtures {
 import model.map.fixtures.mobile {
     Animal
 }
-import model.map.fixtures.resources {
+import strategicprimer.viewer.model.map.fixtures.resources {
     CacheFixture
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {

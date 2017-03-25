@@ -77,18 +77,18 @@ import model.map.fixtures.mobile.worker {
     WorkerStats
 }
 import model.map.fixtures.resources {
-    CacheFixture,
     Meadow,
     Grove,
-    MineralVein,
-    Shrub
+    MineralVein
 }
 import strategicprimer.viewer.model.map {
     IMapNG
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    CacheFixture,
     Mine,
-    StoneDeposit
+    StoneDeposit,
+    Shrub
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,

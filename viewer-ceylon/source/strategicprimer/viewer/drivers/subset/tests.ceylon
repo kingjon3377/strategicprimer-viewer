@@ -37,7 +37,7 @@ import model.map.fixtures.mobile {
 import model.map.fixtures.mobile.worker {
     Job
 }
-import model.map.fixtures.resources {
+import strategicprimer.viewer.model.map.fixtures.resources {
     CacheFixture
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {

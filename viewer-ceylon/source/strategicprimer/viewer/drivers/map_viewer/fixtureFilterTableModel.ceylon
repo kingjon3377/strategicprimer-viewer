@@ -52,15 +52,15 @@ import model.map.fixtures.mobile {
     Animal
 }
 import model.map.fixtures.resources {
-    Shrub,
     MineralVein,
-    CacheFixture,
     Meadow,
     Grove
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    CacheFixture,
     Mine,
-    StoneDeposit
+    StoneDeposit,
+    Shrub
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,

@@ -107,7 +107,6 @@ import model.map.fixtures.mobile {
 import model.map.fixtures.resources {
     FieldStatus,
     MineralVein,
-    CacheFixture,
     Meadow,
     Grove
 }
@@ -121,6 +120,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    CacheFixture,
     Mine,
     StoneKind,
     StoneDeposit

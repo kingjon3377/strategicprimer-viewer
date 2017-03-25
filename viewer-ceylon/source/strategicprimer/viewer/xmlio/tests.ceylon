@@ -110,14 +110,14 @@ import model.map.fixtures.resources {
     Grove,
     FieldStatus,
     Meadow,
-    Shrub,
-    CacheFixture,
     MineralVein
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    CacheFixture,
     StoneKind,
     Mine,
-    StoneDeposit
+    StoneDeposit,
+    Shrub
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,

@@ -101,7 +101,7 @@ import model.map.fixtures.mobile {
     IUnit,
     Animal
 }
-import model.map.fixtures.resources {
+import strategicprimer.viewer.model.map.fixtures.resources {
     CacheFixture
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {

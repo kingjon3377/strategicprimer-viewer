@@ -35,7 +35,7 @@ import model.map.fixtures {
 import model.map.fixtures.mobile {
     IUnit
 }
-import model.map.fixtures.resources {
+import strategicprimer.viewer.model.map.fixtures.resources {
     CacheFixture
 }
 import strategicprimer.viewer.model.map.fixtures.towns {

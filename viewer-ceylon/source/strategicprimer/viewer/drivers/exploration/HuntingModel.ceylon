@@ -18,7 +18,9 @@ import model.map.fixtures.mobile {
 }
 import model.map.fixtures.resources {
     Grove,
-    Meadow,
+    Meadow
+}
+import strategicprimer.viewer.model.map.fixtures.resources {
     Shrub
 }
 import lovelace.util.jvm { shuffle }
