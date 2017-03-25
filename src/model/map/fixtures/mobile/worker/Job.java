@@ -6,8 +6,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+
 import util.LineEnd;
 
 /**
@@ -76,6 +78,7 @@ public class Job implements IJob {
 	public boolean addSkill(final ISkill skill) {
 		if (skillSet.containsKey(skill.getName())) {
 			final ISkill existing = skillSet.get(skill.getName());
+			assert (existing != null);
 			if (existing.equals(skill)) {
 				return false;
 			} else {
@@ -176,7 +179,9 @@ public class Job implements IJob {
 			}
 			for (final ISkill skill : obj) {
 				if (ours.containsKey(skill.getName())) {
-					retval &= ours.get(skill.getName()).isSubset(skill, ostream,
+					@Nullable ISkill ourSkill = ours.get(skill.getName());
+					assert (ourSkill != null);
+					retval &= ourSkill.isSubset(skill, ostream,
 							context + " In Job " + name + ':');
 				} else {
 					ostream.format("%s In Job %s:\tExtra skill %s%n", context, name,

@@ -9,13 +9,15 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.ListMaker;
 
@@ -241,10 +243,14 @@ public class Worker implements IWorker, HasPortrait {
 							ostream.format("%s In worker %s (ID #%d):\tExtra Job: %s%n",
 									context, name, Integer.valueOf(id), job.getName());
 							retval = false;
-						} else if (!ours.get(job.getName()).isSubset(job, ostream,
-								String.format("%s In worker %s (ID #%d):", context, name,
+						} else {
+							@Nullable IJob ourJob = ours.get(job.getName());
+							assert (ourJob != null);
+							if (!ourJob.isSubset(job, ostream,
+									String.format("%s In worker %s (ID #%d):", context, name,
 										Integer.valueOf(id)))) {
-							retval = false;
+								retval = false;
+							}
 						}
 					}
 					return retval;

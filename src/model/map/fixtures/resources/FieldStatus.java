@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * Possible status of fields (and meadows, and orchards ...) Fields should rotate between
  * these, at a rate determined by the kind of field.
@@ -68,7 +70,9 @@ public enum FieldStatus {
 	 */
 	public static FieldStatus parse(final String desc) {
 		if (FST_MAP.containsKey(desc)) {
-			return FST_MAP.get(desc);
+			@Nullable FieldStatus retval = FST_MAP.get(desc);
+			assert (retval != null);
+			return retval;
 		} else {
 			throw new IllegalArgumentException("Not a FieldStatus we recognize");
 		}

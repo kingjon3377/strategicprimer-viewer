@@ -4,6 +4,10 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.HasKind;
@@ -12,7 +16,6 @@ import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.UnitMember;
-import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
 
 /**
@@ -42,7 +45,9 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 		final NavigableMap<Integer, String> orders = getAllOrders();
 		for (int i = turn; i >= -1; i--) {
 			if (orders.containsKey(Integer.valueOf(i))) {
-				final String turnOrders = orders.get(Integer.valueOf(i)).trim();
+				@Nullable String temp = orders.get(Integer.valueOf(i));
+				assert (temp != null);
+				final String turnOrders = temp.trim();
 				if (!turnOrders.isEmpty()) {
 					return turnOrders;
 				}
@@ -114,7 +119,9 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	default String getLatestResults(final int turn) {
 		final NavigableMap<Integer, String> results = getAllResults();
 		for (int i = turn; i >= -1; i--) {
-			final String turnResults = results.get(Integer.valueOf(i)).trim();
+			@Nullable String temp = results.get(Integer.valueOf(i));
+			assert (temp != null);
+			final String turnResults = temp.trim();
 			if (!turnResults.isEmpty()) {
 				return turnResults;
 			}
@@ -201,12 +208,16 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 									context, getKind(), getName(), Integer.valueOf(getID()),
 									member.toString(), Integer.valueOf(member.getID()));
 							retval = false;
-						} else if (!ours.get(Integer.valueOf(member.getID()))
+						} else {
+							@Nullable UnitMember ourMember = ours.get(Integer.valueOf(member.getID()));
+							assert (ourMember != null);
+							if (!ourMember
 											.isSubset(member, ostream, String.format(
 													"%s In unit of kind %s named %s (ID #%d):",
 													context, getKind(), getName(),
 													Integer.valueOf(getID())))) {
-							retval = false;
+								retval = false;
+							}
 						}
 					}
 					if (retval) {

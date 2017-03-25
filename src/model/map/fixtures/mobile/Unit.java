@@ -7,6 +7,10 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.FixtureIterable;
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
@@ -17,8 +21,6 @@ import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.LineEnd;
 import util.TypesafeLogger;
@@ -357,9 +359,13 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	@Override
 	public String getOrders(final int turn) {
 		if (orders.containsKey(Integer.valueOf(turn))) {
-			return orders.get(Integer.valueOf(turn));
+			@Nullable String retval = orders.get(Integer.valueOf(turn));
+			assert (retval != null);
+			return retval;
 		} else if (turn < 0 && orders.containsKey(Integer.valueOf(-1))) {
-			return orders.get(Integer.valueOf(-1));
+			@Nullable String retval = orders.get(Integer.valueOf(-1));
+			assert (retval != null);
+			return retval;
 		} else {
 			return "";
 		}
@@ -383,9 +389,13 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	@Override
 	public String getResults(final int turn) {
 		if (results.containsKey(Integer.valueOf(turn))) {
-			return results.get(Integer.valueOf(turn));
+			@Nullable String retval = results.get(Integer.valueOf(turn));
+			assert (retval != null);
+			return retval;
 		} else if (turn < 0 && results.containsKey(Integer.valueOf(-1))) {
-			return results.get(Integer.valueOf(-1));
+			@Nullable String retval = results.get(Integer.valueOf(-1));
+			assert (retval != null);
+			return retval;
 		} else {
 			return "";
 		}

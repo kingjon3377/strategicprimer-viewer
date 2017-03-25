@@ -1,13 +1,14 @@
 package model.map;
 
+import static util.NullStream.DEV_NULL;
+
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.StreamSupport;
-import org.eclipse.jdt.annotation.Nullable;
 
-import static util.NullStream.DEV_NULL;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A collection of players. Using a simple List doesn't work when -1 is the default index
@@ -45,7 +46,9 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	public Player getPlayer(final int player) {
 		final Integer pValue = Integer.valueOf(player);
 		if (players.containsKey(pValue)) {
-			return players.get(pValue);
+			@Nullable Player retval = players.get(pValue);
+			assert (retval != null);
+			return retval;
 		} else {
 			return new PlayerImpl(player, "");
 		}

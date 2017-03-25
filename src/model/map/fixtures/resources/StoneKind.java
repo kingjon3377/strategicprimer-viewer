@@ -3,6 +3,8 @@ package model.map.fixtures.resources;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * The kinds of stone we know about (for purposes of this event).
  *
@@ -82,7 +84,9 @@ public enum StoneKind {
 	 */
 	public static StoneKind parseStoneKind(final String kind) {
 		if (SK_MAP.containsKey(kind)) {
-			return SK_MAP.get(kind);
+			@Nullable StoneKind retval = SK_MAP.get(kind);
+			assert (retval != null);
+			return retval;
 		} else {
 			throw new IllegalArgumentException("Unrecognized kind of stone");
 		}

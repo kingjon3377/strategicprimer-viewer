@@ -14,6 +14,9 @@ import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
@@ -24,7 +27,6 @@ import model.map.PlayerImpl;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
-import org.eclipse.jdt.annotation.Nullable;
 import util.LineEnd;
 import util.TypesafeLogger;
 
@@ -311,6 +313,7 @@ public final class ProxyUnit
 				if (map.containsKey(memberID)) {
 					//noinspection unchecked
 					proxy = (ProxyFor<? extends UnitMember>) map.get(memberID);
+					assert (proxy != null);
 					if (proxy instanceof ProxyWorker) {
 						if (member instanceof IWorker) {
 							((ProxyWorker) proxy).addProxied((IWorker) member);

@@ -3,6 +3,9 @@ package util;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Formatter;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Subsettable;
 
 /**
@@ -100,7 +103,7 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	 * @return whether it's an equal quantity
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(final @Nullable Object obj) {
 		return obj instanceof Quantity && units.equals(((Quantity) obj).units) &&
 					   number.equals(((Quantity) obj).number);
 	}

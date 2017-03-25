@@ -1,5 +1,7 @@
 package model.map;
 
+import static java.util.Collections.unmodifiableSet;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -8,9 +10,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import util.MultiMapHelper;
 
-import static java.util.Collections.unmodifiableSet;
+import org.eclipse.jdt.annotation.Nullable;
+
+import util.MultiMapHelper;
 
 /**
  * Possible tile types.
@@ -148,7 +151,9 @@ public enum TileType {
 	 */
 	public static TileType getTileType(final String description) {
 		if (CACHE.containsKey(description)) {
-			return CACHE.get(description);
+			@Nullable TileType retval = CACHE.get(description);
+			assert (retval != null);
+			return retval;
 		} // else
 		throw new IllegalArgumentException("Unrecognized terrain type string " +
 												   description);

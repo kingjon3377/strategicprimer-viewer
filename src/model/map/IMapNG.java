@@ -3,13 +3,15 @@ package model.map;
 import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.Ground;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A possible replacement for IMap, aiming to completely hide the implementation details.
@@ -122,6 +124,7 @@ public interface IMapNG
 	 * @param location a location
 	 * @return a Stream of all fixtures there
 	 */
+	@SuppressWarnings("null")
 	default Stream<@NonNull TileFixture> streamAllFixtures(final Point location) {
 		return Stream.concat(Stream.of(getGround(location), getForest(location))
 									 .filter(Objects::nonNull),
