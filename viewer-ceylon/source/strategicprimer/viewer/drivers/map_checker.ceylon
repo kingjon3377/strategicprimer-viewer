@@ -32,7 +32,6 @@ import model.map {
     Point,
     IFixture,
     TileType,
-    IMapNG,
     FixtureIterable
 }
 import model.map.fixtures.mobile {
@@ -48,6 +47,9 @@ import model.map.fixtures.resources {
 
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village
+}
+import strategicprimer.viewer.model.map {
+    IMapNG
 }
 import strategicprimer.viewer.xmlio {
     readMap
@@ -157,7 +159,7 @@ object mapCheckerCLI satisfies UtilityDriver {
             return;
         }
         for (checker in extraChecks) {
-            for (location in map.locations()) {
+            for (location in map.locations) {
                 TileType terrain = map.getBaseTerrain(location);
                 if (exists forest = map.getForest(location)) {
                     contentCheck(checker, terrain, location, warner, forest);

@@ -19,10 +19,12 @@ import model.map {
     Player,
     PointFactory,
     DistanceComparator,
-    IMapNG,
     Point
 }
 
+import strategicprimer.viewer.model.map {
+    IMapNG
+}
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus,
     ITownFixture,

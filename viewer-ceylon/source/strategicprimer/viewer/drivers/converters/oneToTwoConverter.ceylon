@@ -7,9 +7,6 @@ import ceylon.file {
     parsePath,
     Directory
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 
 import java.io {
     IOException
@@ -41,12 +38,12 @@ import model.map {
     MapDimensions,
     MapDimensionsImpl,
     PlayerImpl,
-    IMapNG,
     Point
 }
 import strategicprimer.viewer.model.map {
     SPMapNG,
-    IMutableMapNG
+    IMutableMapNG,
+    IMapNG
 }
 import model.map.fixtures {
     Ground,
@@ -137,14 +134,14 @@ object oneToTwoConverter satisfies SimpleDriver {
             "Whether the map is the main map (new encounter-type fixtures don't go on
              players' maps)"
             Boolean main) {
-        MapDimensions oldDimensions = old.dimensions();
+        MapDimensions oldDimensions = old.dimensions;
         IMutableMapNG retval = SPMapNG(MapDimensionsImpl(
             oldDimensions.rows * expansionFactor,
             oldDimensions.columns * expansionFactor, 2), PlayerCollection(), nextTurn);
-        Player independent = CeylonIterable(old.players()).find(Player.independent)
+        Player independent = old.players.find(Player.independent)
         else PlayerImpl(-1, "independent");
         retval.addPlayer(independent);
-        for (player in old.players()) {
+        for (player in old.players) {
             retval.addPlayer(player);
         }
         MutableList<Point> converted = LinkedList<Point>();
@@ -175,24 +172,17 @@ object oneToTwoConverter satisfies SimpleDriver {
             if (TileType.mountain == originalTerrain) {
                 retval.setMountainous(point, true);
             } else if (!retval.getForest(point) exists,
-                !CeylonIterable(retval.getOtherFixtures(point))
-                    .find((element) => element is Forest) exists,
-                (TileType.temperateForest == originalTerrain ||
-                TileType.borealForest == originalTerrain)) {
-                Ground? tempGround = retval.getGround(point);
-                Forest? tempForest = retval.getForest(point);
+                    retval.getOtherFixtures(point).narrow<Forest>().empty,
+                    (TileType.temperateForest == originalTerrain ||
+                    TileType.borealForest == originalTerrain)) {
                 retval.setForest(point, Forest(runner.getPrimaryTree(point,
-                    originalTerrain, {tempGround, tempForest,
-                        *retval.getOtherFixtures(point)}.coalesced,
-                    retval.dimensions()), false, idFactory.createID()));
+                    originalTerrain, retval.getAllFixtures(point),
+                    retval.dimensions), false, idFactory.createID()));
             }
             retval.setBaseTerrain(point, equivalentTerrain(originalTerrain));
-            Ground? tempGround = retval.getGround(point);
-            Forest? tempForest = retval.getForest(point);
             addFixture(point, Ground(idFactory.createID(),
                 runner.getPrimaryRock(point, retval.getBaseTerrain(point),
-                    {tempGround, tempForest, *retval.getOtherFixtures(point)}.coalesced,
-                    retval.dimensions()), false));
+                    retval.getAllFixtures(point), retval.dimensions), false));
         }
         "Convert a single version-1 tile to the equivalent version-2 tiles."
         {Point*} convertTile(Point point) {
@@ -249,9 +239,9 @@ object oneToTwoConverter satisfies SimpleDriver {
                     if (!shuffledFixtures.front exists) {
                         break;
                     } else if (exists currentSubtile = shuffledInitial.accept()) {
-                        if (CeylonIterable(retval.getOtherFixtures(point)).every(
+                        if (retval.getOtherFixtures(point).every(
                                     (fixture) =>
-                            fixture is Forest|Ground|Sandbar|Shrub|Meadow|Hill),
+                                fixture is Forest|Ground|Sandbar|Shrub|Meadow|Hill),
                             exists fixture = shuffledFixtures.accept()) {
                             if (is ITownFixture fixture) {
                                 {TileFixture*} toRemove = {
@@ -304,7 +294,7 @@ object oneToTwoConverter satisfies SimpleDriver {
             Boolean adjacentWater() {
                 for (neighbor in neighbors) {
                     if (retval.getBaseTerrain(neighbor) == TileType.ocean ||
-                    CeylonIterable(retval.getRivers(neighbor)).first exists) {
+                            !retval.getRivers(neighbor).empty) {
                         return true;
                     }
                 } else {
@@ -322,7 +312,7 @@ object oneToTwoConverter satisfies SimpleDriver {
                                 point, retval.getBaseTerrain(point),
                                 {tempGround, tempForest,
                                     *retval.getOtherFixtures(point)}.coalesced,
-                                retval.dimensions()), true,
+                                retval.dimensions), true,
                                 true, id, FieldStatus.random(id)));
                         } else {
                             Ground? tempGround = retval.getGround(point);
@@ -332,23 +322,20 @@ object oneToTwoConverter satisfies SimpleDriver {
                                     retval.getBaseTerrain(point),
                                     {tempGround, tempForest,
                                         *retval.getOtherFixtures(point)}.coalesced,
-                                    retval.dimensions()), id));
+                                    retval.dimensions), id));
                         }
                     } else if (TileType.desert == retval.getBaseTerrain(point)) {
                         Boolean watered = adjacentWater();
                         if ((watered && rng.nextDouble() < desertToPlains) ||
-                        CeylonIterable(retval.getRivers(point)).first exists &&
+                        !retval.getRivers(point).empty &&
                         rng.nextDouble() < 0.6) {
                             retval.setBaseTerrain(point, TileType.plains);
                         }
                     } else if (rng.nextDouble() < addForestProbability) {
-                        Ground? tempGround = retval.getGround(point);
-                        Forest? tempForest = retval.getForest(point);
                         String forestType = runner.recursiveConsultTable(
                             "temperate_major_tree", point, retval.getBaseTerrain(point),
-                            {tempGround, tempForest,
-                                *retval.getOtherFixtures(point)}.coalesced,
-                            retval.dimensions());
+                            retval.getAllFixtures(point), retval.dimensions);
+                        // TODO: inline initialization into if
                         Forest? existingForest = retval.getForest(point);
                         if (exists existingForest, forestType == existingForest.kind) {
                             // do nothing

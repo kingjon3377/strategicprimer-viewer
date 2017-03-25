@@ -1,7 +1,6 @@
 import ceylon.interop.java {
     javaClass,
-    javaClassFromInstance,
-    CeylonIterable
+    javaClassFromInstance
 }
 import ceylon.math.float {
     random
@@ -63,7 +62,6 @@ import lovelace.util.common {
 import model.map {
     HasMutableImage,
     HasPortrait,
-    IMapNG,
     Player,
     PlayerImpl,
     River,
@@ -76,7 +74,8 @@ import model.map {
 }
 import strategicprimer.viewer.model.map {
     SPMapNG,
-    IMutableMapNG
+    IMutableMapNG,
+    IMapNG
 }
 import model.map.fixtures {
     RiverFixture,
@@ -708,7 +707,7 @@ void testTileSerializationTwo() {
         Unit(PlayerImpl(2, ""), "explorer", "name one", 1));
     five.addFixture(PointFactory.point(2, 3),
         Unit(PlayerImpl(2, ""), "explorer", "name two", 2));
-    assertEquals(CeylonIterable(five.getOtherFixtures(PointFactory.point(2, 3))).size, 2,
+    assertEquals(five.getOtherFixtures(PointFactory.point(2, 3)).size, 2,
         "Just checking ...");
     assertSerialization("Multiple units should come through", five);
     String xmlTwoLogical =

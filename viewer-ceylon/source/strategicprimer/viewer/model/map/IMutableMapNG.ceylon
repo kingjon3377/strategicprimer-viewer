@@ -1,5 +1,4 @@
 import model.map {
-    IMapNG,
     Player,
     Point,
     TileType,

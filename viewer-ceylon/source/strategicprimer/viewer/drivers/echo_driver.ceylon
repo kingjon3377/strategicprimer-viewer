@@ -1,9 +1,9 @@
 import strategicprimer.viewer.model.map {
-    IMutableMapNG
+    IMutableMapNG,
+    IMapNG
 }
 import model.map {
-    Point,
-    IMapNG
+    Point
 }
 import java.nio.file {
     JPaths = Paths
@@ -61,7 +61,7 @@ object echoDriver satisfies UtilityDriver {
                 throw DriverFailedException(except, "SP map format error in ``inArg``");
             }
             IDRegistrar idFactory = createIDFactory(map);
-            for (location in map.locations()) {
+            for (location in map.locations) {
                 if (exists mainForest = map.getForest(location), mainForest.id < 0) {
                     Integer id = 1147200 + location.row * 176 + location.col;
                     idFactory.register(id);
@@ -129,7 +129,7 @@ object forestFixerDriver satisfies SimpleCLIDriver {
         for ([map, file] in model.subordinateMaps) {
             cli.println("Starting ``file?.string
                 else "a map with no associated path"``");
-            for (location in map.locations()) {
+            for (location in map.locations) {
                 {Forest*} mainForests = extractForests(mainMap, location);
                 {Forest*} subForests = extractForests(map, location);
                 for (forest in subForests) {

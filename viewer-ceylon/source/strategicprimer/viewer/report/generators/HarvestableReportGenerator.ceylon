@@ -17,7 +17,6 @@ import model.map {
     PointFactory,
     DistanceComparator,
     Point,
-    IMapNG,
     IFixture
 }
 import model.map.fixtures.resources {
@@ -31,6 +30,9 @@ import model.map.fixtures.resources {
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     Mine
+}
+import strategicprimer.viewer.model.map {
+    IMapNG
 }
 
 import strategicprimer.viewer.report.nodes {

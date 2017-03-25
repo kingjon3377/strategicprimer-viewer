@@ -19,8 +19,10 @@ import java.util.\ifunction {
     Predicate
 }
 
+import strategicprimer.viewer.model.map {
+    IMapNG
+}
 import model.map {
-    IMapNG,
     TileFixture,
     PointFactory,
     MapDimensions
@@ -49,7 +51,7 @@ Integer first(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize)
     Integer start = system.nanoseconds;
     for (rep in 0..reps) {
         image.flush();
-        for (point in map.locations()) {
+        for (point in map.locations) {
             helper.drawTileTranslated(image.createGraphics(), map, point, tileSize,
                 tileSize);
         }
@@ -59,14 +61,14 @@ Integer first(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize)
 }
 "The second test: Translating."
 Integer second(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
-    MapDimensions mapDimensions = map.dimensions();
+    MapDimensions mapDimensions = map.dimensions;
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
     Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
     for (rep in 0..reps) {
         image.flush();
-        for (point in map.locations()) {
+        for (point in map.locations) {
             helper.drawTile(image.createGraphics(), map, point,
                 PointFactory.coordinate(point.row * tileSize, point.col * tileSize),
                 dimensions);
@@ -82,7 +84,7 @@ Integer third(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize)
     for (rep in 0..reps) {
         image.flush();
         Graphics pen = image.createGraphics();
-        for (point in map.locations()) {
+        for (point in map.locations) {
             helper.drawTileTranslated(pen, map, point, tileSize, tileSize);
         }
         pen.dispose();
@@ -92,7 +94,7 @@ Integer third(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize)
 }
 "Fourth test: translating, reusing Graphics."
 Integer fourth(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
-    MapDimensions mapDimensions = map.dimensions();
+    MapDimensions mapDimensions = map.dimensions;
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
@@ -100,7 +102,7 @@ Integer fourth(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize
         image.flush();
         Graphics pen = image.createGraphics();
         Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
-        for (point in map.locations()) {
+        for (point in map.locations) {
             helper.drawTile(pen, map, point, PointFactory.coordinate(point.row * tileSize,
                 point.col * tileSize), dimensions);
         }
@@ -113,7 +115,7 @@ Range<Integer> testRowSpan = 20..40;
 Range<Integer> testColSpan = 55..82;
 "Fifth test, part one: iterating."
 Integer fifthOne(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
-    MapDimensions mapDimensions = map.dimensions();
+    MapDimensions mapDimensions = map.dimensions;
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
@@ -133,7 +135,7 @@ Integer fifthOne(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSi
     return end - start;
 }
 Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
-    MapDimensions mapDimensions = map.dimensions();
+    MapDimensions mapDimensions = map.dimensions;
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
@@ -141,7 +143,7 @@ Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSi
         image.flush();
         Graphics pen = image.createGraphics();
         Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
-        for (point in map.locations()) {
+        for (point in map.locations) {
             if (testRowSpan.contains(point.row) && testColSpan.contains(point.col)) {
                 helper.drawTile(pen, map, point,
                     PointFactory.coordinate(point.row * tileSize, point.col * tileSize),
@@ -191,7 +193,7 @@ void runAllTests(ICLIHelper cli, IMapNG map, Integer repetitions) {
         cli.println("``testDesc``:");
         for ([testCase, caseDesc, accumulator] in helpers) {
             accumulator.add(printStats(caseDesc, test(testCase, map, repetitions,
-                scaleZoom(ViewerModel.defaultZoomLevel, map.dimensions().version)),
+                scaleZoom(ViewerModel.defaultZoomLevel, map.dimensions.version)),
                 repetitions));
         }
     }

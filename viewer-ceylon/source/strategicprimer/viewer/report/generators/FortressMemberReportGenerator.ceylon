@@ -18,8 +18,10 @@ import model.map {
     DistanceComparator,
     Player,
     Point,
-    IMapNG,
     IFixture
+}
+import strategicprimer.viewer.model.map {
+    IMapNG
 }
 import model.map.fixtures {
     Implement,

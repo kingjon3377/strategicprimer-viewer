@@ -1,16 +1,15 @@
 import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
+import strategicprimer.viewer.model.map {
+    IMapNG
+}
 import lovelace.util.common {
     todo
 }
 import model.map {
     IEvent,
-    Point,
-    IMapNG
-}
-import ceylon.interop.java {
-    CeylonIterable
+    Point
 }
 import view.util {
     Coordinate
@@ -51,15 +50,13 @@ shared interface TileDrawHelper {
     "Whether the given map has any fortresses at the given location."
     todo("Move out of the interface")
     shared default Boolean hasAnyForts(IMapNG map, Point location) =>
-            CeylonIterable(map.getOtherFixtures(location))
-                .any((fixture) => fixture is Fortress);
+            !map.getOtherFixtures(location).narrow<Fortress>().empty;
     "Whether the given map has any units at the given location."
     todo("Move out of the interface")
     shared default Boolean hasAnyUnits(IMapNG map, Point location) =>
-            CeylonIterable(map.getOtherFixtures(location))
-                .any((fixture) => fixture is IUnit);
+            !map.getOtherFixtures(location).narrow<IUnit>().empty;
     """Whether the given map has any "events" at the given location."""
-    todo("Move out of the interface", "Port to use Ceylon Iterable instead of Java Stream")
+    todo("Move out of the interface")
     shared default Boolean hasEvent(IMapNG map, Point location) =>
-            map.streamAllFixtures(location).anyMatch((fixture) => fixture is IEvent);
+            !map.getAllFixtures(location).narrow<IEvent>().empty;
 }

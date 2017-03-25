@@ -21,7 +21,6 @@ import javax.swing {
     SwingUtilities
 }
 import ceylon.interop.java {
-    CeylonIterable,
     javaObjectArray
 }
 import java.awt {
@@ -61,7 +60,7 @@ shared class PlayerChangeMenuListener(IDriverModel model)
     }
     shared actual void actionPerformed(ActionEvent event) {
         Player currentPlayer = model.map.currentPlayer;
-        Iterable<Player> players = CeylonIterable(model.map.players());
+        {Player*} players = model.map.players;
         if (is Player retval = JOptionPane.showInputDialog(
                 getContainingFrame(eventSource(event.source)),
                 "Player to view:", "Choose New Player:",

@@ -4,9 +4,6 @@ import ceylon.collection {
     ArrayList,
     HashMap
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 
 import lovelace.util.common {
     DelayedRemovalMap
@@ -17,7 +14,6 @@ import model.map {
     Player,
     PointFactory,
     DistanceComparator,
-    IMapNG,
     River,
     Point
 }
@@ -40,6 +36,9 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 
+import strategicprimer.viewer.model.map {
+    IMapNG
+}
 import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
@@ -260,7 +259,7 @@ shared class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixt
             retval.appendNode(SimpleReportNode("Located at ``loc`` ``distCalculator
                 .distanceString(loc)``", loc));
             // This is a no-op if no rivers, so avoid an if
-            riversToNode(loc, retval, *CeylonIterable(map.getRivers(loc)));
+            riversToNode(loc, retval, *map.getRivers(loc));
             IReportNode units = ListReportNode("Units on the tile:");
             IReportNode resources = ListReportNode("Resources:", loc);
             MutableMap<String,IReportNode> resourceKinds = HashMap<String,IReportNode>();

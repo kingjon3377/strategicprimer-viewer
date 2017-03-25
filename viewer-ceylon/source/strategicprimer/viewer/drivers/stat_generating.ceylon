@@ -37,7 +37,6 @@ import lovelace.util.jvm {
 
 import model.map {
     Player,
-    IMapNG,
     IFixture,
     FixtureIterable,
     Point,
@@ -68,6 +67,9 @@ import strategicprimer.viewer.model {
     IMultiMapModel,
     IDriverModel,
     IDRegistrar
+}
+import strategicprimer.viewer.model.map {
+    IMapNG
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village
@@ -123,7 +125,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Find a fixture in a map by ID number."
     IFixture? find(IMapNG map, Integer id) {
-        for (location in map.locations()) {
+        for (location in map.locations) {
             if (exists forest = map.getForest(location), forest.id == id) {
                 return forest;
             } else if (exists ground = map.getGround(location), ground.id == id) {
@@ -406,7 +408,7 @@ class TileContentsGenerator(IMapNG map) {
         Integer reps = singletonRandom.nextInt(4) + 1;
         for (i in 0..reps) {
             process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
-                {}, map.dimensions()));
+                {}, map.dimensions));
         }
     }
 }
@@ -483,7 +485,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     }
     "Search for and fix aquatic villages with non-aquatic races."
     void fixAllVillages(IMapNG map, ICLIHelper cli) {
-        Village[] villages = [ for (point in map.locations())
+        Village[] villages = [ for (point in map.locations)
             if (map.getBaseTerrain(point) == TileType.ocean)
                 for (fixture in map.getOtherFixtures(point))
                     if (is Village fixture, landRaces.contains(fixture.race))
@@ -541,7 +543,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     }
     "Search for and fix units with kinds missing."
     void fixAllUnits(IMapNG map, ICLIHelper cli) {
-        for (point in map.locations()) {
+        for (point in map.locations) {
             SimpleTerrain terrain = getTerrain(map, point);
             for (fixture in map.getOtherFixtures(point)) {
                 if (is Unit fixture, "TODO" == fixture.kind) {

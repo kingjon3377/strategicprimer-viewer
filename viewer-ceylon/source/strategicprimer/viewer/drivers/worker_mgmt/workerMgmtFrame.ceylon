@@ -42,7 +42,9 @@ import model.map {
     PointFactory,
     DistanceComparator,
     Player,
-    Point,
+    Point
+}
+import strategicprimer.viewer.model.map {
     IMapNG
 }
 import javax.swing.tree {
@@ -58,9 +60,6 @@ import java.awt.event {
     WindowAdapter,
     ActionEvent,
     KeyEvent
-}
-import ceylon.interop.java {
-    CeylonIterable
 }
 import model.listeners {
     PlayerChangeListener,
@@ -95,7 +94,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         IWorkerModel model, MenuBroker menuHandler) {
     Point findHQ() {
         variable Point retval = PointFactory.invalidPoint;
-        for (location in model.map.locations()) {
+        for (location in model.map.locations) {
             for (fixture in model.map.getOtherFixtures(location)) {
                 if (is Fortress fixture, fixture.owner == model.map.currentPlayer) {
                     if ("HQ" == fixture.name) {
@@ -189,8 +188,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
                 newUnitDialog(mainMap.currentPlayer,
                     createIDFactory(mainMap));
         IWorkerTreeModel treeModel = WorkerTreeModelAlt(mainMap.currentPlayer, model);
-        JTree tree = workerTree(treeModel, CeylonIterable(mainMap.players()),
-                    () => mainMap.currentTurn, true);
+        JTree tree = workerTree(treeModel, mainMap.players, () => mainMap.currentTurn,
+            true);
         newUnitFrame.addNewUnitListener(treeModel);
         Integer keyMask = platform.shortcutMask;
         createHotKey(tree, "openUnits", ActionWrapper(

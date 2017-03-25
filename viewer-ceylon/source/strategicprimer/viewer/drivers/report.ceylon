@@ -5,12 +5,11 @@ import strategicprimer.viewer.model {
 import java.nio.file {
     JPath=Path, JPaths=Paths, JFiles=Files
 }
-import model.map {
-    IMapNG,
-    Player
+import strategicprimer.viewer.model.map {
+    IMapNG
 }
-import ceylon.interop.java {
-    CeylonIterable
+import model.map {
+    Player
 }
 import java.io {
     OutputStream,
@@ -50,8 +49,8 @@ object reportCLI satisfies SimpleDriver {
                 if (options.hasOption("--player"),
                         is Integer playerNum =
                                 Integer.parse(options.getArgument("--player")),
-                        exists temp = CeylonIterable(map.players()).find((item) =>
-                            item.playerId == playerNum)) {
+                        exists temp = map.players
+                            .find((item) => item.playerId == playerNum)) {
                     player = temp;
                 } else {
                     player = map.currentPlayer;

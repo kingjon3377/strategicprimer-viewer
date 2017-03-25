@@ -7,8 +7,6 @@ import ceylon.collection {
     ArrayList
 }
 import ceylon.interop.java {
-    JavaIterable,
-    JavaList,
     CeylonIterable
 }
 import ceylon.logging {
@@ -19,20 +17,11 @@ import ceylon.logging {
 import java.util {
     Formatter
 }
-import java.lang {
-    JIterable=Iterable
-}
-import java.util.stream {
-    Stream
-}
 
 import lovelace.util.common {
     todo
 }
 
-import strategicprimer.viewer.model.map {
-    IMutableMapNG
-}
 import model.map {
     Point,
     TileFixture,
@@ -43,8 +32,7 @@ import model.map {
     River,
     IMutablePlayerCollection,
     MutablePlayer,
-    SubsettableFixture,
-    IMapNG
+    SubsettableFixture
 }
 import model.map.fixtures {
     Ground
@@ -57,6 +45,11 @@ import model.map.fixtures.terrain {
 }
 import model.viewer {
     PointIterator
+}
+
+import strategicprimer.viewer.model.map {
+    IMutableMapNG,
+    IMapNG
 }
 
 import util {
@@ -104,37 +97,28 @@ shared class SPMapNG satisfies IMutableMapNG {
         currentTurn = turn;
     }
     "The dimensions of the map."
-    shared actual MapDimensions dimensions() => mapDimensions;
+    shared actual MapDimensions dimensions => mapDimensions;
     "A stream of the players known in the map"
-    shared actual JIterable<Player> players() => playerCollection;
+    shared actual {Player*} players => CeylonIterable(playerCollection);
     "The locations in the map."
-    shared actual JIterable<Point> locations() =>
-            IteratorWrapper(PointIterator(dimensions(), null, true, true));
-    shared actual Stream<Point> locationStream() =>
-            PointIterator(dimensions(), null, true, true).stream();
+    shared actual {Point*} locations =>
+            CeylonIterable(IteratorWrapper(PointIterator(dimensions, null, true, true)));
     "The base terrain at the given location."
     shared actual TileType getBaseTerrain(Point location) =>
             terrain.get(location) else TileType.notVisible;
     "Whether the given location is mountainous."
     shared actual Boolean isMountainous(Point location) => mountains.contains(location);
     "The rivers, if any, at the given location."
-    shared actual JIterable<River> getRivers(Point location) =>
-            JavaIterable<River>(rivers.get(location) else {});
+    shared actual {River*} getRivers(Point location) =>
+            {*(rivers.get(location) else {})};
     "The primary forest, if any, at the given location."
     shared actual Forest? getForest(Point location) => forests.get(location);
     "The base ground, if any known, at the given location."
     shared actual Ground? getGround(Point location) => ground.get(location);
     "Any fixtures other than rivers, primary forest, and primary ground at the given
      location."
-    shared actual JIterable<TileFixture> getOtherFixtures(Point location) =>
-            JavaIterable<TileFixture>(fixtures.get(location) else {});
-    shared actual Stream<TileFixture> streamOtherFixtures(Point location) {
-        if (exists retval = fixtures.get(location)) {
-            return JavaList(retval).stream();
-        } else {
-            return Stream.empty<TileFixture>();
-        }
-    }
+    shared actual {TileFixture*} getOtherFixtures(Point location) =>
+            {*(fixtures.get(location) else {})};
     "The current player."
     shared actual Player currentPlayer => playerCollection.currentPlayer;
     assign currentPlayer {
@@ -246,19 +230,16 @@ shared class SPMapNG satisfies IMutableMapNG {
         }
     }
     shared actual Integer hash =>
-            dimensions().hash + (currentTurn.leftLogicalShift(3)) +
+            dimensions.hash + (currentTurn.leftLogicalShift(3)) +
                 currentPlayer.hash.leftLogicalShift(5);
     shared actual Boolean equals(Object obj) {
         if (is IMapNG obj) {
-            if (dimensions() ==obj.dimensions(),
-                CeylonIterable(players()).containsEvery(CeylonIterable(obj.players())),
-                CeylonIterable(obj.players()).containsEvery(CeylonIterable(players())),
-                currentTurn == obj.currentTurn, currentPlayer == obj.currentPlayer) {
-                for (point in locations()) {
-                    {TileFixture*} ourFixtures = { getGround(point), getForest(point),
-                        *getOtherFixtures(point) }.coalesced;
-                    {TileFixture*} theirFixtures = { obj.getGround(point),
-                        obj.getForest(point), *obj.getOtherFixtures(point) }.coalesced;
+            if (dimensions == obj.dimensions, players.containsEvery(obj.players),
+                    obj.players.containsEvery(players), currentTurn == obj.currentTurn,
+                    currentPlayer == obj.currentPlayer) {
+                for (point in locations) {
+                    {TileFixture*} ourFixtures = getAllFixtures(point);
+                    {TileFixture*} theirFixtures = obj.getAllFixtures(point);
                     if (getBaseTerrain(point) !=obj.getBaseTerrain(point) ||
                     isMountainous(point) !=obj.isMountainous(point) ||
                     set { *getRivers(point) } !=set { *obj.getRivers(point) } ||
@@ -275,13 +256,13 @@ shared class SPMapNG satisfies IMutableMapNG {
     shared actual String string {
         StringBuilder builder = StringBuilder();
         builder.append("SPMapNG:
-                        Map version: ``dimensions().version``
-                        Rows: ``dimensions().rows``
-                        Columns: ``dimensions().columns``
+                        Map version: ``dimensions.version``
+                        Rows: ``dimensions.rows``
+                        Columns: ``dimensions.columns``
                         Current Turn: ``currentTurn``
                         Players:
                         ");
-        for (player in players()) {
+        for (player in players) {
             if (player.current) {
                 builder.append("``player`` (current)");
             } else {
@@ -292,7 +273,7 @@ shared class SPMapNG satisfies IMutableMapNG {
         builder.appendNewline();
         builder.append("Contents:");
         builder.appendNewline();
-        for (location in locations()) {
+        for (location in locations) {
             if (isLocationEmpty(location)) {
                 continue;
             }
@@ -309,7 +290,7 @@ shared class SPMapNG satisfies IMutableMapNG {
             if (exists forest = getForest(location)) {
                 builder.append("forest: ``forest``");
             }
-            if (!CeylonIterable(getRivers(location)).empty) {
+            if (!getRivers(location).empty) {
                 builder.append("rivers:");
                 for (river in getRivers(location)) {
                     builder.append(" ``river``");
@@ -331,11 +312,11 @@ shared class SPMapNG satisfies IMutableMapNG {
     """Returns true if the other map is a "strict subset" of this one, except for those
        cases we deliberately ignore."""
     shared actual Boolean isSubset(IMapNG obj, Formatter ostream, String context) {
-        if (dimensions() == obj.dimensions()) {
+        if (dimensions == obj.dimensions) {
             // TODO: delegate player-subset testing to PlayerCollection
             // TODO: Or else use standard Ceylon Iterable methods
             variable Boolean retval = true;
-            for (player in obj.players()) {
+            for (player in obj.players) {
                 if (!playerCollection.contains(player)) {
                     ostream.format("%s\tExtra player %s%n", context, player.string);
                     retval = false; // return false;
@@ -347,7 +328,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                     HashMap<Integer, MutableList<SubsettableFixture>>();
             // IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
             MutableMap<Integer, IUnit> ourUnits = HashMap<Integer, IUnit>();
-            for (point in locations()) {
+            for (point in locations) {
                 if (!{getBaseTerrain(point), TileType.notVisible}
                         .contains(obj.getBaseTerrain(point))) {
                     if (TileType.notVisible == getBaseTerrain(point)) {
@@ -366,22 +347,15 @@ shared class SPMapNG satisfies IMutableMapNG {
                     retval = false; // return false;
                 }
                 if (exists forest = obj.getForest(point)) {
-                    if (exists ourForest = getForest(point)) {
-                        // There are *far* too many false positives if we don't check the
-                        // "other fixtures," because of the way we represent this in the
-                        // XML. If we ever start a new campaign with a different data
-                        // representation---perhaps a database---we should remove this
-                        // check.
-                        if (forest != ourForest, !CeylonIterable(getOtherFixtures(point))
-                                .contains(forest)) {
-                            ostream.format("%s At %s:\tHas forest we don't", context,
-                                point.string);
-                            retval = false; // return false;
-                        }
-                    } else {
+                    // There are *far* too many false positives if we don't check the
+                    // "other fixtures," because of the way we represent this in the XML.
+                    // If we ever start a new campaign with a different data
+                    // representation---perhaps a database---we should remove this check.
+                    if (!getAllFixtures(point)
+                            .contains(forest)) {
                         ostream.format("%s At %s:\tHas forest we don't", context,
                             point.string);
-                        retval = false;
+                        retval = false; // return false;
                     }
                 }
                 if (exists ground = obj.getGround(point)) {
@@ -390,9 +364,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                         // "other fixtures," because of the way we represent this in the
                         // XML. If we ever start a new campaign with a different data
                         // representation---perhaps a database---we should remove this
-                        // check. Except for the 'exposed' bit.
-                        if (ground != ourGround, !CeylonIterable(getOtherFixtures(point))
-                                .follow(ourGround).narrow<Ground>()
+                        // check. Except for the 'exposed' (kind == kind) bit.
+                        if (ground != ourGround, !getAllFixtures(point).narrow<Ground>()
                                 .any((item) => item.kind == ground.kind)) {
                             ostream.format("%s At %s:\tHas ground we don't", context,
                                 point.string);
@@ -430,7 +403,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                 if (exists forest = getForest(point)) {
                     ourFixtures.add(forest);
                 }
-                {TileFixture*} theirFixtures = CeylonIterable(obj.getOtherFixtures(point));
+                {TileFixture*} theirFixtures = obj.getOtherFixtures(point);
                 for (fixture in theirFixtures) {
                     if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
                         continue;
@@ -474,7 +447,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                         break;
                     }
                 }
-                if (!set { *CeylonIterable(obj.getRivers(point)) }.complement(set { *CeylonIterable(getRivers(point))}).empty) {
+                if (!set { *obj.getRivers(point) }.complement(set { *getRivers(point) }).empty) {
                     ostream.format("%s At %s:\tExtra river%n", context, point.string);
                     retval = false; // return false;
                     break;
@@ -486,22 +459,20 @@ shared class SPMapNG satisfies IMutableMapNG {
             return false;
         }
     }
-    shared actual Integer compareTo(IMapNG other) {
+    todo("Should we really satisfy Comparable?")
+    shared actual Comparison compare(IMapNG other) {
         if (equals(other)) {
-            return 0;
+            return equal;
         } else {
-            switch (hash <=> other.hash)
-            case (smaller) { return -1; }
-            case (equal) { return 0; }
-            case (larger) { return 1; }
+            return hash <=> other.hash;
         }
     }
     "Clone a map, possibly for a specific player, who shouldn't see other players'
      details."
     shared actual IMapNG copy(Boolean zero, Player? player) {
-        IMutableMapNG retval = SPMapNG(dimensions(), playerCollection.copy(),
+        IMutableMapNG retval = SPMapNG(dimensions, playerCollection.copy(),
             currentTurn);
-        for (point in locations()) {
+        for (point in locations) {
             retval.setBaseTerrain(point, getBaseTerrain(point));
             if (exists grd = getGround(point)) {
                 retval.setGround(point, grd.copy(false));
@@ -514,7 +485,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                 retval.setForest(point, null);
             }
             retval.setMountainous(point, isMountainous(point));
-            retval.addRivers(point, *CeylonIterable(getRivers(point)));
+            retval.addRivers(point, *getRivers(point));
             // TODO: what other fixtures should we zero, or skip?
             for (fixture in getOtherFixtures(point)) {
                 retval.addFixture(point,

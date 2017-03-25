@@ -7,8 +7,10 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
+import strategicprimer.viewer.model.map {
+    IMapNG
+}
 import model.map {
-    IMapNG,
     Point,
     IFixture,
     Player,

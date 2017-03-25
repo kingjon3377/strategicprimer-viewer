@@ -40,7 +40,6 @@ import javax.xml.stream.events {
 
 import model.map {
     IMutablePlayerCollection,
-    IMapNG,
     Player,
     TileFixture,
     Point,
@@ -52,7 +51,8 @@ import model.map {
 }
 import strategicprimer.viewer.model.map {
     SPMapNG,
-    IMutableMapNG
+    IMutableMapNG,
+    IMapNG
 }
 import model.map.fixtures {
     Ground,
@@ -273,12 +273,12 @@ class YAMapReader("The Warning instance to use" Warning warner,
         writeProperty(ostream, "current_turn", obj.currentTurn);
         finishParentTag(ostream);
         writeTag(ostream, "map", tabs + 1);
-        MapDimensions dimensions = obj.dimensions();
+        MapDimensions dimensions = obj.dimensions;
         writeProperty(ostream, "version", dimensions.version);
         writeProperty(ostream, "rows", dimensions.rows);
         writeProperty(ostream, "columns", dimensions.columns);
         finishParentTag(ostream);
-        for (player in obj.players()) {
+        for (player in obj.players) {
             playerReader.write(ostream, player, tabs + 2);
         }
         for (i in 0..(dimensions.rows)) {

@@ -10,7 +10,6 @@ import lovelace.util.common {
 }
 
 import model.map {
-    IMapNG,
     Point,
     IFixture,
     DistanceComparator,
@@ -18,6 +17,9 @@ import model.map {
     PointFactory
 }
 
+import strategicprimer.viewer.model.map {
+    IMapNG
+}
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village
 }

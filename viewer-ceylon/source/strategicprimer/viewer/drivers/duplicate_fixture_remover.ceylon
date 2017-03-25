@@ -56,7 +56,7 @@ void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
                 .shortDesc()``', of class '``classDeclaration(matching).name``', ID #``
                 matching.id``?", "duplicate");
     }
-    for (location in map.locations()) {
+    for (location in map.locations) {
         MutableList<TileFixture> fixtures = ArrayList<TileFixture>();
         MutableList<TileFixture> toRemove = ArrayList<TileFixture>();
         if (exists ground = map.getGround(location)) {

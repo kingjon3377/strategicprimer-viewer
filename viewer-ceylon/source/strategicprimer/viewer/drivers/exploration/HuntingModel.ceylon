@@ -5,8 +5,10 @@ import ceylon.collection {
     ArrayList
 }
 
+import strategicprimer.viewer.model.map {
+    IMapNG
+}
 import model.map {
-    IMapNG,
     MapDimensions,
     TileType,
     Point
@@ -28,9 +30,9 @@ shared class HuntingModel {
     shared new (IMapNG map) {
         this.map = map;
     }
-    MapDimensions dimensions = map.dimensions();
+    MapDimensions dimensions = map.dimensions;
     {String*} fishKinds = set {
-        for (point in map.locations())
+        for (point in map.locations)
             if (map.getBaseTerrain(point) == TileType.ocean)
                 for (fixture in map.getOtherFixtures(point))
                     if (is Animal fixture)
@@ -44,7 +46,7 @@ shared class HuntingModel {
             HashMap<Point, MutableList<String>>();
     "Plants in the map."
     MutableMap<Point, MutableList<String>> plants = HashMap<Point, MutableList<String>>();
-    for (point in map.locations()) {
+    for (point in map.locations) {
         for (fixture in map.getOtherFixtures(point)) {
             if (is Animal fixture, !fixture.talking, !fixture.traces) {
                 String kind = fixture.kind;

@@ -12,7 +12,9 @@ import model.map {
     TerrainFixture,
     TileFixture,
     MapDimensions,
-    Point,
+    Point
+}
+import strategicprimer.viewer.model.map {
     IMapNG
 }
 import java.awt.event {

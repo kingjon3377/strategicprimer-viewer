@@ -73,13 +73,13 @@ import lovelace.util.jvm {
 
 import strategicprimer.viewer.model.map {
     SPMapNG,
-    IMutableMapNG
+    IMutableMapNG,
+    IMapNG
 }
 import model.map {
     River,
     Player,
     MapDimensionsImpl,
-    IMapNG,
     Point,
     PointFactory,
     TileType,
@@ -939,16 +939,16 @@ shared void convertZeroToOne() {
 }
 "A utility to convert a map to an equivalent half-resolution one."
 IMapNG decreaseResolution(IMapNG old) {
-    if (old.dimensions().rows % 2 != 0 || old.dimensions().columns %2 != 0) {
+    if (old.dimensions.rows % 2 != 0 || old.dimensions.columns %2 != 0) {
         throw IllegalArgumentException(
             "Can only convert maps with even numbers of rows and columns");
     }
     PlayerCollection players = PlayerCollection();
-    for (player in old.players()) {
+    for (player in old.players) {
         players.add(player);
     }
-    Integer newColumns = old.dimensions().columns / 2;
-    Integer newRows = old.dimensions().rows / 2;
+    Integer newColumns = old.dimensions.columns / 2;
+    Integer newRows = old.dimensions.rows / 2;
     IMutableMapNG retval = SPMapNG(MapDimensionsImpl(newRows, newColumns, 2), players,
         old.currentTurn);
     TileType consensus([TileType+] types) {
@@ -1036,7 +1036,7 @@ void testResolutionReduction() {
 
     IMapNG converted = decreaseResolution(start);
     Point zeroPoint = PointFactory.point(0, 0);
-    assertTrue(CeylonIterable(converted.getOtherFixtures(zeroPoint))
+    assertTrue(converted.getOtherFixtures(zeroPoint)
         .containsEvery({fixture, fixtureTwo, fixtureThree, fixtureFour}),
         "Combined tile should contain fixtures from all four original tiles");
     assertEquals(converted.getBaseTerrain(zeroPoint), TileType.desert,
@@ -1068,15 +1068,15 @@ void testMoreReduction() {
         "One mountainous point makes the reduced point mountainous");
     assertEquals(converted.getGround(zeroPoint), groundOne, "Ground carries over");
     assertEquals(converted.getForest(zeroPoint), forestOne, "Forest carries over");
-    assertTrue(CeylonIterable(converted.getOtherFixtures(zeroPoint))
+    assertTrue(converted.getOtherFixtures(zeroPoint)
         .containsEvery({groundTwo, forestTwo}),
         "Ground and forest carry over even when already set");
-    assertTrue(CeylonIterable(converted.getRivers(zeroPoint))
+    assertTrue(converted.getRivers(zeroPoint)
         .containsEvery({River.lake, River.east, River.south}),
         "Non-interior rivers carry over");
     // TODO: ensure that the original included some interior rivers
-    assertTrue(!CeylonIterable(converted.getRivers(zeroPoint))
-        .containsAny({River.north, River.west}), "Interior rivers do not carry over");
+    assertTrue(!converted.getRivers(zeroPoint).containsAny({River.north, River.west}),
+        "Interior rivers do not carry over");
     assertEquals(converted.getBaseTerrain(zeroPoint), TileType.steppe,
         "Combined tile has most common terrain type among inputs");
 }

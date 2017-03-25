@@ -2,7 +2,9 @@ import java.awt {
     Dimension
 }
 import model.map {
-    Player,
+    Player
+}
+import strategicprimer.viewer.model.map {
     IMapNG
 }
 import javax.swing {
@@ -17,9 +19,6 @@ import lovelace.util.jvm {
     BorderedPanel,
     verticalSplit,
     horizontalSplit
-}
-import ceylon.interop.java {
-    CeylonIterable
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu,
@@ -45,7 +44,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
     IMapNG map = model.map;
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(map.currentPlayer, model);
     JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
-        CeylonIterable(map.players()), () => model.map.currentTurn, false);
+        map.players, () => model.map.currentTurn, false);
     WorkerCreationListener newWorkerListener = WorkerCreationListener(treeModel,
         createIDFactory(map));
     tree.addUnitSelectionListener(newWorkerListener);

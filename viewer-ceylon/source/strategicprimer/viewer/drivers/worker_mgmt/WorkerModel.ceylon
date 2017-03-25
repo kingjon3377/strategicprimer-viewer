@@ -34,7 +34,8 @@ import model.map {
 }
 import strategicprimer.viewer.model.map {
     SPMapNG,
-    IMutableMapNG
+    IMutableMapNG,
+    IMapNG
 }
 import model.map.fixtures.mobile {
     ProxyFor,
@@ -80,7 +81,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     "All the players in all the maps."
     shared actual {Player*} players {
         return allMaps.map(([IMutableMapNG, JPath?] pair) => pair.first)
-                .flatMap((IMutableMapNG map) => CeylonIterable(map.players())).distinct;
+                .flatMap(IMutableMapNG.players).distinct;
     }
     "Get all the given player's units, or only those of a specified kind."
     shared actual {IUnit*} getUnits(Player player, String? kind) {
@@ -89,14 +90,13 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         } else if (subordinateMaps.empty) {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.
-            return getUnitsImpl(CeylonIterable(map.locations())
-                .flatMap((point) => CeylonIterable(map.getOtherFixtures(point))),
-                    player);
+            return getUnitsImpl(map.locations
+                .flatMap((point) => map.getOtherFixtures(point)), player);
         } else {
             value temp = allMaps
                     .map(([IMutableMapNG, JPath?] pair) => pair.first)
-                    .flatMap((map) => CeylonIterable(map.locations()))
-                    .flatMap((point) => getUnitsImpl(CeylonIterable(map.getOtherFixtures(point)), player));
+                    .flatMap(IMapNG.locations)
+                    .flatMap((point) => getUnitsImpl(map.getOtherFixtures(point), player));
             MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
                     TreeMap<Integer, IUnit&ProxyFor<IUnit>>((x, y) => x<=>y);
             for (unit in temp) {
@@ -139,7 +139,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     }
     "Add a unit to all the maps, at the location of its owner's HQ in the main map."
     shared actual void addUnit(IUnit unit) {
-        for (point in map.locations()) {
+        for (point in map.locations) {
             for (fixture in map.getOtherFixtures(point)) {
                 if (is Fortress fixture, "HQ" == fixture.name, fixture.owner == unit.owner) {
                     addUnitAtLocation(unit, point);
@@ -202,7 +202,7 @@ void testGetUnits() {
     fixtures.add(Oasis(8));
     value shuffled = shuffle(fixtures);
     IMutableMapNG map = SPMapNG(MapDimensionsImpl(3, 3, 2), PlayerCollection(), -1);
-    for ([point, fixture] in zipPairs(CeylonIterable(map.locations()), shuffled)) {
+    for ([point, fixture] in zipPairs(map.locations, shuffled)) {
         map.addFixture(point, fixture);
     }
     IWorkerModel model = WorkerModel(map, null);

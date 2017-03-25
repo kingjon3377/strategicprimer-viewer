@@ -1,9 +1,3 @@
-import java.lang {
-    JIterable=Iterable
-}
-import java.util.stream {
-    Stream
-}
 import java.awt.event {
     ActionEvent
 }
@@ -36,9 +30,6 @@ import model.map {
     HasKind,
     FixtureIterable,
     Point
-}
-import ceylon.interop.java {
-    CeylonIterable
 }
 import model.viewer {
     PointIterator
@@ -156,7 +147,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         }
         Point? result = PointIterator(model.mapDimensions, model.selection,
             !backwards.selected, !vertically.selected).stream().filter(
-                    (point) => model.map.streamAllFixtures(point).anyMatch(
+                    (point) => model.map.getAllFixtures(point).any(
                         (fixture) => matches(pattern, idNum, fixture, caseSensitivity)))
             .findFirst().orElse(null);
         if (exists result) {
@@ -203,19 +194,17 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         void populate(Anything fixture) {
             if (is TileFixture fixture) {
                 filterList.shouldDisplay(fixture);
-            } else if (is JIterable<out Anything> fixture) {
+            } else if (is Iterable<Anything> fixture) {
                 for (item in fixture) {
                     populate(item);
                 }
-            } else if (is Stream<out Anything> fixture) {
-                fixture.forEach((Anything item) => populate(item));
             }
         }
-        for (point in model.map.locations()) {
-            if (!CeylonIterable(model.map.getRivers(point)).empty) {
+        for (point in model.map.locations) {
+            if (!model.map.getRivers(point).empty) {
                 populate(RiverFixture());
             }
-            populate(model.map.streamAllFixtures(point));
+            populate(model.map.getAllFixtures(point));
         }
     });
     contentPane = horizontalSplit(0.6, 0.6, contentPanel,

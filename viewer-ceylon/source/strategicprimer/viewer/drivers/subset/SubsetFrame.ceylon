@@ -40,12 +40,12 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.viewer.model.map {
-    SPMapNG
+    SPMapNG,
+    IMapNG
 }
 import model.map {
     PlayerCollection,
-    MapDimensionsImpl,
-    IMapNG
+    MapDimensionsImpl
 }
 
 import strategicprimer.viewer.drivers {

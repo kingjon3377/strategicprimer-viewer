@@ -6,6 +6,9 @@ import ceylon.collection {
     HashSet,
     MutableList
 }
+import ceylon.interop.java {
+    CeylonIterable
+}
 import ceylon.math.float {
     sqrt,
     ceiling
@@ -26,7 +29,6 @@ import lovelace.util.common {
 
 import model.map {
     Point,
-    IMapNG,
     Player,
     TileFixture,
     HasOwner,
@@ -46,15 +48,19 @@ import model.map.fixtures.terrain {
     Forest
 }
 
-import util {
-    Quantity
-}
 import strategicprimer.viewer.drivers.exploration {
     HuntingModel,
     surroundingPointIterable
 }
 import strategicprimer.viewer.model {
     IDriverModel
+}
+import strategicprimer.viewer.model.map {
+    IMapNG
+}
+
+import util {
+    Quantity
 }
 "Models of (game statistics for) herding."
 interface HerdModel of PoultryModel | MammalModel {
@@ -144,14 +150,14 @@ object queryCLI satisfies SimpleDriver {
     "How many encounters per hour for a hunter or such."
     Integer hourlyEncounters = 4;
     "Count the workers in an Iterable belonging to a player."
-    Integer countWorkersInIterable(Player player, JIterable<out TileFixture> fixtures) {
+    Integer countWorkersInIterable(Player player, {TileFixture*} fixtures) {
         variable Integer retval = 0;
         for (fixture in fixtures) {
             if (is IWorker fixture, is HasOwner fixtures, player == fixtures) {
                 retval++;
             } else if (is FixtureIterable<out Object> fixture) {
                 assert (is JIterable<out TileFixture> fixture);
-                retval += countWorkersInIterable(player, fixture);
+                retval += countWorkersInIterable(player, CeylonIterable(fixture));
             }
         }
         return retval;
@@ -163,7 +169,7 @@ object queryCLI satisfies SimpleDriver {
             "Players in the map:", "Map contains no players",
             "Owner of workers to count: ", true);
         if (exists player = playerList[playerNum]) {
-            Integer count = sum { 0, for (location in map.locations())
+            Integer count = sum { 0, for (location in map.locations)
                 countWorkersInIterable(player, map.getOtherFixtures(location)) };
             cli.println("``player.name`` has ``count`` workers");
         }
@@ -327,7 +333,7 @@ object queryCLI satisfies SimpleDriver {
     Point? findUnexplored(IMapNG map, Point base) {
         Queue<Point> queue = LinkedList<Point>();
         queue.offer(base);
-        MapDimensions dimensions = map.dimensions();
+        MapDimensions dimensions = map.dimensions;
         MutableSet<Point> considered = HashSet<Point>();
         MutableList<Point> retval = ArrayList<Point>();
         while (exists current = queue.accept()) {
@@ -393,11 +399,11 @@ object queryCLI satisfies SimpleDriver {
         case ('e') { herd(cli, huntModel); }
         case ('t') { trappingCLI.startDriverOnModel(cli, options, model); }
         case ('d') { printDistance(model.mapDimensions, cli); }
-        case ('c') { countWorkers(model.map, cli, *model.map.players()); }
+        case ('c') { countWorkers(model.map, cli, *model.map.players); }
         case ('u') {
             Point base = cli.inputPoint("Starting point? ");
             if (exists unexplored = findUnexplored(model.map, base)) {
-                Float distanceTo = distance(base, unexplored, model.map.dimensions());
+                Float distanceTo = distance(base, unexplored, model.map.dimensions);
                 cli.println("Nearest unexplored tile is ``unexplored``, ``Float
                     .format(distanceTo, 0, 1, '.', ',')`` tiles away");
             } else {

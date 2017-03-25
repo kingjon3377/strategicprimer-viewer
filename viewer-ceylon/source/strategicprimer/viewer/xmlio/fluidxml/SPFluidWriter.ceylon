@@ -38,7 +38,6 @@ import javax.xml.stream {
 
 import model.map {
     River,
-    IMapNG,
     Player,
     HasKind,
     HasImage,
@@ -84,6 +83,9 @@ import model.map.fixtures.resources {
     MineralVein,
     Shrub,
     StoneDeposit
+}
+import strategicprimer.viewer.model.map {
+    IMapNG
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     Mine
@@ -254,11 +256,11 @@ shared class SPFluidWriter() satisfies SPWriter {
                 obj.currentPlayer.playerId);
             writeIntegerAttribute(ostream, "current_turn", obj.currentTurn);
             writeTag(ostream, "map", indentation + 1, false);
-            MapDimensions dimensions = obj.dimensions();
+            MapDimensions dimensions = obj.dimensions;
             writeIntegerAttribute(ostream, "version", dimensions.version);
             writeIntegerAttribute(ostream, "rows", dimensions.rows);
             writeIntegerAttribute(ostream, "columns", dimensions.columns);
-            for (player in obj.players()) {
+            for (player in obj.players) {
                 writePlayer(ostream, player, indentation + 2);
             }
             for (i in 0..(dimensions.rows)) {

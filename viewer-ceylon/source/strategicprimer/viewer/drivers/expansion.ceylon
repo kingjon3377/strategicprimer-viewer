@@ -1,8 +1,8 @@
 import strategicprimer.viewer.model.map {
-    IMutableMapNG
+    IMutableMapNG,
+    IMapNG
 }
 import model.map {
-    IMapNG,
     Player,
     Point,
     TileFixture,
@@ -19,9 +19,6 @@ import ceylon.collection {
 import model.map.fixtures.mobile {
     IUnit,
     Animal
-}
-import ceylon.interop.java {
-    CeylonIterable
 }
 import model.map.fixtures.resources {
     CacheFixture
@@ -84,10 +81,10 @@ object expansionDriver satisfies SimpleCLIDriver {
                     }
                 }
                 IUnit mock = mockUnit(currentPlayer);
-                for (point in map.locations()) {
+                for (point in map.locations) {
                     if (containsSwornVillage(point)) {
                         for (neighbor in surroundingPointIterable(point,
-                                map.dimensions())) {
+                                map.dimensions)) {
                             if (map.getBaseTerrain(neighbor) == TileType.notVisible) {
                                 map.setBaseTerrain(neighbor,
                                     master.getBaseTerrain(neighbor));
@@ -105,7 +102,7 @@ object expansionDriver satisfies SimpleCLIDriver {
                             }
                             for (fixture in master.getOtherFixtures(neighbor)) {
                                 if (fixture is CacheFixture ||
-                                        CeylonIterable(map.getOtherFixtures(neighbor))
+                                        map.getOtherFixtures(neighbor)
                                             .contains(fixture)) {
                                     continue;
                                 } else if (shouldAlwaysNotice(mock, fixture)) {
@@ -168,7 +165,7 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
     "Populate the map. You shouldn't need to customize this."
     void populate(IMutableMapNG map) {
         IDRegistrar idf = createIDFactory(map);
-        for (location in map.locations()) {
+        for (location in map.locations) {
             if (isSuitable(map, location) && random() < chance) {
                 create(location, map, idf);
             }

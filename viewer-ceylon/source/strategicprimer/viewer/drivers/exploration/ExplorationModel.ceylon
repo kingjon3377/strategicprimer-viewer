@@ -29,13 +29,13 @@ import model.listeners {
     SelectionChangeListener
 }
 import strategicprimer.viewer.model.map {
-    IMutableMapNG
+    IMutableMapNG,
+    IMapNG
 }
 import model.map {
     PointFactory,
     Point,
     Player,
-    IMapNG,
     MapDimensions,
     HasOwner,
     TileType,
@@ -84,7 +84,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
      player (which at present means the unit is moving *to* a tile two or fewer tiles away
      from the watcher), print a message saying so to stdout."
     static void checkAllNearbyWatchers(IMapNG map, IUnit unit, Point dest) {
-        MapDimensions dimensions = map.dimensions();
+        MapDimensions dimensions = map.dimensions;
         for (point in surroundingPointIterable(dest, dimensions).distinct) {
             for (fixture in map.getOtherFixtures(point)) {
                 if (is HasOwner fixture, !fixture.owner.independent, fixture.owner != unit.owner) {
@@ -171,17 +171,16 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             extends SimpleMultiMapModel.copyConstructor(model) {}
     "All the players shared by all the maps."
     shared actual {Player*} playerChoices {
-        variable Set<Player> retval = set { *map.players() };
+        variable Set<Player> retval = set { *map.players };
         for (pair in allMaps) {
-            Set<Player> temp = set { *pair.first.players() };
+            Set<Player> temp = set { *pair.first.players };
             retval = retval.intersection(temp);
         }
         return { *retval };
     }
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) {
-        {Object*} temp = CeylonIterable(map.locations())
-            .flatMap((point) => CeylonIterable(map.getOtherFixtures(point)))
+        {Object*} temp = map.locations.flatMap((point) => map.getOtherFixtures(point))
             .flatMap((element) {
                 if (is Fortress element) {
                     return CeylonIterable(element);
@@ -265,8 +264,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                         {ground, forest, *map.getOtherFixtures(dest)}.coalesced;
                 base = movementCost(map.getBaseTerrain(dest),
                     map.getForest(dest) exists, map.isMountainous(dest),
-                    riversSpeedTravel(direction, CeylonIterable(map.getRivers(point)),
-                        CeylonIterable(map.getRivers(dest))), fixtures);
+                    riversSpeedTravel(direction, map.getRivers(point),
+                        map.getRivers(dest)), fixtures);
             }
             Integer retval = (ceiling(base * speed.mpMultiplier) + 0.1).integer;
             removeImpl(map, point, unit);
@@ -294,7 +293,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     """Search the main map for the given fixture. Returns the first location found (search
        order is not defined) containing a fixture "equal to" the specified one."""
     shared actual Point find(TileFixture fixture) {
-        for (point in map.locations()) {
+        for (point in map.locations) {
             if (doesLocationHaveFixture(map, point, fixture)) {
                 return point;
             }
@@ -364,7 +363,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     }
                 }
                 {[Point, TileFixture]*} surroundingFixtures = surroundingPoints
-                            .flatMap((point) => CeylonIterable(mainMap.getOtherFixtures(point))
+                            .flatMap((point) => mainMap.getOtherFixtures(point)
                                 .map((fixture) => [point, fixture]));
                 [Point, TileFixture]? vegetation = surroundingFixtures
                     .filter(([loc, fixture]) => fixture is Meadow|Grove).first;
@@ -419,10 +418,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 } else if (is Ground newFixture, !locGround exists) {
                     map.setGround(currentPoint, newFixture.copy(condition));
                     return;
-                    // TODO: replace following branch's condition with Ceylon equivalent
-                    // once IMapNG ported
-                } else if (map.streamAllFixtures(currentPoint)
-                        .anyMatch((fixture) => areDiggablesEqual(fixture, oldFixture))) {
+                } else if (map.getAllFixtures(currentPoint)
+                        .any((fixture) => areDiggablesEqual(fixture, oldFixture))) {
                     map.removeFixture(currentPoint, oldFixture);
                 }
                 map.addFixture(currentPoint, newFixture.copy(condition));

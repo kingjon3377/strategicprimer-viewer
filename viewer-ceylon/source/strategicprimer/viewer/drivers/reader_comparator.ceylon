@@ -16,7 +16,7 @@ import java.nio.file {
     JPaths=Paths
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     IMapNG
 }
 

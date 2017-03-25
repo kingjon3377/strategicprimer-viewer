@@ -4,9 +4,6 @@ import ceylon.collection {
     MutableMap,
     HashSet
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 import ceylon.language.meta {
     classDeclaration
 }
@@ -56,11 +53,11 @@ import model.listeners {
 }
 import model.map {
     Player,
-    PlayerImpl,
-    IMapNG
+    PlayerImpl
 }
 import strategicprimer.viewer.model.map {
-    IMutableMapNG
+    IMutableMapNG,
+    IMapNG
 }
 import model.map.fixtures {
     ResourcePile,
@@ -90,7 +87,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
         SimpleMultiMapModel.copyConstructor(driverModel) { }
     "All the players in all the maps."
     shared {Player*} players => allMaps.map((pair) => pair.first)
-        .flatMap((IMutableMapNG temp) => CeylonIterable(temp.players())).distinct;
+        .flatMap((IMutableMapNG temp) => temp.players.distinct);
     "Add a resource to a player's HQ."
     shared void addResource(FortressMember resource, Player player) {
         for (pair in allMaps) {
@@ -104,7 +101,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
     }
     "Add a resource to a player's HQ in a particular map."
     shared void addResourceToMap(FortressMember resource, IMapNG map, Player player) {
-        for (location in map.locations()) {
+        for (location in map.locations) {
             for (fixture in map.getOtherFixtures(location)) {
                 if (is Fortress fixture, "HQ" == fixture.name,
                         player.playerId == fixture.owner.playerId) {

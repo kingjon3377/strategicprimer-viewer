@@ -18,12 +18,12 @@ import model.map {
     MapDimensionsImpl,
     Point,
     PointFactory,
-    IMapNG,
     TileFixture
 }
 import strategicprimer.viewer.model.map {
     SPMapNG,
-    IMutableMapNG
+    IMutableMapNG,
+    IMapNG
 }
 import model.map.fixtures {
     RiverFixture,
@@ -200,7 +200,7 @@ test
 void testMapOffByOne() {
     IMutableMapNG baseMap = SPMapNG(MapDimensionsImpl(2, 2, 2),
         PlayerCollection(), -1);
-    for (point in baseMap.locations()) {
+    for (point in baseMap.locations) {
         baseMap.setBaseTerrain(point, TileType.plains);
     }
     baseMap.setForest(PointFactory.point(1, 1), Forest("elm", false, 1));
@@ -209,12 +209,12 @@ void testMapOffByOne() {
 
     IMutableMapNG testMap = SPMapNG(MapDimensionsImpl(2, 2, 2),
         PlayerCollection(), -1);
-    for (point in testMap.locations()) {
+    for (point in testMap.locations) {
         testMap.setBaseTerrain(point, TileType.plains);
     }
     Forest forest = Forest("elm", false, 1);
     TileFixture animal = Animal("skunk", false, false, "wild", 2);
-    for (point in testMap.locations()) {
+    for (point in testMap.locations) {
         assertIsSubset(baseMap, testMap,
             "Subset invariant before attempt using ``point``");
         Anything(IMapNG, IMapNG, String) testMethod;

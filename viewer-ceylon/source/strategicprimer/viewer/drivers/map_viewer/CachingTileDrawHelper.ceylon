@@ -13,7 +13,9 @@ import view.util {
 import model.map {
     River,
     TileType,
-    Point,
+    Point
+}
+import strategicprimer.viewer.model.map {
     IMapNG
 }
 import java.awt {
@@ -109,7 +111,7 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
             Integer width, Integer height) {
         assert (is Graphics2D pen);
         TileType terrain = map.getBaseTerrain(location);
-        pen.color = colorHelper.get(map.dimensions().version, terrain);
+        pen.color = colorHelper.get(map.dimensions.version, terrain);
         pen.fill(backgroundShape);
         pen.color = Color.black;
         pen.draw(backgroundShape);

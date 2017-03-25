@@ -6,9 +6,11 @@ import java.lang {
     JIterable=Iterable
 }
 
+import strategicprimer.viewer.model.map {
+    IMapNG
+}
 import model.map {
     IFixture,
-    IMapNG,
     FixtureIterable
 }
 import model.map.fixtures {
@@ -32,7 +34,7 @@ shared IDRegistrar createIDFactory(IMapNG|IMultiMapModel|{IFixture*} arg) {
 
 void recursiveRegister(IDRegistrar factory, IMapNG|IMultiMapModel|{IFixture*} arg) {
     if (is IMapNG map = arg) {
-        for (location in map.locations()) {
+        for (location in map.locations) {
             Ground? tempGround = map.getGround(location);
             Forest? tempForest = map.getForest(location);
             recursiveRegister(factory, {tempGround, tempForest,

@@ -19,8 +19,10 @@ import model.map {
     IFixture,
     PointFactory,
     DistanceComparator,
-    IMapNG,
     Point
+}
+import strategicprimer.viewer.model.map {
+    IMapNG
 }
 import model.map.fixtures.mobile {
     Immortal,

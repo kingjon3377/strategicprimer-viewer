@@ -34,16 +34,16 @@ shared class SimpleDriverModel satisfies IDriverModel {
     shared new (IMutableMapNG map = SPMapNG(MapDimensionsImpl(-1, -1, -1), PlayerCollection(), -1),
             JPath? file = null) {
         mainMap = map;
-        mapDim = mainMap.dimensions();
+        mapDim = mainMap.dimensions;
         mainMapFile = file;
     }
     "Set a new main map."
     shared actual default void setMap(IMutableMapNG newMap, JPath? origin) {
         for (listener in vcListeners) {
-            listener.changeVersion(mapDim.version, newMap.dimensions().version);
+            listener.changeVersion(mapDim.version, newMap.dimensions.version);
         }
         mainMap = newMap;
-        mapDim = newMap.dimensions();
+        mapDim = newMap.dimensions;
         mainMapFile = origin;
         for (listener in mcListeners) {
             listener.mapChanged();

@@ -21,7 +21,6 @@ import lovelace.util.jvm {
 }
 
 import model.map {
-    IMapNG,
     Player,
     IFixture,
     Point,
@@ -36,6 +35,9 @@ import model.map.fixtures.mobile {
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
+}
+import strategicprimer.viewer.model.map {
+    IMapNG
 }
 
 import strategicprimer.viewer.report.generators {
@@ -65,7 +67,7 @@ Logger log = logger(`module strategicprimer.viewer`);
 todo("""Return null instead of an "invalid" Point when not found?""")
 Point findHQ(IMapNG map, Player player) {
     variable Point? retval = null;
-    for (location in map.locations()) {
+    for (location in map.locations) {
         for (fixture in map.getOtherFixtures(location)) {
             if (is Fortress fixture, fixture.owner == player) {
                 if ("hq" == fixture.name) {
@@ -107,7 +109,7 @@ DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
             }
         }
     }
-    for (location in map.locations()) {
+    for (location in map.locations) {
         for (IFixture fixture in {map.getGround(location), map.getForest(location),
                 *map.getOtherFixtures(location)}.coalesced) {
             addToMap(location, fixture);

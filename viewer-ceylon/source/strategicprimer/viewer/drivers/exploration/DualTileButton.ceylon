@@ -1,7 +1,9 @@
 import model.map {
     PointFactory,
     TileFixture,
-    Point,
+    Point
+}
+import strategicprimer.viewer.model.map {
     IMapNG
 }
 import javax.swing {

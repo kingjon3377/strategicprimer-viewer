@@ -7,7 +7,6 @@ import ceylon.collection {
     MutableMap
 }
 import ceylon.interop.java {
-    CeylonIterable,
     createJavaIntArray,
     createJavaObjectArray
 }
@@ -319,7 +318,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 SelectionChangeSupport mainPCS = SelectionChangeSupport();
                 SwingList<TileFixture>&SelectionChangeListener mainList =
                         fixtureList(tilesPanel, FixtureListModel(model.map, true),
-                            CeylonIterable(model.map.players()));
+                            model.map.players);
                 mainPCS.addSelectionChangeListener(mainList);
                 tilesPanel.add(JScrollPane(mainList));
                 DualTileButton dtb = DualTileButton(model.map, secondMap,
@@ -405,8 +404,8 @@ SPFrame explorationFrame(IExplorationModel model,
                                             } else if (is Forest fixture,
                                                 !map.getForest(destPoint) exists) {
                                                 map.setForest(destPoint, fixture.copy(false));
-                                            } else if (map.streamAllFixtures(destPoint)
-                                                .noneMatch((that) => fixture == that)) {
+                                            } else if (!map.getAllFixtures(destPoint)
+                                                    .any((that) => fixture == that)) {
                                                 Boolean zero;
                                                 if (is HasOwner fixture, fixture.owner != player) {
                                                     zero = true;
@@ -507,7 +506,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 ecl.addSelectionChangeListener(ell);
                 SwingList<TileFixture>&SelectionChangeListener secList =
                         fixtureList(tilesPanel, FixtureListModel(secondMap, false),
-                            CeylonIterable(secondMap.players()));
+                            secondMap.players);
                 SelectionChangeSupport secPCS = SelectionChangeSupport();
                 secPCS.addSelectionChangeListener(secList);
                 tilesPanel.add(JScrollPane(secList));

@@ -12,7 +12,7 @@ import java.nio.file {
     JFiles=Files
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     IMapNG
 }
 "Sixth generation SP XML writer."

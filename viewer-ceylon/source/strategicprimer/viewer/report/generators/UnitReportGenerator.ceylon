@@ -17,8 +17,10 @@ import model.map {
     Player,
     PointFactory,
     DistanceComparator,
-    IMapNG,
     Point
+}
+import strategicprimer.viewer.model.map {
+    IMapNG
 }
 import model.map.fixtures {
     FortressMember,

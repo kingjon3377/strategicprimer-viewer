@@ -10,9 +10,6 @@ import model.listeners {
 import model.map.fixtures.mobile {
     Animal
 }
-import java.lang {
-    JIterable=Iterable
-}
 import model.map.fixtures.terrain {
     Forest
 }
@@ -55,12 +52,12 @@ shared class FixtureListModel(IMutableMapNG map,
         if (TileType.notVisible != base) {
             addElement(TileTypeFixture(base));
         }
-        JIterable<River> rivers = map.getRivers(newPoint);
-        if (!CeylonIterable(rivers).empty) {
+        {River*} rivers = map.getRivers(newPoint);
+        if (!rivers.empty) {
             if (is TileFixture rivers) {
                 addElement(rivers);
             } else {
-                addElement(RiverFixture(*CeylonIterable(rivers)));
+                addElement(RiverFixture(*rivers));
             }
         }
         Ground? ground = map.getGround(newPoint);

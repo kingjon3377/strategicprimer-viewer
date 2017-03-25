@@ -2,9 +2,6 @@ import ceylon.collection {
     MutableSet,
     HashSet
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 
 import java.awt {
     Image,
@@ -33,7 +30,9 @@ import model.map {
     TerrainFixture,
     TileFixture,
     HasImage,
-    Point,
+    Point
+}
+import strategicprimer.viewer.model.map {
     IMapNG
 }
 import model.map.fixtures {
@@ -155,7 +154,7 @@ class Ver2TileDrawHelper(
                 return colorHelper.mountainColor;
             }
         }
-        return colorHelper.get(map.dimensions().version,
+        return colorHelper.get(map.dimensions.version,
             map.getBaseTerrain(location));
     }
     "Return either a loaded image or, if the specified image fails to load, the generic
@@ -204,12 +203,12 @@ class Ver2TileDrawHelper(
         if (needsFixtureColor(map, location)) {
             pen.color = getFixtureColor(map, location);
         } else {
-            pen.color = colorHelper.get(map.dimensions().version,
+            pen.color = colorHelper.get(map.dimensions.version,
                 map.getBaseTerrain(location));
         }
         pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
-        if (!CeylonIterable(map.getRivers(location)).empty) {
-            pen.drawImage(getRiverImage(CeylonIterable(map.getRivers(location))), coordinates.x,
+        if (!map.getRivers(location).empty) {
+            pen.drawImage(getRiverImage(map.getRivers(location)), coordinates.x,
                 coordinates.y, dimensions.x, dimensions.y, observerWrapper);
         }
         if (exists top = getTopFixture(map, location)) {

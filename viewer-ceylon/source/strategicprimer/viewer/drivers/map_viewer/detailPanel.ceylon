@@ -7,7 +7,6 @@ import javax.swing {
     JComponent
 }
 import ceylon.interop.java {
-    CeylonIterable,
     CeylonList
 }
 import java.io {
@@ -94,8 +93,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         }
     }
     SwingList<TileFixture>&SelectionChangeListener fixtureListObject =
-            fixtureList(retval, FixtureListModel(model.map, false),
-                CeylonIterable(model.map.players()));
+            fixtureList(retval, FixtureListModel(model.map, false), model.map.players);
     retval.delegate = fixtureListObject;
     object portrait extends JComponent() satisfies ListSelectionListener {
         variable Image? portrait = null;

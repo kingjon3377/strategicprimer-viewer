@@ -20,9 +20,7 @@ import javax.xml.stream {
     XMLStreamException
 }
 import strategicprimer.viewer.model.map {
-    IMutableMapNG
-}
-import model.map {
+    IMutableMapNG,
     IMapNG
 }
 

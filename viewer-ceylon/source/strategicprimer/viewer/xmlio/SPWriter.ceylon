@@ -9,7 +9,7 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     IMapNG
 }
 "An interface for map (and other SP XML) writers."

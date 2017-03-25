@@ -7,9 +7,7 @@ import lovelace.util.common {
 }
 
 import strategicprimer.viewer.model.map {
-    IMutableMapNG
-}
-import model.map {
+    IMutableMapNG,
     IMapNG
 }
 """A driver-model for drivers that have a main map (like every driver) and any number of

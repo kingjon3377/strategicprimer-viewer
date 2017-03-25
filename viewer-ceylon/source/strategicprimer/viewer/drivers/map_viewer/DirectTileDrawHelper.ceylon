@@ -5,7 +5,9 @@ import model.map {
     River,
     PointFactory,
     TileType,
-    Point,
+    Point
+}
+import strategicprimer.viewer.model.map {
     IMapNG
 }
 import java.awt {
@@ -76,7 +78,7 @@ class DirectTileDrawHelper() satisfies TileDrawHelper {
             Coordinate coordinates, Coordinate dimensions) {
         Graphics context = pen.create();
         try {
-            context.color = colorHelper.get(map.dimensions().version,
+            context.color = colorHelper.get(map.dimensions.version,
                 map.getBaseTerrain(location));
             context.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
             context.color = Color.black;

@@ -19,12 +19,12 @@ import model.listeners {
     SelectionChangeListener
 }
 import strategicprimer.viewer.model.map {
-    IMutableMapNG
+    IMutableMapNG,
+    IMapNG
 }
 import model.map {
     Point,
-    PointFactory,
-    IMapNG
+    PointFactory
 }
 
 import strategicprimer.viewer.model {
@@ -90,8 +90,8 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     shared new ("The initial map" IMutableMapNG theMap,
             "The file it was loaded from or should be saved to" JPath? file)
             extends SimpleDriverModel(theMap, file) {
-        visDimensions = VisibleDimensions(0, theMap.dimensions().rows - 1,
-            0, theMap.dimensions().columns - 1);
+        visDimensions = VisibleDimensions(0, theMap.dimensions.rows - 1, 0,
+            theMap.dimensions.columns - 1);
     }
     shared new fromPair(
             "A pair of the initial map and its filename"
@@ -99,8 +99,8 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
             extends ViewerModel(pair.first, pair.rest.first) {}
     void postSetMap(IMapNG newMap) {
         clearSelection();
-        visDimensions = VisibleDimensions(0, newMap.dimensions().rows - 1, 0,
-            newMap.dimensions().columns - 1);
+        visDimensions = VisibleDimensions(0, newMap.dimensions.rows - 1, 0,
+            newMap.dimensions.columns - 1);
         resetZoom();
     }
     shared new copyConstructor(IDriverModel model)
