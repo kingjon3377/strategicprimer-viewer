@@ -15,7 +15,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable,
     IllegalArgumentException
 }
@@ -68,7 +67,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
     }
     "Parse orders for a unit for a specified turn."
-    void parseOrders(StartElement element, IUnit unit, JIterable<XMLEvent> stream) {
+    void parseOrders(StartElement element, IUnit unit, {XMLEvent*} stream) {
         Integer turn = getIntegerParameter(element, "turn", -1);
         StringBuilder builder = StringBuilder();
         for (event in stream) {
@@ -83,7 +82,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         unit.setOrders(turn, builder.string.trimmed);
     }
     "Parse results for a unit for a specified turn."
-    void parseResults(StartElement element, IUnit unit, JIterable<XMLEvent> stream) {
+    void parseResults(StartElement element, IUnit unit, {XMLEvent*} stream) {
         Integer turn = getIntegerParameter(element, "turn");
         StringBuilder builder = StringBuilder();
         for (event in stream) {
@@ -97,7 +96,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
         unit.setResults(turn, builder.string.trimmed);
     }
-    UnitMember parseChild(StartElement element, QName parent, JIterable<XMLEvent> stream) {
+    UnitMember parseChild(StartElement element, QName parent, {XMLEvent*} stream) {
         String name = element.name.localPart.lowercased;
         for (reader in readers) {
             if (reader.isSupportedTag(name)) {
@@ -112,7 +111,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
     }
     shared actual IUnit read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, "unit");
         requireNonEmptyParameter(element, "name", false);
         requireNonEmptyParameter(element, "owner", false);

@@ -14,7 +14,6 @@ import strategicprimer.viewer.model {
 
 import java.lang {
     IllegalArgumentException,
-    JIterable=Iterable,
     JAppendable=Appendable
 }
 import java.text {
@@ -121,7 +120,7 @@ abstract class YAAbstractReader<Element>
     }
     "Advance the stream until we hit an end element matching the given name, but object to
      any start elements."
-    shared static void spinUntilEnd(QName tag, JIterable<XMLEvent> reader) {
+    shared static void spinUntilEnd(QName tag, {XMLEvent*} reader) {
         for (event in reader) {
             if (is StartElement event, isSPStartElement(event)) {
                 throw UnwantedChildException(tag, event);

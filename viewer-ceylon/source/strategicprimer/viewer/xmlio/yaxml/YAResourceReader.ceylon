@@ -7,7 +7,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable,
     IllegalArgumentException,
     IllegalStateException
@@ -87,7 +86,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
     shared actual HarvestableFixture read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, *supportedTags);
         Integer idNum = getOrGenerateID(element);
         HarvestableFixture retval;

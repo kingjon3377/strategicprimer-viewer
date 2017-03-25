@@ -3,7 +3,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable
 }
 
@@ -26,7 +25,7 @@ import util {
 "A reader for [[Player]]s."
 class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Player>(warning, idRegistrar) {
-    shared actual Player read(StartElement element, QName parent, JIterable<XMLEvent> stream) {
+    shared actual Player read(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, "player");
         requireNonEmptyParameter(element, "number", true);
         requireNonEmptyParameter(element, "code_name", true);

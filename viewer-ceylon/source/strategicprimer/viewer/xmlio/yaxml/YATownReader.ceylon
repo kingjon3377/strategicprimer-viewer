@@ -14,7 +14,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable,
     IllegalStateException
 }
@@ -70,7 +69,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             return players.independent;
         }
     }
-    ITownFixture parseVillage(StartElement element, JIterable<XMLEvent> stream) {
+    ITownFixture parseVillage(StartElement element, {XMLEvent*} stream) {
         requireNonEmptyParameter(element, "name", false);
         spinUntilEnd(element.name, stream);
         Integer idNum = getOrGenerateID(element);
@@ -86,7 +85,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             throw MissingPropertyException(element, "status");
         }
     }
-    ITownFixture parseTown(StartElement element, JIterable<XMLEvent> stream) {
+    ITownFixture parseTown(StartElement element, {XMLEvent*} stream) {
         requireNonEmptyParameter(element, "name", false);
         String name = getParameter(element, "name", "");
         TownStatus? status = TownStatus.parse(getParameter(element, "status"));
@@ -116,7 +115,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         retval.portrait = getParameter(element, "portrait", "");
         return retval;
     }
-    ITownFixture parseFortress(StartElement element, JIterable<XMLEvent> stream) {
+    ITownFixture parseFortress(StartElement element, {XMLEvent*} stream) {
         requireNonEmptyParameter(element, "owner", false);
         requireNonEmptyParameter(element, "name", false);
         Fortress retval;
@@ -160,7 +159,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             {"village", "fortress", "town", "city", "fortification"}
                 .contains(tag.lowercased);
     shared actual ITownFixture read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, "village", "fortress", "town", "city",
             "fortification");
         switch (element.name.localPart.lowercased)

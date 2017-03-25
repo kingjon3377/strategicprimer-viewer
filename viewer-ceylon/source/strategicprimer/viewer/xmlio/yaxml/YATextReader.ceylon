@@ -6,7 +6,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable
 }
 
@@ -31,7 +30,7 @@ class YATextReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<TextFixture>(warning, idRegistrar) {
     shared actual Boolean isSupportedTag(String tag) => "text" == tag.lowercased;
     shared actual TextFixture read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, "text");
         StringBuilder builder = StringBuilder();
         for (event in stream) {

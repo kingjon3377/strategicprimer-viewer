@@ -18,7 +18,6 @@ import java.io {
     IOException
 }
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable,
     IllegalArgumentException,
     IllegalStateException
@@ -81,7 +80,7 @@ class YAReaderAdapter(
     "Parse an object from XML."
     throws(`class SPFormatException`, "on SP format problems")
     todo("Use Ceylon Iterable instead")
-    shared Object parse(StartElement element, QName parent, JIterable<XMLEvent> stream) {
+    shared Object parse(StartElement element, QName parent, {XMLEvent*} stream) {
         // Since all implementations of necessity check the tag's namespace, we leave that
         // to them.
         String tag = element.name.localPart;

@@ -12,7 +12,6 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable,
     IllegalArgumentException
 }
@@ -76,7 +75,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             SimpleImmortal(SimpleImmortal.SimpleImmortalKind.parse(tag), idNum);
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
-    shared actual MobileFixture read(StartElement element, QName parent, JIterable<XMLEvent> stream) {
+    shared actual MobileFixture read(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, *supportedTags);
         MobileFixture twoParam(MobileFixture(String, Integer) constr) =>
             constr(getParameter(element, "kind"), getOrGenerateID(element));

@@ -6,7 +6,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable,
     IllegalStateException
 }
@@ -39,7 +38,7 @@ class YAExplorableReader(Warning warning, IDRegistrar idRegistrar)
     shared actual Boolean isSupportedTag(String tag) =>
             {"cave", "battlefield"}.contains(tag.lowercased);
     shared actual ExplorableFixture read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, "battlefield", "cave");
         Integer idNum = getOrGenerateID(element);
         ExplorableFixture retval;

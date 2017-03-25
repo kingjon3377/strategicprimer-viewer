@@ -6,7 +6,6 @@ import java.io {
     IOException
 }
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable
 }
 
@@ -33,7 +32,7 @@ interface YAReader<out Item, in Value=Item> given Item satisfies Object {
             QName parent,
             "The stream of XML events to read more from"
             todo("Change to Ceylon Iterable")
-            JIterable<XMLEvent> stream);
+            {XMLEvent*} stream);
     "Write an object to the stream."
     throws(`class IOException`, "on I/O error in writing")
     shared formal void write(

@@ -6,7 +6,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable,
     JInteger=Integer,
     JNumber=Number
@@ -35,7 +34,7 @@ import util {
 class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<ResourcePile>(warning, idRegistrar) {
     shared actual ResourcePile read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, "resource");
         String quantityString = getParameter(element, "quantity");
         JNumber quantity;

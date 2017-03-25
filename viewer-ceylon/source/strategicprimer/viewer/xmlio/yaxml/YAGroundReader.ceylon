@@ -6,7 +6,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable
 }
 
@@ -29,7 +28,7 @@ import util {
 class YAGroundReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Ground>(warning, idRegistrar) {
     shared actual Ground read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, "ground");
         String kind = getParamWithDeprecatedForm(element, "kind", "ground");
         requireNonEmptyParameter(element, "exposed", true);

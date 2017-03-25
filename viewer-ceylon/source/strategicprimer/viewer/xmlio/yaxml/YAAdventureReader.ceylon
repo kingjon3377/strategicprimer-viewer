@@ -3,7 +3,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable
 }
 
@@ -31,7 +30,7 @@ class YAAdventureReader(Warning warner, IDRegistrar idFactory, IPlayerCollection
         extends YAAbstractReader<AdventureFixture>(warner, idFactory) {
     "Read an adventure from XML."
     shared actual AdventureFixture read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, "adventure");
         Player player;
         if (hasParameter(element, "owner")) {

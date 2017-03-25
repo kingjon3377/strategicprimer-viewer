@@ -3,7 +3,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable,
     IllegalArgumentException,
     IllegalStateException
@@ -41,7 +40,7 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
     shared actual TerrainFixture read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, *supportedTags);
         TerrainFixture retval;
         switch (element.name.localPart.lowercased)

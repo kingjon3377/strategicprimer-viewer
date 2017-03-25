@@ -3,7 +3,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable
 }
 
@@ -26,7 +25,7 @@ import util {
 class YAImplementReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Implement>(warning, idRegistrar) {
     shared actual Implement read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, "implement");
         Implement retval = Implement(getParameter(element, "kind"),
             getOrGenerateID(element));

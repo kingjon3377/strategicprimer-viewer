@@ -23,7 +23,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable,
     IllegalArgumentException
 }
@@ -112,7 +111,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         }
     }
     "Get the first open-tag event in our namespace in the stream."
-    StartElement getFirstStartElement(JIterable<XMLEvent> stream, StartElement parent) {
+    StartElement getFirstStartElement({XMLEvent*} stream, StartElement parent) {
         for (element in stream) {
             if (is StartElement element, isSPStartElement(element)) {
                 return element;
@@ -150,7 +149,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
     }
     "Parse what should be a [[TileFixture]] from the XML."
     TileFixture parseFixture(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         String name = element.name.localPart;
         for (reader in readers) {
             if (reader.isSupportedTag(name)) {
@@ -163,7 +162,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
     }
     "Read a map from XML."
     shared actual IMutableMapNG read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, "map", "view");
         Integer currentTurn;
         StartElement mapTag;

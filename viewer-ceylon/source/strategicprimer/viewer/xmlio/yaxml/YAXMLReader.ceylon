@@ -21,7 +21,6 @@ import java.io {
 }
 import java.lang {
     JClass=Class,
-    JIterable=Iterable,
     IllegalStateException
 }
 import java.nio.file {
@@ -70,13 +69,13 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
             "The Warning instance to use for warnings" Warning warner)
             given Element satisfies Object {
         JIterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
-        JIterable<XMLEvent> eventReader = IteratorWrapper(IncludingIterator(file, reader));
+        {XMLEvent*} eventReader = CeylonIterable(IteratorWrapper(IncludingIterator(file, reader)));
         IDRegistrar idFactory = IDFactory();
-        StartElement? event = CeylonIterable(eventReader).narrow<StartElement>().first;
-        if (exists event) {
+        if (exists event = eventReader.narrow<StartElement>().first) {
             Object retval = YAReaderAdapter(warner, idFactory).parse(event, QName("root"),
                 eventReader);
             if (type.isAssignableFrom(javaClassFromInstance(retval))) {
+                // TODO: switch to assertion once ISPReader ported
 //                assert (is Element retval);
                 return type.cast(retval);
 //                return retval;

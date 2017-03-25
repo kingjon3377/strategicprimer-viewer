@@ -11,7 +11,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable
 }
 
@@ -75,7 +74,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         warner = warning;
     }
     WorkerStats parseStats(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, "stats");
         Integer inner(String attr) => getIntegerParameter(element, attr);
         WorkerStats retval = WorkerStats(inner("hp"), inner("max"), inner("str"),
@@ -88,7 +87,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         return Skill(getParameter(element, "name"), getIntegerParameter(element, "level"),
             getIntegerParameter(element, "hours"));
     }
-    IJob parseJob(StartElement element, QName parent, JIterable<XMLEvent> stream) {
+    IJob parseJob(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, "job");
         IJob retval = Job(getParameter(element, "name"),
             getIntegerParameter(element, "level"));
@@ -124,7 +123,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         }
     }
     shared actual IWorker read(StartElement element, QName parent,
-            JIterable<XMLEvent> stream) {
+            {XMLEvent*} stream) {
         requireTag(element, parent, "worker");
         Worker retval = Worker(getParameter(element, "name"),
             getParameter(element, "race", "human"), getOrGenerateID(element));

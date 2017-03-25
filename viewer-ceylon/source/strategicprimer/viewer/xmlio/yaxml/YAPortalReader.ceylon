@@ -3,7 +3,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JAppendable=Appendable
 }
 
@@ -24,7 +23,7 @@ import util {
 }
 "A reader for portals."
 class YAPortalReader(Warning warning, IDRegistrar idRegistrar) extends YAAbstractReader<Portal>(warning, idRegistrar) {
-    shared actual Portal read(StartElement element, QName parent, JIterable<XMLEvent> stream) {
+    shared actual Portal read(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, "portal");
         Portal retval = Portal(getParameter(element, "world"), parsePoint(element),
             getOrGenerateID(element));
