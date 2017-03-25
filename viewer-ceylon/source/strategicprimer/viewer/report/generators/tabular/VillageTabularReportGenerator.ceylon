@@ -5,8 +5,10 @@ import lovelace.util.jvm {
     ceylonComparator
 }
 
+import strategicprimer.viewer.model {
+    DistanceComparator
+}
 import model.map {
-    DistanceComparator,
     Player,
     Point,
     IFixture
@@ -34,7 +36,7 @@ shared class VillageTabularReportGenerator(Player player, Point hq)
             [Point, Village] two) {
         return comparing(
             comparingOn(([Point, Village] pair) => pair.first,
-                ceylonComparator(DistanceComparator(hq))),
+                DistanceComparator(hq).compare),
             comparingOn(([Point, Village] pair) => pair.rest.first.owner,
                 ceylonComparator((Player first, Player second) =>
                 first.compareTo(second))),

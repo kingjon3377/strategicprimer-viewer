@@ -5,9 +5,11 @@ import lovelace.util.jvm {
     ceylonComparator
 }
 
+import strategicprimer.viewer.model {
+    DistanceComparator
+}
 import model.map {
     IFixture,
-    DistanceComparator,
     Point
 }
 import model.map.fixtures.mobile {
@@ -43,10 +45,9 @@ shared class WorkerTabularReportGenerator(Point hq) satisfies ITableGenerator<IW
     "Compare two worker-location pairs."
     shared actual Comparison comparePairs([Point, IWorker] one,
             [Point, IWorker] two) {
-        Comparison(Point, Point) comparator = ceylonComparator(DistanceComparator(hq));
         IWorker first = one.rest.first;
         IWorker second = two.rest.first;
-        Comparison cmp = comparator(one.first, two.first);
+        Comparison cmp = DistanceComparator(hq).compare(one.first, two.first);
         if (cmp == equal) {
             return (first.name.compare(second.name));
         } else {

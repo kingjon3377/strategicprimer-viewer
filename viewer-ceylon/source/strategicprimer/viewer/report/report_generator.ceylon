@@ -4,6 +4,7 @@ import ceylon.logging {
 }
 
 import strategicprimer.viewer.model {
+    DistanceComparator,
     IDRegistrar
 }
 
@@ -24,7 +25,6 @@ import model.map {
     Player,
     IFixture,
     Point,
-    DistanceComparator,
     TerrainFixture,
     PointFactory,
     TileFixture,
@@ -139,7 +139,7 @@ shared String createReport(IMapNG map, Player player = map.currentPlayer) {
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     Point hq = findHQ(map, player);
     Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-        ceylonComparator(DistanceComparator(hq)), byIncreasing(IFixture.hash));
+        DistanceComparator(hq).compare, byIncreasing(IFixture.hash));
     createSubReports(builder, fixtures, map, player,
         FortressReportGenerator(comparator, player, hq),
         UnitReportGenerator(comparator, player, hq), TextReportGenerator(comparator, hq),
@@ -175,7 +175,7 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     Point hq = findHQ(map, player);
     Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-        ceylonComparator(DistanceComparator(findHQ(map, player))),
+        DistanceComparator(findHQ(map, player)).compare,
         byIncreasing(IFixture.hash));
     for ([loc, fixture] in fixtures.items) {
         if (is IUnit|Fortress fixture, fixture.owner == player) {
@@ -223,7 +223,7 @@ shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer)
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     Point hq = findHQ(map, player);
     Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-        ceylonComparator(DistanceComparator(findHQ(map, player))),
+        DistanceComparator(findHQ(map, player)).compare,
         byIncreasing(IFixture.hash));
     createSubReportsIR(retval, fixtures, map, player,
         FortressReportGenerator(comparator, player, hq),
@@ -244,7 +244,7 @@ shared IReportNode createAbbreviatedReportIR(IMapNG map,
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     Point hq = findHQ(map, player);
     Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-        ceylonComparator(DistanceComparator(hq)),
+        DistanceComparator(hq).compare,
         byIncreasing(IFixture.hash));
     for ([loc, fixture] in fixtures.items) {
         if (is IUnit|Fortress fixture, fixture.owner == player) {

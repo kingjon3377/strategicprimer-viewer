@@ -22,10 +22,12 @@ import lovelace.util.common {
 
 import model.map {
     PointFactory,
-    DistanceComparator,
     Player,
     Point,
     IFixture
+}
+import strategicprimer.viewer.model {
+    DistanceComparator
 }
 import strategicprimer.viewer.model.map {
     IMapNG

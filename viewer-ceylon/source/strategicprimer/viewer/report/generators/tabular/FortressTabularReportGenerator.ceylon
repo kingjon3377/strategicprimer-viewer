@@ -7,8 +7,10 @@ import lovelace.util.jvm {
 import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
+import strategicprimer.viewer.model {
+    DistanceComparator
+}
 import model.map {
-    DistanceComparator,
     Player,
     Point,
     IFixture
@@ -38,7 +40,8 @@ shared class FortressTabularReportGenerator(Player player, Point hq)
     "Compare two Point-Fortress pairs."
     shared actual Comparison comparePairs([Point, Fortress] one,
             [Point, Fortress] two) {
-        Comparison(Point, Point) comparator = ceylonComparator(DistanceComparator(hq));
+        Comparison(Point, Point) comparator =
+                DistanceComparator(hq).compare;
         Fortress first = one.rest.first;
         Fortress second = two.rest.first;
         Comparison cmp = comparator(one.first, two.first);

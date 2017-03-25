@@ -10,8 +10,10 @@ import ceylon.language.meta {
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
+import strategicprimer.viewer.model {
+    DistanceComparator
+}
 import model.map {
-    DistanceComparator,
     TileFixture,
     Point,
     IFixture
@@ -70,7 +72,7 @@ shared class CropTabularReportGenerator(Point hq)
         Forest|Shrub|Meadow|Grove second = two.rest.first;
         Comparison cropCmp = first.kind.compare(second.kind);
         if (cropCmp == equal) {
-            Comparison cmp = ceylonComparator(DistanceComparator(hq))(
+            Comparison cmp = DistanceComparator(hq).compare(
                 one.first, two.first);
             if (cmp == equal) {
                 return comparing(byIncreasing<TileFixture, Integer>(

@@ -1,9 +1,11 @@
 import model.map {
     Point,
     IFixture,
-    DistanceComparator,
     PointFactory,
     Player
+}
+import strategicprimer.viewer.model {
+    DistanceComparator
 }
 import ceylon.collection {
     ArrayList,

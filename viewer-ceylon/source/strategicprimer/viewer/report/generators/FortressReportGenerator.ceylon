@@ -13,9 +13,11 @@ import model.map {
     IFixture,
     Player,
     PointFactory,
-    DistanceComparator,
     River,
     Point
+}
+import strategicprimer.viewer.model {
+    DistanceComparator
 }
 import model.map.fixtures {
     FortressMember,

@@ -7,8 +7,10 @@ import lovelace.util.jvm {
 import model.map.fixtures {
     TextFixture
 }
+import strategicprimer.viewer.model {
+    DistanceComparator
+}
 import model.map {
-    DistanceComparator,
     Player,
     Point,
     IFixture
@@ -85,7 +87,7 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq)
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, ExplorableFixture|TextFixture] one,
             [Point, ExplorableFixture|TextFixture] two) {
-        Comparison cmp = ceylonComparator(DistanceComparator(hq))(one.first, two.first);
+        Comparison cmp = DistanceComparator(hq).compare(one.first, two.first);
         if (cmp == equal) {
             return one.rest.first.string.compare(two.rest.first.string);
         } else {

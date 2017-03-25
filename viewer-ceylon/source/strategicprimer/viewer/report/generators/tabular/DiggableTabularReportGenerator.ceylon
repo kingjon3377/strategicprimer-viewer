@@ -4,8 +4,10 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     ceylonComparator
 }
+import strategicprimer.viewer.model {
+    DistanceComparator
+}
 import model.map {
-    DistanceComparator,
     Point,
     IFixture
 }
@@ -62,7 +64,7 @@ shared class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<
         return comparing(
             byIncreasing(([Point, MineralFixture] pair) => pair.rest.first.kind),
                     ([Point, MineralFixture] first, [Point, MineralFixture] second) =>
-            ceylonComparator(DistanceComparator(hq))(first.first, second.first),
+            DistanceComparator(hq).compare(first.first, second.first),
             byIncreasing(([Point, MineralFixture] pair) => pair.rest.first.hash))
         (one, two);
     }

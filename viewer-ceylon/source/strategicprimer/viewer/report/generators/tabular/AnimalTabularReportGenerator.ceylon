@@ -7,8 +7,10 @@ import lovelace.util.jvm {
 import model.map.fixtures.mobile {
     Animal
 }
+import strategicprimer.viewer.model {
+    DistanceComparator
+}
 import model.map {
-    DistanceComparator,
     Point,
     IFixture
 }
@@ -37,7 +39,7 @@ shared class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<An
     }
     "Compare two pairs of Animals and locations."
     shared actual Comparison comparePairs([Point, Animal] one, [Point, Animal] two) {
-        Comparison cmp = ceylonComparator(DistanceComparator(hq))(one.first, two.first);
+        Comparison cmp = DistanceComparator(hq).compare(one.first, two.first);
         if (cmp == equal) {
             Comparison(Animal, Animal) compareBools(Boolean(Animal) func) {
                 Comparison retval(Boolean first, Boolean second) {

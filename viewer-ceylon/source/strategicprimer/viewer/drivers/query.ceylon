@@ -35,7 +35,6 @@ import model.map {
     FixtureIterable,
     MapDimensions,
     TileType,
-    DistanceComparator,
     HasName
 }
 import model.map.fixtures {
@@ -53,7 +52,8 @@ import strategicprimer.viewer.drivers.exploration {
     surroundingPointIterable
 }
 import strategicprimer.viewer.model {
-    IDriverModel
+    IDriverModel,
+    DistanceComparator
 }
 import strategicprimer.viewer.model.map {
     IMapNG
@@ -352,17 +352,7 @@ object queryCLI satisfies SimpleDriver {
             }
             considered.add(current);
         }
-        DistanceComparator comparator = DistanceComparator(base);
-        return retval.sort((Point x, Point y) {
-            Integer comparison = comparator.compare(x, y);
-            if (comparison < 0) {
-                return smaller;
-            } else if (comparison == 0) {
-                return equal;
-            } else {
-                return larger;
-            }
-        }).first;
+        return retval.sort(DistanceComparator(base).compare).first;
     }
     "Print a usage message for the REPL"
     void replUsage(ICLIHelper cli) {

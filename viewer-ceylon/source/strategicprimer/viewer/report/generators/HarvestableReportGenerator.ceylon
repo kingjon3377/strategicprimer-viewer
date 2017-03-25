@@ -15,9 +15,11 @@ import lovelace.util.common {
 
 import model.map {
     PointFactory,
-    DistanceComparator,
     Point,
     IFixture
+}
+import strategicprimer.viewer.model {
+    DistanceComparator
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     HarvestableFixture,

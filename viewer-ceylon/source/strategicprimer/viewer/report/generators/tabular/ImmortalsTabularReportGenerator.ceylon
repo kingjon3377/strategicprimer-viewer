@@ -7,8 +7,10 @@ import lovelace.util.jvm {
 import model.map.fixtures.mobile {
     Immortal
 }
+import strategicprimer.viewer.model {
+    DistanceComparator
+}
 import model.map {
-    DistanceComparator,
     Point,
     IFixture
 }
@@ -30,7 +32,7 @@ shared class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator
             [Point, Immortal] two) {
         return comparing(comparingOn(
                     ([Point, Immortal] pair) => pair.first,
-            ceylonComparator(DistanceComparator(hq))),
+            DistanceComparator(hq).compare),
             comparingOn<[Point, Immortal], Integer>(
                         ([Point, Immortal] pair) => pair.rest.first.hash, increasing),
             comparingOn<[Point, Immortal], Integer>((pair) => pair.rest.first.hash,

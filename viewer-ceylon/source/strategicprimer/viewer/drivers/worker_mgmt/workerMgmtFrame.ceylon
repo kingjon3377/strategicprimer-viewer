@@ -40,9 +40,11 @@ import strategicprimer.viewer.drivers {
 }
 import model.map {
     PointFactory,
-    DistanceComparator,
     Player,
     Point
+}
+import strategicprimer.viewer.model {
+    DistanceComparator
 }
 import strategicprimer.viewer.model.map {
     IMapNG
