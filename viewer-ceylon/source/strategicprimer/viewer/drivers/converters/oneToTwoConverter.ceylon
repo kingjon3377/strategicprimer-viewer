@@ -42,9 +42,11 @@ import model.map {
     MapDimensions,
     MapDimensionsImpl,
     PlayerImpl,
-    SPMapNG,
     IMapNG,
     Point
+}
+import strategicprimer.viewer.model.map {
+    SPMapNG
 }
 import model.map.fixtures {
     Ground,

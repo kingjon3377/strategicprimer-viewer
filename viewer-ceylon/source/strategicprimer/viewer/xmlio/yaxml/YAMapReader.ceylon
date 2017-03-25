@@ -48,9 +48,11 @@ import model.map {
     River,
     MapDimensions,
     MapDimensionsImpl,
-    SPMapNG,
     PointFactory,
     TileType
+}
+import strategicprimer.viewer.model.map {
+    SPMapNG
 }
 import model.map.fixtures {
     Ground,

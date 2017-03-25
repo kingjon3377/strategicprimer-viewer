@@ -29,10 +29,12 @@ import model.map {
     Player,
     PlayerImpl,
     IMutableMapNG,
-    SPMapNG,
     MapDimensionsImpl,
     PlayerCollection,
     Point
+}
+import strategicprimer.viewer.model.map {
+    SPMapNG
 }
 import model.map.fixtures.mobile {
     ProxyFor,

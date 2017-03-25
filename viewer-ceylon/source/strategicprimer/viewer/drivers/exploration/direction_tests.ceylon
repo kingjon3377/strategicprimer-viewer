@@ -2,9 +2,10 @@ import ceylon.test {
     test,
     assertEquals
 }
-
+import strategicprimer.viewer.model.map {
+    SPMapNG
+}
 import model.map {
-    SPMapNG,
     MapDimensionsImpl,
     PlayerCollection,
     PointFactory,

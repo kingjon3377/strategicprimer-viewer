@@ -39,8 +39,10 @@ import lovelace.util.jvm {
     LabelTextColor
 }
 
+import strategicprimer.viewer.model.map {
+    SPMapNG
+}
 import model.map {
-    SPMapNG,
     PlayerCollection,
     MapDimensionsImpl,
     IMapNG

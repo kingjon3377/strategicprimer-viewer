@@ -72,11 +72,13 @@ import lovelace.util.jvm {
     EnumCounter
 }
 
+import strategicprimer.viewer.model.map {
+    SPMapNG
+}
 import model.map {
     River,
     Player,
     MapDimensionsImpl,
-    SPMapNG,
     IMapNG,
     Point,
     PointFactory,

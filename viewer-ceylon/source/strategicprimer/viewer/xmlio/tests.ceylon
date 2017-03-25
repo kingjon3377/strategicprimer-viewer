@@ -69,13 +69,15 @@ import model.map {
     PlayerImpl,
     River,
     IMutableMapNG,
-    SPMapNG,
     MapDimensionsImpl,
     PlayerCollection,
     Point,
     TileType,
     PointFactory,
     MutablePlayer
+}
+import strategicprimer.viewer.model.map {
+    SPMapNG
 }
 import model.map.fixtures {
     RiverFixture,

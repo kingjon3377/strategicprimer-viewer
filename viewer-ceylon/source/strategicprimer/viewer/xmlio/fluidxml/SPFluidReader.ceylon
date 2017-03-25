@@ -63,12 +63,14 @@ import model.map {
     IMutableMapNG,
     MapDimensions,
     MapDimensionsImpl,
-    SPMapNG,
     Point,
     PointFactory,
     TileType,
     River,
     TileFixture
+}
+import strategicprimer.viewer.model.map {
+    SPMapNG
 }
 import model.map.fixtures {
     UnitMember,

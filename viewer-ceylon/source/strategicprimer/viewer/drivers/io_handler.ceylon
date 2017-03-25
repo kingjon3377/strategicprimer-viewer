@@ -48,7 +48,9 @@ import lovelace.util.jvm {
 }
 
 import model.map {
-    PlayerCollection,
+    PlayerCollection
+}
+import strategicprimer.viewer.model.map {
     SPMapNG
 }
 
