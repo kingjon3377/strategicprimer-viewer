@@ -33,11 +33,11 @@ import model.map.fixtures {
     ResourcePile
 }
 import model.map.fixtures.resources {
-    Grove,
-    Meadow,
     FieldStatus
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    Grove,
+    Meadow,
     CacheFixture,
     Mine,
     StoneDeposit,

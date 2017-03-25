@@ -16,11 +16,9 @@ import model.map {
     Point,
     IFixture
 }
-import model.map.fixtures.resources {
-    Meadow,
-    Grove
-}
 import strategicprimer.viewer.model.map.fixtures.resources {
+    Grove,
+    Meadow,
     Shrub
 }
 "A tabular report generator for crops---forests, groves, orchards, fields, meadows, and

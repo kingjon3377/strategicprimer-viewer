@@ -29,9 +29,9 @@ import model.map {
 import model.map.fixtures {
     Ground
 }
-import model.map.fixtures.resources {
-    Meadow,
-    Grove
+import strategicprimer.viewer.model.map.fixtures.resources {
+    Grove,
+    Meadow
 }
 "A list to let the user select which fixtures ought to be searched."
 SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {

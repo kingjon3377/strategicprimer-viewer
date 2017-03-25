@@ -16,12 +16,10 @@ import model.map {
 import model.map.fixtures.mobile {
     Animal
 }
-import model.map.fixtures.resources {
-    Grove,
-    Meadow
-}
 import strategicprimer.viewer.model.map.fixtures.resources {
-    Shrub
+    Grove,
+    Shrub,
+    Meadow
 }
 import lovelace.util.jvm { shuffle }
 "A class to facilitate a better hunting/fishing driver."

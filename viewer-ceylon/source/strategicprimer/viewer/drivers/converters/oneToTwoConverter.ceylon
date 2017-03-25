@@ -50,12 +50,12 @@ import model.map.fixtures {
     TextFixture
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
-    Shrub
+    Meadow,
+    Shrub,
+    Grove
 }
 import model.map.fixtures.resources {
-    FieldStatus,
-    Meadow,
-    Grove
+    FieldStatus
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,

@@ -107,17 +107,17 @@ import model.map.fixtures.mobile.worker {
     WorkerStats
 }
 import model.map.fixtures.resources {
-    Grove,
-    FieldStatus,
-    Meadow
+    FieldStatus
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    Grove,
     CacheFixture,
     StoneKind,
     Mine,
     StoneDeposit,
     Shrub,
-    MineralVein
+    MineralVein,
+    Meadow
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,
@@ -955,8 +955,9 @@ void testMeadowSerialization() {
     variable String[] names = ["first", "second", "third", "fourth"];
     for (field in {true, false}) {
         for (cultivated in {true, false}) {
+            assert (exists name = names.first, exists status = statuses.first);
             assertSerialization("Test of [[Meadow]] serialization",
-                Meadow(names.first, field, cultivated, i++, statuses.first));
+                Meadow(name, field, cultivated, i++, status));
             names = names.rest;
             statuses = statuses.rest;
         }

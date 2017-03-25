@@ -26,17 +26,17 @@ import lovelace.util.common {
 
 import model.map.fixtures.resources {
     HarvestableFixture,
-    Meadow,
-    FieldStatus,
-    Grove
+    FieldStatus
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    Meadow,
     CacheFixture,
     Mine,
     StoneDeposit,
     StoneKind,
     Shrub,
-    MineralVein
+    MineralVein,
+    Grove
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus

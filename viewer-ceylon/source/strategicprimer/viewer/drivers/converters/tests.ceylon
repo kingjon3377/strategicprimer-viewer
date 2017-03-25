@@ -105,9 +105,7 @@ import model.map.fixtures.mobile {
     Animal
 }
 import model.map.fixtures.resources {
-    FieldStatus,
-    Meadow,
-    Grove
+    FieldStatus
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Hill,
@@ -119,11 +117,13 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    Meadow,
     MineralVein,
     CacheFixture,
     Mine,
     StoneKind,
-    StoneDeposit
+    StoneDeposit,
+    Grove
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus,

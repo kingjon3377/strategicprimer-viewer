@@ -20,16 +20,16 @@ import model.map {
     IFixture
 }
 import model.map.fixtures.resources {
-    Meadow,
-    HarvestableFixture,
-    Grove
+    HarvestableFixture
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    Meadow,
     CacheFixture,
     Mine,
     StoneDeposit,
     Shrub,
-    MineralVein
+    MineralVein,
+    Grove
 }
 import strategicprimer.viewer.model.map {
     IMapNG

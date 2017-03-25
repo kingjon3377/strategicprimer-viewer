@@ -76,14 +76,12 @@ import model.map.fixtures.mobile.worker {
     ISkill,
     WorkerStats
 }
-import model.map.fixtures.resources {
-    Meadow,
-    Grove
-}
 import strategicprimer.viewer.model.map {
     IMapNG
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    Grove,
+    Meadow,
     CacheFixture,
     Mine,
     StoneDeposit,
