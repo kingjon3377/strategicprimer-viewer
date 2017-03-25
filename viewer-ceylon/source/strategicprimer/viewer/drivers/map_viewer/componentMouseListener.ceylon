@@ -1,7 +1,7 @@
 import javax.swing {
     JPopupMenu
 }
-import model.map.fixtures.terrain {
+import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 import model.map.fixtures {

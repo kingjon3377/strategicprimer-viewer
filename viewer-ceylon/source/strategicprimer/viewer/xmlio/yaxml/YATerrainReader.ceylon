@@ -21,13 +21,11 @@ import model.map {
     HasMutableImage,
     HasImage
 }
-import model.map.fixtures.terrain {
-    Forest
-}
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,
     Oasis,
-    Hill
+    Hill,
+    Forest
 }
 
 import util {

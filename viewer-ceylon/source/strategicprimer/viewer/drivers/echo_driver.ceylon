@@ -23,7 +23,7 @@ import javax.xml.stream {
 import java.lang {
     IllegalArgumentException
 }
-import model.map.fixtures.terrain {
+import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 import model.map.fixtures {

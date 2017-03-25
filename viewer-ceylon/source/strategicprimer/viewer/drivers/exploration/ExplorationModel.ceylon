@@ -59,7 +59,7 @@ import model.map.fixtures.resources {
 import strategicprimer.viewer.model.map.fixtures.resources {
     Mine
 }
-import model.map.fixtures.terrain {
+import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 

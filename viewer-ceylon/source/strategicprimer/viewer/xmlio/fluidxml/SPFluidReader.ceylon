@@ -87,13 +87,11 @@ import model.map.fixtures.mobile {
     Fairy,
     Giant
 }
-import model.map.fixtures.terrain {
-    Forest
-}
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Hill,
     Oasis,
-    Sandbar
+    Sandbar,
+    Forest
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress,

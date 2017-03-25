@@ -33,11 +33,9 @@ import model.map.fixtures.mobile {
 import model.map.fixtures.mobile.worker {
     WorkerStats
 }
-import model.map.fixtures.terrain {
-    Forest
-}
 import strategicprimer.viewer.model.map.fixtures.terrain {
-    Hill
+    Hill,
+    Forest
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     ITownFixture

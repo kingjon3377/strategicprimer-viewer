@@ -44,7 +44,7 @@ import model.map.fixtures {
 import model.map.fixtures.mobile {
     IWorker
 }
-import model.map.fixtures.terrain {
+import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 

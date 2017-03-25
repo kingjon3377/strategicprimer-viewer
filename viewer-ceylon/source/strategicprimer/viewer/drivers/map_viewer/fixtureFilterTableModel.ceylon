@@ -62,13 +62,11 @@ import model.map.fixtures.resources {
 import strategicprimer.viewer.model.map.fixtures.resources {
     Mine
 }
-import model.map.fixtures.terrain {
-    Forest
-}
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,
     Oasis,
-    Hill
+    Hill,
+    Forest
 }
 
 import strategicprimer.viewer.model.map.fixtures.towns {

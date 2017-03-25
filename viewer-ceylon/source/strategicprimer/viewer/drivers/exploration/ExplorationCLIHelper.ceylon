@@ -35,7 +35,7 @@ import model.map.fixtures.mobile {
 import model.map.fixtures.resources {
     CacheFixture
 }
-import model.map.fixtures.terrain {
+import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 

@@ -113,11 +113,9 @@ import model.map.fixtures.resources {
     StoneDeposit,
     Grove
 }
-import model.map.fixtures.terrain {
-    Forest
-}
 import strategicprimer.viewer.model.map.fixtures.terrain {
-    Hill
+    Hill,
+    Forest
 }
 
 import strategicprimer.viewer.model {

@@ -46,9 +46,7 @@ import model.map.fixtures.mobile {
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Oasis,
-    Hill
-}
-import model.map.fixtures.terrain {
+    Hill,
     Forest
 }
 import strategicprimer.viewer.model.map.fixtures.towns {

@@ -25,12 +25,10 @@ import model.map.fixtures {
 import model.map.fixtures.mobile {
     IUnit
 }
-import model.map.fixtures.terrain {
-    Forest
-}
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Oasis,
-    Hill
+    Hill,
+    Forest
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress

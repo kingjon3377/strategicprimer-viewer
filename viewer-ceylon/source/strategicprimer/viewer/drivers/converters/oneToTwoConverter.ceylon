@@ -55,12 +55,10 @@ import model.map.fixtures.resources {
     Meadow,
     Grove
 }
-import model.map.fixtures.terrain {
-    Forest
-}
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,
-    Hill
+    Hill,
+    Forest
 }
 
 import strategicprimer.viewer.drivers {

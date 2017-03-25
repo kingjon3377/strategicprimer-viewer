@@ -7,7 +7,7 @@ import lovelace.util.jvm {
 import ceylon.language.meta {
     typeOf=type
 }
-import model.map.fixtures.terrain {
+import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 import model.map {

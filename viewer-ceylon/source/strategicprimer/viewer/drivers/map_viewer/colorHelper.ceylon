@@ -16,9 +16,7 @@ import java.awt {
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Oasis,
     Sandbar,
-    Hill
-}
-import model.map.fixtures.terrain {
+    Hill,
     Forest
 }
 import model.map {

@@ -16,7 +16,7 @@ import model.map {
 import model.map.fixtures {
     Ground
 }
-import model.map.fixtures.terrain {
+import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 
