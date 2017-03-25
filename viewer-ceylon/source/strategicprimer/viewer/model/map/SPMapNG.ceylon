@@ -50,7 +50,6 @@ import strategicprimer.viewer.model.map {
 }
 
 import util {
-    IteratorWrapper,
     NullStream
 }
 "A logger."

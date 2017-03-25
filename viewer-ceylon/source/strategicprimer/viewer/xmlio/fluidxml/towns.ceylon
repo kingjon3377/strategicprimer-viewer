@@ -3,7 +3,6 @@ import controller.map.formatexceptions {
 }
 
 import java.lang {
-    JIterable=Iterable,
     IllegalArgumentException
 }
 import java.util {
@@ -44,7 +43,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 import util {
     Warning
 }
-Town readTown(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "town");
     requireNonEmptyAttribute(element, "name", false, warner);
@@ -65,7 +64,7 @@ Town readTown(StartElement element, QName parent, JIterable<XMLEvent> stream,
     }
 }
 
-Fortification readFortification(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Fortification readFortification(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "fortification");
     requireNonEmptyAttribute(element, "name", false, warner);
@@ -87,7 +86,7 @@ Fortification readFortification(StartElement element, QName parent, JIterable<XM
     }
 }
 
-City readCity(StartElement element, QName parent, JIterable<XMLEvent> stream,
+City readCity(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "city");
     requireNonEmptyAttribute(element, "name", false, warner);
@@ -108,7 +107,7 @@ City readCity(StartElement element, QName parent, JIterable<XMLEvent> stream,
     }
 }
 
-Village readVillage(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Village readVillage(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "village");
     requireNonEmptyAttribute(element, "name", false, warner);

@@ -14,7 +14,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     NumberFormatException
 }
 import java.text {
@@ -124,7 +123,7 @@ void spinUntilEnd(
          for"
         QName tag,
         "The stream of XML."
-        JIterable<XMLEvent> reader) {
+        {XMLEvent*} reader) {
     for (event in reader) {
         if (is StartElement event, isSPStartElement(event)) {
             throw UnwantedChildException(tag, event);
@@ -396,7 +395,7 @@ String getTextUntil(
         "The name of the tag whose closing tag we're waitng for"
         QName tag,
         "The stream of XML elements to sift through"
-        JIterable<XMLEvent> stream) {
+        {XMLEvent*} stream) {
     StringBuilder builder = StringBuilder();
     for (event in stream) {
         if (is StartElement event, isSPStartElement(event)) {

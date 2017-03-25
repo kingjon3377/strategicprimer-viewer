@@ -3,7 +3,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     IllegalArgumentException
 }
 
@@ -38,7 +37,7 @@ import util {
     Warning
 }
 AdventureFixture readAdventure(StartElement element, QName parent,
-        JIterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
+        {XMLEvent*} stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
     requireTag(element, parent, "adventure");
     Player player;
@@ -56,7 +55,7 @@ AdventureFixture readAdventure(StartElement element, QName parent,
 }
 
 Portal readPortal(StartElement element, QName parent,
-        JIterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
+        {XMLEvent*} stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
     requireTag(element, parent, "portal");
     Point location = PointFactory.point(getIntegerAttribute(element, "row"),
@@ -69,7 +68,7 @@ Portal readPortal(StartElement element, QName parent,
     return retval;
 }
 
-Cave readCave(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Cave readCave(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "cave");
     Integer idNum = getOrGenerateID(element, warner, idFactory);
@@ -79,7 +78,7 @@ Cave readCave(StartElement element, QName parent, JIterable<XMLEvent> stream,
 }
 
 Battlefield readBattlefield(StartElement element, QName parent,
-        JIterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
+        {XMLEvent*} stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
     requireTag(element, parent, "battlefield");
     Integer idNum = getOrGenerateID(element, warner, idFactory);
@@ -89,7 +88,7 @@ Battlefield readBattlefield(StartElement element, QName parent,
 }
 
 TextFixture readTextFixture(StartElement element, QName parent,
-        JIterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
+        {XMLEvent*} stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
     requireTag(element, parent, "text");
     return setImage(TextFixture(getTextUntil(element.name, stream),

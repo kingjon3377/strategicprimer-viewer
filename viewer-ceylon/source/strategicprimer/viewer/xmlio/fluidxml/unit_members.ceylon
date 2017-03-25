@@ -12,7 +12,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     IllegalArgumentException
 }
 
@@ -49,7 +48,7 @@ import model.map.fixtures.mobile.worker {
 import util {
     Warning
 }
-Worker readWorker(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "worker");
     Worker retval = setImage(
@@ -71,7 +70,7 @@ Worker readWorker(StartElement element, QName parent, JIterable<XMLEvent> stream
     return retval;
 }
 
-IJob readJob(StartElement element, QName parent, JIterable<XMLEvent> stream,
+IJob readJob(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "job");
     if (hasAttribute(element, "hours")) {
@@ -93,7 +92,7 @@ IJob readJob(StartElement element, QName parent, JIterable<XMLEvent> stream,
     return retval;
 }
 
-ISkill readSkill(StartElement element, QName parent, JIterable<XMLEvent> stream,
+ISkill readSkill(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "skill");
     requireNonEmptyAttribute(element, "name", true, warner);
@@ -103,7 +102,7 @@ ISkill readSkill(StartElement element, QName parent, JIterable<XMLEvent> stream,
         getIntegerAttribute(element, "hours"));
 }
 
-WorkerStats readStats(StartElement element, QName parent, JIterable<XMLEvent> stream,
+WorkerStats readStats(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "stats");
     spinUntilEnd(element.name, stream);
@@ -196,7 +195,7 @@ void writeSkill(XMLStreamWriter ostream, Object obj, Integer indentation) {
     }
 }
 
-Animal readAnimal(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Animal readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "animal");
     spinUntilEnd(element.name, stream);

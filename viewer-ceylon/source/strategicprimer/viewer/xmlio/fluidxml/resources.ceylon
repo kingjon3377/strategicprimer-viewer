@@ -7,7 +7,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     JNumber=Number,
     JInteger=Integer,
     IllegalArgumentException
@@ -54,7 +53,7 @@ import util {
     Warning,
     Quantity
 }
-ResourcePile readResource(StartElement element, QName parent, JIterable<XMLEvent> stream,
+ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "resource");
     spinUntilEnd(element.name, stream);
@@ -81,7 +80,7 @@ ResourcePile readResource(StartElement element, QName parent, JIterable<XMLEvent
     return setImage(retval, element, warner);
 }
 
-CacheFixture readCache(StartElement element, QName parent, JIterable<XMLEvent> stream,
+CacheFixture readCache(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "cache");
     spinUntilEnd(element.name, stream);
@@ -92,7 +91,7 @@ CacheFixture readCache(StartElement element, QName parent, JIterable<XMLEvent> s
         element, warner);
 }
 
-Grove readGrove(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Grove readGrove(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "grove");
     spinUntilEnd(element.name, stream);
@@ -114,7 +113,7 @@ Grove readGrove(StartElement element, QName parent, JIterable<XMLEvent> stream,
         element, warner);
 }
 
-Grove readOrchard(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Grove readOrchard(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "orchard");
     spinUntilEnd(element.name, stream);
@@ -136,7 +135,7 @@ Grove readOrchard(StartElement element, QName parent, JIterable<XMLEvent> stream
         element, warner);
 }
 
-Meadow readMeadow(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Meadow readMeadow(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "meadow");
     spinUntilEnd(element.name, stream);
@@ -156,7 +155,7 @@ Meadow readMeadow(StartElement element, QName parent, JIterable<XMLEvent> stream
     }
 }
 
-Meadow readField(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Meadow readField(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "field");
     spinUntilEnd(element.name, stream);
@@ -176,7 +175,7 @@ Meadow readField(StartElement element, QName parent, JIterable<XMLEvent> stream,
     }
 }
 
-Mine readMine(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Mine readMine(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "mine");
     spinUntilEnd(element.name, stream);
@@ -189,7 +188,7 @@ Mine readMine(StartElement element, QName parent, JIterable<XMLEvent> stream,
     }
 }
 
-MineralVein readMineral(StartElement element, QName parent, JIterable<XMLEvent> stream,
+MineralVein readMineral(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "mineral");
     spinUntilEnd(element.name, stream);
@@ -205,7 +204,7 @@ MineralVein readMineral(StartElement element, QName parent, JIterable<XMLEvent> 
     }
 }
 
-Shrub readShrub(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Shrub readShrub(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "shrub");
     spinUntilEnd(element.name, stream);
@@ -215,7 +214,7 @@ Shrub readShrub(StartElement element, QName parent, JIterable<XMLEvent> stream,
         element, warner);
 }
 
-StoneDeposit readStone(StartElement element, QName parent, JIterable<XMLEvent> stream,
+StoneDeposit readStone(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "stone");
     spinUntilEnd(element.name, stream);

@@ -4,15 +4,9 @@ import model.map {
     MapDimensions,
     MapDimensionsImpl
 }
-import util {
-    IteratorWrapper
-}
 import ceylon.test {
     assertEquals,
     test
-}
-import ceylon.interop.java {
-    CeylonIterable
 }
 "A view of locations on the map in order, starting at a given point."
 shared class PointIterator(dimensions, forwards, horizontal,

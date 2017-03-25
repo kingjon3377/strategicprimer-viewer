@@ -6,7 +6,6 @@ import strategicprimer.viewer.model {
 }
 
 import java.lang {
-    JIterable=Iterable,
     IllegalArgumentException
 }
 
@@ -36,7 +35,7 @@ import model.map.fixtures.terrain {
 import util {
     Warning
 }
-Ground readGround(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Ground readGround(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "ground");
     Integer id = getIntegerAttribute(element, "id", -1);
@@ -53,7 +52,7 @@ Ground readGround(StartElement element, QName parent, JIterable<XMLEvent> stream
     }
 }
 
-Forest readForest(StartElement element, QName parent, JIterable<XMLEvent> stream,
+Forest readForest(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "forest");
     Integer id = getIntegerAttribute(element, "id", -1);
@@ -93,14 +92,14 @@ void writeForest(XMLStreamWriter ostream, Object obj, Integer indent) {
     }
 }
 
-River readLake(StartElement element, QName parent, JIterable<XMLEvent> stream,
+River readLake(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "lake");
     spinUntilEnd(element.name, stream);
     return River.lake;
 }
 
-River readRiver(StartElement element, QName parent, JIterable<XMLEvent> stream,
+River readRiver(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "river");
     spinUntilEnd(element.name, stream);
