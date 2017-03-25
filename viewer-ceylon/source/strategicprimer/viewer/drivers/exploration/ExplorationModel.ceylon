@@ -53,11 +53,11 @@ import model.map.fixtures.mobile {
 }
 import model.map.fixtures.resources {
     Meadow,
-    Grove,
-    MineralVein
+    Grove
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
-    Mine
+    Mine,
+    MineralVein
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest

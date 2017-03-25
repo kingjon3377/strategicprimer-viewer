@@ -13,10 +13,8 @@ import model.map.fixtures {
     Ground,
     MineralFixture
 }
-import model.map.fixtures.resources {
-    MineralVein
-}
 import strategicprimer.viewer.model.map.fixtures.resources {
+    MineralVein,
     Mine,
     StoneDeposit
 }

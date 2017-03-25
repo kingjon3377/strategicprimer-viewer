@@ -17,11 +17,9 @@ import model.map.fixtures.explorable {
     Battlefield,
     Cave
 }
-import model.map.fixtures.resources {
-    MineralKind,
-    MineralVein
-}
 import strategicprimer.viewer.model.map.fixtures.resources {
+    MineralVein,
+    MineralKind,
     StoneDeposit,
     StoneKind
 }
@@ -46,7 +44,7 @@ class LegacyTable() satisfies EncounterTable {
                 retval.add(Town(status, size, 0, "", 0, player));
             }
         }
-        for (mineral in MineralKind.values()) {
+        for (mineral in `MineralKind`.caseValues) {
             retval.add(MineralVein(mineral.string, true, 0, 0));
             retval.add(MineralVein(mineral.string, false, 0, 0));
         }

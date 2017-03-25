@@ -78,8 +78,7 @@ import model.map.fixtures.mobile.worker {
 }
 import model.map.fixtures.resources {
     Meadow,
-    Grove,
-    MineralVein
+    Grove
 }
 import strategicprimer.viewer.model.map {
     IMapNG
@@ -88,7 +87,8 @@ import strategicprimer.viewer.model.map.fixtures.resources {
     CacheFixture,
     Mine,
     StoneDeposit,
-    Shrub
+    Shrub,
+    MineralVein
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,
