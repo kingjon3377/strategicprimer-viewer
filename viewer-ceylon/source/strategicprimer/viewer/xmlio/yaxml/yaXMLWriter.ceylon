@@ -1,4 +1,4 @@
-import controller.map.iointerfaces {
+import strategicprimer.viewer.xmlio {
     SPWriter
 }
 import java.io {
@@ -8,7 +8,8 @@ import java.lang {
     JAppendable=Appendable
 }
 import java.nio.file {
-    JPath=Path
+    JPath=Path,
+    JFiles=Files
 }
 
 import model.map {
@@ -18,15 +19,18 @@ import model.map {
 shared object yaXMLWriter satisfies SPWriter {
     "Write an object to a stream."
     throws(`class IOException`, "on I/O error")
-    shared actual void writeSPObject("The stream to write to" JAppendable ostream,
-            "The object to write" Object obj) => YAReaderAdapter().write(ostream, obj, 0);
-    "Write a map to file."
+    shared actual void writeSPObject("The stream to write to" JPath|JAppendable arg,
+            "The object to write" Object obj) {
+        if (is JAppendable ostream = arg) {
+            YAReaderAdapter().write(ostream, obj, 0);
+        } else if (is JPath file = arg) {
+            try (writer = JFiles.newBufferedWriter(file)) {
+                writeSPObject(writer, obj);
+            }
+        }
+    }
+    "Write a map to a file or stream."
     throws(`class IOException`, "on I/O error")
-    shared actual void write("The file to write to." JPath file,
-            "The map to write." IMapNG map) => super.writeSPObject(file, map);
-    "Write a map to a stream."
-    throws(`class IOException`, "on I/O error")
-    shared actual void write("The stream to write to" JAppendable ostream,
-            "The map to write" IMapNG map) => writeSPObject(ostream, map);
-
+    shared actual void write("The file to write to." JPath|JAppendable arg,
+            "The map to write." IMapNG map) => writeSPObject(arg, map);
 }

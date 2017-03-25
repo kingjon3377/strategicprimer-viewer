@@ -21,8 +21,7 @@ import ceylon.test {
 }
 
 import controller.map.iointerfaces {
-    ISPReader,
-    SPWriter
+    ISPReader
 }
 
 import java.io {
@@ -140,7 +139,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 import strategicprimer.viewer.xmlio {
     readMap,
     testReaderFactory,
-    TypesafeXMLEventReader
+    TypesafeXMLEventReader,
+    SPWriter
 }
 
 import util {

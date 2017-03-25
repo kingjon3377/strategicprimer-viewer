@@ -9,9 +9,10 @@ import ceylon.regex {
     Regex,
     regex
 }
-
+import strategicprimer.viewer.xmlio {
+    SPWriter
+}
 import controller.map.iointerfaces {
-    SPWriter,
     ISPReader
 }
 
@@ -115,29 +116,37 @@ shared class SPFluidWriter() satisfies SPWriter {
             }
         }
     }
-    shared actual void writeSPObject(JAppendable ostream, Object obj) {
-        XMLOutputFactory xof = XMLOutputFactory.newInstance();
-        StringWriter writer = StringWriter();
-        try {
-            XMLStreamWriter xsw = xof.createXMLStreamWriter(writer);
-            xsw.setDefaultNamespace(ISPReader.namespace);
-            writeSPObjectImpl(xsw, obj, 0);
-            xsw.writeCharacters("\n");
-            xsw.writeEndDocument();
-            xsw.flush();
-            xsw.close();
-        } catch (XMLStreamException except) {
-            throw IOException("Failure in creating XML", except);
+    shared actual void writeSPObject(JAppendable|JPath arg, Object obj) {
+        if (is JAppendable ostream = arg) {
+            XMLOutputFactory xof = XMLOutputFactory.newInstance();
+            StringWriter writer = StringWriter();
+            try {
+                XMLStreamWriter xsw = xof.createXMLStreamWriter(writer);
+                xsw.setDefaultNamespace(ISPReader.namespace);
+                writeSPObjectImpl(xsw, obj, 0);
+                xsw.writeCharacters("\n");
+                xsw.writeEndDocument();
+                xsw.flush();
+                xsw.close();
+            } catch (XMLStreamException except) {
+                throw IOException("Failure in creating XML", except);
+            }
+            ostream.append(snugEndTag.replace(writer.string, "$1 />"));
+        } else if (is JPath file = arg) {
+            try (writer = JFiles.newBufferedWriter(file)) {
+                writeSPObject(writer, obj);
+            }
         }
-        ostream.append(snugEndTag.replace(writer.string, "$1 />"));
     }
-    shared actual void write(JPath file, IMapNG map) {
-        try (writer = JFiles.newBufferedWriter(file)) {
-            writeSPObject(writer, map);
-        }
-    }
-    shared actual void write(JAppendable ostream, IMapNG map) =>
+    shared actual void write(JPath|JAppendable arg, IMapNG map) {
+        if (is JPath file = arg) {
+            try (writer = JFiles.newBufferedWriter(file)) {
+                writeSPObject(writer, map);
+            }
+        } else if (is JAppendable ostream = arg) {
             writeSPObject(ostream, map);
+        }
+    }
     void writePlayer(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if (is Player obj) {
             writeTag(ostream, "player", indentation, true);

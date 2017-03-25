@@ -10,9 +10,6 @@ import ceylon.test {
 import controller.map.formatexceptions {
     SPFormatException
 }
-import controller.map.iointerfaces {
-    SPWriter
-}
 
 import java.io {
     JReader=Reader,

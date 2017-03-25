@@ -1,5 +1,7 @@
 import controller.map.iointerfaces {
-    ISPReader,
+    ISPReader
+}
+import strategicprimer.viewer.xmlio {
     SPWriter
 }
 
