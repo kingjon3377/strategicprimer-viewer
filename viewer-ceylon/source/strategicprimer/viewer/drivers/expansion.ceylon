@@ -1,6 +1,8 @@
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
+}
 import model.map {
     IMapNG,
-    IMutableMapNG,
     Player,
     Point,
     TileFixture,

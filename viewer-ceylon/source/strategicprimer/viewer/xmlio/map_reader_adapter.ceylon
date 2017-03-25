@@ -31,8 +31,10 @@ import lovelace.util.common {
     todo
 }
 
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
+}
 import model.map {
-    IMutableMapNG,
     IMapNG
 }
 

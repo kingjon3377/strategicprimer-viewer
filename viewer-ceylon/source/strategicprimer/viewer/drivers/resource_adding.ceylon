@@ -57,8 +57,10 @@ import model.listeners {
 import model.map {
     Player,
     PlayerImpl,
-    IMutableMapNG,
     IMapNG
+}
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
 }
 import model.map.fixtures {
     ResourcePile,

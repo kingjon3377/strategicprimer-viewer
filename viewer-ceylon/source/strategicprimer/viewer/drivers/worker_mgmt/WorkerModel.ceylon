@@ -28,13 +28,13 @@ import model.map {
     TileFixture,
     Player,
     PlayerImpl,
-    IMutableMapNG,
     MapDimensionsImpl,
     PlayerCollection,
     Point
 }
 import strategicprimer.viewer.model.map {
-    SPMapNG
+    SPMapNG,
+    IMutableMapNG
 }
 import model.map.fixtures.mobile {
     ProxyFor,

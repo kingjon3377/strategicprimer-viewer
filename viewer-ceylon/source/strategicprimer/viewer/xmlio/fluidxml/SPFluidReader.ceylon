@@ -59,7 +59,6 @@ import model.map {
     Player,
     PlayerImpl,
     PlayerCollection,
-    IMutableMapNG,
     MapDimensions,
     MapDimensionsImpl,
     Point,
@@ -69,7 +68,8 @@ import model.map {
     TileFixture
 }
 import strategicprimer.viewer.model.map {
-    SPMapNG
+    SPMapNG,
+    IMutableMapNG
 }
 import model.map.fixtures {
     UnitMember,
@@ -298,11 +298,11 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             }
         }
         if (hasAttribute(mapTag, "current_player")) {
-            retval.setCurrentPlayer(players.getPlayer(
-                getIntegerAttribute(mapTag, "current_player")));
+            retval.currentPlayer = players.getPlayer(
+                getIntegerAttribute(mapTag, "current_player"));
         } else if (hasAttribute(element, "current_player")) {
-            retval.setCurrentPlayer(players.getPlayer(
-                getIntegerAttribute(element, "current_player")));
+            retval.currentPlayer = players.getPlayer(
+                getIntegerAttribute(element, "current_player"));
         }
         return retval;
     }

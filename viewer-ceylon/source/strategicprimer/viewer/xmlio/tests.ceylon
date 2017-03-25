@@ -67,7 +67,6 @@ import model.map {
     Player,
     PlayerImpl,
     River,
-    IMutableMapNG,
     MapDimensionsImpl,
     PlayerCollection,
     Point,
@@ -76,7 +75,8 @@ import model.map {
     MutablePlayer
 }
 import strategicprimer.viewer.model.map {
-    SPMapNG
+    SPMapNG,
+    IMutableMapNG
 }
 import model.map.fixtures {
     RiverFixture,

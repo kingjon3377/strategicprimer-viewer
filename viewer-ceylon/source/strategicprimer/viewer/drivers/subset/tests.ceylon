@@ -14,7 +14,6 @@ import model.map {
     Subsettable,
     River,
     IFixture,
-    IMutableMapNG,
     TileType,
     MapDimensionsImpl,
     Point,
@@ -23,7 +22,8 @@ import model.map {
     TileFixture
 }
 import strategicprimer.viewer.model.map {
-    SPMapNG
+    SPMapNG,
+    IMutableMapNG
 }
 import model.map.fixtures {
     RiverFixture,

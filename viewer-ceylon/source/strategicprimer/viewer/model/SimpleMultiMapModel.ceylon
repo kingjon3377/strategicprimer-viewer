@@ -11,8 +11,10 @@ import lovelace.util.common {
     todo
 }
 
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
+}
 import model.map {
-    IMutableMapNG,
     IMapNG
 }
 "A superclass for implementations of interfaces inheriting from [[IMultiMapModel]]."

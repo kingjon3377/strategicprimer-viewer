@@ -43,7 +43,6 @@ import model.map {
     IMapNG,
     Player,
     TileFixture,
-    IMutableMapNG,
     Point,
     River,
     MapDimensions,
@@ -52,7 +51,8 @@ import model.map {
     TileType
 }
 import strategicprimer.viewer.model.map {
-    SPMapNG
+    SPMapNG,
+    IMutableMapNG
 }
 import model.map.fixtures {
     Ground,
@@ -245,11 +245,11 @@ class YAMapReader("The Warning instance to use" Warning warner,
             }
         }
         if (hasParameter(mapTag, "current_player")) {
-            retval.setCurrentPlayer(players.getPlayer(getIntegerParameter(mapTag,
-                "current_player")));
+            retval.currentPlayer = players.getPlayer(getIntegerParameter(mapTag,
+                "current_player"));
         } else if (hasParameter(element, "current_player")) {
-            retval.setCurrentPlayer(players.getPlayer(getIntegerParameter(element,
-                "current_player")));
+            retval.currentPlayer = players.getPlayer(getIntegerParameter(element,
+                "current_player"));
         }
         return retval;
     }

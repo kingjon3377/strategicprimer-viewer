@@ -30,9 +30,11 @@ import lovelace.util.common {
     todo
 }
 
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
+}
 import model.map {
     Point,
-    IMutableMapNG,
     TileFixture,
     Player,
     HasOwner,
@@ -94,16 +96,13 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The rivers in the map."
     MutableMap<Point, {River*}> rivers = HashMap<Point, {River*}>();
     "The current turn."
-    variable Integer currentTurnImpl;
+    shared actual variable Integer currentTurn;
     shared new (MapDimensions dimensions, IMutablePlayerCollection players,
             Integer turn) {
         mapDimensions = dimensions;
         playerCollection = players;
-        currentTurnImpl = turn;
+        currentTurn = turn;
     }
-    shared actual Integer currentTurn => currentTurnImpl;
-    "Set the current turn."
-    shared actual void setCurrentTurn(Integer turn) => currentTurnImpl = turn;
     "The dimensions of the map."
     shared actual MapDimensions dimensions() => mapDimensions;
     "A stream of the players known in the map"
@@ -138,7 +137,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     }
     "The current player."
     shared actual Player currentPlayer => playerCollection.currentPlayer;
-    shared actual void setCurrentPlayer(Player currentPlayer) {
+    assign currentPlayer {
         Player oldCurrent = playerCollection.currentPlayer;
         if (is MutablePlayer oldCurrent) {
             oldCurrent.setCurrent(false);

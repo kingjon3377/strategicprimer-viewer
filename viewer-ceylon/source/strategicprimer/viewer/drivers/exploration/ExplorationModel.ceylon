@@ -28,10 +28,12 @@ import model.listeners {
     MovementCostListener,
     SelectionChangeListener
 }
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
+}
 import model.map {
     PointFactory,
     Point,
-    IMutableMapNG,
     Player,
     IMapNG,
     MapDimensions,

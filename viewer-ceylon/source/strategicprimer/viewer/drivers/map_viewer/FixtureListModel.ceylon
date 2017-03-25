@@ -31,9 +31,11 @@ import model.map {
     River,
     PointFactory,
     TileType,
-    IMutableMapNG,
     TileFixture,
     Point
+}
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
 }
 "A model for the list-based representation of the contents of a tile."
 todo("Tests")

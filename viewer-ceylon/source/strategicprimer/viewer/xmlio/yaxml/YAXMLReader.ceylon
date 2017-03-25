@@ -43,7 +43,7 @@ import javax.xml.stream.events {
     StartElement
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     IMutableMapNG
 }
 

@@ -19,9 +19,10 @@ import java.nio.file {
 import javax.xml.stream {
     XMLStreamException
 }
-
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
+}
 import model.map {
-    IMutableMapNG,
     IMapNG
 }
 
@@ -70,7 +71,7 @@ class ConverterDriver(
                         value currentTurn =
                                 Integer.parse(options.getArgument("--current-turn"));
                         if (is Integer currentTurn) {
-                            old.setCurrentTurn(currentTurn);
+                            old.currentTurn = currentTurn;
                         } else {
                             log.error(
                                 "Current turn passed on the command line must be an integer",

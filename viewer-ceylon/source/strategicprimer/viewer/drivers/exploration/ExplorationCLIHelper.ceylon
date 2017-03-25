@@ -15,10 +15,12 @@ import model.listeners {
     MovementCostListener,
     MovementCostSource
 }
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
+}
 import model.map {
     HasOwner,
     TileType,
-    IMutableMapNG,
     TileFixture,
     Player,
     Point

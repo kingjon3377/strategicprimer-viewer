@@ -73,7 +73,8 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.viewer.model.map {
-    SPMapNG
+    SPMapNG,
+    IMutableMapNG
 }
 import model.map {
     River,
@@ -84,7 +85,6 @@ import model.map {
     PointFactory,
     TileType,
     PlayerCollection,
-    IMutableMapNG,
     TileFixture,
     PlayerImpl
 }

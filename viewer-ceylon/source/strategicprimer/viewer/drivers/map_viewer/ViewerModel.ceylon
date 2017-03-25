@@ -18,9 +18,11 @@ import model.listeners {
     SelectionChangeSupport,
     SelectionChangeListener
 }
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
+}
 import model.map {
     Point,
-    IMutableMapNG,
     PointFactory,
     IMapNG
 }

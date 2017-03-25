@@ -1,5 +1,7 @@
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
+}
 import model.map {
-    IMutableMapNG,
     Point,
     IMapNG
 }
@@ -81,7 +83,7 @@ object echoDriver satisfies UtilityDriver {
             if (options.hasOption("--current-turn")) {
                 value currentTurn = Integer.parse(options.getArgument("--current-turn"));
                 if (is Integer currentTurn) {
-                    map.setCurrentTurn(currentTurn);
+                    map.currentTurn = currentTurn;
                 } else {
                     Warning.default.warn(IllegalArgumentException(
                         "--current-turn must be an integer"));

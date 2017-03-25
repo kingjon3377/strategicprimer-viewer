@@ -36,7 +36,6 @@ import model.map {
     PointFactory,
     TileType,
     PlayerCollection,
-    IMutableMapNG,
     TileFixture,
     Player,
     MapDimensions,
@@ -46,7 +45,8 @@ import model.map {
     Point
 }
 import strategicprimer.viewer.model.map {
-    SPMapNG
+    SPMapNG,
+    IMutableMapNG
 }
 import model.map.fixtures {
     Ground,
@@ -213,27 +213,31 @@ object oneToTwoConverter satisfies SimpleDriver {
                 }
                 {TileFixture*} fixtures = {oldCopy.getGround(point),
                     oldCopy.getForest(point), *oldCopy.getOtherFixtures(point)}.coalesced;
+                void riversAt(Point? point, River* rivers) {
+                    assert (exists point);
+                    retval.addRivers(point, *rivers);
+                }
                 for (river in oldCopy.getRivers(point)) {
                     assert (expansionFactor == 4); // the river-dispersion algorithm is tuned
                     switch (river)
                     case (River.east) {
-                        retval.addRivers(initial[10], River.east);
-                        retval.addRivers(initial[11], River.east, River.west);
+                        riversAt(initial[10], River.east);
+                        riversAt(initial[11], River.east, River.west);
                     }
-                    case (River.lake) { retval.addRivers(initial[10], River.lake); }
+                    case (River.lake) { riversAt(initial[10], River.lake); }
                     case (River.north) {
-                        retval.addRivers(initial[2], River.north, River.south);
-                        retval.addRivers(initial[6], River.north, River.south);
-                        retval.addRivers(initial[10], River.north);
+                        riversAt(initial[2], River.north, River.south);
+                        riversAt(initial[6], River.north, River.south);
+                        riversAt(initial[10], River.north);
                     }
                     case (River.south) {
-                        retval.addRivers(initial[10], River.south);
-                        retval.addRivers(initial[14], River.south, River.north);
+                        riversAt(initial[10], River.south);
+                        riversAt(initial[14], River.south, River.north);
                     }
                     case (River.west) {
-                        retval.addRivers(initial[8], River.west, River.east);
-                        retval.addRivers(initial[9], River.west, River.east);
-                        retval.addRivers(initial[10], River.west);
+                        riversAt(initial[8], River.west, River.east);
+                        riversAt(initial[9], River.west, River.east);
+                        riversAt(initial[10], River.west);
                     }
                 }
                 Random rng = Random((point.col.leftLogicalShift(32)) + point.row);

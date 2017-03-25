@@ -8,8 +8,10 @@ import util {
 import java.nio.file {
     JPaths = Paths, JPath = Path
 }
+import strategicprimer.viewer.model.map {
+    IMutableMapNG
+}
 import model.map {
-    IMutableMapNG,
     HasName
 }
 import java.io {
@@ -159,7 +161,7 @@ shared interface SimpleDriver satisfies ISPDriver {
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {
-                turnFixer = (IMutableMapNG map) => map.setCurrentTurn(currentTurn);
+                turnFixer = (IMutableMapNG map) => map.currentTurn = currentTurn;
             } else {
                 log.warn("--current-turn must be an integer");
                 turnFixer = (IMutableMapNG map) {};
@@ -325,7 +327,7 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {
                 for (pair in model.allMaps) {
-                    pair.first.setCurrentTurn(currentTurn);
+                    pair.first.currentTurn = currentTurn;
                 }
             } else {
                 cli.println("--current-turn must be an integer");
