@@ -167,15 +167,15 @@ shared class SPMapNG satisfies IMutableMapNG {
         }
     }
     "Add rivers at a location."
-    shared actual void addRivers(Point location, River?* addedRivers) {
+    shared actual void addRivers(Point location, River* addedRivers) {
         {River*} existing = rivers.get(location) else {};
-        rivers.put(location, set {*existing}.union(set {*{*addedRivers}.coalesced}));
+        rivers.put(location, set {*existing}.union(set {*addedRivers}));
     }
     "Remove rivers from the given location."
-    shared actual void removeRivers(Point location, River?* removedRivers) {
+    shared actual void removeRivers(Point location, River* removedRivers) {
         if (exists existing = rivers.get(location)) {
             rivers.put(location, set {*existing}
-                .complement(set {*{*removedRivers}.coalesced}));
+                .complement(set {*removedRivers}));
         }
     }
     "Set the forest at a location."

@@ -24,8 +24,7 @@ import controller.map.formatexceptions {
     MissingChildException
 }
 import controller.map.iointerfaces {
-    ISPReader,
-    IMapReader
+    ISPReader
 }
 import controller.map.misc {
     DuplicateIDException
@@ -411,7 +410,7 @@ void assertMapDeserialization(String message, IMapNG expected, String xml) {
     for (reader in {oldReader, newReader}) {
         assert (is IMapReader reader);
         try (stringReader = StringReader(xml)) {
-            assertEquals(reader.readMap(fakeFilename, stringReader,
+            assertEquals(reader.readMapFromStream(fakeFilename, stringReader,
                 Warning.die), expected, message);
         }
     }

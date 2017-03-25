@@ -11,7 +11,6 @@ import controller.map.formatexceptions {
     SPFormatException
 }
 import controller.map.iointerfaces {
-    IMapReader,
     SPWriter
 }
 
@@ -76,7 +75,7 @@ shared IMutableMapNG readMap(JPath|JReader file, Warning warner) {
     if (is JPath file) {
         return reader.readMap(file, warner);
     } else {
-        return reader.readMap(JPaths.get(""), file, warner);
+        return reader.readMapFromStream(JPaths.get(""), file, warner);
     }
 }
 "Read a map model from a file or a stream, wrapping any errors the process generates in a

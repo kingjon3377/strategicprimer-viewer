@@ -14,7 +14,6 @@ import controller.map.formatexceptions {
     UnsupportedTagException
 }
 import controller.map.iointerfaces {
-    IMapReader,
     ISPReader
 }
 import strategicprimer.viewer.model {
@@ -104,7 +103,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 
 import strategicprimer.viewer.xmlio {
     IncludingIterator,
-    TypesafeXMLEventReader
+    TypesafeXMLEventReader,
+    IMapReader
 }
 
 import util {
@@ -468,9 +468,9 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     }
     shared actual IMutableMapNG readMap(JPath file, Warning warner) {
         try (istream = JFiles.newBufferedReader(file)) {
-            return readMap(file, istream, warner);
+            return readMapFromStream(file, istream, warner);
         }
     }
-    shared actual IMutableMapNG readMap(JPath file, JReader istream, Warning warner) =>
+    shared actual IMutableMapNG readMapFromStream(JPath file, JReader istream, Warning warner) =>
             readXML<IMutableMapNG>(file, istream, javaClass<IMutableMapNG>(), warner);
 }

@@ -8,7 +8,6 @@ import controller.map.formatexceptions {
     SPFormatException
 }
 import controller.map.iointerfaces {
-    IMapReader,
     ISPReader
 }
 import strategicprimer.viewer.model {
@@ -50,7 +49,8 @@ import model.map {
 
 import strategicprimer.viewer.xmlio {
     IncludingIterator,
-    TypesafeXMLEventReader
+    TypesafeXMLEventReader,
+    IMapReader
 }
 
 import util {
@@ -91,7 +91,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
     "Read a map from a stream."
     throws(`class XMLStreamException`, "on malformed XML")
     throws(`class SPFormatException`, "on SP format problems")
-    shared actual IMutableMapNG readMap("The file we're reading from" JPath file,
+    shared actual IMutableMapNG readMapFromStream("The file we're reading from" JPath file,
             "The stream to read from" JReader istream,
             "The Warning instance to use for warnings" Warning warner) =>
                 readXML(file, istream, javaClass<IMutableMapNG>(), warner);
@@ -102,7 +102,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
     shared actual IMutableMapNG readMap("The file to read from" JPath file,
             "The Warning instance to use for warnings" Warning warner) {
         try (istream = JFiles.newBufferedReader(file)) {
-            return readMap(file, istream, warner);
+            return readMapFromStream(file, istream, warner);
         }
     }
 }
