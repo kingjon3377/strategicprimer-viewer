@@ -14,11 +14,11 @@ import model.map.fixtures {
     MineralFixture
 }
 import model.map.fixtures.resources {
-    StoneDeposit,
     MineralVein
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
-    Mine
+    Mine,
+    StoneDeposit
 }
 "A tabular report generator for resources that can be mined---mines, mineral veins, stone
  deposits, and Ground."

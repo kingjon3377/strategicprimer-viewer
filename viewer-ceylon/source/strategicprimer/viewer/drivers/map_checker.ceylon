@@ -40,7 +40,7 @@ import model.map.fixtures.mobile {
 import model.map.fixtures.mobile.worker {
     IJob
 }
-import model.map.fixtures.resources {
+import strategicprimer.viewer.model.map.fixtures.resources {
     StoneDeposit,
     StoneKind
 }
@@ -76,7 +76,7 @@ class SPContentWarning(Point context, String message)
 object lateriteChecker satisfies Checker {
     shared actual void check(TileType terrain, Point context, IFixture fixture,
             Warning warner) {
-        if (is StoneDeposit fixture, StoneKind.laterite ==fixture.stone(),
+        if (is StoneDeposit fixture, StoneKind.laterite ==fixture.stone,
                 !TileType.jungle == terrain) {
             warner.warn(SPContentWarning(context, "Laterite stone in non-jungle"));
         }

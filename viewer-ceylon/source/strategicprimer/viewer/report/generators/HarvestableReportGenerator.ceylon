@@ -23,13 +23,13 @@ import model.map.fixtures.resources {
     Meadow,
     CacheFixture,
     Shrub,
-    StoneDeposit,
     HarvestableFixture,
     Grove,
     MineralVein
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
-    Mine
+    Mine,
+    StoneDeposit
 }
 import strategicprimer.viewer.model.map {
     IMapNG

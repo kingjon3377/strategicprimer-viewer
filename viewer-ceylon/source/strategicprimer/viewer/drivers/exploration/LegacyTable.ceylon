@@ -19,9 +19,11 @@ import model.map.fixtures.explorable {
 }
 import model.map.fixtures.resources {
     MineralKind,
-    MineralVein,
-    StoneKind,
-    StoneDeposit
+    MineralVein
+}
+import strategicprimer.viewer.model.map.fixtures.resources {
+    StoneDeposit,
+    StoneKind
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     City,
@@ -58,7 +60,7 @@ class LegacyTable() satisfies EncounterTable {
             shared actual String text => "Nothing intersting here ...";
         }
         retval.add(temp);
-        for (stone in StoneKind.values()) {
+        for (stone in `StoneKind`.caseValues) {
             retval.add(StoneDeposit(stone, 0, 0));
         }
         return retval;

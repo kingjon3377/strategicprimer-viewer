@@ -38,12 +38,12 @@ import model.map.fixtures.resources {
     Meadow,
     FieldStatus,
     MineralVein,
-    Shrub,
-    StoneDeposit,
-    StoneKind
+    Shrub
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
-    Mine
+    Mine,
+    StoneDeposit,
+    StoneKind
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus
@@ -218,12 +218,15 @@ StoneDeposit readStone(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "stone");
     spinUntilEnd(element.name, stream);
-    return setImage(
-        StoneDeposit(StoneKind.parseStoneKind(
-            getAttrWithDeprecatedForm(element, "kind", "stone", warner)),
-            getIntegerAttribute(element, "dc"),
-            getOrGenerateID(element, warner, idFactory)),
-        element, warner);
+    if (exists stone = StoneKind.parse(getAttrWithDeprecatedForm(element, "kind", "stone", warner))) {
+        return setImage(
+            StoneDeposit(stone,
+                getIntegerAttribute(element, "dc"),
+                getOrGenerateID(element, warner, idFactory)),
+            element, warner);
+    } else {
+        throw MissingPropertyException(element, "stone");
+    }
 }
 
 void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
@@ -321,7 +324,7 @@ void writeMineral(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writeStone(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is StoneDeposit obj) {
         writeTag(ostream, "stone", indent, true);
-        writeAttribute(ostream, "kind", obj.stone().string);
+        writeAttribute(ostream, "kind", obj.stone.string);
         writeIntegerAttribute(ostream, "dc", obj.dc);
         writeIntegerAttribute(ostream, "id", obj.id);
         writeImage(ostream, obj);

@@ -81,14 +81,14 @@ import model.map.fixtures.resources {
     Meadow,
     Grove,
     MineralVein,
-    Shrub,
-    StoneDeposit
+    Shrub
 }
 import strategicprimer.viewer.model.map {
     IMapNG
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
-    Mine
+    Mine,
+    StoneDeposit
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,

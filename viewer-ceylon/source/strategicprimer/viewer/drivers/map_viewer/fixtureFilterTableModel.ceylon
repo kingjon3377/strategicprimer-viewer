@@ -56,11 +56,11 @@ import model.map.fixtures.resources {
     MineralVein,
     CacheFixture,
     Meadow,
-    StoneDeposit,
     Grove
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
-    Mine
+    Mine,
+    StoneDeposit
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,

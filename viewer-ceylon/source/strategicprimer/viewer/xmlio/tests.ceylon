@@ -107,8 +107,6 @@ import model.map.fixtures.mobile.worker {
     WorkerStats
 }
 import model.map.fixtures.resources {
-    StoneKind,
-    StoneDeposit,
     Grove,
     FieldStatus,
     Meadow,
@@ -117,7 +115,9 @@ import model.map.fixtures.resources {
     MineralVein
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
-    Mine
+    StoneKind,
+    Mine,
+    StoneDeposit
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Sandbar,
@@ -544,7 +544,7 @@ void testTownSerialization(TownSize size, TownStatus status) {
     assertPortraitSerialization("Town portrait property is preserved", thirdTown);
 }
 
-{[StoneKind]*} stoneParameters = {*StoneKind.values()}.map((val) => [val]);
+{[StoneKind]*} stoneParameters = `StoneKind`.caseValues.map((val) => [val]);
 
 test
 parameters(`value stoneParameters`)

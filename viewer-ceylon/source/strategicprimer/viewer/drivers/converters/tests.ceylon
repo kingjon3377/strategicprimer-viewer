@@ -106,11 +106,9 @@ import model.map.fixtures.mobile {
 }
 import model.map.fixtures.resources {
     FieldStatus,
-    StoneKind,
     MineralVein,
     CacheFixture,
     Meadow,
-    StoneDeposit,
     Grove
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
@@ -123,7 +121,9 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
-    Mine
+    Mine,
+    StoneKind,
+    StoneDeposit
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus,

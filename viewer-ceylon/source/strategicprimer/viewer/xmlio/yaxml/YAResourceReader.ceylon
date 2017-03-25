@@ -31,12 +31,12 @@ import model.map.fixtures.resources {
     Grove,
     CacheFixture,
     MineralVein,
-    Shrub,
-    StoneDeposit,
-    StoneKind
+    Shrub
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
-    Mine
+    Mine,
+    StoneDeposit,
+    StoneKind
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus
@@ -121,9 +121,12 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             retval = Shrub(getParamWithDeprecatedForm(element, "kind", "shrub"), idNum);
         }
         case ("stone") {
-            retval = StoneDeposit(
-                StoneKind.parseStoneKind(getParamWithDeprecatedForm(element, "kind",
-                    "stone")), getIntegerParameter(element, "dc"), idNum);
+            if (exists stone = StoneKind.parse(getParamWithDeprecatedForm(element, "kind",
+                    "stone"))) {
+                retval = StoneDeposit(stone, getIntegerParameter(element, "dc"), idNum);
+            } else {
+                throw MissingPropertyException(element, "kind");
+            }
         }
         else {
             throw IllegalArgumentException("Unhandled harvestable tag");
@@ -160,7 +163,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             writeProperty(ostream, "kind", obj.kind);
         } else if (is StoneDeposit obj) {
             writeTag(ostream, "stone", indent);
-            writeProperty(ostream, "kind", obj.stone().string);
+            writeProperty(ostream, "kind", obj.stone.string);
             writeProperty(ostream, "dc", obj.dc);
         } else {
             throw IllegalStateException("Unhandled HarvestableFixture subtype");
