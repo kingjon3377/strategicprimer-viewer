@@ -2,9 +2,6 @@ import model.map {
     HasKind,
     IFixture
 }
-import model.map.fixtures.resources {
-    HarvestableFixture
-}
 "An orchard (fruit trees) or grove (other trees) on the map."
 shared class Grove(orchard, cultivated, kind, id)
         satisfies HarvestableFixture&HasKind {

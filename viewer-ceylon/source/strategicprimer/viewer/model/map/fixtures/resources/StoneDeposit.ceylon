@@ -9,9 +9,6 @@ import model.map {
 import model.map.fixtures {
     MineralFixture
 }
-import model.map.fixtures.resources {
-    HarvestableFixture
-}
 "A deposit (always exposed for now) of stone."
 todo("Support non-exposed deposits")
 shared class StoneDeposit(stone, dc, id)

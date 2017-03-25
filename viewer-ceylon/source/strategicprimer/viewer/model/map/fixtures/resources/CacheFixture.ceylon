@@ -6,9 +6,6 @@ import model.map {
     HasKind,
     IFixture
 }
-import model.map.fixtures.resources {
-    HarvestableFixture
-}
 "A cache (of vegetables, or a hidden treasure, or ...) on a tile."
 shared class CacheFixture(kind, contents, id) satisfies HarvestableFixture&HasKind {
     "What kind of things this is a cache of."

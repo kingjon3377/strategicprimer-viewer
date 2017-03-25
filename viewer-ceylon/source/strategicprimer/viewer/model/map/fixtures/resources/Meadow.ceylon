@@ -6,10 +6,6 @@ import model.map {
     HasKind,
     IFixture
 }
-import model.map.fixtures.resources {
-    HarvestableFixture,
-    FieldStatus
-}
 "A field or meadow. If in forest, should increase a unit's vision slightly when the unit
  is on it."
 todo("Implement that effect")

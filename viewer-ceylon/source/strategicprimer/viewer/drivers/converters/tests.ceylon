@@ -104,9 +104,6 @@ import model.map.fixtures.mobile {
     SimpleImmortal,
     Animal
 }
-import model.map.fixtures.resources {
-    FieldStatus
-}
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Hill,
     Forest
@@ -117,6 +114,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
+    FieldStatus,
     Meadow,
     MineralVein,
     CacheFixture,

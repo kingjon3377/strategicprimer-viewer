@@ -8,9 +8,6 @@ import model.map {
 import model.map.fixtures {
     MineralFixture
 }
-import model.map.fixtures.resources {
-    HarvestableFixture
-}
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus
 }

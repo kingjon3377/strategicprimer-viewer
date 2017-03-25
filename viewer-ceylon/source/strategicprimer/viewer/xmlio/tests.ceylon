@@ -106,10 +106,8 @@ import model.map.fixtures.mobile.worker {
     Skill,
     WorkerStats
 }
-import model.map.fixtures.resources {
-    FieldStatus
-}
 import strategicprimer.viewer.model.map.fixtures.resources {
+    FieldStatus,
     Grove,
     CacheFixture,
     StoneKind,
@@ -951,7 +949,7 @@ void testGroveSerialization() {
 test
 void testMeadowSerialization() {
     variable Integer i = 0;
-    variable {FieldStatus*} statuses = {*FieldStatus.values()}.cycled;
+    variable {FieldStatus*} statuses = `FieldStatus`.caseValues.cycled;
     variable String[] names = ["first", "second", "third", "fourth"];
     for (field in {true, false}) {
         for (cultivated in {true, false}) {

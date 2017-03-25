@@ -32,10 +32,8 @@ import model.map {
 import model.map.fixtures {
     ResourcePile
 }
-import model.map.fixtures.resources {
-    FieldStatus
-}
 import strategicprimer.viewer.model.map.fixtures.resources {
+    FieldStatus,
     Grove,
     Meadow,
     CacheFixture,
@@ -145,11 +143,15 @@ Meadow readMeadow(StartElement element, QName parent, {XMLEvent*} stream,
     }
     value cultivated = Boolean.parse(getAttribute(element, "cultivated"));
     if (is Boolean cultivated) {
-        return setImage(
-            Meadow(getAttribute(element, "kind"), false, cultivated,
-                id, FieldStatus.parse(
-                    getAttribute(element, "status",
-                        FieldStatus.random(id).string))), element, warner);
+        FieldStatus? status = FieldStatus.parse(getAttribute(element, "status",
+            FieldStatus.random(id).string));
+        if (exists status) {
+            return setImage(
+                Meadow(getAttribute(element, "kind"), false, cultivated,
+                    id, status), element, warner);
+        } else {
+            throw MissingPropertyException(element, "status");
+        }
     } else {
         throw MissingPropertyException(element, "cultivated", cultivated);
     }
@@ -165,11 +167,15 @@ Meadow readField(StartElement element, QName parent, {XMLEvent*} stream,
     }
     value cultivated = Boolean.parse(getAttribute(element, "cultivated"));
     if (is Boolean cultivated) {
-        return setImage(
-            Meadow(getAttribute(element, "kind"), true, cultivated,
-                id, FieldStatus.parse(
-                    getAttribute(element, "status",
-                        FieldStatus.random(id).string))), element, warner);
+        FieldStatus? status = FieldStatus.parse(getAttribute(element, "status",
+            FieldStatus.random(id).string));
+        if (exists status) {
+            return setImage(
+                Meadow(getAttribute(element, "kind"), true, cultivated,
+                    id, status), element, warner);
+        } else {
+            throw MissingPropertyException(element, "status");
+        }
     } else {
         throw MissingPropertyException(element, "cultivated", cultivated);
     }

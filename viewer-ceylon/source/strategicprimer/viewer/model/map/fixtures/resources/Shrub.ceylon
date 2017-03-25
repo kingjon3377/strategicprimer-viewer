@@ -6,9 +6,6 @@ import model.map {
     HasKind,
     IFixture
 }
-import model.map.fixtures.resources {
-    HarvestableFixture
-}
 "A [[TileFixture]] to represent shrubs, or their aquatic equivalents, on a tile."
 shared class Shrub(kind, id) satisfies HarvestableFixture&HasKind {
     "What kind of shrub this is"

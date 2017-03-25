@@ -9,9 +9,6 @@ import model.map {
 import model.map.fixtures {
     MineralFixture
 }
-import model.map.fixtures.resources {
-    HarvestableFixture
-}
 "A vein of a mineral."
 shared class MineralVein(kind, exposed, dc, id)
         satisfies IEvent&HarvestableFixture&MineralFixture {

@@ -24,11 +24,8 @@ import lovelace.util.common {
     todo
 }
 
-import model.map.fixtures.resources {
-    HarvestableFixture,
-    FieldStatus
-}
 import strategicprimer.viewer.model.map.fixtures.resources {
+    HarvestableFixture,
     Meadow,
     CacheFixture,
     Mine,
@@ -36,7 +33,8 @@ import strategicprimer.viewer.model.map.fixtures.resources {
     StoneKind,
     Shrub,
     MineralVein,
-    Grove
+    Grove,
+    FieldStatus
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus
@@ -54,7 +52,14 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         requireNonEmptyParameter(element, "status", false);
         value cultivated = Boolean.parse(getParameter(element, "cultivated"));
         if (is Boolean cultivated) {
-            return Meadow(getParameter(element, "kind"), field, cultivated, idNum, FieldStatus.parse(getParameter(element, "status", FieldStatus.random(idNum).string)));
+            FieldStatus? status = FieldStatus.parse(getParameter(element, "status",
+                FieldStatus.random(idNum).string));
+            if (exists status) {
+                return Meadow(getParameter(element, "kind"), field, cultivated, idNum,
+                    status);
+            } else {
+                throw MissingPropertyException(element, "status");
+            }
         } else {
             throw MissingPropertyException(element, "cultivated", cultivated);
         }
