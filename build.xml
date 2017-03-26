@@ -101,6 +101,8 @@
       <ceylon-import-jar cwd="${ceylon.root}" jar="${release}/${basename}.jar"
           module="${shortname}/${major-version-number}.${minor-version-number}"
           failOnError="true" descriptor="legacy-viewer.module.properties" />
+      <ceylon-import-jar cwd="${ceylon.root}" jar="${windowmenu.jar.path}"
+          module="com.bric.window.windowmenu/1.0" failOnError="true" />
   </target>
   <target name="build" depends="init">
     <echo message="${ant.project.name}: ${ant.file}" />
