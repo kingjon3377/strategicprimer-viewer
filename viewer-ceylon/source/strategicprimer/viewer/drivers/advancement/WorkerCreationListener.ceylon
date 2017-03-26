@@ -30,8 +30,7 @@ import lovelace.util.jvm {
 }
 
 import model.listeners {
-    NewWorkerListener,
-    UnitSelectionListener
+    NewWorkerListener
 }
 import model.map.fixtures.mobile {
     IUnit,

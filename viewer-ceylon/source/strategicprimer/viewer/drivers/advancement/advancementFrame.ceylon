@@ -30,7 +30,6 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     IWorkerModel
 }
 import model.listeners {
-    UnitSelectionSource,
     PlayerChangeListener,
     UnitMemberSelectionSource
 }
