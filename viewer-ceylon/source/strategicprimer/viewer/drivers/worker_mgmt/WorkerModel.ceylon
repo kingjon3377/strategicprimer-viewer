@@ -41,7 +41,9 @@ import model.map.fixtures.mobile {
     ProxyFor,
     Animal,
     IUnit,
-    Unit,
+    Unit
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyUnit
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
@@ -103,7 +105,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 if (exists item = tempMap.get(key)) {
                     proxy = item;
                 } else {
-                    value newProxy = ProxyUnit(key);
+                    value newProxy = ProxyUnit.fromParallelMaps(key);
                     tempMap.put(key, newProxy);
                     proxy = newProxy;
                 }

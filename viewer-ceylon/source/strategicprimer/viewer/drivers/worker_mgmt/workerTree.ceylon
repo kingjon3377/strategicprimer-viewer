@@ -11,7 +11,9 @@ import java.awt {
 }
 import model.map.fixtures.mobile.worker {
     IJob,
-    WorkerStats,
+    WorkerStats
+}
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     ProxyWorker
 }
 import model.map {
@@ -362,7 +364,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                             listener.selectUnit(sel);
                         }
                         for (listener in memberListeners) {
-                            listener.memberSelected(null, ProxyWorker(sel));
+                            listener.memberSelected(null, ProxyWorker.fromUnit(sel));
                         }
                     } else if (!sel exists) {
                         for (listener in selectionListeners) {

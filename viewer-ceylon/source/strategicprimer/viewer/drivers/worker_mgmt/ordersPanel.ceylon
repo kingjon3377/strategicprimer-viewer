@@ -13,7 +13,9 @@ import model.listeners {
     PlayerChangeListener
 }
 import model.map.fixtures.mobile {
-    IUnit,
+    IUnit
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyUnit
 }
 import javax.swing.event {
@@ -82,7 +84,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
                     temp = sel;
                 }
                 if (is String temp) {
-                    ProxyUnit proxyUnit = ProxyUnit(temp);
+                    ProxyUnit proxyUnit = ProxyUnit.forKind(temp);
                     for (unit in playerUnits(currentPlayer, temp)) {
                         proxyUnit.addProxied(unit);
                     }

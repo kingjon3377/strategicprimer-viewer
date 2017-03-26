@@ -1,18 +1,25 @@
-import model.map.fixtures.mobile.worker {
-    ProxyWorker,
-    IJob,
-    Job
-}
 import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.viewer.drivers {
-    ICLIHelper
+import ceylon.interop.java {
+    CeylonIterable
 }
+
 import model.map.fixtures.mobile {
     IUnit,
     IWorker
+}
+import model.map.fixtures.mobile.worker {
+    IJob,
+    Job
+}
+
+import strategicprimer.viewer.drivers {
+    ICLIHelper
+}
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    ProxyWorker
 }
 "Let the user add experience to a worker or workers in a unit."
 void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
@@ -26,7 +33,7 @@ void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
         cli.println("No workers in unit.");
     } else {
         // TODO: Switch to named-argument-ish syntax
-        MutableList<IJob> jobs = ArrayList(0, 1.0, { *ProxyWorker(unit) });
+        MutableList<IJob> jobs = ArrayList(0, 1.0, { *CeylonIterable<IJob>(ProxyWorker.fromUnit(unit)) });
         cli.loopOnMutableList(jobs, (ICLIHelper clh) => clh.chooseFromList(
             jobs, "Jobs in workers:", "No existing jobs.",
             "Job to advance: ", false),
@@ -37,7 +44,7 @@ void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
                     worker.addJob(Job(jobName, 0));
                 }
                 list.clear();
-                for (job in ProxyWorker(unit)) {
+                for (job in ProxyWorker.fromUnit(unit)) {
                     list.add(job);
                 }
                 return list.find((item) => jobName == item.name);

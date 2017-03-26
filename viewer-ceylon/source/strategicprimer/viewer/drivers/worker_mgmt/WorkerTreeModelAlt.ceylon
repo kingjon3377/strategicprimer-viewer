@@ -19,7 +19,9 @@ import ceylon.collection {
 }
 import model.map.fixtures.mobile {
     IUnit,
-    ProxyFor,
+    ProxyFor
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyUnit
 }
 import model.map {

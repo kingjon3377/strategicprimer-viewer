@@ -15,14 +15,15 @@ import model.map.fixtures.mobile {
     IWorker,
     Worker,
     IUnit,
-    Unit,
+    Unit
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyUnit
 }
 import model.map.fixtures.mobile.worker {
     ProxyJob,
     Job,
-    Skill,
-    ProxyWorker
+    Skill
 }
 
 import util {
@@ -57,7 +58,7 @@ void testProxyWorker() {
     IWorker secondWorker = Worker("two", "elf", 2, Job("jobTwo", 1,
         Skill("skillThree", 1, 19), Skill("skillFour", 0, 99)));
     IWorker thirdWorker = Worker("three", "dwarf", 5);
-    IWorker proxy = ProxyWorker(firstWorker, secondWorker, thirdWorker);
+    IWorker proxy = ProxyWorker.fromWorkers(firstWorker, secondWorker, thirdWorker);
     for (job in proxy) {
         for (skill in job) {
             skill.addHours(10, 100);
@@ -106,7 +107,7 @@ void testProxyUnit() {
     unitOne.addMember(secondWorker);
     unitTwo.addMember(oneCopy);
     unitTwo.addMember(twoCopy);
-    ProxyUnit proxy = ProxyUnit(4);
+    ProxyUnit proxy = ProxyUnit.fromParallelMaps(4);
     proxy.addProxied(unitOne);
     proxy.addProxied(unitTwo);
     for (member in proxy) {
@@ -151,10 +152,10 @@ void testProxyUnitProxy() {
     unitOne.addMember(secondWorker);
     unitTwo.addMember(oneCopy);
     unitTwo.addMember(twoCopy);
-    ProxyUnit proxy = ProxyUnit(4);
+    ProxyUnit proxy = ProxyUnit.fromParallelMaps(4);
     proxy.addProxied(unitOne);
     proxy.addProxied(unitTwo);
-    ProxyWorker meta = ProxyWorker(proxy);
+    ProxyWorker meta = ProxyWorker.fromUnit(proxy);
     for (job in meta) {
         for (skill in job) {
             skill.addHours(10, 100);
