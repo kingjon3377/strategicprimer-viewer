@@ -12,10 +12,8 @@ import java.awt.event {
 import model.listeners {
     PlayerChangeListener
 }
-import model.map.fixtures.mobile {
-    IUnit
-}
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit,
     ProxyUnit
 }
 import javax.swing.event {

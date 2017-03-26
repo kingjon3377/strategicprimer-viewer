@@ -30,7 +30,7 @@ import model.map {
 import model.map.fixtures {
     FortressMember
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 "A fortress on the map. A player can only have one fortress per tile, but multiple players

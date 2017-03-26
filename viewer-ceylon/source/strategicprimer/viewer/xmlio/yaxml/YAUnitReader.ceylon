@@ -35,7 +35,7 @@ import model.map {
 import model.map.fixtures {
     UnitMember
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit,
     Unit
 }
@@ -119,7 +119,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             players.getPlayer(getIntegerParameter(element, "owner", -1)),
             parseKind(element), getParameter(element, "name", ""),
             getOrGenerateID(element));
-        retval.image = getParameter(element, "image", "");
+        retval.setImage(getParameter(element, "image", ""));
         retval.portrait = getParameter(element, "portrait", "");
         StringBuilder orders = StringBuilder();
         for (event in stream) {
@@ -183,11 +183,10 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             closeLeafTag(ostream);
         } else {
             finishParentTag(ostream);
-            // TODO: drop ".string" once IUnit ported
-            for (turn->orders in CeylonMap(obj.allOrders)) {
-                writeOrders(ostream, "orders", turn.intValue(), orders.string, indent + 1);
-            } for (turn->results in CeylonMap(obj.allResults)) {
-                writeOrders(ostream, "results", turn.intValue(), results.string, indent + 1);
+            for (turn->orders in obj.allOrders) {
+                writeOrders(ostream, "orders", turn, orders, indent + 1);
+            } for (turn->results in obj.allResults) {
+                writeOrders(ostream, "results", turn, results, indent + 1);
             }
             for (member in obj) {
                 writeChild(ostream, member, indent + 1);

@@ -25,7 +25,9 @@ import model.map.fixtures {
 }
 import model.map.fixtures.mobile {
     IWorker,
-    ProxyFor,
+    ProxyFor
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 import model.map.fixtures.mobile.worker {

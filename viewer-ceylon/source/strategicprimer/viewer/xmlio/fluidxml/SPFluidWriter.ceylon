@@ -61,6 +61,9 @@ import model.map.fixtures.explorable {
     Battlefield,
     Cave
 }
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit
+}
 import model.map.fixtures.mobile {
     Animal,
     Dragon,
@@ -68,7 +71,6 @@ import model.map.fixtures.mobile {
     Giant,
     SimpleImmortal,
     IWorker,
-    IUnit,
     Centaur
 }
 import model.map.fixtures.mobile.worker {
@@ -202,15 +204,12 @@ shared class SPFluidWriter() satisfies SPWriter {
             if (is HasPortrait obj) {
                 writeNonEmptyAttribute(ostream, "portrait", obj.portrait);
             }
-            for (turn->orders in CeylonMap(obj.allOrders)) {
-                // FIXME: Drop superfluous .string, .intValue() when IUnit is ported
-                writeUnitOrders(ostream, indentation + 1, turn.intValue(), "orders",
-                    orders.string.trimmed);
+            for (turn->orders in obj.allOrders) {
+                writeUnitOrders(ostream, indentation + 1, turn, "orders", orders.trimmed);
             }
-            for (turn->results in CeylonMap(obj.allResults)) {
-                // FIXME: Drop superfluous .string, .intValue() when IUnit is ported
-                writeUnitOrders(ostream, indentation + 1, turn.intValue(), "results",
-                    results.string.trimmed);
+            for (turn->results in obj.allResults) {
+                writeUnitOrders(ostream, indentation + 1, turn, "results",
+                    results.trimmed);
             }
             for (member in obj) {
                 writeSPObjectImpl(ostream, member, indentation + 1);

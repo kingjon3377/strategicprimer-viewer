@@ -13,12 +13,12 @@ import model.map {
 }
 import model.map.fixtures.mobile {
     IWorker,
-    Worker,
-    IUnit,
-    Unit
+    Worker
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    ProxyUnit
+    ProxyUnit,
+    IUnit,
+    Unit
 }
 import model.map.fixtures.mobile.worker {
     ProxyJob,

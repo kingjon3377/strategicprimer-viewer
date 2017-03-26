@@ -32,7 +32,9 @@ import model.map.fixtures {
 }
 import model.map.fixtures.mobile {
     IWorker,
-    Animal,
+    Animal
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 
@@ -60,10 +62,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         if (!item.allOrders.empty || !item.allResults.empty) {
             formatter("""Orders and Results:<ul>
                          """);
-            for (turn in CeylonSet(item.allOrders.keySet())
-                .union(CeylonSet(item.allResults.keySet())).map((val) =>
-            val.intValue())
-                .sort((x, y) => x <=> y)) {
+            for (turn in set { *item.allOrders.keys }.union(set { *item.allResults.keys })
+                    .sort((x, y) => x <=> y)) {
                 formatter("<li>Turn ``turn``:<ul>
                            ");
                 if (exists orders = item.getOrders(turn)) {
@@ -239,10 +239,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             }
             retval.addIfNonEmpty(workers, animals, equipment, resources, others);
             ListReportNode ordersNode = ListReportNode("Orders and Results:");
-            for (turn in CeylonSet(item.allOrders.keySet())
-                .union(CeylonSet(item.allResults.keySet())).map((val) =>
-            val.intValue())
-                .sort((x, y) => x <=> y)) {
+            for (turn in set { *item.allOrders.keys}.union(set {*item.allResults.keys})
+                    .sort((x, y) => x <=> y)) {
                 ListReportNode current = ListReportNode("Turn ``turn``:");
                 if (exists orders = item.getOrders(turn)) {
                     current.add(SimpleReportNode("Orders: ``orders``"));

@@ -19,7 +19,7 @@ import model.map {
     Point,
     TileType
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 

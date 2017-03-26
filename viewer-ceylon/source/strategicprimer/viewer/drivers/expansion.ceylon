@@ -16,8 +16,10 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit
+}
 import model.map.fixtures.mobile {
-    IUnit,
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
@@ -41,9 +43,6 @@ import strategicprimer.viewer.model {
     IMultiMapModel,
     IDriverModel,
     IDRegistrar
-}
-IUnit mockUnit(Player player) {
-    return UnitProxyMaker.makeProxyFor(player);
 }
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""
@@ -80,7 +79,9 @@ object expansionDriver satisfies SimpleCLIDriver {
                         map.addFixture(point, fixture.copy(true));
                     }
                 }
-                IUnit mock = mockUnit(currentPlayer);
+                object mock satisfies HasOwner {
+                    shared actual Player owner = currentPlayer;
+                }
                 for (point in map.locations) {
                     if (containsSwornVillage(point)) {
                         for (neighbor in surroundingPointIterable(point,

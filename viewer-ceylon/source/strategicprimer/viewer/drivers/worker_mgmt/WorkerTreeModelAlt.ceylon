@@ -18,10 +18,10 @@ import ceylon.collection {
     MutableList
 }
 import model.map.fixtures.mobile {
-    IUnit,
     ProxyFor
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit,
     ProxyUnit
 }
 import model.map {

@@ -29,8 +29,10 @@ import model.map.fixtures {
     RiverFixture,
     TextFixture
 }
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    Unit
+}
 import model.map.fixtures.mobile {
-    Unit,
     Animal,
     Worker
 }

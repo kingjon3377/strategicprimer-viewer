@@ -44,9 +44,11 @@ import model.map {
     PointFactory
 }
 import model.map.fixtures.mobile {
-    IUnit,
     IWorker,
-    Worker,
+    Worker
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit,
     Unit
 }
 import model.map.fixtures.mobile.worker {
@@ -532,13 +534,13 @@ object todoFixerCLI satisfies SimpleCLIDriver {
             if (rng.nextBoolean()) {
                 cli.println("Setting unit with ID #``
                     unit.id`` (``count`` / 5328) to kind ``job``");
-                unit.kind = job;
+                unit.setKind(job);
                 return;
             }
         }
         String kind = cli.inputString(
             "What's the next possible kind for ``description``? ");
-        unit.kind = kind;
+        unit.setKind(kind);
         jobList.add(kind);
     }
     "Search for and fix units with kinds missing."

@@ -28,8 +28,10 @@ import model.map {
 import model.map.fixtures {
     Ground
 }
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit
+}
 import model.map.fixtures.mobile {
-    IUnit,
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
@@ -201,7 +203,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     shared void moveUntilDone() {
         if (exists mover = model.selectedUnit) {
             cli.println("Details of the unit:");
-            cli.println(mover.verbose());
+            cli.println(mover.verbose);
             Integer totalMP = cli.inputNumber("MP the unit has: ");
             variable Integer movement = totalMP;
             void handleCost(Integer cost) {

@@ -90,11 +90,13 @@ import model.map.fixtures.explorable {
     Cave,
     Battlefield
 }
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    Unit,
+    IUnit
+}
 import model.map.fixtures.mobile {
     SimpleImmortal,
-    Unit,
     Animal,
-    IUnit,
     Worker,
     Centaur,
     Dragon,

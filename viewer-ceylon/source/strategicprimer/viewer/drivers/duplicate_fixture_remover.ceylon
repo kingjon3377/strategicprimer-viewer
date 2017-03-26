@@ -32,7 +32,7 @@ import model.map {
 import model.map.fixtures {
     ResourcePile
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 import strategicprimer.viewer.model.map.fixtures.resources {

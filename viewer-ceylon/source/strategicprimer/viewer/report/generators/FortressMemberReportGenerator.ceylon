@@ -30,7 +30,7 @@ import model.map.fixtures {
     ResourcePile,
     FortressMember
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 

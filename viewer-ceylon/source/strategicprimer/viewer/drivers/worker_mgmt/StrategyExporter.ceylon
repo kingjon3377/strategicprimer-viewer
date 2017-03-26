@@ -26,8 +26,10 @@ import ceylon.interop.java {
 import model.listeners {
     PlayerChangeListener
 }
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit
+}
 import model.map.fixtures.mobile {
-    IUnit,
     IWorker
 }
 import ceylon.file {

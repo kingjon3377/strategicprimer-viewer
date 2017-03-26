@@ -12,7 +12,7 @@ import java.awt.datatransfer {
     UnsupportedFlavorException,
     Transferable
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 "A class to transfer a UnitMember via drag-and-drop."

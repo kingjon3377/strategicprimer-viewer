@@ -2,7 +2,9 @@ import ceylon.collection {
     MutableList,
     ArrayList,
     MutableMap,
-    naturalOrderTreeMap
+    naturalOrderTreeMap,
+    SortedMap,
+    TreeMap
 }
 import ceylon.interop.java {
     javaString,
@@ -57,9 +59,12 @@ import model.map.fixtures {
     UnitMember
 }
 import model.map.fixtures.mobile {
-    IUnit,
     ProxyFor,
     IWorker
+}
+
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     ProxyWorker
@@ -77,20 +82,26 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     shared actual Boolean parallel;
     "The units we are a proxy for."
     MutableList<IUnit> proxiedList = ArrayList<IUnit>();
-    JNavigableMap<JInteger, JString> mergeMaps(JNavigableMap<JInteger, JString>(IUnit) method) {
+    SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) {
         object firstFunc satisfies JFunction<JMap<JInteger, JString>, JSet<JMap<JInteger, JString>.Entry<JInteger, JString>>> {
             shared actual JSet<JMap.Entry<JInteger, JString>> apply(JMap<JInteger, JString> arg) => arg.entrySet();
         }
         object secondFunc satisfies JFunction<JSet<JMap<JInteger, JString>.Entry<JInteger, JString>>, JStream<JMap<JInteger, JString>.Entry<JInteger, JString>>> {
             shared actual JStream<JMap<JInteger, JString>.Entry<JInteger, JString>> apply(JSet<JMap<JInteger, JString>.Entry<JInteger, JString>> arg) => arg.stream();
         }
-        JNavigableMap<JInteger, JString> retval = JTreeMap<JInteger, JString>(JavaList(proxiedList)
-            .stream().map(method).map(firstFunc).flatMap(secondFunc)
-            .collect(JCollectors.toMap(JMap<JInteger, JString>.Entry<JInteger, JString>.key,
-                JMap<JInteger, JString>.Entry<JInteger, JString>.\ivalue, mergeFunction)));
-        retval.entrySet().stream().filter((entry) => entry.\ivalue.empty)
-            .map(JMap.Entry<JInteger, JString>.key).distinct()
-            .collect(JCollectors.toList<JInteger>()).forEach((key) => retval.remove(key));
+        MutableMap<Integer,String>&SortedMap<Integer, String> retval =
+                TreeMap<Integer, String>((x, y) => x <=> y, {});
+        for (map in proxiedList.map(method)) {
+            for (key-> item in map) {
+                if (exists existing = retval.get(key)) {
+                    if (item != existing) {
+                        retval.put(key, "");
+                    }
+                } else {
+                    retval.put(key, item);
+                }
+            }
+        }
         return retval;
     }
     "Call a function on every proxied member, and return the value returned if it was
@@ -126,9 +137,9 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         parallel = false;
     }
     "All orders shared by all the proxied units."
-    shared actual JNavigableMap<JInteger, JString> allOrders => mergeMaps(IUnit.allOrders);
+    shared actual SortedMap<Integer, String> allOrders => mergeMaps(IUnit.allOrders);
     "All results shared by all the proxied units."
-    shared actual JNavigableMap<JInteger, JString> allResults => mergeMaps(IUnit.allResults);
+    shared actual SortedMap<Integer, String> allResults => mergeMaps(IUnit.allResults);
     shared actual IUnit copy(Boolean zero) {
         ProxyUnit retval;
         if (parallel) {
@@ -276,11 +287,11 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             unit.setResults(turn, newResults);
         }
     }
-    shared actual String verbose() {
+    shared actual String verbose {
         if (parallel) {
             if (exists first = proxiedList.first) {
                 return "A proxy for units in several maps, such as the following:
-                        ``first.verbose()``";
+                        ``first.verbose``";
             } else {
                 return "A proxy for units in several maps, but no units yet.";
             }

@@ -21,17 +21,21 @@ import lovelace.util.jvm {
 import model.map {
     TileType,
     River,
-    TileFixture
+    TileFixture,
+    HasOwner
 }
 import model.map.fixtures {
     RiverFixture
 }
 import model.map.fixtures.mobile {
-    IUnit,
     IWorker
 }
 import model.map.fixtures.mobile.worker {
     WorkerStats
+}
+
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Hill,
@@ -107,7 +111,7 @@ todo("We now check DCs on Events, but ignore relevant skills other than Percepti
       now a lot more things have DCs for which those other skills are relevant.")
 shared Boolean shouldSometimesNotice(
         "The moving unit"
-        IUnit unit,
+        HasOwner unit,
         "How fast the unit is moving"
         Speed speed,
         "The fixture the unit might be noticing"
@@ -116,8 +120,13 @@ shared Boolean shouldSometimesNotice(
         if (unit == fixture) {
             return false;
         } else {
-            return
-                (highestPerception(unit) + speed.perceptionModifier + 15) >= fixture.dc;
+            Integer perception;
+            if (is IUnit unit) {
+                perception = highestPerception(unit);
+            } else {
+                perception = 0;
+            }
+            return (perception + speed.perceptionModifier + 15) >= fixture.dc;
         }
     } else {
         return false;
@@ -149,7 +158,7 @@ Integer getPerception(IWorker worker) {
  noticed."
 todo("""Very-observant units should "always" notice some things that others might
         "sometimes" notice.""")
-shared Boolean shouldAlwaysNotice(IUnit unit, TileFixture? fixture) {
+shared Boolean shouldAlwaysNotice(HasOwner unit, TileFixture? fixture) {
     if (exists fixture) {
         if (is ITownFixture fixture) {
             return fixture.owner == unit.owner;

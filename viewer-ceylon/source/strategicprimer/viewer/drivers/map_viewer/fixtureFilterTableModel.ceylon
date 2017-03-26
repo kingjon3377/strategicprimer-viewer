@@ -47,9 +47,11 @@ import model.map.fixtures.mobile {
     Giant,
     SimpleImmortal,
     Fairy,
-    Unit,
     Centaur,
     Animal
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    Unit
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     Grove,

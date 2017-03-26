@@ -12,8 +12,10 @@ import model.map {
     Point,
     IFixture
 }
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit
+}
 import model.map.fixtures.mobile {
-    IUnit,
     Animal
 }
 "A tabular report generator for units."
@@ -30,7 +32,7 @@ shared class UnitTabularReportGenerator(Player player, Point hq)
             Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
             ownerString(player, item.owner), item.kind, item.name,
-            item.allOrders.lastEntry().\ivalue.string else "");
+            item.allOrders.last?.item else "");
         for (member in item) {
             if (is Animal item) {
                 // We don't want animals inside a unit showing up in the wild-animal

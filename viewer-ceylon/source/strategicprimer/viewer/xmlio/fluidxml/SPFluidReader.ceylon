@@ -78,10 +78,12 @@ import model.map.fixtures {
     TextFixture,
     RiverFixture
 }
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit,
+    Unit
+}
 import model.map.fixtures.mobile {
     SimpleImmortal,
-    IUnit,
-    Unit,
     Centaur,
     Dragon,
     Fairy,

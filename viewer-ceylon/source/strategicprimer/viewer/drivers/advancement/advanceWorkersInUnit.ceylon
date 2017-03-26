@@ -6,8 +6,10 @@ import ceylon.interop.java {
     CeylonIterable
 }
 
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit
+}
 import model.map.fixtures.mobile {
-    IUnit,
     IWorker
 }
 import model.map.fixtures.mobile.worker {

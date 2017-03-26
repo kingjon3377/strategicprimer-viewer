@@ -36,7 +36,9 @@ import model.map.fixtures.mobile {
     Dragon,
     Fairy,
     Giant,
-    SimpleImmortal,
+    SimpleImmortal
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 

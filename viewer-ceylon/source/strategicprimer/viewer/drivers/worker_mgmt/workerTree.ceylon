@@ -41,7 +41,9 @@ import javax.swing {
     Icon
 }
 import model.map.fixtures.mobile {
-    IWorker,
+    IWorker
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 import model.listeners {

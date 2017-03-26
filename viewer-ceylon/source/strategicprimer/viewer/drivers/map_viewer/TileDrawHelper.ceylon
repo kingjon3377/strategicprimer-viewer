@@ -14,7 +14,7 @@ import model.map {
 import view.util {
     Coordinate
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 import java.awt {

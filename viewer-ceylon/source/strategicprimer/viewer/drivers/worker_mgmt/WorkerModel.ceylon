@@ -39,12 +39,12 @@ import strategicprimer.viewer.model.map {
 }
 import model.map.fixtures.mobile {
     ProxyFor,
-    Animal,
-    IUnit,
-    Unit
+    Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    ProxyUnit
+    ProxyUnit,
+    IUnit,
+    Unit
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Oasis,

@@ -7,7 +7,7 @@ import model.map {
 import strategicprimer.viewer.drivers {
     ICLIHelper
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 "Let the user add experience to a player's workers."

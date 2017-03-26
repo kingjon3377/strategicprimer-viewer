@@ -97,12 +97,14 @@ import model.map.fixtures.explorable {
 import model.map.fixtures.mobile {
     Dragon,
     Fairy,
-    Unit,
     Centaur,
-    IUnit,
     Giant,
     SimpleImmortal,
     Animal
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    Unit,
+    IUnit
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Hill,
