@@ -27,10 +27,12 @@ import java.awt {
     Component,
     Dimension
 }
-import model.listeners {
-    PlayerChangeListener,
+import strategicprimer.viewer.drivers.worker_mgmt {
     NewUnitSource,
     NewUnitListener
+}
+import model.listeners {
+    PlayerChangeListener
 }
 import model.map.fixtures.mobile {
     IUnit,

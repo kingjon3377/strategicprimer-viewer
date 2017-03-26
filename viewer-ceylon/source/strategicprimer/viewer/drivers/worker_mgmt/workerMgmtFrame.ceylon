@@ -65,8 +65,7 @@ import java.awt.event {
 }
 import model.listeners {
     PlayerChangeListener,
-    UnitMemberListener,
-    NewUnitSource
+    UnitMemberListener
 }
 import java.lang {
     Thread

@@ -9,8 +9,7 @@ import model.map.fixtures {
 }
 import model.listeners {
     PlayerChangeListener,
-    MapChangeListener,
-    NewUnitListener
+    MapChangeListener
 }
 import model.map.fixtures.mobile {
     IUnit

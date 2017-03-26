@@ -1,29 +1,35 @@
-import strategicprimer.viewer.drivers {
-    SPDialog,
-    createIDFactory
-}
-import model.map {
-    PointFactory,
-    TileType,
-    Point
-}
 import java.awt.event {
     ActionEvent
 }
+
 import javax.swing {
     JMenuItem,
     JPopupMenu
 }
-import model.map.fixtures.mobile {
-    IUnit
-}
+
 import model.listeners {
     SelectionChangeSupport,
     VersionChangeListener,
     PlayerChangeListener,
     SelectionChangeListener,
-    SelectionChangeSource,
-    NewUnitSource
+    SelectionChangeSource
+}
+import model.map {
+    PointFactory,
+    Point,
+    TileType
+}
+import model.map.fixtures.mobile {
+    IUnit
+}
+
+import strategicprimer.viewer.drivers {
+    SPDialog,
+    createIDFactory
+}
+import strategicprimer.viewer.drivers.worker_mgmt {
+    NewUnitSource,
+    NewUnitListener
 }
 "A popup menu to let the user change a tile's terrain type, or add a unit."
 JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener
@@ -34,10 +40,12 @@ terrainChangingMenu(Integer mapVersion, IViewerModel model) {
     SelectionChangeSupport scs = SelectionChangeSupport();
     JMenuItem newUnitItem = JMenuItem("Add New Unit");
     variable Point point = PointFactory.invalidPoint;
-    nuDialog.addNewUnitListener((IUnit unit) {
-        model.map.addFixture(point, unit);
-        model.selection = point;
-        scs.fireChanges(null, point);
+    nuDialog.addNewUnitListener(object satisfies NewUnitListener {
+        shared actual void addNewUnit(IUnit unit) {
+            model.map.addFixture(point, unit);
+            model.selection = point;
+            scs.fireChanges(null, point);
+        }
     });
     object retval extends JPopupMenu() satisfies VersionChangeListener&
             SelectionChangeListener&SelectionChangeSource {
