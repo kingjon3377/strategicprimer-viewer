@@ -100,7 +100,7 @@
   <target name="init-ceylon" depends="jar">
       <ceylon-import-jar cwd="${ceylon.root}" jar="${release}/${basename}.jar"
           module="${shortname}/${major-version-number}.${minor-version-number}"
-          failOnError="true" descriptor="legacy-viewer.module.properties" />
+          failOnError="true" />
       <ceylon-import-jar cwd="${ceylon.root}" jar="${windowmenu.jar.path}"
           module="com.bric.window.windowmenu/1.0" failOnError="true" />
   </target>
