@@ -71,7 +71,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     {IUnit*} getUnitsImpl({Anything*} iter, Player player) {
         value temp = iter.flatMap((item) {
             if (is Fortress item) {
-                return CeylonIterable(item);
+                return item;
             } else {
                 return {item};
             }

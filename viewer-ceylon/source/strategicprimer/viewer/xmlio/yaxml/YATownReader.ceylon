@@ -146,7 +146,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     void writeAbstractTown(JAppendable ostream, AbstractTown obj, Integer tabs) {
         writeTag(ostream, obj.kind, tabs);
         writeProperty(ostream, "status", obj.status.string);
-        writeProperty(ostream, "size", obj.size.string);
+        writeProperty(ostream, "size", obj.townSize.string);
         writeProperty(ostream, "dc", obj.dc);
         writeNonemptyProperty(ostream, "name", obj.name);
         writeProperty(ostream, "id", obj.id);
@@ -191,7 +191,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             writeImageXML(ostream, obj);
             writeNonemptyProperty(ostream, "portrait", obj.portrait);
             ostream.append('>');
-            if (!CeylonIterable(obj).empty) {
+            if (!obj.empty) {
                 ostream.append(LineEnd.lineSep);
                 for (member in obj) {
                     if (exists reader = memberReaders.find((yar) => yar.canWrite(member))) {

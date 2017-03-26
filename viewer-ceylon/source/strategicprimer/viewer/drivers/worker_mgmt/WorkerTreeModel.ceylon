@@ -53,7 +53,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
                 throw ArrayIndexOutOfBoundsException(index);
             }
         } else if (is IUnit parent) {
-            if (exists child = CeylonIterable(parent).getFromFirst(index)) {
+            if (exists child = parent.getFromFirst(index)) {
                 return index;
             } else {
                 throw ArrayIndexOutOfBoundsException(index);
@@ -69,7 +69,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         } else if (is String parent, model.getUnitKinds(player).contains(parent)) {
             return model.getUnits(player, parent).size;
         } else if (is IUnit parent) {
-            return CeylonIterable(parent).size;
+            return parent.size;
         } else {
             throw IllegalArgumentException("Not a possible member of the tree");
         }
@@ -87,7 +87,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
                 return -1;
             }
         } else if (is IUnit parent,
-            exists index->ignored = CeylonIterable(parent).locate(child.equals)) {
+            exists index->ignored = parent.locate(child.equals)) {
             return index;
         } else {
             return -1;
@@ -170,7 +170,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
             children = createJavaObjectArray<Object>({item});
         } else if (is UnitMember item,
             exists parent = model.getUnits(player)
-                .find((unit) => CeylonIterable(unit).contains(item))) {
+                .find((unit) => unit.contains(item))) {
             path = TreePath(createJavaObjectArray({root, parent}));
             indices = createJavaIntArray({getIndexOfChild(parent, item)});
             children = createJavaObjectArray<Object>({item});
@@ -193,7 +193,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
             children = createJavaObjectArray<Object>({item});
         } else if (is UnitMember item,
             exists parent = model.getUnits(player)
-                .find((unit) => CeylonIterable(unit).contains(item))) {
+                .find((unit) => unit.contains(item))) {
             path = TreePath(createJavaObjectArray({root, parent}));
             indices = createJavaIntArray({getIndexOfChild(parent, item)});
             children = createJavaObjectArray<Object>({item});
@@ -208,7 +208,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
     }
     shared actual void dismissUnitMember(UnitMember member) {
         for (unit in model.getUnits(root)) {
-            if (exists index->item = CeylonIterable(unit).locate(member.equals)) {
+            if (exists index->item = unit.locate(member.equals)) {
                 dismissedMembers.add(member);
                 unit.removeMember(member);
                 TreeModelEvent event = TreeModelEvent(this,

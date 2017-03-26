@@ -179,7 +179,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         if (is HasPortrait obj) {
             writeNonemptyProperty(ostream, "portrait", obj.portrait);
         }
-        if (CeylonIterable(obj).empty && obj.allOrders.empty && obj.allResults.empty) {
+        if (obj.empty && obj.allOrders.empty && obj.allResults.empty) {
             closeLeafTag(ostream);
         } else {
             finishParentTag(ostream);

@@ -217,9 +217,9 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             }
         }
     }
-    shared actual JIterator<UnitMember> iterator() {
+    shared actual Iterator<UnitMember> iterator() {
         if (!parallel) {
-            return JavaIterator<UnitMember>({}.iterator());
+            return {}.iterator();
         } // else
         MutableMap<Integer, UnitMember&ProxyFor<UnitMember>|IWorker&ProxyFor<IWorker>> map =
                 naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|IWorker&ProxyFor<IWorker>>({});
@@ -248,7 +248,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
                 }
             }
         }
-        return JavaIterable<UnitMember>(map.items).iterator();
+        return map.items.iterator();
     }
     shared actual String name => getCommonValue(IUnit.name, "proxied", "proxied");
     shared actual void setName(String newName) {
@@ -303,7 +303,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     shared actual void addMember(UnitMember member) {
         if (parallel) {
             for (unit in proxiedList) {
-                if (!CeylonIterable(unit).any(member.equals)) {
+                if (!unit.any(member.equals)) {
                     unit.addMember(member.copy(false));
                 }
             }
@@ -315,7 +315,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     shared actual void removeMember(UnitMember member) {
         if (parallel) {
             for (unit in proxiedList) {
-                if (exists found = CeylonIterable(unit).find(member.equals)) {
+                if (exists found = unit.find(member.equals)) {
                     unit.removeMember(found);
                 }
             }

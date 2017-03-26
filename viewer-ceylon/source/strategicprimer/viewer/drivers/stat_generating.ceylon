@@ -38,7 +38,6 @@ import lovelace.util.jvm {
 import model.map {
     Player,
     IFixture,
-    FixtureIterable,
     Point,
     TileType,
     PointFactory
@@ -71,7 +70,8 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    FixtureIterable
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village
@@ -116,8 +116,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         for (fixture in fixtures) {
             if (fixture.id == id) {
                 return fixture;
-            } else if (is FixtureIterable<out Object> fixture) {
-                assert (is JIterable<out IFixture> fixture);
+            } else if (is FixtureIterable<out IFixture> fixture) {
                 if (exists result = findInIterable(id, *fixture)) {
                     return result;
                 }

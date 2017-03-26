@@ -22,12 +22,12 @@ import java.math {
 }
 
 import strategicprimer.viewer.model.map {
-    IMutableMapNG
+    IMutableMapNG,
+    FixtureIterable
 }
 import model.map {
     TileFixture,
-    IFixture,
-    FixtureIterable
+    IFixture
 }
 import model.map.fixtures {
     ResourcePile

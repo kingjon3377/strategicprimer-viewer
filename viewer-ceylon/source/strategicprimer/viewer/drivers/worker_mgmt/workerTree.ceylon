@@ -266,12 +266,10 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 } else if (is IUnit internal, is DefaultTreeCellRenderer component) {
                     component.text = internal.name;
                     String orders = internal.getLatestOrders(turnSource()).lowercased;
-                    if (orderCheck, orders.contains("fixme"),
-                        !CeylonIterable(internal).empty) {
+                    if (orderCheck, orders.contains("fixme"), !internal.empty) {
                         component.backgroundSelectionColor = Color.pink;
                         component.backgroundNonSelectionColor = Color.pink;
-                    } else if (orderCheck, orders.contains("todo"),
-                        !CeylonIterable(internal).empty) {
+                    } else if (orderCheck, orders.contains("todo"), !internal.empty) {
                         component.backgroundSelectionColor = Color.yellow;
                         component.backgroundNonSelectionColor = Color.yellow;
                     }
@@ -281,7 +279,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     for (child in item) {
                         if (is WorkerTreeModelAlt.WorkerTreeNode<IUnit> child) {
                             IUnit unit = child.userObjectNarrowed;
-                            if (!CeylonIterable(unit).empty) {
+                            if (!unit.empty) {
                                 String orders = unit.getLatestOrders(turnSource()).lowercased;
                                 if (orders.contains("fixme"),
                                     is DefaultTreeCellRenderer component) {

@@ -7,11 +7,11 @@ import java.lang {
 }
 
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    FixtureIterable
 }
 import model.map {
-    IFixture,
-    FixtureIterable
+    IFixture
 }
 import model.map.fixtures {
     Ground

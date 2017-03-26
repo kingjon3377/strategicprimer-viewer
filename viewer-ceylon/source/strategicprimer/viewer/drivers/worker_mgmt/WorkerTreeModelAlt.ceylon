@@ -71,7 +71,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     static class UnitMemberNode(UnitMember member)
             extends WorkerTreeNode<UnitMember>(member, false) { }
     shared static class UnitNode(IUnit unit) extends WorkerTreeNode<IUnit>(unit) {
-        for (index->member in CeylonIterable(unit).indexed) {
+        for (index->member in unit.indexed) {
             insert(UnitMemberNode(member), index);
         }
     }

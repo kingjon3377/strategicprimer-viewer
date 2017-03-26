@@ -81,9 +81,9 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 fixtures.remove(item.id);
                 ostream("At ``loc``: ``item.name``, ");
                 if (item.owner.independent) {
-                    ostream("an independent ``item.size`` ``item.status`` ``item.kind``");
+                    ostream("an independent ``item.townSize`` ``item.status`` ``item.kind``");
                 } else {
-                    ostream("a ``item.size`` ``item.status`` allied with ``
+                    ostream("a ``item.townSize`` ``item.status`` allied with ``
                         playerNameOrYou(item.owner)``");
                 }
                 ostream(" ``distCalculator.distanceString(loc)``");
@@ -140,11 +140,11 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             } else if (is AbstractTown item) {
                 fixtures.remove(item.id);
                 if (item.owner.independent) {
-                    return SimpleReportNode("At ``loc``: ``item.name``, an independent ``item.size`` ``item
+                    return SimpleReportNode("At ``loc``: ``item.name``, an independent ``item.townSize`` ``item
                         .status`` ``item.kind`` ``distCalculator
                         .distanceString(loc)``", loc);
                 } else {
-                    return SimpleReportNode("At ``loc``: ``item.name``, a ``item.size`` ``item
+                    return SimpleReportNode("At ``loc``: ``item.name``, a ``item.townSize`` ``item
                         .status`` ``item.kind`` allied with ``playerNameOrYou(item.owner)
                         `` ``distCalculator.distanceString(loc)``", loc);
                 }

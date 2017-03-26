@@ -9,11 +9,11 @@ import model.map {
     IFixture
 }
 "An abstract superclass for towns etc."
-shared abstract class AbstractTown(status, size, name, townOwner, dc) satisfies IEvent&HasMutableImage&ITownFixture {
+shared abstract class AbstractTown(status, townSize, name, townOwner, dc) satisfies IEvent&HasMutableImage&ITownFixture {
     "The status of the town, fortification, or city"
     shared actual TownStatus status;
     "The size of the town, fortification, or city"
-    shared actual TownSize size;
+    shared actual TownSize townSize;
     "The name of the town, fortification, or city"
     todo("Should this really be variable?")
     shared actual variable String name;
@@ -30,12 +30,12 @@ shared abstract class AbstractTown(status, size, name, townOwner, dc) satisfies 
     shared actual Player owner => townOwner;
     shared actual void setOwner(Player owner) => townOwner = owner;
     "Exploration-result text for the town."
-    shared actual String text => "There is a ``(size == TownSize.medium) then
-            "medium-size" else size.string`` ``(status == TownStatus.burned) then
+    shared actual String text => "There is a ``(townSize == TownSize.medium) then
+            "medium-size" else townSize.string`` ``(status == TownStatus.burned) then
             "burned-out" else status.string`` ``kind````name.empty then "" else
             ", ``name``,"`` here.";
     "A helper method for equals() that checks everything except the type of the object."
-    shared Boolean equalsContents(AbstractTown fixture) => fixture.size == size &&
+    shared Boolean equalsContents(AbstractTown fixture) => fixture.townSize == townSize &&
             fixture.name == name && fixture.status == status &&
             fixture.owner == owner;
     shared actual default Boolean equals(Object obj) {
@@ -55,10 +55,10 @@ shared abstract class AbstractTown(status, size, name, townOwner, dc) satisfies 
     shared actual Integer hash => id;
     shared actual String string {
         if (owner.independent) {
-            return "An independent ``size`` ``status`` ``kind`` of DC ``dc`` ``
+            return "An independent ``townSize`` ``status`` ``kind`` of DC ``dc`` ``
                 (name.empty) then "with no name" else "named ``name``"``";
         } else {
-            return "A ``size`` ``status`` ``kind`` of DC ``dc`` ``(name.empty) then
+            return "A ``townSize`` ``status`` ``kind`` of DC ``dc`` ``(name.empty) then
                 "with no name" else "named ``name``"``, owned by ``(owner.current) then
                 "you" else owner.name``";
         }
@@ -66,10 +66,10 @@ shared abstract class AbstractTown(status, size, name, townOwner, dc) satisfies 
     shared actual formal String defaultImage;
     shared actual String shortDesc() {
         if (owner.independent) {
-            return "An independent ``size`` ``status`` ``kind`` ``(name.empty) then
+            return "An independent ``townSize`` ``status`` ``kind`` ``(name.empty) then
                 "with no name" else "named ``name``"``";
         } else {
-            return "A ``size`` ``status`` ``kind`` ``(name.empty) then "with no name" else
+            return "A ``townSize`` ``status`` ``kind`` ``(name.empty) then "with no name" else
                 "named ``name``"``, owned by ``(owner.current) then "you" else
                 owner.name``";
         }

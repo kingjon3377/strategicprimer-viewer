@@ -96,7 +96,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             } else {
                 ostream("owned by ``playerNameOrYou(item.owner)``");
             }
-            if (!CeylonIterable(item).empty) {
+            if (!item.empty) {
                 MutableList<IWorker> workers = ArrayList<IWorker>();
                 MutableList<Implement> equipment = ArrayList<Implement>();
                 // TODO: separate out by kind?

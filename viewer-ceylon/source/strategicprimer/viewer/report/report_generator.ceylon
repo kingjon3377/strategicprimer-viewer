@@ -27,8 +27,7 @@ import model.map {
     Point,
     TerrainFixture,
     PointFactory,
-    TileFixture,
-    FixtureIterable
+    TileFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
@@ -37,7 +36,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    FixtureIterable
 }
 
 import strategicprimer.viewer.report.generators {
@@ -102,8 +102,7 @@ DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
                 existing`` and ``val``");
             }
         }
-        if (is FixtureIterable<out Object> fixture) {
-            assert (is JIterable<out IFixture> fixture);
+        if (is FixtureIterable<out IFixture> fixture) {
             for (inner in fixture) {
                 addToMap(location, inner);
             }

@@ -1,6 +1,9 @@
 import ceylon.collection {
     SortedMap
 }
+import ceylon.language {
+    createMap=map
+}
 import ceylon.interop.java {
     CeylonIterable
 }
@@ -17,9 +20,11 @@ import model.map {
     HasImage,
     HasKind,
     HasName,
-    FixtureIterable,
     HasOwner,
     IFixture
+}
+import strategicprimer.viewer.model.map {
+    FixtureIterable
 }
 import model.map.fixtures {
     UnitMember,
@@ -110,7 +115,7 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
                         context, id);
                     return false;
                 }
-                Map<Integer, UnitMember> ours = map { *CeylonIterable(this).map((member) => member.id->member) };
+                Map<Integer, UnitMember> ours = createMap { *map((member) => member.id->member) };
                 variable Boolean retval = true;
                 for (member in obj) {
                     if (exists ourMember = ours.get(member.id)) {
@@ -126,8 +131,8 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
                     }
                 }
                 if (retval) {
-                    if ({name, kind}.contains("unassigned"), !CeylonIterable(this).empty,
-                            CeylonIterable(obj).empty) {
+                    if ({name, kind}.contains("unassigned"), !empty,
+                            obj.empty) {
                         ostream.format(
                             "%s In unit of kind %s named %s (ID #%d): Non empty 'unassigned' when submap has it empty%n",
                             context, kind, name, id);

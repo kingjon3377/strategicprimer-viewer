@@ -107,15 +107,14 @@ shared class Unit(unitOwner, unitKind, unitName, id) satisfies IUnit&HasMutableK
     "Remove a member."
     shared actual void removeMember(UnitMember member) => members.remove(member);
     "An iterator over the unit's members."
-    shared actual JIterator<UnitMember> iterator() => JavaIterable(members).iterator();
+    shared actual Iterator<UnitMember> iterator() => members.iterator();
     "An object is equal iff it is a IUnit owned by the same player, with the same kind,
      ID, and name, and with equal members."
     shared actual Boolean equals(Object obj) {
         if (is IUnit obj) {
             return obj.owner.playerId == owner.playerId && obj.kind == kind &&
                 obj.name == name && obj.id == id &&
-                members.containsEvery(CeylonIterable(obj)) &&
-                CeylonIterable(obj).containsEvery(members);
+                members.containsEvery(obj) && obj.containsEvery(members);
         } else {
             return false;
         }

@@ -32,7 +32,6 @@ import model.map {
     Player,
     TileFixture,
     HasOwner,
-    FixtureIterable,
     MapDimensions,
     TileType,
     HasName
@@ -56,7 +55,8 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    FixtureIterable
 }
 
 import util {

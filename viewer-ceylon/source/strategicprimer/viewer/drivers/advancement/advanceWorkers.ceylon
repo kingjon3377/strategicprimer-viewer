@@ -12,7 +12,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 }
 "Let the user add experience to a player's workers."
 void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli) {
-    IUnit[] units = [*model.getUnits(player).filter((unit) => unit.iterator().hasNext())];
+    IUnit[] units = [*model.getUnits(player).filter((unit) => !unit.empty)];
     cli.loopOnList(units, (clh) => clh.chooseFromList(units,
         "``player.name``'s units:", "No unadvanced units remain.",
         "Chosen unit: ", false),

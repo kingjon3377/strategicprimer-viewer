@@ -17,11 +17,15 @@ import java.util {
 import lovelace.util.common {
     todo
 }
-
+import ceylon.language {
+    createMap=map
+}
+import strategicprimer.viewer.model.map {
+    FixtureIterable
+}
 import model.map {
     HasMutableImage,
     HasMutableName,
-    FixtureIterable,
     SubsettableFixture,
     Player,
     IFixture,
@@ -37,7 +41,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
   may have fortresses on the same tile."
 todo("Enforce that only-one-per-player-per-tile restriction",
     "FIXME: We need something about buildings yet")
-shared class Fortress(fortOwner, fortName, id, size = TownSize.small)
+shared class Fortress(fortOwner, fortName, id, townSize = TownSize.small)
         satisfies HasMutableImage&ITownFixture&HasMutableName&
             FixtureIterable<FortressMember>&SubsettableFixture {
     "The player who owns the fortress."
@@ -47,7 +51,7 @@ shared class Fortress(fortOwner, fortName, id, size = TownSize.small)
     "The ID number."
     shared actual Integer id;
     "The size of the fortress."
-    shared actual TownSize size;
+    shared actual TownSize townSize;
     "The name of the fortress."
     shared actual String name => fortName;
     "Set the name of the fortress."
@@ -75,9 +79,9 @@ shared class Fortress(fortOwner, fortName, id, size = TownSize.small)
     shared actual Fortress copy(Boolean zero) {
         Fortress retval;
         if (zero) {
-            retval = Fortress(fortOwner, "unknown", id, size);
+            retval = Fortress(fortOwner, "unknown", id, townSize);
         } else {
-            retval = Fortress(fortOwner, fortName, id, size);
+            retval = Fortress(fortOwner, fortName, id, townSize);
             for (member in members) {
                 retval.addMember(member.copy(false));
             }
@@ -86,8 +90,7 @@ shared class Fortress(fortOwner, fortName, id, size = TownSize.small)
         return retval;
     }
     "An iterator over the members of the fortress."
-    shared actual JIterator<FortressMember> iterator() =>
-            JavaIterator(members.iterator());
+    shared actual Iterator<FortressMember> iterator() => members.iterator();
     shared actual Boolean equals(Object obj) {
         if (is Fortress obj) {
             return name == obj.name && owner.playerId == obj.owner.playerId &&
@@ -141,7 +144,7 @@ shared class Fortress(fortOwner, fortName, id, size = TownSize.small)
             return false;
         }
         if ({name, "unknown"}.contains(obj.name), obj.owner.playerId == owner.playerId) {
-            Map<Integer, FortressMember> ours = map {
+            Map<Integer, FortressMember> ours = createMap {
                 *members.map((member) => member.id->member)
             };
             variable Boolean retval = true;

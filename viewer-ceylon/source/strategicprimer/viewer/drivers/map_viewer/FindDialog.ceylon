@@ -28,11 +28,11 @@ import model.map {
     IFixture,
     HasName,
     HasKind,
-    FixtureIterable,
     Point
 }
 import strategicprimer.viewer.model.map {
-    PointIterator
+    PointIterator,
+    FixtureIterable
 }
 import lovelace.util.jvm {
     platform,

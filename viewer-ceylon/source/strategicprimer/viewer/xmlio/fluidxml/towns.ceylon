@@ -144,7 +144,7 @@ void writeTown(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is AbstractTown obj) {
         writeTag(ostream, obj.kind, indent, true);
         writeAttribute(ostream, "status", obj.status.string);
-        writeAttribute(ostream, "size", obj.size.string);
+        writeAttribute(ostream, "size", obj.townSize.string);
         writeIntegerAttribute(ostream, "dc", obj.dc);
         writeNonEmptyAttribute(ostream, "name", obj.name);
         writeIntegerAttribute(ostream, "id", obj.id);

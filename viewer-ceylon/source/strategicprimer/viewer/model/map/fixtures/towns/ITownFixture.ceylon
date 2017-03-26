@@ -9,7 +9,7 @@ shared interface ITownFixture satisfies TileFixture&HasName&HasMutableOwner&HasP
     "The status of the town."
     shared formal TownStatus status;
     "The size of the town."
-    shared formal TownSize size;
+    shared formal TownSize townSize;
     """A description of what kind of "town" this is."""
     shared formal String kind;
 }

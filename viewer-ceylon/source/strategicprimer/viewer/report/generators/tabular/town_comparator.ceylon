@@ -115,7 +115,7 @@ Comparison compareTowns(ITownFixture one, ITownFixture two) {
     return comparing(comparingOn<ITownFixture, TownStatus>(
                 (fix) => fix.status, compareTownStatus),
         comparingOn<ITownFixture, TownSize>(
-                    (fix) => fix.size, compareTownSize), compareTownKind,
+                    (fix) => fix.townSize, compareTownSize), compareTownKind,
         byIncreasing(ITownFixture.name))(one, two);
 }
 

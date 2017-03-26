@@ -192,8 +192,7 @@ shared class SPFluidWriter() satisfies SPWriter {
     }
     void writeUnit(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if (is IUnit obj) {
-            Boolean empty =
-                    CeylonIterable(obj).empty && obj.allOrders.empty &&
+            Boolean empty = obj.empty && obj.allOrders.empty &&
                         !obj.allResults.empty;
             writeTag(ostream, "unit", indentation, empty);
             writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
@@ -233,7 +232,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             writeIntegerAttribute(ostream, "size", obj.id);
             writeImage(ostream, obj);
             writeNonEmptyAttribute(ostream, "portrait", obj.portrait);
-            if (!CeylonIterable(obj).empty) {
+            if (!obj.empty) {
                 for (member in obj) {
                     writeSPObjectImpl(ostream, member, indentation + 1);
                 }

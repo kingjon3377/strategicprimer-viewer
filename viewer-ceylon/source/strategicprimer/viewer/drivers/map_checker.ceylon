@@ -31,8 +31,7 @@ import lovelace.util.jvm {
 import model.map {
     Point,
     IFixture,
-    TileType,
-    FixtureIterable
+    TileType
 }
 import model.map.fixtures.mobile {
     IWorker
@@ -49,7 +48,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Village
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    FixtureIterable
 }
 import strategicprimer.viewer.xmlio {
     readMap

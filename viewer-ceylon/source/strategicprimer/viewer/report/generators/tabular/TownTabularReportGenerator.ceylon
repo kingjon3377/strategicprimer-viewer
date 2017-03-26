@@ -27,7 +27,7 @@ shared class TownTabularReportGenerator(Player player, Point hq)
                     compareTownKind),
                 comparingOn(([Point, AbstractTown] pair) => pair.first,
                     DistanceComparator(hq).compare),
-                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.size,
+                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.townSize,
                     compareTownSize),
                 comparingOn(([Point, AbstractTown] pair) => pair.rest.first.status,
                     compareTownStatus),
@@ -41,7 +41,7 @@ shared class TownTabularReportGenerator(Player player, Point hq)
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             AbstractTown item, Point loc) {
         writeRow(ostream, distanceString(loc, hq), loc.string,
-            ownerString(player, item.owner), item.kind, item.size.string,
+            ownerString(player, item.owner), item.kind, item.townSize.string,
             item.status.string, item.name);
         return true;
     }

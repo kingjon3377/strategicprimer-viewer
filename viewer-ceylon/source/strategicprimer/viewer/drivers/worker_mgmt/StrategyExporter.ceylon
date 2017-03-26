@@ -74,8 +74,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options) satisfies PlayerCh
             MutableMap<String, MutableList<IUnit>> unitsByKind =
                     HashMap<String, MutableList<IUnit>>();
             for (unit in units) {
-                if (!unit.iterator().hasNext(),
-                    "false" == options.getArgument("--print-empty")) {
+                if (unit.empty, "false" == options.getArgument("--print-empty")) {
                     continue;
                 }
                 if (exists list = unitsByKind.get(unit.kind)) {
@@ -122,7 +121,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options) satisfies PlayerCh
             for (kind->list in unitsByKind) {
                 writer.writeLine("* ``kind``:");
                 for (unit in list) {
-                    Iterable<UnitMember> iter = CeylonIterable(unit);
+                    // TODO: inline
+                    Iterable<UnitMember> iter = unit;
                     writer.write("  - ``unit.name``");
                     if (!iter.empty) {
                         writer.write(" [");

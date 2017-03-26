@@ -74,7 +74,7 @@ shared class Village(status, name, id, tempOwner, race)
         }
     }
     "All villages are small."
-    shared actual TownSize size => TownSize.small;
+    shared actual TownSize townSize => TownSize.small;
     shared actual String plural() => "Villages";
     """A village is a "subset" of another if they are identical, or if the only difference
         is that the "subset" is independent and the "superset" owes allegiance to some

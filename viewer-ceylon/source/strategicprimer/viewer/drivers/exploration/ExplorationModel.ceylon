@@ -30,7 +30,8 @@ import model.listeners {
 }
 import strategicprimer.viewer.model.map {
     IMutableMapNG,
-    IMapNG
+    IMapNG,
+    FixtureIterable
 }
 import model.map {
     PointFactory,
@@ -40,7 +41,6 @@ import model.map {
     HasOwner,
     TileType,
     TileFixture,
-    FixtureIterable,
     IFixture
 }
 import model.map.fixtures {
@@ -183,7 +183,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         {Object*} temp = map.locations.flatMap((point) => map.getOtherFixtures(point))
             .flatMap((element) {
                 if (is Fortress element) {
-                    return CeylonIterable(element);
+                    return element;
                 } else {
                     return {element};
                 }
