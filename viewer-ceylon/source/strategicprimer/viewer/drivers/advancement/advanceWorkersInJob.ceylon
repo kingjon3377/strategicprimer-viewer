@@ -8,9 +8,11 @@ import ceylon.collection {
 import strategicprimer.viewer.drivers {
     ICLIHelper
 }
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    ProxyJob
+}
 import model.map.fixtures.mobile.worker {
     ISkill,
-    ProxyJob,
     IJob,
     Skill
 }

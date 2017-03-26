@@ -21,7 +21,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Unit
 }
 import model.map.fixtures.mobile.worker {
-    ProxyJob,
     Job,
     Skill
 }

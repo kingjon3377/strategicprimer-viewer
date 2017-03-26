@@ -33,7 +33,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 import model.map.fixtures.mobile.worker {
     IJob,
     WorkerStats,
-    ProxyJob,
     Job
 }
 import ceylon.logging {
