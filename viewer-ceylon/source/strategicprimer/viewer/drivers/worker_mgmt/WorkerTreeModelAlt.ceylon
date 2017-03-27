@@ -17,10 +17,8 @@ import ceylon.collection {
     Queue,
     MutableList
 }
-import model.map.fixtures.mobile {
-    ProxyFor
-}
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    ProxyFor,
     IUnit,
     ProxyUnit
 }
@@ -116,15 +114,14 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     void moveProxied(UnitMember member, ProxyUnit old, ProxyUnit newOwner,
             UnitNode newNode, MutableTreeNode node) {
         assert (is PlayerNode playerNode = root);
+        // TODO: encode this second assertion into the type of the argument
         assert (is ProxyFor<out UnitMember> member);
-        if (CeylonIterable(old.proxied).size == CeylonIterable(newOwner.proxied).size,
-            CeylonIterable(old.proxied).size == CeylonIterable(member.proxied).size) {
+        if (old.proxied.size == newOwner.proxied.size,
+            old.proxied.size == member.proxied.size) {
             Queue<UnitMember>&Iterable<UnitMember> members = LinkedList<UnitMember>();
             Queue<IUnit>&Iterable<IUnit> newList = LinkedList<IUnit>();
             for ([item, innerOld, innerNew] in
-                    zip(CeylonIterable(member.proxied),
-                        zipPairs(CeylonIterable(old.proxied),
-                            CeylonIterable(newOwner.proxied))) ){
+                    zip(member.proxied, zipPairs(old.proxied, newOwner.proxied))) {
                 innerOld.removeMember(item);
                 members.offer(item);
                 newList.offer(innerNew);
@@ -146,7 +143,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     getNode(playerNode, newOwner.kind), newNode}),
                 createJavaIntArray({newNode.getIndex(node)}),
                 createJavaObjectArray<Object>({node}));
-            Iterable<UnitMember> iter = CeylonIterable(member.proxied);
+            Iterable<UnitMember> iter = member.proxied;
             if (iter.empty) {
                 newOwner.addMember(member);
             } else {

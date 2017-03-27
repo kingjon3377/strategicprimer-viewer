@@ -24,11 +24,11 @@ import model.map.fixtures {
     UnitMember
 }
 import model.map.fixtures.mobile {
-    IWorker,
-    ProxyFor
+    IWorker
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit
+    IUnit,
+    ProxyFor
 }
 import model.map.fixtures.mobile.worker {
     IJob,
@@ -189,7 +189,7 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
             proxyJob.addProxied(job);
         }
     }
-    shared actual JIterable<IWorker> proxied => JavaIterable(workers);
+    shared actual Iterable<IWorker> proxied => {*workers};
     shared actual String defaultImage {
         variable String? retval = null;
         for (worker in workers) {

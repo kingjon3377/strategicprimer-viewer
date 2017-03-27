@@ -34,7 +34,7 @@ import model.map {
 import model.map.fixtures {
     UnitMember
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor
 }
 "A unit in the map."

@@ -18,7 +18,7 @@ import lovelace.util.common {
     todo
 }
 
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor
 }
 import model.map.fixtures.mobile.worker {
@@ -112,7 +112,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&Proxy
     shared actual void addProxied(IJob item) => proxiedJobs.add(item);
     "Note that this is the *one* place where [[ProxySkill]] should be a
      [[ProxyFor<ISkill>]] instead of a [[ProxyFor<IJob>]]."
-    shared actual JIterable<IJob> proxied => JavaIterable(proxiedJobs);
+    shared actual {IJob*} proxied => {*proxiedJobs};
     """Whether every proxied Skill is "empty"."""
     shared actual Boolean empty =>
             proxiedJobs.flatMap(CeylonIterable<ISkill>).filter(notThis)

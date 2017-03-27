@@ -38,10 +38,10 @@ import strategicprimer.viewer.model.map {
     IMapNG
 }
 import model.map.fixtures.mobile {
-    ProxyFor,
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    ProxyFor,
     ProxyUnit,
     IUnit,
     Unit
@@ -161,9 +161,8 @@ todo("Once [[ProxyFor]] is ported to Ceylon, use its reified form instead of ass
 {T*} filterProxies<T>(T* list) given T satisfies Object {
     MutableList<T> retval = ArrayList<T>();
     for (item in list) {
-        if (is ProxyFor<out Anything> item) {
-            assert (is ProxyFor<out T> item);
-            retval.addAll(CeylonIterable(item.proxied));
+        if (is ProxyFor<out T> item) {
+            retval.addAll(item.proxied);
         } else {
             retval.add(item);
         }

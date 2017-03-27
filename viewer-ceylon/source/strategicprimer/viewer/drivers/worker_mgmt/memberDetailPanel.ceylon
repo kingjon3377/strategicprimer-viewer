@@ -38,8 +38,10 @@ import model.map {
 import model.map.fixtures {
     UnitMember
 }
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    ProxyFor
+}
 import model.map.fixtures.mobile {
-    ProxyFor,
     Worker,
     Animal
 }
@@ -200,10 +202,9 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     }
     object retval extends JPanel(BorderLayout()) satisfies UnitMemberListener {
         shared actual void memberSelected(UnitMember? old, UnitMember? selected) {
-            if (is ProxyFor<out Anything> selected) {
-                assert (is ProxyFor<out UnitMember> selected);
+            if (is ProxyFor<out UnitMember> selected) {
                 if (selected.parallel) {
-                    if (exists first = CeylonIterable(selected.proxied).first) {
+                    if (exists first = selected.proxied.first) {
                         memberSelected(old, first);
                         return;
                     }

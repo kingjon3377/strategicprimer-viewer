@@ -43,7 +43,7 @@ import model.map {
 import model.map.fixtures {
     RiverFixture
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor
 }
 import model.map.fixtures.mobile.worker {
@@ -116,9 +116,7 @@ class YAReaderAdapter(
             writeAllRivers(ostream, CeylonIterable(obj), indent);
         } else if (is ProxyFor<out Anything> obj) {
             // TODO: Handle proxies in their respective types
-            value iter = obj.proxied.iterator();
-            if (iter.hasNext()) {
-                assert (exists proxied = iter.next());
+            if (exists proxied = obj.proxied.first) {
                 log.error("Wanted to write a proxy",
                     IllegalArgumentException("Wanted to write a proxy object"));
                 write(ostream, proxied, indent);

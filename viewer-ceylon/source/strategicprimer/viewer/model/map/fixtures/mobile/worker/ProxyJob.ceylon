@@ -23,7 +23,9 @@ import lovelace.util.common {
 }
 
 import model.map.fixtures.mobile {
-    IWorker,
+    IWorker
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor
 }
 import model.map.fixtures.mobile.worker {
@@ -116,8 +118,8 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&Pr
             }
         }
     }
-    "A view of the proxied JObs."
-    shared actual JIterable<IJob> proxied => JavaIterable(proxiedJobs);
+    "A view of the proxied Jobs."
+    shared actual Iterable<IJob> proxied => {*proxiedJobs};
     """Whether all of the Jobs this is a proxy for are "empty," i.e. having no levels and
        containing no Skills that report either levels or hours of experience."""
     todo("When porting IJob, make sure to rename this")

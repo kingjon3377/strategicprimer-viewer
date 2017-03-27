@@ -59,11 +59,11 @@ import model.map.fixtures {
     UnitMember
 }
 import model.map.fixtures.mobile {
-    ProxyFor,
     IWorker
 }
 
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    ProxyFor,
     IUnit
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
@@ -323,7 +323,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             log.error("RemoveMember() called on proxy for all units of one kind");
         }
     }
-    shared actual JIterable<IUnit> proxied => JavaIterable(proxiedList);
+    shared actual Iterable<IUnit> proxied => {*proxiedList};
     shared actual String string => (parallel) then "ProxyUnit for ID #``identifier``"
         else "ProxyUnit for units of kind ``identifier``";
     shared actual Boolean equals(Object obj) {

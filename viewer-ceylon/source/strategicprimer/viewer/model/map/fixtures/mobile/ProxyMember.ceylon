@@ -23,7 +23,7 @@ import model.map {
 import model.map.fixtures {
     UnitMember
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor
 }
 "A proxy for non-worker unit members."
@@ -61,7 +61,7 @@ class ProxyMember satisfies UnitMember&ProxyFor<UnitMember> {
         ostream.format("%sisSubset called on ProxyMember%n", context);
         return false;
     }
-    shared actual JIterable<UnitMember> proxied => JavaIterable(proxiedMembers);
+    shared actual Iterable<UnitMember> proxied => {*proxiedMembers};
     todo("Implement properly")
     shared actual String string {
         if (exists first = proxiedMembers.first) {
