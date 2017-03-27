@@ -29,8 +29,7 @@ import model.map.fixtures.mobile {
 import model.map.fixtures.mobile.worker {
     IJob,
     ISkill,
-    Job,
-    ProxySkill
+    Job
 }
 "An IJob implementation to let the Job tree operate on a whole unit at once."
 shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&ProxyFor<IJob> {
