@@ -23,10 +23,8 @@ import model.map {
 import model.map.fixtures {
     UnitMember
 }
-import model.map.fixtures.mobile {
-    IWorker
-}
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    IWorker,
     IUnit,
     ProxyFor
 }
@@ -134,7 +132,7 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
             return false;
         }
     }
-    shared actual JIterator<IJob> iterator() => JavaList<IJob>(proxyJobs).iterator();
+    shared actual Iterator<IJob> iterator() => proxyJobs.iterator();
     shared actual Boolean addJob(IJob job) {
         if (jobNames.contains(job.name)) {
             return false;

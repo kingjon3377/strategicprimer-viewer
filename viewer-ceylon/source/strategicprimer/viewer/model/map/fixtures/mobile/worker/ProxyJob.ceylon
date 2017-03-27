@@ -22,10 +22,8 @@ import lovelace.util.common {
     todo
 }
 
-import model.map.fixtures.mobile {
-    IWorker
-}
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    IWorker,
     ProxyFor
 }
 import model.map.fixtures.mobile.worker {
@@ -58,8 +56,7 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&Pr
         if (unmodified) {
             IJob job = Job(name, 0);
             worker.addJob(job);
-            proxiedJobs.add(CeylonIterable(worker)
-                .find((temp) => temp.name == name) else job);
+            proxiedJobs.add(worker.find((temp) => temp.name == name) else job);
         }
     }
     "Proxy-skills."

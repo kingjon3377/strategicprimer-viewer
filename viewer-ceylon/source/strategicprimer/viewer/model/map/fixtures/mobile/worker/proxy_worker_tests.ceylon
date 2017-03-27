@@ -11,14 +11,12 @@ import model.map {
     PlayerImpl,
     IFixture
 }
-import model.map.fixtures.mobile {
-    IWorker,
-    Worker
-}
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    IWorker,
     ProxyUnit,
     IUnit,
-    Unit
+    Unit,
+    Worker
 }
 import model.map.fixtures.mobile.worker {
     Job,

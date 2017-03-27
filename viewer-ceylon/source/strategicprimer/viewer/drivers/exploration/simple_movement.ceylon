@@ -27,15 +27,13 @@ import model.map {
 import model.map.fixtures {
     RiverFixture
 }
-import model.map.fixtures.mobile {
-    IWorker
-}
 import model.map.fixtures.mobile.worker {
     WorkerStats
 }
 
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit
+    IUnit,
+    IWorker
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Hill,
@@ -146,8 +144,7 @@ Integer getPerception(IWorker worker) {
     } else {
         ability = 0;
     }
-    Integer ranks = CeylonIterable(worker)
-        .flatMap((x) => CeylonIterable(x))
+    Integer ranks = worker.flatMap((x) => CeylonIterable(x))
         .filter((skill) => "perception" == skill.name.lowercased)
         .map((skill) => skill.level).reduce(plus) else 0;
     return ability + (ranks * 2);

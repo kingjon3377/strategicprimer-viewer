@@ -21,7 +21,7 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     IMapNG
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker
 }
 import model.map.fixtures.mobile.worker {
@@ -83,7 +83,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
                      <p>``statsString(stats)``</p>
                  ");
             }
-            if (details, !CeylonIterable(worker).empty) {
+            if (details, !worker.empty) {
                 ostream(
                     """(S)he has training or experience in the following Jobs (Skills):
                         <ul>
@@ -135,7 +135,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
                 if (exists stats = worker.stats) {
                     retval.appendNode(SimpleReportNode(statsString(stats)));
                 }
-                if (!CeylonIterable(worker).empty) {
+                if (!worker.empty) {
                     IReportNode jobs = ListReportNode(
                         "(S)he has training or experience in the following Jobs (Skills):",
                         loc);

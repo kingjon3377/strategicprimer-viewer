@@ -27,9 +27,7 @@ import model.listeners {
     PlayerChangeListener
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit
-}
-import model.map.fixtures.mobile {
+    IUnit,
     IWorker
 }
 import ceylon.file {
@@ -46,7 +44,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options) satisfies PlayerCh
     void writeMember(Writer writer, UnitMember? member) {
         if (is IWorker member) {
             writer.write(member.name);
-            Iterable<IJob> iter = CeylonIterable(member);
+            // TODO: inline
+            Iterable<IJob> iter = member;
             if (exists first = iter.first) {
                 writer.write(" (``first.name`` ``first.level``");
                 for (job in iter.rest) {

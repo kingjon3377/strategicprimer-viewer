@@ -12,7 +12,7 @@ import model.map {
     IFixture,
     Point
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker
 }
 import model.map.fixtures.mobile.worker {

@@ -31,10 +31,10 @@ import model.map.fixtures {
     UnitMember
 }
 import model.map.fixtures.mobile {
-    IWorker,
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    IWorker,
     IUnit
 }
 

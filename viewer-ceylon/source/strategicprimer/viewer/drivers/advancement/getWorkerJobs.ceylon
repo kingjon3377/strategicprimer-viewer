@@ -2,7 +2,7 @@ import model.map.fixtures.mobile.worker {
     IJob,
     Job
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker
 }
 import ceylon.collection {

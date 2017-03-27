@@ -40,11 +40,9 @@ import javax.swing {
     ImageIcon,
     Icon
 }
-import model.map.fixtures.mobile {
-    IWorker
-}
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit
+    IUnit,
+    IWorker
 }
 import model.listeners {
     UnitMemberListener,
@@ -217,7 +215,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 }
             }
             String jobCSL(IWorker worker) {
-                {IJob*} iter = CeylonIterable(worker);
+                // TODO: inline
+                {IJob*} iter = worker;
                 StringBuilder builder = StringBuilder();
                 if (exists first = iter.first) {
                     builder.append(" (```first.name`` ``first.level``");

@@ -7,10 +7,8 @@ import ceylon.interop.java {
 }
 
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    IWorker,
     IUnit
-}
-import model.map.fixtures.mobile {
-    IWorker
 }
 import model.map.fixtures.mobile.worker {
     IJob,
@@ -35,7 +33,7 @@ void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
         cli.println("No workers in unit.");
     } else {
         // TODO: Switch to named-argument-ish syntax
-        MutableList<IJob> jobs = ArrayList(0, 1.0, { *CeylonIterable<IJob>(ProxyWorker.fromUnit(unit)) });
+        MutableList<IJob> jobs = ArrayList(0, 1.0, { *ProxyWorker.fromUnit(unit) });
         cli.loopOnMutableList(jobs, (ICLIHelper clh) => clh.chooseFromList(
             jobs, "Jobs in workers:", "No existing jobs.",
             "Job to advance: ", false),

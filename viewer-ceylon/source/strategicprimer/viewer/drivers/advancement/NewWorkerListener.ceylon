@@ -6,7 +6,7 @@ import lovelace.util.common {
     todo
 }
 
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     Worker
 }
 "An interface for things that want to accept a new user-created worker."

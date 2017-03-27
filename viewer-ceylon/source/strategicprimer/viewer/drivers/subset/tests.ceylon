@@ -30,11 +30,11 @@ import model.map.fixtures {
     TextFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    Unit
+    Unit,
+    Worker
 }
 import model.map.fixtures.mobile {
-    Animal,
-    Worker
+    Animal
 }
 import model.map.fixtures.mobile.worker {
     Job

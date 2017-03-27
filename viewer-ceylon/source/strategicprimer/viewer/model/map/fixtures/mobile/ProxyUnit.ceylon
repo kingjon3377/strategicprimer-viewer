@@ -58,9 +58,6 @@ import model.map {
 import model.map.fixtures {
     UnitMember
 }
-import model.map.fixtures.mobile {
-    IWorker
-}
 
 import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor,

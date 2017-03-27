@@ -8,7 +8,7 @@ import javax.swing.event {
     TreeModelListener,
     TreeModelEvent
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker
 }
 import model.listeners {
@@ -51,7 +51,7 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     shared actual IWorker? root => localRoot;
     shared actual HasName getChild(Object parent, Integer index) {
         if (index >= 0, is IWorker parent,
-            exists child = CeylonIterable(parent).getFromFirst(index)) {
+            exists child = parent.getFromFirst(index)) {
             return child;
         } else if (index >= 0, is IJob parent,
             exists child = CeylonIterable(parent).getFromFirst(index)) {
@@ -61,8 +61,15 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
         }
     }
     shared actual Integer getChildCount(Object parent) {
+        {Object*} temp(IWorker|IJob arg) {
+            if (is IWorker arg) {
+                return arg;
+            } else {
+                return CeylonIterable(arg);
+            }
+        }
         if (is IWorker|IJob parent) {
-            return CeylonIterable(parent).size;
+            return temp(parent).size;
         } else if (is ISkill parent) {
             return 0;
         } else {
@@ -75,9 +82,15 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     shared actual void valueForPathChanged(TreePath path, Object newValue) =>
             log.error("valueForPathChanged needs to be implemented");
     shared actual Integer getIndexOfChild(Object parent, Object child) {
+        {Object*} temp(IWorker|IJob arg) {
+            if (is IWorker arg) {
+                return arg;
+            } else {
+                return CeylonIterable(arg);
+            }
+        }
         if (is IWorker|IJob parent,
-            exists index->ignored = CeylonIterable(parent)
-                .locate(child.equals)) {
+                exists index->ignored = temp(parent).locate(child.equals)) {
             return index;
         } else {
             return -1;

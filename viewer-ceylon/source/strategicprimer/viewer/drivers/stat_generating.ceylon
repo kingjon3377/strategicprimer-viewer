@@ -18,7 +18,6 @@ import ceylon.math.float {
 }
 
 import java.lang {
-    JIterable=Iterable,
     IllegalStateException
 }
 import java.nio.file {
@@ -42,14 +41,6 @@ import model.map {
     TileType,
     PointFactory
 }
-import model.map.fixtures.mobile {
-    IWorker,
-    Worker
-}
-import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit,
-    Unit
-}
 import model.map.fixtures.mobile.worker {
     WorkerStats,
     Job
@@ -72,6 +63,12 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     IMapNG,
     FixtureIterable
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    Worker,
+    IUnit,
+    Unit,
+    IWorker
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village

@@ -25,7 +25,7 @@ import javax.xml.stream.events {
 import model.map {
     HasPortrait
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker,
     Worker
 }
@@ -127,7 +127,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         requireTag(element, parent, "worker");
         Worker retval = Worker(getParameter(element, "name"),
             getParameter(element, "race", "human"), getOrGenerateID(element));
-        retval.image = getParameter(element, "image", "");
+        retval.setImage(getParameter(element, "image", ""));
         retval.portrait = getParameter(element, "portrait", "");
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
@@ -155,7 +155,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         if (is HasPortrait obj) {
             writeNonemptyProperty(ostream, "portrait", obj.portrait);
         }
-        if (!CeylonIterable(obj).empty || obj.stats exists) {
+        if (!obj.empty || obj.stats exists) {
             finishParentTag(ostream);
             writeStats(ostream, obj.stats, indent + 1);
             for (job in obj) {

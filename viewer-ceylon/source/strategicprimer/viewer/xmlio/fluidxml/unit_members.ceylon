@@ -31,9 +31,11 @@ import model.map {
     IPlayerCollection,
     HasPortrait
 }
-import model.map.fixtures.mobile {
-    Worker,
+import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker,
+    Worker
+}
+import model.map.fixtures.mobile {
     Animal,
     SimpleImmortal
 }
@@ -119,7 +121,8 @@ WorkerStats readStats(StartElement element, QName parent, {XMLEvent*} stream,
 void writeWorker(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is IWorker obj) {
         WorkerStats? stats = obj.stats;
-        Boolean hasJobs = !CeylonIterable(obj).empty;
+        // TODO: what about empty Jobs?
+        Boolean hasJobs = !obj.empty;
         writeTag(ostream, "worker", indentation, !hasJobs && !stats exists);
         writeAttribute(ostream, "name", obj.name);
         if ("human" != obj.race) {
