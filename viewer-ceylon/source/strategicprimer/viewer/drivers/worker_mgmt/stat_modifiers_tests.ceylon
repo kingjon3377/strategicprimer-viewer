@@ -3,9 +3,10 @@ import ceylon.test {
     assertEquals
 }
 
-import model.map.fixtures.mobile.worker {
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
+// TODO: move this file into `package strategicprimer.viewer.model.map.fixtures.mobile.worker`?
 test
 void testModifiers() {
     value stats = (0..20).by(2);

@@ -10,11 +10,11 @@ import java.awt {
     Color
 }
 import model.map.fixtures.mobile.worker {
-    IJob,
-    WorkerStats
+    IJob
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    ProxyWorker
+    ProxyWorker,
+    WorkerStats
 }
 import model.map {
     HasImage,

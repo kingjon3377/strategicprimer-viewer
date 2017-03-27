@@ -75,7 +75,9 @@ import model.map.fixtures.mobile {
 }
 import model.map.fixtures.mobile.worker {
     IJob,
-    ISkill,
+    ISkill
+}
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
 import strategicprimer.viewer.model.map {

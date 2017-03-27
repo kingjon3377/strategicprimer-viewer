@@ -11,7 +11,9 @@ import model.map.fixtures {
     UnitMember
 }
 import model.map.fixtures.mobile.worker {
-    IJob,
+    IJob
+}
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
 "An interface for Workers."

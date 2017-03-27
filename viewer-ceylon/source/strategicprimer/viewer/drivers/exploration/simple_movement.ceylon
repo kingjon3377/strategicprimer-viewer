@@ -27,7 +27,7 @@ import model.map {
 import model.map.fixtures {
     RiverFixture
 }
-import model.map.fixtures.mobile.worker {
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
 

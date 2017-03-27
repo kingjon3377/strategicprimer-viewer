@@ -24,11 +24,13 @@ import strategicprimer.viewer.model.map {
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker
 }
-import model.map.fixtures.mobile.worker {
-    ISkill,
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats {
         modifierString=getModifierString
-    },
+    }
+}
+import model.map.fixtures.mobile.worker {
+    ISkill,
     IJob
 }
 

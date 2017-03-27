@@ -15,7 +15,7 @@ import model.map {
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker
 }
-import model.map.fixtures.mobile.worker {
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
 "A report generator for workers. We do not cover Jobs or Skills; see the main report for

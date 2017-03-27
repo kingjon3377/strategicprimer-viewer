@@ -23,9 +23,11 @@ import model.map {
     HasPortrait,
     IFixture
 }
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    WorkerStats
+}
 import model.map.fixtures.mobile.worker {
     IJob,
-    WorkerStats,
     Job
 }
 "Whether neither of two collections of Jobs contains a nonempty Job the other does not."

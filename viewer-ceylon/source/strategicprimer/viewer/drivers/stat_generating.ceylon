@@ -41,8 +41,10 @@ import model.map {
     TileType,
     PointFactory
 }
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    WorkerStats
+}
 import model.map.fixtures.mobile.worker {
-    WorkerStats,
     Job
 }
 
@@ -196,7 +198,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         }
     }
     "Get the index of the lowest value in an array."
-    Integer getMinIndex(Array<Integer> array) {
+    Integer getMinIndex(Integer[] array) {
         variable Integer retval = 0;
         for (index->item in array.indexed) {
             if (exists retItem = array[retval], item < retItem) {
@@ -207,11 +209,13 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Create randomly-generated stats for a worker, with racial adjustments applied."
     WorkerStats createWorkerStats(String race, Integer levels, ICLIHelper cli) {
-        WorkerStats base = WorkerStats.factory(() {
+        // TODO: Only instantiate the Random once
+        // TODO: Better yet, use Ceylonic RNG interfaces
+        WorkerStats base = WorkerStats.random(() {
             Random rng = Random(system.milliseconds);
             return rng.nextInt(6) + rng.nextInt(6) + rng.nextInt(6) + 3;
         });
-        Integer lowestScore = getMinIndex(toIntegerArray(base.toArray()));
+        Integer lowestScore = getMinIndex(base.array);
         WorkerStats racialBonus;
         switch (race)
         case ("dwarf") { racialBonus = WorkerStats.factory(2, 0, 2, 0, 0, -2); }
@@ -246,7 +250,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         for (level in 0..levels) {
             hp = hp + rng.nextInt(8) + 1 + conBonus;
         }
-        return WorkerStats(hp, base, racialBonus);
+        return WorkerStats.adjusted(hp, base, racialBonus);
     }
     "Add a worker to a unit in all maps."
     void addWorkerToUnit(IMultiMapModel model, IFixture unit, IWorker worker) {

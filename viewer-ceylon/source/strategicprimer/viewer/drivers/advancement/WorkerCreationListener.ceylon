@@ -25,7 +25,7 @@ import lovelace.util.jvm {
     singletonRandom
 }
 
-import model.map.fixtures.mobile.worker {
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
 
