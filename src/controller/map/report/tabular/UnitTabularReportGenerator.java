@@ -2,6 +2,7 @@ package controller.map.report.tabular;
 
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.Map;
 import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Player;
@@ -68,7 +69,10 @@ public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> 
 		writeDelimitedField(ostream, getOwnerString(player, item.getOwner()));
 		writeDelimitedField(ostream, item.getKind());
 		writeDelimitedField(ostream, item.getName());
-		writeField(ostream, item.getAllOrders().lastEntry().getValue());
+		Map.Entry<Integer, String> lastOrders = item.getAllOrders().lastEntry();
+		if (lastOrders != null) {
+			writeField(ostream, lastOrders.getValue());
+		}
 		ostream.append(getRowDelimiter());
 		for (final UnitMember member : item) {
 			if (member instanceof Animal) {
