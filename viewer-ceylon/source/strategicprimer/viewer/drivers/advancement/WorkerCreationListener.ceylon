@@ -29,9 +29,6 @@ import lovelace.util.jvm {
     singletonRandom
 }
 
-import model.listeners {
-    NewWorkerListener
-}
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
