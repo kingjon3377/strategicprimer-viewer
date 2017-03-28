@@ -29,20 +29,20 @@ import model.map {
 }
 import model.map.fixtures.mobile {
     MobileFixture,
-    Animal,
-    Centaur,
-    Dragon
+    Animal
 }
 
 import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    Centaur,
     IUnit,
     SimpleImmortal,
     SimpleImmortalKind,
     Giant,
-    Fairy
+    Fairy,
+    Dragon
 }
 
 import util {

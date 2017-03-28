@@ -84,10 +84,8 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     SimpleImmortal,
     Unit,
     Giant,
-    Fairy
-}
-import model.map.fixtures.mobile {
     Centaur,
+    Fairy,
     Dragon
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {

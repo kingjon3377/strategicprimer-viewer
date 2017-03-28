@@ -91,18 +91,18 @@ import model.map.fixtures.explorable {
     Battlefield
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    Centaur,
     SimpleImmortalKind,
     Unit,
     Worker,
     SimpleImmortal,
     IUnit,
     Giant,
-    Fairy
+    Fairy,
+    Dragon
 }
 import model.map.fixtures.mobile {
-    Animal,
-    Centaur,
-    Dragon
+    Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     Job,

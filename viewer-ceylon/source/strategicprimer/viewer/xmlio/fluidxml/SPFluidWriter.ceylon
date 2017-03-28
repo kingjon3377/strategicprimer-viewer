@@ -66,12 +66,12 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Giant,
     SimpleImmortal,
     IWorker,
-    IUnit
+    IUnit,
+    Centaur,
+    Dragon
 }
 import model.map.fixtures.mobile {
-    Animal,
-    Dragon,
-    Centaur
+    Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob,

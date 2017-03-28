@@ -43,12 +43,12 @@ import model.map.fixtures.explorable {
     AdventureFixture
 }
 import model.map.fixtures.mobile {
-    Dragon,
-    Centaur,
     Animal
 }
 
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    Dragon,
+    Centaur,
     Fairy,
     Giant,
     SimpleImmortal,
