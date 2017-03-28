@@ -30,9 +30,6 @@ import model.map.fixtures {
     UnitMember,
     FortressMember
 }
-import model.map.fixtures.mobile {
-    MobileFixture
-}
 "An interface for units."
 shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
         FixtureIterable<UnitMember>&FortressMember&HasOwner {

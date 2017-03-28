@@ -7,9 +7,6 @@ import model.map {
     HasKind,
     IFixture
 }
-import model.map.fixtures.mobile {
-    Immortal
-}
 import java.util {
     Formatter
 }

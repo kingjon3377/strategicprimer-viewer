@@ -7,9 +7,6 @@ import model.map {
     HasKind,
     IFixture
 }
-import model.map.fixtures.mobile {
-    Immortal
-}
 "A centaur."
 shared class Centaur(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 	"What kind of centaur."

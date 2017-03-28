@@ -32,9 +32,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Giant,
     SimpleImmortalKind,
     SimpleImmortal,
-    Dragon
-}
-import model.map.fixtures.mobile {
+    Dragon,
     Immortal
 }
 

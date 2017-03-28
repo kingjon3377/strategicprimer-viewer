@@ -11,9 +11,6 @@ import model.map {
     HasKind,
     IFixture
 }
-import model.map.fixtures.mobile {
-    Immortal
-}
 "A giant."
 shared class Giant(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 	"The ID number."

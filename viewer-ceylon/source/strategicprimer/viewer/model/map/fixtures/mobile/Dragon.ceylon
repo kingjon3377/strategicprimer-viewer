@@ -1,9 +1,6 @@
 import java.util {
     Formatter
 }
-import model.map.fixtures.mobile {
-    Immortal
-}
 import model.map {
     HasKind,
     HasMutableImage,

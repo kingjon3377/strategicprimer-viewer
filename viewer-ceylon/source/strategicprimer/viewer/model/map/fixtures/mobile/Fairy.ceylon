@@ -11,9 +11,6 @@ import model.map {
     HasMutableImage,
     HasKind
 }
-import model.map.fixtures.mobile {
-    Immortal
-}
 "A fairy."
 shared class Fairy(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 	"The ID number."

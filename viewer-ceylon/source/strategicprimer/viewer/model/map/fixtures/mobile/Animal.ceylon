@@ -10,9 +10,6 @@ import model.map {
 import model.map.fixtures {
     UnitMember
 }
-import model.map.fixtures.mobile {
-    MobileFixture
-}
 import java.util {
     Formatter
 }
