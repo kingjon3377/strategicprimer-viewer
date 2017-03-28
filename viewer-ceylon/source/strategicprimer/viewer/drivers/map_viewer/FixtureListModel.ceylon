@@ -7,7 +7,7 @@ import javax.swing {
 import model.listeners {
     SelectionChangeListener
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {

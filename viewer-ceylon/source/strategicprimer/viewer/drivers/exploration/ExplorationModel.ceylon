@@ -48,9 +48,7 @@ import model.map.fixtures {
     MineralFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit
-}
-import model.map.fixtures.mobile {
+    IUnit,
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.resources {

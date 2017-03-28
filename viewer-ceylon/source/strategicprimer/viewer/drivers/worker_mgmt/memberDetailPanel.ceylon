@@ -40,9 +40,7 @@ import model.map.fixtures {
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     Worker,
-    ProxyFor
-}
-import model.map.fixtures.mobile {
+    ProxyFor,
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {

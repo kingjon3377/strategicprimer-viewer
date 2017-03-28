@@ -30,10 +30,8 @@ import model.map.fixtures {
     ResourcePile,
     UnitMember
 }
-import model.map.fixtures.mobile {
-    Animal
-}
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    Animal,
     IWorker,
     IUnit
 }

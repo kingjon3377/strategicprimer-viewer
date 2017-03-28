@@ -4,7 +4,7 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     ceylonComparator
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     Animal
 }
 import strategicprimer.viewer.model {

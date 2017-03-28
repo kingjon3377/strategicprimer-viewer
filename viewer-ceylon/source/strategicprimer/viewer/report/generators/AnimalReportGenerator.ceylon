@@ -21,7 +21,7 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     IMapNG
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     Animal
 }
 

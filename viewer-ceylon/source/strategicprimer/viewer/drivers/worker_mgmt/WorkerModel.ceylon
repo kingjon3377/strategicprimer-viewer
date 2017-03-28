@@ -37,10 +37,8 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     IMapNG
 }
-import model.map.fixtures.mobile {
-    Animal
-}
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    Animal,
     ProxyFor,
     ProxyUnit,
     IUnit,

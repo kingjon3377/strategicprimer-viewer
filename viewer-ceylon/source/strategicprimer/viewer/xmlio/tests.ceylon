@@ -99,9 +99,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit,
     Giant,
     Fairy,
-    Dragon
-}
-import model.map.fixtures.mobile {
+    Dragon,
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
@@ -1211,9 +1209,9 @@ void testAnimalSerialization() {
     String[] statuses = ["wild", "semi-domesticated", "domesticated", "tame"];
     for (tracks in {false, true}) {
         for (talking in {false, true}) {
+            assert (exists status = statuses[i]);
             assertSerialization("Test of [[Animal]] serialization",
-                Animal("animalKind", tracks, talking,
-                    statuses[i], i));
+                Animal("animalKind", tracks, talking, status, i));
             i++;
         }
     }

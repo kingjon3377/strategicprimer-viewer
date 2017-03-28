@@ -31,9 +31,7 @@ import model.map.fixtures {
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     Unit,
-    Worker
-}
-import model.map.fixtures.mobile {
+    Worker,
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {

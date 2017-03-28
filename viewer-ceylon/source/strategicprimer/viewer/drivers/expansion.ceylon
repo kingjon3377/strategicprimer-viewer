@@ -17,9 +17,7 @@ import ceylon.collection {
     MutableList
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit
-}
-import model.map.fixtures.mobile {
+    IUnit,
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.resources {

@@ -28,8 +28,7 @@ import model.map {
     HasImage
 }
 import model.map.fixtures.mobile {
-    MobileFixture,
-    Animal
+    MobileFixture
 }
 
 import strategicprimer.viewer.model {
@@ -42,7 +41,8 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     SimpleImmortalKind,
     Giant,
     Fairy,
-    Dragon
+    Dragon,
+    Animal
 }
 
 import util {

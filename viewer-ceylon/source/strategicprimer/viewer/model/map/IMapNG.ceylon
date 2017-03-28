@@ -15,7 +15,7 @@ import model.map.fixtures {
     Ground,
     TextFixture
 }
-import model.map.fixtures.mobile {
+import strategicprimer.viewer.model.map.fixtures.mobile {
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.resources {

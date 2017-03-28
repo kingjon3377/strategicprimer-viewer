@@ -13,9 +13,7 @@ import model.map {
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit
-}
-import model.map.fixtures.mobile {
+    IUnit,
     Animal
 }
 "A tabular report generator for units."

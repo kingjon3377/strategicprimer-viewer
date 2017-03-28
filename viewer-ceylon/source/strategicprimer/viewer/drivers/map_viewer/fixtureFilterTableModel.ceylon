@@ -42,11 +42,9 @@ import model.map.fixtures.explorable {
     Battlefield,
     AdventureFixture
 }
-import model.map.fixtures.mobile {
-    Animal
-}
 
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    Animal,
     Dragon,
     Centaur,
     Fairy,
