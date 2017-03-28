@@ -6,9 +6,6 @@ import model.map {
     HasName,
     Subsettable
 }
-import model.map.fixtures.mobile.worker {
-    ISkill
-}
 """Skill names that are suspicious when they are the only Skill a Job has. In many
    cases they should be "miscellaneous" instead."""
 shared {String*} suspiciousSkills = {"hunter", "hunting", "explorer",

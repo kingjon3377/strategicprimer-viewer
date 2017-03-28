@@ -33,9 +33,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats,
     Job,
     IJob,
-    Skill
-}
-import model.map.fixtures.mobile.worker {
+    Skill,
     ISkill
 }
 

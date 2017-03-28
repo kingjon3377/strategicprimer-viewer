@@ -8,7 +8,7 @@ import model.listeners {
     LevelGainListener,
     UnitMemberListener
 }
-import model.map.fixtures.mobile.worker {
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     ISkill
 }
 "A listener to print a line whenever a worker gains a level."

@@ -73,12 +73,10 @@ import model.map.fixtures.mobile {
     SimpleImmortal,
     Centaur
 }
-import model.map.fixtures.mobile.worker {
-    ISkill
-}
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob,
-    WorkerStats
+    WorkerStats,
+    ISkill
 }
 import strategicprimer.viewer.model.map {
     IMapNG

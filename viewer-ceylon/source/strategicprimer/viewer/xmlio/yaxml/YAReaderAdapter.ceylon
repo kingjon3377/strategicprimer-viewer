@@ -47,9 +47,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    IJob
-}
-import model.map.fixtures.mobile.worker {
+    IJob,
     ISkill
 }
 

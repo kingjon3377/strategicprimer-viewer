@@ -19,9 +19,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.map.fixtures.mobile.worker {
-    ISkill
-}
 "A Job a worker can work at or have training or experience in."
 shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
     "The worker's level in various skills associated with the Job."

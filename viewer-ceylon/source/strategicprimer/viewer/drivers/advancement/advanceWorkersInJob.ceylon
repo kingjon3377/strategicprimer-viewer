@@ -11,9 +11,7 @@ import strategicprimer.viewer.drivers {
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob,
     ProxyJob,
-    Skill
-}
-import model.map.fixtures.mobile.worker {
+    Skill,
     ISkill
 }
 "Let the user add experience in a given Job to all of a list of workers."

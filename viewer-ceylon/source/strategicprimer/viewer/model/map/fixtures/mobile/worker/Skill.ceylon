@@ -2,9 +2,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.map.fixtures.mobile.worker {
-    ISkill
-}
 "A skill a worker has experience or training in."
 shared class Skill(name, skillLevel, time) satisfies ISkill {
 	"The name of the skill."

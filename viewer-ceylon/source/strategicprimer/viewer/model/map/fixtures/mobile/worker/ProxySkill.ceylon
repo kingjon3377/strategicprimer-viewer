@@ -21,9 +21,6 @@ import lovelace.util.common {
 import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor
 }
-import model.map.fixtures.mobile.worker {
-    ISkill
-}
 "An implementation of ISkill whose operations act on multiple workers at once."
 todo("Figure out how we can make this satisfy ProxyFor<ISkill>?")
 class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&ProxyFor<IJob> {

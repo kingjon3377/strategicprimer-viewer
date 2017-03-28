@@ -17,9 +17,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker,
     ProxyFor
 }
-import model.map.fixtures.mobile.worker {
-    ISkill
-}
 "An IJob implementation to let the Job tree operate on a whole unit at once."
 shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&ProxyFor<IJob> {
     """If false, the worker containing this is representing all the workers in a single

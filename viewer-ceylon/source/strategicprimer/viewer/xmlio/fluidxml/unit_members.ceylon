@@ -39,13 +39,11 @@ import model.map.fixtures.mobile {
     Animal,
     SimpleImmortal
 }
-import model.map.fixtures.mobile.worker {
-    ISkill
-}
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob,
     Job,
     WorkerStats,
+    ISkill,
     Skill
 }
 

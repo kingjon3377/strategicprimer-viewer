@@ -33,7 +33,7 @@ import model.listeners {
     LevelGainSource,
     LevelGainListener
 }
-import model.map.fixtures.mobile.worker {
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     ISkill
 }
 "A panel to let a user add hours of experience to a Skill."

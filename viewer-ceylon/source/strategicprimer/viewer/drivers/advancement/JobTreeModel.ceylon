@@ -31,13 +31,11 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import model.map.fixtures.mobile.worker {
-    ISkill
-}
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob,
     Job,
-    Skill
+    Skill,
+    ISkill
 }
 import ceylon.interop.java {
     createJavaIntArray,

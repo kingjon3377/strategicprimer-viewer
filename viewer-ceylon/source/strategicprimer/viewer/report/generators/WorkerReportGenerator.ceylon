@@ -28,9 +28,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats {
         modifierString=getModifierString
     },
-    IJob
-}
-import model.map.fixtures.mobile.worker {
+    IJob,
     ISkill
 }
 
