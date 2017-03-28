@@ -45,13 +45,15 @@ import model.map.fixtures.explorable {
 import model.map.fixtures.mobile {
     Dragon,
     Giant,
-    SimpleImmortal,
     Fairy,
     Centaur,
     Animal
 }
+
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    Unit
+    SimpleImmortal,
+    Unit,
+    SimpleImmortalKind
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     Grove,
@@ -68,7 +70,6 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
     Hill,
     Forest
 }
-
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village,
     AbstractTown,
@@ -80,14 +81,14 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&Comp
             String description = "``type.declaration.name``s") {
         return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
     }
-    FixtureMatcher immortalMatcher(SimpleImmortal.SimpleImmortalKind kind) {
+    FixtureMatcher immortalMatcher(SimpleImmortalKind kind) {
         return FixtureMatcher((TileFixture fixture) {
             if (is SimpleImmortal fixture) {
-                return fixture.kind() == kind;
+                return fixture.immortalKind == kind;
             } else {
                 return false;
             }
-        }, kind.plural());
+        }, kind.plural);
     }
     {FixtureMatcher*} complements<out T>(Boolean(T) method,
             String firstDescription, String secondDescription)
@@ -106,15 +107,15 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&Comp
         trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
         // TODO: Village through Centaur were all 45, so their ordering happened by chance
         trivialMatcher(`Village`),
-        immortalMatcher(SimpleImmortal.SimpleImmortalKind.troll),
-        immortalMatcher(SimpleImmortal.SimpleImmortalKind.simurgh),
-        immortalMatcher(SimpleImmortal.SimpleImmortalKind.ogre),
-        immortalMatcher(SimpleImmortal.SimpleImmortalKind.minotaur),
+        immortalMatcher(SimpleImmortalKind.troll),
+        immortalMatcher(SimpleImmortalKind.simurgh),
+        immortalMatcher(SimpleImmortalKind.ogre),
+        immortalMatcher(SimpleImmortalKind.minotaur),
         trivialMatcher(`Mine`),
-        immortalMatcher(SimpleImmortal.SimpleImmortalKind.griffin),
-        immortalMatcher(SimpleImmortal.SimpleImmortalKind.sphinx),
-        immortalMatcher(SimpleImmortal.SimpleImmortalKind.phoenix),
-        immortalMatcher(SimpleImmortal.SimpleImmortalKind.djinn),
+        immortalMatcher(SimpleImmortalKind.griffin),
+        immortalMatcher(SimpleImmortalKind.sphinx),
+        immortalMatcher(SimpleImmortalKind.phoenix),
+        immortalMatcher(SimpleImmortalKind.djinn),
         trivialMatcher(`Centaur`),
         // TODO: StoneDeposit through Animal were all 40; they too should be reviewed
         trivialMatcher(`StoneDeposit`, "Stone Deposits"),

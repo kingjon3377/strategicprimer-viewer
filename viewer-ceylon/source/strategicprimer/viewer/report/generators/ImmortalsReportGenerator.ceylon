@@ -26,9 +26,12 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     IMapNG
 }
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    SimpleImmortalKind,
+    SimpleImmortal
+}
 import model.map.fixtures.mobile {
     Immortal,
-    SimpleImmortal,
     Centaur,
     Giant,
     Fairy,
@@ -60,17 +63,16 @@ shared class ImmortalsReportGenerator(Comparison([Point, IFixture], [Point, IFix
                         .sort(pairComparator) };
             MutableMap<Type<IFixture>, Anything(String, Point)> meta =
                     HashMap<Type<IFixture>, Anything(String, Point)>();
-            MutableMap<SimpleImmortal.SimpleImmortalKind,
+            MutableMap<SimpleImmortalKind,
             HeadedList<Point>&MutableList<Point>> simples =
-                    HashMap<SimpleImmortal.SimpleImmortalKind,
+                    HashMap<SimpleImmortalKind,
                     HeadedList<Point>&MutableList<Point>>();
-//            for (kind in `SimpleImmortal.SimpleImmortalKind`.caseValues) {
-            for (kind in SimpleImmortal.SimpleImmortalKind.values()) {
-                simples.put(kind, PointList("``kind.plural()`` at: "));
+            for (kind in `SimpleImmortalKind`.caseValues) {
+                simples.put(kind, PointList("``kind.plural`` at: "));
             }
             meta.put(`SimpleImmortal`,(kind, point) {
-                if (exists list =
-                        simples.get(SimpleImmortal.SimpleImmortalKind.parse(kind))) {
+                if (exists immortal = SimpleImmortalKind.parse(kind),
+                        exists list = simples.get(immortal)) {
                     list.add(point);
                 }
             });
@@ -126,8 +128,8 @@ shared class ImmortalsReportGenerator(Comparison([Point, IFixture], [Point, IFix
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
                         .sort(pairComparator) };
-            MutableMap<SimpleImmortal.SimpleImmortalKind, IReportNode> simples =
-                    HashMap<SimpleImmortal.SimpleImmortalKind, IReportNode>();
+            MutableMap<SimpleImmortalKind, IReportNode> simples =
+                    HashMap<SimpleImmortalKind, IReportNode>();
             MutableMap<String, IReportNode> centaurs = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> giants = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> fairies = HashMap<String, IReportNode>();
@@ -155,11 +157,11 @@ shared class ImmortalsReportGenerator(Comparison([Point, IFixture], [Point, IFix
                         .appendNode(produceRIR(fixtures, map, [immortal, point]));
                 } else if (is SimpleImmortal immortal) {
                     IReportNode node;
-                    if (exists temp = simples.get(immortal.kind())) {
+                    if (exists temp = simples.get(immortal.immortalKind)) {
                         node = temp;
                     } else {
-                        node = ListReportNode(immortal.kind().plural());
-                        simples.put(immortal.kind(), node);
+                        node = ListReportNode(immortal.immortalKind.plural);
+                        simples.put(immortal.immortalKind, node);
                     }
                     node.appendNode(produceRIR(fixtures, map, [immortal, point]));
                 } else if (is Giant immortal) {

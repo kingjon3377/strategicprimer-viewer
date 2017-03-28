@@ -8,9 +8,7 @@ import ceylon.language.meta.model {
 import controller.map.formatexceptions {
     MissingPropertyException
 }
-import strategicprimer.viewer.model {
-    IDRegistrar
-}
+
 import java.lang {
     JAppendable=Appendable,
     IllegalArgumentException
@@ -35,11 +33,16 @@ import model.map.fixtures.mobile {
     Centaur,
     Dragon,
     Fairy,
-    Giant,
-    SimpleImmortal
+    Giant
+}
+
+import strategicprimer.viewer.model {
+    IDRegistrar
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit
+    IUnit,
+    SimpleImmortal,
+    SimpleImmortalKind
 }
 
 import util {
@@ -53,8 +56,8 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         `Fairy`->"fairy", `Giant`->"giant"
     };
     Set<String> supportedTags = set { *tagMap.items }.union(set {
-        *{*SimpleImmortal.SimpleImmortalKind.values()}
-            .map((SimpleImmortal.SimpleImmortalKind kind) => kind.tag)});
+        *{*`SimpleImmortalKind`.caseValues}
+            .map((SimpleImmortalKind kind) => kind.tag)});
     MobileFixture createAnimal(StartElement element) {
         // TODO: support 'traces="false"'
         Boolean tracks = hasParameter(element, "traces");
@@ -73,8 +76,13 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             throw MissingPropertyException(element, "talking", talking);
         }
     }
-    MobileFixture readSimple(String tag, Integer idNum) =>
-            SimpleImmortal(SimpleImmortal.SimpleImmortalKind.parse(tag), idNum);
+    MobileFixture readSimple(String tag, Integer idNum) {
+        if (exists kind = SimpleImmortalKind.parse(tag)) {
+            return SimpleImmortal(kind, idNum);
+        } else {
+            throw IllegalArgumentException("No simple immortal matches ``tag``");
+        }
+    }
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
     shared actual MobileFixture read(StartElement element, QName parent, {XMLEvent*} stream) {

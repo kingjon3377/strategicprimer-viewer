@@ -33,11 +33,11 @@ import model.map {
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker,
-    Worker
+    Worker,
+    SimpleImmortal
 }
 import model.map.fixtures.mobile {
-    Animal,
-    SimpleImmortal
+    Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob,

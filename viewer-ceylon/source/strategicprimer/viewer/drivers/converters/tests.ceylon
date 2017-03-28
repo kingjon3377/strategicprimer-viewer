@@ -99,10 +99,11 @@ import model.map.fixtures.mobile {
     Fairy,
     Centaur,
     Giant,
-    SimpleImmortal,
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    SimpleImmortalKind,
+    SimpleImmortal,
     Unit,
     IUnit
 }
@@ -458,15 +459,15 @@ shared void testThirdOneToTwoConversion() {
         Forest("ttree1", false, 1), Hill(1), Animal("animalKind", false, false, "wild", 2),
         Mine("mineral", TownStatus.active, 3), AdventureFixture(independent,
             "briefDescription", "fullDescription", 4),
-        SimpleImmortal(SimpleImmortal.SimpleImmortalKind.simurgh, 5),
-        SimpleImmortal(SimpleImmortal.SimpleImmortalKind.griffin, 6),
+        SimpleImmortal(SimpleImmortalKind.simurgh, 5),
+        SimpleImmortal(SimpleImmortalKind.griffin, 6),
         City(TownStatus.ruined, TownSize.large, 0, "cityName", 7, independent),
-        SimpleImmortal(SimpleImmortal.SimpleImmortalKind.ogre, 8),
-        SimpleImmortal(SimpleImmortal.SimpleImmortalKind.minotaur, 9),
+        SimpleImmortal(SimpleImmortalKind.ogre, 8),
+        SimpleImmortal(SimpleImmortalKind.minotaur, 9),
         Centaur("hill", 10), Giant("frost", 11),
-        SimpleImmortal(SimpleImmortal.SimpleImmortalKind.djinn, 12),
+        SimpleImmortal(SimpleImmortalKind.djinn, 12),
         Fairy("lesser", 13), Dragon("ice", 14),
-        SimpleImmortal(SimpleImmortal.SimpleImmortalKind.troll, 15),
+        SimpleImmortal(SimpleImmortalKind.troll, 15),
         Fortification(TownStatus.burned, TownSize.medium, 0, "townName", 16, independent),
         StoneDeposit(StoneKind.conglomerate, 0, 17));
     initialize(original, PointFactory.point(1, 0), TileType.mountain);
@@ -484,13 +485,13 @@ shared void testThirdOneToTwoConversion() {
         forest("btree1"), Hill(-1), Centaur("hill", -1),
         field(FieldStatus.growing, "grain1"));
     initialize(converted, PointFactory.point(0, 5), TileType.steppe, groundOne(),
-        forest("btree1"), SimpleImmortal(SimpleImmortal.SimpleImmortalKind.troll, -1),
+        forest("btree1"), SimpleImmortal(SimpleImmortalKind.troll, -1),
         forest("ttree1"));
     initialize(converted, PointFactory.point(0, 6), TileType.steppe, groundOne(),
         forest("btree1"), AdventureFixture(independent, "briefDescription",
             "fullDescription", -1));
     initialize(converted, PointFactory.point(0, 7), TileType.steppe, groundOne(),
-        forest("btree1"), SimpleImmortal(SimpleImmortal.SimpleImmortalKind.griffin, -1),
+        forest("btree1"), SimpleImmortal(SimpleImmortalKind.griffin, -1),
         forest("ttree1"));
     initialize(converted, PointFactory.point(1, 0), TileType.notVisible, groundOne(),
         forest("ttree1"));
@@ -515,18 +516,18 @@ shared void testThirdOneToTwoConversion() {
         Fortification(TownStatus.burned, TownSize.medium, 0, "townName", -1, independent),
         field(FieldStatus.growing));
     initialize(converted, PointFactory.point(2, 6), TileType.steppe, groundOne(),
-        forest("btree1"), SimpleImmortal(SimpleImmortal.SimpleImmortalKind.djinn, -1), village("Danan"),
+        forest("btree1"), SimpleImmortal(SimpleImmortalKind.djinn, -1), village("Danan"),
         TextFixture(oneToTwoConverter.maxIterationsWarning, 15),
         field(FieldStatus.growing));
     initialize(converted, PointFactory.point(2, 7), TileType.steppe, groundOne(),
-        forest("btree1"), SimpleImmortal(SimpleImmortal.SimpleImmortalKind.ogre, -1));
+        forest("btree1"), SimpleImmortal(SimpleImmortalKind.ogre, -1));
     initialize(converted, PointFactory.point(3, 0), TileType.notVisible, groundOne(),
         orchard());
     initialize(converted, PointFactory.point(3, 4), TileType.steppe, groundOne(),
-        forest("btree1"), SimpleImmortal(SimpleImmortal.SimpleImmortalKind.simurgh, -1),
+        forest("btree1"), SimpleImmortal(SimpleImmortalKind.simurgh, -1),
         orchard());
     initialize(converted, PointFactory.point(3, 5), TileType.steppe, groundOne(),
-        forest("btree1"), SimpleImmortal(SimpleImmortal.SimpleImmortalKind.minotaur, -1),
+        forest("btree1"), SimpleImmortal(SimpleImmortalKind.minotaur, -1),
         forest("ttree1"));
     initialize(converted, PointFactory.point(3, 6), TileType.steppe, groundOne(),
         forest("ttree1"),

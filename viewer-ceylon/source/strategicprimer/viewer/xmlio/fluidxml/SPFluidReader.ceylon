@@ -79,11 +79,12 @@ import model.map.fixtures {
     RiverFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    SimpleImmortalKind,
     IUnit,
+    SimpleImmortal,
     Unit
 }
 import model.map.fixtures.mobile {
-    SimpleImmortal,
     Centaur,
     Dragon,
     Fairy,
@@ -148,7 +149,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         return tag->retval;
     }
     {<String->LocalXMLReader>*} simpleImmortalReaders = {
-        for (kind in SimpleImmortal.SimpleImmortalKind.values())
+        for (kind in `SimpleImmortalKind`.caseValues)
             simpleFixtureReader(kind.tag, (id) => SimpleImmortal(kind, id))
     };
     StartElement firstStartElement({XMLEvent*} stream, StartElement parent) {

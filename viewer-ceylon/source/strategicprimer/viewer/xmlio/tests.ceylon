@@ -91,12 +91,13 @@ import model.map.fixtures.explorable {
     Battlefield
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    SimpleImmortalKind,
     Unit,
     Worker,
+    SimpleImmortal,
     IUnit
 }
 import model.map.fixtures.mobile {
-    SimpleImmortal,
     Animal,
     Centaur,
     Dragon,
@@ -654,7 +655,7 @@ void testSimpleTileSerializtion() {
     IMutableMapNG firstMap = createSimpleMap(PointFactory.point(2, 2),
         PointFactory.point(1, 1)->TileType.plains);
     firstMap.addFixture(PointFactory.point(1, 1),
-        SimpleImmortal(SimpleImmortal.SimpleImmortalKind.griffin, 1));
+        SimpleImmortal(SimpleImmortalKind.griffin, 1));
     assertSerialization("Tile with one fixture", firstMap);
     IMutableMapNG secondMap = createSimpleMap(PointFactory.point(3, 3),
         PointFactory.point(2, 2)->TileType.steppe);
@@ -893,7 +894,7 @@ test
 void testInclude() {
     assertForwardDeserialization<SimpleImmortal>("Reading Ogre via <include>",
         """<include file="string:&lt;ogre id=&quot;1&quot; /&gt;" />""",
-        SimpleImmortal(SimpleImmortal.SimpleImmortalKind.ogre, 1).equals);
+        SimpleImmortal(SimpleImmortalKind.ogre, 1).equals);
 }
 
 test
@@ -1404,7 +1405,7 @@ void testSimpleSerializationNoChildren() {
 
 test
 void testSimpleImageSerialization() {
-    for (kind in SimpleImmortal.SimpleImmortalKind.values()) {
+    for (kind in `SimpleImmortalKind`.caseValues) {
         assertImageSerialization("``kind``  image property is preserved",
             SimpleImmortal(kind, (random() * 1048576).integer));
     }
@@ -1415,7 +1416,7 @@ void testSimpleImageSerialization() {
 
 test
 void testSimpleSerialization() {
-    for (kind in SimpleImmortal.SimpleImmortalKind.values()) {
+    for (kind in `SimpleImmortalKind`.caseValues) {
         assertSerialization("``kind``  serialization",
             SimpleImmortal(kind, (random() * 1048576).integer));
     }
