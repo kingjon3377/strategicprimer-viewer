@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Ceylon: org.junit/4.12">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/viewer-ceylon/modules/org/junit/4.12/org.junit-4.12.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
