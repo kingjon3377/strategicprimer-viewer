@@ -5,10 +5,6 @@ import javax.swing.event {
 import javax.swing {
     JTree
 }
-import model.listeners {
-    SkillSelectionListener,
-    SkillSelectionSource
-}
 import ceylon.collection {
     ArrayList,
     MutableList

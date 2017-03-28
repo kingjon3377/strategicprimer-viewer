@@ -5,7 +5,6 @@ import model.map.fixtures {
     UnitMember
 }
 import model.listeners {
-    SkillSelectionListener,
     LevelGainListener,
     UnitMemberListener
 }

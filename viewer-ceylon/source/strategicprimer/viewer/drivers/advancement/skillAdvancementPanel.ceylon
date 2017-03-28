@@ -31,7 +31,6 @@ import lovelace.util.jvm {
 
 import model.listeners {
     LevelGainSource,
-    SkillSelectionListener,
     LevelGainListener
 }
 import model.map.fixtures.mobile.worker {
