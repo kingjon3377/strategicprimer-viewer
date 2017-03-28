@@ -10,11 +10,11 @@ import strategicprimer.viewer.drivers {
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob,
-    ProxyJob
+    ProxyJob,
+    Skill
 }
 import model.map.fixtures.mobile.worker {
-    ISkill,
-    Skill
+    ISkill
 }
 "Let the user add experience in a given Job to all of a list of workers."
 void advanceWorkersInJob(String jobName, ICLIHelper cli, IWorker* workers) {

@@ -40,13 +40,13 @@ import model.map.fixtures.mobile {
     SimpleImmortal
 }
 import model.map.fixtures.mobile.worker {
-    ISkill,
-    Skill
+    ISkill
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob,
     Job,
-    WorkerStats
+    WorkerStats,
+    Skill
 }
 
 import util {

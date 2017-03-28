@@ -103,12 +103,10 @@ import model.map.fixtures.mobile {
     Fairy,
     Giant
 }
-import model.map.fixtures.mobile.worker {
-    Skill
-}
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     Job,
-    WorkerStats
+    WorkerStats,
+    Skill
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     FieldStatus,

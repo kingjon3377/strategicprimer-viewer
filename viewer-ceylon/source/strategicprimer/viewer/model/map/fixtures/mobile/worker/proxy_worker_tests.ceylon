@@ -18,12 +18,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Unit,
     Worker
 }
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    Job
-}
-import model.map.fixtures.mobile.worker {
-    Skill
-}
 
 import util {
     NullStream

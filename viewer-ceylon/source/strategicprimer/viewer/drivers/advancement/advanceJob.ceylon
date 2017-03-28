@@ -8,11 +8,11 @@ import lovelace.util.jvm {
 }
 
 import model.map.fixtures.mobile.worker {
-    ISkill,
-    Skill
+    ISkill
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    IJob
+    IJob,
+    Skill
 }
 import strategicprimer.viewer.drivers {
     ICLIHelper
