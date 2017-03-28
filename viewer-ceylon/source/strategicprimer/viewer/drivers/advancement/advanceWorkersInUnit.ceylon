@@ -10,16 +10,14 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker,
     IUnit
 }
-import model.map.fixtures.mobile.worker {
-    IJob,
-    Job
-}
 
 import strategicprimer.viewer.drivers {
     ICLIHelper
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    ProxyWorker
+    IJob,
+    ProxyWorker,
+    Job
 }
 "Let the user add experience to a worker or workers in a unit."
 void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {

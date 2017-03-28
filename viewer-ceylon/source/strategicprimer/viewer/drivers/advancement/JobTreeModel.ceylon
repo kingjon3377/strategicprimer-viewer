@@ -33,9 +33,11 @@ import ceylon.collection {
 }
 import model.map.fixtures.mobile.worker {
     ISkill,
-    IJob,
-    Job,
     Skill
+}
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    IJob,
+    Job
 }
 import ceylon.interop.java {
     createJavaIntArray,
@@ -54,22 +56,15 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
             exists child = parent.getFromFirst(index)) {
             return child;
         } else if (index >= 0, is IJob parent,
-            exists child = CeylonIterable(parent).getFromFirst(index)) {
+            exists child = parent.getFromFirst(index)) {
             return child;
         } else {
             throw ArrayIndexOutOfBoundsException("Parent does not have that child");
         }
     }
     shared actual Integer getChildCount(Object parent) {
-        {Object*} temp(IWorker|IJob arg) {
-            if (is IWorker arg) {
-                return arg;
-            } else {
-                return CeylonIterable(arg);
-            }
-        }
         if (is IWorker|IJob parent) {
-            return temp(parent).size;
+            return parent.size;
         } else if (is ISkill parent) {
             return 0;
         } else {
@@ -82,15 +77,8 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     shared actual void valueForPathChanged(TreePath path, Object newValue) =>
             log.error("valueForPathChanged needs to be implemented");
     shared actual Integer getIndexOfChild(Object parent, Object child) {
-        {Object*} temp(IWorker|IJob arg) {
-            if (is IWorker arg) {
-                return arg;
-            } else {
-                return CeylonIterable(arg);
-            }
-        }
         if (is IWorker|IJob parent,
-                exists index->ignored = temp(parent).locate(child.equals)) {
+                exists index->ignored = parent.locate(child.equals)) {
             return index;
         } else {
             return -1;

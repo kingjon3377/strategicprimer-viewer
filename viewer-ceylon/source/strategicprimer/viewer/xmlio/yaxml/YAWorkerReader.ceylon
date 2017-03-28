@@ -30,13 +30,13 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Worker
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    WorkerStats
+    WorkerStats,
+    Job,
+    IJob
 }
 import model.map.fixtures.mobile.worker {
     ISkill,
-    Skill,
-    IJob,
-    Job
+    Skill
 }
 
 import util {
@@ -54,13 +54,13 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         }
     }
     shared static void writeJob(JAppendable ostream, IJob obj, Integer indent) {
-        if (obj.level <= 0, CeylonIterable(obj).empty) {
+        if (obj.level <= 0, obj.empty) {
             return;
         }
         writeTag(ostream, "job", indent);
         writeProperty(ostream, "name", obj.name);
         writeProperty(ostream, "level", obj.level);
-        if (CeylonIterable(obj).empty) {
+        if (obj.empty) {
             closeLeafTag(ostream);
         } else {
             finishParentTag(ostream);

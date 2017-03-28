@@ -74,10 +74,10 @@ import model.map.fixtures.mobile {
     Centaur
 }
 import model.map.fixtures.mobile.worker {
-    IJob,
     ISkill
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    IJob,
     WorkerStats
 }
 import strategicprimer.viewer.model.map {

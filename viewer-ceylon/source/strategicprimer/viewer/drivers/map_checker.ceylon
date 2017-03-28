@@ -33,23 +33,24 @@ import model.map {
     IFixture,
     TileType
 }
+
+import strategicprimer.viewer.model.map {
+    IMapNG,
+    FixtureIterable
+}
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker
 }
-import model.map.fixtures.mobile.worker {
-    IJob
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    IJob,
+    suspiciousSkills
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     StoneDeposit,
     StoneKind
 }
-
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village
-}
-import strategicprimer.viewer.model.map {
-    IMapNG,
-    FixtureIterable
 }
 import strategicprimer.viewer.xmlio {
     readMap
@@ -94,10 +95,10 @@ object aquaticVillageChecker satisfies Checker {
     }
 }
 Boolean suspiciousSkill(IJob job) {
-    if (job.stream().count() > 1) {
+    if (job.size > 1) {
         return false;
     } else {
-        return {*job}.any(IJob.suspiciousSkills.contains);
+        return {*job}.any(suspiciousSkills.contains);
     }
 }
 object suspiciousSkillCheck satisfies Checker {

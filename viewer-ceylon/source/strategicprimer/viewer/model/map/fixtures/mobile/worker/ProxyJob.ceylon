@@ -4,17 +4,8 @@ import ceylon.collection {
     MutableSet,
     HashSet
 }
-import ceylon.interop.java {
-    CeylonIterable,
-    JavaIterator,
-    JavaIterable
-}
 
-import java.lang {
-    JIterable=Iterable
-}
 import java.util {
-    JIterator=Iterator,
     Formatter
 }
 
@@ -27,9 +18,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor
 }
 import model.map.fixtures.mobile.worker {
-    IJob,
-    ISkill,
-    Job
+    ISkill
 }
 "An IJob implementation to let the Job tree operate on a whole unit at once."
 shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&ProxyFor<IJob> {
@@ -49,7 +38,7 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&Pr
         for (job in worker) {
             if (name == job.name) {
                 proxiedJobs.add(job);
-                skillNames.addAll(CeylonIterable(job).map(ISkill.name));
+                skillNames.addAll(job.map(ISkill.name));
                 unmodified = false;
             }
         }
@@ -70,8 +59,7 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&Pr
         }
         return retval;
     }
-    shared actual JIterator<ISkill> iterator() =>
-            JavaIterator<ISkill>(proxiedSkills.iterator());
+    shared actual Iterator<ISkill> iterator() => proxiedSkills.iterator();
     "Add a skill; returns false if we were already proxying a skill by that name, and true
      otherwise."
     shared actual Boolean addSkill(ISkill skill) {
@@ -120,9 +108,9 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&Pr
     """Whether all of the Jobs this is a proxy for are "empty," i.e. having no levels and
        containing no Skills that report either levels or hours of experience."""
     todo("When porting IJob, make sure to rename this")
-    shared actual Boolean empty => proxiedJobs.every(IJob.empty);
+    shared actual Boolean emptyJob => proxiedJobs.every(IJob.emptyJob);
     "Get a Skill by name."
-    shared actual ISkill? getSkill(String skillName) {
+    shared actual ISkill getSkill(String skillName) {
         if (exists retval = proxiedSkills.find((skill) => skill.name == skillName)) {
             return retval;
         }

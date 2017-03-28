@@ -24,16 +24,14 @@ import model.map {
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    WorkerStats
-}
-import model.map.fixtures.mobile.worker {
-    IJob,
-    Job
+    WorkerStats,
+    Job,
+    IJob
 }
 "Whether neither of two collections of Jobs contains a nonempty Job the other does not."
 todo("Make sure to change `.empty` once [[IJob]] is ported.")
 Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
-        set { *first.filter((job) => !job.empty) } == set { *second.filter((job) => !job.empty) };
+        set { *first.filter((job) => !job.emptyJob) } == set { *second.filter((job) => !job.emptyJob) };
 "Whether two nullable values are either neither present or both present and equal."
 Boolean nullablesEqual(Anything one, Anything two) {
     if (exists one) {
@@ -150,8 +148,7 @@ shared class Worker(name, race, id, IJob* jobs) satisfies IWorker&HasPortrait {
                 retval.stats = localStats.copy();
             }
             for (job in this) {
-                // TODO: switch to empty-Job attribute once IJob ported.
-                if (!job.empty) {
+                if (!job.emptyJob) {
                     retval.addJob(job.copy());
                 }
             }

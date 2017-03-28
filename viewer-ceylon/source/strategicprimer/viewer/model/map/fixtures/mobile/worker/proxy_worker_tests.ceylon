@@ -18,8 +18,10 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Unit,
     Worker
 }
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    Job
+}
 import model.map.fixtures.mobile.worker {
-    Job,
     Skill
 }
 
@@ -29,7 +31,7 @@ import util {
 // Tests that the proxy classes work as expected.
 "Assert that a worker contains a Job and that this Job is not empty."
 void assertWorkerHasJob(IWorker worker, String jobName) {
-    if (exists job = worker.getJob(jobName), !job.empty) {
+    if (exists job = worker.getJob(jobName), !job.emptyJob) {
         return;
     }
     StringBuilder message = StringBuilder();
@@ -37,7 +39,7 @@ void assertWorkerHasJob(IWorker worker, String jobName) {
     message.appendNewline();
     for (job in worker) {
         message.append(job.name);
-        if (job.empty) {
+        if (job.emptyJob) {
             message.append(" (empty)");
         }
         if (job is ProxyJob) {

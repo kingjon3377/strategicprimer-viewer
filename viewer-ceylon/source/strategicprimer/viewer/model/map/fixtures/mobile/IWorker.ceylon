@@ -10,10 +10,8 @@ import model.map {
 import model.map.fixtures {
     UnitMember
 }
-import model.map.fixtures.mobile.worker {
-    IJob
-}
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    IJob,
     WorkerStats
 }
 "An interface for Workers."

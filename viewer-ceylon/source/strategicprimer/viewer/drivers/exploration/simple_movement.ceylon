@@ -144,7 +144,7 @@ Integer getPerception(IWorker worker) {
     } else {
         ability = 0;
     }
-    Integer ranks = worker.flatMap((x) => CeylonIterable(x))
+    Integer ranks = worker.flatMap(identity)
         .filter((skill) => "perception" == skill.name.lowercased)
         .map((skill) => skill.level).reduce(plus) else 0;
     return ability + (ranks * 2);

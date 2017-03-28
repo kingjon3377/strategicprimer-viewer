@@ -40,12 +40,12 @@ import model.map.fixtures.mobile {
     SimpleImmortal
 }
 import model.map.fixtures.mobile.worker {
-    IJob,
-    Job,
     ISkill,
     Skill
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    IJob,
+    Job,
     WorkerStats
 }
 
@@ -168,7 +168,7 @@ void writeStats(XMLStreamWriter ostream, Object obj, Integer indentation) {
 
 void writeJob(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is IJob obj) {
-        Boolean hasSkills = !CeylonIterable(obj).empty;
+        Boolean hasSkills = !obj.empty;
         if (obj.level <= 0, !hasSkills) {
             return;
         }

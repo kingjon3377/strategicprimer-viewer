@@ -149,9 +149,10 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             }
             jobsPanel.removeAll();
             for (job in local) {
-                if (!job.empty) {
+                if (!job.emptyJob) {
                     JLabel label = JLabel("``job.name`` ``job.level``");
-                    {ISkill*} skills = CeylonIterable(job);
+                    // TODO: inline
+                    {ISkill*} skills = job;
                     if (exists firstSkill = skills.first) {
                         StringBuilder skillsBuilder = StringBuilder();
                         skillsBuilder.append("Skills: ``firstSkill.name`` ``firstSkill

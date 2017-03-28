@@ -27,11 +27,11 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats {
         modifierString=getModifierString
-    }
+    },
+    IJob
 }
 import model.map.fixtures.mobile.worker {
-    ISkill,
-    IJob
+    ISkill
 }
 
 import strategicprimer.viewer.report.nodes {
@@ -68,7 +68,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     }
     "Produce the report-intermediate-representation sub-sub-report on a Job."
     IReportNode produceJobRIR(IJob job, Point loc) {
-        return SimpleReportNode("``job.level`` levels in ``job.name`` ``skills(*CeylonIterable(job))``",
+        return SimpleReportNode("``job.level`` levels in ``job.name`` ``skills(*job)``",
             loc);
     }
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
@@ -92,7 +92,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
                         """);
                 for (job in worker) {
                     ostream("<li>``job.level`` levels in ``job
-                        .name`` ``skills(*CeylonIterable(job))``</li>
+                        .name`` ``skills(*job)``</li>
                     ");
                 }
                 ostream("""</ul>

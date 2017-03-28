@@ -104,10 +104,10 @@ import model.map.fixtures.mobile {
     Giant
 }
 import model.map.fixtures.mobile.worker {
-    Job,
     Skill
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    Job,
     WorkerStats
 }
 import strategicprimer.viewer.model.map.fixtures.resources {

@@ -8,10 +8,7 @@ import ceylon.collection {
 }
 import ceylon.interop.java {
     javaString,
-    JavaList,
-    JavaIterator,
-    JavaIterable,
-    CeylonIterable
+    JavaList
 }
 import ceylon.logging {
     Logger,
@@ -22,15 +19,12 @@ import java.lang {
     JString=String,
     JInteger=Integer,
     IllegalArgumentException,
-    IllegalStateException,
-    JIterable=Iterable
+    IllegalStateException
 }
 import java.util {
-    JNavigableMap=NavigableMap,
     JTreeMap=TreeMap,
     JMap=Map,
     JSet=Set,
-    JIterator=Iterator,
     Formatter
 }
 import java.util.\ifunction {

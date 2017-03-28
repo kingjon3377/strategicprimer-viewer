@@ -23,7 +23,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 }
 import model.map.fixtures.mobile.worker {
     ISkill,
-    IJob,
     Skill
 }
 "An implementation of ISkill whose operations act on multiple workers at once."
@@ -47,7 +46,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&Proxy
     shared actual Integer level {
         variable Integer? retval = null;
         for (job in proxiedJobs) {
-            for (skill in CeylonIterable(job).filter(notThis)) {
+            for (skill in job.filter(notThis)) {
                 if (skill.name == name,
                         skill.level < (retval else runtime.maxIntegerValue)) {
                     retval = skill.level;
@@ -65,7 +64,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&Proxy
     }
     "The most hours any of the proxied Jobs has for the skill."
     shared actual Integer hours {
-        return Integer.max(proxiedJobs.flatMap(CeylonIterable<ISkill>).filter(notThis)
+        return Integer.max(proxiedJobs.flatMap(identity).filter(notThis)
             .map(ISkill.hours)) else 0;
     }
     "Add hours to the proxied skills."
@@ -73,7 +72,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&Proxy
         if (parallel) {
             for (job in proxiedJobs) {
                 variable Boolean unmodified = true;
-                for (skill in CeylonIterable(job).filter(notThis)) {
+                for (skill in job.filter(notThis)) {
                     if (skill.name == name) {
                         skill.addHours(hours, condition);
                         unmodified = false;
@@ -90,7 +89,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&Proxy
             JRandom random = JRandom(condition);
             for (job in proxied) {
                 variable Boolean unmodified = true;
-                for (skill in CeylonIterable(job).filter(notThis)) {
+                for (skill in job.filter(notThis)) {
                     if (skill.name == name) {
                         skill.addHours(hours, random.nextInt(100));
                         unmodified = false;
@@ -99,7 +98,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&Proxy
                 if (unmodified) {
                     ISkill skill = Skill(name, 0, 0);
                     job.addSkill(skill);
-                    (CeylonIterable(job).find((temp) => temp.name == name) else skill)
+                    (job.find((temp) => temp.name == name) else skill)
                         .addHours(hours, random.nextInt(100));
                 }
             }
@@ -115,7 +114,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&Proxy
     shared actual {IJob*} proxied => {*proxiedJobs};
     """Whether every proxied Skill is "empty"."""
     shared actual Boolean empty =>
-            proxiedJobs.flatMap(CeylonIterable<ISkill>).filter(notThis)
+            proxiedJobs.flatMap(identity).filter(notThis)
                 .filter((skill) => skill.name == name).any((skill) => !skill.empty);
     shared actual Boolean isSubset(ISkill obj, Formatter ostream, String context) {
         ostream.format("%s\tisSubset called on ProxySkill%n", context);

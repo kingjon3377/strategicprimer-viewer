@@ -42,9 +42,7 @@ import model.map {
     PointFactory
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    WorkerStats
-}
-import model.map.fixtures.mobile.worker {
+    WorkerStats,
     Job
 }
 

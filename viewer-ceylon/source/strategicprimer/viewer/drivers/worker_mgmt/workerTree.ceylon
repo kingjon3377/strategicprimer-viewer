@@ -9,10 +9,8 @@ import java.awt {
     Graphics2D,
     Color
 }
-import model.map.fixtures.mobile.worker {
-    IJob
-}
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    IJob,
     ProxyWorker,
     WorkerStats
 }

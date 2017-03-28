@@ -1,7 +1,7 @@
 import strategicprimer.viewer.drivers {
     SPOptions
 }
-import model.map.fixtures.mobile.worker {
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob
 }
 import model.map {
