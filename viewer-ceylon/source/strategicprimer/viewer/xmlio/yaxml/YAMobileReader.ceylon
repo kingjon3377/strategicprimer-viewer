@@ -31,9 +31,7 @@ import model.map.fixtures.mobile {
     MobileFixture,
     Animal,
     Centaur,
-    Dragon,
-    Fairy,
-    Giant
+    Dragon
 }
 
 import strategicprimer.viewer.model {
@@ -42,7 +40,9 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit,
     SimpleImmortal,
-    SimpleImmortalKind
+    SimpleImmortalKind,
+    Giant,
+    Fairy
 }
 
 import util {

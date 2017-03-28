@@ -62,6 +62,8 @@ import model.map.fixtures.explorable {
     Cave
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    Fairy,
+    Giant,
     SimpleImmortal,
     IWorker,
     IUnit
@@ -69,8 +71,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 import model.map.fixtures.mobile {
     Animal,
     Dragon,
-    Fairy,
-    Giant,
     Centaur
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {

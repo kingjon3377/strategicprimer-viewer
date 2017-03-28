@@ -44,13 +44,13 @@ import model.map.fixtures.explorable {
 }
 import model.map.fixtures.mobile {
     Dragon,
-    Giant,
-    Fairy,
     Centaur,
     Animal
 }
 
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    Fairy,
+    Giant,
     SimpleImmortal,
     Unit,
     SimpleImmortalKind

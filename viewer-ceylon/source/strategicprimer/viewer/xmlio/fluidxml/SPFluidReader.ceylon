@@ -82,13 +82,13 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     SimpleImmortalKind,
     IUnit,
     SimpleImmortal,
-    Unit
+    Unit,
+    Giant,
+    Fairy
 }
 import model.map.fixtures.mobile {
     Centaur,
-    Dragon,
-    Fairy,
-    Giant
+    Dragon
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Hill,

@@ -96,12 +96,12 @@ import model.map.fixtures.explorable {
 }
 import model.map.fixtures.mobile {
     Dragon,
-    Fairy,
     Centaur,
-    Giant,
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    Fairy,
+    Giant,
     SimpleImmortalKind,
     SimpleImmortal,
     Unit,

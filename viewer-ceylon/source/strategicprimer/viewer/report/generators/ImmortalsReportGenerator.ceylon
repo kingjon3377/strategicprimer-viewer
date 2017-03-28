@@ -27,14 +27,14 @@ import strategicprimer.viewer.model.map {
     IMapNG
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
+    Fairy,
+    Giant,
     SimpleImmortalKind,
     SimpleImmortal
 }
 import model.map.fixtures.mobile {
     Immortal,
     Centaur,
-    Giant,
-    Fairy,
     Dragon
 }
 
