@@ -265,7 +265,6 @@ SPFrame explorationFrame(IExplorationModel model,
             shared actual void selectedPointChanged(Point? old, Point newPoint) {
                 // TODO: use the provided old point instead?
                 Point selPoint = model.selectedUnitLocation;
-//                for (direction in `Direction`.caseValues) {
                 for (direction in `Direction`.caseValues) {
                     Point point = model.getDestination(selPoint, direction);
                     mains.get(direction)?.fireChanges(selPoint, point);
