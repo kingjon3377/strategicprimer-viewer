@@ -70,7 +70,6 @@ object tableDebugger satisfies SimpleCLIDriver {
         set.add(table);
         for (item in table.allEvents) {
             if (item.contains("#")) {
-                // FIXME: This relies on java.lang.String.split(), not ceylon.lang.String
                 {String+} parsed = item.split('#'.equals, true, false, 3);
                 assert (exists callee = parsed.rest.first);
                 debugSingleTable("``before````parsed.first``",
