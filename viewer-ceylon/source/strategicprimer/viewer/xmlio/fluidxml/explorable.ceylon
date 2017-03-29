@@ -26,9 +26,11 @@ import model.map {
 import model.map.fixtures {
     TextFixture
 }
-import model.map.fixtures.explorable {
-    AdventureFixture,
+import strategicprimer.viewer.model.map.fixtures.explorable {
     Portal,
+    AdventureFixture
+}
+import model.map.fixtures.explorable {
     Cave,
     Battlefield
 }

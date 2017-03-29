@@ -14,7 +14,7 @@ import javax.xml.stream.events {
     XMLEvent
 }
 
-import model.map.fixtures.explorable {
+import strategicprimer.viewer.model.map.fixtures.explorable {
     Portal
 }
 
@@ -27,7 +27,7 @@ class YAPortalReader(Warning warning, IDRegistrar idRegistrar) extends YAAbstrac
         requireTag(element, parent, "portal");
         Portal retval = Portal(getParameter(element, "world"), parsePoint(element),
             getOrGenerateID(element));
-        retval.image = getParameter(element, "image", "");
+        retval.setImage(getParameter(element, "image", ""));
         spinUntilEnd(element.name, stream);
         return retval;
     }

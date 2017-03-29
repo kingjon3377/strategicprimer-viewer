@@ -55,9 +55,11 @@ import model.map.fixtures {
     Implement,
     ResourcePile
 }
-import model.map.fixtures.explorable {
-    AdventureFixture,
+import strategicprimer.viewer.model.map.fixtures.explorable {
     Portal,
+    AdventureFixture
+}
+import model.map.fixtures.explorable {
     Battlefield,
     Cave
 }

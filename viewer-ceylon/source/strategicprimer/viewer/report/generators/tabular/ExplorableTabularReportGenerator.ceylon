@@ -16,10 +16,12 @@ import model.map {
     IFixture
 }
 import model.map.fixtures.explorable {
-    Portal,
     ExplorableFixture,
     Cave,
-    Battlefield,
+    Battlefield
+}
+import strategicprimer.viewer.model.map.fixtures.explorable {
+    Portal,
     AdventureFixture
 }
 "A tabular report generator for things that can be explored and are not covered elsewhere:

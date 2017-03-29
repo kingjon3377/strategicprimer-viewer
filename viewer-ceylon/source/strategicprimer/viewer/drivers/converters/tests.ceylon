@@ -91,7 +91,7 @@ import model.map.fixtures {
     TextFixture,
     Ground
 }
-import model.map.fixtures.explorable {
+import strategicprimer.viewer.model.map.fixtures.explorable {
     AdventureFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

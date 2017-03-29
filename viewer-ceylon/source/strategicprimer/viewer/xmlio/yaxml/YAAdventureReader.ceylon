@@ -18,7 +18,7 @@ import model.map {
     IPlayerCollection,
     Player
 }
-import model.map.fixtures.explorable {
+import strategicprimer.viewer.model.map.fixtures.explorable {
     AdventureFixture
 }
 
@@ -41,7 +41,7 @@ class YAAdventureReader(Warning warner, IDRegistrar idFactory, IPlayerCollection
         AdventureFixture retval = AdventureFixture(player,
             getParameter(element, "brief", ""), getParameter(element, "full", ""),
             getOrGenerateID(element));
-        retval.image = getParameter(element, "image", "");
+        retval.setImage(getParameter(element, "image", ""));
         spinUntilEnd(element.name, stream);
         return retval;
     }
