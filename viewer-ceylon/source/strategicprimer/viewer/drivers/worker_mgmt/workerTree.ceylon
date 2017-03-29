@@ -100,7 +100,6 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             "Create a transferable representing the selected node(s)."
             shared actual UnitMemberTransferable? createTransferable(JComponent component) {
                 value paths = selectionModel.selectionPaths;
-                // TODO: use Tuples instead of Pairs
                 MutableList<[UnitMember, IUnit]> toTransfer =
                         ArrayList<[UnitMember, IUnit]>();
                 for (path in paths) {
