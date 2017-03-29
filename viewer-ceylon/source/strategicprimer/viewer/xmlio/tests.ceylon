@@ -1148,7 +1148,7 @@ void testQuoting() {
     unit.setOrders(3, "1 << 2");
     unit.setResults(-1, "\"quote this\"");
     assertSerialization("This works even if such characters occur more than once", unit);
-    unit.setName("\"Can't quote this ><>&\"");
+    unit.name = "\"Can't quote this ><>&\"";
     assertSerialization("Data stored in XML attributes is quoted", unit);
 }
 

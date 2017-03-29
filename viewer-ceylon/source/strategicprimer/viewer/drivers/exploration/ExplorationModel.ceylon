@@ -343,7 +343,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             };
             if (!villages.empty) {
                 for (village in villages) {
-                    village.setOwner(owner);
+                    village.owner = owner;
                     for (pair in allMaps) {
                         pair.first.addFixture(currentPoint, village);
                     }

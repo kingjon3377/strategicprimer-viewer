@@ -13,7 +13,7 @@ import model.map {
     IFixture
 }
 "A village in the map."
-shared class Village(status, name, id, tempOwner, race)
+shared class Village(status, name, id, owner, race)
         satisfies ITownFixture&HasMutableImage&SubsettableFixture {
     "The status of the village."
     shared actual TownStatus status;
@@ -21,11 +21,10 @@ shared class Village(status, name, id, tempOwner, race)
     shared actual String name;
     "The ID number."
     shared actual Integer id;
-    variable Player tempOwner;
+    "The player the village has pledged to serve and support, if any."
+    shared actual variable Player owner;
     "The dominant race of the village."
     shared variable String race;
-    "The player the village has pledged to serve and support, if any."
-    shared actual Player owner => tempOwner;
     variable String tempImage = "";
     "The per-instance icon filename."
     shared actual String image => tempImage;
@@ -117,5 +116,4 @@ shared class Village(status, name, id, tempOwner, race)
     }
     // Until the 'mutable' interfaces are ported ...
     shared actual void setImage(String img) => tempImage = img;
-    shared actual void setOwner(Player player) => tempOwner = player;
 }

@@ -20,12 +20,13 @@ import java.util {
 import lovelace.util.common {
     todo
 }
-
-import model.map {
-    HasMutableKind,
+import strategicprimer.viewer.model.map {
     HasMutableName,
+    HasMutableKind,
+    HasMutableOwner
+}
+import model.map {
     HasMutableImage,
-    HasMutableOwner,
     HasPortrait,
     Player,
     IFixture,
@@ -39,7 +40,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 }
 "A unit in the map."
 todo("FIXME: we need more members: something about stats; what else?")
-shared class Unit(unitOwner, unitKind, unitName, id) satisfies IUnit&HasMutableKind&
+shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
         HasMutableName&HasMutableImage&HasMutableOwner&HasPortrait {
     "The unit's orders. This is serialized to and from XML, but does not affect equality
      or hashing, and is not printed in [[string]]."
@@ -60,19 +61,13 @@ shared class Unit(unitOwner, unitKind, unitName, id) satisfies IUnit&HasMutableK
     shared actual String image => imageFilename;
     shared actual void setImage(String image) => imageFilename = image;
     "The player that owns the unit."
-    variable Player unitOwner;
-    shared actual Player owner => unitOwner;
-    shared actual void setOwner(Player owner) => unitOwner = owner;
+    shared actual variable Player owner;
     """What kind of unit this is. For player-owned units this is usually their "category"
        (e.g. "agriculture"); for independent units it's more descriptive."""
-    variable String unitKind;
-    shared actual String kind => unitKind;
-    shared actual void setKind(String kind) => unitKind = kind;
+    shared actual variable String kind;
     """The name of this unit. For independent this is often something like "party from the
        village"."""
-    variable String unitName;
-    shared actual String name => unitName;
-    shared actual void setName(String name) => unitName = name;
+    shared actual variable String name;
     "The filename of an image to use as a portrait for the unit."
     shared actual variable String portrait = "";
     "The unit's orders for all turns."

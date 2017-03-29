@@ -532,13 +532,13 @@ object todoFixerCLI satisfies SimpleCLIDriver {
             if (rng.nextBoolean()) {
                 cli.println("Setting unit with ID #``
                     unit.id`` (``count`` / 5328) to kind ``job``");
-                unit.setKind(job);
+                unit.kind = job;
                 return;
             }
         }
         String kind = cli.inputString(
             "What's the next possible kind for ``description``? ");
-        unit.setKind(kind);
+        unit.kind = kind;
         jobList.add(kind);
     }
     "Search for and fix units with kinds missing."

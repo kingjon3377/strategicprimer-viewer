@@ -14,11 +14,12 @@ import javax.swing {
     JLabel,
     JPopupMenu
 }
-
-import model.map {
-    HasMutableOwner,
-    HasMutableName,
+import strategicprimer.viewer.model.map {
     HasMutableKind,
+    HasMutableName,
+    HasMutableOwner
+}
+import model.map {
     Player,
     IFixture,
     HasName
@@ -48,7 +49,7 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
                 String resultString = result.string.trimmed;
                 if (resultString != originalName.trimmed) {
                     HasMutableName temp = fixture;
-                    temp.setName(resultString);
+                    temp.name = resultString;
                     for (listener in changeListeners) {
                         listener.renameItem(fixture);
                     }
@@ -66,7 +67,7 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
                 String resultString = result.string.trimmed;
                 if (resultString != originalKind.trimmed) {
                     HasMutableKind temp = fixture;
-                    temp.setKind(resultString);
+                    temp.kind = resultString;
                     for (listener in changeListeners) {
                         listener.moveItem(fixture);
                     }
@@ -82,7 +83,7 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
                 JOptionPane.plainMessage, null, createJavaObjectArray(players),
                 fixture.owner)) {
                 HasMutableOwner temp = fixture;
-                temp.setOwner(player);
+                temp.owner = player;
             }
         });
         immutable = false;

@@ -38,12 +38,13 @@ import java.util.stream {
 import lovelace.util.common {
     todo
 }
-
-import model.map {
-    HasMutableKind,
-    HasMutableImage,
+import strategicprimer.viewer.model.map {
     HasMutableName,
-    HasMutableOwner,
+    HasMutableKind,
+    HasMutableOwner
+}
+import model.map {
+    HasMutableImage,
     IFixture,
     TileFixture,
     Player,
@@ -196,15 +197,16 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             }
         }
     }
-    shared actual void setKind(String newKind) {
+    assign kind {
+        // TODO: Should the second condition here be negated too?
         if (!parallel || identifier is Integer) {
-            identifier = newKind;
+            identifier = kind;
         }
         for (unit in proxiedList) {
             if (is HasMutableKind unit) {
-                unit.setKind(newKind);
+                unit.kind = kind;
             } else {
-                log.error("ProxyUnit.setKind skipped unit with immutable kind");
+                log.error("ProxyUnit.kind setter skipped unit with immutable kind");
             }
         }
     }
@@ -242,21 +244,21 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         return map.items.iterator();
     }
     shared actual String name => getCommonValue(IUnit.name, "proxied", "proxied");
-    shared actual void setName(String newName) {
+    assign name {
         for (unit in proxiedList) {
             if (is HasMutableName unit) {
-                unit.setName(newName);
+                unit.name = name;
             } else {
-                log.error("ProxyUnit.setName skipped unit with immutable name");
+                log.error("ProxyUnit.name setter skipped unit with immutable name");
             }
         }
     }
-    shared actual void setOwner(Player player) {
+    assign owner {
         for (unit in proxiedList) {
             if (is HasMutableOwner unit) {
-                unit.setOwner(player);
+                unit.owner = owner;
             } else {
-                log.error("ProxyUnit.setOwner skipped unit with immutable owner");
+                log.error("ProxyUnit.owner setter skipped unit with immutable owner");
             }
         }
     }

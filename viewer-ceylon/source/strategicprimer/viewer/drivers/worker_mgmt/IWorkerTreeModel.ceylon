@@ -15,7 +15,9 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 import model.map {
-    HasKind,
+    HasKind
+}
+import strategicprimer.viewer.model.map {
     HasMutableName
 }
 "An interface for worker tree-models, adding methods to the [[TreeModel]] interface."

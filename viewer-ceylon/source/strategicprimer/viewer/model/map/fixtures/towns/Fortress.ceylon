@@ -21,11 +21,11 @@ import ceylon.language {
     createMap=map
 }
 import strategicprimer.viewer.model.map {
+    HasMutableName,
     FixtureIterable
 }
 import model.map {
     HasMutableImage,
-    HasMutableName,
     SubsettableFixture,
     Player,
     IFixture,
@@ -41,21 +41,17 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
   may have fortresses on the same tile."
 todo("Enforce that only-one-per-player-per-tile restriction",
     "FIXME: We need something about buildings yet")
-shared class Fortress(fortOwner, fortName, id, townSize = TownSize.small)
+shared class Fortress(owner, name, id, townSize = TownSize.small)
         satisfies HasMutableImage&ITownFixture&HasMutableName&
             FixtureIterable<FortressMember>&SubsettableFixture {
     "The player who owns the fortress."
-    variable Player fortOwner;
+    shared actual variable Player owner;
     "The name of the fortress."
-    variable String fortName;
+    shared actual variable String name;
     "The ID number."
     shared actual Integer id;
     "The size of the fortress."
     shared actual TownSize townSize;
-    "The name of the fortress."
-    shared actual String name => fortName;
-    "Set the name of the fortress."
-    shared actual void setName(String name) => fortName = name;
     "The members of the fortress."
     todo("Should this perhaps be a Set?")
     MutableList<FortressMember> members = ArrayList<FortressMember>();
@@ -71,17 +67,13 @@ shared class Fortress(fortOwner, fortName, id, townSize = TownSize.small)
     shared void addMember(FortressMember member) => members.add(member);
     "Remove a member from the fortress."
     shared void removeMember(FortressMember member) => members.remove(member);
-    "The owner of the fortress."
-    shared actual Player owner => fortOwner;
-    "Set the owner of the fortress."
-    shared actual void setOwner(Player owner) => fortOwner = owner;
     "Clone the fortress."
     shared actual Fortress copy(Boolean zero) {
         Fortress retval;
         if (zero) {
-            retval = Fortress(fortOwner, "unknown", id, townSize);
+            retval = Fortress(owner, "unknown", id, townSize);
         } else {
-            retval = Fortress(fortOwner, fortName, id, townSize);
+            retval = Fortress(owner, name, id, townSize);
             for (member in members) {
                 retval.addMember(member.copy(false));
             }

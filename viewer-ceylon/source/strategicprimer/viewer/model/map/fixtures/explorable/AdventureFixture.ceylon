@@ -2,8 +2,11 @@ import lovelace.util.common {
     todo
 }
 
+import strategicprimer.viewer.model.map {
+    HasMutableOwner
+}
+
 import model.map {
-    HasMutableOwner,
     Player,
     IFixture
 }
@@ -13,7 +16,7 @@ import model.map.fixtures.explorable {
 "A Fixture representing an adventure hook."
 todo("Should be Subsettable, since players shouldn't know when another player completes an
       adventure on the far side of the world")
-shared class AdventureFixture(player, briefDescription, fullDescription, id)
+shared class AdventureFixture(owner, briefDescription, fullDescription, id)
 		satisfies ExplorableFixture&HasMutableOwner {
 	"A brief description of the adventure."
 	shared String briefDescription;
@@ -26,9 +29,7 @@ shared class AdventureFixture(player, briefDescription, fullDescription, id)
 	shared actual String image => imageFilename;
 	shared actual void setImage(String image) => imageFilename = image;
 	"The player that has undertaken the adventure."
-	variable Player player;
-	shared actual Player owner => player;
-	shared actual void setOwner(Player owner) => player = owner;
+	shared actual variable Player owner;
 	"Clone the fixture."
 	shared actual AdventureFixture copy(Boolean zero) {
 		AdventureFixture retval = AdventureFixture(owner, briefDescription,

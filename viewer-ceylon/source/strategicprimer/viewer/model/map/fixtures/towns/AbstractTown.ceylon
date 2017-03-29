@@ -9,7 +9,7 @@ import model.map {
     IFixture
 }
 "An abstract superclass for towns etc."
-shared abstract class AbstractTown(status, townSize, name, townOwner, dc) satisfies IEvent&HasMutableImage&ITownFixture {
+shared abstract class AbstractTown(status, townSize, name, owner, dc) satisfies IEvent&HasMutableImage&ITownFixture {
     "The status of the town, fortification, or city"
     shared actual TownStatus status;
     "The size of the town, fortification, or city"
@@ -18,7 +18,7 @@ shared abstract class AbstractTown(status, townSize, name, townOwner, dc) satisf
     todo("Should this really be variable?")
     shared actual variable String name;
     "The player that owns the town, fortification, or city"
-    variable Player townOwner;
+    shared actual variable Player owner;
     "The DC to discover the town, fortification, or city"
     shared actual Integer dc;
     variable String imageFilename = "";
@@ -27,8 +27,6 @@ shared abstract class AbstractTown(status, townSize, name, townOwner, dc) satisf
     shared actual void setImage(String image) => imageFilename = image;
     "The filename of an image to use as a portrait."
     shared actual variable String portrait = "";
-    shared actual Player owner => townOwner;
-    shared actual void setOwner(Player owner) => townOwner = owner;
     "Exploration-result text for the town."
     shared actual String text => "There is a ``(townSize == TownSize.medium) then
             "medium-size" else townSize.string`` ``(status == TownStatus.burned) then

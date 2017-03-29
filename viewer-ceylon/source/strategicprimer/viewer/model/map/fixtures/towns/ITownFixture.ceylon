@@ -1,7 +1,9 @@
+import strategicprimer.viewer.model.map {
+    HasMutableOwner
+}
 import model.map {
     TileFixture,
     HasName,
-    HasMutableOwner,
     HasPortrait
 }
 "An interface for towns and similar fixtures."
