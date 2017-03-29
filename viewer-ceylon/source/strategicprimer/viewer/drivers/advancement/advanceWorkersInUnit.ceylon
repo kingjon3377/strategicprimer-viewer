@@ -2,9 +2,6 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker,

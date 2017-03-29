@@ -1,6 +1,3 @@
-import ceylon.interop.java {
-    CeylonIterable
-}
 import ceylon.language.meta {
     classDeclaration
 }
@@ -184,6 +181,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             writeTag(ostream, "fortress", tabs);
             writeProperty(ostream, "owner", obj.owner.playerId);
             writeNonemptyProperty(ostream, "name", obj.name);
+            // FIXME: Use obj.townSize
             if (TownSize.small != obj.size) {
                 writeProperty(ostream, "size", obj.size.string);
             }

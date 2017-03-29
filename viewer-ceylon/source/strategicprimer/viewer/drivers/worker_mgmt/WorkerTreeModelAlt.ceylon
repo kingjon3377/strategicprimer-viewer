@@ -31,7 +31,6 @@ import model.map {
 }
 import ceylon.interop.java {
     createJavaIntArray,
-    CeylonIterable,
     createJavaObjectArray
 }
 "An alternative implementation of the worker tree model."

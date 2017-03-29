@@ -4,16 +4,8 @@ import ceylon.collection {
     ArrayList,
     HashSet
 }
-import ceylon.interop.java {
-    JavaList,
-    JavaIterable
-}
 
-import java.lang {
-    JIterable=Iterable
-}
 import java.util {
-    JIterator=Iterator,
     Formatter
 }
 

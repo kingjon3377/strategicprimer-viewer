@@ -2,16 +2,11 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import ceylon.interop.java {
-    JavaIterator,
-    CeylonIterable
-}
 import ceylon.language {
     createMap=map
 }
 
 import java.util {
-    JIterator=Iterator,
     Formatter
 }
 

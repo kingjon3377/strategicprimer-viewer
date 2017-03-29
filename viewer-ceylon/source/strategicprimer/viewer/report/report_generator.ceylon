@@ -8,17 +8,11 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 
-import java.lang {
-    JIterable=Iterable
-}
 
 import lovelace.util.common {
     todo,
     DelayedRemovalMap,
     IntMap
-}
-import lovelace.util.jvm {
-    ceylonComparator
 }
 
 import model.map {

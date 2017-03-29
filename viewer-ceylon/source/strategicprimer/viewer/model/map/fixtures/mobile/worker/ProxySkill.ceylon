@@ -2,17 +2,9 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import ceylon.interop.java {
-    CeylonIterable,
-    JavaIterable
-}
-
 import java.util {
     JRandom=Random,
     Formatter
-}
-import java.lang {
-    JIterable=Iterable
 }
 import lovelace.util.common {
     todo

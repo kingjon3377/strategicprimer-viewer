@@ -2,9 +2,6 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 
 import lovelace.util.common {
     DelayedRemovalMap

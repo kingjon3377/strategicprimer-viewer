@@ -2,9 +2,6 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 
 import java.lang {
     JInteger=Integer

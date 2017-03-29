@@ -1,7 +1,3 @@
-import ceylon.interop.java {
-    CeylonIterable,
-    CeylonMap
-}
 import ceylon.language.meta {
     classDeclaration
 }

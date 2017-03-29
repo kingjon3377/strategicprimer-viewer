@@ -30,7 +30,6 @@ import model.map {
 }
 import ceylon.interop.java {
     createJavaIntArray,
-    CeylonIterable,
     createJavaObjectArray
 }
 "A TreeModel implementation for a player's units and workers."

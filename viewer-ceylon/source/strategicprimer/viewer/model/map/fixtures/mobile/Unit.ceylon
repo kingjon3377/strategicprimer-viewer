@@ -5,16 +5,9 @@ import ceylon.collection {
     SortedMap,
     ArrayList
 }
-import ceylon.interop.java {
-    JavaIterable,
-    CeylonIterable
-}
 
 import java.lang {
     IllegalStateException
-}
-import java.util {
-    JIterator=Iterator
 }
 
 import lovelace.util.common {

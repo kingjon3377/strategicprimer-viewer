@@ -5,9 +5,6 @@ import ceylon.collection {
     MutableMap,
     TreeMap
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 import ceylon.test {
     test,
     assertEquals

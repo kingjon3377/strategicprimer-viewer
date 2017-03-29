@@ -2,13 +2,7 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import ceylon.interop.java {
-    JavaIterable
-}
 
-import java.lang {
-    JIterable=Iterable
-}
 import java.util {
     Formatter
 }

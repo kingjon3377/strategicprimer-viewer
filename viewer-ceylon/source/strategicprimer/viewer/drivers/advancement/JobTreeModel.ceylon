@@ -39,7 +39,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
 }
 import ceylon.interop.java {
     createJavaIntArray,
-    CeylonIterable,
     createJavaObjectArray
 }
 "A model for a tree of a worker's Jobs and Skills."

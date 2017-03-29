@@ -6,43 +6,23 @@ import ceylon.collection {
     SortedMap,
     TreeMap
 }
-import ceylon.interop.java {
-    javaString,
-    JavaList
-}
 import ceylon.logging {
     Logger,
     logger
 }
 
 import java.lang {
-    JString=String,
-    JInteger=Integer,
     IllegalArgumentException,
     IllegalStateException
 }
 import java.util {
-    JTreeMap=TreeMap,
-    JMap=Map,
-    JSet=Set,
     Formatter
-}
-import java.util.\ifunction {
-    JFunction=Function
-}
-import java.util.stream {
-    JCollectors=Collectors,
-    JStream=Stream
 }
 
 import lovelace.util.common {
     todo
 }
-import strategicprimer.viewer.model.map {
-    HasMutableName,
-    HasMutableKind,
-    HasMutableOwner
-}
+
 import model.map {
     HasMutableImage,
     IFixture,
@@ -54,6 +34,11 @@ import model.map.fixtures {
     UnitMember
 }
 
+import strategicprimer.viewer.model.map {
+    HasMutableName,
+    HasMutableKind,
+    HasMutableOwner
+}
 import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor,
     IUnit

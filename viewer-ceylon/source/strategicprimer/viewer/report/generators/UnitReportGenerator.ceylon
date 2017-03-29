@@ -3,10 +3,6 @@ import ceylon.collection {
     MutableMap,
     ArrayList
 }
-import ceylon.interop.java {
-    CeylonSet,
-    CeylonIterable
-}
 
 import lovelace.util.common {
     DelayedRemovalMap

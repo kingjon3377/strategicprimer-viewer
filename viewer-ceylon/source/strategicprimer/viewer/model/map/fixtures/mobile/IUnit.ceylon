@@ -4,9 +4,6 @@ import ceylon.collection {
 import ceylon.language {
     createMap=map
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 
 import java.util {
     Formatter

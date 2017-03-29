@@ -2,15 +2,11 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import ceylon.interop.java {
-    JavaIterator
-}
 
 import java.lang {
     JInteger=Integer
 }
 import java.util {
-    JIterator=Iterator,
     Formatter
 }
 

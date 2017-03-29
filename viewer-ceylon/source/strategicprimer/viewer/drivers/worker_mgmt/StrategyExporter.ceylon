@@ -20,9 +20,6 @@ import ceylon.collection {
     MutableList,
     HashMap
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 import model.listeners {
     PlayerChangeListener
 }

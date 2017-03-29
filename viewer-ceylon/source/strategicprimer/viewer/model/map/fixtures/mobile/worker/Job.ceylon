@@ -2,16 +2,11 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import ceylon.interop.java {
-    JavaIterator,
-    CeylonIterable
-}
 
 import java.lang {
     IllegalArgumentException
 }
 import java.util {
-    JIterator=Iterator,
     Formatter
 }
 

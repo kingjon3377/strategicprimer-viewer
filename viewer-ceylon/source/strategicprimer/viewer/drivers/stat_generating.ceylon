@@ -10,9 +10,6 @@ import ceylon.file {
     parsePath,
     Directory
 }
-import ceylon.interop.java {
-    toIntegerArray
-}
 import ceylon.math.float {
     random
 }

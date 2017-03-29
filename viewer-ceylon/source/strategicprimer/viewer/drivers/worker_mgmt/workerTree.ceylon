@@ -63,9 +63,6 @@ import java.awt.event {
     MouseAdapter,
     MouseEvent
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 import ceylon.collection {
     ArrayList,
     MutableList

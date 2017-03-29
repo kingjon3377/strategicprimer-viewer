@@ -1,9 +1,6 @@
 import lovelace.util.common {
     DelayedRemovalMap
 }
-import lovelace.util.jvm {
-    ceylonComparator
-}
 import model.map.fixtures {
     TextFixture
 }

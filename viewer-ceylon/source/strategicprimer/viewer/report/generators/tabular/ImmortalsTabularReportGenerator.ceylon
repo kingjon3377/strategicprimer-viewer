@@ -1,9 +1,6 @@
 import lovelace.util.common {
     DelayedRemovalMap
 }
-import lovelace.util.jvm {
-    ceylonComparator
-}
 import strategicprimer.viewer.model.map.fixtures.mobile {
     Immortal
 }

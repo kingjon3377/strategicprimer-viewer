@@ -1,6 +1,3 @@
-import ceylon.interop.java {
-    CeylonIterable
-}
 
 import controller.map.formatexceptions {
     UnsupportedPropertyException,
