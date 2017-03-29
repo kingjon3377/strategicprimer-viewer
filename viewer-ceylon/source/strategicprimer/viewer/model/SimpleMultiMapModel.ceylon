@@ -20,6 +20,8 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
     "The collection of subordinate maps."
     MutableList<[IMutableMapNG, JPath?]> subordinateMapsList =
             ArrayList<[IMutableMapNG, JPath?]>();
+    shared actual {[IMutableMapNG, JPath?]*} subordinateMaps =>
+            {*subordinateMapsList};
     shared new (IMutableMapNG map, JPath? file)
             extends SimpleDriverModel(map, file) { }
     shared new copyConstructor(IDriverModel model)
@@ -37,8 +39,6 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
     shared actual void removeSubordinateMap(IMapNG map) {
         subordinateMapsList.removeWhere(([localMap, file]) => localMap == map);
     }
-    shared actual {[IMutableMapNG, JPath?]*} subordinateMaps =>
-            {*subordinateMapsList};
     shared actual {[IMutableMapNG, JPath?]*} allMaps =>
             subordinateMaps.follow([map, mapFile]);
 }
