@@ -333,9 +333,8 @@ object oneToTwoConverter satisfies SimpleDriver {
                         String forestType = runner.recursiveConsultTable(
                             "temperate_major_tree", point, retval.getBaseTerrain(point),
                             retval.getAllFixtures(point), retval.dimensions);
-                        // TODO: inline initialization into if
-                        Forest? existingForest = retval.getForest(point);
-                        if (exists existingForest, forestType == existingForest.kind) {
+                        if (exists existingForest = retval.getForest(point),
+                            forestType == existingForest.kind) {
                             // do nothing
                         } else {
                             addFixture(point, Forest(forestType, false,
