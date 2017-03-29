@@ -220,7 +220,6 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         case ("half-elf") { racialBonus = WorkerStats.factory(0, 1, 0, 1, 0, 0); }
         case ("Danan") { racialBonus = WorkerStats.factory(-2, 1, 1, 1, -2, 1); }
         else { // treat undefined as human
-            // TODO: switch ArrayList constructor to named-argument-ish syntax
             Integer chosenBonus = cli.chooseStringFromList(["Strength", "Dexterity",
                     "Constitution", "Intelligence", "Wisdom", "Charisma", "Lowest"],
                 "Character is a ``race``; which stat should get a +2 bonus?", "",
