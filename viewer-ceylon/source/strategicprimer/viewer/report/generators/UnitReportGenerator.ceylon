@@ -20,10 +20,12 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     IMapNG
 }
-import model.map.fixtures {
-    FortressMember,
-    Implement,
+import strategicprimer.viewer.model.map.fixtures {
     ResourcePile,
+    FortressMember,
+    Implement
+}
+import model.map.fixtures {
     UnitMember
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

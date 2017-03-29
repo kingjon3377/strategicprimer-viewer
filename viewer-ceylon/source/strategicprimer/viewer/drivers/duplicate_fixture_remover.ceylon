@@ -29,7 +29,7 @@ import model.map {
     TileFixture,
     IFixture
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     ResourcePile
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

@@ -24,7 +24,9 @@ import strategicprimer.viewer.model.map {
     FixtureIterable
 }
 import model.map.fixtures {
-    UnitMember,
+    UnitMember
+}
+import strategicprimer.viewer.model.map.fixtures {
     FortressMember
 }
 "An interface for units."

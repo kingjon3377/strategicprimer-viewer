@@ -77,12 +77,14 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     IMapNG
 }
+import strategicprimer.viewer.model.map.fixtures {
+    Implement,
+    ResourcePile
+}
 import model.map.fixtures {
     RiverFixture,
     TextFixture,
-    Ground,
-    Implement,
-    ResourcePile
+    Ground
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {
     Portal,

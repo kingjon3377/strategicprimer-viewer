@@ -70,10 +70,12 @@ import strategicprimer.viewer.model.map {
     SPMapNG,
     IMutableMapNG
 }
+import strategicprimer.viewer.model.map.fixtures {
+    FortressMember,
+    Implement
+}
 import model.map.fixtures {
     UnitMember,
-    FortressMember,
-    Implement,
     Ground,
     TextFixture,
     RiverFixture

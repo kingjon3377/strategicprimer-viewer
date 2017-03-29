@@ -29,7 +29,7 @@ import javax.xml.stream.events {
 import model.map {
     IPlayerCollection
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     ResourcePile
 }
 import strategicprimer.viewer.model.map.fixtures.resources {

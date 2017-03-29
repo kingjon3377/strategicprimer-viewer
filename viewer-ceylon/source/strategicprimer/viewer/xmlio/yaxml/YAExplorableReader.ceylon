@@ -23,9 +23,7 @@ import lovelace.util.common {
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {
     Battlefield,
-    Cave
-}
-import model.map.fixtures.explorable {
+    Cave,
     ExplorableFixture
 }
 

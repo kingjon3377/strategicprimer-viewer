@@ -10,9 +10,6 @@ import model.map {
 import java.util {
 	Formatter
 }
-import model.map.fixtures.explorable {
-	ExplorableFixture
-}
 "A fixture representing a portal to another world."
 shared class Portal(destinationWorld, destinationCoordinates, id)
 		satisfies ExplorableFixture&SubsettableFixture {

@@ -2,9 +2,6 @@ import model.map {
     IEvent,
     IFixture
 }
-import model.map.fixtures.explorable {
-    ExplorableFixture
-}
 """"There are extensive caves beneath this tile"."""
 shared class Cave(dc, id) satisfies IEvent&ExplorableFixture {
 	"The required Perception check result to discover the caves."

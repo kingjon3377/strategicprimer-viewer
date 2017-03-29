@@ -19,10 +19,10 @@ import model.map {
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import model.map.fixtures {
-    FortressMember,
+import strategicprimer.viewer.model.map.fixtures {
     Implement,
-    ResourcePile
+    ResourcePile,
+    FortressMember
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit

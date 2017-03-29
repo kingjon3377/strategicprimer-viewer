@@ -22,7 +22,7 @@ import javax.xml.stream.events {
     XMLEvent
 }
 
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     ResourcePile
 }
 
@@ -55,7 +55,7 @@ class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
             retval.created = getIntegerParameter(element, "created");
         }
         spinUntilEnd(element.name, stream);
-        retval.image = getParameter(element, "image", "");
+        retval.setImage(getParameter(element, "image", ""));
         return retval;
     }
     shared actual Boolean isSupportedTag(String tag) => "resource" == tag.lowercased;

@@ -14,7 +14,7 @@ import javax.xml.stream.events {
     XMLEvent
 }
 
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     Implement
 }
 
@@ -30,7 +30,7 @@ class YAImplementReader(Warning warning, IDRegistrar idRegistrar)
         Implement retval = Implement(getParameter(element, "kind"),
             getOrGenerateID(element));
         spinUntilEnd(element.name, stream);
-        retval.image = getParameter(element, "image", "");
+        retval.setImage(getParameter(element, "image", ""));
         return retval;
     }
     shared actual Boolean isSupportedTag(String tag) => "implement" == tag.lowercased;

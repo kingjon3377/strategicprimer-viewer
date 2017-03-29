@@ -5,7 +5,7 @@ import model.map {
     Point,
     IFixture
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     Implement,
     ResourcePile
 }

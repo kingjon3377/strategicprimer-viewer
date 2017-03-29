@@ -32,10 +32,8 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     IMapNG
 }
-import model.map.fixtures.explorable {
-    ExplorableFixture
-}
 import strategicprimer.viewer.model.map.fixtures.explorable {
+    ExplorableFixture,
     Cave,
     Portal,
     AdventureFixture,

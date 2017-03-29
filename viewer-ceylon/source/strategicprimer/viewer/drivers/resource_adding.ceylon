@@ -59,7 +59,7 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     IMapNG
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     ResourcePile,
     Implement,
     FortressMember

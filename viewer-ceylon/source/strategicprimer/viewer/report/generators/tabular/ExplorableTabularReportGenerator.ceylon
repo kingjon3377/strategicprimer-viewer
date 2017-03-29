@@ -12,10 +12,8 @@ import model.map {
     Point,
     IFixture
 }
-import model.map.fixtures.explorable {
-    ExplorableFixture
-}
 import strategicprimer.viewer.model.map.fixtures.explorable {
+    ExplorableFixture,
     Cave,
     Portal,
     AdventureFixture,

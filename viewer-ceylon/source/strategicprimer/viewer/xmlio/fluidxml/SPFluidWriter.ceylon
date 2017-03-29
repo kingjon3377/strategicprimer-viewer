@@ -44,12 +44,14 @@ import model.map {
     Point,
     TileType
 }
+import strategicprimer.viewer.model.map.fixtures {
+    Implement,
+    ResourcePile
+}
 import model.map.fixtures {
     RiverFixture,
     Ground,
-    TextFixture,
-    Implement,
-    ResourcePile
+    TextFixture
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {
     Portal,

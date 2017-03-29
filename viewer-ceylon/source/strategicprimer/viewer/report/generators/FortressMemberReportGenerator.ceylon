@@ -25,9 +25,9 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     IMapNG
 }
-import model.map.fixtures {
-    Implement,
+import strategicprimer.viewer.model.map.fixtures {
     ResourcePile,
+    Implement,
     FortressMember
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

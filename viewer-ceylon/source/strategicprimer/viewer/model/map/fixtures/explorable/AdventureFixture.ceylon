@@ -10,9 +10,6 @@ import model.map {
     Player,
     IFixture
 }
-import model.map.fixtures.explorable {
-    ExplorableFixture
-}
 "A Fixture representing an adventure hook."
 todo("Should be Subsettable, since players shouldn't know when another player completes an
       adventure on the far side of the world")
