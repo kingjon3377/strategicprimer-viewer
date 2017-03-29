@@ -334,9 +334,9 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
      player."
     void createWorkersForPlayer(IExplorationModel model, IDRegistrar idf, Player player,
             ICLIHelper cli) {
-        // TODO: convert to named-argument-ish syntax
-        MutableList<IUnit> units = ArrayList(0, 1.0,
-            removeStattedUnits(*model.getUnits(player)));
+        MutableList<IUnit> units = ArrayList{
+            *removeStattedUnits(*model.getUnits(player))
+        };
         cli.loopOnMutableList(units, (clh) => clh.chooseFromList(units,
                 "Which unit contains the worker in question? (Select -1 to create new.)",
                 "There are no units owned by that player.", "Unit selection: ",
