@@ -54,13 +54,6 @@ interface MapGUI {
 JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
 mapComponent(IViewerModel model, Boolean(TileFixture) zof,
         Iterable<FixtureMatcher>&Comparator<TileFixture> matchers) {
-    // FIXME: can't we drop this?
-    object iobs satisfies ImageObserver {
-        shared late ImageObserver wrapped;
-        shared actual Boolean imageUpdate(Image? img, Integer infoflags, Integer x,
-                Integer y, Integer width, Integer height) => wrapped.imageUpdate(img,
-            infoflags, x, y, width, height);
-    }
     MouseListener&ToolTipSource&SelectionChangeSource cml =
             componentMouseListener(model, zof, matchers.compare);
     DirectionSelectionChanger dsl = DirectionSelectionChanger(model);
@@ -209,7 +202,6 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             super.paint(pen);
         }
     }
-    iobs.wrapped = retval;
     cml.addSelectionChangeListener(retval);
     retval.addMouseListener(cml);
     retval.addMouseWheelListener(dsl);
