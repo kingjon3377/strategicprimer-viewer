@@ -434,8 +434,7 @@ String encapsulateTileString(String str) {
             <tile row=\"1\" column=\"1\" kind=\"plains\">``str``</tile></map>";
 }
 
-// TODO: use Iterable.distinct instead of set().
-{[TownStatus, String]*} villageParameters = `TownStatus`.caseValues.product(set {*races});
+{[TownStatus, String]*} villageParameters = `TownStatus`.caseValues.product(races.distinct);
 
 test
 parameters(`value villageParameters`)
