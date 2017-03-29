@@ -1,4 +1,4 @@
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 "A (marker) interface for centaurs, trolls, ogres, fairies, and the like."

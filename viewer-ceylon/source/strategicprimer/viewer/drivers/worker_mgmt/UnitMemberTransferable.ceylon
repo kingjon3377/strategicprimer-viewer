@@ -4,7 +4,7 @@ import java.lang {
 import ceylon.interop.java {
     createJavaObjectArray
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 import java.awt.datatransfer {

@@ -30,7 +30,7 @@ import model.map {
     Player,
     PlayerImpl
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 

@@ -7,10 +7,8 @@ import model.map {
     HasMutableImage,
     IFixture
 }
-import model.map.fixtures {
-    UnitMember
-}
 import strategicprimer.viewer.model.map.fixtures {
+	UnitMember,
     FortressMember
 }
 import java.util {

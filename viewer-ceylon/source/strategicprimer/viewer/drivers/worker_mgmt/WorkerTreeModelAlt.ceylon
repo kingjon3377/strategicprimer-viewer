@@ -2,7 +2,7 @@ import java.lang {
     ObjectArray,
     IllegalArgumentException
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 import javax.swing.tree {

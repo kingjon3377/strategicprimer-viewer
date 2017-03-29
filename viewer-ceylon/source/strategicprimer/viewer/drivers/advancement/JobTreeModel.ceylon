@@ -17,7 +17,7 @@ import model.listeners {
 import strategicprimer.viewer.drivers.worker_mgmt {
     UnitMemberListener
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 import javax.swing.tree {

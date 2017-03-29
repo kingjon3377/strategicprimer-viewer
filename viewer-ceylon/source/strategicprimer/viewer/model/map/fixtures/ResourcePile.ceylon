@@ -12,10 +12,8 @@ import java.util {
 import lovelace.util.common {
 	todo
 }
-import model.map.fixtures {
-	UnitMember
-}
 import strategicprimer.viewer.model.map.fixtures {
+	UnitMember,
 	FortressMember
 }
 "A quantity of some kind of resource."

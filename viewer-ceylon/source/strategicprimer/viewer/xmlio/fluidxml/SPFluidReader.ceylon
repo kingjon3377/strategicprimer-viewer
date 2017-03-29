@@ -72,10 +72,10 @@ import strategicprimer.viewer.model.map {
 }
 import strategicprimer.viewer.model.map.fixtures {
     FortressMember,
+    UnitMember,
     Implement
 }
 import model.map.fixtures {
-    UnitMember,
     Ground,
     TextFixture,
     RiverFixture

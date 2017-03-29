@@ -11,7 +11,7 @@ import model.map {
 import java.lang {
     IllegalStateException
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 import ceylon.collection {

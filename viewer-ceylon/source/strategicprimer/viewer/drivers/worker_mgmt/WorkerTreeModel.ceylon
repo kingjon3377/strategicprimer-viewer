@@ -2,7 +2,7 @@ import javax.swing.event {
     TreeModelListener,
     TreeModelEvent
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 import javax.swing.tree {

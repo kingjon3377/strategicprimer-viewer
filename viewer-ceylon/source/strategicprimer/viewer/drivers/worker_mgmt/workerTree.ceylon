@@ -1,7 +1,7 @@
 import java.awt.image {
     BufferedImage
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 import java.awt {

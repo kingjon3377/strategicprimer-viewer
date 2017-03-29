@@ -4,7 +4,7 @@ import lovelace.util.common {
 import javax.swing.tree {
     TreeModel
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 import model.listeners {

@@ -28,7 +28,7 @@ import model.map {
     IPlayerCollection,
     HasPortrait
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

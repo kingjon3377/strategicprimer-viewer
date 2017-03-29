@@ -24,7 +24,7 @@ import model.map {
     IFixture,
     HasName
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 

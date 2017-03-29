@@ -23,9 +23,7 @@ import strategicprimer.viewer.model.map {
 import strategicprimer.viewer.model.map.fixtures {
     ResourcePile,
     FortressMember,
-    Implement
-}
-import model.map.fixtures {
+    Implement,
     UnitMember
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

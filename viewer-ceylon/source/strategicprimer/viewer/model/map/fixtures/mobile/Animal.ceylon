@@ -7,7 +7,7 @@ import model.map {
     HasKind,
     IFixture
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 import java.util {

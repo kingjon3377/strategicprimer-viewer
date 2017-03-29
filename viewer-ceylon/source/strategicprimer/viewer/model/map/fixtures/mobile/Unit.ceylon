@@ -25,7 +25,7 @@ import model.map {
     IFixture,
     TileFixture
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

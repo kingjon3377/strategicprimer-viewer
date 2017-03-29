@@ -29,7 +29,7 @@ import lovelace.util.jvm {
 import model.map {
     HasPortrait
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
