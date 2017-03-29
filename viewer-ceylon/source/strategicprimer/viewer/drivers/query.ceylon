@@ -206,22 +206,20 @@ object queryCLI satisfies SimpleDriver {
             Boolean land, ICLIHelper cli,
             "How many encounters to show."
             Integer encounters) {
-        // TODO: drop .string when these return Ceylon Strings.
         if (land) {
             for (encounter in huntModel.hunt(point, encounters)) {
-                cli.println(encounter.string);
+                cli.println(encounter);
             }
         } else {
             for (encounter in huntModel.fish(point, encounters)) {
-                cli.println(encounter.string);
+                cli.println(encounter);
             }
         }
     }
     "Run food-gathering---that is, produce a list of possible encounters."
     void gather(HuntingModel huntModel, Point point, ICLIHelper cli, Integer encounters) {
         for (encounter in huntModel.gather(point, encounters)) {
-            // TODO: drop .string when this returns a Ceylon String.
-            cli.println(encounter.string);
+            cli.println(encounter);
         }
     }
     """Handle herding mammals. Returns how many hours each herder spends "herding." """
