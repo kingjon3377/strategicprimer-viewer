@@ -86,11 +86,9 @@ import model.map.fixtures {
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {
     Portal,
-    AdventureFixture
-}
-import model.map.fixtures.explorable {
-    Cave,
-    Battlefield
+    AdventureFixture,
+    Battlefield,
+    Cave
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     Centaur,

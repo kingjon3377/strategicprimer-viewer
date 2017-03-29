@@ -33,13 +33,13 @@ import strategicprimer.viewer.model.map {
     IMapNG
 }
 import model.map.fixtures.explorable {
-    ExplorableFixture,
-    Cave,
-    Battlefield
+    ExplorableFixture
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {
+    Cave,
     Portal,
-    AdventureFixture
+    AdventureFixture,
+    Battlefield
 }
 
 import strategicprimer.viewer.report.nodes {

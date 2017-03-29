@@ -13,7 +13,7 @@ import model.map {
     Point,
     PlayerImpl
 }
-import model.map.fixtures.explorable {
+import strategicprimer.viewer.model.map.fixtures.explorable {
     Battlefield,
     Cave
 }

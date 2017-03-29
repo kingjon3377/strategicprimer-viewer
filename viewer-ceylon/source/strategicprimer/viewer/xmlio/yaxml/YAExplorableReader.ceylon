@@ -21,11 +21,12 @@ import javax.xml.stream.events {
 import lovelace.util.common {
     todo
 }
-
-import model.map.fixtures.explorable {
-    ExplorableFixture,
+import strategicprimer.viewer.model.map.fixtures.explorable {
     Battlefield,
     Cave
+}
+import model.map.fixtures.explorable {
+    ExplorableFixture
 }
 
 import util {
