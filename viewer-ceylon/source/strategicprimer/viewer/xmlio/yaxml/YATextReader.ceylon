@@ -18,7 +18,7 @@ import javax.xml.stream.events {
     Characters
 }
 
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     TextFixture
 }
 
@@ -44,7 +44,7 @@ class YATextReader(Warning warning, IDRegistrar idRegistrar)
         }
         TextFixture fixture = TextFixture(builder.string.trimmed,
             getIntegerParameter(element, "turn", -1));
-        fixture.image = getParameter(element, "image", "");
+        fixture.setImage(getParameter(element, "image", ""));
         return fixture;
     }
     shared actual void write(JAppendable ostream, TextFixture obj, Integer indent) {

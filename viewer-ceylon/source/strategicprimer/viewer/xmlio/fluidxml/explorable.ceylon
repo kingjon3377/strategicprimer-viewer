@@ -23,7 +23,7 @@ import model.map {
     PointFactory,
     Point
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     TextFixture
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {

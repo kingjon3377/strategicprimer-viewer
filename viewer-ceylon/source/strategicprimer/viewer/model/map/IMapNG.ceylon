@@ -12,7 +12,9 @@ import model.map {
     Point
 }
 import model.map.fixtures {
-    Ground,
+    Ground
+}
+import strategicprimer.viewer.model.map.fixtures {
     TextFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

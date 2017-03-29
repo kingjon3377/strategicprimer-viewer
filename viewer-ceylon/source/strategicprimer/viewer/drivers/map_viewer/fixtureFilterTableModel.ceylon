@@ -33,7 +33,9 @@ import model.map {
 }
 import model.map.fixtures {
     RiverFixture,
-    Ground,
+    Ground
+}
+import strategicprimer.viewer.model.map.fixtures {
     TextFixture
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {

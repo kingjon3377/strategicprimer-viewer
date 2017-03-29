@@ -73,11 +73,11 @@ import strategicprimer.viewer.model.map {
 import strategicprimer.viewer.model.map.fixtures {
     FortressMember,
     UnitMember,
+    TextFixture,
     Implement
 }
 import model.map.fixtures {
     Ground,
-    TextFixture,
     RiverFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

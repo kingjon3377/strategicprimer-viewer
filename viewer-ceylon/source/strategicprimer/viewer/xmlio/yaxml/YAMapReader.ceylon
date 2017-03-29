@@ -55,7 +55,9 @@ import strategicprimer.viewer.model.map {
 }
 import model.map.fixtures {
     Ground,
-    RiverFixture,
+    RiverFixture
+}
+import strategicprimer.viewer.model.map.fixtures {
     TextFixture
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {

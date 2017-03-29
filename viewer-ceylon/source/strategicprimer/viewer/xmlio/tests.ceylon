@@ -78,12 +78,12 @@ import strategicprimer.viewer.model.map {
     IMapNG
 }
 import strategicprimer.viewer.model.map.fixtures {
+    TextFixture,
     Implement,
     ResourcePile
 }
 import model.map.fixtures {
     RiverFixture,
-    TextFixture,
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {

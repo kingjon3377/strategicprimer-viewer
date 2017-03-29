@@ -1,7 +1,7 @@
 import lovelace.util.common {
     DelayedRemovalMap
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     TextFixture
 }
 import strategicprimer.viewer.model {

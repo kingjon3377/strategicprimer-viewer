@@ -18,7 +18,7 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     IMapNG
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     TextFixture
 }
 
