@@ -220,8 +220,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             writeTag(ostream, "fortress", indentation, false);
             writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
             writeNonEmptyAttribute(ostream, "name", obj.name);
-            // FIXME: Use obj.townSize instead
-            if (TownSize.small != obj.size) {
+            if (TownSize.small != obj.townSize) {
                 writeAttribute(ostream, "size", obj.size.string);
             }
             writeIntegerAttribute(ostream, "size", obj.id);

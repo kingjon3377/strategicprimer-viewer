@@ -181,8 +181,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             writeTag(ostream, "fortress", tabs);
             writeProperty(ostream, "owner", obj.owner.playerId);
             writeNonemptyProperty(ostream, "name", obj.name);
-            // FIXME: Use obj.townSize
-            if (TownSize.small != obj.size) {
+            if (TownSize.small != obj.townSize) {
                 writeProperty(ostream, "size", obj.size.string);
             }
             writeProperty(ostream, "id", obj.id);
