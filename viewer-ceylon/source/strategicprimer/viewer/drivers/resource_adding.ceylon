@@ -130,7 +130,6 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     MutableMap<String, String> resourceUnits = HashMap<String, String>();
     "Ask the user to choose or enter a resource kind."
     String getResourceKind(ICLIHelper cli) {
-        // TODO: here and below, use named-argument-ish syntax.
         String[] list = [*resourceKinds];
         Integer num = cli.chooseStringFromList(list, "Possible kinds of resources:",
             "No resource kinds entered yet", "Chosen kind: ", false);
