@@ -26,9 +26,6 @@ import lovelace.util.jvm {
     horizontalSplit
 }
 
-import model.listeners {
-    UnitMemberListener
-}
 import model.map {
     HasPortrait
 }

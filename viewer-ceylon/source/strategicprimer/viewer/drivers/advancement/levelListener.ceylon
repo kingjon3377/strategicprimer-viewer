@@ -5,7 +5,9 @@ import model.map.fixtures {
     UnitMember
 }
 import model.listeners {
-    LevelGainListener,
+    LevelGainListener
+}
+import strategicprimer.viewer.drivers.worker_mgmt {
     UnitMemberListener
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {

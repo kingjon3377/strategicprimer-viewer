@@ -42,10 +42,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit,
     IWorker
 }
-import model.listeners {
-    UnitMemberListener,
-    UnitMemberSelectionSource
-}
 import strategicprimer.viewer.drivers.advancement {
     UnitSelectionSource,
     UnitSelectionListener

@@ -27,11 +27,11 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     WorkerTreeModelAlt,
     TreeExpansionHandler,
     workerTree,
-    IWorkerModel
+    IWorkerModel,
+    UnitMemberSelectionSource
 }
 import model.listeners {
-    PlayerChangeListener,
-    UnitMemberSelectionSource
+    PlayerChangeListener
 }
 import strategicprimer.viewer.drivers {
     createIDFactory,

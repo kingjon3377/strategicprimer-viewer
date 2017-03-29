@@ -12,7 +12,9 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker
 }
 import model.listeners {
-    AddRemoveListener,
+    AddRemoveListener
+}
+import strategicprimer.viewer.drivers.worker_mgmt {
     UnitMemberListener
 }
 import model.map.fixtures {
