@@ -65,22 +65,12 @@ Logger log = logger(`module strategicprimer.viewer`);
 "A proxy for units in multiple maps, or all a player's units of one kind."
 shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutableImage
         &HasMutableName&HasMutableOwner {
-    """"Merge" two strings by returning one of them if they are equal and the empty string
-       otherwise."""
-    static JString mergeFunction(JString first, JString second) =>
-            (first == second) then first else javaString("");
     "If true, we are proxying parallel units in different maps; if false, multiple units
      of the same kind owned by one player."
     shared actual Boolean parallel;
     "The units we are a proxy for."
     MutableList<IUnit> proxiedList = ArrayList<IUnit>();
     SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) {
-        object firstFunc satisfies JFunction<JMap<JInteger, JString>, JSet<JMap<JInteger, JString>.Entry<JInteger, JString>>> {
-            shared actual JSet<JMap.Entry<JInteger, JString>> apply(JMap<JInteger, JString> arg) => arg.entrySet();
-        }
-        object secondFunc satisfies JFunction<JSet<JMap<JInteger, JString>.Entry<JInteger, JString>>, JStream<JMap<JInteger, JString>.Entry<JInteger, JString>>> {
-            shared actual JStream<JMap<JInteger, JString>.Entry<JInteger, JString>> apply(JSet<JMap<JInteger, JString>.Entry<JInteger, JString>> arg) => arg.stream();
-        }
         MutableMap<Integer,String>&SortedMap<Integer, String> retval =
                 TreeMap<Integer, String>((x, y) => x <=> y, {});
         for (map in proxiedList.map(method)) {
