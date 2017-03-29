@@ -59,7 +59,6 @@ EncounterTable loadTable(String?()|File argument) {
                 }
             }
             case ('r'|'R') {
-                // TODO: Use Tuples once RandomTable is ported to Ceylon.
                 MutableList<[Integer, String]> list =
                         ArrayList<[Integer, String]>();
                 while (exists tableLine = argument()) {
@@ -89,7 +88,6 @@ EncounterTable loadTable(String?()|File argument) {
             }
             case ('l'|'L') { return LegacyTable(); }
             case ('t'|'T') {
-                // TODO: Use Tuples once RandomTable is ported to Ceylon.
                 MutableList<TileType->String> list =
                         ArrayList<TileType->String>();
                 while (exists tableLine = argument()) {
