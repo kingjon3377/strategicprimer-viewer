@@ -40,7 +40,7 @@ import model.map {
     PlayerCollection,
     River
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     RiverFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
@@ -112,8 +112,8 @@ class YAReaderAdapter(
             "The current indentation level" Integer indent) {
         if (is River obj) {
             mapReader.writeRiver(ostream, obj, indent);
-        } else if (is RiverFixture obj) {
-            writeAllRivers(ostream, CeylonIterable(obj), indent);
+        } else if (is {River*} obj) {
+            writeAllRivers(ostream, obj, indent);
         } else if (is ProxyFor<out Anything> obj) {
             // TODO: Handle proxies in their respective types
             if (exists proxied = obj.proxied.first) {

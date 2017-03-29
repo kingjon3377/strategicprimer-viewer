@@ -32,10 +32,10 @@ import model.map {
     TileFixture
 }
 import model.map.fixtures {
-    RiverFixture,
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures {
+    RiverFixture,
     TextFixture
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {

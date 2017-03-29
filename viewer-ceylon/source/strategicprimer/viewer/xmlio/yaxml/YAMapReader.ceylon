@@ -54,11 +54,11 @@ import strategicprimer.viewer.model.map {
     IMapNG
 }
 import model.map.fixtures {
-    Ground,
-    RiverFixture
+    Ground
 }
 import strategicprimer.viewer.model.map.fixtures {
-    TextFixture
+    TextFixture,
+    RiverFixture
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
@@ -107,7 +107,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         } else if (is RiverFixture fixture) {
             // We shouldn't get here, since our parser doesn't use them, but I don't want
             // to lose data if I change that and forget to update its callers
-            map.addRivers(point, *CeylonIterable(fixture));
+            map.addRivers(point, *fixture);
         } else {
             map.addFixture(point, fixture);
         }

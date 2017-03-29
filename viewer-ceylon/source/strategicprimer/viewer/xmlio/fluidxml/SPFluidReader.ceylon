@@ -74,11 +74,11 @@ import strategicprimer.viewer.model.map.fixtures {
     FortressMember,
     UnitMember,
     TextFixture,
-    Implement
+    Implement,
+    RiverFixture
 }
 import model.map.fixtures {
-    Ground,
-    RiverFixture
+    Ground
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     SimpleImmortalKind,
@@ -205,8 +205,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             } else {
                 map.setForest(currentTile, child);
             }
-        } else if (is RiverFixture child) { // TODO: change to (is {River*} child)
-            map.addRivers(currentTile, *CeylonIterable(child));
+        } else if (is {River*} child) {
+            map.addRivers(currentTile, *child);
         } else if (is TileFixture child) {
             map.addFixture(currentTile, child);
         } else {

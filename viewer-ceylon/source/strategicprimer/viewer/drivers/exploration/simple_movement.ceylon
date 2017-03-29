@@ -21,7 +21,7 @@ import model.map {
     TileFixture,
     HasOwner
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     RiverFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {

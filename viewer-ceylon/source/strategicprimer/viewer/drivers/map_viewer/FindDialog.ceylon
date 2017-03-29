@@ -5,7 +5,7 @@ import java.awt {
     Component,
     Frame
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     RiverFixture
 }
 import strategicprimer.viewer.drivers {

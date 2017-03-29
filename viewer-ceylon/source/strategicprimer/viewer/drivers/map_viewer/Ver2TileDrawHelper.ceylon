@@ -36,7 +36,9 @@ import strategicprimer.viewer.model.map {
     IMapNG
 }
 import model.map.fixtures {
-    Ground,
+    Ground
+}
+import strategicprimer.viewer.model.map.fixtures {
     RiverFixture
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {

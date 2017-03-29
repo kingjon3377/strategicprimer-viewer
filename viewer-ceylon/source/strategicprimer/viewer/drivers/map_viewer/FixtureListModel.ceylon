@@ -14,7 +14,9 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 import model.map.fixtures {
-    Ground,
+    Ground
+}
+import strategicprimer.viewer.model.map.fixtures {
     RiverFixture
 }
 import ceylon.collection {
@@ -107,7 +109,7 @@ shared class FixtureListModel(IMutableMapNG map,
                 }
             } else if (is RiverFixture fixture) {
                 if (removeElement(fixture)) {
-                    map.removeRivers(point, *CeylonIterable(fixture));
+                    map.removeRivers(point, *fixture);
                 }
             } else if (filterTracks, is Animal fixture, currentTracks.contains(fixture)) {
                 if (removeElement(fixture)) {

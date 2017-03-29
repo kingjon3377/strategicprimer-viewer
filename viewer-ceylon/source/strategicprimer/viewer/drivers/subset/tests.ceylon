@@ -25,10 +25,8 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     IMapNG
 }
-import model.map.fixtures {
-    RiverFixture
-}
 import strategicprimer.viewer.model.map.fixtures {
+    RiverFixture,
     TextFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
