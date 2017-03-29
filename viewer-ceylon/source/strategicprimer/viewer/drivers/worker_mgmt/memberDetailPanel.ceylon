@@ -144,13 +144,11 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             for (job in local) {
                 if (!job.emptyJob) {
                     JLabel label = JLabel("``job.name`` ``job.level``");
-                    // TODO: inline
-                    {ISkill*} skills = job;
-                    if (exists firstSkill = skills.first) {
+                    if (exists firstSkill = job.first) {
                         StringBuilder skillsBuilder = StringBuilder();
                         skillsBuilder.append("Skills: ``firstSkill.name`` ``firstSkill
                             .level``");
-                        for (skill in skills.rest) {
+                        for (skill in job.rest) {
                             skillsBuilder.append(", ``skill.name`` ``skill.level``");
                         }
                         label.toolTipText = skillsBuilder.string;

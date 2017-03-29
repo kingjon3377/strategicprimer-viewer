@@ -41,11 +41,9 @@ class StrategyExporter(IWorkerModel model, SPOptions options) satisfies PlayerCh
     void writeMember(Writer writer, UnitMember? member) {
         if (is IWorker member) {
             writer.write(member.name);
-            // TODO: inline
-            Iterable<IJob> iter = member;
-            if (exists first = iter.first) {
+            if (exists first = member.first) {
                 writer.write(" (``first.name`` ``first.level``");
-                for (job in iter.rest) {
+                for (job in member.rest) {
                     writer.write(", ``job.name`` ``job.level``");
                 }
                 writer.write(")");
@@ -117,13 +115,11 @@ class StrategyExporter(IWorkerModel model, SPOptions options) satisfies PlayerCh
             for (kind->list in unitsByKind) {
                 writer.writeLine("* ``kind``:");
                 for (unit in list) {
-                    // TODO: inline
-                    Iterable<UnitMember> iter = unit;
                     writer.write("  - ``unit.name``");
-                    if (!iter.empty) {
+                    if (!unit.empty) {
                         writer.write(" [");
-                        writeMember(writer, iter.first);
-                        for (member in iter.rest) {
+                        writeMember(writer, unit.first);
+                        for (member in unit.rest) {
                             writer.write(", ");
                             writeMember(writer, member);
                         }
