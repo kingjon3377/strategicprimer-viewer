@@ -39,6 +39,9 @@ import strategicprimer.viewer.report.nodes {
     SectionListReportNode,
     emptyReportNode
 }
+import ceylon.language {
+    createMap=map
+}
 "A report generator for towns."
 todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
@@ -100,8 +103,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             HeadedMap<ITownFixture, Point>&MutableMap<ITownFixture, Point> ruined =
                     HeadedMapImpl<ITownFixture, Point>("<h5>Ruined Communities</h5>");
             Map<TownStatus, MutableMap<ITownFixture, Point>> separated =
-                    // TODO: Use ceylon.language.map instead of HashMap for the outer Map
-                    HashMap<TownStatus, MutableMap<ITownFixture, Point>> {
+                    createMap<TownStatus, MutableMap<ITownFixture, Point>> {
                         *{ TownStatus.abandoned->abandoned, TownStatus.active->active,
                             TownStatus.burned->burned, TownStatus.ruined->ruined }
                     };
