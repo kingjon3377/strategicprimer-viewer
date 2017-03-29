@@ -14,8 +14,7 @@ import strategicprimer.viewer.drivers {
 }
 "Let the user add experience to a worker."
 void advanceSingleWorker(IWorker worker, ICLIHelper cli) {
-    // TODO: switch to named-argument-ish syntax
-    MutableList<IJob> jobs = ArrayList(0, 1.0, { *worker });
+    MutableList<IJob> jobs = ArrayList { *worker };
     cli.loopOnMutableList(jobs, (clh) => clh.chooseFromList(jobs,
         "Jobs in worker:", "No existing Jobs.", "Job to advance: ", false),
         "Select another Job in this worker? ",
