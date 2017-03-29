@@ -8,7 +8,8 @@ import ceylon.collection {
 import ceylon.file {
     File,
     parsePath,
-    Directory
+    Directory,
+    lines
 }
 import ceylon.math.float {
     random
@@ -38,10 +39,6 @@ import model.map {
     TileType,
     PointFactory
 }
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    WorkerStats,
-    Job
-}
 
 import strategicprimer.viewer.drivers.advancement {
     randomRace
@@ -66,6 +63,10 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit,
     Unit,
     IWorker
+}
+import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+    WorkerStats,
+    Job
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village
@@ -293,14 +294,11 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
             ICLIHelper cli) {
         Integer count = cli.inputNumber("How many workers to generate? ");
         String filename = cli.inputString("Filename to load names from: ");
-        Queue<String> names = ArrayList<String>();
+        Queue<String> names;
         if (is File file = parsePath(filename).resource) {
-            try (reader = file.Reader()) {
-                while (exists line = reader.readLine()) {
-                    names.offer(line);
-                }
-            }
+            names = ArrayList { *lines(file) };
         } else {
+            names = ArrayList<String>();
             cli.println("No such file.");
         }
         for (i in 0..count) {
