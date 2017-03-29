@@ -472,14 +472,13 @@ SPFrame explorationFrame(IExplorationModel model,
                                 }
                                 Point currentLocation = model.selectedUnitLocation;
                                 if (currentLocation.valid) {
-                                    String?(HuntingModel) tracksSource;
-                                    // FIXME: Move as much as possible out of lambdas.
+                                    {String*}(Point, Integer) tracksSource;
                                     if (TileType.ocean == model.map.getBaseTerrain(currentLocation)) {
-                                        tracksSource = (HuntingModel hmodel) => hmodel.fish(currentLocation, 1).first;
+                                        tracksSource = huntingModel.fish;
                                     } else {
-                                        tracksSource = (HuntingModel hmodel) => hmodel.hunt(currentLocation, 1).first;
+                                        tracksSource = huntingModel.hunt;
                                     }
-                                    assert (exists possibleTracks = tracksSource(huntingModel));
+                                    assert (exists possibleTracks = tracksSource(currentLocation, 1).first);
                                     if (HuntingModel.noResults != possibleTracks) {
                                         Animal animal = Animal(possibleTracks, true, false, "wild", -1);
                                         assert (is FixtureListModel listModel = mainList.model);
