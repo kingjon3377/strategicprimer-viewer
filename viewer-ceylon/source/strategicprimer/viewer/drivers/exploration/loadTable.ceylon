@@ -140,11 +140,13 @@ void testLoadQuadrantTable() {
         "quadrant table can use alternate dimensions");
     assertThatException(() => loadTable(LinkedList({"quadrant"}).accept));
 }
+suppressWarnings("expressionTypeNothing")
 object mockDimensions satisfies MapDimensions {
     shared actual Integer rows => nothing;
     shared actual Integer columns => nothing;
     shared actual Integer version => nothing;
 }
+suppressWarnings("expressionTypeNothing")
 object mockPoint satisfies Point {
     shared actual Integer col => nothing;
     shared actual Integer row => nothing;

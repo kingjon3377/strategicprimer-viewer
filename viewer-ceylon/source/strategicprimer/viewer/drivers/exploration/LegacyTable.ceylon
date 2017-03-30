@@ -48,6 +48,7 @@ class LegacyTable() satisfies EncounterTable {
             retval.add(MineralVein(mineral.string, true, 0, 0));
             retval.add(MineralVein(mineral.string, false, 0, 0));
         }
+        suppressWarnings("expressionTypeNothing")
         object temp satisfies IEvent {
             shared actual TileFixture copy(Boolean zero) => nothing;
             shared actual Integer dc => nothing;
