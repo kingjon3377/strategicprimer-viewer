@@ -40,13 +40,9 @@ import strategicprimer.viewer.model.map {
     TileFixture,
     IMapNG,
     pointFactory,
-    coordinateFactory,
     clearPointCache
 }
 
-import view.util {
-    Coordinate
-}
 variable Boolean usePointCache = false;
 "The first test: all in one place."
 Integer first(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {

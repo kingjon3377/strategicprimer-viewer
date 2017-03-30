@@ -7,9 +7,6 @@ import java.awt.geom {
     Line2D,
     Ellipse2D
 }
-import view.util {
-    Coordinate
-}
 import model.map {
     River,
     Point

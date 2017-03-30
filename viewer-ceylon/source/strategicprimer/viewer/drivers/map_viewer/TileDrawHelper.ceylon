@@ -13,9 +13,6 @@ import strategicprimer.viewer.model.map.fixtures {
 import model.map {
     Point
 }
-import view.util {
-    Coordinate
-}
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }

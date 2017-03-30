@@ -21,13 +21,9 @@ import model.map {
 
 import strategicprimer.viewer.model.map {
     TileType,
-    IMapNG,
-    coordinateFactory
+    IMapNG
 }
 
-import view.util {
-    Coordinate
-}
 "A [[TileDrawHelper]] for version-1 maps that draws directly instead of creating Shapes,
  which proves more efficent in practice."
 todo("Convert to an object?")

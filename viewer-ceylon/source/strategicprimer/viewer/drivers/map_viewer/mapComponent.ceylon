@@ -37,8 +37,7 @@ import model.map {
 
 import strategicprimer.viewer.model.map {
     TileFixture,
-    pointFactory,
-    coordinateFactory
+    pointFactory
 }
 "An interface for a UI representing a map."
 todo("Is this needed anymore?")

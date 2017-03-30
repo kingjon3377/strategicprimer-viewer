@@ -32,8 +32,7 @@ import model.map {
 
 import strategicprimer.viewer.model.map {
     TileFixture,
-    IMapNG,
-    coordinateFactory
+    IMapNG
 }
 import strategicprimer.viewer.model.map.fixtures {
     RiverFixture,
@@ -44,9 +43,6 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 
-import view.util {
-    Coordinate
-}
 "A [[TileDrawHelper]] for version-2 maps."
 class Ver2TileDrawHelper(
         "The object to arrange to be notified as images finish drawing. In Java it's the

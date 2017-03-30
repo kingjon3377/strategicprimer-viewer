@@ -11,7 +11,7 @@ import model.map {
     Point
 }
 
-import view.util {
+import strategicprimer.viewer.drivers.map_viewer {
     Coordinate
 }
 "The cache of Points. I use two levels of Maps rather than using Tuples as keys because I
@@ -20,9 +20,6 @@ todo("Measure that",
 		"The Java version used ConcurrentHashMap, while this isn't thread-safe")
 MutableMap<Integer, MutableMap<Integer, Point>> pointCache =
 		HashMap<Integer, MutableMap<Integer, Point>>();
-"Cache of Coordinates."
-MutableMap<Integer, MutableMap<Integer, Coordinate>> coordinateCache =
-		HashMap<Integer, MutableMap<Integer, Coordinate>>();
 "Clear the Point cache. Should only be called by performance-testing code."
 shared void clearPointCache() => pointCache.clear();
 "A wrapper around the [[Point]] constructor that caches Points.
@@ -65,27 +62,6 @@ class PointImpl(row, col) satisfies Point {
 	}
 	shared actual Integer hash => row.leftLogicalShift(9) + col;
 	shared actual String string => "(``row``, ``col``)";
-}
-"Factory method for [[Coordinate]]s."
-shared Coordinate coordinateFactory(Integer x, Integer y, Boolean useCache = true) {
-	if (useCache) {
-		if (exists inner = coordinateCache.get(x)) {
-			if (exists retval = inner.get(y)) {
-				return retval;
-			} else {
-				Coordinate retval = Coordinate(x, y);
-				inner.put(y, retval);
-				return retval;
-			}
-		} else {
-			Coordinate retval = Coordinate(x, y);
-			MutableMap<Integer, Coordinate> inner = HashMap { y->retval };
-			coordinateCache.put(x, inner);
-			return retval;
-		}
-	} else {
-		return Coordinate(x, y);
-	}
 }
 """The standard "invalid point.""""
 todo("Replace with [[null]]?")
