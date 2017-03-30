@@ -1,20 +1,25 @@
-import model.map {
-    Point,
-    IFixture,
-    PointFactory,
-    Player
-}
-import strategicprimer.viewer.model {
-    DistanceComparator
-}
 import ceylon.collection {
     ArrayList,
     MutableMap,
     TreeMap,
     HashMap
 }
+
 import lovelace.util.common {
     todo
+}
+
+import model.map {
+    Point,
+    IFixture,
+    Player
+}
+
+import strategicprimer.viewer.model {
+    DistanceComparator
+}
+import strategicprimer.viewer.model.map {
+    invalidPoint
 }
 "An abstract superclass for classes that generate reports for particular kinds of SP
  objects. It's mostly interface and helper methods, but contains a couple of bits of
@@ -24,7 +29,7 @@ shared sealed abstract class AbstractReportGenerator<T>(
         shared Comparison([Point, IFixture], [Point, IFixture]) pairComparator,
         todo("Take Point and initialize distCalculator here instead of taking it as a parameter")
         shared DistanceComparator distCalculator =
-                DistanceComparator(PointFactory.invalidPoint))
+                DistanceComparator(invalidPoint))
         satisfies IReportGenerator<T> given T satisfies IFixture {
     deprecated shared String playerNameOrYou(Player player) {
         if (player.current) {

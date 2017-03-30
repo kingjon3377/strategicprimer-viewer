@@ -12,12 +12,16 @@ import lovelace.util.common {
 import model.map {
     IFixture,
     Player,
-    PointFactory,
     River,
     Point
 }
+
 import strategicprimer.viewer.model {
     DistanceComparator
+}
+import strategicprimer.viewer.model.map {
+    IMapNG,
+    invalidPoint
 }
 import strategicprimer.viewer.model.map.fixtures {
     Implement,
@@ -35,10 +39,6 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
 import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
-
-import strategicprimer.viewer.model.map {
-    IMapNG
-}
 import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
@@ -49,7 +49,7 @@ import strategicprimer.viewer.report.nodes {
     ComplexReportNode
 }
 "A report generator for fortresses."
-shared class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer, Point hq = PointFactory.invalidPoint)
+shared class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer, Point hq = invalidPoint)
         extends AbstractReportGenerator<Fortress>(comp, DistanceComparator(hq)) {
     IReportGenerator<IUnit> urg = UnitReportGenerator(comp, currentPlayer, hq);
     IReportGenerator<FortressMember> memberReportGenerator =

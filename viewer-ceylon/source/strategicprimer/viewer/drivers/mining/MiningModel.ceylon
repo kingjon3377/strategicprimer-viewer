@@ -5,16 +5,20 @@ import ceylon.collection {
     Queue
 }
 
+import java.util {
+    JRandom=Random
+}
+
 import lovelace.util.common {
     todo
 }
 
 import model.map {
-    Point,
-    PointFactory
+    Point
 }
-import java.util {
-    JRandom=Random
+
+import strategicprimer.viewer.model.map {
+    pointFactory
 }
 "Kinds of mines we know how to create."
 class MineKind of normal | banded {
@@ -33,9 +37,9 @@ class MiningModel(initial, seed, kind) {
     "What kind of mine to model."
     MineKind kind;
     MutableMap<Point, LodeStatus> unnormalized = HashMap<Point, LodeStatus>();
-    unnormalized.put(PointFactory.point(0, 0), initial);
+    unnormalized.put(pointFactory(0, 0), initial);
     Queue<Point> queue = LinkedList<Point>();
-    queue.offer(PointFactory.point(0, 0));
+    queue.offer(pointFactory(0, 0));
     todo("Use `ceylon.random` instead")
     JRandom rng = JRandom(seed);
     LodeStatus(LodeStatus) horizontalGenerator;
@@ -50,9 +54,9 @@ class MiningModel(initial, seed, kind) {
     variable Integer counter = 0;
     variable Integer pruneCounter = 0;
     void modelPoint(Point point) {
-        Point left = PointFactory.point(point.row, point.col - 1);
-        Point down = PointFactory.point(point.row + 1, point.col);
-        Point right = PointFactory.point(point.row, point.col + 1);
+        Point left = pointFactory(point.row, point.col - 1);
+        Point down = pointFactory(point.row + 1, point.col);
+        Point right = pointFactory(point.row, point.col + 1);
         value current = unnormalized.get(point);
         if (!current exists) {
             return;
@@ -93,10 +97,10 @@ class MiningModel(initial, seed, kind) {
      to [[LodeStatus]]es."
     Map<Point, LodeStatus> data = map {
         *unnormalized
-            .map((key->status) => PointFactory.point(key.row, key.col - minimumColumn)->status)
+            .map((key->status) => pointFactory(key.row, key.col - minimumColumn)->status)
     };
     "The farthest row and column we reached."
-    shared Point maximumPoint = PointFactory.point(max(data.keys.map(Point.row)) else 0,
+    shared Point maximumPoint = pointFactory(max(data.keys.map(Point.row)) else 0,
         max(data.keys.map(Point.col)) else 0);
     shared LodeStatus statusAt(Point point) => data.get(point) else LodeStatus.none;
 }

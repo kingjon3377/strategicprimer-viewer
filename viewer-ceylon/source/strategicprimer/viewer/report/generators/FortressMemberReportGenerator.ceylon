@@ -14,16 +14,17 @@ import lovelace.util.common {
 }
 
 import model.map {
-    PointFactory,
     Player,
     Point,
     IFixture
 }
+
 import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    invalidPoint
 }
 import strategicprimer.viewer.model.map.fixtures {
     ResourcePile,
@@ -33,7 +34,6 @@ import strategicprimer.viewer.model.map.fixtures {
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
-
 import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
@@ -43,7 +43,7 @@ import strategicprimer.viewer.report.nodes {
 }
 "A report generator for equipment and resources."
 shared class FortressMemberReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, Point hq = PointFactory.invalidPoint)
+        Player currentPlayer, Point hq = invalidPoint)
         extends AbstractReportGenerator<FortressMember>(comp, DistanceComparator(hq)) {
     "Produces a sub-report on a resource or piece of equipment, or on all fortress
      members. All fixtures referred to in this report are removed from the collection.

@@ -1,38 +1,39 @@
-import lovelace.util.common {
-    todo
+import ceylon.collection {
+    ArrayList,
+    MutableList
 }
+
 import javax.swing {
     DefaultListModel
 }
+
+import lovelace.util.common {
+    todo
+}
+
 import model.listeners {
     SelectionChangeListener
+}
+import model.map {
+    River,
+    Point
+}
+
+import strategicprimer.viewer.model.map {
+    TileFixture,
+    TileType,
+    IMutableMapNG,
+    invalidPoint
+}
+import strategicprimer.viewer.model.map.fixtures {
+    RiverFixture,
+    Ground
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
-}
-import strategicprimer.viewer.model.map.fixtures {
-    RiverFixture,
-    Ground
-}
-import ceylon.collection {
-    ArrayList,
-    MutableList
-}
-import ceylon.interop.java {
-    CeylonIterable
-}
-import model.map {
-    River,
-    PointFactory,
-    Point
-}
-import strategicprimer.viewer.model.map {
-    TileFixture,
-    TileType,
-    IMutableMapNG
 }
 "A model for the list-based representation of the contents of a tile."
 todo("Tests")
@@ -41,7 +42,7 @@ shared class FixtureListModel(IMutableMapNG map,
         Boolean filterTracks) extends DefaultListModel<TileFixture>()
         satisfies SelectionChangeListener {
     "The currently selected point."
-    variable Point point = PointFactory.invalidPoint;
+    variable Point point = invalidPoint;
     """Any animal tracks that have been "added" to the current tile but kept out of the
        map."""
     MutableList<Animal> currentTracks = ArrayList<Animal>();

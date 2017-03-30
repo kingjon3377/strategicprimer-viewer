@@ -14,12 +14,16 @@ import lovelace.util.common {
 }
 
 import model.map {
-    PointFactory,
     Point,
     IFixture
 }
+
 import strategicprimer.viewer.model {
     DistanceComparator
+}
+import strategicprimer.viewer.model.map {
+    IMapNG,
+    invalidPoint
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     HarvestableFixture,
@@ -31,10 +35,6 @@ import strategicprimer.viewer.model.map.fixtures.resources {
     MineralVein,
     Grove
 }
-import strategicprimer.viewer.model.map {
-    IMapNG
-}
-
 import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
@@ -46,7 +46,7 @@ import strategicprimer.viewer.report.nodes {
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
 shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Point hq = PointFactory.invalidPoint)
+        Point hq = invalidPoint)
         extends AbstractReportGenerator<HarvestableFixture>(comp, DistanceComparator(hq)) {
     "Convert a Map from kinds to Points to a HtmlList."
     HeadedList<String>&MutableList<String> mapToList(Map<String, MutableList<Point>> map,

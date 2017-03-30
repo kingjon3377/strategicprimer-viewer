@@ -11,8 +11,7 @@ import java.lang {
 }
 
 import model.map {
-    Point,
-    PointFactory
+    Point
 }
 
 import strategicprimer.viewer.drivers {
@@ -24,6 +23,9 @@ import strategicprimer.viewer.drivers {
     ICLIHelper,
     SPOptions,
     IncorrectUsageException
+}
+import strategicprimer.viewer.model.map {
+    pointFactory
 }
 // FIXME: Rename file to miningCLI.ceylon
 """A driver to create a spreadsheet model of a mine. Its parameters are the name of the
@@ -80,7 +82,7 @@ shared object miningCLI satisfies UtilityDriver {
                     for (row in 0..(lowerRight.row + 1)) {
                         for (col in 0..(lowerRight.col + 1)) {
                             writer.write("``model.statusAt(
-                                PointFactory.point(row, col)).ratio``,");
+                                pointFactory(row, col)).ratio``,");
                         }
                         writer.writeLine();
                     }

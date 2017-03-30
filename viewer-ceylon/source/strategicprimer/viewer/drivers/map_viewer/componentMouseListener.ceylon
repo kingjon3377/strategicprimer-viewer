@@ -1,34 +1,38 @@
-import javax.swing {
-    JPopupMenu
+import ceylon.math.float {
+    halfEven
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
-    Forest
-}
-import strategicprimer.viewer.model.map.fixtures {
-    TerrainFixture,
-    Ground
-}
-import model.map {
-    PointFactory,
-    MapDimensions,
-    Point
-}
-import strategicprimer.viewer.model.map {
-    TileFixture,
-    IMapNG
-}
+
 import java.awt.event {
     MouseAdapter,
     MouseListener,
     MouseEvent
 }
+
+import javax.swing {
+    JPopupMenu
+}
+
 import model.listeners {
     VersionChangeListener,
     SelectionChangeListener,
     SelectionChangeSource
 }
-import ceylon.math.float {
-    halfEven
+import model.map {
+    MapDimensions,
+    Point
+}
+
+import strategicprimer.viewer.model.map {
+    TileFixture,
+    IMapNG,
+    pointFactory
+}
+import strategicprimer.viewer.model.map.fixtures {
+    TerrainFixture,
+    Ground
+}
+import strategicprimer.viewer.model.map.fixtures.terrain {
+    Forest
 }
 "An interface for the method to get the tool-tip message for the location the mouse
  cursor is over."
@@ -72,7 +76,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             MapDimensions mapDimensions = model.mapDimensions;
             Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
             VisibleDimensions visibleDimensions = model.dimensions;
-            Point point = PointFactory.point(
+            Point point = pointFactory(
                 halfEven((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
                     .plus(0.1).integer,
                 halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumColumn)
@@ -94,7 +98,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             VisibleDimensions visibleDimensions = model.dimensions;
             MapDimensions mapDimensions = model.mapDimensions;
             Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
-            Point point = PointFactory.point(
+            Point point = pointFactory(
                 halfEven((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
                     .plus(0.1).integer,
                 halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumColumn)

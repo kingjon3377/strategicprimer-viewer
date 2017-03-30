@@ -2,16 +2,12 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 import ceylon.math.float {
     ceiling
 }
 
 import java.lang {
-    IllegalStateException,
-    JIterable=Iterable
+    IllegalStateException
 }
 import java.nio.file {
     JPath=Path
@@ -28,20 +24,26 @@ import model.listeners {
     MovementCostListener,
     SelectionChangeListener
 }
-import strategicprimer.viewer.model.map {
-    IMutableMapNG,
-    IMapNG,
-    TileType,
-    TileFixture,
-    FixtureIterable
-}
 import model.map {
-    PointFactory,
     Point,
     Player,
     MapDimensions,
     HasOwner,
     IFixture
+}
+
+import strategicprimer.viewer.model {
+    SimpleMultiMapModel,
+    IDriverModel
+}
+import strategicprimer.viewer.model.map {
+    IMutableMapNG,
+    IMapNG,
+    TileType,
+    TileFixture,
+    FixtureIterable,
+    invalidPoint,
+    pointFactory
 }
 import strategicprimer.viewer.model.map.fixtures {
     Ground,
@@ -59,11 +61,6 @@ import strategicprimer.viewer.model.map.fixtures.resources {
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
-}
-
-import strategicprimer.viewer.model {
-    SimpleMultiMapModel,
-    IDriverModel
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village,
@@ -161,7 +158,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     MutableList<SelectionChangeListener> scListeners =
             ArrayList<SelectionChangeListener>();
     "The currently selected unit and its location."
-    variable [Point, IUnit?] selection = [PointFactory.invalidPoint, null];
+    variable [Point, IUnit?] selection = [invalidPoint, null];
     shared new (IMutableMapNG map, JPath? file)
             extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)
@@ -208,7 +205,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Integer maxRow = dims.rows - 1;
         Integer row = point.row;
         Integer column = point.col;
-        Point(Integer, Integer) factory = PointFactory.point;
+        // TODO: inline?
+        Point(Integer, Integer) factory = pointFactory;
         switch (direction)
         case (Direction.east) { return factory(row, increment(column, maxColumn)); }
         case (Direction.north) { return factory(decrement(row, maxRow), column); }
@@ -295,7 +293,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 return point;
             }
         } else {
-            return PointFactory.invalidPoint;
+            return invalidPoint;
         }
     }
     "The currently selected unit."
@@ -308,7 +306,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         if (exists selectedUnit) {
             loc = find(selectedUnit);
         } else {
-            loc = PointFactory.invalidPoint;
+            loc = invalidPoint;
         }
         selection = [loc, selectedUnit];
         fireSelectionChange(oldLoc, loc);

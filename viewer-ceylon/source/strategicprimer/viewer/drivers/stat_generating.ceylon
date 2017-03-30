@@ -35,8 +35,7 @@ import lovelace.util.jvm {
 import model.map {
     Player,
     IFixture,
-    Point,
-    PointFactory
+    Point
 }
 
 import strategicprimer.viewer.drivers.advancement {
@@ -56,7 +55,8 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     TileType,
     IMapNG,
-    FixtureIterable
+    FixtureIterable,
+    pointFactory
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     Worker,
@@ -422,8 +422,7 @@ shared void tileContentsGenerator() {
     if (exists filename = args[0], exists second = args[1],
             is Integer row = Integer.parse(second), exists third = args[2],
             is Integer column = Integer.parse(third)) {
-        tileContentsInstance(filename).generateTileContents(
-            PointFactory.point(row, column));
+        tileContentsInstance(filename).generateTileContents(pointFactory(row, column));
     } else {
         process.writeErrorLine("Usage: tileContentsGenerator map_name.xml row col");
     }

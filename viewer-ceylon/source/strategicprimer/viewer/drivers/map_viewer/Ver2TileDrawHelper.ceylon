@@ -26,13 +26,14 @@ import lovelace.util.common {
 
 import model.map {
     River,
-    PointFactory,
     HasImage,
     Point
 }
+
 import strategicprimer.viewer.model.map {
     TileFixture,
-    IMapNG
+    IMapNG,
+    coordinateFactory
 }
 import strategicprimer.viewer.model.map.fixtures {
     RiverFixture,
@@ -224,8 +225,8 @@ class Ver2TileDrawHelper(
     "Draw a tile at the upper left corner of the drawing surface."
     shared actual void drawTileTranslated(Graphics pen, IMapNG map, Point location,
             Integer width, Integer height) =>
-            drawTile(pen, map, location, PointFactory.coordinate(0, 0),
-                PointFactory.coordinate(width, height));
+            drawTile(pen, map, location, coordinateFactory(0, 0),
+                coordinateFactory(width, height));
     "The drawable fixtures at the given location."
     {TileFixture*} getDrawableFixtures(IMapNG map, Point location) {
         Ground? ground = map.getGround(location);

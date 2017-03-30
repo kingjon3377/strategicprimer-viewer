@@ -16,10 +16,6 @@ import controller.map.formatexceptions {
 import controller.map.iointerfaces {
     ISPReader
 }
-import strategicprimer.viewer.model {
-    IDFactory,
-    IDRegistrar
-}
 
 import java.io {
     JReader=Reader
@@ -61,21 +57,25 @@ import model.map {
     MapDimensions,
     MapDimensionsImpl,
     Point,
-    PointFactory,
     River
+}
+
+import strategicprimer.viewer.model {
+    IDFactory,
+    IDRegistrar
 }
 import strategicprimer.viewer.model.map {
     TileType,
     SPMapNG,
     IMutableMapNG,
-    TileFixture
+    TileFixture,
+    pointFactory
 }
 import strategicprimer.viewer.model.map.fixtures {
     FortressMember,
     UnitMember,
     TextFixture,
     Implement,
-    RiverFixture,
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
@@ -98,7 +98,6 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress,
     TownSize
 }
-
 import strategicprimer.viewer.xmlio {
     IncludingIterator,
     TypesafeXMLEventReader,
@@ -213,7 +212,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     }
     void parseTile(IMutableMapNG map, StartElement element, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
-        Point loc = PointFactory.point(getIntegerAttribute(element, "row"),
+        Point loc = pointFactory(getIntegerAttribute(element, "row"),
             getIntegerAttribute(element, "column"));
         // Tiles have been known to be *written* without "kind" and then fail to load, so
         // let's be liberal in what we accept here, since we can.

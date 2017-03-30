@@ -2,15 +2,18 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import strategicprimer.viewer.model.map {
-    TileType,
-    TileFixture
-}
+
 import model.map {
     MapDimensions,
     Point,
-    MapDimensionsImpl,
-    PointFactory
+    MapDimensionsImpl
+}
+
+import strategicprimer.viewer.model.map {
+    TileType,
+    TileFixture,
+    pointFactory,
+    invalidPoint
 }
 "An [[EncounterTable]] where results are by quadrant of the map."
 class QuadrantTable satisfies EncounterTable {
@@ -36,7 +39,7 @@ class QuadrantTable satisfies EncounterTable {
             for (row in (0..(mapRows - rowRemainder)).by(rowStep)) {
                 for (column in (0..(mapColumns - columnRemainder)).by(columnStep)) {
                     assert (exists temp = possResults[i]);
-                    retval.put(PointFactory.point(row, column), temp);
+                    retval.put(pointFactory(row, column), temp);
                     i++;
                 }
             }
@@ -65,7 +68,7 @@ class QuadrantTable satisfies EncounterTable {
             MapDimensions mapDimensions) {
         Map<Point, String> resultsMap = valuesFor(mapDimensions, possibleResults,
             quadrantRows);
-        variable Point bestKey = PointFactory.invalidPoint;
+        variable Point bestKey = invalidPoint;
         for (key in resultsMap.keys) {
             if (key.row <= row, key.row > bestKey.row, key.col <= column,
                     key.col > bestKey.col) {

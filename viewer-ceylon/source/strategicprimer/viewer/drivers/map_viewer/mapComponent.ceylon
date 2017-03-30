@@ -3,7 +3,6 @@ import ceylon.math.float {
 }
 
 import java.awt {
-    Image,
     Graphics,
     Color,
     Rectangle
@@ -14,9 +13,6 @@ import java.awt.event {
     MouseListener,
     MouseEvent,
     ComponentAdapter
-}
-import java.awt.image {
-    ImageObserver
 }
 
 import javax.swing {
@@ -34,13 +30,15 @@ import model.listeners {
     SelectionChangeListener,
     SelectionChangeSource
 }
-import strategicprimer.viewer.model.map {
-    TileFixture
-}
 import model.map {
-    PointFactory,
     MapDimensions,
     Point
+}
+
+import strategicprimer.viewer.model.map {
+    TileFixture,
+    pointFactory,
+    coordinateFactory
 }
 "An interface for a UI representing a map."
 todo("Is this needed anymore?")
@@ -117,8 +115,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             Integer tileSize = scaleZoom(model.zoomLevel,
                 model.mapDimensions.version);
             helper.drawTile(pen, model.map, point,
-                PointFactory.coordinate(column * tileSize, row * tileSize),
-                PointFactory.coordinate(tileSize, tileSize));
+                coordinateFactory(column * tileSize, row * tileSize),
+                coordinateFactory(tileSize, tileSize));
             if (selected) {
                 Graphics context = pen.create();
                 try {
@@ -186,7 +184,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                             if ((j + minCol) >= (maxCol + 1)) {
                                 break;
                             }
-                            Point location = PointFactory.point(i + minRow, j + minCol);
+                            Point location = pointFactory(i + minRow, j + minCol);
                             paintTile(context, location, i, j,
                                 model.selection == location);
                         }

@@ -9,19 +9,19 @@ import lovelace.util.common {
 
 import model.map {
     IFixture,
-    PointFactory,
     Point
 }
+
 import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    invalidPoint
 }
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture
 }
-
 import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
@@ -29,7 +29,7 @@ import strategicprimer.viewer.report.nodes {
     emptyReportNode
 }
 "A report generator for arbitrary-text notes."
-shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = PointFactory.invalidPoint)
+shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = invalidPoint)
         extends AbstractReportGenerator<TextFixture>(comp, DistanceComparator(hq)) {
     "Produce the part of the report dealing with arbitrary-text notes. If an individual
      note is specified, this does *not* remove it from the collection, because this

@@ -1,12 +1,12 @@
-import model.map {
-    Point,
-    PointFactory,
-    MapDimensions,
-    MapDimensionsImpl
-}
 import ceylon.test {
     assertEquals,
     test
+}
+
+import model.map {
+    Point,
+    MapDimensions,
+    MapDimensionsImpl
 }
 "A view of locations on the map in order, starting at a given point."
 shared class PointIterator(dimensions, forwards, horizontal,
@@ -110,7 +110,7 @@ shared class PointIterator(dimensions, forwards, horizontal,
                             }
                         }
                     }
-                    return PointFactory.point(row, column);
+                    return pointFactory(row, column);
                 }
             }
         }
@@ -120,10 +120,10 @@ shared class PointIterator(dimensions, forwards, horizontal,
 "Test iteration forwards, horizontally, from the beginning of the map."
 test
 void testFromBeginning() {
-    Point[] expected = [PointFactory.point(0, 0), PointFactory.point(0, 1),
-        PointFactory.point(0, 2), PointFactory.point(1, 0), PointFactory.point(1, 1),
-        PointFactory.point(1, 2), PointFactory.point(2, 0), PointFactory.point(2, 1),
-        PointFactory.point(2, 2)];
+    Point[] expected = [pointFactory(0, 0), pointFactory(0, 1),
+        pointFactory(0, 2), pointFactory(1, 0), pointFactory(1, 1),
+        pointFactory(1, 2), pointFactory(2, 0), pointFactory(2, 1),
+        pointFactory(2, 2)];
     Point[] actual = [*PointIterator(MapDimensionsImpl(3, 3, 1), true, true)];
     assertEquals(actual, expected, "Iterator produced points in expected order");
 }
@@ -131,35 +131,35 @@ void testFromBeginning() {
 "Test iteration forwards, horizontally, from a selected point."
 test
 void testFromSelection() {
-    Point[] expected = [PointFactory.point(1, 2), PointFactory.point(2, 0),
-        PointFactory.point(2, 1), PointFactory.point(2, 2), PointFactory.point(0, 0),
-        PointFactory.point(0, 1), PointFactory.point(0, 2), PointFactory.point(1, 0),
-        PointFactory.point(1, 1)];
+    Point[] expected = [pointFactory(1, 2), pointFactory(2, 0),
+        pointFactory(2, 1), pointFactory(2, 2), pointFactory(0, 0),
+        pointFactory(0, 1), pointFactory(0, 2), pointFactory(1, 0),
+        pointFactory(1, 1)];
     Point[] actual = [*PointIterator(MapDimensionsImpl(3, 3, 1), true, true,
-        PointFactory.point(1, 1))];
+        pointFactory(1, 1))];
     assertEquals(actual, expected, "Iterator produced points in expected order");
 }
 
 """Test searching forwards, vertically, from the "selection" the viewer starts with."""
 test
 void testInitialSelection() {
-    Point[] expected = [PointFactory.point(0, 0), PointFactory.point(1, 0),
-        PointFactory.point(2, 0), PointFactory.point(0, 1), PointFactory.point(1, 1),
-        PointFactory.point(2, 1), PointFactory.point(0, 2), PointFactory.point(1, 2),
-        PointFactory.point(2, 2)];
+    Point[] expected = [pointFactory(0, 0), pointFactory(1, 0),
+        pointFactory(2, 0), pointFactory(0, 1), pointFactory(1, 1),
+        pointFactory(2, 1), pointFactory(0, 2), pointFactory(1, 2),
+        pointFactory(2, 2)];
     Point[] actual = [*PointIterator(MapDimensionsImpl(3, 3, 1), true, false,
-        PointFactory.invalidPoint)];
+        invalidPoint)];
     assertEquals(actual, expected, "Iterator produced points in expected order");
 }
 
 "Test searching backwards, horizontally."
 test
 void testReverse() {
-    Point[] expected = [PointFactory.point(2, 2), PointFactory.point(2, 1),
-        PointFactory.point(2, 0), PointFactory.point(1, 2),
-        PointFactory.point(1, 1), PointFactory.point(1, 0),
-        PointFactory.point(0, 2), PointFactory.point(0, 1),
-        PointFactory.point(0, 0)];
+    Point[] expected = [pointFactory(2, 2), pointFactory(2, 1),
+        pointFactory(2, 0), pointFactory(1, 2),
+        pointFactory(1, 1), pointFactory(1, 0),
+        pointFactory(0, 2), pointFactory(0, 1),
+        pointFactory(0, 0)];
     Point[] actual = [*PointIterator(MapDimensionsImpl(3, 3, 1), false, true)];
     assertEquals(actual, expected, "Iterator produced points in expected order");
 }
@@ -167,10 +167,10 @@ void testReverse() {
 "Test searching vertically, backwards."
 test
 void testVerticalReverse() {
-    Point[] expected = [PointFactory.point(2, 2), PointFactory.point(1, 2),
-        PointFactory.point(0, 2), PointFactory.point(2, 1), PointFactory.point(1, 1),
-        PointFactory.point(0, 1), PointFactory.point(2, 0), PointFactory.point(1, 0),
-        PointFactory.point(0, 0)];
+    Point[] expected = [pointFactory(2, 2), pointFactory(1, 2),
+        pointFactory(0, 2), pointFactory(2, 1), pointFactory(1, 1),
+        pointFactory(0, 1), pointFactory(2, 0), pointFactory(1, 0),
+        pointFactory(0, 0)];
     Point[] actual = [*PointIterator(MapDimensionsImpl(3, 3, 1), false, false)];
     assertEquals(actual, expected, "Iterator produced points in expected order");
 }

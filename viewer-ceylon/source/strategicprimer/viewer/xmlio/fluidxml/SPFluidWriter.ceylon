@@ -5,9 +5,7 @@ import ceylon.regex {
     Regex,
     regex
 }
-import strategicprimer.viewer.xmlio {
-    SPWriter
-}
+
 import controller.map.iointerfaces {
     ISPReader
 }
@@ -40,8 +38,13 @@ import model.map {
     IFixture,
     HasPortrait,
     MapDimensions,
-    PointFactory,
     Point
+}
+
+import strategicprimer.viewer.model.map {
+    IMapNG,
+    TileType,
+    pointFactory
 }
 import strategicprimer.viewer.model.map.fixtures {
     Implement,
@@ -71,10 +74,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats,
     ISkill
 }
-import strategicprimer.viewer.model.map {
-    IMapNG,
-    TileType
-}
 import strategicprimer.viewer.model.map.fixtures.resources {
     Grove,
     Meadow,
@@ -90,12 +89,14 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
     Hill,
     Forest
 }
-
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownSize,
     Village,
     AbstractTown,
     Fortress
+}
+import strategicprimer.viewer.xmlio {
+    SPWriter
 }
 Regex snugEndTag = regex("([^ ])/>", true);
 """The main writer-to-XML class in the "fluid XML" implementation."""
@@ -254,7 +255,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             for (i in 0..(dimensions.rows)) {
                 variable Boolean rowEmpty = true;
                 for (j in 0..(dimensions.columns)) {
-                    Point loc = PointFactory.point(i, j);
+                    Point loc = pointFactory(i, j);
                     TileType terrain = obj.getBaseTerrain(loc);
                     if (obj.isLocationEmpty(loc)) {
                         if (rowEmpty) {

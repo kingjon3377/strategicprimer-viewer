@@ -12,14 +12,15 @@ import lovelace.util.common {
 import model.map {
     Point,
     IFixture,
-    Player,
-    PointFactory
+    Player
 }
+
 import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    invalidPoint
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village
@@ -32,7 +33,7 @@ import strategicprimer.viewer.report.nodes {
     emptyReportNode
 }
 "A report generator for Villages."
-shared class VillageReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer, Point hq = PointFactory.invalidPoint)
+shared class VillageReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer, Point hq = invalidPoint)
         extends AbstractReportGenerator<Village>(comp, DistanceComparator(hq)) {
     "Produce the (very brief) report for a particular village (we're probably in the
      middle of a bulleted list, but we don't assume that), or the report on all known

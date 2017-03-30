@@ -20,14 +20,16 @@ import java.io {
 import java.lang {
     IllegalArgumentException
 }
-import strategicprimer.viewer.model.map {
-    TileType
-}
+
 import model.map {
-    PointFactory,
     MapDimensionsImpl,
     MapDimensions,
     Point
+}
+
+import strategicprimer.viewer.model.map {
+    TileType,
+    pointFactory
 }
 
 EncounterTable loadTable(String?()|File argument) {
@@ -128,11 +130,11 @@ void testLoadQuadrantTable() {
     Queue<String> data = LinkedList<String>({"quadrant", "2", "one", "two", "three",
         "four", "five", "six"});
     EncounterTable result = loadTable(data.accept);
-    Point point = PointFactory.point(0, 0);
+    Point point = pointFactory(0, 0);
     MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
     assertEquals("one",result.generateEvent(point, TileType.tundra,
         {}, dimensions), "loading quadrant table");
-    Point pointTwo = PointFactory.point(36, 30);
+    Point pointTwo = pointFactory(36, 30);
     assertEquals("one",result.generateEvent(point, TileType.ocean,
         {}, dimensions), "quadrant table isn't a terrain table");
     assertEquals(result.generateEvent(pointTwo, TileType.tundra,

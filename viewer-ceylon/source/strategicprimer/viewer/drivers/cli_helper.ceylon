@@ -33,12 +33,20 @@ import java.math {
 import lovelace.util.common {
     todo
 }
+import lovelace.util.jvm {
+    systemIn,
+    isNumeric,
+    parseInt
+}
 
 import model.map {
     PlayerImpl,
     HasName,
-    PointFactory,
     Point
+}
+
+import strategicprimer.viewer.model.map {
+    pointFactory
 }
 
 import util {
@@ -47,9 +55,6 @@ import util {
 
 import view.util {
     SystemOut
-}
-import lovelace.util.jvm {
-    systemIn, isNumeric, parseInt
 }
 """An interface for the "CLI helper," which encapsulates input and output streams,
    allowing automated testing of CLIs and GUI wrappers around CLIs."""
@@ -142,7 +147,7 @@ shared interface ICLIHelper satisfies Closeable {
             "The prompt to use to prompt the user."
             String prompt) {
         print(prompt);
-        return PointFactory.point(inputNumber("Row: "), inputNumber("Column: "));
+        return pointFactory(inputNumber("Row: "), inputNumber("Column: "));
     }
 }
 "A helper class to let help CLIs interact with the user, encapsulating input and output
@@ -661,9 +666,9 @@ void testPrinting() {
 test
 void testInputPoint() {
     assertCLI((cli) => cli.inputPoint("point prompt one "), {"2", "3"},
-        "point prompt one Row: Column: ", PointFactory.point(2, 3),
+        "point prompt one Row: Column: ", pointFactory(2, 3),
         "reads row then column", "prompts as expected");
     assertCLI((cli) => cli.inputPoint("point prompt two "), {"-1", "0", "-2", "4"},
-        "point prompt two Row: Row: Column: Column: ", PointFactory.point(0, 4),
+        "point prompt two Row: Row: Column: Column: ", pointFactory(0, 4),
         "doesn't accept negative row or column", "prompts as expected");
 }

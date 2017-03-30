@@ -4,6 +4,9 @@ import ceylon.collection {
     ArrayList,
     HashMap
 }
+import ceylon.language {
+    createMap=map
+}
 
 import java.lang {
     IllegalStateException
@@ -17,14 +20,15 @@ import lovelace.util.common {
 import model.map {
     IFixture,
     Player,
-    PointFactory,
     Point
 }
+
 import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    invalidPoint
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus,
@@ -39,13 +43,10 @@ import strategicprimer.viewer.report.nodes {
     SectionListReportNode,
     emptyReportNode
 }
-import ceylon.language {
-    createMap=map
-}
 "A report generator for towns."
 todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, Point hq = PointFactory.invalidPoint)
+        Player currentPlayer, Point hq = invalidPoint)
         extends AbstractReportGenerator<ITownFixture>(comp, DistanceComparator(hq)) {
     {TownStatus+} statuses = {TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
         TownStatus.burned};

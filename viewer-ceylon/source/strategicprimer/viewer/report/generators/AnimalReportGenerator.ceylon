@@ -12,19 +12,19 @@ import lovelace.util.common {
 
 import model.map {
     IFixture,
-    PointFactory,
     Point
 }
+
 import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    invalidPoint
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     Animal
 }
-
 import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
@@ -34,7 +34,7 @@ import strategicprimer.viewer.report.nodes {
 }
 "A report generator for sightings of animals."
 todo("Ensure that animal-tracks' synthetic IDs are used to remove them")
-shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = PointFactory.invalidPoint)
+shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = invalidPoint)
         extends AbstractReportGenerator<Animal>(comp, DistanceComparator(hq)) {
     "Produce the sub-report about animals or an individual Animal."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,

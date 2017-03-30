@@ -2,10 +2,6 @@ import java.awt {
     Image,
     Graphics
 }
-import strategicprimer.viewer.model {
-    IMultiMapModel,
-    IDriverModel
-}
 import java.awt.image {
     BufferedImage
 }
@@ -19,12 +15,7 @@ import java.util.\ifunction {
     Predicate
 }
 
-import strategicprimer.viewer.model.map {
-    TileFixture,
-    IMapNG
-}
 import model.map {
-    PointFactory,
     MapDimensions
 }
 
@@ -41,10 +32,22 @@ import strategicprimer.viewer.drivers.map_viewer {
     DirectTileDrawHelper,
     Ver2TileDrawHelper
 }
+import strategicprimer.viewer.model {
+    IMultiMapModel,
+    IDriverModel
+}
+import strategicprimer.viewer.model.map {
+    TileFixture,
+    IMapNG,
+    pointFactory,
+    coordinateFactory,
+    clearPointCache
+}
 
 import view.util {
     Coordinate
 }
+variable Boolean usePointCache = false;
 "The first test: all in one place."
 Integer first(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
     BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
@@ -65,13 +68,13 @@ Integer second(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
-    Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
+    Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
     for (rep in 0..reps) {
         image.flush();
         for (point in map.locations) {
             helper.drawTile(image.createGraphics(), map, point,
-                PointFactory.coordinate(point.row * tileSize, point.col * tileSize),
-                dimensions);
+                coordinateFactory(point.row * tileSize, point.col * tileSize,
+                    usePointCache), dimensions);
         }
     }
     Integer end = system.nanoseconds;
@@ -101,10 +104,10 @@ Integer fourth(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize
     for (rep in 0..reps) {
         image.flush();
         Graphics pen = image.createGraphics();
-        Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
+        Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
         for (point in map.locations) {
-            helper.drawTile(pen, map, point, PointFactory.coordinate(point.row * tileSize,
-                point.col * tileSize), dimensions);
+            helper.drawTile(pen, map, point, coordinateFactory(point.row * tileSize,
+                point.col * tileSize, usePointCache), dimensions);
         }
         pen.dispose();
     }
@@ -122,11 +125,12 @@ Integer fifthOne(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSi
     for (rep in 0..reps) {
         image.flush();
         Graphics pen = image.createGraphics();
-        Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
+        Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
         for (row in testRowSpan) {
             for (col in testColSpan) {
-                helper.drawTile(pen, map, PointFactory.point(row, col),
-                    PointFactory.coordinate(row * tileSize, col * tileSize), dimensions);
+                helper.drawTile(pen, map, pointFactory(row, col, usePointCache),
+                    coordinateFactory(row * tileSize, col * tileSize, usePointCache),
+                    dimensions);
             }
         }
         pen.dispose();
@@ -142,12 +146,12 @@ Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSi
     for (rep in 0..reps) {
         image.flush();
         Graphics pen = image.createGraphics();
-        Coordinate dimensions = PointFactory.coordinate(tileSize, tileSize);
+        Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
         for (point in map.locations) {
             if (testRowSpan.contains(point.row) && testColSpan.contains(point.col)) {
                 helper.drawTile(pen, map, point,
-                    PointFactory.coordinate(point.row * tileSize, point.col * tileSize),
-                    dimensions);
+                    coordinateFactory(point.row * tileSize, point.col * tileSize,
+                        usePointCache), dimensions);
             }
         }
         pen.dispose();
@@ -217,17 +221,16 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
         void runTestProcedure(ICLIHelper cli, IMapNG map, Path? filename,
                 Boolean() rng) {
             cli.println("Testing using ``filename?.string else "an unsaved map"``");
-            PointFactory.clearCache();
-            Boolean startCaching = rng();
-            PointFactory.shouldUseCache(startCaching);
+            clearPointCache();
+            usePointCache = rng();
             String cachingMessage(Boolean caching) {
                 return (caching) then "Using cache:" else "Not using cache:";
             }
-            cli.println(cachingMessage(startCaching));
+            cli.println(cachingMessage(usePointCache));
             Integer reps = 50;
             runAllTests(cli, map, reps);
-            PointFactory.shouldUseCache(!startCaching);
-            cli.println(cachingMessage(!startCaching));
+            usePointCache = !usePointCache;
+            cli.println(cachingMessage(usePointCache));
             runAllTests(cli, map, reps);
         }
         if (is IMultiMapModel model) {

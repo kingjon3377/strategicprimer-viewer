@@ -8,9 +8,6 @@ import controller.map.formatexceptions {
 import controller.map.iointerfaces {
     ISPReader
 }
-import strategicprimer.viewer.model {
-    IDRegistrar
-}
 
 import java.lang {
     IllegalArgumentException,
@@ -42,8 +39,14 @@ import lovelace.util.common {
 
 import model.map {
     HasImage,
-    Point,
-    PointFactory
+    Point
+}
+
+import strategicprimer.viewer.model {
+    IDRegistrar
+}
+import strategicprimer.viewer.model.map {
+    pointFactory
 }
 
 import util {
@@ -216,7 +219,7 @@ abstract class YAAbstractReader<Element>
     }
     "Parse a Point from a tag's properties."
     shared static Point parsePoint(StartElement element) =>
-            PointFactory.point(getIntegerParameter(element, "row"),
+            pointFactory(getIntegerParameter(element, "row"),
                 getIntegerParameter(element, "column"));
     "The Warning instance to use."
     Warning warner;

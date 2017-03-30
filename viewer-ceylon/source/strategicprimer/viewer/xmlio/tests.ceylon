@@ -67,15 +67,19 @@ import model.map {
     MapDimensionsImpl,
     PlayerCollection,
     Point,
-    PointFactory,
     MutablePlayer
+}
+
+import strategicprimer.viewer.drivers.advancement {
+    races
 }
 import strategicprimer.viewer.model.map {
     TileType,
     SPMapNG,
     IMutableMapNG,
     IMapNG,
-    HasMutableImage
+    HasMutableImage,
+    pointFactory
 }
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture,
@@ -123,10 +127,6 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
     Oasis,
     Hill,
     Forest
-}
-
-import strategicprimer.viewer.drivers.advancement {
-    races
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus,
@@ -613,7 +613,7 @@ test
 parameters(`value riverParameters`)
 void testSimpleRiverSerialization(River river) {
     assertSerialization("River alone", river);
-    Point loc = PointFactory.point(0, 0);
+    Point loc = pointFactory(0, 0);
     assertSerialization("River in tile", encapsulateRivers(loc, river));
 }
 
@@ -633,32 +633,32 @@ void testRiverSerializationOne() {
     fixTwo.addRiver(River.north);
     assertEquals(fixOne, fixTwo, "Rivers added separately");
     assertEquals(
-        encapsulateRivers(PointFactory.point(1, 1), River.north, River.south),
-        encapsulateRivers(PointFactory.point(1, 1), River.north, River.south),
+        encapsulateRivers(pointFactory(1, 1), River.north, River.south),
+        encapsulateRivers(pointFactory(1, 1), River.north, River.south),
         "Tile equality with rivers");
     assertEquals(
-        encapsulateRivers(PointFactory.point(1, 1), River.east, River.west),
-        encapsulateRivers(PointFactory.point(1, 1), River.west, River.east),
+        encapsulateRivers(pointFactory(1, 1), River.east, River.west),
+        encapsulateRivers(pointFactory(1, 1), River.west, River.east),
         "Tile equality with different order of rivers");
-    assertSerialization("Two rivers", encapsulateRivers(PointFactory.point(1, 2),
+    assertSerialization("Two rivers", encapsulateRivers(pointFactory(1, 2),
         River.north, River.south));
     assertInvalid(encapsulateTileString("""<river direction="invalid" />"""));
 }
 
 test
 void testSimpleTileSerializtion() {
-    assertSerialization("Simple Tile", createSimpleMap(PointFactory.point(1, 1),
-        PointFactory.point(0, 0)->TileType.desert));
-    IMutableMapNG firstMap = createSimpleMap(PointFactory.point(2, 2),
-        PointFactory.point(1, 1)->TileType.plains);
-    firstMap.addFixture(PointFactory.point(1, 1),
+    assertSerialization("Simple Tile", createSimpleMap(pointFactory(1, 1),
+        pointFactory(0, 0)->TileType.desert));
+    IMutableMapNG firstMap = createSimpleMap(pointFactory(2, 2),
+        pointFactory(1, 1)->TileType.plains);
+    firstMap.addFixture(pointFactory(1, 1),
         SimpleImmortal(SimpleImmortalKind.griffin, 1));
     assertSerialization("Tile with one fixture", firstMap);
-    IMutableMapNG secondMap = createSimpleMap(PointFactory.point(3, 3),
-        PointFactory.point(2, 2)->TileType.steppe);
-    secondMap.addFixture(PointFactory.point(2, 2),
+    IMutableMapNG secondMap = createSimpleMap(pointFactory(3, 3),
+        pointFactory(2, 2)->TileType.steppe);
+    secondMap.addFixture(pointFactory(2, 2),
         Unit(PlayerImpl(1, ""), "unitOne", "firstUnit", 1));
-    secondMap.setForest(PointFactory.point(2, 2), Forest("forestKind", true, 8));
+    secondMap.setForest(pointFactory(2, 2), Forest("forestKind", true, 8));
     assertSerialization("Tile with two fixtures", secondMap);
     assertMissingProperty<IMapNG>(
         """<map version="2" rows="1" columns="1">
@@ -675,18 +675,18 @@ void testSimpleTileSerializtion() {
 
 test
 void testTileSerialization() {
-    IMutableMapNG thirdMap = createSimpleMap(PointFactory.point(4, 4),
-        PointFactory.point(3, 3)->TileType.jungle);
+    IMutableMapNG thirdMap = createSimpleMap(pointFactory(4, 4),
+        pointFactory(3, 3)->TileType.jungle);
     Fortress fort = Fortress(PlayerImpl(2, ""), "fortOne", 1,
         TownSize.small);
     fort.addMember(Unit(PlayerImpl(2, ""), "unitTwo", "secondUnit", 2));
-    thirdMap.addFixture(PointFactory.point(3, 3), fort);
-    thirdMap.addFixture(PointFactory.point(3, 3),
+    thirdMap.addFixture(pointFactory(3, 3), fort);
+    thirdMap.addFixture(pointFactory(3, 3),
         TextFixture("Random text here", 5));
-    thirdMap.addRivers(PointFactory.point(3, 3), River.lake);
+    thirdMap.addRivers(pointFactory(3, 3), River.lake);
     assertSerialization("More complex tile", thirdMap);
-    IMutableMapNG fourthMap = createSimpleMap(PointFactory.point(5, 5),
-        PointFactory.point(4, 4)->TileType.plains);
+    IMutableMapNG fourthMap = createSimpleMap(pointFactory(5, 5),
+        pointFactory(4, 4)->TileType.plains);
     for (deprecated in {true, false}) {
         assertDeprecatedDeserialization<IMapNG>(
             "Deserialization of deprecated tile-type idiom", fourthMap,
@@ -697,13 +697,13 @@ void testTileSerialization() {
 
 test
 void testTileSerializationTwo() {
-    IMutableMapNG five = createSimpleMap(PointFactory.point(3, 4),
-        PointFactory.point(2, 3)->TileType.jungle);
-    five.addFixture(PointFactory.point(2, 3),
+    IMutableMapNG five = createSimpleMap(pointFactory(3, 4),
+        pointFactory(2, 3)->TileType.jungle);
+    five.addFixture(pointFactory(2, 3),
         Unit(PlayerImpl(2, ""), "explorer", "name one", 1));
-    five.addFixture(PointFactory.point(2, 3),
+    five.addFixture(pointFactory(2, 3),
         Unit(PlayerImpl(2, ""), "explorer", "name two", 2));
-    assertEquals(five.getOtherFixtures(PointFactory.point(2, 3)).size, 2,
+    assertEquals(five.getOtherFixtures(pointFactory(2, 3)).size, 2,
         "Just checking ...");
     assertSerialization("Multiple units should come through", five);
     String xmlTwoLogical =
@@ -737,15 +737,15 @@ void testTileSerializationTwo() {
     assertTrue(serializedForm == xmlTwoLogical || serializedForm == xmlTwoAlphabetical ||
             serializedForm == xmlTwoLogical.replace("\" />", "\"/>"),
         "Multiple units");
-    assertEquals(createSerializedForm(createSimpleMap(PointFactory.point(1, 1),
-            PointFactory.point(0, 0)->TileType.notVisible), true),
+    assertEquals(createSerializedForm(createSimpleMap(pointFactory(1, 1),
+            pointFactory(0, 0)->TileType.notVisible), true),
         "<view xmlns=\"``ISPReader.namespace`` current_player=\"-1\" current_turn=\"-1\">
          \t<map version=\"2\" rows=\"1\" columns=\"1\">
          \t</map>
          </view>
          ", "Shouldn't print empty not-visible tiles");
-    String emptySerializedForm = createSerializedForm(createSimpleMap(PointFactory.point(1, 1),
-        PointFactory.point(0, 0)->TileType.notVisible), false);
+    String emptySerializedForm = createSerializedForm(createSimpleMap(pointFactory(1, 1),
+        pointFactory(0, 0)->TileType.notVisible), false);
     String firstPossibility =
             "<view xmlns=\"``ISPReader
                 .namespace``\" current_player=\"-1\" current_turn=\"-1\">
@@ -771,10 +771,10 @@ void testTileSerializationTwo() {
 test
 void testTileSerializationThree() {
     IMutableMapNG six = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 5);
-    six.setMountainous(PointFactory.point(0, 0), true);
-    six.setGround(PointFactory.point(0, 1), Ground(22, "basalt", false));
-    six.setForest(PointFactory.point(1, 0), Forest("pine", false, 19));
-    six.addFixture(PointFactory.point(1, 1), Animal("beaver", false, false, "wild", 18));
+    six.setMountainous(pointFactory(0, 0), true);
+    six.setGround(pointFactory(0, 1), Ground(22, "basalt", false));
+    six.setForest(pointFactory(1, 0), Forest("pine", false, 19));
+    six.addFixture(pointFactory(1, 1), Animal("beaver", false, false, "wild", 18));
     for (deprecated in {true, false}) {
         assertMissingPropertyDeserialization("Not-visible tiles with contents are serialized",
             six, createSerializedForm(six, deprecated), "kind");
@@ -806,14 +806,14 @@ void testMapSerialization() {
     IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(1, 1, 2),
         PlayerCollection(), -1);
     firstMap.addPlayer(player);
-    Point loc = PointFactory.point(0, 0);
+    Point loc = pointFactory(0, 0);
     firstMap.setBaseTerrain(loc, TileType.plains);
     assertSerialization("Simple Map serialization", firstMap);
     assertMissingProperty<IMapNG>("""<map version="2" columns="1" />""", "rows", false);
     assertMissingProperty<IMapNG>("""<map version="2" rows="1" />""", "columns", false);
     String originalFormOne = createSerializedForm(firstMap, false);
     String originalFormTwo = createSerializedForm(firstMap, true);
-    firstMap.setBaseTerrain(PointFactory.point(1, 1), TileType.notVisible);
+    firstMap.setBaseTerrain(pointFactory(1, 1), TileType.notVisible);
     assertEquals(createSerializedForm(firstMap, false), originalFormOne,
         "Explicitly not visible tile is not serialized");
     assertEquals(createSerializedForm(firstMap, true), originalFormTwo,
@@ -846,7 +846,7 @@ void testNamespacedSerialization() {
     player.setCurrent(true);
     IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(1, 1, 2), PlayerCollection(), 0);
     firstMap.addPlayer(player);
-    Point loc = PointFactory.point(0, 0);
+    Point loc = pointFactory(0, 0);
     firstMap.setBaseTerrain(loc, TileType.steppe);
     assertMapDeserialization("Proper deserialization of namespaced map", firstMap,
         "<map xmlns=\"``ISPReader.namespace``\" version=\"2\" rows=\"1\" columns=\"1\"
@@ -1022,9 +1022,9 @@ void testTextSerialization() {
     assertSerialization("Third test of [[TextFixture]] serialization", third);
     assertUnwantedChild<TextFixture>("""<text turn="1"><troll /></text>""", false);
     assertImageSerialization("Text image property is preserved", third);
-    IMutableMapNG wrapper = createSimpleMap(PointFactory.point(1, 1),
-        PointFactory.point(0, 0)->TileType.plains);
-    wrapper.addFixture(PointFactory.point(0, 0), TextFixture("one", -1));
+    IMutableMapNG wrapper = createSimpleMap(pointFactory(1, 1),
+        pointFactory(0, 0)->TileType.plains);
+    wrapper.addFixture(pointFactory(0, 0), TextFixture("one", -1));
     assertForwardDeserialization("Deprecated text-in-map still works",
         """<map version="2" rows="1" columns="1">
            <tile row="0" column="0" kind="plains">one</tile></map>""", wrapper.equals);
@@ -1169,18 +1169,18 @@ void testAdventureSerialization() {
     AdventureFixture second = AdventureFixture(PlayerImpl(2, "player"),
         "second hook brief", "second hook full", 2);
     assertNotEquals(first, second, "Two different hooks are not equal");
-    IMutableMapNG wrapper = createSimpleMap(PointFactory.point(1, 1),
-        PointFactory.point(0, 0)->TileType.plains);
+    IMutableMapNG wrapper = createSimpleMap(pointFactory(1, 1),
+        pointFactory(0, 0)->TileType.plains);
     wrapper.addPlayer(independent);
-    wrapper.addFixture(PointFactory.point(0, 0), first);
+    wrapper.addFixture(pointFactory(0, 0), first);
     assertSerialization("First [[AdventureFixture]] serialization test", wrapper);
     assertSerialization("Second [[AdventureFixture]] serialization test", second);
     assertSerialization("[[AdventureFixture]] with empty descriptions",
         AdventureFixture(PlayerImpl(3, "third"), "", "", 4));
-    Portal third = Portal("portal dest", PointFactory.point(1, 2), 3);
-    Portal fourth = Portal("portal dest two", PointFactory.point(2, 1), 4);
+    Portal third = Portal("portal dest", pointFactory(1, 2), 3);
+    Portal fourth = Portal("portal dest two", pointFactory(2, 1), 4);
     assertNotEquals(third, fourth, "Two different portals are not equal");
-    wrapper.addFixture(PointFactory.point(0, 0), third);
+    wrapper.addFixture(pointFactory(0, 0), third);
     assertSerialization("First [[Portal]] serialization test", wrapper);
     assertSerialization("Second [[Portal]] serialization test", fourth);
 }
@@ -1296,8 +1296,8 @@ void testForestSerialization() {
     assertMissingProperty<Forest>("<forest />", "kind", false);
     assertImageSerialization("Forest image property is preserved",
         Forest("thirdForest", true, 3));
-    Point loc = PointFactory.point(0, 0);
-    IMutableMapNG map = createSimpleMap(PointFactory.point(1, 1),
+    Point loc = pointFactory(0, 0);
+    IMutableMapNG map = createSimpleMap(pointFactory(1, 1),
         loc->TileType.plains);
     map.setForest(loc, Forest("trees", false, 4));
     map.addFixture(loc, Forest("secondForest", true, 5));
@@ -1353,8 +1353,8 @@ void testGroundSerialization() {
     assertSerialization("First test of Ground serialization", Ground(1, "one", true));
     assertSerialization("Second test of Ground serialization", Ground(2, "two", true));
     assertSerialization("Third test of Ground serialization", Ground(3, "three", false));
-    Point loc = PointFactory.point(0, 0);
-    IMutableMapNG map = createSimpleMap(PointFactory.point(1, 1),
+    Point loc = pointFactory(0, 0);
+    IMutableMapNG map = createSimpleMap(pointFactory(1, 1),
         loc->TileType.plains);
     map.setGround(loc, Ground(-1, "four", true));
     assertSerialization("Test that reader handles ground as a fixture", map);

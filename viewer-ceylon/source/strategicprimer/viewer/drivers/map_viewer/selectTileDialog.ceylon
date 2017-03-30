@@ -1,33 +1,39 @@
-import java.text {
-    NumberFormat
-}
-import strategicprimer.viewer.drivers {
-    SPDialog
-}
-import model.map {
-    PointFactory,
-    MapDimensions
+import java.awt {
+    Component,
+    Dimension,
+    Frame
 }
 import java.awt.event {
     ActionEvent
 }
+import java.text {
+    NumberFormat
+}
+
 import javax.swing {
     JButton,
     JTextField,
     JPanel,
     JLabel
 }
-import java.awt {
-    Component,
-    Dimension,
-    Frame
-}
+
 import lovelace.util.jvm {
     platform,
     BoxAxis,
     listenedButton,
     boxPanel,
     BoxPanel
+}
+
+import model.map {
+    MapDimensions
+}
+
+import strategicprimer.viewer.drivers {
+    SPDialog
+}
+import strategicprimer.viewer.model.map {
+    pointFactory
 }
 class NumberState of valid|nonNumeric|negative|overflow {
     shared new valid { }
@@ -88,7 +94,7 @@ SPDialog selectTileDialog(Frame? parentFrame, IViewerModel model) {
         }
         if (rowState == NumberState.valid, columnState == NumberState.valid) {
             try {
-                model.selection = PointFactory.point(numParser.parse(rowText).intValue(),
+                model.selection = pointFactory(numParser.parse(rowText).intValue(),
                     numParser.parse(columnText).intValue());
             } catch (ParseException except) {
                 log.error("Parse failure after we checked input was numeric", except);

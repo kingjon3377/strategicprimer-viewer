@@ -2,14 +2,16 @@ import ceylon.test {
     test,
     assertEquals
 }
-import strategicprimer.viewer.model.map {
-    SPMapNG
-}
+
 import model.map {
     MapDimensionsImpl,
     PlayerCollection,
-    PointFactory,
     Point
+}
+
+import strategicprimer.viewer.model.map {
+    SPMapNG,
+    pointFactory
 }
 // This file is tests that the movement code gets its most basic functionality, finding
 // adjacent tiles, right.
@@ -26,11 +28,11 @@ void testEast() {
         PlayerCollection(), 0), null);
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.east, source, destination, extra);
-    localAssert(PointFactory.point(0, 0), PointFactory.point(0, 1));
-    localAssert(PointFactory.point(1, 1), PointFactory.point(1, 2));
-    localAssert(PointFactory.point(3, 4), PointFactory.point(3, 0),
+    localAssert(pointFactory(0, 0), pointFactory(0, 1));
+    localAssert(pointFactory(1, 1), pointFactory(1, 2));
+    localAssert(pointFactory(3, 4), pointFactory(3, 0),
         " in a 5x5 map");
-    localAssert(PointFactory.point(4, 3), PointFactory.point(4, 4));
+    localAssert(pointFactory(4, 3), pointFactory(4, 4));
 }
 
 "Test that wrapping to the north works properly."
@@ -40,10 +42,10 @@ void testNorth() {
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.north, source, destination,
                extra);
-    localAssert(PointFactory.point(0, 0), PointFactory.point(4, 0), " in a 5x5 map");
-    localAssert(PointFactory.point(1, 1), PointFactory.point(0, 1));
-    localAssert(PointFactory.point(3, 4), PointFactory.point(2, 4));
-    localAssert(PointFactory.point(4, 3), PointFactory.point(3, 3));
+    localAssert(pointFactory(0, 0), pointFactory(4, 0), " in a 5x5 map");
+    localAssert(pointFactory(1, 1), pointFactory(0, 1));
+    localAssert(pointFactory(3, 4), pointFactory(2, 4));
+    localAssert(pointFactory(4, 3), pointFactory(3, 3));
 }
 
 "Test that wrapping to the south works properly."
@@ -53,10 +55,10 @@ void testSouth() {
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.south, source, destination,
                 extra);
-    localAssert(PointFactory.point(0, 0), PointFactory.point(1, 0));
-    localAssert(PointFactory.point(1, 1), PointFactory.point(2, 1));
-    localAssert(PointFactory.point(3, 4), PointFactory.point(4, 4));
-    localAssert(PointFactory.point(4, 3), PointFactory.point(0, 3),
+    localAssert(pointFactory(0, 0), pointFactory(1, 0));
+    localAssert(pointFactory(1, 1), pointFactory(2, 1));
+    localAssert(pointFactory(3, 4), pointFactory(4, 4));
+    localAssert(pointFactory(4, 3), pointFactory(0, 3),
         " in a 5x5 map");
 }
 
@@ -67,11 +69,11 @@ void testWest() {
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.west, source, destination,
                 extra);
-    localAssert(PointFactory.point(0, 0), PointFactory.point(0, 4),
+    localAssert(pointFactory(0, 0), pointFactory(0, 4),
         " in a 5x5 map");
-    localAssert(PointFactory.point(1, 1), PointFactory.point(1, 0));
-    localAssert(PointFactory.point(3, 4), PointFactory.point(3, 3));
-    localAssert(PointFactory.point(4, 3), PointFactory.point(4, 2));
+    localAssert(pointFactory(1, 1), pointFactory(1, 0));
+    localAssert(pointFactory(3, 4), pointFactory(3, 3));
+    localAssert(pointFactory(4, 3), pointFactory(4, 2));
 }
 
 // TODO: add tests covering other directions

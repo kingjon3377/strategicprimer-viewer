@@ -3,25 +3,33 @@ import ceylon.logging {
     Logger
 }
 
-import strategicprimer.viewer.model {
-    DistanceComparator,
-    IDRegistrar
-}
-
-
 import lovelace.util.common {
     todo,
     DelayedRemovalMap,
     IntMap
 }
-import strategicprimer.viewer.model.map.fixtures {
-    TerrainFixture
-}
+
 import model.map {
     Player,
     IFixture,
-    Point,
-    PointFactory
+    Point
+}
+
+import strategicprimer.viewer.drivers {
+    createIDFactory
+}
+import strategicprimer.viewer.model {
+    DistanceComparator,
+    IDRegistrar
+}
+import strategicprimer.viewer.model.map {
+    IMapNG,
+    FixtureIterable,
+    TileFixture,
+    invalidPoint
+}
+import strategicprimer.viewer.model.map.fixtures {
+    TerrainFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
@@ -29,12 +37,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
-import strategicprimer.viewer.model.map {
-    IMapNG,
-    FixtureIterable,
-    TileFixture
-}
-
 import strategicprimer.viewer.report.generators {
     pairComparator,
     AnimalReportGenerator,
@@ -53,9 +55,6 @@ import strategicprimer.viewer.report.nodes {
     IReportNode,
     RootReportNode
 }
-import strategicprimer.viewer.drivers {
-    createIDFactory
-}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "Find the location of the given player's HQ in the given map."
@@ -73,7 +72,7 @@ Point findHQ(IMapNG map, Player player) {
             }
         }
     } else {
-        return retval else PointFactory.invalidPoint;
+        return retval else invalidPoint;
     }
 }
 "Create a mapping from ID numbers to Pairs of fixtures and their location for all fixtures

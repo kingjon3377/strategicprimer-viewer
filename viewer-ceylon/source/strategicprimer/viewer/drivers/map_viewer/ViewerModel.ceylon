@@ -18,18 +18,18 @@ import model.listeners {
     SelectionChangeSupport,
     SelectionChangeListener
 }
-import strategicprimer.viewer.model.map {
-    IMutableMapNG,
-    IMapNG
-}
 import model.map {
-    Point,
-    PointFactory
+    Point
 }
 
 import strategicprimer.viewer.model {
     SimpleDriverModel,
     IDriverModel
+}
+import strategicprimer.viewer.model.map {
+    IMutableMapNG,
+    IMapNG,
+    invalidPoint
 }
 "A class to encapsulate the various model-type things views need to do with maps."
 todo("Tests")
@@ -74,7 +74,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         }
     }
     "The currently selected point in the main map."
-    variable Point selPoint = PointFactory.invalidPoint;
+    variable Point selPoint = invalidPoint;
     "The currently selected point in the map."
     todo("Rename to `selection`")
     shared actual Point selection => selPoint;
@@ -84,7 +84,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         scs.fireChanges(oldSel, selPoint);
     }
     "Clear the selection."
-    shared void clearSelection() => selection = PointFactory.invalidPoint;
+    shared void clearSelection() => selection = invalidPoint;
     "The visible dimensions of the map."
     variable VisibleDimensions visDimensions;
     shared new ("The initial map" IMutableMapNG theMap,

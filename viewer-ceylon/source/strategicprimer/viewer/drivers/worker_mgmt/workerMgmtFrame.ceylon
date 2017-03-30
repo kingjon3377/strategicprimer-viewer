@@ -1,24 +1,28 @@
-import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit
+import ceylon.file {
+    parsePath
 }
-import strategicprimer.viewer.model.map.fixtures.towns {
-    Fortress
+
+import com.bric.window {
+    WindowList
 }
+
 import java.awt {
     Dimension,
     Component,
     Frame
 }
-import strategicprimer.viewer.report.nodes {
-    IReportNode,
-    SimpleReportNode
+import java.awt.event {
+    WindowEvent,
+    MouseAdapter,
+    MouseEvent,
+    WindowAdapter,
+    ActionEvent,
+    KeyEvent
 }
-import ceylon.file {
-    parsePath
+import java.lang {
+    Thread
 }
-import strategicprimer.viewer.report {
-    createAbbreviatedReportIR
-}
+
 import javax.swing {
     JPanel,
     JTree,
@@ -30,55 +34,13 @@ import javax.swing {
     SwingUtilities,
     JFileChooser
 }
-import strategicprimer.viewer.drivers {
-    SPFrame,
-    MenuBroker,
-    SPOptions,
-    SPDialog,
-    createIDFactory,
-    FileChooser
-}
-import model.map {
-    PointFactory,
-    Player,
-    Point
-}
-import strategicprimer.viewer.model {
-    DistanceComparator
-}
-import strategicprimer.viewer.model.map {
-    IMapNG
-}
 import javax.swing.tree {
     TreePath,
     DefaultMutableTreeNode,
     DefaultTreeCellRenderer,
     DefaultTreeModel
 }
-import java.awt.event {
-    WindowEvent,
-    MouseAdapter,
-    MouseEvent,
-    WindowAdapter,
-    ActionEvent,
-    KeyEvent
-}
-import model.listeners {
-    PlayerChangeListener
-}
-import java.lang {
-    Thread
-}
-import com.bric.window {
-    WindowList
-}
-import strategicprimer.viewer.drivers.map_viewer {
-    newUnitDialog,
-    IViewerFrame,
-    viewerFrame,
-    ViewerModel,
-    IViewerModel
-}
+
 import lovelace.util.jvm {
     platform,
     listenedButton,
@@ -89,11 +51,55 @@ import lovelace.util.jvm {
     BorderedPanel,
     verticalSplit
 }
+
+import model.listeners {
+    PlayerChangeListener
+}
+import model.map {
+    Player,
+    Point
+}
+
+import strategicprimer.viewer.drivers {
+    SPFrame,
+    MenuBroker,
+    SPOptions,
+    SPDialog,
+    createIDFactory,
+    FileChooser
+}
+import strategicprimer.viewer.drivers.map_viewer {
+    newUnitDialog,
+    IViewerFrame,
+    viewerFrame,
+    ViewerModel,
+    IViewerModel
+}
+import strategicprimer.viewer.model {
+    DistanceComparator
+}
+import strategicprimer.viewer.model.map {
+    IMapNG,
+    invalidPoint
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Fortress
+}
+import strategicprimer.viewer.report {
+    createAbbreviatedReportIR
+}
+import strategicprimer.viewer.report.nodes {
+    IReportNode,
+    SimpleReportNode
+}
 "A window to let the player manage units."
 SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         IWorkerModel model, MenuBroker menuHandler) {
     Point findHQ() {
-        variable Point retval = PointFactory.invalidPoint;
+        variable Point retval = invalidPoint;
         for (location in model.map.locations) {
             for (fixture in model.map.getOtherFixtures(location)) {
                 if (is Fortress fixture, fixture.owner == model.map.currentPlayer) {

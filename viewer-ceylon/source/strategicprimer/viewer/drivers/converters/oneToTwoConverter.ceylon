@@ -30,35 +30,12 @@ import lovelace.util.jvm {
 
 import model.map {
     River,
-    PointFactory,
     PlayerCollection,
     Player,
     MapDimensions,
     MapDimensionsImpl,
     PlayerImpl,
     Point
-}
-import strategicprimer.viewer.model.map {
-    TileFixture,
-    TileType,
-    SPMapNG,
-    IMutableMapNG,
-    IMapNG
-}
-import strategicprimer.viewer.model.map.fixtures {
-    TextFixture,
-    Ground
-}
-import strategicprimer.viewer.model.map.fixtures.resources {
-    FieldStatus,
-    Meadow,
-    Shrub,
-    Grove
-}
-import strategicprimer.viewer.model.map.fixtures.terrain {
-    Sandbar,
-    Hill,
-    Forest
 }
 
 import strategicprimer.viewer.drivers {
@@ -83,6 +60,29 @@ import strategicprimer.viewer.model {
     IMultiMapModel,
     IDriverModel,
     IDRegistrar
+}
+import strategicprimer.viewer.model.map {
+    TileFixture,
+    TileType,
+    SPMapNG,
+    IMutableMapNG,
+    IMapNG,
+    pointFactory
+}
+import strategicprimer.viewer.model.map.fixtures {
+    TextFixture,
+    Ground
+}
+import strategicprimer.viewer.model.map.fixtures.resources {
+    FieldStatus,
+    Meadow,
+    Shrub,
+    Grove
+}
+import strategicprimer.viewer.model.map.fixtures.terrain {
+    Sandbar,
+    Hill,
+    Forest
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     ITownFixture,
@@ -186,7 +186,7 @@ object oneToTwoConverter satisfies SimpleDriver {
         {Point*} convertTile(Point point) {
             Point[] initial = [ for (i in 0..expansionFactor)
             for (j in 0..expansionFactor)
-            PointFactory.point(point.row * expansionFactor + i,
+            pointFactory(point.row * expansionFactor + i,
                 point.col * expansionFactor + j) ];
             for (subtile in initial) {
                 retval.setBaseTerrain(subtile, oldCopy.getBaseTerrain(point));
@@ -269,15 +269,15 @@ object oneToTwoConverter satisfies SimpleDriver {
         }
         for (row in 0..oldDimensions.rows) {
             for (column in 0..oldDimensions.columns) {
-                converted.addAll(convertTile(PointFactory.point(row, column)));
+                converted.addAll(convertTile(pointFactory(row, column)));
             }
         }
         Random rng = Random(maxIterations);
         for (point in shuffle(converted, rng.nextDouble)) {
             // TODO: wrap around edges of map
             {Point*} neighbors = { for (row in (point.row - 1)..(point.row + 1))
-            for (column in (point.col - 1)..(point.col + 1))
-            PointFactory.point(row, column) }.filter((element) => point != element);
+                for (column in (point.col - 1)..(point.col + 1))
+                    pointFactory(row, column) }.filter((element) => point != element);
             Boolean adjacentToTown() {
                 for (neighbor in neighbors) {
                     for (fixture in retval.getOtherFixtures(neighbor)) {

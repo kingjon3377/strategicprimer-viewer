@@ -11,8 +11,11 @@ import lovelace.util.common {
 }
 
 import model.map {
-    PointFactory,
     Point
+}
+
+import strategicprimer.viewer.model.map {
+    invalidPoint
 }
 """An interface for "report nodes" that serve as "report intermediate representation":
    [[TreeNode]]s that can be turned into HTML."""
@@ -62,7 +65,7 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&I
             for (child in this) {
                 if (exists temp = retval) {
                     if (temp != child.point) {
-                        retval = PointFactory.invalidPoint;
+                        retval = invalidPoint;
                     }
                 } else {
                     retval = child.point;
@@ -71,7 +74,7 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&I
             if (exists temp = retval) {
                 return temp;
             } else {
-                return PointFactory.invalidPoint;
+                return invalidPoint;
             }
         }
     }

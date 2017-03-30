@@ -1,31 +1,35 @@
-import model.map {
-    PointFactory,
-    Point
+import ceylon.interop.java {
+    createJavaIntArray
 }
-import strategicprimer.viewer.model.map {
-    TileFixture,
-    IMapNG
+
+import java.awt {
+    Graphics,
+    Polygon
 }
+
 import javax.swing {
     JButton
 }
+
+import model.map {
+    Point
+}
+
 import strategicprimer.viewer.drivers.map_viewer {
     tileDrawHelperFactory,
     FixtureMatcher,
     TileDrawHelper
 }
-import java.awt {
-    Graphics,
-    Polygon
-}
-import ceylon.interop.java {
-    createJavaIntArray
+import strategicprimer.viewer.model.map {
+    TileFixture,
+    IMapNG,
+    invalidPoint
 }
 "A button (visually) representing a tile in two maps."
 class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matchers)
         extends JButton() {
     Integer margin = 2;
-    variable Point localPoint = PointFactory.invalidPoint;
+    variable Point localPoint = invalidPoint;
     shared Point point => localPoint;
     assign point {
         localPoint = point;

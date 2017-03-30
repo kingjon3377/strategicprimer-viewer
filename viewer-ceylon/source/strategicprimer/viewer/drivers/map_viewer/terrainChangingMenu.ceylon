@@ -14,15 +14,8 @@ import model.listeners {
     SelectionChangeListener,
     SelectionChangeSource
 }
-import strategicprimer.viewer.model.map {
-    TileType
-}
 import model.map {
-    PointFactory,
     Point
-}
-import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit
 }
 
 import strategicprimer.viewer.drivers {
@@ -33,6 +26,13 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     NewUnitSource,
     NewUnitListener
 }
+import strategicprimer.viewer.model.map {
+    TileType,
+    invalidPoint
+}
+import strategicprimer.viewer.model.map.fixtures.mobile {
+    IUnit
+}
 "A popup menu to let the user change a tile's terrain type, or add a unit."
 JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener
 terrainChangingMenu(Integer mapVersion, IViewerModel model) {
@@ -41,7 +41,7 @@ terrainChangingMenu(Integer mapVersion, IViewerModel model) {
                 createIDFactory(model.map));
     SelectionChangeSupport scs = SelectionChangeSupport();
     JMenuItem newUnitItem = JMenuItem("Add New Unit");
-    variable Point point = PointFactory.invalidPoint;
+    variable Point point = invalidPoint;
     nuDialog.addNewUnitListener(object satisfies NewUnitListener {
         shared actual void addNewUnit(IUnit unit) {
             model.map.addFixture(point, unit);

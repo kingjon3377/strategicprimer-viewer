@@ -18,9 +18,6 @@ import controller.map.formatexceptions {
 import controller.map.iointerfaces {
     ISPReader
 }
-import strategicprimer.viewer.model {
-    IDRegistrar
-}
 
 import java.lang {
     JAppendable=Appendable,
@@ -43,15 +40,20 @@ import model.map {
     Point,
     River,
     MapDimensions,
-    MapDimensionsImpl,
-    PointFactory
+    MapDimensionsImpl
+}
+
+import strategicprimer.viewer.model {
+    IDRegistrar
 }
 import strategicprimer.viewer.model.map {
     TileFixture,
     SPMapNG,
     IMutableMapNG,
     IMapNG,
-    TileType
+    TileType,
+    invalidPoint,
+    pointFactory
 }
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture,
@@ -184,7 +186,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         tagStack.push(element.name);
         tagStack.push(mapTag.name);
         IMutableMapNG retval = SPMapNG(dimensions, players, currentTurn);
-        variable Point point = PointFactory.invalidPoint; // TODO: Use Point? instead?
+        variable Point point = invalidPoint; // TODO: Use Point? instead?
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
                 String type = event.name.localPart.lowercased;
@@ -196,7 +198,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     // Deliberately ignore "row"
                     continue;
                 } else if ("tile" == type) {
-                    if (PointFactory.invalidPoint != point) {
+                    if (invalidPoint != point) {
                         throw UnwantedChildException(tagStack.top, event);
                     }
                     tagStack.push(event.name);
@@ -213,7 +215,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 } else if (CeylonIterable(ISPReader.future).contains(type)) {
                     tagStack.push(event.name);
                     warner.warn(UnsupportedTagException(event));
-                } else if (PointFactory.invalidPoint == point) {
+                } else if (invalidPoint == point) {
                     // fixture outside tile
                     throw UnwantedChildException(tagStack.top, event);
                 } else if ("lake" == type || "river" == type) {
@@ -234,7 +236,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 if (element.name == event.name) {
                     break;
                 } else if ("tile" == event.name.localPart.lowercased) {
-                    point = PointFactory.invalidPoint;
+                    point = invalidPoint;
                 }
             } else if (is Characters event) {
                 String data = event.data.trimmed;
@@ -283,7 +285,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         for (i in 0..(dimensions.rows)) {
             variable Boolean rowEmpty = true;
             for (j in 0..(dimensions.columns)) {
-                Point loc = PointFactory.point(i, j);
+                Point loc = pointFactory(i, j);
                 TileType terrain = obj.getBaseTerrain(loc);
                 if (!obj.isLocationEmpty(loc)) {
                     if (rowEmpty) {

@@ -1,7 +1,3 @@
-import strategicprimer.viewer.model {
-    IDRegistrar
-}
-
 import java.lang {
     IllegalArgumentException
 }
@@ -20,8 +16,14 @@ import javax.xml.stream.events {
 import model.map {
     IPlayerCollection,
     Player,
-    PointFactory,
     Point
+}
+
+import strategicprimer.viewer.model {
+    IDRegistrar
+}
+import strategicprimer.viewer.model.map {
+    pointFactory
 }
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture
@@ -58,7 +60,7 @@ Portal readPortal(StartElement element, QName parent,
         {XMLEvent*} stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
     requireTag(element, parent, "portal");
-    Point location = PointFactory.point(getIntegerAttribute(element, "row"),
+    Point location = pointFactory(getIntegerAttribute(element, "row"),
         getIntegerAttribute(element, "column"));
     Portal retval = setImage(Portal(
         getAttribute(element, "world"), location,

@@ -17,14 +17,15 @@ import lovelace.util.common {
 
 import model.map {
     IFixture,
-    PointFactory,
     Point
 }
+
 import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    invalidPoint
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     Centaur,
@@ -35,7 +36,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Dragon,
     Immortal
 }
-
 import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
@@ -44,7 +44,7 @@ import strategicprimer.viewer.report.nodes {
     emptyReportNode
 }
 """A report generator for "immortals"---dragons, fairies, centaurs, and such."""
-shared class ImmortalsReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = PointFactory.invalidPoint)
+shared class ImmortalsReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = invalidPoint)
         extends AbstractReportGenerator<Immortal>(comp, DistanceComparator(hq)) {
     "Produce a report on an individual immortal, or on all immortals."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,

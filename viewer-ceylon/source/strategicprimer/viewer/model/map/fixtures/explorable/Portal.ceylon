@@ -1,16 +1,21 @@
+import java.util {
+    Formatter
+}
+
 import lovelace.util.common {
-	todo
+    todo
+}
+
+import model.map {
+    Point,
+    IFixture
+}
+
+import strategicprimer.viewer.model.map {
+    invalidPoint
 }
 import strategicprimer.viewer.model.map.fixtures {
-	SubsettableFixture
-}
-import model.map {
-	Point,
-	PointFactory,
-	IFixture
-}
-import java.util {
-	Formatter
+    SubsettableFixture
 }
 "A fixture representing a portal to another world."
 shared class Portal(destinationWorld, destinationCoordinates, id)
@@ -28,7 +33,8 @@ shared class Portal(destinationWorld, destinationCoordinates, id)
 	"The filename of an image to use as an icon for this instance."
 	shared actual variable String image = "";
 	shared actual Portal copy(Boolean zero) {
-		Portal retval = Portal((zero) then "unknown" else destinationWorld, (zero) then PointFactory.invalidPoint else destinationCoordinates, id);
+		Portal retval = Portal((zero) then "unknown" else destinationWorld,
+			(zero) then invalidPoint else destinationCoordinates, id);
 		retval.image = image;
 		return retval;
 	}

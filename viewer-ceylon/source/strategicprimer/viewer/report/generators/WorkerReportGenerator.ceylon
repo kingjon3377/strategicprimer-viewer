@@ -9,14 +9,15 @@ import lovelace.util.common {
 
 import model.map {
     IFixture,
-    PointFactory,
     Point
 }
+
 import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    invalidPoint
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker
@@ -28,7 +29,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob,
     ISkill
 }
-
 import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
@@ -38,7 +38,7 @@ import strategicprimer.viewer.report.nodes {
     emptyReportNode
 }
 "A report generator for Workers."
-class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Boolean details, Point hq = PointFactory.invalidPoint)
+class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Boolean details, Point hq = invalidPoint)
         extends AbstractReportGenerator<IWorker>(comp, DistanceComparator(hq)) {
     "Produce the sub-sub-report on a worker's stats."
     String statsString(WorkerStats stats) {

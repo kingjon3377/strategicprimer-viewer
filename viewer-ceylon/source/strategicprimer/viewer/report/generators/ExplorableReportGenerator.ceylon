@@ -21,16 +21,17 @@ import lovelace.util.common {
 }
 
 import model.map {
-    PointFactory,
     Player,
     Point,
     IFixture
 }
+
 import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    invalidPoint
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {
     ExplorableFixture,
@@ -39,7 +40,6 @@ import strategicprimer.viewer.model.map.fixtures.explorable {
     AdventureFixture,
     Battlefield
 }
-
 import strategicprimer.viewer.report.nodes {
     IReportNode,
     SimpleReportNode,
@@ -51,7 +51,7 @@ import strategicprimer.viewer.report.nodes {
 "A report generator for caves, battlefields, adventure hooks, and portals."
 todo("Use union type instead of interface, here and elsewhere")
 shared class ExplorableReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, Point hq = PointFactory.invalidPoint)
+        Player currentPlayer, Point hq = invalidPoint)
         extends AbstractReportGenerator<ExplorableFixture>(comp, DistanceComparator(hq)) {
     "Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
      hook, or the report on all such."

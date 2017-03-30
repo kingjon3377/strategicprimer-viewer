@@ -1,27 +1,32 @@
-import view.util {
-    Coordinate
-}
-import model.map {
-    River,
-    PointFactory,
-    Point
-}
-import strategicprimer.viewer.model.map {
-    TileType,
-    IMapNG
-}
-import java.awt {
-    Graphics,
-    Color
-}
 import ceylon.interop.java {
     createJavaIntArray
 }
 import ceylon.math.float {
     halfEven
 }
+
+import java.awt {
+    Graphics,
+    Color
+}
+
 import lovelace.util.common {
     todo
+}
+
+import model.map {
+    River,
+    Point
+}
+
+import strategicprimer.viewer.model.map {
+    TileType,
+    IMapNG,
+    coordinateFactory
+}
+
+import view.util {
+    Coordinate
 }
 "A [[TileDrawHelper]] for version-1 maps that draws directly instead of creating Shapes,
  which proves more efficent in practice."
@@ -133,6 +138,6 @@ class DirectTileDrawHelper() satisfies TileDrawHelper {
     }
     shared actual void drawTileTranslated(Graphics pen, IMapNG map,
             Point location, Integer width, Integer height) =>
-            drawTile(pen, map, location, PointFactory.coordinate(0, 0),
-                PointFactory.coordinate(width, height));
+            drawTile(pen, map, location, coordinateFactory(0, 0),
+                coordinateFactory(width, height));
 }
