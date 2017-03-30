@@ -14,12 +14,13 @@ import lovelace.util.common {
     DelayedRemovalMap,
     IntMap
 }
-
+import strategicprimer.viewer.model.map.fixtures {
+    TerrainFixture
+}
 import model.map {
     Player,
     IFixture,
     Point,
-    TerrainFixture,
     PointFactory,
     TileFixture
 }

@@ -2,9 +2,6 @@ import model.map {
     HasMutableImage,
     IFixture
 }
-import model.map.fixtures {
-    MineralFixture
-}
 "A TileFixture to represent the basic rock beneath the tile, possibly exposed."
 shared class Ground(id, kind, exposed) satisfies MineralFixture&HasMutableImage {
 	"The kind of ground."

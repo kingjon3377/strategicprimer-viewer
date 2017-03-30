@@ -1,9 +1,10 @@
 import lovelace.util.common {
     todo
 }
-
+import strategicprimer.viewer.model.map.fixtures {
+    TerrainFixture
+}
 import model.map {
-    TerrainFixture,
     HasMutableImage,
     IFixture
 }

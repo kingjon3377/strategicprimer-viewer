@@ -6,7 +6,7 @@ import model.map {
     IEvent,
     IFixture
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     MineralFixture
 }
 "A deposit (always exposed for now) of stone."

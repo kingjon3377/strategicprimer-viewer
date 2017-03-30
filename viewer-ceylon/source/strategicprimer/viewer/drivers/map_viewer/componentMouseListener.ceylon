@@ -5,11 +5,11 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.viewer.model.map.fixtures {
+    TerrainFixture,
     Ground
 }
 import model.map {
     PointFactory,
-    TerrainFixture,
     TileFixture,
     MapDimensions,
     Point

@@ -13,7 +13,9 @@ import strategicprimer.viewer.model.map {
 import model.map {
     Point,
     IFixture,
-    Player,
+    Player
+}
+import strategicprimer.viewer.model.map.fixtures {
     TerrainFixture
 }
 import strategicprimer.viewer.report.generators.tabular {

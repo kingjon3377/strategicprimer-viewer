@@ -5,7 +5,7 @@ import lovelace.util.common {
 import model.map {
     IFixture
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     MineralFixture
 }
 import strategicprimer.viewer.model.map.fixtures.towns {

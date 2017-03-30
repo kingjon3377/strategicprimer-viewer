@@ -27,7 +27,6 @@ import lovelace.util.common {
 import model.map {
     River,
     PointFactory,
-    TerrainFixture,
     TileFixture,
     HasImage,
     Point
@@ -37,6 +36,7 @@ import strategicprimer.viewer.model.map {
 }
 import strategicprimer.viewer.model.map.fixtures {
     RiverFixture,
+    TerrainFixture,
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {

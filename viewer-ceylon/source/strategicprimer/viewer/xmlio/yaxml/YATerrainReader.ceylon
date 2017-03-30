@@ -15,9 +15,10 @@ import javax.xml.stream.events {
     StartElement,
     XMLEvent
 }
-
+import strategicprimer.viewer.model.map.fixtures {
+    TerrainFixture
+}
 import model.map {
-    TerrainFixture,
     HasMutableImage,
     HasImage
 }

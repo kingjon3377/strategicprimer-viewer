@@ -44,9 +44,7 @@ import model.map {
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
-    Ground
-}
-import model.map.fixtures {
+    Ground,
     MineralFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
