@@ -13,9 +13,6 @@ import controller.map.formatexceptions {
     UnwantedChildException,
     UnsupportedTagException
 }
-import controller.map.iointerfaces {
-    ISPReader
-}
 
 import java.io {
     JReader=Reader
@@ -99,9 +96,12 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     TownSize
 }
 import strategicprimer.viewer.xmlio {
+    ISPReader,
     IncludingIterator,
     TypesafeXMLEventReader,
-    IMapReader
+    IMapReader,
+    futureTags,
+    spNamespace
 }
 
 import util {
@@ -117,7 +117,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             IDRegistrar idFactory) {
         String namespace = element.name.namespaceURI;
         String tag = element.name.localPart.lowercased;
-        if (namespace.empty || namespace == ISPReader.namespace) {
+        // TODO: what about "the default namespace"?
+        if (namespace.empty || namespace == spNamespace) {
             if (exists reader = readers.get(tag)) {
                 return reader(element, parent, stream, players, warner, idFactory);
             }
@@ -159,7 +160,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
     }
     Boolean isFutureTag(StartElement tag, Warning warner) {
-        if (CeylonIterable(ISPReader.future).contains(tag.name.localPart)) {
+        if (futureTags.contains(tag.name.localPart)) {
             warner.warn(UnsupportedTagException(tag));
             return true;
         } else {
@@ -445,7 +446,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         "player"->readPlayer,
         *simpleImmortalReaders
     };
-    shared actual Type readXML<Type>(JPath file, JReader istream, JClass<Type> type,
+    shared actual Type readXML<Type>(JPath file, JReader istream, JClass<out Type> type,
             Warning warner) given Type satisfies Object {
         JIterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
         {XMLEvent*} eventReader =

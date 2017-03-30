@@ -15,8 +15,9 @@ import controller.map.formatexceptions {
     MissingPropertyException,
     UnsupportedTagException
 }
-import controller.map.iointerfaces {
-    ISPReader
+import strategicprimer.viewer.xmlio {
+    ISPReader,
+    futureTags
 }
 
 import java.lang {
@@ -212,7 +213,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     } else {
                         warner.warn(MissingPropertyException(event, "kind"));
                     }
-                } else if (CeylonIterable(ISPReader.future).contains(type)) {
+                } else if (futureTags.contains(type)) {
                     tagStack.push(event.name);
                     warner.warn(UnsupportedTagException(event));
                 } else if (invalidPoint == point) {

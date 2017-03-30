@@ -7,9 +7,6 @@ import ceylon.interop.java {
 import controller.map.formatexceptions {
     SPFormatException
 }
-import controller.map.iointerfaces {
-    ISPReader
-}
 import strategicprimer.viewer.model {
     IDFactory,
     IDRegistrar
@@ -47,6 +44,7 @@ import strategicprimer.viewer.model.map {
 }
 
 import strategicprimer.viewer.xmlio {
+    ISPReader,
     IncludingIterator,
     TypesafeXMLEventReader,
     IMapReader
@@ -65,7 +63,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
         "if a reader produces a different type than requested")
     shared actual Element readXML<Element>("The file we're reading from" JPath file,
             "The stream to read from" JReader istream,
-            "The type of the object the caller wants" JClass<Element> type,
+            "The type of the object the caller wants" JClass<out Element> type,
             "The Warning instance to use for warnings" Warning warner)
             given Element satisfies Object {
         JIterator<XMLEvent> reader = TypesafeXMLEventReader(istream);

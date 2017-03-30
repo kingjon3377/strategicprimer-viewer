@@ -6,10 +6,6 @@ import ceylon.regex {
     regex
 }
 
-import controller.map.iointerfaces {
-    ISPReader
-}
-
 import java.io {
     StringWriter,
     IOException
@@ -96,7 +92,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.viewer.xmlio {
-    SPWriter
+    SPWriter,
+    spNamespace
 }
 Regex snugEndTag = regex("([^ ])/>", true);
 """The main writer-to-XML class in the "fluid XML" implementation."""
@@ -117,7 +114,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             StringWriter writer = StringWriter();
             try {
                 XMLStreamWriter xsw = xof.createXMLStreamWriter(writer);
-                xsw.setDefaultNamespace(ISPReader.namespace);
+                xsw.setDefaultNamespace(spNamespace);
                 writeSPObjectImpl(xsw, obj, 0);
                 xsw.writeCharacters("\n");
                 xsw.writeEndDocument();

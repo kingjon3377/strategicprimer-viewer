@@ -1,9 +1,3 @@
-import controller.map.iointerfaces {
-    ISPReader
-}
-import strategicprimer.viewer.xmlio {
-    SPWriter
-}
 
 import strategicprimer.viewer.xmlio.fluidxml {
     SPFluidReader,

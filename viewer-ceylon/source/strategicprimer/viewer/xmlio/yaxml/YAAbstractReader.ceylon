@@ -5,9 +5,6 @@ import controller.map.formatexceptions {
     DeprecatedPropertyException,
     SPMalformedInputException
 }
-import controller.map.iointerfaces {
-    ISPReader
-}
 
 import java.lang {
     IllegalArgumentException,
@@ -48,6 +45,9 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     pointFactory
 }
+import strategicprimer.viewer.xmlio {
+    spNamespace
+}
 
 import util {
     Warning,
@@ -63,7 +63,7 @@ abstract class YAAbstractReader<Element>
         satisfies YAReader<Element> given Element satisfies Object {
     "Whether the given tag is in a namespace we support."
     static Boolean isSupportedNamespace(QName tag) =>
-            {ISPReader.namespace, XMLConstants.nullNsUri}.contains(tag.namespaceURI);
+            {spNamespace, XMLConstants.nullNsUri}.contains(tag.namespaceURI);
     "Require that an element be one of the specified tags."
     shared static void requireTag(StartElement element, QName parent, String* tags) {
         if (!isSupportedNamespace(element.name)) {
@@ -81,7 +81,7 @@ abstract class YAAbstractReader<Element>
         }
     }
     "Create a [[QName]] for the given tag in our namespace."
-    static QName qname(String tag) => QName(ISPReader.namespace, tag);
+    static QName qname(String tag) => QName(spNamespace, tag);
     "Get an attribute by name from the given tag, if it's there."
     static Attribute? getAttributeByName(StartElement element, String parameter) {
         if (exists retval = element.getAttributeByName(qname(parameter))) {
@@ -200,7 +200,7 @@ abstract class YAAbstractReader<Element>
         indent(ostream, tabs);
         ostream.append("<``simpleQuote(tag)``");
         if (tabs == 0) {
-            ostream.append(" xmlns=\"``ISPReader.namespace``\"");
+            ostream.append(" xmlns=\"``spNamespace``\"");
         }
     }
     "Close a tag with a right-bracket and add a newline."

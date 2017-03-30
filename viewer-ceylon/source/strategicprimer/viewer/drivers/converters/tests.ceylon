@@ -20,10 +20,6 @@ import ceylon.test {
     assertTrue
 }
 
-import controller.map.iointerfaces {
-    ISPReader
-}
-
 import java.io {
     StringWriter,
     IOException,
@@ -135,10 +131,12 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.viewer.xmlio {
+    ISPReader,
     readMap,
     testReaderFactory,
     TypesafeXMLEventReader,
-    SPWriter
+    SPWriter,
+    spNamespace
 }
 
 import util {
@@ -779,7 +777,7 @@ object zeroToOneConverter {
     addXML("""<stone kind="marble" dc="0" />""", 250, 251, 252);
     addXML("""<cave dc="0" />""", 253, 254, 255);
     Boolean isSpecifiedTag(QName tag, String desired) {
-        return tag == QName(ISPReader.namespace, desired) || tag == QName(desired);
+        return tag == QName(spNamespace, desired) || tag == QName(desired);
     }
     void printAttribute(Appendable ostream, Attribute attribute) {
         // TODO: namespace
@@ -886,7 +884,7 @@ object zeroToOneConverter {
 test
 void testZeroToOneConversion() {
     // FIXME: Include tile fixtures beyond those implicit in events
-    String orig = "<map xmlns:sp=\"``ISPReader.namespace``\" version='0' rows='2'
+    String orig = "<map xmlns:sp=\"``spNamespace``\" version='0' rows='2'
                    columns='2'><player number='0' code_name='Test Player' />
                    <row index='0'><tile row='0' column='0' type='tundra' event='0'>
                    Random event here</tile><tile row='0' column='1' type='boreal_forest'

@@ -6,12 +6,6 @@ import controller.map.formatexceptions {
     SPMalformedInputException,
     UnsupportedPropertyException
 }
-import controller.map.iointerfaces {
-    ISPReader
-}
-import strategicprimer.viewer.model {
-    IDRegistrar
-}
 
 import java.lang {
     NumberFormatException
@@ -43,13 +37,20 @@ import lovelace.util.common {
     todo
 }
 
+import model.map {
+    HasImage,
+    Player
+}
+
+import strategicprimer.viewer.model {
+    IDRegistrar
+}
 import strategicprimer.viewer.model.map {
     IPlayerCollection,
     HasMutableImage
 }
-import model.map {
-    HasImage,
-    Player
+import strategicprimer.viewer.xmlio {
+    spNamespace
 }
 
 import util {
@@ -67,7 +68,7 @@ void requireTag(
         QName parent,
         "The tags we accept here."
         String* tags) {
-    if (!{ISPReader.namespace, XMLConstants.nullNsUri}
+    if (!{spNamespace, XMLConstants.nullNsUri}
             .contains(element.name.namespaceURI)) {
         throw UnwantedChildException(parent, element);
     }
@@ -166,7 +167,7 @@ Attribute? getAttributeByName(
         "The parameter we want"
         String param) {
     if (exists retval = element.getAttributeByName(
-        QName(ISPReader.namespace, param))) {
+        QName(spNamespace, param))) {
         return retval;
     } else if (exists retval = element.getAttributeByName(QName(param))) {
         // This case is split out because the JDK method isn't annotated @Nullable,
@@ -289,12 +290,12 @@ void writeTag(
         indent(ostream, indentation);
     }
     if (leaf) {
-        ostream.writeEmptyElement(ISPReader.namespace, tag);
+        ostream.writeEmptyElement(spNamespace, tag);
     } else {
-        ostream.writeStartElement(ISPReader.namespace, tag);
+        ostream.writeStartElement(spNamespace, tag);
     }
     if (indentation == 0) {
-        ostream.writeDefaultNamespace(ISPReader.namespace);
+        ostream.writeDefaultNamespace(spNamespace);
     }
 }
 
@@ -307,7 +308,7 @@ void writeAttribute(
         "The name of the attribute to write"
         String name,
         "The value of the attribute"
-        String item) => ostream.writeAttribute(ISPReader.namespace, name, item);
+        String item) => ostream.writeAttribute(spNamespace, name, item);
 
 "Write an attribute whose value is an integer."
 throws(`class XMLStreamException`, "on I/O error")
@@ -329,7 +330,7 @@ void writeNonEmptyAttribute(
         "The value of the attribute"
         String item) {
     if (!item.empty) {
-        ostream.writeAttribute(ISPReader.namespace, name, item);
+        ostream.writeAttribute(spNamespace, name, item);
     }
 }
 
@@ -382,7 +383,7 @@ Type setImage<Type>(
 "Whether the given XML element is a [[StartElement]] and in a namespace we support."
 Boolean isSPStartElement(XMLEvent element) {
     if (is StartElement element,
-            {ISPReader.namespace, XMLConstants.nullNsUri}
+            {spNamespace, XMLConstants.nullNsUri}
                 .contains(element.name.namespaceURI)) {
         return true;
     } else {

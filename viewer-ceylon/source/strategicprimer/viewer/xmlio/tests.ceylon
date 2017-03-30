@@ -25,9 +25,6 @@ import controller.map.formatexceptions {
     DeprecatedPropertyException,
     MissingChildException
 }
-import controller.map.iointerfaces {
-    ISPReader
-}
 import controller.map.misc {
     DuplicateIDException
 }
@@ -136,9 +133,6 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortification,
     City,
     Fortress
-}
-import strategicprimer.viewer.xmlio {
-    testReaderFactory
 }
 
 import util {
@@ -706,8 +700,7 @@ void testTileSerializationTwo() {
         "Just checking ...");
     assertSerialization("Multiple units should come through", five);
     String xmlTwoLogical =
-            "<view xmlns=\"``ISPReader
-                .namespace``\" current_player=\"-1\" current_turn=\"-1\">
+            "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
              \t<map version=\"2\" rows=\"3\" columns=\"4\">
              \t\t<row index=\"2\">
              \t\t\t<tile row=\"2\" column=\"3\" kind=\"jungle\">
@@ -720,8 +713,7 @@ void testTileSerializationTwo() {
              ";
     assertEquals(createSerializedForm(five, true), xmlTwoLogical, "Multiple units");
     String xmlTwoAlphabetical =
-            "<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"``ISPReader
-                .namespace``\">
+            "<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"``spNamespace``\">
               \t<map columns=\"4\" rows=\"3\" version=\"2\">
               \t\t<row index=\"2\">
               \t\t\t<tile column=\"3\" kind=\"jungle\" row=\"2\">
@@ -738,7 +730,7 @@ void testTileSerializationTwo() {
         "Multiple units");
     assertEquals(createSerializedForm(createSimpleMap(pointFactory(1, 1),
             pointFactory(0, 0)->TileType.notVisible), true),
-        "<view xmlns=\"``ISPReader.namespace`` current_player=\"-1\" current_turn=\"-1\">
+        "<view xmlns=\"``spNamespace`` current_player=\"-1\" current_turn=\"-1\">
          \t<map version=\"2\" rows=\"1\" columns=\"1\">
          \t</map>
          </view>
@@ -746,15 +738,13 @@ void testTileSerializationTwo() {
     String emptySerializedForm = createSerializedForm(createSimpleMap(pointFactory(1, 1),
         pointFactory(0, 0)->TileType.notVisible), false);
     String firstPossibility =
-            "<view xmlns=\"``ISPReader
-                .namespace``\" current_player=\"-1\" current_turn=\"-1\">
+            "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
              \t<map version=\"2\" rows=\"1\" columns=\"1\">
              \t</map>
              </view>
              ";
     String secondPossibility =
-            "<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"``ISPReader
-                .namespace``\">
+            "<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"``spNamespace``\">
              \t<map columns=\"1\" rows=\"1\" version=\"2\"/>
              </view>
              ";
@@ -848,18 +838,18 @@ void testNamespacedSerialization() {
     Point loc = pointFactory(0, 0);
     firstMap.setBaseTerrain(loc, TileType.steppe);
     assertMapDeserialization("Proper deserialization of namespaced map", firstMap,
-        "<map xmlns=\"``ISPReader.namespace``\" version=\"2\" rows=\"1\" columns=\"1\"
+        "<map xmlns=\"``spNamespace``\" version=\"2\" rows=\"1\" columns=\"1\"
          current_player=\"1\"><player number=\"1\" code_name=\"playerOne\" /><row
          index=\"0\"><tile row=\"0\" column=\"0\" kind=\"steppe\" /></row></map>");
     assertMapDeserialization(
         "Proper deserialization of map if another namespace is declared default",
         firstMap,
-        "<sp:map xmlns=\"xyzzy\" xmlns:sp=\"``ISPReader.namespace``\" version=\"2\"
+        "<sp:map xmlns=\"xyzzy\" xmlns:sp=\"``spNamespace``\" version=\"2\"
          rows=\"1\" columns=\"1\" current_player=\"1\"><sp:player number=\"1\"
          code_name=\"playerOne\" /><sp:row index=\"0\"><sp:tile row=\"0\" column=\"0\"
          kind=\"steppe\" /></sp:row></sp:map>");
     assertMapDeserialization("Non-root other-namespace tags ignored", firstMap,
-        "<map xmlns=\"``ISPReader.namespace``\" version=\"2\" rows=\"1\" columns=\"1\"
+        "<map xmlns=\"``spNamespace``\" version=\"2\" rows=\"1\" columns=\"1\"
          current_player=\"1\" xmlns:xy=\"xyzzy\"><player number=\"1\"
          code_name=\"playerOne\" /><xy:xyzzy><row index=\"0\"><tile row=\"0\"
          column=\"0\" kind=\"steppe\"><xy:hill id=\"0\" /></tile></row></map>");
@@ -1228,7 +1218,7 @@ void testAnimalSerialization() {
     assertImageSerialization("Animal image property is preserved",
         Animal("animalFour", true, true, "status", 8));
     assertForwardDeserialization<Animal>("Namespaced attribute",
-        "<animal xmlns:sp=\"``ISPReader.namespace``\" sp:kind=\"animalNine\"
+        "<animal xmlns:sp=\"``spNamespace``\" sp:kind=\"animalNine\"
          sp:talking=\"true\" sp:traces=\"true\" sp:status=\"tame\" sp:id=\"5\" />",
         Animal("animalNine", true, true, "tame", 5).equals);
 }

@@ -7,9 +7,6 @@ import controller.map.formatexceptions {
     MissingPropertyException,
     SPFormatException
 }
-import controller.map.iointerfaces {
-    ISPReader
-}
 
 import java.io {
     FileNotFoundException
@@ -46,7 +43,7 @@ todo("Satisfy Ceylon Iterator instead of Java Iterator",
 shared class IncludingIterator satisfies JIterator<XMLEvent> {
     "Get the 'file' attribute for the given tag."
     static String getFileAttribute(StartElement element) {
-        for (QName name in { QName(ISPReader.namespace, "file"), QName("file") }) {
+        for (QName name in { QName(spNamespace, "file"), QName("file") }) {
             if (exists attr = element.getAttributeByName(name),
                     exists val = attr.\ivalue) {
                 return val;
@@ -101,7 +98,7 @@ shared class IncludingIterator satisfies JIterator<XMLEvent> {
         if (exists top = stack.top) {
             variable XMLEvent retval = top.rest.first.next();
             while (is StartElement temp = retval,
-                {ISPReader.namespace, XMLConstants.nullNsUri}
+                {spNamespace, XMLConstants.nullNsUri}
                     .contains(temp.name.namespaceURI), "include" == temp.name.localPart) {
                 handleInclude(temp);
                 removeEmptyIterators();
