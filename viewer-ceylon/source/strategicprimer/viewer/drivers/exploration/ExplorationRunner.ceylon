@@ -23,11 +23,11 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.viewer.model.map {
+    TileFixture,
     TileType
 }
 import model.map {
     Point,
-    TileFixture,
     MapDimensions,
     PointFactory,
     MapDimensionsImpl

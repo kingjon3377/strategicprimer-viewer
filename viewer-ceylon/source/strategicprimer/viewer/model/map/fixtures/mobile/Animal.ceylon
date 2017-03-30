@@ -31,7 +31,7 @@ shared class Animal(kind, traces, talking, status, id)
 	shared actual variable String image = "";
 	"What kind of animal this is"
 	shared actual String kind;
-	shared actual String shortDesc() =>
+	shared actual String shortDescription =>
 			"``(traces) then "traces of " else ""````(talking) then "talking " else ""````kind``";
 	"Default image filename"
 	todo("Should depend on the kind of animal")
@@ -60,8 +60,8 @@ shared class Animal(kind, traces, talking, status, id)
 		}
 	}
 	shared actual Integer hash => id;
-	shared actual String string => shortDesc();
-	shared actual String plural() => "Animals";
+	shared actual String string => shortDescription;
+	shared actual String plural = "Animals";
 	"Clone the animal."
 	todo("Should we zero out any information?")
 	shared actual Animal copy(Boolean zero) {

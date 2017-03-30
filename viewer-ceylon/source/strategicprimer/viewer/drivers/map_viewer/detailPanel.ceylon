@@ -21,11 +21,11 @@ import lovelace.util.jvm {
     horizontalSplit
 }
 import strategicprimer.viewer.model.map {
+    TileFixture,
     TileType
 }
 import model.map {
     HasPortrait,
-    TileFixture,
     Point
 }
 import javax.swing.event {

@@ -62,8 +62,8 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
 		}
 	}
 	shared actual Integer hash => id;
-	shared actual String plural() => "Adventures";
-	shared actual String shortDesc() => briefDescription;
+	shared actual String plural => "Adventures";
+	shared actual String shortDescription => briefDescription;
 	"The required Perception check result for an explorer to find the adventure hook."
 	todo("Should probably be variable, i.e. read from XML")
 	shared actual Integer dc => 30;

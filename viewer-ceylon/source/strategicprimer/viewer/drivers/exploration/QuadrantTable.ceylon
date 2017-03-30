@@ -3,14 +3,14 @@ import ceylon.collection {
     HashMap
 }
 import strategicprimer.viewer.model.map {
-    TileType
+    TileType,
+    TileFixture
 }
 import model.map {
     MapDimensions,
     Point,
     MapDimensionsImpl,
-    PointFactory,
-    TileFixture
+    PointFactory
 }
 "An [[EncounterTable]] where results are by quadrant of the map."
 class QuadrantTable satisfies EncounterTable {

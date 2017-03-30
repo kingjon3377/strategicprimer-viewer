@@ -23,7 +23,7 @@ import lovelace.util.jvm {
     ReorderableListModel
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     TileFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
@@ -55,7 +55,7 @@ SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
             }
             value cls = type(fixture);
             matcherListModel.addElement(
-                FixtureMatcher((TileFixture fix) => cls.typeOf(fix), fixture.plural()));
+                FixtureMatcher((TileFixture fix) => cls.typeOf(fix), fixture.plural));
             Integer size = matcherListModel.size;
             selectionModel.addSelectionInterval(size - 1, size - 1);
             return true;

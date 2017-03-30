@@ -20,10 +20,10 @@ import java.util.\ifunction {
 }
 
 import strategicprimer.viewer.model.map {
+    TileFixture,
     IMapNG
 }
 import model.map {
-    TileFixture,
     PointFactory,
     MapDimensions
 }

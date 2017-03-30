@@ -33,7 +33,7 @@ shared class Meadow(kind, field, cultivated, id, status)
     "The name of an image to use as an icon by default."
     todo("Make more granular based on [[kind]]")
     shared actual String defaultImage = (field) then "field.png" else "meadow.png";
-    shared actual String shortDesc() {
+    shared actual String shortDescription {
         if (field) {
             return (cultivated) then "Wild or abandoned ``kind`` field"
                 else "``kind`` field";
@@ -41,7 +41,7 @@ shared class Meadow(kind, field, cultivated, id, status)
             return "``kind`` meadow";
         }
     }
-    shared actual String string = shortDesc();
+    shared actual String string = shortDescription;
     shared actual Boolean equals(Object obj) {
         if (is Meadow obj) {
             return kind == obj.kind && field == obj.field && status == obj.status &&
@@ -58,7 +58,7 @@ shared class Meadow(kind, field, cultivated, id, status)
             return false;
         }
     }
-    shared actual String plural() => "Fields and meadows";
+    shared actual String plural = "Fields and meadows";
     "The required Perception check to find the fixture."
     shared actual Integer dc = 18;
 }

@@ -32,9 +32,9 @@ shared class Ground(id, kind, exposed) satisfies MineralFixture&HasMutableImage 
 		}
 	}
 	shared actual Integer hash => id;
-	shared actual String shortDesc() =>
+	shared actual String shortDescription =>
 			"``(exposed) then "Exposed" else "Unexposed"`` ground of kind ``kind``";
-	shared actual String string => "``shortDesc()``, ID #``id``";
+	shared actual String string => "``shortDescription``, ID #``id``";
 	"If we ignore ID, a fixture is equal if if it is a Ground with equal kind and either
 	 both or neither are exposed."
 	shared actual Boolean equalsIgnoringID(IFixture fixture) {
@@ -45,7 +45,7 @@ shared class Ground(id, kind, exposed) satisfies MineralFixture&HasMutableImage 
 		}
 	}
 	"This works as the plural for our purposes, since it functions as a collective noun."
-	shared actual String plural() => "Ground";
+	shared actual String plural = "Ground";
 	"The required Perception check result for an explorer to find the fixture. This does
 	 not cover digging to deliberately uncover it."
 	shared actual Integer dc => (exposed) then 10 else 40;

@@ -32,6 +32,6 @@ shared class Cave(dc, id) satisfies IEvent&ExplorableFixture {
 	shared actual Boolean equalsIgnoringID(IFixture fixture) => fixture is Cave;
 	by("MrBeast", "http://opengameart.org/content/cave-tileset-0")
 	shared actual String defaultImage = "cave.png";
-	shared actual String plural() => "Caves";
-	shared actual String shortDesc() => "caves underground";
+	shared actual String plural = "Caves";
+	shared actual String shortDescription => "caves underground";
 }

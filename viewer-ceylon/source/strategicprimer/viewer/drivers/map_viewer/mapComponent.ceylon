@@ -34,9 +34,11 @@ import model.listeners {
     SelectionChangeListener,
     SelectionChangeSource
 }
+import strategicprimer.viewer.model.map {
+    TileFixture
+}
 import model.map {
     PointFactory,
-    TileFixture,
     MapDimensions,
     Point
 }

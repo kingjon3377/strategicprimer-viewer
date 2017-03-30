@@ -62,13 +62,13 @@ import model.map {
     MapDimensionsImpl,
     Point,
     PointFactory,
-    River,
-    TileFixture
+    River
 }
 import strategicprimer.viewer.model.map {
     TileType,
     SPMapNG,
-    IMutableMapNG
+    IMutableMapNG,
+    TileFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
     FortressMember,

@@ -2,7 +2,7 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     TileFixture
 }
 """A marker interface for "fixtures" that can (at least in theory) move."""

@@ -16,14 +16,14 @@ import model.map {
     IFixture,
     MapDimensionsImpl,
     Point,
-    PointFactory,
-    TileFixture
+    PointFactory
 }
 import strategicprimer.viewer.model.map {
     TileType,
     SPMapNG,
     IMutableMapNG,
-    IMapNG
+    IMapNG,
+    TileFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
     RiverFixture,

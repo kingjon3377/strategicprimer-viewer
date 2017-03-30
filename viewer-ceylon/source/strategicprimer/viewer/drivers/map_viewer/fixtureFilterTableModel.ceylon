@@ -28,7 +28,7 @@ import lovelace.util.common {
     Comparator
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     TileFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
@@ -194,7 +194,7 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&Comp
                 }
             }
             ClassModel<TileFixture> cls = type(fixture);
-            list.add(trivialMatcher(cls, fixture.plural()));
+            list.add(trivialMatcher(cls, fixture.plural));
             Integer size = list.size;
             fireTableRowsInserted(size - 1, size - 1);
             return true;

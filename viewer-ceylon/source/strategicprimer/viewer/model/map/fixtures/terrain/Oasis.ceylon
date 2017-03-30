@@ -24,8 +24,8 @@ shared class Oasis(id) satisfies TerrainFixture&HasMutableImage {
     }
     shared actual Integer hash => id;
     shared actual Boolean equalsIgnoringID(IFixture fixture) => fixture is Oasis;
-    shared actual String plural() => "Oases";
-    shared actual String shortDesc() => "an oasis";
+    shared actual String plural = "Oases";
+    shared actual String shortDescription => "an oasis";
     shared actual Oasis copy(Boolean zero) {
         Oasis retval = Oasis(id);
         retval.image = image;

@@ -64,7 +64,7 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc) satisfies 
         }
     }
     shared actual formal String defaultImage;
-    shared actual String shortDesc() {
+    shared actual String shortDescription {
         if (owner.independent) {
             return "An independent ``townSize`` ``status`` ``kind`` ``(name.empty) then
                 "with no name" else "named ``name``"``";

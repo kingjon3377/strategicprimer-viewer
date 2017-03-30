@@ -23,7 +23,7 @@ shared class Mine(kind, status, id) satisfies HarvestableFixture&MineralFixture 
     shared actual variable String image = "";
     "The default icon filename."
     shared actual String defaultImage = "mine.png";
-    shared actual String plural() => "Mines";
+    shared actual String plural = "Mines";
     "Clone the object."
     shared actual Mine copy(Boolean zero) {
         Mine retval = Mine(kind, status, id);
@@ -46,7 +46,7 @@ shared class Mine(kind, status, id) satisfies HarvestableFixture&MineralFixture 
             return false;
         }
     }
-    shared actual String shortDesc() => "``status`` ``kind`` mine";
+    shared actual String shortDescription => "``status`` ``kind`` mine";
     "The required Perception check for an explorer to find this fixture."
     todo("Should perhaps be variable and loaded from XML")
     shared actual Integer dc => (TownStatus.active == status) then 15 else 25;

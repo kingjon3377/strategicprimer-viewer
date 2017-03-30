@@ -91,7 +91,7 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     "Clone the unit."
     shared formal actual IUnit copy(Boolean zero);
     "The plural of Unit is Units"
-    shared default actual String plural() => "Units";
+    shared default actual String plural => "Units";
     "A fixture is a subset if it is a unit with the same ID and no extra members, and all
      corresponding (by ID, presumably) members are either equal or themselves subsets."
     shared default actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {

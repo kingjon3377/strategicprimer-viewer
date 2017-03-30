@@ -27,10 +27,10 @@ import ceylon.interop.java {
 import model.map {
     River,
     PointFactory,
-    TileFixture,
     Point
 }
 import strategicprimer.viewer.model.map {
+    TileFixture,
     TileType,
     IMutableMapNG
 }

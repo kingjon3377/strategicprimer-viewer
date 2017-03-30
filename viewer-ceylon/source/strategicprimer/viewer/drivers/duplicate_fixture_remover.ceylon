@@ -23,10 +23,10 @@ import java.math {
 
 import strategicprimer.viewer.model.map {
     IMutableMapNG,
+    TileFixture,
     FixtureIterable
 }
 import model.map {
-    TileFixture,
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
@@ -51,9 +51,9 @@ import util {
 void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
     Boolean approveRemoval(TileFixture fixture, TileFixture matching) {
         return cli.inputBooleanInSeries(
-            "Remove '``fixture.shortDesc()``', of class '``classDeclaration(fixture)
+            "Remove '``fixture.shortDescription``', of class '``classDeclaration(fixture)
                 .name``', ID #``fixture.id``, which matches '``matching
-                .shortDesc()``', of class '``classDeclaration(matching).name``', ID #``
+                .shortDescription``', of class '``classDeclaration(matching).name``', ID #``
                 matching.id``?", "duplicate");
     }
     for (location in map.locations) {

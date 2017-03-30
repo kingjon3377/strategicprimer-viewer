@@ -1,8 +1,8 @@
 import strategicprimer.viewer.model.map {
+    TileFixture,
     HasMutableOwner
 }
 import model.map {
-    TileFixture,
     HasName,
     HasPortrait
 }

@@ -50,7 +50,7 @@ shared class MineralVein(kind, exposed, dc, id)
             (exposed) then "A ``kind`` deposit, exposed, DC ``dc``"
                 else "A ``kind`` deposit, not exposed, DC ``dc``";
     shared actual String defaultImage = "mineral.png";
-    shared actual String plural() => "Mineral veins";
-    shared actual String shortDesc() =>
+    shared actual String plural = "Mineral veins";
+    shared actual String shortDescription =>
             (exposed) then "exposed ``kind``" else "unexposed ``kind``";
 }

@@ -10,11 +10,11 @@ import strategicprimer.viewer.model.map.fixtures {
 }
 import model.map {
     PointFactory,
-    TileFixture,
     MapDimensions,
     Point
 }
 import strategicprimer.viewer.model.map {
+    TileFixture,
     IMapNG
 }
 import java.awt.event {

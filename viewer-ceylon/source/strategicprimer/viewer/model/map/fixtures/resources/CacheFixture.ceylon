@@ -44,8 +44,8 @@ shared class CacheFixture(kind, contents, id) satisfies HarvestableFixture&HasKi
             return false;
         }
     }
-    shared actual String plural() => "Caches";
-    shared actual String shortDesc() => "a cache of ``kind``";
+    shared actual String plural = "Caches";
+    shared actual String shortDescription => "a cache of ``kind``";
     todo("Make variable (loaded from XML) or otherwise more granular?")
     shared actual Integer dc = 25;
 }

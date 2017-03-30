@@ -1,9 +1,10 @@
 import lovelace.util.common {
     todo
 }
-
+import strategicprimer.viewer.model.map {
+    TileFixture
+}
 import model.map {
-    TileFixture,
     HasKind
 }
 """An (at present marker) interface for tile fixtures representing some kind of "mineral"

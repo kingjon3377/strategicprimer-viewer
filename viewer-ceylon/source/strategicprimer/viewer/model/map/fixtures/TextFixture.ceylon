@@ -1,8 +1,8 @@
 import strategicprimer.viewer.model.map {
+	TileFixture,
 	HasMutableImage
 }
 import model.map {
-    TileFixture,
     IFixture
 }
 "A Fixture to encapsulate arbitrary text associated with a tile, so we can improve the
@@ -21,9 +21,9 @@ shared class TextFixture(text, turn) satisfies TileFixture&HasMutableImage {
 		retval.image = image;
 		return retval;
 	}
-	shared actual String shortDesc() =>
+	shared actual String shortDescription =>
 			(turn == -1) then text else "``text`` (turn ``turn``)";
-	shared actual String string => shortDesc();
+	shared actual String string => shortDescription;
 	shared actual String defaultImage = "text.png";
 	shared actual Boolean equals(Object obj) {
 		if (is TextFixture obj) {
@@ -38,7 +38,7 @@ shared class TextFixture(text, turn) satisfies TileFixture&HasMutableImage {
 	shared actual Integer id = -1;
 	"Since text fixtures don't have an ID, this can simplyd elegate to equals()"
 	shared actual Boolean equalsIgnoringID(IFixture fixture) => equals(fixture);
-	shared actual String plural() => "Arbitrary-text notes";
+	shared actual String plural = "Arbitrary-text notes";
 	"The required Perception check result for an explorer to find the note."
 	shared actual Integer dc = 5;
 }

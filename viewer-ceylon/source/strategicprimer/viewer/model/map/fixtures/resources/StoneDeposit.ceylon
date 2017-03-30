@@ -48,6 +48,6 @@ shared class StoneDeposit(stone, dc, id)
         }
     }
     shared actual String kind => stone.string;
-    shared actual String plural() => "Stone deposits";
-    shared actual String shortDesc() => "an exposed ``stone`` deposit";
+    shared actual String plural = "Stone deposits";
+    shared actual String shortDescription => "an exposed ``stone`` deposit";
 }

@@ -1,4 +1,4 @@
-import model.map {
+import strategicprimer.viewer.model.map {
     TileFixture
 }
 """An interface for fixtures representing things that were on the original table of

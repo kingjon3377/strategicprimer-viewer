@@ -30,7 +30,7 @@ shared class Battlefield(dc, id) satisfies IEvent&ExplorableFixture {
 	"If we ignore ID, all Battlefields are equal."
 	shared actual Boolean equalsIgnoringID(IFixture fixture) => fixture is Battlefield;
 	shared actual String defaultImage = "battlefield.png";
-	shared actual String plural() => "Battlefields";
-	shared actual String shortDesc() => "signs of a long-ago battle";
+	shared actual String plural = "Battlefields";
+	shared actual String shortDescription => "signs of a long-ago battle";
 	shared actual String string => "An ancient battlefield with DC ``dc``";
 }

@@ -16,7 +16,7 @@ shared class Fortification("The status of the fortification" TownStatus townStat
         "The owner of the fortification" Player player)
         extends AbstractTown(townStatus, size, townName, player, discoverDC) {
     shared actual String defaultImage = "fortification.png";
-    shared actual String plural() => "Fortifications";
+    shared actual String plural = "Fortifications";
     shared actual String kind => "fortification";
     shared actual Fortification copy(Boolean zero) {
         Fortification retval = Fortification(status, townSize, (zero) then 0 else dc, name, id, owner);

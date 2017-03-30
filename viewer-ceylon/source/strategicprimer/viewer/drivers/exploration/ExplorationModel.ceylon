@@ -32,6 +32,7 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     IMapNG,
     TileType,
+    TileFixture,
     FixtureIterable
 }
 import model.map {
@@ -40,7 +41,6 @@ import model.map {
     Player,
     MapDimensions,
     HasOwner,
-    TileFixture,
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
@@ -87,7 +87,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             for (fixture in map.getOtherFixtures(point)) {
                 if (is HasOwner fixture, !fixture.owner.independent, fixture.owner != unit.owner) {
                     process.writeLine("Motion to ``dest`` could be observed by ``fixture
-                        .shortDesc()`` at ``point``");
+                        .shortDescription`` at ``point``");
                 }
             }
         }

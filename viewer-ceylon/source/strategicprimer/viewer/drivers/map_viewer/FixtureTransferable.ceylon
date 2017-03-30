@@ -15,7 +15,7 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     TileFixture
 }
 "A class to transfer a TileFixture by drag-and-drop."
@@ -35,7 +35,7 @@ class FixtureTransferable satisfies Transferable {
         }
     }
     shared actual String string =>
-            "FixtureTransferable transferring ``payload.shortDesc()``";
+            "FixtureTransferable transferring ``payload.shortDescription``";
     shared actual Boolean equals(Object that) {
         if (is FixtureTransferable that) {
             return payload == that.payload;

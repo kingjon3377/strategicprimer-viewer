@@ -79,7 +79,6 @@ import model.map {
     Point,
     PointFactory,
     PlayerCollection,
-    TileFixture,
     PlayerImpl
 }
 
@@ -88,6 +87,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    TileFixture,
 	TileType,
     SPMapNG,
     IMutableMapNG,

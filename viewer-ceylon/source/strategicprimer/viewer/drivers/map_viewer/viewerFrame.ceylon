@@ -9,7 +9,7 @@ import java.awt {
     Dimension,
     Component
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     TileFixture
 }
 import javax.swing.table {

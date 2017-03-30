@@ -1,8 +1,8 @@
 import strategicprimer.viewer.model.map {
+    TileFixture,
     TileType
 }
 import model.map {
-    TileFixture,
     HasImage,
     IFixture
 }
@@ -16,13 +16,6 @@ shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&Has
     shared actual TileTypeFixture copy(Boolean zero) {
         log.warn("TileTypeFixture.copy called", Exception("dummy"));
         return TileTypeFixture(tileType);
-    }
-    "Compare to another fixture."
-    deprecated("This class should only ever be used in a FixtureListModel, so this method
-                should never be called.")
-    shared actual Integer compareTo(TileFixture fixture) {
-        log.warn("TileTypeFixture.compareTo called");
-        return (super of TileFixture).compareTo(fixture);
     }
     """A dummy "ID number""""
     deprecated("This class should only ever be used in a FixtureListModel, so this
@@ -59,16 +52,23 @@ shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&Has
     shared actual String image => "";
     deprecated("This class should only ever be used in a FixtureListModel, so this method
                 should never be called.")
-    shared actual String plural() {
+    shared actual String plural {
         log.warn("TileTypeFixture.plural called");
         return "You shouldn't see this text; report this.";
     }
     deprecated("This class should only ever be used in a FixtureListModel, so this method
                 should never be called.")
-    shared actual String shortDesc() {
+    shared actual String shortDescription {
         log.warn("TileTypeFixture.shortDesc called");
         return "You shouldn't see this text; report this.";
     }
     "The required Perception check for an explorer to find the fixture."
     shared actual Integer dc = 0;
+    "Compare to another fixture."
+    deprecated("This class should only ever be used in a FixtureListModel, so this method
+                should never be called.")
+    shared actual Comparison compare(TileFixture fixture) {
+        log.warn("TileTypeFixture.compare called");
+        return (super of TileFixture).compare(fixture);
+    }
 }

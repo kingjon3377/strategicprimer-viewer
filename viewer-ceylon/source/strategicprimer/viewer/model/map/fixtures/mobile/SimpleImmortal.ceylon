@@ -55,11 +55,11 @@ shared class SimpleImmortal satisfies Immortal&HasMutableImage&HasKind {
 	"The required Perception check result to find the immortal."
 	shared actual Integer dc => immortalKind.dc;
 	"A short description of the fixture."
-	shared actual String shortDesc() =>
+	shared actual String shortDescription =>
 			(immortalKind == SimpleImmortalKind.ogre) then "an ogre" else
 			"a ``immortalKind.tag``";
 	"The plural of the immortal's kind."
-	shared actual String plural() => immortalKind.plural;
+	shared actual String plural = immortalKind.plural;
 	"The filename of an image to use as an icon for this instance."
 	shared actual variable String image = "";
 	"Clone the object."

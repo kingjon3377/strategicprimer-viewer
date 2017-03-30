@@ -3,9 +3,7 @@ import lovelace.util.common {
 }
 
 import strategicprimer.viewer.model.map {
-    HasMutableImage
-}
-import model.map {
+    HasMutableImage,
     TileFixture
 }
 "A (for now marker) interface for fixtures that can have resources harvested, mined, etc.,

@@ -30,7 +30,6 @@ import lovelace.util.common {
 import model.map {
     Point,
     Player,
-    TileFixture,
     HasOwner,
     MapDimensions,
     HasName
@@ -56,6 +55,7 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     TileType,
     IMapNG,
+    TileFixture,
     FixtureIterable
 }
 

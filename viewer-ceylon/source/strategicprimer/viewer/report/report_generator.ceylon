@@ -21,8 +21,7 @@ import model.map {
     Player,
     IFixture,
     Point,
-    PointFactory,
-    TileFixture
+    PointFactory
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
@@ -32,7 +31,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 }
 import strategicprimer.viewer.model.map {
     IMapNG,
-    FixtureIterable
+    FixtureIterable,
+    TileFixture
 }
 
 import strategicprimer.viewer.report.generators {

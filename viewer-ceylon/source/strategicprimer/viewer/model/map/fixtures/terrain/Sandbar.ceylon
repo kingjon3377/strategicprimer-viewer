@@ -24,8 +24,8 @@ shared class Sandbar(id) satisfies TerrainFixture&HasMutableImage {
     }
     shared actual Integer hash => id;
     shared actual Boolean equalsIgnoringID(IFixture fixture) => fixture is Sandbar;
-    shared actual String plural() => "Sandbars";
-    shared actual String shortDesc() => "a sandbar";
+    shared actual String plural = "Sandbars";
+    shared actual String shortDescription => "a sandbar";
     shared actual Sandbar copy(Boolean zero) {
         Sandbar retval = Sandbar(id);
         retval.image = image;

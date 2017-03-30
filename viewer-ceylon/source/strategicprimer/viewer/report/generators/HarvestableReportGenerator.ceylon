@@ -134,11 +134,11 @@ shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IF
                 } else if (is Mine item) {
                     mines.put(item, point);
                 } else if (is MineralVein item) {
-                    if (exists coll = minerals.get(item.shortDesc())) {
+                    if (exists coll = minerals.get(item.shortDescription)) {
                         coll.add(point);
                     } else {
-                        value coll = PointList("``item.shortDesc()``: at ");
-                        minerals.put(item.shortDesc(), coll);
+                        value coll = PointList("``item.shortDescription``: at ");
+                        minerals.put(item.shortDescription, coll);
                         coll.add(point);
                     }
                     fixtures.remove(item.id);
@@ -262,20 +262,20 @@ shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IF
                         mines.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is MineralVein item) {
                         IReportNode node;
-                        if (exists temp = minerals.get(item.shortDesc())) {
+                        if (exists temp = minerals.get(item.shortDescription)) {
                             node = temp;
                         } else {
-                            node = ListReportNode(item.shortDesc());
-                            minerals.put(item.shortDesc(), node);
+                            node = ListReportNode(item.shortDescription);
+                            minerals.put(item.shortDescription, node);
                         }
                         node.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is Shrub item) {
                         IReportNode node;
-                        if (exists temp = shrubs.get(item.shortDesc())) {
+                        if (exists temp = shrubs.get(item.shortDescription)) {
                             node = temp;
                         } else {
-                            node = ListReportNode(item.shortDesc());
-                            shrubs.put(item.shortDesc(), node);
+                            node = ListReportNode(item.shortDescription);
+                            shrubs.put(item.shortDescription, node);
                         }
                         node.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is StoneDeposit item) {

@@ -2,10 +2,12 @@ import model.listeners {
     SelectionChangeSource,
     MovementCostSource
 }
+import strategicprimer.viewer.model.map {
+    TileFixture
+}
 import model.map {
     Player,
     Point,
-    TileFixture,
     HasName
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

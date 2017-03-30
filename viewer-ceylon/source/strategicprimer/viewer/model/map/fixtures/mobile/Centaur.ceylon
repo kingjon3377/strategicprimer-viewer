@@ -22,8 +22,8 @@ shared class Centaur(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 		retval.image = image;
 		return retval;
 	}
-	shared actual String shortDesc() => "``kind`` centaur";
-	shared actual String string => shortDesc();
+	shared actual String shortDescription => "``kind`` centaur";
+	shared actual String string => shortDescription;
 	shared actual String defaultImage = "centaur.png";
 	shared actual Boolean equals(Object obj) {
 		if (is Centaur obj) {
@@ -61,6 +61,6 @@ shared class Centaur(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 			return false;
 		}
 	}
-	shared actual String plural() => "Centaurs";
+	shared actual String plural = "Centaurs";
 	shared actual Integer dc => 20;
 }

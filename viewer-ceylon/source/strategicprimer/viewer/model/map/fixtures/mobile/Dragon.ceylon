@@ -21,9 +21,9 @@ shared class Dragon(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 		retval.image = image;
 		return retval;
 	}
-	shared actual String shortDesc() =>
+	shared actual String shortDescription =>
 			(kind.empty) then "dragon" else "``kind`` dragon";
-	shared actual String string => shortDesc();
+	shared actual String string => shortDescription;
 	by("https://openclipart.org/detail/166560/fire-dragon-by-olku")
 	shared actual String defaultImage = "dragon.png";
 	shared actual Boolean equals(Object obj) {
@@ -62,6 +62,6 @@ shared class Dragon(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 			return false;
 		}
 	}
-	shared actual String plural() => "Dragons";
+	shared actual String plural = "Dragons";
 	shared actual Integer dc => 20;
 }

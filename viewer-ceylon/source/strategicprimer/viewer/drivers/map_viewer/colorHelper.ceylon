@@ -20,9 +20,7 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.viewer.model.map {
-    TileType
-}
-import model.map {
+    TileType,
     TileFixture
 }
 import ceylon.language.meta.model {

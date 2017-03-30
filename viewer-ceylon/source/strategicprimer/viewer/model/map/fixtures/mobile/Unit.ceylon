@@ -17,13 +17,13 @@ import strategicprimer.viewer.model.map {
     HasMutableName,
     HasMutableKind,
     HasMutableOwner,
-    HasMutableImage
+    HasMutableImage,
+    TileFixture
 }
 import model.map {
     HasPortrait,
     Player,
-    IFixture,
-    TileFixture
+    IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
     UnitMember
@@ -158,7 +158,7 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
     }
     "A short description of the fixture, giving its kind and owner but not its name."
     todo("Should probably give name for independent units.")
-    shared actual String shortDesc() {
+    shared actual String shortDescription {
         if (owner.current) {
             return "a(n) ``kind`` unit belonging to you";
         } else {

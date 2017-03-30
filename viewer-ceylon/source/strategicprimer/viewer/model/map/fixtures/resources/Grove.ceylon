@@ -21,10 +21,10 @@ shared class Grove(orchard, cultivated, kind, id)
         return retval;
     }
     shared actual String defaultImage = (orchard) then "orchard.png" else "tree.png";
-    shared actual String shortDesc() =>
+    shared actual String shortDescription =>
             "``(cultivated) then "Cultivated" else "Wild"`` ``kind`` ``(orchard) then
                 "orchard" else "grove"``";
-    shared actual String string = shortDesc();
+    shared actual String string = shortDescription;
     shared actual Boolean equals(Object obj) {
         if (is Grove obj) {
             return kind == obj.kind && orchard == obj.orchard &&
@@ -42,6 +42,6 @@ shared class Grove(orchard, cultivated, kind, id)
             return false;
         }
     }
-    shared actual String plural() => "Groves and orchards";
+    shared actual String plural = "Groves and orchards";
     shared actual Integer dc = 18;
 }

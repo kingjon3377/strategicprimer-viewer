@@ -19,12 +19,12 @@ import ceylon.language {
 import strategicprimer.viewer.model.map {
     HasMutableName,
     FixtureIterable,
-    HasMutableImage
+    HasMutableImage,
+    TileFixture
 }
 import model.map {
     Player,
-    IFixture,
-    TileFixture
+    IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
     SubsettableFixture,
@@ -166,8 +166,8 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
           maybe a non-'active' fortress is a Fortification, and an active fortification is
           a Fortress.")
     shared actual TownStatus status = TownStatus.active;
-    shared actual String plural() => "Fortresses";
-    shared actual String shortDesc() {
+    shared actual String plural = "Fortresses";
+    shared actual String shortDescription {
         if (owner.current) {
             return "a fortress, ``name``, owned by you";
         } else if (owner.independent) {

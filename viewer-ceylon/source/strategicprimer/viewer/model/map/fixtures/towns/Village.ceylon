@@ -35,7 +35,7 @@ shared class Village(status, name, id, owner, race)
     "A filename of an image to use as a portrait of the village."
     shared actual variable String portrait = "";
     "A short description of the village."
-    shared actual String shortDesc() {
+    shared actual String shortDescription {
         StringBuilder builder = StringBuilder();
         if (owner.independent) {
             builder.append("Independent ");
@@ -51,7 +51,7 @@ shared class Village(status, name, id, owner, race)
         }
         return builder.string;
     }
-    shared actual String string => shortDesc();
+    shared actual String string => shortDescription;
     "An object is equal if it is a Village with the same status, ID, name, race, and
      owner."
     shared actual Boolean equals(Object obj) {
@@ -76,7 +76,7 @@ shared class Village(status, name, id, owner, race)
     }
     "All villages are small."
     shared actual TownSize townSize => TownSize.small;
-    shared actual String plural() => "Villages";
+    shared actual String plural = "Villages";
     """A village is a "subset" of another if they are identical, or if the only difference
         is that the "subset" is independent and the "superset" owes allegiance to some
         player."""

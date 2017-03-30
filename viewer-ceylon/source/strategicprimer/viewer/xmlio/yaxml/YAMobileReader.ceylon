@@ -138,7 +138,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             }
             closeLeafTag(ostream);
         } else {
-            throw IllegalArgumentException("No tag for ``obj.shortDesc()``");
+            throw IllegalArgumentException("No tag for ``obj.shortDescription``");
         }
         // TODO: At least the closeLeafTag() could be moved here
     }

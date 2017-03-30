@@ -26,8 +26,8 @@ shared class Giant(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 		retval.image = image;
 		return retval;
 	}
-	shared actual String shortDesc() => (kind.empty) then "giant" else "``kind`` giant";
-	shared actual String string => shortDesc();
+	shared actual String shortDescription => (kind.empty) then "giant" else "``kind`` giant";
+	shared actual String string => shortDescription;
 	shared actual String defaultImage => "giant.png";
 	shared actual Boolean equals(Object obj) {
 		if (is Giant obj) {
@@ -65,7 +65,7 @@ shared class Giant(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 			return false;
 		}
 	}
-	shared actual String plural() => "Giants";
+	shared actual String plural = "Giants";
 	"The required Perception check result to find the giant."
 	todo("Should this vary with kind?")
 	shared actual Integer dc => 28;

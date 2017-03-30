@@ -40,7 +40,6 @@ import javax.xml.stream.events {
 import model.map {
     IMutablePlayerCollection,
     Player,
-    TileFixture,
     Point,
     River,
     MapDimensions,
@@ -48,6 +47,7 @@ import model.map {
     PointFactory
 }
 import strategicprimer.viewer.model.map {
+    TileFixture,
     SPMapNG,
     IMutableMapNG,
     IMapNG,

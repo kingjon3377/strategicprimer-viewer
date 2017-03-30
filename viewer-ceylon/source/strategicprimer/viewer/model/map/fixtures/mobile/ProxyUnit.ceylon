@@ -25,7 +25,6 @@ import lovelace.util.common {
 
 import model.map {
     IFixture,
-    TileFixture,
     Player,
     PlayerImpl
 }
@@ -34,6 +33,7 @@ import strategicprimer.viewer.model.map.fixtures {
 }
 
 import strategicprimer.viewer.model.map {
+    TileFixture,
     HasMutableName,
     HasMutableKind,
     HasMutableOwner,
@@ -131,7 +131,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             return temp;
         }
     }
-    shared actual String shortDesc() {
+    shared actual String shortDescription {
         if (parallel || proxiedList.size == 1) {
             if (owner.current) {
                 return "a(n) ``kind`` unit belonging to you";
@@ -156,9 +156,9 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         log.warn("ProxyUnit.equalsIgnoringID called");
         throw IllegalStateException("FIXME: implement equalsIgnoringID");
     }
-    shared actual Integer compareTo(TileFixture fixture) {
-        log.warn("ProxyUnit.compareTo called");
-        return super.compareTo(fixture);
+    shared actual Comparison compare(TileFixture fixture) {
+        log.warn("ProxyUnit.compare called");
+        return super.compare(fixture);
     }
     shared actual String defaultImage => getCommonValue(IUnit.defaultImage, "", "unit.png");
     shared actual String image => getCommonValue(IUnit.image, "", "");

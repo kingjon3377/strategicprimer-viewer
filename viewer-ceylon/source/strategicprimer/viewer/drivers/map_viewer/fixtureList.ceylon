@@ -7,8 +7,10 @@ import lovelace.util.common {
 import model.listeners {
     SelectionChangeListener
 }
+import strategicprimer.viewer.model.map {
+    TileFixture
+}
 import model.map {
-    TileFixture,
     Player,
     Point
 }

@@ -32,8 +32,8 @@ shared class Portal(destinationWorld, destinationCoordinates, id)
 		retval.image = image;
 		return retval;
 	}
-	shared actual String shortDesc() => "A portal to another world";
-	shared actual String string => shortDesc();
+	shared actual String shortDescription = "A portal to another world";
+	shared actual String string => shortDescription;
 	shared actual String defaultImage = "portal.png";
 	shared actual Boolean equalsIgnoringID(IFixture fixture) {
 		if (is Portal fixture) {
@@ -51,7 +51,7 @@ shared class Portal(destinationWorld, destinationCoordinates, id)
 		}
 	}
 	shared actual Integer hash => id;
-	shared actual String plural() => "Portals";
+	shared actual String plural = "Portals";
 	todo("Test this")
 	shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
 		if (obj.id == id) {

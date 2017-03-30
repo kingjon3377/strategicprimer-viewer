@@ -3,13 +3,13 @@ import ceylon.collection {
     ArrayList
 }
 import strategicprimer.viewer.model.map {
+    TileFixture,
     TileType
 }
 import strategicprimer.viewer.model.map.fixtures {
     IEvent
 }
 import model.map {
-    TileFixture,
     IFixture,
     Player,
     MapDimensions,
@@ -57,8 +57,8 @@ class LegacyTable() satisfies EncounterTable {
             shared actual Integer dc => nothing;
             shared actual Boolean equalsIgnoringID(IFixture? fix) => nothing;
             shared actual Integer id => nothing;
-            shared actual String plural() => nothing;
-            shared actual String shortDesc() => nothing;
+            shared actual String plural => nothing;
+            shared actual String shortDescription => nothing;
             shared actual String text => "Nothing intersting here ...";
         }
         retval.add(temp);

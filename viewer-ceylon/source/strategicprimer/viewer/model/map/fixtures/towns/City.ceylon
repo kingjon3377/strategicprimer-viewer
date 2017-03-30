@@ -9,7 +9,7 @@ shared class City("The status of the city" TownStatus townStatus,
         "The city's ID number" shared actual Integer id,
         "The owner of the city" Player player)
         extends AbstractTown(townStatus, size, townName, player, discoverDC) {
-    shared actual String plural() => "Cities";
+    shared actual String plural = "Cities";
     shared actual String kind => "city";
     shared actual String defaultImage = "city.png";
     shared actual City copy(Boolean zero) {

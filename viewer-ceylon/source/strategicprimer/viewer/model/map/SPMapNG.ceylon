@@ -24,7 +24,6 @@ import lovelace.util.common {
 
 import model.map {
     Point,
-    TileFixture,
     Player,
     HasOwner,
     MapDimensions,
@@ -34,6 +33,7 @@ import model.map {
 }
 
 import strategicprimer.viewer.model.map {
+    TileFixture,
     IMutableMapNG,
     IMapNG
 }
@@ -207,8 +207,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                 local.add(fixture);
                 log.warn("Inserted duplicate-ID fixture at ``location``");
                 log.debug("Stack trace of this location: ", Exception());
-                log.debug("Existing fixture was: ``existing.shortDesc()``");
-                log.debug("Added: ``fixture.shortDesc()``");
+                log.debug("Existing fixture was: ``existing.shortDescription``");
+                log.debug("Added: ``fixture.shortDescription``");
                 return true;
             }
         } else {

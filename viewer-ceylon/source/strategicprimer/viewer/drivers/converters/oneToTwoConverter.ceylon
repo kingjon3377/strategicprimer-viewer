@@ -32,7 +32,6 @@ import model.map {
     River,
     PointFactory,
     PlayerCollection,
-    TileFixture,
     Player,
     MapDimensions,
     MapDimensionsImpl,
@@ -40,6 +39,7 @@ import model.map {
     Point
 }
 import strategicprimer.viewer.model.map {
+    TileFixture,
     TileType,
     SPMapNG,
     IMutableMapNG,

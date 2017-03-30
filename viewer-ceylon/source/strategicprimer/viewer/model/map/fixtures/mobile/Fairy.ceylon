@@ -26,8 +26,8 @@ shared class Fairy(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 		retval.image = image;
 		return retval;
 	}
-	shared actual String shortDesc() => "``kind`` fairy";
-	shared actual String string => shortDesc();
+	shared actual String shortDescription => "``kind`` fairy";
+	shared actual String string => shortDescription;
 	shared actual String defaultImage => "giant.png";
 	shared actual Boolean equals(Object obj) {
 		if (is Giant obj) {
@@ -65,7 +65,7 @@ shared class Fairy(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 			return false;
 		}
 	}
-	shared actual String plural() => "Giants";
+	shared actual String plural = "Giants";
 	"The required Perception check result to find the giant."
 	todo("Should vary, either defined in XML or computed from kind")
 	shared actual Integer dc => 28;

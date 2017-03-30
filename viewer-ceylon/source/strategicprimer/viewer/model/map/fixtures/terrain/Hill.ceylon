@@ -29,8 +29,8 @@ shared class Hill(id) satisfies TerrainFixture&HasMutableImage {
     }
     shared actual Integer hash => id;
     shared actual Boolean equalsIgnoringID(IFixture fixture) => fixture is Hill;
-    shared actual String plural() => "Hills";
-    shared actual String shortDesc() => "a hill";
+    shared actual String plural = "Hills";
+    shared actual String shortDescription => "a hill";
     shared actual Hill copy(Boolean zero) {
         Hill retval = Hill(id);
         retval.image = image;

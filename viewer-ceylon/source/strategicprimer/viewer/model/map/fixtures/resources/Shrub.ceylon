@@ -36,8 +36,8 @@ shared class Shrub(kind, id) satisfies HarvestableFixture&HasKind {
             return false;
         }
     }
-    shared actual String plural() => "Shrubs";
-    shared actual String shortDesc() => kind;
+    shared actual String plural = "Shrubs";
+    shared actual String shortDescription => kind;
     "The required Perception check for an explorer to find the fixture."
     todo("Should this vary, either loading from XML or by kind?")
     shared actual Integer dc = 15;

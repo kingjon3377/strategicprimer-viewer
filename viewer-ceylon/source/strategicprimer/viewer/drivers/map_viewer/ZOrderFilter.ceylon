@@ -1,4 +1,4 @@
-import model.map {
+import strategicprimer.viewer.model.map {
     TileFixture
 }
 "An interface for a filter to tell whether a given fixture should be displayed."

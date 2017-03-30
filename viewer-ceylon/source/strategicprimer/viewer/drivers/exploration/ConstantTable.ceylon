@@ -1,9 +1,9 @@
 import strategicprimer.viewer.model.map {
+    TileFixture,
     TileType
 }
 import model.map {
     Point,
-    TileFixture,
     MapDimensions
 }
 "An [[EncounterTable]] that always returns the same value."

@@ -1,4 +1,4 @@
-import model.map {
+import strategicprimer.viewer.model.map {
     TileFixture
 }
 "A wrapper around `Boolean(TileFixture)`, used to determine Z-order of fixtures."

@@ -9,8 +9,10 @@ import lovelace.util.common {
 import strategicprimer.viewer.model.map.fixtures {
 	SubsettableFixture
 }
+import strategicprimer.viewer.model.map {
+	TileFixture
+}
 import model.map {
-    TileFixture,
     River,
     IFixture
 }
@@ -64,8 +66,8 @@ shared class RiverFixture(River* initial) satisfies TileFixture&{River*}&Subsett
 	todo("Investigate how FreeCol does it")
 	shared actual Integer id = -1;
 	shared actual Boolean equalsIgnoringID(IFixture fixture) => equals(fixture);
-	shared actual String plural() => "Rivers";
-	shared actual String shortDesc() => "a river";
+	shared actual String plural = "Rivers";
+	shared actual String shortDescription => "a river";
 	"The required Perception check result for an explorer to find the rivers."
 	shared actual Integer dc = 5;
 }

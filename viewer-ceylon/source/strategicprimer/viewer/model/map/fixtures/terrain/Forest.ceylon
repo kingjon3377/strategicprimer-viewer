@@ -45,9 +45,9 @@ shared class Forest(kind, rows, id) satisfies TerrainFixture&HasMutableImage&Has
             return false;
         }
     }
-    shared actual String plural() => "Forests";
-    shared actual String shortDesc() =>
+    shared actual String plural = "Forests";
+    shared actual String shortDescription =>
             (rows) then "Rows of ``kind`` trees" else "A ``kind`` forest";
-    shared actual String string => shortDesc();
+    shared actual String string => shortDescription;
     shared actual Integer dc = 5;
 }
