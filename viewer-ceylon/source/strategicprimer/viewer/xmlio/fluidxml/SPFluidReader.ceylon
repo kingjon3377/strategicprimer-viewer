@@ -457,9 +457,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             if (is StartElement event, isSPStartElement(event)) {
                 Object retval = readSPObject(event, QName("root"), eventReader, players,
                     warner, idFactory);
-//                assert (is Type retval);
-                return type.cast(retval);
-//                return retval;
+                assert (is Type retval);
+                return retval;
             }
         }
         throw XMLStreamException("XML stream didn't contain a start element");

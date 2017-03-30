@@ -72,11 +72,8 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
         if (exists event = eventReader.narrow<StartElement>().first) {
             Object retval = YAReaderAdapter(warner, idFactory).parse(event, QName("root"),
                 eventReader);
-            if (type.isAssignableFrom(javaClassFromInstance(retval))) {
-                // TODO: switch to assertion once ISPReader ported
-//                assert (is Element retval);
-                return type.cast(retval);
-//                return retval;
+            if (is Element retval) {
+                return retval;
             } else {
                 throw IllegalStateException(
                     "Reader produced different type than we expected");
