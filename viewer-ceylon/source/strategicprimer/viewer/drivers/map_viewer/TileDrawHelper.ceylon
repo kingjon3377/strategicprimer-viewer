@@ -7,8 +7,10 @@ import strategicprimer.viewer.model.map {
 import lovelace.util.common {
     todo
 }
+import strategicprimer.viewer.model.map.fixtures {
+    IEvent
+}
 import model.map {
-    IEvent,
     Point
 }
 import view.util {

@@ -5,8 +5,10 @@ import ceylon.collection {
 import strategicprimer.viewer.model.map {
     TileType
 }
+import strategicprimer.viewer.model.map.fixtures {
+    IEvent
+}
 import model.map {
-    IEvent,
     TileFixture,
     IFixture,
     Player,

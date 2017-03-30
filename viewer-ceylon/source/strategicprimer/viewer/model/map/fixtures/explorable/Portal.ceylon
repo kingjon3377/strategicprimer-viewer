@@ -1,11 +1,13 @@
 import lovelace.util.common {
 	todo
 }
+import strategicprimer.viewer.model.map.fixtures {
+	SubsettableFixture
+}
 import model.map {
 	Point,
 	PointFactory,
-	IFixture,
-	SubsettableFixture
+	IFixture
 }
 import java.util {
 	Formatter

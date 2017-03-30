@@ -2,7 +2,7 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
+import strategicprimer.viewer.model.map.fixtures {
     SubsettableFixture
 }
 "A (marker) interface for things that can be in a fortress."

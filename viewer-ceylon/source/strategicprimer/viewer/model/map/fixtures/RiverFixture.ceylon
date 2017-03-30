@@ -6,11 +6,12 @@ import ceylon.collection {
 import lovelace.util.common {
     todo
 }
-
+import strategicprimer.viewer.model.map.fixtures {
+	SubsettableFixture
+}
 import model.map {
     TileFixture,
     River,
-    SubsettableFixture,
     IFixture
 }
 import java.util {

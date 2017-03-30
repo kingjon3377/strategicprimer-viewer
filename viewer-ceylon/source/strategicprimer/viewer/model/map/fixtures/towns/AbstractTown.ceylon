@@ -5,8 +5,10 @@ import lovelace.util.common {
 import strategicprimer.viewer.model.map {
     HasMutableImage
 }
+import strategicprimer.viewer.model.map.fixtures {
+    IEvent
+}
 import model.map {
-    IEvent,
     Player,
     IFixture
 }

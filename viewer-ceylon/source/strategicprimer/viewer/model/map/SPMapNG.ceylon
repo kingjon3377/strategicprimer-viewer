@@ -30,22 +30,22 @@ import model.map {
     MapDimensions,
     River,
     IMutablePlayerCollection,
-    MutablePlayer,
-    SubsettableFixture
+    MutablePlayer
+}
+
+import strategicprimer.viewer.model.map {
+    IMutableMapNG,
+    IMapNG
 }
 import strategicprimer.viewer.model.map.fixtures {
-    Ground
+    Ground,
+    SubsettableFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
-}
-
-import strategicprimer.viewer.model.map {
-    IMutableMapNG,
-    IMapNG
 }
 
 import util {

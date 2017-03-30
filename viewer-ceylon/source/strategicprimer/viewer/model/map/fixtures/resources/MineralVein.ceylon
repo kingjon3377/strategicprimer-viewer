@@ -3,10 +3,10 @@ import lovelace.util.common {
 }
 
 import model.map {
-    IEvent,
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
+    IEvent,
     MineralFixture
 }
 "A vein of a mineral."

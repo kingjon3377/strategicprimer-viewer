@@ -22,12 +22,12 @@ import strategicprimer.viewer.model.map {
     HasMutableImage
 }
 import model.map {
-    SubsettableFixture,
     Player,
     IFixture,
     TileFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
+    SubsettableFixture,
     FortressMember
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

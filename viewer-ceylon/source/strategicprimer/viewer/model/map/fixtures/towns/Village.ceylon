@@ -5,12 +5,13 @@ import java.util {
 import lovelace.util.common {
     todo
 }
-
+import strategicprimer.viewer.model.map.fixtures {
+    SubsettableFixture
+}
 import strategicprimer.viewer.model.map {
     HasMutableImage
 }
 import model.map {
-    SubsettableFixture,
     Player,
     IFixture
 }
