@@ -1,9 +1,6 @@
 import java.io {
     JReader=Reader
 }
-import java.lang {
-    JClass=Class
-}
 import java.nio.file {
     JPath=Path
 }
@@ -25,9 +22,6 @@ shared interface ISPReader {
 			"The reader from which to read the XML"
 			todo("Port to `ceylon.io`")
 			JReader istream,
-			"The type of the object the XML represents"
-			todo("Drop this parameter now we have reified generics")
-			JClass<out Element> type,
 			"The Warning instance to use for warnings"
 			Warning warner) given Element satisfies Object;
 }

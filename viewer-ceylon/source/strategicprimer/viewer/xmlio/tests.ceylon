@@ -153,12 +153,10 @@ void assertFormatIssue<Desideratum, Expectation>(ISPReader reader, String xml,
         given Desideratum satisfies Object given Expectation satisfies Exception {
     if (warning) {
         try (stringReader = StringReader(xml)) {
-            reader.readXML(fakeFilename, stringReader, javaClass<Desideratum>(),
-                Warning.ignore);
+            reader.readXML(fakeFilename, stringReader, Warning.ignore);
         }
         try (stringReader = StringReader(xml)) {
-            reader.readXML(fakeFilename, stringReader,
-                javaClass<Desideratum>(), Warning.die);
+            reader.readXML(fakeFilename, stringReader, Warning.die);
             fail("Expected a fatal warning");
         } catch (FatalWarningException except) {
             assert (is Expectation cause = except.cause);
@@ -166,8 +164,7 @@ void assertFormatIssue<Desideratum, Expectation>(ISPReader reader, String xml,
         }
     } else {
         try (stringReader = StringReader(xml)) {
-            reader.readXML(fakeFilename, stringReader, javaClass<Desideratum>(),
-                Warning.ignore);
+            reader.readXML(fakeFilename, stringReader, Warning.ignore);
             fail("Expected an exception to be thrown");
 //        } catch (Expectation except) {
         } catch (Exception except) {
@@ -259,8 +256,7 @@ void assertSerialization(String message, Object obj,
         for (deprecated in `Boolean`.caseValues) {
             try (stringReader = StringReader(createSerializedForm(obj,
                     deprecated))) {
-                assertEquals(reader.readXML(fakeFilename, stringReader,
-                    javaClassFromInstance(obj), warner), obj, message);
+                assertEquals(reader.readXML(fakeFilename, stringReader, warner), obj, message);
             }
         }
     }
@@ -275,9 +271,8 @@ void assertImageSerialization(String message, HasMutableImage obj) {
         for (deprecated in {true, false}) {
             obj.image = "xyzzy";
             try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
-                assertEquals(reader.readXML(fakeFilename, stringReader,
-                    javaClassFromInstance(obj), Warning.ignore).image, obj.image,
-                    message);
+                assertEquals(reader.readXML<HasMutableImage>(fakeFilename, stringReader,
+                    Warning.ignore).image, obj.image, message);
             }
             obj.image = obj.defaultImage;
             assertFalse(createSerializedForm(obj, deprecated).contains("image="),
@@ -299,9 +294,8 @@ void assertPortraitSerialization(String message, HasPortrait obj) {
         for (deprecated in {true, false}) {
             obj.portrait = "xyzzy";
             try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
-                assertEquals(reader.readXML(fakeFilename, stringReader,
-                    javaClassFromInstance(obj), Warning.ignore).portrait, obj.portrait,
-                    message);
+                assertEquals(reader.readXML<HasPortrait>(fakeFilename, stringReader,
+                    Warning.ignore).portrait, obj.portrait, message);
             }
             obj.portrait = "";
             assertFalse(createSerializedForm(obj, deprecated).contains("portrait="),
@@ -328,8 +322,7 @@ void assertDeprecatedDeserialization<Type>(
         String tag) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertEquals(reader.readXML(fakeFilename, stringReader,
-                javaClass<Type>(), Warning.ignore), expected,
+            assertEquals(reader.readXML(fakeFilename, stringReader, Warning.ignore), expected,
                 message);
         }
     }
@@ -349,8 +342,7 @@ void assertMissingPropertyDeserialization<Type>(
         String property) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertEquals(reader.readXML(fakeFilename, stringReader, javaClass<Type>(),
-                Warning.ignore), expected, message);
+            assertEquals(reader.readXML(fakeFilename, stringReader, Warning.ignore), expected, message);
         }
     }
     assertMissingProperty<Type>(xml, property, true);
@@ -368,8 +360,7 @@ void assertForwardDeserialization<Type>(
         Boolean(Type) assertion) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertTrue(assertion(reader.readXML(fakeFilename, stringReader,
-                javaClass<Type>(), Warning.die)), message);
+            assertTrue(assertion(reader.readXML(fakeFilename, stringReader, Warning.die)), message);
         }
     }
 }
@@ -387,9 +378,7 @@ void assertEquivalentForms<Type>(
     for (reader in {oldReader, newReader}) {
         try (firstReader = StringReader(firstForm),
                 secondReader = StringReader(secondForm)) {
-            assertEquals(reader.readXML(fakeFilename, secondReader,
-                javaClass<Type>(), warningLevel), reader.readXML(fakeFilename,
-                firstReader, javaClass<Type>(), warningLevel), message);
+            assertEquals(reader.readXML(fakeFilename, secondReader, warningLevel), reader.readXML(fakeFilename, firstReader, warningLevel), message);
         }
     }
 }

@@ -1,15 +1,9 @@
 import ceylon.interop.java {
-    CeylonIterable,
-    javaClassFromInstance,
-    javaClass
+    CeylonIterable
 }
 
 import controller.map.formatexceptions {
     SPFormatException
-}
-import strategicprimer.viewer.model {
-    IDFactory,
-    IDRegistrar
 }
 
 import java.io {
@@ -17,7 +11,6 @@ import java.io {
     IOException
 }
 import java.lang {
-    JClass=Class,
     IllegalStateException
 }
 import java.nio.file {
@@ -39,10 +32,13 @@ import javax.xml.stream.events {
     StartElement
 }
 
+import strategicprimer.viewer.model {
+    IDFactory,
+    IDRegistrar
+}
 import strategicprimer.viewer.model.map {
     IMutableMapNG
 }
-
 import strategicprimer.viewer.xmlio {
     ISPReader,
     IncludingIterator,
@@ -61,9 +57,9 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
     throws(`class SPFormatException`, "on SP XML format error")
     throws(`class IllegalStateException`,
         "if a reader produces a different type than requested")
-    shared actual Element readXML<Element>("The file we're reading from" JPath file,
+    shared actual Element readXML<Element>(
+            "The file we're reading from" JPath file,
             "The stream to read from" JReader istream,
-            "The type of the object the caller wants" JClass<out Element> type,
             "The Warning instance to use for warnings" Warning warner)
             given Element satisfies Object {
         JIterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
@@ -88,7 +84,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
     shared actual IMutableMapNG readMapFromStream("The file we're reading from" JPath file,
             "The stream to read from" JReader istream,
             "The Warning instance to use for warnings" Warning warner) =>
-                readXML(file, istream, javaClass<IMutableMapNG>(), warner);
+                readXML(file, istream, warner);
     "Read a map from XML."
     throws(`class IOException`, "on I/O error")
     throws(`class XMLStreamException`, "on malformed XML")

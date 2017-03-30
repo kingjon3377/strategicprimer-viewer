@@ -3,7 +3,6 @@ import ceylon.collection {
     LinkedList
 }
 import ceylon.interop.java {
-    javaClass,
     CeylonIterable
 }
 
@@ -18,7 +17,6 @@ import java.io {
     JReader=Reader
 }
 import java.lang {
-    JClass=Class,
     IllegalStateException
 }
 import java.nio.file {
@@ -446,8 +444,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         "player"->readPlayer,
         *simpleImmortalReaders
     };
-    shared actual Type readXML<Type>(JPath file, JReader istream, JClass<out Type> type,
-            Warning warner) given Type satisfies Object {
+    shared actual Type readXML<Type>(JPath file, JReader istream, Warning warner)
+            given Type satisfies Object {
         JIterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
         {XMLEvent*} eventReader =
                 CeylonIterable(IteratorWrapper(IncludingIterator(file, reader)));
@@ -469,5 +467,5 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
     }
     shared actual IMutableMapNG readMapFromStream(JPath file, JReader istream, Warning warner) =>
-            readXML<IMutableMapNG>(file, istream, javaClass<IMutableMapNG>(), warner);
+            readXML<IMutableMapNG>(file, istream, warner);
 }
