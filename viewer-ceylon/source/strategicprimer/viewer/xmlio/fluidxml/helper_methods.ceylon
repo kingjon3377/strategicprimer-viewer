@@ -44,11 +44,11 @@ import lovelace.util.common {
 }
 
 import strategicprimer.viewer.model.map {
+    IPlayerCollection,
     HasMutableImage
 }
 import model.map {
     HasImage,
-    IPlayerCollection,
     Player
 }
 

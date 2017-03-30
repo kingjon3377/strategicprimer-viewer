@@ -28,11 +28,11 @@ import model.map {
     HasOwner,
     MapDimensions,
     River,
-    IMutablePlayerCollection,
     MutablePlayer
 }
 
 import strategicprimer.viewer.model.map {
+    IMutablePlayerCollection,
     TileFixture,
     IMutableMapNG,
     IMapNG
@@ -94,7 +94,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The dimensions of the map."
     shared actual MapDimensions dimensions => mapDimensions;
     "A stream of the players known in the map"
-    shared actual {Player*} players => CeylonIterable(playerCollection);
+    shared actual {Player*} players => {*playerCollection};
     "The locations in the map."
     shared actual {Point*} locations => PointIterator(dimensions, true, true);
     "The base terrain at the given location."

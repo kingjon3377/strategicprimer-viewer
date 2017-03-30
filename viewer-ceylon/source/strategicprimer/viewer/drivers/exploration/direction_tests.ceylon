@@ -5,11 +5,11 @@ import ceylon.test {
 
 import model.map {
     MapDimensionsImpl,
-    PlayerCollection,
     Point
 }
 
 import strategicprimer.viewer.model.map {
+    PlayerCollection,
     SPMapNG,
     pointFactory
 }

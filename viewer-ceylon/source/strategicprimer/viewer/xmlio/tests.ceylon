@@ -65,7 +65,6 @@ import model.map {
     PlayerImpl,
     River,
     MapDimensionsImpl,
-    PlayerCollection,
     Point,
     MutablePlayer
 }
@@ -74,6 +73,7 @@ import strategicprimer.viewer.drivers.advancement {
     races
 }
 import strategicprimer.viewer.model.map {
+    PlayerCollection,
     TileType,
     SPMapNG,
     IMutableMapNG,

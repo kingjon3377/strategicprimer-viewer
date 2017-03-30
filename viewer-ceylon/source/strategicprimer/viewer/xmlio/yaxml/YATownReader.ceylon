@@ -25,9 +25,10 @@ import javax.xml.stream.events {
     XMLEvent,
     StartElement
 }
-
+import strategicprimer.viewer.model.map {
+    IPlayerCollection
+}
 import model.map {
-    IPlayerCollection,
     Player
 }
 import strategicprimer.viewer.drivers.advancement {

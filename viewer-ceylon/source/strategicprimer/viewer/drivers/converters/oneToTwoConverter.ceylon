@@ -30,7 +30,6 @@ import lovelace.util.jvm {
 
 import model.map {
     River,
-    PlayerCollection,
     Player,
     MapDimensions,
     MapDimensionsImpl,
@@ -62,6 +61,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    PlayerCollection,
     TileFixture,
     TileType,
     SPMapNG,

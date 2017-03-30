@@ -12,12 +12,12 @@ import model.listeners {
 }
 import model.map {
     MapDimensions,
-    MapDimensionsImpl,
-    PlayerCollection
+    MapDimensionsImpl
 }
 import strategicprimer.viewer.model.map {
     SPMapNG,
-    IMutableMapNG
+    IMutableMapNG,
+    PlayerCollection
 }
 "A superclass for driver-models, to handle the common details."
 shared class SimpleDriverModel satisfies IDriverModel {

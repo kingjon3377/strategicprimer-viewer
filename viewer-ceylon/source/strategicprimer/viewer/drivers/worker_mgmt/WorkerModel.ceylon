@@ -25,10 +25,10 @@ import model.map {
     Player,
     PlayerImpl,
     MapDimensionsImpl,
-    PlayerCollection,
     Point
 }
 import strategicprimer.viewer.model.map {
+    PlayerCollection,
     TileFixture,
     SPMapNG,
     IMutableMapNG,

@@ -47,11 +47,9 @@ import lovelace.util.jvm {
     showErrorDialog
 }
 
-import model.map {
-    PlayerCollection
-}
 import strategicprimer.viewer.model.map {
-    SPMapNG
+    SPMapNG,
+    PlayerCollection
 }
 
 import strategicprimer.viewer.drivers.map_viewer {

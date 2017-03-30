@@ -20,7 +20,7 @@ import javax.xml.stream.events {
     XMLEvent
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     IPlayerCollection
 }
 

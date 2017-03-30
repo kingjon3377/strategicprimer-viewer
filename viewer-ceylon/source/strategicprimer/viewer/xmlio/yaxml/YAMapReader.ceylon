@@ -35,7 +35,6 @@ import javax.xml.stream.events {
 }
 
 import model.map {
-    IMutablePlayerCollection,
     Player,
     Point,
     River,
@@ -47,6 +46,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    IMutablePlayerCollection,
     TileFixture,
     SPMapNG,
     IMutableMapNG,

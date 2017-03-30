@@ -7,10 +7,7 @@ import ceylon.test {
 }
 
 import model.map {
-    IMutablePlayerCollection,
-    PlayerCollection,
     PlayerImpl,
-    IPlayerCollection,
     Subsettable,
     River,
     IFixture,
@@ -19,6 +16,9 @@ import model.map {
 }
 
 import strategicprimer.viewer.model.map {
+    IPlayerCollection,
+    IMutablePlayerCollection,
+    PlayerCollection,
     TileType,
     SPMapNG,
     IMutableMapNG,
