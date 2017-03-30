@@ -6,9 +6,6 @@ import ceylon.collection {
     HashSet,
     MutableList
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 import ceylon.math.float {
     sqrt,
     ceiling
@@ -18,8 +15,6 @@ import java.io {
     IOException
 }
 import java.lang {
-    JIterable=Iterable,
-    JDouble=Double,
     JInteger=Integer
 }
 

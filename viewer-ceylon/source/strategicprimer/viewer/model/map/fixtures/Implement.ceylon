@@ -12,9 +12,6 @@ import strategicprimer.viewer.model.map.fixtures {
 	UnitMember,
     FortressMember
 }
-import java.util {
-    Formatter
-}
 "A piece of equipment."
 todo("More members?")
 shared class Implement(kind, id)

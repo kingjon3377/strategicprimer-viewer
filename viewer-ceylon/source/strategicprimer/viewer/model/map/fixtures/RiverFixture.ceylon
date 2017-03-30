@@ -16,9 +16,6 @@ import model.map {
     River,
     IFixture
 }
-import java.util {
-    Formatter
-}
 "A Fixture to encapsulate the rivers on a tile, so we can show a chit for rivers."
 todo("We'd like to remove this class")
 shared class RiverFixture(River* initial) satisfies TileFixture&{River*}&SubsettableFixture {

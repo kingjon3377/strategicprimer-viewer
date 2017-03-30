@@ -19,9 +19,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Worker
 }
 
-import util {
-    NullStream
-}
 // Tests that the proxy classes work as expected.
 "Assert that a worker contains a Job and that this Job is not empty."
 void assertWorkerHasJob(IWorker worker, String jobName) {

@@ -5,10 +5,6 @@ import ceylon.collection {
     HashSet
 }
 
-import java.util {
-    Formatter
-}
-
 import model.map {
     IFixture
 }

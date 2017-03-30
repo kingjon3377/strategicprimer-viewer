@@ -7,8 +7,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob,
-    Job,
-    Skill,
     ISkill
 }
 import strategicprimer.viewer.drivers {

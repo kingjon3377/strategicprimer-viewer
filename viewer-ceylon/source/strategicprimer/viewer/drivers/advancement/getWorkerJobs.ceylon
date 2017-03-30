@@ -1,6 +1,5 @@
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    IJob,
-    Job
+    IJob
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker

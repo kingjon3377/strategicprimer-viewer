@@ -7,9 +7,6 @@ import strategicprimer.viewer.model.map {
 import model.map {
     HasName
 }
-import java.util {
-    Formatter
-}
 "An interface for Skills."
 todo("Split mutators into a separate interface?")
 shared interface ISkill satisfies HasName&Subsettable<ISkill> {

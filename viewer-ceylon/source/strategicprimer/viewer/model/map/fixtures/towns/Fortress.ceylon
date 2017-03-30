@@ -3,12 +3,6 @@ import ceylon.collection {
     ArrayList
 }
 
-import java.lang {
-    JInteger=Integer
-}
-import java.util {
-    Formatter
-}
 
 import lovelace.util.common {
     todo

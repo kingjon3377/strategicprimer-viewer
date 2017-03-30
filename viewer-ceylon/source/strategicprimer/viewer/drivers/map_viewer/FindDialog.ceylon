@@ -26,8 +26,7 @@ import model.map {
     Player,
     IFixture,
     HasName,
-    HasKind,
-    Point
+    HasKind
 }
 import strategicprimer.viewer.model.map {
     TileFixture,

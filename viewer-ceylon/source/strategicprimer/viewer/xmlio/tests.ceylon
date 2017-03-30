@@ -37,8 +37,7 @@ import java.io {
     StringWriter
 }
 import java.lang {
-    IllegalArgumentException,
-    JInteger=Integer
+    IllegalArgumentException
 }
 import java.nio.file {
     JPath=Path,

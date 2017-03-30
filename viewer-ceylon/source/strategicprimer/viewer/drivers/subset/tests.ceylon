@@ -52,9 +52,6 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortification
 }
 
-import util {
-    NullStream
-}
 void assertIsSubset<T,U=T>(T&U one, T&U two, String message)
         given T satisfies Subsettable<U> given U satisfies Object =>
             assertTrue(one.isSubset(two, noop), message);

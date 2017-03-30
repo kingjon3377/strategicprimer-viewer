@@ -6,9 +6,6 @@ import ceylon.language {
     createMap=map
 }
 
-import java.util {
-    Formatter
-}
 
 import lovelace.util.common {
     todo

@@ -6,10 +6,6 @@ import ceylon.collection {
 import java.lang {
     IllegalArgumentException
 }
-import java.util {
-    Formatter
-}
-
 import lovelace.util.common {
     todo
 }

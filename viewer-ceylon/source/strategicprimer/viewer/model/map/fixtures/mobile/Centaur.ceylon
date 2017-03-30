@@ -1,7 +1,3 @@
-import java.util {
-    Formatter
-}
-
 import strategicprimer.viewer.model.map {
 	HasMutableImage
 }

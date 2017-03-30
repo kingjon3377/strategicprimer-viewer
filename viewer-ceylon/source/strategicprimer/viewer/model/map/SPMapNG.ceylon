@@ -6,16 +6,9 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 import ceylon.logging {
     Logger,
     logger
-}
-
-import java.util {
-    Formatter
 }
 
 import lovelace.util.common {
@@ -48,9 +41,6 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 
-import util {
-    NullStream
-}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A class to represent a game-world map and its contents."

@@ -9,9 +9,6 @@ import model.map {
     HasKind,
     IFixture
 }
-import java.util {
-    Formatter
-}
 "Kinds of simple immortals."
 shared class SimpleImmortalKind of sphinx|djinn|griffin|minotaur|ogre|phoenix|
 		simurgh|troll {

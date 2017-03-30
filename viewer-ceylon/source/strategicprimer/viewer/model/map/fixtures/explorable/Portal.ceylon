@@ -1,7 +1,3 @@
-import java.util {
-    Formatter
-}
-
 import lovelace.util.common {
     todo
 }

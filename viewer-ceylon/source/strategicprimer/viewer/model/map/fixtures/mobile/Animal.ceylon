@@ -11,9 +11,6 @@ import model.map {
 import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
-import java.util {
-    Formatter
-}
 "An animal or group of animals."
 todo("Add more features (population, to start with)")
 shared class Animal(kind, traces, talking, status, id)

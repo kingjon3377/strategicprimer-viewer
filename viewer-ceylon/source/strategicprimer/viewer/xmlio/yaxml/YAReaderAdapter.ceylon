@@ -1,6 +1,3 @@
-import ceylon.interop.java {
-    CeylonIterable
-}
 import ceylon.language.meta {
     classDeclaration
 }
@@ -40,9 +37,6 @@ import strategicprimer.viewer.model.map {
 }
 import model.map {
     River
-}
-import strategicprimer.viewer.model.map.fixtures {
-    RiverFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor

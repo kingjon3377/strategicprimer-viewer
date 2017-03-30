@@ -38,8 +38,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Animal
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    WorkerStats,
-    ISkill
+    WorkerStats
 }
 
 import strategicprimer.viewer.drivers.map_viewer {

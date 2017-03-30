@@ -10,7 +10,6 @@ import java.awt {
     Color
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    IJob,
     ProxyWorker,
     WorkerStats
 }

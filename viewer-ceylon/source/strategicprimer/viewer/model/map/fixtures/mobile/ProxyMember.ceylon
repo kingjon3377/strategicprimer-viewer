@@ -3,10 +3,6 @@ import ceylon.collection {
     ArrayList
 }
 
-import java.util {
-    Formatter
-}
-
 import lovelace.util.common {
     todo
 }

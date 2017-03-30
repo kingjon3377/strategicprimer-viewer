@@ -15,9 +15,6 @@ import java.lang {
     IllegalArgumentException,
     IllegalStateException
 }
-import java.util {
-    Formatter
-}
 
 import lovelace.util.common {
     todo

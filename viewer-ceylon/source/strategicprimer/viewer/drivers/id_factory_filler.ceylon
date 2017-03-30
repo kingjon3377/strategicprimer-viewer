@@ -1,11 +1,3 @@
-import ceylon.interop.java {
-    CeylonIterable
-}
-
-import java.lang {
-    JIterable=Iterable
-}
-
 import strategicprimer.viewer.model.map {
     IMapNG,
     FixtureIterable

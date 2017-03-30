@@ -3,8 +3,7 @@ import ceylon.collection {
     ArrayList
 }
 import java.util {
-    JRandom=Random,
-    Formatter
+    JRandom=Random
 }
 import lovelace.util.common {
     todo

@@ -1,9 +1,6 @@
 import strategicprimer.viewer.drivers {
     SPOptions
 }
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    IJob
-}
 import model.map {
     Player,
     HasName

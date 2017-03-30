@@ -8,9 +8,6 @@ import ceylon.math.whole {
 import java.lang {
     IllegalArgumentException
 }
-import java.util {
-    Formatter
-}
 
 import strategicprimer.viewer.model.map {
     Subsettable
