@@ -496,6 +496,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
                     village.race = race;
                 } else {
                     Random rng = Random(village.id);
+                    // TODO: assert its existence instead
                     String race = raceList.get(rng.nextInt(raceList.size)) else nothing;
                     village.race = race;
                     raceMap.put(village.id, race);

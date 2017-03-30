@@ -59,7 +59,8 @@ import javax.xml.stream.events {
     StartElement,
     Characters,
     StartDocument,
-    EndDocument
+    EndDocument,
+    Namespace
 }
 
 import lovelace.util.common {
@@ -71,11 +72,6 @@ import lovelace.util.jvm {
     EnumCounter
 }
 
-import strategicprimer.viewer.model.map {
-    SPMapNG,
-    IMutableMapNG,
-    IMapNG
-}
 import model.map {
     River,
     Player,
@@ -86,6 +82,16 @@ import model.map {
     PlayerCollection,
     TileFixture,
     PlayerImpl
+}
+
+import strategicprimer.viewer.model {
+    IDFactory,
+    IDRegistrar
+}
+import strategicprimer.viewer.model.map {
+    SPMapNG,
+    IMutableMapNG,
+    IMapNG
 }
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture,
@@ -105,15 +111,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Unit,
     IUnit
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
-    Hill,
-    Forest
-}
-
-import strategicprimer.viewer.model {
-    IDFactory,
-    IDRegistrar
-}
 import strategicprimer.viewer.model.map.fixtures.resources {
     FieldStatus,
     Meadow,
@@ -123,6 +120,10 @@ import strategicprimer.viewer.model.map.fixtures.resources {
     StoneKind,
     StoneDeposit,
     Grove
+}
+import strategicprimer.viewer.model.map.fixtures.terrain {
+    Hill,
+    Forest
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus,
@@ -789,7 +790,7 @@ object zeroToOneConverter {
             ostream.append("``element.name.prefix``:");
         }
         ostream.append(element.name.localPart);
-        for (namespace in ConvertingIterable(element.namespaces)) {
+        for (namespace in ConvertingIterable<Namespace>(element.namespaces)) {
             ostream.append(" ``namespace``");
         }
         for (attribute in attributes) {
@@ -819,7 +820,7 @@ object zeroToOneConverter {
             ostream.append("``element.name.prefix``:");
         }
         ostream.append(element.name.localPart);
-        for (attribute in ConvertingIterable(element.attributes)) {
+        for (attribute in ConvertingIterable<Attribute>(element.attributes)) {
             printAttribute(ostream, attribute);
         }
         ostream.append('>');
