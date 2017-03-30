@@ -2,6 +2,9 @@ import ceylon.interop.java {
     javaClass,
     javaClassFromInstance
 }
+import ceylon.math.decimal {
+    parseDecimal
+}
 import ceylon.math.float {
     random
 }
@@ -36,9 +39,6 @@ import java.io {
 import java.lang {
     IllegalArgumentException,
     JInteger=Integer
-}
-import java.math {
-    BigDecimal
 }
 import java.nio.file {
     JPath=Path,
@@ -86,7 +86,8 @@ import strategicprimer.viewer.model.map.fixtures {
     Implement,
     RiverFixture,
     ResourcePile,
-    Ground
+    Ground,
+    Quantity
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {
     Portal,
@@ -143,8 +144,7 @@ import strategicprimer.viewer.xmlio {
 
 import util {
     Warning,
-    FatalWarningException,
-    Quantity
+    FatalWarningException
 }
 JPath fakeFilename = JPaths.get("");
 ISPReader oldReader = testReaderFactory.oldReader;
@@ -1191,15 +1191,15 @@ void testFortressMemberSerialization() {
     firstFort.addMember(Implement("implKind", 2));
     assertSerialization("[[Fortress]] can have an [[Implement]] as a member", firstFort);
     firstFort.addMember(ResourcePile(3, "generalKind", "specificKind",
-        Quantity(JInteger(10), "each")));
+        Quantity(10, "each")));
     assertSerialization("[[Fortress]] can have a [[ResourcePile]] as a member",
         firstFort);
     ResourcePile resource = ResourcePile(4, "generalKind", "specificKind",
-        Quantity(JInteger(15), "pounds"));
+        Quantity(15, "pounds"));
     resource.created = 5;
     assertSerialization("Resource pile can know what turn it was created", resource);
     assertSerialization("Resource pile can have non-integer quantity", ResourcePile(5, "resourceKind", "specificKind2",
-        Quantity(BigDecimal("1.5"), "cubic feet")));
+        Quantity(parseDecimal("1.5") else nothing, "cubic feet")));
 }
 
 test

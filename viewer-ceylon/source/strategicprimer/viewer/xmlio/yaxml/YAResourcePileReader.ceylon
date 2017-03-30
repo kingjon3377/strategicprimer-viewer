@@ -1,17 +1,13 @@
+import ceylon.math.decimal {
+    parseDecimal
+}
+
 import controller.map.formatexceptions {
     MissingPropertyException
 }
-import strategicprimer.viewer.model {
-    IDRegistrar
-}
 
 import java.lang {
-    JAppendable=Appendable,
-    JInteger=Integer,
-    JNumber=Number
-}
-import java.math {
-    BigDecimal
+    JAppendable=Appendable
 }
 
 import javax.xml.namespace {
@@ -22,13 +18,17 @@ import javax.xml.stream.events {
     XMLEvent
 }
 
+import strategicprimer.viewer.model {
+    IDRegistrar
+}
 import strategicprimer.viewer.model.map.fixtures {
-    ResourcePile
+    ResourcePile,
+    Quantity,
+    SPNumber
 }
 
 import util {
-    Warning,
-    Quantity
+    Warning
 }
 "A reader for resource piles."
 class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
@@ -37,13 +37,17 @@ class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
             {XMLEvent*} stream) {
         requireTag(element, parent, "resource");
         String quantityString = getParameter(element, "quantity");
-        JNumber quantity;
+        SPNumber quantity;
         if (quantityString.contains(".")) {
-            quantity = BigDecimal(quantityString);
+            if (exists temp = parseDecimal(quantityString)) {
+                quantity = temp;
+            } else {
+                throw MissingPropertyException(element, "quantity");
+            }
         } else {
             value temp = Integer.parse(quantityString);
             if (is Integer temp) {
-                quantity = JInteger(temp);
+                quantity = temp;
             } else {
                 throw MissingPropertyException(element, "quantity", temp);
             }

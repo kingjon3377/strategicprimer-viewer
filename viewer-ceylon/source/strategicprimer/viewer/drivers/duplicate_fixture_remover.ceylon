@@ -7,18 +7,29 @@ import ceylon.collection {
 import ceylon.language.meta {
     classDeclaration
 }
+import ceylon.math.decimal {
+    decimalNumber,
+    Decimal
+}
+import ceylon.math.whole {
+    Whole
+}
 
 import java.lang {
-    JIterable=Iterable,
     JNumber=Number,
     JInteger=Integer,
     JLong=Long,
     JFloat=Float,
-    JDouble=Double
+    JDouble=Double,
+    IllegalStateException
 }
 import java.math {
     BigDecimal,
     BigInteger
+}
+
+import model.map {
+    IFixture
 }
 
 import strategicprimer.viewer.model.map {
@@ -26,11 +37,9 @@ import strategicprimer.viewer.model.map {
     TileFixture,
     FixtureIterable
 }
-import model.map {
-    IFixture
-}
 import strategicprimer.viewer.model.map.fixtures {
-    ResourcePile
+    ResourcePile,
+    Quantity
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
@@ -42,9 +51,6 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 
-import util {
-    Quantity
-}
 """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests, of the same
     kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile in a
     map."""
@@ -142,8 +148,16 @@ ResourcePile combineResources({ResourcePile*} list) {
     ResourcePile combined = ResourcePile(top.id, top.kind,
         top.contents, Quantity(list
             .map(ResourcePile.quantity).map(Quantity.number)
-            .map(toBigDecimal).fold(BigDecimal.zero)(
-                    (BigDecimal partial, BigDecimal element) => partial.add(element)),
+            .map((num) {
+                if (is Decimal num) {
+                    return num;
+                } else if (is Integer|Float|Whole num) {
+                    return decimalNumber(num);
+                } else {
+                    throw IllegalStateException("Can't get here");
+                }
+            }).fold(decimalNumber(0))(
+                    (Decimal partial, Decimal element) => partial.plus(element)),
             top.quantity.units));
     combined.created = top.created;
     return combined;

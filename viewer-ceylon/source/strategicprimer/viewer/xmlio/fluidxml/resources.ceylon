@@ -1,18 +1,15 @@
+import ceylon.math.decimal {
+    Decimal,
+    parseDecimal
+}
+
 import controller.map.formatexceptions {
     MissingPropertyException,
     DeprecatedPropertyException
 }
-import strategicprimer.viewer.model {
-    IDRegistrar
-}
 
 import java.lang {
-    JNumber=Number,
-    JInteger=Integer,
     IllegalArgumentException
-}
-import java.math {
-    BigDecimal
 }
 
 import javax.xml.namespace {
@@ -29,8 +26,14 @@ import javax.xml.stream.events {
 import model.map {
     IPlayerCollection
 }
+
+import strategicprimer.viewer.model {
+    IDRegistrar
+}
 import strategicprimer.viewer.model.map.fixtures {
-    ResourcePile
+    ResourcePile,
+    Quantity,
+    SPNumber
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     FieldStatus,
@@ -48,21 +51,24 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 }
 
 import util {
-    Warning,
-    Quantity
+    Warning
 }
 ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "resource");
     spinUntilEnd(element.name, stream);
     String quantityStr = getAttribute(element, "quantity");
-    JNumber quantity;
+    SPNumber quantity;
     if (quantityStr.contains(".")) {
-        quantity = BigDecimal(quantityStr);
+        if (exists temp = parseDecimal(quantityStr)) {
+            quantity = temp;
+        } else {
+            throw MissingPropertyException(element, "quantity");
+        }
     } else {
         value temp = Integer.parse(quantityStr);
         if (is Integer temp) {
-            quantity = JInteger(temp);
+            quantity = temp;
         } else {
             throw MissingPropertyException(element, "quantity", temp);
         }
@@ -242,18 +248,20 @@ void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
         writeAttribute(ostream, "kind", obj.kind);
         writeAttribute(ostream, "contents", obj.contents);
         switch (quantity = obj.quantity.number)
-        case (is JInteger) {
-            writeIntegerAttribute(ostream, "quantity", quantity.intValue());
+        case (is Integer) {
+            writeIntegerAttribute(ostream, "quantity", quantity);
         }
-        case (is BigDecimal) {
-            if (quantity.scale() > 0) {
-                writeAttribute(ostream, "quantity", quantity.toPlainString());
+        case (is Decimal) {
+            if (quantity.scale > 0) {
+                // TODO: Java used BigDecimal.toPlainString(), while this evaluates to .toString().
+                writeAttribute(ostream, "quantity", quantity.string);
             } else {
-                writeIntegerAttribute(ostream, "quantity", quantity.intValue());
+                writeIntegerAttribute(ostream, "quantity", quantity.integer);
             }
         }
+        // TODO: Cover Float and Whole cases
         else {
-            throw IllegalArgumentException("ResourcePile with non-Integer, non-BigDecimal quantity");
+            throw IllegalArgumentException("ResourcePile with non-Integer, non-Decimal quantity");
         }
         writeAttribute(ostream, "unit", obj.quantity.units);
         if (obj.created >= 0) {

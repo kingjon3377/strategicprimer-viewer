@@ -7,6 +7,9 @@ import ceylon.collection {
 import ceylon.language.meta {
     classDeclaration
 }
+import ceylon.math.decimal {
+    parseDecimal
+}
 
 import java.awt {
     Component,
@@ -55,22 +58,7 @@ import model.map {
     Player,
     PlayerImpl
 }
-import strategicprimer.viewer.model.map {
-    IMutableMapNG,
-    IMapNG
-}
-import strategicprimer.viewer.model.map.fixtures {
-    ResourcePile,
-    Implement,
-    FortressMember
-}
-import strategicprimer.viewer.model.map.fixtures.towns {
-    Fortress
-}
 
-import util {
-    Quantity
-}
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu
 }
@@ -78,6 +66,19 @@ import strategicprimer.viewer.model {
     SimpleMultiMapModel,
     IDriverModel,
     IDRegistrar
+}
+import strategicprimer.viewer.model.map {
+    IMutableMapNG,
+    IMapNG
+}
+import strategicprimer.viewer.model.map.fixtures {
+    ResourcePile,
+    Implement,
+    FortressMember,
+    Quantity
+}
+import strategicprimer.viewer.model.map.fixtures.towns {
+    Fortress
 }
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
@@ -329,16 +330,21 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
             resourceUnitsBox.requestFocusInWindow();
             return;
         }
-        ResourcePile pile = ResourcePile(idf.createID(), kind, resource,
-            Quantity(resourceQuantityModel.number, units));
-        pile.created = resourceCreatedModel.number.intValue();
-        model.addResource(pile, currentPlayer);
-        logAddition(pile.string);
-        for (box in { resourceKindBox, resourceBox, resourceUnitsBox }) {
-            box.checkAndClear();
+        if (exists qty = parseDecimal(resourceQuantityModel.number.string)) {
+            ResourcePile pile = ResourcePile(idf.createID(), kind, resource,
+                Quantity(qty, units));
+            pile.created =resourceCreatedModel.number.intValue();
+            model.addResource(pile, currentPlayer);
+            logAddition(pile.string);
+            for (box in { resourceKindBox, resourceBox, resourceUnitsBox }) {
+                box.checkAndClear();
+            }
+            resourceCreatedModel.\ivalue = -1;
+            resourceQuantityModel.\ivalue = 0;
+        } else {
+            logLabel.append("Failed to convert quantity into the form we need.
+                             ");
         }
-        resourceCreatedModel.\ivalue = -1;
-        resourceQuantityModel.\ivalue = 0;
     };
     resourcePanel.add(pairPanel(JLabel(""),
         listenedButton("Add Resource", resourceListener)));

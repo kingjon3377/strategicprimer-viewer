@@ -1,6 +1,3 @@
-import util {
-	Quantity
-}
 import strategicprimer.viewer.model.map {
 	HasMutableImage
 }
@@ -16,7 +13,8 @@ import lovelace.util.common {
 }
 import strategicprimer.viewer.model.map.fixtures {
 	UnitMember,
-	FortressMember
+	FortressMember,
+	Quantity
 }
 "A quantity of some kind of resource."
 todo("More members?")

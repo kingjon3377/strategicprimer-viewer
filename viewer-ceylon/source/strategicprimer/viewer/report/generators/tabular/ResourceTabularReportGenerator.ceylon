@@ -63,7 +63,7 @@ shared class ResourceTabularReportGenerator()
                     byIncreasing(ResourcePile.contents),
                     // TODO: Total comparison of Quantity, as in Java compareTo().
                     byDecreasing((ResourcePile pile)
-                    => pile.quantity.number.doubleValue()))(first, second);
+                    => pile.quantity.floatNumber))(first, second);
             } else {
                 return smaller;
             }

@@ -35,7 +35,8 @@ import model.map {
     HasName
 }
 import strategicprimer.viewer.model.map.fixtures {
-    Ground
+    Ground,
+    Quantity
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker
@@ -59,9 +60,6 @@ import strategicprimer.viewer.model.map {
     FixtureIterable
 }
 
-import util {
-    Quantity
-}
 "Models of (game statistics for) herding."
 interface HerdModel of PoultryModel | MammalModel {
     "How much is produced per head per turn, in some model-specified unit."
@@ -77,10 +75,10 @@ interface HerdModel of PoultryModel | MammalModel {
     shared formal Integer dailyTime(Integer heads);
     "How much is produced by a flock of the given size."
     shared Quantity scaledProduction(Integer heads) => Quantity(
-        JDouble(productionPerHead.number.doubleValue() * heads), productionPerHead.units);
+        productionPerHead.floatNumber * heads, productionPerHead.units);
     "How many pounds are produced by a flock of the given size."
     shared Float scaledPoundsProduction(Integer heads) =>
-            productionPerHead.number.doubleValue() * heads * poundsCoefficient;
+            productionPerHead.floatNumber * heads * poundsCoefficient;
 }
 "Models of (game statistics for) herding mammals."
 abstract class MammalModel(production, dailyTimePerHead) of dairyCattle | largeMammals |
@@ -91,7 +89,7 @@ abstract class MammalModel(production, dailyTimePerHead) of dairyCattle | largeM
      food produced by the animals."
     shared actual Integer dailyTimePerHead;
     "The amount produced per head per turn."
-    shared actual Quantity productionPerHead = Quantity(JDouble(production), "gallons");
+    shared actual Quantity productionPerHead = Quantity(production, "gallons");
     "The number of pounds per gallon."
     shared actual Float poundsCoefficient = 8.6;
     "How much time, in minutes, must be spent on the entire herd or flock each turn,
@@ -118,7 +116,7 @@ abstract class PoultryModel(production, poundsCoefficient, dailyTimePerHead, ext
     "The number of eggs produced per head per turn."
     Float production;
     "The amount produced per head per turn."
-    shared actual Quantity productionPerHead = Quantity(JDouble(production), "eggs");
+    shared actual Quantity productionPerHead = Quantity(production, "eggs");
     "The coefficient to turn production into pounds."
     shared actual Float poundsCoefficient;
     "How much time, per head, in minutes, must be spent to gather eggs."
@@ -228,7 +226,7 @@ object queryCLI satisfies SimpleDriver {
             flockPerHerder * animal.dailyTimePerHead`` minutes, or ``flockPerHerder *
             (animal.dailyTimePerHead - 10)``, plus ``animal.dailyTimeFloor`` to gather them");
         Quantity base = animal.scaledProduction(count);
-        Float production = base.number.doubleValue();
+        Float production = base.floatNumber;
         cli.println("This produces ``Float.format(production, 0,
             1)`` ``base.units``, ``Float.format(animal.scaledPoundsProduction(count),
             0, 1)`` lbs, of milk per day.`");
@@ -249,7 +247,7 @@ object queryCLI satisfies SimpleDriver {
             + 1`` turns, takes ``Float.format(bird
             .dailyExtraTime(flockPerHerder) / 60.0, 0, 1)`` hours.");
         Quantity base = bird.scaledProduction(count);
-        Float production = base.number.doubleValue();
+        Float production = base.floatNumber;
         cli.println("This produces ``Float.format(production, 0, 0)`` ``
             base.units``, totaling ``Float.format(bird.scaledPoundsProduction(count),
             0, 1)`` lbs.");

@@ -4,6 +4,11 @@ import ceylon.collection {
     HashMap,
     MutableList
 }
+import ceylon.math.decimal {
+    Decimal,
+    decimalNumber,
+    parseDecimal
+}
 import ceylon.test {
     assertEquals,
     test,
@@ -22,12 +27,8 @@ import java.io {
     InputStreamReader,
     Closeable
 }
-import java.lang {
-    NumberFormatException
-}
 import java.math {
-    BigDecimal,
-    MathContext
+    BigDecimal
 }
 
 import lovelace.util.common {
@@ -116,7 +117,7 @@ shared interface ICLIHelper satisfies Closeable {
             String prompt);
     "Read from the input stream repeatedly until a valid non-negative decimal number is
      entered, then return it."
-    shared formal BigDecimal inputDecimal(
+    shared formal Decimal inputDecimal(
             "The prompt to prompt the user with."
             String prompt);
     "Read a line of input. It is trimmed of leading and trailing whitespace."
@@ -272,17 +273,17 @@ class CLIHelper satisfies ICLIHelper {
     }
     "Read from the input stream repeatedly until a valid non-negative decimal number is
      entered, then return it."
-    shared actual BigDecimal inputDecimal(String prompt) {
-        variable BigDecimal retval = BigDecimal.zero.subtract(BigDecimal.one);
-        while (retval.compareTo(BigDecimal.zero) < 0) {
+    shared actual Decimal inputDecimal(String prompt) {
+        variable Decimal retval = decimalNumber(-1);
+        Decimal zero = decimalNumber(0);
+        while (retval.compare(zero) == smaller) {
             ostream.print(prompt);
             ostream.flush();
             if (exists input = istream.readLine()) {
-                try {
-                    retval = BigDecimal(input.trimmed, MathContext.unlimited);
-                } catch (NumberFormatException except) {
+                if (exists temp = parseDecimal(input.trimmed)) {
+                    retval = temp;
+                } else {
                     ostream.println("Invalid number.");
-                    log.debug("Invalid number", except);
                 }
             } else {
                 throw IOException("Null line of input");
