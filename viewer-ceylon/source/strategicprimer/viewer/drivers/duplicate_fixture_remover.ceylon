@@ -76,8 +76,7 @@ void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
                 toRemove.add(fixture);
             } else {
                 fixtures.add(fixture);
-                if (is FixtureIterable<out Object> fixture) {
-                    assert (is JIterable<out IFixture> fixture);
+                if (is FixtureIterable<out IFixture> fixture) {
                     coalesceResources(fixture, cli);
                 }
             }
@@ -88,12 +87,11 @@ void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
     }
 }
 "Offer to combine like resources in a unit or fortress."
-void coalesceResources(JIterable<out IFixture> stream, ICLIHelper cli) {
+void coalesceResources({IFixture*} stream, ICLIHelper cli) {
     MutableMap<[String, String, String, Integer], MutableList<ResourcePile>> resources =
             HashMap<[String, String, String, Integer], MutableList<ResourcePile>>();
     for (fixture in stream) {
-        if (is FixtureIterable<out Object> fixture) {
-            assert (is JIterable<out IFixture> fixture);
+        if (is FixtureIterable<out IFixture> fixture) {
             coalesceResources(fixture, cli);
         } else if (is ResourcePile fixture) {
             [String, String, String, Integer] key = [fixture.kind, fixture.contents,

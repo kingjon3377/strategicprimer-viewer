@@ -155,9 +155,8 @@ object queryCLI satisfies SimpleDriver {
         for (fixture in fixtures) {
             if (is IWorker fixture, is HasOwner fixtures, player == fixtures) {
                 retval++;
-            } else if (is FixtureIterable<out Object> fixture) {
-                assert (is JIterable<out TileFixture> fixture);
-                retval += countWorkersInIterable(player, CeylonIterable(fixture));
+            } else if (is FixtureIterable<out TileFixture> fixture) {
+                retval += countWorkersInIterable(player, fixture);
             }
         }
         return retval;

@@ -113,9 +113,10 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             Boolean caseSensitivity) {
         if (matchesSimple(pattern, idNum, fixture, caseSensitivity)) {
             return true;
-        } else if (is FixtureIterable<out Object> fixture) {
+        } else if (is FixtureIterable<out IFixture> fixture) {
+            // TODO Use Iterable.any
             for (member in fixture) {
-                if (is IFixture member, matches(pattern, idNum, member, caseSensitivity)) {
+                if (matches(pattern, idNum, member, caseSensitivity)) {
                     return true;
                 }
             } else {

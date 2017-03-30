@@ -53,9 +53,8 @@ void recursiveRegister(IDRegistrar factory, IMapNG|IMultiMapModel|{IFixture*} ar
                 // is unused
                 factory.register(id);
             }
-            if (is FixtureIterable<out Object> fixture) {
-                assert (is JIterable<out IFixture> fixture);
-                recursiveRegister(factory, CeylonIterable(fixture));
+            if (is FixtureIterable<out IFixture> fixture) {
+                recursiveRegister(factory, fixture);
             }
         }
     }

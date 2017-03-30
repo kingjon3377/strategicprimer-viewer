@@ -126,9 +126,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Ground? ground = map.getGround(point);
         Forest? forest = map.getForest(point);
         return {ground, forest, *map.getOtherFixtures(point)}.coalesced.flatMap((element) {
-            if (is FixtureIterable<out Anything> element) {
-                assert (is JIterable<out IFixture> element);
-                return {element, *CeylonIterable(element)};
+            if (is FixtureIterable<out IFixture> element) {
+                return {element, *element};
             } else {
                 return {element};
             }
