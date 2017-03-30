@@ -17,7 +17,7 @@ import javax.xml.stream.events {
     XMLEvent
 }
 
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     Ground
 }
 
@@ -40,7 +40,7 @@ class YAGroundReader(Warning warning, IDRegistrar idRegistrar)
         value exposed  = Boolean.parse(getParameter(element, "exposed"));
         if (is Boolean exposed) {
             Ground retval = Ground(id, kind, exposed);
-            retval.image =getParameter(element, "image", "");
+            retval.setImage(getParameter(element, "image", ""));
             return retval;
         } else {
             throw MissingPropertyException(element, "exposed", exposed);

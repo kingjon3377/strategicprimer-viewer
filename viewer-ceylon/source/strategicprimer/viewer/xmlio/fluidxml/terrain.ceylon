@@ -24,11 +24,9 @@ import model.map {
     IPlayerCollection,
     River
 }
-import model.map.fixtures {
-    Ground
-}
 import strategicprimer.viewer.model.map.fixtures {
-    RiverFixture
+    RiverFixture,
+    Ground
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest

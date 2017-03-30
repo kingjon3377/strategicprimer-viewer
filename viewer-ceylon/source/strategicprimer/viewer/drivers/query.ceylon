@@ -36,7 +36,7 @@ import model.map {
     TileType,
     HasName
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

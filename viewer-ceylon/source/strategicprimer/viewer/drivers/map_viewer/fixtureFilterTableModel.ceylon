@@ -31,12 +31,10 @@ import lovelace.util.common {
 import model.map {
     TileFixture
 }
-import model.map.fixtures {
-    Ground
-}
 import strategicprimer.viewer.model.map.fixtures {
     RiverFixture,
-    TextFixture
+    TextFixture,
+    Ground
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {
     Cave,

@@ -53,12 +53,10 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     IMapNG
 }
-import model.map.fixtures {
-    Ground
-}
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture,
-    RiverFixture
+    RiverFixture,
+    Ground
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest

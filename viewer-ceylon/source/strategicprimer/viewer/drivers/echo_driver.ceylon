@@ -26,7 +26,7 @@ import java.lang {
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     Ground
 }
 import strategicprimer.viewer.xmlio {

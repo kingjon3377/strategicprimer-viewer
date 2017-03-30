@@ -26,7 +26,7 @@ import lovelace.util.jvm {
 import model.map {
     TileFixture
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.resources {

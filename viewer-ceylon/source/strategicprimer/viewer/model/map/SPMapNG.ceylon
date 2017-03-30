@@ -34,7 +34,7 @@ import model.map {
     MutablePlayer,
     SubsettableFixture
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

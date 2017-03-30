@@ -45,11 +45,9 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     IMapNG
 }
-import model.map.fixtures {
-    Ground
-}
 import strategicprimer.viewer.model.map.fixtures {
-    TextFixture
+    TextFixture,
+    Ground
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     FieldStatus,

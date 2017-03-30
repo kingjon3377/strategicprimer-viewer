@@ -5,7 +5,7 @@ import model.map {
     River,
     TileFixture
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {

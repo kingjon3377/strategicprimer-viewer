@@ -4,7 +4,7 @@ import javax.swing {
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     Ground
 }
 import model.map {

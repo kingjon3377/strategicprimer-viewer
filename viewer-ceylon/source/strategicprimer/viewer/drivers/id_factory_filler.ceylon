@@ -13,7 +13,7 @@ import strategicprimer.viewer.model.map {
 import model.map {
     IFixture
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {

@@ -75,9 +75,7 @@ import strategicprimer.viewer.model.map.fixtures {
     UnitMember,
     TextFixture,
     Implement,
-    RiverFixture
-}
-import model.map.fixtures {
+    RiverFixture,
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

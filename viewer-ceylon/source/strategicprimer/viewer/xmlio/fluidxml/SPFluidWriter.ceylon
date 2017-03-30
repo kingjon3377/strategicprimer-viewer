@@ -48,9 +48,7 @@ import strategicprimer.viewer.model.map.fixtures {
     Implement,
     ResourcePile,
     RiverFixture,
-    TextFixture
-}
-import model.map.fixtures {
+    TextFixture,
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {

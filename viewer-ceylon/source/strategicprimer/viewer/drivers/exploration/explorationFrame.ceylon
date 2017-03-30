@@ -94,7 +94,7 @@ import model.map {
 import strategicprimer.viewer.model.map {
     IMutableMapNG
 }
-import model.map.fixtures {
+import strategicprimer.viewer.model.map.fixtures {
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

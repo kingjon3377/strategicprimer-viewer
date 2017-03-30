@@ -88,9 +88,7 @@ import model.map {
     PlayerImpl
 }
 import strategicprimer.viewer.model.map.fixtures {
-    TextFixture
-}
-import model.map.fixtures {
+    TextFixture,
     Ground
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {
