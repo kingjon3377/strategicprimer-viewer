@@ -18,13 +18,11 @@ shared class CacheFixture(kind, contents, id) satisfies HarvestableFixture&HasKi
     "ID number"
     shared actual Integer id;
     "The filename of an image to use as an icon for this instance."
-    variable String imageFilename = "";
-    shared actual String image => imageFilename;
-    shared actual void setImage(String image) => imageFilename = image;
+    shared actual variable String image = "";
     "Clone the object."
     shared actual CacheFixture copy(Boolean zero) {
         CacheFixture retval = CacheFixture(kind, contents, id);
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
     "The filename of the image to use as the default icon for caches."

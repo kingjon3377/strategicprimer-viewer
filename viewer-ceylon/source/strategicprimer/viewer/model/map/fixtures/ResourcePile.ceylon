@@ -1,9 +1,11 @@
 import util {
 	Quantity
 }
+import strategicprimer.viewer.model.map {
+	HasMutableImage
+}
 import model.map {
 	IFixture,
-	HasMutableImage,
 	HasKind
 }
 import java.util {
@@ -29,9 +31,7 @@ shared class ResourcePile(id, kind, contents, quantity)
 	"How much of that thing is in the pile, including units."
 	shared variable Quantity quantity;
 	"The filename of an image to use as an icon for this instance."
-	variable String imageFilename = "";
-	shared actual String image => imageFilename;
-	shared actual void setImage(String image) => imageFilename = image;
+	shared actual variable String image = "";
 	variable Integer createdTurn = -1;
 	"The turn on which the resource was created."
 	shared Integer created => createdTurn;

@@ -18,10 +18,10 @@ import ceylon.language {
 }
 import strategicprimer.viewer.model.map {
     HasMutableName,
-    FixtureIterable
+    FixtureIterable,
+    HasMutableImage
 }
 import model.map {
-    HasMutableImage,
     SubsettableFixture,
     Player,
     IFixture,
@@ -51,12 +51,8 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
     "The members of the fortress."
     todo("Should this perhaps be a Set?")
     MutableList<FortressMember> members = ArrayList<FortressMember>();
-    "The name of an image to use as an icon for this particular instance."
-    variable String imageFilename = "";
-    "The name of an image to use as an icon for this particular instance."
-    shared actual String image => imageFilename;
-    "Set the per-instance icon filename."
-    shared actual void setImage(String image) => imageFilename = image;
+    "The filename of an image to use as an icon for this instance."
+    shared actual variable String image = "";
     "The name of an image to use as a portrait."
     shared actual variable String portrait = "";
     "Add a member to the fortress."
@@ -74,7 +70,7 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
                 retval.addMember(member.copy(false));
             }
         }
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
     "An iterator over the members of the fortress."

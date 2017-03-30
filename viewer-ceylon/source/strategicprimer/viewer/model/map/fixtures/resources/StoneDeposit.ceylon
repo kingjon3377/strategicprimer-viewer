@@ -20,15 +20,12 @@ shared class StoneDeposit(stone, dc, id)
     shared actual Integer dc;
     "ID number."
     shared actual Integer id;
-    "Filename of aan image to use as an icon to represent this instance."
-    variable String imageFilename = "";
-    "Filename of aan image to use as an icon to represent this instance."
-    shared actual String image => imageFilename;
-    shared actual void setImage(String image) => imageFilename = image;
+    "The filename of an image to use as an icon for this instance."
+    shared actual variable String image = "";
     "Clone the object."
     shared actual StoneDeposit copy(Boolean zero) {
         StoneDeposit retval = StoneDeposit(stone, (zero) then 0 else dc, id);
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
     shared actual String text => "There is an exposed ``stone`` deposit here.";

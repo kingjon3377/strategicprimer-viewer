@@ -48,7 +48,7 @@ class YAExplorableReader(Warning warning, IDRegistrar idRegistrar)
         case ("cave") { retval = Cave(getIntegerParameter(element, "dc"), idNum); }
         else { throw UnsupportedTagException(element); }
         spinUntilEnd(element.name, stream);
-        retval.setImage(getParameter(element, "image", ""));
+        retval.image = getParameter(element, "image", "");
         return retval;
     }
     shared actual void write(JAppendable ostream, ExplorableFixture obj, Integer indent) {

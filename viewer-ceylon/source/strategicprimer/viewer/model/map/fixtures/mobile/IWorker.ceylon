@@ -2,10 +2,12 @@ import lovelace.util.common {
     todo
 }
 
+import strategicprimer.viewer.model.map {
+    HasMutableImage
+}
 import model.map {
     HasName,
-    HasKind,
-    HasMutableImage
+    HasKind
 }
 import strategicprimer.viewer.model.map.fixtures {
     UnitMember

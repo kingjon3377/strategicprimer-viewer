@@ -14,12 +14,10 @@ shared class Grove(orchard, cultivated, kind, id)
     "An ID number to identify this orchard or grove."
     shared actual Integer id;
     "The filename of an image to use as an icon for this instance."
-    variable String imageFilename = "";
-    shared actual String image => imageFilename;
-    shared actual void setImage(String image) => imageFilename = image;
+    shared actual variable String image = "";
     shared actual Grove copy(Boolean zero) {
         Grove retval = Grove(orchard, cultivated, kind, id);
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
     shared actual String defaultImage = (orchard) then "orchard.png" else "tree.png";

@@ -13,12 +13,10 @@ shared class Shrub(kind, id) satisfies HarvestableFixture&HasKind {
     "The ID number."
     shared actual Integer id;
     "The filename of an image to use as an icon for this instance."
-    variable String imageFilename = "";
-    shared actual String image => imageFilename;
-    shared actual void setImage(String image) => imageFilename = image;
+    shared actual variable String image = "";
     shared actual Shrub copy(Boolean zero) {
         Shrub retval = Shrub(kind, id);
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
     shared actual String defaultImage = "shrub.png";

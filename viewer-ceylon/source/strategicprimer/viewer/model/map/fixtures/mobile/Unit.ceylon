@@ -16,10 +16,10 @@ import lovelace.util.common {
 import strategicprimer.viewer.model.map {
     HasMutableName,
     HasMutableKind,
-    HasMutableOwner
+    HasMutableOwner,
+    HasMutableImage
 }
 import model.map {
-    HasMutableImage,
     HasPortrait,
     Player,
     IFixture,
@@ -50,9 +50,7 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
     "The ID number."
     shared actual Integer id;
     "The filename of an image to use as an icon for this instance."
-    variable String imageFilename = "";
-    shared actual String image => imageFilename;
-    shared actual void setImage(String image) => imageFilename = image;
+    shared actual variable String image = "";
     "The player that owns the unit."
     shared actual variable Player owner;
     """What kind of unit this is. For player-owned units this is usually their "category"
@@ -81,7 +79,7 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
                 retval.addMember(member.copy(false));
             }
         }
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
     "Add a member."

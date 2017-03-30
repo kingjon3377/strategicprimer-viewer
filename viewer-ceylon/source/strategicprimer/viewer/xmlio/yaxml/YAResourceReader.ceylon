@@ -137,7 +137,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             throw IllegalArgumentException("Unhandled harvestable tag");
         }
         spinUntilEnd(element.name, stream);
-        retval.setImage(getParameter(element, "image", ""));
+        retval.image = getParameter(element, "image", "");
         return retval;
     }
     shared actual void write(JAppendable ostream, HarvestableFixture obj, Integer indent) {

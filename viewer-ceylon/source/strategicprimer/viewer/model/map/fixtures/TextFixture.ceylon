@@ -1,6 +1,8 @@
+import strategicprimer.viewer.model.map {
+	HasMutableImage
+}
 import model.map {
     TileFixture,
-    HasMutableImage,
     IFixture
 }
 "A Fixture to encapsulate arbitrary text associated with a tile, so we can improve the
@@ -12,13 +14,11 @@ shared class TextFixture(text, turn) satisfies TileFixture&HasMutableImage {
 	"The turn it's associated with."
 	shared Integer turn;
 	"The filename of an image to use as an icon for this instance."
-	variable String imageFilename = "";
-	shared actual String image => imageFilename;
-	shared actual void setImage(String image) => imageFilename = image;
+	shared actual variable String image = "";
 	"Clone the object."
 	shared actual TextFixture copy(Boolean zero) {
 		TextFixture retval = TextFixture(text, turn);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 	shared actual String shortDesc() =>

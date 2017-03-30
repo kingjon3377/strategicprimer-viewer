@@ -19,19 +19,15 @@ shared class Mine(kind, status, id) satisfies HarvestableFixture&MineralFixture 
     shared TownStatus status;
     "The ID number of the fixture."
     shared actual Integer id;
-    "The name of an image to use as an icon for this particular instance."
-    variable String imageFilename = "";
+    "The filename of an image to use as an icon for this instance."
+    shared actual variable String image = "";
     "The default icon filename."
     shared actual String defaultImage = "mine.png";
-    "The name of an image to use as an icon for this particular instance."
-    shared actual String image => imageFilename;
-    "Set the per-instance icon filename."
-    shared actual void setImage(String image) => imageFilename = image;
     shared actual String plural() => "Mines";
     "Clone the object."
     shared actual Mine copy(Boolean zero) {
         Mine retval = Mine(kind, status, id);
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
     shared actual String string => "``status`` mine of ``kind``";

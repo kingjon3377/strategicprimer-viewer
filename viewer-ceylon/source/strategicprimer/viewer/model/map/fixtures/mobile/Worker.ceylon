@@ -54,9 +54,7 @@ shared class Worker(name, race, id, IJob* jobs) satisfies IWorker&HasPortrait {
     "The worker's stats."
     shared actual variable WorkerStats? stats = null;
     "The filename of an image to use as an icon for this instance."
-    variable String imageFilename = "";
-    shared actual String image => imageFilename;
-    shared actual void setImage(String image) => imageFilename = image;
+    shared actual variable String image = "";
     "The filename of an image to use as a portrait for the worker."
     shared actual variable String portrait = "";
     "Add a Job."
@@ -137,7 +135,7 @@ shared class Worker(name, race, id, IJob* jobs) satisfies IWorker&HasPortrait {
     "Clone the object."
     shared actual Worker copy(Boolean zero) {
         Worker retval = Worker(name, race, id);
-        retval.setImage(image);
+        retval.image = image;
         if (!zero) {
             if (exists localStats = stats) {
                 retval.stats = localStats.copy();

@@ -22,8 +22,10 @@ import javax.xml.stream.events {
     XMLEvent
 }
 
+import strategicprimer.viewer.model.map {
+    HasMutableImage
+}
 import model.map {
-    HasMutableImage,
     HasKind,
     HasImage
 }
@@ -96,7 +98,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         else { retval = readSimple(type, getOrGenerateID(element)); }
         spinUntilEnd(element.name, stream);
         if (is HasMutableImage retval) {
-            retval.setImage(getParameter(element, "image", ""));
+            retval.image = getParameter(element, "image", "");
         }
         return retval;
     }

@@ -27,7 +27,7 @@ class YAPortalReader(Warning warning, IDRegistrar idRegistrar) extends YAAbstrac
         requireTag(element, parent, "portal");
         Portal retval = Portal(getParameter(element, "world"), parsePoint(element),
             getOrGenerateID(element));
-        retval.setImage(getParameter(element, "image", ""));
+        retval.image = getParameter(element, "image", "");
         spinUntilEnd(element.name, stream);
         return retval;
     }

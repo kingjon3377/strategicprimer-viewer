@@ -4,8 +4,10 @@ import lovelace.util.common {
 import strategicprimer.viewer.model.map.fixtures {
     TerrainFixture
 }
+import strategicprimer.viewer.model.map {
+    HasMutableImage
+}
 import model.map {
-    HasMutableImage,
     HasKind,
     IFixture
 }
@@ -18,14 +20,11 @@ shared class Forest(kind, rows, id) satisfies TerrainFixture&HasMutableImage&Has
     "Unique identifying number for this instance."
     shared actual variable Integer id;
     "The filename of an image to use as an icon for this instance."
-    variable String imageFilename = "";
-    "The filename of an image to use as an icon for this instance."
-    shared actual String image => imageFilename;
-    shared actual void setImage(String image) => imageFilename = image;
+    shared actual variable String image = "";
     "Clone the forest"
     shared actual Forest copy(Boolean zero) {
         Forest retval = Forest(kind, rows, id);
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
     "The filename of an image to represent forests by default."

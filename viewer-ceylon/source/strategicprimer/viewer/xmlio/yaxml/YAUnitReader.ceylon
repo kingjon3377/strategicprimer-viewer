@@ -115,7 +115,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             players.getPlayer(getIntegerParameter(element, "owner", -1)),
             parseKind(element), getParameter(element, "name", ""),
             getOrGenerateID(element));
-        retval.setImage(getParameter(element, "image", ""));
+        retval.image = getParameter(element, "image", "");
         retval.portrait = getParameter(element, "portrait", "");
         StringBuilder orders = StringBuilder();
         for (event in stream) {

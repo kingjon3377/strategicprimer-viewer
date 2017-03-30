@@ -24,12 +24,10 @@ shared class Portal(destinationWorld, destinationCoordinates, id)
 	"A unique ID number."
 	shared actual Integer id;
 	"The filename of an image to use as an icon for this instance."
-	variable String imageFilename = "";
-	shared actual String image => imageFilename;
-	shared actual void setImage(String image) => imageFilename = image;
+	shared actual variable String image = "";
 	shared actual Portal copy(Boolean zero) {
 		Portal retval = Portal((zero) then "unknown" else destinationWorld, (zero) then PointFactory.invalidPoint else destinationCoordinates, id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 	shared actual String shortDesc() => "A portal to another world";

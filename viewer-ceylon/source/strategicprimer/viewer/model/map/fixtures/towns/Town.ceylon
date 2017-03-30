@@ -15,7 +15,7 @@ shared class Town("The status of the town" TownStatus townStatus,
     shared actual Town copy(Boolean zero) {
         Town retval = Town(super.status, super.townSize, (zero) then 0 else discoverDC, townName, id,
             player);
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
 }

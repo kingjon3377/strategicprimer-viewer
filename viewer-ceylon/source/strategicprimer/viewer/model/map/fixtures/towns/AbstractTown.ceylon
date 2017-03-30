@@ -2,9 +2,11 @@ import lovelace.util.common {
     todo
 }
 
+import strategicprimer.viewer.model.map {
+    HasMutableImage
+}
 import model.map {
     IEvent,
-    HasMutableImage,
     Player,
     IFixture
 }
@@ -21,10 +23,8 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc) satisfies 
     shared actual variable Player owner;
     "The DC to discover the town, fortification, or city"
     shared actual Integer dc;
-    variable String imageFilename = "";
-    "The filename of an image to use for this instance."
-    shared actual String image => imageFilename;
-    shared actual void setImage(String image) => imageFilename = image;
+    "The filename of an image to use as an icon for this instance."
+    shared actual variable String image = "";
     "The filename of an image to use as a portrait."
     shared actual variable String portrait = "";
     "Exploration-result text for the town."

@@ -40,7 +40,7 @@ class YAGroundReader(Warning warning, IDRegistrar idRegistrar)
         value exposed  = Boolean.parse(getParameter(element, "exposed"));
         if (is Boolean exposed) {
             Ground retval = Ground(id, kind, exposed);
-            retval.setImage(getParameter(element, "image", ""));
+            retval.image = getParameter(element, "image", "");
             return retval;
         } else {
             throw MissingPropertyException(element, "exposed", exposed);

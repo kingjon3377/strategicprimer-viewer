@@ -1,8 +1,10 @@
 import strategicprimer.viewer.model.map.fixtures {
     TerrainFixture
 }
+import strategicprimer.viewer.model.map {
+    HasMutableImage
+}
 import model.map {
-    HasMutableImage,
     IFixture
 }
 "A sandbar on the map."
@@ -10,11 +12,7 @@ shared class Sandbar(id) satisfies TerrainFixture&HasMutableImage {
     "The ID number of this fixture."
     shared actual Integer id;
     "The filename of an image to use as an icon for this instance."
-    variable String imageFilename = "";
-    "The filename of an image to use as an icon for this instance."
-    shared actual String image => imageFilename;
-    "Set the per-instance icon filename."
-    shared actual void setImage(String image) => imageFilename = image;
+    shared actual variable String image = "";
     shared actual String string = "Sandbar";
     shared actual String defaultImage = "sandbar.png";
     shared actual Boolean equals(Object obj) {
@@ -30,7 +28,7 @@ shared class Sandbar(id) satisfies TerrainFixture&HasMutableImage {
     shared actual String shortDesc() => "a sandbar";
     shared actual Sandbar copy(Boolean zero) {
         Sandbar retval = Sandbar(id);
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
     shared actual Integer dc = 18;

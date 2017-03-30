@@ -20,7 +20,7 @@ shared class Fortification("The status of the fortification" TownStatus townStat
     shared actual String kind => "fortification";
     shared actual Fortification copy(Boolean zero) {
         Fortification retval = Fortification(status, townSize, (zero) then 0 else dc, name, id, owner);
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
 }

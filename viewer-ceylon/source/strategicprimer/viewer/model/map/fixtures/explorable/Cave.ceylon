@@ -9,13 +9,11 @@ shared class Cave(dc, id) satisfies IEvent&ExplorableFixture {
 	"A unique ID."
 	shared actual Integer id;
 	"The filename of an image to use as an icon for this instance."
-	variable String imageFilename = "";
-	shared actual String image => imageFilename;
-	shared actual void setImage(String image) => imageFilename = image;
+	shared actual variable String image = "";
 	"Clone the object."
 	shared actual Cave copy(Boolean zero) {
 		Cave retval = Cave((zero) then 0 else dc, id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 	shared actual String text = "There are extensive caves beneath this tile.";

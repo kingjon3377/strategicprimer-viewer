@@ -124,7 +124,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         requireTag(element, parent, "worker");
         Worker retval = Worker(getParameter(element, "name"),
             getParameter(element, "race", "human"), getOrGenerateID(element));
-        retval.setImage(getParameter(element, "image", ""));
+        retval.image = getParameter(element, "image", "");
         retval.portrait = getParameter(element, "portrait", "");
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {

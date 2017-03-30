@@ -18,8 +18,10 @@ import javax.xml.stream.events {
 import strategicprimer.viewer.model.map.fixtures {
     TerrainFixture
 }
+import strategicprimer.viewer.model.map {
+    HasMutableImage
+}
 import model.map {
-    HasMutableImage,
     HasImage
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {
@@ -61,7 +63,7 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         }
         spinUntilEnd(element.name, stream);
         if (is HasMutableImage retval) {
-            retval.setImage(getParameter(element, "image", ""));
+            retval.image = getParameter(element, "image", "");
         }
         return retval;
     }

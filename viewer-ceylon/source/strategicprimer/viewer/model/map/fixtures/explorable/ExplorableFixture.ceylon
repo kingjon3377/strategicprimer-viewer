@@ -1,10 +1,11 @@
 import lovelace.util.common {
     todo
 }
-
-import model.map {
-    TileFixture,
+import strategicprimer.viewer.model.map {
     HasMutableImage
+}
+import model.map {
+    TileFixture
 }
 "A (for now marker) interface for fixtures that can be somehow explored."
 todo("What methods should this have?")

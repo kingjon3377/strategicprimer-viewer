@@ -60,7 +60,6 @@ import lovelace.util.common {
 }
 
 import model.map {
-    HasMutableImage,
     HasPortrait,
     Player,
     PlayerImpl,
@@ -75,7 +74,8 @@ import model.map {
 import strategicprimer.viewer.model.map {
     SPMapNG,
     IMutableMapNG,
-    IMapNG
+    IMapNG,
+    HasMutableImage
 }
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture,
@@ -280,21 +280,21 @@ void assertImageSerialization(String message, HasMutableImage obj) {
     String oldImage = obj.image;
     for (reader in {oldReader, newReader}) {
         for (deprecated in {true, false}) {
-            obj.setImage("xyzzy");
+            obj.image = "xyzzy";
             try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
                 assertEquals(reader.readXML(fakeFilename, stringReader,
                     javaClassFromInstance(obj), Warning.ignore).image, obj.image,
                     message);
             }
-            obj.setImage(obj.defaultImage);
+            obj.image = obj.defaultImage;
             assertFalse(createSerializedForm(obj, deprecated).contains("image="),
                 "Default image should not be written");
-            obj.setImage("");
+            obj.image = "";
             assertFalse(createSerializedForm(obj, deprecated).contains("image="),
                 "Empty image should not be written");
         }
     }
-    obj.setImage(oldImage);
+    obj.image = oldImage;
 }
 
 "Assert that the given object, if serialized and deserialized, will have its portrait

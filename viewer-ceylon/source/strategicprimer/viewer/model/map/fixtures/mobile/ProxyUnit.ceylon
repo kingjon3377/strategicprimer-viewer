@@ -24,7 +24,6 @@ import lovelace.util.common {
 }
 
 import model.map {
-    HasMutableImage,
     IFixture,
     TileFixture,
     Player,
@@ -37,7 +36,8 @@ import strategicprimer.viewer.model.map.fixtures {
 import strategicprimer.viewer.model.map {
     HasMutableName,
     HasMutableKind,
-    HasMutableOwner
+    HasMutableOwner,
+    HasMutableImage
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor,
@@ -162,13 +162,13 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     }
     shared actual String defaultImage => getCommonValue(IUnit.defaultImage, "", "unit.png");
     shared actual String image => getCommonValue(IUnit.image, "", "");
-    shared actual void setImage(String image) {
-        log.warn("ProxyUnit.setImage called");
+    assign image {
+        log.warn("ProxyUnit.image setter called");
         for (unit in proxiedList) {
             if (is HasMutableImage unit) {
-                unit.setImage(image);
+                unit.image = image;
             } else {
-                log.warn("setImage() skipped unit with immutable image");
+                log.warn("image setter skipped unit with immutable image");
             }
         }
     }

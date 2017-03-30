@@ -1,9 +1,10 @@
 import lovelace.util.common {
     todo
 }
-
+import strategicprimer.viewer.model.map {
+	HasMutableImage
+}
 import model.map {
-    HasMutableImage,
     HasKind,
     IFixture
 }
@@ -26,10 +27,8 @@ shared class Animal(kind, traces, talking, status, id)
 	"The domestication status of the animal."
 	todo("Should this be an enumerated type?")
 	shared variable String status;
-	"The filename of an image to use for this instance."
-	variable String imageFilename = "";
-	shared actual String image => imageFilename;
-	shared actual void setImage(String image) => imageFilename = image;
+	"The filename of an image to use as an icon for this instance."
+	shared actual variable String image = "";
 	"What kind of animal this is"
 	shared actual String kind;
 	shared actual String shortDesc() =>
@@ -67,7 +66,7 @@ shared class Animal(kind, traces, talking, status, id)
 	todo("Should we zero out any information?")
 	shared actual Animal copy(Boolean zero) {
 		Animal retval = Animal(kind, traces, talking, status, id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 	"Required Perception check result to find the animal."

@@ -1,10 +1,11 @@
 import lovelace.util.common {
     todo
 }
-
+import strategicprimer.viewer.model.map {
+	HasMutableImage
+}
 import model.map {
     HasKind,
-    HasMutableImage,
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
@@ -23,9 +24,7 @@ shared class Implement(kind, id)
 	"The ID number."
 	shared actual Integer id;
 	"The filename of an image to use as an icon for this instance."
-	variable String imageFilename = "";
-	shared actual String image => imageFilename;
-	shared actual void setImage(String image) => imageFilename = image;
+	shared actual variable String image = "";
 	"If we ignore ID, a fixture is equal iff itis an Implement of the same kind."
 	shared actual Boolean equalsIgnoringID(IFixture fixture) {
 		if (is Implement fixture) {

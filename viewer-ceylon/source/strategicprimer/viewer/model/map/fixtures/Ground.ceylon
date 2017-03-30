@@ -1,5 +1,7 @@
+import strategicprimer.viewer.model.map {
+	HasMutableImage
+}
 import model.map {
-    HasMutableImage,
     IFixture
 }
 "A TileFixture to represent the basic rock beneath the tile, possibly exposed."
@@ -11,13 +13,11 @@ shared class Ground(id, kind, exposed) satisfies MineralFixture&HasMutableImage 
 	"The ID number."
 	shared actual variable Integer id;
 	"The filename of an image to use as an icon for this instance."
-	variable String imageFilename = "";
-	shared actual String image => imageFilename;
-	shared actual void setImage(String image) => imageFilename = image;
+	shared actual variable String image = "";
 	"Clone the object."
 	shared actual Ground copy(Boolean zero) {
 		Ground retval = Ground(id, kind, exposed);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 	"Default image depends on whether the ground is exposed or not."

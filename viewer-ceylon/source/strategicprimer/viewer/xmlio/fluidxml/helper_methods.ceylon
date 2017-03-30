@@ -43,11 +43,13 @@ import lovelace.util.common {
     todo
 }
 
+import strategicprimer.viewer.model.map {
+    HasMutableImage
+}
 import model.map {
     HasImage,
     IPlayerCollection,
-    Player,
-    HasMutableImage
+    Player
 }
 
 import util {
@@ -370,7 +372,7 @@ Type setImage<Type>(
          specifies one"
         Warning warner) {
     if (is HasMutableImage obj) {
-        obj.setImage(getAttribute(element, "image", ""));
+        obj.image = getAttribute(element, "image", "");
     } else if (hasAttribute(element, "image")) {
         warner.warn(UnsupportedPropertyException(element, "image"));
     }

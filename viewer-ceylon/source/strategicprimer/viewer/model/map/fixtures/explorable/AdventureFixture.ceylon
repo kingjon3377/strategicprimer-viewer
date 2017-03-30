@@ -22,16 +22,14 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
 	"A unique ID number."
 	shared actual Integer id;
 	"The filename of an image to use as an icon for this instance."
-	variable String imageFilename = "";
-	shared actual String image => imageFilename;
-	shared actual void setImage(String image) => imageFilename = image;
+	shared actual variable String image = "";
 	"The player that has undertaken the adventure."
 	shared actual variable Player owner;
 	"Clone the fixture."
 	shared actual AdventureFixture copy(Boolean zero) {
 		AdventureFixture retval = AdventureFixture(owner, briefDescription,
 			fullDescription, id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 	shared actual String string {

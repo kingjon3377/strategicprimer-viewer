@@ -30,7 +30,7 @@ class YAImplementReader(Warning warning, IDRegistrar idRegistrar)
         Implement retval = Implement(getParameter(element, "kind"),
             getOrGenerateID(element));
         spinUntilEnd(element.name, stream);
-        retval.setImage(getParameter(element, "image", ""));
+        retval.image = getParameter(element, "image", "");
         return retval;
     }
     shared actual Boolean isSupportedTag(String tag) => "implement" == tag.lowercased;

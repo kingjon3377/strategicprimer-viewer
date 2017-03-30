@@ -2,8 +2,10 @@ import lovelace.util.common {
     todo
 }
 
+import strategicprimer.viewer.model.map {
+	HasMutableImage
+}
 import model.map {
-    HasMutableImage,
     HasKind,
     IFixture
 }
@@ -59,13 +61,11 @@ shared class SimpleImmortal satisfies Immortal&HasMutableImage&HasKind {
 	"The plural of the immortal's kind."
 	shared actual String plural() => immortalKind.plural;
 	"The filename of an image to use as an icon for this instance."
-	variable String imageFilename = "";
-	shared actual String image => imageFilename;
-	shared actual void setImage(String image) => imageFilename = image;
+	shared actual variable String image = "";
 	"Clone the object."
 	shared actual SimpleImmortal copy(Boolean zero) {
 		SimpleImmortal retval = SimpleImmortal(immortalKind, id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 	shared actual String string => immortalKind.tag;

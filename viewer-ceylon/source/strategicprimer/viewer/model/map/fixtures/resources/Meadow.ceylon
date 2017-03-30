@@ -24,12 +24,10 @@ shared class Meadow(kind, field, cultivated, id, status)
     todo("Make mutable?")
     shared FieldStatus status;
     "The filename of an image to use as an icon for this instance."
-    variable String imageFilename = "";
-    shared actual String image => imageFilename;
-    shared actual void setImage(String image) => imageFilename = image;
+    shared actual variable String image = "";
     shared actual Meadow copy(Boolean zero) {
         Meadow retval = Meadow(kind, field, cultivated, id, status);
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
     "The name of an image to use as an icon by default."

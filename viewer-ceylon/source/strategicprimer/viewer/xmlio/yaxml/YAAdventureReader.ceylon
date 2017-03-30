@@ -41,7 +41,7 @@ class YAAdventureReader(Warning warner, IDRegistrar idFactory, IPlayerCollection
         AdventureFixture retval = AdventureFixture(player,
             getParameter(element, "brief", ""), getParameter(element, "full", ""),
             getOrGenerateID(element));
-        retval.setImage(getParameter(element, "image", ""));
+        retval.image = getParameter(element, "image", "");
         spinUntilEnd(element.name, stream);
         return retval;
     }

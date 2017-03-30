@@ -55,7 +55,7 @@ class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
             retval.created = getIntegerParameter(element, "created");
         }
         spinUntilEnd(element.name, stream);
-        retval.setImage(getParameter(element, "image", ""));
+        retval.image = getParameter(element, "image", "");
         return retval;
     }
     shared actual Boolean isSupportedTag(String tag) => "resource" == tag.lowercased;

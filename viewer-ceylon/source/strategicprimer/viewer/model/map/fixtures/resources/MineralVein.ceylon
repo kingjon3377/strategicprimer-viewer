@@ -22,12 +22,10 @@ shared class MineralVein(kind, exposed, dc, id)
     "The ID number."
     shared actual Integer id;
     "The filename of an image to use as an icon for this instance."
-    variable String imageFilename = "";
-    shared actual String image => imageFilename;
-    shared actual void setImage(String image) => imageFilename = image;
+    shared actual variable String image = "";
     shared actual MineralVein copy(Boolean zero) {
         MineralVein retval = MineralVein(kind, exposed, (zero) then 0 else dc, id);
-        retval.setImage(image);
+        retval.image = image;
         return retval;
     }
     shared actual String text =>

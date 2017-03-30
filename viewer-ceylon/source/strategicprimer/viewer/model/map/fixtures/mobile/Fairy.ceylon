@@ -6,9 +6,11 @@ import lovelace.util.common {
     todo
 }
 
+import strategicprimer.viewer.model.map {
+	HasMutableImage
+}
 import model.map {
     IFixture,
-    HasMutableImage,
     HasKind
 }
 "A fairy."
@@ -17,13 +19,11 @@ shared class Fairy(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 	shared actual Integer id;
 	"The kind of fairy."
 	shared actual String kind;
-	"The filename of an image to use for this instance."
-	variable String imageFilename = "";
-	shared actual String image => imageFilename;
-	shared actual void setImage(String image) => imageFilename = image;
+	"The filename of an image to use as an icon for this instance."
+	shared actual variable String image = "";
 	shared actual Fairy copy(Boolean zero) {
 		Fairy retval = Fairy(kind, id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 	shared actual String shortDesc() => "``kind`` fairy";

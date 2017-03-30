@@ -201,10 +201,10 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
         }
         return retval else "";
     }
-    shared actual void setImage(String image) {
-        log.warn("setImage() called on a ProxyWorker");
+    assign image {
+        log.warn("image setter called on a ProxyWorker");
         for (worker in workers) {
-            worker.setImage(image);
+            worker.image = image;
         }
     }
     shared actual String kind {

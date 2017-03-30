@@ -75,7 +75,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             Village retval = Village(status, getParameter(element, "name", ""), idNum,
                 getOwnerOrIndependent(element), getParameter(element, "race",
                     randomRace((bound) => rng.nextInt(bound))));
-            retval.setImage(getParameter(element, "image", ""));
+            retval.image = getParameter(element, "image", "");
             retval.portrait =getParameter(element, "portrait", "");
             return retval;
         } else {
@@ -108,7 +108,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             throw IllegalStateException("Unhandled town tag");
         }
         spinUntilEnd(element.name, stream);
-        retval.setImage(getParameter(element, "image", ""));
+        retval.image = getParameter(element, "image", "");
         retval.portrait = getParameter(element, "portrait", "");
         return retval;
     }
@@ -136,7 +136,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 break;
             }
         }
-        retval.setImage(getParameter(element, "image", ""));
+        retval.image = getParameter(element, "image", "");
         retval.portrait = getParameter(element, "portrait", "");
         return retval;
     }

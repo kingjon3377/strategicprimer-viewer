@@ -6,8 +6,10 @@ import lovelace.util.common {
     todo
 }
 
+import strategicprimer.viewer.model.map {
+    HasMutableImage
+}
 import model.map {
-    HasMutableImage,
     SubsettableFixture,
     Player,
     IFixture
@@ -25,9 +27,8 @@ shared class Village(status, name, id, owner, race)
     shared actual variable Player owner;
     "The dominant race of the village."
     shared variable String race;
-    variable String tempImage = "";
-    "The per-instance icon filename."
-    shared actual String image => tempImage;
+    "The filename of an image to use as an icon for this instance."
+    shared actual variable String image = "";
     "The default-icon filename."
     shared actual String defaultImage = "village.png";
     "A filename of an image to use as a portrait of the village."
@@ -110,10 +111,8 @@ shared class Village(status, name, id, owner, race)
     todo("Omit portrait if `zero`?")
     shared actual Village copy(Boolean zero) {
         Village retval = Village(status, name, id, owner, race);
-        retval.setImage(image);
+        retval.image = image;
         retval.portrait = portrait;
         return retval;
     }
-    // Until the 'mutable' interfaces are ported ...
-    shared actual void setImage(String img) => tempImage = img;
 }

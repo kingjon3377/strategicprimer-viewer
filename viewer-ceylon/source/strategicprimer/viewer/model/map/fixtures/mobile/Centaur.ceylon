@@ -2,8 +2,10 @@ import java.util {
     Formatter
 }
 
+import strategicprimer.viewer.model.map {
+	HasMutableImage
+}
 import model.map {
-    HasMutableImage,
     HasKind,
     IFixture
 }
@@ -13,13 +15,11 @@ shared class Centaur(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 	shared actual String kind;
 	"ID number."
 	shared actual Integer id;
-	"The filename of an image to use for this instance."
-	variable String imageFilename = "";
-	shared actual String image => imageFilename;
-	shared actual void setImage(String image) => imageFilename = image;
+	"The filename of an image to use as an icon for this instance."
+	shared actual variable String image = "";
 	shared actual Centaur copy(Boolean zero) {
 		Centaur retval = Centaur(kind, id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 	shared actual String shortDesc() => "``kind`` centaur";

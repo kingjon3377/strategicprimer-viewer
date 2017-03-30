@@ -44,7 +44,7 @@ class YATextReader(Warning warning, IDRegistrar idRegistrar)
         }
         TextFixture fixture = TextFixture(builder.string.trimmed,
             getIntegerParameter(element, "turn", -1));
-        fixture.setImage(getParameter(element, "image", ""));
+        fixture.image = getParameter(element, "image", "");
         return fixture;
     }
     shared actual void write(JAppendable ostream, TextFixture obj, Integer indent) {
