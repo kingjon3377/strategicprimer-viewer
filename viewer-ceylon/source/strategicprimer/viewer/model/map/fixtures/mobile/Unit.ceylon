@@ -3,7 +3,8 @@ import ceylon.collection {
     naturalOrderTreeMap,
     MutableList,
     SortedMap,
-    ArrayList
+    ArrayList,
+    MutableSet
 }
 
 import java.lang {
@@ -11,7 +12,8 @@ import java.lang {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    ArraySet
 }
 import strategicprimer.viewer.model.map {
     HasMutableName,
@@ -44,9 +46,7 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
     SortedMap<Integer, String>&MutableMap<Integer, String> results =
             naturalOrderTreeMap<Integer, String>({});
     "The members of the unit."
-    todo("Use [[MutableSet]]/[[ArraySet]] once the latter is ported: we want the
-          uniqueness guarantee")
-    MutableList<UnitMember> members = ArrayList<UnitMember>();
+    MutableSet<UnitMember> members = ArraySet<UnitMember>();
     "The ID number."
     shared actual Integer id;
     "The filename of an image to use as an icon for this instance."

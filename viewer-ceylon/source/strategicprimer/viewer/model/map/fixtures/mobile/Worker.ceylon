@@ -1,24 +1,24 @@
-import ceylon.collection {
-    MutableList,
-    ArrayList
-}
 import ceylon.language {
     createMap=map
 }
 
-
 import lovelace.util.common {
-    todo
+    todo,
+    ArraySet
 }
 
 import model.map {
     HasPortrait,
     IFixture
 }
+
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats,
     Job,
     IJob
+}
+import ceylon.collection {
+    MutableSet
 }
 "Whether neither of two collections of Jobs contains a nonempty Job the other does not."
 todo("Make sure to change `.empty` once [[IJob]] is ported.")
@@ -38,10 +38,8 @@ Boolean nullablesEqual(Anything one, Anything two) {
  only be part of a unit, not as a top-level tag."
 todo("Convert some other [[MobileFixture]]s similarly?")
 shared class Worker(name, race, id, IJob* jobs) satisfies IWorker&HasPortrait {
-    //MutableSet<IJob> jobSet = ArraySet<IJob> { *jobs };
     "The set of Jobs the worker is trained or experienced in."
-    todo("Convert back to Set once ArraySet is ported.")
-    MutableList<IJob> jobSet = ArrayList { *jobs };
+    MutableSet<IJob> jobSet = ArraySet<IJob> { *jobs };
     "The worker's ID number."
     shared actual Integer id;
     "The worker's name."

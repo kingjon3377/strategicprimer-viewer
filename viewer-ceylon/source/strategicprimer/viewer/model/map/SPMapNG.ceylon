@@ -12,7 +12,8 @@ import ceylon.logging {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    ArraySet
 }
 
 import model.map {
@@ -63,10 +64,9 @@ shared class SPMapNG satisfies IMutableMapNG {
        here; the rest go in the "miscellaneous fixtures" pile."""
     MutableMap<Point, Forest> forests = HashMap<Point, Forest>();
     "Fixtures at various points, other than the main ground and forest."
-    todo("Use a multimap once we add a library dependency providing such a class",
-        "Use [[MutableSet]] and ported [[ArraySet]] instead of lists?")
-    MutableMap<Point, MutableList<TileFixture>> fixtures =
-            HashMap<Point, MutableList<TileFixture>>();
+    todo("Use a multimap once we add a library dependency providing such a class")
+    MutableMap<Point, MutableSet<TileFixture>> fixtures =
+            HashMap<Point, MutableSet<TileFixture>>();
     MapDimensions mapDimensions;
     """The ground under various locations. If there's more than one at a point, others go
         in the "other fixtures" collection."""
@@ -168,11 +168,11 @@ shared class SPMapNG satisfies IMutableMapNG {
                 .any((existing) => existing.equalsIgnoringID(fixture))) {
             return false;
         }
-        MutableList<TileFixture> local;
+        MutableSet<TileFixture> local;
         if (exists temp = fixtures.get(location)) {
             local = temp;
         } else {
-            local = ArrayList<TileFixture>();
+            local = ArraySet<TileFixture>();
             fixtures.put(location, local);
         }
         if (fixture.id >= 0,
