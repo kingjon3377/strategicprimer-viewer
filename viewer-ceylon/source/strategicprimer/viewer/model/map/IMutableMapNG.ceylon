@@ -1,7 +1,6 @@
 import model.map {
     Player,
     Point,
-    TileType,
     River,
     TileFixture
 }

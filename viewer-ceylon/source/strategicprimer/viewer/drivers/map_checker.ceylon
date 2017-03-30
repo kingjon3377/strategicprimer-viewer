@@ -30,13 +30,13 @@ import lovelace.util.jvm {
 
 import model.map {
     Point,
-    IFixture,
-    TileType
+    IFixture
 }
 
 import strategicprimer.viewer.model.map {
     IMapNG,
-    FixtureIterable
+    FixtureIterable,
+    TileType
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker

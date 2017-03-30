@@ -78,7 +78,6 @@ import model.map {
     MapDimensionsImpl,
     Point,
     PointFactory,
-    TileType,
     PlayerCollection,
     TileFixture,
     PlayerImpl
@@ -89,6 +88,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+	TileType,
     SPMapNG,
     IMutableMapNG,
     IMapNG
@@ -956,7 +956,7 @@ IMapNG decreaseResolution(IMapNG old) {
         EnumCounter<TileType> counter = EnumCounter<TileType>();
         counter.countMany(*types);
         MutableSet<TileType> twos = HashSet<TileType>();
-        for (type in TileType.values()) {
+        for (type in `TileType`.caseValues) {
             switch (counter.getCount(type))
             case (0|1) { }
             case (2) { twos.add(type); }

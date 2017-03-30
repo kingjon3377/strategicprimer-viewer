@@ -14,10 +14,12 @@ import model.listeners {
     SelectionChangeListener,
     SelectionChangeSource
 }
+import strategicprimer.viewer.model.map {
+    TileType
+}
 import model.map {
     PointFactory,
-    Point,
-    TileType
+    Point
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit

@@ -2,13 +2,14 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-
+import strategicprimer.viewer.model.map {
+    TileType
+}
 import model.map {
     IEvent,
     TileFixture,
     IFixture,
     Player,
-    TileType,
     MapDimensions,
     Point,
     PlayerImpl

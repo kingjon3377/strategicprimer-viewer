@@ -62,11 +62,11 @@ import model.map {
     MapDimensionsImpl,
     Point,
     PointFactory,
-    TileType,
     River,
     TileFixture
 }
 import strategicprimer.viewer.model.map {
+    TileType,
     SPMapNG,
     IMutableMapNG
 }
@@ -217,10 +217,10 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             getIntegerAttribute(element, "column"));
         // Tiles have been known to be *written* without "kind" and then fail to load, so
         // let's be liberal in what we accept here, since we can.
-        if (hasAttribute(element, "kind") || hasAttribute(element, "type")) {
-            map.setBaseTerrain(loc, TileType.getTileType(
-                getAttrWithDeprecatedForm(element,
-                    "kind", "tile", warner)));
+        if ((hasAttribute(element, "kind") || hasAttribute(element, "type")),
+                exists kind = TileType.parse(getAttrWithDeprecatedForm(element, "kind",
+                    "tile", warner))) {
+            map.setBaseTerrain(loc, kind);
         } else {
             warner.warn(MissingPropertyException(element, "kind"));
         }

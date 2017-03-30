@@ -57,8 +57,7 @@ shared class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixt
     String terrain(IMapNG map, Point point,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
         StringBuilder builder = StringBuilder();
-        builder.append("Surrounding terrain: ``map.getBaseTerrain(point).toXML()
-            .replace("_", " ")``");
+        builder.append("Surrounding terrain: ``map.getBaseTerrain(point)``");
         variable Boolean unforested = true;
         if (exists forest = map.getForest(point)) {
             builder.append(", forested with ``forest.kind``");

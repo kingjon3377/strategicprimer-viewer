@@ -31,6 +31,7 @@ import model.listeners {
 import strategicprimer.viewer.model.map {
     IMutableMapNG,
     IMapNG,
+    TileType,
     FixtureIterable
 }
 import model.map {
@@ -39,7 +40,6 @@ import model.map {
     Player,
     MapDimensions,
     HasOwner,
-    TileType,
     TileFixture,
     IFixture
 }

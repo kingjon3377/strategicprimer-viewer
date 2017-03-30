@@ -27,11 +27,11 @@ import ceylon.interop.java {
 import model.map {
     River,
     PointFactory,
-    TileType,
     TileFixture,
     Point
 }
 import strategicprimer.viewer.model.map {
+    TileType,
     IMutableMapNG
 }
 "A model for the list-based representation of the contents of a tile."

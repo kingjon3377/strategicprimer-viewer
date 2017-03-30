@@ -1,5 +1,7 @@
+import strategicprimer.viewer.model.map {
+    TileType
+}
 import model.map {
-    TileType,
     TileFixture,
     HasImage,
     IFixture
@@ -52,7 +54,7 @@ shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&Has
      are all public domain, found on either OpenClipArt or Pixabay and then adjusted to a
      square aspect ratio. (Except for 'mountain', which has been in the repository for a
      long time because it was used by the Mountain tile fixture."
-    shared actual String defaultImage => "``tileType.toXML()``.png";
+    shared actual String defaultImage => "``tileType.xml``.png";
     "We don't allow per-instance icons for these, so always return the empty string."
     shared actual String image => "";
     deprecated("This class should only ever be used in a FixtureListModel, so this method

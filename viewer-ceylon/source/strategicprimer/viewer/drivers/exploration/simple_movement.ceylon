@@ -14,9 +14,10 @@ import lovelace.util.jvm {
     shuffle,
     singletonRandom
 }
-
+import strategicprimer.viewer.model.map {
+    TileType
+}
 import model.map {
-    TileType,
     River,
     TileFixture,
     HasOwner

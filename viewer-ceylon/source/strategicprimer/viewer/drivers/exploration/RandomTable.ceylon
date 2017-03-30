@@ -1,10 +1,11 @@
 import lovelace.util.jvm {
     singletonRandom
 }
-
+import strategicprimer.viewer.model.map {
+    TileType
+}
 import model.map {
     Point,
-    TileType,
     TileFixture,
     MapDimensions
 }

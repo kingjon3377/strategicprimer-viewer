@@ -22,10 +22,11 @@ import java.lang {
 import lovelace.util.common {
     todo
 }
-
+import strategicprimer.viewer.model.map {
+    TileType
+}
 import model.map {
     Point,
-    TileType,
     TileFixture,
     MapDimensions,
     PointFactory,

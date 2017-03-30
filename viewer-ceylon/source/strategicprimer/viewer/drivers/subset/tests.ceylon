@@ -14,13 +14,13 @@ import model.map {
     Subsettable,
     River,
     IFixture,
-    TileType,
     MapDimensionsImpl,
     Point,
     PointFactory,
     TileFixture
 }
 import strategicprimer.viewer.model.map {
+    TileType,
     SPMapNG,
     IMutableMapNG,
     IMapNG

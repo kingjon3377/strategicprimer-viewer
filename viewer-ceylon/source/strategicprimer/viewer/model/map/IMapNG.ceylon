@@ -6,7 +6,6 @@ import model.map {
     Subsettable,
     MapDimensions,
     Player,
-    TileType,
     River,
     TileFixture,
     Point

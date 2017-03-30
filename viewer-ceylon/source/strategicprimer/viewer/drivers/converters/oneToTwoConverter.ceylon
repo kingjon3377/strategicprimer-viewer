@@ -31,7 +31,6 @@ import lovelace.util.jvm {
 import model.map {
     River,
     PointFactory,
-    TileType,
     PlayerCollection,
     TileFixture,
     Player,
@@ -41,6 +40,7 @@ import model.map {
     Point
 }
 import strategicprimer.viewer.model.map {
+    TileType,
     SPMapNG,
     IMutableMapNG,
     IMapNG

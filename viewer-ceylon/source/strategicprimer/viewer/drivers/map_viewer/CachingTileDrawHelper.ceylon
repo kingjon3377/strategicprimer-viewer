@@ -12,10 +12,10 @@ import view.util {
 }
 import model.map {
     River,
-    TileType,
     Point
 }
 import strategicprimer.viewer.model.map {
+    TileType,
     IMapNG
 }
 import java.awt {

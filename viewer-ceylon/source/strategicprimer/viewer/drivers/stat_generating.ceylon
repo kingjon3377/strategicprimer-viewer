@@ -36,7 +36,6 @@ import model.map {
     Player,
     IFixture,
     Point,
-    TileType,
     PointFactory
 }
 
@@ -55,6 +54,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    TileType,
     IMapNG,
     FixtureIterable
 }

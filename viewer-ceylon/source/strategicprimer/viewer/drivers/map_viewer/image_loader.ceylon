@@ -15,7 +15,7 @@ import lovelace.util.jvm {
 import java.awt.image {
     BufferedImage
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     TileType
 }
 import java.io {
@@ -41,8 +41,8 @@ Icon createTerrainIcon(TileType tileType) {
 }
 "An icon cache."
 MutableMap<String, Icon> iconCache = HashMap<String, Icon> {
-    for (tileType in TileType.values())
-    "``tileType.toXML()``.png"->createTerrainIcon(tileType)
+    for (tileType in `TileType`.caseValues)
+    "``tileType.xml``.png"->createTerrainIcon(tileType)
 };
 "A cache of loaded images."
 MutableMap<String, Image> imageCache = HashMap<String, Image>();

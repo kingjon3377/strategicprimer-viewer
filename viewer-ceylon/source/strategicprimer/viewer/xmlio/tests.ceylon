@@ -67,11 +67,11 @@ import model.map {
     MapDimensionsImpl,
     PlayerCollection,
     Point,
-    TileType,
     PointFactory,
     MutablePlayer
 }
 import strategicprimer.viewer.model.map {
+    TileType,
     SPMapNG,
     IMutableMapNG,
     IMapNG,

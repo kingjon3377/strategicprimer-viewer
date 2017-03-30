@@ -16,11 +16,11 @@ import model.listeners {
     MovementCostSource
 }
 import strategicprimer.viewer.model.map {
+    TileType,
     IMutableMapNG
 }
 import model.map {
     HasOwner,
-    TileType,
     TileFixture,
     Player,
     Point

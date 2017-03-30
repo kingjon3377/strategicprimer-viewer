@@ -27,7 +27,6 @@ import model.map {
     TileFixture,
     Player,
     HasOwner,
-    TileType,
     MapDimensions,
     River,
     IMutablePlayerCollection,

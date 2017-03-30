@@ -20,10 +20,11 @@ import java.io {
 import java.lang {
     IllegalArgumentException
 }
-
+import strategicprimer.viewer.model.map {
+    TileType
+}
 import model.map {
     PointFactory,
-    TileType,
     MapDimensionsImpl,
     MapDimensions,
     Point
@@ -96,9 +97,10 @@ EncounterTable loadTable(String?()|File argument) {
                         log.error("Line with no blanks, coninuing ...");
                     } else {
                         String left = splitted.first;
+                        // TODO: Catch TileType-parsing failure and handle more gracefully
                         assert (exists right = splitted.rest.reduce(
-                                    (String partial, element) => "``partial`` ``element``"));
-                        value leftVal = TileType.getTileType(left);
+                                    (String partial, element) => "``partial`` ``element``"),
+                                exists leftVal = TileType.parse(left));
                         list.add(leftVal->right);
                     }
                 }

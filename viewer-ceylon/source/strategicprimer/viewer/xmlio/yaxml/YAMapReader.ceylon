@@ -45,13 +45,13 @@ import model.map {
     River,
     MapDimensions,
     MapDimensionsImpl,
-    PointFactory,
-    TileType
+    PointFactory
 }
 import strategicprimer.viewer.model.map {
     SPMapNG,
     IMutableMapNG,
-    IMapNG
+    IMapNG,
+    TileType
 }
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture,
@@ -203,10 +203,10 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     point = parsePoint(event);
                     // Since tiles have sometimes been *written* without "kind", then
                     // failed to load, be liberal in waht we accept here.
-                    if (hasParameter(event, "kind") || hasParameter(event, "type")) {
-                        retval.setBaseTerrain(point,
-                            TileType.getTileType(
-                                getParamWithDeprecatedForm(event, "kind", "type")));
+                    if ((hasParameter(event, "kind") || hasParameter(event, "type")),
+                            exists kind = TileType.parse(getParamWithDeprecatedForm(event,
+                                "kind", "type"))) {
+                        retval.setBaseTerrain(point, kind);
                     } else {
                         warner.warn(MissingPropertyException(event, "kind"));
                     }
@@ -296,7 +296,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     writeProperty(ostream, "row", i);
                     writeProperty(ostream, "column", j);
                     if (TileType.notVisible != terrain) {
-                        writeProperty(ostream, "kind", terrain.toXML());
+                        writeProperty(ostream, "kind", terrain.xml);
                     }
                     ostream.append('>');
                     variable Boolean needEol = true;

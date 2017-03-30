@@ -41,8 +41,7 @@ import model.map {
     HasPortrait,
     MapDimensions,
     PointFactory,
-    Point,
-    TileType
+    Point
 }
 import strategicprimer.viewer.model.map.fixtures {
     Implement,
@@ -73,7 +72,8 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     ISkill
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
+    IMapNG,
+    TileType
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     Grove,
@@ -266,7 +266,7 @@ shared class SPFluidWriter() satisfies SPWriter {
                         writeIntegerAttribute(ostream, "row", i);
                         writeIntegerAttribute(ostream, "column", j);
                         if (TileType.notVisible != terrain) {
-                            writeAttribute(ostream, "kind", terrain.toXML());
+                            writeAttribute(ostream, "kind", terrain.xml);
                         }
                         variable Boolean anyContents = false;
                         if (obj.isMountainous(loc)) {

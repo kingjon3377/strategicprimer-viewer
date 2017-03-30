@@ -87,11 +87,11 @@ import model.map {
     Player,
     Point,
     HasOwner,
-    TileType,
     TileFixture,
     PlayerImpl
 }
 import strategicprimer.viewer.model.map {
+    TileType,
     IMutableMapNG
 }
 import strategicprimer.viewer.model.map.fixtures {
