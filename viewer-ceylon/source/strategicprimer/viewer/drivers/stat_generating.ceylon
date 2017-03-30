@@ -66,7 +66,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 }
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats,
-    Job
+    IJob
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village
@@ -186,11 +186,8 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     void enterWorkerJobs(ICLIHelper cli, IWorker worker, Integer levels) {
         for (i in 0..levels) {
             String jobName = cli.inputString("Which Job does worker have a level in? ");
-            if (exists job = worker.getJob(jobName)) {
-                job.level = job.level + 1;
-            } else {
-                worker.addJob(Job(jobName, 1));
-            }
+            IJob job = worker.getJob(jobName);
+            job.level = job.level + 1;
         }
     }
     "Get the index of the lowest value in an array."
@@ -486,9 +483,12 @@ object todoFixerCLI satisfies SimpleCLIDriver {
                         fixture ];
         if (nonempty villages) {
             if (raceList.empty) {
-                while (exists race = cli.inputString("Next aquatic race: "),
-                        !race.trimmed.empty) {
-                    raceList.add(race.trimmed);
+                while (true) {
+                    String race = cli.inputString("Next aquatic race: ").trimmed;
+                    if (race.empty) {
+                        break;
+                    }
+                    raceList.add(race);
                 }
             }
             for (village in villages) {

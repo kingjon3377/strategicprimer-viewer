@@ -60,11 +60,13 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     .sort((x, y) => x <=> y)) {
                 formatter("<li>Turn ``turn``:<ul>
                            ");
-                if (exists orders = item.getOrders(turn)) {
+                String orders = item.getOrders(turn);
+                if (!orders.empty) {
                     formatter("<li>Orders: ``orders``</li>
                                ");
                 }
-                if (exists results = item.getResults(turn)) {
+                String results = item.getResults(turn);
+                if (!results.empty) {
                     formatter("<li>Results: ``results``</li>
                                ");
                 }
@@ -236,10 +238,12 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             for (turn in set { *item.allOrders.keys}.union(set {*item.allResults.keys})
                     .sort((x, y) => x <=> y)) {
                 ListReportNode current = ListReportNode("Turn ``turn``:");
-                if (exists orders = item.getOrders(turn)) {
+                String orders = item.getOrders(turn);
+                if (!orders.empty) {
                     current.add(SimpleReportNode("Orders: ``orders``"));
                 }
-                if (exists results = item.getResults(turn)) {
+                String results = item.getResults(turn);
+                if (!results.empty) {
                     current.add(SimpleReportNode("Results: ``results``"));
                 }
                 ordersNode.addIfNonEmpty(current);

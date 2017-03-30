@@ -404,8 +404,8 @@ object queryCLI satisfies SimpleDriver {
             IDriverModel model) {
         HuntingModel huntModel = HuntingModel(model.map);
         try {
-            while (exists input = cli.inputString("Command: "),
-                    exists firstChar = input[0], firstChar != 'q') {
+            while (exists firstChar = cli.inputString("Command: ").first,
+                    firstChar != 'q') {
                 handleCommand(options, model, huntModel, cli, firstChar);
             }
         } catch (IOException except) {

@@ -25,7 +25,7 @@ import util {
 // Tests that the proxy classes work as expected.
 "Assert that a worker contains a Job and that this Job is not empty."
 void assertWorkerHasJob(IWorker worker, String jobName) {
-    if (exists job = worker.getJob(jobName), !job.emptyJob) {
+    if (!worker.getJob(jobName).emptyJob) {
         return;
     }
     StringBuilder message = StringBuilder();

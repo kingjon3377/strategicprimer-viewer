@@ -19,22 +19,8 @@ void advanceWorkersInSkill(String jobName, String skillName, ICLIHelper cli,
         IWorker* workers) {
     Integer hours = cli.inputNumber("Hours of experience to add: ");
     for (worker in workers) {
-        IJob job;
-        if (exists tempJob = worker.getJob(jobName)) {
-            job = tempJob;
-        } else {
-            worker.addJob(Job(jobName, 0));
-            assert (exists secondTempJob = worker.getJob(jobName));
-            job = secondTempJob;
-        }
-        ISkill skill;
-        if (exists tempSkill = job.getSkill(skillName)) {
-            skill = tempSkill;
-        } else {
-            job.addSkill(Skill(skillName, 0, 0));
-            assert (exists secondTempSkill = job.getSkill(skillName));
-            skill = secondTempSkill;
-        }
+        IJob job = worker.getJob(jobName);
+        ISkill skill = job.getSkill(skillName);
         Integer oldLevel = skill.level;
         skill.addHours(hours, singletonRandom.nextInt(100));
         if (skill.level != oldLevel) {

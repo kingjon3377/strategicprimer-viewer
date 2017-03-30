@@ -13,14 +13,9 @@ import ceylon.collection {
  those Jobs."
 {IJob*} getWorkerJobs(String jobName, IWorker* workers) {
     MutableMap<String, IJob> jobs = HashMap<String, IJob>();
+    // TODO: turn to comprehension and use ceylon.language.set
     for (worker in workers) {
-        if (exists job = worker.getJob(jobName)) {
-            jobs.put(worker.name, job);
-        } else {
-            IJob temp = Job(jobName, 0);
-            worker.addJob(temp);
-            jobs.put(worker.name, temp);
-        }
+        jobs.put(worker.name, worker.getJob(jobName));
     }
     return jobs.items;
 }
