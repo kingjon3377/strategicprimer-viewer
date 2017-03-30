@@ -79,8 +79,8 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&Pr
     "Delegates to [[name]]."
     todo("Indicate we're a proxy?")
     shared actual String string => name;
-    shared actual Boolean isSubset(IJob obj, Formatter ostream, String context) {
-        ostream.format("%s\tisSubset called on ProxyJob%n", context);
+    shared actual Boolean isSubset(IJob obj, Anything(String) report) {
+        report("\tisSubset called on ProxyJob");
         return false;
     }
     "Proxy an additional Job."

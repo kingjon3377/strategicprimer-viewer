@@ -34,23 +34,21 @@ shared class Implement(kind, id)
 		}
 	}
 	"A fixture is a subset iff it is equal."
-	shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
+	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
 		if (obj.id == id) {
 			if (is Implement obj) {
 				if (obj.kind == kind) {
 					return true;
 				} else {
-					ostream.format("%s\tIn Implement ID #%d%n: Kinds differ%n", context,
-						id);
+					report("In Implement ID #``id``:\tKinds differ");
 					return false;
 				}
 			} else {
-				ostream.format("%s\tDifferent fixture types given for ID #%d%n", context,
-					id);
+				report("Different fixture types given for ID #``id``");
 				return false;
 			}
 		} else {
-			ostream.format("%s\tIDs differ%n", context);
+			report("IDs differ");
 			return false;
 		}
 	}

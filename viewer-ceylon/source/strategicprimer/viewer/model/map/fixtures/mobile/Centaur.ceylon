@@ -40,24 +40,21 @@ shared class Centaur(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 			return false;
 		}
 	}
-	shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
+	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
 		if (obj.id == id) {
 			if (is Centaur obj) {
 				if (obj.kind == kind) {
 					return true;
 				} else {
-					ostream.format("%s\tDifferent kinds of centaur for ID #%d%n",
-						context, id);
+					report("Different kinds of centaur for ID #``id``");
 					return false;
 				}
 			} else {
-				ostream.format("%s\tFor ID #%d, different kinds of members%n", context,
-					id);
+				report("For ID #``id``, different kinds of members");
 				return false;
 			}
 		} else {
-			ostream.format("%s\tCalled with different IDs, #%d and #%d%n", context, id,
-				obj.id);
+			report("Called with different IDs, #``id`` and ``obj.id``");
 			return false;
 		}
 	}

@@ -63,22 +63,21 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
     """A Job is a "subset" if it has the same name, equal or lower level, and no extra or
        higher-level or extra-experienced Skills."""
     todo("Perhaps a lower-level Job with extra skills should still be a subset?")
-    shared actual Boolean isSubset(IJob obj, Formatter ostream, String context) {
+    shared actual Boolean isSubset(IJob obj, Anything(String) report) {
         if (name != obj.name) {
-            ostream.format("%s\tPassed Jobs with different names%n", context);
+            report("Passed Jobs with different names");
             return false;
         } else if (obj.level > level) {
-            ostream.format("%s\tSubmap has higher level for Job %s%n", context, name);
+            report("Submap has higher level for Job ``name``");
             return false;
         } else {
             variable Boolean retval = true;
             for (skill in obj) {
                 if (exists ours = skillSet.get(skill.name)) {
-                    retval = retval && ours.isSubset(skill, ostream,
-                        "``context`` In Job ``name``:");
+                    retval = retval && ours.isSubset(skill,
+                                (String string) => report("In Job ``name``:\t``string``"));
                 } else {
-                    ostream.format("%s In Job %s:\tExtra skill %s%n", context, name,
-                        skill.name);
+                    report("In Job ``name``:\tExtra skill ``skill.name``");
                     retval = false;
                 }
             }

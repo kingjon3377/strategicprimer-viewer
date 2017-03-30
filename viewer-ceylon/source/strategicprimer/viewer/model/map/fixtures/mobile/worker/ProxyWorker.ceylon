@@ -130,8 +130,8 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
             return true;
         }
     }
-    shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
-        ostream.format("%s\tisSubset called on ProxyWorker%n", context);
+    shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
+        report("isSubset called on ProxyWorker");
         return false;
     }
     shared actual void addProxied(IWorker item) {

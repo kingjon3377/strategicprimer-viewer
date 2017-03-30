@@ -116,11 +116,11 @@ void testProxyUnit() {
     assertEquals(twoCopy, secondWorker, "Two copies of second worker should be equal");
     assertNotEquals(firstWorker, oneOrig,
         "First worker should not still be as it was originally");
-    assertTrue(firstWorker.isSubset(oneOrig, NullStream.devNull, ""),
+    assertTrue(firstWorker.isSubset(oneOrig, noop),
         "But first worker original should be a subset of first worker now");
     assertNotEquals(secondWorker, twoOrig,
         "Two copies of second worker shouldn't still be as it was originally");
-    assertTrue(secondWorker.isSubset(twoOrig, NullStream.devNull, ""),
+    assertTrue(secondWorker.isSubset(twoOrig, noop),
         "But second worker original should be a subset of second worker now");
 }
 
@@ -162,11 +162,11 @@ void testProxyUnitProxy() {
     assertWorkerHasJob(secondWorker, "jobOne");
     assertNotEquals(firstWorker, oneOrig,
         "First worker should not still be as it was originally");
-    assertTrue(firstWorker.isSubset(oneOrig, NullStream.devNull, ""),
+    assertTrue(firstWorker.isSubset(oneOrig, noop),
         "But first worker original should be a subset of first worker now");
     assertNotEquals(secondWorker, twoOrig,
         "Two copies of second worker shouldn't still be as it was originally");
-    assertTrue(secondWorker.isSubset(twoOrig, NullStream.devNull, ""),
+    assertTrue(secondWorker.isSubset(twoOrig, noop),
         "But second worker original should be a subset of second worker now");
 }
 

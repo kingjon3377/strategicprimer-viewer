@@ -117,14 +117,14 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
     """A fixture is a subset if it is a Fortress with the same ID, owner, and name (or it
        has the name "unknown") and every member it has is equal to, or a subset of, one of
        our members."""
-    shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
+    shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         if (!obj is Fortress) {
-            ostream.format("%sIncompatible type to Fortress%n", context);
+            report("Incompatible type to Fortress");
             return false;
         }
         assert (is Fortress obj);
         if (obj.id != id) {
-            ostream.format("%sID mismatch between Fortresses%n", context);
+            report("ID mismatch between Fortresses");
             return false;
         }
         if ({name, "unknown"}.contains(obj.name), obj.owner.playerId == owner.playerId) {
@@ -132,24 +132,21 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
                 *members.map((member) => member.id->member)
             };
             variable Boolean retval = true;
+            void localFormat(String string) =>
+                    report("In fortress ``name`` (ID #``id``):\t``string``");
             for (member in obj) {
-                Integer memberID = member.id;
-                if (exists corresponding = ours.get(memberID)) {
-                    if (!corresponding.isSubset(member, ostream,
-                            "``context`` In fortress ``name`` (ID #``id``")) {
+                if (exists corresponding = ours.get(member.id)) {
+                    if (!corresponding.isSubset(member, localFormat)) {
                         retval = false;
                     }
                 } else {
-                    ostream.format(
-                        "%s In fortress %s (ID #%d): Extra member:\t%s, ID #%d%n",
-                        context, name, JInteger(id), member.string, JInteger(memberID));
+                    localFormat("Extra member:\t``member``, ID #``member.id``");
                     retval = false;
                 }
             }
             return retval;
         } else {
-            ostream.format("%s In fortress (ID #%d): Names don't match%n", context,
-                JInteger(id));
+            report("In fortress (ID #``id``): Names don't match");
             return false;
         }
     }

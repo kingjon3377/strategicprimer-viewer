@@ -88,17 +88,16 @@ shared class SimpleImmortal satisfies Immortal&HasMutableImage&HasKind {
 		}
 	}
 	"A fixture is a subset iff it is equal."
-	shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
+	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
 		if (obj.id == id) {
 			if (is SimpleImmortal obj, obj.immortalKind == immortalKind) {
 				return true;
 			} else {
-				ostream.format("%s\tFor ID #%d, different kinds of members%n", context, id);
+				report("For ID #``id``, different kinds of members");
 				return false;
 			}
 		} else {
-			ostream.format("%sCalled with different IDs, #%d and #%d%n", context, id,
-				obj.id);
+			report("Called with different IDs, #``id`` and ``obj.id``");
 			return false;
 		}
 	}

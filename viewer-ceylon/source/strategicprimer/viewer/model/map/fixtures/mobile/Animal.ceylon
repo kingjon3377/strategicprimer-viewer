@@ -73,38 +73,30 @@ shared class Animal(kind, traces, talking, status, id)
 	todo("Should be variable, either read from XML or computed from kind using some other
 	      read-from-file data.") // FIXME
 	shared actual Integer dc => (traces) then 12 else 22;
-	shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
+	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
 		if (obj.id == id) {
 			if (is Animal obj) {
 				if (kind != obj.kind) {
-					ostream.format("%s\tDifferent kinds of animal for ID #%d%n", context,
-						id);
+					report("Different kinds of animal for ID #``id``");
 					return false;
 				} else if (!talking, obj.talking) {
-					ostream.format(
-						"%s\tIn animal ID #%d:\tSubmap's is talking and master's isn't%n",
-						context, id);
+					report("In animal ID #``id``:\tSubmap's is talking and master's isn't");
 					return false;
 				} else if (traces, !obj.traces) {
-					ostream.format(
-						"%s\tIn animal ID #%d:\tSubmap has animal and master only tracks%n",
-						context, id);
+					report("In animal #``id``: Submap has animal and master only tracks");
 					return false;
 				} else if (status != obj.status) {
-					ostream.format("%s\tAnimal domestication status differs at ID #%d%n",
-						context, id);
+					report("Animal domestication status differs at ID #``id``");
 					return false;
 				} else {
 					return true;
 				}
 			} else {
-				ostream.format("%s\tFor ID #%d, different kinds of members%n", context,
-					id);
+				report("For ID #``id``, different kinds of members");
 				return false;
 			}
 		} else {
-			ostream.format("%s\tCalled with different IDs, #%d and #%d%n", context, id,
-				obj.id);
+			report("Called with different IDs, #``id`` and #``obj.id``");
 			return false;
 		}
 	}

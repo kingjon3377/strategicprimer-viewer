@@ -188,9 +188,9 @@ shared class SPMapNG satisfies IMutableMapNG {
         if (fixture.id >= 0,
                 exists existing = local.find((item) => item.id == fixture.id)) {
             Boolean subsetCheck(TileFixture one, TileFixture two) {
-                if (is SubsettableFixture one, one.isSubset(two, NullStream.devNull, "")) {
+                if (is SubsettableFixture one, one.isSubset(two, noop)) {
                     return true;
-                } else if (is SubsettableFixture two, two.isSubset(one, NullStream.devNull, "")) {
+                } else if (is SubsettableFixture two, two.isSubset(one, noop)) {
                     return true;
                 } else {
                     return false;
@@ -305,14 +305,14 @@ shared class SPMapNG satisfies IMutableMapNG {
     }
     """Returns true if the other map is a "strict subset" of this one, except for those
        cases we deliberately ignore."""
-    shared actual Boolean isSubset(IMapNG obj, Formatter ostream, String context) {
+    shared actual Boolean isSubset(IMapNG obj, Anything(String) report) {
         if (dimensions == obj.dimensions) {
             // TODO: delegate player-subset testing to PlayerCollection
             // TODO: Or else use standard Ceylon Iterable methods
             variable Boolean retval = true;
             for (player in obj.players) {
                 if (!playerCollection.contains(player)) {
-                    ostream.format("%s\tExtra player %s%n", context, player.string);
+                    report("\tExtra player ``player``");
                     retval = false; // return false;
                 }
             }
@@ -323,21 +323,19 @@ shared class SPMapNG satisfies IMutableMapNG {
             // IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
             MutableMap<Integer, IUnit> ourUnits = HashMap<Integer, IUnit>();
             for (point in locations) {
+                void localReport(String string) => report("At ``point``:\t``string``");
                 if (!{getBaseTerrain(point), TileType.notVisible}
                         .contains(obj.getBaseTerrain(point))) {
                     if (TileType.notVisible == getBaseTerrain(point)) {
-                        ostream.format("%s At %s:\tHas terrain information we don't%n",
-                            context, point.string);
+                        localReport("Has terrain information we don't");
                     } else {
-                        ostream.format("%s At %s:\tBase terrain differs%n", context,
-                            point.string);
+                        localReport("Base terrain differs");
                     }
                     retval = false; // return false;
                     continue;
                 }
                 if (obj.isMountainous(point), !isMountainous(point)) {
-                    ostream.format("%s At %s:\tHas mountains we don't%n", context,
-                        point.string);
+                    localReport("Has mountains we don't");
                     retval = false; // return false;
                 }
                 if (exists forest = obj.getForest(point)) {
@@ -345,10 +343,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                     // "other fixtures," because of the way we represent this in the XML.
                     // If we ever start a new campaign with a different data
                     // representation---perhaps a database---we should remove this check.
-                    if (!getAllFixtures(point)
-                            .contains(forest)) {
-                        ostream.format("%s At %s:\tHas forest we don't", context,
-                            point.string);
+                    if (!getAllFixtures(point).contains(forest)) {
+                        localReport("Has forest we don't");
                         retval = false; // return false;
                     }
                 }
@@ -361,19 +357,18 @@ shared class SPMapNG satisfies IMutableMapNG {
                         // check. Except for the 'exposed' (kind == kind) bit.
                         if (ground != ourGround, !getAllFixtures(point).narrow<Ground>()
                                 .any((item) => item.kind == ground.kind)) {
-                            ostream.format("%s At %s:\tHas ground we don't", context,
-                                point.string);
+                            localReport("Has ground we don't");
                             retval = false; // return false;
                         }
                     } else {
-                        ostream.format("%s At %s:\tHas ground we don't", context,
-                            point.string);
+                        localReport("Has ground we don't");
                         retval = false;
                     }
                 }
                 ourFixtures.clear();
                 ourSubsettables.clear();
                 ourUnits.clear();
+                // TODO: Use getAllFixtures instead of adding ground and forest later
                 for (fixture in getOtherFixtures(point)) {
                     Integer idNum = fixture.id;
                     if (is IUnit fixture) {
@@ -402,8 +397,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                     if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
                         continue;
                     } else if (is IUnit fixture, exists unit = ourUnits.get(fixture.id)) {
-                        retval = retval && unit.isSubset(fixture, ostream,
-                            "``context`` At ``point``:");
+                        retval = retval && unit.isSubset(fixture, localReport);
                     } else if (is SubsettableFixture fixture,
                             exists list = ourSubsettables.get(fixture.id)) {
                         variable Integer count = 0;
@@ -412,7 +406,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                         for (subsettable in list) {
                             count++;
                             match = subsettable;
-                            if (subsettable.isSubset(fixture, NullStream.devNull, "")) {
+                            if (subsettable.isSubset(fixture, noop)) {
                                 unmatched = false;
                                 break;
                             } else {
@@ -420,36 +414,35 @@ shared class SPMapNG satisfies IMutableMapNG {
                             }
                         }
                         if (count == 0) {
-                            ostream.format("%s At %s: Extra fixture:\t%s%n", context, point.string, fixture.string);
+                            localReport("Extra fixture:\t``fixture``");
                             retval = false; // return false;
                             break;
                         } else if (count == 1) {
                             assert (exists temp = match);
-                            retval = retval && temp.isSubset(fixture, ostream,
-                                "``context`` At ``point``:");
+                            retval = retval && temp.isSubset(fixture, localReport);
                         } else if (unmatched) {
-                            ostream.format("%s At %s: Fixture with ID #``fixture
-                                .id`` didn't match any of the subsettable fixtures sharing that ID%n",
-                                context, point.string);
+                            localReport(
+                                "Fixture with ID #``fixture.id`` didn't match any of the
+                                 subsettable fixtures sharing that ID");
                             retval = false; // return false;
                             break;
                         }
                     } else {
-                        ostream.format("%s At %s Extra fixture:\t%s%n", context,
-                            point.string, fixture.string);
+                        localReport("Extra fixture:\t``fixture``");
                         retval = false; // return false;
                         break;
                     }
                 }
-                if (!set { *obj.getRivers(point) }.complement(set { *getRivers(point) }).empty) {
-                    ostream.format("%s At %s:\tExtra river%n", context, point.string);
+                if (!set { *obj.getRivers(point) }
+                        .complement(set { *getRivers(point) }).empty) {
+                    localReport("Extra river(s)");
                     retval = false; // return false;
                     break;
                 }
             }
             return retval;
         } else {
-            ostream.format("%s\tDimension mismatch%n", context);
+            report("Dimension mismatch");
             return false;
         }
     }

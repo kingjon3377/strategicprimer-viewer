@@ -59,30 +59,27 @@ shared class Portal(destinationWorld, destinationCoordinates, id)
 	shared actual Integer hash => id;
 	shared actual String plural = "Portals";
 	todo("Test this")
-	shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
+	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
 		if (obj.id == id) {
 			if (is Portal obj) {
+				void localReport(String str) =>
+						report("In portal with ID #``id``: ``str``");
 				if (!{destinationWorld, "unknown"}.contains(obj.destinationWorld)) {
-					ostream.format(
-						"%s\tIn portal with ID #%d: Different destination world%n",
-						context, id);
+					localReport("Different destination world");
 					return false;
 				} else if (obj.destinationCoordinates.valid,
 						destinationCoordinates != obj.destinationCoordinates) {
-					ostream.format(
-						"%s\tIn portal with ID #%d: Different destination coordinates.",
-						context, id);
+					localReport("Different destination coordinates");
 					return false;
 				} else {
 					return true;
 				}
 			} else {
-				ostream.format("%s\tDifferent kinds of fixtures for ID #%d%n", context,
-					id);
+				report("Different kinds of fixtures for ID #``id``");
 				return false;
 			}
 		} else {
-			ostream.format("%s\tCalled with different-ID-# arguments%n", context);
+			report("Called with different ID #s");
 			return false;
 		}
 	}

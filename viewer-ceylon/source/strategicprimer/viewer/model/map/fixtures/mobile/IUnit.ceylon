@@ -94,53 +94,51 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     shared default actual String plural => "Units";
     "A fixture is a subset if it is a unit with the same ID and no extra members, and all
      corresponding (by ID, presumably) members are either equal or themselves subsets."
-    shared default actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
+    shared default actual Boolean isSubset(IFixture obj, Anything(String) report) {
         if (obj.id == id) {
             if (is IUnit obj) {
+                void localSimpleReport(String string) =>
+                        report("In Unit of ID #``id``:\t``string``");
                 if (owner.playerId != obj.owner.playerId) {
-                    ostream.format("%s In Unit of ID #%d:\tOwners differ%n", context, id);
+                    localSimpleReport("Owners differ");
                     return false;
                 } else if (name != obj.name) {
-                    ostream.format("%s In unit of ID #%d:\tNames differ%n", context,
-                        id);
+                    localSimpleReport("Names differ");
                     return false;
                 } else if (kind != obj.kind) {
-                    ostream.format("%s In unit of ID #%d:\tKinds differ%n",
-                        context, id);
+                    localSimpleReport("Kinds differ");
                     return false;
                 }
                 Map<Integer, UnitMember> ours = createMap { *map((member) => member.id->member) };
                 variable Boolean retval = true;
+                void localReport(String string) =>
+                        report("In unit of kind ``kind`` named ``name`` (ID #``id``):\t");
                 for (member in obj) {
                     if (exists ourMember = ours.get(member.id)) {
-                        if (!ourMember.isSubset(member, ostream,
-                                "``context`` In unit of kind ``kind`` named ``name`` (ID #``id``):")) {
+                        if (!ourMember.isSubset(member, localReport)) {
                             retval = false;
                         }
                     } else {
-                        ostream.format(
-                            "%s In unit of kind %s named %s (ID %d): Extra member:\t%s, ID #%d%n",
-                            context, kind, name, id, member.string, member.id);
+                        localReport("Extra member: ``member``, ID #``member.id``");
                         retval = false;
                     }
                 }
                 if (retval) {
                     if ({name, kind}.contains("unassigned"), !empty,
                             obj.empty) {
-                        ostream.format(
-                            "%s In unit of kind %s named %s (ID #%d): Non empty 'unassigned' when submap has it empty%n",
-                            context, kind, name, id);
+                        localReport(
+                            """Non-empty "unassigned" when submap has it empty""");
                     }
                     return true;
                 } else {
                     return false;
                 }
             } else {
-                ostream.format("%s\tDifferent kinds of fixtures for ID #%d%n", context, id);
+                report("Different kinds of fixtures for ID #``id``");
                 return false;
             }
         } else {
-            ostream.format("%s\tFixtures have different IDs%n", context);
+            report("Fixtures have different IDs");
             return false;
         }
     }

@@ -104,8 +104,8 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&Proxy
     shared actual Boolean empty =>
             proxiedJobs.flatMap(identity).filter(notThis)
                 .filter((skill) => skill.name == name).any((skill) => !skill.empty);
-    shared actual Boolean isSubset(ISkill obj, Formatter ostream, String context) {
-        ostream.format("%s\tisSubset called on ProxySkill%n", context);
+    shared actual Boolean isSubset(ISkill obj, Anything(String) report) {
+        report("isSubset called on ProxySkill");
         return false;
     }
 }

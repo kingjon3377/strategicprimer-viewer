@@ -31,16 +31,16 @@ shared class Quantity(number, units) satisfies Subsettable<Quantity>&Comparable<
 	shared actual String string => "``number`` ``units``";
 	"A Quantity is a subset iff it has the same units and either the same or a lesser
 	 quantity."
-	shared actual Boolean isSubset(Quantity obj, Formatter ostream, String context) {
+	shared actual Boolean isSubset(Quantity obj, Anything(String) report) {
 		if (units == obj.units) {
 			if (compareNumbers(number, obj.number) == smaller) {
-				ostream.format("%s: Has greater quantity than we do%n", context);
+				report("Has greater quantity than we do");
 				return false;
 			} else {
 				return true;
 			}
 		} else {
-			ostream.format("%s: Units differ%n", context);
+			report("Units differ");
 			return false;
 		}
 	}

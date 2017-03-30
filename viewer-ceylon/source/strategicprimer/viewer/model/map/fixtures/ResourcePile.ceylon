@@ -53,37 +53,33 @@ shared class ResourcePile(id, kind, contents, quantity)
 	}
 	"A fixture is a subset iff it is a ResourcePile of the same kind, contents, and age,
 	 with the same ID, and its quantity is a subset of ours."
-	shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
+	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
 		if (obj.id == id) {
 			if (is ResourcePile obj) {
 				variable Boolean retval = true;
+				void localReport(String str) => report("In Resource Pile, ID #``id``: ");
 				if (kind != obj.kind) {
-					ostream.format("%s\tIn Resource Pile, ID #%d: Kinds differ%n",
-						context, id);
+					localReport("Kinds differ");
 					retval = false;
 				}
 				if (!contents != obj.contents) {
-					ostream.format("%s\tIn Resource Pile, ID #%d: Contents differ%n",
-						context, id);
+					localReport("Contents differ");
 					retval = false;
 				}
-				if (!quantity.isSubset(obj.quantity, ostream,
-						"``context``\tIn Resource Pile, ID #``id``")) {
+				if (!quantity.isSubset(obj.quantity, localReport)) {
 					retval = false;
 				}
 				if (created != obj.created, obj.created != -1) {
-					ostream.format("%s\tIn Resource Pile, ID #%d: Age differs%n", context,
-						id);
+					localReport("Age differs");
 					retval = false;
 				}
 				return retval;
 			} else {
-				ostream.format("%s\tDifferent fixture types given for ID #%d%n", context,
-					id);
+				report("Different fixture types given for ID #``id``");
 				return false;
 			}
 		} else {
-			ostream.format("%s\tIDs differ%n", context);
+			report("IDs differ");
 			return false;
 		}
 	}

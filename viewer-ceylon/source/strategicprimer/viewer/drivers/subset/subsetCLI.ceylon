@@ -39,7 +39,8 @@ shared object subsetCLI satisfies SimpleDriver {
                 String filename = file?.string else "map without a filename";
                 cli.print("``filename``\t...\t\t");
                 if (model.map.isSubset(map,
-                    Formatter(AppendableHelper(cli.print)), "In ``filename``:")) {
+                            (String string) =>
+                                cli.println("In ``filename``: ``string``"))) {
                     cli.println("OK");
                 } else {
                     cli.println("WARN");

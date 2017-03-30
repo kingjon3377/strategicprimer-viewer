@@ -80,28 +80,24 @@ shared class Village(status, name, id, owner, race)
     """A village is a "subset" of another if they are identical, or if the only difference
         is that the "subset" is independent and the "superset" owes allegiance to some
         player."""
-    shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
+    shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         if (is Village obj) {
             if (id != obj.id) {
-                ostream.format("%s\tIds differ%n", context);
+                report("IDs differ");
             } else if (status != obj.status) {
-                ostream.format("%s In village (ID #``id``):\tVillage status differs%n",
-                    context);
+                report("In village (ID #``id``):\tVillage status differs");
             } else if (name != obj.name) {
-                ostream.format("%s In village (ID #``id``):\tVillage name differs%n",
-                    context);
+                report("In village (ID #``id``):\tVillage name differs");
             } else if (race != obj.race) {
-                ostream.format("%s In village %s (ID #``id``):\tDominant race differs%n",
-                    context, name);
+                report("In village ``name`` (ID #``id``):\tDominant race differs");
             } else if (owner.playerId != obj.owner.playerId, !obj.owner.independent) {
-                ostream.format("%s In village %s (ID #``id``):\tOwners differ%n", context,
-                    name);
+                report("In village ``name`` (ID #``id``):\tOwners differ");
             } else {
                 return true;
             }
             return false;
         } else {
-            ostream.format("%sIncompatible type to Village%n", context);
+            report("Incompatible type to Village");
             return false;
         }
     }

@@ -57,10 +57,10 @@ import util {
 }
 void assertIsSubset<T,U=T>(T&U one, T&U two, String message)
         given T satisfies Subsettable<U> given U satisfies Object =>
-            assertTrue(one.isSubset(two, NullStream.devNull, ""), message);
+            assertTrue(one.isSubset(two, noop), message);
 void assertNotSubset<T,U=T>(T&U one, T&U two, String message)
         given T satisfies Subsettable<U> given U satisfies Object =>
-        assertFalse(one.isSubset(two, NullStream.devNull, ""), message);
+        assertFalse(one.isSubset(two, noop), message);
 "A test of [[PlayerCollection]]'s subset feature"
 test
 void testPlayerCollectionSubset() {

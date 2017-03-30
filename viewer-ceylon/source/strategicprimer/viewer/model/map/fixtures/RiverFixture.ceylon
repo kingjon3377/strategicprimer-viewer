@@ -41,22 +41,17 @@ shared class RiverFixture(River* initial) satisfies TileFixture&{River*}&Subsett
 	shared actual Integer hash = 0;
 	shared actual String string => " ".join(rivers.map(River.description));
 	"A fixture is a subset if it is a RiverFixture with no rivers we don't have."
-	shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
+	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
 		if (is RiverFixture obj) {
 			Set<River> complement = obj.rivers.complement(riversSet);
 			if (complement.empty) {
 				return true;
 			} else {
-				ostream.format("%s Extra rivers:\t", context);
-				for (river in complement) {
-					// TODO: drop .lowercased once River ported, but make sure its .string works
-					ostream.format("%s", river.string.lowercased);
-				}
-				ostream.format("%n");
+				report("Extra rivers:\t``", ".join(complement)``");
 				return false;
 			}
 		} else {
-			ostream.format("%sIncompatible type to RiverFixture%n", context);
+			report("Incompatible type to RiverFixture");
 			return false;
 		}
 	}

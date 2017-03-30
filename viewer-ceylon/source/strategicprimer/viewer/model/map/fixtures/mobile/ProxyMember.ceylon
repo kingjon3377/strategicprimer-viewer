@@ -51,8 +51,8 @@ class ProxyMember satisfies UnitMember&ProxyFor<UnitMember> {
             return false;
         }
     }
-    shared actual Boolean isSubset(IFixture fixture, Formatter ostream, String context) {
-        ostream.format("%sisSubset called on ProxyMember%n", context);
+    shared actual Boolean isSubset(IFixture fixture, Anything(String) report) {
+        report("isSubset called on ProxyMember");
         return false;
     }
     shared actual Iterable<UnitMember> proxied => {*proxiedMembers};

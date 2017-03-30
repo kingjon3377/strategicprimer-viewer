@@ -33,20 +33,19 @@ shared interface ISkill satisfies HasName&Subsettable<ISkill> {
 	shared formal Boolean empty;
 	"A skill is a subset if it has the same name, equal or lower level, and if equal level
 	 equal or lower hours."
-	shared actual default Boolean isSubset(ISkill obj, Formatter ostream, String context) {
+	shared actual default Boolean isSubset(ISkill obj, Anything(String) report) {
 		if (obj.name == name) {
 			if (obj.level > level) {
-				ostream.format("%s\tExtra level(s) in %s%n", context, obj.name);
+				report("Extra level(s) in ``name``");
 				return false;
 			} else if (obj.level == level, obj.hours > hours) {
-				ostream.format("%s\tExtra hours in %s%n", context, obj.name);
+				report("Extra hours in ``name``");
 				return false;
 			} else {
 				return true;
 			}
 		} else {
-			ostream.format("%s\tCalled with non-corresponding skill, %s (this is %s)%n",
-				context, obj.name, name);
+			report("Called with non-corresponding skill, ``obj.name`` ( this is ``name``");
 			return false;
 		}
 	}

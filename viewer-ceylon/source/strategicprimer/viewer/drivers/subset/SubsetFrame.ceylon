@@ -142,7 +142,8 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
         }
         printParagraph("Testing ``filename`` ...");
         try (formatter = Formatter(htmlWriter)) {
-            if (mainMap.isSubset(map, formatter, "``filename``: ")) {
+            if (mainMap.isSubset(map,
+                        (String string) => formatter.format("%s: %s", filename, string))) {
                 printParagraph("OK", LabelTextColor.green);
             } else {
                 printParagraph("WARN", LabelTextColor.yellow);

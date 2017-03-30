@@ -46,12 +46,11 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 	shared actual Iterator<Player> iterator() => players.items.iterator();
 	"A player collection is a subset if it has no players we don't."
 	todo("Compare corresponding players!")
-	shared actual Boolean isSubset(IPlayerCollection obj, Formatter ostream,
-			String context) {
+	shared actual Boolean isSubset(IPlayerCollection obj, Anything(String) report) {
 		variable Boolean retval = true;
 		for (player in obj) {
 			if (!players.items.contains(player)) {
-				ostream.format("%s\tExtra player %s%n", context, player.name);
+				report("Extra player ``player.name``");
 				retval = false;
 			}
 		}
@@ -105,8 +104,7 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 	"An object is equal iff it is a player collection with exactly the players we have."
 	shared actual Boolean equals(Object obj) {
 		if (is IPlayerCollection obj) {
-			return isSubset(obj, NullStream.devNull, "") &&
-			obj.isSubset(this, NullStream.devNull, "");
+			return isSubset(obj, noop) && obj.isSubset(this, noop);
 		} else {
 			return false;
 		}

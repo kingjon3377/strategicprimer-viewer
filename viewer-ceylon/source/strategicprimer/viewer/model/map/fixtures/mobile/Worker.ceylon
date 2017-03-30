@@ -90,45 +90,41 @@ shared class Worker(name, race, id, IJob* jobs) satisfies IWorker&HasPortrait {
     shared actual String defaultImage = "worker.png";
     "A fixture is a subset if it is a worker with the same ID, name, race, and stats, and
      no Jobs we don't have, and its Jobs are subsets of our corresponding Jobs."
-    shared actual Boolean isSubset(IFixture obj, Formatter ostream, String context) {
+    shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         if (obj.id == id) {
             if (is IWorker obj) {
+                void localReport(String string) =>
+                        report("In worker ``name`` (ID #``id``):\t``string``)`");
                 if (name != obj.name) {
-                    ostream.format("%s In worker %s (ID #%d):\tNames differ%n", context,
-                        name, id);
+                    localReport("Names differ");
                     return false;
                 } else if (race != obj.race) {
-                    ostream.format("%s In worker %s (ID %d):\tRaces differ%n", context,
-                        name, id);
+                    localReport("Races differ");
                     return false;
                 } else if (!nullablesEqual(stats, obj.stats)) {
-                    ostream.format("%s In worker %s (ID %d):\tStats differ%n", context,
-                        name, id);
+                    localReport("Stats differ");
                     return false;
                 }
                 Map<String, IJob> ours = createMap { *map((job) => job.name->job) };
                 variable Boolean retval = true;
                 for (job in obj) {
                     if (exists corresponding = ours.get(job.name)) {
-                        if (!corresponding.isSubset(job, ostream,
-                                "``context`` In worker ``name`` (ID #``id``):")) {
+                        if (!corresponding.isSubset(job, localReport)) {
                             retval = false;
                         }
                     } else {
                         // TODO: skip empty Jobs?
-                        ostream.format("%s In worker %s (ID %d):\tExtra Job: %s%n",
-                            context, name, id, job.name);
+                        localReport("Extra Job: ``job.name``");
                         retval = false;
                     }
                 }
                 return retval;
             } else {
-                ostream.format("%sFor ID #%d, different kinds of members%n", context, id);
+                report("For ID #``id``, different kinds of members");
                 return false;
             }
         } else {
-            ostream.format("%sCalled with different IDs, #%d and #%d%n", context, id,
-                obj.id);
+            report("Called with different IDs, #``id`` and #``obj.id``");
             return false;
         }
     }
