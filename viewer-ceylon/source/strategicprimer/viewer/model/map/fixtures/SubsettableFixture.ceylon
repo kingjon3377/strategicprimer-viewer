@@ -1,10 +1,11 @@
 import lovelace.util.common {
     todo
 }
-
-import model.map {
-    IFixture,
+import strategicprimer.viewer.model.map {
     Subsettable
+}
+import model.map {
+    IFixture
 }
 "An interface to use to make Tile.isSubset() work properly without special-casing every
  Subsettable fixture."

@@ -8,7 +8,6 @@ import ceylon.test {
 
 import model.map {
     PlayerImpl,
-    Subsettable,
     River,
     IFixture,
     MapDimensionsImpl,
@@ -16,6 +15,7 @@ import model.map {
 }
 
 import strategicprimer.viewer.model.map {
+    Subsettable,
     IPlayerCollection,
     IMutablePlayerCollection,
     PlayerCollection,
@@ -56,10 +56,10 @@ import util {
     NullStream
 }
 void assertIsSubset<T,U=T>(T&U one, T&U two, String message)
-        given T satisfies Subsettable<U> =>
+        given T satisfies Subsettable<U> given U satisfies Object =>
             assertTrue(one.isSubset(two, NullStream.devNull, ""), message);
 void assertNotSubset<T,U=T>(T&U one, T&U two, String message)
-        given T satisfies Subsettable<U> =>
+        given T satisfies Subsettable<U> given U satisfies Object =>
         assertFalse(one.isSubset(two, NullStream.devNull, ""), message);
 "A test of [[PlayerCollection]]'s subset feature"
 test

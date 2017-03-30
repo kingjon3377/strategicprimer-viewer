@@ -1,10 +1,11 @@
 import lovelace.util.common {
     todo
 }
-
+import strategicprimer.viewer.model.map {
+	Subsettable
+}
 import model.map {
-    HasName,
-    Subsettable
+    HasName
 }
 import java.util {
     Formatter

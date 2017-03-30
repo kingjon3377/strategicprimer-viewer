@@ -11,8 +11,7 @@ import lovelace.util.common {
 }
 
 import model.map {
-    Player,
-    Subsettable
+    Player
 }
 "An interface for collections of players."
 shared interface IPlayerCollection satisfies {Player*}&Subsettable<IPlayerCollection> {

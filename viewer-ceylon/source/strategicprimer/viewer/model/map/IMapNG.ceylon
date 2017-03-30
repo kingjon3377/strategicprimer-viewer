@@ -2,10 +2,10 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.viewer.model.map {
+    Subsettable,
     TileFixture
 }
 import model.map {
-    Subsettable,
     MapDimensions,
     Player,
     River,

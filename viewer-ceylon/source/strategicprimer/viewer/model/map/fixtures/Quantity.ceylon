@@ -12,7 +12,7 @@ import java.util {
     Formatter
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     Subsettable
 }
 
