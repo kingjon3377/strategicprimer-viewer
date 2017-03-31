@@ -145,9 +145,6 @@ import util {
     IteratorWrapper
 }
 
-import view.util {
-    SystemOut
-}
 void assertModuloID(IMapNG map, String serialized, Anything(String) err) {
     Regex matcher = regex("id=\"[0-9]*\"", true);
     try (inStream = StringReader(matcher.replace(serialized, "id=\"-1\""))) {
