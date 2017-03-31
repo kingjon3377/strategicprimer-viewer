@@ -23,7 +23,7 @@ import strategicprimer.viewer.drivers {
     SPOptions,
     SimpleDriver
 }
-import model.listeners {
+import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
 "The worker-advancement GUI driver."

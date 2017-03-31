@@ -7,7 +7,7 @@ import javax.swing {
     JPopupMenu
 }
 
-import model.listeners {
+import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
 import model.map {

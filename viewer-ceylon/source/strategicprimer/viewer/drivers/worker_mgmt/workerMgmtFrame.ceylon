@@ -52,7 +52,7 @@ import lovelace.util.jvm {
     verticalSplit
 }
 
-import model.listeners {
+import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
 import model.map {

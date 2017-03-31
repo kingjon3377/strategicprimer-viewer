@@ -51,7 +51,7 @@ import lovelace.util.jvm {
     FormattedLabel
 }
 
-import model.listeners {
+import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
 import model.map {

@@ -73,10 +73,8 @@ import lovelace.util.jvm {
 }
 
 import model.listeners {
-    PlayerChangeListener,
     CompletionListener,
     MovementCostListener,
-    PlayerChangeSource,
     CompletionSource,
     MovementCostSource
 }

@@ -31,7 +31,7 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     NewUnitSource,
     NewUnitListener
 }
-import model.listeners {
+import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

@@ -2,7 +2,7 @@ import java.awt.event {
     ActionListener,
     ActionEvent
 }
-import model.listeners {
+import strategicprimer.viewer.drivers.exploration {
     PlayerChangeSource,
     PlayerChangeListener
 }

@@ -9,7 +9,7 @@ import java.awt.event {
     KeyEvent,
     KeyAdapter
 }
-import model.listeners {
+import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
