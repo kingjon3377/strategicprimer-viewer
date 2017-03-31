@@ -21,9 +21,6 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     shuffle
 }
-import model.listeners {
-    MovementCostListener
-}
 import strategicprimer.viewer.model {
     SimpleMultiMapModel,
     IDriverModel

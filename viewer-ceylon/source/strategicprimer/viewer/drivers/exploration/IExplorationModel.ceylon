@@ -1,6 +1,3 @@
-import model.listeners {
-    MovementCostSource
-}
 import strategicprimer.viewer.drivers.map_viewer {
     SelectionChangeSource
 }

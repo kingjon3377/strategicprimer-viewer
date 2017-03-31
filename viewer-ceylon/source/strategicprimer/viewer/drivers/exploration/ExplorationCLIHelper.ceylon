@@ -11,10 +11,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.listeners {
-    MovementCostListener,
-    MovementCostSource
-}
 import strategicprimer.viewer.model.map {
     Player,
     TileType,
@@ -202,8 +198,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             cli.println(mover.verbose);
             Integer totalMP = cli.inputNumber("MP the unit has: ");
             variable Integer movement = totalMP;
-            void handleCost(Integer cost) {
-                movement -= cost;
+            object handleCost satisfies MovementCostListener {
+                shared actual void deduct(Integer cost) => movement -= cost;
             }
             model.addMovementCostListener(handleCost);
 //            addMovementCostListener(handleCost);

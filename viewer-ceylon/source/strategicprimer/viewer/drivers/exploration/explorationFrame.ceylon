@@ -74,9 +74,7 @@ import lovelace.util.jvm {
 
 import model.listeners {
     CompletionListener,
-    MovementCostListener,
-    CompletionSource,
-    MovementCostSource
+    CompletionSource
 }
 import strategicprimer.viewer.model.map {
     Point,
@@ -438,7 +436,9 @@ SPFrame explorationFrame(IExplorationModel model,
                     shared actual void selectedPointChanged(Point? old, Point newSel) =>
                             outer.selectedPointChanged(old, newSel);
                 });
-                ecl.addMovementCostListener(deduct);
+                ecl.addMovementCostListener(object satisfies MovementCostListener {
+                    shared actual void deduct(Integer cost) => outer.deduct(cost);
+                });
                 """A list-data-listener to select a random but suitable set of fixtures to
                     be "discovered" if the tile is explored."""
                 object ell satisfies SelectionChangeListener {
