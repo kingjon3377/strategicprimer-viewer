@@ -9,7 +9,6 @@ import javax.swing {
 
 import model.listeners {
     SelectionChangeSupport,
-    VersionChangeListener,
     PlayerChangeListener,
     SelectionChangeListener,
     SelectionChangeSource
@@ -25,6 +24,9 @@ import strategicprimer.viewer.drivers {
 import strategicprimer.viewer.drivers.worker_mgmt {
     NewUnitSource,
     NewUnitListener
+}
+import strategicprimer.viewer.model {
+    VersionChangeListener
 }
 import strategicprimer.viewer.model.map {
     TileType,

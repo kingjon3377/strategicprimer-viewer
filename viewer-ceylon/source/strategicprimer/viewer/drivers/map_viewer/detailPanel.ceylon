@@ -33,7 +33,6 @@ import javax.swing.event {
     ListSelectionEvent
 }
 import model.listeners {
-    VersionChangeListener,
     SelectionChangeListener
 }
 import java.awt {
@@ -43,6 +42,7 @@ import java.awt {
     Dimension
 }
 import strategicprimer.viewer.model {
+    VersionChangeListener,
     IDriverModel
 }
 "A panel to show the details of a tile, using a list rather than sub-panels with chits

@@ -7,12 +7,14 @@ import java.nio.file {
     JPath=Path
 }
 import model.listeners {
-    MapChangeListener,
-    VersionChangeListener
+    MapChangeListener
 }
 import model.map {
     MapDimensions,
     MapDimensionsImpl
+}
+import strategicprimer.viewer.model {
+    VersionChangeListener
 }
 import strategicprimer.viewer.model.map {
     SPMapNG,

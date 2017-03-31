@@ -7,7 +7,6 @@ import lovelace.util.common {
 }
 
 import model.listeners {
-    VersionChangeSource,
     MapChangeSource
 }
 import strategicprimer.viewer.model.map {

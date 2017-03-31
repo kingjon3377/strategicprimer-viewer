@@ -13,7 +13,6 @@ import javax.swing {
 }
 
 import model.listeners {
-    VersionChangeListener,
     SelectionChangeListener,
     SelectionChangeSource
 }
@@ -21,7 +20,9 @@ import model.map {
     MapDimensions,
     Point
 }
-
+import strategicprimer.viewer.model {
+    VersionChangeListener
+}
 import strategicprimer.viewer.model.map {
     TileFixture,
     IMapNG,

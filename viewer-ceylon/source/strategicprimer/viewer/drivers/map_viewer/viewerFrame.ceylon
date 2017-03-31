@@ -9,6 +9,9 @@ import java.awt {
     Dimension,
     Component
 }
+import strategicprimer.viewer.model {
+    VersionChangeListener
+}
 import strategicprimer.viewer.model.map {
     TileFixture
 }
@@ -39,7 +42,6 @@ import java.awt.event {
     ActionEvent
 }
 import model.listeners {
-    VersionChangeListener,
     MapChangeListener,
     SelectionChangeListener
 }
