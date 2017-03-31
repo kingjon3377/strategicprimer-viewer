@@ -28,9 +28,6 @@ import strategicprimer.viewer.drivers {
     ICLIHelper
 }
 
-import view.util {
-    SystemOut
-}
 """A driver to help debug "exploration tables", which were the second "exploration results" framework
    I implemented."""
 object tableDebugger satisfies SimpleCLIDriver {
@@ -87,6 +84,6 @@ object tableDebugger satisfies SimpleCLIDriver {
         runner.verboseGlobalRecursiveCheck((String line) => process.writeLine(line));
         EncounterTable mainTable = runner.getTable("main");
         debugSingleTable("", "", mainTable, "main",
-                    (string) => SystemOut.sysOut.println(string), HashSet<EncounterTable>());
+                    (string) => process.writeLine(string), HashSet<EncounterTable>());
     }
 }
