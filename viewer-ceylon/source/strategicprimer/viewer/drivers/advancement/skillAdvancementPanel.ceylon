@@ -29,10 +29,6 @@ import lovelace.util.jvm {
     singletonRandom
 }
 
-import model.listeners {
-    LevelGainSource,
-    LevelGainListener
-}
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     ISkill
 }
