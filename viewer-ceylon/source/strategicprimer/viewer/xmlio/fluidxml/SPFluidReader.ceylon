@@ -3,10 +3,6 @@ import ceylon.collection {
     LinkedList
 }
 
-import controller.map.formatexceptions {
-    MissingChildException
-}
-
 import java.io {
     JReader=Reader
 }
@@ -86,6 +82,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     TownSize
 }
 import strategicprimer.viewer.xmlio {
+    MissingChildException,
     MissingPropertyException,
     Warning,
     ISPReader,

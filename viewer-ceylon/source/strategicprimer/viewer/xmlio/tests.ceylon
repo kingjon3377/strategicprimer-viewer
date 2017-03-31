@@ -14,7 +14,7 @@ import ceylon.test {
     assertNotEquals
 }
 
-import controller.map.formatexceptions {
+import strategicprimer.viewer.xmlio {
     DeprecatedPropertyException,
     MissingChildException
 }

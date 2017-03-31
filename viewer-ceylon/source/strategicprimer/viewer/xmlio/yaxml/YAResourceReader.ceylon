@@ -1,6 +1,3 @@
-import controller.map.formatexceptions {
-    DeprecatedPropertyException
-}
 import strategicprimer.viewer.model {
     IDRegistrar
 }
@@ -41,7 +38,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 
 import strategicprimer.viewer.xmlio {
     MissingPropertyException,
-    Warning
+    Warning,
+    DeprecatedPropertyException
 }
 "A reader for resource-bearing [[TileFixture]]s."
 class YAResourceReader(Warning warner, IDRegistrar idRegistrar)

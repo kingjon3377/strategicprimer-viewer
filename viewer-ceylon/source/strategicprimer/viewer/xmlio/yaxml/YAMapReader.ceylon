@@ -6,10 +6,6 @@ import ceylon.language.meta {
     classDeclaration
 }
 
-import controller.map.formatexceptions {
-    MissingChildException
-}
-
 import java.lang {
     JAppendable=Appendable,
     IllegalArgumentException
@@ -56,7 +52,8 @@ import strategicprimer.viewer.xmlio {
     Warning,
     futureTags,
     UnsupportedTagException,
-    MissingPropertyException
+    MissingPropertyException,
+    MissingChildException
 }
 "A reader for Strategic Primer maps."
 class YAMapReader("The Warning instance to use" Warning warner,

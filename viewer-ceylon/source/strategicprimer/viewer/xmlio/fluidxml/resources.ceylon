@@ -3,10 +3,6 @@ import ceylon.math.decimal {
     parseDecimal
 }
 
-import controller.map.formatexceptions {
-    DeprecatedPropertyException
-}
-
 import java.lang {
     IllegalArgumentException
 }
@@ -51,6 +47,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 
 import strategicprimer.viewer.xmlio {
     MissingPropertyException,
+	DeprecatedPropertyException,
     Warning
 }
 ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream,

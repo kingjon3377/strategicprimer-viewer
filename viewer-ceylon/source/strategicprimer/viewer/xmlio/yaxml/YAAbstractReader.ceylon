@@ -1,6 +1,5 @@
 import controller.map.formatexceptions {
-    SPFormatException,
-    DeprecatedPropertyException
+    SPFormatException
 }
 
 import java.lang {
@@ -44,7 +43,8 @@ import strategicprimer.viewer.xmlio {
     UnwantedChildException,
     Warning,
     spNamespace,
-    SPMalformedInputException
+    SPMalformedInputException,
+    DeprecatedPropertyException
 }
 "A parser for numeric data, so integers can contain commas."
 NumberFormat numParser = NumberFormat.integerInstance;
