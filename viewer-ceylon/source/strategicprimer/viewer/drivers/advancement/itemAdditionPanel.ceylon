@@ -5,9 +5,6 @@ import java.awt {
     CardLayout,
     Dimension
 }
-import model.listeners {
-    AddRemoveListener
-}
 import java.awt.event {
     ActionEvent
 }

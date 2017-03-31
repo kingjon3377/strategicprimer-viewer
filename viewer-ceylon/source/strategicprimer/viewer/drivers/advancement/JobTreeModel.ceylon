@@ -11,9 +11,6 @@ import javax.swing.event {
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker
 }
-import model.listeners {
-    AddRemoveListener
-}
 import strategicprimer.viewer.drivers.worker_mgmt {
     UnitMemberListener
 }
