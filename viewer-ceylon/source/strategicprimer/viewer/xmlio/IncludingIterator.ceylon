@@ -57,8 +57,13 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     "The stack of iterators we're working with."
     Stack<[String, Iterator<XMLEvent>]> stack =
             LinkedList<[String, Iterator<XMLEvent>]>();
-    shared new (JPath file, JIterator<XMLEvent> iter) {
-        stack.push([file.string, CeylonIterator(iter)]);
+    shared new (JPath file, JIterator<XMLEvent>|Iterator<XMLEvent> iter) {
+        // TODO: Do we have to accept JIterator?
+        if (is Iterator<XMLEvent> iter) {
+            stack.push([file.string, iter]);
+        } else {
+            stack.push([file.string, CeylonIterator(iter)]);
+        }
     }
     """Handle an "include" tag by adding an iterator for the contents of the file it
        references to the top of the stack."""
@@ -66,7 +71,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
         try {
             String file = getFileAttribute(tag);
             // FIXME: The MagicReader here (and thus the file it opens!) get leaked!
-            stack.push([file, CeylonIterator(TypesafeXMLEventReader(MagicReader(file)))]);
+            stack.push([file, TypesafeXMLEventReader(MagicReader(file))]);
         } catch (FileNotFoundException except) {
             throw NoSuchElementBecauseException("File referenced by <include> not found",
                 except);

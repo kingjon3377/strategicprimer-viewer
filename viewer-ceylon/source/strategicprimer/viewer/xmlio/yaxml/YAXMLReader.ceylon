@@ -62,7 +62,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
             "The stream to read from" JReader istream,
             "The Warning instance to use for warnings" Warning warner)
             given Element satisfies Object {
-        JIterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
+        Iterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
         {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
         IDRegistrar idFactory = IDFactory();
         if (exists event = eventReader.narrow<StartElement>().first) {

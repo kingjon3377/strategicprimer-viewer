@@ -231,8 +231,8 @@ void testZeroToOneConversion() {
                    /></sp:tile><tile row='1'column='1' type='temperate_forest'
                    event='219'></tile></row></map>";
 	StringBuilder ostream = StringBuilder();
-	zeroToOneConverter.convert(IteratorWrapper(CeylonIterator(TypesafeXMLEventReader(
-		XMLInputFactory.newInstance().createXMLEventReader(StringReader(orig))))),
+	zeroToOneConverter.convert(IteratorWrapper(TypesafeXMLEventReader(
+		XMLInputFactory.newInstance().createXMLEventReader(StringReader(orig)))),
 		ostream.append);
 	StringWriter actualXML = StringWriter();
 	SPWriter writer = oldWriter;
