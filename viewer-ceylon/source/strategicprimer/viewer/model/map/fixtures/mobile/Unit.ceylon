@@ -1,9 +1,7 @@
 import ceylon.collection {
     MutableMap,
     naturalOrderTreeMap,
-    MutableList,
     SortedMap,
-    ArrayList,
     MutableSet
 }
 

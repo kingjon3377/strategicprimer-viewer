@@ -5,10 +5,6 @@ import controller.map.misc {
     DuplicateIDException
 }
 
-import lovelace.util.common {
-    todo
-}
-
 "A slightly-customizable warning-handling interface."
 shared interface Warning of ignore|warn|die|CustomWarningHandler {
 	"Handle a warning, e.g. if a particular map-format construct is deprecated."

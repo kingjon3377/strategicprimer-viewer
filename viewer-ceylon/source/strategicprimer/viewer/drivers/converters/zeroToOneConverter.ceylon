@@ -4,9 +4,6 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import ceylon.interop.java {
-    CeylonIterator
-}
 import ceylon.test {
     assertEquals,
     test

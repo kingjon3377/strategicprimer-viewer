@@ -1,7 +1,3 @@
-import ceylon.interop.java {
-    javaClass,
-    javaClassFromInstance
-}
 import ceylon.math.decimal {
     parseDecimal
 }

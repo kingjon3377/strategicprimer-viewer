@@ -11,9 +11,6 @@ import model.map {
     Point
 }
 
-import strategicprimer.viewer.drivers.map_viewer {
-    Coordinate
-}
 "The cache of Points. I use two levels of Maps rather than using Tuples as keys because I
  have a hunch this is faster."
 todo("Measure that",

@@ -26,7 +26,6 @@ import strategicprimer.viewer.xmlio {
     readMultiMapModel,
     namesToFiles,
     writeModel,
-    Warning,
     warningLevels
 }
 import javax.swing {

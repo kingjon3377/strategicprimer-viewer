@@ -2,9 +2,6 @@ import ceylon.collection {
     Stack,
     LinkedList
 }
-import ceylon.interop.java {
-    CeylonIterator
-}
 
 import controller.map.formatexceptions {
     MissingPropertyException,
@@ -22,9 +19,6 @@ import java.lang {
 import java.nio.file {
     JPath=Path,
     JFiles=Files
-}
-import java.util {
-    JIterator=Iterator
 }
 
 import javax.xml {
