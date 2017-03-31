@@ -11,7 +11,6 @@ import lovelace.util.common {
 
 import model.map {
     Point,
-    IFixture,
     Player
 }
 
@@ -19,6 +18,7 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
+    IFixture,
     invalidPoint
 }
 "An abstract superclass for classes that generate reports for particular kinds of SP

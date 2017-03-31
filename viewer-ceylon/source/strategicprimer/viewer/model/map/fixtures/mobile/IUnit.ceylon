@@ -13,11 +13,11 @@ import model.map {
     HasImage,
     HasKind,
     HasName,
-    HasOwner,
-    IFixture
+    HasOwner
 }
 import strategicprimer.viewer.model.map {
-    FixtureIterable
+    FixtureIterable,
+    IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
     UnitMember,

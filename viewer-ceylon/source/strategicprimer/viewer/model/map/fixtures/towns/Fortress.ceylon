@@ -14,11 +14,11 @@ import strategicprimer.viewer.model.map {
     HasMutableName,
     FixtureIterable,
     HasMutableImage,
-    TileFixture
+    TileFixture,
+    IFixture
 }
 import model.map {
-    Player,
-    IFixture
+    Player
 }
 import strategicprimer.viewer.model.map.fixtures {
     SubsettableFixture,

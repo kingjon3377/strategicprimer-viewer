@@ -7,9 +7,11 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import model.map {
-    Point,
+import strategicprimer.viewer.model.map {
     IFixture
+}
+import model.map {
+    Point
 }
 """A tabular report generator for "immortals.""""
 shared class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immortal> {

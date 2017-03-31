@@ -2,9 +2,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    IFixture
-}
 "Something that can go on a tile."
 todo("Any other members?")
 shared interface TileFixture satisfies IFixture&Comparable<TileFixture> {

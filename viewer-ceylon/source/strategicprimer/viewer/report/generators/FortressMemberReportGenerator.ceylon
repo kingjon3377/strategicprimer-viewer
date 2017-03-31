@@ -15,8 +15,7 @@ import lovelace.util.common {
 
 import model.map {
     Player,
-    Point,
-    IFixture
+    Point
 }
 
 import strategicprimer.viewer.model {
@@ -24,7 +23,8 @@ import strategicprimer.viewer.model {
 }
 import strategicprimer.viewer.model.map {
     IMapNG,
-    invalidPoint
+    invalidPoint,
+    IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
     ResourcePile,

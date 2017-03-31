@@ -7,9 +7,11 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import model.map {
-    Point,
+import strategicprimer.viewer.model.map {
     IFixture
+}
+import model.map {
+    Point
 }
 "A report generator for sightings of animals."
 shared class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {

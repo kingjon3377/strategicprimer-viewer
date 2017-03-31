@@ -8,11 +8,11 @@ import lovelace.util.common {
 }
 
 import strategicprimer.viewer.model.map {
+    IFixture,
     IMapNG
 }
 import model.map {
     Point,
-    IFixture,
     Player
 }
 import strategicprimer.viewer.model.map.fixtures {

@@ -1,6 +1,8 @@
-import model.map {
-    HasKind,
+import strategicprimer.viewer.model.map {
     IFixture
+}
+import model.map {
+    HasKind
 }
 "An orchard (fruit trees) or grove (other trees) on the map."
 shared class Grove(orchard, cultivated, kind, id)

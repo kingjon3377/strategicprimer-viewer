@@ -3,11 +3,11 @@ import lovelace.util.common {
 }
 
 import strategicprimer.viewer.model.map {
-	HasMutableImage
+	HasMutableImage,
+	IFixture
 }
 import model.map {
-    HasKind,
-    IFixture
+    HasKind
 }
 "Kinds of simple immortals."
 shared class SimpleImmortalKind of sphinx|djinn|griffin|minotaur|ogre|phoenix|

@@ -3,12 +3,12 @@ import lovelace.util.common {
 }
 
 import strategicprimer.viewer.model.map {
-    HasMutableOwner
+    HasMutableOwner,
+	IFixture
 }
 
 import model.map {
-    Player,
-    IFixture
+    Player
 }
 "A Fixture representing an adventure hook."
 todo("Should be Subsettable, since players shouldn't know when another player completes an

@@ -10,10 +10,12 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 import strategicprimer.viewer.model {
     DistanceComparator
 }
+import strategicprimer.viewer.model.map {
+    IFixture
+}
 import model.map {
     Player,
-    Point,
-    IFixture
+    Point
 }
 "A tabular report generator for fortresses."
 shared class FortressTabularReportGenerator(Player player, Point hq)

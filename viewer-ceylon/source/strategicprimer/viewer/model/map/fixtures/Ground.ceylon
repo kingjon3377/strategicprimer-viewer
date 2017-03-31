@@ -1,7 +1,5 @@
 import strategicprimer.viewer.model.map {
-	HasMutableImage
-}
-import model.map {
+	HasMutableImage,
     IFixture
 }
 "A TileFixture to represent the basic rock beneath the tile, possibly exposed."

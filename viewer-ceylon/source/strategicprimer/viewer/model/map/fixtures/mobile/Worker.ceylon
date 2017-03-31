@@ -6,10 +6,11 @@ import lovelace.util.common {
     todo,
     ArraySet
 }
-
-import model.map {
-    HasPortrait,
+import strategicprimer.viewer.model.map {
     IFixture
+}
+import model.map {
+    HasPortrait
 }
 
 import strategicprimer.viewer.model.map.fixtures.mobile.worker {

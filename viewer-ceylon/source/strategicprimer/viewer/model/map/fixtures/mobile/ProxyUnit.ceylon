@@ -21,7 +21,6 @@ import lovelace.util.common {
 }
 
 import model.map {
-    IFixture,
     Player
 }
 import strategicprimer.viewer.model.map.fixtures {
@@ -29,6 +28,7 @@ import strategicprimer.viewer.model.map.fixtures {
 }
 
 import strategicprimer.viewer.model.map {
+    IFixture,
     TileFixture,
     HasMutableName,
     HasMutableKind,

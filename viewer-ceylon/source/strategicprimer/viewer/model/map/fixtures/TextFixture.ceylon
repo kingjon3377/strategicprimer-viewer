@@ -1,8 +1,6 @@
 import strategicprimer.viewer.model.map {
 	TileFixture,
-	HasMutableImage
-}
-import model.map {
+	HasMutableImage,
     IFixture
 }
 "A Fixture to encapsulate arbitrary text associated with a tile, so we can improve the

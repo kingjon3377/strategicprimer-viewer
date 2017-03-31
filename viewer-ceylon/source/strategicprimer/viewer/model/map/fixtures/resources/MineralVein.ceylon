@@ -2,7 +2,7 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {

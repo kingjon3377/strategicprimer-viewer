@@ -11,7 +11,6 @@ import lovelace.util.common {
 
 import model.map {
     Player,
-    IFixture,
     Point
 }
 
@@ -23,6 +22,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    IFixture,
     IMapNG,
     FixtureIterable,
     TileFixture,

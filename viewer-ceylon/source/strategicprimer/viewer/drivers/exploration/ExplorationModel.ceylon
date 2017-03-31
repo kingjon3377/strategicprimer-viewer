@@ -28,8 +28,7 @@ import model.map {
     Point,
     Player,
     MapDimensions,
-    HasOwner,
-    IFixture
+    HasOwner
 }
 
 import strategicprimer.viewer.model {
@@ -43,7 +42,8 @@ import strategicprimer.viewer.model.map {
     TileFixture,
     FixtureIterable,
     invalidPoint,
-    pointFactory
+    pointFactory,
+    IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
     Ground,

@@ -2,9 +2,7 @@ import strategicprimer.viewer.model.map.fixtures {
     TerrainFixture
 }
 import strategicprimer.viewer.model.map {
-    HasMutableImage
-}
-import model.map {
+    HasMutableImage,
     IFixture
 }
 "A sandbar on the map."

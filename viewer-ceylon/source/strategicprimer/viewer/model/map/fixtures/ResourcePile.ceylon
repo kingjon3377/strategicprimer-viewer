@@ -1,17 +1,19 @@
-import strategicprimer.viewer.model.map {
-	HasMutableImage
-}
-import model.map {
-	IFixture,
-	HasKind
-}
 import lovelace.util.common {
-	todo
+    todo
+}
+
+import model.map {
+    HasKind
+}
+
+import strategicprimer.viewer.model.map {
+    HasMutableImage,
+    IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
-	UnitMember,
-	FortressMember,
-	Quantity
+    UnitMember,
+    FortressMember,
+    Quantity
 }
 "A quantity of some kind of resource."
 todo("More members?")

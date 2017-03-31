@@ -1,7 +1,7 @@
 import strategicprimer.viewer.model.map.fixtures {
 	IEvent
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     IFixture
 }
 """"There are extensive caves beneath this tile"."""

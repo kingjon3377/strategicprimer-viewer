@@ -11,11 +11,11 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
-    TileFixture
+    TileFixture,
+    IFixture
 }
 import model.map {
-    Point,
-    IFixture
+    Point
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     Grove,

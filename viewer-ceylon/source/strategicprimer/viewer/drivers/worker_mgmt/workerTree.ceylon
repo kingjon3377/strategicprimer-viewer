@@ -15,7 +15,9 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
 }
 import model.map {
     HasImage,
-    Player,
+    Player
+}
+import strategicprimer.viewer.model.map {
     IFixture
 }
 import javax.swing.event {

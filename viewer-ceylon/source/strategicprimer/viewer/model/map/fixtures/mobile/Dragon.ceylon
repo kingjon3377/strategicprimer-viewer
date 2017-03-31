@@ -1,9 +1,9 @@
 import strategicprimer.viewer.model.map {
-	HasMutableImage
+	HasMutableImage,
+	IFixture
 }
 import model.map {
-    HasKind,
-    IFixture
+    HasKind
 }
 "A dragon."
 shared class Dragon(kind, id) satisfies Immortal&HasMutableImage&HasKind {

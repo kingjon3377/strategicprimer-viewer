@@ -5,11 +5,11 @@ import strategicprimer.viewer.model.map.fixtures {
     TerrainFixture
 }
 import strategicprimer.viewer.model.map {
-    HasMutableImage
+    HasMutableImage,
+    IFixture
 }
 import model.map {
-    HasKind,
-    IFixture
+    HasKind
 }
 "A forest on a tile."
 shared class Forest(kind, rows, id) satisfies TerrainFixture&HasMutableImage&HasKind {

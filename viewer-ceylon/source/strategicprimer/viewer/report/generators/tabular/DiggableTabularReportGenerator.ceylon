@@ -4,9 +4,11 @@ import lovelace.util.common {
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import model.map {
-    Point,
+import strategicprimer.viewer.model.map {
     IFixture
+}
+import model.map {
+    Point
 }
 import strategicprimer.viewer.model.map.fixtures {
     Ground,

@@ -1,10 +1,10 @@
 import strategicprimer.viewer.model.map {
     TileFixture,
-    TileType
+    TileType,
+    IFixture
 }
 import model.map {
-    HasImage,
-    IFixture
+    HasImage
 }
 """A fake "TileFixture" to represent the tile's terrain type, so it can be copied via
    drag-and-drop like a fixture."""

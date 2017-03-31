@@ -1,10 +1,11 @@
 import lovelace.util.common {
     todo
 }
-
-import model.map {
-    HasKind,
+import strategicprimer.viewer.model.map {
     IFixture
+}
+import model.map {
+    HasKind
 }
 "A cache (of vegetables, or a hidden treasure, or ...) on a tile."
 shared class CacheFixture(kind, contents, id) satisfies HarvestableFixture&HasKind {

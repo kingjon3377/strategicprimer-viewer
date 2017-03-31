@@ -14,11 +14,12 @@ import lovelace.util.common {
     todo,
     DelayedRemovalMap
 }
-
+import strategicprimer.viewer.model.map {
+    IFixture
+}
 import model.map {
     Player,
-    Point,
-    IFixture
+    Point
 }
 "A regular expression to mtch quote characters."
 Regex quotePattern = regex("\"", true);

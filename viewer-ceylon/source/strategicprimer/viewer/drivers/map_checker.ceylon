@@ -29,11 +29,11 @@ import lovelace.util.jvm {
 }
 
 import model.map {
-    Point,
-    IFixture
+    Point
 }
 
 import strategicprimer.viewer.model.map {
+    IFixture,
     IMapNG,
     FixtureIterable,
     TileType

@@ -3,12 +3,12 @@ import lovelace.util.common {
 }
 
 import model.map {
-    Point,
-    IFixture
+    Point
 }
 
 import strategicprimer.viewer.model.map {
-    invalidPoint
+    invalidPoint,
+	IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
     SubsettableFixture

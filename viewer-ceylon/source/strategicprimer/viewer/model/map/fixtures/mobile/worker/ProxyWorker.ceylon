@@ -5,7 +5,7 @@ import ceylon.collection {
     HashSet
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {

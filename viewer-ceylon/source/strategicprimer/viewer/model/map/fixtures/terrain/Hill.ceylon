@@ -5,9 +5,7 @@ import strategicprimer.viewer.model.map.fixtures {
     TerrainFixture
 }
 import strategicprimer.viewer.model.map {
-    HasMutableImage
-}
-import model.map {
+    HasMutableImage,
     IFixture
 }
 "A hill on the map. Should increase unit's effective vision by a small fraction when the

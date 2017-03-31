@@ -28,11 +28,8 @@ import java.math {
     BigInteger
 }
 
-import model.map {
-    IFixture
-}
-
 import strategicprimer.viewer.model.map {
+    IFixture,
     IMutableMapNG,
     TileFixture,
     FixtureIterable

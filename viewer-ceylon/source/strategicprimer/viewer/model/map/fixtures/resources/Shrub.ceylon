@@ -1,10 +1,11 @@
 import lovelace.util.common {
     todo
 }
-
-import model.map {
-    HasKind,
+import strategicprimer.viewer.model.map {
     IFixture
+}
+import model.map {
+    HasKind
 }
 "A [[TileFixture]] to represent shrubs, or their aquatic equivalents, on a tile."
 shared class Shrub(kind, id) satisfies HarvestableFixture&HasKind {

@@ -8,10 +8,12 @@ import lovelace.util.jvm {
 import strategicprimer.viewer.model {
     DistanceComparator
 }
+import strategicprimer.viewer.model.map {
+    IFixture
+}
 import model.map {
     Player,
-    Point,
-    IFixture
+    Point
 }
 
 import strategicprimer.viewer.model.map.fixtures.towns {

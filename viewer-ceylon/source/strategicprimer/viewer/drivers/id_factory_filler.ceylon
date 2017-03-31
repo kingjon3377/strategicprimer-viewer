@@ -1,8 +1,6 @@
 import strategicprimer.viewer.model.map {
     IMapNG,
-    FixtureIterable
-}
-import model.map {
+    FixtureIterable,
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {

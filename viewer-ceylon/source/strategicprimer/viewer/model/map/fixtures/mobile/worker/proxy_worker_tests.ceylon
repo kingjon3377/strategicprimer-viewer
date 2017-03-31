@@ -6,11 +6,11 @@ import ceylon.test {
     assertTrue
 }
 import strategicprimer.viewer.model.map {
-    PlayerImpl
+    PlayerImpl,
+    IFixture
 }
 import model.map {
-    Player,
-    IFixture
+    Player
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IWorker,

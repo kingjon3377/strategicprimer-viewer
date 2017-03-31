@@ -5,11 +5,11 @@ import strategicprimer.viewer.model.map.fixtures {
     SubsettableFixture
 }
 import strategicprimer.viewer.model.map {
-    HasMutableImage
+    HasMutableImage,
+    IFixture
 }
 import model.map {
-    Player,
-    IFixture
+    Player
 }
 "A village in the map."
 shared class Village(status, name, id, owner, race)

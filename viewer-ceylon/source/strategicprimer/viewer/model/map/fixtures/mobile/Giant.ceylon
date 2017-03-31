@@ -3,11 +3,11 @@ import lovelace.util.common {
 }
 
 import strategicprimer.viewer.model.map {
-	HasMutableImage
+	HasMutableImage,
+	IFixture
 }
 import model.map {
-    HasKind,
-    IFixture
+    HasKind
 }
 "A giant."
 shared class Giant(kind, id) satisfies Immortal&HasMutableImage&HasKind {

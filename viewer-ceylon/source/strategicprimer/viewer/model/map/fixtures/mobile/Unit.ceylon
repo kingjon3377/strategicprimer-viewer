@@ -20,12 +20,12 @@ import strategicprimer.viewer.model.map {
     HasMutableKind,
     HasMutableOwner,
     HasMutableImage,
-    TileFixture
+    TileFixture,
+    IFixture
 }
 import model.map {
     HasPortrait,
-    Player,
-    IFixture
+    Player
 }
 import strategicprimer.viewer.model.map.fixtures {
     UnitMember

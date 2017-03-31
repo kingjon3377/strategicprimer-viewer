@@ -1,7 +1,7 @@
 import strategicprimer.viewer.model.map.fixtures {
 	IEvent
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     IFixture
 }
 """ "There are the signs of a long-ago battle here" """

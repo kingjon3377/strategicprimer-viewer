@@ -3,12 +3,12 @@ import lovelace.util.common {
 }
 
 import model.map {
-    IFixture,
     Point
 }
 
 import strategicprimer.viewer.model.map {
-    IMapNG
+	IFixture,
+	IMapNG
 }
 import strategicprimer.viewer.report.nodes {
     IReportNode
