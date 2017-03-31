@@ -25,7 +25,7 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
     shared new (IMutableMapNG map, JPath? file)
             extends SimpleDriverModel(map, file) { }
     shared new copyConstructor(IDriverModel model)
-            extends SimpleMultiMapModel(model.map, model.mapFile) {
+            extends SimpleDriverModel(model.map, model.mapFile) {
         if (is IMultiMapModel model) {
             for (pair in model.subordinateMaps) {
                 subordinateMapsList.add(pair);

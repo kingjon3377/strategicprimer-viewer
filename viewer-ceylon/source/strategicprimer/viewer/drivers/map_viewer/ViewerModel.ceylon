@@ -89,7 +89,10 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     shared new fromPair(
             "A pair of the initial map and its filename"
             [IMutableMapNG, JPath?] pair)
-            extends ViewerModel(pair.first, pair.rest.first) {}
+            extends SimpleDriverModel(pair.first, pair.rest.first) {
+        visDimensions = VisibleDimensions(0, pair.first.dimensions.rows - 1, 0,
+            pair.first.dimensions.columns - 1);
+    }
     void postSetMap(IMapNG newMap) {
         clearSelection();
         visDimensions = VisibleDimensions(0, newMap.dimensions.rows - 1, 0,
