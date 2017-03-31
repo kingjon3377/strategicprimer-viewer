@@ -1,7 +1,3 @@
-import controller.map.formatexceptions {
-    MissingPropertyException
-}
-
 import java.lang {
     IllegalArgumentException
 }
@@ -41,6 +37,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 }
 
 import strategicprimer.viewer.xmlio {
+    MissingPropertyException,
     Warning
 }
 Town readTown(StartElement element, QName parent, {XMLEvent*} stream,

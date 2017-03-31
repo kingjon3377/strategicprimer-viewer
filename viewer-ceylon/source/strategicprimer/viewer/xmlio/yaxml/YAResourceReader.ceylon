@@ -1,5 +1,4 @@
 import controller.map.formatexceptions {
-    MissingPropertyException,
     DeprecatedPropertyException
 }
 import strategicprimer.viewer.model {
@@ -41,6 +40,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 }
 
 import strategicprimer.viewer.xmlio {
+    MissingPropertyException,
     Warning
 }
 "A reader for resource-bearing [[TileFixture]]s."

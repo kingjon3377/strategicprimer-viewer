@@ -2,10 +2,6 @@ import ceylon.math.decimal {
     parseDecimal
 }
 
-import controller.map.formatexceptions {
-    MissingPropertyException
-}
-
 import java.lang {
     JAppendable=Appendable
 }
@@ -28,7 +24,8 @@ import strategicprimer.viewer.model.map.fixtures {
 }
 
 import strategicprimer.viewer.xmlio {
-    Warning
+    Warning,
+    MissingPropertyException
 }
 "A reader for resource piles."
 class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)

@@ -5,10 +5,6 @@ import ceylon.language.meta.model {
     ClassOrInterface
 }
 
-import controller.map.formatexceptions {
-    MissingPropertyException
-}
-
 import java.lang {
     JAppendable=Appendable,
     IllegalArgumentException
@@ -43,7 +39,8 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 }
 
 import strategicprimer.viewer.xmlio {
-    Warning
+    Warning,
+    MissingPropertyException
 }
 "A reader for 'mobile fixtures'"
 class YAMobileReader(Warning warning, IDRegistrar idRegistrar)

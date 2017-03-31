@@ -1,8 +1,4 @@
 
-import controller.map.formatexceptions {
-    MissingPropertyException
-}
-
 import java.lang {
     IllegalArgumentException
 }
@@ -40,6 +36,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     Skill
 }
 import strategicprimer.viewer.xmlio {
+    MissingPropertyException,
     UnwantedChildException,
     UnsupportedPropertyException,
     Warning

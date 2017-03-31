@@ -2,10 +2,6 @@ import ceylon.language.meta {
     classDeclaration
 }
 
-import controller.map.formatexceptions {
-    MissingPropertyException
-}
-
 import java.lang {
     JAppendable=Appendable,
     IllegalStateException
@@ -45,7 +41,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 }
 import strategicprimer.viewer.xmlio {
     Warning,
-    UnwantedChildException
+    UnwantedChildException,
+    MissingPropertyException
 }
 "A reader for fortresses, villages, and other towns."
 class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players)

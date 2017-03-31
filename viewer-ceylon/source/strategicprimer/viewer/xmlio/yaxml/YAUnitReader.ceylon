@@ -2,9 +2,6 @@ import ceylon.language.meta {
     classDeclaration
 }
 
-import controller.map.formatexceptions {
-    MissingPropertyException
-}
 import strategicprimer.viewer.model {
     IDRegistrar
 }
@@ -36,7 +33,8 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 
 import strategicprimer.viewer.xmlio {
     Warning,
-    UnwantedChildException
+    UnwantedChildException,
+    MissingPropertyException
 }
 
 "A reader for units."

@@ -1,8 +1,6 @@
 import controller.map.formatexceptions {
-    MissingPropertyException,
     SPFormatException,
-    DeprecatedPropertyException,
-    SPMalformedInputException
+    DeprecatedPropertyException
 }
 
 import java.lang {
@@ -42,9 +40,11 @@ import strategicprimer.viewer.model.map {
     pointFactory
 }
 import strategicprimer.viewer.xmlio {
+    MissingPropertyException,
     UnwantedChildException,
     Warning,
-    spNamespace
+    spNamespace,
+    SPMalformedInputException
 }
 "A parser for numeric data, so integers can contain commas."
 NumberFormat numParser = NumberFormat.integerInstance;

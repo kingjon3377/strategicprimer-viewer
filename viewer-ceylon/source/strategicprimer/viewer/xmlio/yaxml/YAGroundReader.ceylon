@@ -1,6 +1,3 @@
-import controller.map.formatexceptions {
-    MissingPropertyException
-}
 import strategicprimer.viewer.model {
     IDRegistrar
 }
@@ -22,6 +19,7 @@ import strategicprimer.viewer.model.map.fixtures {
 }
 
 import strategicprimer.viewer.xmlio {
+    MissingPropertyException,
     Warning
 }
 "A reader for [[Ground]]."

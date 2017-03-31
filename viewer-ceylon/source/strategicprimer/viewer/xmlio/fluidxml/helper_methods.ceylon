@@ -1,8 +1,6 @@
 import controller.map.formatexceptions {
-    MissingPropertyException,
     SPFormatException,
-    DeprecatedPropertyException,
-    SPMalformedInputException
+    DeprecatedPropertyException
 }
 
 import java.lang {
@@ -45,10 +43,12 @@ import strategicprimer.viewer.model.map {
     Player
 }
 import strategicprimer.viewer.xmlio {
+    MissingPropertyException,
     UnwantedChildException,
     Warning,
     spNamespace,
-    UnsupportedPropertyException
+    UnsupportedPropertyException,
+    SPMalformedInputException
 }
 NumberFormat numParser = NumberFormat.integerInstance;
 

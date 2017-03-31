@@ -4,7 +4,6 @@ import ceylon.math.decimal {
 }
 
 import controller.map.formatexceptions {
-    MissingPropertyException,
     DeprecatedPropertyException
 }
 
@@ -51,6 +50,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 }
 
 import strategicprimer.viewer.xmlio {
+    MissingPropertyException,
     Warning
 }
 ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream,

@@ -7,7 +7,6 @@ import ceylon.interop.java {
 }
 
 import controller.map.formatexceptions {
-    MissingPropertyException,
     SPFormatException
 }
 

@@ -4,7 +4,6 @@ import ceylon.collection {
 }
 
 import controller.map.formatexceptions {
-    MissingPropertyException,
     MissingChildException
 }
 
@@ -87,6 +86,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     TownSize
 }
 import strategicprimer.viewer.xmlio {
+    MissingPropertyException,
     Warning,
     ISPReader,
     IncludingIterator,

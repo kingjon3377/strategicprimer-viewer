@@ -15,7 +15,6 @@ import ceylon.test {
 }
 
 import controller.map.formatexceptions {
-    MissingPropertyException,
     DeprecatedPropertyException,
     MissingChildException
 }

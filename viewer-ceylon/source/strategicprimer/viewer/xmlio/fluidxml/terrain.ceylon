@@ -1,6 +1,3 @@
-import controller.map.formatexceptions {
-    MissingPropertyException
-}
 import strategicprimer.viewer.model {
     IDRegistrar
 }
@@ -32,6 +29,7 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
 }
 
 import strategicprimer.viewer.xmlio {
+    MissingPropertyException,
     Warning
 }
 Ground readGround(StartElement element, QName parent, {XMLEvent*} stream,
