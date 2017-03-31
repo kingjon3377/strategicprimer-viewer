@@ -4,7 +4,7 @@ import javax.swing {
 import strategicprimer.viewer.model.map {
     Player
 }
-import model.listeners {
+import strategicprimer.viewer.model {
     MapChangeListener
 }
 "A list model for players in the exploration GUI."

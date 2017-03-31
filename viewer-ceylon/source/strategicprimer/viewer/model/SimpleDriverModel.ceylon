@@ -6,9 +6,6 @@ import ceylon.collection {
 import java.nio.file {
     JPath=Path
 }
-import model.listeners {
-    MapChangeListener
-}
 import strategicprimer.viewer.model {
     VersionChangeListener
 }

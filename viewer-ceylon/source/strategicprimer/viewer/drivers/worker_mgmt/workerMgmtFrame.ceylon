@@ -71,7 +71,8 @@ import strategicprimer.viewer.drivers.map_viewer {
     IViewerModel
 }
 import strategicprimer.viewer.model {
-    DistanceComparator
+    DistanceComparator,
+    MapChangeListener
 }
 import strategicprimer.viewer.model.map {
     Point,
@@ -243,7 +244,9 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             shared actual void windowClosed(WindowEvent event) => newUnitFrame.dispose();
         }
         addWindowListener(closeListener);
-        model.addMapChangeListener(() => Thread(reportGeneratorThread).start());
+        model.addMapChangeListener(object satisfies MapChangeListener {
+            shared actual void mapChanged() => Thread(reportGeneratorThread).start();
+        });
         object reportUpdater satisfies PlayerChangeListener {
             shared actual void playerChanged(Player? old, Player newPlayer) =>
                     Thread(reportGeneratorThread).start();

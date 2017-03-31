@@ -25,7 +25,7 @@ import lovelace.util.common {
     todo
 }
 
-import model.listeners {
+import strategicprimer.viewer.model {
     MapChangeListener
 }
 

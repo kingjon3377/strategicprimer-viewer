@@ -10,7 +10,8 @@ import java.awt {
     Component
 }
 import strategicprimer.viewer.model {
-    VersionChangeListener
+    VersionChangeListener,
+    MapChangeListener
 }
 import strategicprimer.viewer.model.map {
     TileFixture
@@ -40,9 +41,6 @@ import java.awt.event {
     WindowEvent,
     WindowAdapter,
     ActionEvent
-}
-import model.listeners {
-    MapChangeListener
 }
 import lovelace.util.jvm {
     centeredHorizontalBox,

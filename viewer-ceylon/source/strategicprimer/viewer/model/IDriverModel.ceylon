@@ -6,9 +6,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.listeners {
-    MapChangeSource
-}
 import strategicprimer.viewer.model.map {
     IMutableMapNG,
     MapDimensions
