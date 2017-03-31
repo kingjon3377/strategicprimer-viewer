@@ -1,7 +1,7 @@
 import controller.map.formatexceptions {
     SPFormatException
 }
-import controller.map.misc {
+import strategicprimer.viewer.model {
     DuplicateIDException
 }
 

@@ -2,10 +2,6 @@ import ceylon.interop.java {
     synchronize
 }
 
-import controller.map.misc {
-    DuplicateIDException
-}
-
 import java.lang {
     JInteger=Integer,
     IllegalStateException

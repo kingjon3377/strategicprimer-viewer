@@ -21,7 +21,7 @@ import controller.map.formatexceptions {
     DeprecatedPropertyException,
     MissingChildException
 }
-import controller.map.misc {
+import strategicprimer.viewer.model {
     DuplicateIDException
 }
 
