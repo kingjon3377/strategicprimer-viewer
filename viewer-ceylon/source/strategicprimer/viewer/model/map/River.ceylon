@@ -26,4 +26,4 @@ shared class River of north|east|south|west|lake {
 		*{ description.first?.uppercased, *description.rest}.coalesced };
 }
 River? parseRiver(String description) =>
-		`River`.caseValues.find((river) => river.string == description);
+		`River`.caseValues.find((river) => river.description == description);
