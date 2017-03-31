@@ -1,7 +1,5 @@
 import strategicprimer.viewer.model.map {
-    TileFixture
-}
-import model.map {
+    TileFixture,
     HasImage
 }
 import java.awt.image {

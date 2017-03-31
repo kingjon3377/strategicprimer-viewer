@@ -6,11 +6,11 @@ import strategicprimer.viewer.drivers.map_viewer {
 }
 import strategicprimer.viewer.model.map {
     Player,
-    TileFixture
+    TileFixture,
+    HasName
 }
 import model.map {
-    Point,
-    HasName
+    Point
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit

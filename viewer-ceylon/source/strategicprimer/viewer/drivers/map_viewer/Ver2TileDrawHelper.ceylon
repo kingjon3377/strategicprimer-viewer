@@ -25,13 +25,13 @@ import lovelace.util.common {
 }
 
 import model.map {
-    HasImage,
     Point
 }
 
 import strategicprimer.viewer.model.map {
     River,
     TileFixture,
+    HasImage,
     IMapNG
 }
 import strategicprimer.viewer.model.map.fixtures {

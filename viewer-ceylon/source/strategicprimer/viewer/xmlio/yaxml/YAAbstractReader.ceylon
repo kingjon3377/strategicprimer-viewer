@@ -35,7 +35,6 @@ import lovelace.util.common {
 }
 
 import model.map {
-    HasImage,
     Point
 }
 
@@ -43,6 +42,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    HasImage,
     pointFactory
 }
 import strategicprimer.viewer.xmlio {

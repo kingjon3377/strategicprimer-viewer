@@ -19,9 +19,7 @@ import strategicprimer.viewer.model.map.fixtures {
     TerrainFixture
 }
 import strategicprimer.viewer.model.map {
-    HasMutableImage
-}
-import model.map {
+    HasMutableImage,
     HasImage
 }
 import strategicprimer.viewer.model.map.fixtures.terrain {

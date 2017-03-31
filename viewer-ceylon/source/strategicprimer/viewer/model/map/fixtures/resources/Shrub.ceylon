@@ -2,9 +2,7 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.viewer.model.map {
-    IFixture
-}
-import model.map {
+    IFixture,
     HasKind
 }
 "A [[TileFixture]] to represent shrubs, or their aquatic equivalents, on a tile."

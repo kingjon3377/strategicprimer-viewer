@@ -6,9 +6,7 @@ import strategicprimer.viewer.model.map.fixtures {
 }
 import strategicprimer.viewer.model.map {
     HasMutableImage,
-    IFixture
-}
-import model.map {
+    IFixture,
     HasKind
 }
 "A forest on a tile."

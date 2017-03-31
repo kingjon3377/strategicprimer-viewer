@@ -6,9 +6,7 @@ import java.nio.file {
     JPaths = Paths, JPath = Path
 }
 import strategicprimer.viewer.model.map {
-    IMutableMapNG
-}
-import model.map {
+    IMutableMapNG,
     HasName
 }
 import java.io {

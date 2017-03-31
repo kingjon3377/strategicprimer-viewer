@@ -1,7 +1,5 @@
 import strategicprimer.viewer.model.map {
-    IFixture
-}
-import model.map {
+    IFixture,
     HasKind
 }
 "An orchard (fruit trees) or grove (other trees) on the map."

@@ -21,17 +21,15 @@ import javax.swing {
     ScrollPaneConstants,
     SwingUtilities
 }
-import model.map {
-    HasName,
-    HasKind
-}
 import strategicprimer.viewer.model.map {
     Player,
 	HasOwner,
     IFixture,
     TileFixture,
     PointIterator,
-    FixtureIterable
+    FixtureIterable,
+    HasName,
+    HasKind
 }
 import lovelace.util.jvm {
     platform,

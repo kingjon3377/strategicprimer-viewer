@@ -23,11 +23,9 @@ import javax.xml.stream.events {
 }
 
 import strategicprimer.viewer.model.map {
-    HasMutableImage
-}
-import model.map {
-    HasKind,
-    HasImage
+    HasMutableImage,
+    HasImage,
+    HasKind
 }
 import strategicprimer.viewer.model {
     IDRegistrar

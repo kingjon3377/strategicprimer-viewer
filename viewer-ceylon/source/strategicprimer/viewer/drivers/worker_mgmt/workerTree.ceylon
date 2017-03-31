@@ -13,10 +13,8 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     ProxyWorker,
     WorkerStats
 }
-import model.map {
-    HasImage
-}
 import strategicprimer.viewer.model.map {
+    HasImage,
     IFixture,
     Player
 }

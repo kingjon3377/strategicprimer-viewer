@@ -1,8 +1,6 @@
 import strategicprimer.viewer.model.map {
 	HasMutableImage,
-	IFixture
-}
-import model.map {
+	IFixture,
     HasKind
 }
 "A centaur."

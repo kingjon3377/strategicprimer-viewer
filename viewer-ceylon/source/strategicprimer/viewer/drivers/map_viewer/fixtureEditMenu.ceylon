@@ -19,9 +19,7 @@ import strategicprimer.viewer.model.map {
     IFixture,
     HasMutableKind,
     HasMutableName,
-    HasMutableOwner
-}
-import model.map {
+    HasMutableOwner,
     HasName
 }
 import strategicprimer.viewer.model.map.fixtures {

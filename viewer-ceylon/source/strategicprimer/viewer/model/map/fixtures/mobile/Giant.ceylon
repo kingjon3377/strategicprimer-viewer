@@ -4,9 +4,7 @@ import lovelace.util.common {
 
 import strategicprimer.viewer.model.map {
 	HasMutableImage,
-	IFixture
-}
-import model.map {
+	IFixture,
     HasKind
 }
 "A giant."

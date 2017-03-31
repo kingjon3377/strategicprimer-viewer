@@ -2,9 +2,7 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.viewer.model.map {
-	Subsettable
-}
-import model.map {
+	Subsettable,
     HasName
 }
 """Skill names that are suspicious when they are the only Skill a Job has. In many

@@ -1,4 +1,4 @@
-import model.map {
+import strategicprimer.viewer.model.map {
     HasName
 }
 import lovelace.util.common {

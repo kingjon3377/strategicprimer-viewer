@@ -2,9 +2,7 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.viewer.model.map {
-    IFixture
-}
-import model.map {
+    IFixture,
     HasKind
 }
 "A field or meadow. If in forest, should increase a unit's vision slightly when the unit

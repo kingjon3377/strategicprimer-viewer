@@ -2,13 +2,10 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    HasKind
-}
-
 import strategicprimer.viewer.model.map {
     HasMutableImage,
-    IFixture
+    IFixture,
+	HasKind
 }
 "A fairy."
 shared class Fairy(kind, id) satisfies Immortal&HasMutableImage&HasKind {

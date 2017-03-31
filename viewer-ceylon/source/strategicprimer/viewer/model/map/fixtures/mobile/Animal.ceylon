@@ -3,9 +3,7 @@ import lovelace.util.common {
 }
 import strategicprimer.viewer.model.map {
 	HasMutableImage,
-	IFixture
-}
-import model.map {
+	IFixture,
     HasKind
 }
 import strategicprimer.viewer.model.map.fixtures {

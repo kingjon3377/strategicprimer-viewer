@@ -2,9 +2,7 @@ import strategicprimer.viewer.drivers {
     SPOptions
 }
 import strategicprimer.viewer.model.map {
-    Player
-}
-import model.map {
+    Player,
     HasName
 }
 import java.lang {

@@ -1,6 +1,3 @@
-import model.map {
-    HasName
-}
 "An interface for the representation of a player in the game."
 shared interface Player satisfies Comparable<Player>&HasName {
 	"The player's ID number."

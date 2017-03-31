@@ -2,9 +2,7 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.viewer.model.map {
-    IFixture
-}
-import model.map {
+    IFixture,
     HasKind
 }
 "A cache (of vegetables, or a hidden treasure, or ...) on a tile."

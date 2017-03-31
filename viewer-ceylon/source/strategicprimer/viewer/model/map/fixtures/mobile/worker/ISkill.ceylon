@@ -2,9 +2,7 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.viewer.model.map {
-	Subsettable
-}
-import model.map {
+	Subsettable,
     HasName
 }
 "An interface for Skills."

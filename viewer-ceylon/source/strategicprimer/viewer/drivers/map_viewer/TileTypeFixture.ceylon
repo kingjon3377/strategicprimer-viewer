@@ -1,9 +1,7 @@
 import strategicprimer.viewer.model.map {
     TileFixture,
     TileType,
-    IFixture
-}
-import model.map {
+    IFixture,
     HasImage
 }
 """A fake "TileFixture" to represent the tile's terrain type, so it can be copied via
