@@ -6,11 +6,8 @@ import ceylon.test {
     assertNotEquals
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
     MapDimensionsImpl,
     IFixture,
     PlayerImpl,

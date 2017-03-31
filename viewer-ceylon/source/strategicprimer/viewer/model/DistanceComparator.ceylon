@@ -6,7 +6,7 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     Point
 }
 "A class to compare [[Point]]s based on their distance to a specified point (such as a
@@ -18,7 +18,7 @@ shared class DistanceComparator(base) {
      point: in fact the *square* of the distance, to avoid taking an expensive square
      root."
     Integer distance(Point point) =>
-            ((point.col - base.col) * (point.col - base.col)) +
+            ((point.column - base.column) * (point.column - base.column)) +
                 ((point.row - base.row) * (point.row - base.row));
     "Compare two points on the basis of distance from the base point."
     shared Comparison compare(Point firstPoint, Point secondPoint) =>

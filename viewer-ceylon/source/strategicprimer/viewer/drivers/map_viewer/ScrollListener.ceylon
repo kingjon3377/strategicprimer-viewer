@@ -6,9 +6,7 @@ import java.awt {
     Adjustable
 }
 import strategicprimer.viewer.model.map {
-    MapDimensions
-}
-import model.map {
+    MapDimensions,
     Point
 }
 import lovelace.util.common {
@@ -68,7 +66,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         mapDimensions = mapModel.mapDimensions;
         Point selectedPoint = mapModel.selection;
         horizontalBar = horizontal;
-        horizontal.model.setRangeProperties(largest(selectedPoint.col, 0), 1, 0,
+        horizontal.model.setRangeProperties(largest(selectedPoint.column, 0), 1, 0,
             mapDimensions.columns - visibleDimensions.width, false);
         horizontal.inputVerifier = LocalInputVerifier.horizontal(() => mapDimensions,
                     () => visibleDimensions);
@@ -97,7 +95,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     shared actual void dimensionsChanged(VisibleDimensions oldDimensions,
             VisibleDimensions newDimensions) {
         visibleDimensions = newDimensions;
-        horizontalBar.model.setRangeProperties(largest(model.selection.col, 0), 1, 0,
+        horizontalBar.model.setRangeProperties(largest(model.selection.column, 0), 1, 0,
             mapDimensions.columns - newDimensions.width, false);
         verticalBar.model.setRangeProperties(largest(model.selection.row, 0), 1, 0,
             mapDimensions.rows - newDimensions.height, false);
@@ -112,8 +110,8 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         VisibleDimensions temp = model.dimensions;
         // FIXME: Per the Span docs, the +1 makes these off-by-one
-        if (!((temp.minimumColumn)..(temp.maximumColumn + 1)).contains(newPoint.col)) {
-            horizontalBar.model.\ivalue = largest(newPoint.col, 0);
+        if (!((temp.minimumColumn)..(temp.maximumColumn + 1)).contains(newPoint.column)) {
+            horizontalBar.model.\ivalue = largest(newPoint.column, 0);
         }
         if (!((temp.minimumRow)..(temp.maximumRow + 1)).contains(newPoint.row)) {
             verticalBar.model.\ivalue = largest(newPoint.row, 0);

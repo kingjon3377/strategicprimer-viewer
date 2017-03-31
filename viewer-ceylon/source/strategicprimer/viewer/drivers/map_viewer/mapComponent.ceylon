@@ -28,11 +28,9 @@ import lovelace.util.common {
 import model.listeners {
     MapChangeListener
 }
-import model.map {
-    Point
-}
 
 import strategicprimer.viewer.model.map {
+    Point,
     MapDimensions,
     TileFixture,
     pointFactory
@@ -69,7 +67,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
     void fixVisibility() {
         Point selectedPoint = model.selection;
         Integer selectedRow = largest(selectedPoint.row, 0);
-        Integer selectedColumn = largest(selectedPoint.col, 0);
+        Integer selectedColumn = largest(selectedPoint.column, 0);
         VisibleDimensions visibleDimensions = model.dimensions;
         variable Integer minimumRow = visibleDimensions.minimumRow;
         variable Integer maximumRow = visibleDimensions.maximumRow;
@@ -135,7 +133,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
         Boolean selectionVisible {
             Point selectedPoint = model.selection;
             Integer selectedRow = largest(selectedPoint.row, 0);
-            Integer selectedColumn = largest(selectedPoint.col, 0);
+            Integer selectedColumn = largest(selectedPoint.column, 0);
             VisibleDimensions visibleDimensions = model.dimensions;
             Integer minimumRow = visibleDimensions.minimumRow;
             // FIXME: Per the Span docs, adding 1 makes this off-by-one ...

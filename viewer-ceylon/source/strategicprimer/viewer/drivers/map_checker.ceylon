@@ -28,11 +28,8 @@ import lovelace.util.jvm {
     LabelTextColor
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
     IFixture,
     IMapNG,
     FixtureIterable,

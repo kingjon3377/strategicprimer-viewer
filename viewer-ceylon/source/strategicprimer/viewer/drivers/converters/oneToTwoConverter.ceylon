@@ -28,10 +28,6 @@ import lovelace.util.jvm {
     shuffle
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.drivers {
     DriverUsage,
     ParamCount,
@@ -56,6 +52,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Point,
     MapDimensionsImpl,
     Player,
     PlayerImpl,
@@ -187,7 +184,7 @@ object oneToTwoConverter satisfies SimpleDriver {
             Point[] initial = [ for (i in 0..expansionFactor)
             for (j in 0..expansionFactor)
             pointFactory(point.row * expansionFactor + i,
-                point.col * expansionFactor + j) ];
+                point.column * expansionFactor + j) ];
             for (subtile in initial) {
                 retval.setBaseTerrain(subtile, oldCopy.getBaseTerrain(point));
                 convertSubTile(subtile);
@@ -228,7 +225,7 @@ object oneToTwoConverter satisfies SimpleDriver {
                         riversAt(initial[10], River.west);
                     }
                 }
-                Random rng = Random((point.col.leftLogicalShift(32)) + point.row);
+                Random rng = Random((point.column.leftLogicalShift(32)) + point.row);
                 Queue<Point> shuffledInitial = LinkedList(shuffle(initial,
                     rng.nextDouble));
                 Queue<TileFixture> shuffledFixtures = LinkedList(shuffle(fixtures,
@@ -276,7 +273,7 @@ object oneToTwoConverter satisfies SimpleDriver {
         for (point in shuffle(converted, rng.nextDouble)) {
             // TODO: wrap around edges of map
             {Point*} neighbors = { for (row in (point.row - 1)..(point.row + 1))
-                for (column in (point.col - 1)..(point.col + 1))
+                for (column in (point.column - 1)..(point.column + 1))
                     pointFactory(row, column) }.filter((element) => point != element);
             Boolean adjacentToTown() {
                 for (neighbor in neighbors) {

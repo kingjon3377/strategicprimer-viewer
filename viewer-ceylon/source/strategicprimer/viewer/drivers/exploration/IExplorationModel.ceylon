@@ -7,9 +7,7 @@ import strategicprimer.viewer.drivers.map_viewer {
 import strategicprimer.viewer.model.map {
     Player,
     TileFixture,
-    HasName
-}
-import model.map {
+    HasName,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

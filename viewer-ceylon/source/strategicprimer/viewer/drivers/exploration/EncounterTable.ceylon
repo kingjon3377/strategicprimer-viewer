@@ -1,9 +1,7 @@
 import strategicprimer.viewer.model.map {
     TileFixture,
     TileType,
-    MapDimensions
-}
-import model.map {
+    MapDimensions,
     Point
 }
 "An interface for encounter tables, for the now-nearly-defunct second model of generating

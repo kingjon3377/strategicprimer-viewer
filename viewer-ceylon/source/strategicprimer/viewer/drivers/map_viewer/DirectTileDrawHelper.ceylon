@@ -14,11 +14,8 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
     River,
     TileType,
     IMapNG

@@ -16,16 +16,13 @@ import javax.xml.stream {
     XMLStreamException
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model {
     IMultiMapModel,
     IDriverModel,
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Point,
     IMutableMapNG,
     IMapNG
 }
@@ -65,12 +62,12 @@ object echoDriver satisfies UtilityDriver {
             IDRegistrar idFactory = createIDFactory(map);
             for (location in map.locations) {
                 if (exists mainForest = map.getForest(location), mainForest.id < 0) {
-                    Integer id = 1147200 + location.row * 176 + location.col;
+                    Integer id = 1147200 + location.row * 176 + location.column;
                     idFactory.register(id);
                     mainForest.id = id;
                 }
                 if (exists mainGround = map.getGround(location), mainGround.id < 0) {
-                    Integer id = 1171484 + location.row * 176 + location.col;
+                    Integer id = 1171484 + location.row * 176 + location.column;
                     idFactory.register(id);
                     mainGround.id = id;
                 }

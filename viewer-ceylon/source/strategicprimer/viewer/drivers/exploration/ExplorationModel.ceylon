@@ -24,15 +24,12 @@ import lovelace.util.jvm {
 import model.listeners {
     MovementCostListener
 }
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model {
     SimpleMultiMapModel,
     IDriverModel
 }
 import strategicprimer.viewer.model.map {
+    Point,
     Player,
     IMutableMapNG,
     IMapNG,
@@ -204,7 +201,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Integer maxColumn = dims.columns - 1;
         Integer maxRow = dims.rows - 1;
         Integer row = point.row;
-        Integer column = point.col;
+        Integer column = point.column;
         // TODO: inline?
         Point(Integer, Integer) factory = pointFactory;
         switch (direction)

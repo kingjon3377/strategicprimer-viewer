@@ -10,10 +10,6 @@ import java.lang {
     IllegalArgumentException
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.drivers {
     DriverFailedException,
     UtilityDriver,
@@ -25,6 +21,7 @@ import strategicprimer.viewer.drivers {
     IncorrectUsageException
 }
 import strategicprimer.viewer.model.map {
+    Point,
     pointFactory
 }
 // FIXME: Rename file to miningCLI.ceylon
@@ -80,7 +77,7 @@ shared object miningCLI satisfies UtilityDriver {
                 value file = loc.createFile();
                 try (writer = file.Overwriter()) {
                     for (row in 0..(lowerRight.row + 1)) {
-                        for (col in 0..(lowerRight.col + 1)) {
+                        for (col in 0..(lowerRight.column + 1)) {
                             writer.write("``model.statusAt(
                                 pointFactory(row, col)).ratio``,");
                         }

@@ -6,9 +6,7 @@ import lovelace.util.common {
 }
 import strategicprimer.viewer.model.map {
     Player,
-    TileFixture
-}
-import model.map {
+    TileFixture,
     Point
 }
 import ceylon.interop.java {

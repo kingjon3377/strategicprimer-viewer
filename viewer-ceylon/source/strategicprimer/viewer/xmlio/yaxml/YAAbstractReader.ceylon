@@ -34,14 +34,11 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Point,
     HasImage,
     pointFactory
 }

@@ -3,11 +3,8 @@ import ceylon.collection {
     ArrayList
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
     MapDimensions,
     pointFactory
 }
@@ -36,7 +33,7 @@ shared {Point*} surroundingPointIterable(Point startingPoint, MapDimensions dime
         for (row in lowerBound..upperBound) {
             for (column in lowerBound..upperBound) {
                 points.add(pointFactory(roundRow(startingPoint.row + row),
-                    roundColumn(startingPoint.col + column)));
+                    roundColumn(startingPoint.column + column)));
             }
         }
     }

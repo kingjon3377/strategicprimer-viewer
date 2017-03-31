@@ -3,11 +3,8 @@ import ceylon.collection {
     HashMap
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
     MapDimensions,
     TileType,
     TileFixture,
@@ -70,8 +67,8 @@ class QuadrantTable satisfies EncounterTable {
             quadrantRows);
         variable Point bestKey = invalidPoint;
         for (key in resultsMap.keys) {
-            if (key.row <= row, key.row > bestKey.row, key.col <= column,
-                    key.col > bestKey.col) {
+            if (key.row <= row, key.row > bestKey.row, key.column <= column,
+                    key.column > bestKey.column) {
                 bestKey = key;
             }
         }
@@ -83,7 +80,7 @@ class QuadrantTable satisfies EncounterTable {
     }
     shared actual String generateEvent(Point point, TileType terrain,
             {TileFixture*} fixtures, MapDimensions mapDimensions) =>
-                getQuadrantValue(point.row, point.col, mapDimensions);
+                getQuadrantValue(point.row, point.column, mapDimensions);
     shared actual Set<String> allEvents => set { *possibleResults };
     shared actual String string =>
             "QuadrantTable in ``quadrantRows`` rows of quadrants";

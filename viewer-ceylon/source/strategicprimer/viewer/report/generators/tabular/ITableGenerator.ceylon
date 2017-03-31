@@ -16,9 +16,7 @@ import lovelace.util.common {
 }
 import strategicprimer.viewer.model.map {
     Player,
-    IFixture
-}
-import model.map {
+    IFixture,
     Point
 }
 "A regular expression to mtch quote characters."
@@ -65,7 +63,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
      returns the *square* of the distance, for efficiency."
     todo("Reflect the toroidal topology of the map")
     shared default Integer distance(Point first, Point second) =>
-            ((first.col - second.col) * (first.col - second.col)) +
+            ((first.column - second.column) * (first.column - second.column)) +
             ((first.row - second.row) * (first.row - second.row));
     "A String showing the distance between two points, suitable to be displayed, rounded
      to a tenth of a tile. This default implementation just takes the square root of

@@ -41,15 +41,12 @@ import lovelace.util.common {
     IteratorWrapper
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model {
     IDFactory,
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Point,
 	MapDimensions,
     MapDimensionsImpl,
     HasKind,

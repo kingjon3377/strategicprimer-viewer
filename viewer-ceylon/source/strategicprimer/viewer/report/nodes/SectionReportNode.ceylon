@@ -6,7 +6,7 @@ import javax.swing.tree {
 import lovelace.util.common {
     todo
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     Point
 }
 "A node representing a section, with a header."

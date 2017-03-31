@@ -1,7 +1,7 @@
 import javax.swing.tree {
     MutableTreeNode
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     Point
 }
 "A node for cases where a [[SimpleReportNode]] is not enough, because we *can* have

@@ -28,14 +28,11 @@ import javax.xml.stream.events {
     Characters
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Point,
     Player,
     River,
     IMutablePlayerCollection,

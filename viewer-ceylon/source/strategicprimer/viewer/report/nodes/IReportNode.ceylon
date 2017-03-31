@@ -10,11 +10,8 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
     invalidPoint
 }
 """An interface for "report nodes" that serve as "report intermediate representation":

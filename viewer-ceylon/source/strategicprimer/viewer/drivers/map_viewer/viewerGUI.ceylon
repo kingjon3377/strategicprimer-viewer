@@ -1,7 +1,5 @@
 import strategicprimer.viewer.model.map {
-    MapDimensions
-}
-import model.map {
+    MapDimensions,
     Point
 }
 import javax.swing {
@@ -65,12 +63,12 @@ shared object viewerGUI satisfies SimpleDriver {
                     topRow = selection.row - (visible.height / 2);
                 }
                 Integer leftColumn;
-                if (selection.col - (visible.width / 2) <= 0) {
+                if (selection.column - (visible.width / 2) <= 0) {
                     leftColumn = 0;
-                } else if (selection.col + (visible.width / 2) >= dimensions.columns) {
+                } else if (selection.column + (visible.width / 2) >= dimensions.columns) {
                     leftColumn = dimensions.columns - visible.width;
                 } else {
-                    leftColumn = selection.col - (visible.width / 2);
+                    leftColumn = selection.column - (visible.width / 2);
                 }
                 // Java version had topRow + dimensions.rows and
                 // leftColumn + dimensions.columns as max row and column; this seems

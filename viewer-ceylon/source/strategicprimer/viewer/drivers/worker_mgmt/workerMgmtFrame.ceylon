@@ -55,10 +55,6 @@ import lovelace.util.jvm {
 import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.drivers {
     SPFrame,
     MenuBroker,
@@ -78,6 +74,7 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
+    Point,
     Player,
     IMapNG,
     invalidPoint

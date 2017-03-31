@@ -10,9 +10,6 @@ import javax.swing {
 import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
-import model.map {
-    Point
-}
 
 import strategicprimer.viewer.drivers {
     SPDialog,
@@ -26,6 +23,7 @@ import strategicprimer.viewer.model {
     VersionChangeListener
 }
 import strategicprimer.viewer.model.map {
+    Point,
     TileType,
     invalidPoint
 }

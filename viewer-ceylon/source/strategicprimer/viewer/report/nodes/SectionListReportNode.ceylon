@@ -6,7 +6,7 @@ import javax.swing.tree {
 import lovelace.util.common {
     todo
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     Point
 }
 "A node for a section consisting only of a list. This is a common case, which would

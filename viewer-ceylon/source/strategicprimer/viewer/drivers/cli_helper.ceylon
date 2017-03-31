@@ -31,11 +31,8 @@ import lovelace.util.jvm {
     parseInt
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
     HasName,
     PlayerImpl,
     pointFactory

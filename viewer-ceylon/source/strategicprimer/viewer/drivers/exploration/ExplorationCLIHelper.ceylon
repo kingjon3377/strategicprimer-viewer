@@ -20,9 +20,7 @@ import strategicprimer.viewer.model.map {
     TileType,
 	TileFixture,
     HasOwner,
-    IMutableMapNG
-}
-import model.map {
+    IMutableMapNG,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures {

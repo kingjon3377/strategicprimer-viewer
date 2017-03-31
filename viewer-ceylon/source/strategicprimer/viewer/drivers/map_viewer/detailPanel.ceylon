@@ -23,9 +23,7 @@ import lovelace.util.jvm {
 import strategicprimer.viewer.model.map {
     TileFixture,
     HasPortrait,
-    TileType
-}
-import model.map {
+    TileType,
     Point
 }
 import javax.swing.event {
@@ -88,7 +86,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                 keyPanel.changeVersion(old, newVersion);
         shared actual void selectedPointChanged(Point? old, Point newPoint) {
             delegate.selectedPointChanged(old, newPoint);
-            header.setArgs(newPoint.row, newPoint.col);
+            header.setArgs(newPoint.row, newPoint.column);
         }
     }
     SwingList<TileFixture>&SelectionChangeListener fixtureListObject =

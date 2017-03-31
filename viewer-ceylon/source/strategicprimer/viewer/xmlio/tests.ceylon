@@ -51,14 +51,11 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.drivers.advancement {
     races
 }
 import strategicprimer.viewer.model.map {
+    Point,
     MapDimensionsImpl,
     Player,
 	HasPortrait,
@@ -553,7 +550,7 @@ void testStoneSerializationErrors(StoneKind kind) {
 
 "A factory to encapsulate rivers in a simple map."
 IMapNG encapsulateRivers(Point point, River* rivers) {
-    IMutableMapNG retval = SPMapNG(MapDimensionsImpl(point.row + 1, point.col + 1, 2),
+    IMutableMapNG retval = SPMapNG(MapDimensionsImpl(point.row + 1, point.column + 1, 2),
         PlayerCollection(), -1);
     retval.setBaseTerrain(point, TileType.plains);
     retval.addRivers(point, *rivers);
@@ -562,7 +559,7 @@ IMapNG encapsulateRivers(Point point, River* rivers) {
 
 "Create a simple map."
 IMutableMapNG createSimpleMap(Point dims, <Point->TileType>* terrain) {
-    IMutableMapNG retval = SPMapNG(MapDimensionsImpl(dims.row, dims.col, 2),
+    IMutableMapNG retval = SPMapNG(MapDimensionsImpl(dims.row, dims.column, 2),
         PlayerCollection(), -1);
     for (loc->type in terrain) {
         retval.setBaseTerrain(loc, type);

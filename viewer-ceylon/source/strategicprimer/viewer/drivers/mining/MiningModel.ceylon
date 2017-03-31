@@ -13,11 +13,8 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
     pointFactory
 }
 "Kinds of mines we know how to create."
@@ -54,9 +51,9 @@ class MiningModel(initial, seed, kind) {
     variable Integer counter = 0;
     variable Integer pruneCounter = 0;
     void modelPoint(Point point) {
-        Point left = pointFactory(point.row, point.col - 1);
-        Point down = pointFactory(point.row + 1, point.col);
-        Point right = pointFactory(point.row, point.col + 1);
+        Point left = pointFactory(point.row, point.column - 1);
+        Point down = pointFactory(point.row + 1, point.column);
+        Point right = pointFactory(point.row, point.column + 1);
         value current = unnormalized.get(point);
         if (!current exists) {
             return;
@@ -83,7 +80,7 @@ class MiningModel(initial, seed, kind) {
             process.write(".");
         }
         // Limit the size of the output spreadsheet.
-        if (point.row.magnitude > 200 || point.col.magnitude > 100) {
+        if (point.row.magnitude > 200 || point.column.magnitude > 100) {
             pruneCounter++;
             continue;
         } else {
@@ -92,15 +89,15 @@ class MiningModel(initial, seed, kind) {
     }
     process.writeLine();
     process.writeLine("Pruned ``pruneCounter`` branches beyond our boundaries");
-    Integer minimumColumn = min(unnormalized.keys.map(Point.col)) else 0;
+    Integer minimumColumn = min(unnormalized.keys.map(Point.column)) else 0;
     "A mapping from positions (normalized so they could be spit out into a spreadsheet)
      to [[LodeStatus]]es."
     Map<Point, LodeStatus> data = map {
         *unnormalized
-            .map((key->status) => pointFactory(key.row, key.col - minimumColumn)->status)
+            .map((key->status) => pointFactory(key.row, key.column - minimumColumn)->status)
     };
     "The farthest row and column we reached."
     shared Point maximumPoint = pointFactory(max(data.keys.map(Point.row)) else 0,
-        max(data.keys.map(Point.col)) else 0);
+        max(data.keys.map(Point.column)) else 0);
     shared LodeStatus statusAt(Point point) => data.get(point) else LodeStatus.none;
 }

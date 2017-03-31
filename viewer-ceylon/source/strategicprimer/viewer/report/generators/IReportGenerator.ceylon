@@ -2,11 +2,8 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
 	IFixture,
 	IMapNG
 }

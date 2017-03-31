@@ -32,10 +32,6 @@ import lovelace.util.jvm {
     singletonRandom
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.drivers.advancement {
     randomRace
 }
@@ -51,6 +47,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Point,
     Player,
     IFixture,
     TileType,

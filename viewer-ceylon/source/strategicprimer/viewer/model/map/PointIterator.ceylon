@@ -2,9 +2,6 @@ import ceylon.test {
     assertEquals,
     test
 }
-import model.map {
-    Point
-}
 "A view of locations on the map in order, starting at a given point."
 shared class PointIterator(dimensions, forwards, horizontal,
         selection = null) satisfies Iterable<Point> {
@@ -31,7 +28,7 @@ shared class PointIterator(dimensions, forwards, horizontal,
             Integer wrap(Integer item, Integer wrap) => if (item<0) then wrap else item;
             if (exists selection) {
                 startRow = wrap(selection.row, maxRow);
-                startColumn = wrap(selection.col, maxColumn);
+                startColumn = wrap(selection.column, maxColumn);
             } else if (forwards) {
                 startRow = maxRow;
                 startColumn = maxColumn;

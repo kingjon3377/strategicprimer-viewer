@@ -4,9 +4,7 @@ import java.lang {
 import strategicprimer.viewer.model.map {
     TileFixture,
     TileType,
-    MapDimensions
-}
-import model.map {
+    MapDimensions,
     Point
 }
 "An [[EncounterTable]] that gives its result based on the terrain type of the tile in

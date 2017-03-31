@@ -4,9 +4,7 @@ import strategicprimer.viewer.model.map {
     TileType,
     TileFixture,
     IMapNG,
-    HasOwner
-}
-import model.map {
+    HasOwner,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures.towns {

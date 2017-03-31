@@ -22,9 +22,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    Point
-}
 import strategicprimer.viewer.model.map.fixtures {
     Ground,
     Quantity
@@ -45,6 +42,7 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
+    Point,
     Player,
     HasOwner,
     TileType,
@@ -169,7 +167,7 @@ object queryCLI satisfies SimpleDriver {
     "The distance between two points in a map with the given dimensions."
     Float distance(Point base, Point destination, MapDimensions dimensions) {
         Integer rawXDiff = base.row - destination.row;
-        Integer rawYDiff = base.col - destination.col;
+        Integer rawYDiff = base.column - destination.column;
         Integer xDiff;
         if (rawXDiff < (dimensions.rows / 2)) {
             xDiff = rawXDiff;

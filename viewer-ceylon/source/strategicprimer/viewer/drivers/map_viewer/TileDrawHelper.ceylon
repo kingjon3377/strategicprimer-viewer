@@ -2,6 +2,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.viewer.model.map {
+    Point,
     IMapNG
 }
 import lovelace.util.common {
@@ -9,9 +10,6 @@ import lovelace.util.common {
 }
 import strategicprimer.viewer.model.map.fixtures {
     IEvent
-}
-import model.map {
-    Point
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit

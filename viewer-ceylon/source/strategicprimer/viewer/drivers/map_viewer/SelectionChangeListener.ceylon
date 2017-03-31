@@ -1,7 +1,7 @@
 import java.util {
     EventListener
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     Point
 }
 "An interface for objects that want to know when the selected tile, or its location,

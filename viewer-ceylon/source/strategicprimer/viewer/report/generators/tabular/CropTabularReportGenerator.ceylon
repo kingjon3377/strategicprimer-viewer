@@ -12,9 +12,7 @@ import strategicprimer.viewer.model {
 }
 import strategicprimer.viewer.model.map {
     TileFixture,
-    IFixture
-}
-import model.map {
+    IFixture,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures.resources {

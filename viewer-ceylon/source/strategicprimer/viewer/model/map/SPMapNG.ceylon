@@ -16,10 +16,6 @@ import lovelace.util.common {
     ArraySet
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
     HasOwner,
     River,

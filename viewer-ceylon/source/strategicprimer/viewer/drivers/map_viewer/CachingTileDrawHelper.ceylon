@@ -7,10 +7,8 @@ import java.awt.geom {
     Line2D,
     Ellipse2D
 }
-import model.map {
-    Point
-}
 import strategicprimer.viewer.model.map {
+    Point,
     River,
     TileType,
     IMapNG

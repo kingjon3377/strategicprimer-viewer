@@ -4,9 +4,7 @@ import lovelace.util.jvm {
 import strategicprimer.viewer.model.map {
     TileFixture,
     TileType,
-    MapDimensions
-}
-import model.map {
+    MapDimensions,
     Point
 }
 

@@ -12,13 +12,11 @@ import javax.swing {
     JPopupMenu
 }
 
-import model.map {
-    Point
-}
 import strategicprimer.viewer.model {
     VersionChangeListener
 }
 import strategicprimer.viewer.model.map {
+    Point,
     MapDimensions,
     TileFixture,
     IMapNG,
@@ -79,7 +77,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
                 halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumColumn)
                     .plus(0.1).integer);
             if (point.valid, point.row < mapDimensions.rows,
-                point.col < mapDimensions.columns) {
+                point.column < mapDimensions.columns) {
                 String mountainString = (model.map.isMountainous(point))
                 then ", mountainous" else "";
                 return "<html><body>``point``: ``model.map
@@ -101,7 +99,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
                 halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumColumn)
                     .plus(0.1).integer);
             if (point.valid, point.row < mapDimensions.rows,
-                point.col < mapDimensions.columns) {
+                point.column < mapDimensions.columns) {
                 model.selection = point;
                 if (event.popupTrigger) {
                     menu.show(event.component, event.x, event.y);

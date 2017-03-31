@@ -11,16 +11,13 @@ import javax.swing {
     JButton
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.drivers.map_viewer {
     tileDrawHelperFactory,
     FixtureMatcher,
     TileDrawHelper
 }
 import strategicprimer.viewer.model.map {
+    Point,
     TileFixture,
     IMapNG,
     invalidPoint

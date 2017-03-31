@@ -26,11 +26,8 @@ import javax.xml.stream {
     XMLStreamException
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
     MapDimensions,
     HasKind,
     HasImage,

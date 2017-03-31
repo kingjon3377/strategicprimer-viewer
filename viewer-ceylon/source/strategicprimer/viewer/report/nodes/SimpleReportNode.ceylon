@@ -2,7 +2,7 @@ import javax.swing.tree {
     DefaultMutableTreeNode,
     MutableTreeNode
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     Point
 }
 "A simple node representing plain text. Any children are ignored!"

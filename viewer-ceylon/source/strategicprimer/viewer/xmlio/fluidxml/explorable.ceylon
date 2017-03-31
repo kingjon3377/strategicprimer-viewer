@@ -13,14 +13,11 @@ import javax.xml.stream.events {
     XMLEvent
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Point,
     Player,
     IPlayerCollection,
     pointFactory
@@ -119,7 +116,7 @@ void writePortal(XMLStreamWriter ostream, Object obj, Integer indent) {
         writeTag(ostream, "portal", indent, true);
         writeAttribute(ostream, "world", obj.destinationWorld);
         writeIntegerAttribute(ostream, "row", obj.destinationCoordinates.row);
-        writeIntegerAttribute(ostream, "column", obj.destinationCoordinates.col);
+        writeIntegerAttribute(ostream, "column", obj.destinationCoordinates.column);
         writeIntegerAttribute(ostream, "id", obj.id);
         writeImage(ostream, obj);
     } else {

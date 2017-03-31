@@ -35,7 +35,7 @@ class YAPortalReader(Warning warning, IDRegistrar idRegistrar) extends YAAbstrac
         writeTag(ostream, "portal", indent);
         writeProperty(ostream, "world", obj.destinationWorld);
         writeProperty(ostream, "row", obj.destinationCoordinates.row);
-        writeProperty(ostream, "column", obj.destinationCoordinates.col);
+        writeProperty(ostream, "column", obj.destinationCoordinates.column);
         writeProperty(ostream, "id", obj.id);
         writeImageXML(ostream, obj);
         closeLeafTag(ostream);

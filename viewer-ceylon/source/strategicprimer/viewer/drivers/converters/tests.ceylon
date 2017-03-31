@@ -16,15 +16,12 @@ import java.util {
     Formatter
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model {
     IDFactory,
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Point,
     MapDimensionsImpl,
     Player,
     River,

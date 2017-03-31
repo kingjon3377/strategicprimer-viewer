@@ -9,10 +9,6 @@ import lovelace.util.common {
     IntMap
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.drivers {
     createIDFactory
 }
@@ -21,6 +17,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Point,
     Player,
     IFixture,
     IMapNG,

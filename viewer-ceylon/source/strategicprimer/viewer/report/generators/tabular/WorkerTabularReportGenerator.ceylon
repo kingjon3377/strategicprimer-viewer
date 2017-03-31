@@ -6,9 +6,7 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
-    IFixture
-}
-import model.map {
+    IFixture,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

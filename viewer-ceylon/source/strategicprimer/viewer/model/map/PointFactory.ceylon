@@ -7,10 +7,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    Point
-}
-
 "The cache of Points. I use two levels of Maps rather than using Tuples as keys because I
  have a hunch this is faster."
 todo("Measure that",
@@ -47,18 +43,18 @@ shared Point pointFactory(Integer row, Integer column, Boolean useCache = true) 
 	}
 }
 "A structure encapsulating two coordinates."
-class PointImpl(row, col) satisfies Point {
+class PointImpl(row, column) satisfies Point {
 	shared actual Integer row;
-	shared actual Integer col;
+	shared actual Integer column;
 	shared actual Boolean equals(Object obj) {
 		if (is Point obj) {
-			return obj.row == row && obj.col == col;
+			return obj.row == row && obj.column == column;
 		} else {
 			return false;
 		}
 	}
-	shared actual Integer hash => row.leftLogicalShift(9) + col;
-	shared actual String string => "(``row``, ``col``)";
+	shared actual Integer hash => row.leftLogicalShift(9) + column;
+	shared actual String string => "(``row``, ``column``)";
 }
 """The standard "invalid point.""""
 todo("Replace with [[null]]?")

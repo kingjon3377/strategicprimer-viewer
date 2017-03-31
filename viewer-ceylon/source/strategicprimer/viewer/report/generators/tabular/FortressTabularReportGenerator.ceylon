@@ -9,9 +9,7 @@ import strategicprimer.viewer.model {
 }
 import strategicprimer.viewer.model.map {
     Player,
-    IFixture
-}
-import model.map {
+    IFixture,
     Point
 }
 "A tabular report generator for fortresses."

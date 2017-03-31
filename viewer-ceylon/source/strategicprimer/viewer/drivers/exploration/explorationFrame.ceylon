@@ -78,10 +78,8 @@ import model.listeners {
     CompletionSource,
     MovementCostSource
 }
-import model.map {
-    Point
-}
 import strategicprimer.viewer.model.map {
+    Point,
     Player,
     TileType,
     TileFixture,
@@ -272,7 +270,7 @@ SPFrame explorationFrame(IExplorationModel model,
                         button.repaint();
                     }
                 }
-                locLabel.setArgs(selPoint.row, selPoint.col);
+                locLabel.setArgs(selPoint.row, selPoint.column);
             }
             MutableList<CompletionListener> completionListeners =
                     ArrayList<CompletionListener>();

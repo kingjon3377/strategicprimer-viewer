@@ -21,11 +21,8 @@ import java.lang {
     IllegalArgumentException
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
     MapDimensions,
     MapDimensionsImpl,
     TileType,
@@ -152,7 +149,7 @@ object mockDimensions satisfies MapDimensions {
 }
 suppressWarnings("expressionTypeNothing")
 object mockPoint satisfies Point {
-    shared actual Integer col => nothing;
+    shared actual Integer column => nothing;
     shared actual Integer row => nothing;
 }
 test

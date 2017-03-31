@@ -3,11 +3,8 @@ import ceylon.test {
     assertEquals
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model.map {
+    Point,
     MapDimensionsImpl,
     PlayerCollection,
     SPMapNG,

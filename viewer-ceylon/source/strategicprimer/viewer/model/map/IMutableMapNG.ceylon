@@ -2,9 +2,6 @@ import strategicprimer.viewer.model.map {
     TileFixture,
     River
 }
-import model.map {
-    Point
-}
 import strategicprimer.viewer.model.map.fixtures {
     Ground
 }

@@ -6,9 +6,6 @@ import strategicprimer.viewer.model.map {
     Subsettable,
     TileFixture
 }
-import model.map {
-    Point
-}
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture,
     Ground

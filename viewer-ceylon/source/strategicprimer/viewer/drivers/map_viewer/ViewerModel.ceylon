@@ -14,15 +14,12 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    Point
-}
-
 import strategicprimer.viewer.model {
     SimpleDriverModel,
     IDriverModel
 }
 import strategicprimer.viewer.model.map {
+    Point,
     IMutableMapNG,
     IMapNG,
     invalidPoint
