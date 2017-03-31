@@ -72,10 +72,6 @@ import lovelace.util.jvm {
     isNumeric
 }
 
-import model.listeners {
-    CompletionListener,
-    CompletionSource
-}
 import strategicprimer.viewer.model.map {
     Point,
     Player,
