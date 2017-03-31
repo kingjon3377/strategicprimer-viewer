@@ -9,9 +9,6 @@ import lovelace.util.common {
     todo
 }
 
-import util {
-    FatalWarningException
-}
 "A slightly-customizable warning-handling interface."
 shared interface Warning of ignore|warn|die|CustomWarningHandler {
 	"Handle a warning, e.g. if a particular map-format construct is deprecated."
@@ -43,9 +40,8 @@ shared object warn satisfies Warning {
 }
 "Treat warnings as errors."
 shared object die satisfies Warning {
-	todo("Drop FatalWarningException, as there are no checked exceptions in Ceylon")
 	shared actual void handle(Exception warning) {
-		throw FatalWarningException(warning);
+		throw warning;
 	}
 }
 "A warning handler that takes a user-provided handler."

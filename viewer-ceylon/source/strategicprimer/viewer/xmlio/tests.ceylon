@@ -135,9 +135,6 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortress
 }
 
-import util {
-    FatalWarningException
-}
 JPath fakeFilename = JPaths.get("");
 ISPReader oldReader = testReaderFactory.oldReader;
 ISPReader newReader = testReaderFactory.newReader;
@@ -157,9 +154,8 @@ void assertFormatIssue<Desideratum, Expectation>(ISPReader reader, String xml,
         try (stringReader = StringReader(xml)) {
             reader.readXML(fakeFilename, stringReader, warningLevels.die);
             fail("Expected a fatal warning");
-        } catch (FatalWarningException except) {
-            assert (is Expectation cause = except.cause);
-            checks(cause);
+        } catch (Expectation except) {
+            checks(except);
         }
     } else {
         try (stringReader = StringReader(xml)) {
