@@ -447,7 +447,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     shared actual Type readXML<Type>(JPath file, JReader istream, Warning warner)
             given Type satisfies Object {
         JIterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
-        {XMLEvent*} eventReader = IteratorWrapper(CeylonIterator(IncludingIterator(file, reader)));
+        {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
         IMutablePlayerCollection players = PlayerCollection();
         IDRegistrar idFactory = IDFactory();
         for (event in eventReader) {

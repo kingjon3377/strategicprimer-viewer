@@ -63,7 +63,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
             "The Warning instance to use for warnings" Warning warner)
             given Element satisfies Object {
         JIterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
-        {XMLEvent*} eventReader = IteratorWrapper(CeylonIterator(IncludingIterator(file, reader)));
+        {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
         IDRegistrar idFactory = IDFactory();
         if (exists event = eventReader.narrow<StartElement>().first) {
             Object retval = YAReaderAdapter(warner, idFactory).parse(event, QName("root"),
