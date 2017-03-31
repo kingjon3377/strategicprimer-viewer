@@ -1,7 +1,3 @@
-import controller.map.formatexceptions {
-    SPFormatException
-}
-
 import java.io {
     IOException
 }
@@ -35,7 +31,8 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
 import strategicprimer.viewer.xmlio {
     readMap,
     writeMap,
-    warningLevels
+    warningLevels,
+    SPFormatException
 }
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated

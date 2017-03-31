@@ -1,7 +1,3 @@
-import controller.map.formatexceptions {
-    SPFormatException
-}
-
 import java.io {
     JReader=Reader,
     IOException
@@ -41,7 +37,8 @@ import strategicprimer.viewer.xmlio {
     ISPReader,
     IncludingIterator,
     TypesafeXMLEventReader,
-    IMapReader
+    IMapReader,
+    SPFormatException
 }
 "Sixth-generation SP XML reader."
 shared object yaXMLReader satisfies IMapReader&ISPReader {

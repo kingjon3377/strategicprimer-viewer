@@ -2,10 +2,6 @@ import ceylon.language.meta.model {
     InvocationException
 }
 
-import controller.map.formatexceptions {
-    SPFormatException
-}
-
 import java.awt {
     Component
 }
@@ -62,7 +58,8 @@ import strategicprimer.viewer.model.map {
 import strategicprimer.viewer.xmlio {
     readMap,
     writeMap,
-    warningLevels
+    warningLevels,
+    SPFormatException
 }
 
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(

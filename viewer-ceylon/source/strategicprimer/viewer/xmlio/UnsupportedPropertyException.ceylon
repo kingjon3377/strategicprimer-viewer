@@ -1,9 +1,6 @@
 import javax.xml.stream.events {
     StartElement
 }
-import controller.map.formatexceptions {
-    SPFormatException
-}
 import javax.xml.namespace {
     QName
 }

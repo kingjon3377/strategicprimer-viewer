@@ -1,7 +1,3 @@
-import controller.map.formatexceptions {
-    SPFormatException
-}
-
 import java.lang {
     IllegalArgumentException,
     JAppendable=Appendable
@@ -44,6 +40,7 @@ import strategicprimer.viewer.xmlio {
     Warning,
     spNamespace,
     SPMalformedInputException,
+    SPFormatException,
     DeprecatedPropertyException
 }
 "A parser for numeric data, so integers can contain commas."

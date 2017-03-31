@@ -6,10 +6,6 @@ import ceylon.logging {
     Logger
 }
 
-import controller.map.formatexceptions {
-    SPFormatException
-}
-
 import java.io {
     IOException
 }
@@ -50,7 +46,8 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
 import strategicprimer.viewer.xmlio {
     Warning,
     warningLevels,
-    UnwantedChildException
+    UnwantedChildException,
+    SPFormatException
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

@@ -1,4 +1,4 @@
-import controller.map.formatexceptions {
+import strategicprimer.viewer.xmlio {
     SPFormatException
 }
 import strategicprimer.viewer.model {

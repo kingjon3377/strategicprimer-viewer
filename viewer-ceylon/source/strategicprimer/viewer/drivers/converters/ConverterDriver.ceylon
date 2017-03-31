@@ -3,10 +3,6 @@ import ceylon.logging {
     Logger
 }
 
-import controller.map.formatexceptions {
-    SPFormatException
-}
-
 import java.io {
     FileNotFoundException,
     IOException
@@ -35,7 +31,8 @@ import strategicprimer.viewer.model.map {
 import strategicprimer.viewer.xmlio {
     readMap,
     writeMap,
-    warningLevels
+    warningLevels,
+    SPFormatException
 }
 
 "A logger."

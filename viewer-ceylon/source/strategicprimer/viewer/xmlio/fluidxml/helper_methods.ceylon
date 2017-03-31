@@ -1,7 +1,3 @@
-import controller.map.formatexceptions {
-    SPFormatException
-}
-
 import java.lang {
     NumberFormatException
 }
@@ -48,7 +44,8 @@ import strategicprimer.viewer.xmlio {
     spNamespace,
     UnsupportedPropertyException,
     SPMalformedInputException,
-    DeprecatedPropertyException
+    DeprecatedPropertyException,
+    SPFormatException
 }
 NumberFormat numParser = NumberFormat.integerInstance;
 

@@ -3,10 +3,6 @@ import ceylon.regex {
     Regex
 }
 
-import controller.map.formatexceptions {
-    SPFormatException
-}
-
 import java.awt {
     Dimension
 }
@@ -50,7 +46,8 @@ import strategicprimer.viewer.model.map {
 }
 import strategicprimer.viewer.xmlio {
     readMap,
-    warningLevels
+    warningLevels,
+    SPFormatException
 }
 "A window to show the result of running subset tests."
 class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) {

@@ -1,7 +1,3 @@
-import controller.map.formatexceptions {
-    SPFormatException
-}
-
 import java.io {
     JReader=Reader,
     IOException

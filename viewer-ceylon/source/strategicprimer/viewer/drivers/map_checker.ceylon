@@ -1,7 +1,3 @@
-import controller.map.formatexceptions {
-    SPFormatException
-}
-
 import java.awt {
     Dimension,
     Color
@@ -52,7 +48,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 import strategicprimer.viewer.xmlio {
     readMap,
     Warning,
-    warningLevels
+    warningLevels,
+    SPFormatException
 }
 
 """An interface for checks of a map's *contents* that we don't want the XML-*reading*

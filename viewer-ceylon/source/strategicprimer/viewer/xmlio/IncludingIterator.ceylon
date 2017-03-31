@@ -6,10 +6,6 @@ import ceylon.interop.java {
     CeylonIterator
 }
 
-import controller.map.formatexceptions {
-    SPFormatException
-}
-
 import java.io {
     FileNotFoundException
 }
