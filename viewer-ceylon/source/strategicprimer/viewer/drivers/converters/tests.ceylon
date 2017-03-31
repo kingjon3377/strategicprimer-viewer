@@ -779,58 +779,58 @@ object zeroToOneConverter {
     Boolean isSpecifiedTag(QName tag, String desired) {
         return tag == QName(spNamespace, desired) || tag == QName(desired);
     }
-    void printAttribute(Appendable ostream, Attribute attribute) {
+    void printAttribute(Anything(String) ostream, Attribute attribute) {
         // TODO: namespace
-        ostream.append(" ``attribute.name.localPart``=``attribute.\ivalue``");
+        ostream(" ``attribute.name.localPart``=``attribute.\ivalue``");
     }
     "Convert the version attribute of the map"
-    void convertMap(Appendable ostream, StartElement element, {Attribute*} attributes) {
-        ostream.append('<');
+    void convertMap(Anything(String) ostream, StartElement element, {Attribute*} attributes) {
+        ostream("<");
         if (XMLConstants.defaultNsPrefix != element.name.namespaceURI) {
-            ostream.append("``element.name.prefix``:");
+            ostream("``element.name.prefix``:");
         }
-        ostream.append(element.name.localPart);
+        ostream(element.name.localPart);
         for (namespace in ConvertingIterable<Namespace>(element.namespaces)) {
-            ostream.append(" ``namespace``");
+            ostream(" ``namespace``");
         }
         for (attribute in attributes) {
             if ("version" == attribute.name.localPart.lowercased) {
-                ostream.append(" version=\"1\"");
+                ostream(" version=\"1\"");
             } else {
                 printAttribute(ostream, attribute);
             }
         }
-        ostream.append('>');
+        ostream(">");
     }
-    void printEvent(Appendable ostream, Integer number) {
+    void printEvent(Anything(String) ostream, Integer number) {
         if (exists val = equivalents.get(number)) {
-            ostream.append(val);
+            ostream(val);
         }
     }
-    void printEndElement(Appendable ostream, EndElement element) {
+    void printEndElement(Anything(String) ostream, EndElement element) {
         if (XMLConstants.defaultNsPrefix == element.name.namespaceURI) {
-            ostream.append("</``element.name.localPart``>");
+            ostream("</``element.name.localPart``>");
         } else {
-            ostream.append("</``element.name.prefix``:``element.name.localPart``>");
+            ostream("</``element.name.prefix``:``element.name.localPart``>");
         }
     }
-    void printStartElement(Appendable ostream, StartElement element) {
-        ostream.append('<');
+    void printStartElement(Anything(String) ostream, StartElement element) {
+        ostream("<");
         if (XMLConstants.defaultNsPrefix != element.name.namespaceURI) {
-            ostream.append("``element.name.prefix``:");
+            ostream("``element.name.prefix``:");
         }
-        ostream.append(element.name.localPart);
+        ostream(element.name.localPart);
         for (attribute in ConvertingIterable<Attribute>(element.attributes)) {
             printAttribute(ostream, attribute);
         }
-        ostream.append('>');
+        ostream(">");
     }
-    void convertTile(Appendable ostream, StartElement element, {Attribute*} attributes) {
-        ostream.append('<');
+    void convertTile(Anything(String) ostream, StartElement element, {Attribute*} attributes) {
+        ostream("<");
         if (XMLConstants.defaultNsPrefix != element.name.namespaceURI) {
-            ostream.append("``element.name.prefix``:");
+            ostream("``element.name.prefix``:");
         }
-        ostream.append(element.name.localPart);
+        ostream(element.name.localPart);
         Queue<Integer> events = LinkedList<Integer>();
         for (attribute in attributes) {
             if ("event" == attribute.name.localPart.lowercased) {
@@ -846,16 +846,16 @@ object zeroToOneConverter {
                 printAttribute(ostream, attribute);
             }
         }
-        ostream.append('>');
+        ostream(">");
         while (exists event = events.accept()) {
-            ostream.append(LineEnd.lineSep);
+            ostream(operatingSystem.newline);
             printEvent(ostream, event);
         }
     }
     "Read version-0 XML from the input stream and write version-1 equivalent XML to the
      output stream."
     todo("Convert to ceylon.io and/or ceylon.file, at least for output")
-    shared void convert({XMLEvent*} stream, Appendable ostream) {
+    shared void convert({XMLEvent*} stream, Anything(String) ostream) {
         for (event in stream) {
             if (is StartElement event) {
                 if (isSpecifiedTag(event.name, "tile")) {
@@ -866,19 +866,19 @@ object zeroToOneConverter {
                     printStartElement(ostream, event);
                 }
             } else if (is Characters event) {
-                ostream.append(event.data.trimmed);
+                ostream(event.data.trimmed);
             } else if (is EndElement event) {
                 printEndElement(ostream, event);
             } else if (is StartDocument event) {
-                ostream.append("""<?xml version="1.0"?>""");
-                ostream.append(LineEnd.lineSep);
+                ostream("""<?xml version="1.0"?>""");
+                ostream(operatingSystem.newline);
             } else if (is EndDocument event) {
                 break;
             } else {
                 log.warn("Unhandled element type ``event.eventType``");
             }
         }
-        ostream.append(LineEnd.lineSep);
+        ostream(operatingSystem.newline);
     }
 }
 test
@@ -892,10 +892,10 @@ void testZeroToOneConversion() {
                    type='mountain' event='229'><sp:fortress name='HQ' owner='0' id='15'
                    /></sp:tile><tile row='1'column='1' type='temperate_forest'
                    event='219'></tile></row></map>";
-    StringWriter ostream = StringWriter();
+    StringBuilder ostream = StringBuilder();
     zeroToOneConverter.convert(CeylonIterable(IteratorWrapper(TypesafeXMLEventReader(
             XMLInputFactory.newInstance().createXMLEventReader(StringReader(orig))))),
-        ostream);
+        ostream.append);
     StringWriter actualXML = StringWriter();
     SPWriter writer = oldWriter;
     writer.writeSPObject(actualXML,
@@ -925,7 +925,7 @@ shared void convertZeroToOne() {
         try (reader = JFileReader(argument)) {
             zeroToOneConverter.convert(ConvertingIterable<XMLEvent>(
                     XMLInputFactory.newInstance().createXMLEventReader(reader)),
-                SystemOut.sysOut);
+                process.write);
         } catch (FileNotFoundException|NoSuchFileException except) {
             log.error("File ``argument`` not found", except);
         } catch (XMLStreamException except) {
