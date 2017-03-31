@@ -4,9 +4,6 @@ import java.lang {
 import lovelace.util.common {
     todo
 }
-import model.listeners {
-    SelectionChangeListener
-}
 import strategicprimer.viewer.model.map {
     TileFixture
 }

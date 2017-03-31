@@ -42,8 +42,7 @@ import java.awt.event {
     ActionEvent
 }
 import model.listeners {
-    MapChangeListener,
-    SelectionChangeListener
+    MapChangeListener
 }
 import lovelace.util.jvm {
     centeredHorizontalBox,

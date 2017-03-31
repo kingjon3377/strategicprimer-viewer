@@ -32,9 +32,6 @@ import javax.swing.event {
     ListSelectionListener,
     ListSelectionEvent
 }
-import model.listeners {
-    SelectionChangeListener
-}
 import java.awt {
     Image,
     Graphics,

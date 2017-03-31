@@ -74,12 +74,9 @@ import lovelace.util.jvm {
 
 import model.listeners {
     PlayerChangeListener,
-    SelectionChangeListener,
     CompletionListener,
     MovementCostListener,
     PlayerChangeSource,
-    SelectionChangeSupport,
-    SelectionChangeSource,
     CompletionSource,
     MovementCostSource
 }
@@ -113,6 +110,9 @@ import strategicprimer.viewer.drivers {
     SPMenu
 }
 import strategicprimer.viewer.drivers.map_viewer {
+    SelectionChangeListener,
+    SelectionChangeSource,
+    SelectionChangeSupport,
     fixtureFilterTableModel,
     FixtureMatcher,
     FixtureListModel,
@@ -438,7 +438,10 @@ SPFrame explorationFrame(IExplorationModel model,
                 createHotKey(dtb, direction.string, ecl, JComponent.whenInFocusedWindow,
                 *{arrowKeys.get(direction), numKeys.get(direction)}.coalesced);
                 dtb.addActionListener(ecl);
-                ecl.addSelectionChangeListener(selectedPointChanged);
+                ecl.addSelectionChangeListener(object satisfies SelectionChangeListener {
+                    shared actual void selectedPointChanged(Point? old, Point newSel) =>
+                            outer.selectedPointChanged(old, newSel);
+                });
                 ecl.addMovementCostListener(deduct);
                 """A list-data-listener to select a random but suitable set of fixtures to
                     be "discovered" if the tile is explored."""

@@ -1,6 +1,8 @@
 import model.listeners {
-    SelectionChangeSource,
     MovementCostSource
+}
+import strategicprimer.viewer.drivers.map_viewer {
+    SelectionChangeSource
 }
 import strategicprimer.viewer.model.map {
     TileFixture

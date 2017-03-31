@@ -26,9 +26,7 @@ import lovelace.util.common {
 }
 
 import model.listeners {
-    MapChangeListener,
-    SelectionChangeListener,
-    SelectionChangeSource
+    MapChangeListener
 }
 import model.map {
     MapDimensions,

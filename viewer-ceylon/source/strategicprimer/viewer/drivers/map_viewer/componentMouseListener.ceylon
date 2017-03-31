@@ -12,10 +12,6 @@ import javax.swing {
     JPopupMenu
 }
 
-import model.listeners {
-    SelectionChangeListener,
-    SelectionChangeSource
-}
 import model.map {
     MapDimensions,
     Point

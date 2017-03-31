@@ -14,10 +14,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.listeners {
-    SelectionChangeSupport,
-    SelectionChangeListener
-}
 import model.map {
     Point
 }

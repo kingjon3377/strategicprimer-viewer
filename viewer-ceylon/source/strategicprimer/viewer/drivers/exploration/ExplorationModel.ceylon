@@ -5,7 +5,9 @@ import ceylon.collection {
 import ceylon.math.float {
     ceiling
 }
-
+import strategicprimer.viewer.drivers.map_viewer {
+    SelectionChangeListener
+}
 import java.lang {
     IllegalStateException
 }
@@ -19,10 +21,8 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     shuffle
 }
-
 import model.listeners {
-    MovementCostListener,
-    SelectionChangeListener
+    MovementCostListener
 }
 import model.map {
     Point,

@@ -16,8 +16,7 @@ import lovelace.util.jvm {
     BorderedPanel
 }
 import model.listeners {
-    MapChangeListener,
-    SelectionChangeListener
+    MapChangeListener
 }
 import javax.swing {
     JScrollBar,

@@ -8,10 +8,7 @@ import javax.swing {
 }
 
 import model.listeners {
-    SelectionChangeSupport,
-    PlayerChangeListener,
-    SelectionChangeListener,
-    SelectionChangeSource
+    PlayerChangeListener
 }
 import model.map {
     Point
