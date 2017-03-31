@@ -25,14 +25,11 @@ import lovelace.util.jvm {
     BoxPanel
 }
 
-import model.map {
-    MapDimensions
-}
-
 import strategicprimer.viewer.drivers {
     SPDialog
 }
 import strategicprimer.viewer.model.map {
+    MapDimensions,
     pointFactory
 }
 class NumberState of valid|nonNumeric|negative|overflow {

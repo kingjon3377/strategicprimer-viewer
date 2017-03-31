@@ -22,12 +22,12 @@ import java.lang {
 }
 
 import model.map {
-    MapDimensionsImpl,
-    MapDimensions,
     Point
 }
 
 import strategicprimer.viewer.model.map {
+    MapDimensions,
+    MapDimensionsImpl,
     TileType,
     pointFactory
 }

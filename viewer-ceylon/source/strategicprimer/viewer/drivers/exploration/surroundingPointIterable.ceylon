@@ -4,11 +4,11 @@ import ceylon.collection {
 }
 
 import model.map {
-    MapDimensions,
     Point
 }
 
 import strategicprimer.viewer.model.map {
+    MapDimensions,
     pointFactory
 }
 "A stream of the points in a square surrounding a point, with points that are closer

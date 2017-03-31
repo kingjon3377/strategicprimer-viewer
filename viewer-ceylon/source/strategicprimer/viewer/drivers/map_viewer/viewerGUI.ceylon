@@ -1,5 +1,7 @@
+import strategicprimer.viewer.model.map {
+    MapDimensions
+}
 import model.map {
-    MapDimensions,
     Point
 }
 import javax.swing {

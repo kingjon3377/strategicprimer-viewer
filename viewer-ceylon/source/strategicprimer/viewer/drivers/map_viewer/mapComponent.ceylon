@@ -29,11 +29,11 @@ import model.listeners {
     MapChangeListener
 }
 import model.map {
-    MapDimensions,
     Point
 }
 
 import strategicprimer.viewer.model.map {
+    MapDimensions,
     TileFixture,
     pointFactory
 }

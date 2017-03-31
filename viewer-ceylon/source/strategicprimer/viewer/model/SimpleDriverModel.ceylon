@@ -9,17 +9,15 @@ import java.nio.file {
 import model.listeners {
     MapChangeListener
 }
-import model.map {
-    MapDimensions,
-    MapDimensionsImpl
-}
 import strategicprimer.viewer.model {
     VersionChangeListener
 }
 import strategicprimer.viewer.model.map {
+    MapDimensions,
     SPMapNG,
     IMutableMapNG,
-    PlayerCollection
+    PlayerCollection,
+    MapDimensionsImpl
 }
 "A superclass for driver-models, to handle the common details."
 shared class SimpleDriverModel satisfies IDriverModel {

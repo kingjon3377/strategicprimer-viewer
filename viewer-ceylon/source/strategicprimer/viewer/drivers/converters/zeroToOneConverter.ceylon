@@ -49,11 +49,8 @@ import lovelace.util.jvm {
     ConvertingIterable
 }
 
-import model.map {
-    MapDimensionsImpl
-}
-
 import strategicprimer.viewer.model.map {
+	MapDimensionsImpl,
 	Player,
 	PlayerImpl,
     TileType,

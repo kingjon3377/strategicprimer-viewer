@@ -29,8 +29,6 @@ import lovelace.util.jvm {
 }
 
 import model.map {
-    MapDimensions,
-    MapDimensionsImpl,
     Point
 }
 
@@ -58,6 +56,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    MapDimensionsImpl,
     Player,
     PlayerImpl,
     River,
@@ -67,7 +66,8 @@ import strategicprimer.viewer.model.map {
     SPMapNG,
     IMutableMapNG,
     IMapNG,
-    pointFactory
+    pointFactory,
+    MapDimensions
 }
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture,

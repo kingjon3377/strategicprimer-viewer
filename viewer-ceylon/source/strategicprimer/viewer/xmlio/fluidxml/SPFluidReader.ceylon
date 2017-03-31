@@ -42,8 +42,6 @@ import lovelace.util.common {
 }
 
 import model.map {
-    MapDimensions,
-    MapDimensionsImpl,
     Point
 }
 
@@ -52,6 +50,8 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+	MapDimensions,
+    MapDimensionsImpl,
     HasKind,
     Player,
     PlayerImpl,

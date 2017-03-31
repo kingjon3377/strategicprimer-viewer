@@ -52,7 +52,6 @@ import lovelace.util.common {
 }
 
 import model.map {
-    MapDimensionsImpl,
     Point
 }
 
@@ -60,6 +59,7 @@ import strategicprimer.viewer.drivers.advancement {
     races
 }
 import strategicprimer.viewer.model.map {
+    MapDimensionsImpl,
     Player,
 	HasPortrait,
 	PlayerImpl,

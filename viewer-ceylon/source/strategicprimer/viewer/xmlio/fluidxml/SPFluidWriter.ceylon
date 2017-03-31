@@ -27,11 +27,11 @@ import javax.xml.stream {
 }
 
 import model.map {
-    MapDimensions,
     Point
 }
 
 import strategicprimer.viewer.model.map {
+    MapDimensions,
     HasKind,
     HasImage,
     Player,

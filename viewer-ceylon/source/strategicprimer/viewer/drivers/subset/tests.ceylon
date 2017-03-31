@@ -7,11 +7,11 @@ import ceylon.test {
 }
 
 import model.map {
-    MapDimensionsImpl,
     Point
 }
 
 import strategicprimer.viewer.model.map {
+    MapDimensionsImpl,
     IFixture,
     PlayerImpl,
     River,

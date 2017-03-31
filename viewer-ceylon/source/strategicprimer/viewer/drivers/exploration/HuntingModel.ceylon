@@ -6,11 +6,11 @@ import ceylon.collection {
 }
 
 import strategicprimer.viewer.model.map {
+    MapDimensions,
     TileType,
     IMapNG
 }
 import model.map {
-    MapDimensions,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

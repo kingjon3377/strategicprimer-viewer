@@ -3,11 +3,11 @@ import lovelace.util.jvm {
 }
 import strategicprimer.viewer.model.map {
     TileFixture,
-    TileType
+    TileType,
+    MapDimensions
 }
 import model.map {
-    Point,
-    MapDimensions
+    Point
 }
 
 "An [[EncounterTable]] where the event is selected at random."

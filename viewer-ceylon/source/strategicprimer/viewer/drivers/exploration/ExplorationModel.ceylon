@@ -25,8 +25,7 @@ import model.listeners {
     MovementCostListener
 }
 import model.map {
-    Point,
-    MapDimensions
+    Point
 }
 
 import strategicprimer.viewer.model {
@@ -43,7 +42,8 @@ import strategicprimer.viewer.model.map {
     invalidPoint,
     pointFactory,
     IFixture,
-    HasOwner
+    HasOwner,
+    MapDimensions
 }
 import strategicprimer.viewer.model.map.fixtures {
     Ground,

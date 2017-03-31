@@ -2,11 +2,8 @@ import ceylon.test {
     assertEquals,
     test
 }
-
 import model.map {
-    Point,
-    MapDimensions,
-    MapDimensionsImpl
+    Point
 }
 "A view of locations on the map in order, starting at a given point."
 shared class PointIterator(dimensions, forwards, horizontal,

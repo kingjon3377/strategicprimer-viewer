@@ -5,8 +5,10 @@ import java.awt {
     BorderLayout,
     Adjustable
 }
+import strategicprimer.viewer.model.map {
+    MapDimensions
+}
 import model.map {
-    MapDimensions,
     Point
 }
 import lovelace.util.common {

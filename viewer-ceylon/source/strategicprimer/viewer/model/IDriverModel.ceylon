@@ -10,9 +10,7 @@ import model.listeners {
     MapChangeSource
 }
 import strategicprimer.viewer.model.map {
-    IMutableMapNG
-}
-import model.map {
+    IMutableMapNG,
     MapDimensions
 }
 "An interface for driver-model objects that hold a mutable map. Interfaces deriving from

@@ -2,6 +2,7 @@ import java.lang {
     IllegalArgumentException
 }
 import strategicprimer.viewer.model.map {
+	MapDimensionsImpl,
 	River,
     TileType,
     SPMapNG,
@@ -16,7 +17,6 @@ import lovelace.util.jvm {
     EnumCounter
 }
 import model.map {
-    MapDimensionsImpl,
     Point
 }
 import ceylon.collection {

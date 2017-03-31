@@ -24,15 +24,15 @@ import lovelace.util.common {
 }
 
 import model.map {
-    Point,
-    MapDimensions,
-    MapDimensionsImpl
+    Point
 }
 
 import strategicprimer.viewer.model.map {
     TileFixture,
     TileType,
-    pointFactory
+    pointFactory,
+    MapDimensionsImpl,
+    MapDimensions
 }
 
 """A class to create exploration results. The initial implementation is a bit hackish, and

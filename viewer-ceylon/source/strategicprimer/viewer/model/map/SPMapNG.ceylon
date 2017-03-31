@@ -17,8 +17,7 @@ import lovelace.util.common {
 }
 
 import model.map {
-    Point,
-    MapDimensions
+    Point
 }
 
 import strategicprimer.viewer.model.map {

@@ -1,10 +1,10 @@
 import strategicprimer.viewer.model.map {
     TileFixture,
-    TileType
+    TileType,
+    MapDimensions
 }
 import model.map {
-    Point,
-    MapDimensions
+    Point
 }
 "An [[EncounterTable]] that always returns the same value."
 class ConstantTable(String constant) satisfies EncounterTable {

@@ -15,10 +15,6 @@ import java.util.\ifunction {
     Predicate
 }
 
-import model.map {
-    MapDimensions
-}
-
 import strategicprimer.viewer.drivers {
     SPOptions,
     IDriverUsage,
@@ -37,6 +33,7 @@ import strategicprimer.viewer.model {
     IDriverModel
 }
 import strategicprimer.viewer.model.map {
+    MapDimensions,
     TileFixture,
     IMapNG,
     pointFactory,

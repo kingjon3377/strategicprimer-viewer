@@ -1,10 +1,10 @@
 import strategicprimer.viewer.model.map {
     TileFixture,
-    TileType
+    TileType,
+    MapDimensions
 }
 import model.map {
-    Point,
-    MapDimensions
+    Point
 }
 "An interface for encounter tables, for the now-nearly-defunct second model of generating
  results. This class's methods produce data for the Judge's use; to produce results for a

@@ -29,9 +29,7 @@ import javax.xml.stream.events {
 }
 
 import model.map {
-    Point,
-    MapDimensions,
-    MapDimensionsImpl
+    Point
 }
 
 import strategicprimer.viewer.model {
@@ -47,7 +45,9 @@ import strategicprimer.viewer.model.map {
     IMapNG,
     TileType,
     invalidPoint,
-    pointFactory
+    pointFactory,
+    MapDimensionsImpl,
+    MapDimensions
 }
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture,

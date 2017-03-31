@@ -23,8 +23,7 @@ import lovelace.util.common {
 }
 
 import model.map {
-    Point,
-    MapDimensions
+    Point
 }
 import strategicprimer.viewer.model.map.fixtures {
     Ground,
@@ -52,7 +51,8 @@ import strategicprimer.viewer.model.map {
     IMapNG,
     TileFixture,
     FixtureIterable,
-    HasName
+    HasName,
+    MapDimensions
 }
 
 "Models of (game statistics for) herding."

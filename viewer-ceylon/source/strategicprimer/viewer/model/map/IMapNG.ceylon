@@ -7,7 +7,6 @@ import strategicprimer.viewer.model.map {
     TileFixture
 }
 import model.map {
-    MapDimensions,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures {
