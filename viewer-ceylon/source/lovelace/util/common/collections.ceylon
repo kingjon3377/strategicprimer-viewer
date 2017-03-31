@@ -112,3 +112,9 @@ shared class ArraySet<Element> satisfies MutableSet<Element>
     "Clone the set."
     shared actual ArraySet<Element> clone() => ArraySet.copy(this);
 }
+"A wrapper around an [[Iterator]] to let it be used in for-each loops. XML parsing in
+ particular always seems to hand me an iterator."
+shared class IteratorWrapper<out Element>(Iterator<Element>? wrapped)
+        satisfies Iterable<Element> {
+    shared actual Iterator<Element> iterator() => wrapped else emptyIterator;
+}

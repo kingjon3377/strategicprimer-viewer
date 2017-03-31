@@ -3,7 +3,7 @@ import ceylon.collection {
     LinkedList
 }
 import ceylon.interop.java {
-    CeylonIterable
+    CeylonIterator
 }
 
 import controller.map.formatexceptions {
@@ -41,6 +41,10 @@ import javax.xml.stream.events {
     XMLEvent,
     Characters,
     EndElement
+}
+
+import lovelace.util.common {
+    IteratorWrapper
 }
 
 import model.map {
@@ -101,10 +105,6 @@ import strategicprimer.viewer.xmlio {
     IMapReader,
     futureTags,
     spNamespace
-}
-
-import util {
-    IteratorWrapper
 }
 "The main reader-from-XML class in the 'fluid XML' implementation."
 shared class SPFluidReader() satisfies IMapReader&ISPReader {
@@ -447,8 +447,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     shared actual Type readXML<Type>(JPath file, JReader istream, Warning warner)
             given Type satisfies Object {
         JIterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
-        {XMLEvent*} eventReader =
-                CeylonIterable(IteratorWrapper(IncludingIterator(file, reader)));
+        {XMLEvent*} eventReader = IteratorWrapper(CeylonIterator(IncludingIterator(file, reader)));
         IMutablePlayerCollection players = PlayerCollection();
         IDRegistrar idFactory = IDFactory();
         for (event in eventReader) {

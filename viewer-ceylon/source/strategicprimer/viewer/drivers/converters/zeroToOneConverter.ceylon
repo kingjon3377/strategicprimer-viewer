@@ -1,27 +1,37 @@
-import lovelace.util.jvm {
-    ConvertingIterable
-}
-import javax.xml.namespace {
-    QName
-}
-import lovelace.util.common {
-    todo
-}
-import strategicprimer.viewer.xmlio {
-    spNamespace,
-    readMap,
-    TypesafeXMLEventReader,
-    SPWriter,
-    warningLevels
-}
 import ceylon.collection {
     LinkedList,
     Queue,
     MutableMap,
     HashMap
 }
+import ceylon.interop.java {
+    CeylonIterator
+}
+import ceylon.test {
+    assertEquals,
+    test
+}
+
+import java.io {
+    StringWriter,
+    StringReader,
+    FileNotFoundException,
+    IOException,
+    JFileReader=FileReader
+}
+import java.nio.file {
+    NoSuchFileException
+}
+
 import javax.xml {
     XMLConstants
+}
+import javax.xml.namespace {
+    QName
+}
+import javax.xml.stream {
+    XMLInputFactory,
+    XMLStreamException
 }
 import javax.xml.stream.events {
     Attribute,
@@ -33,12 +43,21 @@ import javax.xml.stream.events {
     Characters,
     XMLEvent
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
-    MineralVein
+
+import lovelace.util.common {
+    todo,
+    IteratorWrapper
 }
-import strategicprimer.viewer.model.map.fixtures {
-    TextFixture
+import lovelace.util.jvm {
+    ConvertingIterable
 }
+
+import model.map {
+    PlayerImpl,
+    Player,
+    MapDimensionsImpl
+}
+
 import strategicprimer.viewer.model.map {
     TileType,
     SPMapNG,
@@ -46,24 +65,11 @@ import strategicprimer.viewer.model.map {
     PlayerCollection,
     pointFactory
 }
-import javax.xml.stream {
-    XMLInputFactory,
-    XMLStreamException
+import strategicprimer.viewer.model.map.fixtures {
+    TextFixture
 }
-import util {
-    IteratorWrapper
-}
-import model.map {
-    PlayerImpl,
-    Player,
-    MapDimensionsImpl
-}
-import ceylon.test {
-    assertEquals,
-    test
-}
-import ceylon.interop.java {
-    CeylonIterable
+import strategicprimer.viewer.model.map.fixtures.resources {
+    MineralVein
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Town,
@@ -71,15 +77,12 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus,
     Fortress
 }
-import java.io {
-    StringWriter,
-    StringReader,
-    FileNotFoundException,
-    IOException,
-    JFileReader=FileReader
-}
-import java.nio.file {
-    NoSuchFileException
+import strategicprimer.viewer.xmlio {
+    spNamespace,
+    readMap,
+    TypesafeXMLEventReader,
+    SPWriter,
+    warningLevels
 }
 object zeroToOneConverter {
 	MutableMap<Integer, String> equivalents = HashMap<Integer, String>();
@@ -228,7 +231,7 @@ void testZeroToOneConversion() {
                    /></sp:tile><tile row='1'column='1' type='temperate_forest'
                    event='219'></tile></row></map>";
 	StringBuilder ostream = StringBuilder();
-	zeroToOneConverter.convert(CeylonIterable(IteratorWrapper(TypesafeXMLEventReader(
+	zeroToOneConverter.convert(IteratorWrapper(CeylonIterator(TypesafeXMLEventReader(
 		XMLInputFactory.newInstance().createXMLEventReader(StringReader(orig))))),
 		ostream.append);
 	StringWriter actualXML = StringWriter();

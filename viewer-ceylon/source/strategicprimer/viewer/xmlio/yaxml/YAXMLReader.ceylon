@@ -1,5 +1,5 @@
 import ceylon.interop.java {
-    CeylonIterable
+    CeylonIterator
 }
 
 import controller.map.formatexceptions {
@@ -32,6 +32,10 @@ import javax.xml.stream.events {
     StartElement
 }
 
+import lovelace.util.common {
+    IteratorWrapper
+}
+
 import strategicprimer.viewer.model {
     IDFactory,
     IDRegistrar
@@ -46,10 +50,6 @@ import strategicprimer.viewer.xmlio {
     TypesafeXMLEventReader,
     IMapReader
 }
-
-import util {
-    IteratorWrapper
-}
 "Sixth-generation SP XML reader."
 shared object yaXMLReader satisfies IMapReader&ISPReader {
     "Read an object from XML."
@@ -63,7 +63,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
             "The Warning instance to use for warnings" Warning warner)
             given Element satisfies Object {
         JIterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
-        {XMLEvent*} eventReader = CeylonIterable(IteratorWrapper(IncludingIterator(file, reader)));
+        {XMLEvent*} eventReader = IteratorWrapper(CeylonIterator(IncludingIterator(file, reader)));
         IDRegistrar idFactory = IDFactory();
         if (exists event = eventReader.narrow<StartElement>().first) {
             Object retval = YAReaderAdapter(warner, idFactory).parse(event, QName("root"),
