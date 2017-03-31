@@ -55,17 +55,13 @@ import strategicprimer.viewer.xmlio {
     readMap,
     warningLevels
 }
-
-import util {
-    LineEnd
-}
 "A window to show the result of running subset tests."
 class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) {
     shared actual String windowName = "Subset Tester";
     StreamingLabel label = StreamingLabel();
     object htmlWriter extends JWriter() {
         variable Boolean lineStart = true;
-        Regex matcher = regex(LineEnd.lineSep, true);
+        Regex matcher = regex(operatingSystem.newline, true);
         shared actual JWriter append(CharSequence csq) {
             String local = csq.string;
             if (lineStart) {

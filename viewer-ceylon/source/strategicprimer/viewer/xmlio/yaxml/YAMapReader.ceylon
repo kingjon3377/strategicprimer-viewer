@@ -2,9 +2,6 @@ import ceylon.collection {
     Stack,
     LinkedList
 }
-import ceylon.interop.java {
-    CeylonIterable
-}
 import ceylon.language.meta {
     classDeclaration
 }
@@ -14,11 +11,6 @@ import controller.map.formatexceptions {
     UnwantedChildException,
     MissingPropertyException,
     UnsupportedTagException
-}
-import strategicprimer.viewer.xmlio {
-    Warning,
-    ISPReader,
-    futureTags
 }
 
 import java.lang {
@@ -65,9 +57,9 @@ import strategicprimer.viewer.model.map.fixtures {
 import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
-
-import util {
-    LineEnd
+import strategicprimer.viewer.xmlio {
+    Warning,
+    futureTags
 }
 "A reader for Strategic Primer maps."
 class YAMapReader("The Warning instance to use" Warning warner,
@@ -126,7 +118,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
     "Write a newline if needed."
     void eolIfNeeded(Boolean needEol, JAppendable writer) {
         if (needEol) {
-            writer.append(LineEnd.lineSep);
+            writer.append(operatingSystem.newline);
         }
     }
     "Parse a river from XML. The caller is now responsible for advancing the stream past

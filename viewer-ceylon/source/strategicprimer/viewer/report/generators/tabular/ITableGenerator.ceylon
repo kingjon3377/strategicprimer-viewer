@@ -20,10 +20,6 @@ import model.map {
     Point,
     IFixture
 }
-
-import util {
-    LineEnd
-}
 "A regular expression to mtch quote characters."
 Regex quotePattern = regex("\"", true);
 "An interface for tabular-report generators. It's expected that implementers will take the
@@ -95,7 +91,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
     shared default Character fieldDelimiter => ',';
     """The row delimiter; used to limit "magic character" warnings and allow us to change
        it."""
-    shared default String rowDelimiter => LineEnd.lineSep;
+    shared default String rowDelimiter => operatingSystem.newline;
     "Write multiple fields to a row, quoting as necessary, separated by the field
      delimiter, with the last field followed by the row delimiter."
     shared default void writeRow(Anything(String) ostream, String firstField,

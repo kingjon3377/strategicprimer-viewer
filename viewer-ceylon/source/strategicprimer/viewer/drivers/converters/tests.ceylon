@@ -1,14 +1,3 @@
-import ceylon.collection {
-    HashSet,
-    HashMap,
-    MutableSet,
-    LinkedList,
-    Queue,
-    MutableMap
-}
-import ceylon.interop.java {
-    CeylonIterable
-}
 import ceylon.regex {
     Regex,
     regex
@@ -16,56 +5,15 @@ import ceylon.regex {
 import ceylon.test {
     test,
     assertEquals,
-    assertThatException,
     assertTrue
 }
 
 import java.io {
     StringWriter,
-    IOException,
-    JFileReader=FileReader,
-    FileNotFoundException,
     StringReader
-}
-import java.lang {
-    Appendable,
-    IllegalArgumentException
-}
-import java.nio.file {
-    NoSuchFileException
 }
 import java.util {
     Formatter
-}
-
-import javax.xml {
-    XMLConstants
-}
-import javax.xml.namespace {
-    QName
-}
-import javax.xml.stream {
-    XMLStreamException,
-    XMLInputFactory
-}
-import javax.xml.stream.events {
-    Attribute,
-    EndElement,
-    XMLEvent,
-    StartElement,
-    Characters,
-    StartDocument,
-    EndDocument,
-    Namespace
-}
-
-import lovelace.util.common {
-    todo
-}
-import lovelace.util.jvm {
-    shuffle,
-    ConvertingIterable,
-    EnumCounter
 }
 
 import model.map {
@@ -103,15 +51,11 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Fairy,
     Giant,
     SimpleImmortalKind,
-    SimpleImmortal,
-    Unit,
-    IUnit
+    SimpleImmortal
 }
 import strategicprimer.viewer.model.map.fixtures.resources {
     FieldStatus,
     Meadow,
-    MineralVein,
-    CacheFixture,
     Mine,
     StoneKind,
     StoneDeposit,
@@ -126,23 +70,14 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     TownSize,
     Village,
     City,
-    Fortification,
-    Town,
-    Fortress
+    Fortification
 }
 import strategicprimer.viewer.xmlio {
     ISPReader,
     readMap,
     testReaderFactory,
-    TypesafeXMLEventReader,
     SPWriter,
-    spNamespace,
     warningLevels
-}
-
-import util {
-    LineEnd,
-    IteratorWrapper
 }
 
 void assertModuloID(IMapNG map, String serialized, Anything(String) err) {

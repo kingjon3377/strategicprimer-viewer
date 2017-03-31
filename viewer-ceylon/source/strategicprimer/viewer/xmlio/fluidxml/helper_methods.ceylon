@@ -53,10 +53,6 @@ import strategicprimer.viewer.xmlio {
     Warning,
     spNamespace
 }
-
-import util {
-    LineEnd
-}
 NumberFormat numParser = NumberFormat.integerInstance;
 
 "Require that an XML tag be one of the specified tags."
@@ -218,7 +214,7 @@ void indent(
         "The number of tabs to write."
         Integer tabs) {
     assert (tabs >= 0);
-    ostream.writeCharacters(LineEnd.lineSep);
+    ostream.writeCharacters(operatingSystem.newline);
     ostream.writeCharacters("\t".repeat(tabs));
 }
 

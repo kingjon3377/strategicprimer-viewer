@@ -49,10 +49,6 @@ import strategicprimer.viewer.xmlio {
     Warning,
     spNamespace
 }
-
-import util {
-    LineEnd
-}
 "A parser for numeric data, so integers can contain commas."
 NumberFormat numParser = NumberFormat.integerInstance;
 "Patterns to match XML metacharacters, and their qutoed forms."
@@ -205,17 +201,17 @@ abstract class YAAbstractReader<Element>
     }
     "Close a tag with a right-bracket and add a newline."
     shared static void finishParentTag(JAppendable ostream) =>
-            ostream.append(">``LineEnd.lineSep``");
+            ostream.append(">``operatingSystem.newline``");
     "Close a 'leaf' tag and add a newline."
     shared static void closeLeafTag(JAppendable ostream) =>
-            ostream.append(" />``LineEnd.lineSep``");
+            ostream.append(" />``operatingSystem.newline``");
     "Write a closing tag to the stream, optionally indented, and followed by a
      newline."
     shared static void closeTag(JAppendable ostream, Integer tabs, String tag) {
         if (tabs > 0) {
             indent(ostream, tabs);
         }
-        ostream.append("</``simpleQuote(tag)``>``LineEnd.lineSep``");
+        ostream.append("</``simpleQuote(tag)``>``operatingSystem.newline``");
     }
     "Parse a Point from a tag's properties."
     shared static Point parsePoint(StartElement element) =>

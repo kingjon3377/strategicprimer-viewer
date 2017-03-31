@@ -6,9 +6,6 @@ import controller.map.formatexceptions {
     MissingPropertyException,
     UnwantedChildException
 }
-import strategicprimer.viewer.model {
-    IDRegistrar
-}
 
 import java.lang {
     JAppendable=Appendable,
@@ -25,14 +22,19 @@ import javax.xml.stream.events {
     XMLEvent,
     StartElement
 }
-import strategicprimer.viewer.model.map {
-    IPlayerCollection
-}
+
 import model.map {
     Player
 }
+
 import strategicprimer.viewer.drivers.advancement {
     randomRace
+}
+import strategicprimer.viewer.model {
+    IDRegistrar
+}
+import strategicprimer.viewer.model.map {
+    IPlayerCollection
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus,
@@ -47,9 +49,6 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 }
 import strategicprimer.viewer.xmlio {
     Warning
-}
-import util {
-    LineEnd
 }
 "A reader for fortresses, villages, and other towns."
 class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players)
@@ -191,7 +190,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             writeNonemptyProperty(ostream, "portrait", obj.portrait);
             ostream.append('>');
             if (!obj.empty) {
-                ostream.append(LineEnd.lineSep);
+                ostream.append(operatingSystem.newline);
                 for (member in obj) {
                     if (exists reader = memberReaders.find((yar) => yar.canWrite(member))) {
                         reader.writeRaw(ostream, member, tabs + 1);
@@ -203,7 +202,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 indent(ostream, tabs);
             }
             ostream.append("</fortress>");
-            ostream.append(LineEnd.lineSep);
+            ostream.append(operatingSystem.newline);
         } else {
             throw IllegalStateException("Unexpected TownFixture type");
         }
