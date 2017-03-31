@@ -12,7 +12,6 @@ import lovelace.util.common {
 import model.map {
     IFixture,
     Player,
-    River,
     Point
 }
 
@@ -20,6 +19,7 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
+    River,
     IMapNG,
     invalidPoint
 }

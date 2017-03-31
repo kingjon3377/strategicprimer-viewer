@@ -2,6 +2,7 @@ import java.lang {
     IllegalArgumentException
 }
 import strategicprimer.viewer.model.map {
+	River,
     TileType,
     SPMapNG,
     IMutableMapNG,
@@ -14,7 +15,6 @@ import lovelace.util.jvm {
     EnumCounter
 }
 import model.map {
-    River,
     MapDimensionsImpl,
     Point,
     PlayerImpl

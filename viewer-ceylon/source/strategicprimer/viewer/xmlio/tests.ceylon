@@ -59,7 +59,6 @@ import model.map {
     HasPortrait,
     Player,
     PlayerImpl,
-    River,
     MapDimensionsImpl,
     Point,
     MutablePlayer
@@ -69,6 +68,7 @@ import strategicprimer.viewer.drivers.advancement {
     races
 }
 import strategicprimer.viewer.model.map {
+    River,
     PlayerCollection,
     TileType,
     SPMapNG,
@@ -584,7 +584,7 @@ void testPlayerSerialization() {
     assertMissingProperty<Player>("""<player number="1" />""", "code_name", false);
 }
 
-{[River]*} riverParameters = {*River.values()}.map((val) => [val]);
+{[River]*} riverParameters = {*`River`.caseValues}.map((val) => [val]);
 
 test
 parameters(`value riverParameters`)

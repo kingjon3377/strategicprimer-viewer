@@ -15,11 +15,11 @@ import lovelace.util.jvm {
     singletonRandom
 }
 import strategicprimer.viewer.model.map {
+    River,
     TileFixture,
     TileType
 }
 import model.map {
-    River,
     HasOwner
 }
 import strategicprimer.viewer.model.map.fixtures {

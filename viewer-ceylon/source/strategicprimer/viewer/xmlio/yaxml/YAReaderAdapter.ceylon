@@ -32,17 +32,14 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    River
-}
-
 import strategicprimer.viewer.model {
     IDFactory,
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
     IMutablePlayerCollection,
-    PlayerCollection
+    PlayerCollection,
+    River
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor

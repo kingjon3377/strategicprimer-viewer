@@ -27,7 +27,6 @@ import javax.xml.stream {
 }
 
 import model.map {
-    River,
     Player,
     HasKind,
     HasImage,
@@ -38,6 +37,7 @@ import model.map {
 }
 
 import strategicprimer.viewer.model.map {
+    River,
     IMapNG,
     TileType,
     pointFactory

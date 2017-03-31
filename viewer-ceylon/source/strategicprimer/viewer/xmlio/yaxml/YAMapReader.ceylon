@@ -31,7 +31,6 @@ import javax.xml.stream.events {
 import model.map {
     Player,
     Point,
-    River,
     MapDimensions,
     MapDimensionsImpl
 }
@@ -40,6 +39,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    River,
     IMutablePlayerCollection,
     TileFixture,
     SPMapNG,
@@ -127,9 +127,10 @@ class YAMapReader("The Warning instance to use" Warning warner,
         requireTag(element, parent, "river", "lake");
         if ("lake" == element.name.localPart.lowercased) {
             return River.lake;
+        } else if (exists river = River.parse(getParameter(element, "direction"))) {
+            return river;
         } else {
-            requireNonEmptyParameter(element, "direction", true);
-            return River.getRiver(getParameter(element, "direction"));
+            throw MissingPropertyException(element, "direction");
         }
     }
     "Write a river."

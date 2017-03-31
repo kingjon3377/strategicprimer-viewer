@@ -1,10 +1,10 @@
 import strategicprimer.viewer.model.map {
-    TileFixture
+    TileFixture,
+    River
 }
 import model.map {
     Player,
-    Point,
-    River
+    Point
 }
 import strategicprimer.viewer.model.map.fixtures {
     Ground

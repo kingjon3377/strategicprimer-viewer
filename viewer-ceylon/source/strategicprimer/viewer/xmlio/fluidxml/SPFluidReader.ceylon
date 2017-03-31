@@ -53,8 +53,7 @@ import model.map {
     PlayerImpl,
     MapDimensions,
     MapDimensionsImpl,
-    Point,
-    River
+    Point
 }
 
 import strategicprimer.viewer.model {
@@ -68,7 +67,8 @@ import strategicprimer.viewer.model.map {
     SPMapNG,
     IMutableMapNG,
     TileFixture,
-    pointFactory
+    pointFactory,
+    River
 }
 import strategicprimer.viewer.model.map.fixtures {
     FortressMember,

@@ -8,13 +8,13 @@ import ceylon.test {
 
 import model.map {
     PlayerImpl,
-    River,
     IFixture,
     MapDimensionsImpl,
     Point
 }
 
 import strategicprimer.viewer.model.map {
+    River,
     Subsettable,
     IPlayerCollection,
     IMutablePlayerCollection,

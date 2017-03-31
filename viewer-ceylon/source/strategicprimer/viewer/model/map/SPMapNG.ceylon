@@ -21,11 +21,11 @@ import model.map {
     Player,
     HasOwner,
     MapDimensions,
-    River,
     MutablePlayer
 }
 
 import strategicprimer.viewer.model.map {
+    River,
     IMutablePlayerCollection,
     TileFixture,
     IMutableMapNG,

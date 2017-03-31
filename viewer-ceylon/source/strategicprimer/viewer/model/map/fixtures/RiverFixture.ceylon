@@ -10,10 +10,10 @@ import strategicprimer.viewer.model.map.fixtures {
 	SubsettableFixture
 }
 import strategicprimer.viewer.model.map {
+	River,
 	TileFixture
 }
 import model.map {
-    River,
     IFixture
 }
 "A Fixture to encapsulate the rivers on a tile, so we can show a chit for rivers."

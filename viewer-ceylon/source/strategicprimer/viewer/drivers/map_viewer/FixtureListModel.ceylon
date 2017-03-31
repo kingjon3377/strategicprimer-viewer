@@ -15,11 +15,11 @@ import model.listeners {
     SelectionChangeListener
 }
 import model.map {
-    River,
     Point
 }
 
 import strategicprimer.viewer.model.map {
+    River,
     TileFixture,
     TileType,
     IMutableMapNG,

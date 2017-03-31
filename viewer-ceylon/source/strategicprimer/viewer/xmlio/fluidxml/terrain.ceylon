@@ -20,9 +20,7 @@ import javax.xml.stream.events {
     XMLEvent
 }
 import strategicprimer.viewer.model.map {
-    IPlayerCollection
-}
-import model.map {
+    IPlayerCollection,
     River
 }
 import strategicprimer.viewer.model.map.fixtures {
@@ -104,7 +102,11 @@ River readRiver(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "river");
     spinUntilEnd(element.name, stream);
-    return River.getRiver(getAttribute(element, "direction"));
+    if (exists river = River.parse(getAttribute(element, "direction"))) {
+        return river;
+    } else {
+        throw MissingPropertyException(element, "direction");
+    }
 }
 
 void writeRivers(XMLStreamWriter ostream, Object obj, Integer indent) {
