@@ -15,10 +15,10 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 import strategicprimer.viewer.model.map {
+    Player,
     IFixture
 }
 import model.map {
-    Player,
     Point
 }
 "A regular expression to mtch quote characters."

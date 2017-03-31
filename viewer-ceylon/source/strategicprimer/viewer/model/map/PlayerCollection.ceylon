@@ -14,10 +14,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    Player
-}
-
 "A collection of players. Using a simple List doesn't work when -1 is the default index if
  one isn't given in the XML."
 shared class PlayerCollection() satisfies IMutablePlayerCollection {

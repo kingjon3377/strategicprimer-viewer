@@ -22,11 +22,11 @@ import lovelace.util.jvm {
 }
 
 import model.map {
-    Player,
     MapDimensionsImpl,
     Point
 }
 import strategicprimer.viewer.model.map {
+    Player,
     PlayerImpl,
     PlayerCollection,
     TileFixture,

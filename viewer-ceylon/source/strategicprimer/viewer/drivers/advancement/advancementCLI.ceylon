@@ -1,7 +1,7 @@
 import strategicprimer.viewer.model {
     IDriverModel
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     Player
 }
 import strategicprimer.viewer.drivers.worker_mgmt {

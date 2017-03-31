@@ -3,14 +3,12 @@ import lovelace.util.common {
 }
 
 import strategicprimer.viewer.model.map {
+    Player,
     HasMutableImage,
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures {
     IEvent
-}
-import model.map {
-    Player
 }
 "An abstract superclass for towns etc."
 shared abstract class AbstractTown(status, townSize, name, owner, dc) satisfies IEvent&HasMutableImage&ITownFixture {

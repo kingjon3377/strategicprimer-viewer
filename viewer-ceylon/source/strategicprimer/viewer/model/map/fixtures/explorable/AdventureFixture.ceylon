@@ -4,10 +4,7 @@ import lovelace.util.common {
 
 import strategicprimer.viewer.model.map {
     HasMutableOwner,
-	IFixture
-}
-
-import model.map {
+	IFixture,
     Player
 }
 "A Fixture representing an adventure hook."

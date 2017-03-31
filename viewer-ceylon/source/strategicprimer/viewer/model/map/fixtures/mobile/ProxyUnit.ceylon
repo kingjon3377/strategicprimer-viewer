@@ -20,14 +20,12 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    Player
-}
 import strategicprimer.viewer.model.map.fixtures {
     UnitMember
 }
 
 import strategicprimer.viewer.model.map {
+    Player,
     IFixture,
     TileFixture,
     HasMutableName,

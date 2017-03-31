@@ -14,9 +14,7 @@ import javax.xml.stream.events {
     XMLEvent
 }
 import strategicprimer.viewer.model.map {
-    PlayerImpl
-}
-import model.map {
+    PlayerImpl,
     Player
 }
 

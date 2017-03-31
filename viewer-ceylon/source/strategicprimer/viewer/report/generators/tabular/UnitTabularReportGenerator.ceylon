@@ -1,17 +1,14 @@
 import lovelace.util.common {
     DelayedRemovalMap
 }
-import lovelace.util.jvm {
-    ceylonComparator
-}
 import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
+    Player,
     IFixture
 }
 import model.map {
-    Player,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
@@ -52,8 +49,7 @@ shared class UnitTabularReportGenerator(Player player, Point hq)
             comparingOn(([Point, IUnit] pair) => pair.first,
                 DistanceComparator(hq).compare),
             comparingOn(([Point, IUnit] pair) =>
-            pair.rest.first.owner, ceylonComparator((Player first, Player second) =>
-            first.compareTo(second))),
+                pair.rest.first.owner, increasing<Player>),
             comparingOn(([Point, IUnit] pair) => pair.rest.first.kind,
                 increasing<String>),
             comparingOn(([Point, IUnit] pair) => pair.rest.first.name,

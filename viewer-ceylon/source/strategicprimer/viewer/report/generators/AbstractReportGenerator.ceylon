@@ -10,8 +10,7 @@ import lovelace.util.common {
 }
 
 import model.map {
-    Point,
-    Player
+    Point
 }
 
 import strategicprimer.viewer.model {
@@ -19,7 +18,8 @@ import strategicprimer.viewer.model {
 }
 import strategicprimer.viewer.model.map {
     IFixture,
-    invalidPoint
+    invalidPoint,
+    Player
 }
 "An abstract superclass for classes that generate reports for particular kinds of SP
  objects. It's mostly interface and helper methods, but contains a couple of bits of

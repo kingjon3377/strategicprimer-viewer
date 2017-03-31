@@ -9,11 +9,11 @@ import lovelace.util.common {
 
 import strategicprimer.viewer.model.map {
     IFixture,
-    IMapNG
+    IMapNG,
+    Player
 }
 import model.map {
-    Point,
-    Player
+    Point
 }
 import strategicprimer.viewer.model.map.fixtures {
     TerrainFixture

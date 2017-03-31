@@ -3,7 +3,6 @@ import strategicprimer.viewer.model.map {
     River
 }
 import model.map {
-    Player,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures {

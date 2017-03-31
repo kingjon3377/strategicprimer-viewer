@@ -3,6 +3,7 @@ import ceylon.collection {
     ArrayList
 }
 import strategicprimer.viewer.model.map {
+    Player,
     IFixture,
     TileFixture,
     TileType,
@@ -12,7 +13,6 @@ import strategicprimer.viewer.model.map.fixtures {
     IEvent
 }
 import model.map {
-    Player,
     MapDimensions,
     Point
 }

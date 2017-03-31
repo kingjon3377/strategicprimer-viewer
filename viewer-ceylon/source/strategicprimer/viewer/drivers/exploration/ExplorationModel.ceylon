@@ -26,7 +26,6 @@ import model.listeners {
 }
 import model.map {
     Point,
-    Player,
     MapDimensions
 }
 
@@ -35,6 +34,7 @@ import strategicprimer.viewer.model {
     IDriverModel
 }
 import strategicprimer.viewer.model.map {
+    Player,
     IMutableMapNG,
     IMapNG,
     TileType,

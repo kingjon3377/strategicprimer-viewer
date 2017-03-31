@@ -22,11 +22,11 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     IUnit
 }
 import strategicprimer.viewer.model.map {
-    HasMutableName
+    HasMutableName,
+    Player
 }
 import model.map {
-    HasKind,
-    Player
+    HasKind
 }
 import ceylon.interop.java {
     createJavaIntArray,

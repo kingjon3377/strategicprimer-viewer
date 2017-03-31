@@ -53,11 +53,11 @@ import lovelace.util.jvm {
 }
 
 import model.map {
-    Player,
     MapDimensionsImpl
 }
 
 import strategicprimer.viewer.model.map {
+	Player,
 	PlayerImpl,
     TileType,
     SPMapNG,

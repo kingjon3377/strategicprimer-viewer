@@ -14,9 +14,7 @@ import javax.xml.stream.events {
     XMLEvent
 }
 import strategicprimer.viewer.model.map {
-    IPlayerCollection
-}
-import model.map {
+    IPlayerCollection,
     Player
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {

@@ -11,10 +11,10 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
+    Player,
     IFixture
 }
 import model.map {
-    Player,
     Point
 }
 "A tabular report generator for fortresses."
@@ -58,8 +58,7 @@ shared class FortressTabularReportGenerator(Player player, Point hq)
             } else if ("HQ" != first.name, "HQ" == second.name) {
                 return larger;
             } else if (nameCmp == equal) {
-                return ceylonComparator((Player one, Player two) => one.compareTo(two))
-                (first.owner, second.owner);
+                return first.owner <=> second.owner;
             } else {
                 return nameCmp;
             }

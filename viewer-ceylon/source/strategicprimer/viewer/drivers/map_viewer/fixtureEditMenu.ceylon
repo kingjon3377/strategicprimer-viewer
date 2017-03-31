@@ -15,13 +15,13 @@ import javax.swing {
     JPopupMenu
 }
 import strategicprimer.viewer.model.map {
+    Player,
     IFixture,
     HasMutableKind,
     HasMutableName,
     HasMutableOwner
 }
 import model.map {
-    Player,
     HasName
 }
 import strategicprimer.viewer.model.map.fixtures {

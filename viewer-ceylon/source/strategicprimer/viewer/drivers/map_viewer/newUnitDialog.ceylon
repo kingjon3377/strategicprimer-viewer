@@ -1,7 +1,7 @@
 import java.text {
     NumberFormat
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     Player
 }
 import strategicprimer.viewer.drivers {

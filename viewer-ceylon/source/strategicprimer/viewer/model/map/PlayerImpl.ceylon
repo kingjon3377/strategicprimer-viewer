@@ -2,9 +2,6 @@ import lovelace.util.common {
     todo
 }
 
-import model.map {
-    Player
-}
 "A representation of a player in the game."
 shared class PlayerImpl(playerId, name) satisfies MutablePlayer {
 	"The player's number."
@@ -23,12 +20,7 @@ shared class PlayerImpl(playerId, name) satisfies MutablePlayer {
 		}
 	}
 	shared actual Integer hash => playerId;
-	shared actual Integer compareTo(Player player) {
-		switch (playerId <=> player.playerId)
-		case (smaller) { return -1; }
-		case (equal) { return 0; }
-		case (larger) { return 1; }
-	}
+	shared actual Comparison compare(Player player) => playerId <=> player.playerId;
 	"""If the player name is non-empty, use it; otherwise, use "player #NN"."""
 	shared actual String string => (name.empty) then "player #``playerId``" else name;
 }

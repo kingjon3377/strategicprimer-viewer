@@ -5,10 +5,10 @@ import strategicprimer.viewer.drivers.map_viewer {
     SelectionChangeSource
 }
 import strategicprimer.viewer.model.map {
+    Player,
     TileFixture
 }
 import model.map {
-    Player,
     Point,
     HasName
 }

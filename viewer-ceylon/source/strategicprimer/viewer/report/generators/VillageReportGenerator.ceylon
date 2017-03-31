@@ -10,8 +10,7 @@ import lovelace.util.common {
 }
 
 import model.map {
-    Point,
-    Player
+    Point
 }
 
 import strategicprimer.viewer.model {
@@ -20,7 +19,8 @@ import strategicprimer.viewer.model {
 import strategicprimer.viewer.model.map {
     IFixture,
     IMapNG,
-    invalidPoint
+    invalidPoint,
+    Player
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     Village

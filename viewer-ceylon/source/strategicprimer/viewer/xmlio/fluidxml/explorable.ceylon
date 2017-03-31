@@ -14,7 +14,6 @@ import javax.xml.stream.events {
 }
 
 import model.map {
-    Player,
     Point
 }
 
@@ -22,6 +21,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Player,
     IPlayerCollection,
     pointFactory
 }

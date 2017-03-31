@@ -11,14 +11,12 @@ import ceylon.language {
     createMap=map
 }
 import strategicprimer.viewer.model.map {
+    Player,
     HasMutableName,
     FixtureIterable,
     HasMutableImage,
     TileFixture,
     IFixture
-}
-import model.map {
-    Player
 }
 import strategicprimer.viewer.model.map.fixtures {
     SubsettableFixture,

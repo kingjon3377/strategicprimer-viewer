@@ -8,10 +8,10 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
+    Player,
     IFixture
 }
 import model.map {
-    Player,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {

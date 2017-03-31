@@ -18,7 +18,6 @@ import lovelace.util.common {
 
 import model.map {
     Point,
-    Player,
     MapDimensions
 }
 

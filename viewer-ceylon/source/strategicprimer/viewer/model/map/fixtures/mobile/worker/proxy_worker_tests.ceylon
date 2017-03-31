@@ -7,9 +7,7 @@ import ceylon.test {
 }
 import strategicprimer.viewer.model.map {
     PlayerImpl,
-    IFixture
-}
-import model.map {
+    IFixture,
     Player
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

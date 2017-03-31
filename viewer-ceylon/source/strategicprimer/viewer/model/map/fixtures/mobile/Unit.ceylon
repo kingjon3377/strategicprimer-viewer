@@ -22,9 +22,7 @@ import strategicprimer.viewer.model.map {
     HasMutableImage,
     TileFixture,
     HasPortrait,
-    IFixture
-}
-import model.map {
+    IFixture,
     Player
 }
 import strategicprimer.viewer.model.map.fixtures {

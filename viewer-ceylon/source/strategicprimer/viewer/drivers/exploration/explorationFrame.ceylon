@@ -79,10 +79,10 @@ import model.listeners {
     MovementCostSource
 }
 import model.map {
-    Player,
     Point
 }
 import strategicprimer.viewer.model.map {
+    Player,
     TileType,
     TileFixture,
     IMutableMapNG,

@@ -22,11 +22,11 @@ import javax.swing {
     SwingUtilities
 }
 import model.map {
-    Player,
     HasName,
     HasKind
 }
 import strategicprimer.viewer.model.map {
+    Player,
 	HasOwner,
     IFixture,
     TileFixture,

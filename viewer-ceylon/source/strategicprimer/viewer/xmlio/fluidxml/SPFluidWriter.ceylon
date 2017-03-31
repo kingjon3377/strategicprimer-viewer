@@ -27,7 +27,6 @@ import javax.xml.stream {
 }
 
 import model.map {
-    Player,
     HasKind,
     HasImage,
     MapDimensions,
@@ -35,6 +34,7 @@ import model.map {
 }
 
 import strategicprimer.viewer.model.map {
+    Player,
     HasPortrait,
     IFixture,
     River,

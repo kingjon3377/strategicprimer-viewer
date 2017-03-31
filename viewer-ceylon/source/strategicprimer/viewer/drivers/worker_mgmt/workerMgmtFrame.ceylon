@@ -56,7 +56,6 @@ import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
 import model.map {
-    Player,
     Point
 }
 
@@ -79,6 +78,7 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
+    Player,
     IMapNG,
     invalidPoint
 }

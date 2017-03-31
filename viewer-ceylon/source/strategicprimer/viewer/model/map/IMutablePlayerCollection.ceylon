@@ -1,9 +1,6 @@
 import lovelace.util.common {
     todo
 }
-import model.map {
-    Player
-}
 "An interface for player collections that can be modified."
 shared interface IMutablePlayerCollection satisfies IPlayerCollection {
 	"Add a player to the collection."

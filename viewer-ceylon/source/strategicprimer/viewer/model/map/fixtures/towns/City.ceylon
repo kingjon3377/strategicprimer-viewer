@@ -1,4 +1,4 @@
-import model.map {
+import strategicprimer.viewer.model.map {
     Player
 }
 "An abandoned, ruined, or burned-out city."

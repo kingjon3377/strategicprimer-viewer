@@ -14,11 +14,11 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
 import model.map {
-    HasImage,
-    Player
+    HasImage
 }
 import strategicprimer.viewer.model.map {
-    IFixture
+    IFixture,
+    Player
 }
 import javax.swing.event {
     TreeSelectionEvent,

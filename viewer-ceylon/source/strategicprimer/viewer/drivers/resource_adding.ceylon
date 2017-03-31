@@ -54,10 +54,6 @@ import lovelace.util.jvm {
 import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
-import model.map {
-    Player
-}
-
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu
 }
@@ -67,6 +63,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Player,
     IMutableMapNG,
     IMapNG,
     PlayerImpl

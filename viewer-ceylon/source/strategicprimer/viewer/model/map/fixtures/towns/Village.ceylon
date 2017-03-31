@@ -6,9 +6,7 @@ import strategicprimer.viewer.model.map.fixtures {
 }
 import strategicprimer.viewer.model.map {
     HasMutableImage,
-    IFixture
-}
-import model.map {
+    IFixture,
     Player
 }
 "A village in the map."

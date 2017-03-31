@@ -1,4 +1,5 @@
 import strategicprimer.viewer.model.map {
+    Player,
     IMutableMapNG,
     TileType,
     TileFixture,
@@ -6,7 +7,6 @@ import strategicprimer.viewer.model.map {
     HasOwner
 }
 import model.map {
-    Player,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures.towns {

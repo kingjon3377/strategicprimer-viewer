@@ -17,7 +17,6 @@ import java.util {
 }
 
 import model.map {
-    Player,
     MapDimensionsImpl,
     Point
 }
@@ -27,6 +26,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    Player,
     River,
     PlayerCollection,
     TileFixture,

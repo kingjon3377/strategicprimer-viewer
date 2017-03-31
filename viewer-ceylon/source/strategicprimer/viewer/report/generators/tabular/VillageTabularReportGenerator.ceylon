@@ -9,10 +9,10 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
+    Player,
     IFixture
 }
 import model.map {
-    Player,
     Point
 }
 
@@ -40,8 +40,7 @@ shared class VillageTabularReportGenerator(Player player, Point hq)
             comparingOn(([Point, Village] pair) => pair.first,
                 DistanceComparator(hq).compare),
             comparingOn(([Point, Village] pair) => pair.rest.first.owner,
-                ceylonComparator((Player first, Player second) =>
-                first.compareTo(second))),
+                increasing<Player>),
             comparingOn(([Point, Village] pair) => pair.rest.first.name,
                 increasing<String>))(one, two);
     }

@@ -38,8 +38,7 @@ import lovelace.util.common {
 }
 
 import model.map {
-    HasImage,
-    Player
+    HasImage
 }
 
 import strategicprimer.viewer.model {
@@ -47,7 +46,8 @@ import strategicprimer.viewer.model {
 }
 import strategicprimer.viewer.model.map {
     IPlayerCollection,
-    HasMutableImage
+    HasMutableImage,
+    Player
 }
 import strategicprimer.viewer.xmlio {
     Warning,

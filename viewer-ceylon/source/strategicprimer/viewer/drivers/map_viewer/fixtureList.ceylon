@@ -5,10 +5,10 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.viewer.model.map {
+    Player,
     TileFixture
 }
 import model.map {
-    Player,
     Point
 }
 import ceylon.interop.java {

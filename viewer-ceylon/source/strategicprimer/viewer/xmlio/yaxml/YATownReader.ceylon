@@ -23,10 +23,6 @@ import javax.xml.stream.events {
     StartElement
 }
 
-import model.map {
-    Player
-}
-
 import strategicprimer.viewer.drivers.advancement {
     randomRace
 }
@@ -34,7 +30,8 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
-    IPlayerCollection
+    IPlayerCollection,
+    Player
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus,

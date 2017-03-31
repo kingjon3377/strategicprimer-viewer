@@ -8,7 +8,6 @@ import strategicprimer.viewer.model.map {
 }
 import model.map {
     MapDimensions,
-    Player,
     Point
 }
 import strategicprimer.viewer.model.map.fixtures {

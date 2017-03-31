@@ -1,10 +1,8 @@
 import java.awt {
     Dimension
 }
-import model.map {
-    Player
-}
 import strategicprimer.viewer.model.map {
+    Player,
     IMapNG
 }
 import javax.swing {

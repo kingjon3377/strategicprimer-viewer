@@ -6,9 +6,7 @@ import java.nio.file {
     JPath=Path, JPaths=Paths, JFiles=Files
 }
 import strategicprimer.viewer.model.map {
-    IMapNG
-}
-import model.map {
+    IMapNG,
     Player
 }
 import java.io {

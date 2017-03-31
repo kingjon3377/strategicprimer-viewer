@@ -1,4 +1,4 @@
-import model.map {
+import strategicprimer.viewer.model.map {
     Player
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

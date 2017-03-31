@@ -1,7 +1,7 @@
 import javax.swing.tree {
     DefaultMutableTreeNode
 }
-import model.map {
+import strategicprimer.viewer.model.map {
     Player
 }
 import java.awt.event {
