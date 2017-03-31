@@ -47,11 +47,6 @@ import lovelace.util.jvm {
     showErrorDialog
 }
 
-import strategicprimer.viewer.model.map {
-    SPMapNG,
-    PlayerCollection
-}
-
 import strategicprimer.viewer.drivers.map_viewer {
     viewerGUI,
     ViewerModel
@@ -60,14 +55,16 @@ import strategicprimer.viewer.model {
     IMultiMapModel,
     IDriverModel
 }
+import strategicprimer.viewer.model.map {
+    SPMapNG,
+    PlayerCollection
+}
 import strategicprimer.viewer.xmlio {
     readMap,
-    writeMap
+    writeMap,
+    warningLevels
 }
 
-import util {
-    Warning
-}
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(
     "Strategic Primer world map files", "map", "xml");
 "A factory method for [[JFileChooser]] taking a [[FileFilter]] to apply in the same
@@ -114,7 +111,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         case ("load") {
             FileChooser.open(null).call((path) {
                 try {
-                    mapModel.setMap(readMap(path, Warning.default), path);
+                    mapModel.setMap(readMap(path, warningLevels.default), path);
                 } catch (IOException|SPFormatException|XMLStreamException except) {
                     handleError(except, path.string);
                 }
@@ -155,7 +152,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             if (is IMultiMapModel mapModel) {
                 FileChooser.open(null).call((path) {
                     try {
-                        mapModel.addSubordinateMap(readMap(path, Warning.default), path);
+                        mapModel.addSubordinateMap(readMap(path, warningLevels.default), path);
                     } catch (IOException|SPFormatException|XMLStreamException except) {
                         handleError(except, path.string);
                     }

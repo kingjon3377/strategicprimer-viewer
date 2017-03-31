@@ -37,7 +37,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     Unit
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 
@@ -55,11 +55,11 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         try {
             String retval = getParamWithDeprecatedForm(element, "kind", "type");
             if (retval.empty) {
-                warner.warn(MissingPropertyException(element, "kind"));
+                warner.handle(MissingPropertyException(element, "kind"));
             }
             return retval;
         } catch (MissingPropertyException except) {
-            warner.warn(except);
+            warner.handle(except);
             return "";
         }
     }

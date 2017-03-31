@@ -4,9 +4,6 @@ import ceylon.file {
     Reader,
     Resource
 }
-import strategicprimer.viewer.xmlio {
-    IMapReader
-}
 
 import java.io {
     StringReader
@@ -19,7 +16,11 @@ import java.nio.file {
 import strategicprimer.viewer.model.map {
     IMapNG
 }
-
+import strategicprimer.viewer.xmlio {
+    IMapReader,
+    Warning,
+    warningLevels
+}
 import strategicprimer.viewer.xmlio.fluidxml {
     SPFluidReader
 }
@@ -27,9 +28,6 @@ import strategicprimer.viewer.xmlio.yaxml {
     yaXMLReader
 }
 
-import util {
-    Warning
-}
 "A driver for comparing map readers."
 object readerComparator satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, "-t", "--test", ParamCount.atLeastOne,
@@ -40,7 +38,7 @@ object readerComparator satisfies UtilityDriver {
             String* args) {
         IMapReader one = SPFluidReader();
         IMapReader two = yaXMLReader;
-        Warning warner = Warning.ignore;
+        Warning warner = warningLevels.ignore;
         for (arg in args.coalesced) {
             cli.println("``arg``:");
             Resource file = parsePath(arg).resource;

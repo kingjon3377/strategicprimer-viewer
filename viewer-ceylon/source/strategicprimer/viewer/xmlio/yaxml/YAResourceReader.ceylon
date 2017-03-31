@@ -40,7 +40,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A reader for resource-bearing [[TileFixture]]s."
@@ -75,7 +75,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         } else if (hasParameter(element, "wild")) {
             value wild = Boolean.parse(getParameter(element, "wild"));
             if (is Boolean wild) {
-                warner.warn(DeprecatedPropertyException(element, "wild", "cultivated"));
+                warner.handle(DeprecatedPropertyException(element, "wild", "cultivated"));
                 return !wild;
             } else {
                 throw MissingPropertyException(element, "cultivated", wild);

@@ -40,7 +40,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortification
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 Town readTown(StartElement element, QName parent, {XMLEvent*} stream,

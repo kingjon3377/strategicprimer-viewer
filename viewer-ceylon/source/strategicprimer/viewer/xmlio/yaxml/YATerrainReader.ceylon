@@ -31,7 +31,7 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A reader for [[TerrainFixture]]s."

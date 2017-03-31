@@ -27,7 +27,7 @@ import strategicprimer.viewer.model.map.fixtures.explorable {
     ExplorableFixture
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A reader for Caves and Battlefields."

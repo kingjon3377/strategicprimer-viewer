@@ -23,7 +23,7 @@ import strategicprimer.viewer.model.map.fixtures.explorable {
     AdventureFixture
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A reader for adventure hooks."

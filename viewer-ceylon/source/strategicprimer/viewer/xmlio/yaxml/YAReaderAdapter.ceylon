@@ -31,12 +31,18 @@ import javax.xml.stream.events {
 import lovelace.util.common {
     todo
 }
+
+import model.map {
+    River
+}
+
+import strategicprimer.viewer.model {
+    IDFactory,
+    IDRegistrar
+}
 import strategicprimer.viewer.model.map {
     IMutablePlayerCollection,
     PlayerCollection
-}
-import model.map {
-    River
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor
@@ -45,19 +51,15 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     IJob,
     ISkill
 }
-
-import util {
-    Warning
-}
-import strategicprimer.viewer.model {
-    IDFactory,
-    IDRegistrar
+import strategicprimer.viewer.xmlio {
+    Warning,
+    warningLevels
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A class to hide the complexity of YAXML from callers."
 class YAReaderAdapter(
-        "The Warning instance to use" Warning warning = Warning.default,
+        "The Warning instance to use" Warning warning = warningLevels.default,
         "The factory for ID numbers" IDRegistrar idFactory = IDFactory()) {
     "The player collection to use."
     IMutablePlayerCollection players = PlayerCollection();

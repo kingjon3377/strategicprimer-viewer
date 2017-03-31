@@ -16,6 +16,7 @@ import controller.map.formatexceptions {
     UnsupportedTagException
 }
 import strategicprimer.viewer.xmlio {
+    Warning,
     ISPReader,
     futureTags
 }
@@ -66,7 +67,6 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
 }
 
 import util {
-    Warning,
     LineEnd
 }
 "A reader for Strategic Primer maps."
@@ -211,11 +211,11 @@ class YAMapReader("The Warning instance to use" Warning warner,
                                 "kind", "type"))) {
                         retval.setBaseTerrain(point, kind);
                     } else {
-                        warner.warn(MissingPropertyException(event, "kind"));
+                        warner.handle(MissingPropertyException(event, "kind"));
                     }
                 } else if (futureTags.contains(type)) {
                     tagStack.push(event.name);
-                    warner.warn(UnsupportedTagException(event));
+                    warner.handle(UnsupportedTagException(event));
                 } else if (invalidPoint == point) {
                     // fixture outside tile
                     throw UnwantedChildException(tagStack.top, event);

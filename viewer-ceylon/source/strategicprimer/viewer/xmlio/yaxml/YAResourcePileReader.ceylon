@@ -27,7 +27,7 @@ import strategicprimer.viewer.model.map.fixtures {
     SPNumber
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A reader for resource piles."

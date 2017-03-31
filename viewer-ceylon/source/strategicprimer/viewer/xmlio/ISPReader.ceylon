@@ -9,9 +9,6 @@ import lovelace.util.common {
     todo
 }
 
-import util {
-    Warning
-}
 "An interface for readers of any SP model type."
 shared interface ISPReader {
 	"Read an object from XML."

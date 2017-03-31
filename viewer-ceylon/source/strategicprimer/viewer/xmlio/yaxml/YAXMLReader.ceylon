@@ -40,6 +40,7 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG
 }
 import strategicprimer.viewer.xmlio {
+    Warning,
     ISPReader,
     IncludingIterator,
     TypesafeXMLEventReader,
@@ -47,7 +48,6 @@ import strategicprimer.viewer.xmlio {
 }
 
 import util {
-    Warning,
     IteratorWrapper
 }
 "Sixth-generation SP XML reader."

@@ -19,7 +19,7 @@ import model.map {
     PlayerImpl
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A reader for [[Player]]s."

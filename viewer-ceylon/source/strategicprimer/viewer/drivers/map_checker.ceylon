@@ -53,12 +53,11 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Village
 }
 import strategicprimer.viewer.xmlio {
-    readMap
+    readMap,
+    Warning,
+    warningLevels
 }
 
-import util {
-    Warning
-}
 """An interface for checks of a map's *contents* that we don't want the XML-*reading*
    code to do."""
 interface Checker {
@@ -79,7 +78,7 @@ object lateriteChecker satisfies Checker {
             Warning warner) {
         if (is StoneDeposit fixture, StoneKind.laterite ==fixture.stone,
                 !TileType.jungle == terrain) {
-            warner.warn(SPContentWarning(context, "Laterite stone in non-jungle"));
+            warner.handle(SPContentWarning(context, "Laterite stone in non-jungle"));
         }
     }
 }
@@ -89,7 +88,7 @@ object aquaticVillageChecker satisfies Checker {
             Warning warner) {
         if (is Village fixture, landRaces.contains(fixture.race), 
                 TileType.ocean == terrain) {
-            warner.warn(SPContentWarning(context,
+            warner.handle(SPContentWarning(context,
                 "Aquatic village has non-aquatic race"));
         }
     }
@@ -106,13 +105,13 @@ object suspiciousSkillCheck satisfies Checker {
             Warning warner) {
         if (is IWorker fixture) {
             if ({*fixture}.any(suspiciousSkill)) {
-                warner.warn(SPContentWarning(context,
+                warner.handle(SPContentWarning(context,
                     "``fixture.name`` has a Job with one suspiciously-named Skill"));
             }
             for (job in fixture) {
                 for (skill in job) {
                     if (skill.name == "miscellaneous", skill.level > 0) {
-                        warner.warn(SPContentWarning(context,
+                        warner.handle(SPContentWarning(context,
                             "``fixture.name`` has a level in 'miscellaneous'"));
                         return;
                     }
@@ -135,10 +134,10 @@ object mapCheckerCLI satisfies UtilityDriver {
             checker.check(terrain, context, fixture, warner);
         }
     }
-    shared void check(JPath file, Anything(String) outStream, Anything(String) err) {
+    shared void check(JPath file, Anything(String) outStream, Anything(String) err,
+            Warning warner = warningLevels.custom()) {
         outStream("Starting ``file``");
 // TODO: take Warning instead of using Warning.Custom and assuming callers have set it up
-        Warning warner = Warning.custom;
         IMapNG map;
         try {
             map = readMap(file, warner);
@@ -192,8 +191,8 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
             LabelTextColor color = LabelTextColor.white) {
         label.append("<p style=\"color:``color``\">``paragraph``</p>");
     }
-    Warning.custom.setCustomPrinter(Warning.wrapHandler(
-        (string) => printParagraph(string, LabelTextColor.yellow)));
+    void customPrinter(String string) =>
+            printParagraph(string, LabelTextColor.yellow);
     setBackground(Color.black);
     contentPane = JScrollPane(label);
     contentPane.background = Color.black;
@@ -204,7 +203,8 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
             } else {
                 printParagraph(text);
             }
-        }, (text) => printParagraph(text, LabelTextColor.red));
+        }, (text) => printParagraph(text, LabelTextColor.red),
+            warningLevels.custom(customPrinter));
     }
 }
 "A driver to check every map file in a list for errors and report the results in a

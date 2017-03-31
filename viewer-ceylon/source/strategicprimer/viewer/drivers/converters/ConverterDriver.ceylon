@@ -19,10 +19,6 @@ import java.nio.file {
 import javax.xml.stream {
     XMLStreamException
 }
-import strategicprimer.viewer.model.map {
-    IMutableMapNG,
-    IMapNG
-}
 
 import strategicprimer.viewer.drivers {
     ICLIHelper,
@@ -32,14 +28,16 @@ import strategicprimer.viewer.drivers {
     IDriverUsage,
     SPOptions
 }
+import strategicprimer.viewer.model.map {
+    IMutableMapNG,
+    IMapNG
+}
 import strategicprimer.viewer.xmlio {
     readMap,
-    writeMap
+    writeMap,
+    warningLevels
 }
 
-import util {
-    Warning
-}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to convert maps: at present, halving their resolution."
@@ -64,7 +62,7 @@ class ConverterDriver(
             for (filename in arguments) {
                 cli.print("Reading ``filename ``... ");
                 try {
-                    IMutableMapNG old = readMap(Paths.get(filename), Warning.default);
+                    IMutableMapNG old = readMap(Paths.get(filename), warningLevels.default);
                     if (options.hasOption("--current-turn")) {
                         value currentTurn =
                                 Integer.parse(options.getArgument("--current-turn"));

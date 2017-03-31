@@ -136,7 +136,6 @@ import strategicprimer.viewer.model.map.fixtures.towns {
 }
 
 import util {
-    Warning,
     FatalWarningException
 }
 JPath fakeFilename = JPaths.get("");
@@ -153,10 +152,10 @@ void assertFormatIssue<Desideratum, Expectation>(ISPReader reader, String xml,
         given Desideratum satisfies Object given Expectation satisfies Exception {
     if (warning) {
         try (stringReader = StringReader(xml)) {
-            reader.readXML(fakeFilename, stringReader, Warning.ignore);
+            reader.readXML(fakeFilename, stringReader, warningLevels.ignore);
         }
         try (stringReader = StringReader(xml)) {
-            reader.readXML(fakeFilename, stringReader, Warning.die);
+            reader.readXML(fakeFilename, stringReader, warningLevels.die);
             fail("Expected a fatal warning");
         } catch (FatalWarningException except) {
             assert (is Expectation cause = except.cause);
@@ -164,7 +163,7 @@ void assertFormatIssue<Desideratum, Expectation>(ISPReader reader, String xml,
         }
     } else {
         try (stringReader = StringReader(xml)) {
-            reader.readXML(fakeFilename, stringReader, Warning.ignore);
+            reader.readXML(fakeFilename, stringReader, warningLevels.ignore);
             fail("Expected an exception to be thrown");
 //        } catch (Expectation except) {
         } catch (Exception except) {
@@ -251,7 +250,7 @@ String createSerializedForm(
 }
 "Assert that the serialized form of the given object will deserialize without error."
 void assertSerialization(String message, Object obj,
-        Warning warner = Warning.die) {
+        Warning warner = warningLevels.die) {
     for (reader in {oldReader, newReader}) {
         for (deprecated in `Boolean`.caseValues) {
             try (stringReader = StringReader(createSerializedForm(obj,
@@ -272,7 +271,7 @@ void assertImageSerialization(String message, HasMutableImage obj) {
             obj.image = "xyzzy";
             try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
                 assertEquals(reader.readXML<HasMutableImage>(fakeFilename, stringReader,
-                    Warning.ignore).image, obj.image, message);
+                    warningLevels.ignore).image, obj.image, message);
             }
             obj.image = obj.defaultImage;
             assertFalse(createSerializedForm(obj, deprecated).contains("image="),
@@ -295,7 +294,7 @@ void assertPortraitSerialization(String message, HasPortrait obj) {
             obj.portrait = "xyzzy";
             try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
                 assertEquals(reader.readXML<HasPortrait>(fakeFilename, stringReader,
-                    Warning.ignore).portrait, obj.portrait, message);
+                    warningLevels.ignore).portrait, obj.portrait, message);
             }
             obj.portrait = "";
             assertFalse(createSerializedForm(obj, deprecated).contains("portrait="),
@@ -322,7 +321,7 @@ void assertDeprecatedDeserialization<Type>(
         String tag) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertEquals(reader.readXML(fakeFilename, stringReader, Warning.ignore), expected,
+            assertEquals(reader.readXML(fakeFilename, stringReader, warningLevels.ignore), expected,
                 message);
         }
     }
@@ -342,7 +341,7 @@ void assertMissingPropertyDeserialization<Type>(
         String property) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertEquals(reader.readXML(fakeFilename, stringReader, Warning.ignore), expected, message);
+            assertEquals(reader.readXML(fakeFilename, stringReader, warningLevels.ignore), expected, message);
         }
     }
     assertMissingProperty<Type>(xml, property, true);
@@ -360,7 +359,7 @@ void assertForwardDeserialization<Type>(
         Boolean(Type) assertion) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertTrue(assertion(reader.readXML(fakeFilename, stringReader, Warning.die)), message);
+            assertTrue(assertion(reader.readXML(fakeFilename, stringReader, warningLevels.die)), message);
         }
     }
 }
@@ -389,7 +388,7 @@ void assertMapDeserialization(String message, IMapNG expected, String xml) {
         assert (is IMapReader reader);
         try (stringReader = StringReader(xml)) {
             assertEquals(reader.readMapFromStream(fakeFilename, stringReader,
-                Warning.die), expected, message);
+                warningLevels.die), expected, message);
         }
     }
 }
@@ -457,7 +456,7 @@ void testCitySerialization(TownSize size, TownStatus status) {
             size, 40, "twoCity", 1, owner));
     City thirdCity = City(status, size, 30, "", 3, owner);
     assertSerialization("Serialization of City without a name", thirdCity,
-        Warning.ignore);
+        warningLevels.ignore);
     for (deprecation in {true, false}) {
         assertMissingProperty<City>(createSerializedForm(thirdCity, deprecation), "name",
             true);
@@ -483,7 +482,7 @@ void testFortificationSerialization(TownSize size, TownStatus status) {
         Fortification(status, size, 40, "two", 1, owner));
     Fortification thirdFort = Fortification(status, size, 30, "", 3, owner);
     assertSerialization("Serialization of Fortification without a name", thirdFort,
-        Warning.ignore);
+        warningLevels.ignore);
     for (deprecation in {true, false}) {
         assertMissingProperty<Fortification>(createSerializedForm(thirdFort, deprecation),
             "name", true);
@@ -509,7 +508,7 @@ void testTownSerialization(TownSize size, TownStatus status) {
             size, 40, "two", 1, owner));
     Town thirdTown = Town(status, size, 30, "", 3, owner);
     assertSerialization("Serialization of Town without a name", thirdTown,
-        Warning.ignore);
+        warningLevels.ignore);
     for (deprecation in {true, false}) {
         assertMissingProperty<Town>(createSerializedForm(thirdTown, deprecation), "name",
             true);
@@ -763,10 +762,10 @@ test
 void testSkippableSerialization() {
     assertEquivalentForms<IMapNG>("Two maps, one with row tags, one without",
         """<map rows="1" columns="1" version="2" />""",
-        """<map rows="1" columns="1" version="2"><row /></map>""", Warning.die);
+        """<map rows="1" columns="1" version="2"><row /></map>""", warningLevels.die);
     assertEquivalentForms<IMapNG>("Two maps, one with future tag, one without",
         """<map rows="1" columns="1" version="2" />""",
-        """<map rows="1" columns="1" version="2"><future /></map>""", Warning.ignore);
+        """<map rows="1" columns="1" version="2"><future /></map>""", warningLevels.ignore);
     assertUnsupportedTag<IMapNG>(
         """<map rows="1" columns="1" version="2"><future /></map>""", "future", true);
     assertUnsupportedTag<IMapNG>(
@@ -919,7 +918,7 @@ void testGroveSerialization() {
         "wild", "cultivated", "grove", true);
     assertEquivalentForms<Grove>("Assert that wild is the inverse of cultivated",
         """<grove wild="true" kind="tree" id="0" />""",
-        """<grove cultivated="false" kind="tree"id="0" />""", Warning.ignore);
+        """<grove cultivated="false" kind="tree"id="0" />""", warningLevels.ignore);
     assertImageSerialization("Grove image property is preserved", Grove(false, false,
         "five", 5));
 }
@@ -1032,7 +1031,7 @@ void testUnitWarnings() {
     }
     assertMissingProperty<IUnit>("""<unit owner="2" kind="unit" />""", "name", true);
     assertSerialization("Deserialize unit with no kind properly", Unit(PlayerImpl(2, ""),
-        "", "name", 2), Warning.ignore);
+        "", "name", 2), warningLevels.ignore);
     assertMissingPropertyDeserialization("Deserialize unit with no owner properly",
         Unit(PlayerImpl(-1, ""), "kind", "unitThree", 3),
         """<unit kind="kind" name="unitThree" id="3" />""", "owner");
@@ -1288,7 +1287,7 @@ void testForestSerialization() {
             """<forest kind="trees" id="4" />
                <forest kind="trees" id="4" />
                <forest kind="second" rows="true" id="5" />"""),
-        Warning.ignore);
+        warningLevels.ignore);
 }
 
 test

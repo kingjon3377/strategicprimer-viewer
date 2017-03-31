@@ -45,9 +45,10 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Fortification,
     Town
 }
-
+import strategicprimer.viewer.xmlio {
+    Warning
+}
 import util {
-    Warning,
     LineEnd
 }
 "A reader for fortresses, villages, and other towns."
@@ -63,7 +64,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         if (hasParameter(element, "owner")) {
             return players.getPlayer(getIntegerParameter(element, "owner"));
         } else {
-            warner.warn(MissingPropertyException(element, "owner"));
+            warner.handle(MissingPropertyException(element, "owner"));
             return players.independent;
         }
     }

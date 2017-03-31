@@ -49,9 +49,6 @@ import strategicprimer.viewer.xmlio.yaxml {
     yaXMLWriter
 }
 
-import util {
-    Warning
-}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 IMapReader reader = yaXMLReader;

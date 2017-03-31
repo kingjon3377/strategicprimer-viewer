@@ -136,11 +136,11 @@ import strategicprimer.viewer.xmlio {
     testReaderFactory,
     TypesafeXMLEventReader,
     SPWriter,
-    spNamespace
+    spNamespace,
+    warningLevels
 }
 
 import util {
-    Warning,
     LineEnd,
     IteratorWrapper
 }
@@ -152,7 +152,7 @@ void assertModuloID(IMapNG map, String serialized, Anything(String) err) {
     Regex matcher = regex("id=\"[0-9]*\"", true);
     try (inStream = StringReader(matcher.replace(serialized, "id=\"-1\""))) {
         assertTrue(
-            map.isSubset(readMap(inStream, Warning.ignore), err),
+            map.isSubset(readMap(inStream, warningLevels.ignore), err),
             "Actual is at least subset of expected converted, modulo IDs");
     }
 }
@@ -899,7 +899,7 @@ void testZeroToOneConversion() {
     StringWriter actualXML = StringWriter();
     SPWriter writer = oldWriter;
     writer.writeSPObject(actualXML,
-        readMap(StringReader(ostream.string), Warning.ignore));
+        readMap(StringReader(ostream.string), warningLevels.ignore));
     IMutableMapNG expected = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
     Player player = PlayerImpl(0, "Test Player");
     expected.addPlayer(player);
@@ -916,7 +916,7 @@ void testZeroToOneConversion() {
     assertEquals(actualXML.string, expectedXML.string,
         "Converted map's serialized form was as expected");
     assertEquals(readMap(StringReader(ostream.string),
-        Warning.ignore), expected, "Converted map was as expected");
+        warningLevels.ignore), expected, "Converted map was as expected");
 }
 "Convert files provided on command line; prints results to standard output."
 todo("Write results to file")

@@ -1,42 +1,44 @@
-import strategicprimer.viewer.model.map {
-    IMutableMapNG,
-    IMapNG
-}
-import model.map {
-    Point
-}
-import java.nio.file {
-    JPaths = Paths
-}
-import util {
-    Warning
-}
-import java.io {
-    IOException
-}
 import controller.map.formatexceptions {
     SPFormatException
 }
-import javax.xml.stream {
-    XMLStreamException
+
+import java.io {
+    IOException
 }
 import java.lang {
     IllegalArgumentException
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
-    Forest
+import java.nio.file {
+    JPaths=Paths
 }
-import strategicprimer.viewer.model.map.fixtures {
-    Ground
+
+import javax.xml.stream {
+    XMLStreamException
 }
-import strategicprimer.viewer.xmlio {
-    readMap,
-    writeMap
+
+import model.map {
+    Point
 }
+
 import strategicprimer.viewer.model {
     IMultiMapModel,
     IDriverModel,
     IDRegistrar
+}
+import strategicprimer.viewer.model.map {
+    IMutableMapNG,
+    IMapNG
+}
+import strategicprimer.viewer.model.map.fixtures {
+    Ground
+}
+import strategicprimer.viewer.model.map.fixtures.terrain {
+    Forest
+}
+import strategicprimer.viewer.xmlio {
+    readMap,
+    writeMap,
+    warningLevels
 }
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated
@@ -52,7 +54,7 @@ object echoDriver satisfies UtilityDriver {
         if (exists inArg = args.first, exists outArg = args.rest.first, args.size == 2) {
             IMutableMapNG map;
             try {
-                map = readMap(JPaths.get(inArg), Warning.ignore);
+                map = readMap(JPaths.get(inArg), warningLevels.ignore);
             } catch (IOException except) {
                 throw DriverFailedException(except, "I/O error reading file ``inArg``");
             } catch (XMLStreamException except) {
@@ -85,7 +87,7 @@ object echoDriver satisfies UtilityDriver {
                 if (is Integer currentTurn) {
                     map.currentTurn = currentTurn;
                 } else {
-                    Warning.default.warn(IllegalArgumentException(
+                    warningLevels.default.handle(IllegalArgumentException(
                         "--current-turn must be an integer"));
                 }
             }

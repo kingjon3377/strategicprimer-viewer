@@ -43,7 +43,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     Skill
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,
@@ -72,7 +72,7 @@ IJob readJob(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "job");
     if (hasAttribute(element, "hours")) {
-        warner.warn(UnsupportedPropertyException(element, "hours"));
+        warner.handle(UnsupportedPropertyException(element, "hours"));
     }
     IJob retval = Job(getAttribute(element, "name"),
         getIntegerAttribute(element, "level"));

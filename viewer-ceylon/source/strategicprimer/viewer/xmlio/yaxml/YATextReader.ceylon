@@ -22,7 +22,7 @@ import strategicprimer.viewer.model.map.fixtures {
     TextFixture
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A reader for arbitrary-text notes."

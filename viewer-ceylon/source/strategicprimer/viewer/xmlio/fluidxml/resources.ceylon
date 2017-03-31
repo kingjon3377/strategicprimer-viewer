@@ -50,7 +50,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     TownStatus
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream,
@@ -105,7 +105,7 @@ Grove readGrove(StartElement element, QName parent, {XMLEvent*} stream,
         cultivated = temp;
     } else if (hasAttribute(element, "wild"),
             is Boolean temp = Boolean.parse(getAttribute(element, "wild"))) {
-        warner.warn(DeprecatedPropertyException(element, "wild", "cultivated"));
+        warner.handle(DeprecatedPropertyException(element, "wild", "cultivated"));
         cultivated = !temp;
     } else {
         throw MissingPropertyException(element, "cultivated");
@@ -127,7 +127,7 @@ Grove readOrchard(StartElement element, QName parent, {XMLEvent*} stream,
         cultivated = temp;
     } else if (hasAttribute(element, "wild"),
         is Boolean temp = Boolean.parse(getAttribute(element, "wild"))) {
-        warner.warn(DeprecatedPropertyException(element, "wild", "cultivated"));
+        warner.handle(DeprecatedPropertyException(element, "wild", "cultivated"));
         cultivated = !temp;
     } else {
         throw MissingPropertyException(element, "cultivated");
@@ -145,7 +145,7 @@ Meadow readMeadow(StartElement element, QName parent, {XMLEvent*} stream,
     spinUntilEnd(element.name, stream);
     Integer id = getOrGenerateID(element, warner, idFactory);
     if (!hasAttribute(element, "status")) {
-        warner.warn(MissingPropertyException(element, "status"));
+        warner.handle(MissingPropertyException(element, "status"));
     }
     value cultivated = Boolean.parse(getAttribute(element, "cultivated"));
     if (is Boolean cultivated) {
@@ -169,7 +169,7 @@ Meadow readField(StartElement element, QName parent, {XMLEvent*} stream,
     spinUntilEnd(element.name, stream);
     Integer id = getOrGenerateID(element, warner, idFactory);
     if (!hasAttribute(element, "status")) {
-        warner.warn(MissingPropertyException(element, "status"));
+        warner.handle(MissingPropertyException(element, "status"));
     }
     value cultivated = Boolean.parse(getAttribute(element, "cultivated"));
     if (is Boolean cultivated) {

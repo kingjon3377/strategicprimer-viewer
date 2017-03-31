@@ -18,7 +18,7 @@ import strategicprimer.viewer.model.map.fixtures {
     Implement
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A reader for [[Implement]]s."

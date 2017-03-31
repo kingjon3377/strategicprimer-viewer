@@ -2,9 +2,6 @@ import java.lang {
     IllegalStateException,
     IllegalArgumentException
 }
-import util {
-    Warning
-}
 import java.nio.file {
     JPaths = Paths, JPath = Path
 }
@@ -30,7 +27,9 @@ import ceylon.collection {
 import strategicprimer.viewer.xmlio {
     readMultiMapModel,
     namesToFiles,
-    writeModel
+    writeModel,
+    Warning,
+    warningLevels
 }
 import javax.swing {
     JFrame,
@@ -177,7 +176,7 @@ shared interface SimpleDriver satisfies ISPDriver {
             } else if ({ ParamCount.two, ParamCount.atLeastTwo }.contains(desiderata)) {
                 JPath masterPath = askUserForFile();
                 JPath subordinatePath = askUserForFile();
-                IMultiMapModel mapModel = readMultiMapModel(Warning.default, masterPath,
+                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default, masterPath,
                     subordinatePath);
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
@@ -185,7 +184,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                 startDriverOnModel(cli, options, mapModel);
             } else {
                 // TODO: Maybe just use readMapModel() here?
-                IMultiMapModel mapModel = readMultiMapModel(Warning.default,
+                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
                     askUserForFile());
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
@@ -197,7 +196,7 @@ shared interface SimpleDriver satisfies ISPDriver {
         } else if (args.size == 1,
                 {ParamCount.two, ParamCount.atLeastTwo}.contains(desiderata)) {
             assert (exists firstArg = args.first);
-            IMultiMapModel mapModel = readMultiMapModel(Warning.default,
+            IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
                 JPaths.get(firstArg), askUserForFile());
             for (pair in mapModel.allMaps) {
                 turnFixer(pair.first);
@@ -206,7 +205,7 @@ shared interface SimpleDriver satisfies ISPDriver {
         } else {
             assert (exists firstArg = args.first);
             assert (nonempty temp = args.map(javaString).sequence());
-            IMultiMapModel mapModel = readMultiMapModel(Warning.default, JPaths.get(firstArg),
+            IMultiMapModel mapModel = readMultiMapModel(warningLevels.default, JPaths.get(firstArg),
                 *namesToFiles(false, *args.rest));
             for (pair in mapModel.allMaps) {
                 turnFixer(pair.first);
@@ -321,7 +320,7 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
         assert (nonempty temp = args.map(javaString).sequence());
         // We declare this as IMultiMapModel so we can correct the current turn in all
         // maps if needed.
-        IMultiMapModel model = readMultiMapModel(Warning.ignore, JPaths.get(firstArg),
+        IMultiMapModel model = readMultiMapModel(warningLevels.ignore, JPaths.get(firstArg),
             *namesToFiles(false, *args.rest));
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn =

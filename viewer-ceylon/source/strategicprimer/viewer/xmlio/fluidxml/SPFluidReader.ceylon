@@ -94,6 +94,7 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     TownSize
 }
 import strategicprimer.viewer.xmlio {
+    Warning,
     ISPReader,
     IncludingIterator,
     TypesafeXMLEventReader,
@@ -103,7 +104,6 @@ import strategicprimer.viewer.xmlio {
 }
 
 import util {
-    Warning,
     IteratorWrapper
 }
 "The main reader-from-XML class in the 'fluid XML' implementation."
@@ -159,7 +159,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     }
     Boolean isFutureTag(StartElement tag, Warning warner) {
         if (futureTags.contains(tag.name.localPart)) {
-            warner.warn(UnsupportedTagException(tag));
+            warner.handle(UnsupportedTagException(tag));
             return true;
         } else {
             return false;
@@ -220,7 +220,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
                     "tile", warner))) {
             map.setBaseTerrain(loc, kind);
         } else {
-            warner.warn(MissingPropertyException(element, "kind"));
+            warner.handle(MissingPropertyException(element, "kind"));
         }
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
@@ -287,7 +287,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
                     break;
                 }
             } else if (is Characters event, !event.data.trimmed.empty) {
-                warner.warn(UnwantedChildException(stackTop,
+                warner.handle(UnwantedChildException(stackTop,
                     QName(XMLConstants.nullNsUri, "text"),
                     event.location,
                     IllegalStateException("Random text outside any tile")));
@@ -328,11 +328,11 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         try {
             temp = getAttrWithDeprecatedForm(element, "kind", "type", warner);
         } catch (MissingPropertyException except) {
-            warner.warn(except);
+            warner.handle(except);
         }
         String kind = temp else "";
         if (kind.empty) {
-            warner.warn(MissingPropertyException(element, "kind"));
+            warner.handle(MissingPropertyException(element, "kind"));
         }
         Unit retval = setImage(Unit(
             getPlayerOrIndependent(element, warner, players), kind,

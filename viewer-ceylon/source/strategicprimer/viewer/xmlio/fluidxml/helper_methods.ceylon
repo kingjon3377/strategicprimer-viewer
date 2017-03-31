@@ -50,11 +50,11 @@ import strategicprimer.viewer.model.map {
     HasMutableImage
 }
 import strategicprimer.viewer.xmlio {
+    Warning,
     spNamespace
 }
 
 import util {
-    Warning,
     LineEnd
 }
 NumberFormat numParser = NumberFormat.integerInstance;
@@ -113,7 +113,7 @@ void requireNonEmptyAttribute(
         if (mandatory) {
             throw except;
         } else {
-            warner.warn(except);
+            warner.handle(except);
         }
     }
 }
@@ -155,7 +155,7 @@ Integer getOrGenerateID(
             throw MissingPropertyException(element, "id", except);
         }
     } else {
-        warner.warn(MissingPropertyException(element, "id"));
+        warner.handle(MissingPropertyException(element, "id"));
         return idFactory.createID();
     }
 }
@@ -203,7 +203,7 @@ String getAttrWithDeprecatedForm(
     if (hasAttribute(element, preferred)) {
         return getAttribute(element, preferred);
     } else if (hasAttribute(element, deprecated)) {
-        warner.warn(DeprecatedPropertyException(element, deprecated, preferred));
+        warner.handle(DeprecatedPropertyException(element, deprecated, preferred));
         return getAttribute(element, deprecated);
     } else {
         throw MissingPropertyException(element, preferred);
@@ -358,7 +358,7 @@ Player getPlayerOrIndependent(
     if (hasAttribute(element, "owner")) {
         return players.getPlayer(getIntegerAttribute(element, "owner"));
     } else {
-        warner.warn(MissingPropertyException(element, "owner"));
+        warner.handle(MissingPropertyException(element, "owner"));
         return players.independent;
     }
 }
@@ -375,7 +375,7 @@ Type setImage<Type>(
     if (is HasMutableImage obj) {
         obj.image = getAttribute(element, "image", "");
     } else if (hasAttribute(element, "image")) {
-        warner.warn(UnsupportedPropertyException(element, "image"));
+        warner.handle(UnsupportedPropertyException(element, "image"));
     }
     return obj;
 }

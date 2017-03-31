@@ -35,7 +35,7 @@ import strategicprimer.viewer.model.map.fixtures.explorable {
     Cave
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 AdventureFixture readAdventure(StartElement element, QName parent,

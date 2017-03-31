@@ -46,11 +46,11 @@ import strategicprimer.viewer.model.map {
     pointFactory
 }
 import strategicprimer.viewer.xmlio {
+    Warning,
     spNamespace
 }
 
 import util {
-    Warning,
     LineEnd
 }
 "A parser for numeric data, so integers can contain commas."
@@ -237,7 +237,7 @@ abstract class YAAbstractReader<Element>
             if (mandatory) {
                 throw except;
             } else {
-                warner.warn(except);
+                warner.handle(except);
             }
         }
     }
@@ -250,7 +250,7 @@ abstract class YAAbstractReader<Element>
         if (hasParameter(element, "id")) {
             return registerID(getIntegerParameter(element, "id"));
         } else {
-            warner.warn(MissingPropertyException(element, "id"));
+            warner.handle(MissingPropertyException(element, "id"));
             return idf.createID();
         }
     }
@@ -263,7 +263,7 @@ abstract class YAAbstractReader<Element>
             return retval;
         } else if (exists deprecatedProperty = getAttributeByName(element, deprecated),
                 exists retval = deprecatedProperty.\ivalue) {
-            warner.warn(DeprecatedPropertyException(element, deprecated, preferred));
+            warner.handle(DeprecatedPropertyException(element, deprecated, preferred));
             return retval;
         } else {
             throw MissingPropertyException(element, preferred);

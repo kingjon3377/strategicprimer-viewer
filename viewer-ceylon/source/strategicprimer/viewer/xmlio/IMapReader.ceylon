@@ -18,9 +18,6 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG
 }
 
-import util {
-    Warning
-}
 "An interface for map readers."
 shared interface IMapReader {
     "Read the map (view) contained in a file."

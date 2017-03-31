@@ -34,7 +34,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     ISkill
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A reader for workers."
@@ -89,7 +89,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         IJob retval = Job(getParameter(element, "name"),
             getIntegerParameter(element, "level"));
         if (hasParameter(element, "hours")) {
-            warner.warn(UnsupportedPropertyException(element, "hours"));
+            warner.handle(UnsupportedPropertyException(element, "hours"));
         }
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {

@@ -21,7 +21,7 @@ import strategicprimer.viewer.model.map.fixtures {
     Ground
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A reader for [[Ground]]."

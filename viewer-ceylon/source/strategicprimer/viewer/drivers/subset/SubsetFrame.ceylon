@@ -39,11 +39,6 @@ import lovelace.util.jvm {
     LabelTextColor
 }
 
-import strategicprimer.viewer.model.map {
-    PlayerCollection,
-    SPMapNG,
-    IMapNG
-}
 import model.map {
     MapDimensionsImpl
 }
@@ -51,12 +46,17 @@ import model.map {
 import strategicprimer.viewer.drivers {
     SPFrame
 }
+import strategicprimer.viewer.model.map {
+    PlayerCollection,
+    SPMapNG,
+    IMapNG
+}
 import strategicprimer.viewer.xmlio {
-    readMap
+    readMap,
+    warningLevels
 }
 
 import util {
-    Warning,
     LineEnd
 }
 "A window to show the result of running subset tests."
@@ -99,7 +99,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
     shared void loadMain(IMapNG|JPath arg) {
         if (is JPath path = arg) {
             try {
-                mainMap = readMap(path, Warning.ignore);
+                mainMap = readMap(path, warningLevels.ignore);
             } catch (FileNotFoundException|NoSuchFileException except) {
                 printParagraph("File ``path`` not found", LabelTextColor.red);
                 throw except;
@@ -156,7 +156,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
         printParagraph("Testing ``path`` ...");
         IMapNG map;
         try {
-            map = readMap(path, Warning.ignore);
+            map = readMap(path, warningLevels.ignore);
         } catch (FileNotFoundException|NoSuchFileException except) {
             printParagraph("FAIL: File not found", LabelTextColor.red);
             log.error("``path`` not found", except);

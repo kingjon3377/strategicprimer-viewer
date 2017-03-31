@@ -18,7 +18,7 @@ import lovelace.util.common {
     todo
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A class to register IDs with and produce not-yet-used IDs. Performance is likely to be
@@ -35,7 +35,7 @@ shared class IDFactory() satisfies IDRegistrar {
     shared actual Integer register(Integer id, Warning warning) {
         if (id >= 0) {
             if (usedIDs.get(id)) {
-                warning.warn(DuplicateIDException(id));
+                warning.handle(DuplicateIDException(id));
             }
             usedIDs.set(id);
         }

@@ -44,7 +44,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
     MobileFixture
 }
 
-import util {
+import strategicprimer.viewer.xmlio {
     Warning
 }
 "A reader for 'mobile fixtures'"

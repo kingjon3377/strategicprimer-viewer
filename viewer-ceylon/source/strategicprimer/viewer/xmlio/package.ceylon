@@ -1,1 +1,1 @@
-package strategicprimer.viewer.xmlio;
+shared package strategicprimer.viewer.xmlio;

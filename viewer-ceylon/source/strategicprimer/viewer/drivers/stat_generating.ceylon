@@ -72,12 +72,10 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Village
 }
 import strategicprimer.viewer.xmlio {
-    readMap
+    readMap,
+    warningLevels
 }
 
-import util {
-    Warning
-}
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
 object statGeneratingCLI satisfies SimpleCLIDriver {
@@ -411,7 +409,7 @@ TileContentsGenerator tileContentsInstance(String filename) {
         return retval;
     } else {
         TileContentsGenerator retval =
-                TileContentsGenerator(readMap(JPaths.get(filename), Warning.default));
+                TileContentsGenerator(readMap(JPaths.get(filename), warningLevels.default));
         tileContentsInstances.put(filename, retval);
         return retval;
     }
