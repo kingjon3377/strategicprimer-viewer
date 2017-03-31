@@ -5,9 +5,7 @@ import ceylon.collection {
 
 import controller.map.formatexceptions {
     MissingPropertyException,
-    MissingChildException,
-    UnwantedChildException,
-    UnsupportedTagException
+    MissingChildException
 }
 
 import java.io {
@@ -95,7 +93,9 @@ import strategicprimer.viewer.xmlio {
     TypesafeXMLEventReader,
     IMapReader,
     futureTags,
-    spNamespace
+    spNamespace,
+    UnsupportedTagException,
+    UnwantedChildException
 }
 "The main reader-from-XML class in the 'fluid XML' implementation."
 shared class SPFluidReader() satisfies IMapReader&ISPReader {
@@ -278,7 +278,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
                     break;
                 }
             } else if (is Characters event, !event.data.trimmed.empty) {
-                warner.handle(UnwantedChildException(stackTop,
+                assert (exists top = stackTop);
+                warner.handle(UnwantedChildException.childInTag(top,
                     QName(XMLConstants.nullNsUri, "text"),
                     event.location,
                     IllegalStateException("Random text outside any tile")));

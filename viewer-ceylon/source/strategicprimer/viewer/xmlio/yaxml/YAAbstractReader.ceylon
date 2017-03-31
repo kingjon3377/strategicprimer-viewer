@@ -1,5 +1,4 @@
 import controller.map.formatexceptions {
-    UnwantedChildException,
     MissingPropertyException,
     SPFormatException,
     DeprecatedPropertyException,
@@ -43,6 +42,7 @@ import strategicprimer.viewer.model.map {
     pointFactory
 }
 import strategicprimer.viewer.xmlio {
+    UnwantedChildException,
     Warning,
     spNamespace
 }

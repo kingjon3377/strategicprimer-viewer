@@ -1,8 +1,4 @@
 
-import controller.map.formatexceptions {
-    UnsupportedPropertyException,
-    UnwantedChildException
-}
 import strategicprimer.viewer.model {
     IDRegistrar
 }
@@ -35,7 +31,9 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
 }
 
 import strategicprimer.viewer.xmlio {
-    Warning
+    UnsupportedPropertyException,
+    Warning,
+    UnwantedChildException
 }
 "A reader for workers."
 class YAWorkerReader extends YAAbstractReader<IWorker> {

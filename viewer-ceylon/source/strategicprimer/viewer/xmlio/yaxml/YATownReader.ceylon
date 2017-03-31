@@ -3,8 +3,7 @@ import ceylon.language.meta {
 }
 
 import controller.map.formatexceptions {
-    MissingPropertyException,
-    UnwantedChildException
+    MissingPropertyException
 }
 
 import java.lang {
@@ -45,7 +44,8 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     Town
 }
 import strategicprimer.viewer.xmlio {
-    Warning
+    Warning,
+    UnwantedChildException
 }
 "A reader for fortresses, villages, and other towns."
 class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players)

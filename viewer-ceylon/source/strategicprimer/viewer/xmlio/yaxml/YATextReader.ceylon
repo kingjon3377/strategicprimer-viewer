@@ -1,6 +1,3 @@
-import controller.map.formatexceptions {
-    UnwantedChildException
-}
 import strategicprimer.viewer.model {
     IDRegistrar
 }
@@ -23,7 +20,8 @@ import strategicprimer.viewer.model.map.fixtures {
 }
 
 import strategicprimer.viewer.xmlio {
-    Warning
+    Warning,
+    UnwantedChildException
 }
 "A reader for arbitrary-text notes."
 class YATextReader(Warning warning, IDRegistrar idRegistrar)

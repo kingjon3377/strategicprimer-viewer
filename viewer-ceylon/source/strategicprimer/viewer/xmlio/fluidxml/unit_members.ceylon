@@ -1,7 +1,5 @@
 
 import controller.map.formatexceptions {
-    UnwantedChildException,
-    UnsupportedPropertyException,
     MissingPropertyException
 }
 
@@ -42,6 +40,8 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     Skill
 }
 import strategicprimer.viewer.xmlio {
+    UnwantedChildException,
+    UnsupportedPropertyException,
     Warning
 }
 Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,

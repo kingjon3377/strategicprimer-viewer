@@ -1,6 +1,3 @@
-import controller.map.formatexceptions {
-    UnsupportedTagException
-}
 import strategicprimer.viewer.model {
     IDRegistrar
 }
@@ -28,6 +25,7 @@ import strategicprimer.viewer.model.map.fixtures.explorable {
 }
 
 import strategicprimer.viewer.xmlio {
+    UnsupportedTagException,
     Warning
 }
 "A reader for Caves and Battlefields."

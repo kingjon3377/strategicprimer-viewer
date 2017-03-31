@@ -8,9 +8,7 @@ import ceylon.language.meta {
 
 import controller.map.formatexceptions {
     MissingChildException,
-    UnwantedChildException,
-    MissingPropertyException,
-    UnsupportedTagException
+    MissingPropertyException
 }
 
 import java.lang {
@@ -55,8 +53,10 @@ import strategicprimer.viewer.model.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.viewer.xmlio {
+    UnwantedChildException,
     Warning,
-    futureTags
+    futureTags,
+    UnsupportedTagException
 }
 "A reader for Strategic Primer maps."
 class YAMapReader("The Warning instance to use" Warning warner,
@@ -190,7 +190,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     continue;
                 } else if ("tile" == type) {
                     if (invalidPoint != point) {
-                        throw UnwantedChildException(tagStack.top, event);
+                        assert (exists top = tagStack.top);
+                        throw UnwantedChildException(top, event);
                     }
                     tagStack.push(event.name);
                     point = parsePoint(event);
@@ -208,7 +209,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     warner.handle(UnsupportedTagException(event));
                 } else if (invalidPoint == point) {
                     // fixture outside tile
-                    throw UnwantedChildException(tagStack.top, event);
+                    assert (exists top = tagStack.top);
+                    throw UnwantedChildException(top, event);
                 } else if ("lake" == type || "river" == type) {
                     assert (exists top = tagStack.top);
                     retval.addRivers(point, parseRiver(event, top));

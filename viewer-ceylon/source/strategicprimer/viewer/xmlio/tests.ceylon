@@ -15,8 +15,6 @@ import ceylon.test {
 }
 
 import controller.map.formatexceptions {
-    UnsupportedTagException,
-    UnwantedChildException,
     MissingPropertyException,
     DeprecatedPropertyException,
     MissingChildException
