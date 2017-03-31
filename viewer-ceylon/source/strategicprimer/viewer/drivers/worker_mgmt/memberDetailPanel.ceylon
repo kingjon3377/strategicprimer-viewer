@@ -26,7 +26,7 @@ import lovelace.util.jvm {
     horizontalSplit
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     HasPortrait
 }
 import strategicprimer.viewer.model.map.fixtures {

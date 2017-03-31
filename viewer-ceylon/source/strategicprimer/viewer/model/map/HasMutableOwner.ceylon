@@ -1,5 +1,7 @@
+import strategicprimer.viewer.model.map {
+	HasOwner
+}
 import model.map {
-    HasOwner,
     Player
 }
 "An interface for things that are owned by a player whose owner can change."

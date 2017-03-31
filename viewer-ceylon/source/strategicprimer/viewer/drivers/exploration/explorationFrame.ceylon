@@ -85,14 +85,14 @@ import model.listeners {
 }
 import model.map {
     Player,
-    Point,
-    HasOwner
+    Point
 }
 import strategicprimer.viewer.model.map {
     TileType,
     TileFixture,
     IMutableMapNG,
-    PlayerImpl
+    PlayerImpl,
+    HasOwner
 }
 import strategicprimer.viewer.model.map.fixtures {
     Ground

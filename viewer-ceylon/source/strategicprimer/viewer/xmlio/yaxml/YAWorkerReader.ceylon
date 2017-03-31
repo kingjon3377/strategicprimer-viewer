@@ -19,7 +19,7 @@ import javax.xml.stream.events {
     XMLEvent
 }
 
-import model.map {
+import strategicprimer.viewer.model.map {
     HasPortrait
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

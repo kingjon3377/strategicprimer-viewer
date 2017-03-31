@@ -22,12 +22,12 @@ import javax.swing {
     SwingUtilities
 }
 import model.map {
-    HasOwner,
     Player,
     HasName,
     HasKind
 }
 import strategicprimer.viewer.model.map {
+	HasOwner,
     IFixture,
     TileFixture,
     PointIterator,

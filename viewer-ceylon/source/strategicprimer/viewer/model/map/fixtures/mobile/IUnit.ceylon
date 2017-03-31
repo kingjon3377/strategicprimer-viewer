@@ -12,12 +12,12 @@ import lovelace.util.common {
 import model.map {
     HasImage,
     HasKind,
-    HasName,
-    HasOwner
+    HasName
 }
 import strategicprimer.viewer.model.map {
     FixtureIterable,
-    IFixture
+    IFixture,
+    HasOwner
 }
 import strategicprimer.viewer.model.map.fixtures {
     UnitMember,

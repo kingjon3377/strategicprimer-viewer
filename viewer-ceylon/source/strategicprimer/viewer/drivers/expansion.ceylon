@@ -2,12 +2,12 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     TileType,
     TileFixture,
-    IMapNG
+    IMapNG,
+    HasOwner
 }
 import model.map {
     Player,
-    Point,
-    HasOwner
+    Point
 }
 import strategicprimer.viewer.model.map.fixtures.towns {
     ITownFixture

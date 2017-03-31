@@ -25,7 +25,6 @@ import lovelace.util.common {
 import model.map {
     Point,
     Player,
-    HasOwner,
     MapDimensions,
     HasName
 }
@@ -49,6 +48,7 @@ import strategicprimer.viewer.model {
     DistanceComparator
 }
 import strategicprimer.viewer.model.map {
+    HasOwner,
     TileType,
     IMapNG,
     TileFixture,

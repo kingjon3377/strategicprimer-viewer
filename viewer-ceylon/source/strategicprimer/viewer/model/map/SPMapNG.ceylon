@@ -19,11 +19,11 @@ import lovelace.util.common {
 import model.map {
     Point,
     Player,
-    HasOwner,
     MapDimensions
 }
 
 import strategicprimer.viewer.model.map {
+    HasOwner,
     River,
     IMutablePlayerCollection,
     TileFixture,

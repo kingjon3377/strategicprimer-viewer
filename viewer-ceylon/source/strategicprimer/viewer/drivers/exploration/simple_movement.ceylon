@@ -17,9 +17,7 @@ import lovelace.util.jvm {
 import strategicprimer.viewer.model.map {
     River,
     TileFixture,
-    TileType
-}
-import model.map {
+    TileType,
     HasOwner
 }
 import strategicprimer.viewer.model.map.fixtures {

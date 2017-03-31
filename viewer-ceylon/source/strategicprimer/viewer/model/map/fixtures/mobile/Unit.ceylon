@@ -21,10 +21,10 @@ import strategicprimer.viewer.model.map {
     HasMutableOwner,
     HasMutableImage,
     TileFixture,
+    HasPortrait,
     IFixture
 }
 import model.map {
-    HasPortrait,
     Player
 }
 import strategicprimer.viewer.model.map.fixtures {

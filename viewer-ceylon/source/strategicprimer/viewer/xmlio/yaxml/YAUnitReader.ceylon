@@ -24,9 +24,7 @@ import javax.xml.stream.events {
     Characters
 }
 import strategicprimer.viewer.model.map {
-    IPlayerCollection
-}
-import model.map {
+    IPlayerCollection,
     HasPortrait
 }
 import strategicprimer.viewer.model.map.fixtures {

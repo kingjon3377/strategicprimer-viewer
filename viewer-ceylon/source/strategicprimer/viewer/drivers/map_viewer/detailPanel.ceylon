@@ -22,10 +22,10 @@ import lovelace.util.jvm {
 }
 import strategicprimer.viewer.model.map {
     TileFixture,
+    HasPortrait,
     TileType
 }
 import model.map {
-    HasPortrait,
     Point
 }
 import javax.swing.event {

@@ -1,10 +1,10 @@
 import strategicprimer.viewer.model.map {
     TileFixture,
-    HasMutableOwner
+    HasMutableOwner,
+    HasPortrait
 }
 import model.map {
-    HasName,
-    HasPortrait
+    HasName
 }
 "An interface for towns and similar fixtures."
 shared interface ITownFixture satisfies TileFixture&HasName&HasMutableOwner&HasPortrait {

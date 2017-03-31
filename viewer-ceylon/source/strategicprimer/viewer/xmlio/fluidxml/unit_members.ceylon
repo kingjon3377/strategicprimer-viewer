@@ -4,9 +4,6 @@ import controller.map.formatexceptions {
     UnsupportedPropertyException,
     MissingPropertyException
 }
-import strategicprimer.viewer.model {
-    IDRegistrar
-}
 
 import java.lang {
     IllegalArgumentException
@@ -23,10 +20,12 @@ import javax.xml.stream.events {
     XMLEvent,
     EndElement
 }
-import strategicprimer.viewer.model.map {
-    IPlayerCollection
+
+import strategicprimer.viewer.model {
+    IDRegistrar
 }
-import model.map {
+import strategicprimer.viewer.model.map {
+    IPlayerCollection,
     HasPortrait
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
@@ -42,7 +41,6 @@ import strategicprimer.viewer.model.map.fixtures.mobile.worker {
     ISkill,
     Skill
 }
-
 import strategicprimer.viewer.xmlio {
     Warning
 }

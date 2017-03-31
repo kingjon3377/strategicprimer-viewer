@@ -18,10 +18,10 @@ import model.listeners {
 import strategicprimer.viewer.model.map {
     TileType,
 	TileFixture,
+    HasOwner,
     IMutableMapNG
 }
 import model.map {
-    HasOwner,
     Player,
     Point
 }

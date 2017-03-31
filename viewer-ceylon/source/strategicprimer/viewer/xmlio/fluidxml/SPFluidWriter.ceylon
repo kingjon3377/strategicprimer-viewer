@@ -30,12 +30,12 @@ import model.map {
     Player,
     HasKind,
     HasImage,
-    HasPortrait,
     MapDimensions,
     Point
 }
 
 import strategicprimer.viewer.model.map {
+    HasPortrait,
     IFixture,
     River,
     IMapNG,
