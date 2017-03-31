@@ -74,7 +74,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
     shared actual IMutableMapNG readMapFromStream("The file we're reading from" JPath file,
             "The stream to read from" JReader istream,
             "The Warning instance to use for warnings" Warning warner) =>
-                readXML(file, istream, warner);
+                readXML<IMutableMapNG>(file, istream, warner);
     "Read a map from XML."
     throws(`class IOException`, "on I/O error")
     throws(`class XMLStreamException`, "on malformed XML")
