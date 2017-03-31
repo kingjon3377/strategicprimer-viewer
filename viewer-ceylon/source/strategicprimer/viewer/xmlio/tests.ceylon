@@ -140,9 +140,9 @@ ISPReader newReader = testReaderFactory.newReader;
 "Assert that the given XML will produce the given kind of warning and that it satisfies
  the given additional assertions. If it's only supposed to be a warning, asser that the
  XML will pass with warnings disabled but fail with warnings made fatal."
-void assertFormatIssue<Desideratum, Expectation>(ISPReader reader, String xml,
+void assertFormatIssue<Expectation>(ISPReader reader, String xml,
         Boolean warning, Anything(Expectation) checks = (Expectation warning) {} )
-        given Desideratum satisfies Object given Expectation satisfies Exception {
+        given Expectation satisfies Exception {
     if (warning) {
         try (stringReader = StringReader(xml)) {
             reader.readXML(fakeFilename, stringReader, warningLevels.ignore);
@@ -173,7 +173,7 @@ void assertFormatIssue<Desideratum, Expectation>(ISPReader reader, String xml,
 void assertUnsupportedTag<Type>(String xml, String tag, Boolean warning)
         given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<Type,UnsupportedTagException>(reader, xml, warning,
+        assertFormatIssue<UnsupportedTagException>(reader, xml, warning,
                     (UnsupportedTagException except) => assertEquals(except.tag.localPart,
                 tag, "Unsupported tag was the tag we expected"));
     }
@@ -185,7 +185,7 @@ void assertUnsupportedTag<Type>(String xml, String tag, Boolean warning)
 void assertUnwantedChild<Type>(String xml, Boolean warning)
         given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<Type,UnwantedChildException>(reader, xml, warning);
+        assertFormatIssue<UnwantedChildException>(reader, xml, warning);
     }
 }
 
@@ -195,7 +195,7 @@ void assertUnwantedChild<Type>(String xml, Boolean warning)
 void assertMissingProperty<Type>(String xml, String property,
         Boolean warning) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<Type,MissingPropertyException>(reader, xml, warning,
+        assertFormatIssue<MissingPropertyException>(reader, xml, warning,
                     (except) => assertEquals(except.param, property,
                 "Missing property should be the one we're expecting"));
     }
@@ -204,7 +204,7 @@ void assertMissingProperty<Type>(String xml, String property,
 "Assert that reading the given XML will give a MissingChildException."
 void assertMissingChild<Type>(String xml) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<Type,MissingChildException>(reader, xml, false);
+        assertFormatIssue<MissingChildException>(reader, xml, false);
     }
 }
 
@@ -214,7 +214,7 @@ void assertMissingChild<Type>(String xml) given Type satisfies Object {
 void assertDeprecatedProperty<Type>(String xml, String deprecated, String preferred,
         String tag, Boolean warning) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<Type,DeprecatedPropertyException>(reader, xml, warning,
+        assertFormatIssue<DeprecatedPropertyException>(reader, xml, warning,
                     (except) {
             assertEquals(except.old, deprecated,
                 "Missing property should be the one we're expecting");
@@ -357,7 +357,7 @@ void assertForwardDeserialization<Type>(
 }
 
 "Assert that two serialized forms are equivalent, using both readers."
-void assertEquivalentForms<Type>(
+void assertEquivalentForms(
         "The assertion message to use"
         String message,
         "The first serialized form"
@@ -365,7 +365,7 @@ void assertEquivalentForms<Type>(
         "The second serialized form"
         String secondForm,
         "The warning level to use"
-        Warning warningLevel) given Type satisfies Object {
+        Warning warningLevel) {
     for (reader in {oldReader, newReader}) {
         try (firstReader = StringReader(firstForm),
                 secondReader = StringReader(secondForm)) {
@@ -388,7 +388,7 @@ void assertMapDeserialization(String message, IMapNG expected, String xml) {
 "Assert that the given XML will produce warnings about duplicate IDs."
 void assertDuplicateID(String xml) {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<Object, DuplicateIDException>(reader, xml, true);
+        assertFormatIssue<DuplicateIDException>(reader, xml, true);
     }
 }
 
@@ -396,7 +396,7 @@ void assertDuplicateID(String xml) {
  SP format errors."
 void assertInvalid(String xml) {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException>(reader,
+        assertFormatIssue<NoSuchElementException|IllegalArgumentException>(reader,
             xml, false);
     }
 }
@@ -752,13 +752,13 @@ void testTileSerializationThree() {
 
 test
 void testSkippableSerialization() {
-    assertEquivalentForms<IMapNG>("Two maps, one with row tags, one without",
+    assertEquivalentForms("Two maps, one with row tags, one without",
         """<map rows="1" columns="1" version="2" />""",
         """<map rows="1" columns="1" version="2"><row /></map>""", warningLevels.die);
-    assertEquivalentForms<IMapNG>("Two maps, one with future tag, one without",
+    assertEquivalentForms("Two maps, one with future tag, one without",
         """<map rows="1" columns="1" version="2" />""",
         """<map rows="1" columns="1" version="2"><future /></map>""", warningLevels.ignore);
-    assertUnsupportedTag<IMapNG>(
+    assertUnsupportedTag(
         """<map rows="1" columns="1" version="2"><future /></map>""", "future", true);
     assertUnsupportedTag<IMapNG>(
         """<map rows="1" columns="1" version="2">
@@ -908,7 +908,7 @@ void testGroveSerialization() {
         true);
     assertDeprecatedProperty<Grove>("""<grove wild="true" kind="tree" id="0" />""",
         "wild", "cultivated", "grove", true);
-    assertEquivalentForms<Grove>("Assert that wild is the inverse of cultivated",
+    assertEquivalentForms("Assert that wild is the inverse of cultivated",
         """<grove wild="true" kind="tree" id="0" />""",
         """<grove cultivated="false" kind="tree"id="0" />""", warningLevels.ignore);
     assertImageSerialization("Grove image property is preserved", Grove(false, false,
@@ -1271,7 +1271,7 @@ void testForestSerialization() {
     map.setForest(loc, Forest("trees", false, 4));
     map.addFixture(loc, Forest("secondForest", true, 5));
     assertSerialization("Map with multiple Forests on a tile", map);
-    assertEquivalentForms<IMutableMapNG>("Duplicate Forests ignored",
+    assertEquivalentForms("Duplicate Forests ignored",
         encapsulateTileString(
             """<forest kind="trees" id="4" />
                <forest kind="second" rows="true" id="5" />"""),
