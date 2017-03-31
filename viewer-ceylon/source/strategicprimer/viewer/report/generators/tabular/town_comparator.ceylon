@@ -13,9 +13,10 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     shuffle
 }
-
+import strategicprimer.viewer.model.map {
+    PlayerImpl
+}
 import model.map {
-    PlayerImpl,
     Player
 }
 

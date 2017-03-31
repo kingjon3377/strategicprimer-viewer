@@ -20,8 +20,7 @@ import model.map {
     Point,
     Player,
     HasOwner,
-    MapDimensions,
-    MutablePlayer
+    MapDimensions
 }
 
 import strategicprimer.viewer.model.map {
@@ -29,7 +28,8 @@ import strategicprimer.viewer.model.map {
     IMutablePlayerCollection,
     TileFixture,
     IMutableMapNG,
-    IMapNG
+    IMapNG,
+    MutablePlayer
 }
 import strategicprimer.viewer.model.map.fixtures {
     Ground,
@@ -108,13 +108,13 @@ shared class SPMapNG satisfies IMutableMapNG {
     assign currentPlayer {
         Player oldCurrent = playerCollection.currentPlayer;
         if (is MutablePlayer oldCurrent) {
-            oldCurrent.setCurrent(false);
+            oldCurrent.current = false;
         } else {
             log.warn("Previous current player wasn't mutable");
         }
         Player newCurrent = playerCollection.getPlayer(currentPlayer.playerId);
         if (is MutablePlayer newCurrent) {
-            newCurrent.setCurrent(true);
+            newCurrent.current = true;
         } else {
             log.warn(
                 "Player in collection matching specified 'new' player wasn't mutable");

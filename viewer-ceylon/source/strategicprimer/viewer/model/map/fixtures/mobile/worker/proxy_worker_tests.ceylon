@@ -5,10 +5,11 @@ import ceylon.test {
     assertNotEquals,
     assertTrue
 }
-
+import strategicprimer.viewer.model.map {
+    PlayerImpl
+}
 import model.map {
     Player,
-    PlayerImpl,
     IFixture
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {

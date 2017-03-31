@@ -4,7 +4,8 @@ import ceylon.collection {
 }
 import strategicprimer.viewer.model.map {
     TileFixture,
-    TileType
+    TileType,
+    PlayerImpl
 }
 import strategicprimer.viewer.model.map.fixtures {
     IEvent
@@ -13,8 +14,7 @@ import model.map {
     IFixture,
     Player,
     MapDimensions,
-    Point,
-    PlayerImpl
+    Point
 }
 import strategicprimer.viewer.model.map.fixtures.explorable {
     Battlefield,

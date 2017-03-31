@@ -8,7 +8,8 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     PlayerCollection,
     pointFactory,
-    IMapNG
+    IMapNG,
+	PlayerImpl
 }
 import lovelace.util.jvm {
     shuffle,
@@ -16,8 +17,7 @@ import lovelace.util.jvm {
 }
 import model.map {
     MapDimensionsImpl,
-    Point,
-    PlayerImpl
+    Point
 }
 import ceylon.collection {
     MutableSet,

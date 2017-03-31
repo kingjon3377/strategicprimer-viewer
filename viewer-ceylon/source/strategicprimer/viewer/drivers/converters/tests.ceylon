@@ -19,8 +19,7 @@ import java.util {
 import model.map {
     Player,
     MapDimensionsImpl,
-    Point,
-    PlayerImpl
+    Point
 }
 
 import strategicprimer.viewer.model {
@@ -35,7 +34,8 @@ import strategicprimer.viewer.model.map {
     SPMapNG,
     IMutableMapNG,
     IMapNG,
-    pointFactory
+    pointFactory,
+    PlayerImpl
 }
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture,

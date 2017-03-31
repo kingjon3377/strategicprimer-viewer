@@ -15,8 +15,7 @@ import lovelace.util.common {
 }
 
 import model.map {
-    Player,
-    PlayerImpl
+    Player
 }
 
 "A collection of players. Using a simple List doesn't work when -1 is the default index if

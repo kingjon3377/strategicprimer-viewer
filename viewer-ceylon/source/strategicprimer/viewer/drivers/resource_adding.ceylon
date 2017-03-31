@@ -55,8 +55,7 @@ import model.listeners {
     PlayerChangeListener
 }
 import model.map {
-    Player,
-    PlayerImpl
+    Player
 }
 
 import strategicprimer.viewer.drivers.worker_mgmt {
@@ -69,7 +68,8 @@ import strategicprimer.viewer.model {
 }
 import strategicprimer.viewer.model.map {
     IMutableMapNG,
-    IMapNG
+    IMapNG,
+    PlayerImpl
 }
 import strategicprimer.viewer.model.map.fixtures {
     ResourcePile,

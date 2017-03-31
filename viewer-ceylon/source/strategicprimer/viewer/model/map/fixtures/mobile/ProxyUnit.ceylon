@@ -22,8 +22,7 @@ import lovelace.util.common {
 
 import model.map {
     IFixture,
-    Player,
-    PlayerImpl
+    Player
 }
 import strategicprimer.viewer.model.map.fixtures {
     UnitMember
@@ -34,7 +33,8 @@ import strategicprimer.viewer.model.map {
     HasMutableName,
     HasMutableKind,
     HasMutableOwner,
-    HasMutableImage
+    HasMutableImage,
+    PlayerImpl
 }
 import strategicprimer.viewer.model.map.fixtures.mobile {
     ProxyFor,

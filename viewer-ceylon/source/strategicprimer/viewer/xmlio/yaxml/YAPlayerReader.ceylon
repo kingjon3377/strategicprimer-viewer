@@ -13,10 +13,11 @@ import javax.xml.stream.events {
     StartElement,
     XMLEvent
 }
-
-import model.map {
-    Player,
+import strategicprimer.viewer.model.map {
     PlayerImpl
+}
+import model.map {
+    Player
 }
 
 import strategicprimer.viewer.xmlio {

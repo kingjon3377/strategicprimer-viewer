@@ -58,16 +58,15 @@ import lovelace.util.common {
 import model.map {
     HasPortrait,
     Player,
-    PlayerImpl,
     MapDimensionsImpl,
-    Point,
-    MutablePlayer
+    Point
 }
 
 import strategicprimer.viewer.drivers.advancement {
     races
 }
 import strategicprimer.viewer.model.map {
+    PlayerImpl,
     River,
     PlayerCollection,
     TileType,
@@ -75,7 +74,8 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     IMapNG,
     HasMutableImage,
-    pointFactory
+    pointFactory,
+    MutablePlayer
 }
 import strategicprimer.viewer.model.map.fixtures {
     TextFixture,
@@ -775,7 +775,7 @@ void testMapSerialization() {
     assertUnwantedChild<IMapNG>(
         """<map rows="1" columns="1" version="2"><hill /></map>""", false);
     MutablePlayer player = PlayerImpl(1, "playerOne");
-    player.setCurrent(true);
+    player.current = true;
     IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(1, 1, 2),
         PlayerCollection(), -1);
     firstMap.addPlayer(player);
@@ -816,7 +816,7 @@ void testMapSerialization() {
 test
 void testNamespacedSerialization() {
     MutablePlayer player = PlayerImpl(1, "playerOne");
-    player.setCurrent(true);
+    player.current = true;
     IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(1, 1, 2), PlayerCollection(), 0);
     firstMap.addPlayer(player);
     Point loc = pointFactory(0, 0);

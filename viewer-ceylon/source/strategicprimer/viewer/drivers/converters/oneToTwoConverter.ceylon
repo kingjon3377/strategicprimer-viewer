@@ -32,7 +32,6 @@ import model.map {
     Player,
     MapDimensions,
     MapDimensionsImpl,
-    PlayerImpl,
     Point
 }
 
@@ -60,6 +59,7 @@ import strategicprimer.viewer.model {
     IDRegistrar
 }
 import strategicprimer.viewer.model.map {
+    PlayerImpl,
     River,
     PlayerCollection,
     TileFixture,

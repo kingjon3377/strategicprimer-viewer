@@ -32,12 +32,12 @@ import lovelace.util.jvm {
 }
 
 import model.map {
-    PlayerImpl,
     HasName,
     Point
 }
 
 import strategicprimer.viewer.model.map {
+    PlayerImpl,
     pointFactory
 }
 """An interface for the "CLI helper," which encapsulates input and output streams,
