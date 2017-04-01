@@ -12,7 +12,7 @@ import lovelace.util.common {
 "An interface for readers of any SP model type."
 shared interface ISPReader {
 	"Read an object from XML."
-	shared formal Element readXML<out Element>(
+	shared formal Element readXML<out Element=Object>(
 			"The name of the file being read from"
 			todo("Port to `ceylon.file`")
 			JPath file,
