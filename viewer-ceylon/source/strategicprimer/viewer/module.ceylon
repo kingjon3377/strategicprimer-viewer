@@ -15,7 +15,6 @@ module strategicprimer.viewer "0.4.9900" {
     shared import ceylon.file "1.3.2";
     import ceylon.io "1.3.2";
     import com.bric.window.windowmenu "1.0";
-    shared import viewer "0.4";
     shared import java.desktop "8";
     import lovelace.util.jvm "0.1.0";
     import ceylon.regex "1.3.2";
