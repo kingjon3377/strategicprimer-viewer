@@ -86,8 +86,10 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             ostream("Unit of type ``item.kind``, named ``item.name``, ");
             if (item.owner.independent) {
                 ostream("independent");
+            } else if (item.owner == currentPlayer) {
+                ostream("owned by you");
             } else {
-                ostream("owned by ``playerNameOrYou(item.owner)``");
+                ostream("owned by ``item.owner``");
             }
             if (!item.empty) {
                 MutableList<IWorker> workers = ArrayList<IWorker>();
