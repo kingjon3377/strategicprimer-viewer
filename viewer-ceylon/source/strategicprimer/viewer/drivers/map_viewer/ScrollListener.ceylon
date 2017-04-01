@@ -1,5 +1,6 @@
 import java.awt.event {
-    AdjustmentEvent
+    AdjustmentEvent,
+    AdjustmentListener
 }
 import java.awt {
     BorderLayout,
@@ -75,10 +76,17 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             mapDimensions.rows - visibleDimensions.height, false);
         vertical.inputVerifier = LocalInputVerifier.vertical(() => mapDimensions,
                     () => visibleDimensions);
-        void adjustmentListener(AdjustmentEvent event) =>
-                model.dimensions = VisibleDimensions(verticalBar.\ivalue,
+        object adjustmentListener satisfies AdjustmentListener {
+            shared actual void adjustmentValueChanged(AdjustmentEvent event) {
+                VisibleDimensions oldDimensions = model.dimensions;
+                VisibleDimensions newDimensions = VisibleDimensions(verticalBar.\ivalue,
                     verticalBar.\ivalue + visibleDimensions.height, horizontalBar.\ivalue,
                     horizontalBar.\ivalue + visibleDimensions.width);
+                if (oldDimensions != newDimensions) {
+                    model.dimensions = newDimensions;
+                }
+            }
+        }
         horizontalBar.addAdjustmentListener(adjustmentListener);
         verticalBar.addAdjustmentListener(adjustmentListener);
     }
