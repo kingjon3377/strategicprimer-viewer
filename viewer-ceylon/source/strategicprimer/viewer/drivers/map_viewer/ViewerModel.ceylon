@@ -113,12 +113,15 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "The visible dimensions of the map."
     shared actual VisibleDimensions dimensions => visDimensions;
     assign dimensions {
-        // TODO: should we notify listeners before or after the change? Do they use the
-        // params we pass them, or get them from us?
-        for (listener in gpListeners) {
-            listener.dimensionsChanged(visDimensions, dimensions);
+        if (visDimensions != dimensions) {
+            VisibleDimensions oldDimensions = visDimensions;
+            visDimensions = dimensions;
+            // TODO: should we notify listeners before or after the change? Do they use the
+            // params we pass them, or get them from us?
+            for (listener in gpListeners) {
+                listener.dimensionsChanged(oldDimensions, dimensions);
+            }
         }
-        visDimensions = dimensions;
     }
     shared actual void addSelectionChangeListener(SelectionChangeListener listener) =>
             scs.addSelectionChangeListener(listener);
