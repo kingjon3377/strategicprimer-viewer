@@ -1,5 +1,9 @@
 import ceylon.interop.java {
-    javaClass
+    javaClass,
+    javaClassFromInstance
+}
+import ceylon.language.meta {
+    modules
 }
 
 import java.io {
@@ -27,6 +31,15 @@ shared class ResourceInputStream(String filename) extends InputStream() {
                     javaClass<ResourceInputStream>().getResourceAsStream(filename)) {
                 return temp;
             } else {
+//                if (exists uri = mod.resourceByPath(filename)?.uri, exists temp =
+//                        javaClass<ResourceInputStream>()
+//                            .getResourceAsStream(uri.string)) {
+                for (mod in modules.list) {
+                    if (exists temp = javaClassFromInstance(mod).getResourceAsStream(
+                            "/``mod.name.replace(".", "/")``/``filename``")) {
+                        return temp;
+                    }
+                }
                 throw except;
             }
         }
