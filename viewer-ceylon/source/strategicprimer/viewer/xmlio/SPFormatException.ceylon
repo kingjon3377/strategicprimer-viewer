@@ -1,6 +1,3 @@
-import javax.xml.namespace {
-	QName
-}
 import javax.xml.stream {
 	Location
 }
