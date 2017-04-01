@@ -7,7 +7,7 @@ import javax.xml.namespace {
 "A custom exception for cases where one property is deprecated in favor of another."
 shared class DeprecatedPropertyException(context, old, preferred)
 		extends SPFormatException(
-			"Use of the property ``deprecated`` in tag ``context.name
+			"Use of the property ``old`` in tag ``context.name
 				.localPart`` is deprecated; use ``preferred`` instead",
 			context.location) {
 	"The current tag."
