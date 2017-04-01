@@ -313,7 +313,7 @@ void assertDeprecatedDeserialization<Type>(
         String tag) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertEquals(reader.readXML(fakeFilename, stringReader, warningLevels.ignore), expected,
+            assertEquals(reader.readXML<Type>(fakeFilename, stringReader, warningLevels.ignore), expected,
                 message);
         }
     }
@@ -333,7 +333,7 @@ void assertMissingPropertyDeserialization<Type>(
         String property) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertEquals(reader.readXML(fakeFilename, stringReader, warningLevels.ignore), expected, message);
+            assertEquals(reader.readXML<Type>(fakeFilename, stringReader, warningLevels.ignore), expected, message);
         }
     }
     assertMissingProperty<Type>(xml, property, true);
@@ -351,7 +351,7 @@ void assertForwardDeserialization<Type>(
         Boolean(Type) assertion) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertTrue(assertion(reader.readXML(fakeFilename, stringReader, warningLevels.die)), message);
+            assertTrue(assertion(reader.readXML<Type>(fakeFilename, stringReader, warningLevels.die)), message);
         }
     }
 }
