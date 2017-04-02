@@ -841,7 +841,7 @@ void testNamespacedSerialization() {
         "<map xmlns=\"``spNamespace``\" version=\"2\" rows=\"1\" columns=\"1\"
          current_player=\"1\" xmlns:xy=\"xyzzy\"><player number=\"1\"
          code_name=\"playerOne\" /><xy:xyzzy><row index=\"0\"><tile row=\"0\"
-         column=\"0\" kind=\"steppe\"><xy:hill id=\"0\" /></tile></row></map>");
+         column=\"0\" kind=\"steppe\"><xy:hill id=\"0\" /></tile></row></xy:xyzzy></map>");
     try {
         assertMapDeserialization("Root tag must be in supported namespace", firstMap,
             """<map xmlns="xyzzy" version="2" rows="1" columns="1" current_player="1">
