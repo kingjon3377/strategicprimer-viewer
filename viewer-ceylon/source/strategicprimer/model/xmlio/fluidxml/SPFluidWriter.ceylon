@@ -251,7 +251,7 @@ shared class SPFluidWriter() satisfies SPWriter {
                 for (j in 0..(dimensions.columns)) {
                     Point loc = pointFactory(i, j);
                     TileType terrain = obj.getBaseTerrain(loc);
-                    if (obj.isLocationEmpty(loc)) {
+                    if (!obj.isLocationEmpty(loc)) {
                         if (rowEmpty) {
                             writeTag(ostream, "row", indentation + 2, false);
                             rowEmpty = false;
