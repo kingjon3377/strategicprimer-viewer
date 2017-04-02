@@ -264,7 +264,6 @@ void testZeroToOneConversion() {
 	StringBuilder ostream = StringBuilder();
 	XMLInputFactory xif = XMLInputFactory.newInstance();
 	xif.setProperty(XMLInputFactory.supportDtd, JBoolean(false));
-	process.writeLine(orig);
 	zeroToOneConverter.convert(IteratorWrapper(TypesafeXMLEventReader(
 		XMLInputFactory.newInstance().createXMLEventReader(StringReader(orig)))),
 		ostream.append);
