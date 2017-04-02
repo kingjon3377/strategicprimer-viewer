@@ -128,7 +128,7 @@ object zeroToOneConverter {
 	}
 	void printAttribute(Anything(String) ostream, Attribute attribute) {
 		// TODO: namespace
-		ostream(" ``attribute.name.localPart``=``attribute.\ivalue``");
+		ostream(" ``attribute.name.localPart``=\"``attribute.\ivalue``\"");
 	}
 	"Convert the version attribute of the map"
 	void convertMap(Anything(String) ostream, StartElement element, {Attribute*} attributes) {
