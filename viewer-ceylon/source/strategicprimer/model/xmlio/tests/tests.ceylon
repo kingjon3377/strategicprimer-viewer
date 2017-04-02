@@ -762,15 +762,18 @@ void testTileSerializationThree() {
 test
 void testSkippableSerialization() {
     assertEquivalentForms("Two maps, one with row tags, one without",
-        """<map rows="1" columns="1" version="2" />""",
-        """<map rows="1" columns="1" version="2"><row /></map>""", warningLevels.die);
+        """<map rows="1" columns="1" version="2" current_player="-1" />""",
+        """<map rows="1" columns="1" version="2" current_player="-1"><row /></map>""",
+        warningLevels.die);
     assertEquivalentForms("Two maps, one with future tag, one without",
-        """<map rows="1" columns="1" version="2" />""",
-        """<map rows="1" columns="1" version="2"><future /></map>""", warningLevels.ignore);
-    assertUnsupportedTag(
-        """<map rows="1" columns="1" version="2"><future /></map>""", "future", true);
+        """<map rows="1" columns="1" version="2" current_player="-1" />""",
+        """<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
+        warningLevels.ignore);
     assertUnsupportedTag<IMapNG>(
-        """<map rows="1" columns="1" version="2">
+        """<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
+        "future", true);
+    assertUnsupportedTag<IMapNG>(
+        """<map rows="1" columns="1" version="2" current_player="-1">
            <tile row="0" column="0" kind="steppe"><futureTag /></tile></map>""",
         "futureTag", true);
 }
@@ -1004,7 +1007,7 @@ void testTextSerialization() {
         pointFactory(0, 0)->TileType.plains);
     wrapper.addFixture(pointFactory(0, 0), TextFixture("one", -1));
     assertForwardDeserialization("Deprecated text-in-map still works",
-        """<map version="2" rows="1" columns="1">
+        """<map version="2" rows="1" columns="1" current_player="-1">
            <tile row="0" column="0" kind="plains">one</tile></map>""", wrapper.equals);
 }
 
@@ -1337,20 +1340,23 @@ void testGroundSerialization() {
     map.setGround(loc, Ground(-1, "four", true));
     assertSerialization("Test that reader handles ground as a fixture", map);
     assertForwardDeserialization("Duplicate Ground ignored",
-        """<view current_turn="-1"><map version="2" rows="1" columns="1">
-           <tile row="0" column="0" kind="plains"><ground kind="four" exposed="true" />
-           <ground kind="four" exposed="true" /></tile></map></view>""",
+        """<view current_turn="-1" current_player="-1">
+           <map version="2" rows="1" columns="1"><tile row="0" column="0" kind="plains">
+           <ground kind="four" exposed="true" /><ground kind="four" exposed="true" />
+           </tile></map></view>""",
         map.equals);
     map.addFixture(loc, Ground(-1, "five", false));
     assertForwardDeserialization("Exposed Ground made main",
-        """<view current_turn="-1"><map version="2" rows="1" columns="1">
-           <tile row="0" column="0" kind="plains"><ground kind="five" exposed="false" />
-           <ground kind="four" exposed="true" /></tile></map></view>""",
+        """<view current_turn="-1" current_player="-1">
+           <map version="2" rows="1" columns="1"><tile row="0" column="0" kind="plains">
+           <ground kind="five" exposed="false" /><ground kind="four" exposed="true" />
+           </tile></map></view>""",
         map.equals);
     assertForwardDeserialization("Exposed Ground left as main",
-        """<view current_turn="-1"><map version="2" rows="1" columns="1">
-           <tile row="0" column="0" kind="plains"><ground kind="four" exposed="true" />
-           <ground kind="five" exposed="false" /></tile></map></view>""",
+        """<view current_turn="-1" current_player="-1">
+           <map version="2" rows="1" columns="1"><tile row="0" column="0" kind="plains">
+           <ground kind="four" exposed="true" /><ground kind="five" exposed="false" />
+           </tile></map></view>""",
         map.equals);
     assertUnwantedChild<Ground>(
         """<ground kind="sand" exposed="true"><hill /></ground>""", false);
