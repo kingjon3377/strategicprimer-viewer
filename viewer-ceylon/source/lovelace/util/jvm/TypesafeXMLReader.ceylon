@@ -24,7 +24,7 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent> {
 	}
 	throws(`class XMLStreamException`, "on malformed XML")
 	shared actual XMLEvent|Finished next() {
-		if (exists retval = wrapped.nextEvent()) {
+		if (wrapped.hasNext(), exists retval = wrapped.nextEvent()) {
 			return retval;
 		} else {
 			return finished;
