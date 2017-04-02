@@ -182,7 +182,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             writeProperty(ostream, "owner", obj.owner.playerId);
             writeNonemptyProperty(ostream, "name", obj.name);
             if (TownSize.small != obj.townSize) {
-                writeProperty(ostream, "size", obj.size.string);
+                writeProperty(ostream, "size", obj.townSize.string);
             }
             writeProperty(ostream, "id", obj.id);
             writeImageXML(ostream, obj);

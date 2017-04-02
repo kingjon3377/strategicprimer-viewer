@@ -216,7 +216,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
             writeNonEmptyAttribute(ostream, "name", obj.name);
             if (TownSize.small != obj.townSize) {
-                writeAttribute(ostream, "size", obj.size.string);
+                writeAttribute(ostream, "size", obj.townSize.string);
             }
             writeIntegerAttribute(ostream, "id", obj.id);
             writeImage(ostream, obj);
