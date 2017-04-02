@@ -248,7 +248,7 @@ void testZeroToOneConversion() {
                    Random event here</tile><tile row='0' column='1' type='boreal_forest'
                    event='183'></tile></row><row index='1'><sp:tile row='1' column='0'
                    type='mountain' event='229'><sp:fortress name='HQ' owner='0' id='15'
-                   /></sp:tile><tile row='1'column='1' type='temperate_forest'
+                   /></sp:tile><tile row='1' column='1' type='temperate_forest'
                    event='219'></tile></row></map>";
 	StringBuilder ostream = StringBuilder();
 	zeroToOneConverter.convert(IteratorWrapper(TypesafeXMLEventReader(
