@@ -1,5 +1,5 @@
 import ceylon.math.decimal {
-    parseDecimal
+    decimalNumber
 }
 import ceylon.math.float {
     random
@@ -1177,7 +1177,7 @@ void testFortressMemberSerialization() {
     resource.created = 5;
     assertSerialization("Resource pile can know what turn it was created", resource);
     assertSerialization("Resource pile can have non-integer quantity", ResourcePile(5, "resourceKind", "specificKind2",
-        Quantity(parseDecimal("1.5") else nothing, "cubic feet")));
+        Quantity(decimalNumber(3) / decimalNumber(2), "cubic feet")));
 }
 
 test
