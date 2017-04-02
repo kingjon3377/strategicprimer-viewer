@@ -164,7 +164,7 @@ void assertFormatIssue<Type, Expectation>(ISPReader reader, String xml,
     } else {
         try (stringReader = StringReader(xml)) {
             reader.readXML<Type>(fakeFilename, stringReader, warningLevels.ignore);
-            fail("Expected an exception to be thrown");
+            fail("Expected a(n) `` `Expectation`.string `` to be thrown");
 //        } catch (Expectation except) {
         } catch (Exception except) {
             if (is Expectation except) {
