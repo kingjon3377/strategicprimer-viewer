@@ -23,14 +23,14 @@ import lovelace.util.common {
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     IMapNG,
     invalidPoint,
     IFixture,
     Player
 }
-import strategicprimer.viewer.model.map.fixtures.explorable {
+import strategicprimer.model.map.fixtures.explorable {
     ExplorableFixture,
     Cave,
     Portal,

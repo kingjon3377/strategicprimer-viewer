@@ -12,7 +12,7 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player
 }
 import javax.swing {

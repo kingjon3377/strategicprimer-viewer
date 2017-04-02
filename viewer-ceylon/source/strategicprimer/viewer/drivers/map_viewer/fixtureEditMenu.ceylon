@@ -14,7 +14,7 @@ import javax.swing {
     JLabel,
     JPopupMenu
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player,
     IFixture,
     HasMutableKind,
@@ -22,7 +22,7 @@ import strategicprimer.viewer.model.map {
     HasMutableOwner,
     HasName
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     UnitMember
 }
 

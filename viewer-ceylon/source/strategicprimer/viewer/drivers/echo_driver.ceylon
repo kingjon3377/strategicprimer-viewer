@@ -12,27 +12,30 @@ import javax.xml.stream {
     XMLStreamException
 }
 
-import strategicprimer.viewer.model {
-    IMultiMapModel,
-    IDriverModel,
-    IDRegistrar
+import strategicprimer.model.idreg {
+    IDRegistrar,
+    createIDFactory
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     IMutableMapNG,
     IMapNG
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     Ground
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
-import strategicprimer.viewer.xmlio {
+import strategicprimer.model.xmlio {
     readMap,
-    writeMap,
     warningLevels,
-    SPFormatException
+    SPFormatException,
+    writeMap
+}
+import strategicprimer.viewer.model {
+    IMultiMapModel,
+    IDriverModel
 }
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated

@@ -31,11 +31,11 @@ import lovelace.util.jvm {
     parseInt
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     HasName,
-    PlayerImpl,
-    pointFactory
+    pointFactory,
+    PlayerImpl
 }
 """An interface for the "CLI helper," which encapsulates input and output streams,
    allowing automated testing of CLIs and GUI wrappers around CLIs."""

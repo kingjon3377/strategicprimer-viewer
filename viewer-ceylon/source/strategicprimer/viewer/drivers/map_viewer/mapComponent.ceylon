@@ -29,7 +29,7 @@ import strategicprimer.viewer.model {
     MapChangeListener
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     MapDimensions,
     TileFixture,

@@ -1,4 +1,4 @@
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     MapDimensions,
     Point
 }

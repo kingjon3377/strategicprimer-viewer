@@ -6,7 +6,7 @@ import java.awt {
     BorderLayout,
     Adjustable
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     MapDimensions,
     Point
 }

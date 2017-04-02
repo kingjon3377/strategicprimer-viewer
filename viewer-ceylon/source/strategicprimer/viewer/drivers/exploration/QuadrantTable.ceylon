@@ -3,7 +3,7 @@ import ceylon.collection {
     HashMap
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     MapDimensions,
     TileType,

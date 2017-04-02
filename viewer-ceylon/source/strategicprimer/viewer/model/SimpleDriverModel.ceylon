@@ -9,7 +9,7 @@ import java.nio.file {
 import strategicprimer.viewer.model {
     VersionChangeListener
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     MapDimensions,
     SPMapNG,
     IMutableMapNG,

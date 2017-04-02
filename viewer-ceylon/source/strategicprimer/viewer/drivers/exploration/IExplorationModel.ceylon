@@ -1,13 +1,13 @@
 import strategicprimer.viewer.drivers.map_viewer {
     SelectionChangeSource
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player,
     TileFixture,
     HasName,
     Point
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
 import strategicprimer.viewer.model {

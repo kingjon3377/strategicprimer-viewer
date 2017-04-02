@@ -24,19 +24,19 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     River,
     TileFixture,
     HasImage,
     IMapNG
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     RiverFixture,
     TerrainFixture,
     Ground
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 

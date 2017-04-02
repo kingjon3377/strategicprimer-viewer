@@ -28,23 +28,23 @@ import java.math {
     BigInteger
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     IFixture,
     IMutableMapNG,
     TileFixture,
     FixtureIterable
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     ResourcePile,
     Quantity
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
+import strategicprimer.model.map.fixtures.resources {
     CacheFixture
 }
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map.fixtures.towns {
     Fortress
 }
 

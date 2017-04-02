@@ -1,33 +1,39 @@
+import ceylon.collection {
+    MutableMap,
+    HashMap
+}
+import ceylon.interop.java {
+    javaString
+}
+
+import com.apple.eawt {
+    Application,
+    AppEvent
+}
+import com.bric.window {
+    WindowList
+}
+
+import java.awt {
+    Dimension,
+    Frame
+}
+import java.awt.event {
+    ActionEvent,
+    KeyEvent
+}
+import java.io {
+    IOException
+}
 import java.lang {
     IllegalStateException,
     IllegalArgumentException
 }
 import java.nio.file {
-    JPaths = Paths, JPath = Path
+    JPaths=Paths,
+    JPath=Path
 }
-import strategicprimer.viewer.model.map {
-    IMutableMapNG,
-    HasName
-}
-import java.io {
-    IOException
-}
-import lovelace.util.common {
-    todo
-}
-import ceylon.interop.java {
-    javaString
-}
-import ceylon.collection {
-    MutableMap,
-    HashMap
-}
-import strategicprimer.viewer.xmlio {
-    readMultiMapModel,
-    namesToFiles,
-    writeModel,
-    warningLevels
-}
+
 import javax.swing {
     JFrame,
     WindowConstants,
@@ -39,13 +45,9 @@ import javax.swing {
     JMenuItem,
     InputMap
 }
-import java.awt {
-    Dimension,
-    Frame
-}
-import java.awt.event {
-    ActionEvent,
-    KeyEvent
+
+import lovelace.util.common {
+    todo
 }
 import lovelace.util.jvm {
     createHotKey,
@@ -55,21 +57,26 @@ import lovelace.util.jvm {
     platform,
     ActionWrapper
 }
-import com.apple.eawt {
-    Application, AppEvent
+
+import strategicprimer.model.map {
+    IMutableMapNG,
+    HasName
 }
-import com.bric.window {
-    WindowList
-}
-import strategicprimer.viewer.drivers.worker_mgmt {
-    IWorkerModel
+import strategicprimer.model.xmlio {
+    warningLevels,
+    namesToFiles
 }
 import strategicprimer.viewer.drivers.map_viewer {
     IViewerModel
 }
+import strategicprimer.viewer.drivers.worker_mgmt {
+    IWorkerModel
+}
 import strategicprimer.viewer.model {
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    readMultiMapModel,
+    writeModel
 }
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option

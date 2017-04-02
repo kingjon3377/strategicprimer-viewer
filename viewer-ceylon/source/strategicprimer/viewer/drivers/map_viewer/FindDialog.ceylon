@@ -1,16 +1,11 @@
-import java.awt.event {
-    ActionEvent
-}
 import java.awt {
     Component,
     Frame
 }
-import strategicprimer.viewer.model.map.fixtures {
-    RiverFixture
+import java.awt.event {
+    ActionEvent
 }
-import strategicprimer.viewer.drivers {
-    SPDialog
-}
+
 import javax.swing {
     JTextField,
     JPanel,
@@ -21,16 +16,7 @@ import javax.swing {
     ScrollPaneConstants,
     SwingUtilities
 }
-import strategicprimer.viewer.model.map {
-    Player,
-	HasOwner,
-    IFixture,
-    TileFixture,
-    PointIterator,
-    FixtureIterable,
-    HasName,
-    HasKind
-}
+
 import lovelace.util.jvm {
     platform,
     listenedButton,
@@ -39,6 +25,23 @@ import lovelace.util.jvm {
     BoxAxis,
     BorderedPanel,
     boxPanel
+}
+
+import strategicprimer.model.map {
+    Player,
+    HasOwner,
+    IFixture,
+    TileFixture,
+    FixtureIterable,
+    HasName,
+    HasKind,
+    PointIterator
+}
+import strategicprimer.model.map.fixtures {
+    RiverFixture
+}
+import strategicprimer.viewer.drivers {
+    SPDialog
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {

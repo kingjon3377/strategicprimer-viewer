@@ -4,7 +4,7 @@ import java.lang {
 import lovelace.util.common {
     todo
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player,
     TileFixture,
     Point

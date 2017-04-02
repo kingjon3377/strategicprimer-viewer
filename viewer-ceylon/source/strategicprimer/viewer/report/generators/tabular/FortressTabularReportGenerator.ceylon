@@ -1,13 +1,13 @@
 import lovelace.util.common {
     DelayedRemovalMap
 }
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player,
     IFixture,
     Point

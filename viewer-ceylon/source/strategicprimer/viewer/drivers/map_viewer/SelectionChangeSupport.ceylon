@@ -3,7 +3,7 @@ import ceylon.collection {
     MutableList
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point
 }
 "A helper class to proxy selection-changing calls."

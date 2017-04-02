@@ -11,7 +11,7 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player,
     TileType,
 	TileFixture,
@@ -19,17 +19,17 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     Point
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     Ground
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
+import strategicprimer.model.map.fixtures.resources {
     CacheFixture
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 

@@ -1,32 +1,6 @@
-import java.lang {
-    IllegalArgumentException
-}
-import strategicprimer.viewer.model.map {
-	Point,
-	MapDimensionsImpl,
-	River,
-    TileType,
-    SPMapNG,
-    IMutableMapNG,
-    PlayerCollection,
-    pointFactory,
-    IMapNG,
-	PlayerImpl
-}
-import lovelace.util.jvm {
-    shuffle,
-    EnumCounter
-}
 import ceylon.collection {
     MutableSet,
     HashSet
-}
-import strategicprimer.viewer.model.map.fixtures.resources {
-    CacheFixture
-}
-import strategicprimer.viewer.model.map.fixtures.towns {
-    TownSize,
-    Fortress
 }
 import ceylon.test {
     assertEquals,
@@ -34,19 +8,49 @@ import ceylon.test {
     test,
     assertThatException
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+
+import java.lang {
+    IllegalArgumentException
+}
+
+import lovelace.util.jvm {
+    EnumCounter,
+    shuffle
+}
+
+import strategicprimer.model.map {
+    Point,
+    River,
+    TileType,
+    IMutableMapNG,
+    pointFactory,
+    IMapNG,
+    PlayerCollection,
+    SPMapNG,
+    MapDimensionsImpl,
+    PlayerImpl,
+    TileFixture
+}
+import strategicprimer.model.map.fixtures {
+    Ground
+}
+import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal,
     Unit
 }
-import strategicprimer.viewer.model.map.fixtures {
-    Ground
+import strategicprimer.model.map.fixtures.resources {
+    CacheFixture
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
+import strategicprimer.model.map.fixtures.towns {
+    TownSize,
+    Fortress
+}
 "A utility to convert a map to an equivalent half-resolution one."
-IMapNG decreaseResolution(IMapNG old) {
+shared IMapNG decreaseResolution(IMapNG old) {
 	if (old.dimensions.rows % 2 != 0 || old.dimensions.columns %2 != 0) {
 		throw IllegalArgumentException(
 			"Can only convert maps with even numbers of rows and columns");
@@ -129,6 +133,20 @@ IMapNG decreaseResolution(IMapNG old) {
 		}
 	}
 	return retval;
+}
+void initialize(IMutableMapNG map, Point point, TileType? terrain, TileFixture* fixtures) {
+	if (exists terrain, terrain != TileType.notVisible) {
+		map.setBaseTerrain(point, terrain);
+	}
+	for (fixture in fixtures) {
+		if (is Ground fixture, !map.getGround(point) exists) {
+			map.setGround(point, fixture);
+		} else if (is Forest fixture, !map.getForest(point) exists) {
+			map.setForest(point, fixture);
+		} else {
+			map.addFixture(point, fixture);
+		}
+	}
 }
 test
 void testResolutionReduction() {

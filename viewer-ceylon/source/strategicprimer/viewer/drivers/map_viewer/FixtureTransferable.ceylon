@@ -15,7 +15,7 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     TileFixture
 }
 "A class to transfer a TileFixture by drag-and-drop."

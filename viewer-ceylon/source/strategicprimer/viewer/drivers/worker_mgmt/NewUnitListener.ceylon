@@ -1,4 +1,4 @@
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
 import java.util {

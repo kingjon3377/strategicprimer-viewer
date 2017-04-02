@@ -16,13 +16,13 @@ import lovelace.util.common {
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     IMapNG,
     invalidPoint,
     IFixture
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
+import strategicprimer.model.map.fixtures.resources {
     HarvestableFixture,
     Meadow,
     CacheFixture,

@@ -1,18 +1,18 @@
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+    comparingOn
 }
 
-import strategicprimer.viewer.model {
-    DistanceComparator
-}
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player,
     IFixture,
     Point
 }
-
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map.fixtures.towns {
     Village
+}
+import strategicprimer.viewer.model {
+    DistanceComparator
 }
 "A tabular report generator for villages."
 shared class VillageTabularReportGenerator(Player player, Point hq)

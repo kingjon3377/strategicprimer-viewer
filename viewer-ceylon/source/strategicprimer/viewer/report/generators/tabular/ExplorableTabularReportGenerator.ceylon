@@ -1,18 +1,18 @@
 import lovelace.util.common {
     DelayedRemovalMap
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     TextFixture
 }
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player,
     IFixture,
     Point
 }
-import strategicprimer.viewer.model.map.fixtures.explorable {
+import strategicprimer.model.map.fixtures.explorable {
     ExplorableFixture,
     Cave,
     Portal,

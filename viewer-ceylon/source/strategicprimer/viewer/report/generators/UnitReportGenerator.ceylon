@@ -11,20 +11,20 @@ import lovelace.util.common {
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     Player,
     IFixture,
     IMapNG,
     invalidPoint
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     ResourcePile,
     FortressMember,
     Implement,
     UnitMember
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     Animal,
     IWorker,
     IUnit

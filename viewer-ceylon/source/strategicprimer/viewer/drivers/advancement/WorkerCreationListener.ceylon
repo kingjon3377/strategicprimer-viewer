@@ -25,19 +25,19 @@ import lovelace.util.jvm {
     singletonRandom
 }
 
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    WorkerStats
-}
-
-import strategicprimer.viewer.drivers.worker_mgmt {
-    IWorkerTreeModel
-}
-import strategicprimer.viewer.model {
+import strategicprimer.model.idreg {
     IDRegistrar
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Worker
+}
+import strategicprimer.model.map.fixtures.mobile.worker {
+    WorkerStats,
+    randomRace
+}
+import strategicprimer.viewer.drivers.worker_mgmt {
+    IWorkerTreeModel
 }
 "A listener to keep track of the currently selected unit and listen for new-worker
  notifications, then pass this information on to the tree model."

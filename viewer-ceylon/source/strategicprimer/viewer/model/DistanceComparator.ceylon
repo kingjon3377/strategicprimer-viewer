@@ -6,7 +6,7 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point
 }
 "A class to compare [[Point]]s based on their distance to a specified point (such as a

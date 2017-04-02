@@ -1,17 +1,17 @@
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map.fixtures.towns {
     Fortress
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     IMapNG
 }
 import lovelace.util.common {
     todo
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     IEvent
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
 import java.awt {

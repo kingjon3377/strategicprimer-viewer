@@ -1,4 +1,23 @@
-import strategicprimer.viewer.model.map {
+import ceylon.collection {
+    ArrayList,
+    MutableList
+}
+import ceylon.math.float {
+    random
+}
+
+import lovelace.util.common {
+    todo
+}
+import lovelace.util.jvm {
+    shuffle
+}
+
+import strategicprimer.model.idreg {
+    IDRegistrar,
+    createIDFactory
+}
+import strategicprimer.model.map {
     Player,
     IMutableMapNG,
     TileType,
@@ -7,25 +26,14 @@ import strategicprimer.viewer.model.map {
     HasOwner,
     Point
 }
-import strategicprimer.viewer.model.map.fixtures.towns {
-    ITownFixture
-}
-import ceylon.collection {
-    ArrayList,
-    MutableList
-}
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     Animal
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
+import strategicprimer.model.map.fixtures.resources {
     CacheFixture
 }
-import lovelace.util.jvm { shuffle }
-import lovelace.util.common {
-    todo
-}
-import ceylon.math.float {
-    random
+import strategicprimer.model.map.fixtures.towns {
+    ITownFixture
 }
 import strategicprimer.viewer.drivers.exploration {
     surroundingPointIterable,
@@ -36,8 +44,7 @@ import strategicprimer.viewer.drivers.exploration {
 import strategicprimer.viewer.model {
     SimpleMultiMapModel,
     IMultiMapModel,
-    IDriverModel,
-    IDRegistrar
+    IDriverModel
 }
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""

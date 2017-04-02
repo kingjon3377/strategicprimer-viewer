@@ -21,34 +21,33 @@ import lovelace.util.jvm {
     shuffle
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
-    MapDimensionsImpl,
     Player,
-    PlayerImpl,
-    PlayerCollection,
     TileFixture,
-    SPMapNG,
     IMutableMapNG,
-    IMapNG
+    IMapNG,
+    PlayerImpl,
+    SPMapNG,
+    MapDimensionsImpl,
+    PlayerCollection
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     Animal,
     ProxyFor,
     ProxyUnit,
     IUnit,
     Unit
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Oasis,
     Hill,
     Forest
 }
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map.fixtures.towns {
     TownSize,
     Fortress
 }
-
 import strategicprimer.viewer.model {
     SimpleMultiMapModel,
     IDriverModel

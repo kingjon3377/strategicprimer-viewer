@@ -35,19 +35,19 @@ import lovelace.util.jvm {
     LabelTextColor
 }
 
-import strategicprimer.viewer.drivers {
-    SPFrame
-}
-import strategicprimer.viewer.model.map {
-    MapDimensionsImpl,
-    PlayerCollection,
+import strategicprimer.model.map {
+    IMapNG,
     SPMapNG,
-    IMapNG
+    MapDimensionsImpl,
+    PlayerCollection
 }
-import strategicprimer.viewer.xmlio {
+import strategicprimer.model.xmlio {
     readMap,
     warningLevels,
     SPFormatException
+}
+import strategicprimer.viewer.drivers {
+    SPFrame
 }
 "A window to show the result of running subset tests."
 class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) {

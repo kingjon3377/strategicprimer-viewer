@@ -18,7 +18,7 @@ import strategicprimer.viewer.model {
     SimpleDriverModel,
     IDriverModel
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     IMutableMapNG,
     IMapNG,

@@ -25,7 +25,7 @@ import strategicprimer.viewer.model {
     SimpleMultiMapModel,
     IDriverModel
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     Player,
     IMutableMapNG,
@@ -39,24 +39,24 @@ import strategicprimer.viewer.model.map {
     HasOwner,
     MapDimensions
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     Ground,
     MineralFixture
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
+import strategicprimer.model.map.fixtures.resources {
     Grove,
     Meadow,
     Mine,
     MineralVein
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map.fixtures.towns {
     Village,
     Fortress
 }

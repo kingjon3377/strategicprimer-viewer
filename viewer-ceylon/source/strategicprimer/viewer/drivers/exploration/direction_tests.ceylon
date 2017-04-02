@@ -3,7 +3,7 @@ import ceylon.test {
     assertEquals
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     MapDimensionsImpl,
     PlayerCollection,

@@ -2,7 +2,7 @@ import java.lang {
     ObjectArray,
     IllegalArgumentException
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     UnitMember
 }
 import javax.swing.tree {
@@ -17,12 +17,12 @@ import ceylon.collection {
     Queue,
     MutableList
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     ProxyFor,
     IUnit,
     ProxyUnit
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     HasMutableName,
     Player,
     HasKind

@@ -8,17 +8,18 @@ import ceylon.test {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    comparingOn
 }
 import lovelace.util.jvm {
     shuffle
 }
-import strategicprimer.viewer.model.map {
-    PlayerImpl,
-    Player
-}
 
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map {
+    Player,
+    PlayerImpl
+}
+import strategicprimer.model.map.fixtures.towns {
     TownStatus,
     TownSize,
     ITownFixture,
@@ -27,9 +28,6 @@ import strategicprimer.viewer.model.map.fixtures.towns {
     City,
     Town,
     Fortification
-}
-import strategicprimer.viewer.report.generators.tabular {
-    comparingOn
 }
 "A comparator for town-sizes, to put larger towns before smaller ones."
 todo("Reverse the semantics here and use Comparator-reversing methods, so we don't

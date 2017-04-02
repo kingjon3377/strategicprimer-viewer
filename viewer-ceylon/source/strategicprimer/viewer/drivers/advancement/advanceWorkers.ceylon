@@ -1,13 +1,13 @@
 import strategicprimer.viewer.drivers.worker_mgmt {
     IWorkerModel
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player
 }
 import strategicprimer.viewer.drivers {
     ICLIHelper
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
 "Let the user add experience to a player's workers."

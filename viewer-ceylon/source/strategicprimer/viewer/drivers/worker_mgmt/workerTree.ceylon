@@ -1,7 +1,7 @@
 import java.awt.image {
     BufferedImage
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     UnitMember
 }
 import java.awt {
@@ -9,11 +9,11 @@ import java.awt {
     Graphics2D,
     Color
 }
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.map.fixtures.mobile.worker {
     ProxyWorker,
     WorkerStats
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     HasImage,
     IFixture,
     Player
@@ -37,7 +37,7 @@ import javax.swing {
     ImageIcon,
     Icon
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     IWorker
 }

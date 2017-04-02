@@ -20,14 +20,14 @@ import lovelace.util.common {
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     Player,
     IFixture,
     IMapNG,
     invalidPoint
 }
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map.fixtures.towns {
     TownStatus,
     ITownFixture,
     Fortress,

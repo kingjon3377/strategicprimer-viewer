@@ -1,4 +1,4 @@
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IWorker
 }
 import ceylon.collection {
@@ -8,7 +8,7 @@ import ceylon.collection {
 import strategicprimer.viewer.drivers {
     ICLIHelper
 }
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
     ProxyJob,
     Skill,

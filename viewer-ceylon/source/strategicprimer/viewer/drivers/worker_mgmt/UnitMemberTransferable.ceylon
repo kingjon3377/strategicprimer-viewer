@@ -4,7 +4,7 @@ import java.lang {
 import ceylon.interop.java {
     createJavaObjectArray
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     UnitMember
 }
 import java.awt.datatransfer {
@@ -12,7 +12,7 @@ import java.awt.datatransfer {
     UnsupportedFlavorException,
     Transferable
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
 "A class to transfer a UnitMember via drag-and-drop."

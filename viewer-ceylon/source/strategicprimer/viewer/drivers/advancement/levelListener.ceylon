@@ -1,13 +1,13 @@
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     HasName
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     UnitMember
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
     UnitMemberListener
 }
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.map.fixtures.mobile.worker {
     ISkill
 }
 "A listener to print a line whenever a worker gains a level."

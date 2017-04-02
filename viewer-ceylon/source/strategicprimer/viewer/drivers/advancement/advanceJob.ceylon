@@ -7,7 +7,7 @@ import lovelace.util.jvm {
     singletonRandom
 }
 
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
     Skill,
     ISkill

@@ -20,7 +20,7 @@ import strategicprimer.viewer.drivers {
     SPOptions,
     IncorrectUsageException
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     pointFactory
 }

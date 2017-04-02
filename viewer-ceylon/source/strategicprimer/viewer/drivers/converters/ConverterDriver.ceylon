@@ -16,6 +16,16 @@ import javax.xml.stream {
     XMLStreamException
 }
 
+import strategicprimer.model.map {
+    IMutableMapNG,
+    IMapNG
+}
+import strategicprimer.model.xmlio {
+    readMap,
+    warningLevels,
+    writeMap,
+    SPFormatException
+}
 import strategicprimer.viewer.drivers {
     ICLIHelper,
     DriverUsage,
@@ -24,17 +34,6 @@ import strategicprimer.viewer.drivers {
     IDriverUsage,
     SPOptions
 }
-import strategicprimer.viewer.model.map {
-    IMutableMapNG,
-    IMapNG
-}
-import strategicprimer.viewer.xmlio {
-    readMap,
-    writeMap,
-    warningLevels,
-    SPFormatException
-}
-
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to convert maps: at present, halving their resolution."

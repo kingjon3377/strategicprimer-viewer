@@ -1,17 +1,19 @@
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+    comparingOn
 }
-import strategicprimer.viewer.model {
-    DistanceComparator
-}
-import strategicprimer.viewer.model.map {
+
+import strategicprimer.model.map {
     Player,
     IFixture,
     Point
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal
+}
+import strategicprimer.viewer.model {
+    DistanceComparator
 }
 "A tabular report generator for units."
 shared class UnitTabularReportGenerator(Player player, Point hq)

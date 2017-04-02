@@ -7,7 +7,7 @@ import lovelace.util.jvm {
     platform
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     pointFactory
 }

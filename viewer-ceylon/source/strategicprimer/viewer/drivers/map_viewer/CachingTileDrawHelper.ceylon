@@ -7,7 +7,7 @@ import java.awt.geom {
     Line2D,
     Ellipse2D
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     River,
     TileType,

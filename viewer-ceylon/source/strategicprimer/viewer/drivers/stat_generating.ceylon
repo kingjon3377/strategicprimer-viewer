@@ -32,8 +32,36 @@ import lovelace.util.jvm {
     singletonRandom
 }
 
-import strategicprimer.viewer.drivers.advancement {
+import strategicprimer.model.idreg {
+    IDRegistrar,
+    createIDFactory
+}
+import strategicprimer.model.map {
+    Point,
+    Player,
+    IFixture,
+    TileType,
+    IMapNG,
+    FixtureIterable,
+    pointFactory
+}
+import strategicprimer.model.map.fixtures.mobile {
+    Worker,
+    IUnit,
+    Unit,
+    IWorker
+}
+import strategicprimer.model.map.fixtures.mobile.worker {
+    WorkerStats,
+    IJob,
     randomRace
+}
+import strategicprimer.model.map.fixtures.towns {
+    Village
+}
+import strategicprimer.model.xmlio {
+    readMap,
+    warningLevels
 }
 import strategicprimer.viewer.drivers.exploration {
     loadAllTables,
@@ -43,34 +71,7 @@ import strategicprimer.viewer.drivers.exploration {
 }
 import strategicprimer.viewer.model {
     IMultiMapModel,
-    IDriverModel,
-    IDRegistrar
-}
-import strategicprimer.viewer.model.map {
-    Point,
-    Player,
-    IFixture,
-    TileType,
-    IMapNG,
-    FixtureIterable,
-    pointFactory
-}
-import strategicprimer.viewer.model.map.fixtures.mobile {
-    Worker,
-    IUnit,
-    Unit,
-    IWorker
-}
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
-    WorkerStats,
-    IJob
-}
-import strategicprimer.viewer.model.map.fixtures.towns {
-    Village
-}
-import strategicprimer.viewer.xmlio {
-    readMap,
-    warningLevels
+    IDriverModel
 }
 
 "A driver to let the user enter pre-generated stats for existing workers or generate new
@@ -372,7 +373,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
                     "Enter pregenerated stats for existing workers?")) {
                 enterStats(model, cli);
             } else {
-                createWorkers(model, createIDFactory(model), cli);
+                createWorkers(model, createIDFactory(model.allMaps.map((pair) => pair.first)), cli);
             }
         } else {
             startDriverOnModel(cli, options, ExplorationModel.copyConstructor(model));

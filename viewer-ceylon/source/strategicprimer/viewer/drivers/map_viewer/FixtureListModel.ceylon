@@ -11,7 +11,7 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     River,
     TileFixture,
@@ -19,14 +19,14 @@ import strategicprimer.viewer.model.map {
     IMutableMapNG,
     invalidPoint
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     RiverFixture,
     Ground
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     Animal
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 "A model for the list-based representation of the contents of a tile."

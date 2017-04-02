@@ -4,18 +4,18 @@ import lovelace.util.common {
 import ceylon.language.meta {
     typeOf=type
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     TileFixture,
     IFixture,
     Point
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
+import strategicprimer.model.map.fixtures.resources {
     Grove,
     Meadow,
     Shrub

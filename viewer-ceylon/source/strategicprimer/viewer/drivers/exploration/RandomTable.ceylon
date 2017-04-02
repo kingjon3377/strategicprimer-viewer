@@ -1,7 +1,7 @@
 import lovelace.util.jvm {
     singletonRandom
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     TileFixture,
     TileType,
     MapDimensions,

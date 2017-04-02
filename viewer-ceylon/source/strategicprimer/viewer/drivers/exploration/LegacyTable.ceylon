@@ -2,7 +2,8 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import strategicprimer.viewer.model.map {
+
+import strategicprimer.model.map {
     Point,
     MapDimensions,
     Player,
@@ -11,20 +12,20 @@ import strategicprimer.viewer.model.map {
     TileType,
     PlayerImpl
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     IEvent
 }
-import strategicprimer.viewer.model.map.fixtures.explorable {
+import strategicprimer.model.map.fixtures.explorable {
     Battlefield,
     Cave
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
+import strategicprimer.model.map.fixtures.resources {
     MineralVein,
     MineralKind,
     StoneDeposit,
     StoneKind
 }
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map.fixtures.towns {
     City,
     Fortification,
     Town,

@@ -1,14 +1,14 @@
 import strategicprimer.viewer.drivers {
     SPOptions
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player,
     HasName
 }
 import java.lang {
     IllegalStateException
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     UnitMember
 }
 import ceylon.collection {
@@ -20,7 +20,7 @@ import ceylon.collection {
 import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     IWorker
 }

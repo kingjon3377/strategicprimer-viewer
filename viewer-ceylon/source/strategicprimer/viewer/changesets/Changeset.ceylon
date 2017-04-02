@@ -1,7 +1,7 @@
 import lovelace.util.common {
     todo
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     IMutableMapNG
 }
 "An interface to represent a set of changes that can be made to a map (TODO: or to what?).

@@ -3,7 +3,7 @@ import ceylon.collection {
     MutableList
 }
 
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IWorker,
     IUnit
 }
@@ -11,7 +11,7 @@ import strategicprimer.viewer.model.map.fixtures.mobile {
 import strategicprimer.viewer.drivers {
     ICLIHelper
 }
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
     ProxyWorker,
     Job

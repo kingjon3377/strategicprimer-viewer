@@ -13,7 +13,7 @@ import strategicprimer.viewer.model {
     VersionChangeListener,
     MapChangeListener
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     TileFixture
 }
 import javax.swing.table {

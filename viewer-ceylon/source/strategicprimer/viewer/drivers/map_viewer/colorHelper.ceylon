@@ -13,13 +13,13 @@ import ceylon.language.meta {
 import java.awt {
     Color
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Oasis,
     Sandbar,
     Hill,
     Forest
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     TileType,
     TileFixture
 }

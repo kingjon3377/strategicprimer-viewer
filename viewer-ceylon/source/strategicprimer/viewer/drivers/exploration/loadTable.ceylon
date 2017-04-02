@@ -21,7 +21,7 @@ import java.lang {
     IllegalArgumentException
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     MapDimensions,
     MapDimensionsImpl,

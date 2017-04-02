@@ -1,19 +1,22 @@
-import lovelace.util.common {
-    DelayedRemovalMap
-}
-import strategicprimer.viewer.model.map {
-    IFixture,
-    Point
-}
-import strategicprimer.viewer.model.map.fixtures {
-    Implement,
-    ResourcePile
-}
 import ceylon.collection {
     MutableMap,
     HashMap
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
+
+import lovelace.util.common {
+    DelayedRemovalMap,
+    comparingOn
+}
+
+import strategicprimer.model.map {
+    IFixture,
+    Point
+}
+import strategicprimer.model.map.fixtures {
+    Implement,
+    ResourcePile
+}
+import strategicprimer.model.map.fixtures.resources {
     CacheFixture
 }
 "A tabular report generator for resources, including caches, resource piles, and

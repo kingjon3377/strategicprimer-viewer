@@ -26,18 +26,18 @@ import lovelace.util.jvm {
     horizontalSplit
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     HasPortrait
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     UnitMember
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     Worker,
     ProxyFor,
     Animal
 }
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
 

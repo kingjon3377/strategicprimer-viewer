@@ -1,15 +1,17 @@
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+    comparingOn
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+
+import strategicprimer.model.map {
+    IFixture,
+    Point
+}
+import strategicprimer.model.map.fixtures.mobile {
     Immortal
 }
 import strategicprimer.viewer.model {
     DistanceComparator
-}
-import strategicprimer.viewer.model.map {
-    IFixture,
-    Point
 }
 """A tabular report generator for "immortals.""""
 shared class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immortal> {

@@ -72,7 +72,7 @@ import lovelace.util.jvm {
     isNumeric
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     Player,
     TileType,
@@ -81,17 +81,17 @@ import strategicprimer.viewer.model.map {
     PlayerImpl,
     HasOwner
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     Ground
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
+import strategicprimer.model.map.fixtures.resources {
     CacheFixture
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 
@@ -109,7 +109,7 @@ import strategicprimer.viewer.drivers.map_viewer {
     fixtureList,
     TileTypeFixture
 }
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map.fixtures.towns {
     Village
 }
 "The main window for the exploration GUI."

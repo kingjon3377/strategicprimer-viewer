@@ -14,28 +14,28 @@ import lovelace.util.jvm {
     shuffle,
     singletonRandom
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     River,
     TileFixture,
     TileType,
     HasOwner
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     RiverFixture
 }
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
 
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     IWorker
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Hill,
     Forest
 }
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map.fixtures.towns {
     ITownFixture
 }
 "Whether land movement is possible on the given terrain."

@@ -24,31 +24,31 @@ import lovelace.util.jvm {
     LabelTextColor
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     IFixture,
     IMapNG,
     FixtureIterable,
     TileType
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IWorker
 }
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
     suspiciousSkills
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
+import strategicprimer.model.map.fixtures.resources {
     StoneDeposit,
     StoneKind
 }
-import strategicprimer.viewer.model.map.fixtures.towns {
+import strategicprimer.model.map.fixtures.towns {
     Village
 }
-import strategicprimer.viewer.xmlio {
-    readMap,
+import strategicprimer.model.xmlio {
     Warning,
     warningLevels,
+    readMap,
     SPFormatException
 }
 

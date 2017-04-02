@@ -9,7 +9,7 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     TileFixture
 }
 "A version-1 tile-draw-helper."

@@ -1,7 +1,7 @@
 import javax.swing.tree {
     DefaultMutableTreeNode
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player
 }
 import java.awt.event {
@@ -12,7 +12,7 @@ import java.awt.event {
 import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     ProxyUnit
 }

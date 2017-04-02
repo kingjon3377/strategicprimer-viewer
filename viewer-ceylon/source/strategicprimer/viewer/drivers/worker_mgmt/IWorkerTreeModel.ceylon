@@ -4,7 +4,7 @@ import lovelace.util.common {
 import javax.swing.tree {
     TreeModel
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     UnitMember
 }
 import strategicprimer.viewer.drivers.exploration {
@@ -13,10 +13,10 @@ import strategicprimer.viewer.drivers.exploration {
 import strategicprimer.viewer.model {
     MapChangeListener
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     HasMutableName,
     HasKind
 }

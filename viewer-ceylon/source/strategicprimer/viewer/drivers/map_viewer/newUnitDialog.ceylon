@@ -1,48 +1,52 @@
-import java.text {
-    NumberFormat
+import ceylon.collection {
+    ArrayList,
+    MutableList
 }
-import strategicprimer.viewer.model.map {
-    Player
-}
-import strategicprimer.viewer.drivers {
-    SPDialog
+
+import java.awt {
+    Component,
+    Dimension
 }
 import java.awt.event {
     ActionEvent
 }
-import strategicprimer.viewer.model {
-    IDRegistrar
+import java.text {
+    NumberFormat
 }
+
 import javax.swing {
     JButton,
     JTextField,
     JFormattedTextField,
     JLabel
 }
-import ceylon.collection {
-    ArrayList,
-    MutableList
-}
-import java.awt {
-    Component,
-    Dimension
-}
-import strategicprimer.viewer.drivers.worker_mgmt {
-    NewUnitSource,
-    NewUnitListener
-}
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeListener
-}
-import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit,
-    Unit
-}
+
 import lovelace.util.jvm {
     platform,
     listenedButton,
     isNumeric,
     parseInt
+}
+
+import strategicprimer.model.idreg {
+    IDRegistrar
+}
+import strategicprimer.model.map {
+    Player
+}
+import strategicprimer.model.map.fixtures.mobile {
+    IUnit,
+    Unit
+}
+import strategicprimer.viewer.drivers {
+    SPDialog
+}
+import strategicprimer.viewer.drivers.exploration {
+    PlayerChangeListener
+}
+import strategicprimer.viewer.drivers.worker_mgmt {
+    NewUnitSource,
+    NewUnitListener
 }
 "A dialog to let the user add a new unit."
 shared SPDialog&NewUnitSource&PlayerChangeListener newUnitDialog(variable Player player,

@@ -52,16 +52,30 @@ import lovelace.util.jvm {
     verticalSplit
 }
 
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeListener
+import strategicprimer.model.idreg {
+    createIDFactory
+}
+import strategicprimer.model.map {
+    Point,
+    Player,
+    IMapNG,
+    invalidPoint
+}
+import strategicprimer.model.map.fixtures.mobile {
+    IUnit
+}
+import strategicprimer.model.map.fixtures.towns {
+    Fortress
 }
 import strategicprimer.viewer.drivers {
     SPFrame,
     MenuBroker,
     SPOptions,
     SPDialog,
-    createIDFactory,
     FileChooser
+}
+import strategicprimer.viewer.drivers.exploration {
+    PlayerChangeListener
 }
 import strategicprimer.viewer.drivers.map_viewer {
     newUnitDialog,
@@ -73,18 +87,6 @@ import strategicprimer.viewer.drivers.map_viewer {
 import strategicprimer.viewer.model {
     DistanceComparator,
     MapChangeListener
-}
-import strategicprimer.viewer.model.map {
-    Point,
-    Player,
-    IMapNG,
-    invalidPoint
-}
-import strategicprimer.viewer.model.map.fixtures.mobile {
-    IUnit
-}
-import strategicprimer.viewer.model.map.fixtures.towns {
-    Fortress
 }
 import strategicprimer.viewer.report {
     createAbbreviatedReportIR

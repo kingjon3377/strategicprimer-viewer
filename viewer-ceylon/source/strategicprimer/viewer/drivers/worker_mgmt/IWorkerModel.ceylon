@@ -1,7 +1,7 @@
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Player
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
 import strategicprimer.viewer.model {

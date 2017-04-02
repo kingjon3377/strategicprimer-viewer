@@ -32,7 +32,7 @@ import strategicprimer.viewer.model {
     IMultiMapModel,
     IDriverModel
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     MapDimensions,
     TileFixture,
     IMapNG,

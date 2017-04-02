@@ -13,19 +13,14 @@ import java.nio.file {
     JPaths=Paths
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     IMapNG
 }
-import strategicprimer.viewer.xmlio {
+import strategicprimer.model.xmlio {
     IMapReader,
     Warning,
-    warningLevels
-}
-import strategicprimer.viewer.xmlio.fluidxml {
-    SPFluidReader
-}
-import strategicprimer.viewer.xmlio.yaxml {
-    yaXMLReader
+    warningLevels,
+    testReaderFactory
 }
 
 "A driver for comparing map readers."
@@ -36,8 +31,8 @@ object readerComparator satisfies UtilityDriver {
     "Compare the two readers' performance on the given files."
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
-        IMapReader one = SPFluidReader();
-        IMapReader two = yaXMLReader;
+        IMapReader one = testReaderFactory.oldReader;
+        IMapReader two = testReaderFactory.newReader;
         Warning warner = warningLevels.ignore;
         for (arg in args.coalesced) {
             cli.println("``arg``:");

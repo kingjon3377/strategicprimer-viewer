@@ -51,6 +51,25 @@ import lovelace.util.jvm {
     FormattedLabel
 }
 
+import strategicprimer.model.idreg {
+    IDRegistrar,
+    createIDFactory
+}
+import strategicprimer.model.map {
+    Player,
+    IMutableMapNG,
+    IMapNG,
+    PlayerImpl
+}
+import strategicprimer.model.map.fixtures {
+    ResourcePile,
+    Implement,
+    FortressMember,
+    Quantity
+}
+import strategicprimer.model.map.fixtures.towns {
+    Fortress
+}
 import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
@@ -59,23 +78,7 @@ import strategicprimer.viewer.drivers.worker_mgmt {
 }
 import strategicprimer.viewer.model {
     SimpleMultiMapModel,
-    IDriverModel,
-    IDRegistrar
-}
-import strategicprimer.viewer.model.map {
-    Player,
-    IMutableMapNG,
-    IMapNG,
-    PlayerImpl
-}
-import strategicprimer.viewer.model.map.fixtures {
-    ResourcePile,
-    Implement,
-    FortressMember,
-    Quantity
-}
-import strategicprimer.viewer.model.map.fixtures.towns {
-    Fortress
+    IDriverModel
 }
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
@@ -198,7 +201,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
             IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
             Player[] players = [*model.players];
-            IDRegistrar idf = createIDFactory(model);
+            IDRegistrar idf = createIDFactory(model.allMaps.map((pair) => pair.first));
             try {
                 cli.loopOnList(players,
                     (clh) => clh.chooseFromList(players,
@@ -227,7 +230,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
 "A window to let the user enter resources etc. Note that this is not a dialog to enter one resource and close."
 SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
         Anything(ActionEvent) menuHandler) {
-    IDRegistrar idf = createIDFactory(model);
+    IDRegistrar idf = createIDFactory(model.allMaps.map((pair) => pair.first));
     variable Player currentPlayer = PlayerImpl(-1, "");
     JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
     FormattedLabel resourceLabel = FormattedLabel("Add resource for %s:",

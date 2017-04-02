@@ -20,7 +20,7 @@ import lovelace.util.jvm {
     BoxPanel,
     horizontalSplit
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     TileFixture,
     HasPortrait,
     TileType,

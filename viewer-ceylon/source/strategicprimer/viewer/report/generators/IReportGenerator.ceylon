@@ -2,7 +2,7 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
 	IFixture,
 	IMapNG

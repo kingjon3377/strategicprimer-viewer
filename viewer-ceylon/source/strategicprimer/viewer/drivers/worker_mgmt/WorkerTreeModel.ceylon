@@ -2,7 +2,7 @@ import javax.swing.event {
     TreeModelListener,
     TreeModelEvent
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     UnitMember
 }
 import javax.swing.tree {
@@ -18,10 +18,10 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     HasMutableName,
     Player,
     HasKind

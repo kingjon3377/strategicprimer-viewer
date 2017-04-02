@@ -1,7 +1,7 @@
 import java.lang {
     IllegalArgumentException
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     TileFixture,
     TileType,
     MapDimensions,

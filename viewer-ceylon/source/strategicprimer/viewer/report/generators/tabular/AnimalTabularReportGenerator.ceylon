@@ -1,13 +1,13 @@
 import lovelace.util.common {
     DelayedRemovalMap
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     Animal
 }
 import strategicprimer.viewer.model {
     DistanceComparator
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     IFixture,
     Point
 }

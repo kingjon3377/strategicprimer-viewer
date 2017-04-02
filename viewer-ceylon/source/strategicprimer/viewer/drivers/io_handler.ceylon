@@ -43,6 +43,16 @@ import lovelace.util.jvm {
     showErrorDialog
 }
 
+import strategicprimer.model.map {
+    SPMapNG,
+    PlayerCollection
+}
+import strategicprimer.model.xmlio {
+    readMap,
+    writeMap,
+    warningLevels,
+    SPFormatException
+}
 import strategicprimer.viewer.drivers.map_viewer {
     viewerGUI,
     ViewerModel
@@ -50,16 +60,6 @@ import strategicprimer.viewer.drivers.map_viewer {
 import strategicprimer.viewer.model {
     IMultiMapModel,
     IDriverModel
-}
-import strategicprimer.viewer.model.map {
-    SPMapNG,
-    PlayerCollection
-}
-import strategicprimer.viewer.xmlio {
-    readMap,
-    writeMap,
-    warningLevels,
-    SPFormatException
 }
 
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(

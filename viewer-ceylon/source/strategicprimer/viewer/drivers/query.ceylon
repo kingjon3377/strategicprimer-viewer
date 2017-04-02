@@ -22,14 +22,14 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     Ground,
     Quantity
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     IWorker
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 
@@ -41,7 +41,7 @@ import strategicprimer.viewer.model {
     IDriverModel,
     DistanceComparator
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     Player,
     HasOwner,

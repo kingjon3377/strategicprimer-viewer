@@ -1,22 +1,35 @@
 import java.awt {
     Dimension
 }
-import strategicprimer.viewer.model.map {
-    Player,
-    IMapNG
-}
+
 import javax.swing {
     JPanel,
     JLabel,
     JTree,
     JScrollPane
 }
+
 import lovelace.util.jvm {
     listenedButton,
     FormattedLabel,
     BorderedPanel,
     verticalSplit,
     horizontalSplit
+}
+
+import strategicprimer.model.idreg {
+    createIDFactory
+}
+import strategicprimer.model.map {
+    Player,
+    IMapNG
+}
+import strategicprimer.viewer.drivers {
+    SPFrame,
+    MenuBroker
+}
+import strategicprimer.viewer.drivers.exploration {
+    PlayerChangeListener
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu,
@@ -27,14 +40,6 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     workerTree,
     IWorkerModel,
     UnitMemberSelectionSource
-}
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeListener
-}
-import strategicprimer.viewer.drivers {
-    createIDFactory,
-    SPFrame,
-    MenuBroker
 }
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker menuHandler) {

@@ -6,7 +6,7 @@ import javax.swing.tree {
 import lovelace.util.common {
     todo
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point
 }
 "The root of a node hierarchy."

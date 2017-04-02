@@ -5,16 +5,16 @@ import ceylon.collection {
     ArrayList
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     MapDimensions,
     TileType,
     IMapNG,
     Point
 }
-import strategicprimer.viewer.model.map.fixtures.mobile {
+import strategicprimer.model.map.fixtures.mobile {
     Animal
 }
-import strategicprimer.viewer.model.map.fixtures.resources {
+import strategicprimer.model.map.fixtures.resources {
     Grove,
     Shrub,
     Meadow

@@ -15,18 +15,18 @@ import javax.swing {
 import strategicprimer.viewer.model {
     VersionChangeListener
 }
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     Point,
     MapDimensions,
     TileFixture,
     IMapNG,
     pointFactory
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     TerrainFixture,
     Ground
 }
-import strategicprimer.viewer.model.map.fixtures.terrain {
+import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 "An interface for the method to get the tool-tip message for the location the mouse

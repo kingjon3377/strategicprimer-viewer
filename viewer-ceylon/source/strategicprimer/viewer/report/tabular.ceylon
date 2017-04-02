@@ -7,13 +7,13 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.viewer.model.map {
+import strategicprimer.model.map {
     IFixture,
     IMapNG,
     Player,
     Point
 }
-import strategicprimer.viewer.model.map.fixtures {
+import strategicprimer.model.map.fixtures {
     TerrainFixture
 }
 import strategicprimer.viewer.report.generators.tabular {

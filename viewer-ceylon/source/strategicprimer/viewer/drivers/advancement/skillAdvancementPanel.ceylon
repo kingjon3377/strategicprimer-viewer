@@ -29,7 +29,7 @@ import lovelace.util.jvm {
     singletonRandom
 }
 
-import strategicprimer.viewer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.map.fixtures.mobile.worker {
     ISkill
 }
 "A panel to let a user add hours of experience to a Skill."
