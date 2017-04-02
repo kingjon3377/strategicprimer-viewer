@@ -8,7 +8,8 @@ import lovelace.util.common {
 todo("Extend to cover other directions?")
 shared class River of north|east|south|west|lake {
 	"Get the river matching the given description."
-	shared static River? parse(String description) => parseRiver(description);
+	shared static River|ParseException parse(String description) =>
+			parseRiver(description);
 	"A descriptive string representing the direction, suitable for use in XML as well."
 	shared String description;
 	"North."
@@ -25,5 +26,6 @@ shared class River of north|east|south|west|lake {
 	shared actual String string = String {
 		*{ description.first?.uppercased, *description.rest}.coalesced };
 }
-River? parseRiver(String description) =>
-		`River`.caseValues.find((river) => river.description == description);
+River|ParseException parseRiver(String description) =>
+		`River`.caseValues.find((river) => river.description == description) else
+			ParseException("Failed to parse River from '``description``'");

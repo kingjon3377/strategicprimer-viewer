@@ -1,6 +1,7 @@
 "Possible statuses of towns, fortifications, and cities."
 shared class TownStatus of active|abandoned|burned|ruined {
-    shared static TownStatus? parse(String status) => parseTownStatus(status);
+    shared static TownStatus|ParseException parse(String status) =>
+            parseTownStatus(status);
     shared actual String string;
     shared Integer ordinal;
     shared new active {
@@ -20,11 +21,11 @@ shared class TownStatus of active|abandoned|burned|ruined {
         ordinal = 3;
     }
 }
-TownStatus? parseTownStatus(String status) {
+TownStatus|ParseException parseTownStatus(String status) {
     switch (status)
     case ("active") { return TownStatus.active; }
     case ("abandoned") { return TownStatus.abandoned; }
     case ("burned") { return TownStatus.burned; }
     case ("ruined") { return TownStatus.ruined; }
-    else { return null; }
+    else { return ParseException("Failed to parse TownStatus from '``status``'"); }
 }

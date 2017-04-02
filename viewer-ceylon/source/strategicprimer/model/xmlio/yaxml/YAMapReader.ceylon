@@ -123,10 +123,13 @@ class YAMapReader("The Warning instance to use" Warning warner,
         requireTag(element, parent, "river", "lake");
         if ("lake" == element.name.localPart.lowercased) {
             return River.lake;
-        } else if (exists river = River.parse(getParameter(element, "direction"))) {
-            return river;
         } else {
-            throw MissingPropertyException(element, "direction");
+            value river = River.parse(getParameter(element, "direction"));
+            if (is River river) {
+                return river;
+            } else {
+                throw MissingPropertyException(element, "direction", river);
+            }
         }
     }
     "Write a river."
@@ -196,10 +199,14 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     point = parsePoint(event);
                     // Since tiles have sometimes been *written* without "kind", then
                     // failed to load, be liberal in waht we accept here.
-                    if ((hasParameter(event, "kind") || hasParameter(event, "type")),
-                            exists kind = TileType.parse(getParamWithDeprecatedForm(event,
-                                "kind", "type"))) {
-                        retval.setBaseTerrain(point, kind);
+                    if ((hasParameter(event, "kind") || hasParameter(event, "type"))) {
+                        value kind = TileType.parse(getParamWithDeprecatedForm(event,
+                            "kind", "type"));
+                        if (is TileType kind) {
+                            retval.setBaseTerrain(point, kind);
+                        } else {
+                            warner.handle(MissingPropertyException(event, "kind", kind));
+                        }
                     } else {
                         warner.handle(MissingPropertyException(event, "kind"));
                     }

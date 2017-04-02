@@ -209,10 +209,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             getIntegerAttribute(element, "column"));
         // Tiles have been known to be *written* without "kind" and then fail to load, so
         // let's be liberal in what we accept here, since we can.
-        if ((hasAttribute(element, "kind") || hasAttribute(element, "type")),
-                exists kind = TileType.parse(getAttrWithDeprecatedForm(element, "kind",
-                    "tile", warner))) {
-            map.setBaseTerrain(loc, kind);
+        if ((hasAttribute(element, "kind") || hasAttribute(element, "type"))) {
+            value kind = TileType.parse(getAttrWithDeprecatedForm(element, "kind",
+                "tile", warner));
+            if (is TileType kind) {
+                map.setBaseTerrain(loc, kind);
+            } else {
+                warner.handle(MissingPropertyException(element, "kind", kind));
+            }
         } else {
             warner.handle(MissingPropertyException(element, "kind"));
         }
@@ -368,13 +372,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireNonEmptyAttribute(element, "owner", false, warner);
         requireNonEmptyAttribute(element, "name", false, warner);
         Fortress retval;
-        if (exists size = TownSize.parse(getAttribute(element, "size", "small"))) {
+        value size = TownSize.parse(getAttribute(element, "size", "small"));
+        if (is TownSize size) {
             retval = Fortress(
                 getPlayerOrIndependent(element, warner, players),
                 getAttribute(element, "name", ""),
                 getOrGenerateID(element, warner, idFactory), size);
         } else {
-            throw MissingPropertyException(element, "size");
+            throw MissingPropertyException(element, "size", size);
         }
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {

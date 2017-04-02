@@ -11,7 +11,7 @@ import strategicprimer.model.map {
 shared class SimpleImmortalKind of sphinx|djinn|griffin|minotaur|ogre|phoenix|
 		simurgh|troll {
 	"Get the value representing the given XML tag."
-	shared static SimpleImmortalKind? parse(String tag) =>
+	shared static SimpleImmortalKind|ParseException parse(String tag) =>
 			parseSimpleImmortalKind(tag);
 	"The word to use for both default image and XML tag."
 	shared String tag;
@@ -97,12 +97,12 @@ shared class SimpleImmortal satisfies Immortal&HasMutableImage&HasKind {
 		}
 	}
 }
-SimpleImmortalKind? parseSimpleImmortalKind(String tag) {
+SimpleImmortalKind|ParseException parseSimpleImmortalKind(String tag) {
 	for (kind in `SimpleImmortalKind`.caseValues) {
 		if (tag == kind.tag) {
 			return kind;
 		}
 	} else {
-		return null;
+		return ParseException("Can't parse a simple immortal kind from '``tag``'");
 	}
 }

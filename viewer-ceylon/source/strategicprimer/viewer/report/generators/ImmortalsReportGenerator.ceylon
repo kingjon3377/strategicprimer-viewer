@@ -11,6 +11,10 @@ import ceylon.language.meta.model {
     Type
 }
 
+import java.lang {
+    IllegalStateException
+}
+
 import lovelace.util.common {
     DelayedRemovalMap
 }
@@ -66,9 +70,18 @@ shared class ImmortalsReportGenerator(Comparison([Point, IFixture], [Point, IFix
                 simples.put(kind, PointList("``kind.plural`` at: "));
             }
             meta.put(`SimpleImmortal`,(kind, point) {
-                if (exists immortal = SimpleImmortalKind.parse(kind),
-                        exists list = simples.get(immortal)) {
-                    list.add(point);
+                // FIXME: why are we parsing in a report generator at all?
+                value immortal = SimpleImmortalKind.parse(kind);
+                if (is SimpleImmortalKind immortal) {
+                    if (exists list = simples.get(immortal)) {
+                        list.add(point);
+                    } else {
+                        throw IllegalStateException(
+                            "Parsed but failed to find immortal kind");
+                    }
+                } else {
+                    throw IllegalStateException("Failed to parse immortal kind",
+                        immortal);
                 }
             });
             MutableMap<String, MutableList<Point>> handleComplex(Type<Immortal> type,

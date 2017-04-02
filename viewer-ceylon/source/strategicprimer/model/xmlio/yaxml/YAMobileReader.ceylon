@@ -72,10 +72,11 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         }
     }
     MobileFixture readSimple(String tag, Integer idNum) {
-        if (exists kind = SimpleImmortalKind.parse(tag)) {
+        value kind = SimpleImmortalKind.parse(tag);
+        if (is SimpleImmortalKind kind) {
             return SimpleImmortal(kind, idNum);
         } else {
-            throw IllegalArgumentException("No simple immortal matches ``tag``");
+            throw IllegalArgumentException("No simple immortal matches ``tag``", kind);
         }
     }
     shared actual Boolean isSupportedTag(String tag) =>

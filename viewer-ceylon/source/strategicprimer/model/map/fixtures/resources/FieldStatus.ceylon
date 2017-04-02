@@ -11,7 +11,8 @@ import java.util {
  these, at a rate determined by the kind of field."
 todo("Implement that")
 shared class FieldStatus of fallow|seeding|growing|bearing {
-    shared static FieldStatus? parse(String status) => parseFieldStatus(status);
+    shared static FieldStatus|ParseException parse(String status) =>
+            parseFieldStatus(status);
     shared static FieldStatus random(Integer seed) => randomStatus(seed);
     shared actual String string;
     shared Integer ordinal;
@@ -36,13 +37,13 @@ shared class FieldStatus of fallow|seeding|growing|bearing {
         ordinal = 3;
     }
 }
-FieldStatus? parseFieldStatus(String status) {
+FieldStatus|ParseException parseFieldStatus(String status) {
     for (item in `FieldStatus`.caseValues) {
         if (item.string == status) {
             return item;
         }
     }
-    return null;
+    return ParseException("Failed to parse FieldStatus from '``status``'");
 }
 FieldStatus randomStatus(Integer seed) {
     assert (exists retval =

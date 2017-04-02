@@ -68,7 +68,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         spinUntilEnd(element.name, stream);
         Integer idNum = getOrGenerateID(element);
         JRandom rng = JRandom(idNum);
-        if (exists status = TownStatus.parse(getParameter(element, "status"))) {
+        value status = TownStatus.parse(getParameter(element, "status"));
+        if (is TownStatus status) {
             Village retval = Village(status, getParameter(element, "name", ""), idNum,
                 getOwnerOrIndependent(element), getParameter(element, "race",
                     randomRace((bound) => rng.nextInt(bound))));
@@ -76,49 +77,51 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             retval.portrait =getParameter(element, "portrait", "");
             return retval;
         } else {
-            throw MissingPropertyException(element, "status");
+            throw MissingPropertyException(element, "status", status);
         }
     }
     ITownFixture parseTown(StartElement element, {XMLEvent*} stream) {
         requireNonEmptyParameter(element, "name", false);
         String name = getParameter(element, "name", "");
-        TownStatus? status = TownStatus.parse(getParameter(element, "status"));
-        TownSize? size = TownSize.parse(getParameter(element, "size"));
-        if (!size exists) {
-            throw MissingPropertyException(element, "size");
+        value status = TownStatus.parse(getParameter(element, "status"));
+        if (is TownStatus status) {
+            value size = TownSize.parse(getParameter(element, "size"));
+            if (is TownSize size) {
+                Integer dc = getIntegerParameter(element, "dc");
+                Integer id = getOrGenerateID(element);
+                Player owner = getOwnerOrIndependent(element);
+                AbstractTown retval;
+                switch (element.name.localPart.lowercased)
+                case ("town") { retval = Town(status, size, dc, name, id, owner); }
+                case ("city") { retval = City(status, size, dc, name, id, owner); }
+                case ("fortification") {
+                    retval = Fortification(status, size, dc, name, id, owner);
+                }
+                else {
+                    throw IllegalStateException("Unhandled town tag");
+                }
+                spinUntilEnd(element.name, stream);
+                retval.image = getParameter(element, "image", "");
+                retval.portrait = getParameter(element, "portrait", "");
+                return retval;
+            } else {
+                throw MissingPropertyException(element, "size", size);
+            }
+        } else {
+            throw MissingPropertyException(element, "status", status);
         }
-        if (!status exists) {
-            throw MissingPropertyException(element, "status");
-        }
-        assert (exists size, exists status);
-        Integer dc = getIntegerParameter(element, "dc");
-        Integer id = getOrGenerateID(element);
-        Player owner = getOwnerOrIndependent(element);
-        AbstractTown retval;
-        switch (element.name.localPart.lowercased)
-        case ("town") { retval = Town(status, size, dc, name, id, owner); }
-        case ("city") { retval = City(status, size, dc, name, id, owner); }
-        case ("fortification") {
-            retval = Fortification(status, size, dc, name, id, owner);
-        }
-        else {
-            throw IllegalStateException("Unhandled town tag");
-        }
-        spinUntilEnd(element.name, stream);
-        retval.image = getParameter(element, "image", "");
-        retval.portrait = getParameter(element, "portrait", "");
-        return retval;
     }
     ITownFixture parseFortress(StartElement element, {XMLEvent*} stream) {
         requireNonEmptyParameter(element, "owner", false);
         requireNonEmptyParameter(element, "name", false);
         Fortress retval;
-        if (exists size = TownSize.parse(getParameter(element, "size", "small"))) {
+        value size = TownSize.parse(getParameter(element, "size", "small"));
+        if (is TownSize size) {
             retval = Fortress(getOwnerOrIndependent(element),
                 getParameter(element, "name", ""), getOrGenerateID(element),
                 size);
         } else {
-            throw MissingPropertyException(element, "size");
+            throw MissingPropertyException(element, "size", size);
         }
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {

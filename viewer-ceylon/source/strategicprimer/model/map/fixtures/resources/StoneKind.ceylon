@@ -1,7 +1,8 @@
 "The kinds of stone we know about."
 shared class StoneKind
         of limestone|marble|slate|pumice|conglomerate|sandstone|laterite|shale {
-    shared static StoneKind? parse(String stone) => parseStoneKind(stone);
+    shared static StoneKind|ParseException parse(String stone) =>
+            parseStoneKind(stone);
     shared actual String string;
     shared new limestone { string = "limestone"; }
     shared new marble { string = "marble"; }
@@ -13,5 +14,6 @@ shared class StoneKind
     shared new laterite { string = "laterite"; }
     shared new shale { string = "shale"; }
 }
-StoneKind? parseStoneKind(String stone) =>
-        `StoneKind`.caseValues.find((kind) => kind.string == stone);
+StoneKind|ParseException parseStoneKind(String stone) =>
+        `StoneKind`.caseValues.find((kind) => kind.string == stone)
+            else ParseException("Failed to parse StoneKind from '``stone``");

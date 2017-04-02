@@ -9,7 +9,8 @@ shared class TileType of tundra|desert|mountain|borealForest|temperateForest|oce
 	shared static {TileType*} valuesForVersion(Integer version) =>
 			getTypesForVersion(version);
 	"Parse an XML representation of a tile type."
-	shared static TileType? parse(String xml) => parseTileType(xml);
+	shared static TileType|ParseException parse(String xml) =>
+			parseTileType(xml);
 	"A description of the instance, for human consumption"
 	shared actual String string;
 	"How to represent the instance in XML"
@@ -59,4 +60,6 @@ shared class TileType of tundra|desert|mountain|borealForest|temperateForest|oce
 }
 {TileType*} getTypesForVersion(Integer version) =>
 		`TileType`.caseValues.filter((type) => type.isSupportedByVersion(version));
-TileType? parseTileType(String xml) => `TileType`.caseValues.find((type) => type.xml == xml);
+TileType|ParseException parseTileType(String xml) =>
+		`TileType`.caseValues.find((type) => type.xml == xml) else
+			ParseException("Failed to parse TileType from '``xml``'");

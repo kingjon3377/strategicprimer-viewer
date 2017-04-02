@@ -98,9 +98,14 @@ EncounterTable loadTable(String?()|File argument) {
                         String left = splitted.first;
                         // TODO: Catch TileType-parsing failure and handle more gracefully
                         assert (exists right = splitted.rest.reduce(
-                                    (String partial, element) => "``partial`` ``element``"),
-                                exists leftVal = TileType.parse(left));
-                        list.add(leftVal->right);
+                                    (String partial, element) => "``partial`` ``element``"));
+                        value leftVal = TileType.parse(left);
+                        if (is TileType leftVal) {
+                            list.add(leftVal->right);
+                        } else {
+                            throw IllegalArgumentException(
+                                "'Tile type' wasn't a recognized tile type", leftVal);
+                        }
                     }
                 }
                 return TerrainTable(*list);

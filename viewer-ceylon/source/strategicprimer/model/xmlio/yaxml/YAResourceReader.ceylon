@@ -50,13 +50,13 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         requireNonEmptyParameter(element, "status", false);
         value cultivated = Boolean.parse(getParameter(element, "cultivated"));
         if (is Boolean cultivated) {
-            FieldStatus? status = FieldStatus.parse(getParameter(element, "status",
+            value status = FieldStatus.parse(getParameter(element, "status",
                 FieldStatus.random(idNum).string));
-            if (exists status) {
+            if (is FieldStatus status) {
                 return Meadow(getParameter(element, "kind"), field, cultivated, idNum,
                     status);
             } else {
-                throw MissingPropertyException(element, "status");
+                throw MissingPropertyException(element, "status", status);
             }
         } else {
             throw MissingPropertyException(element, "cultivated", cultivated);
@@ -102,11 +102,12 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         case ("grove") { retval = createGrove(element, false, idNum); }
         case ("meadow") { retval = createMeadow(element, false, idNum); }
         case ("mine") {
-            if (exists status = TownStatus.parse(getParameter(element, "status"))) {
+            value status = TownStatus.parse(getParameter(element, "status"));
+            if (is TownStatus status) {
                 retval = Mine(getParamWithDeprecatedForm(element, "kind", "product"),
                     status, idNum);
             } else {
-                throw MissingPropertyException(element, "status");
+                throw MissingPropertyException(element, "status", status);
             }
         }
         case ("mineral") {
@@ -124,11 +125,12 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             retval = Shrub(getParamWithDeprecatedForm(element, "kind", "shrub"), idNum);
         }
         case ("stone") {
-            if (exists stone = StoneKind.parse(getParamWithDeprecatedForm(element, "kind",
-                    "stone"))) {
+            value stone = StoneKind.parse(getParamWithDeprecatedForm(element, "kind",
+                "stone"));
+            if (is StoneKind stone) {
                 retval = StoneDeposit(stone, getIntegerParameter(element, "dc"), idNum);
             } else {
-                throw MissingPropertyException(element, "kind");
+                throw MissingPropertyException(element, "kind", stone);
             }
         }
         else {

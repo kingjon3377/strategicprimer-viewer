@@ -101,10 +101,11 @@ River readRiver(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "river");
     spinUntilEnd(element.name, stream);
-    if (exists river = River.parse(getAttribute(element, "direction"))) {
+    value river = River.parse(getAttribute(element, "direction"));
+    if (is River river) {
         return river;
     } else {
-        throw MissingPropertyException(element, "direction");
+        throw MissingPropertyException(element, "direction", river);
     }
 }
 

@@ -146,14 +146,14 @@ Meadow readMeadow(StartElement element, QName parent, {XMLEvent*} stream,
     }
     value cultivated = Boolean.parse(getAttribute(element, "cultivated"));
     if (is Boolean cultivated) {
-        FieldStatus? status = FieldStatus.parse(getAttribute(element, "status",
+        value status = FieldStatus.parse(getAttribute(element, "status",
             FieldStatus.random(id).string));
-        if (exists status) {
+        if (is FieldStatus status) {
             return setImage(
                 Meadow(getAttribute(element, "kind"), false, cultivated,
                     id, status), element, warner);
         } else {
-            throw MissingPropertyException(element, "status");
+            throw MissingPropertyException(element, "status", status);
         }
     } else {
         throw MissingPropertyException(element, "cultivated", cultivated);
@@ -170,14 +170,14 @@ Meadow readField(StartElement element, QName parent, {XMLEvent*} stream,
     }
     value cultivated = Boolean.parse(getAttribute(element, "cultivated"));
     if (is Boolean cultivated) {
-        FieldStatus? status = FieldStatus.parse(getAttribute(element, "status",
+        value status = FieldStatus.parse(getAttribute(element, "status",
             FieldStatus.random(id).string));
-        if (exists status) {
+        if (is FieldStatus status) {
             return setImage(
                 Meadow(getAttribute(element, "kind"), true, cultivated,
                     id, status), element, warner);
         } else {
-            throw MissingPropertyException(element, "status");
+            throw MissingPropertyException(element, "status", status);
         }
     } else {
         throw MissingPropertyException(element, "cultivated", cultivated);
@@ -188,12 +188,13 @@ Mine readMine(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "mine");
     spinUntilEnd(element.name, stream);
-    if (exists status = TownStatus.parse(getAttribute(element, "status"))) {
+    value status = TownStatus.parse(getAttribute(element, "status"));
+    if (is TownStatus status) {
         return setImage(
             Mine(getAttrWithDeprecatedForm(element, "kind", "product", warner),
                 status, getOrGenerateID(element, warner, idFactory)), element, warner);
     } else {
-        throw MissingPropertyException(element, "status");
+        throw MissingPropertyException(element, "status", status);
     }
 }
 
@@ -227,14 +228,16 @@ StoneDeposit readStone(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "stone");
     spinUntilEnd(element.name, stream);
-    if (exists stone = StoneKind.parse(getAttrWithDeprecatedForm(element, "kind", "stone", warner))) {
+    value stone = StoneKind.parse(getAttrWithDeprecatedForm(element, "kind",
+        "stone", warner));
+    if (is StoneKind stone) {
         return setImage(
             StoneDeposit(stone,
                 getIntegerAttribute(element, "dc"),
                 getOrGenerateID(element, warner, idFactory)),
             element, warner);
     } else {
-        throw MissingPropertyException(element, "stone");
+        throw MissingPropertyException(element, "stone", stone);
     }
 }
 
