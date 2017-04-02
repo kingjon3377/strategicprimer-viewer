@@ -29,7 +29,7 @@ shared Element[] shuffle<Element>({Element*} elements, Float() randomizer = rand
     return shuffled.size == 0 then [] else [*shuffled];
 }
 class ConvertingIterator<Element>(JIterator<out Anything> iter)
-        satisfies Iterator<Element> {
+        satisfies Iterator<Element> given Element satisfies Object {
     shared actual Element|Finished next() {
         if (iter.hasNext()) {
             assert (is Element retval = iter.next());
@@ -40,7 +40,7 @@ class ConvertingIterator<Element>(JIterator<out Anything> iter)
     }
 }
 shared class ConvertingIterable<Element>(JIterator<out Object>|JIterable<out Object> iter)
-        satisfies Iterable<Element> {
+        satisfies Iterable<Element> given Element satisfies Object {
     shared actual Iterator<Element> iterator();
     if (is JIterator<out Anything> iter) {
         iterator = () => ConvertingIterator<Element>(iter);
