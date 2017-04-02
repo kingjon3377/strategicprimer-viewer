@@ -203,9 +203,9 @@ object zeroToOneConverter {
 		for (event in stream) {
 			if (is StartElement event) {
 				if (isSpecifiedTag(event.name, "tile")) {
-					convertTile(ostream, event, ConvertingIterable(event.attributes));
+					convertTile(ostream, event, ConvertingIterable<Attribute>(event.attributes));
 				} else if (isSpecifiedTag(event.name, "map")) {
-					convertMap(ostream, event, ConvertingIterable(event.attributes));
+					convertMap(ostream, event, ConvertingIterable<Attribute>(event.attributes));
 				} else {
 					printStartElement(ostream, event);
 				}
