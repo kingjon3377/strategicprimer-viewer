@@ -2,7 +2,8 @@ import java.lang {
     NumberFormatException
 }
 import java.text {
-    NumberFormat
+    NumberFormat,
+    JParseException=ParseException
 }
 
 import javax.xml {
@@ -143,7 +144,7 @@ Integer getOrGenerateID(
             return idFactory.register(
                 numParser.parse(getAttribute(element, "id")).intValue(),
                 warner);
-        } catch (NumberFormatException|ParseException except) {
+        } catch (NumberFormatException|ParseException|JParseException except) {
             throw MissingPropertyException(element, "id", except);
         }
     } else {
@@ -239,7 +240,7 @@ Integer parseInt(
         Location location) {
     try {
         return numParser.parse(string).intValue();
-    } catch (ParseException except) {
+    } catch (ParseException|JParseException except) {
         throw SPMalformedInputException(location, except);
     }
 }

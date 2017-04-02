@@ -3,7 +3,8 @@ import java.lang {
     JAppendable=Appendable
 }
 import java.text {
-    NumberFormat
+    NumberFormat,
+    JParseException=ParseException
 }
 
 import javax.xml {
@@ -169,7 +170,7 @@ abstract class YAAbstractReader<Element>
             "The current location in the document" Location location) {
         try {
             return numParser.parse(string).intValue();
-        } catch (ParseException except) {
+        } catch (ParseException|JParseException except) {
             throw SPMalformedInputException(location, except);
         }
     }
