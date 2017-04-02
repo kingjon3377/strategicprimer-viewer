@@ -255,7 +255,7 @@ void assertSerialization(String message, Object obj,
         for (deprecated in `Boolean`.caseValues) {
             try (stringReader = StringReader(createSerializedForm(obj,
                     deprecated))) {
-                assertEquals(reader.readXML(fakeFilename, stringReader, warner), obj, message);
+                assertEquals(reader.readXML<Object>(fakeFilename, stringReader, warner), obj, message);
             }
         }
     }
@@ -377,7 +377,8 @@ void assertEquivalentForms(
     for (reader in {oldReader, newReader}) {
         try (firstReader = StringReader(firstForm),
                 secondReader = StringReader(secondForm)) {
-            assertEquals(reader.readXML(fakeFilename, secondReader, warningLevel), reader.readXML(fakeFilename, firstReader, warningLevel), message);
+            assertEquals(reader.readXML<Object>(fakeFilename, secondReader, warningLevel),
+                reader.readXML<Object>(fakeFilename, firstReader, warningLevel), message);
         }
     }
 }
