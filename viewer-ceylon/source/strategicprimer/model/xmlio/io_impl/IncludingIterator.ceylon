@@ -74,6 +74,13 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     }
     """Handle an "include" tag by adding an iterator for the contents of the file it
        references to the top of the stack."""
+    throws(`class FileNotFoundException`,
+        "when file referenced by <include> does not exist")
+    throws(`class XMLStreamException`,
+        "on XML parsing error in parsing the <include> tag or opening the included file")
+    throws(`class SPFormatException`, "on SP format problem in <include>")
+    todo("Add tests covering include-non-XML case",
+        "Ensure that any thrown exceptions make clear that there's inclusion involved")
     void handleInclude(StartElement tag) {
         try {
             String file = getFileAttribute(tag);
