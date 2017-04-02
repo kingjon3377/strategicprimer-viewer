@@ -1202,7 +1202,7 @@ void testAnimalSerialization() {
     assertMissingProperty<Animal>("""<animal kind="animalEight" id="nonNumeric" />""",
         "id", false);
     assertForwardDeserialization<Animal>("Explicit default status of animal",
-        """<animal kind="animalSeven" status="wild", id="4" />""",
+        """<animal kind="animalSeven" status="wild" id="4" />""",
         Animal("animalSeven", false, false, "wild", 4).equals);
     assertImageSerialization("Animal image property is preserved",
         Animal("animalFour", true, true, "status", 8));
