@@ -77,7 +77,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     }
     "Parse results for a unit for a specified turn."
     void parseResults(StartElement element, IUnit unit, {XMLEvent*} stream) {
-        Integer turn = getIntegerParameter(element, "turn");
+        Integer turn = getIntegerParameter(element, "turn", -1);
         StringBuilder builder = StringBuilder();
         for (event in stream) {
             if (is Characters event) {
