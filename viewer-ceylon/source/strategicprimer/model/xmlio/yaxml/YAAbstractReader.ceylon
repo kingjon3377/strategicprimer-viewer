@@ -166,6 +166,9 @@ abstract class YAAbstractReader<Element>
     }
     "Parse an integer. We use [[NumberFormat]] rather than [[Integer.parse]] because we
      want to allow commas in the input."
+    todo("Test that commas in the input are allowed",
+        "Inline this into the caller or pass in information that lets us throw a more
+         meaningful exception, so we can get rid of SPMalformedInputException")
     static Integer parseInt(String string,
             "The current location in the document" Location location) {
         try {
@@ -179,7 +182,11 @@ abstract class YAAbstractReader<Element>
             Integer? defaultValue = null) {
         if (exists attr = getAttributeByName(element, parameter),
             exists retval = attr.\ivalue) {
-            return parseInt(retval, element.location);
+            try {
+                return parseInt(retval, element.location);
+            } catch (SPMalformedInputException except) {
+                throw MissingPropertyException(element, parameter, except.cause);
+            }
         } else if (exists defaultValue) {
             return defaultValue;
         } else {
