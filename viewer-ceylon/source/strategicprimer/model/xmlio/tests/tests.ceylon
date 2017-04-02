@@ -142,15 +142,15 @@ ISPReader newReader = testReaderFactory.newReader;
 "Assert that the given XML will produce the given kind of warning and that it satisfies
  the given additional assertions. If it's only supposed to be a warning, asser that the
  XML will pass with warnings disabled but fail with warnings made fatal."
-void assertFormatIssue<Expectation>(ISPReader reader, String xml,
+void assertFormatIssue<Type, Expectation>(ISPReader reader, String xml,
         Boolean warning, Anything(Expectation) checks = (Expectation warning) {} )
-        given Expectation satisfies Exception {
+        given Expectation satisfies Exception given Type satisfies Object {
     if (warning) {
         try (stringReader = StringReader(xml)) {
-            reader.readXML(fakeFilename, stringReader, warningLevels.ignore);
+            reader.readXML<Type>(fakeFilename, stringReader, warningLevels.ignore);
         }
         try (stringReader = StringReader(xml)) {
-            reader.readXML(fakeFilename, stringReader, warningLevels.die);
+            reader.readXML<Type>(fakeFilename, stringReader, warningLevels.die);
             fail("Expected a fatal warning");
 // TODO: replace the catch (Exception) with catch (Expectation) once compiler bug fixed
 //        } catch (Expectation except) {
@@ -163,7 +163,7 @@ void assertFormatIssue<Expectation>(ISPReader reader, String xml,
         }
     } else {
         try (stringReader = StringReader(xml)) {
-            reader.readXML(fakeFilename, stringReader, warningLevels.ignore);
+            reader.readXML<Type>(fakeFilename, stringReader, warningLevels.ignore);
             fail("Expected an exception to be thrown");
 //        } catch (Expectation except) {
         } catch (Exception except) {
@@ -181,7 +181,7 @@ void assertFormatIssue<Expectation>(ISPReader reader, String xml,
 void assertUnsupportedTag<Type>(String xml, String tag, Boolean warning)
         given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<UnsupportedTagException>(reader, xml, warning,
+        assertFormatIssue<Type, UnsupportedTagException>(reader, xml, warning,
                     (UnsupportedTagException except) => assertEquals(except.tag.localPart,
                 tag, "Unsupported tag was the tag we expected"));
     }
@@ -193,7 +193,7 @@ void assertUnsupportedTag<Type>(String xml, String tag, Boolean warning)
 void assertUnwantedChild<Type>(String xml, Boolean warning)
         given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<UnwantedChildException>(reader, xml, warning);
+        assertFormatIssue<Type, UnwantedChildException>(reader, xml, warning);
     }
 }
 
@@ -203,7 +203,7 @@ void assertUnwantedChild<Type>(String xml, Boolean warning)
 void assertMissingProperty<Type>(String xml, String property,
         Boolean warning) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<MissingPropertyException>(reader, xml, warning,
+        assertFormatIssue<Type, MissingPropertyException>(reader, xml, warning,
                     (except) => assertEquals(except.param, property,
                 "Missing property should be the one we're expecting"));
     }
@@ -212,7 +212,7 @@ void assertMissingProperty<Type>(String xml, String property,
 "Assert that reading the given XML will give a MissingChildException."
 void assertMissingChild<Type>(String xml) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<MissingChildException>(reader, xml, false);
+        assertFormatIssue<Type, MissingChildException>(reader, xml, false);
     }
 }
 
@@ -222,7 +222,7 @@ void assertMissingChild<Type>(String xml) given Type satisfies Object {
 void assertDeprecatedProperty<Type>(String xml, String deprecated, String preferred,
         String tag, Boolean warning) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<DeprecatedPropertyException>(reader, xml, warning,
+        assertFormatIssue<Type, DeprecatedPropertyException>(reader, xml, warning,
                     (except) {
             assertEquals(except.old, deprecated,
                 "Missing property should be the one we're expecting");
@@ -396,7 +396,7 @@ void assertMapDeserialization(String message, IMapNG expected, String xml) {
 "Assert that the given XML will produce warnings about duplicate IDs."
 void assertDuplicateID(String xml) {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<DuplicateIDException>(reader, xml, true);
+        assertFormatIssue<Object, DuplicateIDException>(reader, xml, true);
     }
 }
 
@@ -404,7 +404,7 @@ void assertDuplicateID(String xml) {
  SP format errors."
 void assertInvalid(String xml) {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<NoSuchElementException|IllegalArgumentException>(reader,
+        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException>(reader,
             xml, false);
     }
 }
