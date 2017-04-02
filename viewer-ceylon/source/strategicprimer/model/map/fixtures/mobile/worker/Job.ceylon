@@ -41,7 +41,7 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
         addSkill(skill);
     }
     "Clone the Job."
-    shared actual IJob copy() => Job(name, level, *skillSet.items);
+    shared actual IJob copy() => Job(name, level, *skillSet.items.map((skill) => skill.copy()));
     "An iterator over (the worker's level in) the Skills in this Job."
     shared actual Iterator<ISkill> iterator() => skillSet.items.iterator();
     "A Job is equal to another object iff it is a Job with the same name and level and
