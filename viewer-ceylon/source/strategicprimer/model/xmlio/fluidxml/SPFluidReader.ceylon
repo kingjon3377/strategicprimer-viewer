@@ -298,6 +298,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         } else if (hasAttribute(element, "current_player")) {
             retval.currentPlayer = players.getPlayer(
                 getIntegerAttribute(element, "current_player"));
+        } else {
+            warner.handle(MissingPropertyException(mapTag, "current_player"));
         }
         return retval;
     }

@@ -250,6 +250,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
         } else if (hasParameter(element, "current_player")) {
             retval.currentPlayer = players.getPlayer(getIntegerParameter(element,
                 "current_player"));
+        } else {
+            warner.handle(MissingPropertyException(mapTag, "current_player"));
         }
         return retval;
     }
