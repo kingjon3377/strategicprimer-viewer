@@ -919,7 +919,7 @@ void testGroveSerialization() {
         "wild", "cultivated", "grove", true);
     assertEquivalentForms("Assert that wild is the inverse of cultivated",
         """<grove wild="true" kind="tree" id="0" />""",
-        """<grove cultivated="false" kind="tree"id="0" />""", warningLevels.ignore);
+        """<grove cultivated="false" kind="tree" id="0" />""", warningLevels.ignore);
     assertImageSerialization("Grove image property is preserved", Grove(false, false,
         "five", 5));
 }
