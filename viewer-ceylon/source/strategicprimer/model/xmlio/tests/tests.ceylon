@@ -991,7 +991,7 @@ void testShrubSerialization() {
     }
     assertUnwantedChild<Shrub>("""<shrub kind="shrub"><troll /></shrub>""", false);
     assertMissingProperty<Shrub>("<shrub />", "kind", false);
-    assertMissingProperty("""<shrub kind="kind" />""", "id", true);
+    assertMissingProperty<Shrub>("""<shrub kind="kind" />""", "id", true);
     assertImageSerialization("Shrub image property is preserved", secondShrub);
 }
 
