@@ -1031,9 +1031,15 @@ void testTextSerialization() {
     IMutableMapNG wrapper = createSimpleMap(pointFactory(1, 1),
         pointFactory(0, 0)->TileType.plains);
     wrapper.addFixture(pointFactory(0, 0), TextFixture("one", -1));
+    wrapper.currentTurn = 0;
     assertForwardDeserialization("Deprecated text-in-map still works",
         """<map version="2" rows="1" columns="1" current_player="-1">
-           <tile row="0" column="0" kind="plains">one</tile></map>""", wrapper.equals);
+           <tile row="0" column="0" kind="plains">one</tile></map>""",
+                (Object obj) {
+                    assertEquals(obj, wrapper,
+                        "Deprecated text-in-map still works");
+                    return obj == wrapper;
+                });
 }
 
 test
