@@ -842,7 +842,8 @@ void testMapSerialization() {
     assertMapDeserialization("Proper deserialization of map without view tag", firstMap,
         """<map version="2" rows="1" columns="1" current_player="1">
            <player number="1" code_name="playerOne" />
-           <row index="0"><tile row="0" column="0" kind="plains" /></row></map>""");
+           <row index="0"><tile row="0" column="0" kind="plains"><mountain /></tile></row>
+           </map>""");
 }
 
 test
