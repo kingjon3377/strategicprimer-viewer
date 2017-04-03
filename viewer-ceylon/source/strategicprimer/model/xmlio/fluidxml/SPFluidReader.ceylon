@@ -211,7 +211,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         // let's be liberal in what we accept here, since we can.
         if ((hasAttribute(element, "kind") || hasAttribute(element, "type"))) {
             value kind = TileType.parse(getAttrWithDeprecatedForm(element, "kind",
-                "tile", warner));
+                "type", warner));
             if (is TileType kind) {
                 map.setBaseTerrain(loc, kind);
             } else {
