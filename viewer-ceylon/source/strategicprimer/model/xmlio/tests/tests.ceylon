@@ -787,7 +787,7 @@ void testMapSerialization() {
     MutablePlayer player = PlayerImpl(1, "playerOne");
     player.current = true;
     IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(1, 1, 2),
-        PlayerCollection(), -1);
+        PlayerCollection(), 0);
     firstMap.addPlayer(player);
     Point loc = pointFactory(0, 0);
     firstMap.setBaseTerrain(loc, TileType.plains);
