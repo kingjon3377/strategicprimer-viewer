@@ -83,8 +83,7 @@ void testPlayerCollectionSubset() {
 test
 void testRiverSubset() {
     RiverFixture zero = RiverFixture();
-    RiverFixture thirdCollection = RiverFixture(River.lake, River.south, River.east,
-        River.west);
+    RiverFixture thirdCollection = RiverFixture(*`River`.caseValues);
     assertIsSubset<RiverFixture, IFixture>(thirdCollection, zero,
         "None is a subset of all");
     RiverFixture firstRivers = RiverFixture(River.lake, River.south, River.east);
