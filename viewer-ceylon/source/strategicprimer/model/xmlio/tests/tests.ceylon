@@ -405,7 +405,8 @@ void assertDuplicateID(String xml) {
  SP format errors."
 void assertInvalid(String xml) {
     for (reader in {oldReader, newReader}) {
-        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException>(reader,
+        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
+                XMLStreamException>(reader,
             xml, false);
     }
 }
