@@ -258,7 +258,15 @@ Integer getIntegerAttribute(
         "The number to return if the parameter doesn't exist"
         Integer? defaultValue = null) {
     if (exists attr = getAttributeByName(tag, parameter), exists val = attr.\ivalue) {
-        return parseInt(val, tag.location);
+        try {
+            return parseInt(val, tag.location);
+        } catch (SPMalformedInputException except) {
+            if (exists defaultValue) {
+                return defaultValue;
+            } else {
+                throw MissingPropertyException(tag, parameter, except.cause);
+            }
+        }
     } else if (exists defaultValue) {
         return defaultValue;
     } else {
