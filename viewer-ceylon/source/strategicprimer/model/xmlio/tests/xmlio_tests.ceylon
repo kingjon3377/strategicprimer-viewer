@@ -735,7 +735,7 @@ void testTileSerializationTwo() {
     }
     assertEquals(createSerializedForm(createSimpleMap(pointFactory(1, 1),
             pointFactory(0, 0)->TileType.notVisible), true),
-        "<view xmlns=\"``spNamespace`` current_player=\"-1\" current_turn=\"-1\">
+        "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
          \t<map version=\"2\" rows=\"1\" columns=\"1\">
          \t</map>
          </view>
