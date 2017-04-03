@@ -39,7 +39,8 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     TreeExpansionHandler,
     workerTree,
     IWorkerModel,
-    UnitMemberSelectionSource
+    UnitMemberSelectionSource,
+    UnitSelectionSource
 }
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker menuHandler) {

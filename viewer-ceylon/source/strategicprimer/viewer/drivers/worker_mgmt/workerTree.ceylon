@@ -41,10 +41,6 @@ import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     IWorker
 }
-import strategicprimer.viewer.drivers.advancement {
-    UnitSelectionSource,
-    UnitSelectionListener
-}
 import strategicprimer.viewer.drivers.map_viewer {
     loadIcon,
     fixtureEditMenu
