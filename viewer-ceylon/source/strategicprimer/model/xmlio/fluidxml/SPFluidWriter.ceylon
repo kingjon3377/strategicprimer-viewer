@@ -181,8 +181,9 @@ shared class SPFluidWriter() satisfies SPWriter {
     }
     void writeUnit(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if (is IUnit obj) {
-            Boolean empty = obj.empty && obj.allOrders.empty &&
-                        !obj.allResults.empty;
+            Boolean nonemptyOrders(Integer->String entry) => !entry.item.empty;
+            Boolean empty = obj.empty && obj.allOrders.filter(nonemptyOrders).empty &&
+                        obj.allResults.filter(nonemptyOrders).empty;
             writeTag(ostream, "unit", indentation, empty);
             writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
             writeNonEmptyAttribute(ostream, "kind", obj.kind);
