@@ -625,7 +625,8 @@ void testRiverSerializationOne() {
         "Tile equality with different order of rivers");
     assertSerialization("Two rivers", encapsulateRivers(pointFactory(1, 2),
         River.north, River.south));
-    assertInvalid(encapsulateTileString("""<river direction="invalid" />"""));
+    assertMissingProperty<IMapNG>(
+        encapsulateTileString("""<river direction="invalid" />"""), "direction", false);
 }
 
 test
