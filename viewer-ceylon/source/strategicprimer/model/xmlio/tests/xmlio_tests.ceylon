@@ -433,7 +433,7 @@ void testVillageSerialization(TownStatus status, String race) {
             "Village serialization with no or empty name does The Right Thing", thirdVillage,
             createSerializedForm(thirdVillage, deprecated), "name");
     }
-    assertUnwantedChild<Village>("<village status=\"``status``\">village /></village>",
+    assertUnwantedChild<Village>("<village status=\"``status``\"><village /></village>",
         false);
     assertMissingProperty<Village>("<village />", "status", false);
     assertMissingProperty<Village>("<village name=\"name\" status=\"``status``\" />",
