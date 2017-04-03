@@ -130,9 +130,7 @@ abstract class YAAbstractReader<Element>
             getAttributeByName(element, param) exists;
     "Append the given number of tabs to the stream."
     shared static void indent(JAppendable ostream, Integer tabs) {
-        for (i in 0..tabs) {
-            ostream.append('\t');
-        }
+        ostream.append("\t".repeat(tabs));
     }
     "Replace XML meta-characters in a string with their equivalents."
     shared static String simpleQuote(String text) {
