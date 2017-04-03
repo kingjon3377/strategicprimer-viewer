@@ -648,7 +648,7 @@ void testSimpleTileSerializtion() {
         """<map version="2" rows="1" columns="1">
            <tile column="0" kind="plains" /></map>""", "row", false);
     assertMissingProperty<IMapNG>(
-        """<map verision="2" rows="1" columns="1"><tile row="0" kind="plains" /></map>""",
+        """<map version="2" rows="1" columns="1"><tile row="0" kind="plains" /></map>""",
         "column", false);
     assertMissingProperty<IMapNG>(
         """<map version="2" rows="1" columns="1"><tile row="0" column="0" /></map>""",
