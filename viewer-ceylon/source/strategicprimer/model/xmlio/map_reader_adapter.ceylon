@@ -56,8 +56,8 @@ shared void writeMap(JPath file, IMapNG map) => writer.write(file, map);
 test
 void testNamesToFiles() {
     JPath[] expected = [ JPaths.get("two"), JPaths.get("three"), JPaths.get("four") ];
-    assertEquals(namesToFiles(false, "two", "three", "four"), expected,
+    assertEquals([*namesToFiles(false, "two", "three", "four")], expected,
         "Returns all names when dropFirst is false");
-    assertEquals(namesToFiles(true, "one", "two", "three", "four"), expected,
+    assertEquals([*namesToFiles(true, "one", "two", "three", "four")], expected,
         "Drops first name when dropFirst is true");
 }
