@@ -1045,7 +1045,6 @@ void testTextSerialization() {
 test
 void testUnitHasRequiredProperties() {
     assertMissingProperty<IUnit>("""<unit name="name" />""", "owner", true);
-    assertMissingProperty<IUnit>("""<unit owner="" name="name" />""", "owner", true);
     assertMissingProperty<IUnit>("""<unit owner="1" name="name" id="0" />""", "kind",
         true);
     assertMissingProperty<IUnit>("""<unit onwer="1" kind="" name="name" id="0" />""",
