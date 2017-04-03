@@ -132,6 +132,9 @@ import strategicprimer.model.xmlio.exceptions {
     MissingChildException,
     DeprecatedPropertyException
 }
+import ceylon.test.engine {
+    MultipleFailureException
+}
 
 JPath fakeFilename = JPaths.get("");
 ISPReader oldReader = testReaderFactory.oldReader;
@@ -716,9 +719,20 @@ void testTileSerializationTwo() {
               </view>
               ";
     String serializedForm = createSerializedForm(five, false);
-    assertTrue(serializedForm == xmlTwoLogical || serializedForm == xmlTwoAlphabetical ||
-            serializedForm == xmlTwoLogical.replace("\" />", "\"/>"),
-        "Multiple units");
+    try {
+        assertEquals(serializedForm, xmlTwoLogical, "Multiple units");
+    } catch (AssertionError one) {
+        // TODO: Write assertAny() helper
+        try {
+            assertEquals(serializedForm, xmlTwoAlphabetical, "Multiple units");
+        } catch (AssertionError two) {
+            try {
+                assertEquals(serializedForm, xmlTwoLogical.replace("\" />", "\"/>"), "Multiple units");
+            } catch (AssertionError three) {
+                throw MultipleFailureException([one, two, three]);
+            }
+        }
+    }
     assertEquals(createSerializedForm(createSimpleMap(pointFactory(1, 1),
             pointFactory(0, 0)->TileType.notVisible), true),
         "<view xmlns=\"``spNamespace`` current_player=\"-1\" current_turn=\"-1\">
@@ -739,9 +753,17 @@ void testTileSerializationTwo() {
              \t<map columns=\"1\" rows=\"1\" version=\"2\"/>
              </view>
              ";
-    assertTrue(emptySerializedForm == firstPossibility ||
-            emptySerializedForm == secondPossibility,
-        "Shouldn't print empty not-visible tiles");
+    try {
+        assertEquals(emptySerializedForm, firstPossibility,
+            "Shouldn't print empty not-visible tiles");
+    } catch (AssertionError one) {
+        try {
+            assertEquals(emptySerializedForm, secondPossibility,
+                "Shouldn't print empty not-visible tiles");
+        } catch (AssertionError two) {
+            throw MultipleFailureException([one, two]);
+        }
+    }
     // TODO: this last assertion doesn't belong in this test
     assertImageSerialization("Unit image property is preserved",
         Unit(PlayerImpl(5, ""), "herder",
