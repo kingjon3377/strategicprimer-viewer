@@ -803,7 +803,7 @@ void testMapSerialization() {
     assertSerialization("Map with a mountainous point", firstMap);
     assertMissingProperty<IMapNG>(
         """<view current_turn="0"><map version="2" rows="1" columns="1" /></view>""",
-        "current_player", false);
+        "current_player", true);
     assertMissingProperty<IMapNG>(
         """<view current_player="0"><map version="2" rows="1" columns="1" /></view>""",
         "current_turn", false);
