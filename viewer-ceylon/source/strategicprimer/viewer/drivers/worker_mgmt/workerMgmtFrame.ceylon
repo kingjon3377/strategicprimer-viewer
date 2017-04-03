@@ -52,6 +52,9 @@ import lovelace.util.jvm {
     verticalSplit
 }
 
+import strategicprimer.model {
+    DistanceComparator
+}
 import strategicprimer.model.idreg {
     createIDFactory
 }
@@ -66,6 +69,11 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import strategicprimer.model.map.fixtures.towns {
     Fortress
+}
+import strategicprimer.report {
+    createAbbreviatedReportIR,
+    IReportNode,
+    simpleReportNode
 }
 import strategicprimer.viewer.drivers {
     SPFrame,
@@ -85,15 +93,7 @@ import strategicprimer.viewer.drivers.map_viewer {
     IViewerModel
 }
 import strategicprimer.viewer.model {
-    DistanceComparator,
     MapChangeListener
-}
-import strategicprimer.viewer.report {
-    createAbbreviatedReportIR
-}
-import strategicprimer.viewer.report.nodes {
-    IReportNode,
-    SimpleReportNode
 }
 "A window to let the player manage units."
 SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
@@ -209,7 +209,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
                     (IUnit unit, Integer turn) => unit.getLatestOrders(turn),
                     (IUnit unit, Integer turn, String orders) => unit.setOrders(turn, orders));
         tree.addTreeSelectionListener(ordersPanelObj);
-        DefaultTreeModel reportModel = DefaultTreeModel(SimpleReportNode(
+        DefaultTreeModel reportModel = DefaultTreeModel(simpleReportNode(
             "Please wait, loading report ..."));
         void reportGeneratorThread() {
             log.info("About to generate report");

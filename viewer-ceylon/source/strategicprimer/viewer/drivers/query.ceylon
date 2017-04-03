@@ -38,7 +38,9 @@ import strategicprimer.viewer.drivers.exploration {
     surroundingPointIterable
 }
 import strategicprimer.viewer.model {
-    IDriverModel,
+    IDriverModel
+}
+import strategicprimer.model {
     DistanceComparator
 }
 import strategicprimer.model.map {

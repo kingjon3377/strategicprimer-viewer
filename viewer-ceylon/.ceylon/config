@@ -3,6 +3,7 @@
 source=source
 resource=resource
 source=source
+source=source
 
 [defaults]
 offline=false

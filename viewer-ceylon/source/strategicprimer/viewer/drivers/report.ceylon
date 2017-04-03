@@ -18,7 +18,7 @@ import ceylon.file {
     parsePath,
     Nil
 }
-import strategicprimer.viewer.report {
+import strategicprimer.report {
     createReport,
     createTabularReports
 }

@@ -20,4 +20,5 @@ module strategicprimer.viewer "0.4.9900" {
     import ceylon.regex "1.3.2";
     import maven:"com.massisframework:orange-extensions" "1.3.1";
     shared import strategicprimer.model "0.4.9900";
+    import strategicprimer.report "0.4.9900";
 }
