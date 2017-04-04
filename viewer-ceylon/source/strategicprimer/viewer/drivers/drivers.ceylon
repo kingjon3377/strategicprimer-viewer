@@ -79,7 +79,6 @@ import strategicprimer.drivers.common {
 	IncorrectUsageException,
     DriverUsage,
     ICLIHelper,
-    CLIHelper,
     SimpleCLIDriver,
     SPOptionsImpl
 }
