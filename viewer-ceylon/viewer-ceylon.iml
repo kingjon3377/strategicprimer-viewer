@@ -10,7 +10,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="$MODULE_DIR$/modules" />
     <output-test url="$MODULE_DIR$/modules" />
     <exclude-output />
