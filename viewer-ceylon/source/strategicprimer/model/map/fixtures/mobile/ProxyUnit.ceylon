@@ -291,7 +291,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     shared actual Boolean equals(Object obj) {
         if (is ProxyUnit obj) {
             return parallel == obj.parallel && identifier == obj.identifier &&
-                proxied == obj.proxied;
+                proxiedList == obj.proxiedList;
         } else {
             return false;
         }
