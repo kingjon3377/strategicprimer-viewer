@@ -22,4 +22,5 @@ module strategicprimer.viewer "0.4.9900" {
     shared import strategicprimer.model "0.4.9900";
     import strategicprimer.report "0.4.9900";
     shared import strategicprimer.drivers.common "0.4.9900";
+    import strategicprimer.drivers.exploration.old "0.4.9900";
 }

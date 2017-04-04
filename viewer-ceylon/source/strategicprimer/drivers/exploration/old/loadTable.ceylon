@@ -28,7 +28,12 @@ import strategicprimer.model.map {
     TileType,
     pointFactory
 }
+import ceylon.logging {
+    logger,
+    Logger
+}
 
+Logger log = logger(`module strategicprimer.drivers.exploration.old`);
 EncounterTable loadTable(String?()|File argument) {
     if (is File argument) {
         try (reader = argument.Reader()) {

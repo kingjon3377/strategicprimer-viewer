@@ -63,9 +63,11 @@ import strategicprimer.model.xmlio {
     readMap,
     warningLevels
 }
-import strategicprimer.viewer.drivers.exploration {
+import strategicprimer.drivers.exploration.old {
     loadAllTables,
-    ExplorationRunner,
+    ExplorationRunner
+}
+import strategicprimer.viewer.drivers.exploration {
     ExplorationModel,
     IExplorationModel
 }

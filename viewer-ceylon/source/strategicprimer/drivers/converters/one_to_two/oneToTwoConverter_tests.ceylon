@@ -76,7 +76,7 @@ import strategicprimer.model.xmlio {
     SPWriter,
     testReaderFactory
 }
-import strategicprimer.viewer.drivers.exploration {
+import strategicprimer.drivers.exploration.old {
     ExplorationRunner
 }
 

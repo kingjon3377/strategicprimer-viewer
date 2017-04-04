@@ -61,7 +61,7 @@ import strategicprimer.model.map.fixtures.towns {
     TownStatus,
     ITownFixture
 }
-import strategicprimer.viewer.drivers.exploration {
+import strategicprimer.drivers.exploration.old {
     MissingTableException,
     ExplorationRunner
 }

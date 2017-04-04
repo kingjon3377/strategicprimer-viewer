@@ -13,7 +13,7 @@ import java.nio.file {
     JPath=Path
 }
 
-import strategicprimer.viewer.drivers.converters.one_to_two {
+import strategicprimer.drivers.converters.one_to_two {
     convertOneToTwo
 }
 import strategicprimer.model.map {
@@ -22,7 +22,7 @@ import strategicprimer.model.map {
 import strategicprimer.model.xmlio {
     writeMap
 }
-import strategicprimer.viewer.drivers.exploration {
+import strategicprimer.drivers.exploration.old {
     ExplorationRunner,
     loadAllTables
 }

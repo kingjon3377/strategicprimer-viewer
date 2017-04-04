@@ -35,7 +35,7 @@ import strategicprimer.model.xmlio {
     SPFormatException
 }
 "A logger."
-Logger log = logger(`module strategicprimer.viewer`);
+Logger log = logger(`module strategicprimer.drivers.converters`);
 "A driver to convert maps: at present, halving their resolution."
 class ConverterDriver(
         """Set to true when the provided [[ICLIHelper]] is connected to a graphical window
