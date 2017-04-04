@@ -48,7 +48,7 @@ import strategicprimer.model.map.fixtures.towns {
     TownSize,
     Fortress
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     SimpleMultiMapModel,
     IDriverModel
 }

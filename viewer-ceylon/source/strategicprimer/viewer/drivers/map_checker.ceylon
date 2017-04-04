@@ -24,6 +24,14 @@ import lovelace.util.jvm {
     LabelTextColor
 }
 
+import strategicprimer.drivers.common {
+    UtilityDriver,
+    IDriverUsage,
+    DriverUsage,
+    ParamCount,
+    SPOptions,
+    ICLIHelper
+}
 import strategicprimer.model.map {
     Point,
     IFixture,

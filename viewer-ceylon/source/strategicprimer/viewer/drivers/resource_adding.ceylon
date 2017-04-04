@@ -76,9 +76,17 @@ import strategicprimer.viewer.drivers.exploration {
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     SimpleMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    SPOptions,
+    IDriverUsage,
+    DriverFailedException,
+    SimpleDriver,
+    ParamCount,
+    DriverUsage,
+    SimpleCLIDriver,
+    ICLIHelper
 }
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
@@ -427,6 +435,15 @@ object resourceAddingGUI satisfies SimpleDriver {
         } else {
             startDriverOnModel(cli, options,
                 ResourceManagementDriverModel.fromDriverModel(model));
+        }
+    }
+    "Ask the user to choose a file."
+    shared actual JPath askUserForFile() {
+        try {
+            return FileChooser.open(null).file;
+        } catch (FileChooser.ChoiceInterruptedException except) {
+            throw DriverFailedException(except,
+                "Choice interrupted or user didn't choose");
         }
     }
 }

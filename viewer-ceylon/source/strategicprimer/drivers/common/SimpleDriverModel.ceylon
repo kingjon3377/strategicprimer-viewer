@@ -6,7 +6,7 @@ import ceylon.collection {
 import java.nio.file {
     JPath=Path
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     VersionChangeListener
 }
 import strategicprimer.model.map {

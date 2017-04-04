@@ -12,7 +12,7 @@ import javax.swing {
     JPopupMenu
 }
 
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     VersionChangeListener
 }
 import strategicprimer.model.map {

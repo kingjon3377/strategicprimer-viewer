@@ -4,17 +4,18 @@ import java.lang {
 import ceylon.file {
     parsePath
 }
-import strategicprimer.viewer.drivers {
+import strategicprimer.drivers.common {
     DriverFailedException,
-    ICLIHelper,
+    IDriverModel,
     DriverUsage,
     ParamCount,
     IDriverUsage,
     SPOptions,
-    SimpleDriver
+    SimpleDriver,
+    ICLIHelper
 }
-import strategicprimer.viewer.model {
-    IDriverModel
+import java.nio.file {
+    JPath=Path
 }
 "A command-line program to export a proto-strategy for a player from orders in a map."
 shared object strategyExportCLI satisfies SimpleDriver {
@@ -42,4 +43,6 @@ shared object strategyExportCLI satisfies SimpleDriver {
             startDriverOnModel(cli, options, WorkerModel.copyConstructor(model));
         }
     }
+    "This is a CLI driver, so we can't show a file-chooser dialog."
+    shared actual JPath? askUserForFile() => null;
 }

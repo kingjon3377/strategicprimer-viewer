@@ -78,7 +78,6 @@ import strategicprimer.report {
 import strategicprimer.viewer.drivers {
     SPFrame,
     MenuBroker,
-    SPOptions,
     SPDialog,
     FileChooser
 }
@@ -92,8 +91,9 @@ import strategicprimer.viewer.drivers.map_viewer {
     ViewerModel,
     IViewerModel
 }
-import strategicprimer.viewer.model {
-    MapChangeListener
+import strategicprimer.drivers.common {
+    MapChangeListener,
+    SPOptions
 }
 "A window to let the player manage units."
 SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,

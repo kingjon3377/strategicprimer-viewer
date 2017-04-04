@@ -1,30 +1,36 @@
 import javax.swing {
     SwingUtilities
 }
-import strategicprimer.viewer.model {
-    IDriverModel
+
+import strategicprimer.drivers.common {
+    ParamCount,
+    IDriverUsage,
+    SPOptions,
+    DriverUsage,
+    IDriverModel,
+    SimpleDriver,
+    ICLIHelper,
+    DriverFailedException
 }
-import strategicprimer.viewer.drivers.worker_mgmt {
-    WorkerModel,
-    IWorkerModel
+import java.nio.file {
+    JPath=Path
 }
 import strategicprimer.viewer.about {
     aboutDialog
 }
 import strategicprimer.viewer.drivers {
-    ICLIHelper,
     SPFrame,
-    DriverUsage,
     PlayerChangeMenuListener,
-    ParamCount,
     IOHandler,
-    IDriverUsage,
     MenuBroker,
-    SPOptions,
-    SimpleDriver
+    FileChooser
 }
 import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
+}
+import strategicprimer.viewer.drivers.worker_mgmt {
+    WorkerModel,
+    IWorkerModel
 }
 "The worker-advancement GUI driver."
 shared object advancementGUI satisfies SimpleDriver {
@@ -64,5 +70,14 @@ shared object advancementGUI satisfies SimpleDriver {
             aboutDialog(frame, frame.windowName).setVisible(true), "about");
             frame.setVisible(true);
         });
+    }
+    "Ask the user to choose a file."
+    shared actual JPath askUserForFile() {
+        try {
+            return FileChooser.open(null).file;
+        } catch (FileChooser.ChoiceInterruptedException except) {
+            throw DriverFailedException(except,
+                "Choice interrupted or user didn't choose");
+        }
     }
 }

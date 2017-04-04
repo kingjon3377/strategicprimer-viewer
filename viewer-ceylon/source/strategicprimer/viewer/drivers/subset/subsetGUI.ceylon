@@ -22,19 +22,17 @@ import lovelace.util.jvm {
 import strategicprimer.model.xmlio {
     SPFormatException
 }
-import strategicprimer.viewer.drivers {
+import strategicprimer.drivers.common {
     DriverFailedException,
-    ICLIHelper,
+    IMultiMapModel,
+    IDriverModel,
     DriverUsage,
     ParamCount,
     IDriverUsage,
     ISPDriver,
     SPOptions,
-    IncorrectUsageException
-}
-import strategicprimer.viewer.model {
-    IMultiMapModel,
-    IDriverModel
+    IncorrectUsageException,
+    ICLIHelper
 }
 "A driver to check whether player maps are subsets of the main map and display the
  results graphically."

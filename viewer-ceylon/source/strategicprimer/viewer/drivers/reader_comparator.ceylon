@@ -22,6 +22,14 @@ import strategicprimer.model.xmlio {
     warningLevels,
     testReaderFactory
 }
+import strategicprimer.drivers.common {
+    UtilityDriver,
+    IDriverUsage,
+    DriverUsage,
+    ParamCount,
+    SPOptions,
+    ICLIHelper
+}
 
 "A driver for comparing map readers."
 object readerComparator satisfies UtilityDriver {

@@ -1,21 +1,19 @@
 import java.io {
     IOException
 }
-import strategicprimer.viewer.drivers {
+import ceylon.logging {
+    logger,
+    Logger
+}
+import strategicprimer.drivers.common {
     DriverFailedException,
     DriverUsage,
     ParamCount,
     SimpleCLIDriver,
     IDriverUsage,
     SPOptions,
+    IDriverModel,
     ICLIHelper
-}
-import ceylon.logging {
-    logger,
-    Logger
-}
-import strategicprimer.viewer.model {
-    IDriverModel
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

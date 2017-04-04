@@ -10,19 +10,19 @@ import java.lang {
     IllegalArgumentException
 }
 
-import strategicprimer.viewer.drivers {
+import strategicprimer.model.map {
+    Point,
+    pointFactory
+}
+import strategicprimer.drivers.common {
     DriverFailedException,
     UtilityDriver,
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    ICLIHelper,
     SPOptions,
-    IncorrectUsageException
-}
-import strategicprimer.model.map {
-    Point,
-    pointFactory
+    IncorrectUsageException,
+    ICLIHelper
 }
 // FIXME: Rename file to miningCLI.ceylon
 """A driver to create a spreadsheet model of a mine. Its parameters are the name of the

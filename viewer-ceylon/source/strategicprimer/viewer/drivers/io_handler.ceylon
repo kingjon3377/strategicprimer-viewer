@@ -57,9 +57,11 @@ import strategicprimer.viewer.drivers.map_viewer {
     viewerGUI,
     ViewerModel
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    SPOptions,
+    ICLIHelper
 }
 
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(

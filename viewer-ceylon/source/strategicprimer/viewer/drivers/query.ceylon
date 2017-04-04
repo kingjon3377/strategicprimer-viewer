@@ -37,8 +37,14 @@ import strategicprimer.viewer.drivers.exploration {
     HuntingModel,
     surroundingPointIterable
 }
-import strategicprimer.viewer.model {
-    IDriverModel
+import strategicprimer.drivers.common {
+    IDriverModel,
+    SPOptions,
+    IDriverUsage,
+    ParamCount,
+    DriverUsage,
+    SimpleDriver,
+	ICLIHelper
 }
 import strategicprimer.model {
     DistanceComparator
@@ -53,6 +59,9 @@ import strategicprimer.model.map {
     FixtureIterable,
     HasName,
     MapDimensions
+}
+import java.nio.file {
+    JPath=Path
 }
 
 "Models of (game statistics for) herding."
@@ -405,6 +414,8 @@ object queryCLI satisfies SimpleDriver {
             log.error("I/O error", except);
         }
     }
+    "As we're a CLI driver, we can't show a file-chooser dialog."
+    shared actual JPath? askUserForFile() => null;
 }
 "Possible actions in the trapping CLI; top-level so we can switch on the cases,
  since the other alternative, `static`, isn't possible in an `object` anymore."
@@ -490,4 +501,6 @@ object trappingCLI satisfies SimpleDriver {
                 "Next action: ", false);
         }
     }
+    "As this is a CLI, we can't show a file-chooser dialog."
+    shared actual JPath? askUserForFile() => null;
 }

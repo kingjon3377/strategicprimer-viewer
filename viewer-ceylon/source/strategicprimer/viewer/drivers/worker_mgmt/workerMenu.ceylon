@@ -11,7 +11,7 @@ import javax.swing {
 import java.awt.event {
     ActionEvent
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     IDriverModel
 }
 "A set of menus for the worker GUI (and other related apps)."

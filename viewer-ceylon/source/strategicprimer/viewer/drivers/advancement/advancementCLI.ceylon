@@ -1,5 +1,12 @@
-import strategicprimer.viewer.model {
-    IDriverModel
+import strategicprimer.drivers.common {
+    DriverFailedException,
+    IDriverModel,
+    DriverUsage,
+    ParamCount,
+    SimpleCLIDriver,
+    IDriverUsage,
+    SPOptions,
+    ICLIHelper
 }
 import strategicprimer.model.map {
     Player
@@ -10,15 +17,6 @@ import strategicprimer.viewer.drivers.worker_mgmt {
 }
 import java.io {
     IOException
-}
-import strategicprimer.viewer.drivers {
-    DriverFailedException,
-    ICLIHelper,
-    DriverUsage,
-    ParamCount,
-    SimpleCLIDriver,
-    IDriverUsage,
-    SPOptions
 }
 import ceylon.logging {
     logger,

@@ -9,7 +9,7 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.viewer.drivers {
+import strategicprimer.drivers.common {
     ICLIHelper
 }
 "Let the user add experience to a worker."

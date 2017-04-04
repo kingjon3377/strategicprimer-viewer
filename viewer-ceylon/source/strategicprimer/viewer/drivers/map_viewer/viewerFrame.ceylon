@@ -9,7 +9,7 @@ import java.awt {
     Dimension,
     Component
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     VersionChangeListener,
     MapChangeListener
 }

@@ -33,9 +33,18 @@ import strategicprimer.model.xmlio {
     SPFormatException,
     writeMap
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    ParamCount,
+    UtilityDriver,
+    DriverFailedException,
+    IncorrectUsageException,
+    SimpleCLIDriver,
+    SPOptions,
+    DriverUsage,
+    IDriverUsage,
+    ICLIHelper
 }
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated

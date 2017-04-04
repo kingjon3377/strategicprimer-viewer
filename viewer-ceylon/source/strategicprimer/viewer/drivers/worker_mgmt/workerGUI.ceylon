@@ -5,22 +5,27 @@ import strategicprimer.viewer.about {
     aboutDialog
 }
 import strategicprimer.viewer.drivers {
-    ICLIHelper,
-    DriverUsage,
     PlayerChangeMenuListener,
-    ParamCount,
     IOHandler,
-    IDriverUsage,
     MenuBroker,
-    SPOptions,
-    SimpleDriver
+    FileChooser
 }
 import ceylon.logging {
     logger,
     Logger
 }
-import strategicprimer.viewer.model {
-    IDriverModel
+import strategicprimer.drivers.common {
+    ICLIHelper,
+    IDriverUsage,
+    ParamCount,
+    DriverUsage,
+    SPOptions,
+    IDriverModel,
+    SimpleDriver,
+    DriverFailedException
+}
+import java.nio.file {
+    JPath=Path
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -58,6 +63,15 @@ shared object workerGUI satisfies SimpleDriver {
             });
         } else {
             startDriverOnModel(cli, options, WorkerModel.copyConstructor(model));
+        }
+    }
+    "Ask the user to choose a file."
+    shared actual JPath askUserForFile() {
+        try {
+            return FileChooser.open(null).file;
+        } catch (FileChooser.ChoiceInterruptedException except) {
+            throw DriverFailedException(except,
+                "Choice interrupted or user didn't choose");
         }
     }
 }

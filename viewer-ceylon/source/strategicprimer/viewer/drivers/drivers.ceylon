@@ -68,9 +68,20 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     workerGUI,
     strategyExportCLI
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    ISPDriver,
+    IDriverUsage,
+	SPOptions,
+	ParamCount,
+	DriverFailedException,
+	IncorrectUsageException,
+    DriverUsage,
+    ICLIHelper,
+    CLIHelper,
+    SimpleCLIDriver,
+    SPOptionsImpl
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -298,7 +309,6 @@ shared void run() {
                 ISPDriver[] cliDrivers = [*driverCache.items.map(
                             (element) => element.first)];
                 try {
-                    assert (is CLIHelper cli);
                     if (exists driver = cliDrivers.get(cli.chooseFromList(
                             cliDrivers, "CLI apps available:",
                             "No applications available", "App to start: ", true))) {

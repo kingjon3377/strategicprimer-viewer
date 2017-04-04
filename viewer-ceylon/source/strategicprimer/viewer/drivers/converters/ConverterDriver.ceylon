@@ -16,6 +16,14 @@ import javax.xml.stream {
     XMLStreamException
 }
 
+import strategicprimer.drivers.common {
+    DriverUsage,
+    ParamCount,
+    UtilityDriver,
+    IDriverUsage,
+    SPOptions,
+    ICLIHelper
+}
 import strategicprimer.model.map {
     IMutableMapNG,
     IMapNG
@@ -25,14 +33,6 @@ import strategicprimer.model.xmlio {
     warningLevels,
     writeMap,
     SPFormatException
-}
-import strategicprimer.viewer.drivers {
-    ICLIHelper,
-    DriverUsage,
-    ParamCount,
-    UtilityDriver,
-    IDriverUsage,
-    SPOptions
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

@@ -1,22 +1,29 @@
+import java.nio.file {
+    JPath=Path
+}
+
 import javax.swing {
     SwingUtilities
 }
-import strategicprimer.viewer.drivers {
-    SPFrame,
+
+import strategicprimer.drivers.common {
     DriverUsage,
     ParamCount,
-    IOHandler,
     IDriverUsage,
-    MenuBroker,
     SPOptions,
     SimpleDriver,
-    ICLIHelper
-}
-import strategicprimer.viewer.model {
-    IDriverModel
+    IDriverModel,
+    ICLIHelper,
+    DriverFailedException
 }
 import strategicprimer.viewer.about {
     aboutDialog
+}
+import strategicprimer.viewer.drivers {
+    SPFrame,
+    IOHandler,
+    MenuBroker,
+    FileChooser
 }
 "An object to start the exploration GUI."
 shared object explorationGUI satisfies SimpleDriver {
@@ -50,5 +57,14 @@ shared object explorationGUI satisfies SimpleDriver {
             aboutDialog(frame, frame.windowName).setVisible(true), "about");
             frame.setVisible(true);
         });
+    }
+    "Ask the user to choose a file."
+    shared actual JPath askUserForFile() {
+        try {
+            return FileChooser.open(null).file;
+        } catch (FileChooser.ChoiceInterruptedException except) {
+            throw DriverFailedException(except,
+                "Choice interrupted or user didn't choose");
+        }
     }
 }

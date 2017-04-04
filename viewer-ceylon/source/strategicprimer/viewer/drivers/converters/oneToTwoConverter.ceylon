@@ -22,22 +22,20 @@ import strategicprimer.model.map {
 import strategicprimer.model.xmlio {
     writeMap
 }
-import strategicprimer.viewer.drivers {
-    DriverUsage,
-    ParamCount,
-    SPOptions,
-    DriverFailedException,
-    ICLIHelper,
-    IDriverUsage,
-    SimpleDriver
-}
 import strategicprimer.viewer.drivers.exploration {
     ExplorationRunner,
     loadAllTables
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
+    DriverUsage,
+    ParamCount,
+    SPOptions,
+    DriverFailedException,
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    IDriverUsage,
+    SimpleDriver,
+    ICLIHelper
 }
 "A class to convert a version-1 map to a version-2 map with greater resolution."
 object oneToTwoConverter satisfies SimpleDriver {
@@ -91,4 +89,6 @@ object oneToTwoConverter satisfies SimpleDriver {
             }
         }
     }
+    "This is a CLI driver, so we can't show a file-chooser dialog."
+    shared actual JPath? askUserForFile() => null;
 }

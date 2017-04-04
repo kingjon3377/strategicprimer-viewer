@@ -21,7 +21,7 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     shuffle
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     SimpleMultiMapModel,
     IDriverModel
 }

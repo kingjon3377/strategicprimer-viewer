@@ -1,19 +1,20 @@
-import strategicprimer.viewer.drivers {
-    ICLIHelper,
-    DriverUsage,
-    ParamCount,
-    IDriverUsage,
-    SPOptions,
-    SimpleDriver
-}
 import ceylon.logging {
     logger,
     Logger
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
+    DriverUsage,
+    ParamCount,
+    IDriverUsage,
+    SPOptions,
     SimpleMultiMapModel,
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    SimpleDriver,
+    ICLIHelper
+}
+import java.nio.file {
+    JPath=Path
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -42,4 +43,6 @@ shared object subsetCLI satisfies SimpleDriver {
             startDriverOnModel(cli, options, SimpleMultiMapModel.copyConstructor(model));
         }
     }
+    "This is a CLI driver, so we can't show a file-chooser dialog."
+    shared actual JPath? askUserForFile() => null;
 }

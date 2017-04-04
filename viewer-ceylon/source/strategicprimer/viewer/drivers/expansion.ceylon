@@ -41,10 +41,16 @@ import strategicprimer.viewer.drivers.exploration {
     shouldAlwaysNotice,
     Speed
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     SimpleMultiMapModel,
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    SimpleCLIDriver,
+    SPOptions,
+    ParamCount,
+    IDriverUsage,
+    DriverUsage,
+    ICLIHelper
 }
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""

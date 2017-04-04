@@ -6,22 +6,6 @@ import ceylon.interop.java {
     javaString
 }
 
-import com.apple.eawt {
-    Application,
-    AppEvent
-}
-import com.bric.window {
-    WindowList
-}
-
-import java.awt {
-    Dimension,
-    Frame
-}
-import java.awt.event {
-    ActionEvent,
-    KeyEvent
-}
 import java.io {
     IOException
 }
@@ -34,30 +18,9 @@ import java.nio.file {
     JPath=Path
 }
 
-import javax.swing {
-    JFrame,
-    WindowConstants,
-    JDialog,
-    JComponent,
-    KeyStroke,
-    JMenuBar,
-    JMenu,
-    JMenuItem,
-    InputMap
-}
-
 import lovelace.util.common {
     todo
 }
-import lovelace.util.jvm {
-    createHotKey,
-    HotKeyModifier,
-    createAccelerator,
-    createMenuItem,
-    platform,
-    ActionWrapper
-}
-
 import strategicprimer.model.map {
     IMutableMapNG,
     HasName
@@ -66,13 +29,7 @@ import strategicprimer.model.xmlio {
     warningLevels,
     namesToFiles
 }
-import strategicprimer.viewer.drivers.map_viewer {
-    IViewerModel
-}
-import strategicprimer.viewer.drivers.worker_mgmt {
-    IWorkerModel
-}
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
     readMultiMapModel,
@@ -94,7 +51,7 @@ shared interface SPOptions satisfies Iterable<String->String> {
 """The command-line options passed by the user. At this point we assume that if any option
    is passed to an app more than once, the subsequent option overrides the previous, and
    any option passed without argument has an implied argument of "true"."""
-class SPOptionsImpl({<String->String>*} existing = {}) satisfies SPOptions {
+shared class SPOptionsImpl({<String->String>*} existing = {}) satisfies SPOptions {
     MutableMap<String, String> options = HashMap<String, String>();
     options.putAll(existing);
     shared void addOption(String option, String argument = "true") {
@@ -141,18 +98,11 @@ shared interface SimpleDriver satisfies ISPDriver {
             IllegalStateException("Driver does not support no-arg operation"),
             "Driver does not support no-arg operation");
     }
-    "The one method that satisfying classes have to implement."
+    "Run the driver."
     shared actual formal void startDriverOnModel(ICLIHelper cli, SPOptions options,
         IDriverModel model);
-    "Ask the user to choose a file."
-    JPath askUserForFile() {
-        try {
-            return FileChooser.open(null).file;
-        } catch (FileChooser.ChoiceInterruptedException except) {
-            throw DriverFailedException(except,
-                "Choice interrupted or user didn't choose");
-        }
-    }
+    "Ask the user to choose a file. (Or do something equivalent to produce a filename.)"
+    shared formal JPath? askUserForFile();
     """Run the driver. If the driver is a GUI driver, this should use
        SwingUtilities.invokeLater(); if it's a CLI driver, that's not necessary. This
        default implementation does *not* write to file after running the driver on the
@@ -178,34 +128,42 @@ shared interface SimpleDriver satisfies ISPDriver {
                 // The Java version called startDriver(cli, options), which recurses.
                 startDriverNoArgs();
             } else if ({ ParamCount.two, ParamCount.atLeastTwo }.contains(desiderata)) {
-                JPath masterPath = askUserForFile();
-                JPath subordinatePath = askUserForFile();
-                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default, masterPath,
-                    subordinatePath);
+                if (exists masterPath = askUserForFile(), exists subordinatePath = askUserForFile()) {
+                    IMultiMapModel mapModel = readMultiMapModel(warningLevels.default, masterPath,
+                        subordinatePath);
+                    for (pair in mapModel.allMaps) {
+                        turnFixer(pair.first);
+                    }
+                    startDriverOnModel(cli, options, mapModel);
+                } else {
+                    throw IncorrectUsageException(usage);
+                }
+            } else if (exists chosenFile = askUserForFile()){
+                // TODO: Maybe just use readMapModel() here?
+                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                    chosenFile);
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
                 }
                 startDriverOnModel(cli, options, mapModel);
             } else {
-                // TODO: Maybe just use readMapModel() here?
-                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
-                    askUserForFile());
-                for (pair in mapModel.allMaps) {
-                    turnFixer(pair.first);
-                }
-                startDriverOnModel(cli, options, mapModel);
+                throw IncorrectUsageException(usage);
             }
         } else if (ParamCount.none == desiderata) {
             throw IncorrectUsageException(usage);
         } else if (args.size == 1,
                 {ParamCount.two, ParamCount.atLeastTwo}.contains(desiderata)) {
             assert (exists firstArg = args.first);
-            IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
-                JPaths.get(firstArg), askUserForFile());
-            for (pair in mapModel.allMaps) {
-                turnFixer(pair.first);
+            if (exists chosenFile = askUserForFile()) {
+                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                    JPaths.get(firstArg), chosenFile);
+                for (pair in mapModel.allMaps) {
+                    turnFixer(pair.first);
+                }
+                startDriverOnModel(cli, options, mapModel);
+            } else {
+                throw IncorrectUsageException(usage);
             }
-            startDriverOnModel(cli, options, mapModel);
         } else {
             assert (exists firstArg = args.first);
             assert (nonempty temp = args.map(javaString).sequence());
@@ -278,11 +236,13 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
     "Run the driver. This is the one method that implementations must implement."
     shared actual formal void startDriverOnModel(ICLIHelper cli, SPOptions options,
         IDriverModel model);
+    "As CLI drivers can't ask the user to choose a file using a file-chooser dialog, we
+     simply return null here as a default."
+    shared actual default JPath? askUserForFile() => null;
     "Run the driver. If the driver is a GUIDriver, this should use
      SwingUtilities.invokeLater(); if it's a CLI driver, that's not necessary. This
      default implementation assumes a CLI driver, and writes the model back to file(s)
      after calling startDriver with the model."
-    // TODO: remove optional from String args after ISPDriver ported
     shared actual default void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         switch (usage.paramsWanted)
@@ -416,203 +376,4 @@ shared class DriverUsage(
 ) satisfies IDriverUsage {
     shared actual {String*} supportedOptions =
             supportedOptionsTemp;
-}
-"An interface for top-level windows in assistive programs."
-shared interface ISPWindow {
-    """The name of this window. This method should *not* return a string including the
-       loaded file, since it is used only in the About dialog to "personalize" it for the
-       particular app."""
-    shared formal String windowName;
-}
-"An intermediate subclass of JFrame to take care of some common setup things that can't be
- done in an interface."
-shared abstract class SPFrame(String windowTitle, JPath? file, Dimension? minSize = null)
-        extends JFrame(windowTitle) satisfies ISPWindow {
-    if (exists file) {
-        title = "``file`` | ``windowTitle``";
-        rootPane.putClientProperty("Window.documentFile", file.toFile());
-    }
-    defaultCloseOperation = WindowConstants.disposeOnClose;
-    if (exists minSize) {
-        setMinimumSize(minSize);
-    }
-}
-"A superclass to perform setup common to dialogs."
-shared class SPDialog(Frame? parentFrame, String title)
-        extends JDialog(parentFrame, title) {
-    defaultCloseOperation = WindowConstants.disposeOnClose;
-    createHotKey(rootPane, "close", ActionWrapper((ActionEvent event) => dispose()),
-        JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkW,
-            platform.shortcutMask), KeyStroke.getKeyStroke(KeyEvent.vkEscape, 0));
-}
-"A class to hold the logic for building our menus."
-todo("Make the methods static once MenuItemCreator has been ported.",
-    "Redesign so users just have to say which menus they want enabled instead of
-     instantiatng them one by one")
-shared class SPMenu() extends JMenuBar() {
-    "Create the file menu."
-    shared JMenu createFileMenu(/*ActionListener|*/Anything(ActionEvent) handler,
-            IDriverModel model) {
-        JMenu fileMenu = JMenu("File");
-        fileMenu.mnemonic = KeyEvent.vkF;
-        JMenuItem newItem = createMenuItem("New", KeyEvent.vkN,
-            createAccelerator(KeyEvent.vkN),
-            "Create a new, empty map the same size as the current one", handler);
-        fileMenu.add(newItem);
-        if (!model is IViewerModel) {
-            newItem.enabled = false;
-        }
-        String loadCaption;
-        String saveCaption;
-        String saveAsCaption;
-        if (model is IMultiMapModel) { // TODO: use interpolation of "the main" instead
-            loadCaption = "Load the main map from file";
-            saveCaption = "Save the main map to the file it was loaded from";
-            saveAsCaption = "Save the main map to file";
-        } else {
-            loadCaption = "Load a map from file";
-            saveCaption = "Save the map to the file it was loaded from";
-            saveAsCaption = "Save the map to file";
-        }
-        fileMenu.add(createMenuItem("Load", KeyEvent.vkL, createAccelerator(KeyEvent.vkO),
-            loadCaption, handler));
-        JMenuItem loadSecondaryItem = createMenuItem("Load secondary", KeyEvent.vkE,
-            createAccelerator(KeyEvent.vkO, HotKeyModifier.shift),
-            "Load an additional secondary map from file", handler);
-        fileMenu.add(loadSecondaryItem);
-        fileMenu.add(createMenuItem("Save", KeyEvent.vkS, createAccelerator(KeyEvent.vkS),
-            saveCaption, handler));
-        fileMenu.add(createMenuItem("Save As", KeyEvent.vkA,
-            createAccelerator(KeyEvent.vkS, HotKeyModifier.shift), saveAsCaption,
-            handler));
-        JMenuItem saveAllItem = createMenuItem("Save All", KeyEvent.vkV,
-            createAccelerator(KeyEvent.vkL), "Save all maps to their files", handler);
-        fileMenu.add(saveAllItem);
-        if (!model is IMultiMapModel) {
-            loadSecondaryItem.enabled = false;
-            saveAllItem.enabled = false;
-        }
-        fileMenu.addSeparator();
-        JMenuItem openViewerItem = createMenuItem("Open in map viwer", KeyEvent.vkM,
-            createAccelerator(KeyEvent.vkM),
-            "Open the main map in the map viewer for a broader view", handler);
-        fileMenu.add(openViewerItem);
-        if (model is IViewerModel) {
-            openViewerItem.enabled = false;
-        }
-        JMenuItem openSecondaryViewerItem = createMenuItem(
-            "Open secondary map in map viewer", KeyEvent.vkE,
-            createAccelerator(KeyEvent.vkE),
-            "Open the first secondary map in the map vieer for a broader view", handler);
-        fileMenu.add(openSecondaryViewerItem);
-        if (model is IViewerModel || !model is IMultiMapModel) {
-            openSecondaryViewerItem.enabled = false;
-        }
-        fileMenu.addSeparator();
-        if (platform.systemIsMac) {
-            Application.application.setAboutHandler((AppEvent.AboutEvent event) {
-                Object source = WindowList.getWindows(true, false).iterable.coalesced
-                    .sequence().reversed.first else event;
-                handler(ActionEvent(source, ActionEvent.actionFirst,
-                    "About"));
-            });
-        } else {
-            fileMenu.add(createMenuItem("About", KeyEvent.vkB,
-                createAccelerator(KeyEvent.vkB), "Show development credits", handler));
-            fileMenu.addSeparator();
-            fileMenu.add(createMenuItem("Quit", KeyEvent.vkQ,
-                createAccelerator(KeyEvent.vkQ), "Quit the application", handler));
-        }
-        return fileMenu;
-    }
-    """Create the "map" menu, including go-to-tile, find, and zooming functions."""
-    shared JMenu createMapMenu(Anything(ActionEvent) handler, IDriverModel model) {
-        JMenu retval = JMenu("Map");
-        retval.mnemonic = KeyEvent.vkM;
-        Integer findKey = KeyEvent.vkF;
-        KeyStroke findStroke = createAccelerator(findKey);
-        KeyStroke nextStroke = createAccelerator(KeyEvent.vkG);
-        JMenuItem gotoTileItem = createMenuItem("Go to tile", KeyEvent.vkT,
-            createAccelerator(KeyEvent.vkT), "Go to a tile by coordinates", handler);
-        JMenuItem findItem = createMenuItem("Find a fixture", findKey, findStroke,
-            "Find a fixture by name, kind or ID #", handler);
-        Integer nextKey = KeyEvent.vkN;
-        JMenuItem nextItem = createMenuItem("Find next", nextKey, nextStroke,
-            "Find the next fixture matching the pattern", handler);
-        if (!model is IViewerModel) {
-            gotoTileItem.enabled = false;
-            findItem.enabled = false;
-            nextItem.enabled = false;
-        }
-        retval.add(gotoTileItem);
-        InputMap findInput = findItem.getInputMap(JComponent.whenInFocusedWindow);
-        findInput.put(KeyStroke.getKeyStroke(KeyEvent.vkSlash, 0),
-            findInput.get(findStroke));
-        retval.add(findItem);
-        InputMap nextInput = nextItem.getInputMap(JComponent.whenInFocusedWindow);
-        nextInput.put(KeyStroke.getKeyStroke(nextKey, 0), nextInput.get(nextStroke));
-        retval.add(nextItem);
-        retval.addSeparator();
-        // vkPlus only works on non-US keyboards, but we leave it as the primary hot-key
-        // because it's the best to *show* in the menu.
-        KeyStroke plusKey = createAccelerator(KeyEvent.vkPlus);
-        JMenuItem zoomInItem = createMenuItem("Zoom in", KeyEvent.vkI, plusKey,
-            "Increase the visible size of each tile", handler);
-        InputMap zoomInInputMap = zoomInItem.getInputMap(JComponent.whenInFocusedWindow);
-        zoomInInputMap.put(createAccelerator(KeyEvent.vkEquals), inputMap.get(plusKey));
-        zoomInInputMap.put(createAccelerator(KeyEvent.vkEquals, HotKeyModifier.shift),
-            inputMap.get(plusKey));
-        zoomInInputMap.put(createAccelerator(KeyEvent.vkAdd), inputMap.get(plusKey));
-        retval.add(zoomInItem);
-        retval.add(createMenuItem("Zoom out", KeyEvent.vkO,
-            createAccelerator(KeyEvent.vkMinus), "Decrease the visible size of each tile",
-            handler));
-        // TODO: Shouldn't there be a "reset zoom" item?
-        retval.addSeparator();
-        retval.add(createMenuItem("Center", KeyEvent.vkC, createAccelerator(KeyEvent.vkC),
-            "Center the view on the selected tile", handler));
-        return retval;
-    }
-    """Create the "view" menu."""
-    shared JMenu createViewMenu(Anything(ActionEvent) handler, IDriverModel model) {
-        JMenu viewMenu = JMenu("View");
-        viewMenu.mnemonic = KeyEvent.vkE;
-
-        // We *create* these items here (early) so that we can enable or disable them
-        // without an extra branch.
-        // TODO: create Ceylon Iterable instead of add()ing to a List
-        {JMenuItem*} treeItems = {
-            createMenuItem("Reload tree", KeyEvent.vkR, createAccelerator(KeyEvent.vkR),
-                "Refresh the view of the workers", handler),
-            createMenuItem("Expand All", KeyEvent.vkX, null,
-                "Expand all nodes in the unit tree", handler),
-            createMenuItem("Expand Unit Kinds", KeyEvent.vkK, null,
-                "Expand all unit kinds to show the units", handler),
-            createMenuItem("Collapse All", KeyEvent.vkC, null,
-                "Collapse all nodes in the unit tree", handler)
-        };
-        JMenuItem currentPlayerItem;
-        if (is IWorkerModel model) {
-            currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
-                createAccelerator(KeyEvent.vkP),
-                "Look at a different player's units and workers", handler);
-        } else {
-            currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
-                null, "Mark a player as the current player in the map", handler);
-            for (item in treeItems) {
-                item.enabled = false;
-            }
-        }
-        viewMenu.add(currentPlayerItem);
-        for (item in treeItems) {
-            viewMenu.add(item);
-        }
-        return viewMenu;
-    }
-    "Add a menu, but set it to disabled."
-    shared JMenu addDisabled(JMenu menu) {
-        add(menu);
-        menu.enabled = false;
-        return menu;
-    }
 }

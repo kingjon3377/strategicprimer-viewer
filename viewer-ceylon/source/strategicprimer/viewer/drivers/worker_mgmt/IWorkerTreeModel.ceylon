@@ -10,7 +10,7 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.viewer.drivers.exploration {
     PlayerChangeListener
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     MapChangeListener
 }
 import strategicprimer.model.map.fixtures.mobile {

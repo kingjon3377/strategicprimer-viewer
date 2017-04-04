@@ -4,7 +4,7 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     IMultiMapModel
 }
 shared interface IWorkerModel satisfies IMultiMapModel {

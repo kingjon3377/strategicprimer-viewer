@@ -1,31 +1,39 @@
-import strategicprimer.model.map {
-    MapDimensions,
-    Point
-}
-import javax.swing {
-    SwingUtilities
-}
-import strategicprimer.viewer.drivers {
-    SPFrame,
-    DriverUsage,
-    ParamCount,
-    IOHandler,
-    IDriverUsage,
-    MenuBroker,
-    SPOptions,
-    SimpleDriver,
-    ICLIHelper
-}
-import strategicprimer.viewer.about {
-    aboutDialog
-}
 import ceylon.logging {
     logger,
     Logger
 }
-import strategicprimer.viewer.model {
+
+import java.nio.file {
+    JPath=Path
+}
+
+import javax.swing {
+    SwingUtilities
+}
+
+import strategicprimer.drivers.common {
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    IDriverUsage,
+    DriverUsage,
+    SimpleDriver,
+    SPOptions,
+    ParamCount,
+    ICLIHelper,
+    DriverFailedException
+}
+import strategicprimer.model.map {
+    MapDimensions,
+    Point
+}
+import strategicprimer.viewer.about {
+    aboutDialog
+}
+import strategicprimer.viewer.drivers {
+    SPFrame,
+    IOHandler,
+    MenuBroker,
+    FileChooser
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -106,6 +114,15 @@ shared object viewerGUI satisfies SimpleDriver {
         } else {
             startDriverOnModel(cli, options, ViewerModel(model.map,
                 model.mapFile));
+        }
+    }
+    "Ask the user to choose a file."
+    shared actual JPath askUserForFile() {
+        try {
+            return FileChooser.open(null).file;
+        } catch (FileChooser.ChoiceInterruptedException except) {
+            throw DriverFailedException(except,
+                "Choice interrupted or user didn't choose");
         }
     }
 }

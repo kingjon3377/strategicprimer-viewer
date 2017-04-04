@@ -15,22 +15,20 @@ import java.util.\ifunction {
     Predicate
 }
 
-import strategicprimer.viewer.drivers {
-    SPOptions,
-    IDriverUsage,
-    DriverUsage,
-    ParamCount,
-    SimpleCLIDriver,
-    ICLIHelper
-}
 import strategicprimer.viewer.drivers.map_viewer {
     CachingTileDrawHelper,
     DirectTileDrawHelper,
     Ver2TileDrawHelper
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
+    SPOptions,
+    IDriverUsage,
+    DriverUsage,
+    ParamCount,
+    SimpleCLIDriver,
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    ICLIHelper
 }
 import strategicprimer.model.map {
     MapDimensions,

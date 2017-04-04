@@ -36,7 +36,7 @@ import java.awt {
     GridLayout,
     Dimension
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     VersionChangeListener,
     IDriverModel
 }

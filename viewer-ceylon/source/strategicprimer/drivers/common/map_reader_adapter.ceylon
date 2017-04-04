@@ -25,22 +25,16 @@ import strategicprimer.model.xmlio {
     readMap,
     writeMap
 }
-import strategicprimer.viewer.drivers {
-    DriverFailedException
-}
-import strategicprimer.viewer.drivers.map_viewer {
-    ViewerModel
-}
-Logger log = logger(`module strategicprimer.viewer`);
+Logger log = logger(`module strategicprimer.drivers.common`);
 "Read a map model from a file or a stream, wrapping any errors the process generates in a
  [[DriverFailedException]] to simplify callers."
 todo("Return exceptions instead of throwing them")
 shared IDriverModel readMapModel(JPath|JReader file, Warning warner) {
 	try {
 		if (is JReader file) {
-			return ViewerModel(readMap(file, warner), null);
+			return SimpleDriverModel(readMap(file, warner), null);
 		} else {
-			return ViewerModel(readMap(file, warner), file);
+			return SimpleDriverModel(readMap(file, warner), file);
 		}
 	} catch (IOException except) {
 		throw DriverFailedException(except, "I/O error while reading");

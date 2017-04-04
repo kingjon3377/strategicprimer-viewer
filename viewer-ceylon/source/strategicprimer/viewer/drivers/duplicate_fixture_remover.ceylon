@@ -47,6 +47,9 @@ import strategicprimer.model.map.fixtures.resources {
 import strategicprimer.model.map.fixtures.towns {
     Fortress
 }
+import strategicprimer.drivers.common {
+    ICLIHelper
+}
 
 """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests, of the same
     kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile in a

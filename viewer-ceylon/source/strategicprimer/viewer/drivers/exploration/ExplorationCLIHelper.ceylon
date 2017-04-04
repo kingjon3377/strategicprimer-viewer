@@ -33,7 +33,7 @@ import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 
-import strategicprimer.viewer.drivers {
+import strategicprimer.drivers.common {
     ICLIHelper
 }
 "The logic split out of [[explorationCLI]]"

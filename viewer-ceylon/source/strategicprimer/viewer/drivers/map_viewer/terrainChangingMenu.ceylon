@@ -28,7 +28,7 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     NewUnitSource,
     NewUnitListener
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     VersionChangeListener
 }
 "A popup menu to let the user change a tile's terrain type, or add a unit."

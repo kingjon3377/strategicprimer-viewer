@@ -5,7 +5,7 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.viewer.drivers {
+import strategicprimer.drivers.common {
     ICLIHelper
 }
 import strategicprimer.model.map.fixtures.mobile.worker {

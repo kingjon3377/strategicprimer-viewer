@@ -16,7 +16,7 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     BorderedPanel
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     MapChangeListener
 }
 import javax.swing {

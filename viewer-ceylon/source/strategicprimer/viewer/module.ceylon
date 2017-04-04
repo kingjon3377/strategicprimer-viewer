@@ -21,4 +21,5 @@ module strategicprimer.viewer "0.4.9900" {
     import maven:"com.massisframework:orange-extensions" "1.3.1";
     shared import strategicprimer.model "0.4.9900";
     import strategicprimer.report "0.4.9900";
+    shared import strategicprimer.drivers.common "0.4.9900";
 }

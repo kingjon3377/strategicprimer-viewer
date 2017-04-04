@@ -1,4 +1,4 @@
-import strategicprimer.viewer.drivers {
+import strategicprimer.drivers.common {
     SPOptions
 }
 import strategicprimer.model.map {

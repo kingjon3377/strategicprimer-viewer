@@ -15,16 +15,13 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.viewer.model {
-    IDriverModel
-}
-
-import strategicprimer.viewer.drivers {
-    SimpleCLIDriver,
+import strategicprimer.drivers.common {
+    IDriverModel,
     IDriverUsage,
     DriverUsage,
-    ParamCount,
     SPOptions,
+    SimpleCLIDriver,
+    ParamCount,
     ICLIHelper
 }
 

@@ -25,7 +25,7 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     MapChangeListener
 }
 

@@ -69,9 +69,15 @@ import strategicprimer.viewer.drivers.exploration {
     ExplorationModel,
     IExplorationModel
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    SimpleCLIDriver,
+    IDriverUsage,
+    DriverUsage,
+    ParamCount,
+    SPOptions,
+    ICLIHelper
 }
 
 "A driver to let the user enter pre-generated stats for existing workers or generate new

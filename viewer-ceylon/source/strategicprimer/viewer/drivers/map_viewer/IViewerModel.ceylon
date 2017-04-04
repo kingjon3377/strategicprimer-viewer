@@ -5,7 +5,7 @@ import lovelace.util.common {
 import strategicprimer.model.map {
     Point
 }
-import strategicprimer.viewer.model {
+import strategicprimer.drivers.common {
     IDriverModel
 }
 "An interface for a model behind the map viewer, handling the selected tile and visible

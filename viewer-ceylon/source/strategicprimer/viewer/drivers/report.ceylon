@@ -1,22 +1,33 @@
-import strategicprimer.viewer.model {
-    IMultiMapModel,
-    IDriverModel
+import ceylon.file {
+    parsePath,
+    Nil
 }
-import java.nio.file {
-    JPath=Path, JPaths=Paths, JFiles=Files
-}
-import strategicprimer.model.map {
-    IMapNG,
-    Player
-}
+
 import java.io {
     OutputStream,
     IOException,
     IOError
 }
-import ceylon.file {
-    parsePath,
-    Nil
+import java.nio.file {
+    JPath=Path,
+    JPaths=Paths,
+    JFiles=Files
+}
+
+import strategicprimer.drivers.common {
+    IMultiMapModel,
+    IDriverModel,
+    ParamCount,
+    SimpleDriver,
+    IDriverUsage,
+    SPOptions,
+    DriverUsage,
+    DriverFailedException,
+    ICLIHelper
+}
+import strategicprimer.model.map {
+    IMapNG,
+    Player
 }
 import strategicprimer.report {
     createReport,
@@ -81,6 +92,8 @@ object reportCLI satisfies SimpleDriver {
             writeReport(model.mapFile, model.map);
         }
     }
+    "As we're a CLI driver, we can't show a file-chooser dialog."
+    shared actual JPath? askUserForFile() => null;
 }
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
 object tabularReportCLI satisfies SimpleDriver {
@@ -113,4 +126,6 @@ object tabularReportCLI satisfies SimpleDriver {
             createReports(model.map, model.mapFile);
         }
     }
+    "Since this is a CLI driver, we can't show a file-chooser dialog."
+    shared actual JPath? askUserForFile() => null;
 }
