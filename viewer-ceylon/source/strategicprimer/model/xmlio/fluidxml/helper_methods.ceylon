@@ -47,7 +47,6 @@ import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException,
     MissingPropertyException,
     DeprecatedPropertyException,
-    SPMalformedInputException,
     UnsupportedPropertyException
 }
 NumberFormat numParser = NumberFormat.integerInstance;
@@ -228,21 +227,17 @@ void writeImage(
     }
 }
 
-"Parse an integer, throwing an [[SPFormatException]] on non-numeric or otherwise malformed
+"Parse an integer, throwing an exception on non-numeric or otherwise malformed
  input."
-throws(`class SPFormatException`, "if the string is non-numeric or otherwise malformed")
-// FIXME: Use SPMalformedInputException elsewhere where we used MissingPropertyException
-// for similar cases
+throws(`class JParseException`, "if the string is non-numeric or otherwise malformed")
+throws(`class ParseException`,
+    "if the string is non-numeric, if we were using [[Integer.parse]]")
 Integer parseInt(
         "The text to parse"
         String string,
         "The current location in the XML."
         Location location) {
-    try {
-        return numParser.parse(string).intValue();
-    } catch (ParseException|JParseException except) {
-        throw SPMalformedInputException(location, except);
-    }
+    return numParser.parse(string).intValue();
 }
 
 "Parse an Integer parameter."
@@ -260,11 +255,12 @@ Integer getIntegerAttribute(
     if (exists attr = getAttributeByName(tag, parameter), exists val = attr.\ivalue) {
         try {
             return parseInt(val, tag.location);
-        } catch (SPMalformedInputException except) {
+        } catch (ParseException|JParseException except) {
             if (exists defaultValue) {
+                // TODO: warn about the malformed input?
                 return defaultValue;
             } else {
-                throw MissingPropertyException(tag, parameter, except.cause);
+                throw MissingPropertyException(tag, parameter, except);
             }
         }
     } else if (exists defaultValue) {

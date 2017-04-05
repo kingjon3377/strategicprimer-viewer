@@ -43,7 +43,6 @@ import strategicprimer.model.xmlio {
 import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException,
     MissingPropertyException,
-    SPMalformedInputException,
     DeprecatedPropertyException
 }
 "A parser for numeric data, so integers can contain commas."
@@ -167,13 +166,12 @@ abstract class YAAbstractReader<Element>
     todo("Test that commas in the input are allowed",
         "Inline this into the caller or pass in information that lets us throw a more
          meaningful exception, so we can get rid of SPMalformedInputException")
+    throws(`class JParseException`, "on non-numeric input")
+    throws(`class ParseException`,
+        "on non-numeric input, if we were using [[Integer.parse]]")
     static Integer parseInt(String string,
             "The current location in the document" Location location) {
-        try {
-            return numParser.parse(string).intValue();
-        } catch (ParseException|JParseException except) {
-            throw SPMalformedInputException(location, except);
-        }
+        return numParser.parse(string).intValue();
     }
     "Read a parameter from XML whose value must be an integer."
     shared static Integer getIntegerParameter(StartElement element, String parameter,
@@ -182,8 +180,8 @@ abstract class YAAbstractReader<Element>
             exists retval = attr.\ivalue) {
             try {
                 return parseInt(retval, element.location);
-            } catch (SPMalformedInputException except) {
-                throw MissingPropertyException(element, parameter, except.cause);
+            } catch (ParseException|JParseException except) {
+                throw MissingPropertyException(element, parameter, except);
             }
         } else if (exists defaultValue) {
             return defaultValue;
