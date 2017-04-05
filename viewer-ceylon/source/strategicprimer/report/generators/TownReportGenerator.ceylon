@@ -85,9 +85,11 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 ostream("At ``loc``: ``item.name``, ");
                 if (item.owner.independent) {
                     ostream("an independent ``item.townSize`` ``item.status`` ``item.kind``");
+                } else if (item.owner == currentPlayer) {
+                    ostream("a ``item.townSize`` ``item.status`` allied with you");
                 } else {
                     ostream("a ``item.townSize`` ``item.status`` allied with ``
-                        playerNameOrYou(item.owner)``");
+                        item.owner``");
                 }
                 ostream(" ``distCalculator.distanceString(loc)``");
             } else {
@@ -145,10 +147,14 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     return SimpleReportNode("At ``loc``: ``item.name``, an independent ``item.townSize`` ``item
                         .status`` ``item.kind`` ``distCalculator
                         .distanceString(loc)``", loc);
+                } else if (item.owner == currentPlayer) {
+                    return SimpleReportNode("At ``loc``: ``item.name``, a ``item.townSize
+                        `` ``item.status`` ``item.kind`` allied with you ``distCalculator
+                            .distanceString(loc)``", loc);
                 } else {
-                    return SimpleReportNode("At ``loc``: ``item.name``, a ``item.townSize`` ``item
-                        .status`` ``item.kind`` allied with ``playerNameOrYou(item.owner)
-                        `` ``distCalculator.distanceString(loc)``", loc);
+                    return SimpleReportNode("At ``loc``: ``item.name``, a ``item.townSize
+                        `` ``item.status`` ``item.kind`` allied with ``item.owner`` ``
+                        distCalculator.distanceString(loc)``", loc);
                 }
             } else {
                 throw IllegalStateException("Unhandled ITownFixture subclass");

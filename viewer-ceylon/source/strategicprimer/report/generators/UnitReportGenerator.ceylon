@@ -199,9 +199,11 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             if (item.owner.independent) {
                 base = "Unit of type ``item.kind``, named ``item
                     .name``, independent.";
+            } else if (item.owner == currentPlayer) {
+                base = "Unit of type ``item.kind``, named ``item.name``, owned by you.";
             } else {
                 base = "Unit of type ``item.kind``, named ``item.name``, owned by ``
-                playerNameOrYou(item.owner)``.";
+                    item.owner``.";
             }
             fixtures.remove(item.id);
             ListReportNode workers = ListReportNode("Workers:");

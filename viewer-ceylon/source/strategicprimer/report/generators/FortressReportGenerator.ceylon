@@ -123,8 +123,8 @@ shared class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixt
         if (exists entry) {
             Fortress item = entry.first;
             Point loc = entry.rest.first;
-            ostream("<h5>Fortress ``item.name`` belonging to ``playerNameOrYou(
-                item.owner)``</h5>
+            ostream("<h5>Fortress ``item.name`` belonging to ``
+                    (item.owner == currentPlayer) then "you" else item.owner.string``</h5>
                      <ul>
                      <li>Located at ``loc`` ``distCalculator.distanceString(loc)``</li>
                      <li>``terrain(map, loc, fixtures)``</li>
@@ -252,8 +252,8 @@ shared class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixt
             Fortress item = entry.first;
             Point loc = entry.rest.first;
             IReportNode retval = SectionListReportNode(5,
-                "Fortress ``item.name`` belonging to ``playerNameOrYou(item.owner)``",
-                loc);
+                "Fortress ``item.name`` belonging to ``
+                (item.owner == currentPlayer) then "you" else item.owner.string``", loc);
             retval.appendNode(SimpleReportNode("Located at ``loc`` ``distCalculator
                 .distanceString(loc)``", loc));
             // This is a no-op if no rivers, so avoid an if
