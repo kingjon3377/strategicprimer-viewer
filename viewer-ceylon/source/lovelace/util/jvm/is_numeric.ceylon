@@ -1,10 +1,10 @@
-import ceylon.test {
+/*import ceylon.test {
     test,
     assertTrue,
     assertFalse,
     assertEquals,
     assertNull
-}
+}*/
 
 import java.lang {
     NumberFormatException
@@ -35,7 +35,8 @@ shared Integer? parseInt(String string) {
         return null;
     }
 }
-test
+// TODO: Uncomment tests once Ceylon bug #6986 is fixed
+/*test
 void testIsNumeric() {
     assertTrue(isNumeric("1"), "1 is numeric");
     assertFalse(isNumeric("xyzzy"), "xyzzy is not numeric");
@@ -47,4 +48,4 @@ void testParseInt() {
     assertEquals(parseInt("-5,127"), -5127, "parseInt() parses comma-containing numbers");
     assertEquals(parseInt("2345"), 2345, "parseInt() doesn't require commas");
     assertNull(parseInt("alphabetic"));
-}
+}*/
