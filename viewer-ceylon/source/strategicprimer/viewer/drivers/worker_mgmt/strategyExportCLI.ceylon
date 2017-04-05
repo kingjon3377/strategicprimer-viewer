@@ -17,6 +17,10 @@ import strategicprimer.drivers.common {
 import java.nio.file {
     JPath=Path
 }
+import strategicprimer.drivers.worker.common {
+    WorkerModel,
+    IWorkerModel
+}
 "A command-line program to export a proto-strategy for a player from orders in a map."
 shared object strategyExportCLI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {

@@ -50,19 +50,19 @@ import lovelace.util.jvm {
 
 import strategicprimer.drivers.common {
     IDriverModel,
-    IMultiMapModel
+    IMultiMapModel,
+    PlayerChangeListener
 }
 import strategicprimer.model.map {
     Player
 }
 import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeSource,
-    PlayerChangeListener
+    PlayerChangeSource
 }
 import strategicprimer.viewer.drivers.map_viewer {
     IViewerModel
 }
-import strategicprimer.viewer.drivers.worker_mgmt {
+import strategicprimer.drivers.worker.common {
     IWorkerModel
 }
 """A class to respond to "change current player" menu items."""

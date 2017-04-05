@@ -9,7 +9,6 @@ module strategicprimer.viewer "0.4.9900" {
     import ceylon.interop.java "1.3.2";
     import ceylon.logging "1.3.2";
     shared import lovelace.util.common "0.1.0";
-    import ceylon.test "1.3.2";
     shared import javax.xml "8";
     shared import ceylon.math "1.3.2";
     shared import ceylon.file "1.3.2";
@@ -24,4 +23,5 @@ module strategicprimer.viewer "0.4.9900" {
     shared import strategicprimer.drivers.common "0.4.9900";
     import strategicprimer.drivers.exploration.old "0.4.9900";
     import strategicprimer.drivers.exploration.common "0.4.9900";
+    shared import strategicprimer.drivers.worker.common "0.4.9900";
 }

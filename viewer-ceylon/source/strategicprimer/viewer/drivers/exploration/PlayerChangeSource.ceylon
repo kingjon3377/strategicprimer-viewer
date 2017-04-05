@@ -1,3 +1,6 @@
+import strategicprimer.drivers.common {
+    PlayerChangeListener
+}
 "An interface for things that can fire notifications of the current player changing."
 shared interface PlayerChangeSource {
 	"Notify the given listener of future changes to which player is current."

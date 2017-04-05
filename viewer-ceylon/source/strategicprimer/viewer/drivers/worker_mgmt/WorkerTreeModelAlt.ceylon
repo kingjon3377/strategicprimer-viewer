@@ -31,6 +31,10 @@ import ceylon.interop.java {
     createJavaIntArray,
     createJavaObjectArray
 }
+import strategicprimer.drivers.worker.common {
+    IWorkerModel,
+    IWorkerTreeModel
+}
 "An alternative implementation of the worker tree model."
 shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
     shared static class WorkerTreeNode<T>(T userObj, Boolean permitsChildren = true)

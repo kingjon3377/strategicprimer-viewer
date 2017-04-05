@@ -68,6 +68,9 @@ import java.nio.file {
 import ceylon.math.float {
     halfEven
 }
+import strategicprimer.drivers.worker.common {
+    IWorkerTreeModel
+}
 "A tree of a player's units."
 shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         "The tree model"

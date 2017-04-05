@@ -30,6 +30,10 @@ import ceylon.interop.java {
     createJavaIntArray,
     createJavaObjectArray
 }
+import strategicprimer.drivers.worker.common {
+    IWorkerModel,
+    IWorkerTreeModel
+}
 "A TreeModel implementation for a player's units and workers."
 class WorkerTreeModel(variable Player player, IWorkerModel model)
         satisfies IWorkerTreeModel {

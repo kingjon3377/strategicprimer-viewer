@@ -1,4 +1,4 @@
-import strategicprimer.viewer.drivers.worker_mgmt {
+import strategicprimer.drivers.worker.common {
     IWorkerModel
 }
 import strategicprimer.model.map {

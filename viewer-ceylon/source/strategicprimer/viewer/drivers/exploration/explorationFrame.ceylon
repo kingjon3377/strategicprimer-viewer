@@ -123,7 +123,8 @@ import strategicprimer.drivers.exploration.common {
 }
 import strategicprimer.drivers.common {
     SelectionChangeListener,
-    SelectionChangeSource
+    SelectionChangeSource,
+    PlayerChangeListener
 }
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,

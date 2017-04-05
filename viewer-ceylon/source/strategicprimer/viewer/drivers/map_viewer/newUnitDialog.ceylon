@@ -28,6 +28,12 @@ import lovelace.util.jvm {
     parseInt
 }
 
+import strategicprimer.drivers.common {
+    PlayerChangeListener
+}
+import strategicprimer.drivers.worker.common {
+    NewUnitListener
+}
 import strategicprimer.model.idreg {
     IDRegistrar
 }
@@ -41,12 +47,8 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.viewer.drivers {
     SPDialog
 }
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeListener
-}
 import strategicprimer.viewer.drivers.worker_mgmt {
-    NewUnitSource,
-    NewUnitListener
+    NewUnitSource
 }
 "A dialog to let the user add a new unit."
 shared SPDialog&NewUnitSource&PlayerChangeListener newUnitDialog(variable Player player,

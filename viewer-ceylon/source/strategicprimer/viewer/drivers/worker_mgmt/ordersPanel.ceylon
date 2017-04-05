@@ -1,25 +1,9 @@
-import javax.swing.tree {
-    DefaultMutableTreeNode
-}
-import strategicprimer.model.map {
-    Player
-}
 import java.awt.event {
     ActionEvent,
     KeyEvent,
     KeyAdapter
 }
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeListener
-}
-import strategicprimer.model.map.fixtures.mobile {
-    IUnit,
-    ProxyUnit
-}
-import javax.swing.event {
-    TreeSelectionListener,
-    TreeSelectionEvent
-}
+
 import javax.swing {
     SpinnerNumberModel,
     KeyStroke,
@@ -31,6 +15,14 @@ import javax.swing {
     JTextArea,
     JComponent
 }
+import javax.swing.event {
+    TreeSelectionListener,
+    TreeSelectionEvent
+}
+import javax.swing.tree {
+    DefaultMutableTreeNode
+}
+
 import lovelace.util.jvm {
     platform,
     centeredHorizontalBox,
@@ -38,6 +30,17 @@ import lovelace.util.jvm {
     createHotKey,
     BorderedPanel,
     ActionWrapper
+}
+
+import strategicprimer.drivers.common {
+    PlayerChangeListener
+}
+import strategicprimer.model.map {
+    Player
+}
+import strategicprimer.model.map.fixtures.mobile {
+    IUnit,
+    ProxyUnit
 }
 "A panel for the user to enter a unit's orders or read a unit's results."
 JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel(

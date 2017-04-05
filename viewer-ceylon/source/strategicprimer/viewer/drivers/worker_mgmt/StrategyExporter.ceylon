@@ -1,34 +1,37 @@
-import strategicprimer.drivers.common {
-    SPOptions
-}
-import strategicprimer.model.map {
-    Player,
-    HasName
-}
-import java.lang {
-    IllegalStateException
-}
-import strategicprimer.model.map.fixtures {
-    UnitMember
-}
 import ceylon.collection {
     ArrayList,
     MutableMap,
     MutableList,
     HashMap
 }
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeListener
-}
-import strategicprimer.model.map.fixtures.mobile {
-    IUnit,
-    IWorker
-}
 import ceylon.file {
     Resource,
     File,
     Writer,
     Nil
+}
+
+import java.lang {
+    IllegalStateException
+}
+
+import strategicprimer.drivers.common {
+    SPOptions,
+    PlayerChangeListener
+}
+import strategicprimer.drivers.worker.common {
+    IWorkerModel
+}
+import strategicprimer.model.map {
+    Player,
+    HasName
+}
+import strategicprimer.model.map.fixtures {
+    UnitMember
+}
+import strategicprimer.model.map.fixtures.mobile {
+    IUnit,
+    IWorker
 }
 "A class to write a proto-strategy to file."
 class StrategyExporter(IWorkerModel model, SPOptions options) satisfies PlayerChangeListener {

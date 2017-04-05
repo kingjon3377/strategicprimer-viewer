@@ -7,6 +7,15 @@ import javax.swing {
     JPopupMenu
 }
 
+import strategicprimer.drivers.common {
+    VersionChangeListener,
+    SelectionChangeListener,
+    SelectionChangeSource,
+    PlayerChangeListener
+}
+import strategicprimer.drivers.worker.common {
+    NewUnitListener
+}
 import strategicprimer.model.idreg {
     createIDFactory
 }
@@ -21,17 +30,8 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.viewer.drivers {
     SPDialog
 }
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeListener
-}
 import strategicprimer.viewer.drivers.worker_mgmt {
-    NewUnitSource,
-    NewUnitListener
-}
-import strategicprimer.drivers.common {
-    VersionChangeListener,
-    SelectionChangeListener,
-    SelectionChangeSource
+    NewUnitSource
 }
 "A popup menu to let the user change a tile's terrain type, or add a unit."
 JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener

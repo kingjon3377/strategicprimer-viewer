@@ -7,10 +7,8 @@ import javax.swing.tree {
 import strategicprimer.model.map.fixtures {
     UnitMember
 }
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeListener
-}
 import strategicprimer.drivers.common {
+    PlayerChangeListener,
     MapChangeListener
 }
 import strategicprimer.model.map.fixtures.mobile {

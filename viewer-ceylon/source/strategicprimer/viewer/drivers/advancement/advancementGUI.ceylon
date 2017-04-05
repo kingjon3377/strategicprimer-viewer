@@ -1,3 +1,7 @@
+import java.nio.file {
+    JPath=Path
+}
+
 import javax.swing {
     SwingUtilities
 }
@@ -10,10 +14,12 @@ import strategicprimer.drivers.common {
     IDriverModel,
     SimpleDriver,
     ICLIHelper,
-    DriverFailedException
+    DriverFailedException,
+    PlayerChangeListener
 }
-import java.nio.file {
-    JPath=Path
+import strategicprimer.drivers.worker.common {
+    WorkerModel,
+    IWorkerModel
 }
 import strategicprimer.viewer.about {
     aboutDialog
@@ -24,13 +30,6 @@ import strategicprimer.viewer.drivers {
     IOHandler,
     MenuBroker,
     FileChooser
-}
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeListener
-}
-import strategicprimer.viewer.drivers.worker_mgmt {
-    WorkerModel,
-    IWorkerModel
 }
 "The worker-advancement GUI driver."
 shared object advancementGUI satisfies SimpleDriver {

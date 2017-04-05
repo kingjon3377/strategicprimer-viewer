@@ -37,8 +37,10 @@ import strategicprimer.model.map.fixtures.mobile.worker {
     randomRace
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
-    IWorkerTreeModel,
     UnitSelectionListener
+}
+import strategicprimer.drivers.worker.common {
+    IWorkerTreeModel
 }
 "A listener to keep track of the currently selected unit and listen for new-worker
  notifications, then pass this information on to the tree model."

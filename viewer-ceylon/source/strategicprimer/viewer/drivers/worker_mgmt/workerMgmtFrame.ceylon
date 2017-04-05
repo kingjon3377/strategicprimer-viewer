@@ -52,6 +52,15 @@ import lovelace.util.jvm {
     verticalSplit
 }
 
+import strategicprimer.drivers.common {
+    MapChangeListener,
+    SPOptions,
+    PlayerChangeListener
+}
+import strategicprimer.drivers.worker.common {
+    IWorkerModel,
+    IWorkerTreeModel
+}
 import strategicprimer.model {
     DistanceComparator
 }
@@ -81,19 +90,12 @@ import strategicprimer.viewer.drivers {
     SPDialog,
     FileChooser
 }
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeListener
-}
 import strategicprimer.viewer.drivers.map_viewer {
     newUnitDialog,
     IViewerFrame,
     viewerFrame,
     ViewerModel,
     IViewerModel
-}
-import strategicprimer.drivers.common {
-    MapChangeListener,
-    SPOptions
 }
 "A window to let the player manage units."
 SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,

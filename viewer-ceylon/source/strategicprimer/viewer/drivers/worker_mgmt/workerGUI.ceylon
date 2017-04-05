@@ -27,6 +27,10 @@ import strategicprimer.drivers.common {
 import java.nio.file {
     JPath=Path
 }
+import strategicprimer.drivers.worker.common {
+    WorkerModel,
+    IWorkerModel
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to start the worker management GUI."

@@ -11,7 +11,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.map {
     Player
 }
-import strategicprimer.viewer.drivers.worker_mgmt {
+import strategicprimer.drivers.worker.common {
     WorkerModel,
     IWorkerModel
 }

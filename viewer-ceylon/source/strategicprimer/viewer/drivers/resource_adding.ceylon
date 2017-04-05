@@ -51,6 +51,19 @@ import lovelace.util.jvm {
     FormattedLabel
 }
 
+import strategicprimer.drivers.common {
+    SimpleMultiMapModel,
+    IDriverModel,
+    SPOptions,
+    IDriverUsage,
+    DriverFailedException,
+    SimpleDriver,
+    ParamCount,
+    DriverUsage,
+    SimpleCLIDriver,
+    ICLIHelper,
+    PlayerChangeListener
+}
 import strategicprimer.model.idreg {
     IDRegistrar,
     createIDFactory
@@ -70,23 +83,8 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.model.map.fixtures.towns {
     Fortress
 }
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeListener
-}
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu
-}
-import strategicprimer.drivers.common {
-    SimpleMultiMapModel,
-    IDriverModel,
-    SPOptions,
-    IDriverUsage,
-    DriverFailedException,
-    SimpleDriver,
-    ParamCount,
-    DriverUsage,
-    SimpleCLIDriver,
-    ICLIHelper
 }
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
