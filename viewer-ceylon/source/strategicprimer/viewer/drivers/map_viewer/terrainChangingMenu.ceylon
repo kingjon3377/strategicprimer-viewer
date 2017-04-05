@@ -29,7 +29,9 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     NewUnitListener
 }
 import strategicprimer.drivers.common {
-    VersionChangeListener
+    VersionChangeListener,
+    SelectionChangeListener,
+    SelectionChangeSource
 }
 "A popup menu to let the user change a tile's terrain type, or add a unit."
 JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener

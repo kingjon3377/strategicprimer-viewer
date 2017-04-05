@@ -29,6 +29,9 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
+import strategicprimer.drivers.common {
+    SelectionChangeListener
+}
 "A model for the list-based representation of the contents of a tile."
 todo("Tests")
 shared class FixtureListModel(IMutableMapNG map,

@@ -38,7 +38,8 @@ import java.awt {
 }
 import strategicprimer.drivers.common {
     VersionChangeListener,
-    IDriverModel
+    IDriverModel,
+    SelectionChangeListener
 }
 "A panel to show the details of a tile, using a list rather than sub-panels with chits
  for its fixtures."

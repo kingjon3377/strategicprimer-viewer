@@ -11,7 +11,8 @@ import java.awt {
 }
 import strategicprimer.drivers.common {
     VersionChangeListener,
-    MapChangeListener
+    MapChangeListener,
+    SelectionChangeListener
 }
 import strategicprimer.model.map {
     TileFixture

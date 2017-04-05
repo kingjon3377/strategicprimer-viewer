@@ -5,9 +5,6 @@ import ceylon.collection {
 import ceylon.math.float {
     ceiling
 }
-import strategicprimer.viewer.drivers.map_viewer {
-    SelectionChangeListener
-}
 import java.lang {
     IllegalStateException
 }
@@ -23,7 +20,8 @@ import lovelace.util.jvm {
 }
 import strategicprimer.drivers.common {
     SimpleMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    SelectionChangeListener
 }
 import strategicprimer.model.map {
     Point,

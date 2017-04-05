@@ -34,8 +34,7 @@ import strategicprimer.model.map.fixtures.terrain {
 }
 
 import strategicprimer.viewer.drivers.exploration {
-    HuntingModel,
-    surroundingPointIterable
+    HuntingModel
 }
 import strategicprimer.drivers.common {
     IDriverModel,
@@ -62,6 +61,9 @@ import strategicprimer.model.map {
 }
 import java.nio.file {
     JPath=Path
+}
+import strategicprimer.drivers.exploration.common {
+    surroundingPointIterable
 }
 
 "Models of (game statistics for) herding."

@@ -50,6 +50,9 @@ import javax.swing {
     ListSelectionModel,
     JComponent
 }
+import strategicprimer.drivers.common {
+    SelectionChangeListener
+}
 "A visual list-based representation of the contents of a tile."
 shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
         JComponent parentComponent, FixtureListModel listModel,

@@ -17,7 +17,8 @@ import lovelace.util.jvm {
     BorderedPanel
 }
 import strategicprimer.drivers.common {
-    MapChangeListener
+    MapChangeListener,
+    SelectionChangeListener
 }
 import javax.swing {
     JScrollBar,

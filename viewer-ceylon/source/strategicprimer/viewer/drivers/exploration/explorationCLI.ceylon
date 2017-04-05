@@ -15,6 +15,10 @@ import strategicprimer.drivers.common {
     IDriverModel,
     ICLIHelper
 }
+import strategicprimer.drivers.exploration.common {
+    IExplorationModel,
+    ExplorationModel
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A CLI to help running exploration."

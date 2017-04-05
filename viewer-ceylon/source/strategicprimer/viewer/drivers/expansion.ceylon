@@ -35,12 +35,6 @@ import strategicprimer.model.map.fixtures.resources {
 import strategicprimer.model.map.fixtures.towns {
     ITownFixture
 }
-import strategicprimer.viewer.drivers.exploration {
-    surroundingPointIterable,
-    shouldSometimesNotice,
-    shouldAlwaysNotice,
-    Speed
-}
 import strategicprimer.drivers.common {
     SimpleMultiMapModel,
     IMultiMapModel,
@@ -51,6 +45,12 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     DriverUsage,
     ICLIHelper
+}
+import strategicprimer.drivers.exploration.common {
+    Speed,
+    surroundingPointIterable,
+    shouldAlwaysNotice,
+    shouldSometimesNotice
 }
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""

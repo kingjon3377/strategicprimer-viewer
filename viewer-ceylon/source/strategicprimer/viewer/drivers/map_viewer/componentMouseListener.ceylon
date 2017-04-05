@@ -13,7 +13,9 @@ import javax.swing {
 }
 
 import strategicprimer.drivers.common {
-    VersionChangeListener
+    VersionChangeListener,
+    SelectionChangeSource,
+    SelectionChangeListener
 }
 import strategicprimer.model.map {
     Point,

@@ -6,6 +6,10 @@ import ceylon.collection {
 import strategicprimer.model.map {
     Point
 }
+import strategicprimer.drivers.common {
+    SelectionChangeListener,
+    SelectionChangeSource
+}
 "A helper class to proxy selection-changing calls."
 shared class SelectionChangeSupport() satisfies SelectionChangeSource {
 	"The list of listeners to notify."

@@ -20,6 +20,9 @@ import strategicprimer.model.map.fixtures.resources {
     Meadow
 }
 import lovelace.util.jvm { shuffle }
+import strategicprimer.drivers.exploration.common {
+    surroundingPointIterable
+}
 "A class to facilitate a better hunting/fishing driver."
 shared class HuntingModel {
     """The "nothing" value we insert."""

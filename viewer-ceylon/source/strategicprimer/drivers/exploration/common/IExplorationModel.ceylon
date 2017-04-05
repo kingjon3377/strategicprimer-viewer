@@ -1,5 +1,6 @@
-import strategicprimer.viewer.drivers.map_viewer {
-    SelectionChangeSource
+import strategicprimer.drivers.common {
+    SelectionChangeSource,
+    IMultiMapModel
 }
 import strategicprimer.model.map {
     Player,
@@ -9,9 +10,6 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit
-}
-import strategicprimer.drivers.common {
-    IMultiMapModel
 }
 "An enumeration of directions of possible travel."
 shared class Direction of north|northeast|east|southeast|south|southwest|west|northwest|nowhere {

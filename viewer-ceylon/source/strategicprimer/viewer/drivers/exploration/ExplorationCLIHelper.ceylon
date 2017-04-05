@@ -36,6 +36,17 @@ import strategicprimer.model.map.fixtures.terrain {
 import strategicprimer.drivers.common {
     ICLIHelper
 }
+import strategicprimer.drivers.exploration.common {
+    IExplorationModel,
+    Speed,
+    Direction,
+    MovementCostListener,
+    TraversalImpossibleException,
+    shouldAlwaysNotice,
+    shouldSometimesNotice,
+    MovementCostSource,
+    selectNoticed
+}
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         satisfies MovementCostSource {

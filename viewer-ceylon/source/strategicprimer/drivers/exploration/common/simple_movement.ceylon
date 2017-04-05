@@ -38,6 +38,9 @@ import strategicprimer.model.map.fixtures.terrain {
 import strategicprimer.model.map.fixtures.towns {
     ITownFixture
 }
+import strategicprimer.drivers.exploration.common {
+    Direction
+}
 "Whether land movement is possible on the given terrain."
 Boolean landMovementPossible(TileType terrain) => TileType.ocean != terrain;
 "Whether rivers in either the source or the destination will speed travel in the given
@@ -164,7 +167,7 @@ shared Boolean shouldAlwaysNotice(HasOwner unit, TileFixture? fixture) {
 "Choose what the mover should in fact find from the list of things he or she might find.
  Since some callers need to have a list of Pairs instead of TileFixtures, we take a
  function for getting the fixtures out of the list."
-{Element*} selectNoticed<Element>({Element*} possibilities, TileFixture(Element) getter,
+shared {Element*} selectNoticed<Element>({Element*} possibilities, TileFixture(Element) getter,
         IUnit mover, Speed speed) {
     {Element*} local = shuffle(possibilities);
     variable Integer perception = highestPerception(mover) + speed.perceptionModifier;

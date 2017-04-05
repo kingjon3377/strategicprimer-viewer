@@ -16,7 +16,8 @@ import lovelace.util.common {
 
 import strategicprimer.drivers.common {
     SimpleDriverModel,
-    IDriverModel
+    IDriverModel,
+    SelectionChangeListener
 }
 import strategicprimer.model.map {
     Point,

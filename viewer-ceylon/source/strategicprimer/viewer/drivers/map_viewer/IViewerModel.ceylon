@@ -6,7 +6,8 @@ import strategicprimer.model.map {
     Point
 }
 import strategicprimer.drivers.common {
-    IDriverModel
+    IDriverModel,
+    SelectionChangeSource
 }
 "An interface for a model behind the map viewer, handling the selected tile and visible
  dimensions."

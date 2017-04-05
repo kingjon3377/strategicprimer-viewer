@@ -67,10 +67,6 @@ import strategicprimer.drivers.exploration.old {
     loadAllTables,
     ExplorationRunner
 }
-import strategicprimer.viewer.drivers.exploration {
-    ExplorationModel,
-    IExplorationModel
-}
 import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
@@ -80,6 +76,10 @@ import strategicprimer.drivers.common {
     ParamCount,
     SPOptions,
     ICLIHelper
+}
+import strategicprimer.drivers.exploration.common {
+    IExplorationModel,
+    ExplorationModel
 }
 
 "A driver to let the user enter pre-generated stats for existing workers or generate new

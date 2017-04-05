@@ -100,8 +100,6 @@ import strategicprimer.viewer.drivers {
     SPMenu
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    SelectionChangeListener,
-    SelectionChangeSource,
     SelectionChangeSupport,
     fixtureFilterTableModel,
     FixtureMatcher,
@@ -111,6 +109,21 @@ import strategicprimer.viewer.drivers.map_viewer {
 }
 import strategicprimer.model.map.fixtures.towns {
     Village
+}
+import strategicprimer.drivers.exploration.common {
+    Direction,
+    IExplorationModel,
+    Speed,
+    MovementCostListener,
+    MovementCostSource,
+    TraversalImpossibleException,
+    selectNoticed,
+    shouldSometimesNotice,
+    shouldAlwaysNotice
+}
+import strategicprimer.drivers.common {
+    SelectionChangeListener,
+    SelectionChangeSource
 }
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,

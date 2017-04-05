@@ -25,6 +25,10 @@ import strategicprimer.viewer.drivers {
     MenuBroker,
     FileChooser
 }
+import strategicprimer.drivers.exploration.common {
+    IExplorationModel,
+    ExplorationModel
+}
 "An object to start the exploration GUI."
 shared object explorationGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {

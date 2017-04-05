@@ -7,6 +7,9 @@ import strategicprimer.model.map {
 import strategicprimer.drivers.common {
     MapChangeListener
 }
+import strategicprimer.drivers.exploration.common {
+    IExplorationModel
+}
 "A list model for players in the exploration GUI."
 class PlayerListModel(IExplorationModel model) extends DefaultListModel<Player>()
         satisfies MapChangeListener {
