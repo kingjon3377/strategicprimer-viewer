@@ -169,6 +169,7 @@ shared class ExplorationRunner() {
             MapDimensions mapDimensions) => consultTable("major_rock", location, terrain,
                 fixtures, mapDimensions);
     "Get the primary forest at the given location."
+    suppressWarnings("deprecation")
     shared String getPrimaryTree(
             "The tile's location."
             Point location,
@@ -191,6 +192,7 @@ shared class ExplorationRunner() {
     }
     """Get the "default results" (primary rock and primary forest) for the given
        location."""
+    suppressWarnings("deprecation")
     shared String defaultResults(
             "The tile's location."
             Point location,
@@ -236,6 +238,7 @@ void testGetPrimaryRock() {
         "primary_rock_test", "primary rock test");
 }
 test
+suppressWarnings("deprecation")
 void testGetPrimaryTree() {
     ExplorationRunner runner = ExplorationRunner();
     runner.loadTable("boreal_major_tree", MockTable("boreal_major_test"));
@@ -298,6 +301,7 @@ void testRecursiveConsultTable() {
 }
 
 test
+suppressWarnings("deprecation")
 void testDefaultResults() {
     ExplorationRunner runner = ExplorationRunner();
     runner.loadTable("major_rock", ConstantTable("test_rock"));

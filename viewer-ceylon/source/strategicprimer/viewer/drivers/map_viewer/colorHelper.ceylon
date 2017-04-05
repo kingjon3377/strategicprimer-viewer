@@ -30,6 +30,7 @@ import ceylon.language.meta.model {
 object colorHelper {
     String wrap(String wrapped) => "<html<p>``wrapped``</p></html>";
     "Descriptions of the types."
+    suppressWarnings("deprecation")
     Map<TileType, String> descriptions = HashMap {
         TileType.borealForest->wrap("Boreal Forest"),
         TileType.desert->wrap("Desert"),
@@ -52,6 +53,7 @@ object colorHelper {
         `Hill`->Color(141, 182, 0)
     };
     "A map from map versions to maps from tile-types to colors."
+    suppressWarnings("deprecation")
     Map<Integer, Map<TileType, Color>> colors = HashMap {
         1->HashMap {
             TileType.borealForest->Color(72, 218, 164),

@@ -243,6 +243,7 @@ void initialize(IMutableMapNG map, Point point, TileType? terrain, TileFixture* 
 	}
 }
 test
+suppressWarnings("deprecation")
 void testZeroToOneConversion() {
 	// FIXME: Include tile fixtures beyond those implicit in events
 	String orig =

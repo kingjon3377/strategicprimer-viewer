@@ -67,6 +67,7 @@ import strategicprimer.drivers.exploration.old {
 }
 Logger log = logger(`module strategicprimer.model`);
 "Convert a version-1 map to a higher-resolution version-2 map."
+suppressWarnings("deprecation")
 shared IMapNG convertOneToTwo(
 		"The version-1 map to convert"
 		todo("Skip this if it's already version 2?")

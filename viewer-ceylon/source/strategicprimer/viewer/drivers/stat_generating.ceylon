@@ -460,8 +460,11 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     "Get the simplified-terrain-model instance covering the map's terrain at the given
      location."
     todo("Just use TileType now we have union types available")
+    suppressWarnings("deprecation")
     SimpleTerrain getTerrain(IMapNG map, Point location) {
         switch (map.getBaseTerrain(location))
+        // TODO: Steppe is only always-forested in our current world map because of how it
+        // was introduced; remove it here
         case (TileType.jungle|TileType.borealForest|TileType.steppe|
                 TileType.temperateForest) { return forested; }
         case (TileType.desert|TileType.mountain|TileType.tundra|TileType.notVisible) {

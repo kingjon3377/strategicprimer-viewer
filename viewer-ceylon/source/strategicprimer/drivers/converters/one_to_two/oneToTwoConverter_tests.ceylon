@@ -107,6 +107,7 @@ ISPReader newReader = testReaderFactory.newReader;
 SPWriter oldWriter = testReaderFactory.oldWriter;
 SPWriter newWriter = testReaderFactory.newWriter;
 test
+suppressWarnings("deprecation")
 shared void testOneToTwoConversion() {
     IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
     original.setBaseTerrain(pointFactory(0, 0), TileType.borealForest);
@@ -236,6 +237,7 @@ shared void testOneToTwoConversion() {
     }
 }
 test
+suppressWarnings("deprecation")
 shared void testMoreOneToTwoConversion() {
     IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
     initialize(original, pointFactory(0, 0), TileType.jungle);
@@ -374,6 +376,7 @@ shared void testMoreOneToTwoConversion() {
 }
 
 test
+suppressWarnings("deprecation")
 shared void testThirdOneToTwoConversion() {
     Ground groundOne() => Ground(-1, "rock1", false);
     Ground groundTwo() => Ground(-1, "rock4", false);
