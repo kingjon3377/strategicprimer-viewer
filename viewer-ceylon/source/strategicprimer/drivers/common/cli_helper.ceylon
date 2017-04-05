@@ -370,7 +370,7 @@ void assertCLI<out T>(
     try (cli = CLIHelper(ArrayList { *input }.pop, ostream.append)) {
         assertEquals(method(cli), expectedResult, resultMessage);
     }
-    assertEquals(ostream.string, expectedOutput, outputMessage);
+    assertEquals(ostream.string, expectedOutputReal, outputMessage);
 }
 
 "Test chooseFromList()."
