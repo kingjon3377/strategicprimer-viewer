@@ -19,7 +19,7 @@ import strategicprimer.report.nodes {
     isNonEmptyNode
 }
 """An interface for "report nodes" that serve as "report intermediate representation":
-   [[TreeNode]]s that can be turned into HTML."""
+   [[TreeNodes|javax.swing.tree::TreeNode]] that can be turned into HTML."""
 todo("The interface has been ported directly over from Java; with String interpolation,
       only replacing Formatter with Anything(String); reconsider the interface!")
 shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&Iterable<IReportNode> {
@@ -45,7 +45,8 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&I
         }
     }
     "Add a node as a child."
-    todo("Allow null instead of having [[emptyReportNode]]?")
+    todo("Allow null instead of having
+          [[strategicprimer.report.nodes::emptyReportNode]]?")
     shared formal void appendNode(MutableTreeNode node);
     "Add a node as our first child."
     shared default void addAsFirst(MutableTreeNode node) {
@@ -57,7 +58,7 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&I
      represents anything on."
     shared formal variable Point? localPoint;
     "The point, if any, that this and its children represent something on."
-    todo("Return null rather than [[PointFactory.invalidPoint]]?")
+    todo("Return null rather than [[strategicprimer.model.map::invalidPoint]]?")
     shared default Point point {
         if (exists retval = localPoint) {
             return retval;

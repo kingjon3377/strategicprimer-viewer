@@ -20,8 +20,8 @@ shared TileDrawHelper tileDrawHelperFactory(
         "The version of the map that is to be drawn."
         Integer version,
         "The object to arrange to be notified as images finish drawing. In Java it's the
-          [[ImageObserver]] interface, but we don't want to have to construct *objects*
-          for this when a lambda will do."
+          [[java.awt.image::ImageObserver]] interface, but we don't want to have to
+          construct *objects* for this when a lambda will do."
         Boolean(Image, Integer, Integer, Integer, Integer, Integer) observer,
         "The filter to tell a version-two helper which fixtures to draw."
         Boolean(TileFixture)? zof,

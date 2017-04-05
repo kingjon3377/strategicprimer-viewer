@@ -5,7 +5,8 @@ import strategicprimer.model.map {
     IFixture,
     HasKind
 }
-"A [[TileFixture]] to represent shrubs, or their aquatic equivalents, on a tile."
+"A [[strategicprimer.model.map::TileFixture]] to represent shrubs, or their aquatic
+ equivalents, on a tile."
 shared class Shrub(kind, id) satisfies HarvestableFixture&HasKind {
     "What kind of shrub this is"
     shared actual String kind;

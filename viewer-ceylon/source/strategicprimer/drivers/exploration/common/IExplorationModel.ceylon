@@ -89,8 +89,10 @@ shared interface IExplorationModel
     "If there is a currently selected unit, make any independent villages at its location
      change to be owned by the owner of the currently selected unit. This costs MP."
     shared formal void swearVillages();
-    "If there is a currently selected unit, change one [[Ground]], [[StoneDeposit]], or
-     [[MineralVein]] at the location of that unit from unexposed to exposed (and discover
-     it). This costs MP."
+    "If there is a currently selected unit, change one
+     [[strategicprimer.model.map.fixtures::Ground]],
+     [[strategicprimer.model.map.fixtures.resources::StoneDeposit]], or
+     [[strategicprimer.model.map.fixtures.resources::MineralVein]] at the location of that
+     unit from unexposed to exposed (and discover it). This costs MP."
     shared formal void dig();
 }

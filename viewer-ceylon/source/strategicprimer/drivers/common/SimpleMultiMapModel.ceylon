@@ -35,7 +35,7 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
     shared actual void addSubordinateMap(IMutableMapNG map, JPath? file) =>
             subordinateMapsList.add([map, file]);
     todo(/*FIXME*/"Test this; I fixed the clearly-wrong implementation, but this might
-                   cause [[ConcurrentModificationException]]")
+                   cause [[java.util::ConcurrentModificationException]]")
     shared actual void removeSubordinateMap(IMapNG map) {
         subordinateMapsList.removeWhere(([localMap, file]) => localMap == map);
     }

@@ -16,7 +16,7 @@ shared interface Changeset {
     shared formal Changeset invert();
     "Apply the changeset to a map."
     todo("Should this possibly take different arguments?",
-        "Should this possibly take [[IMapNG]] and return the modified map, instead of
-         modifying an [[IMutableMapNG]] in place?")
+        "Should this possibly take [[strategicprimer.model.map::IMapNG]] and return the
+         modified map, instead of modifying an [[IMutableMapNG]] in place?")
     shared formal void apply(IMutableMapNG map);
 }

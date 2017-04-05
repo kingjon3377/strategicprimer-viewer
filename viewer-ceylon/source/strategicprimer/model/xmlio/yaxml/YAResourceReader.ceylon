@@ -41,7 +41,7 @@ import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException,
     DeprecatedPropertyException
 }
-"A reader for resource-bearing [[TileFixture]]s."
+"A reader for resource-bearing [[strategicprimer.model.map::TileFixture]]s."
 class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         extends YAAbstractReader<HarvestableFixture>(warner, idRegistrar) {
     {String*} supportedTags = set { "cache", "grove", "orchard", "field", "meadow", "mine",

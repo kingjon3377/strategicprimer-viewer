@@ -1,4 +1,5 @@
-"A supertype for both [[TileFixture]] and any [[UnitMember]]s (etc.) that shouldn't be
+"A supertype for both [[TileFixture]] and any
+ [[strategicprimer.model.map.fixtures::UnitMember]]s (etc.) that shouldn't be
  [[TileFixture]]s, so we don't have to special-case them for things like searching."
 shared interface IFixture {
 	"The fixture's ID number. For most fixtures this should be unique in the map."

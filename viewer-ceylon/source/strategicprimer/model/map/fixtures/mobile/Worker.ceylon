@@ -33,8 +33,9 @@ Boolean nullablesEqual(Anything one, Anything two) {
     }
     return !two exists;
 }
-"A worker (or soldier) in a unit. This is deliberately not a [[TileFixture]]: these should
- only be part of a unit, not as a top-level tag."
+"A worker (or soldier) in a unit. This is deliberately not a
+ [[TileFixture|strategicprimer.model.map::TileFixture]]: these should only be part of a
+ unit, not as a top-level tag."
 todo("Convert some other [[MobileFixture]]s similarly?")
 shared class Worker(name, race, id, IJob* jobs) satisfies IWorker&HasPortrait {
     "The set of Jobs the worker is trained or experienced in."
@@ -80,7 +81,8 @@ shared class Worker(name, race, id, IJob* jobs) satisfies IWorker&HasPortrait {
             ("human" == race) then name else "``name``, a ``race``";
     shared actual String kind => race;
     "The filename of the icon to use by default. This is just for icons in lists and such,
-     not the map, since this isn't a [[TileFixture]]."
+     not the map, since this isn't a
+     [[TileFixture|strategicprimer.model.map::TileFixture]]."
     shared actual String defaultImage = "worker.png";
     "A fixture is a subset if it is a worker with the same ID, name, race, and stats, and
      no Jobs we don't have, and its Jobs are subsets of our corresponding Jobs."

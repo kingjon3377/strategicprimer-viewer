@@ -33,11 +33,12 @@ shared class TileType of tundra|desert|mountain|borealForest|temperateForest|oce
 	deprecated("Format version 1 only")
 	shared new mountain extends delegate("mountain", "mountain", 1) {}
 	"Boreal forest. Starting in version 2, this is represented as [[steppe]] with a
-	 [[Forest]] on the tile."
+	 [[strategicprimer.model.map.fixtures.terrain::Forest]]
+	 on the tile."
 	deprecated("Format version 1 only")
 	shared new borealForest extends delegate("boreal forest", "boreal_forest", 1) {}
 	"Temperate forest. Starting in version 2, this is represented as [[plains]] with a
-	 [[Forest]] on the tile."
+	 [[strategicprimer.model.map.fixtures.terrain::Forest]] on the tile."
 	deprecated("Format version 1 only")
 	shared new temperateForest
 			extends delegate("temperate forest", "temperate_forest", 1) {}

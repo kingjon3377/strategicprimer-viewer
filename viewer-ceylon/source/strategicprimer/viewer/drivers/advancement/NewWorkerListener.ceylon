@@ -13,6 +13,6 @@ import strategicprimer.model.map.fixtures.mobile {
 todo("Drop this interface, as the only implementer is also the only user of that method?")
 interface NewWorkerListener satisfies EventListener {
     "Add the new worker."
-    todo("Take [[IWorker]] instead?")
+    todo("Take [[strategicprimer.model.map.fixtures.mobile::IWorker]] instead?")
     shared formal void addNewWorker(Worker worker);
 }

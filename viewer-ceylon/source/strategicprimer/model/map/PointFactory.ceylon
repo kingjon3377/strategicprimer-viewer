@@ -19,9 +19,11 @@ shared void clearPointCache() => pointCache.clear();
 
  Fairly early in the development of the Java version, I implemented this to try to speed
  things up, then considered replacing the cache with simply a constructor call. After
- performance testing (only using the [[drawHelperComparator]] and [[echoDriver]], not any
- more realistic test, though) it appeared that the cache is faster as the map's size and
- complexity increased, so I decided to leave it."
+ performance testing (only using the [[draw helper
+ comparator|strategicprimer.viewer.drivers.map_viewer::drawHelperComparator]] and [[echo
+ driver|strategicprimer.viewer.drivers::echoDriver]], not any more realistic test, though)
+ it appeared that the cache is faster as the map's size and complexity increased, so I
+ decided to leave it."
 shared Point pointFactory(Integer row, Integer column, Boolean useCache = true) {
 	if (useCache) {
 		if (exists inner = pointCache.get(row)) {

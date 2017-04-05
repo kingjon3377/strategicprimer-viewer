@@ -9,7 +9,8 @@ import lovelace.util.common {
 import strategicprimer.model.xmlio {
     SPFormatException
 }
-"For cases of malformed input where we can't use [[XMLStreamException]]."
+"For cases of malformed input where we can't use
+ [[javax.xml.stream::XMLStreamException]]."
 todo("Eliminate, since Ceylon doesn't have checked exception")
 deprecated("Unnecessary now that everything's in Ceylon")
 shared class SPMalformedInputException(Location location, Throwable cause)

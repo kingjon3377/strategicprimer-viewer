@@ -1,5 +1,6 @@
 
-"The next turn, to use when creating [[TextFixture]]s."
+"The next turn, to use when creating
+ [[TextFixture|strategicprimer.model.map.fixtures::TextFixture]]s."
 Integer nextTurn = 15;
 "The factor by which to expand the map on each axis."
 Integer expansionFactor = 4;
