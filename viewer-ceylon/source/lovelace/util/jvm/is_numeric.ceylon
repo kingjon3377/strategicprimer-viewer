@@ -10,7 +10,7 @@ import java.lang {
     NumberFormatException
 }
 import java.text {
-    NumberFormat
+    NumberFormat,JParseException=ParseException
 }
 
 import lovelace.util.common {
@@ -22,7 +22,7 @@ shared Boolean isNumeric(String string) {
     try {
         intParser.parse(string);
         return true;
-    } catch (NumberFormatException|ParseException ignored) {
+    } catch (NumberFormatException|ParseException|JParseException ignored) {
         return false;
     }
 }
