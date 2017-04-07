@@ -69,7 +69,7 @@ shared EncounterTable loadTable(String?()|File argument) {
                 MutableList<[Integer, String]> list =
                         ArrayList<[Integer, String]>();
                 while (exists tableLine = argument()) {
-                    value splitted = tableLine.split(" ".equals, true, false);
+                    value splitted = tableLine.split(' '.equals, true, false);
                     if (splitted.size < 2) {
                         log.error("Line with no blanks, coninuing ...");
                     } else {
@@ -98,7 +98,7 @@ shared EncounterTable loadTable(String?()|File argument) {
                 MutableList<TileType->String> list =
                         ArrayList<TileType->String>();
                 while (exists tableLine = argument()) {
-                    value splitted = tableLine.split(" ".equals, true, false);
+                    value splitted = tableLine.split(' '.equals, true, false);
                     if (splitted.size < 2) {
                         log.error("Line with no blanks, coninuing ...");
                     } else {
@@ -151,7 +151,7 @@ void testLoadQuadrantTable() {
     assertEquals(result.generateEvent(pointTwo, TileType.tundra,
         {}, MapDimensionsImpl(35, 32, 2)), "six",
         "quadrant table can use alternate dimensions");
-    assertThatException(() => loadTable(LinkedList({"quadrant"}).accept));
+    assertThatException(() => loadTable(LinkedList{"quadrant"}.accept));
 }
 suppressWarnings("expressionTypeNothing")
 object mockDimensions satisfies MapDimensions {
@@ -166,14 +166,14 @@ object mockPoint satisfies Point {
 }
 test
 void testLoadRandomTable() {
-    EncounterTable result = loadTable(LinkedList({"random", "0 one", "99 two"}).accept);
+    EncounterTable result = loadTable(LinkedList{"random", "0 one", "99 two"}.accept);
     assertEquals(result.generateEvent(mockPoint, TileType.tundra, {},
         mockDimensions), "one", "loading random table");
 }
 test
 void testLoadTerrainTable() {
-    EncounterTable result = loadTable(LinkedList({"terrain", "tundra one",
-        "plains two", "ocean three"}).accept);
+    EncounterTable result = loadTable(LinkedList{"terrain", "tundra one",
+        "plains two", "ocean three"}.accept);
     assertEquals(result.generateEvent(mockPoint, TileType.tundra,
         {}, mockDimensions), "one",
         "loading terrain table: tundra");
@@ -185,15 +185,15 @@ void testLoadTerrainTable() {
 }
 test
 void testLoadConstantTable() {
-    EncounterTable result = loadTable(LinkedList({"constant", "one"}).accept);
+    EncounterTable result = loadTable(LinkedList{"constant", "one"}.accept);
     assertEquals(result.generateEvent(mockPoint, TileType.plains,
         {}, mockDimensions), "one");
 }
 test
 void testTableLoadingInvalidInput() {
     // no data
-    assertThatException(() => loadTable(LinkedList({""}).accept));
+    assertThatException(() => loadTable(LinkedList{""}.accept));
     // invalid header
-    assertThatException(() => loadTable(LinkedList({"2", "invalidData",
-        "invalidData"}).accept));
+    assertThatException(() => loadTable(LinkedList{"2", "invalidData",
+        "invalidData"}.accept));
 }

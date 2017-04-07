@@ -66,7 +66,7 @@ class QuadrantTable satisfies EncounterTable {
         Map<Point, String> resultsMap = valuesFor(mapDimensions, possibleResults,
             quadrantRows);
         variable Point bestKey = invalidPoint;
-        for (key in resultsMap.keys) {
+        for (key in sort(resultsMap.keys).reversed) {
             if (key.row <= row, key.row > bestKey.row, key.column <= column,
                     key.column > bestKey.column) {
                 bestKey = key;
@@ -75,6 +75,7 @@ class QuadrantTable satisfies EncounterTable {
         if (exists retval = resultsMap.get(bestKey)) {
             return retval;
         } else {
+            process.writeLine("Key mapped to null");
             return "";
         }
     }
