@@ -7,6 +7,10 @@ import ceylon.test {
     assertEquals
 }
 
+import java.lang {
+    IllegalStateException
+}
+
 import lovelace.util.common {
     todo,
     comparingOn
@@ -136,10 +140,10 @@ void testComparison() {
     input.add(City(TownStatus.active, TownSize.large, -1, "inputCityTwo", id++, owner));
     input.add(Fortress(owner, "inputFortressTwo", id++, TownSize.small));
     input.add(Town(TownStatus.ruined, TownSize.medium, -1, "inputTownTwo", id++, owner));
-    input.add(Fortification(TownStatus.burned, TownSize.small, -1, "inputFotrificationTwo", id++, owner));
+    input.add(Fortification(TownStatus.burned, TownSize.small, -1, "inputFortificationTwo", id++, owner));
     input.add(Village(TownStatus.abandoned, "inputVillageTwo", id, owner, "inputRace"));
     {ITownFixture*} shuffled = shuffle(input);
-    {ITownFixture*} expected = {City(TownStatus.active, TownSize.large, -1, "inputCity", 7, owner),
+    {ITownFixture*} expected = [City(TownStatus.active, TownSize.large, -1, "inputCity", 7, owner),
         City(TownStatus.active, TownSize.large, -1, "inputCityTwo", 41, owner),
         Town(TownStatus.active, TownSize.large, -1, "inputTown", 6, owner),
         Fortification(TownStatus.active, TownSize.large, -1, "inputFortification", 8, owner),
@@ -184,7 +188,7 @@ void testComparison() {
         Town(TownStatus.burned, TownSize.small, -1, "inputTown", 20, owner),
         Fortification(TownStatus.burned, TownSize.small, -1, "inputFortification", 22, owner),
         Fortification(TownStatus.burned, TownSize.small, -1, "inputFortificationTwo", 44, owner),
-        Village(TownStatus.burned, "inputVillage", 29, owner, "inputRace")};
-    assertEquals(shuffled.sort(compareTowns), expected,
+        Village(TownStatus.burned, "inputVillage", 29, owner, "inputRace")];
+    assertEquals([*shuffled.sort(compareTowns)], [*expected],
         "Sorted list of towns is in the order we expect");
 }
