@@ -34,7 +34,9 @@ import ceylon.logging {
 }
 
 Logger log = logger(`module strategicprimer.drivers.exploration.old`);
-EncounterTable loadTable(String?()|File argument) {
+// Made shared so the oneToTwoConverter tests can get tables as classpath resources and
+// load them from there
+shared EncounterTable loadTable(String?()|File argument) {
     if (is File argument) {
         try (reader = argument.Reader()) {
             return loadTable(reader.readLine);

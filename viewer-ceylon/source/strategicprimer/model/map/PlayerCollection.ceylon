@@ -1,6 +1,7 @@
 import ceylon.collection {
     MutableMap,
-    HashMap
+    HashMap,
+    naturalOrderTreeMap
 }
 import ceylon.interop.java {
     createJavaObjectArray
@@ -24,7 +25,7 @@ import strategicprimer.model.map {
  one isn't given in the XML."
 shared class PlayerCollection() satisfies IMutablePlayerCollection {
 	"The collection this class wraps."
-	MutableMap<Integer, Player> players = HashMap<Integer, Player>();
+	MutableMap<Integer, Player> players = naturalOrderTreeMap<Integer, Player>({});
 	"""The player for "independent" fixtures."""
 	variable Player independentPlayer = PlayerImpl(-1, "Independent");
 	"Get a player by ID number."

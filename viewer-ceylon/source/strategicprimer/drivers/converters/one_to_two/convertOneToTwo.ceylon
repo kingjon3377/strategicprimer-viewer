@@ -129,8 +129,8 @@ shared IMapNG convertOneToTwo(
 	}
 	"Convert a single version-1 tile to the equivalent version-2 tiles."
 	{Point*} convertTile(Point point) {
-		Point[] initial = [ for (i in 0..expansionFactor)
-		for (j in 0..expansionFactor)
+		Point[] initial = [ for (i in 0:expansionFactor)
+		for (j in 0:expansionFactor)
 		pointFactory(point.row * expansionFactor + i,
 			point.column * expansionFactor + j) ];
 		for (subtile in initial) {
@@ -178,7 +178,7 @@ shared IMapNG convertOneToTwo(
 				rng.nextDouble));
 			Queue<TileFixture> shuffledFixtures = LinkedList(shuffle(fixtures,
 				rng.nextDouble));
-			for (iteration in 0..maxIterations) {
+			for (iteration in 0:maxIterations) {
 				if (!shuffledFixtures.front exists) {
 					break;
 				} else if (exists currentSubtile = shuffledInitial.accept()) {
@@ -212,8 +212,8 @@ shared IMapNG convertOneToTwo(
 		}
 		return initial;
 	}
-	for (row in 0..oldDimensions.rows) {
-		for (column in 0..oldDimensions.columns) {
+	for (row in 0:oldDimensions.rows) {
+		for (column in 0:oldDimensions.columns) {
 			converted.addAll(convertTile(pointFactory(row, column)));
 		}
 	}

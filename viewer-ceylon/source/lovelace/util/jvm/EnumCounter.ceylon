@@ -14,7 +14,7 @@ import lovelace.util.common {
 }
 "A class to count instances of enums."
 todo("Adapt to work with Ceylon case-values") // FIXME
-shared class EnumCounter<Type>() given Type satisfies Enum<Type> {
+shared class EnumCounter<Type>() given Type satisfies Object {
     MutableMap<Type, Accumulator> counts = HashMap<Type, Accumulator>();
     void count(Type item) {
         if (exists counter = counts.get(item)) {

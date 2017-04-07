@@ -33,8 +33,8 @@ class QuadrantTable satisfies EncounterTable {
             Integer rowRemainder = mapRows % quadrantRowCount;
             Integer columnStep = mapColumns / columns;
             Integer rowStep = mapRows / quadrantRowCount;
-            for (row in (0..(mapRows - rowRemainder)).by(rowStep)) {
-                for (column in (0..(mapColumns - columnRemainder)).by(columnStep)) {
+            for (row in (0:(mapRows - rowRemainder)).by(rowStep)) {
+                for (column in (0:(mapColumns - columnRemainder)).by(columnStep)) {
                     assert (exists temp = possResults[i]);
                     retval.put(pointFactory(row, column), temp);
                     i++;
