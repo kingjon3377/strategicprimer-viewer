@@ -198,25 +198,23 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Integer maxRow = dims.rows - 1;
         Integer row = point.row;
         Integer column = point.column;
-        // TODO: inline?
-        Point(Integer, Integer) factory = pointFactory;
         switch (direction)
-        case (Direction.east) { return factory(row, increment(column, maxColumn)); }
-        case (Direction.north) { return factory(decrement(row, maxRow), column); }
+        case (Direction.east) { return pointFactory(row, increment(column, maxColumn)); }
+        case (Direction.north) { return pointFactory(decrement(row, maxRow), column); }
         case (Direction.northeast) {
-            return factory(decrement(row, maxRow), increment(column, maxColumn));
+            return pointFactory(decrement(row, maxRow), increment(column, maxColumn));
         }
         case (Direction.northwest) {
-            return factory(decrement(row, maxRow), decrement(column, maxColumn));
+            return pointFactory(decrement(row, maxRow), decrement(column, maxColumn));
         }
-        case (Direction.south) { return factory(increment(row, maxRow), column); }
+        case (Direction.south) { return pointFactory(increment(row, maxRow), column); }
         case (Direction.southeast) {
-            return factory(increment(row, maxRow), increment(column, maxColumn));
+            return pointFactory(increment(row, maxRow), increment(column, maxColumn));
         }
         case (Direction.southwest) {
-            return factory(increment(row, maxRow), decrement(column, maxColumn));
+            return pointFactory(increment(row, maxRow), decrement(column, maxColumn));
         }
-        case (Direction.west) { return factory(row, decrement(column, maxColumn)); }
+        case (Direction.west) { return pointFactory(row, decrement(column, maxColumn)); }
         case (Direction.nowhere) { return point; }
     }
     "Move the currently selected unit from its current location one tile in the specified
