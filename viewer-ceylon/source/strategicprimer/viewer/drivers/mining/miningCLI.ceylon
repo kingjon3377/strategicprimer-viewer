@@ -24,7 +24,6 @@ import strategicprimer.drivers.common {
     IncorrectUsageException,
     ICLIHelper
 }
-// FIXME: Rename file to miningCLI.ceylon
 """A driver to create a spreadsheet model of a mine. Its parameters are the name of the
    file to write the CSV to and the value at the top center (as an index into the
    LodeStatus values array).""""
