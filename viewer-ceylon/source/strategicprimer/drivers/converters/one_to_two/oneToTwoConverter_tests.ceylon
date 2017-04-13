@@ -46,7 +46,6 @@ import strategicprimer.model.map {
     PlayerImpl
 }
 import strategicprimer.model.map.fixtures {
-    TextFixture,
     Ground
 }
 import strategicprimer.model.map.fixtures.explorable {
@@ -146,8 +145,9 @@ shared void testOneToTwoConversion() {
     converted.addPlayer(player);
     converted.addPlayer(independent);
     Ground groundOne() => Ground(-1, "rock1", false);
-    Ground groundTwo() => Ground(-1, "rock4", false);
+    Ground groundTwo() => Ground(-1, "rock2", false);
     Ground groundThree() => Ground(-1, "rock3", false);
+    Ground groundFour() => Ground(-1, "rock4", false);
     Village village(String race) =>
             Village(TownStatus.active, "", -1, independent, race);
     Forest forest(String kind) => Forest(kind, false, -1);
@@ -163,50 +163,48 @@ shared void testOneToTwoConversion() {
         forest("btree1"), orchard());
     initialize(converted, pointFactory(2, 2), TileType.steppe, groundOne(),
         forest("btree1"), orchard());
-    initialize(converted, pointFactory(2, 4), TileType.plains, groundOne(),
-        forest("ttree1"), field(FieldStatus.seeding));
+    initialize(converted, pointFactory(2, 4), TileType.plains, groundTwo(),
+        forest("ttree2"), field(FieldStatus.seeding, "grain2"));
     initialize(converted, pointFactory(3, 1), TileType.steppe, groundOne(),
         forest("btree1"), village("human"));
     initialize(converted, pointFactory(3, 2), TileType.steppe, groundOne(),
         forest("btree1"), field(FieldStatus.growing));
-    initialize(converted, pointFactory(3, 4), TileType.plains, groundOne(),
-        forest("ttree1"), field(FieldStatus.seeding));
-    initialize(converted, pointFactory(3, 5), TileType.plains, groundOne(),
-        forest("ttree1"), village("dwarf"));
-    initialize(converted, pointFactory(3, 6), TileType.plains, groundOne(),
-        forest("ttree1"), field(FieldStatus.growing));
-    initialize(converted, pointFactory(3, 7), TileType.plains, groundOne(),
-        forest("ttree1"));
+    initialize(converted, pointFactory(3, 4), TileType.plains, groundTwo(),
+        forest("ttree2"), field(FieldStatus.seeding, "grain2"));
+    initialize(converted, pointFactory(3, 5), TileType.plains, groundTwo(),
+        forest("ttree2"), village("dwarf"));
+    initialize(converted, pointFactory(3, 6), TileType.plains, groundTwo(),
+        forest("ttree2"), field(FieldStatus.growing, "grain2"));
     initialize(converted, pointFactory(4, 1), TileType.desert, groundThree(),
         field(FieldStatus.fallow, "grain3"));
     initialize(converted, pointFactory(4, 2), TileType.desert, groundThree(),
         field(FieldStatus.fallow, "grain3"));
-    initialize(converted, pointFactory(4, 4), TileType.plains, groundThree(),
-        orchard("fruit3"));
-    initialize(converted, pointFactory(4, 5), TileType.plains, groundThree(),
-        field(FieldStatus.bearing, "grain3"));
+    initialize(converted, pointFactory(4, 4), TileType.plains, groundFour(),
+        orchard("fruit4"));
+    initialize(converted, pointFactory(4, 5), TileType.plains, groundFour(),
+        field(FieldStatus.bearing, "grain4"));
     initialize(converted, pointFactory(5, 0), TileType.desert, groundThree(),
         field(FieldStatus.fallow, "grain3"));
     initialize(converted, pointFactory(5, 1), TileType.desert, groundThree(),
         village("human"));
     initialize(converted, pointFactory(5, 2), TileType.desert, groundThree(),
         field(FieldStatus.seeding, "grain3"));
-    initialize(converted, pointFactory(5, 7), TileType.plains, groundThree(),
-        forest("ttree3"));
+    initialize(converted, pointFactory(5, 7), TileType.plains, groundFour(),
+        forest("ttree4"));
     initialize(converted, pointFactory(6, 0), TileType.desert, groundThree(),
         field(FieldStatus.seeding, "grain3"));
     initialize(converted, pointFactory(6, 1), TileType.desert, groundThree(),
         field(FieldStatus.growing, "grain3"));
     initialize(converted, pointFactory(6, 2), TileType.desert, groundThree(),
         orchard("fruit3"));
-    initialize(converted, pointFactory(6, 5), TileType.plains, groundThree(),
-        forest("ttree3"));
-    initialize(converted, pointFactory(6, 6), TileType.plains, groundThree(),
-        field(FieldStatus.bearing, "grain3"));
-    initialize(converted, pointFactory(7, 6), TileType.plains, groundThree(),
+    initialize(converted, pointFactory(6, 5), TileType.plains, groundFour(),
+        forest("ttree4"));
+    initialize(converted, pointFactory(6, 6), TileType.plains, groundFour(),
+        field(FieldStatus.bearing, "grain4"));
+    initialize(converted, pointFactory(7, 6), TileType.plains, groundFour(),
         village("human"));
-    initialize(converted, pointFactory(7, 7), TileType.plains, groundThree(),
-        field(FieldStatus.bearing, "grain3"));
+    initialize(converted, pointFactory(7, 7), TileType.plains, groundFour(),
+        field(FieldStatus.bearing, "grain4"));
     for (loc in { pointFactory(0, 2), pointFactory(0, 3), pointFactory(1, 2),
             pointFactory(1, 3), pointFactory(2, 0), pointFactory(2, 3),
             pointFactory(3, 0), pointFactory(3, 3) }) {
@@ -215,8 +213,8 @@ shared void testOneToTwoConversion() {
     for (loc in { pointFactory(0, 4), pointFactory(0, 5), pointFactory(0, 6),
             pointFactory(0, 7), pointFactory(1, 4), pointFactory(1, 5),
             pointFactory(1, 6), pointFactory(1, 7), pointFactory(2, 5),
-            pointFactory(2, 6), pointFactory(2, 7), pointFactory(3, 5) }) {
-        initialize(converted, loc, TileType.plains, groundOne(), forest("ttree1"));
+            pointFactory(2, 6), pointFactory(2, 7), pointFactory(3, 7) }) {
+        initialize(converted, loc, TileType.plains, groundTwo(), forest("ttree2"));
     }
     for (loc in { pointFactory(4, 0), pointFactory(4, 3), pointFactory(5, 3),
             pointFactory(6, 3), pointFactory(7, 0), pointFactory(7, 1),
@@ -227,7 +225,7 @@ shared void testOneToTwoConversion() {
             pointFactory(5, 5), pointFactory(5, 6), pointFactory(6, 4),
             pointFactory(6, 7), pointFactory(7, 4),
             pointFactory(7, 5) }) {
-        initialize(converted, loc, TileType.plains, groundThree());
+        initialize(converted, loc, TileType.plains, groundFour());
     }
 
     ExplorationRunner runner = initializeRunner();
@@ -280,8 +278,9 @@ shared void testMoreOneToTwoConversion() {
     converted.addPlayer(player);
     converted.addPlayer(independent);
     Ground groundOne() => Ground(-1, "rock1", false);
-    Ground groundTwo() => Ground(-1, "rock4", false);
+    Ground groundTwo() => Ground(-1, "rock2", false);
     Ground groundThree() => Ground(-1, "rock3", false);
+    Ground groundFour() => Ground(-1, "rock4", false);
     Village village(String race) =>
             Village(TownStatus.active, "", -1, independent, race);
     Forest forest(String kind) => Forest(kind, false, -1);
@@ -293,20 +292,22 @@ shared void testMoreOneToTwoConversion() {
     initialize(converted, pointFactory(2, 0), TileType.jungle, groundOne(), orchard());
     initialize(converted, pointFactory(2, 2), TileType.jungle, groundOne(),
         field(FieldStatus.growing));
-    initialize(converted, pointFactory(2, 4), TileType.plains, groundOne(),
-        forest("ttree1"), orchard());
-    initialize(converted, pointFactory(2, 5), TileType.plains, groundOne(),
-        forest("ttree1"), orchard());
+    initialize(converted, pointFactory(2, 4), TileType.plains, groundTwo(),
+        forest("ttree2"), orchard("fruit2"));
+    initialize(converted, pointFactory(2, 5), TileType.plains, groundTwo(),
+        forest("ttree2"), orchard("fruit2"));
+    initialize(converted, pointFactory(2, 7), TileType.plains, groundTwo(),
+        forest("ttree2"), forest("ttree1"));
     initialize(converted, pointFactory(3, 0), TileType.jungle, groundOne(),
         field(FieldStatus.growing));
     initialize(converted, pointFactory(3, 1), TileType.jungle, groundOne(),
         village("human"));
-    initialize(converted, pointFactory(3, 4), TileType.plains, groundOne(),
-        forest("ttree1"), field(FieldStatus.bearing));
-    initialize(converted, pointFactory(3, 5), TileType.plains, groundOne(),
-        forest("ttree1"), village("human"));
-    initialize(converted, pointFactory(3, 6), TileType.plains, groundOne(),
-        forest("ttree1"), field(FieldStatus.fallow));
+    initialize(converted, pointFactory(3, 4), TileType.plains, groundTwo(),
+        forest("ttree2"), field(FieldStatus.bearing, "grain2"));
+    initialize(converted, pointFactory(3, 5), TileType.plains, groundTwo(),
+        forest("ttree2"), village("human"));
+    initialize(converted, pointFactory(3, 6), TileType.plains, groundTwo(),
+        forest("ttree2"), field(FieldStatus.fallow, "grain2"));
     initialize(converted, pointFactory(4, 0), TileType.plains, groundThree(),
         field(FieldStatus.fallow, "grain3"));
     initialize(converted, pointFactory(4, 1), TileType.plains, groundThree(),
@@ -314,8 +315,8 @@ shared void testMoreOneToTwoConversion() {
     initialize(converted, pointFactory(4, 2), TileType.plains, groundThree(),
         orchard("fruit3"));
     initialize(converted, pointFactory(4, 3), TileType.plains, groundThree());
-    initialize(converted, pointFactory(4, 4), TileType.tundra, groundThree(),
-        field(FieldStatus.growing, "grain3"));
+    initialize(converted, pointFactory(4, 4), TileType.tundra, groundFour(),
+        field(FieldStatus.growing, "grain4"));
     initialize(converted, pointFactory(5, 0), TileType.plains, groundThree(),
         field(FieldStatus.fallow, "grain3"));
     initialize(converted, pointFactory(5, 1), TileType.plains, groundThree(),
@@ -326,13 +327,13 @@ shared void testMoreOneToTwoConversion() {
         field(FieldStatus.bearing, "grain3"));
     initialize(converted, pointFactory(6, 2), TileType.plains, groundThree(),
         orchard("fruit3"));
-    initialize(converted, pointFactory(6, 6), TileType.tundra, groundThree(),
-        forest("ttree3"));
-    initialize(converted, pointFactory(6, 7), TileType.tundra, groundThree(),
-        field(FieldStatus.growing, "grain3"));
-    initialize(converted, pointFactory(7, 6), TileType.tundra, groundThree(),
+    initialize(converted, pointFactory(6, 6), TileType.tundra, groundFour(),
+        forest("ttree4"));
+    initialize(converted, pointFactory(6, 7), TileType.tundra, groundFour(),
+        field(FieldStatus.growing, "grain4"));
+    initialize(converted, pointFactory(7, 6), TileType.tundra, groundFour(),
         groundOne());
-    initialize(converted, pointFactory(7, 7), TileType.tundra, groundThree(),
+    initialize(converted, pointFactory(7, 7), TileType.tundra, groundFour(),
         village("human"));
     for (loc in { pointFactory(0, 0), pointFactory(0, 1),
             pointFactory(0, 3), pointFactory(1, 0), pointFactory(1, 1),
@@ -343,9 +344,8 @@ shared void testMoreOneToTwoConversion() {
     for (loc in { pointFactory(0, 4), pointFactory(0, 5),
             pointFactory(0, 6), pointFactory(0, 7), pointFactory(1, 4),
             pointFactory(1, 5), pointFactory(1, 6), pointFactory(1, 7),
-            pointFactory(2, 6), pointFactory(2, 7), pointFactory(3, 6),
-            pointFactory(3, 7) }) {
-        initialize(converted, loc, TileType.plains, groundOne(), forest("ttree1"));
+            pointFactory(2, 6), pointFactory(3, 6), pointFactory(3, 7) }) {
+        initialize(converted, loc, TileType.plains, groundTwo(), forest("ttree2"));
     }
     for (loc in { pointFactory(6, 1), pointFactory(7, 1) }) {
         initialize(converted, loc, TileType.plains, groundThree(), forest("ttree3"));
@@ -361,14 +361,8 @@ shared void testMoreOneToTwoConversion() {
             pointFactory(5, 4), pointFactory(5, 5), pointFactory(5, 6),
             pointFactory(5, 7), pointFactory(6, 4), pointFactory(6, 5),
             pointFactory(7, 4), pointFactory(7, 5), pointFactory(7, 7) }) {
-        initialize(converted, loc, TileType.tundra, groundThree());
+        initialize(converted, loc, TileType.tundra, groundFour());
     }
-    // The converter adds a second forest here, but trying to do the same gets it
-    // filtered out because it would have the same ID. So we create it, *then* reset
-    // its ID.
-    Forest tempForest = Forest("ttree1", false, 0);
-    converted.addFixture(pointFactory(3, 7), tempForest);
-    tempForest.id = -1;
     for (loc in { pointFactory(4, 0), pointFactory(4, 1), pointFactory(4, 2),
             pointFactory(4, 3), pointFactory(5, 0), pointFactory(5, 1),
             pointFactory(5, 2), pointFactory(6, 0), pointFactory(6, 2) }) {
@@ -410,8 +404,9 @@ test
 suppressWarnings("deprecation")
 shared void testThirdOneToTwoConversion() {
     Ground groundOne() => Ground(-1, "rock1", false);
-    Ground groundTwo() => Ground(-1, "rock4", false);
+    Ground groundTwo() => Ground(-1, "rock2", false);
     Ground groundThree() => Ground(-1, "rock3", false);
+    Ground groundFour() => Ground(-1, "rock4", false);
     Player independent = PlayerImpl(2, "independent");
     Village village(String race) =>
             Village(TownStatus.active, "", -1, independent, race);
@@ -449,81 +444,81 @@ shared void testThirdOneToTwoConversion() {
     IMutableMapNG converted = SPMapNG(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
     converted.addPlayer(player);
     converted.addPlayer(independent);
-    initialize(converted, pointFactory(0, 4), TileType.steppe, groundOne(),
-        forest("btree1"), Fairy("lesser", -1));
-    initialize(converted, pointFactory(0, 5), TileType.steppe, groundOne(),
-        forest("btree1"), Dragon("ice", -1), field(FieldStatus.bearing));
-    initialize(converted, pointFactory(0, 6), TileType.steppe, groundOne(),
-        forest("btree1"), Mine("mineral", TownStatus.active, -1));
-    initialize(converted, pointFactory(0, 7), TileType.steppe, groundOne(),
-        forest("btree1"), Animal("animalKind", false, false, "wild", -1));
+    initialize(converted, pointFactory(0, 4), TileType.steppe, groundTwo(),
+        forest("btree2"), Fairy("lesser", -1));
+    initialize(converted, pointFactory(0, 5), TileType.steppe, groundTwo(),
+        forest("btree2"), Dragon("ice", -1), field(FieldStatus.bearing, "grain2"));
+    initialize(converted, pointFactory(0, 6), TileType.steppe, groundTwo(),
+        forest("btree2"), Mine("mineral", TownStatus.active, -1));
+    initialize(converted, pointFactory(0, 7), TileType.steppe, groundTwo(),
+        forest("btree2"), Animal("animalKind", false, false, "wild", -1));
     initialize(converted, pointFactory(1, 3), TileType.notVisible, groundOne(),
         field(FieldStatus.bearing));
-    initialize(converted, pointFactory(1, 4), TileType.steppe, groundOne(),
-        forest("btree1"), village("Danan"));
-    initialize(converted, pointFactory(1, 5), TileType.steppe, groundOne(),
-        forest("btree1"), SimpleImmortal(SimpleImmortalKind.troll, -1),
-        orchard());
-    initialize(converted, pointFactory(1, 6), TileType.steppe, groundOne(),
-        forest("btree1"), SimpleImmortal(SimpleImmortalKind.djinn, -1));
-    initialize(converted, pointFactory(1, 7), TileType.steppe, groundOne(),
-        forest("btree1"), StoneDeposit(StoneKind.conglomerate, 0, -1),
-        Centaur("hill", -1), orchard());
+    initialize(converted, pointFactory(1, 4), TileType.steppe, groundTwo(),
+        forest("btree2"), village("Danan"));
+    initialize(converted, pointFactory(1, 5), TileType.steppe, groundTwo(),
+        forest("btree2"), SimpleImmortal(SimpleImmortalKind.troll, -1),
+        orchard("fruit2"));
+    initialize(converted, pointFactory(1, 6), TileType.steppe, groundTwo(),
+        forest("btree2"), SimpleImmortal(SimpleImmortalKind.djinn, -1));
+    initialize(converted, pointFactory(1, 7), TileType.steppe, groundTwo(),
+        forest("btree2"), StoneDeposit(StoneKind.conglomerate, 0, -1),
+        Centaur("hill", -1), orchard("fruit2"));
     initialize(converted, pointFactory(2, 3), TileType.notVisible, groundOne(),
         orchard());
-    initialize(converted, pointFactory(2, 4), TileType.steppe, groundOne(),
-        forest("btree1"), SimpleImmortal(SimpleImmortalKind.minotaur, -1),
-        orchard());
-    initialize(converted, pointFactory(2, 5), TileType.steppe, groundOne(),
-        forest("btree1"), SimpleImmortal(SimpleImmortalKind.simurgh, -1));
-    initialize(converted, pointFactory(2, 6), TileType.steppe, groundOne(),
-        forest("btree1"), AdventureFixture(independent, "briefDescription",
+    initialize(converted, pointFactory(2, 4), TileType.steppe, groundTwo(),
+        forest("btree2"), SimpleImmortal(SimpleImmortalKind.minotaur, -1),
+        orchard("fruit2"));
+    initialize(converted, pointFactory(2, 5), TileType.steppe, groundTwo(),
+        forest("btree2"), SimpleImmortal(SimpleImmortalKind.simurgh, -1));
+    initialize(converted, pointFactory(2, 6), TileType.steppe, groundTwo(),
+        forest("btree2"), AdventureFixture(independent, "briefDescription",
             "fullDescription", -1));
-    initialize(converted, pointFactory(2, 7), TileType.steppe, groundOne(),
-        forest("btree1"),
+    initialize(converted, pointFactory(2, 7), TileType.steppe, groundTwo(),
+        forest("btree2"),
         Fortification(TownStatus.burned, TownSize.medium, 0, "townName", -1,
             independent), SimpleImmortal(SimpleImmortalKind.griffin, -1));
     initialize(converted, pointFactory(3, 0), TileType.notVisible, groundOne(),
         village("half-elf"));
     initialize(converted, pointFactory(3, 1), TileType.notVisible, groundOne(),
         orchard());
-    initialize(converted, pointFactory(3, 4), TileType.steppe, groundOne(),
-        forest("btree1"), Hill(-1));
-    Forest temp = Forest("ttree1", false, 1);
-    initialize(converted, pointFactory(3, 5), TileType.steppe, groundOne(),
-        forest("btree1"), SimpleImmortal(SimpleImmortalKind.ogre, -1),
+    initialize(converted, pointFactory(3, 4), TileType.steppe, groundTwo(),
+        forest("btree2"), Hill(-1));
+    Forest temp = Forest("ttree2", false, 1);
+    initialize(converted, pointFactory(3, 5), TileType.steppe, groundTwo(),
+        forest("btree2"), SimpleImmortal(SimpleImmortalKind.ogre, -1),
         forest("ttree1"), temp);
     temp.id = -1;
-    initialize(converted, pointFactory(3, 6), TileType.steppe, groundOne(),
-        forest("btree1"),
+    initialize(converted, pointFactory(3, 6), TileType.steppe, groundTwo(),
+        forest("btree2"),
         City(TownStatus.ruined, TownSize.large, 0, "cityName", -1, independent),
-        orchard());
-    initialize(converted, pointFactory(3, 7), TileType.steppe, groundOne(),
-        forest("btree1"), Giant("frost", -1));
+        orchard("fruit2"));
+    initialize(converted, pointFactory(3, 7), TileType.steppe, groundTwo(),
+        forest("btree2"), Giant("frost", -1));
     initialize(converted, pointFactory(4, 0), TileType.plains, groundThree(),
         field(FieldStatus.fallow, "grain3"));
     initialize(converted, pointFactory(4, 1), TileType.plains, groundThree(),
         orchard("fruit3"));
-    initialize(converted, pointFactory(4, 6), TileType.tundra, groundThree(),
-        orchard("fruit3"));
-    initialize(converted, pointFactory(4, 7), TileType.tundra, groundThree(),
-        field(FieldStatus.seeding, "grain3"));
+    initialize(converted, pointFactory(4, 6), TileType.tundra, groundFour(),
+        orchard("fruit4"));
+    initialize(converted, pointFactory(4, 7), TileType.tundra, groundFour(),
+        field(FieldStatus.seeding, "grain4"));
     initialize(converted, pointFactory(5, 1), TileType.plains, groundThree(),
         village("dwarf"));
-    initialize(converted, pointFactory(5, 6), TileType.tundra, groundThree(),
-        forest("ttree3"));
+    initialize(converted, pointFactory(5, 6), TileType.tundra, groundFour(),
+        forest("ttree4"));
     initialize(converted, pointFactory(6, 0), TileType.plains, groundThree(),
         field(FieldStatus.growing, "grain3"));
     initialize(converted, pointFactory(6, 2), TileType.plains, groundThree(),
         field(FieldStatus.seeding, "grain3"));
-    initialize(converted, pointFactory(6, 5), TileType.tundra, groundThree(),
-        field(FieldStatus.growing, "grain3"));
-    initialize(converted, pointFactory(7, 5), TileType.tundra, groundThree(),
-        field(FieldStatus.bearing, "grain3"));
-    initialize(converted, pointFactory(7, 6), TileType.tundra, groundThree(),
+    initialize(converted, pointFactory(6, 5), TileType.tundra, groundFour(),
+        field(FieldStatus.growing, "grain4"));
+    initialize(converted, pointFactory(7, 5), TileType.tundra, groundFour(),
+        field(FieldStatus.bearing, "grain4"));
+    initialize(converted, pointFactory(7, 6), TileType.tundra, groundFour(),
         village("human"));
-    initialize(converted, pointFactory(7, 7), TileType.tundra, groundThree(),
-        field(FieldStatus.seeding, "grain3"));
+    initialize(converted, pointFactory(7, 7), TileType.tundra, groundFour(),
+        field(FieldStatus.seeding, "grain4"));
     for (loc in { pointFactory(0, 0), pointFactory(0, 1), pointFactory(0, 2),
             pointFactory(0, 3), pointFactory(1, 0), pointFactory(1, 1),
             pointFactory(1, 2), pointFactory(2, 0), pointFactory(2, 1),
@@ -540,7 +535,7 @@ shared void testThirdOneToTwoConversion() {
     for (loc in { pointFactory(4, 4), pointFactory(4, 5), pointFactory(5, 4),
             pointFactory(5, 5), pointFactory(5, 7), pointFactory(6, 4),
             pointFactory(6, 6), pointFactory(6, 7), pointFactory(7, 4) }) {
-        initialize(converted, loc, TileType.tundra, groundThree());
+        initialize(converted, loc, TileType.tundra, groundFour());
     }
     converted.addRivers(pointFactory(2, 6), River.lake, River.south);
     converted.addRivers(pointFactory(3, 6), River.north, River.south);
@@ -621,9 +616,9 @@ shared void testFourthOneToTwoConversion() {
     }
     initialize(converted, pointFactory(0, 0), TileType.ocean);
     initialize(converted, pointFactory(2, 5), TileType.desert,
-        register(Grove(true, true, "fruit1", 75)));
+        register(Grove(true, true, "fruit2", 75)));
     initialize(converted, pointFactory(2, 6), TileType.desert,
-        register(Meadow("grain1", true, true, 76, FieldStatus.bearing)));
+        register(Meadow("grain2", true, true, 76, FieldStatus.bearing)));
     initialize(converted, pointFactory(3, 1), TileType.ocean,
         register(Village(TownStatus.active, "", 16, independent, "human")));
     initialize(converted, pointFactory(3, 5), TileType.desert,
@@ -631,9 +626,9 @@ shared void testFourthOneToTwoConversion() {
     initialize(converted, pointFactory(4, 2), TileType.desert,
         register(Grove(true, true, "fruit3", 74)));
     initialize(converted, pointFactory(4, 5), TileType.desert,
-        register(Meadow("grain3", true, true, 69, FieldStatus.fallow)));
+        register(Meadow("grain4", true, true, 69, FieldStatus.fallow)));
     initialize(converted, pointFactory(4, 6), TileType.desert,
-        register(Grove(true, true, "fruit3", 73)));
+        register(Grove(true, true, "fruit4", 73)));
     initialize(converted, pointFactory(5, 1), TileType.desert,
         register(Village(TownStatus.active, "", 50, independent, "human")));
     initialize(converted, pointFactory(6, 0), TileType.desert,
@@ -643,7 +638,7 @@ shared void testFourthOneToTwoConversion() {
     initialize(converted, pointFactory(6, 2), TileType.desert,
         register(Meadow("grain3", true, true, 70, FieldStatus.bearing)));
     initialize(converted, pointFactory(6, 6), TileType.desert,
-        register(Meadow("grain3", true, true, 71, FieldStatus.fallow)));
+        register(Meadow("grain4", true, true, 71, FieldStatus.fallow)));
     initialize(converted, pointFactory(7, 6), TileType.desert,
         register(Village(TownStatus.active, "", 67, independent, "human")));
     for (i in 0:4) {
@@ -655,7 +650,7 @@ shared void testFourthOneToTwoConversion() {
     for (i in 0:4) {
         for (j in 4:4) {
             initialize(converted, pointFactory(i, j), TileType.notVisible,
-                Ground(testFactory.createID(), "rock1", false));
+                Ground(testFactory.createID(), "rock2", false));
         }
     }
     for (i in 4:4) {
@@ -667,7 +662,7 @@ shared void testFourthOneToTwoConversion() {
     for (i in 4:4) {
         for (j in 4:4) {
             initialize(converted, pointFactory(i, j), TileType.notVisible,
-                Ground(testFactory.createID(), "rock3", false));
+                Ground(testFactory.createID(), "rock4", false));
         }
     }
     for (point in { pointFactory(0, 1), pointFactory(0, 2),
