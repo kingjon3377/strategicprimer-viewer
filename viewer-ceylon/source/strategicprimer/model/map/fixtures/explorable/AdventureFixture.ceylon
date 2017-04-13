@@ -4,14 +4,16 @@ import lovelace.util.common {
 
 import strategicprimer.model.map {
     HasMutableOwner,
-	IFixture,
+    IFixture,
     Player
 }
-"A Fixture representing an adventure hook."
-todo("Should be Subsettable, since players shouldn't know when another player completes an
-      adventure on the far side of the world")
+import strategicprimer.model.map.fixtures {
+    SubsettableFixture
+}
+"A Fixture representing an adventure hook. Satisfies Subsettable because players shouldn't
+ know when another player completes an adventure on the far side of the world."
 shared class AdventureFixture(owner, briefDescription, fullDescription, id)
-		satisfies ExplorableFixture&HasMutableOwner {
+		satisfies ExplorableFixture&HasMutableOwner&SubsettableFixture {
 	"A brief description of the adventure."
 	shared String briefDescription;
 	"A longer description of the adventure."
@@ -64,4 +66,31 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
 	"The required Perception check result for an explorer to find the adventure hook."
 	todo("Should probably be variable, i.e. read from XML")
 	shared actual Integer dc => 30;
+	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
+		if (obj.id == id) {
+			if (is AdventureFixture obj) {
+				void localReport(String message) =>
+						report("In adventure with ID #``id``: ``message``");
+				if (briefDescription != obj.briefDescription) {
+					localReport("Brief descriptions differ");
+					return false;
+				} else if (fullDescription != obj.fullDescription) {
+					localReport("Full descriptions differ");
+					return false;
+				} else if (owner.playerId != obj.owner.playerId, !obj.owner.independent) {
+					localReport("Owners differ");
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				report("Different kinds of fixtures for ID #``id``");
+				return false;
+			}
+		} else {
+			report("ID mismatch");
+			return false;
+		}
+	}
+
 }
