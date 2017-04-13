@@ -109,8 +109,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             IDRegistrar idFactory) {
         String namespace = element.name.namespaceURI;
         String tag = element.name.localPart.lowercased;
-        // TODO: what about "the default namespace"?
-        if (namespace.empty || namespace == spNamespace) {
+        if (namespace.empty || namespace == spNamespace ||
+                namespace == XMLConstants.nullNsUri) {
             if (exists reader = readers.get(tag)) {
                 return reader(element, parent, stream, players, warner, idFactory);
             }
