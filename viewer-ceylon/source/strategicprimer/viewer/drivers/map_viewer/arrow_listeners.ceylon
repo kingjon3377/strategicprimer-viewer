@@ -74,9 +74,7 @@ Map<Integer, String> jumpInputs = HashMap<Integer, String> {
 Map<Integer, String> otherInputs = HashMap<Integer, String> {
     KeyEvent.vkHome->"home", KeyEvent.vk0->"home", KeyEvent.vkNumpad0->"home",
     KeyEvent.vkEnd->"end", KeyEvent.vkNumberSign->"end", KeyEvent.vkDollar->"dollar",
-    KeyEvent.vkCircumflex->"caret",
-    // TODO: Test that this works; Java used Character.getNumericValue('#')
-    '#'.integer->"end",'^'.integer->"caret"
+    KeyEvent.vkCircumflex->"caret", '#'.integer->"end",'^'.integer->"caret"
 };
 void repeat<T>(Anything(T) func, T args, Integer times) {
     for (i in 0..times) {
