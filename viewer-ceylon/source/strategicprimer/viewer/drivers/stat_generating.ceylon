@@ -455,14 +455,13 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     suppressWarnings("deprecation")
     SimpleTerrain getTerrain(IMapNG map, Point location) {
         switch (map.getBaseTerrain(location))
-        // TODO: Steppe is only always-forested in our current world map because of how it
-        // was introduced; remove it here
-        case (TileType.jungle|TileType.borealForest|TileType.steppe|
-                TileType.temperateForest) { return forested; }
+        case (TileType.jungle|TileType.borealForest|TileType.temperateForest) {
+            return forested;
+        }
         case (TileType.desert|TileType.mountain|TileType.tundra|TileType.notVisible) {
             return unforested; }
         case (TileType.ocean) { return ocean; }
-        case (TileType.plains) {
+        case (TileType.plains|TileType.steppe) {
             if (map.isMountainous(location)) {
                 return unforested;
             } else if (map.getForest(location) exists) {
