@@ -81,8 +81,8 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
         Integer height = ceiling(view.getPreferredSpan(View.yAxis)).integer;
         component.preferredSize = Dimension(wid, height);
     }
+    static Icon defaultFixtureIcon = createDefaultFixtureIcon();
     shared new () { }
-    Icon defaultFixtureIcon = createDefaultFixtureIcon(); // TODO: make static?
     Icon getIcon(HasImage obj) {
         String image = obj.image;
         String actualImage;
