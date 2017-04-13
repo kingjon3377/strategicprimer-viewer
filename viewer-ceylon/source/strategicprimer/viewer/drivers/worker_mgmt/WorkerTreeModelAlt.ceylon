@@ -114,11 +114,9 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             extends DefaultTreeModel(PlayerNode(player, driverModel), true) {
         model = driverModel;
     }
-    void moveProxied(UnitMember member, ProxyUnit old, ProxyUnit newOwner,
+    void moveProxied(UnitMember&ProxyFor<out UnitMember> member, ProxyUnit old, ProxyUnit newOwner,
             UnitNode newNode, MutableTreeNode node) {
         assert (is PlayerNode playerNode = root);
-        // TODO: encode this second assertion into the type of the argument
-        assert (is ProxyFor<out UnitMember> member);
         if (old.proxied.size == newOwner.proxied.size,
             old.proxied.size == member.proxied.size) {
             Queue<UnitMember>&Iterable<UnitMember> members = LinkedList<UnitMember>();
@@ -176,7 +174,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             if (exists oldNode) {
                 oldNode.remove(node);
             }
-            if (is ProxyFor<out Anything> member, is ProxyUnit old, is ProxyUnit newOwner) {
+            if (is ProxyFor<out UnitMember> member, is ProxyUnit old, is ProxyUnit newOwner) {
                 moveProxied(member, old, newOwner, newNode, node);
             } else {
                 old.removeMember(member);
