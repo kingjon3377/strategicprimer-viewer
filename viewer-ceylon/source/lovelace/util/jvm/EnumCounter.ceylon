@@ -3,10 +3,6 @@ import ceylon.collection {
     HashMap
 }
 
-import java.lang {
-    Enum
-}
-
 import lovelace.util.common {
     Accumulator,
     IntHolder,

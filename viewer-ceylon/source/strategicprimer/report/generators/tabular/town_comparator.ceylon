@@ -7,10 +7,6 @@ import ceylon.test {
     assertEquals
 }
 
-import java.lang {
-    IllegalStateException
-}
-
 import lovelace.util.common {
     todo,
     comparingOn

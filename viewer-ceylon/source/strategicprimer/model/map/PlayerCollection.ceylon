@@ -1,6 +1,5 @@
 import ceylon.collection {
     MutableMap,
-    HashMap,
     naturalOrderTreeMap
 }
 import ceylon.interop.java {

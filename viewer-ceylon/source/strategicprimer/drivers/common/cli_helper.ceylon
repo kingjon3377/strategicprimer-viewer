@@ -11,8 +11,7 @@ import ceylon.math.decimal {
 }
 import ceylon.test {
     assertEquals,
-    test,
-    assertThatException
+    test
 }
 
 import java.io {
