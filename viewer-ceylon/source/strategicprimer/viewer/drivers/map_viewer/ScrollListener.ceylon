@@ -123,11 +123,10 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
      switched to using the new value it was passed."
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         VisibleDimensions temp = model.dimensions;
-        // FIXME: Per the Span docs, the +1 makes these off-by-one
-        if (!((temp.minimumColumn)..(temp.maximumColumn + 1)).contains(newPoint.column)) {
+        if (!((temp.minimumColumn)..(temp.maximumColumn)).contains(newPoint.column)) {
             horizontalBar.model.\ivalue = largest(newPoint.column, 0);
         }
-        if (!((temp.minimumRow)..(temp.maximumRow + 1)).contains(newPoint.row)) {
+        if (!((temp.minimumRow)..(temp.maximumRow)).contains(newPoint.row)) {
             verticalBar.model.\ivalue = largest(newPoint.row, 0);
         }
     }
