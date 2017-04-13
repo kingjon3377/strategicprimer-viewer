@@ -356,8 +356,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                 ourFixtures.clear();
                 ourSubsettables.clear();
                 ourUnits.clear();
-                // TODO: Use getAllFixtures instead of adding ground and forest later
-                for (fixture in getOtherFixtures(point)) {
+                for (fixture in getAllFixtures(point)) {
                     Integer idNum = fixture.id;
                     if (is IUnit fixture) {
                         ourUnits.put(idNum, fixture);
@@ -373,12 +372,6 @@ shared class SPMapNG satisfies IMutableMapNG {
                     } else {
                         ourFixtures.add(fixture);
                     }
-                }
-                if (exists ground = getGround(point)) {
-                    ourFixtures.add(ground);
-                }
-                if (exists forest = getForest(point)) {
-                    ourFixtures.add(forest);
                 }
                 {TileFixture*} theirFixtures = obj.getOtherFixtures(point);
                 for (fixture in theirFixtures) {
