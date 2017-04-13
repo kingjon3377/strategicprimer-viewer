@@ -86,6 +86,12 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             }
             super.add(child);
         }
+        shared actual void remove(MutableTreeNode child) {
+            if (is UnitMemberNode child) {
+                unit.removeMember(child.userObjectNarrowed);
+            }
+            super.remove(child);
+        }
     }
     shared static class KindNode(String kind, IUnit* units)
             extends WorkerTreeNode<String>(kind) {
@@ -327,8 +333,6 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             fireTreeNodesRemoved(this, path, createJavaIntArray({index}),
                 createJavaObjectArray<Object>({node}));
             dismissedMembers.add(member);
-            // TODO: Extend UnitNode.remove to remove from the user object?
-            parentNode.userObjectNarrowed.removeMember(member);
         }
     }
     shared actual {UnitMember*} dismissed => dismissedMembers;
