@@ -61,7 +61,7 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq)
             } else {
                 brief = "portal to another world";
             }
-            owner = "---"; // TODO: report owner?
+            owner = "---";
             longDesc = "";
         }
         case (is AdventureFixture) {
