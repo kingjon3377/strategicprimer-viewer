@@ -99,8 +99,7 @@ shared class FortressMemberReportGenerator(Comparison([Point, IFixture], [Point,
                             "<li>``resource.kind``:",
                             comparing(byIncreasing(ResourcePile.kind),
                                 byIncreasing(ResourcePile.contents),
-                                // TODO: do full comparison of Quantities, as in Java version
-                                byDecreasing((ResourcePile pile) => pile.quantity.units),
+                                byDecreasing(ResourcePile.quantity),
                                 byIncreasing(ResourcePile.created),
                                 byIncreasing(ResourcePile.id)));
                         resources.put(resource.kind, pileMap);
