@@ -251,7 +251,8 @@ shared class SPMenu() extends JMenuBar() {
         retval.add(createMenuItem("Zoom out", KeyEvent.vkO,
             createAccelerator(KeyEvent.vkMinus), "Decrease the visible size of each tile",
             handler));
-        // TODO: Shouldn't there be a "reset zoom" item?
+        retval.add(createMenuItem("Reset zoom", KeyEvent.vkR,
+            createAccelerator(KeyEvent.vk0), "Reset the zoom level", handler));
         retval.addSeparator();
         retval.add(createMenuItem("Center", KeyEvent.vkC, createAccelerator(KeyEvent.vkC),
             "Center the view on the selected tile", handler));

@@ -58,6 +58,7 @@ shared object viewerGUI satisfies SimpleDriver {
             menuHandler.register((event) => process.exit(0), "quit");
             menuHandler.register((event) => model.zoomIn(), "zoom in");
             menuHandler.register((event) => model.zoomOut(), "zoom out");
+            menuHandler.register((event) => model.resetZoom(), "reset zoom");
             menuHandler.register((event) {
                 Point selection = model.selection;
                 MapDimensions dimensions = model.mapDimensions;
