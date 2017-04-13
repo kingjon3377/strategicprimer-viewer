@@ -109,11 +109,13 @@
     </ceylon-compile>
   </target>
   <target name="doc-ceylon" depends="build-ceylon">
+      <!-- FIXME: Uncomment this once Ceylon bug #6749 is fixed
     <ceylon-doc cwd="${ceylon.root}" src="${ceylon.source.dir}" encoding="UTF-8">
         <moduleset>
             <sourcemodules dir="${ceylon.source.dir}" />
         </moduleset>
     </ceylon-doc>
+    -->
   </target>
 
   <!-- Test targets -->
