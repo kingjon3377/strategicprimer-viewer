@@ -68,7 +68,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             }
         }
         shared actual String string => (super of DefaultMutableTreeNode).string;
-        shared actual void add(MutableTreeNode child) {
+        shared actual default void add(MutableTreeNode child) {
             if (is WorkerTreeNode<out Anything> child) {
                 super.add(child);
             }
@@ -79,6 +79,12 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     shared static class UnitNode(IUnit unit) extends WorkerTreeNode<IUnit>(unit) {
         for (index->member in unit.indexed) {
             insert(UnitMemberNode(member), index);
+        }
+        shared actual void add(MutableTreeNode child) {
+            if (is UnitMemberNode child) {
+                unit.addMember(child.userObjectNarrowed);
+            }
+            super.add(child);
         }
     }
     shared static class KindNode(String kind, IUnit* units)
@@ -189,8 +195,6 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                         newOwner.kind), newNode}),
                     createJavaIntArray({newNode.getIndex(node)}),
                     createJavaObjectArray<Object>({node}));
-                // TODO: make UniitNode.add() call IUnit.addMember()?
-                newOwner.addMember(member);
             }
         }
     }
