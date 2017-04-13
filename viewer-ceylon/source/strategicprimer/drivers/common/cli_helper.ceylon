@@ -139,7 +139,7 @@ shared interface ICLIHelper satisfies Obtainable {
 }
 "A helper class to let help CLIs interact with the user, encapsulating input and output
  streams."
-todo("Port to ceylon.io or equivalent", "Should we make a factory method rather than exposing the class as shared?")
+todo("Should we make a factory method rather than exposing the class as shared?")
 shared class CLIHelper satisfies ICLIHelper {
     String?() istream;
     Anything(String) ostream;
