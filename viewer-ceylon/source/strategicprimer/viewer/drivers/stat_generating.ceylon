@@ -28,9 +28,6 @@ import java.util {
 import lovelace.util.common {
     todo
 }
-import lovelace.util.jvm {
-    singletonRandom
-}
 
 import strategicprimer.model.idreg {
     IDRegistrar,
@@ -206,12 +203,8 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Create randomly-generated stats for a worker, with racial adjustments applied."
     WorkerStats createWorkerStats(String race, Integer levels, ICLIHelper cli) {
-        // TODO: Only instantiate the Random once
-        // TODO: Better yet, use Ceylonic RNG interfaces
-        WorkerStats base = WorkerStats.random(() {
-            Random rng = Random(system.milliseconds);
-            return rng.nextInt(6) + rng.nextInt(6) + rng.nextInt(6) + 3;
-        });
+        Integer die(Integer max) => (random() * max).integer + 1;
+        WorkerStats base = WorkerStats.random(() => die(6) + die(6) + die(6));
         Integer lowestScore = getMinIndex(base.array);
         WorkerStats racialBonus;
         switch (race)
@@ -242,9 +235,8 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         Integer conBonus = WorkerStats.getModifier(base.constitution +
             racialBonus.constitution);
         variable Integer hp = 8 + conBonus;
-        Random rng = Random(system.milliseconds);
         for (level in 0..levels) {
-            hp = hp + rng.nextInt(8) + 1 + conBonus;
+            hp = hp + die(8) + conBonus;
         }
         return WorkerStats.adjusted(hp, base, racialBonus);
     }
@@ -400,7 +392,7 @@ class TileContentsGenerator(IMapNG map) {
     }
     shared void generateTileContents(Point point,
             TileType terrain = map.getBaseTerrain(point)) {
-        Integer reps = singletonRandom.nextInt(4) + 1;
+        Integer reps = (random() * 4).integer + 1;
         for (i in 0..reps) {
             process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
                 {}, map.dimensions));
