@@ -30,10 +30,13 @@ import strategicprimer.report.generators.tabular {
     ImmortalsTabularReportGenerator,
     ExplorableTabularReportGenerator
 }
+import ceylon.file {
+    Writer
+}
 "A method to produce tabular reports based on a map for a player."
 todo("Change the type of `source`, so we don't have to mark our import of `java.base` as
       `shared`")
-shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
+shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     Player player = map.currentPlayer;
     Point hq = findHQ(map, player);
@@ -51,10 +54,7 @@ shared void createTabularReports(IMapNG map, JOutputStream(String) source) {
         ExplorableTabularReportGenerator(player, hq)
     };
     for (generator in generators) {
-        // TODO: Use ceylon.file / ceylon.io for file output
-        try (ostream = JPrintStream(source(generator.tableName))) {
-            generator.produceTable((String string) => ostream.print(string), fixtures);
-        }
+        generator.produceTable(source(generator.tableName), fixtures);
         for ([loc, fixture] in fixtures.items) {
             if (is TerrainFixture fixture) {
                 fixtures.remove(fixture.id);

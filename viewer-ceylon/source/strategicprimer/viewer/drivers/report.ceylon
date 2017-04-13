@@ -1,17 +1,17 @@
 import ceylon.file {
     parsePath,
-    Nil
+    Nil,
+    File,
+    Path
 }
 
 import java.io {
-    OutputStream,
     IOException,
     IOError
 }
 import java.nio.file {
     JPath=Path,
-    JPaths=Paths,
-    JFiles=Files
+    JPaths=Paths
 }
 
 import strategicprimer.drivers.common {
@@ -102,15 +102,29 @@ object tabularReportCLI satisfies SimpleDriver {
         "Produce CSV reports of the contents of a map.");
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        OutputStream(String) filenameFunction(JPath base) {
-            return (String string) =>
-                JFiles.newOutputStream(
-                    base.resolveSibling("``base.fileName``.``string``.csv"));
+        Anything(String)(String) filenameFunction(Path base) {
+            assert (exists baseName = base.elements.terminal(1).first);
+            Anything(String) retval(String tableName) {
+                File file;
+                switch (temp = base.siblingPath("``baseName``.``tableName``.csv"))
+                case (is File) {
+                    file = temp;
+                }
+                case (is Nil) {
+                    file = temp.createFile();
+                }
+                else {
+                    throw IOException("``base`` exists but is not a file");
+                }
+                value writer = file.Overwriter();
+                return writer.write;
+            }
+            return retval;
         }
         void createReports(IMapNG map, JPath? mapFile) {
             if (exists mapFile) {
                 try {
-                    createTabularReports(map, filenameFunction(mapFile));
+                    createTabularReports(map, filenameFunction(parsePath(mapFile.string)));
                 } catch (IOException|IOError except) {
                     throw DriverFailedException(except);
                 }
