@@ -6,7 +6,6 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    todo,
     DelayedRemovalMap
 }
 
@@ -32,7 +31,6 @@ import strategicprimer.report.nodes {
     SectionListReportNode
 }
 "A report generator for sightings of animals."
-todo("Ensure that animal-tracks' synthetic IDs are used to remove them")
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = invalidPoint)
         extends AbstractReportGenerator<Animal>(comp, DistanceComparator(hq)) {
     "Produce the sub-report about animals or an individual Animal."
