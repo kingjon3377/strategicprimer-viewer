@@ -108,8 +108,7 @@ shared class Worker(name, race, id, IJob* jobs) satisfies IWorker&HasPortrait {
                         if (!corresponding.isSubset(job, localReport)) {
                             retval = false;
                         }
-                    } else {
-                        // TODO: skip empty Jobs?
+                    } else if (!job.empty) {
                         localReport("Extra Job: ``job.name``");
                         retval = false;
                     }
