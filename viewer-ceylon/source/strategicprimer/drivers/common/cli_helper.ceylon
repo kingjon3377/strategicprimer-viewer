@@ -15,8 +15,7 @@ import ceylon.test {
 }
 
 import java.io {
-    IOException,
-    Closeable
+    IOException
 }
 
 import lovelace.util.common {
@@ -34,8 +33,11 @@ import strategicprimer.model.map {
     PlayerImpl
 }
 """An interface for the "CLI helper," which encapsulates input and output streams,
-   allowing automated testing of CLIs and GUI wrappers around CLIs."""
-shared interface ICLIHelper satisfies Closeable {
+   allowing automated testing of CLIs and GUI wrappers around CLIs. We satisfy
+   [[Obtainable]] to allow instances to be created in resource expressions in
+   try-with-resources statements, but the default implementations of that
+   interface's methods are no-ops."""
+shared interface ICLIHelper satisfies Obtainable {
     shared alias ListAmendment<Element> => Element?(MutableList<Element>, ICLIHelper);
     "Ask the user to choose an item from the list, and if he does carry out an
      operation on it and then ask if he wants to do another."
@@ -126,6 +128,14 @@ shared interface ICLIHelper satisfies Closeable {
         print(prompt);
         return pointFactory(inputNumber("Row: "), inputNumber("Column: "));
     }
+    "Close I/O streams."
+    shared actual default void release(Throwable? error) {
+        if (exists error) {
+            throw error;
+        }
+    }
+    "A no-op."
+    shared actual default void obtain() {}
 }
 "A helper class to let help CLIs interact with the user, encapsulating input and output
  streams."
@@ -327,9 +337,6 @@ shared class CLIHelper satisfies ICLIHelper {
     "Print the specified string."
     shared actual void print(String text) {
         ostream(text);
-    }
-    "Close I/O streams."
-    shared actual void close() {
     }
 }
 
