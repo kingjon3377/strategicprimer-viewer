@@ -65,24 +65,21 @@ shared IMapNG decreaseResolution(IMapNG old) {
 	IMutableMapNG retval = SPMapNG(MapDimensionsImpl(newRows, newColumns, 2), players,
 		old.currentTurn);
 	TileType consensus([TileType+] types) {
-		assert (types.size == 4); // the algorithm assumes only possible splits are
-		// 4-0, 3-1, 2-2, 2-1-1, and 1-1-1-1
-		// TODO: more Ceylonic algorithm/implementation
-		EnumCounter<TileType> counter = EnumCounter<TileType>();
-		counter.countMany(*types);
-		MutableSet<TileType> twos = HashSet<TileType>();
-		for (type in `TileType`.caseValues) {
-			switch (counter.getCount(type))
-			case (0|1) { }
-			case (2) { twos.add(type); }
-			else { return type; }
-		}
-		if (twos.size == 1) {
-			assert (exists type = twos.first);
-			return type;
+		value counted = types.frequencies().map((type->count) => [count, type])
+			.sort(comparing(
+					([Integer, TileType] first, [Integer, TileType] second) =>
+						first.first <=> second.first,
+					([Integer, TileType] first, [Integer, TileType] second) =>
+						first.rest.first.xml <=> second.rest.first.xml)).reversed;
+		assert (exists largestCount = counted.first?.first);
+		value matchingCount = counted.filter((item) => item.first == largestCount);
+		if (matchingCount.size > 1) {
+			assert (exists retval = shuffle(matchingCount.map(
+						([Integer count, TileType type]) => type)).first);
+			return retval;
 		} else {
-			assert (exists type = shuffle(types).first);
-			return type;
+			assert (exists retval = counted.first?.rest?.first);
+			return retval;
 		}
 	}
 	for (row in 0:newRows) {
