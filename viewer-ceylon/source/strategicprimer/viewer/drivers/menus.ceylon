@@ -153,18 +153,11 @@ shared class SPMenu() extends JMenuBar() {
         if (!model is IViewerModel) {
             newItem.enabled = false;
         }
-        String loadCaption;
-        String saveCaption;
-        String saveAsCaption;
-        if (model is IMultiMapModel) { // TODO: use interpolation of "the main" instead
-            loadCaption = "Load the main map from file";
-            saveCaption = "Save the main map to the file it was loaded from";
-            saveAsCaption = "Save the main map to file";
-        } else {
-            loadCaption = "Load a map from file";
-            saveCaption = "Save the map to the file it was loaded from";
-            saveAsCaption = "Save the map to file";
-        }
+        String desc = (model is IMultiMapModel) then "the main" else "the";
+        String loadCaption = "Load ``(model is IMultiMapModel) then "the main" else "a"
+            `` map from file";
+        String saveCaption = "Save ``desc`` map to the file it was loaded from";
+        String saveAsCaption = "Save ``desc`` map to file";
         fileMenu.add(createMenuItem("Load", KeyEvent.vkL, createAccelerator(KeyEvent.vkO),
             loadCaption, handler));
         JMenuItem loadSecondaryItem = createMenuItem("Load secondary", KeyEvent.vkE,
