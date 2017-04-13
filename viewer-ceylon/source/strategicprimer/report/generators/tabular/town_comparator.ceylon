@@ -127,8 +127,8 @@ void testComparison() {
     MutableList<ITownFixture> input = ArrayList<ITownFixture>();
     variable Integer id = 0;
     Player owner = PlayerImpl(1, "player");
-    for (status in `TownStatus`.caseValues) {
-        for (size in `TownSize`.caseValues) {
+    for (status in `TownStatus`.caseValues.sort(byIncreasing((TownStatus status) => status.ordinal))) {
+        for (size in `TownSize`.caseValues.sort(byIncreasing((TownSize size) => size.ordinal))) {
             input.add(Town(status, size, -1, "inputTown", id++, owner));
             input.add(City(status, size, -1, "inputCity", id++, owner));
             input.add(Fortification(status, size, -1, "inputFortification", id++, owner));
