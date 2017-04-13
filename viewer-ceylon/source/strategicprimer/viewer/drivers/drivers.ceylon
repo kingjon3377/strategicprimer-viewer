@@ -290,7 +290,6 @@ shared void run() {
                             "Strategic Primer Assistive Programs", except.message));
                     }
                 } else {
-                    // TODO: switch to named-argument-ish syntax
                     ISPDriver[] driversList = [*driverCache.items.map(Tuple.first)];
                     Integer choice = cli.chooseFromList(driversList,
                         "CLI apps available:", "No applications available", "App to start: ", true);
