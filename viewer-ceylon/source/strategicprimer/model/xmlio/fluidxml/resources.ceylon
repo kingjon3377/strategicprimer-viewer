@@ -50,6 +50,9 @@ import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException,
     DeprecatedPropertyException
 }
+import ceylon.math.whole {
+    Whole
+}
 ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "resource");
@@ -259,7 +262,12 @@ void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
                 writeIntegerAttribute(ostream, "quantity", quantity.integer);
             }
         }
-        // TODO: Cover Float and Whole cases
+        case (is Float) {
+            writeAttribute(ostream, "quantity", quantity.string);
+        }
+        case (is Whole) {
+            writeIntegerAttribute(ostream, "quantity", quantity.integer);
+        }
         else {
             throw IllegalArgumentException("ResourcePile with non-Integer, non-Decimal quantity");
         }
