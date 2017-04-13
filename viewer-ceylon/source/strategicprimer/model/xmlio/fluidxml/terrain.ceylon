@@ -115,7 +115,7 @@ void writeRivers(XMLStreamWriter ostream, Object obj, Integer indent) {
     } else if (is River obj) {
         writeTag(ostream, "river", indent, true);
         writeAttribute(ostream, "direction", obj.description);
-    } else if (is RiverFixture obj) { // TODO: change to {River*} once ported
+    } else if (is {River*} obj) {
         for (river in obj) {
             writeRivers(ostream, river, indent);
         }
