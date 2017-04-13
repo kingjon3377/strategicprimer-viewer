@@ -59,36 +59,42 @@ shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IF
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, [HarvestableFixture, Point]? entry) {
         if (exists entry) {
-            HarvestableFixture item = entry.first;
             Point loc = entry.rest.first;
-            // TODO: convert to switch statement?
-            if (is CacheFixture item) {
+            switch (item = entry.first)
+            case (is CacheFixture) {
                 ostream("At ``loc``: ``distCalculator
                     .distanceString(loc)``A cache of ``item
                     .kind``, containing ``item.contents``");
-            } else if (is Grove item) {
+            }
+            case (is Grove) {
                 ostream("At ``loc``: ``(item.cultivated) then "cultivated" else
                 "wild"`` ``item.kind`` ``(item.orchard) then "orchard" else
                 "grove"`` ``distCalculator.distanceString(loc)``");
-            } else if (is Meadow item) {
+            }
+            case (is Meadow) {
                 ostream("At ``loc``: ``item.status`` ``(item.cultivated) then
                 "cultivated" else "wild or abandoned"`` ``item.kind`` ``(item
                     .field) then "field" else "meadow"`` ``distCalculator
                     .distanceString(loc)``");
-            } else if (is Mine item) {
+            }
+            case (is Mine) {
                 ostream("At ``loc``: ``item`` ``distCalculator
                     .distanceString(loc)``");
-            } else if (is MineralVein item) {
+            }
+            case (is MineralVein) {
                 ostream("At ``loc``: An ``(item.exposed) then
                 "exposed" else "unexposed"`` vein of ``item
                     .kind`` ``distCalculator.distanceString(loc)``");
-            } else if (is Shrub item) {
+            }
+            case (is Shrub) {
                 ostream("At ``loc``: ``item.kind`` ``distCalculator
                     .distanceString(loc)``");
-            } else if (is StoneDeposit item) {
+            }
+            case (is StoneDeposit) {
                 ostream("At ``loc``: An exposed ``item
                     .kind`` deposit ``distCalculator.distanceString(loc)``");
-            } else {
+            }
+            else {
                 throw IllegalArgumentException(
                     "Unexpected HarvestableFixture type");
             }
