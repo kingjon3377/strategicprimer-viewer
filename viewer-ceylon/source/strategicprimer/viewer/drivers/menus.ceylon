@@ -265,7 +265,6 @@ shared class SPMenu() extends JMenuBar() {
 
         // We *create* these items here (early) so that we can enable or disable them
         // without an extra branch.
-        // TODO: create Ceylon Iterable instead of add()ing to a List
         {JMenuItem*} treeItems = {
             createMenuItem("Reload tree", KeyEvent.vkR, createAccelerator(KeyEvent.vkR),
                 "Refresh the view of the workers", handler),
