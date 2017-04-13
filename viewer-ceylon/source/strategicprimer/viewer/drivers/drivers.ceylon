@@ -360,9 +360,9 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
     buttonPanel.add(button("Worker Skill Advancement", () => advancementGUI));
     buttonPanel.add(button("Unit Orders and Worker Management", () => workerGUI));
     buttonPanel.add(button("Exploration", () => explorationGUI));
-    // TODO: use a fewer-argument BorderedPanel constructor
-    frame.contentPane = BorderedPanel(JScrollPane(buttonPanel),
-        JLabel("Please choose one of the applications below"), null, null, null);
+    frame.contentPane = BorderedPanel.verticalPanel(
+        JLabel("Please choose one of the applications below"),
+        JScrollPane(buttonPanel), null);
     frame.pack();
     return frame;
 }
