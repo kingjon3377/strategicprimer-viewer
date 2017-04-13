@@ -52,6 +52,11 @@ import strategicprimer.drivers.common {
     SimpleMultiMapModel,
     IDriverModel
 }
+import ceylon.logging {
+    Logger,
+    logger
+}
+Logger log = logger(`module strategicprimer.drivers.worker.common`);
 "A model to underlie the advancement GUI, etc."
 shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     shared new (IMutableMapNG map, JPath? file)
@@ -138,8 +143,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                     return;
                 }
             } else {
-                // TODO: use a logger instead?
-                process.writeLine("No suitable location found");
+                log.warn("No suitable location found for unit");
             }
         }
     }
