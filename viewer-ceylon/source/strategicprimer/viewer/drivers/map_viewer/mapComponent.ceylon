@@ -138,10 +138,9 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             Integer selectedColumn = largest(selectedPoint.column, 0);
             VisibleDimensions visibleDimensions = model.dimensions;
             Integer minimumRow = visibleDimensions.minimumRow;
-            // FIXME: Per the Span docs, adding 1 makes this off-by-one ...
-            Integer maximumRow = visibleDimensions.maximumRow + 1;
+            Integer maximumRow = visibleDimensions.maximumRow;
             Integer minimumColumn = visibleDimensions.minimumColumn;
-            Integer maximumColumn = visibleDimensions.maximumColumn + 1;
+            Integer maximumColumn = visibleDimensions.maximumColumn;
             if ((minimumRow..maximumRow).contains(selectedRow),
                 (minimumColumn..maximumColumn).contains(selectedColumn)) {
                 return true;
