@@ -241,15 +241,12 @@
         <include name="viewer.eml" />
         <include name="viewer.iml" />
       </tarfileset>
-      <tarfileset dir="${source_dir}" prefix="${basename}/viewer-ceylon">
+      <tarfileset dir="viewer-ceylon" prefix="${basename}/viewer-ceylon">
         <include name="**" />
       </tarfileset>
       <tarfileset dir=".idea" prefix="${basename}/.idea">
           <include name="**" />
           <exclude name="workspace.xml" />
-      </tarfileset>
-      <tarfileset dir="tables" prefix="${basename}/tables">
-          <include name="**" />
       </tarfileset>
       <tarfileset dir=".codepro" prefix="${basename}/.codepro">
           <include name="**" />
