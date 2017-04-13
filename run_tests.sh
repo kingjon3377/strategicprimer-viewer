@@ -8,4 +8,4 @@ ant \
     -Dhamcrest.jar.path=/usr/share/java/hamcrest-core-1.3.jar \
     -Dapple.extensions.path=./orange-extensions-1.3.0.jar \
     -Dceylon.home=./ceylon-1.3.2 \
-    test test-ceylon
+    test-ceylon
