@@ -54,13 +54,21 @@ object reportCLI satisfies SimpleDriver {
         void writeReport(JPath? filename, IMapNG map) {
             if (exists filename) {
                 Player player;
-                // FIXME: If parsing fails or there isn't a matching player, log a warning
-                if (options.hasOption("--player"),
-                        is Integer playerNum =
-                                Integer.parse(options.getArgument("--player")),
-                        exists temp = map.players
-                            .find((item) => item.playerId == playerNum)) {
-                    player = temp;
+                if (options.hasOption("--player")) {
+                    value playerNum = Integer.parse(options.getArgument("--player"));
+                    if (is Integer playerNum) {
+                            if (exists temp = map.players
+                                    .find((item) => item.playerId == playerNum)) {
+                                player = temp;
+                            } else {
+                                log.warn("No player with that number");
+                                // TODO: create new instead?
+                                player = map.currentPlayer;
+                            }
+                    } else {
+                        log.warn("Non-numeric player", playerNum);
+                        player = map.currentPlayer;
+                    }
                 } else {
                     player = map.currentPlayer;
                 }
