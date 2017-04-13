@@ -114,8 +114,8 @@ WorkerStats readStats(StartElement element, QName parent, {XMLEvent*} stream,
 void writeWorker(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is IWorker obj) {
         WorkerStats? stats = obj.stats;
-        // TODO: what about empty Jobs?
-        Boolean hasJobs = !obj.empty;
+        {IJob*} jobs = obj.filter((job) => !job.emptyJob);
+        Boolean hasJobs = !jobs.empty;
         writeTag(ostream, "worker", indentation, !hasJobs && !stats exists);
         writeAttribute(ostream, "name", obj.name);
         if ("human" != obj.race) {
@@ -129,7 +129,7 @@ void writeWorker(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if (exists stats) {
             writeStats(ostream, stats, indentation + 1);
         }
-        for (job in obj) {
+        for (job in jobs) {
             writeJob(ostream, job, indentation + 1);
         }
         if (hasJobs || stats exists) {
