@@ -21,7 +21,6 @@ import strategicprimer.model.map {
     River
 }
 import strategicprimer.model.map.fixtures {
-    RiverFixture,
     Ground
 }
 import strategicprimer.model.map.fixtures.terrain {

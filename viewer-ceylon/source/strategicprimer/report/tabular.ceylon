@@ -1,8 +1,3 @@
-import java.io {
-    JOutputStream=OutputStream,
-    JPrintStream=PrintStream
-}
-
 import lovelace.util.common {
     DelayedRemovalMap,
     todo
@@ -29,9 +24,6 @@ import strategicprimer.report.generators.tabular {
     ResourceTabularReportGenerator,
     ImmortalsTabularReportGenerator,
     ExplorableTabularReportGenerator
-}
-import ceylon.file {
-    Writer
 }
 "A method to produce tabular reports based on a map for a player."
 todo("Change the type of `source`, so we don't have to mark our import of `java.base` as

@@ -5,8 +5,7 @@ import ceylon.collection {
 
 import lovelace.util.common {
     Accumulator,
-    IntHolder,
-    todo
+    IntHolder
 }
 "A class to count references to enumerated objects."
 shared class EnumCounter<Type>() given Type satisfies Object {

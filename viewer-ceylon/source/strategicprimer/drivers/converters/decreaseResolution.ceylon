@@ -15,7 +15,6 @@ import java.lang {
 }
 
 import lovelace.util.jvm {
-    EnumCounter,
     shuffle
 }
 
