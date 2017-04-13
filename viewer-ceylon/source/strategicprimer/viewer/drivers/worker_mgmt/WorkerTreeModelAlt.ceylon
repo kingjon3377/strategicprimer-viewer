@@ -68,6 +68,11 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             }
         }
         shared actual String string => (super of DefaultMutableTreeNode).string;
+        shared actual void add(MutableTreeNode child) {
+            if (is WorkerTreeNode<out Anything> child) {
+                super.add(child);
+            }
+        }
     }
     static class UnitMemberNode(UnitMember member)
             extends WorkerTreeNode<UnitMember>(member, false) { }
