@@ -33,14 +33,13 @@ import strategicprimer.model.map.fixtures {
     UnitMember
 }
 import strategicprimer.model.map.fixtures.mobile {
-    Worker,
     ProxyFor,
-    Animal
+    Animal,
+    IWorker
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
-
 import strategicprimer.viewer.drivers.map_viewer {
     loadImage
 }
@@ -128,7 +127,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     variable UnitMember? current = null;
     void recache() {
         UnitMember? local = current;
-        if (is Worker local) { // TODO: IWorker interface?
+        if (is IWorker local) {
             typeLabel.text = "Worker";
             nameLabel.text = local.name;
             kindLabel.text = local.kind;
