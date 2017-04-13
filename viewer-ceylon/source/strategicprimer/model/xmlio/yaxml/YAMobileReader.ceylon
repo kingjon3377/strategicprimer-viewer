@@ -118,12 +118,10 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
                 writeProperty(ostream, "id", obj.id);
             }
             writeImageXML(ostream, obj);
-            closeLeafTag(ostream);
         } else if (is SimpleImmortal obj) {
             writeTag(ostream, obj.kind, indent);
             writeProperty(ostream, "id", obj.id);
             writeImageXML(ostream, obj);
-            closeLeafTag(ostream);
         } else if (exists tag = tagMap.get(type(obj))) {
             writeTag(ostream, tag, indent);
             if (is HasKind obj) {
@@ -133,11 +131,10 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             if (is HasImage obj) {
                 writeImageXML(ostream, obj);
             }
-            closeLeafTag(ostream);
         } else {
             throw IllegalArgumentException("No tag for ``obj.shortDescription``");
         }
-        // TODO: At least the closeLeafTag() could be moved here
+        closeLeafTag(ostream);
     }
     shared actual Boolean canWrite(Object obj) => obj is MobileFixture && !obj is IUnit;
 }
