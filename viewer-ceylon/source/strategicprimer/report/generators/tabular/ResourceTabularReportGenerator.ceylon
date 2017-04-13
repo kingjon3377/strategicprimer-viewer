@@ -64,9 +64,7 @@ shared class ResourceTabularReportGenerator()
             if (is ResourcePile second) {
                 return comparing(byIncreasing(ResourcePile.kind),
                     byIncreasing(ResourcePile.contents),
-                    // TODO: Total comparison of Quantity, as in Java compareTo().
-                    byDecreasing((ResourcePile pile)
-                    => pile.quantity.floatNumber))(first, second);
+                    byDecreasing(ResourcePile.quantity))(first, second);
             } else {
                 return smaller;
             }
