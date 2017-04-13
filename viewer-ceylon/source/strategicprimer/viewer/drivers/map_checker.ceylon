@@ -139,7 +139,6 @@ object mapCheckerCLI satisfies UtilityDriver {
     shared void check(JPath file, Anything(String) outStream, Anything(String) err,
             Warning warner = warningLevels.custom()) {
         outStream("Starting ``file``");
-// TODO: take Warning instead of using Warning.Custom and assuming callers have set it up
         IMapNG map;
         try {
             map = readMap(file, warner);
