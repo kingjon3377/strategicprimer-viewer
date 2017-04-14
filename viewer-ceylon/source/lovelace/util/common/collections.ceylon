@@ -22,22 +22,32 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
         }
         toRemove.clear();
     }
-    todo("Should probably check against toRemove as well")
-    shared actual Boolean defines(Object key) => backing.defines(key);
+    shared actual Boolean defines(Object key) =>
+            backing.defines(key) && !toRemove.contains(key);
 
-    todo("Should probably check against toRemove as well")
-    shared actual Item? get(Object key) => backing.get(key);
+    shared actual Item? get(Object key) {
+        if (toRemove.contains(key)) {
+            return null;
+        } else {
+            return backing.get(key);
+        }
+    }
 
-    todo("Should probably filter against toRemove as well")
-    shared actual Iterator<Integer->Item> iterator() => backing.iterator();
+    shared actual Iterator<Integer->Item> iterator() =>
+            backing.filterKeys((key) => !backing.contains(key)).iterator();
 
-    todo("Should probably check against toRemove as well")
-    shared actual Item? put(Integer key, Item item) => backing.put(key, item);
+    shared actual Item? put(Integer key, Item item) {
+        toRemove.remove(key);
+        return backing.put(key, item);
+    }
 
-    todo("Should probably check against toRemove as well")
     shared actual Item? remove(Integer key) {
-        toRemove.add(key);
-        return get(key);
+        if (toRemove.contains(key)) {
+            return null;
+        } else {
+            toRemove.add(key);
+            return get(key);
+        }
     }
     shared actual Boolean equals(Object that) {
         if (is IntMap<Item> that) {
