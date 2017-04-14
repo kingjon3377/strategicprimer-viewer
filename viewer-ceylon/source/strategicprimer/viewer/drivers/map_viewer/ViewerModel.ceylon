@@ -103,7 +103,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     shared new copyConstructor(IDriverModel model)
             extends SimpleDriverModel(model.map, model.mapFile) {
         if (is IViewerModel model) {
-            visDimensions = model.dimensions;
+            visDimensions = model.visibleDimensions;
             selPoint = model.selection;
         } else {
             visDimensions = VisibleDimensions(0, model.mapDimensions.rows - 1,
@@ -112,15 +112,15 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         resetZoom();
     }
     "The visible dimensions of the map."
-    shared actual VisibleDimensions dimensions => visDimensions;
-    assign dimensions {
-        if (visDimensions != dimensions) {
+    shared actual VisibleDimensions visibleDimensions => visDimensions;
+    assign visibleDimensions {
+        if (visDimensions != visibleDimensions) {
             VisibleDimensions oldDimensions = visDimensions;
-            visDimensions = dimensions;
+            visDimensions = visibleDimensions;
             // TODO: should we notify listeners before or after the change? Do they use the
             // params we pass them, or get them from us?
             for (listener in gpListeners) {
-                listener.dimensionsChanged(oldDimensions, dimensions);
+                listener.dimensionsChanged(oldDimensions, visDimensions);
             }
         }
     }

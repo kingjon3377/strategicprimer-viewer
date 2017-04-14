@@ -62,7 +62,7 @@ shared object viewerGUI satisfies SimpleDriver {
             menuHandler.register((event) {
                 Point selection = model.selection;
                 MapDimensions dimensions = model.mapDimensions;
-                VisibleDimensions visible = model.dimensions;
+                VisibleDimensions visible = model.visibleDimensions;
                 Integer topRow;
                 if (selection.row - (visible.height / 2) <= 0) {
                     topRow = 0;
@@ -82,7 +82,7 @@ shared object viewerGUI satisfies SimpleDriver {
                 // Java version had topRow + dimensions.rows and
                 // leftColumn + dimensions.columns as max row and column; this seems
                 // plainly wrong.
-                model.dimensions = VisibleDimensions(topRow, topRow + visible.height,
+                model.visibleDimensions = VisibleDimensions(topRow, topRow + visible.height,
                     leftColumn, leftColumn + visible.width);
             }, "center");
             SwingUtilities.invokeLater(() {

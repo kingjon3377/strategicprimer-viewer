@@ -64,7 +64,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     variable VisibleDimensions visibleDimensions;
     shared new (IViewerModel mapModel, JScrollBar horizontal, JScrollBar vertical) {
         model = mapModel;
-        visibleDimensions = mapModel.dimensions;
+        visibleDimensions = mapModel.visibleDimensions;
         mapDimensions = mapModel.mapDimensions;
         Point selectedPoint = mapModel.selection;
         horizontalBar = horizontal;
@@ -79,12 +79,12 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
                     () => visibleDimensions);
         object adjustmentListener satisfies AdjustmentListener {
             shared actual void adjustmentValueChanged(AdjustmentEvent event) {
-                VisibleDimensions oldDimensions = model.dimensions;
+                VisibleDimensions oldDimensions = model.visibleDimensions;
                 VisibleDimensions newDimensions = VisibleDimensions(verticalBar.\ivalue,
                     verticalBar.\ivalue + visibleDimensions.height, horizontalBar.\ivalue,
                     horizontalBar.\ivalue + visibleDimensions.width);
                 if (oldDimensions != newDimensions) {
-                    model.dimensions = newDimensions;
+                    model.visibleDimensions = newDimensions;
                 }
             }
         }
@@ -122,7 +122,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
      at the reported new value; since it's typesafe here, and probably faster, this
      switched to using the new value it was passed."
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
-        VisibleDimensions temp = model.dimensions;
+        VisibleDimensions temp = model.visibleDimensions;
         if (!((temp.minimumColumn)..(temp.maximumColumn)).contains(newPoint.column)) {
             horizontalBar.model.\ivalue = largest(newPoint.column, 0);
         }
@@ -133,7 +133,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     "Handle notification that a new map was loaded."
     shared actual void mapChanged() {
         mapDimensions = model.mapDimensions;
-        visibleDimensions = model.dimensions;
+        visibleDimensions = model.visibleDimensions;
         horizontalBar.model.setRangeProperties(0, 1, 0,
             mapDimensions.columns - visibleDimensions.width, false);
         verticalBar.model.setRangeProperties(0, 1, 0,

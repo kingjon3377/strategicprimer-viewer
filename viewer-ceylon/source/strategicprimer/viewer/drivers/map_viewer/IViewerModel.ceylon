@@ -15,8 +15,7 @@ shared interface IViewerModel satisfies IDriverModel&SelectionChangeSource&Graph
     "The coordinates of the currently selected tile."
     shared formal variable Point selection;
     "The visible dimensions of the map."
-    todo("Rename to visibleDimensions")
-    shared formal variable VisibleDimensions dimensions;
+    shared formal variable VisibleDimensions visibleDimensions;
     "The current zoom level."
     shared formal Integer zoomLevel;
     "Zoom in."

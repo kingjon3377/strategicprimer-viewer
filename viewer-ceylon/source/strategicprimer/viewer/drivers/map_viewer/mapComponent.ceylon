@@ -60,7 +60,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
         } else {
             Integer tileSize = scaleZoom(model.zoomLevel,
                 model.mapDimensions.version);
-            VisibleDimensions dimensions = model.dimensions;
+            VisibleDimensions dimensions = model.visibleDimensions;
             return Rectangle(0, 0,
                 (dimensions.maximumColumn - dimensions.minimumColumn) * tileSize,
                 (dimensions.maximumRow - dimensions.minimumRow) * tileSize);
@@ -70,7 +70,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
         Point selectedPoint = model.selection;
         Integer selectedRow = largest(selectedPoint.row, 0);
         Integer selectedColumn = largest(selectedPoint.column, 0);
-        VisibleDimensions visibleDimensions = model.dimensions;
+        VisibleDimensions visibleDimensions = model.visibleDimensions;
         variable Integer minimumRow = visibleDimensions.minimumRow;
         variable Integer maximumRow = visibleDimensions.maximumRow;
         variable Integer minimumColumn = visibleDimensions.minimumColumn;
@@ -93,7 +93,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             minimumColumn += difference;
             maximumColumn += difference;
         }
-        model.dimensions = VisibleDimensions(minimumRow, maximumRow, minimumColumn,
+        model.visibleDimensions = VisibleDimensions(minimumRow, maximumRow, minimumColumn,
             maximumColumn);
     }
     object retval extends JComponent() satisfies MapGUI&MapChangeListener&
@@ -136,7 +136,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             Point selectedPoint = model.selection;
             Integer selectedRow = largest(selectedPoint.row, 0);
             Integer selectedColumn = largest(selectedPoint.column, 0);
-            VisibleDimensions visibleDimensions = model.dimensions;
+            VisibleDimensions visibleDimensions = model.visibleDimensions;
             Integer minimumRow = visibleDimensions.minimumRow;
             Integer maximumRow = visibleDimensions.maximumRow;
             Integer minimumColumn = visibleDimensions.minimumColumn;
@@ -168,10 +168,10 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                 MapDimensions mapDimensions = model.mapDimensions;
                 Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
                 void drawMapPortion(Integer minX, Integer minY, Integer maxX, Integer maxY) {
-                    Integer minRow = model.dimensions.minimumRow;
-                    Integer maxRow = model.dimensions.maximumRow;
-                    Integer minCol = model.dimensions.minimumColumn;
-                    Integer maxCol = model.dimensions.maximumColumn;
+                    Integer minRow = model.visibleDimensions.minimumRow;
+                    Integer maxRow = model.visibleDimensions.maximumRow;
+                    Integer minCol = model.visibleDimensions.minimumColumn;
+                    Integer maxCol = model.visibleDimensions.maximumColumn;
                     for (i in minY .. maxY) {
                         if ((i + minRow)>=(maxRow + 1)) {
                             break;
@@ -209,10 +209,10 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             Integer tileSize = scaleZoom(model.zoomLevel, model.mapDimensions.version);
             Integer visibleColumns = event.component.width / tileSize;
             Integer visibleRows = event.component.height / tileSize;
-            variable Integer minimumColumn = model.dimensions.minimumColumn;
-            variable Integer maximumColumn = model.dimensions.maximumColumn;
-            variable Integer minimumRow = model.dimensions.minimumRow;
-            variable Integer maximumRow = model.dimensions.maximumRow;
+            variable Integer minimumColumn = model.visibleDimensions.minimumColumn;
+            variable Integer maximumColumn = model.visibleDimensions.maximumColumn;
+            variable Integer minimumRow = model.visibleDimensions.minimumRow;
+            variable Integer maximumRow = model.visibleDimensions.maximumRow;
             MapDimensions mapDimensions = model.mapDimensions;
             if (visibleColumns != (maximumColumn - minimumColumn) ||
             visibleRows != (maximumRow - minimumRow)) {
@@ -236,7 +236,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                 } else {
                     maximumRow = minimumRow + visibleRows - 1;
                 }
-                model.dimensions = VisibleDimensions(minimumRow, maximumRow,
+                model.visibleDimensions = VisibleDimensions(minimumRow, maximumRow,
                     minimumColumn, maximumColumn);
             }
         }

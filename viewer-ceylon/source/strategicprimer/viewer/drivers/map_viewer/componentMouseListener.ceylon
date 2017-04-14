@@ -72,7 +72,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             value eventPoint = event.point;
             MapDimensions mapDimensions = model.mapDimensions;
             Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
-            VisibleDimensions visibleDimensions = model.dimensions;
+            VisibleDimensions visibleDimensions = model.visibleDimensions;
             Point point = pointFactory(
                 halfEven((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
                     .plus(0.1).integer,
@@ -92,7 +92,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
         shared actual void mouseClicked(MouseEvent event) {
             event.component.requestFocusInWindow();
             value eventPoint = event.point;
-            VisibleDimensions visibleDimensions = model.dimensions;
+            VisibleDimensions visibleDimensions = model.visibleDimensions;
             MapDimensions mapDimensions = model.mapDimensions;
             Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
             Point point = pointFactory(
