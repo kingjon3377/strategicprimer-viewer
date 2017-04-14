@@ -201,7 +201,7 @@ object zeroToOneConverter {
 	}
 	"Read version-0 XML from the input stream and write version-1 equivalent XML to the
 	 output stream."
-	todo("Convert to ceylon.io and/or ceylon.file, at least for output")
+	todo("Convert input to ceylon.io and/or ceylon.file")
 	shared void convert({XMLEvent*} stream, Anything(String) ostream) {
 		for (event in stream) {
 			if (is StartElement event) {
