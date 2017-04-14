@@ -39,6 +39,4 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
     shared actual void removeSubordinateMap(IMapNG map) {
         subordinateMapsList.removeWhere(([localMap, file]) => localMap == map);
     }
-    shared actual {[IMutableMapNG, JPath?]*} allMaps =>
-            subordinateMaps.follow([map, mapFile]);
 }
