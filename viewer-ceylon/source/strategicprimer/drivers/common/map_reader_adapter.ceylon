@@ -25,6 +25,9 @@ import strategicprimer.model.xmlio {
     readMap,
     writeMap
 }
+import ceylon.file {
+    parsePath
+}
 Logger log = logger(`module strategicprimer.drivers.common`);
 "Read a map model from a file or a stream, wrapping any errors the process generates in a
  [[DriverFailedException]] to simplify callers."
@@ -71,7 +74,7 @@ todo("Return exceptions instead of throwing them")
 shared void writeModel(IDriverModel model) {
 	if (exists mainFile = model.mapFile) {
 		try {
-			writeMap(mainFile, model.map);
+			writeMap(parsePath(mainFile.string), model.map);
 		} catch (IOException except) {
 			throw DriverFailedException(except, "I/O error writing to ``mainFile``");
 		}
@@ -82,7 +85,7 @@ shared void writeModel(IDriverModel model) {
 		for ([map, filename] in model.subordinateMaps) {
 			if (exists filename) {
 				try {
-					writeMap(filename, map);
+					writeMap(parsePath(filename.string), map);
 				} catch (IOException except) {
 					throw DriverFailedException(except,
 						"I/O error writing to ``filename``");

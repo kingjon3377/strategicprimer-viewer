@@ -63,6 +63,9 @@ import strategicprimer.drivers.common {
     SPOptions,
     ICLIHelper
 }
+import ceylon.file {
+    parsePath
+}
 
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(
     "Strategic Primer world map files", "map", "xml");
@@ -117,10 +120,10 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             });
         }
         case ("save") {
-            JPath? givenFile = mapModel.mapFile;
+            JPath? givenFile = mapModel.mapFile; // TODO: inline into exists
             if (exists givenFile) {
                 try {
-                    writeMap(givenFile, mapModel.map);
+                    writeMap(parsePath(givenFile.string), mapModel.map);
                 } catch (IOException except) {
                     showErrorDialog(source, "Strategic Primer Assistive Programs",
                         "I/O error writing to ``givenFile``");
@@ -134,7 +137,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
         case ("save as") {
             FileChooser.save(null, fileChooser).call((path) {
                 try {
-                    writeMap(path, mapModel.map);
+                    writeMap(parsePath(path.string), mapModel.map);
                 } catch (IOException except) {
                     showErrorDialog(source, "Strategic Primer Assistive Programs",
                         "I/O error writing to ``path``");
@@ -163,7 +166,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
                 for ([map, file] in mapModel.allMaps) {
                     if (exists file) {
                         try {
-                            writeMap(file, map);
+                            writeMap(parsePath(file.string), map);
                         } catch (IOException except) {
                             showErrorDialog(source, "Strategic Primer Assistive Programs",
                                 "I/O error writing to ``file``");
@@ -174,7 +177,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             } else {
                 FileChooser.save(null, fileChooser).call((path) {
                     try {
-                        writeMap(path, mapModel.map);
+                        writeMap(parsePath(path.string), mapModel.map);
                     } catch (IOException except) {
                         showErrorDialog(source, "Strategic Primer Assistive Programs",
                             "I/O error writing to ``path``");

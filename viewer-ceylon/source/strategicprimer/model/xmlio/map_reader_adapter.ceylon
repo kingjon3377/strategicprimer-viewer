@@ -27,6 +27,9 @@ import strategicprimer.model.xmlio.yaxml {
     yaXMLReader,
     yaXMLWriter
 }
+import ceylon.file {
+    Path
+}
 
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
@@ -52,7 +55,7 @@ shared IMutableMapNG readMap(JPath|JReader file, Warning warner) {
     }
 }
 "Write a map to file."
-shared void writeMap(JPath file, IMapNG map) => writer.write(file, map);
+shared void writeMap(Path file, IMapNG map) => writer.write(file, map);
 test
 void testNamesToFiles() {
     JPath[] expected = [ JPaths.get("two"), JPaths.get("three"), JPaths.get("four") ];

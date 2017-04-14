@@ -46,6 +46,9 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     ICLIHelper
 }
+import ceylon.file {
+    parsePath
+}
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated
    syntax. (Because of that usage, warnings are disabled.)"""
@@ -98,7 +101,7 @@ object echoDriver satisfies UtilityDriver {
                 }
             }
             try {
-                writeMap(JPaths.get(outArg), map);
+                writeMap(parsePath(outArg), map);
             } catch (IOException except) {
                 throw DriverFailedException(except, "I/O error writing ``outArg``");
             }

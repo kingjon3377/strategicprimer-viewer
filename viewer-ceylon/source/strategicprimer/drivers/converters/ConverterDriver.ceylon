@@ -34,6 +34,9 @@ import strategicprimer.model.xmlio {
     writeMap,
     SPFormatException
 }
+import ceylon.file {
+    parsePath
+}
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.converters`);
 "A driver to convert maps: at present, halving their resolution."
@@ -73,7 +76,7 @@ class ConverterDriver(
                     cli.println(" ... Converting ... ");
                     IMapNG map = decreaseResolution(old);
                     cli.println("About to write ``filename``.new.xml");
-                    writeMap(Paths.get(filename + ".new.xml"), map);
+                    writeMap(parsePath(filename + ".new.xml"), map);
                 } catch (FileNotFoundException|NoSuchFileException except) {
                     log.error("``filename`` not found", except);
                 } catch (IOException except) {

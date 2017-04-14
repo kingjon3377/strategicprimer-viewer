@@ -91,6 +91,11 @@ import strategicprimer.model.xmlio {
     SPWriter,
     spNamespace
 }
+import ceylon.file {
+    Path,
+    File,
+    Nil
+}
 Regex snugEndTag = regex("([^ ])/>", true);
 """The main writer-to-XML class in the "fluid XML" implementation."""
 shared class SPFluidWriter() satisfies SPWriter {
@@ -104,7 +109,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             }
         }
     }
-    shared actual void writeSPObject(Anything(String)|JPath arg, Object obj) {
+    shared actual void writeSPObject(Anything(String)|Path arg, Object obj) {
         if (is Anything(String) ostream = arg) {
             XMLOutputFactory xof = XMLOutputFactory.newInstance();
             StringWriter writer = StringWriter();
@@ -120,16 +125,34 @@ shared class SPFluidWriter() satisfies SPWriter {
                 throw IOException("Failure in creating XML", except);
             }
             ostream(snugEndTag.replace(writer.string, "$1 />"));
-        } else if (is JPath file = arg) {
-            try (writer = JFiles.newBufferedWriter(file)) {
-                writeSPObject((String str) => writer.append(str), obj);
+        } else if (is Path path = arg) {
+            File file;
+            value res = path.resource;
+            if (is File res) {
+                file = res;
+            } else if (is Nil res) {
+                file = res.createFile();
+            } else {
+                throw IOException("``path`` exists but is not a file");
+            }
+            try (writer = file.Overwriter()) {
+                writeSPObject(writer.write, obj);
             }
         }
     }
-    shared actual void write(JPath|Anything(String) arg, IMapNG map) {
-        if (is JPath file = arg) {
-            try (writer = JFiles.newBufferedWriter(file)) {
-                writeSPObject((String str) => writer.append(str), map);
+    shared actual void write(Path|Anything(String) arg, IMapNG map) {
+        if (is Path path = arg) {
+            File file;
+            value res = path.resource;
+            if (is File res) {
+                file = res;
+            } else if (is Nil res) {
+                file = res.createFile();
+            } else {
+                throw IOException("``path`` exists but is not a file");
+            }
+            try (writer = file.Overwriter()) {
+                writeSPObject(writer.write, map);
             }
         } else if (is Anything(String) ostream = arg) {
             writeSPObject(ostream, map);
