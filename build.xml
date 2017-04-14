@@ -27,16 +27,9 @@
 
   <!-- Paths within the repository. This should just work, so long
        as the directories exist. -->
-  <path id="junit.classpath">
-    <!-- See comment in paths.properties. -->
-    <pathelement location="${junit.jar.path}" />
-    <pathelement location="${hamcrest.jar.path}" />
-    <pathelement location="${windowmenu.jar.path}" />
-  </path>
   <target name="set-classpath-on-mac" if="onmac">
     <path id="viewer.classpath">
       <pathelement location="${bin_dir}" />
-      <path refid="junit.classpath" />
       <!-- See comment in paths.properties -->
       <pathelement location="${nullness.jar.path}" />
       <pathelement location="${windowmenu.jar.path}" />
@@ -46,7 +39,6 @@
   <target name="set-classpath-on-non-mac" unless="onmac">
     <path id="viewer.classpath">
       <pathelement location="${bin_dir}" />
-      <path refid="junit.classpath" />
       <!-- See comment in paths.properties -->
       <pathelement location="${nullness.jar.path}" />
       <pathelement location="${windowmenu.jar.path}" />
