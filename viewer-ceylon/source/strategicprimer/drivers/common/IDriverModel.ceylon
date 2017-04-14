@@ -19,8 +19,7 @@ shared interface IDriverModel satisfies MapChangeSource&VersionChangeSource {
     "The (main) map."
     shared formal IMutableMapNG map;
     "Its dimensions."
-    todo("Provide default implementation")
-    shared formal MapDimensions mapDimensions;
+    shared default MapDimensions mapDimensions => map.dimensions;
     "The filename from which the map was loaded or to which it should be written."
     shared formal JPath? mapFile;
 }
