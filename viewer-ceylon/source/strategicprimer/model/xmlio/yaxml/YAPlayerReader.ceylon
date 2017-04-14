@@ -1,7 +1,3 @@
-import java.lang {
-    JAppendable=Appendable
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -32,7 +28,7 @@ class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
             getParameter(element, "code_name"));
     }
     shared actual Boolean isSupportedTag(String tag) => "player" == tag.lowercased;
-    shared actual void write(JAppendable ostream, Player obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, Player obj, Integer indent) {
         writeTag(ostream, "player", indent);
         writeProperty(ostream, "number", obj.playerId);
         writeProperty(ostream, "code_name", obj.name);

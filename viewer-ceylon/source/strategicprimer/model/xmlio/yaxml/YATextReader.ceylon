@@ -1,7 +1,3 @@
-import java.lang {
-    JAppendable=Appendable
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -45,14 +41,14 @@ class YATextReader(Warning warning, IDRegistrar idRegistrar)
         fixture.image = getParameter(element, "image", "");
         return fixture;
     }
-    shared actual void write(JAppendable ostream, TextFixture obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, TextFixture obj, Integer indent) {
         writeTag(ostream, "text", indent);
         if (obj.turn != -1) {
             writeProperty(ostream, "turn", obj.turn);
         }
         writeImageXML(ostream, obj);
-        ostream.append('>');
-        ostream.append(obj.text.trimmed);
+        ostream(">");
+        ostream(obj.text.trimmed);
         closeTag(ostream, 0, "text");
     }
     shared actual Boolean canWrite(Object obj) => obj is TextFixture;

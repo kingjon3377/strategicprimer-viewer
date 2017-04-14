@@ -1,7 +1,3 @@
-import java.lang {
-    JAppendable=Appendable
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -29,7 +25,7 @@ class YAPortalReader(Warning warning, IDRegistrar idRegistrar) extends YAAbstrac
         spinUntilEnd(element.name, stream);
         return retval;
     }
-    shared actual void write(JAppendable ostream, Portal obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, Portal obj, Integer indent) {
         writeTag(ostream, "portal", indent);
         writeProperty(ostream, "world", obj.destinationWorld);
         writeProperty(ostream, "row", obj.destinationCoordinates.row);

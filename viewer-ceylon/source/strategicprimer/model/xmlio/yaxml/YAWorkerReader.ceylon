@@ -1,8 +1,4 @@
 
-import java.lang {
-    JAppendable=Appendable
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -37,7 +33,7 @@ import strategicprimer.model.xmlio.exceptions {
 }
 "A reader for workers."
 class YAWorkerReader extends YAAbstractReader<IWorker> {
-    shared static void writeSkill(JAppendable ostream, ISkill obj, Integer indent) {
+    shared static void writeSkill(Anything(String) ostream, ISkill obj, Integer indent) {
         if (!obj.empty) {
             writeTag(ostream, "skill", indent);
             writeProperty(ostream, "name", obj.name);
@@ -46,7 +42,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
             closeLeafTag(ostream);
         }
     }
-    shared static void writeJob(JAppendable ostream, IJob obj, Integer indent) {
+    shared static void writeJob(Anything(String) ostream, IJob obj, Integer indent) {
         if (obj.level <= 0, obj.empty) {
             return;
         }
@@ -103,7 +99,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         }
         return retval;
     }
-    void writeStats(JAppendable ostream, WorkerStats? stats, Integer indent) {
+    void writeStats(Anything(String) ostream, WorkerStats? stats, Integer indent) {
         if (exists stats) {
             writeTag(ostream, "stats", indent);
             writeProperty(ostream, "hp", stats.hitPoints);
@@ -139,7 +135,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         }
         return retval;
     }
-    shared actual void write(JAppendable ostream, IWorker obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, IWorker obj, Integer indent) {
         writeTag(ostream, "worker", indent);
         writeProperty(ostream, "name", obj.name);
         if ("human" != obj.race) {

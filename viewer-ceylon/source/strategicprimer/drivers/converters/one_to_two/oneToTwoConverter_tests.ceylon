@@ -229,35 +229,31 @@ shared void testOneToTwoConversion() {
     }
 
     ExplorationRunner runner = initializeRunner();
-    try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = newWriter;
-        writer.write(outOne, converted);
-        writer.write(outTwo, convertOneToTwo(original, runner, true));
-        Regex matcher = regex("id=\"[0-9]*\"", true);
-        assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
-            "Produces expected result");
-    }
-    try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = oldWriter;
-        writer.write(outOne, converted);
-        writer.write(outTwo, convertOneToTwo(original, runner, true));
-        Regex matcher = regex("id=\"[0-9]*\"", true);
-        assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
-            "Deprecated I/O produces expected result");
-    }
     StringBuilder outOne = StringBuilder();
     StringBuilder outTwo = StringBuilder();
+    Regex matcher = regex("id=\"[0-9]*\"", true);
+    newWriter.write(outOne.append, converted);
+    newWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+    assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
+        "Produces expected result");
+    outOne.clear();
+    outTwo.clear();
+    oldWriter.write(outOne.append, converted);
+    oldWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+    assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
+        "Deprecated I/O produces expected result");
+    outOne.clear();
+    outTwo.clear();
     assertEquals(
         converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outTwo, str)),
         converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outOne, str)),
         "Products of two runs are both or neither subsets of expected");
     assertEquals(outTwo.string, outOne.string,
         "Two runs produce identical results");
-    try (outStream = StringWriter(), errStream = Formatter()) {
-        SPWriter writer = newWriter;
-        writer.writeSPObject(outStream, convertOneToTwo(original, runner, true));
-        assertModuloID(converted, outStream.string, noop);
-    }
+    outOne.clear();
+    outTwo.clear();
+    newWriter.writeSPObject(outOne.append, convertOneToTwo(original, runner, true));
+    assertModuloID(converted, outOne.string, noop);
 }
 test
 suppressWarnings("deprecation")
@@ -369,35 +365,30 @@ shared void testMoreOneToTwoConversion() {
         converted.setMountainous(loc, true);
     }
     ExplorationRunner runner = initializeRunner();
-    try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = newWriter;
-        writer.write(outOne, converted);
-        writer.write(outTwo, convertOneToTwo(original, runner, true));
-        Regex matcher = regex("id=\"[0-9]*\"", true);
-        assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
-            "Produces expected result");
-    }
-    try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = oldWriter;
-        writer.write(outOne, converted);
-        writer.write(outTwo, convertOneToTwo(original, runner, true));
-        Regex matcher = regex("id=\"[0-9]*\"", true);
-        assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
-            "Deprecated I/O produces expected result");
-    }
+    Regex matcher = regex("id=\"[0-9]*\"", true);
     StringBuilder outOne = StringBuilder();
     StringBuilder outTwo = StringBuilder();
+    newWriter.write(outOne.append, converted);
+    newWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+    assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
+        "Produces expected result");
+    outOne.clear();
+    outTwo.clear();
+    oldWriter.write(outOne.append, converted);
+    oldWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+    assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
+        "Deprecated I/O produces expected result");
+    outOne.clear();
+    outTwo.clear();
     assertEquals(
         converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outTwo, str)),
         converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outOne, str)),
         "Products of two runs are both or neither subsets of expected");
     assertEquals(outTwo.string, outOne.string,
         "Two runs produce identical results");
-    try (outStream = StringWriter(), errStream = Formatter()) {
-        SPWriter writer = newWriter;
-        writer.writeSPObject(outStream, convertOneToTwo(original, runner, true));
-        assertModuloID(converted, outStream.string, noop);
-    }
+    outOne.clear();
+    newWriter.writeSPObject(outOne.append, convertOneToTwo(original, runner, true));
+    assertModuloID(converted, outOne.string, noop);
 }
 
 test
@@ -555,35 +546,31 @@ shared void testThirdOneToTwoConversion() {
     converted.addRivers(pointFactory(6, 5), River.east, River.west);
     converted.addRivers(pointFactory(6, 6), River.north, River.west);
     ExplorationRunner runner = initializeRunner();
-    try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = newWriter;
-        writer.write(outOne, converted);
-        writer.write(outTwo, convertOneToTwo(original, runner, true));
-        Regex matcher = regex("id=\"[0-9]*\"", true);
-        assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
-            "Produces expected result");
-    }
-    try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = oldWriter;
-        writer.write(outOne, converted);
-        writer.write(outTwo, convertOneToTwo(original, runner, true));
-        Regex matcher = regex("id=\"[0-9]*\"", true);
-        assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
-            "Deprecated I/O produces expected result");
-    }
+    Regex matcher = regex("id=\"[0-9]*\"", true);
     StringBuilder outOne = StringBuilder();
     StringBuilder outTwo = StringBuilder();
+    newWriter.write(outOne.append, converted);
+    newWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+    assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
+        "Produces expected result");
+    outOne.clear();
+    outTwo.clear();
+    oldWriter.write(outOne.append, converted);
+    oldWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+    assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
+        "Deprecated I/O produces expected result");
+    outOne.clear();
+    outTwo.clear();
     assertEquals(
         converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outTwo, str)),
         converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outOne, str)),
         "Products of two runs are both or neither subsets of expected");
     assertEquals(outTwo.string, outOne.string,
         "Two runs produce identical results");
-    try (outStream = StringWriter(), errStream = Formatter()) {
-        SPWriter writer = newWriter;
-        writer.writeSPObject(outStream, convertOneToTwo(original, runner, true));
-        assertModuloID(converted, outStream.string, noop);
-    }
+    outOne.clear();
+    outTwo.clear();
+    newWriter.writeSPObject(outOne.append, convertOneToTwo(original, runner, true));
+    assertModuloID(converted, outOne.string, noop);
 }
 
 void writeLine(StringBuilder ostream, String line) {
@@ -693,20 +680,18 @@ shared void testFourthOneToTwoConversion() {
         initialize(converted, point, TileType.plains);
     }
 
-    try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = newWriter;
-        writer.write(outOne, converted);
-        writer.write(outTwo, convertOneToTwo(original, runner, true));
-        assertEquals(outTwo.string, outOne.string, "Produces expected result");
-    }
-    try (outOne = StringWriter(), outTwo = StringWriter()) {
-        SPWriter writer = oldWriter;
-        writer.write(outOne, converted);
-        writer.write(outTwo, actualConverted);
-        assertEquals(outTwo.string, outOne.string, "Deprecated I/O produces expected result");
-    }
     StringBuilder outOne = StringBuilder();
     StringBuilder outTwo = StringBuilder();
+    newWriter.write(outOne.append, converted);
+    newWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+    assertEquals(outTwo.string, outOne.string, "Produces expected result");
+    outOne.clear();
+    outTwo.clear();
+    oldWriter.write(outOne.append, converted);
+    oldWriter.write(outTwo.append, actualConverted);
+    assertEquals(outTwo.string, outOne.string, "Deprecated I/O produces expected result");
+    outOne.clear();
+    outTwo.clear();
     assertEquals(
         converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outTwo, str)),
         converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outOne, str)),

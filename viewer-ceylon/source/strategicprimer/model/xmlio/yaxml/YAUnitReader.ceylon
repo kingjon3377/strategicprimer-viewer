@@ -3,7 +3,6 @@ import ceylon.language.meta {
 }
 
 import java.lang {
-    JAppendable=Appendable,
     IllegalArgumentException
 }
 
@@ -138,7 +137,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         return retval;
     }
     shared actual Boolean isSupportedTag(String tag) => "unit" == tag.lowercased;
-    void writeOrders(JAppendable ostream, String tag, Integer turn, String orders,
+    void writeOrders(Anything(String) ostream, String tag, Integer turn, String orders,
             Integer indent) {
         if (orders.empty) {
             return;
@@ -147,11 +146,11 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         if (turn >= 0) {
             writeProperty(ostream, "turn", turn);
         }
-        ostream.append('>');
-        ostream.append(simpleQuote(orders));
+        ostream(">");
+        ostream(simpleQuote(orders));
         closeTag(ostream, 0, tag);
     }
-    void writeChild(JAppendable ostream, UnitMember child, Integer indent) {
+    void writeChild(Anything(String) ostream, UnitMember child, Integer indent) {
         for (reader in readers) {
             if (reader.canWrite(child)) {
                 reader.writeRaw(ostream, child, indent);
@@ -163,7 +162,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 .name``");
         }
     }
-    shared actual void write(JAppendable ostream, IUnit obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, IUnit obj, Integer indent) {
         writeTag(ostream, "unit", indent);
         writeProperty(ostream, "owner", obj.owner.playerId);
         writeNonemptyProperty(ostream, "kind", obj.kind);

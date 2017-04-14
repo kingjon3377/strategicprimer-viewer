@@ -268,9 +268,9 @@ void testZeroToOneConversion() {
 	zeroToOneConverter.convert(IteratorWrapper(TypesafeXMLEventReader(
 		XMLInputFactory.newInstance().createXMLEventReader(StringReader(orig)))),
 		ostream.append);
-	StringWriter actualXML = StringWriter();
+	StringBuilder actualXML = StringBuilder();
 	SPWriter writer = testReaderFactory.oldWriter;
-	writer.writeSPObject(actualXML,
+	writer.writeSPObject(actualXML.append,
 		readMap(StringReader(ostream.string), warningLevels.ignore));
 	IMutableMapNG expected = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
 	Player player = PlayerImpl(0, "Test Player");
@@ -284,7 +284,7 @@ void testZeroToOneConversion() {
 	initialize(expected, pointFactory(1, 1), TileType.temperateForest,
 		MineralVein("coal", true, 0, 1));
 	StringWriter expectedXML = StringWriter();
-	writer.writeSPObject(expectedXML, expected);
+	writer.writeSPObject((String str) => expectedXML.append(str), expected);
 	assertEquals(actualXML.string, expectedXML.string,
 		"Converted map's serialized form was as expected");
 	assertEquals(readMap(StringReader(ostream.string),

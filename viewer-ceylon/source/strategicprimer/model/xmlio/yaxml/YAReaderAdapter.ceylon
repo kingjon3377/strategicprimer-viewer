@@ -10,7 +10,6 @@ import java.io {
     IOException
 }
 import java.lang {
-    JAppendable=Appendable,
     IllegalArgumentException,
     IllegalStateException
 }
@@ -91,7 +90,7 @@ class YAReaderAdapter(
     "Write a series of rivers."
     todo("Test this")
     throws(`class IOException`, "on I/O error")
-    void writeAllRivers(JAppendable ostream, {River*} rivers, Integer indent) {
+    void writeAllRivers(Anything(String) ostream, {River*} rivers, Integer indent) {
         for (river in rivers) {
             mapReader.writeRiver(ostream, river, indent);
         }
@@ -99,7 +98,7 @@ class YAReaderAdapter(
     "Write an object to XML."
     todo("Improve test coverage")
     throws(`class IOException`, "on I/O error")
-    shared void write("The stream to write to" JAppendable ostream,
+    shared void write("The stream to write to" Anything(String) ostream,
             "The object to write" Object obj,
             "The current indentation level" Integer indent) {
         if (is River obj) {

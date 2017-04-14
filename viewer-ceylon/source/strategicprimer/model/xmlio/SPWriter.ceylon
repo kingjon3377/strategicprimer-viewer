@@ -1,6 +1,3 @@
-import java.lang {
-    JAppendable=Appendable
-}
 import java.nio.file {
     JPath=Path
 }
@@ -15,12 +12,12 @@ import strategicprimer.model.map {
 "An interface for map (and other SP XML) writers."
 shared interface SPWriter {
     "Write a map to file or a stream."
+    todo("Port to ceylon.file")
     shared formal void write(
             "The file or stream to write to."
-            todo("Take String() instead of Appendable")
-            JPath|JAppendable arg,
+            JPath|Anything(String) arg,
             "The map to write"
             IMapNG map);
     "Write an object to a file or stream."
-    shared formal void writeSPObject(JPath|JAppendable arg, Object obj);
+    shared formal void writeSPObject(JPath|Anything(String) arg, Object obj);
 }

@@ -6,7 +6,6 @@ import ceylon.language.meta.model {
 }
 
 import java.lang {
-    JAppendable=Appendable,
     IllegalArgumentException
 }
 
@@ -99,7 +98,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         }
         return retval;
     }
-    shared actual void write(JAppendable ostream, MobileFixture obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, MobileFixture obj, Integer indent) {
         if (is IUnit obj) {
             throw IllegalArgumentException("Unit handled elsewhere");
         } else if (is Animal obj) {

@@ -2,10 +2,6 @@ import ceylon.math.decimal {
     parseDecimal
 }
 
-import java.lang {
-    JAppendable=Appendable
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -61,7 +57,7 @@ class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
         return retval;
     }
     shared actual Boolean isSupportedTag(String tag) => "resource" == tag.lowercased;
-    shared actual void write(JAppendable ostream, ResourcePile obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, ResourcePile obj, Integer indent) {
         writeTag(ostream, "resource", indent);
         writeProperty(ostream, "id", obj.id);
         writeProperty(ostream, "kind", obj.kind);

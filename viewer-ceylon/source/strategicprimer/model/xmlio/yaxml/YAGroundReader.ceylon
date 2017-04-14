@@ -1,7 +1,3 @@
-import java.lang {
-    JAppendable=Appendable
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -45,7 +41,7 @@ class YAGroundReader(Warning warning, IDRegistrar idRegistrar)
         }
     }
     shared actual Boolean isSupportedTag(String tag) => "ground" == tag.lowercased;
-    shared actual void write(JAppendable ostream, Ground obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, Ground obj, Integer indent) {
         writeTag(ostream, "ground", indent);
         writeProperty(ostream, "kind", obj.kind);
         writeProperty(ostream, "exposed", obj.exposed.string);

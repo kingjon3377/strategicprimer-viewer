@@ -1,6 +1,5 @@
 import java.lang {
-    IllegalArgumentException,
-    JAppendable=Appendable
+    IllegalArgumentException
 }
 import java.text {
     NumberFormat,
@@ -128,8 +127,8 @@ abstract class YAAbstractReader<Element>
     shared static Boolean hasParameter(StartElement element, String param) =>
             getAttributeByName(element, param) exists;
     "Append the given number of tabs to the stream."
-    shared static void indent(JAppendable ostream, Integer tabs) {
-        ostream.append("\t".repeat(tabs));
+    shared static void indent(Anything(String) ostream, Integer tabs) {
+        ostream("\t".repeat(tabs));
     }
     "Replace XML meta-characters in a string with their equivalents."
     shared static String simpleQuote(String text) {
@@ -140,22 +139,22 @@ abstract class YAAbstractReader<Element>
         return retval;
     }
     "Write a property to XML."
-    shared static void writeProperty(JAppendable ostream, String name, String|Integer val) {
+    shared static void writeProperty(Anything(String) ostream, String name, String|Integer val) {
         switch (val)
         case (is String) {
-            ostream.append(" ``simpleQuote(name)``=\"``simpleQuote(val)``\"");
+            ostream(" ``simpleQuote(name)``=\"``simpleQuote(val)``\"");
         }
         case (is Integer) { writeProperty(ostream, name, val.string); }
     }
     "Write a property to XML only if its value is nonempty."
-    shared static void writeNonemptyProperty(JAppendable ostream, String name, String val) {
+    shared static void writeNonemptyProperty(Anything(String) ostream, String name, String val) {
         if (!val.empty) {
             writeProperty(ostream, name, val);
         }
     }
     "Write the image property to XML if the object's image is nonempty and differs from
      the default."
-    shared static void writeImageXML(JAppendable ostream, HasImage obj) {
+    shared static void writeImageXML(Anything(String) ostream, HasImage obj) {
         String image = obj.image;
         if (image != obj.defaultImage) {
             writeNonemptyProperty(ostream, "image", image);
@@ -192,26 +191,26 @@ abstract class YAAbstractReader<Element>
     "Write the necessary number of tab characters and a tag. Does not write the
      right-bracket to close the tag. If `tabs` is 0, emit a namespace declaration as
      well."
-    shared static void writeTag(JAppendable ostream, String tag, Integer tabs) {
+    shared static void writeTag(Anything(String) ostream, String tag, Integer tabs) {
         indent(ostream, tabs);
-        ostream.append("<``simpleQuote(tag)``");
+        ostream("<``simpleQuote(tag)``");
         if (tabs == 0) {
-            ostream.append(" xmlns=\"``spNamespace``\"");
+            ostream(" xmlns=\"``spNamespace``\"");
         }
     }
     "Close a tag with a right-bracket and add a newline."
-    shared static void finishParentTag(JAppendable ostream) =>
-            ostream.append(">``operatingSystem.newline``");
+    shared static void finishParentTag(Anything(String) ostream) =>
+            ostream(">``operatingSystem.newline``");
     "Close a 'leaf' tag and add a newline."
-    shared static void closeLeafTag(JAppendable ostream) =>
-            ostream.append(" />``operatingSystem.newline``");
+    shared static void closeLeafTag(Anything(String) ostream) =>
+            ostream(" />``operatingSystem.newline``");
     "Write a closing tag to the stream, optionally indented, and followed by a
      newline."
-    shared static void closeTag(JAppendable ostream, Integer tabs, String tag) {
+    shared static void closeTag(Anything(String) ostream, Integer tabs, String tag) {
         if (tabs > 0) {
             indent(ostream, tabs);
         }
-        ostream.append("</``simpleQuote(tag)``>``operatingSystem.newline``");
+        ostream("</``simpleQuote(tag)``>``operatingSystem.newline``");
     }
     "Parse a Point from a tag's properties."
     shared static Point parsePoint(StartElement element) =>

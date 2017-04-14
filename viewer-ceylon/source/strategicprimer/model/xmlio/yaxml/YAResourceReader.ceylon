@@ -1,5 +1,4 @@
 import java.lang {
-    JAppendable=Appendable,
     IllegalArgumentException,
     IllegalStateException
 }
@@ -140,7 +139,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         retval.image = getParameter(element, "image", "");
         return retval;
     }
-    shared actual void write(JAppendable ostream, HarvestableFixture obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, HarvestableFixture obj, Integer indent) {
         if (is CacheFixture obj) {
             writeTag(ostream, "cache", indent);
             writeProperty(ostream, "kind", obj.kind);

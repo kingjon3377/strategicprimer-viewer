@@ -7,7 +7,6 @@ import ceylon.language.meta {
 }
 
 import java.lang {
-    JAppendable=Appendable,
     IllegalArgumentException
 }
 
@@ -112,9 +111,9 @@ class YAMapReader("The Warning instance to use" Warning warner,
         }
     }
     "Write a newline if needed."
-    void eolIfNeeded(Boolean needEol, JAppendable writer) {
+    void eolIfNeeded(Boolean needEol, Anything(String) writer) {
         if (needEol) {
-            writer.append(operatingSystem.newline);
+            writer(operatingSystem.newline);
         }
     }
     "Parse a river from XML. The caller is now responsible for advancing the stream past
@@ -133,7 +132,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         }
     }
     "Write a river."
-    shared void writeRiver(JAppendable ostream, River obj, Integer indent) {
+    shared void writeRiver(Anything(String) ostream, River obj, Integer indent) {
         if (River.lake == obj) {
             writeTag(ostream, "lake", indent);
         } else {
@@ -256,7 +255,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         return retval;
     }
     "Write a child object"
-    void writeChild(JAppendable ostream, TileFixture child, Integer tabs) {
+    void writeChild(Anything(String) ostream, TileFixture child, Integer tabs) {
         for (reader in readers) {
             if (reader.canWrite(child)) {
                 reader.writeRaw(ostream, child, tabs);
@@ -269,7 +268,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         }
     }
     "Write a map."
-    shared actual void write(JAppendable ostream, IMapNG obj, Integer tabs) {
+    shared actual void write(Anything(String) ostream, IMapNG obj, Integer tabs) {
         writeTag(ostream, "view", tabs);
         writeProperty(ostream, "current_player", obj.currentPlayer.playerId);
         writeProperty(ostream, "current_turn", obj.currentTurn);
@@ -301,7 +300,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     if (TileType.notVisible != terrain) {
                         writeProperty(ostream, "kind", terrain.xml);
                     }
-                    ostream.append('>');
+                    ostream(">");
                     variable Boolean needEol = true;
                     if (obj.isMountainous(loc)) {
                         eolIfNeeded(true, ostream);

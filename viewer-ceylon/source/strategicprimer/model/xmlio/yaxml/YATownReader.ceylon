@@ -3,7 +3,6 @@ import ceylon.language.meta {
 }
 
 import java.lang {
-    JAppendable=Appendable,
     IllegalStateException
 }
 
@@ -141,7 +140,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         retval.portrait = getParameter(element, "portrait", "");
         return retval;
     }
-    void writeAbstractTown(JAppendable ostream, AbstractTown obj, Integer tabs) {
+    void writeAbstractTown(Anything(String) ostream, AbstractTown obj, Integer tabs) {
         writeTag(ostream, obj.kind, tabs);
         writeProperty(ostream, "status", obj.status.string);
         writeProperty(ostream, "size", obj.townSize.string);
@@ -165,7 +164,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         case ("fortress") { return parseFortress(element, stream); }
         else { return parseTown(element, stream); }
     }
-    shared actual void write(JAppendable ostream, ITownFixture obj, Integer tabs) {
+    shared actual void write(Anything(String) ostream, ITownFixture obj, Integer tabs) {
         if (is AbstractTown obj) {
             writeAbstractTown(ostream, obj, tabs);
         } else if (is Village obj) {
@@ -188,9 +187,9 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             writeProperty(ostream, "id", obj.id);
             writeImageXML(ostream, obj);
             writeNonemptyProperty(ostream, "portrait", obj.portrait);
-            ostream.append('>');
+            ostream(">");
             if (!obj.empty) {
-                ostream.append(operatingSystem.newline);
+                ostream(operatingSystem.newline);
                 for (member in obj) {
                     if (exists reader = memberReaders.find((yar) => yar.canWrite(member))) {
                         reader.writeRaw(ostream, member, tabs + 1);
@@ -201,8 +200,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 }
                 indent(ostream, tabs);
             }
-            ostream.append("</fortress>");
-            ostream.append(operatingSystem.newline);
+            ostream("</fortress>");
+            ostream(operatingSystem.newline);
         } else {
             throw IllegalStateException("Unexpected TownFixture type");
         }

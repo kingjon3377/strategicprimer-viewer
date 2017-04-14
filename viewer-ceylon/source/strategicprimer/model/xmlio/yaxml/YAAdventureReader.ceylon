@@ -1,7 +1,3 @@
-import java.lang {
-    JAppendable=Appendable
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -44,7 +40,7 @@ class YAAdventureReader(Warning warner, IDRegistrar idFactory, IPlayerCollection
         return retval;
     }
     "Write an adventure to XML."
-    shared actual void write(JAppendable ostream, AdventureFixture obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, AdventureFixture obj, Integer indent) {
         writeTag(ostream, "adventure", indent);
         writeProperty(ostream, "id", obj.id);
         if (!obj.owner.independent) {

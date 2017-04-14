@@ -12,7 +12,6 @@ import java.io {
 }
 import java.lang {
     IllegalArgumentException,
-    JAppendable=Appendable,
     IllegalStateException
 }
 import java.nio.file {
@@ -105,8 +104,8 @@ shared class SPFluidWriter() satisfies SPWriter {
             }
         }
     }
-    shared actual void writeSPObject(JAppendable|JPath arg, Object obj) {
-        if (is JAppendable ostream = arg) {
+    shared actual void writeSPObject(Anything(String)|JPath arg, Object obj) {
+        if (is Anything(String) ostream = arg) {
             XMLOutputFactory xof = XMLOutputFactory.newInstance();
             StringWriter writer = StringWriter();
             try {
@@ -120,19 +119,19 @@ shared class SPFluidWriter() satisfies SPWriter {
             } catch (XMLStreamException except) {
                 throw IOException("Failure in creating XML", except);
             }
-            ostream.append(snugEndTag.replace(writer.string, "$1 />"));
+            ostream(snugEndTag.replace(writer.string, "$1 />"));
         } else if (is JPath file = arg) {
             try (writer = JFiles.newBufferedWriter(file)) {
-                writeSPObject(writer, obj);
+                writeSPObject((String str) => writer.append(str), obj);
             }
         }
     }
-    shared actual void write(JPath|JAppendable arg, IMapNG map) {
+    shared actual void write(JPath|Anything(String) arg, IMapNG map) {
         if (is JPath file = arg) {
             try (writer = JFiles.newBufferedWriter(file)) {
-                writeSPObject(writer, map);
+                writeSPObject((String str) => writer.append(str), map);
             }
-        } else if (is JAppendable ostream = arg) {
+        } else if (is Anything(String) ostream = arg) {
             writeSPObject(ostream, map);
         }
     }

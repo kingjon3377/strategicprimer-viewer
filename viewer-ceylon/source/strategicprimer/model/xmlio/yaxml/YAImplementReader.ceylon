@@ -1,7 +1,3 @@
-import java.lang {
-    JAppendable=Appendable
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -32,7 +28,7 @@ class YAImplementReader(Warning warning, IDRegistrar idRegistrar)
         return retval;
     }
     shared actual Boolean isSupportedTag(String tag) => "implement" == tag.lowercased;
-    shared actual void write(JAppendable ostream, Implement obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, Implement obj, Integer indent) {
         writeTag(ostream, "implement", indent);
         writeProperty(ostream, "kind", obj.kind);
         writeProperty(ostream, "id", obj.id);

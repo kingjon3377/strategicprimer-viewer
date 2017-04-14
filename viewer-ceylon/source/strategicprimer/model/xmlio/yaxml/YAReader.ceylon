@@ -5,9 +5,6 @@ import strategicprimer.model.xmlio {
 import java.io {
     IOException
 }
-import java.lang {
-    JAppendable=Appendable
-}
 
 import javax.xml.namespace {
     QName
@@ -36,8 +33,7 @@ interface YAReader<out Item, in Value=Item> given Item satisfies Object {
     throws(`class IOException`, "on I/O error in writing")
     shared formal void write(
             "The stream to write to"
-            todo("Use a more Ceylonic idiom (and drop `throws`")
-            JAppendable ostream,
+            Anything(String) ostream,
             "The object to write"
             Value obj,
             "The current indentation level"
@@ -49,7 +45,7 @@ interface YAReader<out Item, in Value=Item> given Item satisfies Object {
     "Write the given object, when the caller knows the object is the right type but the
      typechecker doesn't. This will probably crash the program if the types don't in fact
      match."
-    shared default void writeRaw(JAppendable ostream, Object obj, Integer indentation) {
+    shared default void writeRaw(Anything(String) ostream, Object obj, Integer indentation) {
         assert (is Value obj);
         write(ostream, obj, indentation);
     }

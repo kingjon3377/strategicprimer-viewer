@@ -243,11 +243,11 @@ String createSerializedForm(
         Object obj,
         "Whether to use the deprecated i.e. one-generation-back writer"
         Boolean deprecated) {
-    StringWriter writer = StringWriter();
+    StringBuilder writer = StringBuilder();
     if (deprecated) {
-        testReaderFactory.oldWriter.writeSPObject(writer, obj);
+        testReaderFactory.oldWriter.writeSPObject(writer.append, obj);
     } else {
-        testReaderFactory.newWriter.writeSPObject(writer, obj);
+        testReaderFactory.newWriter.writeSPObject(writer.append, obj);
     }
     return writer.string;
 }
