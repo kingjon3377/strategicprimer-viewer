@@ -84,24 +84,24 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     JLabel chaCaption = caption("Cha");
     JLabel jobsCaption = JLabel("Job Levels");
     JPanel jobsPanel = JPanel(GridLayout(0, 1));
-    statLayout.setVerticalGroup(statLayout.createSequentialGroupOf(
-        statLayout.createParallelGroupOf(typeCaption, typeLabel),
-        statLayout.createParallelGroupOf(nameCaption, nameLabel),
-        statLayout.createParallelGroupOf(kindCaption, kindLabel),
-        statLayout.createParallelGroupOf(strCaption, strLabel, intCaption, intLabel),
-        statLayout.createParallelGroupOf(dexCaption, dexLabel, wisCaption, wisLabel),
-        statLayout.createParallelGroupOf(conCaption, conLabel, chaCaption, chaLabel),
-        statLayout.createParallelGroupOf(jobsCaption, jobsPanel)));
-    statLayout.setHorizontalGroup(statLayout.createParallelGroupOf(
-        statLayout.createSequentialGroupOf(
-            statLayout.createParallelGroupOf(typeCaption, nameCaption, kindCaption,
-                statLayout.createSequentialGroupOf(strCaption, strLabel),
-                statLayout.createSequentialGroupOf(dexCaption, dexLabel),
-                statLayout.createSequentialGroupOf(conCaption, conLabel), jobsCaption),
-            statLayout.createParallelGroupOf(typeLabel, nameLabel, kindLabel,
-                statLayout.createSequentialGroupOf(intCaption, intLabel),
-                statLayout.createSequentialGroupOf(wisCaption, wisLabel),
-                statLayout.createSequentialGroupOf(chaCaption, chaLabel), jobsPanel))));
+    statLayout.setVerticalGroup(statLayout.sequentialGroupOf(
+        statLayout.parallelGroupOf(typeCaption, typeLabel),
+        statLayout.parallelGroupOf(nameCaption, nameLabel),
+        statLayout.parallelGroupOf(kindCaption, kindLabel),
+        statLayout.parallelGroupOf(strCaption, strLabel, intCaption, intLabel),
+        statLayout.parallelGroupOf(dexCaption, dexLabel, wisCaption, wisLabel),
+        statLayout.parallelGroupOf(conCaption, conLabel, chaCaption, chaLabel),
+        statLayout.parallelGroupOf(jobsCaption, jobsPanel)));
+    statLayout.setHorizontalGroup(statLayout.parallelGroupOf(
+        statLayout.sequentialGroupOf(
+            statLayout.parallelGroupOf(typeCaption, nameCaption, kindCaption,
+                statLayout.sequentialGroupOf(strCaption, strLabel),
+                statLayout.sequentialGroupOf(dexCaption, dexLabel),
+                statLayout.sequentialGroupOf(conCaption, conLabel), jobsCaption),
+            statLayout.parallelGroupOf(typeLabel, nameLabel, kindLabel,
+                statLayout.sequentialGroupOf(intCaption, intLabel),
+                statLayout.sequentialGroupOf(wisCaption, wisLabel),
+                statLayout.sequentialGroupOf(chaCaption, chaLabel), jobsPanel))));
     statLayout.linkSize(SwingConstants.horizontal, typeCaption, nameCaption, kindCaption,
         jobsCaption);
     statLayout.linkSize(SwingConstants.horizontal, typeLabel, nameLabel, kindLabel,

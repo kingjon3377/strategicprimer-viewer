@@ -79,12 +79,10 @@ shared class FunctionalGroupLayout(Container host) extends GroupLayout(host) {
         return group;
     }
     "Factory for a parallel group."
-    todo("Rename to parallelGroupOf()")
-    shared ParallelGroup createParallelGroupOf(Component|Group* components) =>
+    shared ParallelGroup parallelGroupOf(Component|Group* components) =>
         initializeGroup(createParallelGroup(), *components);
     "Factory for a sequential group."
-    todo("Rename to sequentialGroupOf()")
-    shared SequentialGroup createSequentialGroupOf(Component|Group* components) =>
+    shared SequentialGroup sequentialGroupOf(Component|Group* components) =>
         initializeGroup(createSequentialGroup(), *components);
 }
 "An extension to [[JComboBox]] to improve it by making the Tab key do what one expects."
