@@ -8,15 +8,8 @@ import ceylon.logging {
     logger
 }
 
-import java.util {
-    Random
-}
-
 import lovelace.util.common {
     todo
-}
-import lovelace.util.jvm {
-    shuffle
 }
 
 import strategicprimer.model.idreg {
@@ -64,6 +57,11 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.drivers.exploration.old {
     MissingTableException,
     ExplorationRunner
+}
+import ceylon.random {
+	randomize,
+	Random,
+    DefaultRandom
 }
 Logger log = logger(`module strategicprimer.model`);
 "Convert a version-1 map to a higher-resolution version-2 map."
@@ -142,9 +140,9 @@ shared IMapNG convertOneToTwo(
 		if (!oldCopy.isLocationEmpty(point)) {
 			Integer idNum = idFactory.createID();
 			if (is IMutableMapNG oldCopy) {
-				Random rng = Random(idNum);
+				Random rng = DefaultRandom(idNum);
 				oldCopy.addFixture(point, Village(TownStatus.active, "", idNum,
-					independent, randomRace((bound) => rng.nextInt(bound))));
+					independent, randomRace((bound) => rng.nextInteger(bound))));
 			}
 			{TileFixture*} fixtures = {oldCopy.getGround(point),
 				oldCopy.getForest(point), *oldCopy.getOtherFixtures(point)}.coalesced;
@@ -175,11 +173,9 @@ shared IMapNG convertOneToTwo(
 					riversAt(initial[10], River.west);
 				}
 			}
-			Random rng = Random((point.column.leftLogicalShift(32)) + point.row);
-			Queue<Point> shuffledInitial = LinkedList(shuffle(initial,
-				rng.nextDouble));
-			Queue<TileFixture> shuffledFixtures = LinkedList(shuffle(fixtures,
-				rng.nextDouble));
+			Random rng = DefaultRandom((point.column.leftLogicalShift(32)) + point.row);
+			Queue<Point> shuffledInitial = LinkedList(randomize(initial, rng));
+			Queue<TileFixture> shuffledFixtures = LinkedList(randomize(fixtures, rng));
 			for (iteration in 0:maxIterations) {
 				if (!shuffledFixtures.front exists) {
 					break;
@@ -219,8 +215,8 @@ shared IMapNG convertOneToTwo(
 			converted.addAll(convertTile(pointFactory(row, column)));
 		}
 	}
-	Random rng = Random(maxIterations);
-	for (point in shuffle(converted, rng.nextDouble)) {
+	Random rng = DefaultRandom(maxIterations);
+	for (point in randomize(converted, rng)) {
 		// TODO: wrap around edges of map
 		{Point*} neighbors = { for (row in (point.row - 1)..(point.row + 1))
 		for (column in (point.column - 1)..(point.column + 1))
@@ -248,7 +244,7 @@ shared IMapNG convertOneToTwo(
 		}
 		try {
 			if (TileType.ocean != retval.getBaseTerrain(point)) {
-				if (adjacentToTown(), rng.nextDouble() < 0.6) {
+				if (adjacentToTown(), rng.nextFloat() < 0.6) {
 					Integer id = idFactory.createID();
 					if (rng.nextBoolean()) {
 						Ground? tempGround = retval.getGround(point);
@@ -271,12 +267,12 @@ shared IMapNG convertOneToTwo(
 					}
 				} else if (TileType.desert == retval.getBaseTerrain(point)) {
 					Boolean watered = adjacentWater();
-					if ((watered && rng.nextDouble() < desertToPlains) ||
+					if ((watered && rng.nextFloat() < desertToPlains) ||
 					!retval.getRivers(point).empty &&
-					rng.nextDouble() < 0.6) {
+					rng.nextFloat() < 0.6) {
 						retval.setBaseTerrain(point, TileType.plains);
 					}
-				} else if (rng.nextDouble() < addForestProbability) {
+				} else if (rng.nextFloat() < addForestProbability) {
 					String forestType = runner.recursiveConsultTable(
 						"temperate_major_tree", point, retval.getBaseTerrain(point),
 						retval.getAllFixtures(point), retval.dimensions);

@@ -1,8 +1,8 @@
 import lovelace.util.common {
     todo
 }
-import java.util {
-    JRandom=Random
+import ceylon.random {
+    Random
 }
 "The status of a vein of ore or deposit of stone at any given point."
 class LodeStatus of
@@ -78,8 +78,14 @@ class LodeStatus of
     }
     """Randomly choose the status of a location horizontally adjacent in a "banded" (e.g.
        sand) mine to one with this status."""
-    shared LodeStatus bandedAdjacent(JRandom rng) {
-        // "normal" distribution with mean 0.5 and standard deviation 0.25
-        return adjacent(() => rng.nextGaussian() * 0.25 + 0.5);
+    shared LodeStatus bandedAdjacent(Random rng) {
+        // Since ceylon.random doesn't provide a Gaussian ("normal") distribution method,
+        // approximate it by averaging several values, then scaling the result to have
+        // mean 0.5. I don't think it has the desired standard deviation of 0.25 anymore,
+        // however.
+        return adjacent(() {
+            assert (exists sum = rng.floats().take(12).reduce(plus));
+            return sum / 12;
+        });
     }
 }

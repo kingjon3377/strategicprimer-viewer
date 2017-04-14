@@ -20,7 +20,7 @@ void advanceWorkersInSkill(String jobName, String skillName, ICLIHelper cli,
         IJob job = worker.getJob(jobName);
         ISkill skill = job.getSkill(skillName);
         Integer oldLevel = skill.level;
-        skill.addHours(hours, singletonRandom.nextInt(100));
+        skill.addHours(hours, singletonRandom.nextInteger(100));
         if (skill.level != oldLevel) {
             cli.println("``worker.name`` gained a level in ``skill.name``");
         }

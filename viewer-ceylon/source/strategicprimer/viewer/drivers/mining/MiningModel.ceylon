@@ -5,10 +5,6 @@ import ceylon.collection {
     Queue
 }
 
-import java.util {
-    JRandom=Random
-}
-
 import lovelace.util.common {
     todo
 }
@@ -16,6 +12,10 @@ import lovelace.util.common {
 import strategicprimer.model.map {
     Point,
     pointFactory
+}
+import ceylon.random {
+    DefaultRandom,
+    Random
 }
 "Kinds of mines we know how to create."
 class MineKind of normal | banded {
@@ -37,17 +37,16 @@ class MiningModel(initial, seed, kind) {
     unnormalized.put(pointFactory(0, 0), initial);
     Queue<Point> queue = LinkedList<Point>();
     queue.offer(pointFactory(0, 0));
-    todo("Use `ceylon.random` instead")
-    JRandom rng = JRandom(seed);
+    Random rng = DefaultRandom(seed);
     LodeStatus(LodeStatus) horizontalGenerator;
     switch (kind)
     case (MineKind.normal) {
-        horizontalGenerator = (LodeStatus current) => current.adjacent(rng.nextDouble);
+        horizontalGenerator = (LodeStatus current) => current.adjacent(rng.nextFloat);
     }
     case (MineKind.banded) {
         horizontalGenerator = (LodeStatus current) => current.bandedAdjacent(rng);
     }
-    LodeStatus verticalGenerator(LodeStatus current) => current.adjacent(rng.nextDouble);
+    LodeStatus verticalGenerator(LodeStatus current) => current.adjacent(rng.nextFloat);
     variable Integer counter = 0;
     variable Integer pruneCounter = 0;
     void modelPoint(Point point) {

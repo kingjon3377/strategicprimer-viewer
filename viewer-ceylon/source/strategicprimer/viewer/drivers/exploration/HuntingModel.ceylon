@@ -5,6 +5,9 @@ import ceylon.collection {
     ArrayList
 }
 
+import strategicprimer.drivers.exploration.common {
+    surroundingPointIterable
+}
 import strategicprimer.model.map {
     MapDimensions,
     TileType,
@@ -19,9 +22,8 @@ import strategicprimer.model.map.fixtures.resources {
     Shrub,
     Meadow
 }
-import lovelace.util.jvm { shuffle }
-import strategicprimer.drivers.exploration.common {
-    surroundingPointIterable
+import ceylon.random {
+    DefaultRandom
 }
 "A class to facilitate a better hunting/fishing driver."
 shared class HuntingModel {
@@ -102,14 +104,7 @@ shared class HuntingModel {
                         item
         };
         choices = choices.chain({noResults}.repeat(choices.size));
-        MutableList<String> retval = ArrayList<String>();
-        for (i in 0..items) {
-            choices = shuffle(choices);
-            if (exists first = choices.first) {
-                retval.add(first);
-            }
-        }
-        return { *retval };
+        return DefaultRandom().elements(choices).take(items);
     }
     """Get a list of hunting results from the area surrounding the given tile. About half
         will be "nothing"."""
@@ -139,13 +134,6 @@ shared class HuntingModel {
                     for (plant in list)
                         plant
         };
-        MutableList<String> retval = ArrayList<String>();
-        for (i in 0..items) {
-            choices = shuffle(choices);
-            if (exists first = choices.first) {
-                retval.add(first);
-            }
-        }
-        return { *retval };
+        return DefaultRandom().elements(choices).take(items);
     }
 }

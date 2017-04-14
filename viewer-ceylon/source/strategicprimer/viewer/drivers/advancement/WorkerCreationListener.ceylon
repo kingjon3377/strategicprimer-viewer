@@ -139,8 +139,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                     ["Intelligence:", intelligence], ["Dexterity:", dexterity],
                     ["Wisdom:", wisdom], ["Constitution:", constitution],
                     ["Charisma:", charisma]}) {
-                    box.text = (singletonRandom.nextInt(6) + singletonRandom.nextInt(6) +
-                    singletonRandom.nextInt(6) + 3).string;
+                    box.text = singletonRandom.elements(1..6).take(3).reduce(plus)?.string else "0";
                     addLabeledField(statsPanel, stat, box);
                 }
                 contentPane = BorderedPanel.verticalPanel(textPanel, statsPanel, buttonPanel);

@@ -13,4 +13,5 @@ module strategicprimer.drivers.worker.common "0.4.9900" {
     import lovelace.util.jvm "0.1.0";
     shared import java.desktop "8";
     import ceylon.logging "1.3.2";
+    import ceylon.random "1.3.2";
 }

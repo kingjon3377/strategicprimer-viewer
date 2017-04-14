@@ -2,15 +2,16 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import java.util {
-    JRandom=Random
-}
 import lovelace.util.common {
     todo
 }
 
 import strategicprimer.model.map.fixtures.mobile {
     ProxyFor
+}
+import ceylon.random {
+    DefaultRandom,
+    Random
 }
 "An implementation of ISkill whose operations act on multiple workers at once."
 todo("Figure out how we can make this satisfy ProxyFor<ISkill>?")
@@ -73,12 +74,12 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&Proxy
             }
         } else {
             // TODO: figure out how to use "Ceylon-native" RNG interfaces
-            JRandom random = JRandom(condition);
+            Random random = DefaultRandom(condition);
             for (job in proxied) {
                 variable Boolean unmodified = true;
                 for (skill in job.filter(notThis)) {
                     if (skill.name == name) {
-                        skill.addHours(hours, random.nextInt(100));
+                        skill.addHours(hours, random.nextInteger(100));
                         unmodified = false;
                     }
                 }
@@ -86,7 +87,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&Proxy
                     ISkill skill = Skill(name, 0, 0);
                     job.addSkill(skill);
                     (job.find((temp) => temp.name == name) else skill)
-                        .addHours(hours, random.nextInt(100));
+                        .addHours(hours, random.nextInteger(100));
                 }
             }
         }

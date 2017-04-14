@@ -13,4 +13,5 @@ module strategicprimer.drivers.converters "0.4.9900" {
     import ceylon.regex "1.3.2";
     import ceylon.file "1.3.2";
     shared import strategicprimer.drivers.exploration.old "0.4.9900";
+    import ceylon.random "1.3.2";
 }

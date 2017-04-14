@@ -8,9 +8,6 @@ import java.awt.image {
 import java.nio.file {
     Path
 }
-import java.util {
-    Random
-}
 import java.util.\ifunction {
     Predicate
 }
@@ -36,6 +33,9 @@ import strategicprimer.model.map {
     IMapNG,
     pointFactory,
     clearPointCache
+}
+import ceylon.random {
+    DefaultRandom
 }
 
 variable Boolean usePointCache = false;
@@ -208,7 +208,7 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
     "Run the tests."
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        Boolean() random = Random().nextBoolean;
+        Boolean() random = DefaultRandom().nextBoolean;
         void runTestProcedure(ICLIHelper cli, IMapNG map, Path? filename,
                 Boolean() rng) {
             cli.println("Testing using ``filename?.string else "an unsaved map"``");

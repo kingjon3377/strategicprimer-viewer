@@ -24,4 +24,5 @@ module strategicprimer.viewer "0.4.9900" {
     import strategicprimer.drivers.exploration.old "0.4.9900";
     import strategicprimer.drivers.exploration.common "0.4.9900";
     shared import strategicprimer.drivers.worker.common "0.4.9900";
+    import ceylon.random "1.3.2";
 }

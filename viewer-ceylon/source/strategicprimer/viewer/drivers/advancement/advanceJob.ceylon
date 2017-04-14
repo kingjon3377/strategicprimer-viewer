@@ -32,7 +32,7 @@ void advanceJob(IJob job, ICLIHelper cli) {
         }, (ISkill skill, clh) {
             Integer oldLevel = skill.level;
             skill.addHours(clh.inputNumber("Hours of experience to add: "),
-                singletonRandom.nextInt(100));
+                singletonRandom.nextInteger(100));
             if (skill.level == oldLevel) {
                 clh.print("Worker(s) gained a level in ``skill.name``");
             }

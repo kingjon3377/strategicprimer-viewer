@@ -1,9 +1,6 @@
 import java.lang {
     IllegalArgumentException
 }
-import java.util {
-    JRandom=Random
-}
 
 import javax.xml.namespace {
     QName
@@ -39,6 +36,10 @@ import strategicprimer.model.xmlio {
 }
 import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException
+}
+import ceylon.random {
+    Random,
+    DefaultRandom
 }
 Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
@@ -116,12 +117,12 @@ Village readVillage(StartElement element, QName parent, {XMLEvent*} stream,
     requireNonEmptyAttribute(element, "name", false, warner);
     spinUntilEnd(element.name, stream);
     Integer idNum = getOrGenerateID(element, warner, idFactory);
-    JRandom rng = JRandom(idNum);
+    Random rng = DefaultRandom(idNum);
     value status = TownStatus.parse(getAttribute(element, "status"));
     if (is TownStatus status) {
         Village retval = Village(status, getAttribute(element, "name", ""), idNum,
             getPlayerOrIndependent(element, warner, players),
-            getAttribute(element, "race", randomRace((bound) => rng.nextInt(bound))));
+            getAttribute(element, "race", randomRace((bound) => rng.nextInteger(bound))));
         retval.portrait =getAttribute(element, "portrait", "");
         return setImage(retval, element, warner);
     } else {

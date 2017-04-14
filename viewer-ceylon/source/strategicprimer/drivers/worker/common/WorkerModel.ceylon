@@ -17,9 +17,6 @@ import java.nio.file {
 import lovelace.util.common {
     todo
 }
-import lovelace.util.jvm {
-    shuffle
-}
 
 import strategicprimer.model.map {
     Point,
@@ -55,6 +52,9 @@ import strategicprimer.drivers.common {
 import ceylon.logging {
     Logger,
     logger
+}
+import ceylon.random {
+    randomize
 }
 Logger log = logger(`module strategicprimer.drivers.worker.common`);
 "A model to underlie the advancement GUI, etc."
@@ -195,7 +195,7 @@ void testGetUnits() {
     fixtures.add(Hill(7));
     addItem(Unit(playerOne, "four", "unitFour", 6), fixtures, listOne);
     fixtures.add(Oasis(8));
-    value shuffled = shuffle(fixtures);
+    value shuffled = randomize(fixtures);
     IMutableMapNG map = SPMapNG(MapDimensionsImpl(3, 3, 2), PlayerCollection(), -1);
     for ([point, fixture] in zipPairs(map.locations, shuffled)) {
         map.addFixture(point, fixture);

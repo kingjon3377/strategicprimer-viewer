@@ -6,9 +6,6 @@ import java.lang {
     JAppendable=Appendable,
     IllegalStateException
 }
-import java.util {
-    JRandom=Random
-}
 
 import javax.xml.namespace {
     QName
@@ -46,6 +43,10 @@ import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException,
     UnwantedChildException
 }
+import ceylon.random {
+    Random,
+    DefaultRandom
+}
 "A reader for fortresses, villages, and other towns."
 class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players)
         extends YAAbstractReader<ITownFixture>(warner, idRegistrar) {
@@ -67,12 +68,12 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         requireNonEmptyParameter(element, "name", false);
         spinUntilEnd(element.name, stream);
         Integer idNum = getOrGenerateID(element);
-        JRandom rng = JRandom(idNum);
+        Random rng = DefaultRandom(idNum);
         value status = TownStatus.parse(getParameter(element, "status"));
         if (is TownStatus status) {
             Village retval = Village(status, getParameter(element, "name", ""), idNum,
                 getOwnerOrIndependent(element), getParameter(element, "race",
-                    randomRace((bound) => rng.nextInt(bound))));
+                    randomRace((bound) => rng.nextInteger(bound))));
             retval.image = getParameter(element, "image", "");
             retval.portrait =getParameter(element, "portrait", "");
             return retval;

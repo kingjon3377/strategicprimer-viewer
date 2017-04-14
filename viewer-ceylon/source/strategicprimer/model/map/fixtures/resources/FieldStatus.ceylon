@@ -1,11 +1,8 @@
 import lovelace.util.common {
     todo
 }
-import lovelace.util.jvm {
-    shuffle
-}
-import java.util {
-    JRandom=Random
+import ceylon.random {
+    DefaultRandom
 }
 "Possible status of fields (and meadows, and orchards ...) Fields should rotate between
  these, at a rate determined by the kind of field."
@@ -48,12 +45,6 @@ FieldStatus|ParseException parseFieldStatus(String status) {
     return ParseException("Failed to parse FieldStatus from '``status``'");
 }
 FieldStatus randomStatus(Integer seed) {
-    assert (exists retval =
-            shuffle(sort<FieldStatus>(`FieldStatus`.caseValues), JRandom(seed).nextDouble).first);
-    if (seed == 76) {
-        if (retval != FieldStatus.bearing) {
-            process.writeLine("Somehow produced ``retval`` instead of bearing for ID #76");
-        }
-    }
+    assert (exists retval = DefaultRandom(seed).nextElement(sort<FieldStatus>(`FieldStatus`.caseValues)));
     return retval;
 }

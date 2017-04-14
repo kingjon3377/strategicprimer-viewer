@@ -14,9 +14,6 @@ import java.lang {
     IllegalArgumentException
 }
 
-import lovelace.util.jvm {
-    shuffle
-}
 
 import strategicprimer.model.map {
     Point,
@@ -49,6 +46,9 @@ import strategicprimer.model.map.fixtures.towns {
     TownSize,
     Fortress
 }
+import ceylon.random {
+    randomize
+}
 "A utility to convert a map to an equivalent half-resolution one."
 shared IMapNG decreaseResolution(IMapNG old) {
 	if (old.dimensions.rows % 2 != 0 || old.dimensions.columns %2 != 0) {
@@ -73,7 +73,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
 		assert (exists largestCount = counted.first?.first);
 		value matchingCount = counted.filter((item) => item.first == largestCount);
 		if (matchingCount.size > 1) {
-			assert (exists retval = shuffle(matchingCount.map(
+			assert (exists retval = randomize(matchingCount.map(
 						([Integer count, TileType type]) => type)).first);
 			return retval;
 		} else {

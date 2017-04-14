@@ -11,7 +11,6 @@ import lovelace.util.common {
     todo
 }
 import lovelace.util.jvm {
-    shuffle,
     singletonRandom
 }
 import strategicprimer.model.map {
@@ -40,6 +39,9 @@ import strategicprimer.model.map.fixtures.towns {
 }
 import strategicprimer.drivers.exploration.common {
     Direction
+}
+import ceylon.random {
+    randomize
 }
 "Whether land movement is possible on the given terrain."
 Boolean landMovementPossible(TileType terrain) => TileType.ocean != terrain;
@@ -169,12 +171,12 @@ shared Boolean shouldAlwaysNotice(HasOwner unit, TileFixture? fixture) {
  function for getting the fixtures out of the list."
 shared {Element*} selectNoticed<Element>({Element*} possibilities, TileFixture(Element) getter,
         IUnit mover, Speed speed) {
-    {Element*} local = shuffle(possibilities);
+    {Element*} local = randomize(possibilities);
     variable Integer perception = highestPerception(mover) + speed.perceptionModifier;
     MutableList<Element> retval = ArrayList<Element>();
     for (item in local) {
         Integer dc = getter(item).dc;
-        if (singletonRandom.nextInt(20) + perception + 1 >= dc) {
+        if (singletonRandom.nextElement(1..20) + perception >= dc) {
             retval.add(item);
             perception -= 5;
         }

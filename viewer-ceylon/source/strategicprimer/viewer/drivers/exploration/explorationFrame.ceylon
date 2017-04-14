@@ -64,7 +64,6 @@ import lovelace.util.jvm {
     createHotKey,
     FormattedLabel,
     BoxAxis,
-    shuffle,
     boxPanel,
     verticalSplit,
     ImprovedComboBox,
@@ -128,6 +127,9 @@ import strategicprimer.drivers.common {
 }
 import lovelace.util.common {
     todo
+}
+import ceylon.random {
+    randomize
 }
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,
@@ -501,7 +503,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                         tracks.add([currentLocation, animal]);
                                     }
                                 }
-                                constants.addAll(selectNoticed(shuffle(possibles),
+                                constants.addAll(selectNoticed(randomize(possibles),
                                             ([Integer, TileFixture] tuple) => tuple.rest.first,
                                     selectedUnit, speedSource()));
                                 IntArray indices = createJavaIntArray(

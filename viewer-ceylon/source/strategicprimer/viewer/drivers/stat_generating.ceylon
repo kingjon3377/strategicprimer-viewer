@@ -21,9 +21,6 @@ import java.lang {
 import java.nio.file {
     JPaths=Paths
 }
-import java.util {
-    Random
-}
 
 import lovelace.util.common {
     todo
@@ -77,6 +74,10 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
     ExplorationModel
+}
+import ceylon.random {
+    DefaultRandom,
+    Random
 }
 
 "A driver to let the user enter pre-generated stats for existing workers or generate new
@@ -493,8 +494,8 @@ object todoFixerCLI satisfies SimpleCLIDriver {
                 if (exists race = raceMap.get(village.id)) {
                     village.race = race;
                 } else {
-                    Random rng = Random(village.id);
-                    assert (exists race = raceList.get(rng.nextInt(raceList.size)));
+                    Random rng = DefaultRandom(village.id);
+                    assert (exists race = rng.nextElement(raceList));
                     village.race = race;
                     raceMap.put(village.id, race);
                 }
@@ -503,7 +504,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     }
     "Fix a stubbed-out kind for a unit."
     void fixUnit(Unit unit, SimpleTerrain terrain, ICLIHelper cli) {
-        Random rng = Random(unit.id);
+        Random rng = DefaultRandom(unit.id);
         count++;
         MutableList<String> jobList;
         String description;

@@ -15,9 +15,6 @@ import java.nio.file {
 import lovelace.util.common {
     todo
 }
-import lovelace.util.jvm {
-    shuffle
-}
 import strategicprimer.drivers.common {
     SimpleMultiMapModel,
     IDriverModel,
@@ -57,6 +54,9 @@ import strategicprimer.model.map.fixtures.terrain {
 import strategicprimer.model.map.fixtures.towns {
     Village,
     Fortress
+}
+import ceylon.random {
+    randomize
 }
 "A model for exploration drivers."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
@@ -384,7 +384,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             variable Integer i = 0;
             variable Boolean first = true;
             while (first || (i < 4 && !diggables.first is Ground)) {
-                diggables = shuffle(diggables);
+                diggables = randomize(diggables);
                 first = false;
                 i++;
             }

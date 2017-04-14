@@ -1,10 +1,11 @@
-import java.util {
-    JRandom=Random
+import ceylon.random {
+    Random,
+    DefaultRandom
 }
 
 import lovelace.util.common {
     todo
 }
-"A single [[Random|JRandom]] for the whole application."
+"A single [[Random]] for the whole application."
 todo("Replace with wrapper around the `random` in `ceylon.math`")
-shared JRandom singletonRandom = JRandom(system.milliseconds);
+shared Random singletonRandom = DefaultRandom();

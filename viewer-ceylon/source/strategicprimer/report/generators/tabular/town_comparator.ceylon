@@ -11,9 +11,6 @@ import lovelace.util.common {
     todo,
     comparingOn
 }
-import lovelace.util.jvm {
-    shuffle
-}
 
 import strategicprimer.model.map {
     Player,
@@ -28,6 +25,9 @@ import strategicprimer.model.map.fixtures.towns {
     City,
     Town,
     Fortification
+}
+import ceylon.random {
+    randomize
 }
 "A comparator for town-sizes, to put larger towns before smaller ones."
 todo("Reverse the semantics here and use Comparator-reversing methods, so we don't
@@ -138,7 +138,7 @@ void testComparison() {
     input.add(Town(TownStatus.ruined, TownSize.medium, -1, "inputTownTwo", id++, owner));
     input.add(Fortification(TownStatus.burned, TownSize.small, -1, "inputFortificationTwo", id++, owner));
     input.add(Village(TownStatus.abandoned, "inputVillageTwo", id, owner, "inputRace"));
-    {ITownFixture*} shuffled = shuffle(input);
+    {ITownFixture*} shuffled = randomize(input);
     {ITownFixture*} expected = [City(TownStatus.active, TownSize.large, -1, "inputCity", 7, owner),
         City(TownStatus.active, TownSize.large, -1, "inputCityTwo", 41, owner),
         Town(TownStatus.active, TownSize.large, -1, "inputTown", 6, owner),

@@ -9,9 +9,6 @@ import ceylon.math.float {
 import lovelace.util.common {
     todo
 }
-import lovelace.util.jvm {
-    shuffle
-}
 
 import strategicprimer.model.idreg {
     IDRegistrar,
@@ -51,6 +48,9 @@ import strategicprimer.drivers.exploration.common {
     surroundingPointIterable,
     shouldAlwaysNotice,
     shouldSometimesNotice
+}
+import ceylon.random {
+    randomize
 }
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""
@@ -121,7 +121,7 @@ object expansionDriver satisfies SimpleCLIDriver {
                                     possibilities.add(fixture);
                                 }
                             }
-                            if (exists first = shuffle(possibilities).first) {
+                            if (exists first = randomize(possibilities).first) {
                                 safeAdd(neighbor, first);
                             }
                         }

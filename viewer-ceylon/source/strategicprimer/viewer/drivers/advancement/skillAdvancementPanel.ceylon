@@ -45,7 +45,7 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
         if (exists local = skill) {
             Integer level = local.level;
             if (is Integer number = Integer.parse(hours.text)) {
-                local.addHours(number, singletonRandom.nextInt(100));
+                local.addHours(number, singletonRandom.nextInteger(100));
             } else {
                 showErrorDialog(hours, "Strategic Primer Worker Advancement",
                     "Hours to add must be a number");

@@ -11,4 +11,5 @@ module lovelace.util.jvm "0.1.0" {
     // TODO: Uncomment tests once Ceylon bug #6986 is fixed
 //    import ceylon.test "1.3.2";
     shared import javax.xml "8";
+    shared import ceylon.random "1.3.2";
 }
