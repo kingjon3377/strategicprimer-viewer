@@ -1,6 +1,11 @@
 import ceylon.collection {
     ArrayList
 }
+import ceylon.file {
+    parsePath,
+    Nil,
+    File
+}
 import ceylon.regex {
     Regex,
     regex
@@ -127,6 +132,16 @@ ExplorationRunner initializeRunner() {
             loadTable(ArrayList { *tableSplit }.accept));
     }
     return retval;
+}
+void writeToFile(String filename, String text) {
+    File file;
+    switch (res = parsePath("/Users/kingjon/strategicprimer-viewer/" + filename).resource)
+    case (is File) { file = res; }
+    case (is Nil) { file = res.createFile(); }
+    else { throw IllegalStateException("Exists but is not a file"); }
+    try (writer = file.Overwriter()) {
+        writer.write(text);
+    }
 }
 test
 suppressWarnings("deprecation")
