@@ -70,7 +70,6 @@ Logger log = logger(`module strategicprimer.model`);
 suppressWarnings("deprecation")
 shared IMapNG convertOneToTwo(
 		"The version-1 map to convert"
-		todo("Skip this if it's already version 2?")
 		IMapNG old,
 		"The source for kinds of ground, fields, etc."
 		ExplorationRunner runner,
@@ -78,6 +77,9 @@ shared IMapNG convertOneToTwo(
 		 players' maps)"
 		Boolean main) {
 	MapDimensions oldDimensions = old.dimensions;
+	if (oldDimensions.version >= 2) {
+		return old;
+	}
 	IMutableMapNG retval = SPMapNG(MapDimensionsImpl(
 		oldDimensions.rows * expansionFactor,
 		oldDimensions.columns * expansionFactor, 2), PlayerCollection(), nextTurn);
