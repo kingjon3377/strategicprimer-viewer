@@ -140,7 +140,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         if (is Player obj) {
             writeTag(ostream, "player", indentation, true);
             writeIntegerAttribute(ostream, "number", obj.playerId);
-            writeAttribute(ostream, "code_name", obj.name);
+            writeAttributes(ostream, "code_name"->obj.name);
         } else {
             throw IllegalArgumentException("Can only write Player");
         }
@@ -154,7 +154,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             if (is IFixture obj) {
                 writeTag(ostream, tag, indentation, true);
                 if (is HasKind obj) {
-                    writeAttribute(ostream, "kind", obj.kind);
+                    writeAttributes(ostream, "kind"->obj.kind);
                 }
                 writeIntegerAttribute(ostream, "id", obj.id);
                 if (is HasImage obj) {
@@ -217,7 +217,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
             writeNonEmptyAttribute(ostream, "name", obj.name);
             if (TownSize.small != obj.townSize) {
-                writeAttribute(ostream, "size", obj.townSize.string);
+                writeAttributes(ostream, "size"->obj.townSize.string);
             }
             writeIntegerAttribute(ostream, "id", obj.id);
             writeImage(ostream, obj);
@@ -262,7 +262,7 @@ shared class SPFluidWriter() satisfies SPWriter {
                         writeIntegerAttribute(ostream, "row", i);
                         writeIntegerAttribute(ostream, "column", j);
                         if (TileType.notVisible != terrain) {
-                            writeAttribute(ostream, "kind", terrain.xml);
+                            writeAttributes(ostream, "kind"->terrain.xml);
                         }
                         variable Boolean anyContents = false;
                         if (obj.isMountainous(loc)) {

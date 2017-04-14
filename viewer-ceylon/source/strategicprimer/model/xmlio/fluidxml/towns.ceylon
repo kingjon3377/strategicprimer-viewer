@@ -132,11 +132,11 @@ Village readVillage(StartElement element, QName parent, {XMLEvent*} stream,
 void writeVillage(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Village obj) {
         writeTag(ostream, "village", indent, true);
-        writeAttribute(ostream, "status", obj.status.string);
+        writeAttributes(ostream, "status"->obj.status.string);
         writeNonEmptyAttribute(ostream, "name", obj.name);
         writeIntegerAttribute(ostream, "id", obj.id);
         writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
-        writeAttribute(ostream, "race", obj.race);
+        writeAttributes(ostream, "race"->obj.race);
         writeImage(ostream, obj);
         writeNonEmptyAttribute(ostream, "portrait", obj.portrait);
     } else {
@@ -147,8 +147,8 @@ void writeVillage(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writeTown(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is AbstractTown obj) {
         writeTag(ostream, obj.kind, indent, true);
-        writeAttribute(ostream, "status", obj.status.string);
-        writeAttribute(ostream, "size", obj.townSize.string);
+        writeAttributes(ostream, "status"->obj.status.string,
+            "size"->obj.townSize.string);
         writeIntegerAttribute(ostream, "dc", obj.dc);
         writeNonEmptyAttribute(ostream, "name", obj.name);
         writeIntegerAttribute(ostream, "id", obj.id);

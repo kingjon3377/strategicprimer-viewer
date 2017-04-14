@@ -296,18 +296,21 @@ void writeTag(
     }
 }
 
-"Write an attribute to XML."
+"Write attributes to XML."
 throws(`class XMLStreamException`, "on I/O error")
 todo("Convert to writeAttributes(XMLStreamWriter, <String->String>*)")
-void writeAttribute(
+void writeAttributes(
         "The stream to write to"
         XMLStreamWriter ostream,
-        "The name of the attribute to write"
-        String name,
-        "The value of the attribute"
-        String item) => ostream.writeAttribute(spNamespace, name, item);
+        "The name and values of the attributes to write"
+        <String->String>* attributes) {
+    for (name->item in attributes) {
+        ostream.writeAttribute(spNamespace, name, item);
+    }
+}
 
 "Write an attribute whose value is an integer."
+todo("As [[writeAttributes]], take a sequence of Entries")
 throws(`class XMLStreamException`, "on I/O error")
 void writeIntegerAttribute(
         "The stream to write to"
@@ -315,9 +318,10 @@ void writeIntegerAttribute(
         "The name of the attribute to write"
         String name,
         "The value of the attribute"
-        Integer item) => writeAttribute(ostream, name, item.string);
+        Integer item) => writeAttributes(ostream, name->item.string);
 
 "Write an attribute if its value is nonempty."
+todo("As [[writeAttributes]], take a sequence of Entries")
 throws(`class XMLStreamException`, "on I/O error")
 void writeNonEmptyAttribute(
         "The stream to write to"
@@ -332,6 +336,7 @@ void writeNonEmptyAttribute(
 }
 
 "Write an attribute whose value is a Boolean value."
+todo("Take a stream of Entries", "Combine with writeAttributes() via union type")
 throws(`class XMLStreamException`, "on error creating XML")
 void writeBooleanAttribute(
         "The stream to write to"
@@ -339,7 +344,7 @@ void writeBooleanAttribute(
         "The name of the attribute to write"
         String name,
         "Its value"
-        Boolean item) => writeAttribute(ostream, name, item.string);
+        Boolean item) => writeAttributes(ostream, name->item.string);
 
 """If the specified tag has an "owner" property, return the player it indicates; otherwise
    warn about its absence and return the "independent" player from the player

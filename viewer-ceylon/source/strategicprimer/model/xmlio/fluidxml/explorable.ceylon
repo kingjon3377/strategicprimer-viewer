@@ -113,7 +113,7 @@ void writeAdventure(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writePortal(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Portal obj) {
         writeTag(ostream, "portal", indent, true);
-        writeAttribute(ostream, "world", obj.destinationWorld);
+        writeAttributes(ostream, "world"->obj.destinationWorld);
         writeIntegerAttribute(ostream, "row", obj.destinationCoordinates.row);
         writeIntegerAttribute(ostream, "column", obj.destinationCoordinates.column);
         writeIntegerAttribute(ostream, "id", obj.id);

@@ -248,8 +248,7 @@ void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is ResourcePile obj) {
         writeTag(ostream, "resource", indent, true);
         writeIntegerAttribute(ostream, "id", obj.id);
-        writeAttribute(ostream, "kind", obj.kind);
-        writeAttribute(ostream, "contents", obj.contents);
+        writeAttributes(ostream, "kind"->obj.kind, "contents"->obj.contents);
         switch (quantity = obj.quantity.number)
         case (is Integer) {
             writeIntegerAttribute(ostream, "quantity", quantity);
@@ -257,13 +256,13 @@ void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
         case (is Decimal) {
             if (quantity.scale > 0) {
                 // TODO: Java used BigDecimal.toPlainString(), while this evaluates to .toString().
-                writeAttribute(ostream, "quantity", quantity.string);
+                writeAttributes(ostream, "quantity"->quantity.string);
             } else {
                 writeIntegerAttribute(ostream, "quantity", quantity.integer);
             }
         }
         case (is Float) {
-            writeAttribute(ostream, "quantity", quantity.string);
+            writeAttributes(ostream, "quantity"->quantity.string);
         }
         case (is Whole) {
             writeIntegerAttribute(ostream, "quantity", quantity.integer);
@@ -271,7 +270,7 @@ void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
         else {
             throw IllegalArgumentException("ResourcePile with non-Integer, non-Decimal quantity");
         }
-        writeAttribute(ostream, "unit", obj.quantity.units);
+        writeAttributes(ostream, "unit"->obj.quantity.units);
         if (obj.created >= 0) {
             writeIntegerAttribute(ostream, "created", obj.created);
         }
@@ -284,8 +283,7 @@ void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writeCache(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is CacheFixture obj) {
         writeTag(ostream, "cache", indent, true);
-        writeAttribute(ostream, "kind", obj.kind);
-        writeAttribute(ostream, "contents", obj.contents);
+        writeAttributes(ostream, "kind"->obj.kind, "contents"->obj.contents);
         writeIntegerAttribute(ostream, "id", obj.id);
         writeImage(ostream, obj);
     } else {
@@ -296,9 +294,9 @@ void writeCache(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writeMeadow(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Meadow obj) {
         writeTag(ostream, (obj.field) then "field" else "meadow", indent, true);
-        writeAttribute(ostream, "kind", obj.kind);
+        writeAttributes(ostream, "kind"->obj.kind);
         writeBooleanAttribute(ostream, "cultivated", obj.cultivated);
-        writeAttribute(ostream, "status", obj.status.string);
+        writeAttributes(ostream, "status"->obj.status.string);
         writeIntegerAttribute(ostream, "id", obj.id);
         writeImage(ostream, obj);
     } else {
@@ -310,7 +308,7 @@ void writeGrove(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Grove obj) {
         writeTag(ostream, (obj.orchard) then "orchard" else "grove", indent, true);
         writeBooleanAttribute(ostream, "cultivated", obj.cultivated);
-        writeAttribute(ostream, "kind", obj.kind);
+        writeAttributes(ostream, "kind"->obj.kind);
         writeIntegerAttribute(ostream, "id", obj.id);
         writeImage(ostream, obj);
     } else {
@@ -321,8 +319,7 @@ void writeGrove(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writeMine(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Mine obj) {
         writeTag(ostream, "mine", indent, true);
-        writeAttribute(ostream, "kind", obj.kind);
-        writeAttribute(ostream, "status", obj.status.string);
+        writeAttributes(ostream, "kind"->obj.kind, "status"->obj.status.string);
         writeIntegerAttribute(ostream, "id", obj.id);
         writeImage(ostream, obj);
     } else {
@@ -333,7 +330,7 @@ void writeMine(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writeMineral(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is MineralVein obj) {
         writeTag(ostream, "mineral", indent, true);
-        writeAttribute(ostream, "kind", obj.kind);
+        writeAttributes(ostream, "kind"->obj.kind);
         writeBooleanAttribute(ostream, "exposed", obj.exposed);
         writeIntegerAttribute(ostream, "dc", obj.dc);
         writeIntegerAttribute(ostream, "id", obj.id);
@@ -346,7 +343,7 @@ void writeMineral(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writeStone(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is StoneDeposit obj) {
         writeTag(ostream, "stone", indent, true);
-        writeAttribute(ostream, "kind", obj.stone.string);
+        writeAttributes(ostream, "kind"->obj.stone.string);
         writeIntegerAttribute(ostream, "dc", obj.dc);
         writeIntegerAttribute(ostream, "id", obj.id);
         writeImage(ostream, obj);

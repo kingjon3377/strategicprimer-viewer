@@ -66,7 +66,7 @@ Forest readForest(StartElement element, QName parent, {XMLEvent*} stream,
 void writeGround(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Ground obj) {
         writeTag(ostream, "ground", indent, true);
-        writeAttribute(ostream, "kind", obj.kind);
+        writeAttributes(ostream, "kind"->obj.kind);
         writeBooleanAttribute(ostream, "exposed", obj.exposed);
         writeIntegerAttribute(ostream, "id", obj.id);
         writeImage(ostream, obj);
@@ -78,7 +78,7 @@ void writeGround(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writeForest(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Forest obj) {
         writeTag(ostream, "forest", indent, true);
-        writeAttribute(ostream, "kind", obj.kind);
+        writeAttributes(ostream, "kind"->obj.kind);
         if (obj.rows) {
             writeBooleanAttribute(ostream, "rows", true);
         }
@@ -113,7 +113,7 @@ void writeRivers(XMLStreamWriter ostream, Object obj, Integer indent) {
         writeTag(ostream, "lake", indent, true);
     } else if (is River obj) {
         writeTag(ostream, "river", indent, true);
-        writeAttribute(ostream, "direction", obj.description);
+        writeAttributes(ostream, "direction"->obj.description);
     } else if (is {River*} obj) {
         for (river in obj) {
             writeRivers(ostream, river, indent);

@@ -117,9 +117,9 @@ void writeWorker(XMLStreamWriter ostream, Object obj, Integer indentation) {
         {IJob*} jobs = obj.filter((job) => !job.emptyJob);
         Boolean hasJobs = !jobs.empty;
         writeTag(ostream, "worker", indentation, !hasJobs && !stats exists);
-        writeAttribute(ostream, "name", obj.name);
+        writeAttributes(ostream, "name"->obj.name);
         if ("human" != obj.race) {
-            writeAttribute(ostream, "race", obj.race);
+            writeAttributes(ostream, "race"->obj.race);
         }
         writeIntegerAttribute(ostream, "id", obj.id);
         writeImage(ostream, obj);
@@ -164,7 +164,7 @@ void writeJob(XMLStreamWriter ostream, Object obj, Integer indentation) {
             return;
         }
         writeTag(ostream, "job", indentation, !hasSkills);
-        writeAttribute(ostream, "name", obj.name);
+        writeAttributes(ostream, "name"->obj.name);
         writeIntegerAttribute(ostream, "level", obj.level);
         for (skill in obj) {
             writeSkill(ostream, skill, indentation + 1);
@@ -182,7 +182,7 @@ void writeSkill(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is ISkill obj) {
         if (!obj.empty) {
             writeTag(ostream, "skill", indentation, true);
-            writeAttribute(ostream, "name", obj.name);
+            writeAttributes(ostream, "name"->obj.name);
             writeIntegerAttribute(ostream, "level", obj.level);
             writeIntegerAttribute(ostream, "hours", obj.hours);
         }
@@ -217,15 +217,15 @@ Animal readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
 void writeAnimal(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is Animal obj) {
         writeTag(ostream, "animal", indentation, true);
-        writeAttribute(ostream, "kind", obj.kind);
+        writeAttributes(ostream, "kind"->obj.kind);
         if (obj.traces) {
-            writeAttribute(ostream, "traces", "");
+            writeAttributes(ostream, "traces"->"");
         }
         if (obj.talking) {
             writeBooleanAttribute(ostream, "talking", true);
         }
         if ("wild" != obj.status) {
-            writeAttribute(ostream, "status", obj.status);
+            writeAttributes(ostream, "status"->obj.status);
         }
         if (!obj.traces) {
             writeIntegerAttribute(ostream, "id", obj.id);
