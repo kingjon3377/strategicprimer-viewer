@@ -5,9 +5,6 @@ import ceylon.interop.java {
 import java.awt.event {
     InputEvent
 }
-import java.lang {
-    JSystem=System
-}
 
 import javax.swing {
     JButton,
@@ -25,13 +22,7 @@ void setStringProperty(JComponent component, String key, String val) =>
  non-Mac platforms."
 shared object platform {
     "Whether this system is a Mac."
-    todo("Use `ceylon.language::operatingSystem` object instead")
-    shared Boolean systemIsMac;
-    if (exists temp = JSystem.getProperty("os.name")) {
-        systemIsMac = temp.lowercased.startsWith("mac os x");
-    } else {
-        systemIsMac = false;
-    }
+    shared Boolean systemIsMac = operatingSystem.name == "mac";
     "The usual shortcut-key modifier on this system."
     shared Integer shortcutMask;
     "A String describing that modifier."
