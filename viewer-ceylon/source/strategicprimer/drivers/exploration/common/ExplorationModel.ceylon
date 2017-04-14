@@ -290,7 +290,6 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     "The currently selected unit."
     shared actual IUnit? selectedUnit => selection.rest.first;
     "Select the given unit."
-    todo("Convert to setter of selectedUnit in interface")
     assign selectedUnit {
         Point oldLoc = selection.first;
         Point loc;
