@@ -20,7 +20,6 @@ import ceylon.collection {
     MutableSet
 }
 "Whether neither of two collections of Jobs contains a nonempty Job the other does not."
-todo("Make sure to change `.empty` once [[IJob]] is ported.")
 Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
         set { *first.filter((job) => !job.emptyJob) } == set { *second.filter((job) => !job.emptyJob) };
 "Whether two nullable values are either neither present or both present and equal."
