@@ -22,7 +22,7 @@ void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
     if (cli.inputBoolean("Add experience to workers individually? ")) {
         cli.loopOnList(workers, (clh) => clh.chooseFromList(workers,
             "Workers in unit:", "No unadvanced workers remain.", "Chosen worker: ",
-            false),
+            false).key,
             "Choose another worker? ", advanceSingleWorker);
     } else if (workers.empty) {
         cli.println("No workers in unit.");
@@ -30,7 +30,7 @@ void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
         MutableList<IJob> jobs = ArrayList { *ProxyWorker.fromUnit(unit) };
         cli.loopOnMutableList(jobs, (ICLIHelper clh) => clh.chooseFromList(
             jobs, "Jobs in workers:", "No existing jobs.",
-            "Job to advance: ", false),
+            "Job to advance: ", false).key,
             "Select another Job in these workers? ",
                     (MutableList<IJob> list, ICLIHelper clh) {
                 String jobName = clh.inputString("Name of new Job: ");

@@ -168,10 +168,10 @@ object queryCLI satisfies SimpleDriver {
     "Count the workers belonging to a player."
     void countWorkers(IMapNG map, ICLIHelper cli, Player* players) {
         Player[] playerList = [*players];
-        Integer playerNum = cli.chooseFromList(playerList,
+        value choice = cli.chooseFromList(playerList,
             "Players in the map:", "Map contains no players",
             "Owner of workers to count: ", true);
-        if (exists player = playerList[playerNum]) {
+        if (exists player = choice.item) {
             Integer count = sum { 0, for (location in map.locations)
                 countWorkersInIterable(player, map.getOtherFixtures(location)) };
             cli.println("``player.name`` has ``count`` workers");
@@ -489,18 +489,14 @@ object trappingCLI satisfies SimpleDriver {
         } else {
             fixtures = LinkedList { *huntModel.hunt(point, minutes)};
         }
-        variable Integer input = -1;
-        while (minutes > 0, input < commands.size) {
-            if (exists command = commands[input]) {
-                minutes -= handleCommand(fixtures, cli, command, fishing);
-                cli.println("``inHours(minutes)`` remaining");
-                if (command == quit) {
-                    break;
-                }
-            }
-            input = cli.chooseFromList(commands,
+        while (minutes > 0, exists command = cli.chooseFromList(commands,
                 "What should the ``name`` do next?", "Oops! No commands",
-                "Next action: ", false);
+                "Next action: ", false).item) {
+            minutes -= handleCommand(fixtures, cli, command, fishing);
+            cli.println("``inHours(minutes)`` remaining");
+            if (command == quit) {
+                break;
+            }
         }
     }
     "As this is a CLI, we can't show a file-chooser dialog."

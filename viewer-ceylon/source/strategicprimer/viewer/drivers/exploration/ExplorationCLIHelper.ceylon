@@ -68,28 +68,24 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     "Have the user choose a player."
     shared Player? choosePlayer() {
         Player[] players = [*model.playerChoices];
-        Integer playerNum = cli.chooseFromList(players,
+        return cli.chooseFromList(players,
             "Players shared by all the maps:", "No players shared by all the maps:",
-            "Chosen player: ", true);
-        assert (exists retval = players[playerNum]);
-        return retval;
+            "Chosen player: ", true).item;
     }
     "Have the user choose a unit belonging to that player."
     shared IUnit? chooseUnit(Player player) {
         IUnit[] units = [*model.getUnits(player)];
-        Integer unitNum = cli.chooseFromList(units, "Player's units:",
-            "That player has no units in the master map", "Chosen unit: ", true);
-        assert (exists retval = units[unitNum]);
-        return retval;
+        return cli.chooseFromList(units, "Player's units:",
+            "That player has no units in the master map", "Chosen unit: ", true).item;
     }
     "The explorer's current movement speed."
     variable Speed speed = Speed.normal;
     "Let the user change the explorer's speed"
     void changeSpeed() {
         Speed[] speeds = `Speed`.caseValues;
-        Integer newSpeed = cli.chooseFromList(speeds,
+        Integer->Speed? newSpeed = cli.chooseFromList(speeds,
             "Possible Speeds:", "No speeds available", "Chosen Speed: ", true);
-        if (exists temp = speeds[newSpeed]) {
+        if (exists temp = newSpeed.item) {
             speed = temp;
         }
     }

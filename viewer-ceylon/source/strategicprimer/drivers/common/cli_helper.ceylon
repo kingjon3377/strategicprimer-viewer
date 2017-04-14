@@ -45,6 +45,7 @@ shared interface ICLIHelper satisfies Obtainable {
             "The list."
             Element[] list,
             "How to ask the user to choose an item from the list."
+            todo("Take Entry(ICLIHelper) now?")
             Integer(ICLIHelper) choice,
             "The prompt to use to ask if the user wants to continue."
             String prompt,
@@ -64,8 +65,7 @@ shared interface ICLIHelper satisfies Obtainable {
             "What to do with the chosen item in the list."
             Anything(Element, ICLIHelper) operation) given Element satisfies Object;
     "Have the user choose an item from a list. Returns the index."
-    todo("Return Entry, as in Iterable.indexed?")
-    shared formal Integer chooseFromList<Element>(
+    shared formal Integer->Element? chooseFromList<Element>(
             "The list of items to choose from."
             Element[]|List<Element> items,
             "The description to give before printing the list."
@@ -77,8 +77,7 @@ shared interface ICLIHelper satisfies Obtainable {
             "Whether to automatically choose if there's only one choice."
             Boolean auto) given Element satisfies Object&HasName;
     "Have the user choose an item from a list."
-    todo("Return Entry, as in Iterable.indexed?")
-    shared formal Integer chooseStringFromList(
+    shared formal Integer->String? chooseStringFromList(
             "The list of items to choose from."
             String[] items,
             "The description to give before printing the list."
@@ -217,13 +216,13 @@ shared class CLIHelper satisfies ICLIHelper {
         }
     }
     "Implementation of chooseFromList() and chooseStringFromList()."
-    Integer chooseFromListImpl<Element>({Element*} items, String description,
+    Integer->Element? chooseFromListImpl<Element>({Element*} items, String description,
             String none, String prompt, Boolean auto, String(Element) func)
             given Element satisfies Object {
         if (items.empty) {
             ostream(none);
             ostream(operatingSystem.newline);
-            return -1;
+            return -1->null;
         }
         ostream(description);
         ostream(operatingSystem.newline);
@@ -231,14 +230,15 @@ shared class CLIHelper satisfies ICLIHelper {
             assert (exists first = items.first);
             ostream("Automatically choosing only item, ``func(first)``.");
             ostream(operatingSystem.newline);
-            return 0;
+            return 0->first;
         } else {
             printList(items, func);
-            return inputNumber(prompt);
+            Integer retval = inputNumber(prompt);
+            return retval->items.getFromFirst(retval);
         }
     }
     "Have the user choose an item from a list."
-    shared actual Integer chooseFromList<out Element>(
+    shared actual Integer->Element? chooseFromList<out Element>(
             Element[]|List<Element> list, String description, String none,
             String prompt, Boolean auto) given Element satisfies HasName&Object {
         return chooseFromListImpl<Element>(list, description, none, prompt,
@@ -324,7 +324,7 @@ shared class CLIHelper satisfies ICLIHelper {
         }
     }
     "Have the user choose an item from a list."
-    shared actual Integer chooseStringFromList(String[] items, String description,
+    shared actual Integer->String? chooseStringFromList(String[] items, String description,
             String none, String prompt, Boolean auto) {
         return chooseFromListImpl<String>(items, description, none, prompt, auto,
                     (String x) => x);

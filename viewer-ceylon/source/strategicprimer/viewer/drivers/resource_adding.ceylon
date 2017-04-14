@@ -138,9 +138,9 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     "Ask the user to choose or enter a resource kind."
     String getResourceKind(ICLIHelper cli) {
         String[] list = [*resourceKinds];
-        Integer num = cli.chooseStringFromList(list, "Possible kinds of resources:",
+        value choice = cli.chooseStringFromList(list, "Possible kinds of resources:",
             "No resource kinds entered yet", "Chosen kind: ", false);
-        if (exists retval = list.get(num)) {
+        if (exists retval = choice.item) {
             return retval;
         } else {
             String retval = cli.inputString("Resource kind to use: ");
@@ -160,7 +160,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
         String[] list = [*set];
         Integer num = cli.chooseStringFromList(list,
             "Possible resources in the ``kind`` category`", "No resources entered yet",
-            "Choose resource: ", false);
+            "Choose resource: ", false).key;
         if (exists retval = list.get(num)) {
             return retval;
         } else {
@@ -212,7 +212,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
                 cli.loopOnList(players,
                     (clh) => clh.chooseFromList(players,
                         "Players in the maps:", "No players found.",
-                        "Player to add resources for: ", false),
+                        "Player to add resources for: ", false).key,
                 "Choose another player?", (Player player, clh) {
                         while (clh.inputBoolean("Keep going? ")) {
                             if (clh.inputBooleanInSeries(

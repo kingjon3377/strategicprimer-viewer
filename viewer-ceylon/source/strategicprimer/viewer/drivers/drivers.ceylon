@@ -291,9 +291,9 @@ shared void run() {
                     }
                 } else {
                     ISPDriver[] driversList = [*driverCache.items.map(Tuple.first)];
-                    Integer choice = cli.chooseFromList(driversList,
+                    value choice = cli.chooseFromList(driversList,
                         "CLI apps available:", "No applications available", "App to start: ", true);
-                    if (exists chosenDriver = driversList.get(choice)) {
+                    if (exists chosenDriver = choice.item) {
                         chosenDriver.startDriverOnArguments(cli, options, *others);
                     }
                 }
@@ -307,9 +307,9 @@ shared void run() {
                 ISPDriver[] cliDrivers = [*driverCache.items.map(
                             (element) => element.first)];
                 try {
-                    if (exists driver = cliDrivers.get(cli.chooseFromList(
+                    if (exists driver = cli.chooseFromList(
                             cliDrivers, "CLI apps available:",
-                            "No applications available", "App to start: ", true))) {
+                            "No applications available", "App to start: ", true).item) {
                         driver.startDriverOnModel(cli, options, driverModel);
                     }
                 } catch (IOException except) {

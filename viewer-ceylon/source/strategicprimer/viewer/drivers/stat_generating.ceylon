@@ -161,7 +161,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         cli.loopOnList(workers, (clh) => clh.chooseFromList(workers,
                 "Which worker do you want to enter stats for?",
                 "There are no workers without stats in that unit.",
-                "Worker to modify: ", false), "Choose another worker? ",
+                "Worker to modify: ", false).key, "Choose another worker? ",
             (IWorker worker, clh) => enterStatsForWorker(model, worker.id, clh));
     }
     "Let the user enter stats for workers already in the maps that belong to one
@@ -170,7 +170,8 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         IUnit[] units = [*removeStattedUnits(*model.getUnits(player))];
         cli.loopOnList(units, (clh) =>
             clh.chooseFromList(units, "Which unit contains the worker in question?",
-                "All that player's units already have stats.", "Unit selection: ", false),
+                "All that player's units already have stats.", "Unit selection: ",
+                false).key,
             "Choose another unit? ", (IUnit unit, clh) =>
                 enterStatsInUnit(model, unit, clh));
     }
@@ -180,7 +181,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         cli.loopOnList(players, (clh) => clh.chooseFromList(players,
                 "Which player owns the worker in question?",
                 "There are no players shared by all the maps.", "Player selection: ",
-                true), "Choose another player?", (Player player, clh) =>
+                true).key, "Choose another player?", (Player player, clh) =>
             enterStatsForPlayer(model, player, clh));
     }
     "Let the user enter which Jobs a worker's levels are in."
@@ -217,7 +218,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
             Integer chosenBonus = cli.chooseStringFromList(["Strength", "Dexterity",
                     "Constitution", "Intelligence", "Wisdom", "Charisma", "Lowest"],
                 "Character is a ``race``; which stat should get a +2 bonus?", "",
-                "Stat for bonus:", false);
+                "Stat for bonus:", false).key;
             Integer bonusStat;
             if (chosenBonus < 6) {
                 bonusStat = chosenBonus;
@@ -333,7 +334,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         cli.loopOnMutableList(units, (clh) => clh.chooseFromList(units,
                 "Which unit contains the worker in question? (Select -1 to create new.)",
                 "There are no units owned by that player.", "Unit selection: ",
-                false), "Choose another unit? ", (MutableList<out IUnit> list, clh) {
+                false).key, "Choose another unit? ", (MutableList<out IUnit> list, clh) {
             Point point = clh.inputPoint("Where to put new unit? ");
             IUnit temp = Unit(player, clh.inputString("Kind of unit: "),
                 clh.inputString("Unit name: "), idf.createID());
@@ -357,7 +358,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         cli.loopOnList(players, (clh) => clh.chooseFromList(players,
                 "Which player owns the new worker(s)?",
                 "There are no players shared by all the maps.",
-                "Player selection: ", false), "Choose another player? ",
+                "Player selection: ", false).key, "Choose another player? ",
             (Player player, clh) {
                 variable Boolean again = true;
                 while (again) {

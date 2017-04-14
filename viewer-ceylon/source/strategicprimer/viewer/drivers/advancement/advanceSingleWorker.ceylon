@@ -16,7 +16,7 @@ import strategicprimer.drivers.common {
 void advanceSingleWorker(IWorker worker, ICLIHelper cli) {
     MutableList<IJob> jobs = ArrayList { *worker };
     cli.loopOnMutableList(jobs, (clh) => clh.chooseFromList(jobs,
-        "Jobs in worker:", "No existing Jobs.", "Job to advance: ", false),
+        "Jobs in worker:", "No existing Jobs.", "Job to advance: ", false).key,
         "Select another Job in this worker? ",
                 (MutableList<IJob> list, clh) {
             String jobName = clh.inputString("Name of new Job: ");
