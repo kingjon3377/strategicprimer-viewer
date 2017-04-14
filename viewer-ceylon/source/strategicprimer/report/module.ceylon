@@ -4,7 +4,7 @@ native("jvm")
 module strategicprimer.report "0.4.9900" {
 	import lovelace.util.jvm "0.1.0";
 	import ceylon.regex "1.3.2";
-	shared import java.base "8";
+	import java.base "8";
 	import ceylon.interop.java "1.3.2";
 	shared import java.desktop "8";
 	import ceylon.collection "1.3.2";

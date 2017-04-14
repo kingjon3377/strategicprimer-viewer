@@ -26,8 +26,6 @@ import strategicprimer.report.generators.tabular {
     ExplorableTabularReportGenerator
 }
 "A method to produce tabular reports based on a map for a player."
-todo("Change the type of `source`, so we don't have to mark our import of `java.base` as
-      `shared`")
 shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     Player player = map.currentPlayer;
