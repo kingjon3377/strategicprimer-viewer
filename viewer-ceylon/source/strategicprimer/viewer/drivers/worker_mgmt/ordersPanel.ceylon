@@ -134,12 +134,12 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
     }
     area.addKeyListener(modifiedEnterListener);
     Integer keyMask = platform.shortcutMask;
-    createHotKey(retval, "openOrders", ActionWrapper((event) {
+    createHotKey(retval, "openOrders", (event) {
         Boolean newlyGainingFocus = !area.focusOwner;
         area.requestFocusInWindow();
         if (newlyGainingFocus) {
             area.selectAll();
         }
-    }), JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkD, keyMask));
+    }, JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkD, keyMask));
     return retval;
 }

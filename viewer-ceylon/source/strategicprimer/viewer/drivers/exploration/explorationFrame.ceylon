@@ -126,6 +126,9 @@ import strategicprimer.drivers.common {
     SelectionChangeSource,
     PlayerChangeListener
 }
+import lovelace.util.common {
+    todo
+}
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,
         Anything(ActionEvent) menuHandler) {
@@ -328,6 +331,7 @@ SPFrame explorationFrame(IExplorationModel model,
                     matchers);
                 // At some point we tried wrapping the button in a JScrollPane.
                 tilesPanel.add(dtb);
+                todo("Does this really need to extend AbstractAction now?")
                 object ecl extends AbstractAction()
                         satisfies MovementCostSource&SelectionChangeSource {
                     MutableList<MovementCostListener> movementListeners =

@@ -266,9 +266,7 @@ shared void createHotKey(
         "The String to use to identify the action"
         String action,
         "The listener that should handle the action"
-        todo("Now we have union types, take an [[ActionListener]] or equivalent lambda
-              as well and in that case wrap it in an [[ActionWrapper]].")
-        Action handler,
+        Action|ActionListener|Anything(ActionEvent) handler,
         "See [[JComponent#getInputMap(Integer)]]."
         Integer condition,
         "The keys to use as hot-keys"
@@ -277,7 +275,13 @@ shared void createHotKey(
     for (key in keys) {
         inputMap.put(key, action);
     }
-    component.actionMap.put(action, handler);
+    Action temp;
+    if (is Action handler) {
+        temp = handler;
+    } else {
+        temp = ActionWrapper(handler);
+    }
+    component.actionMap.put(action, temp);
 }
 "An enumeration of possible modifiers to hot-keys."
 shared class HotKeyModifier {

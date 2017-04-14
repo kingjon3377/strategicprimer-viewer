@@ -173,8 +173,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
     }
     retval.dropTarget = DropTarget(retval, dropListener);
     createHotKey(retval, "delete",
-        ActionWrapper((ActionEvent event) => listModel.removeAll(
-        *retval.selectedValuesList)),
+        (ActionEvent event) => listModel.removeAll(*retval.selectedValuesList),
         JComponent.whenAncestorOfFocusedComponent,
         KeyStroke.getKeyStroke(KeyEvent.vkDelete, 0),
         KeyStroke.getKeyStroke(KeyEvent.vkBackSpace, 0));
