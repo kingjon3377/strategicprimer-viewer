@@ -153,7 +153,6 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
 }
 "Helper method: Flatten any proxies in the list by replacing them with what they are
  proxies for."
-todo("Once [[ProxyFor]] is ported to Ceylon, use its reified form instead of assertions")
 {T*} filterProxies<T>(T* list) given T satisfies Object {
     MutableList<T> retval = ArrayList<T>();
     for (item in list) {
