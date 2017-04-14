@@ -6,7 +6,6 @@ ant \
     -lib $(pwd)/launch4j/lib \
     -Dlaunch4j.dir=$(pwd)/launch4j \
     -Dnullness.jar.path=$(pwd)/org.eclipse.jdt.annotation-2.0.0.jar \
-    -Djunit.jar.path=/usr/share/java/junit4.jar \
     -Dwindowmenu.jar.path=$(pwd)/WindowMenu.jar \
     -Dstub-script-path=$(pwd)/universalJavaApplicationStub-2.0.1/src/universalJavaApplicationStub \
     -Dapple.extensions.path=$(pwd)/orange-extensions-1.3.0.jar \

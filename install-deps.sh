@@ -10,10 +10,7 @@ wget http://central.maven.org/maven2/org/eclipse/jdt/org.eclipse.jdt.annotation/
 wget http://javagraphics.java.net/jars/WindowMenu.jar
 wget http://central.maven.org/maven2/com/yuvimasory/orange-extensions/1.3.0/orange-extensions-1.3.0.jar
 sudo apt-get update -qq
-# TODO: Open request for libhamcrest1.2-java
 sudo apt-get install genisoimage
-wget http://mirrors.kernel.org/ubuntu/pool/main/libh/libhamcrest-java/libhamcrest-java_1.3-4_all.deb
-sudo dpkg -i libhamcrest-java_1.3-4_all.deb
 wget https://github.com/tofi86/universalJavaApplicationStub/archive/v2.0.1.tar.gz -O \
         universalJavaApplicationStub-2.0.1.tar.gz
 tar xzf universalJavaApplicationStub-2.0.1.tar.gz

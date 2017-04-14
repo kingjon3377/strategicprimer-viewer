@@ -5,7 +5,6 @@ jdk:
 addons:
   apt:
     packages:
-      - junit4
       - ant-optional
       - libc6:i386
       - icnsutils
